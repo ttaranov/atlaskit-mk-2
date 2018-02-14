@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
 import {
+  AnalyticsContext,
   UIAnalyticsEvent,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
@@ -30,6 +31,7 @@ import {
 } from '../../shared-variables';
 import * as presets from '../../theme/presets';
 import WithElectronTheme from '../../theme/with-electron-theme';
+import { version } from '../../../package.json';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -284,7 +286,8 @@ class Navigation extends PureComponent<Props, State> {
           originalInteraction: 'drag',
           ...payload,
           action: 'toggle',
-          isOpen,
+          newIsOpen: isOpen,
+          version,
         }))
         .fire('atlaskit');
     }
@@ -329,7 +332,8 @@ class Navigation extends PureComponent<Props, State> {
           originalInteraction: 'click',
           ...payload,
           action: 'toggle',
-          isOpen,
+          newIsOpen: isOpen,
+          version,
         }))
         .fire('atlaskit');
     }
@@ -448,46 +452,48 @@ class Navigation extends PureComponent<Props, State> {
     ) : null;
 
     return (
-      <WithElectronTheme isElectronMac={isElectronMac}>
-        <div>
-          {/* Used to push the page to the right the width of the nav */}
-          <Spacer
-            innerRef={this.registerSpacerRef}
-            onTransitionEnd={this.onSpacerTransitionEnd}
-            shouldAnimate={shouldAnimateContainer}
-            width={renderedWidth}
-          >
-            <NavigationFixedContainer topOffset={topOffset}>
-              {globalNavigation}
-              <NavigationContainerNavigationWrapper
-                horizontalOffset={containerOffsetX}
-              >
-                <ContainerNavigation
-                  scrollRef={containerScrollRef}
-                  theme={containerTheme}
-                  showGlobalActions={!showGlobalNavigation}
-                  globalCreateIcon={globalCreateIcon}
-                  globalPrimaryActions={globalPrimaryActions}
-                  globalPrimaryIcon={globalPrimaryIcon}
-                  globalPrimaryItemHref={globalPrimaryItemHref}
-                  globalSearchIcon={globalSearchIcon}
-                  globalSecondaryActions={globalSecondaryActions}
-                  hasScrollHintTop={hasScrollHintTop}
-                  headerComponent={containerHeaderComponent}
-                  linkComponent={linkComponent}
-                  onGlobalCreateActivate={onCreateDrawerOpen}
-                  onGlobalSearchActivate={onSearchDrawerOpen}
-                  isCollapsed={isContainerCollapsed}
+      <AnalyticsContext data={{ isNavigationOpen: isOpen }}>
+        <WithElectronTheme isElectronMac={isElectronMac}>
+          <div>
+            {/* Used to push the page to the right the width of the nav */}
+            <Spacer
+              innerRef={this.registerSpacerRef}
+              onTransitionEnd={this.onSpacerTransitionEnd}
+              shouldAnimate={shouldAnimateContainer}
+              width={renderedWidth}
+            >
+              <NavigationFixedContainer topOffset={topOffset}>
+                {globalNavigation}
+                <NavigationContainerNavigationWrapper
+                  horizontalOffset={containerOffsetX}
                 >
-                  {children}
-                </ContainerNavigation>
-              </NavigationContainerNavigationWrapper>
-              {resizer}
-            </NavigationFixedContainer>
-          </Spacer>
-          {drawers}
-        </div>
-      </WithElectronTheme>
+                  <ContainerNavigation
+                    scrollRef={containerScrollRef}
+                    theme={containerTheme}
+                    showGlobalActions={!showGlobalNavigation}
+                    globalCreateIcon={globalCreateIcon}
+                    globalPrimaryActions={globalPrimaryActions}
+                    globalPrimaryIcon={globalPrimaryIcon}
+                    globalPrimaryItemHref={globalPrimaryItemHref}
+                    globalSearchIcon={globalSearchIcon}
+                    globalSecondaryActions={globalSecondaryActions}
+                    hasScrollHintTop={hasScrollHintTop}
+                    headerComponent={containerHeaderComponent}
+                    linkComponent={linkComponent}
+                    onGlobalCreateActivate={onCreateDrawerOpen}
+                    onGlobalSearchActivate={onSearchDrawerOpen}
+                    isCollapsed={isContainerCollapsed}
+                  >
+                    {children}
+                  </ContainerNavigation>
+                </NavigationContainerNavigationWrapper>
+                {resizer}
+              </NavigationFixedContainer>
+            </Spacer>
+            {drawers}
+          </div>
+        </WithElectronTheme>
+      </AnalyticsContext>
     );
   }
 }

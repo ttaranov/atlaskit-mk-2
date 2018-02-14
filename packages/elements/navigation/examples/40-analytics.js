@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
-import Navigation from '../src';
+import Navigation, { AkNavigationItem } from '../src';
 
 type State = {
   isOpen: boolean,
@@ -65,7 +65,9 @@ export default class BasicNavigation extends Component<{}, State> {
             isOpen={this.state.isOpen}
             onResize={this.resize}
             width={this.state.width || undefined}
-          />
+          >
+            <AkNavigationItem text="Click me" />
+          </Navigation>
         </div>
       </AnalyticsListener>
     );
