@@ -41,8 +41,8 @@ describe('Uploader', () => {
   it('should pass down the file content to Chunkinator', async () => {
     const { MediaStoreMock, ChunkinatorMock, config } = setup();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     uploadFile({ content: 'file-content' }, config);
 
@@ -52,7 +52,7 @@ describe('Uploader', () => {
   it('should create a MediaStore with the given config', () => {
     const { MediaStoreMock, config } = setup();
 
-    MediaStore = MediaStoreMock;
+    (MediaStore as any) = MediaStoreMock;
 
     uploadFile({ content: '' }, config);
 
@@ -67,8 +67,8 @@ describe('Uploader', () => {
       createFileFromUpload,
     } = setup();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onComplete();
@@ -96,8 +96,8 @@ describe('Uploader', () => {
     } = setup();
     const onProgress = jest.fn();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onProgress(0.1, [{ hash: 1 }, { hash: 2 }, { hash: 3 }]);
@@ -125,8 +125,8 @@ describe('Uploader', () => {
     } = setup();
     const onProgress = jest.fn();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onProgress(0.1, [1, 2, 3]);
@@ -144,8 +144,8 @@ describe('Uploader', () => {
   it('should resolve with the fileId of the uploaded file', async () => {
     const { MediaStoreMock, ChunkinatorMock, config } = setup();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onComplete();
@@ -159,8 +159,8 @@ describe('Uploader', () => {
   it('should reject if there was an error with the upload', () => {
     const { MediaStoreMock, ChunkinatorMock, config } = setup();
 
-    MediaStore = MediaStoreMock;
-    chunkinator = ChunkinatorMock;
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onError('some upload error');
