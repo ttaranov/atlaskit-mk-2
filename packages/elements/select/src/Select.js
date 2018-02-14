@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import Select, { type SelectComponents } from 'react-select';
+import Select, { mergeStyles, type SelectComponents } from 'react-select';
 import { colors } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
@@ -123,69 +123,68 @@ export default class AtlaskitSelect extends Component<Props> {
   };
   render() {
     // $FlowFixMe: `validationState` is passed in from a parent validation component
-    const { validationState, ...props } = this.props; // eslint-disable-line
+    const { styles, validationState, ...props } = this.props; // eslint-disable-line
 
     // props must be spread first to stop `components` being overridden
     return (
       <Select
         {...props}
         components={this.components}
-        styles={{
-          control: (styles, { isFocused }) => {
-            let borderColor = isFocused ? colors.B100 : colors.N20;
-            if (validationState === 'error') borderColor = colors.R400;
-            if (validationState === 'success') borderColor = colors.G400;
+        styles={mergeStyles(
+          {
+            control: (css, { isFocused }) => {
+              let borderColor = isFocused ? colors.B100 : colors.N20;
+              if (validationState === 'error') borderColor = colors.R400;
+              if (validationState === 'success') borderColor = colors.G400;
 
-            let borderColorHover = isFocused ? colors.B100 : colors.N20;
-            if (validationState === 'error') borderColorHover = colors.R400;
-            if (validationState === 'success') borderColorHover = colors.G400;
+              let borderColorHover = isFocused ? colors.B100 : colors.N20;
+              if (validationState === 'error') borderColorHover = colors.R400;
+              if (validationState === 'success') borderColorHover = colors.G400;
 
-            const lgBorder = isFocused || validationState !== 'default';
-            const transitionDuration = '200ms';
+              const lgBorder = isFocused || validationState !== 'default';
+              const transitionDuration = '200ms';
 
-            return {
-              ...styles,
-              backgroundColor: isFocused ? colors.N0 : colors.N10,
-              borderColor,
-              borderStyle: 'solid',
-              borderWidth: lgBorder ? 2 : 1,
-              boxShadow: 'none',
-              padding: lgBorder ? 0 : 1,
-              transition: `background-color ${transitionDuration} ease-in-out,
+              return {
+                ...css,
+                backgroundColor: isFocused ? colors.N0 : colors.N10,
+                borderColor,
+                borderStyle: 'solid',
+                borderWidth: lgBorder ? 2 : 1,
+                boxShadow: 'none',
+                padding: lgBorder ? 0 : 1,
+                transition: `background-color ${transitionDuration} ease-in-out,
                 border-color ${transitionDuration} ease-in-out`,
 
-              ':hover': {
-                backgroundColor: isFocused ? colors.N0 : colors.N20,
-                borderColor: borderColorHover,
-              },
-            };
-          },
-          indicator: (styles, { isFocused }) => ({
-            ...styles,
-            color: isFocused ? colors.N200 : colors.N80,
-            paddingBottom: 6,
-            paddingTop: 6,
-
-            ':hover': {
-              color: colors.N200,
+                ':hover': {
+                  backgroundColor: isFocused ? colors.N0 : colors.N20,
+                  borderColor: borderColorHover,
+                },
+              };
             },
-          }),
-          option: (styles, { isFocused, isSelected }) => {
-            const color = isSelected ? colors.N0 : null;
+            indicator: (css, { isFocused }) => ({
+              ...css,
+              color: isFocused ? colors.N200 : colors.N80,
+              paddingBottom: 6,
+              paddingTop: 6,
 
-            let backgroundColor;
-            if (isSelected) backgroundColor = colors.B200;
-            else if (isFocused) backgroundColor = colors.N20;
+              ':hover': {
+                color: colors.N200,
+              },
+            }),
+            option: (css, { isFocused, isSelected }) => {
+              const color = isSelected ? colors.N0 : null;
 
-            return { ...styles, backgroundColor, color };
+              let backgroundColor;
+              if (isSelected) backgroundColor = colors.B200;
+              else if (isFocused) backgroundColor = colors.N20;
+
+              return { ...css, backgroundColor, color };
+            },
+            placeholder: css => ({ ...css, color: colors.N100 }),
+            singleValue: css => ({ ...css, color: colors.N900 }),
           },
-          placeholder: styles => {
-            return { ...styles, color: colors.N100 };
-          },
-          singleValue: styles => {
-            return { ...styles, color: colors.N900 };
-          },
-        }}
+          styles,
+        )}
       />
     );
   }

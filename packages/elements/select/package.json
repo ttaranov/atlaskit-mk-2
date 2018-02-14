@@ -23,7 +23,7 @@
   "dependencies": {
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/theme": "^2.3.3",
-    "react-select": "2.0.0-alpha.4",
+    "react-select": "2.0.0-alpha.6",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
