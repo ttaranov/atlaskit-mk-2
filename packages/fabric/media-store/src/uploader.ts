@@ -71,11 +71,13 @@ export const uploadFile = (
       },
       {
         async onComplete() {
-          const id = await deferredUploadId;
-          const response = await store.createFileFromUpload(id, {
-            collection,
-            name,
-          });
+          const uploadId = await deferredUploadId;
+          const response = await store.createFileFromUpload(
+            { uploadId, name },
+            {
+              collection,
+            },
+          );
           const fileId = response.data.id;
 
           resolve(fileId);

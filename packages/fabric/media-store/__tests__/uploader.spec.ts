@@ -80,10 +80,12 @@ describe('Uploader', () => {
     );
 
     expect(createFileFromUpload).toHaveBeenCalledTimes(1);
-    expect(createFileFromUpload).toBeCalledWith('upload-id-123', {
-      name: 'file-name',
-      collection: 'some-collection',
-    });
+    expect(createFileFromUpload).toBeCalledWith(
+      { uploadId: 'upload-id-123', name: 'file-name' },
+      {
+        collection: 'some-collection',
+      },
+    );
   });
 
   it('should append the chunks to the upload on chunking progress', async () => {
