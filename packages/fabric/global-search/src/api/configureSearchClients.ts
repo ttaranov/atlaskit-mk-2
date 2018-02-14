@@ -1,17 +1,17 @@
-import RecentSearchProviderImpl, {
-  RecentSearchProvider,
-} from './RecentSearchProvider';
-import CrossProductSearchProviderImpl, {
-  CrossProductSearchProvider,
-} from './CrossProductSearchProvider';
-import PeopleSearchProviderImpl, {
-  PeopleSearchProvider,
-} from './PeopleSearchProvider';
+import RecentSearchClientImpl, {
+  RecentSearchClient,
+} from './RecentSearchClient';
+import CrossProductSearchClientImpl, {
+  CrossProductSearchClient,
+} from './CrossProductSearchClient';
+import PeopleSearchClientImpl, {
+  PeopleSearchClient,
+} from './PeopleSearchClient';
 
-export interface SearchProviders {
-  recentSearchProvider: RecentSearchProvider;
-  crossProductSearchProvider: CrossProductSearchProvider;
-  peopleSearchProvider: PeopleSearchProvider;
+export interface SearchClients {
+  recentSearchClient: RecentSearchClient;
+  crossProductSearchClient: CrossProductSearchClient;
+  peopleSearchClient: PeopleSearchClient;
 }
 
 interface Config {
@@ -45,10 +45,10 @@ const config: Config = {
   },
 };
 
-export default function configureSearchProviders(
+export default function configureSearchClients(
   cloudId: string,
   environment: string,
-): SearchProviders {
+): SearchClients {
   if (!(environment in config)) {
     throw new Error(
       `Invalid environment. Valid options are: ${Object.keys(config)}`,
@@ -60,17 +60,11 @@ export default function configureSearchProviders(
   const peopleSearchUrl = config[environment].peopleSearch;
 
   return {
-    recentSearchProvider: new RecentSearchProviderImpl(
-      recentSearchUrl,
-      cloudId,
-    ),
-    crossProductSearchProvider: new CrossProductSearchProviderImpl(
+    recentSearchClient: new RecentSearchClientImpl(recentSearchUrl, cloudId),
+    crossProductSearchClient: new CrossProductSearchClientImpl(
       crossProductSearchUrl,
       cloudId,
     ),
-    peopleSearchProvider: new PeopleSearchProviderImpl(
-      peopleSearchUrl,
-      cloudId,
-    ),
+    peopleSearchClient: new PeopleSearchClientImpl(peopleSearchUrl, cloudId),
   };
 }

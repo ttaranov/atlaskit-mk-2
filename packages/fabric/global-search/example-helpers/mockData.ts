@@ -1,16 +1,13 @@
 import * as faker from 'faker';
-import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchProvider';
-import {
-  RecentItemsResponse,
-  RecentItem,
-} from '../src/api/RecentSearchProvider';
+import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
+import { RecentItemsResponse, RecentItem } from '../src/api/RecentSearchClient';
 import {
   CrossProductSearchResponse,
   Scope,
   SearchItem,
   ConfluenceItem,
   JiraItem,
-} from '../src/api/CrossProductSearchProvider';
+} from '../src/api/CrossProductSearchClient';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);

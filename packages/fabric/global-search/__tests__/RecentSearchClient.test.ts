@@ -1,6 +1,4 @@
-import RecentSearchProvider, {
-  RecentItem,
-} from '../src/api/RecentSearchProvider';
+import RecentSearchClient, { RecentItem } from '../src/api/RecentSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 
@@ -14,11 +12,11 @@ function apiWillReturn(state: RecentItem[]) {
   fetchMock.get('localhost/api/client/recent?cloudId=123', response, opts);
 }
 
-describe('RecentSearchProvider', () => {
-  let searchProvider;
+describe('RecentSearchClient', () => {
+  let searchClient;
 
   beforeEach(() => {
-    searchProvider = new RecentSearchProvider('localhost', '123');
+    searchClient = new RecentSearchClient('localhost', '123');
   });
 
   afterEach(fetchMock.restore);
@@ -35,7 +33,7 @@ describe('RecentSearchProvider', () => {
         },
       ]);
 
-      const items = await searchProvider.getRecentItems();
+      const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
       const item = items[0];
@@ -60,7 +58,7 @@ describe('RecentSearchProvider', () => {
         },
       ]);
 
-      const items = await searchProvider.search('name');
+      const items = await searchClient.search('name');
       expect(items).toHaveLength(1);
 
       const item = items[0];
@@ -72,12 +70,12 @@ describe('RecentSearchProvider', () => {
       expect(item.containerName).toEqual('container');
     });
 
-    it('should call the api only once when provider is invoked repeatedly', async () => {
+    it('should call the api only once when client is invoked repeatedly', async () => {
       apiWillReturn([]);
 
-      await searchProvider.search('once');
-      await searchProvider.search('twice');
-      await searchProvider.search('thrice');
+      await searchClient.search('once');
+      await searchClient.search('twice');
+      await searchClient.search('thrice');
 
       expect(fetchMock.calls('recent')).toHaveLength(1);
     });
@@ -93,7 +91,7 @@ describe('RecentSearchProvider', () => {
         },
       ]);
 
-      const items = await searchProvider.search('');
+      const items = await searchClient.search('');
       expect(items).toHaveLength(0);
     });
 
@@ -115,7 +113,7 @@ describe('RecentSearchProvider', () => {
         },
       ]);
 
-      const items = await searchProvider.search('Nam');
+      const items = await searchClient.search('Nam');
       expect(items).toHaveLength(2);
       expect(items[0].name).toEqual('name');
       expect(items[1].name).toEqual('name2');

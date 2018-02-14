@@ -7,13 +7,13 @@ import {
 import GlobalQuickSearch, {
   Props as GlobalQuickSearchProps,
 } from '../src/components/GlobalQuickSearch';
-import { RecentSearchProvider } from '../src/api/RecentSearchProvider';
+import { RecentSearchClient } from '../src/api/RecentSearchClient';
 import {
-  CrossProductSearchProvider,
+  CrossProductSearchClient,
   CrossProductResults,
-} from '../src/api/CrossProductSearchProvider';
+} from '../src/api/CrossProductSearchClient';
 import { Result, ResultType } from '../src/model/Result';
-import { PeopleSearchProvider } from '../src/api/PeopleSearchProvider';
+import { PeopleSearchClient } from '../src/api/PeopleSearchClient';
 
 function delay<T>(millis: number = 1, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -35,7 +35,7 @@ async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   wrapper.update();
 }
 
-const noResultsRecentSearchProvider: RecentSearchProvider = {
+const noResultsRecentSearchClient: RecentSearchClient = {
   getRecentItems() {
     return Promise.resolve([]);
   },
@@ -44,7 +44,7 @@ const noResultsRecentSearchProvider: RecentSearchProvider = {
   },
 };
 
-const errorRecentSearchProvider: RecentSearchProvider = {
+const errorRecentSearchClient: RecentSearchClient = {
   getRecentItems() {
     return Promise.reject('error');
   },
@@ -53,13 +53,13 @@ const errorRecentSearchProvider: RecentSearchProvider = {
   },
 };
 
-const noResultsCrossProductSearchProvider: CrossProductSearchProvider = {
+const noResultsCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
     return Promise.resolve({ jiraIssues: [], confluencePages: [] });
   },
 };
 
-const noResultsPeopleSearchProvider: PeopleSearchProvider = {
+const noResultsPeopleSearchClient: PeopleSearchClient = {
   search(query: string) {
     return Promise.resolve([]);
   },
@@ -78,9 +78,9 @@ function makeResult(partial?: Partial<Result>): Result {
 
 function render(partialProps?: Partial<Props>) {
   const props: Props = {
-    recentSearchProvider: noResultsRecentSearchProvider,
-    crossProductSearchProvider: noResultsCrossProductSearchProvider,
-    peopleSearchProvider: noResultsPeopleSearchProvider,
+    recentSearchClient: noResultsRecentSearchClient,
+    crossProductSearchClient: noResultsCrossProductSearchClient,
+    peopleSearchClient: noResultsPeopleSearchClient,
     debounceMillis: 1,
     ...partialProps,
   };
@@ -106,7 +106,7 @@ describe('GlobalQuickSearchContainer', () => {
 
   it('should should reset loading state when an error happened', async () => {
     const wrapper = render({
-      recentSearchProvider: errorRecentSearchProvider,
+      recentSearchClient: errorRecentSearchClient,
     });
 
     searchFor('dav', wrapper);
@@ -126,7 +126,7 @@ describe('GlobalQuickSearchContainer', () => {
 
   it('should render recent results', async () => {
     const wrapper = render({
-      recentSearchProvider: {
+      recentSearchClient: {
         search() {
           return Promise.resolve([makeResult()]);
         },
@@ -144,7 +144,7 @@ describe('GlobalQuickSearchContainer', () => {
   });
 
   it('should render recently viewed items', async () => {
-    const mockRecentProvider = {
+    const mockRecentClient = {
       getRecentItems() {
         return Promise.resolve([makeResult()]);
       },
@@ -154,7 +154,7 @@ describe('GlobalQuickSearchContainer', () => {
     };
 
     const wrapper = render({
-      recentSearchProvider: mockRecentProvider,
+      recentSearchClient: mockRecentClient,
     });
 
     const getRecentlyViewedItems = wrapper
@@ -171,7 +171,7 @@ describe('GlobalQuickSearchContainer', () => {
 
   it('should render jira results', async () => {
     const wrapper = render({
-      crossProductSearchProvider: {
+      crossProductSearchClient: {
         search() {
           return Promise.resolve({
             jira: [makeResult()],
@@ -195,7 +195,7 @@ describe('GlobalQuickSearchContainer', () => {
 
   it('should render confluence results', async () => {
     const wrapper = render({
-      crossProductSearchProvider: {
+      crossProductSearchClient: {
         search() {
           return Promise.resolve({
             jira: [],
@@ -219,7 +219,7 @@ describe('GlobalQuickSearchContainer', () => {
 
   it('should render people results', async () => {
     const wrapper = render({
-      peopleSearchProvider: {
+      peopleSearchClient: {
         search() {
           return Promise.resolve([makeResult()]);
         },
@@ -253,18 +253,18 @@ describe('GlobalQuickSearchContainer', () => {
       });
     }
 
-    const mockSearchProvider = {
+    const mockSearchClient = {
       search: jest.fn(searchCrossProduct),
     };
 
-    const mockRecentSearchProvider = {
+    const mockRecentSearchClient = {
       getRecentItems: jest.fn(),
       search: jest.fn(searchRecent),
     };
 
     const wrapper = render({
-      recentSearchProvider: mockRecentSearchProvider,
-      crossProductSearchProvider: mockSearchProvider,
+      recentSearchClient: mockRecentSearchClient,
+      crossProductSearchClient: mockSearchClient,
     });
 
     searchFor('once', wrapper);
@@ -305,13 +305,13 @@ describe('GlobalQuickSearchContainer', () => {
       .mockImplementationOnce(searchDelayed)
       .mockImplementationOnce(searchCurrent);
 
-    const mockSearchProvider = {
+    const mockSearchClient = {
       search: searchMock,
     };
 
     const wrapper = render({
-      recentSearchProvider: noResultsRecentSearchProvider,
-      crossProductSearchProvider: mockSearchProvider,
+      recentSearchClient: noResultsRecentSearchClient,
+      crossProductSearchClient: mockSearchClient,
     });
 
     searchFor('once - this will return the delayed result', wrapper);
@@ -327,7 +327,7 @@ describe('GlobalQuickSearchContainer', () => {
       const firePrivateAnalyticsEventMock = jest.fn();
 
       const wrapper = render({
-        peopleSearchProvider: {
+        peopleSearchClient: {
           search(query: string) {
             return Promise.reject(new TypeError('failed'));
           },

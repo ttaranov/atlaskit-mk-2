@@ -2,18 +2,18 @@ import * as React from 'react';
 import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import GlobalQuickSearch from './GlobalQuickSearch';
-import { RecentSearchProvider } from '../api/RecentSearchProvider';
+import { RecentSearchClient } from '../api/RecentSearchClient';
 import {
-  CrossProductSearchProvider,
+  CrossProductSearchClient,
   CrossProductResults,
-} from '../api/CrossProductSearchProvider';
+} from '../api/CrossProductSearchClient';
 import { Result } from '../model/Result';
-import { PeopleSearchProvider } from '../api/PeopleSearchProvider';
+import { PeopleSearchClient } from '../api/PeopleSearchClient';
 
 export interface Props {
-  recentSearchProvider: RecentSearchProvider;
-  crossProductSearchProvider: CrossProductSearchProvider;
-  peopleSearchProvider: PeopleSearchProvider;
+  recentSearchClient: RecentSearchClient;
+  crossProductSearchClient: CrossProductSearchClient;
+  peopleSearchClient: PeopleSearchClient;
   debounceMillis?: number; // for testing only
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
@@ -65,7 +65,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   };
 
   async searchRecent(query: string) {
-    const results = await this.props.recentSearchProvider.search(query);
+    const results = await this.props.recentSearchClient.search(query);
 
     if (this.state.query === query) {
       this.setState({
@@ -77,7 +77,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   }
 
   async searchCrossProduct(query: string): Promise<CrossProductResults> {
-    const results = await this.props.crossProductSearchProvider.search(query);
+    const results = await this.props.crossProductSearchClient.search(query);
 
     if (this.state.query === query) {
       this.setState({
@@ -90,7 +90,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   }
 
   async searchPeople(query: string): Promise<Result[]> {
-    const results = await this.props.peopleSearchProvider.search(query);
+    const results = await this.props.peopleSearchClient.search(query);
 
     if (this.state.query === query) {
       this.setState({
@@ -138,7 +138,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
 
   handleGetRecentItems = async () => {
     this.setState({
-      recentlyViewedItems: await this.props.recentSearchProvider.getRecentItems(),
+      recentlyViewedItems: await this.props.recentSearchClient.getRecentItems(),
     });
   };
 

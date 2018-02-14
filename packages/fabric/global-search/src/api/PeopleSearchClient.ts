@@ -19,11 +19,11 @@ export interface GraphqlError {
   message: string;
 }
 
-export interface PeopleSearchProvider {
+export interface PeopleSearchClient {
   search(query: string): Promise<Result[]>;
 }
 
-export default class PeopleSearchProviderImpl implements PeopleSearchProvider {
+export default class PeopleSearchClientImpl implements PeopleSearchClient {
   private url: string;
   private cloudId: string;
 
@@ -71,7 +71,7 @@ export default class PeopleSearchProviderImpl implements PeopleSearchProvider {
     }
 
     if (!response.data || !response.data.AccountCentricUserSearch) {
-      throw new Error('PeopleSearchProvider: Response data missing');
+      throw new Error('PeopleSearchClient: Response data missing');
     }
 
     return response.data.AccountCentricUserSearch.map(userSearchResultToResult);

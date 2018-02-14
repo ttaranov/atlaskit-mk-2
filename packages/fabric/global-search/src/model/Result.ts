@@ -1,3 +1,4 @@
+// Common properties that the quick-search Result component supports
 export interface Result {
   resultId: string;
   type: ResultType;
@@ -7,7 +8,7 @@ export interface Result {
   containerName?: string;
 }
 
-// Use string enum here because the type prop in ResultBase is a string and used in callbacks/analytics
+// Use string enum here because the type prop in quick-search Result is actually a string
 export enum ResultType {
   Person = 'person',
   Container = 'container',

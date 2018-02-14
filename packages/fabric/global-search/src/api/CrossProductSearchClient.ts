@@ -39,12 +39,12 @@ export interface ScopeResult {
   results: SearchItem[];
 }
 
-export interface CrossProductSearchProvider {
+export interface CrossProductSearchClient {
   search(query: string): Promise<CrossProductResults>;
 }
 
-export default class CrossProductSearchProviderImpl
-  implements CrossProductSearchProvider {
+export default class CrossProductSearchClientImpl
+  implements CrossProductSearchClient {
   private url: string;
   private cloudId: string;
 

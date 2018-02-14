@@ -1,10 +1,10 @@
-import CrossProductSearchProvider, {
+import CrossProductSearchClient, {
   SearchItem,
   CrossProductSearchResponse,
   Scope,
   removeHighlightTags,
   getConfluenceAvatarUrl,
-} from '../src/api/CrossProductSearchProvider';
+} from '../src/api/CrossProductSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 
@@ -17,11 +17,11 @@ function apiWillReturn(state: CrossProductSearchResponse) {
   fetchMock.mock('localhost/quicksearch/v1', state, opts);
 }
 
-describe('CrossProductSearchProvider', () => {
-  let searchProvider: CrossProductSearchProvider;
+describe('CrossProductSearchClient', () => {
+  let searchClient: CrossProductSearchClient;
 
   beforeEach(() => {
-    searchProvider = new CrossProductSearchProvider('localhost', '123');
+    searchClient = new CrossProductSearchClient('localhost', '123');
   });
 
   afterEach(fetchMock.restore);
@@ -46,7 +46,7 @@ describe('CrossProductSearchProvider', () => {
         ],
       });
 
-      const result = await searchProvider.search('query');
+      const result = await searchClient.search('query');
       expect(result.confluence).toHaveLength(1);
 
       const item = result.confluence[0];
@@ -99,7 +99,7 @@ describe('CrossProductSearchProvider', () => {
         ],
       });
 
-      const result = await searchProvider.search('query');
+      const result = await searchClient.search('query');
       expect(result.jira).toHaveLength(1);
 
       const item = result.jira[0];
@@ -115,7 +115,7 @@ describe('CrossProductSearchProvider', () => {
       scopes: [],
     });
 
-    const result = await searchProvider.search('query');
+    const result = await searchClient.search('query');
     const call = fetchMock.calls('xpsearch')[0];
     const body = JSON.parse(call[1].body);
 

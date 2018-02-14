@@ -13,12 +13,12 @@ export interface RecentItem {
   url: string;
 }
 
-export interface RecentSearchProvider {
+export interface RecentSearchClient {
   getRecentItems(): Promise<Result[]>;
   search(query: string): Promise<Result[]>;
 }
 
-export default class RecentSearchProviderImpl implements RecentSearchProvider {
+export default class RecentSearchClientImpl implements RecentSearchClient {
   private url: string;
   private cloudId: string;
   private getRecentRequestPromise: Promise<RecentItemsResponse>;

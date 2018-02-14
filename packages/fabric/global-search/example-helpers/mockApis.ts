@@ -5,7 +5,7 @@ import {
   recentData,
   makeCrossProductSearchData,
 } from '../example-helpers/mockData';
-import { Scope } from '../src/api/CrossProductSearchProvider';
+import { Scope } from '../src/api/CrossProductSearchClient';
 
 const recentResponse = recentData();
 const queryMockSearch = makeCrossProductSearchData();

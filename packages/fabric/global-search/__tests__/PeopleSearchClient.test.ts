@@ -1,7 +1,7 @@
-import PeopleSearchProvider, {
+import PeopleSearchClient, {
   SearchResult,
   GraphqlResponse,
-} from '../src/api/PeopleSearchProvider';
+} from '../src/api/PeopleSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 
@@ -17,11 +17,11 @@ function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
   fetchMock.post('localhost/graphql', response, opts);
 }
 
-describe('PeopleSearchProvider', () => {
-  let searchProvider;
+describe('PeopleSearchClient', () => {
+  let searchClient;
 
   beforeEach(() => {
-    searchProvider = new PeopleSearchProvider('localhost', '123');
+    searchClient = new PeopleSearchClient('localhost', '123');
   });
 
   afterEach(fetchMock.restore);
@@ -29,7 +29,7 @@ describe('PeopleSearchProvider', () => {
   describe('search()', () => {
     it('should put cloudId and search query into the graphql query', () => {
       apiWillReturn([]);
-      searchProvider.search('query');
+      searchClient.search('query');
 
       const call = fetchMock.calls('people')[0];
       const body = JSON.parse(call[1].body);
@@ -47,7 +47,7 @@ describe('PeopleSearchProvider', () => {
         },
       ]);
 
-      const items = await searchProvider.search('query');
+      const items = await searchClient.search('query');
       expect(items).toHaveLength(1);
 
       const item = items[0];
@@ -66,11 +66,9 @@ describe('PeopleSearchProvider', () => {
 
       expect.assertions(1);
       try {
-        await searchProvider.search('query');
+        await searchClient.search('query');
       } catch (e) {
-        expect(e.message).toEqual(
-          'PeopleSearchProvider: Response data missing',
-        );
+        expect(e.message).toEqual('PeopleSearchClient: Response data missing');
       }
     });
 
@@ -86,7 +84,7 @@ describe('PeopleSearchProvider', () => {
 
       expect.assertions(1);
       try {
-        await searchProvider.search('query');
+        await searchClient.search('query');
       } catch (e) {
         expect(e.message).toEqual('category: error1');
       }

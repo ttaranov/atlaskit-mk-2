@@ -1,6 +1,6 @@
 import * as React from 'react';
 import GlobalQuickSearchContainer from './GlobalQuickSearchContainer';
-import configureSearchProviders from '../api/configureSearchProviders';
+import configureSearchClients from '../api/configureSearchClients';
 import memoizeOne from 'memoize-one';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
@@ -16,15 +16,15 @@ export interface Props {
 export default class GlobalQuickSearchConfiguration extends React.Component<
   Props
 > {
-  // configureSearchProviders is a potentially expensive function that we don't want to invoke on re-renders
-  memoizedConfigureSearchProviders = memoizeOneTyped(configureSearchProviders);
+  // configureSearchClients is a potentially expensive function that we don't want to invoke on re-renders
+  memoizedConfigureSearchClients = memoizeOneTyped(configureSearchClients);
 
   render() {
-    const searchProviders = this.memoizedConfigureSearchProviders(
+    const searchClients = this.memoizedConfigureSearchClients(
       this.props.cloudId,
       this.props.environment,
     );
 
-    return <GlobalQuickSearchContainer {...searchProviders} />;
+    return <GlobalQuickSearchContainer {...searchClients} />;
   }
 }
