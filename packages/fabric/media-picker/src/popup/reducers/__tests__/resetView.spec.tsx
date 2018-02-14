@@ -67,25 +67,6 @@ describe('resetView reducer', () => {
     });
   });
 
-  it('should set the new view', () => {
-    const oldState: any = {
-      uploads: {},
-      view: { isVisible: true },
-    };
-
-    const newState = resetView(oldState, action);
-
-    expect(newState.view).to.deep.equal({
-      isVisible: true,
-      service: {
-        name: 'upload',
-        accountId: '',
-      },
-      path: [],
-      hasPopupBeenVisible: true,
-    });
-  });
-
   it('should set empty selectedItems', () => {
     const oldState: any = {
       uploads: {},

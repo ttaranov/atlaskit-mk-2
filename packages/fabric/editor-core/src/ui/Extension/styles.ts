@@ -50,12 +50,16 @@ export const Overlay = styled.div`
 export const PlaceholderFallback = styled.div`
   display: inline-flex;
   align-items: center;
+
+  & > img {
+    margin: 0 4px;
+  }
 `;
 
 // tslint:disable-next-line:variable-name
 export const PlaceholderFallbackParams = styled.span`
   display: inline-block;
-  width: 200px;
+  max-width: 200px;
   margin-left: 5px;
   color: ${akColorN70};
   text-overflow: ellipsis;

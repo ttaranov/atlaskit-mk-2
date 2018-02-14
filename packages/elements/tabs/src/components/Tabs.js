@@ -52,9 +52,7 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     ) {
       const selected = this.resolveSelected(newProps.selected, newProps);
       this.setState({ selected });
-    }
-
-    if (newProps.tabs !== this.props.tabs) {
+    } else if (newProps.tabs !== this.props.tabs) {
       const updatedselected = this.resolveSelected(
         this.state.selected,
         newProps,
