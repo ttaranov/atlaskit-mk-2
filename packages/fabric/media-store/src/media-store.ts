@@ -121,24 +121,19 @@ export class MediaStore {
     });
   };
 
-  appendChunksToUpload = (
+  appendChunksToUpload(
     uploadId: string,
-    chunks: string[],
-    offset: number,
-  ) => {
-    const body = JSON.stringify({
-      chunks,
-      offset,
-    });
-
+    body: AppendChunksToUploadRequestBody,
+  ): Promise<AppendChunksToUploadResponseData> {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
-      body,
+      body: JSON.stringify(body),
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-    });
-  };
+    }).then(mapResponseToJson);
+  }
 
   async request(
     path: string,
@@ -216,4 +211,15 @@ export type MediaStoreGetCollectionItemsPrams = {
   readonly inclusiveStartKey?: string;
   readonly sortDirection?: 'asc' | 'desc';
   readonly details?: 'minimal' | 'full';
+};
+
+export type AppendChunksToUploadRequestBody = {
+  readonly chunks: string[];
+
+  readonly hash?: string;
+  readonly offset?: number;
+};
+
+export type AppendChunksToUploadResponseData = {
+  readonly nextChunkOffset: number;
 };
