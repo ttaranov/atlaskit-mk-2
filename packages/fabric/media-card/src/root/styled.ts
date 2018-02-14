@@ -25,12 +25,12 @@ export interface WrapperProps {
 
 const getWrapperHeight = (dimensions?: CardDimensions) =>
   dimensions && dimensions.height
-    ? `height: ${getCSSUnitValue(dimensions.height)}`
+    ? `height: ${getCSSUnitValue(dimensions.height)};`
     : '';
 
 const getWrapperWidth = (dimensions?: CardDimensions) =>
   dimensions && dimensions.width
-    ? `width: ${getCSSUnitValue(dimensions.width)}`
+    ? `width: ${getCSSUnitValue(dimensions.width)};`
     : '';
 
 export const Wrapper = styled.div`

@@ -56,27 +56,27 @@ const wrapperStyles = css`
   ${borderRadius} width: 100%;
   ${({ minWidth }: WrapperProps) => {
     if (minWidth) {
-      return `min-width: ${minWidth}px`;
+      return `min-width: ${minWidth}px;`;
     } else {
       return '';
     }
   }} ${({ maxWidth }: WrapperProps) => {
       if (maxWidth) {
-        return `max-width: ${maxWidth}px`;
+        return `max-width: ${maxWidth}px;`;
       } else {
         return '';
       }
     }} ${({ isInteractive }: WrapperProps) => {
       if (isInteractive) {
         return `
-          cursor: pointer;
-          &:hover {
-            background-color: ${akColorN30};
-          }
-          &:active {
-            background-color: ${akColorB50};
-          }
-        `;
+        cursor: pointer;
+        &:hover {
+          background-color: ${akColorN30};
+        }
+        &:active {
+          background-color: ${akColorB50};
+        }
+      `;
       } else {
         return '';
       }
@@ -115,8 +115,8 @@ export const IconWrapper = styled.div`
   ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
       if (isPlaceholder) {
         return `
-        background-color: ${akColorN30};
-      `;
+      background-color: ${akColorN30};
+    `;
       } else {
         return '';
       }
