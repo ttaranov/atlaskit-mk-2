@@ -4,47 +4,69 @@ import fetchMock = require('fetch-mock');
 import { defaultServiceHost } from '@atlaskit/media-test-helpers';
 
 import { MediaStore } from '../src/';
+import { MediaUpload } from '../src/models/media';
 
 describe('MediaStore', () => {
   const apiUrl = defaultServiceHost;
-  const clientId = 'some-client-id';
-  const token = 'some-token';
-  const auth = { clientId, token };
-  const authProvider = () => Promise.resolve(auth);
 
-  describe('createUpload', () => {
-    const setup = () => {
-      const fetch = fetchMock.mock(`*`, {
-        body: { hello: 'world' },
-        status: 201,
+  describe('given auth provider resolves', () => {
+    const clientId = 'some-client-id';
+    const token = 'some-token';
+    const auth = { clientId, token };
+    const authProvider = () => Promise.resolve(auth);
+    const mediaStore = new MediaStore({
+      apiUrl,
+      authProvider,
+    });
+
+    describe('createUpload', () => {
+      afterEach(() => fetchMock.restore());
+
+      it('should POST to /upload endpoint with correct options', () => {
+        const createUpTo = 1;
+        const data: MediaUpload[] = [
+          { id: 'some-upload-id', created: 123, expires: 456 },
+        ];
+
+        fetchMock.mock(`begin:${apiUrl}/upload`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.createUpload(createUpTo).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${apiUrl}/upload?createUpTo=${createUpTo}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+            body: undefined,
+          });
+        });
       });
+    });
+  });
 
-      const mediaStore = new MediaStore({
-        apiUrl,
-        authProvider,
-      });
+  describe('given auth provider rejects', () => {
+    const error = new Error('some-error');
+    const authProvider = () => Promise.reject(error);
 
-      return {
-        fetch,
-        mediaStore,
-      };
-    };
+    describe('request', () => {
+      it('should reject with some error', () => {
+        const mediaStore = new MediaStore({
+          apiUrl: defaultServiceHost,
+          authProvider,
+        });
 
-    afterEach(() => fetchMock.restore());
-
-    it('should fetch from /upload endpoint with correct parameters', () => {
-      const createUpTo = randomInteger();
-      const { mediaStore, fetch } = setup();
-
-      return mediaStore.createUpload(createUpTo).then(response => {
-        expect(fetch.lastUrl()).toEqual(
-          `${apiUrl}/upload?createUpTo=${createUpTo}`,
-        );
+        return expect(mediaStore.request('/some-path')).rejects.toEqual(error);
       });
     });
   });
 });
-
-function randomInteger(max: number = 100): number {
-  return Math.floor(Math.random() * max);
-}

@@ -11,6 +11,7 @@ import {
   mapResponseToJson,
   RequestMethod,
   RequestParams,
+  RequestHeaders,
 } from './utils/request';
 
 export interface MediaStoreConfig {
@@ -33,8 +34,9 @@ export type ProbeChunks = {
 export type MediaStoreRequestOptions = {
   readonly method?: RequestMethod;
   readonly authContext?: AuthContext;
-  readonly body?: any;
   readonly params?: RequestParams;
+  readonly headers?: RequestHeaders;
+  readonly body?: any;
 };
 
 export type MediaStoreCreateFileFromUploadParams = {
@@ -70,13 +72,13 @@ export class MediaStore {
   constructor(private readonly config: MediaStoreConfig) {}
 
   createCollection(name: string): Promise<MediaStoreResponse<MediaCollection>> {
-    const body = {
-      name,
-    };
-
-    return this.request('/collection', { method: 'POST', body }).then(
-      mapResponseToJson,
-    );
+    return this.request('/collection', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(mapResponseToJson);
   }
 
   getCollection(
@@ -105,6 +107,9 @@ export class MediaStore {
   ): Promise<MediaStoreResponse<MediaUpload[]>> => {
     return this.request(`/upload?createUpTo=${createUpTo}`, {
       method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
     }).then(mapResponseToJson);
   };
 
@@ -125,6 +130,9 @@ export class MediaStore {
     return this.request(`/chunk/probe`, {
       method: 'POST',
       body,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then(mapResponseToJson);
   };
 
@@ -140,6 +148,9 @@ export class MediaStore {
       method: 'POST',
       params,
       body,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then(mapResponseToJson);
   };
 
@@ -173,6 +184,9 @@ export class MediaStore {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
       body,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   };
 
@@ -183,12 +197,9 @@ export class MediaStore {
     },
   ): Promise<Response> {
     const { apiUrl, authProvider } = this.config;
-    const { method, body, authContext, params } = options;
+    const { method, authContext, params, headers, body } = options;
 
     const auth = await authProvider(authContext);
-    const headers = {
-      'Content-Type': 'application/json',
-    };
 
     return request(`${apiUrl}${path}`, {
       method,
