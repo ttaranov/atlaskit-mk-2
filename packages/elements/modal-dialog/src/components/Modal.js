@@ -104,7 +104,7 @@ type Props = {
   /**
     Function that will be called when the enter transition is complete.
   */
-  onOpenComplete?: ElementType => void,
+  onOpenComplete?: (node: ElementType, isAppearing: boolean) => void,
   /**
     Function that will be called when the modal changes position in the stack.
   */
@@ -143,6 +143,7 @@ type State = {
   dialogNode: Node | null,
   scrollDistance: number,
   isExiting: boolean,
+  hasEntered: boolean,
 };
 
 class Modal extends Component<Props, State> {

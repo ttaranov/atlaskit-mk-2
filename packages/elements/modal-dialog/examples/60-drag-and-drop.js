@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
-import React, { Component, PureComponent } from 'react';
+import React, { Component, PureComponent, type Node } from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { colors } from '@atlaskit/theme';
@@ -39,17 +39,29 @@ const isMiddleClick = event => event.button === 1;
 
 type Item = {
   id: string,
+  message: string,
 };
 
 type ItemLineCardProps = {
   item: Item,
   index: number,
   isReorderEnabled: boolean,
-  children: Node,
-  onClick: () => void,
+  children: (
+    isHovering: boolean,
+    isActive: boolean,
+    isFocused: boolean,
+    item: Item,
+  ) => Node,
+  onClick: (item: Item, e?: any) => void,
 };
 
-class ItemLineCard extends Component<ItemLineCardProps> {
+type ItemLineCardState = {
+  isHovering: boolean,
+  isActive: boolean,
+  isFocused: boolean,
+};
+
+class ItemLineCard extends Component<ItemLineCardProps, ItemLineCardState> {
   static defaultProps = {
     isReorderEnabled: true,
     onClick: noop,
@@ -161,8 +173,18 @@ class ItemLineCard extends Component<ItemLineCardProps> {
 type ItemLineCardGroupProps = {
   groupId: string,
   items: Item[],
-  children: Node,
-  onOrderChange: () => void,
+  children: (
+    isHovering: boolean,
+    isActive: boolean,
+    isFocused: boolean,
+    item: Item,
+  ) => Node,
+  onOrderChange: (
+    items: Item[],
+    target: Item,
+    sourceIndex: number,
+    destIndex: number,
+  ) => void,
   onClick: () => void,
 };
 
@@ -236,10 +258,15 @@ const items = [...new Array(5).keys()].map(item => ({
   message: `Line item card ${item}: `,
 }));
 
-class Wrapper extends Component {
+type WrapperState = {
+  items: Item[],
+};
+
+class Wrapper extends Component<*, WrapperState> {
   state = {
     items: [...items],
   };
+
   render() {
     return (
       <ItemLineCardGroup

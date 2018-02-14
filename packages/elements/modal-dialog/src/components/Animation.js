@@ -21,7 +21,7 @@ type TransitionType = {
 type Props = {
   in: boolean,
   component: ComponentType,
-  customTransition: string,
+  customTransition?: string,
   onEnter?: EnterType,
   onEntering?: EnterType,
   onEntered?: EnterType,
@@ -84,6 +84,7 @@ function Animation({
           ...style,
           ...styleDefault,
           ...transition[status],
+          // $FlowFixMe this is completely legal in chrome
           ...transition[customTransition],
         };
 
@@ -118,6 +119,7 @@ export const SlideUp = ({
   stackIndex,
   in: transitionIn,
   style,
+  component,
   ...props
 }: { stackIndex: number } & $Diff<
   Props,
@@ -128,6 +130,7 @@ export const SlideUp = ({
 
   return (
     <Animation
+      component={component}
       in={transitionIn}
       style={style}
       styleDefault={{
@@ -148,7 +151,7 @@ export const SlideUp = ({
           transform: null,
           top:
             translateY +
-            (props.component.displayName === 'PositionerAbsolute' ? gutter : 0),
+            (component.displayName === 'PositionerAbsolute' ? gutter : 0),
         },
         exit: {
           transform: restingTransform,
