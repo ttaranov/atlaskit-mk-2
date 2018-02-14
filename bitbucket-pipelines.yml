@@ -29,6 +29,9 @@ pipelines:
     - step:
         script:
           - echo "This is the branch build that is passing!"
+          - echo "Making sure important file is here"
+          - test -e important-file
+          - echo "Good!"
         #   - source ./build-setup.sh
         #   - bolt install --pure-lockfile
         #   - yarn build
@@ -86,7 +89,8 @@ pipelines:
             - echo "This is a landkid build that passes!"
             - echo "We're going to add a short wait to make testing easier"
             - sleep 30
-            - echo "Done!"
+            - echo "Making sure important file is here"
+            - test -e important-file
             # - bolt install --pure-lockfile
             # - yarn build
             # - yarn lint
