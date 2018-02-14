@@ -9,10 +9,10 @@ import {
 export const Outer = styled.div`
   margin: ${akGridSizeUnitless * 3}px 0 0;
 `;
+
 export const Title = styled.h1`
   ${akTypographyMixins.h700};
   line-height: ${akGridSizeUnitless * 4}px;
-  margin-right: ${akGridSizeUnitless * 4}px;
   margin-top: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -29,8 +29,18 @@ export const TitleWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: ${akGridSizeUnitless * 3}px;
 `;
+
+export const CustomComponentWrapper = styled.div`
+  min-width: 0%;
+  flex-shrink: 1;
+  width: 100%;
+`;
+
 export const ActionsWrapper = styled.div`
   white-space: nowrap;
+  padding-left: ${akGridSizeUnitless * 4}px;
+  min-width: 0%;
+  flex-shrink: 0;
 `;
 
 export const BottomBarWrapper = styled.div`

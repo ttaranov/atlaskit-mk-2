@@ -8,6 +8,7 @@ import {
   ActionsWrapper,
   BottomBarWrapper,
   BreadcrumbsContainer,
+  CustomComponentWrapper,
 } from './styled';
 
 type Props = {
@@ -20,8 +21,8 @@ type Props = {
   /** Content of the page title. The text would be trimmed if it doesn't fit the
    header width and end with an ellipsis */
   children?: Node,
-  /** Enable default styled wrapper for page title */
-  useStyledWrapper?: boolean,
+  /** Disable default styles for page title */
+  disableTitleStyles?: boolean,
 };
 export default class PageHeader extends Component<Props> {
   render() {
@@ -30,16 +31,17 @@ export default class PageHeader extends Component<Props> {
       actions,
       bottomBar,
       children,
-      useStyledWrapper = true,
+      disableTitleStyles = false,
     } = this.props;
-
     return (
       <Outer>
         {breadcrumbs && (
           <BreadcrumbsContainer> {breadcrumbs} </BreadcrumbsContainer>
         )}
         <TitleWrapper>
-          {useStyledWrapper ? <Title>{children}</Title> : children}
+          <CustomComponentWrapper>
+            {disableTitleStyles ? children : <Title>{children}</Title>}
+          </CustomComponentWrapper>
           <ActionsWrapper>{actions}</ActionsWrapper>
         </TitleWrapper>
         {bottomBar && <BottomBarWrapper> {bottomBar} </BottomBarWrapper>}

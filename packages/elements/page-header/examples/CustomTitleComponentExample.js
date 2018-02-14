@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
-import { ButtonGroup } from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import TextField from '@atlaskit/field-text';
 import InlineEdit from '@atlaskit/inline-edit';
 import SingleLineTextInput from '@atlaskit/input';
@@ -15,7 +15,13 @@ const breadcrumbs = (
     <BreadcrumbsItem text="Parent page" key="Parent page" />
   </BreadcrumbsStateless>
 );
-
+const actionsContent = (
+  <ButtonGroup>
+    <Button appearance="primary">Primary Action</Button>
+    <Button>Default</Button>
+    <Button>...</Button>
+  </ButtonGroup>
+);
 const barContent = (
   <ButtonGroup>
     <TextField isLabelHidden placeholder="Filter" label="hidden" />
@@ -23,11 +29,8 @@ const barContent = (
 );
 
 const textStyle = {
-  fontSize: '1.7142857142857142em',
-  lineHeight: '1.1666666666666667em',
-  fontWeight: 500,
-  letterSpacing: '-0.01em',
-  height: 'auto',
+  fontSize: '1.71em',
+  fontWeight: '500',
 };
 
 const CustomTitleComponent = () => (
@@ -37,14 +40,15 @@ const CustomTitleComponent = () => (
       <SingleLineTextInput
         style={textStyle}
         isEditing={false}
-        value={'Custom title component'}
+        value={'Editable title'}
       />
     }
     editView={
       <SingleLineTextInput
         style={textStyle}
+        isInitiallySelected
         isEditing
-        value={'Edit custom title'}
+        value={'Editable title'}
         onChange={() => {}}
       />
     }
@@ -57,7 +61,8 @@ export default () => (
   <PageHeader
     breadcrumbs={breadcrumbs}
     bottomBar={barContent}
-    useStyledWrapper={false}
+    actions={actionsContent}
+    disableTitleStyles
   >
     <CustomTitleComponent />
   </PageHeader>

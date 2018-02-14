@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { name } from '../package.json';
 import PageHeader from '../src';
-import { Title, TitleWrapper } from '../src/PageHeader/styled';
+import { Title, CustomComponentWrapper } from '../src/PageHeader/styled';
 
 describe(name, () => {
   it('should render passed children', () => {
@@ -36,7 +36,7 @@ describe(name, () => {
   it('should render custom component instead of a Title when useStyledWrapper is false', () => {
     const CustomTitle = () => <span>Custom component</span>;
     const wrapper = shallow(
-      <PageHeader useStyledWrapper={false}>
+      <PageHeader disableTitleStyles>
         <CustomTitle />
       </PageHeader>,
     );
@@ -44,7 +44,7 @@ describe(name, () => {
       wrapper
         .find(CustomTitle)
         .parent()
-        .is(TitleWrapper),
+        .is(CustomComponentWrapper),
     ).toEqual(true);
 
     expect(wrapper.find(Title)).toHaveLength(0);
