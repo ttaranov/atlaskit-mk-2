@@ -4,6 +4,7 @@ import {
   MediaCollection,
   MediaCollectionItems,
   MediaUpload,
+  MediaChunksProbe,
 } from './models/media';
 import {
   request,
@@ -19,55 +20,6 @@ export interface MediaStoreConfig {
   readonly apiUrl: string;
   readonly authProvider: AuthProvider;
 }
-
-export interface MediaStoreResponse<Data> {
-  readonly data: Data;
-}
-
-export type ChunksProbe = {
-  readonly results: {
-    readonly [etag: string]: {
-      readonly exists: boolean;
-    };
-  };
-};
-
-export type MediaStoreRequestOptions = {
-  readonly method?: RequestMethod;
-  readonly authContext?: AuthContext;
-  readonly params?: RequestParams;
-  readonly headers?: RequestHeaders;
-  readonly body?: any;
-};
-
-export type MediaStoreCreateFileFromUploadParams = {
-  readonly name?: string;
-  readonly collection?: string;
-};
-
-export type MediaStoreGetFileParams = {
-  readonly version?: number;
-  readonly collection?: string;
-};
-
-export type MediaStoreGetFileImageParams = {
-  readonly version?: number;
-  readonly collection?: number;
-  readonly width?: number;
-  readonly height?: number;
-  readonly mode?: 'fit' | 'full-fit' | 'crop';
-  readonly upscale?: boolean;
-  readonly 'max-age': number;
-  readonly allowAnimated: boolean;
-};
-
-export type MediaStoreGetCollectionItemsPrams = {
-  readonly limit: number;
-
-  readonly inclusiveStartKey?: string;
-  readonly sortDirection?: 'asc' | 'desc';
-  readonly details?: 'minimal' | 'full';
-};
 
 export class MediaStore {
   constructor(private readonly config: MediaStoreConfig) {}
@@ -124,7 +76,7 @@ export class MediaStore {
     }).then(mapResponseToVoid);
   }
 
-  probeChunks(chunks: string[]): Promise<MediaStoreResponse<ChunksProbe>> {
+  probeChunks(chunks: string[]): Promise<MediaStoreResponse<MediaChunksProbe>> {
     return this.request(`/chunk/probe`, {
       method: 'POST',
       body: JSON.stringify({
@@ -137,23 +89,20 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
-  createFileFromUpload = (
-    uploadId: string,
+  createFileFromUpload(
+    body: MediaStoreCreateFileFromUploadBody,
     params: MediaStoreCreateFileFromUploadParams = {},
-  ): Promise<MediaStoreResponse<MediaFile>> => {
-    const body = JSON.stringify({
-      uploadId,
-    });
-
+  ): Promise<MediaStoreResponse<MediaFile>> {
     return this.request('/file/upload', {
       method: 'POST',
       params,
-      body,
+      body: JSON.stringify(body),
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     }).then(mapResponseToJson);
-  };
+  }
 
   getFile = (
     fileId: string,
@@ -211,3 +160,60 @@ export class MediaStore {
     });
   }
 }
+
+export interface MediaStoreResponse<Data> {
+  readonly data: Data;
+}
+
+export type MediaStoreRequestOptions = {
+  readonly method?: RequestMethod;
+  readonly authContext?: AuthContext;
+  readonly params?: RequestParams;
+  readonly headers?: RequestHeaders;
+  readonly body?: any;
+};
+
+export type MediaStoreCreateFileFromUploadParams = {
+  readonly collection?: string;
+  readonly occurrenceKey?: string;
+  readonly expireAfter?: number;
+  readonly replaceFileId?: string;
+  readonly skipConversions?: boolean;
+};
+
+export type MediaStoreCreateFileFromUploadConditions = {
+  readonly hash: string;
+  readonly size: number;
+};
+
+export type MediaStoreCreateFileFromUploadBody = {
+  readonly uploadId: string;
+
+  readonly name?: string;
+  readonly mimeType?: string;
+  readonly conditions?: MediaStoreCreateFileFromUploadConditions;
+};
+
+export type MediaStoreGetFileParams = {
+  readonly version?: number;
+  readonly collection?: string;
+};
+
+export type MediaStoreGetFileImageParams = {
+  readonly version?: number;
+  readonly collection?: number;
+  readonly width?: number;
+  readonly height?: number;
+  readonly mode?: 'fit' | 'full-fit' | 'crop';
+  readonly upscale?: boolean;
+  readonly 'max-age': number;
+  readonly allowAnimated: boolean;
+};
+
+export type MediaStoreGetCollectionItemsPrams = {
+  readonly limit: number;
+
+  readonly inclusiveStartKey?: string;
+  readonly sortDirection?: 'asc' | 'desc';
+  readonly details?: 'minimal' | 'full';
+};

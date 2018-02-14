@@ -1,9 +1,9 @@
 import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
+import { stringify } from 'query-string';
 
 import { MediaStore } from '../src/';
-import { MediaUpload } from '../src/models/media';
-import { ChunksProbe } from '../src/media-store';
+import { MediaUpload, MediaChunksProbe, MediaFile } from '../src/models/media';
 
 describe('MediaStore', () => {
   const apiUrl = 'http://some-host';
@@ -79,7 +79,7 @@ describe('MediaStore', () => {
       it('should POST to /chunk/probe endpoint with correct options', () => {
         const etag = 'some-etag';
         const chunks = [etag];
-        const data: ChunksProbe = {
+        const data: MediaChunksProbe = {
           results: {
             [etag]: {
               exists: true,
@@ -106,6 +106,60 @@ describe('MediaStore', () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ chunks }),
+          });
+        });
+      });
+    });
+
+    describe('createFileFromUpload', () => {
+      it('should POST to /file/upload endpoint with correct options', () => {
+        const body = {
+          uploadId: 'some-upload-id',
+          name: 'some-name',
+          mimeType: 'application/pdf',
+          conditions: {
+            hash: 'sha1:da39a3ee5e6b4b0d3255bfef95601890afd80709',
+            size: 42,
+          },
+        };
+        const params = {
+          collection: 'some-collection',
+          occurrenceKey: 'some-occurrence-key',
+          expireAfter: 123,
+          replaceFileId: 'some-replace-file-id',
+          skipConversions: true,
+        };
+        const data: MediaFile = {
+          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
+          mediaType: 'document',
+          mimeType: 'application/pdf',
+          name: 'example document.pdf',
+          processingStatus: 'pending',
+          size: 231392,
+          artifacts: {},
+        };
+
+        fetchMock.mock(`begin:${apiUrl}/file/upload`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.createFileFromUpload(body, params).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${apiUrl}/file/upload?${stringify(params)}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
           });
         });
       });

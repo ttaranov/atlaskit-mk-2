@@ -54,3 +54,11 @@ export type MediaUpload = {
   readonly created: number;
   readonly expires: number;
 };
+
+export type MediaChunksProbe = {
+  readonly results: {
+    readonly [etag: string]: {
+      readonly exists: boolean;
+    };
+  };
+};
