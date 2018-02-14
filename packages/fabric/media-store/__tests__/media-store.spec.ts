@@ -1,30 +1,45 @@
+import 'whatwg-fetch';
+import fetchMock = require('fetch-mock');
+
+import { defaultServiceHost } from '@atlaskit/media-test-helpers';
+
 import { MediaStore } from '../src/';
 
 describe('MediaStore', () => {
-  const setup = (fetchResponse = Promise.resolve({ json: jest.fn() })) => {
-    const auth = { clientId: 'some-client-id', token: 'some-token' };
-    const mediaStore = new MediaStore({
-      apiUrl: 'some-api-url',
-      authProvider: () => Promise.resolve(auth),
-    });
-
-    mediaStore['fetch'] = jest.fn().mockReturnValueOnce(fetchResponse);
-
-    return {
-      mediaStore,
-      fetch: mediaStore['fetch'],
-    };
-  };
+  const apiUrl = defaultServiceHost;
+  const clientId = 'some-client-id';
+  const token = 'some-token';
+  const auth = { clientId, token };
+  const authProvider = () => Promise.resolve(auth);
 
   describe('createUpload', () => {
-    it('should fetch from /upload api', () => {
+    const setup = () => {
+      const fetch = fetchMock.mock(`*`, {
+        body: { hello: 'world' },
+        status: 201,
+      });
+
+      const mediaStore = new MediaStore({
+        apiUrl,
+        authProvider,
+      });
+
+      return {
+        fetch,
+        mediaStore,
+      };
+    };
+
+    afterEach(() => fetchMock.restore());
+
+    it('should fetch from /upload endpoint with correct parameters', () => {
       const createUpTo = randomInteger();
       const { mediaStore, fetch } = setup();
 
-      return mediaStore.createUpload(createUpTo).then(() => {
-        expect(fetch).toBeCalledWith(`/upload?createUpTo=${createUpTo}`, {
-          method: 'POST',
-        });
+      return mediaStore.createUpload(createUpTo).then(response => {
+        expect(fetch.lastUrl()).toEqual(
+          `${apiUrl}/upload?createUpTo=${createUpTo}`,
+        );
       });
     });
   });

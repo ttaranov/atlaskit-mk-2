@@ -22,6 +22,9 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^9.0.1",
-    "styled-components": "^1.4.6"
+    "@types/fetch-mock": "^5.12.1",
+    "fetch-mock": "^5.12.1",
+    "styled-components": "^1.4.6",
+    "whatwg-fetch": "^2.0.3"
   }
 }

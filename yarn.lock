@@ -689,6 +689,10 @@
   dependencies:
     eventemitter2 "*"
 
+"@types/fetch-mock@^5.12.1":
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/@types/fetch-mock/-/fetch-mock-5.12.2.tgz#8c96517ff74303031c65c5da2d99858e34c844d2"
+
 "@types/filesize@^3.2.15":
   version "3.2.15"
   resolved "https://registry.yarnpkg.com/@types/filesize/-/filesize-3.2.15.tgz#a97325f27a5ff7974c7cbd7afa244b8a7affe668"
