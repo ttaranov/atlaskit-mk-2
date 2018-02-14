@@ -105,8 +105,11 @@ export class MediaStore {
   createUpload = (
     createUpTo: number = 1,
   ): Promise<MediaStoreResponse<MediaUpload[]>> => {
-    return this.request(`/upload?createUpTo=${createUpTo}`, {
+    return this.request(`/upload`, {
       method: 'POST',
+      params: {
+        createUpTo,
+      },
       headers: {
         Accept: 'application/json',
       },

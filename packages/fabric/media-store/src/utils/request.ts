@@ -1,3 +1,5 @@
+import { parse, stringify } from 'query-string';
+
 import { Auth } from '../models/auth';
 import { mapAuthToQueryParameters } from '../models/auth-query-parameters';
 import { mapAuthToAuthHeaders } from '../models/auth-headers';
@@ -42,26 +44,19 @@ export function mapResponseToJson(response: Response): Promise<any> {
 }
 
 export function createUrl(
-  baseUrl: string,
+  url: string,
   params?: RequestParams,
   auth?: Auth,
 ): string {
-  const url = new URL(baseUrl);
+  const { baseUrl, queryParams } = extract(url);
+  const authParams = auth && mapAuthToQueryParameters(auth);
+  const queryString = stringify({
+    ...queryParams,
+    ...params,
+    ...authParams,
+  });
 
-  if (params) {
-    Object.keys(params).forEach(name =>
-      url.searchParams.set(name, params[name]),
-    );
-  }
-
-  if (auth) {
-    const authParams = mapAuthToQueryParameters(auth);
-    Object.keys(authParams).forEach(name =>
-      url.searchParams.set(name, authParams[name]),
-    );
-  }
-
-  return url.toString();
+  return `${baseUrl}${queryString.length > 0 ? `?${queryString}` : ''}`;
 }
 
 function withAuth(auth?: Auth) {
@@ -75,6 +70,21 @@ function withAuth(auth?: Auth) {
       return headers;
     }
   };
+}
+
+function extract(url: string): { baseUrl: string; queryParams?: any } {
+  const index = url.indexOf('?');
+
+  if (index > 0) {
+    return {
+      baseUrl: url.substring(0, index),
+      queryParams: parse(url.substring(index + 1, url.length)),
+    };
+  } else {
+    return {
+      baseUrl: url,
+    };
+  }
 }
 
 export default request;
