@@ -96,9 +96,9 @@ function setLocalClients() {
       desiredCapabilities: {
         browserName: launchers[key].browserName,
         //Disable headless here to run on real browsers
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu'],
-        },
+        // chromeOptions: {
+        //   args: ['--headless', '--disable-gpu'],
+        // },
       },
     };
     const driver = webdriverio.remote(option);
