@@ -40,7 +40,7 @@
     "start": "                               yarn run website:start",
     "start:elements": "                      yarn run website:start **/packages/elements/**",
     "start:fabric": "                        yarn run website:start **/packages/fabric/**",
-    "start:media": "            fet             yarn run website:start **/packages/fabric/media-*",
+    "start:media": "                         yarn run website:start **/packages/fabric/media-*",
     "start:editor": "                        yarn run website:start '**/packages/fabric/+(code|editor-core|editor-common|renderer)'",
     "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
