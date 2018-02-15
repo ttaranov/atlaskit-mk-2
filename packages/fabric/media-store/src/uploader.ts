@@ -77,9 +77,9 @@ export const uploadFile = (
         async onComplete() {
           const [uploadId] = await Promise.all([
             deferredUploadId,
-            queue.onEmpty(),
+            queue.onIdle(),
           ]);
-          console.log('finalizing');
+
           const { data: { id: fileId } } = await store.createFileFromUpload(
             { uploadId, name, mimeType },
             {
@@ -91,18 +91,14 @@ export const uploadFile = (
         },
         onError: reject,
         async onProgress(progress, chunks) {
-          const uploadId = await deferredUploadId;
-          console.log('onProgress:', progress);
-          queue.add(() =>
-            store
-              .appendChunksToUpload(uploadId, {
-                chunks: hashedChunks(chunks),
-                offset,
-              })
-              .then(() => console.log('appendChunksToUpload')),
-          );
+          queue.add(async () => {
+            await store.appendChunksToUpload(await deferredUploadId, {
+              chunks: hashedChunks(chunks),
+              offset,
+            });
 
-          offset += chunks.length;
+            offset += chunks.length;
+          });
 
           if (callbacks && callbacks.onProgress) {
             callbacks.onProgress(progress);
@@ -114,18 +110,3 @@ export const uploadFile = (
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);
-
-async function* func1(): AsyncIterableIterator<number> {
-  yield await Promise.resolve(42);
-  yield await Promise.resolve(45);
-}
-
-console.log('ZOO');
-
-async function boo() {
-  for await (const i of func1()) {
-    console.log('FOO:', i);
-  }
-}
-
-boo();
