@@ -1,12 +1,12 @@
 // @flow
-import { md } from '@atlaskit/docs';
+import { md, code } from '@atlaskit/docs';
 
 export default md`
   # Installing @atlaskit/editor-core
 
-  ~~~js
+${code`
   npm install @atlaskit/editor-core
-  ~~~
+`}
 
   ### Note:
 
@@ -22,11 +22,11 @@ export default md`
 
   The simplest editor in the world is just:
 
-  ~~~js
+${code`
   import { Editor } from '@atlaskit/editor-core';
 
   <Editor appearance="comment" allowTextFormatting />;
-  ~~~
+`}
 
   This will render the comment editor with only text formatting (bold / italics / underline / superscript/subscript) enabled.
 
@@ -36,7 +36,7 @@ export default md`
 
   To add mention capabilities to the editor, you will need to pass in a "Mention Provider". At a high level, this is simply an object that will allow us to interface whatever mention source you want to use with the editor. This looks like:
 
-  ~~~js
+${code`
   import { Editor } from '@atlaskit/editor-core';
   import mentionProvider from './mentionProvider';
 
@@ -45,13 +45,13 @@ export default md`
     allowTextFormatting
     mentionProvider={mentionProvider.get()}
   />;
-  ~~~
+`}
 
   ## Collapsed Editor
 
   Sometimes we don't want to show the whole editor at the start and instead show a collapsed state for a user to click on to start typing. This looks like:
 
-  ~~~js
+${code`
   import { Editor, CollapsedEditor } from '@atlaskit/editor-core';
 
   class CollapsibleEditor extends React.Component {
@@ -81,13 +81,13 @@ export default md`
       );
     }
   }
-  ~~~
+`}
 
   ## What is EditorContext?!?!
 
   EditorContext allows you, in conjunction with WithEditorActions, to manipulate the editor from anywhere inside the EditorContext. In the example below, notice that no reference is kept to the editor instance.
 
-  ~~~js
+${code`
   import { EditorContext, WithEditorActions } from '@atlaskit/editor-core';
   import { CollapsibleEditor } from 'previous-example';
 
@@ -104,7 +104,7 @@ export default md`
       />
     </div>
   </EditorContext>;
-  ~~~
+`}
 
   ## How can I set the content of the editor?
 
@@ -122,7 +122,7 @@ export default md`
 
   Using a custom storage format is fairly straightforward - you simply have to import the relevant transformer and pass it through to the editor. That's all!
 
-  ~~~js
+${code`
   import { Editor, BitbucketTransformer } from '@atlaskit/editor-core';
 
   <Editor
@@ -130,13 +130,13 @@ export default md`
     allowTextFormatting
     contentTransformerProvider={schema => new BitbucketTransformer(schema)}
   />;
-  ~~~
+`}
 
   ## Example saving content
 
   If you want an example of actually using \`WithEditorActions\` to save content, you've got it!
 
-  ~~~js
+${code`
   class SaveExample extends React.Component {
     onSubmit = actions => editorView => {
       actions.getValue().then(value => {
@@ -161,11 +161,11 @@ export default md`
         </EditorContext>
       )
     }
-  ~~~
+`}
 
   alternatively
 
-  ~~~js
+${code`
   class EditorWrapper extends React.Component {
     propTypes = { actions: PropTypes.object };
 
@@ -199,7 +199,7 @@ export default md`
       );
     }
   }
-  ~~~
+`}
 
   We’d love to hear your feedback.
 `;

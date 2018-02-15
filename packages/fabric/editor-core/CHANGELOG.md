@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 62.0.9
+- [patch] Show fake cursor when inserting a placeholder text element [ca557d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca557d0)
+
+## 62.0.8
+
+## 62.0.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
 ## 62.0.6
 - [patch] fix date when inserting from + menu [8f6bd7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f6bd7c)
 
