@@ -6,7 +6,7 @@
     "@atlaskit/badge": "^6.2.0",
     "@atlaskit/lozenge": "^3.5.0",
     "enzyme": "^3.3.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
   }
 }
