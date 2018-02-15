@@ -6,6 +6,7 @@
 // @flow
 import React from 'react';
 import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 import PageHeader from '../src';
 import { name } from '../package.json';
 import { StyledTitle } from '../src/PageHeader/styled';
@@ -16,16 +17,17 @@ describe(name, () => {
     const Actions = () => <div>Action</div>;
     const Bar = () => <div>Bar</div>;
 
-    const wrapper = shallow(
+    const wrapper = (
       <PageHeader
         breadcrumbs={<BreadCrumbs />}
         actions={<Actions />}
         bottomBar={<Bar />}
       >
         Test
-      </PageHeader>,
+      </PageHeader>
     );
-    expect(wrapper).toMatchSnapshot();
+    const Component = renderer.create(wrapper).toJSON();
+    expect(Component).toMatchSnapshot();
   });
 
   it('should renders correctly with disableTitleStyles prop', () => {
@@ -33,7 +35,7 @@ describe(name, () => {
     const Actions = () => <div>Action</div>;
     const Bar = () => <div>Bar</div>;
 
-    const wrapper = shallow(
+    const wrapper = (
       <PageHeader
         breadcrumbs={<BreadCrumbs />}
         actions={<Actions />}
@@ -41,9 +43,11 @@ describe(name, () => {
         disableTitleStyles
       >
         Test
-      </PageHeader>,
+      </PageHeader>
     );
-    expect(wrapper).toMatchSnapshot();
+
+    const Component = renderer.create(wrapper).toJSON();
+    expect(Component).toMatchSnapshot();
   });
 
   it('should render passed children', () => {

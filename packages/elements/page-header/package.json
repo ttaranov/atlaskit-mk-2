@@ -32,7 +32,8 @@
     "@atlaskit/field-text": "^4.1.7",
     "@atlaskit/single-select": "^3.2.3",
     "@atlaskit/theme": "^2.3.3",
-    "enzyme": "^3.3.0"
+    "enzyme": "^3.3.0",
+    "react-test-renderer": "^16.2.0"
   },
   "keywords": [
     "atlaskit",
