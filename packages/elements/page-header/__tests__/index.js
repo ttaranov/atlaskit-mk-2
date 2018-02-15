@@ -1,11 +1,51 @@
+/**
+ * TODO remove when using styled-components > v1.
+ *
+ * @jest-environment node
+ */
 // @flow
 import React from 'react';
 import { shallow } from 'enzyme';
-import { name } from '../package.json';
 import PageHeader from '../src';
-import { Title, TitleContainer } from '../src/PageHeader/styled';
+import { name } from '../package.json';
+import { StyledTitle } from '../src/PageHeader/styled';
 
 describe(name, () => {
+  it('should renders correctly', () => {
+    const BreadCrumbs = () => <div>Breadcrumb</div>;
+    const Actions = () => <div>Action</div>;
+    const Bar = () => <div>Bar</div>;
+
+    const wrapper = shallow(
+      <PageHeader
+        breadcrumbs={<BreadCrumbs />}
+        actions={<Actions />}
+        bottomBar={<Bar />}
+      >
+        Test
+      </PageHeader>,
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should renders correctly with disableTitleStyles prop', () => {
+    const BreadCrumbs = () => <div>Breadcrumb</div>;
+    const Actions = () => <div>Action</div>;
+    const Bar = () => <div>Bar</div>;
+
+    const wrapper = shallow(
+      <PageHeader
+        breadcrumbs={<BreadCrumbs />}
+        actions={<Actions />}
+        bottomBar={<Bar />}
+        disableTitleStyles
+      >
+        Test
+      </PageHeader>,
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should render passed children', () => {
     const wrapper = shallow(<PageHeader>Title</PageHeader>);
     expect(wrapper.contains('Title')).toBe(true);
@@ -33,20 +73,13 @@ describe(name, () => {
     expect(wrapper.find(Bar).length).toBe(1);
   });
 
-  it('should render custom component instead of a Title when disableTitleStyles is true', () => {
+  it('should render custom component without the StyledTitle when disableTitleStyles is true', () => {
     const CustomTitle = () => <span>Custom component</span>;
     const wrapper = shallow(
       <PageHeader disableTitleStyles>
         <CustomTitle />
       </PageHeader>,
     );
-    expect(
-      wrapper
-        .find(CustomTitle)
-        .parent()
-        .is(TitleContainer),
-    ).toEqual(true);
-
-    expect(wrapper.find(Title)).toHaveLength(0);
+    expect(wrapper.find(StyledTitle)).toHaveLength(0);
   });
 });

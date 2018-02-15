@@ -4,7 +4,7 @@ import React, { Component, type Element, type Node } from 'react';
 import {
   Outer,
   TitleWrapper,
-  Title,
+  StyledTitle,
   ActionsWrapper,
   BottomBarWrapper,
   BreadcrumbsContainer,
@@ -14,7 +14,7 @@ import {
 type Props = {
   /** Page breadcrumbs to be rendered above the title. */
   breadcrumbs?: Element<any>,
-  /** Contents of the action bar to be rendere\d next to the page title. */
+  /** Contents of the action bar to be rendered next to the page title. */
   actions?: Element<any>,
   /** Contents of the header bar to be rendered below the page title. */
   bottomBar?: Element<any>,
@@ -44,7 +44,11 @@ export default class PageHeader extends Component<Props> {
         )}
         <TitleWrapper>
           <TitleContainer>
-            {disableTitleStyles ? children : <Title>{children}</Title>}
+            {disableTitleStyles ? (
+              children
+            ) : (
+              <StyledTitle>{children}</StyledTitle>
+            )}
           </TitleContainer>
           <ActionsWrapper>{actions}</ActionsWrapper>
         </TitleWrapper>

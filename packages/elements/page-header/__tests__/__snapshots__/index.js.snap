@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`@atlaskit/page-header should renders correctly 1`] = `
+<styled.div>
+  <styled.div>
+     
+    <BreadCrumbs />
+     
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      <styled.h1>
+        Test
+      </styled.h1>
+    </styled.div>
+    <styled.div>
+      <Actions />
+    </styled.div>
+  </styled.div>
+  <styled.div>
+     
+    <Bar />
+     
+  </styled.div>
+</styled.div>
+`;
+
+exports[`@atlaskit/page-header should renders correctly with disableTitleStyles prop 1`] = `
+<styled.div>
+  <styled.div>
+     
+    <BreadCrumbs />
+     
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      Test
+    </styled.div>
+    <styled.div>
+      <Actions />
+    </styled.div>
+  </styled.div>
+  <styled.div>
+     
+    <Bar />
+     
+  </styled.div>
+</styled.div>
+`;

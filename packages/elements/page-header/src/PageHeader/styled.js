@@ -10,7 +10,7 @@ export const Outer = styled.div`
   margin: ${akGridSizeUnitless * 3}px 0 0;
 `;
 
-export const Title = styled.h1`
+export const StyledTitle = styled.h1`
   ${akTypographyMixins.h700};
   line-height: ${akGridSizeUnitless * 4}px;
   margin-top: 0;
