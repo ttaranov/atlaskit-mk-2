@@ -16,9 +16,13 @@ import {
 } from '../styled/ItemParts';
 
 type DnDType = {
-  draggableStyle?: {},
-  dragHandleProps?: {},
-  innerRef?: Function,
+  draggableProps: {
+    style: ?Object,
+    'data-react-beautiful-dnd-draggable': string,
+  },
+  dragHandleProps: ?Object,
+  innerRef: Function,
+  placeholder?: Node,
 };
 
 type Props = {
@@ -28,8 +32,8 @@ type Props = {
   children?: Node,
   /** Secondary text to be shown underneath the main content. */
   description: string,
-  /** Drag and drop props provided by react-beautiful-dnd. Please do not use this unless
-   * using react-beautiful-dnd */
+  /** Drag and drop props provided by react-beautiful-dnd. Please do not use
+   * this unless using react-beautiful-dnd */
   dnd?: DnDType,
   /** Content to be shown after the main content. Shown to the right of content (or to the left
    * in RTL mode). */
@@ -215,8 +219,8 @@ export default class Item extends Component<Props, {}> {
         tabIndex={isDisabled || isHidden || this.props.href ? null : 0}
         target={this.props.target}
         title={this.props.title}
-        style={dnd ? dnd.draggableStyle : null}
         innerRef={patchedInnerRef}
+        {...dnd && dnd.draggableProps}
         {...dragHandleProps}
         {...patchedEventHandlers}
         {...otherProps}

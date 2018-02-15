@@ -1,5 +1,7 @@
 # @atlaskit/modal-dialog
 
+## 3.3.13
+
 ## 3.3.12
 - [patch] Remove babel-plugin-react-flow-props-to-prop-types [06c1f08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06c1f08)
 

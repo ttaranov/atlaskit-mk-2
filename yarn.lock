@@ -9,12 +9,6 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
-"@atlaskit/analytics@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/analytics/-/analytics-2.3.2.tgz#9c997282cf3db4ece11f9228483429f72036e62f"
-  dependencies:
-    prop-types "^15.5.10"
-
 "@atlaskit/analytics@^2.3.5":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/analytics/-/analytics-2.4.1.tgz#d394a2bc59ecb5dbe3acdf542badf3f7df57564a"
@@ -448,23 +442,6 @@
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
-"@atlaskit/task-decision@^4.6.0":
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/task-decision/-/task-decision-4.6.0.tgz#9944eeec81ef67d1faac469747f5ae5e653c4272"
-  dependencies:
-    uid "^0.0.2"
-    "@atlaskit/analytics" "^2.3.2"
-    "@atlaskit/avatar" "^8.3.3"
-    "@atlaskit/button" "^5.4.10"
-    "@atlaskit/icon" "^10.3.2"
-    "@atlaskit/spinner" "^4.0.2"
-    "@atlaskit/theme" "^2.2.4"
-    "@atlaskit/util-service-support" "^2.0.2"
-    date-fns "^1.28.5"
-    lodash.debounce "^4.0.8"
-    styled-components "^1.4.6"
-    tslib "^1.2.0"
-
 "@atlaskit/task-decision@^4.7.0":
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/task-decision/-/task-decision-4.7.1.tgz#47c02d453efee016730fd1f7912dd8af6b45ad46"
@@ -688,6 +665,10 @@
   resolved "https://registry.yarnpkg.com/@types/eventemitter2/-/eventemitter2-4.1.0.tgz#090b4a67f25aa0fc087c8f2403e46f5ccc3fdfbc"
   dependencies:
     eventemitter2 "*"
+
+"@types/fetch-mock@^5.8.0":
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/@types/fetch-mock/-/fetch-mock-5.12.2.tgz#8c96517ff74303031c65c5da2d99858e34c844d2"
 
 "@types/filesize@^3.2.15":
   version "3.2.15"
@@ -12131,6 +12112,13 @@ space-separated-tokens@^1.0.0:
   resolved "https://registry.yarnpkg.com/space-separated-tokens/-/space-separated-tokens-1.1.1.tgz#9695b9df9e65aec1811d4c3f9ce52520bc2f7e4d"
   dependencies:
     trim "0.0.1"
+
+spawndamnit@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/spawndamnit/-/spawndamnit-1.0.0.tgz#b5d4a1a73016dbcca8f8b1e283eee76a649161b8"
+  dependencies:
+    cross-spawn "^5.1.0"
+    signal-exit "^3.0.2"
 
 spdx-correct@~1.0.0:
   version "1.0.2"

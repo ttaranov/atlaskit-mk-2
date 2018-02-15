@@ -18,15 +18,23 @@ import { isInOverflowDropdown } from '../../theme/util';
 
 const Item = withItemClick(withItemFocus(baseItem));
 
+type DnDType = {
+  draggableProps: {
+    style: ?Object,
+    'data-react-beautiful-dnd-draggable': string,
+  },
+  dragHandleProps: ?Object,
+  innerRef: Function,
+  placeholder?: Node,
+};
+
 type Props = {
   action?: Node,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
-  dnd?: {
-    innerRef: Function,
-    placeholder?: Node,
-    draggableStyle: Object,
-  },
+  /** Drag and drop props provided by react-beautiful-dnd. Please do not use
+   * this unless using react-beautiful-dnd */
+  dnd?: DnDType,
   /** Location to link out to on click. This is passed down to the custom link
    component if one is provided. */
   href?: string,
