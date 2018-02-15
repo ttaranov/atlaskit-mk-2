@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.3.14
+- [patch] Fix react-beautiful-dnd position issues when used inside a modal dialog [cfda546](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfda546)
+
 ## 3.3.13
 
 ## 3.3.12
