@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
 import { CardEvent } from '@atlaskit/media-card';
 import { CardSurroundings, ProviderFactory } from '@atlaskit/editor-common';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';

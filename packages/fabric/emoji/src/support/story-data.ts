@@ -7,13 +7,14 @@ import {
 } from './MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../types';
 import { EmojiProvider } from '../api/EmojiResource';
+import { emoji } from '@atlaskit/util-data-test';
 
 let emojisSets: Map<string, EmojiDescription[]>;
 
-export const getStandardEmojiData = (): EmojiServiceResponse =>
-  require('./json-data/service-data-standard.json') as EmojiServiceResponse;
-export const getAtlassianEmojiData = (): EmojiServiceResponse =>
-  require('./json-data/service-data-atlassian.json') as EmojiServiceResponse;
+export const getStandardEmojiData: () => EmojiServiceResponse = () =>
+  emoji.emojiData.getStandardEmojiData as EmojiServiceResponse;
+export const getAtlassianEmojiData: () => EmojiServiceResponse = () =>
+  emoji.emojiData.getAtlassianEmojiData as EmojiServiceResponse;
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();

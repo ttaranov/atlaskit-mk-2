@@ -37,6 +37,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^2.1.1",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^7.3.0",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
     "whatwg-fetch": "^2.0.3"
@@ -53,10 +54,7 @@
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
-  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "keywords": [
     "ui",
     "mention",

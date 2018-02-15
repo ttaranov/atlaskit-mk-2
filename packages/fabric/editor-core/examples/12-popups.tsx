@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
 import { Editor } from '../src';
 import { Content } from '../example-helpers/styles';
 import imageUploadHandler from '../example-helpers/imageUpload';

@@ -61,6 +61,7 @@
     "@atlaskit/editor-core": "^62.0.4",
     "@atlaskit/layer": "^2.5.8",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^7.3.0",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "es6-promise": "^4.0.5",
@@ -68,10 +69,7 @@
     "react-addons-perf": "^15.3.2",
     "whatwg-fetch": "^2.0.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
-  },
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "keywords": [
     "fabric",
     "ui"

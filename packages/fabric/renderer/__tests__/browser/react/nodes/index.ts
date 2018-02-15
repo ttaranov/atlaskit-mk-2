@@ -7,7 +7,7 @@ import {
   isText,
   isTextWrapper,
 } from '../../../../src/react/nodes';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { testData as emojiTestData } from '@atlaskit/emoji';
 
 const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;

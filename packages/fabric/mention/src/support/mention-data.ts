@@ -1,8 +1,8 @@
+import { mention } from '@atlaskit/util-data-test';
 import { MentionsResult } from '../types';
 
-// tslint:disable-next-line:no-var-requires
-const mentionData: MentionsResult = require('./json-data/test-mention-data.json') as MentionsResult;
-
+const mentionData: MentionsResult = mention.mentionData
+  .default as MentionsResult;
 export const mentionDataSize = mentionData.mentions.length;
 
 export default mentionData;

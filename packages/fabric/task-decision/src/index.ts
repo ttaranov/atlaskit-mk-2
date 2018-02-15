@@ -5,6 +5,7 @@ import ResourcedTaskItem from './components/ResourcedTaskItem';
 import TaskDecisionResource from './api/TaskDecisionResource';
 import TaskItem from './components/TaskItem';
 import TaskList from './components/TaskList';
+import { testData, storyData } from './support';
 
 export * from './types';
 
@@ -16,4 +17,6 @@ export {
   TaskDecisionResource,
   TaskItem,
   TaskList,
+  testData,
+  storyData,
 };
