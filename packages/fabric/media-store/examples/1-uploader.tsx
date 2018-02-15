@@ -114,9 +114,10 @@ class UploaderExample extends Component<
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { currentTarget: { files } } = e;
+    const file = files[0];
 
     uploadFile(
-      { content: files[0] },
+      { content: file, name: file.name },
       {
         apiUrl: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
