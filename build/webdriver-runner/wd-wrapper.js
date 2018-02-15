@@ -60,6 +60,18 @@ export default class Page {
     // for puppteer
     return this.browser.getText(selector);
   }
+
+  getCssProperty(selector, cssProperty) {
+    return this.browser.getCssProperty(selector, cssProperty);
+  }
+
+  getElementSize(selector) {
+    return this.browser.getElementSize(selector);
+  }
+
+  getHTML(selector) {
+    return this.browser.getHTML(selector);
+  }
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
   }
