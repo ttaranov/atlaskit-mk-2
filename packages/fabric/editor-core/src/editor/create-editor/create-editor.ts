@@ -1,19 +1,12 @@
-import { Schema, MarkSpec } from 'prosemirror-model';
-import { EditorState, Plugin, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { Schema, MarkSpec, Mark, Node } from 'prosemirror-model';
+import { EditorState, Plugin, Selection } from 'prosemirror-state';
 import { sanitizeNodes } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import {
-  EditorInstance,
-  EditorPlugin,
-  EditorProps,
-  EditorConfig,
-} from '../types';
+import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
-import { processRawValue } from '../utils/document';
-import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 import { name, version } from '../../version';
+import { Dispatch } from '../event-dispatcher';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -131,65 +124,24 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   });
 }
 
-/**
- * Creates and mounts EditorView to the provided place.
- */
-export default function createEditor(
-  place: HTMLElement | null,
-  editorPlugins: EditorPlugin[] = [],
-  props: EditorProps,
-  providerFactory: ProviderFactory,
-): EditorInstance {
-  const editorConfig = processPluginsList(editorPlugins, props);
-  const {
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-  } = editorConfig;
-  const { contentTransformerProvider, defaultValue, onChange } = props;
-
-  initAnalytics(props.analyticsHandler);
-
-  const errorReporter = createErrorReporter(props.errorReporterHandler);
-  const eventDispatcher = new EventDispatcher();
-  const dispatch = createDispatch(eventDispatcher);
-  const schema = createSchema(editorConfig);
-  const plugins = createPMPlugins(
-    editorConfig,
-    schema,
-    props,
-    dispatch,
-    providerFactory,
-    errorReporter,
-  );
-  const contentTransformer = contentTransformerProvider
-    ? contentTransformerProvider(schema)
-    : undefined;
-  const doc =
-    contentTransformer && typeof defaultValue === 'string'
-      ? contentTransformer.parse(defaultValue)
-      : processRawValue(schema, defaultValue);
-
-  const state = EditorState.create({ doc, schema, plugins });
-  const editorView = new EditorView(place!, {
-    state,
-    dispatchTransaction(tr: Transaction) {
-      tr.setMeta('isLocal', true);
-      const newState = editorView.state.apply(tr);
-      editorView.updateState(newState);
-      if (onChange && tr.docChanged) {
-        onChange(editorView);
-      }
-    },
-    editable: () => true,
+export const reconfigureState = (
+  oldState: EditorState,
+  newSchema: Schema,
+  newPlugins?: Plugin[],
+  newDoc?: Node,
+): EditorState => {
+  // Since the schema has changed, we need to transform doc/selection/storedMarks ourselves
+  // see https://github.com/ProseMirror/prosemirror/issues/754
+  const newState = oldState.reconfigure({
+    schema: newSchema,
+    plugins: newPlugins,
   });
+  const doc = newDoc || newSchema.nodeFromJSON(oldState.doc.toJSON());
+  const selection = Selection.fromJSON(doc, oldState.selection.toJSON());
+  const storedMarks = oldState.storedMarks
+    ? oldState.storedMarks.map(mark => Mark.fromJSON(newSchema, mark.toJSON()))
+    : undefined;
 
-  return {
-    editorView,
-    eventDispatcher,
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-    contentTransformer,
-  };
-}
+  doc.check(); // Ensure the new document is valid the with schema
+  return Object.assign(newState, { doc, selection, storedMarks });
+};
