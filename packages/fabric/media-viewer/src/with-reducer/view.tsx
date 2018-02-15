@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component as NC } from 'react';
 import { Toolbar } from '../newgen/components/viewer/toolbar';
 import {
   ImageViewer,

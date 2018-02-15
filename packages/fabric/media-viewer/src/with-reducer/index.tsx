@@ -53,6 +53,10 @@ export type State =
       readonly items: MediaViewerItem[];
       readonly selectedItem: MediaViewerItem;
       readonly view: view.State;
+    }
+  | {
+      readonly state: 'error';
+      readonly msg: string;
     };
 
 export const initState: State = {
@@ -77,6 +81,17 @@ export type Action =
   | {
       readonly type: 'VIEW';
       readonly wrapped: view.Action;
+    }
+  | {
+      readonly type: 'LOAD_COLLECTION';
+    }
+  | {
+      readonly type: 'LOAD_COLLECTION_FAILURE';
+      readonly err: Error;
+    }
+  | {
+      readonly type: 'LOAD_COLLECTION_SUCCESS';
+      readonly collection: MediaViewerItem[];
     };
 
 export const reducer = (prevState: State, action: Action): State => {
@@ -96,33 +111,54 @@ export const reducer = (prevState: State, action: Action): State => {
       return prevState.state === 'ready'
         ? { ...prevState, view: view.reducer(prevState.view, action.wrapped) }
         : prevState;
+    case 'LOAD_COLLECTION':
+      return prevState;
+    case 'LOAD_COLLECTION_SUCCESS':
+      return {
+        state: 'ready',
+        items: action.collection,
+        selectedItem: action.collection[0],
+        view: view.getInitState(item),
+      };
+    case 'LOAD_COLLECTION_FAILURE':
+      return { state: 'loading' };
   }
 };
 
 export type Props = { dispatch: (action: Action) => void } & State;
-export const Component = (props: Props) =>
-  props.state === 'loading' ? (
-    <div>loading</div>
-  ) : (
-    <MainWrapper>
-      <HeaderWrapper>
-        <Header item={props.selectedItem} />
-      </HeaderWrapper>
-      <view.Component
-        {...props.view}
-        dispatch={action => props.dispatch({ type: 'VIEW', wrapped: action })}
-      />
-      <FooterWrapper>
-        <Footer item={props.selectedItem} />
-      </FooterWrapper>
-      <Navigation
-        onNavigate={(
-          selectedItem: MediaViewerItem,
-          index: number,
-          total: number,
-        ) => props.dispatch({ type: 'NAVIGATE', selectedItem, index, total })}
-        items={props.items}
-        selectedItem={props.selectedItem}
-      />
-    </MainWrapper>
-  );
+export const Component = (props: Props) => {
+  switch (props.state) {
+    case 'loading':
+      return <div>loading</div>;
+    case 'ready':
+      return (
+        <MainWrapper>
+          <HeaderWrapper>
+            <Header item={props.selectedItem} />
+          </HeaderWrapper>
+          <view.Component
+            {...props.view}
+            dispatch={action =>
+              props.dispatch({ type: 'VIEW', wrapped: action })
+            }
+          />
+          <FooterWrapper>
+            <Footer item={props.selectedItem} />
+          </FooterWrapper>
+          <Navigation
+            onNavigate={(
+              selectedItem: MediaViewerItem,
+              index: number,
+              total: number,
+            ) =>
+              props.dispatch({ type: 'NAVIGATE', selectedItem, index, total })
+            }
+            items={props.items}
+            selectedItem={props.selectedItem}
+          />
+        </MainWrapper>
+      );
+    case 'error':
+      return <div>ouch {props.msg}</div>;
+  }
+};
