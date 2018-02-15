@@ -130,12 +130,6 @@ export default class Editor extends React.Component<
   private flashToggle = false;
   private appearance: EditorAppearance = 'comment';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
       this.props.onSave(this.props.editorView);
@@ -150,6 +144,7 @@ export default class Editor extends React.Component<
 
   private renderChrome = ({ maxContentSize, mediaState }) => {
     const {
+      editorDOMElement,
       editorView,
       editorActions,
       eventDispatcher,
@@ -170,6 +165,16 @@ export default class Editor extends React.Component<
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
+
+    if (!editorView) {
+      return (
+        <CommentEditor maxHeight={maxHeight}>
+          <MainToolbar />
+          <ContentArea>{editorDOMElement}</ContentArea>
+          <SecondaryToolbar />
+        </CommentEditor>
+      );
+    }
 
     return (
       <CommentEditor
@@ -194,7 +199,7 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
@@ -208,6 +213,7 @@ export default class Editor extends React.Component<
             popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
+          {editorDOMElement}
         </ContentArea>
         <SecondaryToolbar>
           <ButtonGroup>

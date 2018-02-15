@@ -91,12 +91,6 @@ export default class Editor extends React.Component<
   private flashToggle = false;
   private appearance: EditorAppearance = 'message';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private focusEditor = e => {
     if (this.props.editorActions) {
       this.props.editorActions.focus();
@@ -106,6 +100,7 @@ export default class Editor extends React.Component<
   private renderChrome = ({ maxContentSize, isMultilineContent }) => {
     const {
       disabled,
+      editorDOMElement,
       editorView,
       editorActions,
       eventDispatcher,
@@ -124,15 +119,22 @@ export default class Editor extends React.Component<
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
+    if (!editorView) {
+      return (
+        <MessageEditor maxHeight={maxHeight}>
+          <ContentArea>{editorDOMElement}</ContentArea>
+          <SecondaryToolbarContainer />
+        </MessageEditor>
+      );
+    }
+
     return (
       <MessageEditor
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
-        maxHeight={maxHeight}
         onClick={this.focusEditor}
       >
         <ContentArea
-          innerRef={this.handleRef}
           maxHeight={maxHeight}
           isMultiline={isMultilineContent}
         >
@@ -149,6 +151,7 @@ export default class Editor extends React.Component<
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
           />
+          {editorDOMElement}
         </ContentArea>
         <SecondaryToolbarContainer>
           <PluginSlot
