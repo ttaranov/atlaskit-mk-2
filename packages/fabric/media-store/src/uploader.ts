@@ -1,10 +1,13 @@
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 import * as Rusha from 'rusha';
+import * as PQueue from 'p-queue';
+
 import { MediaStoreConfig, MediaStore } from './media-store';
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
   content: ChunkinatorFile;
   name?: string;
+  mimeType?: string;
   collection?: string;
 };
 
@@ -48,7 +51,7 @@ export const uploadFile = (
   callbacks?: Callbacks,
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const { content, collection, name } = file;
+    const { content, collection, name, mimeType } = file;
     const store = new MediaStore(config);
     const deferredUploadId = store
       .createUpload()
@@ -56,7 +59,7 @@ export const uploadFile = (
     const uploadingFunction = (chunk: Chunk) =>
       store.uploadChunk(chunk.hash, chunk.blob);
     let offset = 0;
-    const chunkUploads: Promise<void>[] = [];
+    const queue = new PQueue({ concurrency: 1 });
 
     chunkinator(
       content,
@@ -72,27 +75,31 @@ export const uploadFile = (
       },
       {
         async onComplete() {
-          const uploadId = await deferredUploadId;
-
-          await Promise.all(chunkUploads);
-
+          const [uploadId] = await Promise.all([
+            deferredUploadId,
+            queue.onEmpty(),
+          ]);
+          console.log('finalizing');
           const { data: { id: fileId } } = await store.createFileFromUpload(
-            { uploadId, name },
+            { uploadId, name, mimeType },
             {
               collection,
             },
           );
+
           resolve(fileId);
         },
         onError: reject,
         async onProgress(progress, chunks) {
           const uploadId = await deferredUploadId;
-
-          chunkUploads.push(
-            store.appendChunksToUpload(uploadId, {
-              chunks: hashedChunks(chunks),
-              offset,
-            }),
+          console.log('onProgress:', progress);
+          queue.add(() =>
+            store
+              .appendChunksToUpload(uploadId, {
+                chunks: hashedChunks(chunks),
+                offset,
+              })
+              .then(() => console.log('appendChunksToUpload')),
           );
 
           offset += chunks.length;
@@ -107,3 +114,18 @@ export const uploadFile = (
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);
+
+async function* func1(): AsyncIterableIterator<number> {
+  yield await Promise.resolve(42);
+  yield await Promise.resolve(45);
+}
+
+console.log('ZOO');
+
+async function boo() {
+  for await (const i of func1()) {
+    console.log('FOO:', i);
+  }
+}
+
+boo();

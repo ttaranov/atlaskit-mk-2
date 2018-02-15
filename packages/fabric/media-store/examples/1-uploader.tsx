@@ -117,7 +117,7 @@ class UploaderExample extends Component<
     const file = files[0];
 
     uploadFile(
-      { content: file, name: file.name },
+      { content: file, name: file.name, mimeType: file.type },
       {
         apiUrl: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
