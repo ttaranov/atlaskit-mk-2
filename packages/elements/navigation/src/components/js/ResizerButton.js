@@ -33,6 +33,6 @@ class ResizerButton extends PureComponent<Props> {
   }
 }
 
-export default withAnalyticsContext({ component: 'resizer-button' })(
+export default withAnalyticsContext({ component: 'navigation-resizer-button' })(
   withAnalyticsEvents({ onClick: { action: 'click' } })(ResizerButton),
 );

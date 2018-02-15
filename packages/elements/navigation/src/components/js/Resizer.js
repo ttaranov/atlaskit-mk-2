@@ -205,6 +205,6 @@ class Resizer extends PureComponent<Props & WithAnalyticsEventsProps, State> {
 // We use the isElectronMac theme value in Resizer's calculation methods, so need access to
 // the theme props which withTheme provides.
 // $FlowFixMe
-export default withAnalyticsContext({ component: 'resizer' })(
+export default withAnalyticsContext({ component: 'navigation-resizer' })(
   withAnalyticsEvents()(withTheme(Resizer)),
 );
