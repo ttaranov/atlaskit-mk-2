@@ -46,7 +46,8 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
         <NewGenMediaViewer
           context={this.props.context}
           dataSource={this.props.dataSource}
-          selectedItem={this.props.selectedItem}
+          initialItem={this.props.selectedItem}
+          collectionName={this.props.collectionName}
         />
       );
     } else if (this.props.dataSource.list) {
