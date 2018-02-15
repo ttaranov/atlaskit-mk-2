@@ -1,5 +1,9 @@
 import { Result, ResultType } from '../model/Result';
-import makeRequest from './makeRequest';
+import {
+  RequestServiceOptions,
+  ServiceConfig,
+  utils,
+} from '@atlaskit/util-service-support';
 
 export enum Scope {
   ConfluencePage = 'confluence.page',
@@ -45,11 +49,11 @@ export interface CrossProductSearchClient {
 
 export default class CrossProductSearchClientImpl
   implements CrossProductSearchClient {
-  private url: string;
+  private serviceConfig: ServiceConfig;
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
-    this.url = url;
+    this.serviceConfig = { url: url };
     this.cloudId = cloudId;
   }
 
@@ -69,10 +73,21 @@ export default class CrossProductSearchClientImpl
       scopes: [Scope.JiraIssue, Scope.ConfluencePage],
     };
 
-    return await makeRequest(this.url, '/quicksearch/v1', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
+    const options: RequestServiceOptions = {
+      path: 'quicksearch/v1',
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      },
+    };
+
+    return utils.requestService<CrossProductSearchResponse>(
+      this.serviceConfig,
+      options,
+    );
   }
 
   private parseResponse(

@@ -32,7 +32,7 @@ describe('PeopleSearchClient', () => {
       searchClient.search('query');
 
       const call = fetchMock.calls('people')[0];
-      const body = JSON.parse(call[1].body);
+      const body = JSON.parse(call[0]._bodyText);
 
       expect(body.variables.cloudId).toEqual('123');
       expect(body.variables.displayName).toEqual('query');

@@ -1,5 +1,9 @@
 import { Result, ResultType } from '../model/Result';
-import makeRequest from './makeRequest';
+import {
+  RequestServiceOptions,
+  ServiceConfig,
+  utils,
+} from '@atlaskit/util-service-support';
 
 export interface RecentItemsResponse {
   data: RecentItem[];
@@ -19,12 +23,12 @@ export interface RecentSearchClient {
 }
 
 export default class RecentSearchClientImpl implements RecentSearchClient {
-  private url: string;
+  private serviceConfig: ServiceConfig;
   private cloudId: string;
   private getRecentRequestPromise: Promise<RecentItemsResponse>;
 
   constructor(url: string, cloudId: string) {
-    this.url = url;
+    this.serviceConfig = { url: url };
     this.cloudId = cloudId;
   }
 
@@ -53,9 +57,16 @@ export default class RecentSearchClientImpl implements RecentSearchClient {
 
   private async fetchRecentItems(): Promise<RecentItem[]> {
     if (!this.getRecentRequestPromise) {
-      this.getRecentRequestPromise = makeRequest(
-        this.url,
-        `/api/client/recent?cloudId=${this.cloudId}`,
+      const options: RequestServiceOptions = {
+        path: 'api/client/recent',
+        queryParams: {
+          cloudId: this.cloudId,
+        },
+      };
+
+      this.getRecentRequestPromise = utils.requestService(
+        this.serviceConfig,
+        options,
       );
     }
 

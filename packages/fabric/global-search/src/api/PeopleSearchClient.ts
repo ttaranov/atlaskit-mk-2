@@ -1,5 +1,9 @@
 import { Result, ResultType } from '../model/Result';
-import makeRequest from './makeRequest';
+import {
+  RequestServiceOptions,
+  ServiceConfig,
+  utils,
+} from '@atlaskit/util-service-support';
 
 export interface GraphqlResponse {
   errors?: GraphqlError[];
@@ -24,11 +28,11 @@ export interface PeopleSearchClient {
 }
 
 export default class PeopleSearchClientImpl implements PeopleSearchClient {
-  private url: string;
+  private serviceConfig: ServiceConfig;
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
-    this.url = url;
+    this.serviceConfig = { url: url };
     this.cloudId = cloudId;
   }
 
@@ -61,10 +65,21 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
   }
 
   public async search(query: string): Promise<Result[]> {
-    const response: GraphqlResponse = await makeRequest(this.url, '/graphql', {
-      method: 'POST',
-      body: JSON.stringify(this.buildQuery(query)),
-    });
+    const options: RequestServiceOptions = {
+      path: 'graphql',
+      requestInit: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(this.buildQuery(query)),
+      },
+    };
+
+    const response = await utils.requestService<GraphqlResponse>(
+      this.serviceConfig,
+      options,
+    );
 
     if (response.errors) {
       throw new Error(makeGraphqlErrorMessage(response.errors));
