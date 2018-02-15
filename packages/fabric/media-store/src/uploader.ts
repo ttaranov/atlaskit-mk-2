@@ -63,10 +63,10 @@ export const uploadFile = (
       {
         hashingFunction,
         hashingConcurrency: 5,
-        probingBatchSize: 3,
-        chunkSize: 10000,
+        probingBatchSize: 100,
+        chunkSize: 4 * 1024 * 1024,
         uploadingConcurrency: 3,
-        progressBatchSize: 3,
+        progressBatchSize: 1000,
         uploadingFunction,
         probingFunction: createProbingFunction(store),
       },
