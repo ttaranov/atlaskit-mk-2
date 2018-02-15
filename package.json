@@ -272,7 +272,7 @@
     "jest-junit": "^3.4.1",
     "jest-styled-components": "^4.9.0",
     "keycode": "^2.1.7",
-    "landkid": "^0.0.14",
+    "landkid": "^0.0.19",
     "less-loader": "^4.0.5",
     "linkify-it": "^2.0.3",
     "lodash.clonedeep": "^4.5.0",
