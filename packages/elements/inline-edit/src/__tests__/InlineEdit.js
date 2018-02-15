@@ -281,13 +281,13 @@ describe('@atlaskit/inline-edit', () => {
    * can properly use jest-styled-components without disabling mount(...) calls
    */
   // eslint-disable-next-line jest/no-disabled-tests
-  xdescribe('field width', () => {
+  describe('field width', () => {
     it('should not stretch to container width in read mode by default', () => {
       const wrapper = mount(<InlineEditStateless {...defaultProps} />);
       //$FlowFixMe
       expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
         'display',
-        'inline-flex',
+        'inline-block',
       );
     });
 
