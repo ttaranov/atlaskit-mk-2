@@ -17,7 +17,7 @@
   "dependencies": {
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/theme": "^2.3.3",
-    "styled-components": "^3.1.6",
+    "styled-components": "1.4.6 - 3.1.6",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
