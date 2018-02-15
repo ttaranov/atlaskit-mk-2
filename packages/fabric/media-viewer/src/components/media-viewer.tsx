@@ -31,13 +31,17 @@ export interface MediaViewerProps {
   readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
   readonly onClose?: () => void;
+
+  readonly experimental?: boolean;
 }
 
 export interface MediaViewerState {}
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   render(): JSX.Element {
-    if (this.props.dataSource.list) {
+    if (this.props.experimental) {
+      return <h1>test</h1>;
+    } else if (this.props.dataSource.list) {
       return (
         <MediaFileListViewer
           context={this.props.context}
