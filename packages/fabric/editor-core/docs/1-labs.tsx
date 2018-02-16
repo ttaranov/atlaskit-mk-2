@@ -1,5 +1,4 @@
-// @flow
-import { md } from '@atlaskit/docs';
+import { md, code } from '@atlaskit/docs';
 
 export default md`
   # Editor Labs
@@ -12,7 +11,7 @@ export default md`
 
   This change introduces a breaking API change that passes the EditorActions object as the argument instead.
 
-  ~~~js
+${code`
   import { EditorWithActions } from '@atlaskit/editor-core';
 
   handleSave = actions => {
@@ -20,11 +19,10 @@ export default md`
   };
 
   render(<Editor onSave={this.handleSave} />);
-  ~~~
-
+`}
   This replaces code that looked like:
 
-  ~~~js
+${code`
   import {
     Editor,
     WithEditorActions,
@@ -42,11 +40,11 @@ export default md`
       />
     </EditorContext>,
   );
-  ~~~
+`}
 
   or
 
-  ~~~js
+${code`
   import { Editor, WithEditorActions, EditorContext } from '@atlaskit/editor-core';
 
   class ExtendedEditor extends React.Component {
@@ -67,5 +65,5 @@ export default md`
       />
     </EditorContext>
   )
-  ~~~
+`}
 `;
