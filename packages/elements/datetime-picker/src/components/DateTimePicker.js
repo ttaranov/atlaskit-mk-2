@@ -24,6 +24,8 @@ type Props = {
   defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
+  /** The id of the field */
+  id: string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -165,7 +167,7 @@ class DateTimePicker extends Component<Props, State> {
   }
 
   render() {
-    const { autoFocus, name } = this.props;
+    const { autoFocus, id, isDisabled, name, onBlur, onFocus } = this.props;
     const { _dateValue, _timeValue, isFocused, value } = this.state;
     const bothProps = {
       onBlur: this.onBlur,
@@ -179,7 +181,11 @@ class DateTimePicker extends Component<Props, State> {
             {...bothProps}
             autoFocus={autoFocus}
             icon={null}
+            id={id}
+            isDisabled={isDisabled}
+            onBlur={onBlur}
             onChange={this.onDateChange}
+            onFocus={onFocus}
             styles={styles.date}
             value={_dateValue}
           />
@@ -188,7 +194,10 @@ class DateTimePicker extends Component<Props, State> {
           <TimePicker
             {...bothProps}
             icon={CalendarIcon}
+            isDisabled={isDisabled}
+            onBlur={onBlur}
             onChange={this.onTimeChange}
+            onFocus={onFocus}
             styles={styles.time}
             value={_timeValue}
           />

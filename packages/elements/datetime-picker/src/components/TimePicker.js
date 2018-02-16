@@ -26,6 +26,8 @@ type Props = {
   defaultValue: string,
   /** The icon to show in the field. */
   icon: boolean,
+  /** The id of the field */
+  id: string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -94,20 +96,32 @@ class TimePicker extends Component<Props, State> {
   };
 
   render() {
-    const { icon, name, ...rest } = this.props;
+    const {
+      autoFocus,
+      icon,
+      id,
+      isDisabled,
+      name,
+      onBlur,
+      onFocus,
+    } = this.props;
     const { value } = this.state;
     return (
       <div>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          {...rest}
+          autoFocus={autoFocus}
+          instanceId={id}
+          isDisabled={isDisabled}
+          onBlur={onBlur}
+          onChange={this.onChange}
+          options={this.getOptions()}
+          onFocus={onFocus}
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
           }}
-          onChange={this.onChange}
-          options={this.getOptions()}
           placeholder="e.g. 9:00am"
           value={
             value && {

@@ -23,6 +23,8 @@ type Props = {
   disabled: Array<string>,
   /** The icon to show in the field. */
   icon: typeof Component,
+  /** The id of the field */
+  id: string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -175,8 +177,15 @@ class DatePicker extends Component<Props, State> {
   };
 
   render() {
-    const { icon, name } = this.props;
-    const { autoFocus, isDisabled, onBlur, onFocus } = this.props;
+    const {
+      autoFocus,
+      icon,
+      id,
+      isDisabled,
+      name,
+      onBlur,
+      onFocus,
+    } = this.props;
     const { isOpen, value, view } = this.state;
     const Menu = () =>
       isOpen ? (
@@ -204,6 +213,7 @@ class DatePicker extends Component<Props, State> {
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           autoFocus={autoFocus}
+          instanceId={id}
           isDisabled={isDisabled}
           onBlur={onBlur}
           onFocus={onFocus}
