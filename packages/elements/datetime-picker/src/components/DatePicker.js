@@ -22,11 +22,11 @@ type Props = {
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
   /** The icon to show in the field. */
-  icon?: typeof Component,
+  icon: typeof Component,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  isOpen: boolean,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -36,7 +36,7 @@ type Props = {
   /** Called when the field is focused. */
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value: string,
 };
 
 type State = {

@@ -15,21 +15,21 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `focused`. */
-  defaultFocused?: string,
+  defaultFocused: string,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
+  defaultIsOpen: boolean,
   /** Default for `times`. */
-  defaultTimes?: Array<string>,
+  defaultTimes: Array<string>,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  isOpen: boolean,
   /** The time in the dropdown that should be focused. */
-  focused?: string,
+  focused: string,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -39,9 +39,9 @@ type Props = {
   /** Called when the field is focused. */
   onFocus: () => void,
   /** The times to show in the dropdown. */
-  times?: Array<string>,
+  times: Array<string>,
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value: string,
 };
 
 type State = {

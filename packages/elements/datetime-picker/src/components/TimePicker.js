@@ -17,19 +17,19 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `focused`. */
-  defaultFocused?: string,
+  defaultFocused: string,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
+  defaultIsOpen: boolean,
   /** Default for `times`. */
-  defaultTimes?: Array<string>,
+  defaultTimes: Array<string>,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** The icon to show in the field. */
   icon: boolean,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  isOpen: boolean,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -39,9 +39,9 @@ type Props = {
   /** Called when the field is focused. */
   onFocus: () => void,
   /** The times to show in the dropdown. */
-  times?: Array<string>,
+  times: Array<string>,
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value: string,
 };
 
 type State = {
