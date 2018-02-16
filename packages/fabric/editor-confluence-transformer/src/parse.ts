@@ -448,7 +448,7 @@ function convertConfluenceMacro(
 
     case 'JIRA':
       const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
-      const { server, serverid: serverId, key: issueKey } = params;
+      const { server, serverId, key: issueKey } = params;
 
       // if this is an issue list, render it as unsupported node
       // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672

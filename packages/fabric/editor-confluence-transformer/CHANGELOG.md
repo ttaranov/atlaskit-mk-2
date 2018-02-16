@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.8
+- [patch] Remove Confluence Macro resrouce identifier code [944c827](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/944c827)
+
 ## 2.7.7
 
 
