@@ -131,23 +131,6 @@ class DatePicker extends Component<Props, State> {
     this.setState({ isOpen: true });
   };
 
-  // onInputClick = (e: Event) => {
-  //   // TODO find a different way ASAP.
-  //   //
-  //   // This toggles the calendar if the mouse is used on the input.
-  //   //
-  //   // Also, for some reason this fails to toggle the menu if you blur and
-  //   // then refocus. The isOpen state is correctly conveyed, but the calendar
-  //   // never shows. I think this is due to some internal react-select state.
-  //   // This will properly propagate once react-select allows a controlled way
-  //   // of specifying whether or not the dropdown should be shown.
-  //   if (e.target.className.indexOf('react-select') > -1) {
-  //     this.setState(state => ({
-  //       isOpen: !state.isOpen,
-  //     }));
-  //   }
-  // };
-
   onSelectInput = (e: Event) => {
     let value = e.target.value;
     if (value) {
