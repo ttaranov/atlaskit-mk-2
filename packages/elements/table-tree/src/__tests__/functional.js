@@ -1,9 +1,13 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import TableTree, { Rows, Row, Cell } from '../index';
+import TableTree, { Rows, Row, Cell, Header, Headers } from '../index';
+import { Cell as StyledCell, Header as StyledHeader } from '../styled';
 
 describe('TableTree', () => {
+  const settleImmediatePromises = () =>
+    new Promise(resolve => setTimeout(resolve, 0));
+
   it('renders a flat tree', async () => {
     const getFlatItems = parent => {
       if (parent) {
@@ -152,7 +156,108 @@ describe('TableTree', () => {
     ]);
   });
 
+  it('uses headers to define column widths', async () => {
+    const nestedData = [
+      {
+        title: 'Chapter One',
+        page: 10,
+      },
+      {
+        title: 'Chapter Two',
+        page: 20,
+        children: [
+          {
+            title: 'Chapter Two Subchapter One',
+            page: 21,
+          },
+        ],
+      },
+    ];
+    const getNestedItems = parent => (parent ? parent.children : nestedData);
+
+    const wrapper = mount(
+      <TableTree>
+        <Headers>
+          <Header width={300}>Chapter title</Header>
+          <Header width={100}>Page #</Header>
+        </Headers>
+        <Rows
+          items={getNestedItems}
+          render={({ title, page, children }) => (
+            <Row itemId={title} hasChildren={!!children}>
+              <Cell className={'title'}>{title}</Cell>
+              <Cell className={'page'}>{page}</Cell>
+            </Row>
+          )}
+        />
+      </TableTree>,
+    );
+    const tree = createTreeHarness(wrapper);
+
+    await settleImmediatePromises();
+    wrapper.update();
+
+    tree.expandChevron(1).simulate('click');
+    await settleImmediatePromises();
+    wrapper.update();
+
+    expect(tree.header(0).text()).toEqual('Chapter title');
+    expect(
+      tree
+        .header(0)
+        .find(StyledHeader)
+        .props(),
+    ).toHaveProperty('width', 300);
+    expect(tree.header(1).text()).toEqual('Page #');
+    expect(
+      tree
+        .header(1)
+        .find(StyledHeader)
+        .props(),
+    ).toHaveProperty('width', 100);
+
+    expect(
+      tree
+        .cell(0, 0)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 300);
+    expect(
+      tree
+        .cell(0, 1)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 100);
+    expect(
+      tree
+        .cell(1, 0)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 300);
+    expect(
+      tree
+        .cell(1, 1)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 100);
+    expect(
+      tree
+        .cell(2, 0)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 300);
+    expect(
+      tree
+        .cell(2, 1)
+        .find(StyledCell)
+        .props(),
+    ).toHaveProperty('width', 100);
+  });
+
   function createTreeHarness(treeWrapper) {
+    const header = columnIndex =>
+      treeWrapper.find('Headers Header').at(columnIndex);
+
     const rows = () => treeWrapper.find('Row');
 
     const row = index => rows().at(index);
@@ -180,17 +285,14 @@ describe('TableTree', () => {
     const collapseChevron = rowIndex => row(rowIndex).find('ChevronDownIcon');
 
     return {
-      textOfCellsInColumn,
-      textOfCellsInRow,
+      header,
       rows,
       row,
       cell,
+      textOfCellsInColumn,
+      textOfCellsInRow,
       expandChevron,
       collapseChevron,
     };
-  }
-
-  function settleImmediatePromises() {
-    return new Promise(resolve => setImmediate(resolve));
   }
 });
