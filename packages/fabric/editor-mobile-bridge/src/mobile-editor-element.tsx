@@ -8,7 +8,7 @@ import { MentionProvider, MentionDescription } from '@atlaskit/mention';
  * So this type is supposed to be a stub version of mention provider. We don't actually need it.
  * TODO consider to move this helper class to somewhere outside example
  */
-class MentionProviderImpl implements MentionProvider {
+export class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
   recordMentionSelection(mention: MentionDescription): void {}
   shouldHighlightMention(mention: MentionDescription): boolean {
