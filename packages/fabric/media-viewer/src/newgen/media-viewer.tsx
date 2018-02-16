@@ -44,13 +44,13 @@ export const initialAction = (props: Props): Action => {
 
 export const reducer = (prevState: State, action: Action): State => {
   switch(action.type) {
+    case 'INIT':
+      return prevState;
     case 'LOADED':
       return {
         type: 'LOADED',
         name: action.item.type === 'file' && action.item.details.name || 'unkown'
       };
-    case 'INIT':
-      return prevState;
     case  'LOADING_ERROR':
       return {
         type: 'ERROR'
@@ -60,11 +60,15 @@ export const reducer = (prevState: State, action: Action): State => {
 
 export type ComponentProps = State & { dispatch: DispatchFn };
 
+export const Spinner = () => {
+  return <div>spinner</div>;
+}
+
 export const Component = (props: ComponentProps) => {
   switch(props.type) {
     case 'LOADING':
       return (
-        <div>..spinner..</div>
+        <Spinner/>
       );
     case 'ERROR':
       return (
@@ -73,23 +77,6 @@ export const Component = (props: ComponentProps) => {
     case 'LOADED':
     return (
       <div>{props.name}</div>
-    );    
-  }
-};
-
-export const render = (dispatch: DispatchFn, state: State) => {
-  switch(state.type) {
-    case 'LOADING':
-      return (
-        <div>..spinner..</div>
-      );
-    case 'ERROR':
-      return (
-        <div>ERROR view</div>
-      );
-    case 'LOADED':
-    return (
-      <div>{state.name}</div>
     );    
   }
 };
