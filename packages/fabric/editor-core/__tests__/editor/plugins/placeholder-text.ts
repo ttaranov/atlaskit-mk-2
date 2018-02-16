@@ -20,7 +20,7 @@ import { Selection } from 'prosemirror-state';
 const editor = (doc: any) =>
   createEditor({
     doc,
-    editorPlugins: [placeholderTextPlugin],
+    editorProps: { allowTemplatePlaceholders: true },
   });
 
 describe(name, () => {
