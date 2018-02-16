@@ -69,6 +69,11 @@ export interface MentionProvider
   recordMentionSelection(mention: MentionDescription): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
   isFiltering(query: string): boolean;
+
+  // objectId is used by analytics handlers to correlate a mentions events with the content or
+  // object that they occurred on. E.g. a mention being created on a confluence page,
+  // would use the confluence page ID. Ideally this would be handled at a higher level and
+  // injected in, but for now it's passed through the provider.
   objectId?: string;
 }
 
