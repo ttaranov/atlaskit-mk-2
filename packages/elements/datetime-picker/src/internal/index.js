@@ -26,7 +26,7 @@ export const defaultTimes = [
   '18:00',
 ];
 
-export const DropdownIndicator = ({ icon: Icon }: { icon: any }) =>
+export const DropdownIndicator = ({ icon: Icon }: { icon?: any } = {}) =>
   Icon ? (
     <span role="img">
       <Icon />
