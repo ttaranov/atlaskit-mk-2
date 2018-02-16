@@ -2,13 +2,13 @@
 import { globals } from '../../../../../jest.config';
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { render } from 'enzyme';
 
 const messageEditor = `${
   globals.__baseUrl__
 }/examples/fabric/editor-core/message-renderer`;
 const editable = `[contenteditable="true"]`;
 const emojiTypeAhead = '.ak-emoji-typeahead';
+const decisions = 'span[aria-label="Decision"]';
 
 BrowserTestCase(
   'user should be able to see emoji if typed the name in full',
@@ -42,13 +42,11 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, ['# heading', ' :)', ' is heading']);
-    await browser.waitForSelector('span[shortname=":slight_smile:"]');
+    await browser.waitForSelector('[shortname=":slight_smile:"]');
 
-    expect(await browser.isExisting('span[shortname=":slight_smile:"]')).toBe(
-      true,
-    );
+    expect(await browser.isExisting('[shortname=":slight_smile:"]')).toBe(true);
     expect(
-      await browser.isExisting('span[data-emoji-short-name=":slight_smile:"]'),
+      await browser.isExisting('[data-emoji-short-name=":slight_smile:"]'),
     ).toBe(true);
   },
 );
@@ -61,7 +59,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, ['this is code', '`:)`']);
-    expect(await browser.isExisting('span[shortname=":slight_smile:"]')).toBe(
+    expect(await browser.isExisting('[shortname=":slight_smile:"]')).toBe(
       false,
     );
     expect(
@@ -80,7 +78,7 @@ BrowserTestCase(
     await browser.waitForSelector(editable);
     await browser.type(editable, ['this ', ':smile']);
     await browser.waitForSelector(emojiTypeAhead);
-    expect(await browser.isExisting('.ak-emoji-typeahead')).toBe(true);
+    expect(await browser.isExisting(emojiTypeAhead)).toBe(true);
   },
 );
 
@@ -122,14 +120,79 @@ BrowserTestCase(
   },
 );
 
-// BrowserTestCase(
-//   'user should be able to click on the emoji button',
-//   { skip: ['edge', 'ie', 'safari'] },
-//   async client => {
-//     const sample = await new Page(client);
-//     await sample.goto(messageEditor);
-//     await sample.type(editable, [':smile']);
-//     await sample.waitForSelector('.ak-emoji-typeahead');
-//     expect(await sample.isExisting('.ak-emoji-typeahead')).toBe(true);
-//   }
-// );
+BrowserTestCase(
+  'user should be able remove emoji on backspace',
+  { skip: ['edge', 'ie', 'safari'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, [
+      'this ',
+      ':a:',
+      ':a:',
+      ':grinning:',
+      'Backspace',
+      'Backspace',
+    ]);
+    await browser.waitForSelector('[data-emoji-short-name=":a:"]');
+    expect(
+      await browser.isExisting('[data-emoji-short-name=":grinning:"]'),
+    ).toBe(false);
+  },
+);
+
+BrowserTestCase(
+  'user should be able to click on the emoji button and select emoji',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const emojiButton = '[aria-label="Insert emoji (:)"]';
+    const sweatSmile = '[aria-label=":sweat_smile:"]';
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.waitForSelector(emojiButton);
+    await browser.click(emojiButton);
+    await browser.waitForSelector(sweatSmile);
+    await browser.click(sweatSmile);
+    expect(
+      await browser.isExisting('[data-emoji-short-name=":sweat_smile:"]'),
+    ).toBe(true);
+  },
+);
+
+BrowserTestCase(
+  'user should be able to select emoji inside task-decisions',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, ['<>  ', 'this ', ':smil']);
+    await browser.waitForSelector(emojiTypeAhead);
+    await browser.waitForSelector('.ak-emoji-typeahead-list');
+    await browser.isVisible('span=:smile:');
+    await browser.click('span=:smile:');
+    expect(await browser.isExisting('[data-emoji-short-name=":smile:"]')).toBe(
+      true,
+    );
+  },
+);
+
+BrowserTestCase(
+  'user should be able to change text with emoji into decisions',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const createDecisions = '[aria-label="Create decision"]';
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, ['this ', ':smile:']);
+    await browser.waitForSelector(createDecisions);
+    await browser.click(createDecisions);
+    await browser.isExisting(decisions);
+    expect(await browser.isExisting('[data-emoji-short-name=":smile:"]')).toBe(
+      true,
+    );
+  },
+);

@@ -78,6 +78,7 @@ export default class Page {
   isExisting(selector) {
     return this.browser.isExisting(selector);
   }
+
   isVisible(selector) {
     return this.browser.isVisible(selector);
   }
