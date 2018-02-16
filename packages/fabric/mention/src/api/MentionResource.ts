@@ -69,6 +69,7 @@ export interface MentionProvider
   recordMentionSelection(mention: MentionDescription): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
   isFiltering(query: string): boolean;
+  objectId?: string;
 }
 
 const emptySecurityProvider = () => {

@@ -206,6 +206,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private fireMentionInsertAnalytics = (mention: MentionDescription) => {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState!.lastQuery;
+    const objectId = this.state.mentionProvider
+      ? this.state.mentionProvider.objectId
+      : '';
 
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
       mode: this.insertType || InsertType.SELECTED,
@@ -213,6 +216,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
       duration: this.pickerElapsedTime || 0,
+      mentionee: mention.id,
+      objectId: objectId as string,
     });
 
     this.insertType = undefined;
