@@ -56,24 +56,6 @@ function isoToObj(iso) {
     : {};
 }
 
-/*
-
-TODO
-
-Pickers
-
-- DateTimePicker positioning of dropdowns needs slight moving, but requires styling hooks.
-- Tests!
-
-ReactSelect
-
-- ReactSelect should have an option to disable the auto-width of the Menu component.
-- ReactSelect needs an event for when the clear button is clicked, when controlling the value.
-- ReactSelect needs a way to control the open / closed state of the dropdown.
-- ReactSelect forces input width to match dropdown. This breaks `flex-basis: 0` in DateTimePicker.
-
-*/
-
 const arrowKeys = {
   ArrowDown: 'down',
   ArrowLeft: 'left',
