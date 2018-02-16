@@ -7,7 +7,7 @@ export default md`
 
   ## EditorWithActions
 
-  Based off feedback from our consumers, the existing approach of passing the EditorView as the argument to the onSave / onCancel / onChange callback functions unnecessarily leaks the abstraction over Prosemirror that the editor is supposed to provider.
+  Based off feedback from our consumers, the existing approach of passing the EditorView as the argument to the onSave / onCancel / onChange callback functions unnecessarily leaks the abstraction over Prosemirror that the editor is supposed to provide.
 
   This change introduces a breaking API change that passes the EditorActions object as the argument instead.
 
@@ -20,6 +20,7 @@ ${code`
 
   render(<Editor onSave={this.handleSave} />);
 `}
+
   This replaces code that looked like:
 
 ${code`
