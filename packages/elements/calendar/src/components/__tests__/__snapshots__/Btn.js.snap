@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`children 1`] = `
+<Component>
+  <WithDeprecationWarnings(Button)
+    appearance="subtle"
+    spacing="none"
+    tabIndex={-1}
+  >
+    <Button
+      appearance="subtle"
+      isDisabled={false}
+      isSelected={false}
+      shouldFitContainer={false}
+      spacing="none"
+      tabIndex={-1}
+      type="button"
+    >
+      <StyledButton
+        appearance="subtle"
+        disabled={false}
+        fit={false}
+        isActive={false}
+        isFocus={false}
+        isHover={false}
+        isSelected={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        spacing="none"
+        tabIndex={-1}
+        type="button"
+      >
+        <button
+          className="gCEHLP"
+          disabled={false}
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onMouseDown={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          spacing="none"
+          tabIndex={-1}
+          type="button"
+        >
+          <ButtonWrapper
+            fit={false}
+            onClick={[Function]}
+          >
+            <span
+              onClick={[Function]}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "display": "inline-flex",
+                  "flexWrap": "nowrap",
+                  "maxWidth": "100%",
+                }
+              }
+            />
+          </ButtonWrapper>
+        </button>
+      </StyledButton>
+    </Button>
+  </WithDeprecationWarnings(Button)>
+</Component>
+`;
+
+exports[`children 2`] = `
+<Component>
+  <WithDeprecationWarnings(Button)
+    appearance="subtle"
+    spacing="none"
+    tabIndex={-1}
+  >
+    <Button
+      appearance="subtle"
+      isDisabled={false}
+      isSelected={false}
+      shouldFitContainer={false}
+      spacing="none"
+      tabIndex={-1}
+      type="button"
+    >
+      <StyledButton
+        appearance="subtle"
+        disabled={false}
+        fit={false}
+        isActive={false}
+        isFocus={false}
+        isHover={false}
+        isSelected={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        spacing="none"
+        tabIndex={-1}
+        type="button"
+      >
+        <button
+          className="gCEHLP"
+          disabled={false}
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onMouseDown={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          spacing="none"
+          tabIndex={-1}
+          type="button"
+        >
+          <ButtonWrapper
+            fit={false}
+            onClick={[Function]}
+          >
+            <span
+              onClick={[Function]}
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "display": "inline-flex",
+                  "flexWrap": "nowrap",
+                  "maxWidth": "100%",
+                }
+              }
+            >
+              <ButtonContent
+                followsIcon={false}
+                spacing="none"
+              >
+                <span
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "alignSelf": "center",
+                      "flex": "1 1 auto",
+                      "margin": 0,
+                      "maxWidth": "100%",
+                      "overflow": "hidden",
+                      "textOverflow": "ellipsis",
+                      "whiteSpace": "nowrap",
+                    }
+                  }
+                >
+                  children
+                </span>
+              </ButtonContent>
+            </span>
+          </ButtonWrapper>
+        </button>
+      </StyledButton>
+    </Button>
+  </WithDeprecationWarnings(Button)>
+</Component>
+`;

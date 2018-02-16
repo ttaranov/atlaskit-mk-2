@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render 1`] = `
+<PredefinedHeading>
+  <Component
+    month={1}
+    year={2000}
+  >
+    <styled.div
+      aria-hidden="true"
+    >
+      <div
+        aria-hidden="true"
+        className="iOBizo"
+      >
+        <div>
+          <Component>
+            <WithDeprecationWarnings(Button)
+              appearance="subtle"
+              spacing="none"
+              tabIndex={-1}
+            >
+              <Button
+                appearance="subtle"
+                isDisabled={false}
+                isSelected={false}
+                shouldFitContainer={false}
+                spacing="none"
+                tabIndex={-1}
+                type="button"
+              >
+                <StyledButton
+                  appearance="subtle"
+                  disabled={false}
+                  fit={false}
+                  isActive={false}
+                  isFocus={false}
+                  isHover={false}
+                  isSelected={false}
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseDown={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseUp={[Function]}
+                  spacing="none"
+                  tabIndex={-1}
+                  type="button"
+                >
+                  <button
+                    className="gCEHLP"
+                    disabled={false}
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    onMouseDown={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                    onMouseUp={[Function]}
+                    spacing="none"
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <ButtonWrapper
+                      fit={false}
+                      onClick={[Function]}
+                    >
+                      <span
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "alignSelf": "center",
+                            "display": "inline-flex",
+                            "flexWrap": "nowrap",
+                            "maxWidth": "100%",
+                          }
+                        }
+                      >
+                        <ButtonContent
+                          followsIcon={false}
+                          spacing="none"
+                        >
+                          <span
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "alignSelf": "center",
+                                "flex": "1 1 auto",
+                                "margin": 0,
+                                "maxWidth": "100%",
+                                "overflow": "hidden",
+                                "textOverflow": "ellipsis",
+                                "whiteSpace": "nowrap",
+                              }
+                            }
+                          >
+                            <ArrowLeftIcon
+                              label="Last month"
+                              primaryColor="#97A0AF"
+                              size="medium"
+                            >
+                              <Icon
+                                dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M8.414 11.5H18a1 1 0 0 1 0 2H8.414l3.793 3.793a1 1 0 0 1-1.414 1.414l-5.5-5.5a1 1 0 0 1 0-1.414l5.5-5.5a1 1 0 0 1 1.414 1.414L8.414 11.5z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>"
+                                label="Last month"
+                                onClick={[Function]}
+                                primaryColor="#97A0AF"
+                                size="medium"
+                              >
+                                <styled.span
+                                  aria-label="Last month"
+                                  dangerouslySetInnerHTML={
+                                    Object {
+                                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M8.414 11.5H18a1 1 0 0 1 0 2H8.414l3.793 3.793a1 1 0 0 1-1.414 1.414l-5.5-5.5a1 1 0 0 1 0-1.414l5.5-5.5a1 1 0 0 1 1.414 1.414L8.414 11.5z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>",
+                                    }
+                                  }
+                                  onClick={[Function]}
+                                  primaryColor="#97A0AF"
+                                  role="img"
+                                  size="medium"
+                                >
+                                  <span
+                                    aria-label="Last month"
+                                    className="kWvJmr"
+                                    dangerouslySetInnerHTML={
+                                      Object {
+                                        "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M8.414 11.5H18a1 1 0 0 1 0 2H8.414l3.793 3.793a1 1 0 0 1-1.414 1.414l-5.5-5.5a1 1 0 0 1 0-1.414l5.5-5.5a1 1 0 0 1 1.414 1.414L8.414 11.5z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>",
+                                      }
+                                    }
+                                    onClick={[Function]}
+                                    role="img"
+                                    size="medium"
+                                  />
+                                </styled.span>
+                              </Icon>
+                            </ArrowLeftIcon>
+                          </span>
+                        </ButtonContent>
+                      </span>
+                    </ButtonWrapper>
+                  </button>
+                </StyledButton>
+              </Button>
+            </WithDeprecationWarnings(Button)>
+          </Component>
+        </div>
+        <styled.div>
+          <div
+            className="dLJPmG"
+          >
+            January 2000
+          </div>
+        </styled.div>
+        <div>
+          <Component>
+            <WithDeprecationWarnings(Button)
+              appearance="subtle"
+              spacing="none"
+              tabIndex={-1}
+            >
+              <Button
+                appearance="subtle"
+                isDisabled={false}
+                isSelected={false}
+                shouldFitContainer={false}
+                spacing="none"
+                tabIndex={-1}
+                type="button"
+              >
+                <StyledButton
+                  appearance="subtle"
+                  disabled={false}
+                  fit={false}
+                  isActive={false}
+                  isFocus={false}
+                  isHover={false}
+                  isSelected={false}
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseDown={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseUp={[Function]}
+                  spacing="none"
+                  tabIndex={-1}
+                  type="button"
+                >
+                  <button
+                    className="gCEHLP"
+                    disabled={false}
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    onMouseDown={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                    onMouseUp={[Function]}
+                    spacing="none"
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <ButtonWrapper
+                      fit={false}
+                      onClick={[Function]}
+                    >
+                      <span
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "alignSelf": "center",
+                            "display": "inline-flex",
+                            "flexWrap": "nowrap",
+                            "maxWidth": "100%",
+                          }
+                        }
+                      >
+                        <ButtonContent
+                          followsIcon={false}
+                          spacing="none"
+                        >
+                          <span
+                            style={
+                              Object {
+                                "alignItems": "center",
+                                "alignSelf": "center",
+                                "flex": "1 1 auto",
+                                "margin": 0,
+                                "maxWidth": "100%",
+                                "overflow": "hidden",
+                                "textOverflow": "ellipsis",
+                                "whiteSpace": "nowrap",
+                              }
+                            }
+                          >
+                            <ArrowRightIcon
+                              label="Next month"
+                              primaryColor="#97A0AF"
+                              size="medium"
+                            >
+                              <Icon
+                                dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M11.793 5.793a.999.999 0 0 0 0 1.414L15.586 11H6a1 1 0 0 0 0 2h9.586l-3.793 3.793a.999.999 0 0 0 0 1.414c.39.39 1.024.39 1.415 0l5.499-5.5a.997.997 0 0 0 .293-.679v-.057a.996.996 0 0 0-.293-.678l-5.499-5.5a1 1 0 0 0-1.415 0z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>"
+                                label="Next month"
+                                onClick={[Function]}
+                                primaryColor="#97A0AF"
+                                size="medium"
+                              >
+                                <styled.span
+                                  aria-label="Next month"
+                                  dangerouslySetInnerHTML={
+                                    Object {
+                                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M11.793 5.793a.999.999 0 0 0 0 1.414L15.586 11H6a1 1 0 0 0 0 2h9.586l-3.793 3.793a.999.999 0 0 0 0 1.414c.39.39 1.024.39 1.415 0l5.499-5.5a.997.997 0 0 0 .293-.679v-.057a.996.996 0 0 0-.293-.678l-5.499-5.5a1 1 0 0 0-1.415 0z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>",
+                                    }
+                                  }
+                                  onClick={[Function]}
+                                  primaryColor="#97A0AF"
+                                  role="img"
+                                  size="medium"
+                                >
+                                  <span
+                                    aria-label="Next month"
+                                    className="kWvJmr"
+                                    dangerouslySetInnerHTML={
+                                      Object {
+                                        "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><path d=\\"M11.793 5.793a.999.999 0 0 0 0 1.414L15.586 11H6a1 1 0 0 0 0 2h9.586l-3.793 3.793a.999.999 0 0 0 0 1.414c.39.39 1.024.39 1.415 0l5.499-5.5a.997.997 0 0 0 .293-.679v-.057a.996.996 0 0 0-.293-.678l-5.499-5.5a1 1 0 0 0-1.415 0z\\" fill=\\"currentColor\\" fill-rule=\\"evenodd\\"/></svg>",
+                                      }
+                                    }
+                                    onClick={[Function]}
+                                    role="img"
+                                    size="medium"
+                                  />
+                                </styled.span>
+                              </Icon>
+                            </ArrowRightIcon>
+                          </span>
+                        </ButtonContent>
+                      </span>
+                    </ButtonWrapper>
+                  </button>
+                </StyledButton>
+              </Button>
+            </WithDeprecationWarnings(Button)>
+          </Component>
+        </div>
+      </div>
+    </styled.div>
+  </Component>
+</PredefinedHeading>
+`;

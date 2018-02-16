@@ -5,6 +5,7 @@ import { mount, shallow } from 'enzyme';
 import { parse } from 'date-fns';
 import cases from 'jest-in-case';
 
+import Btn from '../Btn';
 import Calendar from '../Calendar';
 import Date from '../Date';
 import { DateTd } from '../../styled/Date';
@@ -102,12 +103,65 @@ test('handleClickDay()', () => {
   expect(mockOnSelect).toHaveBeenCalledWith(createEventData('2000-01-01'));
 });
 
-test('handleClickNext()', () => {});
+test('handleClickNext()', () => {
+  const mockOnChange = jest.fn();
+  const wrapper = mount(
+    <Calendar onChange={mockOnChange} day={1} month={1} year={2000} />,
+  );
+  wrapper
+    .find(Btn)
+    .at(1)
+    .simulate('click', createEvent());
+  expect(mockOnChange).toHaveBeenCalledWith({
+    type: 'next',
+    ...createEventData('2000-02-01'),
+  });
+});
 
-test('handleClickPrev()', () => {});
+test('handleClickPrev()', () => {
+  const mockOnChange = jest.fn();
+  const wrapper = mount(
+    <Calendar onChange={mockOnChange} day={1} month={1} year={2000} />,
+  );
+  wrapper
+    .find(Btn)
+    .at(0)
+    .simulate('click', createEvent());
+  expect(mockOnChange).toHaveBeenCalledWith({
+    type: 'prev',
+    ...createEventData('1999-12-01'),
+  });
+});
 
-test('handleContainerBlur()', () => {});
+test('handleContainerBlur()', () => {
+  const mockOnBlur = jest.fn();
+  const wrapper = mount(<Calendar onBlur={mockOnBlur} />);
+  wrapper
+    .find('div')
+    .first()
+    .simulate('blur', createEvent());
+  expect(mockOnBlur).toHaveBeenCalledTimes(1);
+});
 
-test('handleContainerFocus()', () => {});
+test('handleContainerFocus()', () => {
+  const mockOnFocus = jest.fn();
+  const wrapper = mount(<Calendar onFocus={mockOnFocus} />);
+  wrapper
+    .find('div')
+    .first()
+    .simulate('focus', createEvent());
+  expect(mockOnFocus).toHaveBeenCalledTimes(1);
+});
 
-test('focus()', () => {});
+test('refContainer()', () => {
+  const wrapper = mount(<Calendar />);
+  expect(wrapper.instance().container).toBeInstanceOf(HTMLDivElement);
+});
+
+test('focus()', () => {
+  const wrapper = mount(<Calendar />);
+  const instance = wrapper.instance();
+  instance.container.focus = jest.fn();
+  instance.focus();
+  expect(instance.container.focus).toHaveBeenCalledTimes(1);
+});
