@@ -18,14 +18,12 @@ describe('Uploader', () => {
     const createUpload = () => {
       return Promise.resolve({ data: [{ id: 'upload-id-123' }] });
     };
-    const appendChunksToUpload = jest.fn();
-    const MediaStoreMock = jest.fn().mockImplementation(() => {
-      return {
-        createUpload,
-        createFileFromUpload,
-        appendChunksToUpload,
-      };
-    });
+    const appendChunksToUpload = jest.fn().mockReturnValue(Promise.resolve(1));
+    const MediaStoreMock = jest.fn().mockImplementation(() => ({
+      createUpload,
+      createFileFromUpload,
+      appendChunksToUpload,
+    }));
 
     return {
       MediaStoreMock,
@@ -71,7 +69,7 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
-      callbacks.onComplete();
+      return Promise.resolve();
     });
 
     await uploadFile(
@@ -104,18 +102,20 @@ describe('Uploader', () => {
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
       callbacks.onProgress(0.1, [{ hash: 1 }, { hash: 2 }, { hash: 3 }]);
       callbacks.onProgress(0.2, [{ hash: 4 }, { hash: 5 }, { hash: 6 }]);
+
+      return Promise.resolve();
     });
 
-    uploadFile({ content: '' }, config, { onProgress });
+    await uploadFile({ content: '' }, config, { onProgress });
     await createFileFromUpload();
 
     expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
     expect(appendChunksToUpload.mock.calls[0][0]).toEqual('upload-id-123');
-    expect(appendChunksToUpload.mock.calls[0][1]).toEqual([1, 2, 3]);
-    expect(appendChunksToUpload.mock.calls[0][2]).toEqual(0);
+    expect(appendChunksToUpload.mock.calls[0][1].chunks).toEqual([1, 2, 3]);
+    expect(appendChunksToUpload.mock.calls[0][1].offset).toEqual(0);
     expect(appendChunksToUpload.mock.calls[1][0]).toEqual('upload-id-123');
-    expect(appendChunksToUpload.mock.calls[1][1]).toEqual([4, 5, 6]);
-    expect(appendChunksToUpload.mock.calls[1][2]).toEqual(3);
+    expect(appendChunksToUpload.mock.calls[1][1].chunks).toEqual([4, 5, 6]);
+    expect(appendChunksToUpload.mock.calls[1][1].offset).toEqual(3);
   });
 
   it('should call onProgress with the upload percentage', async () => {
@@ -150,7 +150,7 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
-      callbacks.onComplete();
+      return Promise.resolve();
     });
 
     const fileId = await uploadFile({ content: '' }, config);
@@ -165,11 +165,45 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation((file, config, callbacks) => {
-      callbacks.onError('some upload error');
+      return Promise.reject('some upload error');
     });
 
     return expect(uploadFile({ content: '' }, config)).rejects.toEqual(
       'some upload error',
     );
+  });
+
+  it('should create the file after all chunks have been appended', async () => {
+    expect.assertions(3);
+    const {
+      createUpload,
+      ChunkinatorMock,
+      config,
+      appendChunksToUpload,
+      createFileFromUpload,
+    } = setup();
+
+    (chunkinator as any) = ChunkinatorMock;
+
+    (MediaStore as any) = jest.fn().mockImplementation(() => ({
+      createUpload,
+      createFileFromUpload() {
+        expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
+        return createFileFromUpload();
+      },
+      appendChunksToUpload() {
+        expect(createFileFromUpload).toHaveBeenCalledTimes(0);
+        return appendChunksToUpload();
+      },
+    }));
+
+    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+      callbacks.onProgress(0.1, [1, 2, 3]);
+      callbacks.onProgress(0.2, [1, 2, 3]);
+
+      return Promise.resolve();
+    });
+
+    await uploadFile({ content: '' }, config);
   });
 });

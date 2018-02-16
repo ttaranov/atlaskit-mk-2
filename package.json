@@ -238,7 +238,7 @@
     "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
     "chromatism": "^2.6.0",
-    "chunkinator": "^0.0.10",
+    "chunkinator": "^0.0.13",
     "classnames": "^2.2.5",
     "clone-deep": "^3.0.1",
     "codemirror": "^5.26.0",

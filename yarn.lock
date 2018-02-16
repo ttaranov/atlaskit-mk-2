@@ -3246,9 +3246,9 @@ chromatism@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
 
-chunkinator@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.10.tgz#48134c01c8b024f35c259ba481b64eda7412a519"
+chunkinator@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.13.tgz#ae29d77208523babe082efe1580e83a55d0c7be5"
   dependencies:
     rxjs "^5.5.6"
     rxjs-async-map "^0.1.0"

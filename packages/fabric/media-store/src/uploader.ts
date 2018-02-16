@@ -45,68 +45,61 @@ const createProbingFunction = (store: MediaStore) => async (
   return (Object as any).values(results).map((result: any) => result.exists);
 };
 
-export const uploadFile = (
+export const uploadFile = async (
   file: UploadableFile,
   config: MediaStoreConfig,
   callbacks?: Callbacks,
 ): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const { content, collection, name, mimeType } = file;
-    const store = new MediaStore(config);
-    const deferredUploadId = store
-      .createUpload()
-      .then(response => response.data[0].id);
-    const uploadingFunction = (chunk: Chunk) =>
-      store.uploadChunk(chunk.hash, chunk.blob);
-    let offset = 0;
-    const queue = new PQueue({ concurrency: 1 });
+  const { content, collection, name, mimeType } = file;
+  const store = new MediaStore(config);
+  const deferredUploadId = store
+    .createUpload()
+    .then(response => response.data[0].id);
+  const uploadingFunction = (chunk: Chunk) =>
+    store.uploadChunk(chunk.hash, chunk.blob);
+  let offset = 0;
+  const queue = new PQueue({ concurrency: 1 });
 
-    chunkinator(
-      content,
-      {
-        hashingFunction,
-        hashingConcurrency: 5,
-        probingBatchSize: 100,
-        chunkSize: 4 * 1024 * 1024,
-        uploadingConcurrency: 3,
-        progressBatchSize: 1000,
-        uploadingFunction,
-        probingFunction: createProbingFunction(store),
-      },
-      {
-        async onComplete() {
-          const [uploadId] = await Promise.all([
-            deferredUploadId,
-            queue.onIdle(),
-          ]);
-
-          const { data: { id: fileId } } = await store.createFileFromUpload(
-            { uploadId, name, mimeType },
-            {
-              collection,
-            },
-          );
-
-          resolve(fileId);
-        },
-        onError: reject,
-        async onProgress(progress, chunks) {
-          queue.add(async () => {
-            await store.appendChunksToUpload(await deferredUploadId, {
-              chunks: hashedChunks(chunks),
-              offset,
-            });
-
-            offset += chunks.length;
+  await chunkinator(
+    content,
+    {
+      hashingFunction,
+      hashingConcurrency: 5,
+      probingBatchSize: 100,
+      chunkSize: 4 * 1024 * 1024,
+      uploadingConcurrency: 3,
+      progressBatchSize: 1000,
+      uploadingFunction,
+      probingFunction: createProbingFunction(store),
+    },
+    {
+      async onProgress(progress, chunks) {
+        queue.add(async () => {
+          await store.appendChunksToUpload(await deferredUploadId, {
+            chunks: hashedChunks(chunks),
+            offset,
           });
 
-          if (callbacks && callbacks.onProgress) {
-            callbacks.onProgress(progress);
-          }
-        },
+          offset += chunks.length;
+        });
+
+        if (callbacks && callbacks.onProgress) {
+          callbacks.onProgress(progress);
+        }
       },
-    );
-  });
+    },
+  );
+
+  const [uploadId] = await Promise.all([deferredUploadId, queue.onIdle()]);
+
+  const { data: { id: fileId } } = await store.createFileFromUpload(
+    { uploadId, name, mimeType },
+    {
+      collection,
+    },
+  );
+
+  return fileId;
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);
