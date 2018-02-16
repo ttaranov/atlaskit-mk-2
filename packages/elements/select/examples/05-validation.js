@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { cities } from './common/data';
-import { Select } from './common/components';
-import SelectWrapper from '../src/SelectWrapper';
+import Select from '../src';
+import SelectWrapper from '../src/SelectWrapper'; // TEMP: waiting for @atlaskit/form support
 
 const errorMsg = 'This field is required.';
 const successMsg = 'Great job selecting an option!';

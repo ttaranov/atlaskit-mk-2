@@ -1,13 +1,9 @@
 // @flow
 
 import React from 'react';
-import Async from 'react-select/lib/Async';
-import { withValue } from 'react-value';
+import AsyncSelect from '../src/AsyncSelect';
 
 import { cities } from './common/data';
-
-// `withValue` manages onChange & value properties for brevity
-const AsyncSelect = withValue(Async);
 
 // you control how the options are filtered
 const filter = (inputValue: string) =>
@@ -21,14 +17,12 @@ const loadOptions = (inputValue, callback) => {
 };
 
 const AsyncExample = () => (
-  <div>
-    <AsyncSelect
-      defaultOptions
-      loadOptions={loadOptions}
-      options={cities}
-      placeholder="Choose a City"
-    />
-  </div>
+  <AsyncSelect
+    defaultOptions
+    loadOptions={loadOptions}
+    options={cities}
+    placeholder="Choose a City"
+  />
 );
 
 export default AsyncExample;

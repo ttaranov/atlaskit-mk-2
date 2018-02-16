@@ -314,11 +314,11 @@ export const allCountries: Array<{
 // separate countries into groups
 export const groupedCountries = [
   {
-    name: 'Suggested',
+    label: 'Suggested',
     options: allCountries.filter(c => c.suggested),
   },
   {
-    name: 'All Countries',
+    label: 'All Countries',
     options: allCountries.filter(c => !c.suggested),
   },
 ];
