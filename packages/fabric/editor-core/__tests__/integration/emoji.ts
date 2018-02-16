@@ -122,7 +122,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'user should be able remove emoji on backspace',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie', 'safari,', 'firefox'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -190,6 +190,7 @@ BrowserTestCase(
     await browser.type(editable, ['this ', ':smile:']);
     await browser.waitForSelector(createDecisions);
     await browser.click(createDecisions);
+    await browser.waitForSelector(decisions);
     await browser.isExisting(decisions);
     expect(await browser.isExisting('[data-emoji-short-name=":smile:"]')).toBe(
       true,
