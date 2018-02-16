@@ -2,9 +2,8 @@ import * as React from 'react';
 import { createApp } from './create-app';
 import { Context, MediaItem } from '@atlaskit/media-core';
 import { MediaViewerDataSource, MediaViewerItem } from '../components/media-viewer';
-// initState: State;
-// reducer: (prevState: State, action: Action) => State;
-// render: (dispatch: (action: Action) => void, state: State) => any;
+
+export type DispatchFn = (action: Action) => void;
 
 export interface Props {
   context: Context;
@@ -32,18 +31,18 @@ export type Action = {
   type: 'LOADING_ERROR',
 };
 
-const initialState: State = {
+export const initialState: State = {
   type: 'LOADING'
 };
 
-const initialAction = (props: Props): Action => {
+export const initialAction = (props: Props): Action => {
   return {
     type: 'INIT',
     props
   };
 }
 
-const reducer = (prevState: State, action: Action): State => {
+export const reducer = (prevState: State, action: Action): State => {
   switch(action.type) {
     case 'LOADED':
       return {
@@ -59,7 +58,26 @@ const reducer = (prevState: State, action: Action): State => {
   }
 };
 
-const render = (dispatch: (action: Action) => void, state: State) => {
+export type ComponentProps = State & { dispatch: DispatchFn };
+
+export const Component = (props: ComponentProps) => {
+  switch(props.type) {
+    case 'LOADING':
+      return (
+        <div>..spinner..</div>
+      );
+    case 'ERROR':
+      return (
+        <div>ERROR view</div>
+      );
+    case 'LOADED':
+    return (
+      <div>{props.name}</div>
+    );    
+  }
+};
+
+export const render = (dispatch: DispatchFn, state: State) => {
   switch(state.type) {
     case 'LOADING':
       return (
@@ -76,7 +94,7 @@ const render = (dispatch: (action: Action) => void, state: State) => {
   }
 };
 
-const effects = (action: Action): Promise<Action> | null => {
+export const effects = (action: Action): Promise<Action> | null => {
   switch (action.type) {
     case 'INIT': 
       return new Promise((resolve, reject) => {
@@ -103,11 +121,3 @@ const effects = (action: Action): Promise<Action> | null => {
       return null;
   }
 };
-
-export const App = createApp<State, Action, Props>({
-  initialAction,
-  initialState,
-  reducer,
-  render,
-  effects
-});
