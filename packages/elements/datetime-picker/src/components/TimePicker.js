@@ -28,6 +28,8 @@ type Props = {
   icon: boolean,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -100,6 +102,7 @@ class TimePicker extends Component<Props, State> {
       autoFocus,
       icon,
       id,
+      innerProps,
       isDisabled,
       name,
       onBlur,
@@ -107,7 +110,7 @@ class TimePicker extends Component<Props, State> {
     } = this.props;
     const { value } = this.state;
     return (
-      <div>
+      <div {...innerProps}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select

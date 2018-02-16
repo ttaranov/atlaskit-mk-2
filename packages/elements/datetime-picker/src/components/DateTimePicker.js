@@ -26,6 +26,8 @@ type Props = {
   disabled: Array<string>,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -167,7 +169,7 @@ class DateTimePicker extends Component<Props, State> {
   }
 
   render() {
-    const { autoFocus, id, isDisabled, name } = this.props;
+    const { autoFocus, id, innerProps, isDisabled, name } = this.props;
     const { _dateValue, _timeValue, isFocused, value } = this.state;
     const bothProps = {
       isDisabled,
@@ -175,7 +177,7 @@ class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
     };
     return (
-      <Flex isFocused={isFocused}>
+      <Flex {...innerProps} isFocused={isFocused}>
         <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker

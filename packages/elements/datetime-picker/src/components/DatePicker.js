@@ -25,6 +25,8 @@ type Props = {
   icon: typeof Component,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
@@ -182,6 +184,7 @@ class DatePicker extends Component<Props, State> {
       disabled,
       icon,
       id,
+      innerProps,
       isDisabled,
       name,
       onBlur,
@@ -205,6 +208,7 @@ class DatePicker extends Component<Props, State> {
 
     return (
       <div
+        {...innerProps}
         role="presentation"
         onBlur={this.onInputBlur}
         onFocus={this.onInputFocus}
