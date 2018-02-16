@@ -34,6 +34,8 @@ type Props = {
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
    This does not prevent these dates being selected. */
   disabled: Array<string>,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** The number of the month (from 1 to 12) which the calendar should be on. */
   month: number,
   /** Function which is called when the calendar is no longer focused. */
@@ -280,6 +282,7 @@ class Calendar extends Component<Props, State> {
   };
 
   render() {
+    const { innerProps } = this.props;
     const {
       day,
       disabled,
@@ -345,6 +348,7 @@ class Calendar extends Component<Props, State> {
 
     return (
       <div
+        {...innerProps}
         onBlur={this.handleContainerBlur}
         onFocus={this.handleContainerFocus}
         onKeyDown={this.handleContainerKeyDown}
