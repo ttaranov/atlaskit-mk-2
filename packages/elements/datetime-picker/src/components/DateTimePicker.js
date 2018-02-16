@@ -167,9 +167,10 @@ class DateTimePicker extends Component<Props, State> {
   }
 
   render() {
-    const { autoFocus, id, isDisabled, name, onBlur, onFocus } = this.props;
+    const { autoFocus, id, isDisabled, name } = this.props;
     const { _dateValue, _timeValue, isFocused, value } = this.state;
     const bothProps = {
+      isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
     };
@@ -182,10 +183,7 @@ class DateTimePicker extends Component<Props, State> {
             autoFocus={autoFocus}
             icon={null}
             id={id}
-            isDisabled={isDisabled}
-            onBlur={onBlur}
             onChange={this.onDateChange}
-            onFocus={onFocus}
             styles={styles.date}
             value={_dateValue}
           />
@@ -194,10 +192,7 @@ class DateTimePicker extends Component<Props, State> {
           <TimePicker
             {...bothProps}
             icon={CalendarIcon}
-            isDisabled={isDisabled}
-            onBlur={onBlur}
             onChange={this.onTimeChange}
-            onFocus={onFocus}
             styles={styles.time}
             value={_timeValue}
           />
