@@ -34,7 +34,7 @@ describe('CrossProductSearchClient', () => {
             id: 'confluence.page' as Scope,
             results: [
               {
-                title: 'page name',
+                title: '@@@hl@@@page@@@endhl@@@ name',
                 iconCssClass: 'aui-iconfont-page-default',
                 url: 'url',
                 container: {
