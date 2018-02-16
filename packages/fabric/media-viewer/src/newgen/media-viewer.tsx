@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { createApp } from './create-app';
 import { Context, MediaItem } from '@atlaskit/media-core';
 import { MediaViewerDataSource, MediaViewerItem } from '../components/media-viewer';
 

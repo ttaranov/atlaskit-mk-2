@@ -7,7 +7,7 @@ import { MediaFileListViewer } from './media-file-list-viewer';
 
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 
-import { App as NewGenMediaViewer} from '../newgen/media-viewer';
+import { App as NewGenMediaViewer} from '../newgen/app';
 
 export interface MediaViewerItem {
   id: string;
