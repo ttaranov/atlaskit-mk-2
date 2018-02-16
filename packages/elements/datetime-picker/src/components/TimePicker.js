@@ -26,7 +26,7 @@ type Props = {
   defaultValue: string,
   /** The icon to show in the field. */
   icon: boolean,
-  /** The id of the field */
+  /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
