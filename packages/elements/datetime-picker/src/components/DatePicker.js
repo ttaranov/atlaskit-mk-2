@@ -179,6 +179,7 @@ class DatePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
+      disabled,
       icon,
       id,
       isDisabled,
@@ -193,6 +194,7 @@ class DatePicker extends Component<Props, State> {
           <Calendar
             {...isoToObj(value)}
             {...isoToObj(view)}
+            disabled={disabled}
             onChange={this.onCalendarChange}
             onSelect={this.onCalendarSelect}
             ref={this.refCalendar}

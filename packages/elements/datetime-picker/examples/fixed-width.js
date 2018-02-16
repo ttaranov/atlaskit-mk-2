@@ -9,11 +9,17 @@ export default () => {
   return (
     <div>
       <Label label="Date picker" />
-      <DatePicker width={gridSize() * 20} />
+      <div style={{ width: gridSize() * 20 }}>
+        <DatePicker />
+      </div>
       <Label label="Time picker" />
-      <TimePicker width={gridSize() * 20} />
+      <div style={{ width: gridSize() * 20 }}>
+        <TimePicker />
+      </div>
       <Label label="Date / time picker" />
-      <DateTimePicker width={gridSize() * 30} />
+      <div style={{ width: gridSize() * 40 }}>
+        <DateTimePicker />
+      </div>
     </div>
   );
 };
