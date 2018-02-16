@@ -69,3 +69,8 @@ export {
 } from '@atlaskit/mention';
 
 export * from './analytics'; // ?
+
+// plugin keys
+
+export { default as mentionPluginKey } from './plugins/mentions/plugin-key';
+export { MentionsState } from './plugins/mentions';

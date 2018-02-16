@@ -14,14 +14,9 @@ export interface MobileEditorProps {
 
 // tslint:disable-next-line:variable-name
 const MobileEditor: any = styled.div`
-  height: auto;
+  height: 100%;
   min-height: 30px;
-  ${(props: MobileEditorProps) =>
-    props.maxHeight
-      ? 'max-height: ' + props.maxHeight + 'px;'
-      : ''} overflow-x: hidden;
-  overflow-y: auto;
-
+  width: 100%;
   max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
@@ -36,14 +31,20 @@ const MobileEditor: any = styled.div`
 MobileEditor.displayName = 'MobileEditor';
 
 // tslint:disable-next-line:variable-name
-const ContentArea = styled(ContentStyles)``;
+const ContentArea = styled(ContentStyles)`
+  height: 100%;
+
+  .ProseMirror {
+    height: 100%;
+  }
+`;
 ContentArea.displayName = 'ContentArea';
 
 export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
 > {
-  static displayName = 'MobileEditorAppearance';
+  static displayName = 'MobileEditor';
 
   private flashToggle = false;
 
@@ -67,10 +68,8 @@ export default class Editor extends React.Component<
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
-    console.log('state ' + mentions);
     return (
       <MobileEditor
-        mentionState={mentions}
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Editor } from '@atlaskit/editor-core';
+
+import { Editor, mentionPluginKey, MentionsState } from '@atlaskit/editor-core';
 import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 
 /**
@@ -26,13 +27,80 @@ class MentionProviderImpl implements MentionProvider {
   unsubscribe(key: string): void {}
 }
 
+let mentionsPluginState: MentionsState | null = null;
+
+export const bridge = ((window as any).bridge = {
+  makeBold() {
+    throw new Error('Method not implemented.');
+  },
+
+  makeItalics() {
+    throw new Error('Method not implemented.');
+  },
+
+  onMentionSelect(mention: string) {
+    if (mentionsPluginState) {
+      mentionsPluginState.insertMention(JSON.parse(mention));
+    }
+  },
+
+  onMentionPickerResult(result: string) {
+    if (mentionsPluginState) {
+      let all: MentionDescription[] = JSON.parse(result);
+      mentionsPluginState.onMentionResult(
+        all,
+        mentionsPluginState.query ? mentionsPluginState.query : '',
+      );
+    }
+  },
+
+  onMentionPickerDismissed() {
+    if (mentionsPluginState) {
+      mentionsPluginState.dismiss();
+    }
+  },
+});
+
+export class EditorWithState extends Editor {
+  componentDidUpdate(prevProps, prevState) {
+    const { editor } = this.state;
+    super.componentDidUpdate(prevProps, prevState);
+    if (editor) {
+      mentionsPluginState = mentionPluginKey.getState(editor.editorView.state);
+      if (mentionsPluginState) {
+        mentionsPluginState.subscribe(state => {
+          const { mentionsBridge } = window;
+          if (mentionsBridge) {
+            if (state.queryActive) {
+              mentionsBridge.showMentions(state.query || '');
+            } else {
+              mentionsBridge.dismissMentions();
+            }
+          }
+        });
+      }
+    }
+  }
+}
+
 export default function mobileEditor() {
   return (
-    <Editor
+    <EditorWithState
       appearance="mobile"
       allowHyperlinks={true}
       allowTextFormatting={true}
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
     />
   );
+}
+
+declare global {
+  interface Window {
+    mentionsBridge?: MentionBridge;
+  }
+}
+
+export interface MentionBridge {
+  showMentions(query: String);
+  dismissMentions();
 }

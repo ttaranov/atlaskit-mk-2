@@ -6,6 +6,9 @@ import {
   InfoCallback,
   ResultCallback,
 } from '../../mention/src/api/MentionResource';
+import EditorContext from '../src/editor/ui/EditorContext';
+import WithEditorActions from '../src/editor/ui/WithEditorActions';
+import { Button } from '../src/ui/ToolbarTextColor/Color/styles';
 
 //FIXME remove
 /*class Subscriber {
@@ -62,7 +65,7 @@ class MentionProviderImpl implements MentionProvider {
     infoCallback?: InfoCallback,
     allResultsCallback?: ResultCallback<MentionDescription[]>,
   ): void {
-    //this.subscribers.set(key, new Subscriber(callback, errCallback,infoCallback,allResultsCallback));
+    // this.subscribers.set(key, new Subscriber(callback, errCallback,infoCallback,allResultsCallback));
   }
   unsubscribe(key: string): void {
     /*this.subscribers.delete(key);*/
@@ -70,14 +73,27 @@ class MentionProviderImpl implements MentionProvider {
 }
 
 export function mobileEditor() {
+  let getValue = actions => {
+    actions.getValue();
+  };
   return (
-    <Editor
-      appearance="mobile"
-      allowHyperlinks={true}
-      allowTextFormatting={true}
-      allowMentions={true}
-      mentionProvider={Promise.resolve(new MentionProviderImpl())}
-    />
+    <EditorContext>
+      <div>
+        <WithEditorActions
+          render={actions => (
+            <Button onClick={() => getValue(actions)}>Action</Button>
+          )}
+        />
+        <Editor
+          appearance="mobile"
+          allowHyperlinks={true}
+          allowTextFormatting={true}
+          allowMentions={true}
+          mentionProvider={Promise.resolve(new MentionProviderImpl())}
+          onChange={editorView => this.setState({})}
+        />
+      </div>
+    </EditorContext>
   );
 }
 
