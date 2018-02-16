@@ -12,6 +12,7 @@ import {
   createErrorReporter,
   createPMPlugins,
   reconfigureState,
+  initAnalytics,
 } from './create-editor';
 
 export interface EditorViewProps {
@@ -51,8 +52,8 @@ export interface EditorViewState {
   editorState: EditorState;
 }
 
-export default class ReactEditorView extends React.Component<
-  EditorViewProps,
+export default class ReactEditorView<T = {}> extends React.Component<
+  EditorViewProps & T,
   EditorViewState
 > {
   view?: EditorView;
@@ -60,8 +61,10 @@ export default class ReactEditorView extends React.Component<
   contentTransformer?: Transformer<string>;
   config: EditorConfig;
 
-  constructor(props: EditorViewProps) {
+  constructor(props: EditorViewProps & T) {
     super(props);
+
+    initAnalytics(props.editorProps.analyticsHandler);
 
     this.state = {
       editorState: this.createEditorState({ props, replaceDoc: true }),
@@ -94,8 +97,23 @@ export default class ReactEditorView extends React.Component<
   /**
    * Clean up any non-PM resources when the editor is unmounted
    */
-  componentDidUnmount() {
+  componentWillUnmount() {
     this.eventDispatcher.destroy();
+
+    if (this.view) {
+      this.state.editorState.plugins.forEach(plugin => {
+        const state = plugin.getState(this.state.editorState);
+        if (state && state.destroy) {
+          state.destroy();
+        }
+      });
+
+      this.view.destroy();
+    }
+  }
+
+  getPlugins(editorProps: EditorProps): EditorPlugin[] {
+    return createPluginList(editorProps);
   }
 
   /**
@@ -110,7 +128,7 @@ export default class ReactEditorView extends React.Component<
     replaceDoc?: boolean;
   }) => {
     this.config = processPluginsList(
-      createPluginList(options.props.editorProps),
+      this.getPlugins(options.props.editorProps),
       options.props.editorProps,
     );
     const schema = createSchema(this.config);
@@ -194,6 +212,9 @@ export default class ReactEditorView extends React.Component<
     transaction.setMeta('isLocal', true);
     const editorState = this.view!.state.apply(transaction);
     this.view!.updateState(editorState);
+    if (this.props.editorProps.onChange && transaction.docChanged) {
+      this.props.editorProps.onChange(this.view!);
+    }
     this.setState({ editorState });
   };
 
