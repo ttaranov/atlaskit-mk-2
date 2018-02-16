@@ -1,4 +1,4 @@
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { testData as emojiTestData } from '@atlaskit/emoji';
 import { emoji as emojiNode, ProviderFactory } from '@atlaskit/editor-common';
 import {
   createEditor,

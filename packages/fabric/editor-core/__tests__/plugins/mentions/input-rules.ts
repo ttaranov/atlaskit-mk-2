@@ -1,4 +1,4 @@
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { testData as emojiTestData } from '@atlaskit/emoji';
 import {
   MentionsState,
   stateKey as mentionPluginKey,
@@ -15,7 +15,7 @@ import {
   mention,
   code,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import emojiPlugin from '../../../src/editor/plugins/emoji';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';

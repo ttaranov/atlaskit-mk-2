@@ -12,9 +12,9 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision';
 
 import {
   akEditorCodeBackground,
@@ -24,7 +24,6 @@ import {
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
-import { EmojiProvider } from '@atlaskit/emoji';
 
 export const TitleInput = styled.input`
   border: none;
@@ -126,9 +125,7 @@ export default function Example() {
                 allowMediaSingle: true,
                 customDropzoneContainer: parentContainer,
               }}
-              emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
-              }
+              emojiProvider={emojiStoryData.getEmojiResource()}
               mentionProvider={Promise.resolve(
                 mentionStoryData.resourceProvider,
               )}
@@ -174,9 +171,7 @@ export default function Example() {
                 allowMediaSingle: true,
                 customDropzoneContainer: parentContainer,
               }}
-              emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
-              }
+              emojiProvider={emojiStoryData.getEmojiResource()}
               mentionProvider={Promise.resolve(
                 mentionStoryData.resourceProvider,
               )}

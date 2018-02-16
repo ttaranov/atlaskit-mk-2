@@ -6,8 +6,8 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
 import { HttpError } from '../src/api/HttpError';
 
 import {

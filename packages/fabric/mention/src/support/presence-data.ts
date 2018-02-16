@@ -1,5 +1,6 @@
-// tslint:disable-next-line:no-var-requires
-export const validPresenceData: Response = require('./json-data/presence-valid-info.json') as Response;
+import { mention } from '@atlaskit/util-data-test';
 
-// tslint:disable-next-line:no-var-requires
-export const invalidPresenceData: Response = require('./json-data/presence-invalid-info.json') as Response;
+export const validPresenceData: Response =
+  mention.presenceData.validPresenceData;
+export const invalidPresenceData: Response =
+  mention.presenceData.invalidPresenceData;

@@ -5,15 +5,15 @@
  *
  * It can be imported as follows:
  *
- * ```import { ... } from '@atlaskit/emoji/src/support';```
+ * ```import { ... } from '@atlaskit/mention/src/support';```
  *
  * or
  *
- * ```import { ... } from '@atlaskit/emoji/dist/es5/support';```
+ * ```import { ... } from '@atlaskit/mention/dist/es5/support';```
  *
  * or
  *
- * ```import { ... } from '@atlaskit/emoji/dist/es2015/support';```
+ * ```import { ... } from '@atlaskit/mention/dist/es2015/support';```
  */
 
 export * from './support-types';

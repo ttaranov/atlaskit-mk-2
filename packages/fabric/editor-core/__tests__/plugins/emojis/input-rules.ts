@@ -1,5 +1,5 @@
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { testData as emojiTestData } from '@atlaskit/emoji';
 import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
 import {
   insertText,

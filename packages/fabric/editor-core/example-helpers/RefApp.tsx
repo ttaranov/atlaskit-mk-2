@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention';
+import { storyData as emojiStoryData } from '@atlaskit/emoji';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision';
 import { ReactRenderer } from '@atlaskit/renderer';
 
 import { Content } from './styles';
