@@ -108,8 +108,6 @@ describe('CrossProductSearchClient', () => {
     });
   });
 
-  it.skip('should handle scope errors', () => {});
-
   it('should send the right body', async () => {
     apiWillReturn({
       scopes: [],
