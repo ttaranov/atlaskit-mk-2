@@ -108,6 +108,34 @@ describe('CrossProductSearchClient', () => {
     });
   });
 
+  it.skip('should return partial results when one scope has an error', async () => {
+    apiWillReturn({
+      scopes: [
+        {
+          id: 'jira.issue' as Scope,
+          results: [
+            {
+              key: 'key-1',
+              fields: {
+                summary: 'summary',
+              },
+            },
+          ],
+        },
+        {
+          id: 'confluence.page' as Scope,
+          error: 'TIMEOUT',
+          results: [],
+        },
+      ],
+    });
+
+    const result = await searchClient.search('query');
+
+    expect(result.jira).toHaveLength(1);
+    expect(result.confluence).toHaveLength(0);
+  });
+
   it('should send the right body', async () => {
     apiWillReturn({
       scopes: [],
