@@ -108,7 +108,7 @@ describe('CrossProductSearchClient', () => {
     });
   });
 
-  it.skip('should return partial results when one scope has an error', async () => {
+  it('should return partial results when one scope has an error', async () => {
     apiWillReturn({
       scopes: [
         {

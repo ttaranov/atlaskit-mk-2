@@ -9,22 +9,40 @@ const OuterBorder = styled.div`
   border-radius: 3px;
 `;
 
-export default class extends React.Component {
+export default class extends React.Component<{}, { cloudId: string }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cloudId: 'DUMMY-7c8a2b74-595a-41c7-960c-fd32f8572cea', // SDOG
+    };
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      cloudId: e.target.value,
+    });
+  };
+
   render() {
     return (
-      <OuterBorder>
-        <BasicNavigation
-          searchDrawerContent={
-            <GlobalQuickSearch
-              // SDOG
-              // cloudId="DUMMY-7c8a2b74-595a-41c7-960c-fd32f8572cea"
-              // drichard-feb12
-              cloudId="ac7c9a08-f73d-470e-8e7a-5338887a57f2"
-              environment="staging"
-            />
-          }
+      <div>
+        Cloud Id:{' '}
+        <input
+          type="text"
+          value={this.state.cloudId}
+          onChange={this.handleInputChange}
         />
-      </OuterBorder>
+        <OuterBorder>
+          <BasicNavigation
+            searchDrawerContent={
+              <GlobalQuickSearch
+                cloudId={this.state.cloudId}
+                environment="staging"
+              />
+            }
+          />
+        </OuterBorder>
+      </div>
     );
   }
 }
