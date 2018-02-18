@@ -1,5 +1,15 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.7.8
+- [patch] Remove Confluence Macro resrouce identifier code [944c827](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/944c827)
+
+## 2.7.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
 ## 2.7.6
 
 ## 2.7.5

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "9.0.1",
+  "version": "9.0.3",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,8 +15,8 @@
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk2",
   "dependencies": {
-    "@atlaskit/dropdown-menu": "^3.11.8",
-    "@atlaskit/item": "^4.2.11",
+    "@atlaskit/dropdown-menu": "^3.11.9",
+    "@atlaskit/item": "^5.0.0",
     "@atlaskit/polyfills": "^1.4.2",
     "@atlaskit/theme": "^2.3.3",
     "@atlaskit/tooltip": "^8.3.1",

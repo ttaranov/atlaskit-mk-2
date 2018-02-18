@@ -2,6 +2,7 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
 import type { ComponentType } from '../types';
+import { gutter } from '../shared-variables';
 
 const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
@@ -20,6 +21,7 @@ type TransitionType = {
 type Props = {
   in: boolean,
   component: ComponentType,
+  customTransition?: string,
   onEnter?: EnterType,
   onEntering?: EnterType,
   onEntered?: EnterType,
@@ -57,6 +59,7 @@ function Animation({
   onExited,
   style,
   styleDefault,
+  customTransition,
   transition,
   ...props
 }: Props) {
@@ -81,6 +84,8 @@ function Animation({
           ...style,
           ...styleDefault,
           ...transition[status],
+          // $FlowFixMe this is completely legal in chrome
+          ...transition[customTransition],
         };
 
         return <Tag style={styles} {...props} />;
@@ -114,6 +119,7 @@ export const SlideUp = ({
   stackIndex,
   in: transitionIn,
   style,
+  component,
   ...props
 }: { stackIndex: number } & $Diff<
   Props,
@@ -124,6 +130,7 @@ export const SlideUp = ({
 
   return (
     <Animation
+      component={component}
       in={transitionIn}
       style={style}
       styleDefault={{
@@ -135,6 +142,18 @@ export const SlideUp = ({
           transform: `translate3d(0, ${verticalOffset * 2}px, 0)`,
         },
         entered: {
+          transform: restingTransform,
+        },
+        /* Custom transition where we remove the transform so it doesn't cause issues with react-beautiful-dnd (AK-4328)
+         * This can be removed once react-beautiful-dnd portals its draggables.
+         */
+        afterEntered: {
+          transform: null,
+          top:
+            translateY +
+            (component.displayName === 'PositionerAbsolute' ? gutter : 0),
+        },
+        exit: {
           transform: restingTransform,
         },
         exiting: {

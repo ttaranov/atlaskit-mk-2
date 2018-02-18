@@ -789,6 +789,14 @@ describe(name, () => {
     });
 
     describe('handleOnBlur', () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        jest.useRealTimers();
+      });
+
       it('should close select when handleOnBlur is called', () => {
         wrapper.setProps({ isOpen: true });
         const args = { event: {}, isOpen: false };
@@ -799,6 +807,7 @@ describe(name, () => {
       it('should close select when select is blurred', () => {
         wrapper.setProps({ isOpen: true });
         wrapper.find(Trigger).simulate('blur');
+        jest.runOnlyPendingTimers();
         expect(onOpenChangeSpy).toHaveBeenCalled();
         expect(onOpenChangeSpy.mock.calls[0][0]).toEqual(
           expect.objectContaining({ isOpen: false }),

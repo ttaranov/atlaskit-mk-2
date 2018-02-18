@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Plugin, NodeSelection, Transaction } from 'prosemirror-state';
+import {
+  Plugin,
+  NodeSelection,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
 import { placeholder } from '@atlaskit/editor-common';
 import PlaceholderTextNodeView from '../../../nodeviews/ui/placeholder-text';
@@ -12,23 +17,26 @@ import {
   hidePlaceholderFloatingToolbar,
   insertPlaceholderTextAtSelection,
 } from './actions';
+import { FakeTextCursorSelection } from '../fake-text-cursor/cursor';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
 export interface PluginState {
-  showInsertPanelAt: number | false;
+  showInsertPanelAt: number | null;
 }
 
-export function createPlugin(dispatch: Dispatch): Plugin | undefined {
+export function createPlugin(
+  dispatch: Dispatch<PluginState>,
+): Plugin | undefined {
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => ({ showInsertPanelAt: false } as PluginState),
+      init: () => ({ showInsertPanelAt: null } as PluginState),
       apply: (tr: Transaction, state: PluginState) => {
-        const meta = tr.getMeta(pluginKey) as PluginState;
-        if (meta) {
+        const meta = tr.getMeta(pluginKey) as Partial<PluginState>;
+        if (meta && meta.showInsertPanelAt !== undefined) {
           const newState = {
-            showInsertPanelAt: meta.showInsertPanelAt || false,
+            showInsertPanelAt: meta.showInsertPanelAt,
           };
           dispatch(pluginKey, newState);
           return newState;
@@ -73,6 +81,26 @@ export function createPlugin(dispatch: Dispatch): Plugin | undefined {
             );
             return newState.tr.deleteRange($from.pos, $to.pos);
           }
+        }
+      }
+
+      // Handle Fake Text Cursor for Floating Toolbar
+      if (
+        !(pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        (pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        return newState.tr.setSelection(
+          new FakeTextCursorSelection(newState.selection.$from),
+        );
+      }
+      if (
+        (pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        !(pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        if (newState.selection instanceof FakeTextCursorSelection) {
+          return newState.tr.setSelection(
+            new TextSelection(newState.selection.$from),
+          );
         }
       }
     },

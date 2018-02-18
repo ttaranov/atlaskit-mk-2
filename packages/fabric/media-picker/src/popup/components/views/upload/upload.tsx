@@ -17,6 +17,7 @@ import {
   CardAction,
 } from '@atlaskit/media-core';
 
+import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
@@ -40,7 +41,7 @@ import {
 } from '../../../domain';
 
 import { menuEdit } from '../editor/phrases';
-import { Wrapper } from './styled';
+import { Wrapper, SpinnerWrapper } from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -59,11 +60,11 @@ export interface UploadViewOwnProps {
 }
 
 export interface UploadViewStateProps {
+  readonly isLoading: boolean;
   readonly recents: Recents;
   readonly uploads: LocalUploads;
   readonly selectedItems: SelectedItem[];
   readonly apiUrl: string;
-  readonly hasPopupBeenVisible: boolean;
 }
 
 export interface UploadViewDispatchProps {
@@ -102,6 +103,12 @@ export class StatelessUploadView extends Component<
   };
 
   render() {
+    const { isLoading } = this.props;
+
+    if (isLoading) {
+      return this.loadingView();
+    }
+
     const cards = this.cards();
 
     if (cards.length > 0) {
@@ -111,7 +118,15 @@ export class StatelessUploadView extends Component<
     }
   }
 
-  emptyView() {
+  private loadingView = () => {
+    return (
+      <SpinnerWrapper>
+        <Spinner size="large" />
+      </SpinnerWrapper>
+    );
+  };
+
+  private emptyView() {
     return (
       <Wrapper className="empty">
         <Dropzone mpBrowser={this.props.mpBrowser} />
@@ -119,7 +134,7 @@ export class StatelessUploadView extends Component<
     );
   }
 
-  recentView(cards: JSX.Element[]) {
+  private recentView(cards: JSX.Element[]) {
     return (
       <Wrapper>
         <Dropzone mpBrowser={this.props.mpBrowser} />
@@ -158,16 +173,8 @@ export class StatelessUploadView extends Component<
   );
 
   private cards() {
-    const { hasPopupBeenVisible } = this.props;
-
-    // Returning an empty array instead of null to keep the same api
-    if (!hasPopupBeenVisible) {
-      return [];
-    }
-
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-
     return uploadingFilesCards.concat(recentFilesCards);
   }
 
@@ -337,11 +344,11 @@ export class StatelessUploadView extends Component<
 }
 
 const mapStateToProps = (state: State): UploadViewStateProps => ({
+  isLoading: state.view.isLoading,
   recents: state.recents,
   uploads: state.uploads,
   selectedItems: state.selectedItems,
   apiUrl: state.apiUrl,
-  hasPopupBeenVisible: state.view.hasPopupBeenVisible,
 });
 
 const mapDispatchToProps = (

@@ -873,36 +873,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         }</ac:parameter>`,
     );
 
-    describe('extensions with resource identifiers', () => {
-      const attrs = {
-        extensionType: 'com.atlassian.confluence.macro.core',
-        extensionKey: 'fake',
-        parameters: {
-          macroParams: {
-            src: { value: 'www.google.com' },
-            spaces: { value: 'abc' },
-          },
-          macroMetadata: {
-            ...macroMetadata,
-            schemaVersion: { value: '2' },
-          },
-        },
-      };
-      check(
-        'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="${
-          attrs.parameters.macroMetadata.schemaVersion.value
-        }" ac:macro-id="${
-          macroMetadata.macroId.value
-        }"><ac:parameter ac:name="src"><ri:url ri:value="www.google.com" /></ac:parameter><ac:parameter ac:name="spaces"><ri:space ri:space-key="abc" /></ac:parameter><fab:placeholder-url>${
-          macroMetadata.placeholder[0].data.url
-        }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
-        doc(extension(attrs)()),
-      );
-    });
-
     describe('inlineExtension', () => {
       check(
         'basic',

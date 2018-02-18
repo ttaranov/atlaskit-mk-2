@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 11.4.3
+
+
+
+- [patch] added a prop to enable the new applicationCard designs [3057eb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3057eb2)
+
 ## 11.4.2
 
 ## 11.4.1
