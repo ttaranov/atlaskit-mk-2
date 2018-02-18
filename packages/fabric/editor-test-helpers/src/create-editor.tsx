@@ -12,7 +12,7 @@ import { mount } from 'enzyme';
 import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
 import { PluginKey } from 'prosemirror-state';
-import jsdomFixtures from './jsdom-fixtures';
+import patchEditorViewForJSDOM from './jsdom-fixtures';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -65,7 +65,7 @@ export default function createEditorForTests<T = any>({
     !('getSelection' in window) &&
     navigator.userAgent.indexOf('Node.js') !== -1
   ) {
-    jsdomFixtures((editor.instance() as ReactEditorView).view);
+    patchEditorViewForJSDOM((editor.instance() as ReactEditorView).view);
   }
 
   let refs;
