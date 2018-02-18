@@ -13,6 +13,7 @@ import ReactEditorView, {
   EditorViewState,
 } from '../../../src/editor/create-editor/ReactEditorView';
 import { toJSON } from '../../../src/utils';
+import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
 
 describe(name, () => {
   describe('<ReactEditorView />', () => {
@@ -72,5 +73,26 @@ describe(name, () => {
     wrapper.unmount();
 
     spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
+  });
+
+  describe('when a transaction is dispatched', () => {
+    it('should not trigger a re-render', () => {
+      const wrapper = mount(
+        <ReactEditorView
+          editorProps={{}}
+          providerFactory={ProviderFactory.create({})}
+          onEditorCreated={() => {}}
+          onEditorDestroyed={() => {}}
+        />,
+      );
+
+      const editor = wrapper.instance() as ReactEditorView;
+      patchEditorViewForJSDOM(editor.view);
+
+      const renderSpy = jest.spyOn(editor, 'render');
+      editor.view!.dispatch(editor.view!.state.tr);
+
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+    });
   });
 });

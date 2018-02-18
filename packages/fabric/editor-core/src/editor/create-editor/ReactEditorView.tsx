@@ -71,6 +71,16 @@ export default class ReactEditorView<T = {}> extends React.Component<
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.props === nextProps &&
+      this.state.editorState !== nextState.editorState
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   componentWillReceiveProps(nextProps: EditorViewProps) {
     if (
       this.props.editorProps.appearance !== nextProps.editorProps.appearance
