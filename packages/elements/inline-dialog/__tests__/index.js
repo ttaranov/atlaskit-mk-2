@@ -36,6 +36,17 @@ describe('inline-dialog', () => {
     });
   });
 
+  describe('boundariesElement prop', () => {
+    it('should be reflected onto the Layer component', () => {
+      const wrapper = shallow(
+        <InlineDialog boundariesElement="scrollParent" />,
+      );
+      const layer = wrapper.find(Layer);
+      expect(layer.length).toBeGreaterThan(0);
+      expect(layer.prop('boundariesElement')).toBe('scrollParent');
+    });
+  });
+
   describe('isOpen prop', () => {
     it('should render the content container if isOpen is set', () => {
       const wrapper = mount(<InlineDialog isOpen />);

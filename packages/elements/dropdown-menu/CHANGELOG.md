@@ -1,5 +1,13 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.9
+
+## 3.11.8
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 3.11.7
+- [patch] added logic to close dropdown menu when tabbing out of the component [8279a46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8279a46)
+
 ## 3.11.6
 
 - [patch] updated item dependency version [23771b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23771b9)

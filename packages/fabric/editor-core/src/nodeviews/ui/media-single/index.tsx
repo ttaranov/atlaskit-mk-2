@@ -1,8 +1,8 @@
+import { MediaSingle } from '@atlaskit/editor-common';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { Wrapper } from './styled';
 import { MediaNodeProps } from '../media';
 import { stateKey, MediaPluginState } from '../../../plugins/media';
 
@@ -29,7 +29,7 @@ export default class MediaSingleNode extends PureComponent<
     const { layout } = this.props.node.attrs;
     const { width, height } = child.props.node.attrs;
     return (
-      <Wrapper layout={layout} height={height} width={width}>
+      <MediaSingle layout={layout} height={height} width={width}>
         {React.cloneElement(
           child as ReactElement<any>,
           {
@@ -40,7 +40,7 @@ export default class MediaSingleNode extends PureComponent<
             isMediaSingle: true,
           } as MediaNodeProps,
         )}
-      </Wrapper>
+      </MediaSingle>
     );
   }
 }

@@ -74,6 +74,7 @@ export {
   RefsTracker,
   sequence,
   date,
+  placeholder,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
@@ -89,8 +90,10 @@ export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
 export { default as spyOnReturnValue } from './spy-on-return-value';
 export { macroProvider, MockMacroProvider } from './mock-macro-provider';
+export { customInsertMenuItems } from './mock-insert-menu';
 export {
   inlineExtensionData,
   extensionData,
   bodiedExtensionData,
 } from './mock-extension-data';
+export * from './schema-element-builder';

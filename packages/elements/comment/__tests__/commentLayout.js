@@ -87,6 +87,31 @@ describe('@atlaskit comments', () => {
         const wrapper = mount(<CommentLayout />);
         expect(wrapper.contains(NestedCommentsDiv)).toBe(false);
       });
+
+      it('should not unmount the component when the children change', () => {
+        // Extend the class to bind an inspectable componentWillUnmount
+        const componentWillUnmount = jest.fn();
+        class CommentLayoutTest extends CommentLayout {
+          componentWillUnmount = componentWillUnmount;
+        }
+
+        const child1 = <CommentLayoutTest key="1" content="child1" />;
+        const child2 = <CommentLayoutTest key="2" content="child2" />;
+        const children = [child1];
+
+        const wrapper = mount(
+          <CommentLayoutTest content="parent'">{children}</CommentLayoutTest>,
+        );
+
+        // First child
+        expect(wrapper.find(NestedCommentsDiv)).toBeDefined();
+        expect(wrapper.find(NestedCommentsDiv).contains(child1)).toBe(true);
+
+        // Add another child - should not unmount
+        wrapper.setProps({ children: [child1, child2] });
+        expect(wrapper.find(NestedCommentsDiv).contains(child2)).toBe(true);
+        expect(componentWillUnmount.mock.calls.length).toEqual(0);
+      });
     });
   });
 });

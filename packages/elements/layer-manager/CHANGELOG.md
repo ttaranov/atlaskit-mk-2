@@ -1,5 +1,11 @@
 # @atlaskit/layer-manager
 
+## 2.7.3
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 2.7.2
+- [patch] Preserve jira context keys through portals for layer manager components [a0705fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0705fd)
+
 ## 2.7.1
 - [patch] Fix infinite loop caused by nested layer components (e.g. modals) of the same type [d48686d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d48686d)
 

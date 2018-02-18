@@ -1,5 +1,27 @@
 # @atlaskit/editor-common
 
+## 6.1.6
+
+## 6.1.5
+
+## 6.1.4
+
+## 6.1.3
+- [patch] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
+## 6.1.2
+
+
+- [patch] Add the placeholder text node to the schema [330993f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330993f)
+
+## 6.1.1
+
+## 6.1.0
+- [minor] Fixing content expression of bodiedExtension node. [38b81ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b81ad)
+
+## 6.0.4
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
 ## 6.0.3
 
 - [patch] Remove monospace font-style for code marks. [b92c81e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b92c81e)

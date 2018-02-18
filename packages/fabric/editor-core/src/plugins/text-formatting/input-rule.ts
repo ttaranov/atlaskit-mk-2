@@ -9,13 +9,27 @@ function addMark(
   markType: MarkType,
   schema: Schema,
   charSize: number,
+  char?: string,
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
+    if (match[1] && match[1][0] === '`') {
+      return;
+    }
+    if (markType === schema.marks.em && match[1]) {
+      const strBefore = match[1];
+      const lastChar = strBefore[strBefore.length - 1];
+      if (
+        (lastChar === '*' && char === '*') ||
+        (lastChar === '_' && char === '_')
+      ) {
+        return;
+      }
+    }
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
     // because we want ** to work for strong text
     // that's why "start" argument is wrong and we need to calculate it ourselves
-    const from = match[1] ? to - match[1].length + 1 : start;
+    const from = match[2] ? to - match[2].length + 1 : start;
 
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
@@ -76,6 +90,13 @@ function addCodeMark(
   };
 }
 
+export const strongRegex1 = /([^0-9a-zA-Z])(\_\_([^\s]+)\_\_)$|^(\s{0})(\_\_([^\s]+)\_\_)$/;
+export const strongRegex2 = /(\S*)(\*\*([^\s]+)\*\*)$/;
+export const italicRegex1 = /([^0-9a-zA-Z])(\_([^\s\_]+?)\_)$|^(\s{0})(\_([^\s\_]+)\_)$/;
+export const italicRegex2 = /(\S*)(\*([^\s\*]+?)\*)$/;
+export const strikeRegex = /(\S*)(\~\~([^\s\~]+)\~\~)$/;
+export const codeRegex = /(`[^\s`].*`)$/;
+
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
@@ -84,13 +105,13 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     const markLength = 2;
     rules.push(
       createInputRule(
-        /(?:[^`0-9A-Za-z]+)(\_\_([^\s\_][^\_]+)\_\_)$|^(\_\_([^\s \_][^\_]+)\_\_)$/,
+        strongRegex1,
         addMark(schema.marks.strong, schema, markLength),
       ),
     );
     rules.push(
       createInputRule(
-        /^(?:[^`]+)(\*\*([^\s\*][^\*]+)\*\*)$|^(\*\*([^\s\*][^\*]+)\*\*)$/,
+        strongRegex2,
         addMark(schema.marks.strong, schema, markLength),
       ),
     );
@@ -101,14 +122,14 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     const markLength = 1;
     rules.push(
       createInputRule(
-        /(?:[^\_`0-9A-Za-z]+)(\_([^\s\_][^\_]+?)\_)$|^(\_([^\s\_][^\_]+)\_)$/,
-        addMark(schema.marks.em, schema, markLength),
+        italicRegex1,
+        addMark(schema.marks.em, schema, markLength, '_'),
       ),
     );
     rules.push(
       createInputRule(
-        /^(?:[^\*`]+)(\*([^\s\*][^\*]+?)\*)$|^(\*([^\s\*][^\*]+)\*)$/,
-        addMark(schema.marks.em, schema, markLength),
+        italicRegex2,
+        addMark(schema.marks.em, schema, markLength, '*'),
       ),
     );
   }
@@ -118,7 +139,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     const markLength = 2;
     rules.push(
       createInputRule(
-        /^(?:[^`]+)(\~\~([^\s\~][^\~]+)\~\~)$|^(\~\~([^\s\~][^\~]+)\~\~)$/,
+        strikeRegex,
         addMark(schema.marks.strike, schema, markLength),
       ),
     );
@@ -127,10 +148,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (schema.marks.code) {
     // `string` should monospace the text
     rules.push(
-      createInputRule(
-        /(`[^\s`].*`)$/,
-        addCodeMark(schema.marks.code, schema, '`'),
-      ),
+      createInputRule(codeRegex, addCodeMark(schema.marks.code, schema, '`')),
     );
   }
 

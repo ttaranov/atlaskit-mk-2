@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 import IconImage from '../../../../src/shared/IconImage';
 import CardDetails from '../../../../src/app_2/shared/CardDetails';
-import Actions from '../../../../src/app_2/shared/CardDetails/Actions';
 import {
   Title,
   Description,
@@ -123,23 +122,5 @@ describe('CardDetails', () => {
   it('should not padLeft when there is no icon, user or preview', () => {
     const element = shallow(<CardDetails />);
     expect(element.find(BottomWrapper).prop('padLeft')).toBeFalsy();
-  });
-
-  it('should use compact actions when width is <384', () => {
-    const element = shallow(<CardDetails />);
-    element.setState({ width: 383 });
-    expect(element.find(Actions).prop('compact')).toBeTruthy();
-  });
-
-  it('should not use compact actions when width is undefined', () => {
-    const element = shallow(<CardDetails />);
-    element.setState({ width: undefined });
-    expect(element.find(Actions).prop('compact')).toBeFalsy();
-  });
-
-  it('should not use compact actions when width is >=384', () => {
-    const element = shallow(<CardDetails />);
-    element.setState({ width: 384 });
-    expect(element.find(Actions).prop('compact')).toBeFalsy();
   });
 });

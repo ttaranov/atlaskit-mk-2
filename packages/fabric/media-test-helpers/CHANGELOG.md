@@ -1,5 +1,7 @@
 # @atlaskit/media-test-helpers
 
+## 9.0.1
+
 ## 9.0.0
 
 - [patch] use impersonation endpoint in authProvider [85cf404](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85cf404)

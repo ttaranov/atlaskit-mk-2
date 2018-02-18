@@ -21,6 +21,12 @@ export const BodyWrapper = styled.div`
 
   /* make ellipsis work */
   overflow: hidden;
+
+  /* 
+    move the avatars below the alert - I'd like to not use z-index which can have flow-on affects, 
+    but I need to use it because the avatars use z-index 
+  */
+  z-index: 0;
 `;
 
 export const TopWrapper = styled.div`

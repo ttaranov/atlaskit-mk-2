@@ -1,5 +1,24 @@
 # @atlaskit/modal-dialog
 
+## 3.3.14
+- [patch] Fix react-beautiful-dnd position issues when used inside a modal dialog [cfda546](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfda546)
+
+## 3.3.13
+
+## 3.3.12
+- [patch] Remove babel-plugin-react-flow-props-to-prop-types [06c1f08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06c1f08)
+
+## 3.3.11
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 3.3.10
+
+## 3.3.9
+- [patch] Updated inline-dialog to include boundaries element prop, updated Layer to have dynamic boolean escapeWithReference property, updated modal-dialog Content component with overflow-x:hidden' [cb72752](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb72752)
+
+## 3.3.8
+- [patch] Prevent window from being scrolled programmatically [3e3085c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e3085c)
+
 ## 3.3.7
 
 ## 3.3.6

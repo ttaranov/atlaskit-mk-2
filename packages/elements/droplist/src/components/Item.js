@@ -38,6 +38,7 @@ type Props = {
   tooltipDescription?: ?string,
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right',
   type?: string,
+  itemContext?: string,
 };
 
 type State = {

@@ -45,7 +45,7 @@ type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
 */
 
 function testRun(
-  testCase /*: string*/,
+  testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
   tester /*: Tester<Object>*/,
   client /*: Object*/,
   skipBrowser /*: ?{skip:Array<string>}*/,

@@ -35,6 +35,10 @@ export const WarningContainer = styled.div`
   user-select: text;
 `;
 
+export const WarningIconWrapper = styled.div`
+  width: 92px;
+`;
+
 export const WarningImage = styled.img`
   width: 200px;
 `;

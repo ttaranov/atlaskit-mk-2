@@ -2,6 +2,5 @@
 
 import React from 'react';
 import Calendar from '../src';
-import { action } from './utils/_';
 
-export default () => <Calendar onUpdate={action('onUpdate')} />;
+export default () => <Calendar onUpdate={e => console.log('onUpdate', e)} />;

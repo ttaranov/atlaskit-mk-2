@@ -2,9 +2,9 @@
 
 Related reading:
 
-- [naming props](./naming-props)
-- https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627
-- https://flow.org/en/docs/react/types/
+* [naming props](./naming-props)
+* https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627
+* https://flow.org/en/docs/react/types/
 
 ## Problem
 
@@ -12,7 +12,7 @@ You're creating a new Atlaskit Component and need to design its API.
 
 ## Solution
 
-The main thing to consider is the public API and there's two parts to this: `props` and `children`. Though, `children` is just a prop, it's special in the way you compose your components together. This means you need to place emphasis on *how* you want your component to compose and be composed.
+The main thing to consider is the public API and there's two parts to this: `props` and `children`. Though, `children` is just a prop, it's special in the way you compose your components together. This means you need to place emphasis on _how_ you want your component to compose and be composed.
 
 ### Props
 
@@ -22,12 +22,12 @@ The main thing to consider is the public API and there's two parts to this: `pro
 
 ```js
 type Props = {
-  isDisabled?: boolean
+  isDisabled?: boolean,
 };
 class MyComponent extends Component<Props> {
   static defaultProps = {
-    isDisabled: false
-  }
+    isDisabled: false,
+  };
 }
 ```
 
@@ -51,7 +51,7 @@ Essentially this is the same thing as doing:
 
 ```js
 type Props = {
-  children: React.Node
+  children: React.Node,
 };
 class MyComponent extends Component<Props> {}
 ```
@@ -60,7 +60,7 @@ This may not be ideal in some scenarios and in those cases where we want to guid
 
 ```js
 type Props = {
-  children: React.Element<typeof Whatever>
+  children: React.Element<typeof Whatever>,
 };
 class MyComponent extends Component<Props> {}
 ```
@@ -71,12 +71,12 @@ Another pattern is passing data as a prop and rendering a component using the su
 
 ```js
 type Props = {
-  items: Array<Object>
+  items: Array<Object>,
 };
 class MyComponent extends Component<Props> {
   static defaultProps = {
-    items: []
-  }
+    items: [],
+  };
   render() {
     return this.prop.items.map(item => <Whatever {...item} />);
   }
@@ -88,12 +88,12 @@ However, in this scenario, `<Whatever />` is hard-coded. To make this so the use
 ```js
 type Props = {
   items: Array<Object>
-  renderItem: (data: Object) => React.Node
+  renderItem: Object => React.Node
 };
 class MyComponent extends Component<Props> {
   static defaultProps = {
     items: [],
-    renderItem: (data: Object) => <Whatever {...item} />
+    renderItem: (item: Object) => <Whatever {...item} />
   }
   render() {
     return this.props.items.map(this.props.renderItem);

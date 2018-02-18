@@ -154,6 +154,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         }`,
       },
       captureTimeout: 120000,
+      browserNoActivityTimeout: 120000,
       reporters: ['mocha', 'BrowserStack'],
       concurrency: 2,
       browserDisconnectTolerance: 5,

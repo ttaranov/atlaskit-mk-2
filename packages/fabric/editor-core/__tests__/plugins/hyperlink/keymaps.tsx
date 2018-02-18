@@ -12,6 +12,7 @@ import {
   sendKeyToPm,
   em,
   code,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import textFormatting from '../../../src/editor/plugins/text-formatting';
@@ -113,8 +114,7 @@ describe('hyperlink - keymap', () => {
   });
 
   describe('Shift-Enter keypress', () => {
-    // TODO: ED-3676
-    it.skip('converts possible link text to hyperlink', () => {
+    it('converts possible link text to hyperlink', () => {
       const trackEvent = jest.fn();
       const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')), {
         analyticsHandler: trackEvent,
@@ -127,6 +127,7 @@ describe('hyperlink - keymap', () => {
           p(
             'hello ',
             link({ href: 'http://www.atlassian.com' })('www.atlassian.com'),
+            hardBreak(),
           ),
         ),
       );
