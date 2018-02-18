@@ -8,7 +8,9 @@ describe('@atlaskit/editor-core/editor/plugins/Comment', () => {
   const providerFactory = new ProviderFactory();
 
   it('should have Editor component defined', () => {
-    const editor = mount(<Editor providerFactory={providerFactory} />);
+    const editor = mount(
+      <Editor editorDOMElement={<div />} providerFactory={providerFactory} />,
+    );
     expect(editor).to.not.equal(undefined);
   });
 });

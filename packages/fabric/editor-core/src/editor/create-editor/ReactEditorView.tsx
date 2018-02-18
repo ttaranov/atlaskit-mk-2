@@ -203,8 +203,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
         transformer: this.contentTransformer,
       });
       this.view = undefined;
-    } else {
-      console.warn('Tried to recreate editor when it already exists');
     }
   };
 
