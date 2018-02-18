@@ -4,8 +4,8 @@ import {
   EditorInstance,
   ReactEditorView,
   setTextSelection,
-  EditorPlugin,
   getDefaultPluginsList,
+  EditorPlugin,
 } from '@atlaskit/editor-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { mount } from 'enzyme';
@@ -17,7 +17,7 @@ import jsdomFixtures from './jsdom-fixtures';
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
 }> {
-  getPlugins(editorProps: EditorProps) {
+  getPlugins(editorProps: EditorProps): EditorPlugin[] {
     return this.props.plugins || super.getPlugins(editorProps);
   }
 }
@@ -25,7 +25,7 @@ class TestReactEditorView extends ReactEditorView<{
 export type Options = {
   doc?: (schema: Schema) => RefsNode;
   // It needs to be any, otherwise TypeScript complains about mismatching types when dist folder exists
-  editorPlugins?: EditorPlugin[];
+  editorPlugins?: any[];
   editorProps?: EditorProps;
   providerFactory?: ProviderFactory;
   pluginKey?: PluginKey;
