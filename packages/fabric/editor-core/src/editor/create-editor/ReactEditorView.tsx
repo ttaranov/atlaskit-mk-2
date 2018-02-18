@@ -89,7 +89,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
     ) {
       // Disables the contentEditable attribute of the editor if the editor is disabled
       this.view.setProps({
-        editable: state => !this.props.editorProps.disabled,
+        editable: state => !nextProps.editorProps.disabled,
       } as DirectEditorProps);
     }
   }

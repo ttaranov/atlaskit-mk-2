@@ -46,6 +46,7 @@ export default function createEditorForTests<T = any>({
   const plugins = editorPlugins
     ? [...getDefaultPluginsList(), ...editorPlugins]
     : undefined;
+  const place = document.body.appendChild(document.createElement('div'));
   const editor = mount(
     <TestReactEditorView
       editorProps={editorProps}
@@ -56,6 +57,7 @@ export default function createEditorForTests<T = any>({
       onEditorDestroyed={() => {}}
       plugins={plugins}
     />,
+    { attachTo: place },
   );
 
   // Work around JSDOM/Node not supporting DOM Selection API
@@ -108,17 +110,26 @@ export default function createEditorForTests<T = any>({
 
   afterEach(() => {
     editor.unmount();
+    editor.detach();
+    if (place && place.parentNode) {
+      place.parentNode.removeChild(place);
+    }
   });
 
+  const {
+    eventDispatcher,
+    config: {
+      contentComponents,
+      primaryToolbarComponents,
+      secondaryToolbarComponents,
+    },
+  } = editor.instance() as ReactEditorView;
   return {
     editorView: editorView!,
-    eventDispatcher: (editor.instance() as ReactEditorView).eventDispatcher,
-    contentComponents: (editor.instance() as ReactEditorView).config
-      .contentComponents,
-    primaryToolbarComponents: (editor.instance() as ReactEditorView).config
-      .primaryToolbarComponents,
-    secondaryToolbarComponents: (editor.instance() as ReactEditorView).config
-      .secondaryToolbarComponents,
+    eventDispatcher,
+    contentComponents,
+    primaryToolbarComponents,
+    secondaryToolbarComponents,
     refs,
     sel: refs ? refs['<>'] : 0,
     plugin,
