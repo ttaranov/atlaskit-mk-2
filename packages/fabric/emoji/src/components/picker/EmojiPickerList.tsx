@@ -11,6 +11,8 @@ import {
   defaultCategories,
   frequentCategory,
   MAX_ORDINAL,
+  customTitle,
+  userCustomTitle,
 } from '../../constants';
 import {
   EmojiDescription,
@@ -18,6 +20,7 @@ import {
   OnCategory,
   OnEmojiEvent,
   ToneSelection,
+  OptionalUser,
 } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -40,6 +43,7 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
+  currentUser?: OptionalUser;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
@@ -256,7 +260,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   };
 
   private buildVirtualItems = (props: Props, state: State): void => {
-    const { emojis, loading, query } = props;
+    const { emojis, loading, query, currentUser } = props;
 
     let items: Items.VirtualItem<any>[] = [];
 
@@ -289,8 +293,26 @@ export default class EmojiPickerVirtualList extends PureComponent<
         this.allEmojiGroups.forEach(group => {
           // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
           // by not passing it to irrelevant groups
+          let userCustomGroup: EmojiGroup | undefined;
+
+          if (group.category === customCategory) {
+            if (currentUser) {
+              const userCustomEmojis = group.emojis.filter(
+                e => e.creatorUserId === currentUser!.id,
+              );
+              userCustomGroup = {
+                emojis: userCustomEmojis,
+                title: userCustomTitle,
+                category: customCategory,
+              } as EmojiGroup;
+            }
+          }
+
           this.categoryTracker.add(group.category, items.length);
 
+          if (userCustomGroup && userCustomGroup.emojis.length > 0) {
+            items = [...items, ...this.buildCategory(userCustomGroup)];
+          }
           items = [...items, ...this.buildCategory(group)];
         });
       }
@@ -332,7 +354,10 @@ export default class EmojiPickerVirtualList extends PureComponent<
         } else {
           currentGroup = {
             emojis: [],
-            title: currentCategory,
+            title:
+              currentCategory === customCategory
+                ? customTitle
+                : currentCategory,
             category: currentCategory,
           };
           existingCategories.set(currentCategory, currentGroup);

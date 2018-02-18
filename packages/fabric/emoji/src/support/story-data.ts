@@ -14,16 +14,23 @@ export const getStandardEmojiData = (): EmojiServiceResponse =>
   require('./json-data/service-data-standard.json') as EmojiServiceResponse;
 export const getAtlassianEmojiData = (): EmojiServiceResponse =>
   require('./json-data/service-data-atlassian.json') as EmojiServiceResponse;
+export const getSiteEmojiData = (): EmojiServiceResponse =>
+  require('./json-data/service-data-site.json') as EmojiServiceResponse;
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();
   const atlassianEmojis = getAtlassianEmojiData();
+  const siteEmojis = getSiteEmojiData();
   const standardSprites =
     (standardEmojis.meta && standardEmojis.meta.spriteSheets) || {};
   const atlassianSprites =
     (atlassianEmojis.meta && atlassianEmojis.meta.spriteSheets) || {};
   return {
-    emojis: [...standardEmojis.emojis, ...atlassianEmojis.emojis],
+    emojis: [
+      ...standardEmojis.emojis,
+      ...atlassianEmojis.emojis,
+      ...siteEmojis.emojis,
+    ],
     meta: {
       spriteSheets: {
         ...standardSprites,
@@ -42,11 +49,14 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
     const atlassianEmojis = denormaliseEmojiServiceResponse(
       getAtlassianEmojiData(),
     ).emojis;
+    const siteEmojis = denormaliseEmojiServiceResponse(getSiteEmojiData())
+      .emojis;
 
     emojisSets = new Map<string, EmojiDescription[]>();
     emojisSets.set('all', emojis);
     emojisSets.set('standard', standardEmojis);
     emojisSets.set('atlassian', atlassianEmojis);
+    emojisSets.set('site', siteEmojis);
   }
   return emojisSets.get(name) || [];
 };

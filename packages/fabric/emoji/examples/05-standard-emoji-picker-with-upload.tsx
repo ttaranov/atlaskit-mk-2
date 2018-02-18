@@ -11,7 +11,10 @@ export default function Example() {
       <Layer
         content={
           <EmojiPicker
-            emojiProvider={getEmojiResource({ uploadSupported: true })}
+            emojiProvider={getEmojiResource({
+              uploadSupported: true,
+              user: { id: 'abcdefg' },
+            })}
             onSelection={onSelection}
           />
         }

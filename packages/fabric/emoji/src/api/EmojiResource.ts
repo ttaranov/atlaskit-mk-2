@@ -16,6 +16,8 @@ import {
   OptionalEmojiDescription,
   SearchOptions,
   ToneSelection,
+  User,
+  OptionalUser,
 } from '../types';
 import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
@@ -45,6 +47,11 @@ export interface EmojiResourceConfig {
    * must support upload for the UploadingEmojiResource implementation of UploadingEmojiProvider).
    */
   allowUpload?: boolean;
+
+  /**
+   * Logged user in the Product.
+   */
+  user?: User;
 }
 
 export interface OnEmojiProviderChange
@@ -174,6 +181,11 @@ export interface EmojiProvider
    * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
    */
   calculateDynamicCategories?(): Promise<string[]>;
+
+  /**
+   * Returns the logged user passed by the Product
+   */
+  getCurrentUser?(): OptionalUser;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -235,10 +247,12 @@ export class EmojiResource extends AbstractResource<
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected siteEmojiResource?: SiteEmojiResource;
   protected selectedTone: ToneSelection;
+  protected user?: User;
 
   constructor(config: EmojiResourceConfig) {
     super();
     this.recordConfig = config.recordConfig;
+    this.user = config.user;
 
     // Ensure order is retained by tracking until all done.
     const emojiResponses: EmojiResponse[] = [];
@@ -564,6 +578,10 @@ export class EmojiResource extends AbstractResource<
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
+  }
+
+  getCurrentUser(): OptionalUser {
+    return this.user;
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {

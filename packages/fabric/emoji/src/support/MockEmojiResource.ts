@@ -10,6 +10,7 @@ import {
   OptionalEmojiDescription,
   SearchOptions,
   ToneSelection,
+  OptionalUser,
 } from '../types';
 import { selectedToneStorageKey } from '../constants';
 import { EmojiProvider, UploadingEmojiProvider } from '../api/EmojiResource';
@@ -49,11 +50,13 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   protected lastQuery: string = '';
   protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
+  protected user?: OptionalUser;
 
   recordedSelections: EmojiDescription[] = [];
 
   constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
     super();
+    this.user = (config && config.user) || undefined;
     this.emojiRepository = emojiService;
     this.promiseBuilder = result => Promise.resolve(result);
     if (config) {
@@ -67,6 +70,10 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
       const storedTone = window.localStorage.getItem(selectedToneStorageKey);
       this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
     }
+  }
+
+  getCurrentUser(): OptionalUser {
+    return this.user;
   }
 
   filter(query?: string, options?: SearchOptions) {
