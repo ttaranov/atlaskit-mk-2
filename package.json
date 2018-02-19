@@ -334,7 +334,7 @@
     "resolve-from": "^4.0.0",
     "resumablejs": "1.0.2",
     "rusha": "^0.8.11",
-    "rxjs": "^5.5.6",
+    "rxjs": "^5.1.0",
     "scroll-into-view-if-needed": "^1.2.1",
     "scrollparent": "^2.0.1",
     "selenium-standalone": "^6.12.0",
