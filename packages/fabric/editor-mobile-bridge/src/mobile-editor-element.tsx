@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Editor, mentionPluginKey, MentionsState } from '@atlaskit/editor-core';
 import { MentionProvider, MentionDescription } from '@atlaskit/mention';
+import NativeToWebBridge from './native-to-web-bridge';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -29,7 +30,7 @@ export class MentionProviderImpl implements MentionProvider {
 
 let mentionsPluginState: MentionsState | null = null;
 
-export const bridge = ((window as any).bridge = {
+export const bridge: NativeToWebBridge = ((window as any).bridge = {
   makeBold() {
     throw new Error('Method not implemented.');
   },
