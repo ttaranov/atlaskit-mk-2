@@ -50,7 +50,9 @@ import DefaultMediaStateManager from './default-state-manager';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
-const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
+// We get `publicId` of `file` in `processing` stage so it's possible to send
+// consumers a ADF with media-ids before ready state
+const MEDIA_RESOLVED_STATES = ['ready', 'error', 'cancelled', 'processing'];
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -282,7 +284,7 @@ export class MediaPluginState {
     }
 
     const isEndState = (state: MediaState) =>
-      state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
+      state.status && MEDIA_RESOLVED_STATES.indexOf(state.status) !== -1;
 
     this.pendingTask = mediaStates
       .filter(state => !isEndState(state))
@@ -638,6 +640,7 @@ export class MediaPluginState {
         }
         break;
 
+      case 'processing':
       case 'ready':
         this.stateManager.off(state.id, this.handleMediaState);
         this.replaceTemporaryNode(state);
