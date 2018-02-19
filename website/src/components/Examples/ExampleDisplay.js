@@ -6,7 +6,7 @@ import Loading from '../Loading';
 import CodeBlock from '../Code';
 
 type Props = {
-  src: string,
+  src: string | null,
   example: {
     contents: Function,
     exports: Function,
@@ -23,6 +23,10 @@ export default (props: Props) => {
       return <CodeBlock grammar="jsx" content={loaded} />;
     },
   });
+  if (!props.src) {
+    console.error('No source url provided for the examples iframe', props.src);
+    return;
+  }
   const Example = () => (
     <iframe
       style={{

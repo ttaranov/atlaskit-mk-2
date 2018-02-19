@@ -44,11 +44,17 @@ export default (groupId?: string, packageId?: string, exampleId?: string) => {
 };
 
 export const getLoaderUrl = (
-  groupId: string,
-  packageId: string,
-  exampleId: string,
+  groupId?: string,
+  packageId?: string,
+  exampleId?: string,
 ) => {
-  const baseUrl =
-    process.env.NODE_ENV === 'development' ? 'http://localhost:9001/' : '/';
-  return `${baseUrl}examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${exampleId}`;
+  if (!groupId || !packageId || !exampleId) {
+    console.error(`Warning missing parameter: Please ensure that you have passed in the correct arguments:
+      \n  groupId: ${String(groupId)}
+      \n  packageId: ${String(packageId)}
+      \n  exampleId: ${String(exampleId)}
+    `);
+    return null;
+  }
+  return `/examples.html?groupId=${groupId}&packageId=${packageId}&exampleId=${exampleId}`;
 };
