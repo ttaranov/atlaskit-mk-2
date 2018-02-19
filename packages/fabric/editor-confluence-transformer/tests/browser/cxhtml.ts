@@ -856,7 +856,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           type: 'image',
         },
       ],
-      schemaVersion: { value: '1' },
+      schemaVersion: { value: '2' },
     };
     const attrs = {
       extensionType: 'com.atlassian.confluence.macro.core',
@@ -878,7 +878,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -892,7 +892,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -906,7 +906,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
