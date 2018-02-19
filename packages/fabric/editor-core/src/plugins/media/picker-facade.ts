@@ -50,6 +50,12 @@ export interface PickerFacadeInterface {
   onNewMedia(cb: (states: MediaState[]) => any): void;
 
   onDrag(cb: (state: 'enter' | 'leave') => any): void;
+
+  activate(): void;
+  
+  deactivate(): void;
+
+  onClose(cb: () => void): () => void;
 }
 
 export default class PickerFacade implements PickerFacadeInterface {
