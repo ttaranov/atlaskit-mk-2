@@ -25,6 +25,7 @@ import {
   insertText,
   getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
+
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
@@ -44,13 +45,12 @@ const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
-const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory({
+const getFreshMediaProvider = () =>
+  storyMediaProviderFactory({
     collectionName: testCollectionName,
     stateManager,
     includeUserAuthProvider: true,
   });
-};
 
 describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
@@ -105,8 +105,6 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    expect(typeof pluginState.binaryPicker!).toBe('object');
-
     pluginState.binaryPicker!.upload = jest.fn();
 
     pluginState.insertFileFromDataUrl(
@@ -116,18 +114,6 @@ describe('Media plugin', () => {
 
     expect(pluginState.binaryPicker!.upload as any).toHaveBeenCalledTimes(1);
     collectionFromProvider.mockRestore();
-    pluginState.destroy();
-  });
-
-  it('should add an onClose event listener in popupPicker', async () => {
-    const { pluginState } = editor(doc(p('{<>}')));
-    const provider = await mediaProvider;
-    await provider.uploadContext;
-
-    const onClose = jest.fn();
-    (pluginState as any).popupPicker!.onClose = onClose;
-    expect(onClose).toHaveBeenCalledTimes(1);
-
     pluginState.destroy();
   });
 
@@ -934,7 +920,7 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
-  it(`should copy optional attributes from MediaState to Node attrs`, () => {
+  it('should copy optional attributes from MediaState to Node attrs', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
     const collectionFromProvider = jest.spyOn(
       pluginState,
