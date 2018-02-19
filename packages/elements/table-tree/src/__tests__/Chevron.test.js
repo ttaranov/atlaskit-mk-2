@@ -8,86 +8,79 @@ import { iconColorFocus } from '../styled';
 
 const controlledId = 'controlled_element_id';
 
-describe('TableTree', () => {
-  describe('Chevron', () => {
-    it('renders an accessible button', () => {
-      const wrapper = mount(
-        <Chevron ariaControls={controlledId} isExpanded={false} />,
-      );
-      const button = wrapper.find('button');
-      expect(button).toHaveLength(1);
-      expect(button.props()).toHaveProperty('aria-controls', controlledId);
-    });
+const findIcon = chevron =>
+  chevron.findWhere(e => e.is(ChevronDownIcon) || e.is(ChevronRightIcon));
+const isHighlighted = chevron =>
+  findIcon(chevron).props().primaryColor === iconColorFocus;
 
-    it('renders a collapse button when expanded', () => {
-      const wrapper = mount(<Chevron ariaControls={controlledId} isExpanded />);
-      const button = wrapper.find('button');
-      expect(button.find(ChevronRightIcon)).toHaveLength(0);
-      expect(button.find(ChevronDownIcon)).toHaveLength(1);
-    });
+test('accessibility', () => {
+  const wrapper = mount(
+    <Chevron ariaControls={controlledId} isExpanded={false} />,
+  );
+  const button = wrapper.find('button');
+  expect(button).toHaveLength(1);
+  expect(button.props()).toHaveProperty('aria-controls', controlledId);
+});
 
-    it('renders an expand button when collapsed', () => {
-      const wrapper = mount(
-        <Chevron ariaControls={controlledId} isExpanded={false} />,
-      );
-      const button = wrapper.find('button');
-      expect(button.find(ChevronRightIcon)).toHaveLength(1);
-      expect(button.find(ChevronDownIcon)).toHaveLength(0);
-    });
+test('expanded', () => {
+  const wrapper = mount(<Chevron ariaControls={controlledId} isExpanded />);
+  const button = wrapper.find('button');
+  expect(button.find(ChevronRightIcon)).toHaveLength(0);
+  expect(button.find(ChevronDownIcon)).toHaveLength(1);
+});
 
-    it('calls onExpandToggle when clicked', () => {
-      const spy = jest.fn();
-      const wrapper = mount(
-        <Chevron
-          ariaControls={controlledId}
-          isExpanded={false}
-          onExpandToggle={spy}
-        />,
-      );
-      const button = wrapper.find('button');
-      button.simulate('click');
-      expect(spy).toHaveBeenCalled();
-    });
+test('collapsed', () => {
+  const wrapper = mount(
+    <Chevron ariaControls={controlledId} isExpanded={false} />,
+  );
+  const button = wrapper.find('button');
+  expect(button.find(ChevronRightIcon)).toHaveLength(1);
+  expect(button.find(ChevronDownIcon)).toHaveLength(0);
+});
 
-    it('is not highlighted initially', () => {
-      const wrapper = mount(
-        <Chevron ariaControls={controlledId} isExpanded={false} />,
-      );
-      expect(isHighlighted(wrapper)).toBe(false);
-    });
+test('onExpandToggle', () => {
+  const spy = jest.fn();
+  const wrapper = mount(
+    <Chevron
+      ariaControls={controlledId}
+      isExpanded={false}
+      onExpandToggle={spy}
+    />,
+  );
+  const button = wrapper.find('button');
+  button.simulate('click');
+  expect(spy).toHaveBeenCalled();
+});
 
-    it('gets highlighted when focused', () => {
-      const wrapper = mount(
-        <Chevron ariaControls={controlledId} isExpanded={false} />,
-      );
-      const button = wrapper.find('button');
+test('no highlight initially', () => {
+  const wrapper = mount(
+    <Chevron ariaControls={controlledId} isExpanded={false} />,
+  );
+  expect(isHighlighted(wrapper)).toBe(false);
+});
 
-      button.simulate('focus');
-      expect(isHighlighted(wrapper)).toBe(true);
+test('highlight on focus', () => {
+  const wrapper = mount(
+    <Chevron ariaControls={controlledId} isExpanded={false} />,
+  );
+  const button = wrapper.find('button');
 
-      button.simulate('blur');
-      expect(isHighlighted(wrapper)).toBe(false);
-    });
+  button.simulate('focus');
+  expect(isHighlighted(wrapper)).toBe(true);
 
-    it('gets highlighted when hovered', () => {
-      const wrapper = mount(
-        <Chevron ariaControls={controlledId} isExpanded={false} />,
-      );
-      const button = wrapper.find('button');
+  button.simulate('blur');
+  expect(isHighlighted(wrapper)).toBe(false);
+});
 
-      button.simulate('focus');
-      expect(isHighlighted(wrapper)).toBe(true);
+test('highlight on hover', () => {
+  const wrapper = mount(
+    <Chevron ariaControls={controlledId} isExpanded={false} />,
+  );
+  const button = wrapper.find('button');
 
-      button.simulate('blur');
-      expect(isHighlighted(wrapper)).toBe(false);
-    });
+  button.simulate('focus');
+  expect(isHighlighted(wrapper)).toBe(true);
 
-    function isHighlighted(chevron) {
-      return (
-        chevron
-          .findWhere(e => e.is(ChevronDownIcon) || e.is(ChevronRightIcon))
-          .props().primaryColor === iconColorFocus
-      );
-    }
-  });
+  button.simulate('blur');
+  expect(isHighlighted(wrapper)).toBe(false);
 });
