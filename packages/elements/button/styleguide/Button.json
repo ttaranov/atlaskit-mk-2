@@ -1,0 +1,52 @@
+{
+    "package": "@atlaskit/Button",
+    "component": "Button",
+    "sketchSymbol": "Button",
+    "description": "Button style is defined for different appearance types, states & events",
+    "htmlUrl": "/styleguides/elements/button/ButtonStyleGuide",
+    "sketchUrl": "/styleguides/elements/button/ButtonStyleGuide.sketch",
+    "themes": {
+        "options": [
+            "default",
+            "dark"
+        ]
+    },
+    "props": [
+        {   
+            "name": "type",
+            "prop" : "appearance",
+            "values" : [
+                "primary",
+                "default"
+            ]
+        },
+        { "name": "selected", "prop": "isSelected", "values":[ true,false ] },
+        { "name": "disabled", "prop": "isDisabled", "values":[ true,false ] },
+        { "name": "width",
+            "prop": "isFitContainer", 
+            "values":[ 
+                { "name":"full", "value": true },
+                { "name":"normal", "value": false }
+    ],
+    "events": [
+        { "name": "focus", "state": "isFocus" },
+        { "name": "hover", "state": "isEvent" },
+        { "name": "active", "state": "isActive" }
+    ],
+    "render":{
+        "groups":[
+            {
+                "label": "All Styles", 
+                "include": [ "props", "events" ],
+                "textProp": "children"
+            },
+            {
+                "label": "Full Width",
+                "props": {
+                    "isFitContainer": true
+                }
+            }
+        ]
+    }
+}
+   
