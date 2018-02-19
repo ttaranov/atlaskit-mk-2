@@ -2,7 +2,7 @@ import {
   ServiceConfig,
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
-import { uploadFile } from '@atlaskit/media-store';
+import { MediaPicker } from '@atlaskit/media-picker';
 
 import {
   EmojiDescription,
@@ -20,6 +20,12 @@ import {
   isMediaEmoji,
   convertImageToMediaRepresentation,
 } from '../../type-helpers';
+import {
+  MediaApiData,
+  MediaUploadEnd,
+  MediaUploadError,
+  MediaUploadStatusUpdate,
+} from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
 import {
   denormaliseEmojiServiceResponse,
@@ -104,43 +110,44 @@ export default class SiteEmojiResource {
               clientId,
               token: uploadToken.jwt,
             }),
-        };
-        const onProgress = progress => {
-          debug('upload progress', progress);
-          if (progressCallback) {
-            progressCallback({
-              percent: progress * mediaProportionOfProgress,
-            });
-          }
-        };
-        const file = uploadFile(
-          {
-            content: upload.dataURL,
-            name: upload.filename,
+          uploadParams: {
             collection: collectionName,
           },
-          mpConfig,
-          { onProgress },
-        );
+        };
 
-        file
-          .then(fileId => {
-            const totalUploadTime = Date.now() - startTime;
-            const mediaUploadTime = totalUploadTime - tokenLoadTime;
-            debug(
-              'total upload / media upload times',
-              totalUploadTime,
-              mediaUploadTime,
-            );
-            this.postToEmojiService(upload, fileId)
-              .then(emoji => {
-                resolve(emoji);
-              })
-              .catch(httpError => {
-                reject(httpError.reason || httpError);
+        const mpBinary = this.createMediaPicker('binary', mpConfig);
+        mpBinary.on('upload-end', (result: MediaUploadEnd) => {
+          const totalUploadTime = Date.now() - startTime;
+          const mediaUploadTime = totalUploadTime - tokenLoadTime;
+          debug(
+            'total upload / media upload times',
+            totalUploadTime,
+            mediaUploadTime,
+          );
+          this.postToEmojiService(upload, result.public)
+            .then(emoji => {
+              resolve(emoji);
+            })
+            .catch(httpError => {
+              reject(httpError.reason || httpError);
+            });
+        });
+        mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
+          reject(errorResult.error);
+        });
+        mpBinary.on(
+          'upload-status-update',
+          (statusUpdate: MediaUploadStatusUpdate) => {
+            debug('upload progress', statusUpdate.progress);
+            if (progressCallback) {
+              progressCallback({
+                percent:
+                  statusUpdate.progress.portion * mediaProportionOfProgress,
               });
-          })
-          .catch(reject);
+            }
+          },
+        );
+        mpBinary.upload(upload.dataURL, upload.filename);
       });
     });
   }
@@ -202,9 +209,16 @@ export default class SiteEmojiResource {
     );
   }
 
+  /**
+   * Intended to be overridden for unit testing.
+   */
+  protected createMediaPicker(type, mpConfig) {
+    return MediaPicker(type, mpConfig);
+  }
+
   private postToEmojiService = (
     upload: EmojiUpload,
-    fileId: string,
+    mediaApiData: MediaApiData,
   ): Promise<EmojiDescription> => {
     const { shortName, name } = upload;
     const { width, height } = upload;
@@ -218,7 +232,7 @@ export default class SiteEmojiResource {
         name,
         width,
         height,
-        fileId,
+        fileId: mediaApiData.id,
       }),
     };
 
