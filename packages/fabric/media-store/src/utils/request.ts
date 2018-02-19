@@ -17,18 +17,18 @@ export type RequestOptions = {
   readonly body?: any;
 };
 
-export const DEFAULT_REQUEST_OPTIONS: RequestOptions = {
-  method: 'GET',
-};
-
 export function request(
   url: string,
-  options: RequestOptions = DEFAULT_REQUEST_OPTIONS,
+  options: RequestOptions = {},
 ): Promise<Response> {
-  const { method, auth, params, headers, body } = options;
+  const { method = 'GET', auth, params, headers, body } = options;
 
   if (method === 'GET') {
-    return fetch(createUrl(url, { params, auth }), { method, body, headers });
+    return fetch(createUrl(url, { params, auth }), {
+      method,
+      body,
+      headers,
+    });
   } else {
     return fetch(createUrl(url, { params }), {
       method,
@@ -53,7 +53,7 @@ export type CreateUrlOptions = {
 
 export function createUrl(
   url: string,
-  { params, auth }: CreateUrlOptions = {},
+  { params, auth }: CreateUrlOptions,
 ): string {
   const { baseUrl, queryParams } = extract(url);
   const authParams = auth && mapAuthToQueryParameters(auth);
@@ -68,10 +68,10 @@ export function createUrl(
 }
 
 function withAuth(auth?: Auth) {
-  return (headers: RequestHeaders = {}): RequestHeaders => {
+  return (headers?: RequestHeaders): RequestHeaders | undefined => {
     if (auth) {
       return {
-        ...headers,
+        ...(headers || {}),
         ...mapAuthToRequestHeaders(auth),
       };
     } else {

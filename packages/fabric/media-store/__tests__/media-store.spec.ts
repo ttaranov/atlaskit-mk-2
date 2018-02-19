@@ -255,12 +255,11 @@ describe('MediaStore', () => {
         return mediaStore.getCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${apiUrl}/collection/${collectionName}`,
+            `${apiUrl}/collection/${collectionName}?client=${clientId}&token=${token}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
+            method: 'GET',
             headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
               Accept: 'application/json',
             },
           });
@@ -293,12 +292,11 @@ describe('MediaStore', () => {
           .then(response => {
             expect(response).toEqual({ data });
             expect(fetchMock.lastUrl()).toEqual(
-              `${apiUrl}/collection/some-collection-name/items?details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc`,
+              `${apiUrl}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
             );
             expect(fetchMock.lastOptions()).toEqual({
+              method: 'GET',
               headers: {
-                'X-Client-Id': clientId,
-                Authorization: `Bearer ${token}`,
                 Accept: 'application/json',
               },
             });
