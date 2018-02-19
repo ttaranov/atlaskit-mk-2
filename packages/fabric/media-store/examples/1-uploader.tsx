@@ -18,6 +18,7 @@ export interface UploaderExampleState {
   uploadingProgress: number;
   fileURL?: string;
   fileMetadata?: any;
+  error?: any;
 }
 
 const store = new MediaStore({
@@ -37,8 +38,6 @@ class UploaderExample extends Component<
     store.getFile(id).then(async response => {
       const fileMetadata = response.data;
       const { processingStatus } = fileMetadata;
-
-      console.log('processingStatus', id, processingStatus);
 
       if (processingStatus === 'pending') {
         setTimeout(() => this.fetchFile(id), 1000);
@@ -80,7 +79,9 @@ class UploaderExample extends Component<
 
   renderMetadata() {
     const { fileMetadata } = this.state;
-    if (!fileMetadata) return;
+    if (!fileMetadata) {
+      return;
+    }
 
     return (
       <MetadataWrapper>{JSON.stringify(fileMetadata, null, 2)}</MetadataWrapper>
@@ -108,8 +109,8 @@ class UploaderExample extends Component<
       .catch(this.onError);
   };
 
-  onError = err => {
-    console.log('upload error', err);
+  onError = error => {
+    this.setState({ error });
   };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
