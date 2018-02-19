@@ -9,9 +9,7 @@ import {
   defaultSchema,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import ReactEditorView, {
-  EditorViewState,
-} from '../../../src/editor/create-editor/ReactEditorView';
+import ReactEditorView from '../../../src/editor/create-editor/ReactEditorView';
 import { toJSON } from '../../../src/utils';
 import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
 
@@ -27,7 +25,7 @@ describe(name, () => {
           onEditorDestroyed={() => {}}
         />,
       );
-      const { editorState } = wrapper.instance() as EditorViewState;
+      const { editorState } = wrapper.instance() as ReactEditorView;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
     });
@@ -42,7 +40,7 @@ describe(name, () => {
           onEditorDestroyed={() => {}}
         />,
       );
-      const { editorState } = wrapper.instance() as EditorViewState;
+      const { editorState } = wrapper.instance() as ReactEditorView;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
     });

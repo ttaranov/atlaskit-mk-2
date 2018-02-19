@@ -148,7 +148,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
         providerFactory={this.providerFactory}
         onEditorCreated={this.onEditorCreated}
         onEditorDestroyed={this.onEditorDestroyed}
-        render={({ editor, view, state, eventDispatcher, config }) => (
+        render={({ editor, view, eventDispatcher, config }) => (
           <Component
             disabled={this.props.disabled}
             editorActions={this.editorActions}
