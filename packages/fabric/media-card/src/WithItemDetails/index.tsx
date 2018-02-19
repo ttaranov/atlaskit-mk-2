@@ -23,7 +23,7 @@ export interface FunctionProps {
 export type RenderFunction = (props: FunctionProps) => React.ReactElement<any>;
 export type CallbackFunction = (props: FunctionProps) => void;
 
-export interface WithMediaItemDetailsProps {
+export interface WithItemDetailsProps {
   context: Context;
   type: MediaItemType;
   id: string;
@@ -33,13 +33,13 @@ export interface WithMediaItemDetailsProps {
   onStatusChange?: CallbackFunction;
 }
 
-export interface WithMediaItemDetailsState {
+export interface WithItemDetailsState {
   status: Status;
   error?: Error;
   details?: Details;
 }
 
-function loading(): WithMediaItemDetailsState {
+function loading(): WithItemDetailsState {
   return {
     status: 'loading',
     error: undefined,
@@ -47,34 +47,34 @@ function loading(): WithMediaItemDetailsState {
   };
 }
 
-function processing(details?: Details): WithMediaItemDetailsState {
+function processing(details?: Details): WithItemDetailsState {
   return {
     status: 'processing',
     details,
   };
 }
 
-function completed(details?: Details): WithMediaItemDetailsState {
+function completed(details?: Details): WithItemDetailsState {
   return {
     status: 'complete',
     details,
   };
 }
 
-function errored(error: Error): WithMediaItemDetailsState {
+function errored(error: Error): WithItemDetailsState {
   return {
     status: 'error',
     error,
   };
 }
 
-export default class WithMediaItemDetails extends React.Component<
-  WithMediaItemDetailsProps,
-  WithMediaItemDetailsState
+export default class WithItemDetails extends React.Component<
+  WithItemDetailsProps,
+  WithItemDetailsState
 > {
   private subscription?: Subscription;
 
-  constructor(props: WithMediaItemDetailsProps, ...args) {
+  constructor(props: WithItemDetailsProps, ...args) {
     super(props, ...args);
 
     // initialise the state from the initial details
@@ -120,8 +120,8 @@ export default class WithMediaItemDetails extends React.Component<
   }
 
   private needsUpdating(
-    prevProps: WithMediaItemDetailsProps,
-    nextProps: WithMediaItemDetailsProps,
+    prevProps: WithItemDetailsProps,
+    nextProps: WithItemDetailsProps,
   ): boolean {
     const {
       context: prevContext,
@@ -195,13 +195,13 @@ export default class WithMediaItemDetails extends React.Component<
     this.subscribe();
   }
 
-  componentWillReceiveProps(nextProps: WithMediaItemDetailsProps): void {
+  componentWillReceiveProps(nextProps: WithItemDetailsProps): void {
     if (this.needsUpdating(this.props, nextProps)) {
       this.setState(loading());
     }
   }
 
-  componentDidUpdate(prevProps: WithMediaItemDetailsProps): void {
+  componentDidUpdate(prevProps: WithItemDetailsProps): void {
     if (this.needsUpdating(prevProps, this.props)) {
       this.subscribe();
     }

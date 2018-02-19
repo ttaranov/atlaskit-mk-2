@@ -11,7 +11,9 @@ import {
 } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardEventProps } from '../..';
-import { MediaCard } from '../mediaCard';
+import WithPreviewDetails from '../../WithPreviewDetails';
+import WithItemDetails from '../../WithItemDetails';
+import WithFileImage from '../../WithFileImage';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 
@@ -78,6 +80,20 @@ export class Card extends Component<CardProps, {}> {
     }
   }
 
+  isFileIdentifier(identifier: Identifier): identifier is FileIdentifier {
+    return (
+      identifier.mediaItemType === 'file' &&
+      (identifier as FileIdentifier).id !== undefined
+    );
+  }
+
+  isLinkIdentifier(identifier: Identifier): identifier is LinkIdentifier {
+    return (
+      identifier.mediaItemType === 'link' &&
+      (identifier as LinkIdentifier).id !== undefined
+    );
+  }
+
   private isUrlPreviewIdentifier(
     identifier: Identifier,
   ): identifier is UrlPreviewIdentifier {
@@ -121,30 +137,84 @@ export class Card extends Component<CardProps, {}> {
     );
   }
 
-  render() {
-    const {
-      context,
-      isLazy,
-      appearance,
-      resizeMode,
-      identifier,
-      ...otherProps,
-    } = this.props;
-    const card = (
-      <MediaCard
-        {...otherProps}
-        resizeMode={resizeMode}
-        appearance={appearance}
-        mediaItemType={this.mediaItemType}
-        provider={this.provider}
-        dataURIService={this.dataURIService}
-      />
-    );
+  renderCard(): JSX.Element {
+    const { context, identifier, appearance, resizeMode } = this.props;
 
+    const commonProps = {
+      resizeMode: resizeMode,
+      appearance: appearance,
+      mediaItemType: this.mediaItemType,
+    };
+
+    if (this.isFileIdentifier(identifier)) {
+      const { mediaItemType, id, collectionName } = identifier;
+      return (
+        <WithItemDetails
+          context={context}
+          type={mediaItemType}
+          id={id}
+          collection={collectionName}
+        >
+          {({ status, details }) => (
+            <WithFileImage
+              context={context}
+              details={details}
+              appearance={appearance}
+              resizeMode={resizeMode}
+            >
+              {({ src }) => (
+                <CardView
+                  {...commonProps}
+                  status={status}
+                  metadata={details}
+                  dataURI={src}
+                />
+              )}
+            </WithFileImage>
+          )}
+        </WithItemDetails>
+      );
+    }
+
+    if (this.isLinkIdentifier(identifier)) {
+      const { mediaItemType, id, collectionName } = identifier;
+      return (
+        <WithItemDetails
+          context={context}
+          type={mediaItemType}
+          id={id}
+          collection={collectionName}
+        >
+          {({ status, details }) => (
+            <CardView {...commonProps} status={status} metadata={details} />
+          )}
+        </WithItemDetails>
+      );
+    }
+
+    if (this.isUrlPreviewIdentifier(identifier)) {
+      const { url } = identifier;
+      return (
+        <WithPreviewDetails context={context} url={url}>
+          {({ status, details }) => (
+            <CardView {...commonProps} status={status} metadata={details} />
+          )}
+        </WithPreviewDetails>
+      );
+    }
+
+    // this case should never occur but is necessary to make typescript happy
+    throw new Error('Unsupported identifier');
+  }
+
+  render() {
+    const { isLazy } = this.props;
     return isLazy ? (
-      <LazyContent placeholder={this.placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={this.placeholder}>
+        {this.renderCard()}
+      </LazyContent>
     ) : (
-      card
+      this.renderCard()
     );
   }
 

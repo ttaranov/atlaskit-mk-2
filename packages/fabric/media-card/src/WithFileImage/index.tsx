@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, MediaItemType, ImageResizeMode } from '@atlaskit/media-core';
+import { Context, ImageResizeMode, FileDetails } from '@atlaskit/media-core';
 import { CardAppearance, CardDimensions } from '..';
 import { isRetina } from '../utils/isRetina';
 import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
@@ -11,36 +11,51 @@ import {
 } from '../utils/getElementDimension';
 import { defaultImageCardDimensions } from '../utils';
 
-export interface WithMediaItemURIProps {
-  context: Context;
-  id: string;
-  type: MediaItemType;
-  children: (dataURI?: string) => React.ReactElement<any>;
+export interface RenderProps {
+  src?: string;
+}
 
+export interface WithFileImageProps {
+  context: Context;
+  details?: FileDetails;
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
   resizeMode?: ImageResizeMode;
+  children: (props: RenderProps) => React.ReactElement<any>;
 }
 
-export interface WithMediaItemURIState {
-  dataURI?: string;
+export interface WithFileImageState {
+  src?: string;
 }
 
-export default class WithMediaItemURI extends React.Component<
-  WithMediaItemURIProps,
-  WithMediaItemURIState
+export default class WithFileImage extends React.Component<
+  WithFileImageProps,
+  WithFileImageState
 > {
-  state: WithMediaItemURIState = {};
+  state: WithFileImageState = {};
 
   private needToFetch(
-    prevProps: WithMediaItemURIProps,
-    nextProps: WithMediaItemURIProps,
+    prevProps: WithFileImageProps,
+    nextProps: WithFileImageProps,
   ) {
-    const { context: prevContext, type: prevType, id: prevId } = prevProps;
-    const { context: nextContext, type: nextType, id: nextId } = nextProps;
-    return (
-      nextContext !== prevContext || nextType !== prevType || nextId !== prevId
-    );
+    const { context: prevContext, details: prevDetails } = prevProps;
+    const { context: nextContext, details: nextDetails } = nextProps;
+    return nextContext !== prevContext || nextDetails !== prevDetails;
+  }
+
+  private hasImage(): boolean {
+    const { details } = this.props;
+
+    if (!details || !details.artifacts) {
+      return false;
+    }
+
+    // const {artifacts} = details;
+    // if (!artifacts['image.jpg']) {
+    //   return false;
+    // }
+
+    return true;
   }
 
   private isSmall(): boolean {
@@ -74,10 +89,15 @@ export default class WithMediaItemURI extends React.Component<
   }
 
   private async fetch() {
-    const { context, type, id, resizeMode, appearance } = this.props;
+    const { context, details, resizeMode, appearance } = this.props;
 
-    // we don't need to fetch the dataURI if its a link
-    if (type === 'link') {
+    // check if we have metadata to fetch
+    if (!details) {
+      return;
+    }
+
+    // check if the server will return an image
+    if (!this.hasImage()) {
       return;
     }
 
@@ -87,8 +107,8 @@ export default class WithMediaItemURI extends React.Component<
 
     const dataURIService = context.getDataUriService();
     try {
-      const dataURI = await dataURIService.fetchImageDataUri(
-        { type: 'file', details: { id } },
+      const src = await dataURIService.fetchImageDataUri(
+        { type: 'file', details },
         {
           width,
           height,
@@ -96,7 +116,7 @@ export default class WithMediaItemURI extends React.Component<
           allowAnimated,
         },
       );
-      this.setState({ dataURI });
+      this.setState({ src });
     } catch (error) {
       /* we don't do anything atm */
     }
@@ -106,13 +126,13 @@ export default class WithMediaItemURI extends React.Component<
     this.fetch();
   }
 
-  componentWillReceiveProps(nextProps: WithMediaItemURIProps): void {
+  componentWillReceiveProps(nextProps: WithFileImageProps): void {
     if (this.needToFetch(this.props, nextProps)) {
-      this.setState({ dataURI: undefined });
+      this.setState({ src: undefined });
     }
   }
 
-  componentDidUpdate(prevProps: WithMediaItemURIProps) {
+  componentDidUpdate(prevProps: WithFileImageProps) {
     if (this.needToFetch(prevProps, this.props)) {
       this.fetch();
     }
@@ -120,7 +140,7 @@ export default class WithMediaItemURI extends React.Component<
 
   render() {
     const { children } = this.props;
-    const { dataURI } = this.state;
-    return children(dataURI);
+    const { src } = this.state;
+    return children({ src });
   }
 }

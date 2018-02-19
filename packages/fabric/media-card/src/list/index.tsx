@@ -9,19 +9,18 @@ import {
   MediaCollectionItem,
   Context,
   CollectionAction,
-  DataUriService,
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import WithMediaItemDetails from '../WithMediaItemDetails';
-import WithMediaItemURI from '../WithMediaItemURI';
+import WithItemDetails from '../WithItemDetails';
+import WithFileImage from '../WithFileImage';
 import {
   defaultImageCardDimensions,
   defaultSmallCardDimensions,
 } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, CardView } from '../root';
+import { CardView } from '../root';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
@@ -225,16 +224,19 @@ export class CardList extends Component<CardListProps, CardListState> {
     return this.renderList();
   }
 
-  private renderList(): JSX.Element {
-    const { collection, shouldAnimate } = this.state;
-    const { cardWidth, dimensions, handleCardClick, placeholder } = this;
+  private renderCard(mediaItem: MediaCollectionItem): JSX.Element {
+    const { dimensions, handleCardClick } = this;
     const {
       context,
       collectionName,
       cardAppearance,
-      shouldLazyLoadCards,
+      actions = [],
     } = this.props;
-    const actions = this.props.actions || [];
+    const { collection } = this.state;
+
+    const { type, details } = mediaItem;
+    const id = mediaItem.details.id || 'unknown-id'; // I think ID is always returned by the server but it is optional in our typings for another use-case
+
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
         return {
@@ -247,6 +249,67 @@ export class CardList extends Component<CardListProps, CardListState> {
           },
         };
       });
+
+    const commonProps = {
+      appearance: cardAppearance,
+      dimensions,
+      onClick: handleCardClick.bind(this, mediaItem),
+      actions: cardActions(mediaItem),
+    };
+
+    if (type === 'file') {
+      return (
+        <WithItemDetails
+          context={context}
+          type={type}
+          id={id}
+          collection={collectionName}
+          initialDetails={details}
+        >
+          {({ status, details }) => (
+            <WithFileImage
+              context={context}
+              details={details}
+              appearance={cardAppearance}
+            >
+              {({ src }) => (
+                <CardView
+                  {...commonProps}
+                  status={status}
+                  metadata={details}
+                  dataURI={src}
+                />
+              )}
+            </WithFileImage>
+          )}
+        </WithItemDetails>
+      );
+    }
+
+    if (type === 'link') {
+      return (
+        <WithItemDetails
+          context={context}
+          type={type}
+          id={id}
+          collection={collectionName}
+          initialDetails={details}
+        >
+          {({ status, details }) => (
+            <CardView {...commonProps} status={status} metadata={details} />
+          )}
+        </WithItemDetails>
+      );
+    }
+
+    // this case should never happen but is required for typescript to be happy
+    throw new Error('Unsupported media item type.');
+  }
+
+  private renderList(): JSX.Element {
+    const { collection, shouldAnimate } = this.state;
+    const { cardWidth, placeholder } = this;
+    const { shouldLazyLoadCards } = this.props;
 
     const cards = collection
       ? collection.items.map((mediaItem: MediaCollectionItem) => {
@@ -267,33 +330,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                 shouldAnimate={shouldAnimate}
                 cardWidth={cardWidth}
               >
-                <WithMediaItemDetails
-                  context={context}
-                  type={mediaItem.type}
-                  id={mediaItem.details.id}
-                  collection={collectionName}
-                  initialDetails={mediaItem.details}
-                >
-                  {({ status, details }) => (
-                    <WithMediaItemURI
-                      context={context}
-                      type={mediaItem.type}
-                      id={mediaItem.details.id || ''}
-                    >
-                      {dataURI => (
-                        <CardView
-                          status={status}
-                          metadata={details}
-                          dataURI={dataURI}
-                          appearance={cardAppearance}
-                          dimensions={dimensions}
-                          onClick={handleCardClick.bind(this, mediaItem)}
-                          actions={cardActions(mediaItem)}
-                        />
-                      )}
-                    </WithMediaItemURI>
-                  )}
-                </WithMediaItemDetails>
+                {this.renderCard(mediaItem)}
               </CardListItemWrapper>
             </CSSTransition>
           );
