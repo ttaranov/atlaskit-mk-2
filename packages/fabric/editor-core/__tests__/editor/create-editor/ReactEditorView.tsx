@@ -27,7 +27,7 @@ describe(name, () => {
           onEditorDestroyed={() => {}}
         />,
       );
-      const { editorState } = wrapper.state() as EditorViewState;
+      const { editorState } = wrapper.instance() as EditorViewState;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
     });
@@ -42,7 +42,7 @@ describe(name, () => {
           onEditorDestroyed={() => {}}
         />,
       );
-      const { editorState } = wrapper.state() as EditorViewState;
+      const { editorState } = wrapper.instance() as EditorViewState;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
     });
@@ -59,9 +59,9 @@ describe(name, () => {
           mediaProvider: mediaProvider,
         }}
         providerFactory={ProviderFactory.create({ mediaProvider })}
-        onEditorCreated={({ state }) => {
-          spies = state.plugins
-            .map(plugin => plugin.getState(state))
+        onEditorCreated={({ view }) => {
+          spies = view.state.plugins
+            .map(plugin => plugin.getState(view.state))
             .filter(state => !!state && !!state.destroy)
             .map(state => jest.spyOn(state, 'destroy'));
         }}

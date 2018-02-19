@@ -11,7 +11,6 @@ import {
   createSchema,
   createErrorReporter,
   createPMPlugins,
-  reconfigureState,
   initAnalytics,
 } from './create-editor';
 
@@ -21,7 +20,6 @@ export interface EditorViewProps {
   render?: (
     props: {
       editor: JSX.Element;
-      state: EditorState;
       view?: EditorView;
       config: EditorConfig;
       eventDispatcher: EventDispatcher;
@@ -30,7 +28,6 @@ export interface EditorViewProps {
   ) => JSX.Element;
   onEditorCreated: (
     instance: {
-      state: EditorState;
       view: EditorView;
       config: EditorConfig;
       eventDispatcher: EventDispatcher;
@@ -39,7 +36,6 @@ export interface EditorViewProps {
   ) => void;
   onEditorDestroyed: (
     instance: {
-      state: EditorState;
       view: EditorView;
       config: EditorConfig;
       eventDispatcher: EventDispatcher;
@@ -48,51 +44,24 @@ export interface EditorViewProps {
   ) => void;
 }
 
-export interface EditorViewState {
-  editorState: EditorState;
-}
-
-export default class ReactEditorView<T = {}> extends React.Component<
-  EditorViewProps & T,
-  EditorViewState
+export default class ReactEditorView<T = {}> extends React.PureComponent<
+  EditorViewProps & T
 > {
   view?: EditorView;
   eventDispatcher: EventDispatcher;
   contentTransformer?: Transformer<string>;
   config: EditorConfig;
+  editorState: EditorState;
 
   constructor(props: EditorViewProps & T) {
     super(props);
 
     initAnalytics(props.editorProps.analyticsHandler);
 
-    this.state = {
-      editorState: this.createEditorState({ props, replaceDoc: true }),
-    };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      this.props === nextProps &&
-      this.state.editorState !== nextState.editorState
-    ) {
-      return false;
-    }
-    return true;
+    this.editorState = this.createEditorState({ props, replaceDoc: true });
   }
 
   componentWillReceiveProps(nextProps: EditorViewProps) {
-    if (
-      this.props.editorProps.appearance !== nextProps.editorProps.appearance
-    ) {
-      this.setState(prevState => ({
-        editorState: this.createEditorState({
-          props: this.props,
-          state: prevState,
-        }),
-      }));
-    }
-
     if (
       this.view &&
       this.props.editorProps.disabled !== nextProps.editorProps.disabled
@@ -111,8 +80,9 @@ export default class ReactEditorView<T = {}> extends React.Component<
     this.eventDispatcher.destroy();
 
     if (this.view) {
-      this.state.editorState.plugins.forEach(plugin => {
-        const state = plugin.getState(this.state.editorState);
+      const editorState = this.view.state;
+      editorState.plugins.forEach(plugin => {
+        const state = plugin.getState(editorState);
         if (state && state.destroy) {
           state.destroy();
         }
@@ -122,21 +92,29 @@ export default class ReactEditorView<T = {}> extends React.Component<
     }
   }
 
+  // Helper to allow tests to inject plugins directly
   getPlugins(editorProps: EditorProps): EditorPlugin[] {
     return createPluginList(editorProps);
   }
 
-  /**
-   * Construct the initial editor state from the EditorProps.
-   * If an EditorView already exists, it will reconstruct the state
-   * from the given props and state to (ideally) seamlessly transition
-   * state between EditorViews
-   */
   createEditorState = (options: {
     props: EditorViewProps;
-    state?: EditorViewState;
     replaceDoc?: boolean;
   }) => {
+    if (this.view) {
+      /**
+       * There's presently a number of issues with changing the schema of a
+       * editor inflight. A significant issue is that we lose the ability
+       * to keep track of a user's history as the internal plugin state
+       * keeps a list of Steps to undo/redo (which are tied to the schema).
+       * Without a good way to do work around this, we prevent this for now.
+       */
+      console.warn(
+        'The editor does not support changing the schema dynamically.',
+      );
+      return this.editorState;
+    }
+
     this.config = processPluginsList(
       this.getPlugins(options.props.editorProps),
       options.props.editorProps,
@@ -173,9 +151,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
           : processRawValue(schema, defaultValue);
     }
 
-    if (this.view && this.view.state.schema !== schema) {
-      return reconfigureState(options.state!.editorState, schema, plugins, doc);
-    }
     const selection = doc ? Selection.atEnd(doc) : undefined;
     // Workaround for ED-3507: When media node is the last element, scrollIntoView throws an error
     const patchedSelection = selection ? Selection.findFrom(selection.$head, -1, true) || undefined : undefined;
@@ -191,23 +166,22 @@ export default class ReactEditorView<T = {}> extends React.Component<
   createEditorView = node => {
     if (!this.view && node) {
       this.view = new EditorView(node, {
-        state: this.state.editorState,
+        state: this.editorState,
         dispatchTransaction: this.dispatchTransaction,
         // Disables the contentEditable attribute of the editor if the editor is disabled
         editable: state => !this.props.editorProps.disabled,
       });
       this.props.onEditorCreated({
         view: this.view,
-        state: this.state.editorState,
         config: this.config,
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
       });
+      // Force React to re-render so consumers get a reference to the editor view
       this.forceUpdate();
     } else if (this.view && !node) {
       this.props.onEditorDestroyed({
         view: this.view,
-        state: this.state.editorState,
         config: this.config,
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
@@ -223,7 +197,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
     if (this.props.editorProps.onChange && transaction.docChanged) {
       this.props.editorProps.onChange(this.view!);
     }
-    this.setState({ editorState });
+    this.editorState = editorState;
   };
 
   render() {
@@ -231,7 +205,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
     return this.props.render
       ? this.props.render({
           editor,
-          state: this.state.editorState,
           view: this.view,
           config: this.config,
           eventDispatcher: this.eventDispatcher,
