@@ -84,7 +84,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  padding: 0 ${math.multiply(gridSize, 3)}px 0 ${math.multiply(gridSize, 5)}px;
+  padding: 0 0 0 ${math.multiply(gridSize, 5)}px;
 `;
 
 export const Expander = styled.div`
