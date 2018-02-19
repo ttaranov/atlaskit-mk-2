@@ -1,8 +1,4 @@
-import {
-  isClientBasedAuth,
-  ClientBasedAuth,
-  isAsapBasedAuth,
-} from '../../src/models/auth';
+import { isClientBasedAuth, isAsapBasedAuth } from '../../src/models/auth';
 
 describe('Auth', () => {
   const clientBasedAuth = {
