@@ -1,7 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import packageResolver from '../../utils/packageResolver';
 import * as fs from '../../utils/fs';
 import styled, { css } from 'styled-components';
+import type { File } from '../../types';
 import { colors } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
 import Loading from '../../components/Loading';
@@ -14,7 +16,9 @@ const Content = styled.div`
 const ComponentContainer = styled.div`
   height: 100%;
   position: relative;
+  box-sizing: border-box;
   width: 100%;
+  padding: 20px;
 `;
 
 const ErrorMessage = styled.div`
@@ -24,7 +28,22 @@ const ErrorMessage = styled.div`
   padding: 1em;
 `;
 
-export default class ExamplesIFrame extends Component {
+type State = {
+  packageId: string,
+  groupId: string,
+  exampleId: string,
+};
+
+type ExampleLoaderProps = {
+  example: File,
+};
+
+export default class ExamplesIFrame extends Component<{}, State> {
+  state = {
+    packageId: '',
+    groupId: '',
+    exampleId: '',
+  };
   componentWillMount() {
     if (window) {
       const { packageId, groupId, exampleId } = qs.parse(
@@ -62,7 +81,7 @@ export default class ExamplesIFrame extends Component {
   }
 }
 
-function ExampleLoader(props) {
+function ExampleLoader(props: ExampleLoaderProps) {
   const ExampleComponent = Loadable({
     loader: () => props.example.exports(),
     loading: Loading,
