@@ -3,7 +3,13 @@ import fetchMock = require('fetch-mock');
 import { stringify } from 'query-string';
 
 import { MediaStore } from '../src/';
-import { MediaUpload, MediaChunksProbe, MediaFile } from '../src/models/media';
+import {
+  MediaUpload,
+  MediaChunksProbe,
+  MediaFile,
+  MediaCollection,
+  MediaCollectionItems,
+} from '../src/models/media';
 
 describe('MediaStore', () => {
   const apiUrl = 'http://some-host';
@@ -196,6 +202,107 @@ describe('MediaStore', () => {
             body: JSON.stringify(body),
           });
         });
+      });
+    });
+
+    describe('createCollection', () => {
+      it('should POST to /collection endpoint with correct options', () => {
+        const collectionName = 'some-collection-name';
+        const data: MediaCollection = {
+          name: collectionName,
+          createdAt: Date.now(),
+        };
+
+        fetchMock.mock(`begin:${apiUrl}/collection`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.createCollection(collectionName).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/collection`);
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({ name: collectionName }),
+          });
+        });
+      });
+    });
+
+    describe('getCollection', () => {
+      it('should GET to /collection/{collectionName} endpoint with correct options', () => {
+        const collectionName = 'some-collection-name';
+        const data: MediaCollection = {
+          name: collectionName,
+          createdAt: Date.now(),
+        };
+
+        fetchMock.mock(`begin:${apiUrl}/collection/${collectionName}`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.getCollection(collectionName).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${apiUrl}/collection/${collectionName}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+          });
+        });
+      });
+    });
+
+    describe('getCollectionItems', () => {
+      it('should GET to /collection/{collectionName} endpoint with correct options', () => {
+        const collectionName = 'some-collection-name';
+        const data: MediaCollectionItems = {
+          nextInclusiveStartKey: '121',
+          contents: [],
+        };
+
+        fetchMock.mock(`begin:${apiUrl}/collection/${collectionName}`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore
+          .getCollectionItems(collectionName, {
+            limit: 10,
+            details: 'full',
+            inclusiveStartKey: 'some-inclusive-start-key',
+            sortDirection: 'desc',
+          })
+          .then(response => {
+            expect(response).toEqual({ data });
+            expect(fetchMock.lastUrl()).toEqual(
+              `${apiUrl}/collection/some-collection-name/items?details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc`,
+            );
+            expect(fetchMock.lastOptions()).toEqual({
+              headers: {
+                'X-Client-Id': clientId,
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+              },
+            });
+          });
       });
     });
   });

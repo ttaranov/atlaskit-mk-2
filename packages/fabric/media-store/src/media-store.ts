@@ -30,6 +30,7 @@ export class MediaStore {
       body: JSON.stringify({ name }),
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     }).then(mapResponseToJson);
   }
@@ -37,22 +38,23 @@ export class MediaStore {
   getCollection(
     collectionName: string,
   ): Promise<MediaStoreResponse<MediaCollection>> {
-    return this.request(`/collection/${collectionName}`).then(
-      mapResponseToJson,
-    );
+    return this.request(`/collection/${collectionName}`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then(mapResponseToJson);
   }
 
   getCollectionItems(
     collectionName: string,
     params: MediaStoreGetCollectionItemsPrams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
-    return this.request(`/collection/${collectionName}/items`, { params }).then(
-      mapResponseToJson,
-    );
-  }
-
-  deleteCollection(name: string): Promise<void> {
-    return Promise.reject('not implemented yet');
+    return this.request(`/collection/${collectionName}/items`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then(mapResponseToJson);
   }
 
   createUpload(
