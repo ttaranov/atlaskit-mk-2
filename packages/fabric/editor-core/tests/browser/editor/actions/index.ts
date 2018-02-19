@@ -276,6 +276,37 @@ describe(name, () => {
           expect(value.content[0].content[0].type).to.be.eq('media');
           expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
         });
+
+        it('should resolve after processing status', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          // To simulate async behavior, trigger ready on next tick
+          setTimeout(() => {
+            stateManager.updateState(testTempFileId, {
+              status: 'processing',
+              id: testTempFileId,
+              publicId: testPubFileId,
+            });
+          }, 0);
+
+          const value = (await editorActions.getValue()) as any;
+
+          expect(value).to.be.an('object');
+          expect(value.content).to.be.of.length(2);
+          expect(value.content[0].type).to.be.eq('mediaGroup');
+          expect(value.content[0].content[0].type).to.be.eq('media');
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+        });
       });
 
       describe('with waitForMediaUpload === false', () => {

@@ -140,6 +140,31 @@ export default class PickerFacade implements PickerFacadeInterface {
     this.picker.setUploadParams(params);
   }
 
+  onClose(cb): () => void {
+    const { picker } = this;
+    if (picker instanceof Popup) {
+      picker.on('closed', cb);
+
+      return () => picker.off('closed', cb);
+    }
+
+    return () => {};
+  }
+
+  activate() {
+    const { picker } = this;
+    if (picker instanceof Dropzone || picker instanceof Clipboard) {
+      picker.activate();
+    }
+  }
+
+  deactivate() {
+    const { picker } = this;
+    if (picker instanceof Dropzone || picker instanceof Clipboard) {
+      picker.deactivate();
+    }
+  }
+
   show(): void {
     if (this.picker instanceof Popup) {
       try {
