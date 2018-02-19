@@ -19,7 +19,7 @@
     "name": "Analytics",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "bitbucket:atlassian/atlaskit-mk-2",
   "dependencies": {
     "prop-types": "^15.5.10"
   },
