@@ -168,7 +168,6 @@ const converters = {
       </TypeMeta>
     </span>
   ),
-  function: type => k2s.convert(type),
 };
 
 const prettyConvert = (type, depth = 1) => {
