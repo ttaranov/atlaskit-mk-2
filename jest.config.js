@@ -36,7 +36,7 @@ if (RUN_ONLY !== 'all') {
 const config = {
   testMatch: testMatchArr,
   testPathIgnorePatterns: [
-    // ignore files that are under a directory starting with "_" at the root of __tests__
+    // ignore files that are under a directory starting with '_' at the root of __tests__
     '/__tests__\\/_.*?',
     // ignore files under __tests__ that start with an underscore
     '/__tests__\\/.*?\\/_.*?',
@@ -63,6 +63,13 @@ const config = {
   setupFiles: ['./build/jest-config/index.js'],
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
   testResultsProcessor: 'jest-junit',
+
+  testEnvironment: 'jest-puppe-shots/lib/node-environment.js',
+  globalSetup: 'jest-puppe-shots/lib/global-setup.js',
+  globalTeardown: 'jest-puppe-shots/lib/global-teardown.js',
+  globals: {
+    __JEST_PUPPE_SHOTS_RENDERER__: 'STYLED_COMPONENTS',
+  },
 };
 
 module.exports = config;

@@ -69,6 +69,7 @@
     }
   },
   "devDependencies": {
+    "@atlaskit/css-reset": "^1.2.1",
     "@atlaskit/eslint-config-base": "^2.0.7",
     "@atlaskit/util-data-test": "^7.2.1",
     "@types/chai": "^4.0.4",
@@ -122,8 +123,9 @@
     "globby": "^6.1.0",
     "highlight.js": "^9.6.0",
     "husky": "^0.14.3",
-    "jest": "^20.0.4",
+    "jest": "^22.2.2",
     "jest-in-case": "^1.0.2",
+    "jest-puppe-shots": "^0.3.3",
     "jest-resolve": "^20.0.4",
     "jest-sandbox": "^1.1.1",
     "jquery": "^3.2.1",
@@ -338,7 +340,7 @@
     "sinon-chai": "^2.9.0",
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
-    "styled-components": "^1.4.6",
+    "styled-components": "^2.0.0",
     "svg-inline-react": "^3.0.0",
     "svg-url-loader": "^2.3.0",
     "svgo": "^0.7.0",
