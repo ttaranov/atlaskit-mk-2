@@ -204,6 +204,7 @@ export default class InlineEdit extends Component<Props, State> {
           <Button
             iconBefore={<ConfirmIcon label="confirm" size="small" />}
             onClick={this.onConfirmClick}
+            shouldFitContainer
             ref={ref => {
               // $FlowFixMe TEMPORARY
               this.confirmButtonRef = ref;
@@ -214,6 +215,7 @@ export default class InlineEdit extends Component<Props, State> {
           <Button
             iconBefore={<CancelIcon label="cancel" size="small" />}
             onClick={this.onCancelClick}
+            shouldFitContainer
             ref={ref => {
               // $FlowFixMe TEMPORARY
               this.cancelButtonRef = ref;
