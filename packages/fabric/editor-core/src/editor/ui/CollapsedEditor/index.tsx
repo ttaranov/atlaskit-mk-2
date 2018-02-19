@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Editor from '../../../editor';
+import EditorWithActions from '../../../labs/EditorWithActions';
 import ChromeCollapsed from '../../../ui/ChromeCollapsed';
 
 export interface Props {
@@ -41,7 +42,7 @@ export default class CollapsedEditor extends React.Component<Props, State> {
 
   render() {
     const child = React.Children.only(this.props.children);
-    if (child.type !== Editor) {
+    if (child.type !== Editor && child.type !== EditorWithActions) {
       throw new Error('Expected child to be of type `Editor`');
     }
 

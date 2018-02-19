@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.0.10
+- [patch] fix setting selection inside of the content nodeView [5beb385](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5beb385)
+
 ## 62.0.9
 - [patch] Show fake cursor when inserting a placeholder text element [ca557d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca557d0)
 
