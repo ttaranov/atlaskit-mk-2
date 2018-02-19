@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.0.11
+- [patch] Fix issue with having multiple Dropzone elements listening at the same time with Editor and MediaPicker [d37de20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d37de20)
+
 ## 62.0.10
 - [patch] fix setting selection inside of the content nodeView [5beb385](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5beb385)
 
