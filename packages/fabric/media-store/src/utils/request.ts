@@ -1,8 +1,7 @@
 import { parse, stringify } from 'query-string';
 
-import { Auth } from '../models/auth';
+import { Auth, isClientBasedAuth } from '../models/auth';
 import { mapAuthToQueryParameters } from '../models/auth-query-parameters';
-import { mapAuthToAuthHeaders } from '../models/auth-headers';
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -69,11 +68,11 @@ export function createUrl(
 }
 
 function withAuth(auth?: Auth) {
-  return (headers?: RequestHeaders): RequestHeaders | undefined => {
+  return (headers: RequestHeaders = {}): RequestHeaders => {
     if (auth) {
       return {
         ...headers,
-        ...mapAuthToAuthHeaders(auth),
+        ...mapAuthToRequestHeaders(auth),
       };
     } else {
       return headers;
@@ -92,6 +91,20 @@ function extract(url: string): { baseUrl: string; queryParams?: any } {
   } else {
     return {
       baseUrl: url,
+    };
+  }
+}
+
+function mapAuthToRequestHeaders(auth: Auth): RequestHeaders {
+  if (isClientBasedAuth(auth)) {
+    return {
+      'X-Client-Id': auth.clientId,
+      Authorization: `Bearer ${auth.token}`,
+    };
+  } else {
+    return {
+      'X-Issuer': auth.asapIssuer,
+      Authorization: `Bearer ${auth.token}`,
     };
   }
 }

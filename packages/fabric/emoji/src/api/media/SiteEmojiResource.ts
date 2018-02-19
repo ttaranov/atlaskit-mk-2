@@ -21,7 +21,6 @@ import {
   isMediaEmoji,
   convertImageToMediaRepresentation,
 } from '../../type-helpers';
-import { MediaApiData } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
 import {
   denormaliseEmojiServiceResponse,
@@ -213,7 +212,7 @@ export default class SiteEmojiResource {
 
   private postToEmojiService = (
     upload: EmojiUpload,
-    mediaApiData: MediaApiData,
+    fileId: string,
   ): Promise<EmojiDescription> => {
     const { shortName, name } = upload;
     const { width, height } = upload;
@@ -227,7 +226,7 @@ export default class SiteEmojiResource {
         name,
         width,
         height,
-        fileId: mediaApiData.id,
+        fileId,
       }),
     };
 
