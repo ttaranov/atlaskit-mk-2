@@ -11,6 +11,7 @@ type Props = {
     contents: Function,
     exports: Function,
   },
+  name: 'string',
   displayCode: boolean,
   render: (ComponentType<any>, ComponentType<any>, boolean) => any,
 };
@@ -20,7 +21,7 @@ export default (props: Props) => {
     loader: () => props.example.contents(),
     loading: Loading,
     render(loaded) {
-      return <CodeBlock grammar="jsx" content={loaded} />;
+      return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
     },
   });
   if (!props.src) {
