@@ -1,5 +1,11 @@
 # @atlaskit/tabs
 
+## 5.1.2
+- [patch] Tabs now abide by selected prop when tabs and selected props both change, instead of using internal selected state [3facabc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3facabc)
+
+## 5.1.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 5.1.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

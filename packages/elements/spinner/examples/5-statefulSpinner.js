@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import Spinner from '@atlaskit/spinner';
+import Spinner from '../src';
 
 type State = {
   active: boolean,

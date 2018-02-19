@@ -1,23 +1,31 @@
-import codeBlockPlugins, {
-  CodeBlockState,
-} from '../../../src/plugins/code-block';
+import { stateKey as codeBlockPluginKey } from '../../../src/plugins/code-block';
 import {
   code_block,
   doc,
-  makeEditor,
+  createEditor,
   p,
   createEvent,
-  blockquote,
+  table,
+  tr,
+  td,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import tablesPlugin from '../../../src/editor/plugins/table';
 
 describe('code-block', () => {
-  const editor = (doc: any) =>
-    makeEditor<CodeBlockState>({
+  const editor = (doc: any) => {
+    const editor = createEditor({
       doc,
-      plugins: codeBlockPlugins(defaultSchema),
+      editorPlugins: [codeBlockPlugin, tablesPlugin],
     });
+    const pluginState = codeBlockPluginKey.getState(editor.editorView.state);
+    const plugin = editor.editorView.state.plugins.find(
+      (p: any) => p.key === (codeBlockPluginKey as any).key,
+    );
+
+    return { ...editor, pluginState, plugin: plugin! };
+  };
 
   const event = createEvent('event');
 
@@ -359,10 +367,12 @@ describe('code-block', () => {
 
     it('should not remove parent block when removing code_block', () => {
       const { pluginState, editorView } = editor(
-        doc(blockquote(code_block({ language: 'java' })('codeBlock{<>}'))),
+        doc(
+          table(tr(td({})(code_block({ language: 'java' })('codeBlock{<>}')))),
+        ),
       );
       pluginState.removeCodeBlock(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(blockquote(p())));
+      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
       editorView.destroy();
     });
   });

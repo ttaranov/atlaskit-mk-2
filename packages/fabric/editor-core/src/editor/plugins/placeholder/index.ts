@@ -2,7 +2,7 @@ import { Node } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { DecorationSet, Decoration } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
-import { isEmpty, isEmptyParagraph } from '../../utils';
+import { isEmptyDocument } from '../../utils';
 
 export const pluginKey = new PluginKey('placeholderPlugin');
 
@@ -25,10 +25,7 @@ export function createPlugin(placeholderText?: string): Plugin | undefined {
     key: pluginKey,
     props: {
       decorations(editorState): DecorationSet | undefined {
-        if (
-          isEmpty(editorState.doc) &&
-          isEmptyParagraph(editorState.doc.firstChild)
-        ) {
+        if (isEmptyDocument(editorState.doc)) {
           return createPlaceholderDecoration(editorState.doc, placeholderText);
         }
       },

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import Editor from '../example-helpers/editor';
+import { Editor } from '../src';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 type State = {
   dropzoneRef?: HTMLElement;
 };
+
+const mediaProvider = storyMediaProviderFactory();
 
 class DemoEditor extends React.PureComponent<any, State> {
   state: State = {};
@@ -17,11 +19,12 @@ class DemoEditor extends React.PureComponent<any, State> {
     const { dropzoneRef } = this.state;
     const editor = !dropzoneRef ? null : (
       <Editor
-        mediaProvider={storyMediaProviderFactory({
-          dropzoneContainer: dropzoneRef,
-        })}
-        isExpandedByDefault={true}
-        devTools={true}
+        appearance="comment"
+        allowHyperlinks
+        media={{
+          provider: mediaProvider,
+          customDropzoneContainer: dropzoneRef,
+        }}
       />
     );
 

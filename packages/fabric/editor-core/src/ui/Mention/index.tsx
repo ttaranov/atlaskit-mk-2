@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import MentionWithProviders from './mention-with-providers';
+import { MentionProvider, ResourcedMention } from '@atlaskit/mention';
 import {
-  MentionUserType as UserType,
   MentionEventHandlers,
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-
-import { ProfilecardProvider } from './types';
 
 export interface MentionProps {
   id: string;
@@ -16,12 +13,6 @@ export interface MentionProps {
   eventHandlers?: MentionEventHandlers;
   text: string;
   accessLevel?: string;
-  portal?: HTMLElement;
-  userType?: UserType;
-}
-
-export interface MentionState {
-  profilecardProvider: ProfilecardProvider | null;
 }
 
 export default class Mention extends PureComponent<MentionProps, {}> {
@@ -41,19 +32,24 @@ export default class Mention extends PureComponent<MentionProps, {}> {
   }
 
   private renderWithProvider = providers => {
-    const { accessLevel, eventHandlers, id, portal, text } = this.props;
+    const { accessLevel, eventHandlers, id, text } = this.props;
+    const { mentionProvider } = providers as {
+      mentionProvider?: Promise<MentionProvider>;
+    };
 
-    const { mentionProvider, profilecardProvider } = providers;
+    const actionHandlers = {};
+    ['onClick', 'onMouseEnter', 'onMouseLeave'].forEach(handler => {
+      actionHandlers[handler] =
+        (eventHandlers && eventHandlers[handler]) || (() => {});
+    });
 
     return (
-      <MentionWithProviders
+      <ResourcedMention
         id={id}
         text={text}
         accessLevel={accessLevel}
-        eventHandlers={eventHandlers}
         mentionProvider={mentionProvider}
-        profilecardProvider={profilecardProvider}
-        portal={portal}
+        {...actionHandlers}
       />
     );
   };

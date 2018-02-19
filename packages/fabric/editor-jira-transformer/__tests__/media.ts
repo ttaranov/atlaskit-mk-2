@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { nodeFactory } from '@atlaskit/editor-test-helpers';
+import { doc, mediaGroup, media } from '@atlaskit/editor-test-helpers';
 import {
   checkParse,
   checkEncode,
@@ -9,11 +9,6 @@ import { createJIRASchema, MediaAttributes } from '@atlaskit/editor-common';
 import { JIRATransformer } from '../src';
 
 const schema = createJIRASchema({ allowMedia: true });
-
-// Nodes
-const doc = nodeFactory(schema.nodes.doc);
-const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
-const media = (attrs: MediaAttributes) => schema.nodes.media.create(attrs);
 
 const fragment1 = `
 <span class="image-wrap" style="">
@@ -80,15 +75,15 @@ describe('JIRATransformer', () => {
       schema,
       '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: '',
             __fileName: 'foo.png',
             __displayType: 'thumbnail',
-          }),
-        ]),
+          })(),
+        ),
       ),
       {},
       {
@@ -106,15 +101,15 @@ describe('JIRATransformer', () => {
       schema,
       '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42">foo.pdf</a></span></p>',
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: '',
             __fileName: 'foo.pdf',
             __displayType: 'file',
-          }),
-        ]),
+          })(),
+        ),
       ),
     );
 
@@ -123,15 +118,15 @@ describe('JIRATransformer', () => {
       schema,
       [`<p>${fragment1}</p>`],
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: '',
             __fileName: 'foo.png',
             __displayType: 'thumbnail',
-          }),
-        ]),
+          })(),
+        ),
       ),
     );
 
@@ -140,15 +135,15 @@ describe('JIRATransformer', () => {
       schema,
       [`<p>${fragment2}</p>`],
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '36',
             type: 'file',
             collection: '',
             __fileName: 'bar.pdf',
             __displayType: 'file',
-          }),
-        ]),
+          })(),
+        ),
       ),
     );
 
@@ -157,22 +152,22 @@ describe('JIRATransformer', () => {
       schema,
       [`<p>${fragment1}${fragment2}</p>`],
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: '',
             __fileName: 'foo.png',
             __displayType: 'thumbnail',
-          }),
+          })(),
           media({
             id: '36',
             type: 'file',
             collection: '',
             __fileName: 'bar.pdf',
             __displayType: 'file',
-          }),
-        ]),
+          })(),
+        ),
       ),
     );
 
@@ -183,15 +178,15 @@ describe('JIRATransformer', () => {
         '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
       ],
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: '',
             __fileName: 'foo.png',
             __displayType: 'thumbnail',
-          }),
-        ]),
+          })(),
+        ),
       ),
     );
 
@@ -199,15 +194,15 @@ describe('JIRATransformer', () => {
       'thumbnail type (uploadContext)',
       schema,
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
             collection: 'MediaServicesSample',
             __fileName: 'foo.png',
             __displayType: 'thumbnail',
-          }),
-        ]),
+          })(),
+        ),
       ),
       '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample"></jira-attachment-thumbnail></a></span></p>',
       {},
@@ -225,7 +220,7 @@ describe('JIRATransformer', () => {
       'file type (without __displayType)',
       schema,
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
@@ -233,8 +228,8 @@ describe('JIRATransformer', () => {
             __fileName: 'foo.pdf',
             __displayType: null,
             __fileMimeType: 'application/pdf',
-          }),
-        ]),
+          })(),
+        ),
       ),
       '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample">foo.pdf</a></span></p>',
     );
@@ -243,7 +238,7 @@ describe('JIRATransformer', () => {
       'thumbnail type (without __displayType)',
       schema,
       doc(
-        mediaGroup([
+        mediaGroup(
           media({
             id: '42',
             type: 'file',
@@ -251,8 +246,8 @@ describe('JIRATransformer', () => {
             __fileName: 'foo.png',
             __displayType: null,
             __fileMimeType: 'image/png',
-          }),
-        ]),
+          })(),
+        ),
       ),
       '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample"></jira-attachment-thumbnail></a></span></p>',
     );

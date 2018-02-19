@@ -1,5 +1,12 @@
 # @atlaskit/input
 
+## 1.6.5
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 1.6.4
+
+- [patch] Fixed font-size in Input component [bebf0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bebf0ab)
+
 ## 1.6.3
 
 

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import ProgressTracker from '../src/ProgressTracker';
+import { ProgressTracker } from '../src';
 
 const css = `
   .sample {

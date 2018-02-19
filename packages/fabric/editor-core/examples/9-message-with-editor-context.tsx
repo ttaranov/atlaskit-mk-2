@@ -48,6 +48,33 @@ export default function Example() {
                 Load Document
               </Button>
               <Button onClick={() => actions.clear()}>Clear</Button>
+              <Button
+                onClick={() =>
+                  actions.replaceSelection({
+                    type: 'mention',
+                    attrs: {
+                      id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+                      text: '@Bradley Ayers',
+                      userType: 'APP',
+                    },
+                  })
+                }
+              >
+                Inser mention
+              </Button>
+              <Button
+                onClick={() =>
+                  actions.replaceSelection({
+                    type: 'codeBlock',
+                    attrs: {
+                      language: 'javascript',
+                    },
+                    content: [],
+                  })
+                }
+              >
+                Inser code block
+              </Button>
             </ButtonGroup>
           )}
         />

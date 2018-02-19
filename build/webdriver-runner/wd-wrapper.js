@@ -10,76 +10,55 @@ export default class Page {
     return this.browser.url(url);
   }
 
-  // Get
-  getAttribute(selector, attributeName) {
-    return this.browser.getAttribute(selector, attributeName);
-  }
-  getCssProperty(selector, cssProperty) {
-    return this.browser.getCssProperty(selector, cssProperty);
-  }
-  getElementSize(selector, prop) {
-    return this.browser.getElementSize(selector, prop);
-  }
-  getText(selector) {
-    return this.browser.getText(selector);
-  }
-  getTitle() {
+  title() {
     return this.browser.getTitle();
   }
-  getUrl() {
-    return this.browser.getUrl();
-  }
-  getValue(selector) {
-    return this.browser.getValue(selector);
-  }
-  // Protocol
-  back() {
-    return this.browser.back();
+
+  $(selector) {
+    return this.browser.element(selector);
   }
 
-  // Selenium Actions
-  addValue(selector, values) {
-    return this.browser.addValue(selector, values);
+  $$(selector) {
+    return this.browser.elements(selector);
   }
-  clearElement(selector) {
-    return this.browser.clearElement(selector);
+
+  type(selector, text) {
+    return this.browser.addValue(selector, text);
   }
+
   click(selector) {
     return this.browser.click(selector);
   }
-  doubleClick(selector) {
-    return this.browser.doubleClick(selector);
-  }
-  dragAndDrop(sourceElem, destinationElem) {
-    return this.browser.dragAndDrop(sourceElem, destinationElem);
-  }
-  element(selector) {
-    return this.browser.element(selector);
-  }
-  elements(selector) {
-    return this.browser.elements(selector);
-  }
   keys(value) {
-    return this.browser.keys(value); // more documentation - https://w3c.github.io/webdriver/webdriver-spec.html#keyboard-actions
+    return this.browser.keys(value);
   }
-  select(selector) {
-    return this.browser.element(selector);
+
+  // Get
+  getProperty(selector, cssProperty) {
+    return this.browser.getCssProperty(selector, cssProperty);
   }
-  selectByAttribute(selector, attribute, value) {
-    return this.browser.selectByAttribute(selector, attribute, value);
+
+  url() {
+    return this.browser.getUrl();
   }
-  selectByValue(selector, value) {
-    return this.browser.selectByValue(selector, value);
+  // Protocol
+  goBack() {
+    return this.browser.back();
   }
-  selectByVisibleText(selector, text) {
-    return this.browser.selectByVisibleText(selector, text);
+  close() {
+    return this.browser.close();
   }
-  setValue(selector, values) {
-    return this.browser.setValue(selector, values);
-  }
-  // State
-  hasFocus(selector) {
-    return this.browser.hasFocus(selector);
+
+  // To be replaced by those puppeeter fucntions
+  //  keyboard.down('KeyA');
+  //  keyboard.press('KeyA');
+  //  keyboard.up('Shift');
+
+  //will need to have wrapper for these once moved to puppeteer
+  getText(selector) {
+    // replace with await page.evaluate(() => document.querySelector('p').textContent)
+    // for puppteer
+    return this.browser.getText(selector);
   }
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
@@ -87,18 +66,20 @@ export default class Page {
   isVisible(selector) {
     return this.browser.isVisible(selector);
   }
+  log(type) {
+    return this.browser.log(type);
+  }
   // Wait
   waitForSelector(selector) {
     return this.browser.waitForSelector(selector);
   }
-  waitForVisible(selector, [, ms], [, reverse]) {
-    return this.browser.waitForVisible(selector, [, ms], [, reverse]);
+  waitFor(selector, ms, reverse) {
+    return this.browser.waitForVisible(selector, ms, reverse);
   }
   // Window
-  // close
-  // getViewportSize
-  // setViewPortSize
-  // switchTab
+  setViewPort(size, type) {
+    return this.browser.setViewPort(size, type);
+  }
 }
 //TODO: Maybe wrapping all functions?
 async function wrapper(fn) {

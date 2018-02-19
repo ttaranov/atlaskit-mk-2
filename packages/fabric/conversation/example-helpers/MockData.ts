@@ -1,4 +1,5 @@
 import { Comment, Conversation, User } from '../src/model';
+import { uuid } from '../src/internal/uuid';
 
 export const MOCK_USERS: User[] = [
   {
@@ -130,4 +131,41 @@ export const mockInlineConversation: Conversation = {
   containerId: 'abc:abc:abc/demo',
   comments: [mockInlineComment],
   meta: { name: 'main.js', lineNumber: 3 },
+};
+
+export const generateMockConversation = (): Conversation => {
+  const conversationId = <string>uuid.generate();
+  return {
+    meta: {},
+    conversationId,
+    containerId: 'abc:abc:abc/demo',
+    comments: Array.from({ length: 2 }).map(() => {
+      const commentId = <string>uuid.generate();
+
+      return {
+        localId: `${commentId}-local`,
+        commentId: commentId,
+        conversationId,
+        createdBy: MOCK_USERS[0],
+        createdAt: Date.now(),
+        document: {
+          adf: {
+            version: 1,
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'Hello World',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+    }),
+  };
 };

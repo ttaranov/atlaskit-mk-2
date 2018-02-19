@@ -1,5 +1,11 @@
 # @atlaskit/icon
 
+## 10.9.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 10.9.0
+- [minor] New emoji-add icon [b8b1b51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8b1b51)
+
 ## 10.8.0
 - [minor] added editor/success icon, updated a few other editor icons [911074c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911074c)
 

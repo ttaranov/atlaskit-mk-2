@@ -311,7 +311,7 @@ export function parseMacro(node: Element): Macro {
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        params[key.toLowerCase()] = value;
+        params[key] = value;
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
@@ -354,4 +354,20 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
       return 'panel';
   }
   return panelType;
+};
+
+export const encodeMacroParams = (
+  doc: Document,
+  params: {
+    [name: string]: { value: string };
+  },
+) => {
+  const elem = doc.createDocumentFragment();
+  Object.keys(params).forEach(name => {
+    const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    el.setAttributeNS(AC_XMLNS, 'ac:name', name);
+    el.textContent = params[name].value;
+    elem.appendChild(el);
+  });
+  return elem;
 };

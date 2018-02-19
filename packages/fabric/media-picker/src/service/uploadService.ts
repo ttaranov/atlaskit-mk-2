@@ -2,7 +2,7 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
@@ -18,6 +18,7 @@ import { MediaClient, MediaApiError, isTokenError } from './mediaClient';
 import { MediaClientPool } from './mediaClientPool';
 import { MediaApi, MediaFileData } from './mediaApi';
 import { Preview } from '../domain/preview';
+import { UploadParams } from '../domain/config';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,

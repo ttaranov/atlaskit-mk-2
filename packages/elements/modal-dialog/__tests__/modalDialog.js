@@ -27,6 +27,14 @@ describe('modal-dialog', () => {
     expect(wrapper).not.toBe(undefined);
   });
 
+  /* eslint-disable jest/no-disabled-tests */
+  xdescribe('scrolling window', () => {
+    xit('should be locked when initiated by the user', () => {});
+
+    xit('should be locked when initiated programatically', () => {});
+  });
+  /* eslint-enable jest/no-disabled-tests */
+
   describe('props', () => {
     describe('height', () => {
       it('should be passed to Dialog', () => {

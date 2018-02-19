@@ -6,27 +6,43 @@ import {
   strong,
   insertText,
   doc,
-  makeEditor,
+  createEditor,
   a as link,
   p,
   code_block,
-  plain,
 } from '@atlaskit/editor-test-helpers';
 
-import textFormattingPlugins from '../../../src/plugins/text-formatting';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import {
+  strongRegex1,
+  strongRegex2,
+  italicRegex1,
+  italicRegex2,
+  strikeRegex,
+  codeRegex,
+} from '../../../src/plugins/text-formatting/input-rule';
 
 describe('text-formatting input rules', () => {
-  const editor = (doc: any, schema: any = defaultSchema) =>
-    makeEditor({
-      doc,
-      plugins: textFormattingPlugins(schema),
-    });
   let trackEvent;
+  const editor = (doc: any, disableCode = false) =>
+    createEditor({
+      doc,
+      editorPlugins: [
+        textFormatting({ disableCode }),
+        codeBlockPlugin,
+        hyperlinkPlugin,
+        mentionsPlugin,
+      ],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('strong rule', () => {
@@ -191,11 +207,13 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "**text** to strong when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '**text**', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('**text**')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('**text**')),
+      );
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -218,6 +236,13 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '* text*', sel);
       expect(editorView.state.doc).toEqualDocument(doc(p('* text*')));
+    });
+
+    it('should not convert "**text*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '**text*', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('**text*')));
     });
 
     it('should convert "_text_" to em', () => {
@@ -333,11 +358,11 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "_text_ to em when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '_text_', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('_text_')));
+      expect(editorView.state.doc).toEqualDocument(doc(code_block()('_text_')));
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -416,11 +441,13 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "~~text~~ to strike when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '~~text~~', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('~~text~~')));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('~~text~~')),
+      );
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -466,7 +493,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should convert mention to plaint text', () => {
-      const mentionNode = mention({ id: '1234', text: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' })();
       const { editorView, sel } = editor(
         doc(p('hey! `hello, ', mentionNode, ' there{<>}?')),
       );
@@ -478,7 +505,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should cleanup other formatting', () => {
-      const mentionNode = mention({ id: '1234', text: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' })();
       const { editorView, sel } = editor(
         doc(
           p('`', strong('hello '), mentionNode, em(', '), strike('there?{<>}')),
@@ -517,11 +544,11 @@ describe('text-formatting input rules', () => {
     });
 
     it('should not convert "`text`" to code when node does not support text formatting', () => {
-      const { editorView, sel } = editor(doc(plain('{<>}')));
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
       insertText(editorView, '`text`', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(plain('`text`')));
+      expect(editorView.state.doc).toEqualDocument(doc(code_block()('`text`')));
       expect(trackEvent).not.toHaveBeenCalledWith(
         'atlassian.editor.format.strong.autoformatting',
       );
@@ -530,14 +557,7 @@ describe('text-formatting input rules', () => {
 
   describe('nested rules', () => {
     it('should work without code-mark in the schema', () => {
-      const simpleSchema = {
-        ...defaultSchema,
-        marks: {
-          strong: defaultSchema.marks.strong,
-        },
-      };
-
-      const { editorView, sel } = editor(doc(p('{<>}')), simpleSchema);
+      const { editorView, sel } = editor(doc(p('{<>}')), true);
 
       insertText(editorView, '**text**', sel);
 
@@ -591,6 +611,166 @@ describe('text-formatting input rules', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.strike.autoformatting',
       );
+    });
+
+    describe('when there is code mark in the line', () => {
+      let editorView;
+      beforeEach(() => {
+        editorView = editor(doc(p(code('abc'), ' {<>}'))).editorView;
+      });
+      it('should do autoformatting even for ** strong text', () => {
+        insertText(editorView, '**abc**', editorView.state.selection.from);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(code('abc'), ' ', strong('abc'))),
+        );
+      });
+      it('should do autoformatting even for __ strong text', () => {
+        insertText(editorView, '__abc__', editorView.state.selection.from);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(code('abc'), ' ', strong('abc'))),
+        );
+      });
+      it('should do autoformatting even for * italic text', () => {
+        insertText(editorView, '*abc*', editorView.state.selection.from);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(code('abc'), ' ', em('abc'))),
+        );
+      });
+      it('should do autoformatting even for _ italic text', () => {
+        insertText(editorView, '_abc_', editorView.state.selection.from);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(code('abc'), ' ', em('abc'))),
+        );
+      });
+      it('should do autoformatting even for ~~ strike text', () => {
+        insertText(editorView, '~~abc~~', editorView.state.selection.from);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(code('abc'), ' ', strike('abc'))),
+        );
+      });
+    });
+  });
+
+  describe('regex', () => {
+    const checkValidStrings = (regex, string, formatting) => {
+      it(`should not return null for correct markdown style: ${formatting}, regex: ${regex}, string: ${string}`, () => {
+        expect(regex.exec(string)).not.toEqual(null);
+      });
+    };
+    const autoformats = string => {
+      it(`should autoformat: ${string}`, () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        insertText(editorView, string, 1);
+        expect(editorView.state.doc).not.toEqualDocument(doc(p(string)));
+      });
+    };
+    const checkInvalidStrings = (regex, string, formatting) => {
+      it(`should return null for incorrect markdown style: ${formatting}, regex: ${regex}, string: ${string}`, () => {
+        expect(regex.exec(string)).toEqual(null);
+      });
+    };
+    const notautoformats = string => {
+      it(`should not autoformat: ${string}`, () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        insertText(editorView, string, 1);
+        expect(editorView.state.doc).toEqualDocument(doc(p(string)));
+      });
+    };
+    describe('valid strings', () => {
+      // simple single word
+      checkValidStrings(strongRegex1, '__test__', 'strong');
+      checkValidStrings(strongRegex2, '**test**', 'strong');
+      checkValidStrings(italicRegex1, '_test_', 'italic');
+      checkValidStrings(italicRegex2, '*test*', 'italic');
+      checkValidStrings(strikeRegex, '~~test~~', 'strike');
+      checkValidStrings(codeRegex, '`test`', 'code');
+      // single character
+      checkValidStrings(strongRegex1, '__a__', 'strong');
+      checkValidStrings(strongRegex2, '**a**', 'strong');
+      checkValidStrings(italicRegex1, '_a_', 'italic');
+      checkValidStrings(italicRegex2, '*a*', 'italic');
+      checkValidStrings(strikeRegex, '~~a~~', 'strike');
+      checkValidStrings(codeRegex, '`a`', 'code');
+      // at end of line
+      checkValidStrings(strongRegex1, 'abc abc abc __test__', 'strong');
+      checkValidStrings(strongRegex2, 'abc abc abc **test**', 'strong');
+      checkValidStrings(italicRegex1, 'abc abc abc _test_', 'italic');
+      checkValidStrings(italicRegex2, 'abc abc abc *test*', 'italic');
+      checkValidStrings(strikeRegex, 'abc abc abc ~~test~~', 'strike');
+      checkValidStrings(codeRegex, 'abc abc abc `test`', 'code');
+      // 2 characters
+      checkValidStrings(strongRegex1, '__ab__', 'strong');
+      checkValidStrings(strongRegex2, '**ab**', 'strong');
+      checkValidStrings(italicRegex1, '_ab_', 'italic');
+      checkValidStrings(italicRegex2, '*ab*', 'italic');
+      checkValidStrings(strikeRegex, '~~ab~~', 'strike');
+      checkValidStrings(codeRegex, '`ab`', 'code');
+      // without space before
+      checkValidStrings(strongRegex2, 'abc**test**', 'strong');
+      checkValidStrings(italicRegex2, 'abc*test*', 'italic');
+      checkValidStrings(strikeRegex, 'abc~~test~~', 'strike');
+      checkValidStrings(codeRegex, 'abc`test`', 'code');
+      // conbining autoformatting
+      checkValidStrings(strongRegex2, '~~**test**', 'strong');
+      checkValidStrings(strongRegex2, '***test**', 'string');
+      checkValidStrings(strongRegex1, '___test__', 'strong');
+      checkValidStrings(italicRegex2, '~~*test*', 'italic');
+      checkValidStrings(strikeRegex, '**~~test~~', 'strike');
+      checkValidStrings(strongRegex1, '~~__test__', 'strong');
+      checkValidStrings(strongRegex1, '**__test__', 'strong');
+      checkValidStrings(italicRegex1, '~~_test_', 'italic');
+      checkValidStrings(italicRegex1, '**_test_', 'italic');
+      // ` not in beginning of word
+      autoformats('`test __test__');
+      autoformats('`test **test**');
+      autoformats('`test _test_');
+      autoformats('`test *test*');
+      autoformats('`test ~~test~~');
+      // more complex string combination with `
+      autoformats('`test_test_ __test__');
+      autoformats('`test*test* **test**');
+      autoformats('`test__test__ _test_');
+      autoformats('`test**test** *test*');
+      autoformats('`test**test**  ~~test~~');
+      autoformats('te`st __test__');
+      autoformats('te`st **test**');
+      autoformats('te`st _test_');
+      autoformats('te`st *test*');
+      autoformats('te`st ~~test~~');
+      autoformats('` __test__');
+      autoformats('` **test**');
+      autoformats('` _test_');
+      autoformats('` *test*');
+      autoformats('` ~~test~~');
+    });
+
+    describe('invalid strings', () => {
+      // space after
+      checkInvalidStrings(strongRegex1, '__test__ ', 'strong');
+      checkInvalidStrings(strongRegex2, '**test** ', 'strong');
+      checkInvalidStrings(italicRegex1, '_test_ ', 'italic');
+      checkInvalidStrings(italicRegex2, '*test* ', 'italic');
+      checkInvalidStrings(strikeRegex, '~~test~~ ', 'strike');
+      checkInvalidStrings(codeRegex, '`test` ', 'code');
+      // not last word in the line
+      checkInvalidStrings(strongRegex1, '__test__ abc', 'strong');
+      checkInvalidStrings(strongRegex2, '**test** abc', 'strong');
+      checkInvalidStrings(italicRegex1, '_test_ abc', 'italic');
+      checkInvalidStrings(italicRegex2, '*test* abc', 'italic');
+      checkInvalidStrings(strikeRegex, '~~test~~ abc', 'strike');
+      checkInvalidStrings(codeRegex, '`test` abc', 'code');
+      // no space before
+      checkInvalidStrings(strongRegex1, 'abc__test__', 'strong');
+      checkInvalidStrings(italicRegex1, 'abc_test_', 'italic');
+      // ` in beginning
+      notautoformats('`__test__');
+      notautoformats('`**test**');
+      notautoformats('`_test_');
+      notautoformats('`*test*');
+      notautoformats('`~~test~~');
+      notautoformats('___test_');
+      notautoformats('__test_');
+      notautoformats('**test*');
     });
   });
 });

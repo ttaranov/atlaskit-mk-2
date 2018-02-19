@@ -60,7 +60,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - bolt test:webdriver:browserstack
+            - yarn test:webdriver:browserstack
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
@@ -76,3 +76,15 @@ pipelines:
             - yarn test:browser:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
+
+    landkid:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - git rebase master
+            - bolt install --pure-lockfile
+            - yarn build
+            - yarn lint
+            - yarn typecheck
+            - yarn test
+            - yarn test:browser:browserstack

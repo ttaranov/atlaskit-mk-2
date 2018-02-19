@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import { ResourceProvider } from '../src/api/ConversationResource';
 import { Conversation } from '../src';
 import SingleSelect from '@atlaskit/single-select';
-import {
-  Comment as CommentType,
-  Conversation as ConversationType,
-  User,
-} from '../src/model';
+import { Conversation as ConversationType, User } from '../src/model';
+import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { selectAll } from 'prosemirror-commands';
@@ -159,7 +156,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
-  { conversations: any[]; selectedUser: User }
+  { conversations: any[]; selectedUser: User; responseCode: number }
 > {
   constructor(props) {
     super(props);
@@ -167,6 +164,7 @@ export class Demo extends React.Component<
     this.state = {
       conversations: [],
       selectedUser: MOCK_USERS[0],
+      responseCode: 200,
     };
   }
 
@@ -176,10 +174,21 @@ export class Demo extends React.Component<
     try {
       const conversations = await provider.getConversations(containerId);
       this.setState({ conversations });
+      provider.subscribe(this.handleDispatch);
     } catch (err) {
       // Handle error
     }
   }
+
+  async componentWillUnmount() {
+    const { provider } = this.props;
+    provider.unsubscribe(this.handleDispatch);
+  }
+
+  handleDispatch = (state: State): void => {
+    const { conversations } = state;
+    this.setState({ conversations });
+  };
 
   private onUserSelect = (selected: any) => {
     const { item } = selected;
@@ -196,6 +205,18 @@ export class Demo extends React.Component<
 
     this.setState({
       selectedUser,
+    });
+  };
+
+  private onResponseCodeSelect = (selected: any) => {
+    const { item } = selected;
+    const { provider } = this.props;
+    const responseCode = item.value;
+
+    (provider as any).updateResponseCode(responseCode);
+
+    this.setState({
+      responseCode,
     });
   };
 
@@ -221,15 +242,38 @@ export class Demo extends React.Component<
     ));
   }
 
-  private renderUserSelect() {
-    const { selectedUser } = this.state;
+  private renderOptions() {
+    const { selectedUser, responseCode } = this.state;
     const users = {
       heading: 'Users',
       items: MOCK_USERS.map((user: User) => {
         return {
           content: user.name,
           value: user.id,
+          label: user.name,
           isSelected: selectedUser.id === user.id,
+        };
+      }),
+    };
+    const success = {
+      heading: 'Success',
+      items: [200, 201, 204].map((code: Number) => {
+        return {
+          content: code,
+          value: code,
+          label: String(code),
+          isSelected: responseCode === code,
+        };
+      }),
+    };
+    const error = {
+      heading: 'Error',
+      items: [400, 403, 404, 500, 503].map((code: Number) => {
+        return {
+          content: code,
+          value: code,
+          label: String(code),
+          isSelected: responseCode === code,
         };
       }),
     };
@@ -240,14 +284,25 @@ export class Demo extends React.Component<
           marginBottom: '10px',
           paddingBottom: '10px',
           borderBottom: '1px solid #ccc',
+          display: 'flex',
         }}
       >
-        <SingleSelect
-          label="Change User"
-          defaultSelected={users.items[0]}
-          items={[users]}
-          onSelected={this.onUserSelect}
-        />
+        <div>
+          <SingleSelect
+            label="Change User"
+            defaultSelected={users.items[0]}
+            items={[users]}
+            onSelected={this.onUserSelect}
+          />
+        </div>
+        <div style={{ marginLeft: '30px' }}>
+          <SingleSelect
+            label="Provider Response Code"
+            defaultSelected={success.items[0]}
+            items={[success, error]}
+            onSelected={this.onResponseCodeSelect}
+          />
+        </div>
       </div>
     );
   }
@@ -261,7 +316,7 @@ export class Demo extends React.Component<
 
     return (
       <div style={{ margin: '20px' }}>
-        {this.renderUserSelect()}
+        {this.renderOptions()}
         {this.renderConversations(prConversations)}
         {prConversations.length === 0 ? (
           <Conversation

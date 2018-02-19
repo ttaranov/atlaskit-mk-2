@@ -1,5 +1,12 @@
 # @atlaskit/page
 
+## 5.0.13
+
+## 5.0.12
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 5.0.11
+
 ## 5.0.10
 
 

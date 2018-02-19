@@ -1,12 +1,10 @@
 import { name } from '../../../package.json';
-import { Schema, Node } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
-import createEditor from '../../_helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import {
   sortByRank,
   fixExcludes,
   createPMPlugins,
-  processDefaultDocument,
 } from '../../../src/editor/create-editor/create-editor';
 
 describe(name, () => {
@@ -86,90 +84,10 @@ describe(name, () => {
     });
   });
 
-  describe('#processDefaultDocument', () => {
-    let schema: Schema;
-    let consoleError: any;
-
-    beforeEach(() => {
-      const editor = createEditor();
-      schema = editor.editorView.state.schema;
-      consoleError = jest.spyOn(console, 'error');
-      consoleError.mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-      consoleError.mockRestore();
-    });
-
-    it('should return undefined if no default document provided', () => {
-      expect(processDefaultDocument(schema, undefined)).toBe(undefined);
-    });
-
-    it(`should return undefined if provided document isn't a vaild JSON`, () => {
-      expect(processDefaultDocument(schema, '{1:2}')).toBe(undefined);
-      expect(consoleError).toHaveBeenCalled();
-    });
-
-    it(`should return undefined if provided document is an array`, () => {
-      expect(processDefaultDocument(schema, [{ type: 'paragraph' }])).toBe(
-        undefined,
-      );
-      expect(consoleError).toHaveBeenCalled();
-    });
-
-    it(`should return undefined if Node.fomJSON wasn't able to create a Node`, () => {
-      expect(
-        processDefaultDocument(schema, {
-          version: 1,
-          type: 'doc',
-          content: [
-            {
-              type: 'taskList',
-              content: [
-                {
-                  type: 'taskItem',
-                  content: [{ type: 'text', text: '213123' }],
-                },
-              ],
-            },
-          ],
-        }),
-      ).toBe(undefined);
-      expect(consoleError).toHaveBeenCalled();
-    });
-
-    it('should return PM Node if a default document is an instance of Node', () => {
-      const node = Node.fromJSON(schema, {
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [{ type: 'text', text: 'text' }],
-          },
-        ],
-      });
-      expect(processDefaultDocument(schema, node)).toEqual(node);
-    });
-
-    it('should return PM Node', () => {
-      expect(
-        processDefaultDocument(schema, {
-          type: 'doc',
-          content: [
-            {
-              type: 'paragraph',
-              content: [{ type: 'text', text: 'text' }],
-            },
-          ],
-        }) instanceof Node,
-      ).toBe(true);
-    });
-  });
-
   describe('onChange', () => {
     it('should call onChange only when document changes', () => {
       const onChange = jest.fn();
-      const editor = createEditor([], { onChange });
+      const editor = createEditor({ editorProps: { onChange } });
       const { editorView } = editor;
       editorView.dispatch(editorView.state.tr.insertText('hello'));
       expect(onChange).toHaveBeenCalledTimes(1);

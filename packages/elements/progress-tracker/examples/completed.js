@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import ProgressTracker from '../src/ProgressTracker';
+import { ProgressTracker } from '../src';
 
 const items = [
   {
@@ -34,15 +34,15 @@ const items = [
   {
     id: '5',
     label: 'Step 5',
-    percentageComplete: 50,
-    status: 'current',
+    percentageComplete: 100,
+    status: 'visited',
     href: '#',
   },
   {
     id: '6',
     label: 'Step 6',
     percentageComplete: 0,
-    status: 'unvisited',
+    status: 'current',
     href: '#',
   },
 ];

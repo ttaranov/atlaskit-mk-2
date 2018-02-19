@@ -1,5 +1,104 @@
 # @atlaskit/editor-core
 
+## 62.0.9
+- [patch] Show fake cursor when inserting a placeholder text element [ca557d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca557d0)
+
+## 62.0.8
+
+## 62.0.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
+## 62.0.6
+- [patch] fix date when inserting from + menu [8f6bd7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f6bd7c)
+
+## 62.0.5
+- [patch] ED-3270: Allow arbitrary items to be added to the plus menu [a88b921](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88b921)
+
+## 62.0.4
+- [patch] Fix an issue where Shift-Enter shortcuts would not be properly handled by the Editor. Refactored the BlockType and Tables shortcut handlers to better support the updated editor architecture. [a78626e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78626e)
+- [patch] Minor fixes for the placeholder node to improve experience. We now highlight the node when selected, and fixed a bug where clicking on the span in a list would not trigger a selection change [a9576d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9576d8)
+- [patch] Add support for inserting custom placeholder-text via the Insert Block menu [dfc41ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfc41ea)
+
+## 62.0.3
+
+## 62.0.2
+- [patch] Fix editor getValue action is giving old doc while using with waitForMediaUpload [14010c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14010c3)
+
+## 62.0.1
+
+## 62.0.0
+- [major] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
+## 61.9.0
+- [minor] Add replaceSelection method to EditorActions [e0da0dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0da0dd)
+
+## 61.8.2
+- [patch] Removes @atlaskit/profilecard dependency from editor-core [5a0555e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a0555e)
+
+## 61.8.1
+
+## 61.8.0
+- [patch] Refactor PlaceholderText to use a NodeView to improve selection behaviour across browsers [47e4b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47e4b88)
+- [minor] Support the `allowTemplatePlaceholders` prop to enable placeholder text elements. [70dbde2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70dbde2)
+
+## 61.7.16
+- [patch] Autoformatting should work for single character. [70e44af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e44af)
+
+## 61.7.15
+- [patch] Handle Media.getDomElement when node has no child nodes [618b0c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/618b0c1)
+
+## 61.7.14
+
+## 61.7.13
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
+## 61.7.12
+- [patch] When adding blockquote from toolbar cursor is not visible. [c7c4780](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7c4780)
+
+## 61.7.11
+- [patch] fix space after mention [b47f480](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b47f480)
+
+## 61.7.10
+
+## 61.7.9
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 61.7.8
+- [patch] Adding product detail to JIRA collector feedback form. [81a9fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81a9fd3)
+
+## 61.7.7
+
+## 61.7.6
+- [patch] fix table controls on crazy fast resize [ad93c0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad93c0b)
+
+## 61.7.5
+- [patch] Add ToolbarFeedback export back [8525bb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8525bb2)
+
+## 61.7.4
+- [patch] fix cursor pos on table controls hover [76bfa3f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76bfa3f)
+
+## 61.7.3
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+- [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
+## 61.7.2
+- [patch] Clear formatting advance option should remove panel, blockquote and code block node types. [966a444](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966a444)
+
+## 61.7.1
+- [patch] added ContentNodeView class to fix nodeViews that has contentDOM ref [53f2a38](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53f2a38)
+
+## 61.7.0
+- [minor] The allowPlaceholderCursor prop has been removed in favour of always showing the (now renamed) fake text-cursor. [c5da217](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5da217)
+
+## 61.6.5
+
+## 61.6.4
+- [patch] Removes components, examples, and tests, for old arch editor [9fd0649](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fd0649)
+
 ## 61.6.3
 - [patch] Reducing min-width of comment editor to 272px. [c71ff58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c71ff58)
 

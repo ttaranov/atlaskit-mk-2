@@ -1,11 +1,6 @@
-import * as chai from 'chai';
-import { expect } from 'chai';
 import { NodeSelection } from 'prosemirror-state';
-import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
-  chaiPlugin,
-  makeEditor,
+  createEditor,
   doc,
   p,
   blockquote,
@@ -15,12 +10,12 @@ import {
   taskItem,
   mediaGroup,
   media,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
-
-chai.use(chaiPlugin);
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 describe('tasks and decisions - commands', () => {
   beforeEach(() => {
@@ -32,13 +27,9 @@ describe('tasks and decisions - commands', () => {
   });
 
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(
-        defaultSchema,
-        {},
-        new ProviderFactory(),
-      ),
+      editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
     });
 
   describe('changeToTaskDecision', () => {
@@ -47,7 +38,7 @@ describe('tasks and decisions - commands', () => {
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
-      expect(changeToTaskDecision(editorView, 'taskList')).to.equal(true);
+      expect(changeToTaskDecision(editorView, 'taskList')).toBe(true);
     });
 
     it('can convert decision item to action', () => {
@@ -61,7 +52,7 @@ describe('tasks and decisions - commands', () => {
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
-      expect(changeToTaskDecision(editorView, 'taskList')).to.equal(true);
+      expect(changeToTaskDecision(editorView, 'taskList')).toBe(true);
     });
 
     it('can convert action item to decision', () => {
@@ -75,7 +66,7 @@ describe('tasks and decisions - commands', () => {
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
-      expect(changeToTaskDecision(editorView, 'decisionList')).to.equal(true);
+      expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
     });
 
     it('can convert blockquote to action/decision', () => {
@@ -83,7 +74,7 @@ describe('tasks and decisions - commands', () => {
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
-      expect(changeToTaskDecision(editorView, 'decisionList')).to.equal(true);
+      expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
     });
 
     it('cannot convert media node to action/decision', () => {
@@ -94,14 +85,14 @@ describe('tasks and decisions - commands', () => {
               id: 'test',
               type: 'file',
               collection: 'blah',
-            }),
+            })(),
           ),
         ),
       );
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
-      expect(changeToTaskDecision(editorView, 'taskList')).to.equal(false);
+      expect(changeToTaskDecision(editorView, 'taskList')).toBe(false);
     });
   });
 });

@@ -1,5 +1,38 @@
 # @atlaskit/conversation
 
+## 5.2.2
+- [patch] Enabling hyperlinks in the conversation editor [a151fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a151fd3)
+
+## 5.2.1
+
+## 5.2.0
+- [minor] Add subscribe/unsubscribe methods to resource provider [5c1e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c1e2bf)
+
+## 5.1.3
+
+## 5.1.2
+
+## 5.1.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 5.1.0
+
+- [minor] Add error state and cancel/retry [0c1bb6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c1bb6e)
+
+## 5.0.6
+
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 5.0.2
+- [patch] Avoid unnecessary re-render of comments [402cc7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/402cc7c)
+
+## 5.0.1
+
 ## 5.0.0
 - [major] Added some tests for reducer/store and renamed actions [ba629ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba629ef)
 

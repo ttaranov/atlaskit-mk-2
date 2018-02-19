@@ -110,6 +110,10 @@ const ContentStyles = styled.div`
     }
   }
 
+  .ProseMirror span[data-placeholder] {
+    color: ${akColorN80};
+  }
+
   .ProseMirror blockquote {
     box-sizing: border-box;
     padding-left: ${akGridSizeUnitless * 2}px;
@@ -132,6 +136,10 @@ const ContentStyles = styled.div`
 
     &::after {
       content: '';
+    }
+
+    & p {
+      display: block;
     }
   }
 
@@ -324,14 +332,14 @@ const ContentStyles = styled.div`
 
   //=============== PLACEHOLDER CURSOR STYLES=========
 
-  & .ProseMirror-placeholder-cursor {
+  & .ProseMirror-fake-text-cursor {
     display: inline;
     pointer-events: none;
     position: relative;
     height: 15px;
   }
 
-  & .ProseMirror-placeholder-cursor:after {
+  & .ProseMirror-fake-text-cursor:after {
     content: '';
     display: inline;
     top: 0;

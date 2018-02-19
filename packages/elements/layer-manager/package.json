@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer-manager",
-  "version": "2.7.1",
+  "version": "2.7.3",
   "description": "A React Component for managing layers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -27,13 +27,13 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics": "^2.4.0",
-    "@atlaskit/button": "^6.3.0",
+    "@atlaskit/analytics": "^2.4.2",
+    "@atlaskit/button": "^6.4.1",
     "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/modal-dialog": "^3.3.6",
-    "@atlaskit/onboarding": "^2.2.0",
-    "@atlaskit/tooltip": "^8.1.0"
+    "@atlaskit/icon": "^10.9.1",
+    "@atlaskit/modal-dialog": "^3.3.11",
+    "@atlaskit/onboarding": "^2.3.2",
+    "@atlaskit/tooltip": "^8.3.1"
   },
   "keywords": [
     "atlaskit",

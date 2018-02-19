@@ -14,6 +14,7 @@ export default md`
       source={require('!!raw-loader!../examples/00-basic')}
     />
   )}
+
   ${(
     <Example
       Component={require('../examples/01-groupless').default}
@@ -32,7 +33,7 @@ export default md`
 
   ${(
     <Props
-      heading={'Statefil MultiSelect Props'}
+      heading={'Stateful MultiSelect Props'}
       props={require('!!extract-react-types-loader!../src/components/Stateful')}
     />
   )}

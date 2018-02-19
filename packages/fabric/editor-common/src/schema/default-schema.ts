@@ -19,6 +19,7 @@ export const defaultSchema: Schema = createSchema({
     'mention',
     'media',
     'mediaGroup',
+    'mediaSingle',
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
@@ -37,6 +38,7 @@ export const defaultSchema: Schema = createSchema({
     'taskItem',
     'unknownBlock',
     'date',
+    'placeholder',
   ],
   marks: [
     'action',

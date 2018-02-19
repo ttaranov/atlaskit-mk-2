@@ -2,6 +2,7 @@ import { generateUuid as uuid } from './uuid';
 import { defaultSchema } from '../schema';
 import { Mark as PMMark, Schema } from 'prosemirror-model';
 import { isSafeUrl } from '.';
+import { inlineNodes } from '../schema';
 
 export interface ADDoc {
   version: 1;
@@ -85,7 +86,9 @@ export const getValidDocument = (
 const wrapInlineNodes = (nodes: ADNode[] = []): ADNode[] => {
   return nodes.map(
     node =>
-      node.type === 'text' ? { type: 'paragraph', content: [node] } : node,
+      inlineNodes.has(node.type)
+        ? { type: 'paragraph', content: [node] }
+        : node,
   );
 };
 
@@ -164,12 +167,13 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
       text: text || attrs.text || `[${type}]`,
     };
 
-    if (attrs.textUrl) {
+    const { textUrl } = attrs;
+    if (textUrl && isSafeUrl(textUrl)) {
       unknownInlineNode.marks = [
         {
           type: 'link',
           attrs: {
-            href: attrs.textUrl,
+            href: textUrl,
           },
         } as ADMark,
       ];
@@ -399,13 +403,23 @@ export const getValidNode = (
           mediaCollection = collection;
         }
         if (mediaId && mediaType) {
+          const mediaAttrs: any = {
+            type: mediaType,
+            id: mediaId,
+            collection: mediaCollection,
+          };
+
+          if (attrs.width) {
+            mediaAttrs.width = attrs.width;
+          }
+
+          if (attrs.height) {
+            mediaAttrs.height = attrs.height;
+          }
+
           return {
             type,
-            attrs: {
-              type: mediaType,
-              id: mediaId,
-              collection: mediaCollection,
-            },
+            attrs: mediaAttrs,
           };
         }
         break;
@@ -414,6 +428,20 @@ export const getValidNode = (
         if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'mediaSingle': {
+        if (
+          Array.isArray(content) &&
+          content.length === 1 &&
+          content[0].type === 'media'
+        ) {
+          return {
+            type,
+            attrs,
             content,
           };
         }

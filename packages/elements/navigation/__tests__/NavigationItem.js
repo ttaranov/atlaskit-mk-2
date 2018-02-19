@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import Item from '@atlaskit/item';
+import { toClass } from 'recompose';
 import { ThemeProvider } from 'styled-components';
 import Navigation from '../src/components/js/Navigation';
 import NavigationItem from '../src/components/js/NavigationItem';
@@ -80,21 +81,16 @@ describe('<NavigationItem />', () => {
       expect(navigation.find('a').props().target).toBe('_blank');
     });
     it('linkComponent should render a custom link component', () => {
-      // TODO: Please see - AK-4242
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const myLinkComponent = toClass(({ children, href }) => (
+        <a className="custom" href={href}>
+          {children}
+        </a>
+      ));
       const customLink = mountWithRootTheme(
-        <NavigationItem
-          href="#custom-href"
-          linkComponent={({ children, href }) => (
-            <a className="custom" href={href}>
-              {children}
-            </a>
-          )}
-        />,
+        <NavigationItem href="#custom-href" linkComponent={myLinkComponent} />,
       ).find('.custom');
       expect(customLink).not.toBe(undefined);
       expect(customLink.props().href).toBe('#custom-href');
-      expect(spy).toHaveBeenCalled();
     });
     it('textAfter should render in the navigation item', () => {
       expect(
@@ -203,7 +199,7 @@ describe('<NavigationItem />', () => {
       const refSpy = jest.fn();
       const dnd = {
         innerRef: refSpy,
-        draggableStyle: {},
+        draggableProps: { style: {} },
         placeholder: null,
       };
       mountWithRootTheme(<NavigationItem text="test" dnd={dnd} />);
@@ -213,7 +209,7 @@ describe('<NavigationItem />', () => {
       const refSpy = jest.fn();
       const dnd = {
         innerRef: refSpy,
-        draggableStyle: { textDecoration: 'underline' },
+        draggableProps: { style: { textDecoration: 'underline' } },
         placeholder: null,
       };
       mountWithRootTheme(<NavigationItem text="test" dnd={dnd} />);

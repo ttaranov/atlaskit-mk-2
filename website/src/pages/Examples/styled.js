@@ -126,8 +126,8 @@ const navButtonStyles = css`
   transition: all 150ms;
   width: 32px;
 
-  &:hover,
-  &:focus {
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
     border-color: ${p => (p.isSelected ? colors.primary : colors.B200)};
     color: ${p => (p.isSelected ? colors.N0 : colors.B200)};
     cursor: pointer;

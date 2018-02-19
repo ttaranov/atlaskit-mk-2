@@ -3,35 +3,40 @@ import {
   sendKeyToPm,
   doc,
   strike,
-  plain,
   strong,
   em,
   underline,
   code,
   p,
   subsup,
-  makeEditor,
+  createEditor,
   mention,
   insertText,
+  code_block,
 } from '@atlaskit/editor-test-helpers';
-import textFormattingPlugins, {
+import {
   TextFormattingState,
+  stateKey as textFormattingPluginKey,
 } from '../../../src/plugins/text-formatting';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('text-formatting', () => {
+  let trackEvent;
   const editor = (doc: any) =>
-    makeEditor<TextFormattingState>({
+    createEditor<TextFormattingState>({
       doc,
-      plugins: textFormattingPlugins(defaultSchema),
+      editorPlugins: [textFormatting(), mentionsPlugin, codeBlockPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: textFormattingPluginKey,
     });
 
   describe('keymap', () => {
-    let trackEvent;
     beforeEach(() => {
       trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
     });
     if (browser.mac) {
       describe('when on a mac', () => {
@@ -103,7 +108,7 @@ describe('text-formatting', () => {
               doc(
                 p(
                   strong('{<}text '),
-                  mention({ id: '1234', text: '@helga' }),
+                  mention({ id: '1234', text: '@helga' })(),
                   em(' text{>}'),
                 ),
               ),
@@ -246,7 +251,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes em as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.emDisabled).toBe(true);
     });
@@ -285,7 +290,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes strong as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.strongDisabled).toBe(true);
     });
@@ -326,7 +331,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes underline as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.underlineDisabled).toBe(true);
     });
@@ -365,7 +370,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes strike as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.strikeDisabled).toBe(true);
     });
@@ -406,7 +411,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes subcript as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.subscriptDisabled).toBe(true);
     });
@@ -462,7 +467,7 @@ describe('text-formatting', () => {
     });
 
     it('exposes superscript as disabled when the mark cannot be applied', () => {
-      const { pluginState } = editor(doc(plain('te{<>}xt')));
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
 
       expect(pluginState.superscriptDisabled).toBe(true);
     });

@@ -239,6 +239,7 @@ export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
 export const br = sampleSchema.nodes.hardBreak.createChecked();
+export const extension = nodeFactory(sampleSchema.nodes.extension, {});
 export const panel = nodeFactory(sampleSchema.nodes.panel, {});
 export const panelNote = nodeFactory(sampleSchema.nodes.panel, {
   panelType: 'note',

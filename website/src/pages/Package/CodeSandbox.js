@@ -1,143 +1,92 @@
-// @flow
-
-import React, { Component, type Node } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Link, Redirect, Route, withRouter } from 'react-router-dom';
-
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
-import Flag, { FlagGroup } from '@atlaskit/flag';
-import Modal, { ModalHeader } from '@atlaskit/modal-dialog';
-import Spinner from '@atlaskit/spinner';
-import { colors } from '@atlaskit/theme';
+import Loadable from 'react-loadable';
 
-import sketchLogo from '../../../public/sketch-logo.svg';
+import CodeSandboxLogo from './CodeSandboxLogo';
+import csbLoading from './csbLoading';
+import CodeSandboxDeployer from 'react-codesandboxer';
 
-export const ButtonGroup = styled.div`
-  display: inline-flex;
-  margin: 0 -2px;
+const codesandboxURL = 'https://codesandbox.io/api/v1/sandboxes/define';
+const { NavButton } = require('../Examples/styled');
 
-  > * {
-    flex: 1 0 auto;
-    margin: 0 2px !important;
-  }
-`;
+const getExampleUrl = (groupId, packageId, exampleId) =>
+  `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/${groupId}/${packageId}/examples/${exampleId}`;
+const repoUrl = 'https://bitbucket.org/atlassian/atlaskit-mk-2';
 
-const SANDBOX_DEPLOY_ENDPOINT =
-  'https://atlaskit-deploy-sandbox.glitch.me/deploy';
+const baseFiles = (groupId, packageId, exampleId) => ({
+  'index.js': {
+    content: `/**
+  This CodeSandbox has been automatically generated from the contents of ${getExampleUrl(
+    groupId,
+    packageId,
+    exampleId,
+  )}.
 
-type RenderArgs = {
-  deploySandbox: () => Promise<void>,
-  loadingSandbox: boolean,
-};
-type Props = {
-  children: (args: RenderArgs) => Node,
-  exampleId?: string | null,
-  groupId: string,
-  packageId: string,
-};
-type State = {
-  flags: Object,
-  loadingSandbox: boolean,
-};
+  This generator does not follow relative imports beyond those that reference the
+  module root, and as such, other relative imports may fail to load.
 
-export default class CodeSandbox extends Component<Props, State> {
-  state = {
-    flags: {},
-    loadingSandbox: false,
-  };
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
+  You can look up the relative imports from ${repoUrl}
 
-  addFlag = (flagProps: {
-    appearance: 'error' | 'info' | 'normal' | 'success' | 'warning',
-    description: string,
-    title: string,
-  }) => {
-    const id = Date.now().toString();
-    const icon = (() => {
-      if (flagProps.appearance === 'error') {
-        return <ErrorIcon label="Error" secondaryColor={colors.R400} />;
-      }
+  If this fails in any other way, contact Ben Conolly (https://bitbucket.org/bconolly)
+*/
+import React from 'react';
+import ReactDOM from 'react-dom';
+import '@atlaskit/css-reset';
+import Example from './example';
 
-      return '';
-    })();
-    this.setState({
-      flags: {
-        [id]: (
-          <Flag
-            icon={icon}
-            id={id}
-            key={id}
-            actions={[{ content: 'OK', onClick: () => this.removeFlag(id) }]}
-            {...flagProps}
-          />
-        ),
-        ...this.state.flags,
-      },
-    });
-  };
+ReactDOM.render(
+<Example />,
+document.getElementById('root')
+);`,
+  },
+});
 
-  removeFlag = (removedKey: string) => {
-    const flags = Object.keys(this.state.flags)
-      .filter(key => key !== removedKey.toString())
-      .reduce(
-        (newFlags, key) => ({ ...newFlags, [key]: this.state.flags[key] }),
-        {},
-      );
-
-    this.setState({ flags });
-  };
-
-  deploySandbox = async () => {
-    const { exampleId, packageId } = this.props;
-
-    if (!exampleId) return;
-
-    const component = packageId;
-    const example = exampleId
-      .split('.')
-      .slice(0, -1)
-      .join('.');
-
-    this.setState({ loadingSandbox: true });
-
-    const URL = `${SANDBOX_DEPLOY_ENDPOINT}/${component}/${example}`;
-    const response = await fetch(URL);
-
-    if (response.ok) {
-      const url = await response.text();
-      window.open(url);
-    } else {
-      const message = await response.text();
-      this.addFlag({
-        appearance: 'error',
-        description: message,
-        title: 'Error deploying to Codesandbox',
-      });
-    }
-
-    this.setState({ loadingSandbox: false });
-  };
+export default class CodeSandbox extends Component<{}, {}> {
+  state = { parameters: '' };
 
   render() {
-    const { children } = this.props;
-    const { loadingSandbox } = this.state;
-    const iconSize = { height: 20, width: 20 };
-    const sketchIcon = <img alt="Sketch Logo" src={sketchLogo} {...iconSize} />;
+    const {
+      deployButton,
+      example,
+      examples,
+      groupId,
+      loadingButton,
+      packageId,
+      pkgJSON,
+    } = this.props;
 
-    return (
-      <div>
-        {children({
-          deploySandbox: this.deploySandbox,
-          loadingSandbox,
-        })}
-        <FlagGroup>
-          {Object.keys(this.state.flags).map(key => this.state.flags[key])}
-        </FlagGroup>
-      </div>
-    );
+    // move config and baseFiles to csbLoading
+    const config = ({ extraImports, extraFiles }) => ({
+      originLocation: '../src',
+      providedDeps: { '@atlaskit/css-reset': 'latest', ...extraImports },
+      providedFiles: {
+        ...baseFiles(groupId, packageId, example.Id),
+        ...extraFiles,
+      },
+    });
+
+    const ExampleComponent = Loadable({
+      loader: () => csbLoading(example, groupId, packageId, pkgJSON),
+      loading: loadingButton,
+      render({
+        loadedExample,
+        extraFiles,
+        simpleImports,
+        trickyImports,
+        extraImports,
+      }) {
+        return (
+          <CodeSandboxDeployer
+            example={loadedExample}
+            pkgJSON={pkgJSON}
+            config={config({ extraFiles, extraImports })}
+          >
+            {deployButton({ isDisabled: trickyImports })}
+          </CodeSandboxDeployer>
+        );
+      },
+    });
+
+    return <ExampleComponent />;
   }
 }

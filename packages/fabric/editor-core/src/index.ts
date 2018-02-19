@@ -1,39 +1,6 @@
-export {
-  EmojiProvider,
-  AtlassianEmojiMigrationResource as EmojiResource,
-} from '@atlaskit/emoji';
-
-export {
-  DefaultMediaStateManager,
-  MediaProvider,
-  MediaState,
-} from '@atlaskit/media-core';
-
-export {
-  AbstractMentionResource,
-  MentionProvider,
-  MentionResource,
-  PresenceProvider,
-  PresenceResource,
-  MentionsResult,
-} from '@atlaskit/mention';
+// Useful Exports
 
 export { name, version } from './version';
-export * from './config';
-export * from './plugins';
-export * from './ui';
-export * from './analytics';
-export * from './nodeviews';
-export { keyCodes } from './keymaps';
-export {
-  ErrorReporter,
-  ErrorReportingHandler,
-  JSONDocNode,
-  JSONNode,
-  toJSON,
-  filterContentByType,
-  setTextSelection,
-} from './utils';
 
 export { default as Editor, EditorWithAnalytics } from './editor';
 export { default as EditorContext } from './editor/ui/EditorContext';
@@ -44,6 +11,30 @@ export {
 } from './editor/create-editor/get-props-preset';
 export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
 export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
+export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
+
+export {
+  ErrorReporter,
+  ErrorReportingHandler,
+  JSONDocNode,
+  JSONNode,
+  toJSON,
+  filterContentByType,
+  setTextSelection,
+} from './utils';
+
+// Used in editor-test-helpers
+
+export { keyCodes } from './keymaps';
+export { reactNodeViewPlugins } from './plugins';
+export { createEditor } from './editor/create-editor';
+export {
+  getDefaultPluginsList,
+} from './editor/create-editor/create-plugins-list';
+export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
+export { default as EditorActions } from './editor/actions';
+
+// Useless exports
 
 export {
   createJIRASchema,
@@ -55,4 +46,26 @@ export {
   MacroAttributes,
   ExtensionType,
 } from './editor/plugins/macro';
-export * from './styles';
+
+export {
+  EmojiProvider,
+  AtlassianEmojiMigrationResource as EmojiResource,
+} from '@atlaskit/emoji';
+
+export {
+  DefaultMediaStateManager,
+  MediaStateManager,
+  MediaProvider,
+  MediaState,
+} from './plugins/media';
+
+export {
+  AbstractMentionResource,
+  MentionProvider,
+  MentionResource,
+  PresenceProvider,
+  PresenceResource,
+  MentionsResult,
+} from '@atlaskit/mention';
+
+export * from './analytics'; // ?

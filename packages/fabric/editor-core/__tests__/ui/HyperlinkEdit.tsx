@@ -1,7 +1,10 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, { HyperlinkState } from '../../src/plugins/hyperlink';
+import {
+  HyperlinkState,
+  stateKey as hyperlinkPluginKey,
+} from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../src/ui/PanelTextInput';
 import {
@@ -9,17 +12,18 @@ import {
   doc,
   p as paragraph,
   a as link,
-  makeEditor,
-  defaultSchema,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
-import { PlaceholderCursor } from '../../src/plugins/placeholder-cursor/cursor';
+import { FakeTextCursorSelection } from '../../src/editor/plugins/fake-text-cursor/cursor';
+import hyperlinkPlugin from '../../src/editor/plugins/hyperlink';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor<HyperlinkState>({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [hyperlinkPlugin],
+      pluginKey: hyperlinkPluginKey,
     });
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');
@@ -286,8 +290,8 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find(PanelTextInput);
     input.simulate('mouseDown');
-    expect(editorView.state.selection instanceof PlaceholderCursor).toEqual(
-      true,
-    );
+    expect(
+      editorView.state.selection instanceof FakeTextCursorSelection,
+    ).toEqual(true);
   });
 });

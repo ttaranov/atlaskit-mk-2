@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TextSelection } from 'prosemirror-state';
-import createEditor from '../../../../helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import collabEdit, {
   pluginKey as collabEditPluginKey,
 } from '../../../../../src/editor/plugins/collab-edit';
@@ -17,7 +17,10 @@ const setupEditor = (setProvider: boolean = true) => {
     providerFactory.setProvider('collabEditProvider', providerPromise);
   }
 
-  const { editorView } = createEditor([collabEdit], {}, providerFactory);
+  const { editorView } = createEditor({
+    editorPlugins: [collabEdit],
+    providerFactory,
+  });
 
   return {
     editorView,

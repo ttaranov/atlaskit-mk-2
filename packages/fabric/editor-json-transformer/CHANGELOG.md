@@ -1,5 +1,12 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.4
+
+## 2.5.3
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 2.5.2
+
 ## 2.5.1
 
 ## 2.5.0

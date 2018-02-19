@@ -1,6 +1,6 @@
 // @flow
 // eslint-disable-next-line import/prefer-default-export
-import type { HeadType, RowType } from '../types';
+import type { HeadType, RowType, RankEnd } from '../types';
 
 export const getPageRows = (
   pageNumber?: number,
@@ -51,4 +51,55 @@ export const validateSortKey = (
     }
   }
   return null;
+};
+
+// creates inline styles if flag ranking is true
+export const inlineStylesIfRanking = (
+  isRanking: boolean,
+  width: number,
+  height?: number,
+): {} => {
+  if (!isRanking) {
+    return {};
+  }
+
+  if (height) {
+    return { width, height };
+  }
+  return { width };
+};
+
+// computes index of dropped item after ranking
+export const computeIndex = (
+  index: number,
+  page: number,
+  rowsPerPage?: number,
+): number => {
+  const itemOnPreviousPages =
+    rowsPerPage && isFinite(rowsPerPage) ? (page - 1) * rowsPerPage : 0;
+
+  return index + itemOnPreviousPages;
+};
+
+// reorder rows in table after ranking
+export const reorderRows = (
+  rankEnd: RankEnd,
+  rows: RowType[],
+  page?: number = 1,
+  rowsPerPage?: number,
+): RowType[] => {
+  const { destination, sourceIndex } = rankEnd;
+
+  if (!destination) {
+    return rows;
+  }
+
+  const fromIndex = computeIndex(sourceIndex, page, rowsPerPage);
+  const toIndex = computeIndex(destination.index, page, rowsPerPage);
+
+  const reordered = rows.slice();
+  const [removed] = reordered.splice(fromIndex, 1);
+  reordered.splice(toIndex, 0, removed);
+
+  return reordered;
 };

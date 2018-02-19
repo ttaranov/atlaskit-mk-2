@@ -4,6 +4,7 @@ import React, { type Node } from 'react';
 import CommonMark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
 import { AkCodeBlock, AkCode } from '@atlaskit/code';
+import Heading from './Markdown/Heading';
 
 const parser = new CommonMark.Parser();
 const renderer = new ReactRenderer({
@@ -14,6 +15,7 @@ const renderer = new ReactRenderer({
       </p>
     ),
     Code: props => <AkCode text={props.literal} language={props.language} />,
+    Heading,
   },
 });
 

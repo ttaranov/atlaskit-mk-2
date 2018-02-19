@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { TableBodyRow, TableBodyCell } from '../styled/TableRow';
+import { TableBodyRow } from '../styled/TableRow';
+import { TableBodyCell } from '../styled/TableCell';
 import type { HeadType, RowType } from '../types';
 
 type Props = {

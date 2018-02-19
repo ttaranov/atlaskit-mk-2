@@ -78,6 +78,7 @@ export default class Flag extends Component<FlagProps, State> {
     const ButtonIcon = isBold ? ChevronIcon : CrossIcon;
     const buttonLabel = isBold ? 'Toggle flag body' : 'Dismiss flag';
     const buttonAction = isBold ? this.toggleExpand : this.dismissFlag;
+    const size = ButtonIcon === ChevronIcon ? 'large' : 'small';
 
     return (
       <DismissButton
@@ -87,7 +88,7 @@ export default class Flag extends Component<FlagProps, State> {
         onClick={buttonAction}
         type="button"
       >
-        <ButtonIcon label={buttonLabel} size="small" />
+        <ButtonIcon label={buttonLabel} size={size} />
       </DismissButton>
     );
   };

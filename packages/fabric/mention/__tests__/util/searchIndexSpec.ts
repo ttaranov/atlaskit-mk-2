@@ -1,7 +1,7 @@
 import {
   Highlighter,
   SearchIndex,
-  compareMentionDescription,
+  mentionDescriptionComparator,
 } from '../../src/util/searchIndex';
 
 describe('SearchIndex', () => {
@@ -113,25 +113,10 @@ describe('SearchIndex', () => {
     expect(result.mentions).toHaveLength(1);
   });
 
-  it('should sort results', async () => {
-    searchIndex.indexResults([
-      { id: 'id1', name: 'Homer Simpson', mentionName: 'homer' },
-      {
-        id: 'id2',
-        name: 'Marge Simpson',
-        mentionName: 'marge',
-        inContext: true,
-      },
-    ]);
+  describe('#hasDocuments', () => {
+    it('should be true if index contains mention', async () => {
+      expect(searchIndex.hasDocuments()).toBe(false);
 
-    const result = await searchIndex.search('simpson');
-    expect(result.mentions).toHaveLength(2);
-    expect(result.mentions[0].mentionName).toEqual('marge');
-    expect(result.mentions[1].mentionName).toEqual('homer');
-  });
-
-  describe('#indexResults', () => {
-    it('should augment cached data', async () => {
       searchIndex.indexResults([
         {
           id: 'id',
@@ -141,26 +126,31 @@ describe('SearchIndex', () => {
         },
       ]);
 
+      expect(searchIndex.hasDocuments()).toBe(true);
+    });
+
+    it('should be false after reset()', async () => {
       searchIndex.indexResults([
         {
           id: 'id',
           name: 'Homer Simpson',
           mentionName: 'mentionName',
-          accessLevel: 'CONTAINER',
+          inContext: true,
         },
       ]);
 
-      const result = await searchIndex.search('mentionName');
-      expect(result.mentions).toHaveLength(1);
-      expect(result.mentions[0].inContext).toBe(true);
-      expect(result.mentions[0].accessLevel).toEqual('CONTAINER');
+      expect(searchIndex.hasDocuments()).toBe(true);
+
+      searchIndex.reset();
+
+      expect(searchIndex.hasDocuments()).toBe(false);
     });
   });
 });
 
 describe('compareMentionDescription', () => {
   it('should put in context mention first', () => {
-    const result = compareMentionDescription(
+    const result = mentionDescriptionComparator(new Set())(
       { id: 'id1', inContext: true },
       { id: 'id2', inContext: false },
     );
@@ -169,7 +159,7 @@ describe('compareMentionDescription', () => {
   });
 
   it('should use weight as a second sort criteria', () => {
-    const result = compareMentionDescription(
+    const result = mentionDescriptionComparator(new Set())(
       { id: 'id1', inContext: true, weight: 0 },
       { id: 'id2', inContext: true, weight: 1 },
     );
@@ -178,7 +168,7 @@ describe('compareMentionDescription', () => {
   });
 
   it('should put mention without weight second', () => {
-    const result = compareMentionDescription(
+    const result = mentionDescriptionComparator(new Set())(
       { id: 'id1', inContext: true, weight: 5 },
       { id: 'id2', inContext: true },
     );
@@ -187,7 +177,7 @@ describe('compareMentionDescription', () => {
   });
 
   it('should put special mention first', () => {
-    const result = compareMentionDescription(
+    const result = mentionDescriptionComparator(new Set())(
       { id: 'id1', userType: 'SPECIAL' },
       { id: 'id2' },
     );

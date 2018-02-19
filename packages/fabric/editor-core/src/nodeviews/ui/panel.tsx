@@ -22,6 +22,7 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
+import ContentNodeView from '../contentNodeView';
 
 const panelColor = {
   info: akColorB50,
@@ -74,21 +75,17 @@ export interface Props {
   node: PMNode;
 }
 
-class Panel implements NodeView {
+class Panel extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
-  private contentDOMRef: HTMLElement | undefined;
   private panelType: string;
   private node: PMNode;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    super(node, view);
     this.node = node;
     this.panelType = node.attrs.panelType;
     this.renderReactComponent();
   }
-
-  private handleRef = (node: HTMLElement | undefined) => {
-    this.contentDOMRef = node;
-  };
 
   private renderReactComponent() {
     const { panelType } = this;
@@ -113,10 +110,6 @@ class Panel implements NodeView {
     return this.domRef;
   }
 
-  get contentDOM() {
-    return this.contentDOMRef;
-  }
-
   update(node) {
     if (
       node.attrs.panelType !== this.node.attrs.panelType ||
@@ -130,7 +123,7 @@ class Panel implements NodeView {
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
-    this.contentDOMRef = undefined;
+    super.destroy();
   }
 }
 

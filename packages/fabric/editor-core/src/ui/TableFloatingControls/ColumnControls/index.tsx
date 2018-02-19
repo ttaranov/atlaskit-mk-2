@@ -26,7 +26,7 @@ export interface Props {
 export default class ColumnControls extends Component<Props, any> {
   render() {
     const {
-      editorView: { state, dispatch },
+      editorView: { state },
       tableElement,
       checkIfSelected,
       isTableHovered,
@@ -50,9 +50,9 @@ export default class ColumnControls extends Component<Props, any> {
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onMouseDown={() => this.props.selectColumn(i)(state, dispatch)}
-            onMouseOver={() => this.props.hoverColumn(i)(state, dispatch)}
-            onMouseOut={() => this.props.resetHoverSelection(state, dispatch)}
+            onMouseDown={() => this.selectColumn(i)}
+            onMouseOver={() => this.hoverColumn(i)}
+            onMouseOut={this.resetHoverSelection}
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertColumnButton
@@ -73,5 +73,20 @@ export default class ColumnControls extends Component<Props, any> {
 
   private handleMouseDown = event => {
     event.preventDefault();
+  };
+
+  private selectColumn = (column: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectColumn(column)(state, dispatch);
+  };
+
+  private hoverColumn = (column: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.hoverColumn(column)(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.resetHoverSelection(state, dispatch);
   };
 }

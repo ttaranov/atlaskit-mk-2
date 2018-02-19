@@ -17,7 +17,6 @@ export const mockState: State = {
     },
     isUploading: false,
     isCancelling: false,
-    hasPopupBeenVisible: false,
   },
   accounts: [],
   recents: {
@@ -92,6 +91,12 @@ export const mockProvider = jest.fn(() => ({
     return Observable.create();
   },
 }));
+
+export const mockAuthProvider = jest
+  .fn()
+  .mockReturnValue(
+    Promise.resolve({ clientId: 'some-client-id', token: 'some-token' }),
+  );
 
 export const mockFetcher = () => ({
   fetchCloudAccountFolder: jest.fn(),

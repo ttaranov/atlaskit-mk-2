@@ -46,6 +46,7 @@ export default createSchema({
     'inlineExtension',
     'bodiedExtension',
     'date',
+    'placeholder',
   ],
   marks: [
     'em',
@@ -58,6 +59,7 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
+    'confluenceInlineComment',
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*', marks: '' },

@@ -1,28 +1,29 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, {
-  HyperlinkState,
-} from '../../../src/plugins/hyperlink';
+import { stateKey as hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
-  makeEditor,
+  createEditor,
   doc,
   p,
   a as link,
   sendKeyToPm,
   em,
   code,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
+import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink - keymap', () => {
-  const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+  const editor = (doc: any, editorProps = {}) =>
+    createEditor({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [hyperlinkPlugin, textFormatting()],
+      editorProps,
+      pluginKey: hyperlinkPluginKey,
     });
 
   describe('Enter keypress', () => {
@@ -30,8 +31,9 @@ describe('hyperlink - keymap', () => {
       describe('when it does not contain a link', () => {
         it('converts possible link text to hyperlink', () => {
           const trackEvent = jest.fn();
-          analyticsService.trackEvent = trackEvent;
-          const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
+          const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')), {
+            analyticsHandler: trackEvent,
+          });
 
           sendKeyToPm(editorView, 'Enter');
 
@@ -48,8 +50,10 @@ describe('hyperlink - keymap', () => {
 
         it('converts possible mailto link text to hyperlink', () => {
           const trackEvent = jest.fn();
-          analyticsService.trackEvent = trackEvent;
-          const { editorView } = editor(doc(p('hello test@atlassian.com{<>}')));
+          const { editorView } = editor(
+            doc(p('hello test@atlassian.com{<>}')),
+            { analyticsHandler: trackEvent },
+          );
 
           sendKeyToPm(editorView, 'Enter');
 
@@ -112,13 +116,21 @@ describe('hyperlink - keymap', () => {
   describe('Shift-Enter keypress', () => {
     it('converts possible link text to hyperlink', () => {
       const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')));
+      const { editorView } = editor(doc(p('hello www.atlassian.com{<>}')), {
+        analyticsHandler: trackEvent,
+      });
 
       sendKeyToPm(editorView, 'Shift-Enter');
 
-      const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
-      expect(editorView.state.doc).toEqualDocument(doc(p('hello ', a)));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            'hello ',
+            link({ href: 'http://www.atlassian.com' })('www.atlassian.com'),
+            hardBreak(),
+          ),
+        ),
+      );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
@@ -139,12 +151,9 @@ describe('hyperlink - keymap', () => {
     });
 
     it('should not work for message editor', () => {
-      const messageEditor = (doc: any) =>
-        makeEditor<HyperlinkState>({
-          doc,
-          plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
-        });
-      const { editorView, pluginState } = messageEditor(doc(p('{<}text{>}')));
+      const { editorView, pluginState } = editor(doc(p('{<}text{>}')), {
+        appearance: 'message',
+      });
       const hyperlinkEdit = mount(
         <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
       );
@@ -155,7 +164,9 @@ describe('hyperlink - keymap', () => {
     });
 
     it('should not open floating toolbar if incompatible mark is selected', () => {
-      const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))));
+      const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))), {
+        appearance: 'message',
+      });
       const hyperlinkEdit = mount(
         <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
       );

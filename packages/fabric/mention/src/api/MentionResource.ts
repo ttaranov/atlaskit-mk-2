@@ -1,36 +1,15 @@
-import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+import {
+  ServiceConfig,
+  KeyValues,
+  utils as serviceUtils,
+} from '@atlaskit/util-service-support';
 
 import { MentionDescription, isAppMention, MentionsResult } from '../types';
 import debug from '../util/logger';
-import { SearchIndex, compareMentionDescription } from '../util/searchIndex';
+import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
-
-export interface KeyValues {
-  [index: string]: any;
-}
-
-export interface SecurityOptions {
-  params?: KeyValues;
-  headers?: KeyValues;
-  omitCredentials?: boolean;
-}
-
-/**
- * Returns the current SecurityOptions for the mentions service.
- */
-export interface SecurityProvider {
-  (): SecurityOptions;
-}
-
-/**
- * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a
- * new token. Will be used for single retry per request if a 401 is returned.
- */
-export interface RefreshSecurityProvider {
-  (): Promise<SecurityOptions>;
-}
 
 export interface ResultCallback<T> {
   (result: T, query?: string): void;
@@ -44,13 +23,9 @@ export interface InfoCallback {
   (info: string): void;
 }
 
-export interface MentionResourceConfig {
-  /** the base url of the mentions service */
-  url: string;
-  securityProvider?: SecurityProvider;
+export interface MentionResourceConfig extends ServiceConfig {
   containerId?: string;
   productId?: string;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: MentionDescription) => boolean;
 
   /**
@@ -101,99 +76,6 @@ const emptySecurityProvider = () => {
     params: {},
     headers: {},
   };
-};
-
-const buildUrl = (
-  baseUrl: string,
-  path: string | undefined,
-  data: KeyValues,
-  secOptions: SecurityOptions,
-) => {
-  const searchParam = new URLSearchParams();
-  for (const key in data) {
-    if (Object.hasOwnProperty.call(data, key)) {
-      searchParam.append(key, data[key]);
-    }
-  }
-  if (secOptions && secOptions.params) {
-    for (const key in secOptions.params) {
-      if (Object.hasOwnProperty.call(secOptions.params, key)) {
-        const values = secOptions.params[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            searchParam.append(key, values[i]);
-          }
-        } else {
-          searchParam.append(key, values);
-        }
-      }
-    }
-  }
-  let seperator = '';
-  if (baseUrl.substr(-1) !== '/') {
-    seperator = '/';
-  }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
-};
-
-const buildHeaders = (secOptions: SecurityOptions) => {
-  const headers = new Headers();
-  if (secOptions && secOptions.headers) {
-    for (const key in secOptions.headers) {
-      if (Object.hasOwnProperty.call(secOptions.headers, key)) {
-        const values = secOptions.headers[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            headers.append(key, values[i]);
-          }
-        } else {
-          headers.append(key, values);
-        }
-      }
-    }
-  }
-
-  return headers;
-};
-
-const buildCredentials = (secOptions: SecurityOptions) => {
-  return secOptions && secOptions.omitCredentials
-    ? ('omit' as 'omit')
-    : ('include' as 'include');
-};
-
-/**
- * @returns Promise containing the json response
- */
-const requestService = (
-  baseUrl: string,
-  path: string | undefined,
-  data: KeyValues,
-  opts: KeyValues,
-  secOptions: SecurityOptions,
-  refreshedSecurityProvider?: RefreshSecurityProvider,
-) => {
-  const url = buildUrl(baseUrl, path, data, secOptions);
-  const headers = buildHeaders(secOptions);
-  const credentials = buildCredentials(secOptions);
-  const options = {
-    ...opts,
-    ...{ headers },
-    credentials,
-  };
-  return fetch(new Request(url, options)).then(response => {
-    if (response.ok) {
-      return response.json();
-    } else if (response.status === 401 && refreshedSecurityProvider) {
-      // auth issue - try once
-      debug('401 attempting a forced refresh from securityProvider');
-      return refreshedSecurityProvider().then(newSecOptions =>
-        requestService(baseUrl, path, data, opts, newSecOptions),
-      );
-    }
-
-    return Promise.reject(new HttpError(response.status, response.statusText));
-  });
 };
 
 class AbstractResource<Result> implements ResourceProvider<Result> {
@@ -341,6 +223,10 @@ class MentionResource extends AbstractMentionResource {
       throw new Error('config.url is a required parameter');
     }
 
+    if (!config.securityProvider) {
+      config['securityProvider'] = emptySecurityProvider;
+    }
+
     this.config = config;
     this.lastReturnedSearch = 0;
     this.searchIndex = new SearchIndex();
@@ -356,15 +242,17 @@ class MentionResource extends AbstractMentionResource {
   }
 
   notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
-    if (searchTime > this.lastReturnedSearch) {
-      this.lastReturnedSearch = searchTime;
-      this._notifyListeners(mentionResult);
-    } else {
-      const date = new Date(searchTime).toISOString().substr(17, 6);
-      debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
-    }
+    this.sortMentionsResult(mentionResult).then(sortedMentionsResult => {
+      if (searchTime > this.lastReturnedSearch) {
+        this.lastReturnedSearch = searchTime;
+        this._notifyListeners(sortedMentionsResult);
+      } else {
+        const date = new Date(searchTime).toISOString().substr(17, 6);
+        debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
+      }
 
-    this._notifyAllResultsListeners(mentionResult);
+      this._notifyAllResultsListeners(sortedMentionsResult);
+    });
   }
 
   notifyError(error: Error, query?: string) {
@@ -403,37 +291,19 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private initialState(): Promise<MentionsResult> {
-    return this.initialStateFromContext().then(inContextMentions => {
-      const inContextResultMap = inContextMentions.reduce(
-        (acc, value) => acc.set(value.id, value),
-        new Map(),
-      );
-      return this.remoteInitialState().then(results => {
-        results.mentions = results.mentions.map(result => ({
-          ...result,
-          inContext: inContextResultMap.has(result.id),
-        }));
-        results.mentions.sort(compareMentionDescription);
-
-        return results;
-      });
-    });
+    return this.remoteInitialState();
   }
 
-  private initialStateFromContext(): Promise<MentionDescription[]> {
-    this.searchIndex.reset();
+  private getUserIdsInContext(): Promise<Set<string>> {
     if (this.config.getUsersInContext) {
-      return this.config.getUsersInContext().then(users => {
-        const usersInContext = users.map(user => {
-          return { ...user, inContext: true };
-        });
-
-        this.searchIndex.indexResults(usersInContext);
-        return usersInContext;
-      });
+      return this.config
+        .getUsersInContext()
+        .then(users =>
+          users.reduce((acc, value) => acc.add(value.id), new Set()),
+        );
     }
 
-    return Promise.resolve([]);
+    return Promise.resolve(new Set());
   }
 
   /**
@@ -444,29 +314,23 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   private remoteInitialState(): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider
-      ? this.config.securityProvider()
-      : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data: KeyValues = {};
-    const options: KeyValues = {};
+    const queryParams: KeyValues = {};
 
     if (this.config.containerId) {
-      data['containerId'] = this.config.containerId;
+      queryParams['containerId'] = this.config.containerId;
     }
 
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(
-      this.config.url,
-      'bootstrap',
-      data,
-      options,
-      secOptions,
-      refreshedSecurityProvider,
-    )
+    const options = {
+      path: 'bootstrap',
+      queryParams,
+    };
+
+    return serviceUtils
+      .requestService<MentionsResult>(this.config, options)
       .then(result => this.transformServiceResponse(result))
       .then(result => {
         this.searchIndex.indexResults(result.mentions);
@@ -475,100 +339,99 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private search(query: string): Promise<MentionsResult> {
-    return this.localSearch(query).then(localResults => {
-      const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-      this.remoteSearch(query)
-        .then(result => {
-          this.activeSearches.delete(query);
-          this.searchIndex.indexResults(result.mentions);
-          return this.localSearch(query);
-        })
-        .then(
-          result => this.notify(searchTime, result, query),
+    if (this.searchIndex.hasDocuments()) {
+      return this.searchIndex.search(query).then(result => {
+        const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
+        this.remoteSearch(query).then(
+          result => {
+            this.activeSearches.delete(query);
+            this.notify(searchTime, result, query);
+            this.searchIndex.indexResults(result.mentions);
+          },
           err => {
             this._notifyErrorListeners(err);
           },
         );
 
-      return localResults;
+        return result;
+      });
+    }
+
+    return this.remoteSearch(query).then(result => {
+      this.searchIndex.indexResults(result.mentions);
+      return result;
     });
   }
 
-  private localSearch(query: string) {
-    if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query);
-    } else {
-      return this.initialStateFromContext().then(() =>
-        this.searchIndex.search(query),
-      );
-    }
+  private sortMentionsResult(
+    mentionsResult: MentionsResult,
+  ): Promise<MentionsResult> {
+    return this.getUserIdsInContext().then(userIdsInContext => {
+      return {
+        ...mentionsResult,
+        mentions: mentionsResult.mentions.sort(
+          mentionDescriptionComparator(userIdsInContext),
+        ),
+      };
+    });
   }
 
   private remoteSearch(query: string): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider
-      ? this.config.securityProvider()
-      : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data = {
+    const queryParams = {
       query,
       limit: MAX_QUERY_ITEMS,
     };
-    const options = {};
+
     if (this.config.containerId) {
-      data['containerId'] = this.config.containerId;
+      queryParams['containerId'] = this.config.containerId;
     }
 
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(
-      this.config.url,
-      'search',
-      data,
-      options,
-      secOptions,
-      refreshedSecurityProvider,
-    ).then(result => this.transformServiceResponse(result));
+    const options = {
+      path: 'search',
+      queryParams,
+    };
+
+    return serviceUtils
+      .requestService<MentionsResult>(this.config, options)
+      .then(result => this.transformServiceResponse(result));
   }
 
   private transformServiceResponse(result: MentionsResult): MentionsResult {
-    const mentions = result.mentions.map(mention => {
+    const mentions = result.mentions.map((mention, index) => {
       let lozenge: string | undefined;
+      const weight = mention.weight !== undefined ? mention.weight : index;
       if (isAppMention(mention)) {
         lozenge = mention.userType;
       }
 
-      return { ...mention, lozenge };
+      return { ...mention, lozenge, weight };
     });
 
     return { ...result, mentions };
   }
 
   private recordSelection(mention: MentionDescription): Promise<void> {
-    const secOptions = this.config.securityProvider
-      ? this.config.securityProvider()
-      : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data = {
+    const queryParams = {
       selectedUserId: mention.id,
-    };
-    const options = {
-      method: 'POST',
     };
 
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(
-      this.config.url,
-      'record',
-      data,
-      options,
-      secOptions,
-      refreshedSecurityProvider,
-    );
+    const options = {
+      path: 'record',
+      queryParams,
+      requestInit: {
+        method: 'POST',
+      },
+    };
+
+    return serviceUtils.requestService<void>(this.config, options);
   }
 }
 

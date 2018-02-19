@@ -27,11 +27,12 @@ export { default as tablePlugin } from './table';
 export { default as macroPlugin } from './macro';
 export { default as extensionPlugin } from './extension';
 export { default as datePlugin } from './date';
+export { default as placeholderTextPlugin } from './placeholder-text';
 
 export {
   default as confluenceInlineComment,
 } from './confluence-inline-comment';
-export { default as placeholderCursorPlugin } from './placeholder-cursor';
+export { default as fakeTextCursorPlugin } from './fake-text-cursor';
 export {
   default as clearMarksOnChangeToEmptyDocumentPlugin,
 } from './clear-marks-on-change-to-empty-document';

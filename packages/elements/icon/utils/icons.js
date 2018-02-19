@@ -142,6 +142,7 @@ import EditorUndoIcon from '../glyph/editor/undo';
 import EditorUnlinkIcon from '../glyph/editor/unlink';
 import EditorWarningIcon from '../glyph/editor/warning';
 import EmailIcon from '../glyph/email';
+import EmojiAddIcon from '../glyph/emoji-add';
 import EmojiIcon from '../glyph/emoji';
 import EmojiActivityIcon from '../glyph/emoji/activity';
 import EmojiAtlassianIcon from '../glyph/emoji/atlassian';
@@ -1127,6 +1128,12 @@ export default {
     component: EmailIcon,
     componentName: 'EmailIcon',
     package: '@atlaskit/icon/glyph/email',
+  },
+  'emoji-add': {
+    keywords: ['emoji-add', 'emojiadd'],
+    component: EmojiAddIcon,
+    componentName: 'EmojiAddIcon',
+    package: '@atlaskit/icon/glyph/emoji-add',
   },
   emoji: {
     keywords: ['emoji', 'emoticon', 'smiley'],

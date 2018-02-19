@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import {
   confluenceSchemaWithMediaSingle as schema,
   parseDate,
@@ -25,14 +25,13 @@ import {
   p,
   strike,
   strong,
-  sub,
-  sup,
-  u,
+  subsup,
+  underline,
   ul,
-  codeblock,
+  code_block,
   panel,
   mention,
-  link,
+  a,
   textColor,
   confluenceUnsupportedInline,
   confluenceUnsupportedBlock,
@@ -52,7 +51,7 @@ import {
   taskList,
   taskItem,
   date,
-} from './_schema-builder';
+} from '@atlaskit/editor-test-helpers';
 
 import {
   ConfluenceTransformer,
@@ -83,8 +82,11 @@ const checkBuilder = (
   });
 };
 
-const check = (description: string, cxhtml: string, doc: PMNode) =>
-  checkBuilder(it, description, cxhtml, doc);
+const check = (
+  description: string,
+  cxhtml: string,
+  doc: (schema: Schema) => PMNode,
+) => checkBuilder(it, description, cxhtml, doc(schema));
 
 describe('ConfluenceTransformer: encode - parse:', () => {
   describe('empty', () => {
@@ -126,7 +128,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       check(
         'a paragraph with a hard break in it',
         '<p>Text on two<br />lines.</p>',
-        doc(p('Text on two', br, 'lines.')),
+        doc(p('Text on two', br(), 'lines.')),
       );
 
       check(
@@ -137,16 +139,20 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('breaks:', () => {
-      check('a self-closing break', '<br />', doc(p(br)));
+      check('a self-closing break', '<br />', doc(p(br())));
 
-      check('a self-closing break in a paragraph', '<p><br /></p>', doc(p(br)));
+      check(
+        'a self-closing break in a paragraph',
+        '<p><br /></p>',
+        doc(p(br())),
+      );
     });
 
     describe('marks formatting:', () => {
       check(
         '<u> tag',
         '<p>Text with <u>underline words</u>.</p>',
-        doc(p('Text with ', u('underline words'), '.')),
+        doc(p('Text with ', underline('underline words'), '.')),
       );
 
       check(
@@ -197,7 +203,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         doc(
           p(
             'Text with ',
-            link({ href: 'http://www.atlassian.com' })('www.atlassian.com'),
+            a({ href: 'http://www.atlassian.com' })('www.atlassian.com'),
           ),
         ),
       );
@@ -399,25 +405,49 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       check(
         '<i><sub> nesting',
         '<p>Text with <i><sub>subscript emphasised words</sub></i>.</p>',
-        doc(p('Text with ', em(sub('subscript emphasised words')), '.')),
+        doc(
+          p(
+            'Text with ',
+            em(subsup({ type: 'sub' })('subscript emphasised words')),
+            '.',
+          ),
+        ),
       );
 
       check(
         '<sub><i> nesting',
         '<p>Text with <sub><i>subscript emphasised words</i></sub>.</p>',
-        doc(p('Text with ', em(sub('subscript emphasised words')), '.')),
+        doc(
+          p(
+            'Text with ',
+            em(subsup({ type: 'sub' })('subscript emphasised words')),
+            '.',
+          ),
+        ),
       );
 
       check(
         '<i><sup> nesting',
         '<p>Text with <i><sup>subscript emphasised words</sup></i>.</p>',
-        doc(p('Text with ', em(sup('subscript emphasised words')), '.')),
+        doc(
+          p(
+            'Text with ',
+            em(subsup({ type: 'sup' })('subscript emphasised words')),
+            '.',
+          ),
+        ),
       );
 
       check(
         '<sup><i> nesting',
         '<p>Text with <sup><i>subscript emphasised words</i></sup>.</p>',
-        doc(p('Text with ', em(sup('subscript emphasised words')), '.')),
+        doc(
+          p(
+            'Text with ',
+            em(subsup({ type: 'sup' })('subscript emphasised words')),
+            '.',
+          ),
+        ),
       );
 
       check(
@@ -609,7 +639,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       check(
         'with CDATA',
         '<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(codeblock()('some code')),
+        doc(code_block()('some code')),
       );
 
       check(
@@ -619,7 +649,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         multiple
         lines]]></ac:plain-text-body></ac:structured-macro>`,
         doc(
-          codeblock()(`some code
+          code_block()(`some code
         on
         multiple
         lines`),
@@ -629,14 +659,14 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       check(
         'with title',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(h5('Code'), codeblock({ language: 'js' })('some code')),
+        doc(h5('Code'), code_block({ language: 'js' })('some code')),
       );
 
       describe('when language is not set', () => {
         check(
           `has language attribute as null`,
           `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
-          doc(codeblock({ language: null })('some code')),
+          doc(code_block({ language: null })('some code')),
         );
       });
 
@@ -648,7 +678,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               LANGUAGE_MAP[languageName]
             }</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
             doc(
-              codeblock({ language: LANGUAGE_MAP[languageName] })('some code'),
+              code_block({ language: LANGUAGE_MAP[languageName] })('some code'),
             ),
           );
         });
@@ -658,25 +688,31 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         check(
           'with language',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-parameters="language=js" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN9&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(codeblock({ language: 'js' })('const speed = 350;')),
+          doc(code_block({ language: 'js' })('const speed = 350;')),
         );
 
         check(
           'with title',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-parameters="title=hello" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(h5('hello'), codeblock({ language: null })('const speed = 350;')),
+          doc(
+            h5('hello'),
+            code_block({ language: null })('const speed = 350;'),
+          ),
         );
 
         check(
           'with language and title',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-id="80adec37-7fd5-4533-88a6-5f958c9957ba" data-macro-parameters="language=js|title=hello" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-mce-style="background-image: url(\'https://pm-temp-201701.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2\'); background-repeat: no-repeat;" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(h5('hello'), codeblock({ language: 'js' })('const speed = 350;')),
+          doc(
+            h5('hello'),
+            code_block({ language: 'js' })('const speed = 350;'),
+          ),
         );
 
         check(
           'with no parameters',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-id="80adec37-7fd5-4533-88a6-5f958c9957ba" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-mce-style="background-image: url(\'https://pm-temp-201701.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2\'); background-repeat: no-repeat;" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(codeblock({ language: null })('const speed = 350;')),
+          doc(code_block({ language: null })('const speed = 350;')),
         );
       });
 
@@ -684,32 +720,35 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         check(
           'with language and title',
           '<div class="codeHeader panelHeader pdl" style="margin: 0px; padding: 5px 15px; border-bottom: 1px solid rgb(204, 204, 204); background: rgb(245, 245, 245); text-align: left; overflow: hidden; position: relative; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><b style="color: rgb(51, 51, 51);">hello</b></div><div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
-          doc(h5('hello'), codeblock({ language: 'js' })('const speed = 350;')),
+          doc(
+            h5('hello'),
+            code_block({ language: 'js' })('const speed = 350;'),
+          ),
         );
 
         check(
           'with language',
           '<div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
-          doc(codeblock({ language: 'js' })('const speed = 350;')),
+          doc(code_block({ language: 'js' })('const speed = 350;')),
         );
 
         check(
           'with no parameters (java language by default)',
           '<div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  java" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
-          doc(codeblock({ language: 'java' })('const speed = 350;')),
+          doc(code_block({ language: 'java' })('const speed = 350;')),
         );
 
         check(
           '<pre>',
           '<pre style="margin: 0px; padding: 0px; font-family: ConfluenceInstalledFont, monospace; line-height: 1.3; color: rgb(51, 51, 51); font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;">const x = 13;</pre>',
-          doc(codeblock({ language: null })('const x = 13;')),
+          doc(code_block({ language: null })('const x = 13;')),
         );
 
         check(
           'with whitespace',
           '<div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_338782" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 957px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" resolved="" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 957px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 942px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const x = 111;</code></div><div class="line number2 index1 alt1" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">function hello () {}</code></div></div></td></tr></tbody></table></div></div></div>',
           doc(
-            codeblock({ language: 'js' })(
+            code_block({ language: 'js' })(
               'const x = 111;\nfunction hello () {}',
             ),
           ),
@@ -718,26 +757,12 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('panel', () => {
-      describe('when panels are nested', () => {
-        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
-          check(
-            `${panelType} panel`,
-            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><ac:structured-macro ac:name="info" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro></ac:rich-text-body></ac:structured-macro>`,
-            doc(
-              panel({ panelType: mapPanelTypeToPm(panelType) })(
-                panel('info')(p()),
-              ),
-            ),
-          );
-        });
-      });
-
       describe('when panel does not have any content', () => {
         ['warning', 'tip', 'info', 'note'].forEach(panelType => {
           check(
             `${panelType} panel`,
             `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p></p></ac:rich-text-body></ac:structured-macro>`,
-            doc(panel({ panelType: mapPanelTypeToPm(panelType) })(p())),
+            doc(panel({ panelType: mapPanelTypeToPm(panelType) })(p(''))),
           );
         });
       });
@@ -811,7 +836,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               schemaVersion: '1',
               server: 'JIRA (product-fabric.atlassian.net)',
               serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
-            }),
+            })(),
           ),
         ),
       );
@@ -840,7 +865,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         macroMetadata,
       },
     };
-    const params = Object.keys(macroParams).map(
+    const paramsAsCXHTML = Object.keys(macroParams).map(
       key =>
         `<ac:parameter ac:name="${key}">${
           macroParams[key].value
@@ -853,11 +878,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
-        doc(p(inlineExtension(attrs))),
+        doc(p(inlineExtension(attrs)())),
       );
     });
 
@@ -867,11 +892,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
-        doc(extension(attrs)),
+        doc(extension(attrs)()),
       );
     });
 
@@ -881,14 +906,14 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
         }" ac:schema-version="1" ac:macro-id="${
-          attrs.parameters.macroMetadata.macroId.value
-        }">${params}<fab:placeholder-url>${
+          macroMetadata.macroId.value
+        }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
         }</fab:placeholder-url>
           <fab:display-type>BLOCK</fab:display-type>
           <ac:rich-text-body><p>little<strong>piggy</strong></p></ac:rich-text-body>
         </ac:structured-macro>`,
-        doc(bodiedExtension(attrs, p('little', strong('piggy')))),
+        doc(bodiedExtension(attrs)(p('little', strong('piggy')))),
       );
     });
   });
@@ -1037,7 +1062,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   +// bar!]]></ac:plain-text-body></ac:structured-macro>`);
         expect(actual).to.deep.equal(
           doc(
-            codeblock({ language: null })(`foo
+            code_block({ language: null })(`foo
   +// bar!`),
           ),
         );
@@ -1049,7 +1074,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             '<table class="wysiwyg-macro" data-macro-name="noformat" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-macro-id="d03bc664-56dd-4eb4-ac68-9eadfc3a9663" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 226px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e25vZm9ybWF0fQ&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; min-width: 200px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">No format content</pre></td></tr></tbody></table>',
           );
           expect(actual).to.deep.equal(
-            doc(codeblock({ language: null })('No format content')),
+            doc(code_block({ language: null })('No format content')),
           );
         });
       });
@@ -1060,7 +1085,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             '<div class="preformatted panel" style="margin: 10px 0px; padding: 0px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); overflow: auto; border-radius: 3px; background-color: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div class="preformattedContent panelContent" style="margin: 0px; padding: 10px;"><pre style="margin: 0px; padding: 0px; font-family: ConfluenceInstalledFont, monospace; line-height: 1.3;">No format content</pre></div></div>',
           );
           expect(actual).to.deep.equal(
-            doc(codeblock({ language: null })('No format content')),
+            doc(code_block({ language: null })('No format content')),
           );
         });
       });
@@ -1077,7 +1102,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     check(
       'h1 + macro with CDATA',
       '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-      doc(h1('Code block'), codeblock()('some code')),
+      doc(h1('Code block'), code_block()('some code')),
     );
 
     describe('ac:link', () => {
@@ -1129,7 +1154,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             id: '1f642',
             shortName: ':slight_smile:',
             text: '\uD83D\uDE42',
-          }),
+          })(),
         ),
       ),
     );
@@ -1137,7 +1162,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     check(
       'emoticons that will end up mapped to default fabric id emoji will preserve original ac:name',
       '<p><ac:emoticon ac:name="unknown"/></p>',
-      doc(p(emoji({ id: '2b50', shortName: ':unknown:', text: '' }))),
+      doc(p(emoji({ id: '2b50', shortName: ':unknown:', text: '' })())),
     );
 
     check(
@@ -1149,7 +1174,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             id: 'atlassian-sadpanda',
             shortName: ':sadpanda:',
             text: '',
-          }),
+          })(),
         ),
       ),
     );
@@ -1163,7 +1188,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             id: '1f61c',
             shortName: ':stuck_out_tongue_winking_eye:',
             text: '😜',
-          }),
+          })(),
         ),
       ),
     );
@@ -1176,9 +1201,9 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               id: '1f61c',
               shortName: ':stuck_out_tongue_winking_eye:',
               text: '😜',
-            }),
+            })(),
           ),
-        ),
+        )(schema),
       );
       expect(emoticon).to.contain('ac:name="blue-star"');
     });
@@ -1202,42 +1227,39 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   });
 
   describe('fabric mentions', () => {
-    check(
-      'with atlassian id and name',
-      '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>',
-      doc(
-        p(
-          'This is mention from ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          }),
-        ),
-      ),
-    );
+    it('shoult parse mention with atlassian id and name', () => {
+      const cxhtml =
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link></p>';
 
-    it('strips @ from mention text', () => {
-      const docBefore = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: '@Artur Bodera',
-          }),
+      expect(parse(cxhtml)).to.deep.equal(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
         ),
       );
+    });
 
-      const docAfter = doc(
-        p(
-          '@ is stripped from this mention: ',
-          mention({
-            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
-            text: 'Artur Bodera',
-          }),
-        ),
+    // @see ED-3634
+    it('shoult encode mention and preserve only atlassian id', () => {
+      const encodedCxhtml = encode(
+        doc(
+          p(
+            'This is mention from ',
+            mention({
+              id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+              text: 'Artur Bodera',
+            })(),
+          ),
+        )(schema),
       );
-
-      expect(parse(encode(docBefore))).to.deep.equal(docAfter);
+      expect(encodedCxhtml).to.equal(
+        '<p>This is mention from <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"/></fab:link></p>',
+      );
     });
   });
 
@@ -1251,7 +1273,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
             id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
             type: 'file',
             collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
-          }),
+          })(),
         ),
       ),
     );
@@ -1275,19 +1297,19 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
         type: 'file',
         collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
-        fileName: '2017-04-12 07.15.57.jpg',
-        fileSize: 95316,
-        fileMimeType: 'image/jpeg',
+        __fileName: '2017-04-12 07.15.57.jpg',
+        __fileSize: 95316,
+        __fileMimeType: 'image/jpeg',
         width: 600,
         height: 400,
       });
-      const docNode = doc(mediaSingle()(mediaNode));
+      const docNode = doc(mediaSingle()(mediaNode()));
 
       // check that parsing/encoding is working as expected
       // plus takes node own attributes into account
       const parsed = parse(cxhtml);
       expect(parsed).to.deep.equal(docNode);
-      expect(parse(encode(docNode))).to.deep.equal(docNode);
+      expect(parse(encode(docNode(schema)))).to.deep.equal(docNode);
 
       // check that node attributes are set during parsing
       const parsedMediaNode = parsed.firstChild!.firstChild;
@@ -1320,26 +1342,26 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
         type: 'file',
         collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
-        fileName: '2017-04-12 07.15.57.jpg',
-        fileSize: 95316,
-        fileMimeType: 'image/jpeg',
+        __fileName: '2017-04-12 07.15.57.jpg',
+        __fileSize: 95316,
+        __fileMimeType: 'image/jpeg',
       });
 
       const docNode = doc(
         p('my answer with attachment'),
-        mediaGroup(mediaNode, mediaNode),
+        mediaGroup(mediaNode(), mediaNode()),
         p('my answer with attachment 2'),
-        mediaSingle({ layout: 'wrap-left' })(mediaNode),
+        mediaSingle({ layout: 'wrap-left' })(mediaNode()),
         p(
           'my answer with attachment 3 ',
           mention({
             id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
             text: 'Artur Bodera',
-          }),
+          })(),
         ),
       );
 
-      expect(docNode).to.deep.equal(parseWrap());
+      expect(docNode(schema)).to.deep.equal(parseWrap());
     });
   });
 });

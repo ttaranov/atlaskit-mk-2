@@ -1,8 +1,4 @@
-import {
-  ContextConfig as MediaContextConfig,
-  MediaProvider,
-  MediaStateManager,
-} from '@atlaskit/media-core';
+import { ContextConfig as MediaContextConfig } from '@atlaskit/media-core';
 import {
   defaultCollectionName,
   StoryBookAuthProvider,
@@ -11,6 +7,7 @@ import {
   defaultServiceHost,
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
+import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
 export interface MediaProviderFactoryConfig {
   serviceHost?: string;
