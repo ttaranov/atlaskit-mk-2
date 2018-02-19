@@ -11,6 +11,7 @@ export const MediaPickerPopupWrapper = styled.div`
   user-select: none;
   font-family: ${akFontFamily};
   border-radius: 3px;
+  position: relative;
 `;
 
 export const SidebarWrapper = styled.div`

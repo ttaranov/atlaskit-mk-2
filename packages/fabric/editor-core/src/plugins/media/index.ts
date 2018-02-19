@@ -85,6 +85,7 @@ export class MediaPluginState {
   private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
+  private removeOnCloseListener: () => void = () => {};
 
   constructor(
     state: EditorState,
@@ -349,9 +350,7 @@ export class MediaPluginState {
     );
   };
 
-  splitMediaGroup = (): boolean => {
-    return splitMediaGroup(this.view);
-  };
+  splitMediaGroup = (): boolean => splitMediaGroup(this.view);
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
@@ -363,11 +362,20 @@ export class MediaPluginState {
     binaryPicker!.upload(url, fileName);
   };
 
+  // TODO [MSW-454]: remove this logic from Editor
+  onPopupPickerClose = () => {
+    if (this.dropzonePicker) {
+      this.dropzonePicker.activate();
+    }
+  };
+
   showMediaPicker = () => {
     if (!this.popupPicker) {
       return;
     }
-
+    if (this.dropzonePicker) {
+      this.dropzonePicker.deactivate();
+    }
     this.popupPicker.show();
   };
 
@@ -481,6 +489,7 @@ export class MediaPluginState {
     const { mediaNodes } = this;
     mediaNodes.splice(0, mediaNodes.length);
 
+    this.removeOnCloseListener();
     this.destroyPickers();
   }
 
@@ -536,6 +545,8 @@ export class MediaPluginState {
 
     this.popupPicker = undefined;
     this.binaryPicker = undefined;
+    this.clipboardPicker = undefined;
+    this.dropzonePicker = undefined;
   };
 
   private initPickers(
@@ -595,7 +606,11 @@ export class MediaPluginState {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
+
       this.dropzonePicker.onDrag(this.handleDrag);
+      this.removeOnCloseListener = this.popupPicker.onClose(
+        this.onPopupPickerClose,
+      );
     }
 
     if (this.popupPicker) {
