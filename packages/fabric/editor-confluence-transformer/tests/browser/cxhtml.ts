@@ -51,6 +51,7 @@ import {
   taskList,
   taskItem,
   date,
+  placeholder,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -924,6 +925,15 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       'date node',
       `<time datetime="${iso}"></time>`,
       doc(p(date({ timestamp: parseDate(iso).valueOf() }))),
+    );
+  });
+
+  describe('placeholder', () => {
+    const text = 'Write something...';
+    check(
+      'placeholder node',
+      `<ac:placeholder>${text}</ac:placeholder>`,
+      doc(p(placeholder({ text }))),
     );
   });
 

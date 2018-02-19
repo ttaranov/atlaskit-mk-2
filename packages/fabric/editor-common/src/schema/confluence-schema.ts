@@ -33,6 +33,7 @@ const nodes = [
   'taskList',
   'taskItem',
   'date',
+  'placeholder',
 ];
 
 const marks = [
