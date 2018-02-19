@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Select } from './common/components';
+import Select from '../src';
 
 const SingleExample = () => (
   <Select

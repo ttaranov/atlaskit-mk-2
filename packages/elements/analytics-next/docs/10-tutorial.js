@@ -18,15 +18,15 @@ export default md`
   ## Creating an analytics event
 
   The \`withAnalyticsEvents\` HOC provides the wrapped component with a function for creating analytics events. This function takes an optional \`payload\` argument.
-  
+
   **Important:** The payload object can have any shape you please, but by convention all Atlaskit components will include an \`action\` property in the payload to capture the initial user interaction which triggered the event. Other Atlassian teams are encouraged to follow this convention.
 
   Creating an event is as simple as this:
 
   ##### Button.js
 
-  ${code([
-    `import React, { Component } from 'react';
+${code`
+import React, { Component } from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 class Button extends Component {
@@ -45,8 +45,8 @@ class Button extends Component {
   }
 }
 
-export default withAnalyticsEvents()(Button);`,
-  ])}
+export default withAnalyticsEvents()(Button);
+`}
 
   <a name="firing-an-event"></a>
   ## Firing an event
@@ -55,8 +55,8 @@ export default withAnalyticsEvents()(Button);`,
 
   ##### Button.js (handleClick method)
 
-  ${code([
-    `handleClick = e => {
+${code`
+handleClick = e => {
   // Create our analytics event
   const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' });
 
@@ -66,15 +66,15 @@ export default withAnalyticsEvents()(Button);`,
   if (this.props.onClick) {
     this.props.onClick(e);
   }
-};`,
-  ])}
+};
+`}
 
   We fire events on a specific \`channel\`; in this case it's the \`'atlaskit'\` channel. If we're going to fire an event we'll also need something to handle it. Here's our app:
 
   ##### App.js
 
-  ${code([
-    `import React, { Component } from 'react';
+${code`
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import Button from './Button';
@@ -93,8 +93,8 @@ class App extends Component {
   }
 }
 
-render(<App />, document.getElementById('root'));`,
-  ])}
+render(<App />, document.getElementById('root'));
+`}
 
   The \`AnalyticsListener\` component accepts \`channel\` and \`onEvent\` props. When an event is fired on this Listener's channel its onEvent function will be called.
 
@@ -112,13 +112,13 @@ render(<App />, document.getElementById('root'));`,
   ## Adding context to an event
 
   What if this button lives inside a Jira issue, and we want to capture that issue's ID in our analytics event? Our button is a reusable component and doesn't have any idea where or how it's being used. There might also be a number of component boundaries between the part of the app that knows the issue ID and the part of the app that renders the button.
-  
+
   This is where the \`AnalyticsContext\` component comes in:
 
   ##### App.js
 
-  ${code([
-    `import React, { Component } from 'react';
+${code`
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import {
   AnalyticsContext,
@@ -143,8 +143,8 @@ class App extends Component {
   }
 }
 
-render(<App />, document.getElementById('root'));`,
-  ])}
+render(<App />, document.getElementById('root'));
+`}
 
   You can add multiple layers of \`AnalyticsContext\`s throughout your render tree. Context is stored in the analytics event as an array of objects and it's up to you to merge or transform this data when you handle the event.
 
@@ -165,8 +165,8 @@ render(<App />, document.getElementById('root'));`,
 
   ##### Button.js (handleClick method)
 
-  ${code([
-    `handleClick = e => {
+${code`
+handleClick = e => {
   // Create our analytics event
   const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' });
 
@@ -174,15 +174,15 @@ render(<App />, document.getElementById('root'));`,
     // Pass the event through the corresponding callback prop
     this.props.onClick(e, analyticsEvent);
   }
-};`,
-  ])}
+};
+`}
 
   This is a pretty common pattern for component authors, so \`withAnalyticsEvents\` includes a shortcut:
 
   ##### Button.js
 
-  ${code([
-    `import React, { Component } from 'react';
+${code`
+import React, { Component } from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 class Button extends Component {
@@ -202,19 +202,19 @@ export default withAnalyticsEvents({
   onClick: createEvent => {
     return createEvent({ action: 'click' });
   },
-})(Button);`,
-  ])}
+})(Button);
+`}
 
   \`withAnalyticsEvents\` accepts an optional object mapping callback prop names to functions. These functions will be passed the \`createAnalyticsEvent\` method and the instance's props, and should return an analytics event. This event will be automatically added as a final argument to the callback prop.
 
   Since creating and returning an event is such a common pattern we've included an even quicker shorthand:
 
-  ${code([
-    `withAnalyticsEvents({
+${code`
+withAnalyticsEvents({
   // If you simply provide a payload we'll automatically create an event for you
   onClick: { action: 'click' }
-})(Button);`,
-  ])}
+})(Button);
+`}
 
   ${(
     <Example
@@ -238,7 +238,7 @@ export default withAnalyticsEvents({
   )}
 
   What's happening here is that a keydown event in an input field and a click event in a button are both triggering a submit event in a form, which adds the value of the field to the event before firing it.
-  
+
   Analytics events have an \`.update\` method. This accepts a function which is called with the event's current payload and should return a new payload. For convenience \`.update\` also accepts an object which is automatically shallow merged into its current payload.
 
   You'll also notice that we've introduced another feature - \`withAnalyticsContext\`. This HOC wraps your component in an \`AnalyticsContext\` and allows you to provide a default value for the context data.
@@ -258,8 +258,8 @@ export default withAnalyticsEvents({
 
   ##### Form.js (onSubmit method):
 
-  ${code([
-    `onSubmit = analyticsEvent => {
+${code`
+onSubmit = analyticsEvent => {
   const { value } = this.state;
 
   // Clone the analytics event
@@ -272,8 +272,8 @@ export default withAnalyticsEvents({
     // Pass the cloned event to the callback prop for consumers to use
     this.props.onSubmit(value, publicEvent);
   }
-};`,
-  ])}
+};
+`}
 
   ${(
     <Example
@@ -305,8 +305,8 @@ export default withAnalyticsEvents({
 
   In case it is useful for you to have a consistent interface for your events, even if they're not coming from the UI, we do export the base \`AnalyticsEvent\` class. Here's an example of how you might use it:
 
-  ${code([
-    `import { AnalyticsEvent } from '@atlaskit/analytics-next';
+${code`
+import { AnalyticsEvent } from '@atlaskit/analytics-next';
 import sendAnalyticsEventToBackend from './sendAnalyticsEventToBackend';
 
 const fetchBacon = async () => {
@@ -333,6 +333,6 @@ const fetchBacon = async () => {
   sendAnalyticsEventToBackend(analyticsEvent);
 
   return data;
-};`,
-  ])}
+};
+`}
 `;

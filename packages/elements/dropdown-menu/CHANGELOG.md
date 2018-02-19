@@ -1,5 +1,7 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.9
+
 ## 3.11.8
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

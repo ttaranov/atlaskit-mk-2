@@ -7755,9 +7755,9 @@ knot.js@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/knot.js/-/knot.js-1.1.5.tgz#28e72522f703f50fe98812fde224dd72728fef5d"
 
-landkid@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.12.tgz#6a70d4392d197bc5bd9bfa05bd22bfb571283477"
+landkid@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.19.tgz#132e9d19dd93c6c2fc516d0d3273ccf8800d6a9c"
   dependencies:
     axios "^0.17.1"
     babel-cli "^6.26.0"
@@ -10755,6 +10755,10 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-node-resolver@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-node-resolver/-/react-node-resolver-1.0.1.tgz#1798a729c0e218bf2f0e8ddf79c550d4af61d83a"
+
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
@@ -10802,14 +10806,21 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-select@2.0.0-alpha.4:
-  version "2.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.4.tgz#76b93a5ac3f46a1def719783d47e38b4f7d2b1c3"
+react-scroll-captor@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-scroll-captor/-/react-scroll-captor-1.0.1.tgz#3f912df72ab8e7f46d4fa27d8707131ffe59b353"
+  dependencies:
+    react-node-resolver "^1.0.1"
+
+react-select@2.0.0-alpha.6:
+  version "2.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.6.tgz#422de89840538a8c09a25e9609f5e79777a79154"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
     react-input-autosize "^2.2.1"
+    react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"
 
 react-syntax-highlighter@^3.0.2:
