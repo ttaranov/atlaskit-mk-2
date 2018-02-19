@@ -126,12 +126,13 @@ export const Content = styled.div`
 const getMaxWidth = (maxWidth?: number) =>
   maxWidth ? `${maxWidth}px` : '100%';
 
-/* IE11 does not respect max-width when using flex-grow, similar to https://github.com/philipwalton/flexbugs#flexbug-11
+/* IE11 does not respect max-width when using flex-grow + nested flex content, similar to https://github.com/philipwalton/flexbugs#flexbug-11
  * and https://github.com/philipwalton/flexbugs#flexbug-17.
  * This can be fixed by setting the basis to 100%, allowing shrinking and setting the min-width to the original flex-basis value
  * (or 0 if it was auto).
  * Alternatively since we're just setting the contents to fit parent container when grow is set to true, we can just change flex-basis
  * to 100% and not worry about shrinking or growing.
+ * See AK-4285.
  */
 export const ContentWrapper = styled.div`
   ${props =>
