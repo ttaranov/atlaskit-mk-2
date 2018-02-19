@@ -3,7 +3,6 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 import { uploadFile } from '@atlaskit/media-store';
-import { MediaPicker } from '@atlaskit/media-picker';
 
 import {
   EmojiDescription,
@@ -201,13 +200,6 @@ export default class SiteEmojiResource {
         // Unsuccessful delete on Promise.reject
         .catch(() => false)
     );
-  }
-
-  /**
-   * Intended to be overridden for unit testing.
-   */
-  protected createMediaPicker(type, mpConfig) {
-    return MediaPicker(type, mpConfig);
   }
 
   private postToEmojiService = (

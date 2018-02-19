@@ -80,10 +80,6 @@ class TestSiteEmojiResource extends SiteEmojiResource {
     this.tokenManager = tokenManager;
     this.mockMediaPicker = mockMediaPicker;
   }
-
-  protected createMediaPicker(type, mpConfig) {
-    return this.mockMediaPicker;
-  }
 }
 
 describe('SiteEmojiResource', () => {
