@@ -2,13 +2,29 @@
 import React, { Component } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
 import FieldText from '@atlaskit/field-text';
+import FieldRadioGroup from '@atlaskit/field-radio-group';
 import InlineEdit from '../src';
+
+const radioItems = [
+  {
+    name: 'shouldFitContainer',
+    value: 'true',
+    label: 'true',
+  },
+  {
+    name: 'shouldFitContainer',
+    value: 'false',
+    label: 'false',
+    defaultSelected: true,
+  },
+];
 
 type State = {
   inputValue: string,
   editInputValue: string,
   fieldTextValue: string,
   editFieldTextValue: string,
+  shouldFitContainer: boolean,
 };
 
 export default class extends Component<*, State> {
@@ -17,6 +33,7 @@ export default class extends Component<*, State> {
     editInputValue: 'Input value',
     fieldTextValue: 'Field text value',
     editFieldTextValue: 'Field text value',
+    shouldFitContainer: false,
   };
 
   onInputChange = (e: SyntheticInputEvent<>) => {
@@ -55,9 +72,30 @@ export default class extends Component<*, State> {
     });
   };
 
+  onShouldFitContainerChange = (e: any) => {
+    this.setState({
+      shouldFitContainer: e.target.value === 'true',
+    });
+  };
+
   render() {
     return (
       <div>
+        <p>
+          The <code>isFitContainerWidthReadView</code> prop controls whether the
+          read view width should stretch to fit the parent container. You can
+          see this while hovering.
+          <br />
+          The edit view width will always stretch to fit the container and
+          should work regardless of what edit view component you use, provided
+          that it stretches to fit its container.
+        </p>
+
+        <FieldRadioGroup
+          items={radioItems}
+          label="Should read view width fit container:"
+          onRadioChange={this.onShouldFitContainerChange}
+        />
         <InlineEdit
           label="Input edit view"
           readView={
@@ -67,10 +105,11 @@ export default class extends Component<*, State> {
               onChange={this.onInputChange}
             />
           }
-          isFitContainerWidthReadView
+          isFitContainerWidthReadView={this.state.shouldFitContainer}
           editView={
             <SingleLineTextInput
               isEditing
+              isInitiallySelected
               value={this.state.editInputValue}
               onChange={this.onInputChange}
             />
@@ -81,12 +120,13 @@ export default class extends Component<*, State> {
         <InlineEdit
           label="FieldText edit view"
           readView={this.state.fieldTextValue}
-          isFitContainerWidthReadView
+          isFitContainerWidthReadView={this.state.shouldFitContainer}
           disableEditViewFieldBase
           editView={
             <FieldText
               shouldFitContainer
               isLabelHidden
+              autoFocus
               value={this.state.editFieldTextValue}
               onChange={this.onFieldTextChange}
             />
