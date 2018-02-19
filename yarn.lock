@@ -5324,9 +5324,9 @@ extglob@^2.0.2:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-react-types@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.7.1.tgz#28b0464d3984be38ac7f4ef1ba658977c7420d94"
+extract-react-types@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.8.0.tgz#7c34bbf4a1d01c79f0d1f8b07a0b137da54b3fae"
   dependencies:
     ast-pretty-print "^2.0.1"
     babel-core "7.0.0-alpha.19"
@@ -7744,6 +7744,10 @@ kind-of@^5.0.0, kind-of@^5.0.2:
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+
+kind2string@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/kind2string/-/kind2string-0.2.0.tgz#2775f03965ef4876ecd33e84f7e2bf50fd64589a"
 
 klaw@^1.0.0:
   version "1.3.1"

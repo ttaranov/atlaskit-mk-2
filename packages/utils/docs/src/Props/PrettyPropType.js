@@ -2,9 +2,9 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { type Node } from 'react';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, themed } from '@atlaskit/theme';
 import styled from 'styled-components';
-import translate from './kindToString';
+import k2s from 'kind2string';
 
 const Wrapper = styled.code`
   display: inline-block;
@@ -44,12 +44,6 @@ const StringType = styled(Type)`
   color: ${themed({ light: colors.G500, dark: colors.G100 })};
 `;
 
-// $FlowFixMe
-const InstanceType = styled(Type)`
-  background-color: ${themed({ light: colors.Y50, dark: colors.G500 })};
-  color: ${themed({ light: colors.Y500, dark: colors.G100 })};
-`;
-
 const Required = styled.span`
   color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
@@ -59,15 +53,9 @@ const Outline = styled.span`
   line-height: 1;
 `;
 
-const Invalid = styled.span`
-  color: ${themed({ light: colors.N80, dark: colors.DN80 })};
-  margin: ${math.divide(gridSize, 2)}px;
-`;
-
 const SIMPLE_TYPES = [
   'array',
   'boolean',
-  'function',
   'number',
   'string',
   'symbol',
@@ -81,9 +69,9 @@ const SIMPLE_TYPES = [
 
 /* eslint-disable no-use-before-define */
 /* eslint-disable prefer-rest-params */
-function printComplexType(type) {
+function printComplexType(type, depth) {
   if (typeof type === 'object' && !SIMPLE_TYPES.includes(type.kind)) {
-    return print(...arguments);
+    return prettyConvert(type, depth);
   }
   return null;
 }
@@ -93,186 +81,114 @@ function printComplexType(type) {
 function Indent(props: { children: Node }) {
   return <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>;
 }
-
-function resolveFromGeneric(type) {
-  if (type.typeParams && type.value.name === 'Array') {
-    // If a generic type is an Array, we don't want to just return the value,
-    // But also the entire type object, so we can parse the typeParams later on.
-    return type;
-  }
-  if (type.value.kind === 'generic') {
-    return resolveFromGeneric(type.value);
-  }
-  return type.value;
-}
-
-const ObjectProp = (
-  { prop }, // eslint-disable-line
-) => (
-  <div key={translate(prop.key)}>
-    <TypeMinWidth>
-      <Type>{translate(prop.key)}</Type>
-    </TypeMinWidth>{' '}
-    {prop.value.kind !== 'generic' ? prop.value.kind : ''}
-    {prop.optional ? null : <Required> required</Required>}{' '}
-    {printComplexType(prop.value)}
-  </div>
-);
-
-function print(startType, depth = 1) {
-  let type = startType;
-  if (type.kind === 'nullable') type = type.arguments;
-  if (type.kind === 'generic') {
-    if (type.value && type.value.name === 'Array') {
-      // As Flow does not know what the keyword Array<T> means, we're doing a check here for generic types with a nominal value of 'Array'
-      // If a type meets this criteria, we print out its contents as per below.
-      return (
-        <span>
-          <TypeMeta>
-            Array of <Outline>{'['}</Outline>
-          </TypeMeta>
-          <Indent>{print(type.typeParams[0].type)}</Indent>
-          <TypeMeta>
-            <Outline>{']'}</Outline>
-          </TypeMeta>
-        </span>
-      );
-    }
-    type = resolveFromGeneric(type);
-  }
-
-  if (type.kind === 'string' || type.kind === 'stringLiteral') {
-    if (type.value) {
-      return (
-        <StringType>
-          {'"'}
-          {type.value}
-          {'"'}
-        </StringType>
-      );
-    }
-    return <Type>{type.kind}</Type>;
-  }
-
-  if (type.kind === 'function') {
-    return <Type>{'function'}</Type>;
-  }
-  if (type.kind === 'any') {
-    return <Type>{'any'}</Type>;
-  }
-  if (type.kind === 'null') {
-    return <Type>{'null'}</Type>;
-  }
-
-  if (type.kind === 'number' || type.kind === 'numberLiteral') {
-    if (type.value) {
-      return <StringType>{type.value}</StringType>;
-    }
-    return <Type>{type.kind}</Type>;
-  }
-
-  // make sure we have an object; we should always have an object!!!
-  if (typeof type !== 'object') {
-    return <div>ERROR: TYPEOF type === {typeof type}</div>;
-  }
-
-  if (type.kind === 'object') {
-    return (
-      <span>
-        <TypeMeta>
-          Shape <Outline>{'{'}</Outline>
-        </TypeMeta>
-        <Indent>
-          {type.members.map(prop => {
-            // handling this badly. It should be recursive. Shipit work on kindToString
-            // should simplify how we think about PrettyPropType. If this is unchanged
-            // after 2018-02-12, blame Ben Conolly
-            if (prop.kind === 'spread') {
-              const nestedObj = resolveFromGeneric(prop.value);
-              return nestedObj.members.map(newProp => (
-                <ObjectProp prop={newProp} />
-              ));
-            }
-            return <ObjectProp prop={prop} />;
-          })}
-        </Indent>
-        <TypeMeta>
-          <Outline>{'}'}</Outline>
-        </TypeMeta>
-      </span>
-    );
-  }
-
-  if (type.name === 'enum') {
-    if (typeof type.value === 'string') {
-      return (
-        <span>
-          <TypeMeta>
-            One of <Outline>{'('}</Outline>
-          </TypeMeta>
-          <InstanceType>{type.value}</InstanceType>
-          <TypeMeta>
-            <Outline>{')'}</Outline>
-          </TypeMeta>
-        </span>
-      );
-    }
-    return (
-      <span>
-        <TypeMeta>
-          One of <Outline>{'('}</Outline>
-        </TypeMeta>
-        <Indent>
-          {Array.isArray(type.value)
-            ? type.value.map((v, i) => (
-                <Block key={i}>{print(v.value, depth + 1)}</Block>
-              ))
-            : print(type.value, depth + 1)}
-        </Indent>
-        <TypeMeta>
-          <Outline>{')'}</Outline>
-        </TypeMeta>
-      </span>
-    );
-  }
-
-  if (type.kind === 'union') {
-    return (
-      <span>
-        <TypeMeta>
-          One of <Outline>{'('}</Outline>
-        </TypeMeta>
-        <Indent>
-          {Array.isArray(type.types)
-            ? type.types.map((t, i) => (
-                <Block key={i}>{print(t, depth + 1)}</Block>
-              ))
-            : print(type.types, depth + 1)}
-        </Indent>
-        <TypeMeta>
-          <Outline>{')'}</Outline>
-        </TypeMeta>
-      </span>
-    );
-  }
-
-  // note we guard against complex name properties here, because you can have
-  // shapes with name properties
-  if (!type.value && typeof type.name === 'string') {
-    return <Type>{type.name}</Type>;
-  }
-
-  return <Invalid>{JSON.stringify(type)}</Invalid>;
-}
+// const printFunc = type => null;
 
 type PrettyPropTypeProps = {
   type: Object,
 };
 
+const converters = {
+  string: type => {
+    if (type.value != null) {
+      return <StringType>{k2s.convert(type)}</StringType>;
+    }
+    return <Type>{k2s.convert(type)}</Type>;
+  },
+  nullable: (type, depth) => {
+    return prettyConvert(type.arguments, depth);
+  },
+  generic: (type, depth) => {
+    if (type.value && type.typeParams) {
+      // As Flow does not know what the keyword Array<T> means, we're doing a check here for generic types with a nominal value of 'Array'
+      // If a type meets this criteria, we print out its contents as per below.
+      return (
+        <span>
+          <TypeMeta>
+            {k2s.convert(type.value)} <Outline>{'<'}</Outline>
+          </TypeMeta>
+          <Indent>
+            {type.typeParams.params.map((param, i) => (
+              <span key={i}>{prettyConvert(param, depth)}</span>
+            ))}
+          </Indent>
+          <TypeMeta>
+            <Outline>{'>'}</Outline>
+          </TypeMeta>
+        </span>
+      );
+    }
+    return prettyConvert(k2s.resolveFromGeneric(type));
+  },
+  object: (type, depth) => (
+    <span>
+      <TypeMeta>
+        Shape <Outline>{'{'}</Outline>
+      </TypeMeta>
+      <Indent>
+        {type.members.map(prop => {
+          // handling this badly. It should be recursive. Shipit work on kindToString
+          // should simplify how we think about PrettyPropType. If this is unchanged
+          // after 2018-02-12, blame Ben Conolly
+          if (prop.kind === 'spread') {
+            const nestedObj = k2s.resolveFromGeneric(prop.value);
+            return nestedObj.members.map(newProp =>
+              prettyConvert(newProp, depth),
+            );
+          }
+          return prettyConvert(prop, depth);
+        })}
+      </Indent>
+      <TypeMeta>
+        <Outline>{'}'}</Outline>
+      </TypeMeta>
+    </span>
+  ),
+  property: (type, depth) => (
+    <div key={k2s.convert(type.key)}>
+      <TypeMinWidth>
+        <Type>{k2s.convert(type.key)}</Type>
+      </TypeMinWidth>{' '}
+      {type.value.kind !== 'generic' ? type.value.kind : ''}
+      {type.optional ? null : <Required> required</Required>}{' '}
+      {printComplexType(type.value, depth)}
+    </div>
+  ),
+  union: (type, depth) => (
+    <span>
+      <TypeMeta>
+        One of <Outline>{'('}</Outline>
+      </TypeMeta>
+      <Indent>
+        {type.types.map((t, i) => (
+          <Block key={i}>{prettyConvert(t, depth + 1)}</Block>
+        ))}
+      </Indent>
+      <TypeMeta>
+        <Outline>{')'}</Outline>
+      </TypeMeta>
+    </span>
+  ),
+  function: type => k2s.convert(type),
+};
+
+const prettyConvert = (type, depth = 1) => {
+  if (!type) {
+    return '';
+  }
+
+  const converter = converters[type.kind];
+  if (!converter) {
+    return <Type>{k2s.convert(type)}</Type>;
+  }
+  return converter(type, depth);
+};
+
 export default function PrettyPropType(props: PrettyPropTypeProps) {
+  // any instance of returning null means we are confident the information will
+  // be displayed elsewhere so we do not need to also include it here
   let type = props.type;
   if (type.kind === 'generic') {
-    type = resolveFromGeneric(props.type);
+    type = k2s.resolveFromGeneric(props.type);
   }
   if (SIMPLE_TYPES.includes(type.kind)) return null;
   if (
@@ -281,5 +197,5 @@ export default function PrettyPropType(props: PrettyPropTypeProps) {
   ) {
     return null;
   }
-  return <Wrapper>{print(type)}</Wrapper>;
+  return <Wrapper>{prettyConvert(type)}</Wrapper>;
 }
