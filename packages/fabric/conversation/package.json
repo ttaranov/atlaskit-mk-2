@@ -17,7 +17,7 @@
   "maintainers": [
     "Oscar W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0"

@@ -15,7 +15,7 @@
       "name": "Sean C"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.4.1",
     "@atlaskit/docs": "^2.4.0",

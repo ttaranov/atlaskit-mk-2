@@ -28,5 +28,5 @@
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2"
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

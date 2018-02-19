@@ -17,7 +17,7 @@
     "name": "Lozenge",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/droplist": "^4.11.8",
     "@atlaskit/field-base": "^8.1.10",

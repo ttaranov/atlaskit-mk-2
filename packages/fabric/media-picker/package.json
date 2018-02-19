@@ -18,7 +18,7 @@
     "Aleksandr M",
     "Jimmy L"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.3.0",
     "@atlaskit/dropdown-menu": "^3.11.5",

@@ -17,7 +17,7 @@
     "name": "Tag group",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "styled-components": "^1.4.6"

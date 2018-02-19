@@ -17,7 +17,7 @@
     "Hector Z",
     "Aleksandr M"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.3.0",
     "@atlaskit/field-range": "^2.5.0",

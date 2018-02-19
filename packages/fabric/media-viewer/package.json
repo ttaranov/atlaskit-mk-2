@@ -17,7 +17,7 @@
     "Damien K",
     "Hector Z"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "query-string": "^4.3.2",
     "tslib": "^1.8.0"

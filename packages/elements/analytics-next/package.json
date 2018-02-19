@@ -20,7 +20,7 @@
     "name": "Analytics next",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "clone-deep": "^3.0.1",
     "prop-types": "^15.5.10"

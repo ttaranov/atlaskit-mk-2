@@ -14,7 +14,7 @@
     "Joss M",
     "Jed W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/layer-manager": "^2.7.3",
     "@atlaskit/theme": "^2.3.3",

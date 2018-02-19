@@ -12,7 +12,7 @@
   "maintainers": [
     "Sean C"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
     "build": "lessc src/index.less dist/bundle.css"
   },
