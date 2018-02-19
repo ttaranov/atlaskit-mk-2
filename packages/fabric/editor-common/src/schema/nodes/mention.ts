@@ -1,11 +1,10 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 
-// Migrate to String Enums when we move to TypeScript 2.4
-export const USER_TYPES = {
-  DEFAULT: true,
-  SPECIAL: true,
-  APP: true,
-};
+export enum USER_TYPES {
+  DEFAULT = 'DEFAULT',
+  SPECIAL = 'SPECIAL',
+  APP = 'APP',
+}
 
 export type UserType = keyof typeof USER_TYPES;
 

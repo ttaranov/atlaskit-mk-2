@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 29.0.0
+- [major] update navigation and item's usage of react-beautiful-dnd from 2.x to 4.x. [aeefa01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeefa01)
+
 ## 28.0.4
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

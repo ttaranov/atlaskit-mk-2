@@ -27,7 +27,7 @@ export const insertPlaceholderTextAtSelection = value => (
       .replaceSelectionWith(
         state.schema.nodes.placeholder.createChecked({ text: value }),
       )
-      .setMeta(pluginKey, { showInsertPanelAt: false })
+      .setMeta(pluginKey, { showInsertPanelAt: null })
       .scrollIntoView(),
   );
   return true;
@@ -36,4 +36,7 @@ export const insertPlaceholderTextAtSelection = value => (
 export const hidePlaceholderFloatingToolbar = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-) => dispatch(state.tr.setMeta(pluginKey, { showInsertPanelAt: false }));
+) => {
+  dispatch(state.tr.setMeta(pluginKey, { showInsertPanelAt: null }));
+  return true;
+};

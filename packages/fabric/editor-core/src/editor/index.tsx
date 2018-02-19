@@ -186,6 +186,7 @@ export default class Editor extends React.Component<EditorProps, State> {
       contentComponents,
       primaryToolbarComponents,
       secondaryToolbarComponents,
+      insertMenuItems,
       eventDispatcher,
     } = editor as EditorInstance;
 
@@ -205,6 +206,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}
+        insertMenuItems={insertMenuItems}
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
         customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}

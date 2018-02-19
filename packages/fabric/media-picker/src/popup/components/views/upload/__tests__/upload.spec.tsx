@@ -1,8 +1,10 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
+import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
+import { Card } from '@atlaskit/media-card';
 
-import { State } from '../../../../domain';
+import { State, CollectionItem } from '../../../../domain';
 import {
   mockStore,
   mockState,
@@ -17,6 +19,10 @@ import { StatelessUploadView, default as ConnectedUploadView } from '../upload';
 import { fileClick } from '../../../../actions/fileClick';
 import { editorShowImage } from '../../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../../actions/editRemoteImage';
+
+import { Dropzone } from '../dropzone';
+
+import { SpinnerWrapper, Wrapper } from '../styled';
 
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
@@ -42,7 +48,68 @@ const createConnectedComponent = (
 };
 
 describe('<StatelessUploadView />', () => {
-  // Tests for stateless part
+  const getUploadViewElement = (
+    isLoading: boolean,
+    recentItems: CollectionItem[] = [],
+  ) => {
+    const context = mockContext();
+    const { selectedItems, uploads, apiUrl } = mockState;
+
+    const recents = {
+      items: recentItems,
+      nextKey: '',
+    };
+
+    return (
+      <StatelessUploadView
+        mpBrowser={{} as any}
+        context={context}
+        recentsCollection="some-collection-name"
+        apiUrl={apiUrl}
+        isLoading={isLoading}
+        recents={recents}
+        uploads={uploads}
+        selectedItems={selectedItems}
+        onFileClick={() => {}}
+        onEditorShowImage={() => {}}
+        onEditRemoteImage={() => {}}
+      />
+    );
+  };
+
+  it('should render the loading state when "isLoading" is true', () => {
+    const component = shallow(getUploadViewElement(true));
+
+    expect(component.find(SpinnerWrapper)).toHaveLength(1);
+    expect(component.find(Spinner)).toHaveLength(1);
+  });
+
+  it('should render the empty state when there are NO recent items and NO local uploads inflight', () => {
+    const component = shallow(getUploadViewElement(false));
+
+    expect(component.find(Wrapper)).toHaveLength(1);
+    expect(component.find(Wrapper).props().className).toEqual('empty');
+    expect(component.find(Dropzone)).toHaveLength(1);
+  });
+
+  it('should render cards and dropzone when there are recent items', () => {
+    const recentItem = {
+      type: 'file',
+      id: 'some-file-id',
+      insertedAt: 0,
+      occurrenceKey: 'some-occurrence-key',
+      details: { name: 'some-file-name', size: 1000 },
+    };
+    const recentItems = [recentItem, recentItem, recentItem];
+
+    const component = shallow(getUploadViewElement(false, recentItems));
+
+    expect(component.find(Wrapper)).toHaveLength(1);
+    expect(component.find(Wrapper).props().className).toEqual(undefined);
+    expect(component.find(Dropzone)).toHaveLength(1);
+
+    expect(component.find(Card)).toHaveLength(3);
+  });
 });
 
 describe('<UploadView />', () => {
@@ -67,7 +134,6 @@ describe('<UploadView />', () => {
       },
       view: {
         ...mockState.view,
-        hasPopupBeenVisible: true,
       },
       uploads: {
         'some-id': {
@@ -102,7 +168,6 @@ describe('<UploadView />', () => {
     expect(props.uploads).toEqual(state.uploads);
     expect(props.selectedItems).toEqual(state.selectedItems);
     expect(props.apiUrl).toEqual(state.apiUrl);
-    expect(props.hasPopupBeenVisible).toEqual(state.view.hasPopupBeenVisible);
   });
 
   it('should dispatch fileClick action when onFileClick called', () => {

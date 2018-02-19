@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "The AtlasKit Component Analytics Framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,7 @@
     "name": "Analytics",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "bitbucket:atlassian/atlaskit-mk-2",
   "dependencies": {
     "prop-types": "^15.5.10"
   },

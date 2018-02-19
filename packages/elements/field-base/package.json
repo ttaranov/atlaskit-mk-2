@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-base",
-  "version": "8.1.10",
+  "version": "8.1.11",
   "description": "Wraps fields and provides styles for focus/hover states",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
