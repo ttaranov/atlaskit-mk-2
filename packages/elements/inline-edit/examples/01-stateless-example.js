@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
-import FieldText from '@atlaskit/field-text';
 import { InlineEditStateless } from '../src';
 
 type State = {|
@@ -67,23 +66,6 @@ export default class StatelessExample extends Component<void, State> {
               onChange={this.onChange}
             />
           }
-        />
-        <InlineEditStateless
-          label="With hidden action buttons & shouldFitContainer"
-          readView="Click to edit"
-          isFitContainerWidthReadView
-          disableEditViewFieldBase
-          areActionButtonsHidden
-          isEditing
-          editView={
-            <FieldText
-              shouldFitContainer
-              isLabelHidden
-              value="With inline edit"
-            />
-          }
-          onConfirm={this.onConfirm}
-          onCancel={this.onCancel}
         />
         <div
           style={{
