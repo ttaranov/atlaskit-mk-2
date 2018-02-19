@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 import { Redirect, Link } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import LinkIcon from '@atlaskit/icon/glyph/link';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { AkCodeBlock } from '@atlaskit/code';
 import CodeIcon from '@atlaskit/icon/glyph/code';
@@ -123,6 +124,7 @@ function ExampleNavigation(props) {
     groups,
     exampleId,
     groupId,
+    loaderUrl,
     packageId,
     config,
   } = props;
@@ -185,6 +187,15 @@ function ExampleNavigation(props) {
           >
             <CodeIcon label="Show source" />
           </NavButton>
+        </Tooltip>
+        <Tooltip content="Isolated View" position="bottom">
+          <Button
+            appearance="subtle"
+            component={'a'}
+            iconBefore={<LinkIcon label="Link Icon" />}
+            href={loaderUrl}
+            target={'_blank'}
+          />
         </Tooltip>
       </NavSection>
     </Nav>
@@ -362,6 +373,7 @@ export default class Examples extends React.Component<Props, State> {
           exampleId={exampleId}
           groups={groups}
           examples={examples}
+          loaderUrl={loaderUrl}
           codeIsVisible={this.state.displayCode}
           onPackageSelected={this.onPackageSelected}
           onExampleSelected={this.onExampleSelected}

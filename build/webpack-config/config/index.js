@@ -42,11 +42,20 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), entry),
             ]
           : path.join(cwd, entry),
+      examples:
+        env === 'development' && host && port
+          ? [
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
+              path.join(process.cwd(), './src/examples-entry.js'),
+            ]
+          : path.join(cwd, './src/examples-entry.js'),
       vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(cwd, 'dist/website'),
+      path: path.resolve(cwd, 'dist'),
       publicPath: '/',
     },
     devtool: env === 'production' ? false : 'cheap-module-source-map',
@@ -232,6 +241,13 @@ function plugins(
 
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
+      favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['examples'],
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'examples.html',
+      template: path.join(cwd, 'public/examples.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
     }),
 
