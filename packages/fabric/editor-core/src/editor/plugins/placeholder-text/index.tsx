@@ -21,28 +21,42 @@ import { FakeTextCursorSelection } from '../fake-text-cursor/cursor';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
+export interface PlaceholderTextOptions {
+  allowInserting?: boolean;
+}
+
 export interface PluginState {
   showInsertPanelAt: number | null;
+  // Enables the "Insert Placeholder Text" dropdown item
+  allowInserting: boolean;
 }
 
 export function createPlugin(
   dispatch: Dispatch<PluginState>,
+  options: PlaceholderTextOptions,
 ): Plugin | undefined {
+  const allowInserting = !!options.allowInserting;
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => ({ showInsertPanelAt: null } as PluginState),
+      init: () =>
+        ({
+          showInsertPanelAt: null,
+          allowInserting,
+        } as PluginState),
       apply: (tr: Transaction, state: PluginState) => {
         const meta = tr.getMeta(pluginKey) as Partial<PluginState>;
         if (meta && meta.showInsertPanelAt !== undefined) {
           const newState = {
             showInsertPanelAt: meta.showInsertPanelAt,
+            allowInserting,
           };
           dispatch(pluginKey, newState);
           return newState;
         } else if (state.showInsertPanelAt) {
           const newState = {
             showInsertPanelAt: tr.mapping.map(state.showInsertPanelAt),
+            allowInserting,
           };
           dispatch(pluginKey, newState);
           return newState;
@@ -107,7 +121,9 @@ export function createPlugin(
   });
 }
 
-const placeholderTextPlugin: EditorPlugin = {
+const placeholderTextPlugin = (
+  options: PlaceholderTextOptions,
+): EditorPlugin => ({
   nodes() {
     return [{ name: 'placeholder', node: placeholder, rank: 1600 }];
   },
@@ -116,7 +132,8 @@ const placeholderTextPlugin: EditorPlugin = {
     return [
       {
         rank: 400,
-        plugin: ({ schema, props, dispatch }) => createPlugin(dispatch),
+        plugin: ({ schema, props, dispatch }) =>
+          createPlugin(dispatch, options),
       },
     ];
   },
@@ -164,5 +181,5 @@ const placeholderTextPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 export default placeholderTextPlugin;
