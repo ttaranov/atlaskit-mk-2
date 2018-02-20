@@ -31,6 +31,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^9.0.1",
     "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/field-radio-group": "^1.8.3",
+    "@atlaskit/field-text": "^4.1.6",
     "@atlaskit/inline-dialog": "5.2.1",
     "@atlaskit/input": "^1.6.5",
     "@atlaskit/mention": "^9.1.1",
