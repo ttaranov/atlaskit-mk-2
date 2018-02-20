@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.16
+- [patch] tweaks confirm and cancel button sizes and position [f416077](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f416077)
+
 ## 4.5.15
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
