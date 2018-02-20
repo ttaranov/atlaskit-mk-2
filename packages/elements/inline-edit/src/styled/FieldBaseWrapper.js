@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // Max-width required to prevent text overflow when display is inline.
 const FieldBaseWrapper = styled.div`
   display: ${({ displayFullWidth }) =>
-    displayFullWidth ? 'flex' : 'inline-block'};
+    displayFullWidth ? 'block' : 'inline-block'};
   max-width: 100%;
   flex-basis: auto;
   flex-grow: 1;

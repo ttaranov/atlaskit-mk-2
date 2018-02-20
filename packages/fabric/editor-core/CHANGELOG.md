@@ -1,5 +1,25 @@
 # @atlaskit/editor-core
 
+## 62.0.14
+- [patch] Fix toolbar style in editor [ebe7265](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebe7265)
+
+## 62.0.13
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 62.0.12
+- [patch] Don't block getValue untill media is ready [2440642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2440642)
+
+## 62.0.11
+- [patch] Fix issue with having multiple Dropzone elements listening at the same time with Editor and MediaPicker [d37de20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d37de20)
+
+## 62.0.10
+- [patch] fix setting selection inside of the content nodeView [5beb385](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5beb385)
+
+## 62.0.9
+- [patch] Show fake cursor when inserting a placeholder text element [ca557d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca557d0)
+
+## 62.0.8
+
 ## 62.0.7
 
 
