@@ -827,13 +827,13 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     describe('jira issue', () => {
       check(
         'basic',
-        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="3" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
         doc(
           p(
             confluenceJiraIssue({
               issueKey: 'ED-1068',
               macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
-              schemaVersion: '1',
+              schemaVersion: '3',
               server: 'JIRA (product-fabric.atlassian.net)',
               serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
             })(),
@@ -856,6 +856,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           type: 'image',
         },
       ],
+      schemaVersion: { value: '2' },
     };
     const attrs = {
       extensionType: 'com.atlassian.confluence.macro.core',
@@ -877,7 +878,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -891,7 +892,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -905,7 +906,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
