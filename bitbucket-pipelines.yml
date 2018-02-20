@@ -32,15 +32,15 @@ pipelines:
           - bolt install --pure-lockfile
           - yarn build
           # run this a bunch of times, hopefully we can make it fail?
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
-          - yarn test
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
+          - yarn test  --no-cache
           # - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
           # - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
           # - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
