@@ -53,19 +53,13 @@ describe('Avatar Picker Dialog', () => {
       .find({ appearance: 'primary' });
   };
 
-  it('when save button is clicked onSaveImage should be called', () => {
+  it('when save button is clicked onImagePicked should be called', () => {
     const onImagePicked = jest.fn();
-    const onImagePickedDataURI = jest.fn();
 
     const component = renderWithProps({
       onImagePicked,
-      onImagePickedDataURI,
       imageSource: smallImage,
     });
-
-    // Stub internal funciton to facilitate shallow testing of `onImagePickedDataURI`
-    const croppedImgDataURI = 'data:image/meme;based64:w0w';
-    component.instance()['getCroppedImageDataURI'] = () => croppedImgDataURI;
 
     const { footer } = component.find(ModalDialog).props() as {
       footer: any;
@@ -82,6 +76,29 @@ describe('Avatar Picker Dialog', () => {
       y: 0,
       size: CONTAINER_SIZE,
     });
+  });
+
+  it('when save button is clicked onImagePickedDataURI should be called', () => {
+    const onImagePickedDataURI = jest.fn();
+
+    const component = renderWithProps({
+      onImagePickedDataURI,
+      imageSource: smallImage,
+    });
+
+    // Stub internal function to facilitate shallow testing of `onImagePickedDataURI`
+    const croppedImgDataURI = 'data:image/meme;based64:w0w';
+    component.instance()['exportCroppedImage'] = () => croppedImgDataURI;
+
+    const { footer } = component.find(ModalDialog).props() as {
+      footer: any;
+    };
+
+    // click on the save button
+    shallow(footer())
+      .find(Button)
+      .find({ appearance: 'primary' })
+      .simulate('click');
 
     expect(onImagePickedDataURI).toBeCalledWith(croppedImgDataURI);
   });

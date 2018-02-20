@@ -97,13 +97,14 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   onImageNavigatorLoad = (loadParams: LoadParameters) => {
-    this.imageNavigatorLoadParams = loadParams;
+    this.exportCroppedImage = loadParams.export;
   };
 
-  getCroppedImageDataURI = () =>
-    this.imageNavigatorLoadParams &&
-    this.imageNavigatorLoadParams.export &&
-    this.imageNavigatorLoadParams.export();
+  /**
+   * Initialised with no-op function.  Is assigned cropped image exporting
+   * function when internal ImageCropper mounts via this.onImageNavigatorLoad
+   */
+  exportCroppedImage = () => '';
 
   onSaveClick = () => {
     const {
@@ -122,7 +123,7 @@ export class AvatarPickerDialog extends PureComponent<
         onImagePicked(image, crop);
       }
       if (onImagePickedDataURI) {
-        onImagePickedDataURI(this.getCroppedImageDataURI());
+        onImagePickedDataURI(this.exportCroppedImage());
       }
     } else if (selectedAvatar) {
       onAvatarPicked(selectedAvatar);
