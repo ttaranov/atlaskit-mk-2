@@ -25,14 +25,18 @@ export default class AlertView extends React.Component<
 
   el: HTMLDivElement;
 
-  handleTryAgain = () => {
+  handleTryAgain = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     const { onTryAgain } = this.props;
     if (onTryAgain) {
       onTryAgain();
     }
   };
 
-  handleCancel = () => {
+  handleCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
