@@ -18,7 +18,7 @@ const ComponentContainer = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding: 20px;
+  padding: ${props => (props.mode === 'fullscreen' ? '20px' : '0px')};
 `;
 
 const ErrorMessage = styled.div`
@@ -32,10 +32,12 @@ type State = {
   packageId: string,
   groupId: string,
   exampleId: string,
+  mode: string,
 };
 
 type ExampleLoaderProps = {
   example: File,
+  mode: string,
 };
 
 export default class ExamplesIFrame extends Component<{}, State> {
@@ -43,16 +45,18 @@ export default class ExamplesIFrame extends Component<{}, State> {
     packageId: '',
     groupId: '',
     exampleId: '',
+    mode: '',
   };
   componentWillMount() {
     if (window) {
-      const { packageId, groupId, exampleId } = qs.parse(
+      const { packageId, groupId, exampleId, mode } = qs.parse(
         window.location.search,
       );
       this.setState({
         packageId,
         groupId,
         exampleId,
+        mode: mode ? mode : '',
       });
     }
   }
@@ -67,6 +71,7 @@ export default class ExamplesIFrame extends Component<{}, State> {
       return (
         <ExampleLoader
           example={fs.getById(fs.getFiles(examples.children), exampleId)}
+          mode={this.state.mode}
         />
       );
     }
@@ -95,7 +100,7 @@ function ExampleLoader(props: ExampleLoaderProps) {
       }
 
       return (
-        <ComponentContainer>
+        <ComponentContainer mode={props.mode}>
           <loaded.default />
         </ComponentContainer>
       );

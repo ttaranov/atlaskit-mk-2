@@ -31,12 +31,10 @@ export default (props: Props) => {
   const Example = () => (
     <iframe
       style={{
-        flex: '1',
         width: '100%',
         height: '100%',
         border: 'none',
       }}
-      scrolling="none"
       src={props.src}
     />
   );
