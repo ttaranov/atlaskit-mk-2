@@ -68,7 +68,7 @@ BrowserTestCase(
   },
 );
 
-//TO-DO below usecases
+// TO-DO below usecases
 BrowserTestCase(
   'user should see emoji typeahead',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
@@ -97,6 +97,34 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
+  'user should be able to use emoji inside bulletList',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.type(editable, ['* this is inside list :a:']);
+    await browser.waitForSelector('[data-emoji-short-name=":a:"]');
+    expect(await browser.isExisting('[data-emoji-short-name=":a:"]')).toBe(
+      true,
+    );
+  },
+);
+
+BrowserTestCase(
+  'user should be able to use emoji inside orderedList',
+  { skip: ['edge', 'ie', 'safari', 'firefox'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.type(editable, ['1. this is inside blockquote :a:']);
+    await browser.waitForSelector('[data-emoji-short-name=":a:"]');
+    expect(await browser.isExisting('[data-emoji-short-name=":a:"]')).toBe(
+      true,
+    );
+  },
+);
+
+BrowserTestCase(
   'user should be able to navigate between emojis',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
   async client => {
@@ -113,6 +141,7 @@ BrowserTestCase(
       'this is more text',
     ]);
     await browser.waitForSelector('[data-emoji-short-name=":a:"]');
+    // tslint:disable-next-line:no-construct
     const output = new String(await browser.getHTML('p'));
     const actual = output.replace(/class=\"(\w+)\"/gi, 'class="test-name"');
     const expected = `<p>this <span shortname=":a:" id="1f170" text="🅰" contenteditable="false"><span class="test-name"><span data-emoji-id="1f170" data-emoji-short-name=":a:" data-emoji-text="🅰"><span class="test-name" aria-label=":a:"><span><span class="emoji-common-emoji-sprite" style="background-image: url(&quot;https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png&quot;); background-position: 47.0588% 18.75%; background-size: 1800% 1700%; width: 20px; height: 20px;">&nbsp;</span></span></span></span></span></span> <span shortname=":a:" id="1f170" text="🅰" contenteditable="false"><span class="test-name"><span data-emoji-id="1f170" data-emoji-short-name=":a:" data-emoji-text="🅰"><span class="test-name" aria-label=":a:"><span><span class="emoji-common-emoji-sprite" style="background-image: url(&quot;https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png&quot;); background-position: 47.0588% 18.75%; background-size: 1800% 1700%; width: 20px; height: 20px;">&nbsp;</span></span></span></span></span></span> this is more text<span shortname=":a:" id="1f170" text="🅰" contenteditable="false"><span class="test-name"><span data-emoji-id="1f170" data-emoji-short-name=":a:" data-emoji-text="🅰"><span class="test-name" aria-label=":a:"><span><span class="emoji-common-emoji-sprite" style="background-image: url(&quot;https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png&quot;); background-position: 47.0588% 18.75%; background-size: 1800% 1700%; width: 20px; height: 20px;">&nbsp;</span></span></span></span></span></span> </p>`;

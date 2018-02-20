@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import Editor from './../src/editor';
 import RefApp from '../example-helpers/RefApp';
+import getPropsPreset from '../src/editor/create-editor/get-props-preset';
 
 export default class MessageRenderer extends React.PureComponent<any, any> {
   render() {
@@ -17,7 +18,7 @@ export default class MessageRenderer extends React.PureComponent<any, any> {
         }) => {
           return (
             <Editor
-              appearance="message"
+              {...getPropsPreset('message')}
               emojiProvider={emojiProvider}
               mentionProvider={mentionProvider}
               taskDecisionProvider={taskDecisionProvider}
