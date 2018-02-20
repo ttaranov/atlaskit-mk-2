@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.5.15",
+  "version": "4.5.17",
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,10 +15,10 @@
       "name": "Mike G"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.4.1",
-    "@atlaskit/field-base": "^8.1.10",
+    "@atlaskit/field-base": "^8.1.12",
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/theme": "^2.3.3",
     "classnames": "^2.2.5",
@@ -31,6 +31,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^9.0.1",
     "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/field-radio-group": "^1.8.3",
+    "@atlaskit/field-text": "^4.1.6",
     "@atlaskit/inline-dialog": "5.2.1",
     "@atlaskit/input": "^1.6.5",
     "@atlaskit/mention": "^9.1.1",

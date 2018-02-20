@@ -16,7 +16,7 @@
     "name": "Progress tracker",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-22",
   "dependencies": {
     "@atlaskit/page": "^5.0.12",
     "@atlaskit/theme": "^2.3.3",

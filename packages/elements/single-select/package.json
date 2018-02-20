@@ -18,7 +18,7 @@
     "name": "Single Select",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.4.1",
     "@atlaskit/droplist": "^4.11.8",

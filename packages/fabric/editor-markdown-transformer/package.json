@@ -7,7 +7,7 @@
   "module": "dist/es2015/index.js",
   "atlaskit:src": "src/index.ts",
   "types": "dist/es5/index.d.ts",
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "files": [
     "dist",
     "src"

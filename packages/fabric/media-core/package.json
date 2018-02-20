@@ -18,7 +18,7 @@
     "James N",
     "Aleksandr M"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "axios": "^0.17.1",
     "lru-fast": "^0.2.2",

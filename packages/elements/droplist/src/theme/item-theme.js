@@ -16,7 +16,7 @@ const droplistItemTheme: Object = {
   },
   borderRadius: () => 0,
   default: {
-    background: 'transparent',
+    background: themed({ light: colors.N0, dark: colors.DN50 }),
     text: themed({ light: colors.N800, dark: colors.DN600 }),
     secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
   },

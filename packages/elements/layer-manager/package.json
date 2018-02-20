@@ -14,7 +14,7 @@
     "Joss M",
     "Jed W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",

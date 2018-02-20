@@ -14,7 +14,7 @@
     "Bartosz S",
     "Trey S"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/spinner": "^4.1.4",
