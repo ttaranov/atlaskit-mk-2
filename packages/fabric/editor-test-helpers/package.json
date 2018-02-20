@@ -15,7 +15,7 @@
   "maintainers": [
     "Stanislas S"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-common": "^6.1.3",
     "@atlaskit/editor-core": "^62.0.11",

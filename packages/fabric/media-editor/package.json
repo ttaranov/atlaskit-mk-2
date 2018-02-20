@@ -16,7 +16,7 @@
     "Vadim K",
     "Michael J"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^10.7.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

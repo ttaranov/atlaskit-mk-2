@@ -14,7 +14,7 @@
     "Charles L",
     "Joss M"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^6.4.1",
     "@atlaskit/icon": "^10.9.1",

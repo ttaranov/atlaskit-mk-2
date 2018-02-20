@@ -18,7 +18,7 @@
       "name": "Luke B"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/theme": "^2.3.3",
     "styled-components": "^1.4.6"

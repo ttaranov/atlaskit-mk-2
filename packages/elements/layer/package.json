@@ -17,7 +17,7 @@
     "Ajay N Mathur",
     "Luke B"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "styled-components": "^1.4.6"
   },

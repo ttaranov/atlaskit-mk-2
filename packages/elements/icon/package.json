@@ -18,7 +18,7 @@
     "Sean C",
     "Ben C"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
     "build": "mkdir -p dist && cp -r es5 dist/esm",
     "update": "node ./build/index.js && yarn build:babel:cjs",

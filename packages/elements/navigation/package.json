@@ -17,7 +17,7 @@
     "name": "Navigation",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics": "^2.4.2",
     "@atlaskit/avatar": "^9.0.3",

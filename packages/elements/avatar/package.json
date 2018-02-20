@@ -13,7 +13,7 @@
   "maintainers": [
     "Joss M"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/dropdown-menu": "^3.11.9",
     "@atlaskit/item": "^5.0.0",
