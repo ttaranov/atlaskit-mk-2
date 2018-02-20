@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 24.0.3
+- [patch] fixed issue where clicking on smart-card try-again and cancel links would trigger onClick [1e575b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e575b3)
+
 ## 24.0.2
 
 - [patch] added missing smart-card action states [3f7536e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f7536e)
