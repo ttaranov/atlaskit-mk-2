@@ -54,19 +54,24 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
             const Icon = icons[layout].icon;
             const label = icons[layout].label;
             return (
-              <ToolbarButton
-                selected={layout === selectedLayout}
-                key={index}
-                onClick={this.handleChangeLayout.bind(this, layout)}
-                iconBefore={<Icon label={`Change layout to ${label}`} />}
-              />
+              /** Adding extra span tag here to get rid of unneccessary styling */
+              <span key={index}>
+                <ToolbarButton
+                  selected={layout === selectedLayout}
+                  onClick={this.handleChangeLayout.bind(this, layout)}
+                  iconBefore={<Icon label={`Change layout to ${label}`} />}
+                />
+              </span>
             );
           })}
           <Separator />
-          <ToolbarButton
-            onClick={this.handleRemove}
-            iconBefore={<RemoveIcon label="Remove media" />}
-          />
+          {/** Adding extra span tag here to get rid of unneccessary styling */}
+          <span>
+            <ToolbarButton
+              onClick={this.handleRemove}
+              iconBefore={<RemoveIcon label="Remove media" />}
+            />
+          </span>
         </FloatingToolbar>
       );
     } else {
