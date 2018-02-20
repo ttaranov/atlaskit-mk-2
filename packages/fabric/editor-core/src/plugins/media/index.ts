@@ -38,7 +38,7 @@ import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
 import { insertMediaSingleNode } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import { PickerFacadeInterface, PickerFacadeConfig } from './picker-facade';
+import PickerFacade, { PickerFacadeConfig } from './picker-facade';
 import {
   MediaState,
   MediaProvider,
@@ -46,7 +46,6 @@ import {
   MediaStateManager,
 } from './types';
 import DefaultMediaStateManager from './default-state-manager';
-
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -66,8 +65,8 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacadeInterface[] = [];
-  public binaryPicker?: PickerFacadeInterface;
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
@@ -82,9 +81,9 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacadeInterface;
-  private clipboardPicker?: PickerFacadeInterface;
-  private dropzonePicker?: PickerFacadeInterface;
+  private popupPicker?: PickerFacade;
+  private clipboardPicker?: PickerFacade;
+  private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
@@ -145,9 +144,14 @@ export class MediaPluginState {
 
     // TODO disable (not destroy!) pickers until mediaProvider is resolved
     let resolvedMediaProvider: MediaProvider;
+    let Picker: typeof PickerFacade;
 
     try {
-      resolvedMediaProvider = await mediaProvider;
+      [ resolvedMediaProvider, { default: Picker } ] = await Promise.all([
+        mediaProvider,
+        import(/* webpackChunkName:"@atlaskit-internal_editor-core_picker-facade" */ './picker-facade'),
+      ]);
+
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
@@ -197,9 +201,10 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        await this.initPickers(
+        this.initPickers(
           resolvedMediaProvider.uploadParams,
           uploadContext,
+          Picker,
         );
       } else {
         this.destroyPickers();
@@ -554,17 +559,16 @@ export class MediaPluginState {
     this.dropzonePicker = undefined;
   };
 
-  private async initPickers(
+  private initPickers(
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
+    Picker: typeof PickerFacade,
   ) {
     if (this.destroyed) {
       return;
     }
 
     const { errorReporter, pickers, stateManager } = this;
-    const PickerFacade = (await import(/* webpackChunkName:"@atlaskit-internal_editor-core_picker-facade" */ './picker-facade'))
-      .default;
 
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {
@@ -577,29 +581,29 @@ export class MediaPluginState {
 
       if (contextConfig.userAuthProvider) {
         pickers.push(
-          (this.popupPicker = new PickerFacade('popup', pickerFacadeConfig, {
+          (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
             userAuthProvider: contextConfig.userAuthProvider,
           })),
         );
       } else {
         pickers.push(
-          (this.popupPicker = new PickerFacade('browser', pickerFacadeConfig)),
+          (this.popupPicker = new Picker('browser', pickerFacadeConfig)),
         );
       }
 
       pickers.push(
-        (this.binaryPicker = new PickerFacade('binary', pickerFacadeConfig)),
+        (this.binaryPicker = new Picker('binary', pickerFacadeConfig)),
       );
 
       pickers.push(
-        (this.clipboardPicker = new PickerFacade(
+        (this.clipboardPicker = new Picker(
           'clipboard',
           pickerFacadeConfig,
         )),
       );
 
       pickers.push(
-        (this.dropzonePicker = new PickerFacade(
+        (this.dropzonePicker = new Picker(
           'dropzone',
           pickerFacadeConfig,
           {

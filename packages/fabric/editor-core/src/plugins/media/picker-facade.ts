@@ -33,32 +33,7 @@ export type PickerFacadeConfig = {
   errorReporter: ErrorReportingHandler;
 };
 
-export interface PickerFacadeInterface {
-  type: PickerType;
-  destroy(): void;
-
-  setUploadParams(params: UploadParams): void;
-
-  show(): void;
-
-  hide(): void;
-
-  cancel(tempId: string): void;
-
-  upload(url: string, fileName: string): void;
-
-  onNewMedia(cb: (states: MediaState[]) => any): void;
-
-  onDrag(cb: (state: 'enter' | 'leave') => any): void;
-
-  activate(): void;
-  
-  deactivate(): void;
-
-  onClose(cb: () => void): () => void;
-}
-
-export default class PickerFacade implements PickerFacadeInterface {
+export default class PickerFacade {
   private picker: MediaPickerComponent;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];

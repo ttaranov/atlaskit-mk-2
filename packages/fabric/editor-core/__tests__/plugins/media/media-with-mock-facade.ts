@@ -28,6 +28,9 @@ const getFreshMediaProvider = () =>
     includeUserAuthProvider: true,
   });
 
+const waitForPluginStateChange = async (pluginState: MediaPluginState) => 
+  new Promise(resolve => pluginState.subscribe(resolve));
+
 describe('Media with mock facade', () => {
   const mediaProvider = getFreshMediaProvider();
   const providerFactory = ProviderFactory.create({ mediaProvider });
@@ -74,6 +77,9 @@ describe('Media with mock facade', () => {
 
   it('should add an onClose event listener in popupPicker', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
+    
+    await waitForPluginStateChange(pluginState);
+
     const provider = await mediaProvider;
     await provider.uploadContext;
 
@@ -87,6 +93,8 @@ describe('Media with mock facade', () => {
   it('should cleanup properly on destroy', async () => {
     removeOnCloseListener.mockClear();
     const { pluginState } = editor(doc(p('{<>}')));
+    await waitForPluginStateChange(pluginState);
+
     const provider = await mediaProvider;
     await provider.uploadContext;
 
@@ -98,6 +106,8 @@ describe('Media with mock facade', () => {
     spies.popup.show.mockClear();
     spies.dropzone.deactivate.mockClear();
     const { pluginState } = editor(doc(p('{<>}')));
+    await waitForPluginStateChange(pluginState);
+
     const provider = await mediaProvider;
     await provider.uploadContext;
 

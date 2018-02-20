@@ -37,19 +37,8 @@ const editor = (doc: any, uploadErrorHandler?: () => void) =>
     providerFactory,
   });
 
-const waitForProperty = async (
-  pluginState: MediaPluginState,
-  property: string,
-) => {
-  return new Promise(resolve => {
-    const interval = setInterval(() => {
-      if (typeof pluginState[property] !== 'undefined') {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 10);
-  });
-};
+const waitForPluginStateChange = async (pluginState: MediaPluginState) => 
+  new Promise(resolve => pluginState.subscribe(resolve));
 
 describe(name, () => {
   describe('Utils -> Action', () => {
@@ -61,7 +50,7 @@ describe(name, () => {
           .returns(testCollectionName);
         const provider = await mediaProvider;
         await provider.uploadContext;
-        await waitForProperty(pluginState, 'binaryPicker');
+        await waitForPluginStateChange(pluginState);
         
         pluginState.binaryPicker!.upload = sinon.spy();
 

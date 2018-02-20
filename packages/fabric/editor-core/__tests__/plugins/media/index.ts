@@ -106,11 +106,10 @@ describe('Media plugin', () => {
       'collectionFromProvider' as any,
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
+    await waitForPluginStateChange(pluginState);
     const provider = await mediaProvider;
     await provider.uploadContext;
     
-    await waitForPluginStateChange(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
     
     pluginState.binaryPicker!.upload = jest.fn();
@@ -130,7 +129,7 @@ describe('Media plugin', () => {
       const { editorView, pluginState } = editor(doc(p('')), {
         appearance: 'message',
       });
-      await mediaProvider;
+      await waitForPluginStateChange(pluginState);
 
       pluginState.insertFiles([
         { id: 'foo', fileMimeType: 'image/jpeg' },
@@ -163,7 +162,7 @@ describe('Media plugin', () => {
     describe('when all of the files are images', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForPluginStateChange(pluginState);;
 
         pluginState.insertFiles([
           {
@@ -231,7 +230,7 @@ describe('Media plugin', () => {
 
       it(`shouldn't insert multiple media in uploading triggers multiple times`, async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForPluginStateChange(pluginState);;
 
         pluginState.insertFiles([
           {
@@ -278,7 +277,7 @@ describe('Media plugin', () => {
           const { editorView, pluginState } = editor(
             doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
           );
-          await mediaProvider;
+          await waitForPluginStateChange(pluginState);;
 
           pluginState.insertFiles([
             {
@@ -343,7 +342,7 @@ describe('Media plugin', () => {
     describe('when it is a mix of pdf and image', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForPluginStateChange(pluginState);;
 
         pluginState.insertFiles([
           { id: 'foo', fileMimeType: 'pdf' },
@@ -384,7 +383,7 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
 
-    await mediaProvider;
+    await waitForPluginStateChange(pluginState);
 
     pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
@@ -908,10 +907,10 @@ describe('Media plugin', () => {
 
   it('should focus the editor after files are added to the document', async () => {
     const { editorView, pluginState } = editor(doc(p('')));
-    await mediaProvider;
+    await waitForPluginStateChange(pluginState);
 
     const spy = jest.spyOn(editorView, 'focus');
-
+    
     pluginState.insertFiles([{ id: 'foo' }]);
     expect(spy).toHaveBeenCalled();
 
