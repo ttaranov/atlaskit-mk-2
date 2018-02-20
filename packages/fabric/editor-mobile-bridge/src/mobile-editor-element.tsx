@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { EditorView } from 'prosemirror-view';
 
 import { Editor, mentionPluginKey, MentionsState } from '@atlaskit/editor-core';
 import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 import NativeToWebBridge from './native-to-web-bridge';
+import { MentionBridge } from './web-to-native-bridge';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
  * So this type is supposed to be a stub version of mention provider. We don't actually need it.
- * TODO consider to move this helper class to somewhere outside example
  */
 export class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
@@ -62,24 +63,25 @@ export const bridge: NativeToWebBridge = ((window as any).bridge = {
   },
 });
 
-export class EditorWithState extends Editor {
+class EditorWithState extends Editor {
   componentDidUpdate(prevProps, prevState) {
     const { editor } = this.state;
     super.componentDidUpdate(prevProps, prevState);
-    if (editor) {
+    if (!prevState.editor && editor) {
       mentionsPluginState = mentionPluginKey.getState(editor.editorView.state);
       if (mentionsPluginState) {
         mentionsPluginState.subscribe(state => {
-          const { mentionsBridge } = window;
-          if (mentionsBridge) {
-            if (state.queryActive) {
-              mentionsBridge.showMentions(state.query || '');
-            } else {
-              mentionsBridge.dismissMentions();
-            }
+          if (state.queryActive) {
+            toNativeBridge.showMentions(state.query || '');
+          } else {
+            toNativeBridge.dismissMentions();
           }
         });
       }
+      let editorView: EditorView = editor.editorView;
+      editorView.dom.addEventListener('keydown', event => {
+        // console.log(event)
+      });
     }
   }
 }
@@ -98,10 +100,68 @@ export default function mobileEditor() {
 declare global {
   interface Window {
     mentionsBridge?: MentionBridge;
+    webkit?: any;
   }
 }
 
-export interface MentionBridge {
-  showMentions(query: String);
-  dismissMentions();
+class Bridge implements MentionBridge {
+  mentionBridge: MentionBridge;
+
+  constructor() {
+    if (window.mentionsBridge) {
+      this.mentionBridge = new AndroidBridge();
+    } else if (window.webkit) {
+      this.mentionBridge = new IosBridge();
+    } else {
+      this.mentionBridge = new DummyBridge();
+    }
+  }
+
+  showMentions(query: String) {
+    this.mentionBridge.showMentions(query);
+  }
+
+  dismissMentions() {
+    this.mentionBridge.dismissMentions();
+  }
 }
+
+class AndroidBridge implements MentionBridge {
+  mentionBridge: MentionBridge;
+  constructor() {
+    this.mentionBridge = window.mentionsBridge as MentionBridge;
+  }
+
+  showMentions(query: String) {
+    this.mentionBridge.showMentions(query);
+  }
+
+  dismissMentions() {
+    this.mentionBridge.dismissMentions();
+  }
+}
+
+class IosBridge implements MentionBridge {
+  showMentions(query: String) {
+    if (window.webkit) {
+      window.webkit.mentionBridge.postMessage({
+        name: 'showMentions',
+        query: query,
+      });
+    }
+  }
+
+  dismissMentions() {
+    if (window.webkit) {
+      window.webkit.mentionBridge.postMessage({ name: 'dismissMentions' });
+    }
+  }
+}
+
+class DummyBridge implements MentionBridge {
+  showMentions(query: String) {}
+
+  dismissMentions() {}
+}
+
+const toNativeBridge: Bridge = new Bridge();

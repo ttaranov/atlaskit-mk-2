@@ -2,7 +2,26 @@ import * as React from 'react';
 import Editor from './../src/editor';
 import EditorContext from '../src/editor/ui/EditorContext';
 import WithEditorActions from '../src/editor/ui/WithEditorActions';
-import { MentionProviderImpl } from '../../editor-mobile-bridge/src/mobile-editor-element';
+import { MentionDescription, MentionProvider } from '../../mention/dist/es5';
+
+class MentionProviderImpl implements MentionProvider {
+  filter(query?: string): void {}
+  recordMentionSelection(mention: MentionDescription): void {}
+  shouldHighlightMention(mention: MentionDescription): boolean {
+    return false;
+  }
+  isFiltering(query: string): boolean {
+    return false;
+  }
+  subscribe(
+    key: string,
+    callback?,
+    errCallback?,
+    infoCallback?,
+    allResultsCallback?,
+  ): void {}
+  unsubscribe(key: string): void {}
+}
 
 export function mobileEditor() {
   return (
