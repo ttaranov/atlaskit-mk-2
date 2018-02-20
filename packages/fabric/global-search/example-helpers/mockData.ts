@@ -77,6 +77,7 @@ export function makeCrossProductSearchData(
       },
       iconCssClass: iconCssClass(),
       url: faker.internet.url(),
+      baseUrl: '',
     });
   }
 
@@ -103,7 +104,7 @@ export function makeCrossProductSearchData(
     return {
       scopes: [
         {
-          id: Scope.ConfluencePage,
+          id: Scope.ConfluencePageBlog,
           results: filteredConfResults,
         },
         {

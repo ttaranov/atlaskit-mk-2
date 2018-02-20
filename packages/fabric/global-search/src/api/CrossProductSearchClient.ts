@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/util-service-support';
 
 export enum Scope {
-  ConfluencePage = 'confluence.page',
+  ConfluencePageBlog = 'confluence.page,blogpost',
   JiraIssue = 'jira.issue',
 }
 
@@ -71,7 +71,7 @@ export default class CrossProductSearchClientImpl
       query: query,
       cloudId: this.cloudId,
       limit: 5,
-      scopes: [Scope.JiraIssue, Scope.ConfluencePage],
+      scopes: [Scope.JiraIssue, Scope.ConfluencePageBlog],
     };
 
     const options: RequestServiceOptions = {
@@ -98,7 +98,7 @@ export default class CrossProductSearchClientImpl
     let confResults: Result[] = [];
 
     response.scopes.forEach(scope => {
-      if (scope.id === Scope.ConfluencePage) {
+      if (scope.id === Scope.ConfluencePageBlog) {
         confResults = scope.results.map(confluenceItemToResult);
       } else if (scope.id === Scope.JiraIssue) {
         jiraResults = scope.results.map(jiraItemToResult);

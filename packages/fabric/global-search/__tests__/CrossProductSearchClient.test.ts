@@ -31,7 +31,7 @@ describe('CrossProductSearchClient', () => {
       apiWillReturn({
         scopes: [
           {
-            id: 'confluence.page' as Scope,
+            id: 'confluence.page,blogpost' as Scope,
             results: [
               {
                 title: '@@@hl@@@page@@@endhl@@@ name',
@@ -122,7 +122,7 @@ describe('CrossProductSearchClient', () => {
           ],
         },
         {
-          id: 'confluence.page' as Scope,
+          id: 'confluence.page,blogpost' as Scope,
           error: 'TIMEOUT',
           results: [],
         },
@@ -147,6 +147,6 @@ describe('CrossProductSearchClient', () => {
     expect(body.query).toEqual('query');
     expect(body.cloudId).toEqual('123');
     expect(body.limit).toEqual(5);
-    expect(body.scopes).toEqual(['jira.issue', 'confluence.page']);
+    expect(body.scopes).toEqual(['jira.issue', 'confluence.page,blogpost']);
   });
 });
