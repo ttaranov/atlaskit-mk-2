@@ -17,14 +17,15 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  flex-direction: column;
+  display: flex;
 `;
 
 export const Content = styled.div`
   position: relative;
   display: flex;
-  height: 100%;
+  flex: 1;
   flex-direction: column;
-  top: 48px;
 `;
 
 // Example Component / Code
@@ -104,7 +105,6 @@ export const Nav = styled.nav`
   flex-direction: row;
   height: ${NAVBAR_HEIGHT};
   justify-content: space-between;
-  position: absolute;
   top: 0;
   width: 100%;
   z-index: 2;
