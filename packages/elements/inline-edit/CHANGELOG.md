@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.17
+- [patch] Fix inline edit not stretching all edit views correctly [f45f667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f45f667)
+
 ## 4.5.16
 - [patch] tweaks confirm and cancel button sizes and position [f416077](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f416077)
 
