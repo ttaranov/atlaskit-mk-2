@@ -397,12 +397,12 @@ export default class ExamplesModal extends Component<Props, State> {
             loadingSandbox={this.state.loadingSandbox}
           />
           <ModalContent>
-            {examples && exampleId ? (
+            {examples && exampleId && loaderUrl ? (
               <ExampleDisplay
                 displayCode={displayCode}
                 example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
-                src={loaderUrl}
+                src={`${loaderUrl}&mode=modal`}
                 render={(ExampleCode, ExampleComponent, displayCode) => {
                   if (displayCode) {
                     return (

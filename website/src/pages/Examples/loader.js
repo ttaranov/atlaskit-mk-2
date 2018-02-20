@@ -18,7 +18,7 @@ const ComponentContainer = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  padding: ${props => (props.mode === 'fullscreen' ? '20px' : '0px')};
+  padding: ${props => (props.mode === 'modal' ? '0px' : '20px')};
 `;
 
 const ErrorMessage = styled.div`
