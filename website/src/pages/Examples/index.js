@@ -382,12 +382,12 @@ export default class Examples extends React.Component<Props, State> {
           loadingSandbox={this.state.loadingSandbox}
           config={config}
         />
-        {examples && exampleId ? (
+        {examples && exampleId && loaderUrl ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
             name={config.name}
-            src={loaderUrl}
+            src={`${loaderUrl}&mode=fullscreen`}
             render={(ExampleCode, ExampleComponent, displayCode) => {
               return (
                 <Content>
