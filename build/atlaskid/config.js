@@ -41,6 +41,8 @@ const editorAndElementsTeam = [
   'pcurren',
   'jhoarau',
   'agnes',
+  'vsutrave',
+  'ahixon_atlassian',
 ];
 const mediaTeam = [
   'sattard',

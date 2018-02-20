@@ -12,7 +12,7 @@ links:
   binary:
     # The name and tag of the docker image to use in deployment
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v5
+    tag: v6
     type: docker
   # Endpoint *must* return a 2xx resonse or Micros will fail
   healthcheck:
