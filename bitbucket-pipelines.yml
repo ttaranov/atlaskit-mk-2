@@ -81,7 +81,7 @@ pipelines:
       - step:
           script:
             - source ./build-setup.sh
-            - git rebase master
+            - git merge master --no-edit
             - bolt install --pure-lockfile
             - yarn build
             - yarn lint
