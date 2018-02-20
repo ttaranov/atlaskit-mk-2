@@ -63,8 +63,6 @@ export class AvatarPickerDialog extends PureComponent<
     selectedImage: undefined,
   };
 
-  imageNavigatorLoadParams: LoadParameters;
-
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
     // this is the main method to update the image state,
     // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded.
