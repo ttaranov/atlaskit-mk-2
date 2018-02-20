@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.10
+- [patch] fixes AK-4178 , added fix for double color icon in navigation [c6121d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6121d6)
+
 ## 4.11.9
 
 ## 4.11.8
