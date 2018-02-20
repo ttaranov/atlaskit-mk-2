@@ -28,6 +28,7 @@ export interface JiraItem {
 
 export interface ConfluenceItem {
   title: string;
+  baseUrl: string;
   url: string;
   iconCssClass: string;
   container: {
@@ -126,25 +127,25 @@ export function removeHighlightTags(text: string) {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
 
-function confluenceItemToResult(jiraItem: ConfluenceItem): Result {
+function confluenceItemToResult(item: ConfluenceItem): Result {
   return {
     type: ResultType.Object,
-    resultId: 'search-' + jiraItem.url,
-    avatarUrl: getConfluenceAvatarUrl(jiraItem.iconCssClass),
-    name: removeHighlightTags(jiraItem.title),
-    href: jiraItem.url,
-    containerName: jiraItem.container.title,
+    resultId: 'search-' + item.url,
+    avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
+    name: removeHighlightTags(item.title),
+    href: item.baseUrl + item.url,
+    containerName: item.container.title,
   };
 }
 
 // TODO populate props once API is ready
-function jiraItemToResult(jiraItem: JiraItem): Result {
+function jiraItemToResult(item: JiraItem): Result {
   return {
     type: ResultType.Object,
-    resultId: 'search-' + jiraItem.key + 'TODO',
+    resultId: 'search-' + item.key + 'TODO',
     avatarUrl: 'TODO',
-    name: jiraItem.fields.summary,
+    name: item.fields.summary,
     href: 'TODO',
-    containerName: jiraItem.key,
+    containerName: item.key,
   };
 }

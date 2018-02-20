@@ -35,8 +35,9 @@ describe('CrossProductSearchClient', () => {
             results: [
               {
                 title: '@@@hl@@@page@@@endhl@@@ name',
+                baseUrl: 'baseUrl',
+                url: '/url',
                 iconCssClass: 'aui-iconfont-page-default',
-                url: 'url',
                 container: {
                   title: 'containerTitle',
                 },
@@ -51,12 +52,12 @@ describe('CrossProductSearchClient', () => {
 
       const item = result.confluence[0];
       expect(item.type).toEqual('object');
-      expect(item.resultId).toEqual('search-url');
+      expect(item.resultId).toEqual('search-/url');
       expect(item.avatarUrl).toEqual(
         'https://home.useast.atlassian.io/confluence-page-icon.svg',
       );
       expect(item.name).toEqual('page name');
-      expect(item.href).toEqual('url');
+      expect(item.href).toEqual('baseUrl/url');
       expect(item.containerName).toEqual('containerTitle');
     });
 
@@ -77,8 +78,6 @@ describe('CrossProductSearchClient', () => {
       url = getConfluenceAvatarUrl('aui-iconfont-page-blogpost');
       expect(url).toContain('blogpost-icon.svg');
     });
-
-    it.skip('should concat base url with url', () => {});
   });
 
   describe('Jira', () => {
