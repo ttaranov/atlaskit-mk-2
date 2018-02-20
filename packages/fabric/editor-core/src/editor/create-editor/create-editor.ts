@@ -14,6 +14,7 @@ import ErrorReporter from '../../utils/error-reporter';
 import { processRawValue } from '../utils/document';
 import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 import { name, version } from '../../version';
+import { profileProsemirrorPlugins } from '../utils/performance';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -162,6 +163,7 @@ export default function createEditor(
     providerFactory,
     errorReporter,
   );
+  profileProsemirrorPlugins(plugins);
   const contentTransformer = contentTransformerProvider
     ? contentTransformerProvider(schema)
     : undefined;
