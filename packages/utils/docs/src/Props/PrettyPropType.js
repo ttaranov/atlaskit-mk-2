@@ -126,9 +126,6 @@ const converters = {
       </TypeMeta>
       <Indent>
         {type.members.map(prop => {
-          // handling this badly. It should be recursive. Shipit work on kindToString
-          // should simplify how we think about PrettyPropType. If this is unchanged
-          // after 2018-02-12, blame Ben Conolly
           if (prop.kind === 'spread') {
             const nestedObj = k2s.resolveFromGeneric(prop.value);
             return nestedObj.members.map(newProp =>
