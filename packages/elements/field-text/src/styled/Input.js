@@ -7,20 +7,20 @@ const getPlaceholderStyle = style => css`
     /* WebKit, Blink, Edge */
     ${style};
   }
-  &:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    ${style} opacity: 1;
-  }
   &::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     ${style} opacity: 1;
   }
-  &:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    ${style};
-  }
   &::-ms-input-placeholder {
     /* Microsoft Edge */
+    ${style};
+  }
+  &:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    ${style} opacity: 1;
+  }
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
     ${style};
   }
 `;

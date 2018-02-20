@@ -92,8 +92,8 @@ const getColorStyle = ({ isDisabled, theme }) => {
   return css`
     color: ${getThemeStyle(theme[themeNamespace], 'secondaryText', 'default')};
 
-    // This detects hover on the grandparent. Saves us having to maintain isHovered
-    // state in the grandparent.
+    /* This detects hover on the grandparent. Saves us having to maintain isHovered
+       state in the grandparent. */
     *:hover > * > & {
       color: ${() =>
         getThemeStyle(theme[themeNamespace], 'secondaryText', 'hover')};

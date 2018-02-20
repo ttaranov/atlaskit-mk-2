@@ -340,7 +340,7 @@
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
     "styled-components": "1.4.6 - 3.1.6",
-    "stylelint": "^9.0.0",
+    "stylelint": "^8.4",
     "stylelint-config-prettier": "^2.0.0",
     "stylelint-config-standard": "^18.1.0",
     "stylelint-config-styled-components": "^0.1.1",
