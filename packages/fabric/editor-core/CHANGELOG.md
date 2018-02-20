@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.0.15
+
 ## 62.0.14
 - [patch] Fix toolbar style in editor [ebe7265](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebe7265)
 
