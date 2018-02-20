@@ -63,7 +63,6 @@ export default class StatefulAvatarPickerDialog extends React.Component<
         }}
         onImagePicked={(selectedImage, crop) => {
           console.log('onImagePicked:', selectedImage, crop);
-          this.save('');
         }}
         onImagePickedDataURI={exportedImg => {
           console.log('onImagePickedDataURI: ', { dataURI: exportedImg });
