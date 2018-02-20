@@ -135,12 +135,12 @@ export default class Flag extends Component<FlagProps, State> {
         onMouseDown={this.handleMouseDown}
         {...autoDismissProps}
       >
-        <Icon>{icon}</Icon>
+        <Header>
+          <Icon>{icon}</Icon>
+          <Title appearance={appearance}>{title}</Title>
+          <OptionalDismissButton />
+        </Header>
         <Content>
-          <Header>
-            <Title appearance={appearance}>{title}</Title>
-            <OptionalDismissButton />
-          </Header>
           <Body />
         </Content>
       </Container>
