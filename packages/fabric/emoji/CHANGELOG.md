@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.1.3
+- [patch] IE11 does not calculate emoji picker width correctly so give it a min-width explicitly. [95bbc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95bbc84)
+
 ## 31.1.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
