@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.18
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 4.5.17
 - [patch] Fix inline edit not stretching all edit views correctly [f45f667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f45f667)
 
