@@ -2,9 +2,7 @@
 .*/node_modules/styled-components/.*
 .*/node_modules/raf-schd/test/.*
 .*/node_modules/react-beautiful-dnd/lib/.*
-.*/node_modules/extract-react-types/.*
 .*/website/dist/sandbox/.*
-.*/node_modules/babel-normalize-comments/.*
 .*/packages/elements/icon/es5/.*
 
 [include]
