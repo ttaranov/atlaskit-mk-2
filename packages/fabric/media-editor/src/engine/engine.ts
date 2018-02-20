@@ -1,4 +1,4 @@
-import { Core } from './core/binaries/editorCore';
+import * as Core from './core/binaries/mediaEditor';
 import { ExportedImage, ShapeParameters, TextDirection, Tool } from '../common';
 import { ResourceManager } from './resourceManager';
 
