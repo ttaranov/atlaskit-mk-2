@@ -1,13 +1,9 @@
 // @flow
-
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
-import jestConfig = require('../../../../../jest.config');
-
-const messageEditor = `${
-  jestConfig.globals.__baseUrl__
-}/examples/fabric/editor-core/message`;
+const __baseUrl__ = `http://localhost:9000`;
+const messageEditor = `${__baseUrl__}/examples/fabric/editor-core/message`;
 const editable = `[contenteditable="true"]`;
 const enter = 'Enter';
 
