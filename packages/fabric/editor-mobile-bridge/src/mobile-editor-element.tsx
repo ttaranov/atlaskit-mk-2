@@ -143,8 +143,8 @@ class AndroidBridge implements MentionBridge {
 
 class IosBridge implements MentionBridge {
   showMentions(query: String) {
-    if (window.webkit) {
-      window.webkit.mentionBridge.postMessage({
+    if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
+      window.webkit.messageHandlers.mentionBridge.postMessage({
         name: 'showMentions',
         query: query,
       });
@@ -153,7 +153,9 @@ class IosBridge implements MentionBridge {
 
   dismissMentions() {
     if (window.webkit) {
-      window.webkit.mentionBridge.postMessage({ name: 'dismissMentions' });
+      window.webkit.messageHandlers.mentionBridge.postMessage({
+        name: 'dismissMentions',
+      });
     }
   }
 }
