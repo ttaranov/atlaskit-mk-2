@@ -3246,9 +3246,9 @@ chromatism@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
 
-chunkinator@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.14.tgz#119694e5efe07131f7a8978c64cb87e87975c8be"
+chunkinator@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.15.tgz#52e88c4f7cd4f9384a7d5e6a9a9fa51730ea8ea6"
   dependencies:
     rxjs "^5.5.6"
     rxjs-async-map "^0.1.0"
@@ -11593,7 +11593,7 @@ rxjs@^5.0.0-beta.11:
   dependencies:
     symbol-observable "^1.0.1"
 
-rxjs@^5.5.6:
+rxjs@^5.1.0, rxjs@^5.5.6:
   version "5.5.6"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.6.tgz#e31fb96d6fd2ff1fd84bcea8ae9c02d007179c02"
   dependencies:
