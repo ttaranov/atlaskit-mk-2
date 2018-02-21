@@ -26,6 +26,8 @@ import { ExtensionHandlers } from '../ui/Renderer';
 import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
+  objectAri?: string;
+  containerAri?: string;
   adDoc?: any;
   schema?: Schema;
 }

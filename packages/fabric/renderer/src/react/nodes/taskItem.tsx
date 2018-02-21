@@ -2,8 +2,11 @@ import * as React from 'react';
 import { PureComponent, Children, ReactElement } from 'react';
 import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 import TaskItemWithProviders from './task-item-with-providers';
+import { RendererContext } from '../';
+
 export interface Props {
   localId: string;
+  rendererContext?: RendererContext;
   state?: string;
   providers?: ProviderFactory;
   children?: ReactElement<any>;
@@ -26,11 +29,21 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   private renderWithProvider = providers => {
-    const { taskDecisionProvider, contextIdentifierProvider } = providers;
+    const {
+      taskDecisionProvider,
+      contextIdentifierProvider,
+      rendererContext,
+    } = providers;
     const { children, localId, state } = this.props;
+    const { objectAri, containerAri } = rendererContext || {
+      objectAri: '',
+      containerAri: '',
+    };
 
     return (
       <TaskItemWithProviders
+        objectAri={objectAri}
+        containerAri={containerAri}
         taskId={localId}
         isDone={state === 'DONE'}
         taskDecisionProvider={taskDecisionProvider}
