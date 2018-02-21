@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 10.8.0
+- [minor] Moved Reactions to MK2 repo [d0cecbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0cecbf)
+
 ## 10.7.1 (2017-12-14)
 
 * bug fix; fix TS errors in reactions ([21c92b6](https://bitbucket.org/atlassian/atlaskit/commits/21c92b6))

@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 11.5.0
+- [minor] FS-1461 objectAri and containerAri are optional in RendererContext [1b20296](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b20296)
+
 ## 11.4.5
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

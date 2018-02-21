@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.0.21
+- [patch] FS-1461 objectAri and containerAri are optional in RendererContext [1b20296](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b20296)
+
 ## 62.0.20
 
 ## 62.0.19
