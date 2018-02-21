@@ -20,9 +20,8 @@ const dialogBgColor = ({ isChromeless }) =>
     ? 'transparent'
     : themed({ light: colors.N0, dark: colors.DN50 });
 const gutter = 60;
-const maxDimensions = css`calc(100% - ${gutter * 2}px)`;
-const maxHeightDimensions = css`calc(100% - ${gutter * 2 -
-  IEMaxHeightCalcPx}px)`;
+const maxDimensions = `calc(100% - ${gutter * 2}px)`;
+const maxHeightDimensions = `calc(100% - ${gutter * 2 - IEMaxHeightCalcPx}px)`;
 
 export const dialogWidth = ({
   widthName,

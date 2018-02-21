@@ -101,7 +101,6 @@ export const Cell = styled.div`
 export const Header = styled.div`
   ${commonCell} font-weight: bold;
   font-size: 12px;
-  font-weight: bold;
   line-height: 1.67;
   letter-spacing: -0.1px;
   color: ${colors.N300};
