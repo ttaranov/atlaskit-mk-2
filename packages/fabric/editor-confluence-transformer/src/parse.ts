@@ -349,6 +349,9 @@ function converter(
       case 'AC:TASK-LIST':
         return convertTaskList(schema, node) || unsupportedInline;
 
+      case 'FAB:ADF':
+        return convertADF(schema, node) || unsupportedInline;
+
       case 'PRE':
         return schema.nodes.codeBlock.create(
           { language: null },
@@ -628,4 +631,16 @@ function convertTaskItem(schema: Schema, node: Element) {
   }
 
   return schema.nodes.taskItem.createChecked(attrs, nodes);
+}
+
+function convertADF(schema: Schema, node: Element) {
+  const str =
+    (node.textContent || '')[0] === '"'
+      ? node.textContent || ''
+      : `"${node.textContent}"`;
+  let json = JSON.parse(str);
+  if (typeof json === 'string') {
+    json = JSON.parse(json);
+  }
+  return schema.nodeFromJSON(json);
 }
