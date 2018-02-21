@@ -9,7 +9,7 @@ Linting not only keeps our styles consistent but also catches syntax errors such
 To lint your styled-components, run the following command:
 
 ```
-bolt run lint:css
+bolt run lint:stylelint
 ```
 
 Linting is also run as part of our CI build process.
