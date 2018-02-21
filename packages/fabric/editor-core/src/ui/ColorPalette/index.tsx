@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import Color from '../Color';
+import Color from './Color';
 
 import { ColorPaletteWrapper } from './styles';
 

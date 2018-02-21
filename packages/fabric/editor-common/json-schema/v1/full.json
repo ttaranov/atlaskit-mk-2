@@ -722,6 +722,15 @@
             "table"
           ]
         },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "isNumberColumnEnabled": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
         "content": {
           "type": "array",
           "items": {
@@ -732,6 +741,7 @@
       },
       "required": [
         "type",
+        "attrs",
         "content"
       ],
       "additionalProperties": false
