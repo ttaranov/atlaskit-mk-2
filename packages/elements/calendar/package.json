@@ -30,7 +30,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.4",
+    "@atlaskit/docs": "^2.4.3",
     "date-fns": "^1.29.0",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.0",
