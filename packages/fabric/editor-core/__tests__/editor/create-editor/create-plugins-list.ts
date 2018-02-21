@@ -1,6 +1,7 @@
 jest.mock('../../../src/editor/plugins', () => ({
   mediaPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
+  placeholderTextPlugin: jest.fn(),
 }));
 
 import {
@@ -10,6 +11,7 @@ import {
   fakeTextCursorPlugin,
   submitEditorPlugin,
   insertBlockPlugin,
+  placeholderTextPlugin,
 } from '../../../src/editor/plugins';
 
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
@@ -17,6 +19,7 @@ import createPluginsList from '../../../src/editor/create-editor/create-plugins-
 describe('createPluginsList', () => {
   beforeEach(() => {
     (insertBlockPlugin as any).mockReset();
+    (placeholderTextPlugin as any).mockReset();
   });
 
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
@@ -47,6 +50,26 @@ describe('createPluginsList', () => {
     createPluginsList({ media });
     expect(mediaPlugin).toHaveBeenCalledTimes(1);
     expect(mediaPlugin).toHaveBeenCalledWith(media);
+  });
+
+  it('should add placeholderText plugin if allowTemplatePlaceholders prop is provided', () => {
+    (placeholderTextPlugin as any).mockReturnValue('placeholderText');
+    const plugins = createPluginsList({ allowTemplatePlaceholders: true });
+    expect(plugins).toContain('placeholderText');
+  });
+
+  it('should pass empty options to placeholderText plugin if allowTemplatePlaceholders is true', () => {
+    createPluginsList({ allowTemplatePlaceholders: true });
+    expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
+    expect(placeholderTextPlugin).toHaveBeenCalledWith({});
+  });
+
+  it('should enable allowInserting for placeholderText plugin if options.allowInserting is true', () => {
+    createPluginsList({ allowTemplatePlaceholders: { allowInserting: true } });
+    expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
+    expect(placeholderTextPlugin).toHaveBeenCalledWith({
+      allowInserting: true,
+    });
   });
 
   it('should always add insertBlockPlugin to the editor with insertMenuItems', () => {

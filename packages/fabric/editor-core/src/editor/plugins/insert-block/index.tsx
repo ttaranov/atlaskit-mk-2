@@ -97,7 +97,9 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
                   tableSupported={!!tablesState}
                   mentionsEnabled={mentionsState && mentionsState.enabled}
                   dateEnabled={!!dateState}
-                  placeholderTextEnabled={!!placeholderTextState}
+                  placeholderTextEnabled={
+                    placeholderTextState && placeholderTextState.allowInserting
+                  }
                   insertMentionQuery={
                     mentionsState && mentionsState.insertMentionQuery
                   }
