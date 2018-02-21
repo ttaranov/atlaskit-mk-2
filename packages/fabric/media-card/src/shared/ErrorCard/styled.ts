@@ -19,7 +19,7 @@ const aspectRatio = `
 `;
 
 export const ErrorWrapper = styled.div`
-  // Needed to keep error state consistent
+  /* Needed to keep error state consistent */
   padding-top: ${newCardDetailsHeight}px;
   position: relative;
   ${withAppearance({

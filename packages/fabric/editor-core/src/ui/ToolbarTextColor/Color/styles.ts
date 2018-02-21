@@ -28,7 +28,7 @@ export const ButtonWrapper = styled.span`
   display: inline-block;
   border: 2px solid transparent;
   margin: 1px;
-  font-size: 0px;
+  font-size: 0;
   border-radius: 6px;
   &:hover {
     border-color: ${akColorN50};

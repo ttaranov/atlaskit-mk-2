@@ -11,7 +11,7 @@ import { akBorderRadius, akColorN50 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Input = styled.input`
-  // Normal .className gets overridden by input[type=text] hence this hack to produce input.className
+  /* Normal .className gets overridden by input[type=text] hence this hack to produce input.className */
   input& {
     background-color: white;
     border: 1px solid ${akEditorSubtleAccent};

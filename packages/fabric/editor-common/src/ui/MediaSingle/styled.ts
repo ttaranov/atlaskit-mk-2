@@ -56,7 +56,7 @@ const MediaSingleDimensionHelper = ({
   max-width: ${width}px;
   max-height: ${height}px;
   width: ${calcWidth(layout)};
-  &:after {
+  &::after {
     content: '';
     display: block;
     padding-bottom: ${height / width * 100}%;

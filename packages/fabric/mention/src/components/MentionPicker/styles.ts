@@ -31,7 +31,7 @@ export const MentionPickerInfoStyle = styled.div`
   color: ${akColorN100};
   border: 1px solid ${noDialogContainerBorderColor};
   border-radius: ${noDialogContainerBorderRadius};
-  box-shadow: ${noDialogContainerBoxShadow}
+  box-shadow: ${noDialogContainerBoxShadow};
   display: block;
   width: ${mentionListWidth};
   white-space: nowrap;

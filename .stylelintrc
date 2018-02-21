@@ -13,7 +13,13 @@
     "declaration-empty-line-before": null,
     "number-leading-zero": null,
     "rule-empty-line-before": null,
-    "property-no-vendor-prefix": null
+    "property-no-vendor-prefix": null,
+    # Bug exists in ts where it matches across different styled css rules
+    "no-descending-specificity": null,
+    # Bug exists in ts where interpolated values trigger these two rules
+    "selector-type-case": null,
+    "selector-type-no-unknown": null,
+    "no-duplicate-selectors": null,
   },
   "ignoreFiles": ""
 }
