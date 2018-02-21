@@ -138,7 +138,6 @@ const extensionHandlers: ExtensionHandlers = {
         );
       case 'block':
       case 'status':
-        console.log('render block');
         return <ProvidedExtensionComponent node={ext} />;
     }
 

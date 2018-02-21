@@ -7,6 +7,7 @@ import { MacroProvider } from '../../editor/plugins/macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '../../editor/types';
+import { pluginKey } from '../../editor/plugins/extension/plugin';
 import EditorActions from '../../editor/actions';
 
 export interface Props {
@@ -27,10 +28,13 @@ export interface Props {
 
 export interface State {
   macroProvider?: MacroProvider;
+  handlerResult?: any;
 }
 
 export default class ExtensionComponent extends Component<Props, State> {
-  state: State = {};
+  state: State = {
+    handlerResult: null,
+  };
   mounted = false;
   editorActions = new EditorActions();
 
@@ -44,6 +48,8 @@ export default class ExtensionComponent extends Component<Props, State> {
     if (macroProvider) {
       macroProvider.then(this.handleMacroProvider);
     }
+
+    this.tryExtensionHandler(this.props);
   }
 
   componentWillUnmount() {
@@ -60,26 +66,16 @@ export default class ExtensionComponent extends Component<Props, State> {
         this.setState({ macroProvider });
       }
     }
+
+    this.tryExtensionHandler(nextProps);
   }
 
   render() {
-    const { macroProvider } = this.state;
-    const { node, handleContentDOMRef, isSelected, editorView } = this.props;
+    const { macroProvider, handlerResult } = this.state;
+    const { node, handleContentDOMRef } = this.props;
 
-    try {
-      const extensionContent = this.handleExtension();
-      if (extensionContent && React.isValidElement(extensionContent)) {
-        return React.cloneElement(extensionContent as any, {
-          onClick: this.handleSelectExtension,
-          isSelected,
-          editorActions: this.editorActions,
-          editorView,
-        });
-      }
-    } catch (e) {
-      console.log('error rendering extension', e);
-      /** We don't want this error to block renderer */
-      /** We keep rendering the default content */
+    if (handlerResult) {
+      return handlerResult;
     }
 
     switch (node.type.name) {
@@ -107,8 +103,65 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   }
 
-  private handleExtension = () => {
-    const { node, extensionHandlers, editorView } = this.props;
+  private tryExtensionHandler(props) {
+    const { node, isSelected, editorView } = props;
+
+    const { state: editorState, dispatch } = editorView;
+
+    const handlerResult = this.getExtensionHandlerResult(
+      node,
+      editorView,
+      isSelected,
+    );
+    this.setState({ handlerResult });
+
+    try {
+      const meta = pluginKey.getState(editorState);
+
+      // disable default toolbar - extension handler should provide it
+      if (handlerResult && !meta.handledExternally) {
+        const tr = editorState.tr.setMeta(pluginKey, {
+          handledExternally: true,
+        });
+        dispatch(tr);
+      }
+
+      // enable default toolbar
+      if (!handlerResult && meta.handledExternally) {
+        const tr = editorState.tr.setMeta(pluginKey, {
+          handledExternally: false,
+        });
+        dispatch(tr);
+      }
+    } catch (e) {
+      // first time is throwing an error (Invalid position 1) from HyperlinkState
+      console.log('error setting meta', e);
+    }
+  }
+
+  private getExtensionHandlerResult(node, editorView, isSelected) {
+    try {
+      const extensionContent = this.handleExtension(node);
+      if (extensionContent && React.isValidElement(extensionContent)) {
+        return React.cloneElement(extensionContent as any, {
+          onClick: this.handleClick,
+          onSelect: this.handleSelectExtension,
+          isSelected,
+          editorActions: this.editorActions,
+          editorView,
+        });
+      }
+    } catch (e) {
+      console.log('error rendering extension', e);
+      /** We don't want this error to block renderer */
+      /** We keep rendering the default content */
+    }
+
+    return null;
+  }
+
+  private handleExtension = node => {
+    const { extensionHandlers, editorView } = this.props;
     const { extensionKey, extensionType, parameters } = node.attrs;
 
     if (!extensionHandlers || !extensionHandlers[extensionType]) {

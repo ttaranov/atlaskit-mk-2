@@ -2,7 +2,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ExtensionNodeView } from '../../../nodeviews';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { Dispatch } from '../../event-dispatcher';
+import { Dispatch, EventDispatcher } from '../../event-dispatcher';
 import { setExtensionElement } from './actions';
 import { getExtensionNode } from './utils';
 import { ExtensionHandlers } from '../../../editor/types';
@@ -17,6 +17,7 @@ export default (
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
+  eventDispatcher: EventDispatcher,
 ) => {
   return new Plugin({
     state: {
@@ -51,9 +52,21 @@ export default (
     key: pluginKey,
     props: {
       nodeViews: {
-        extension: ExtensionNodeView(providerFactory, extensionHandlers),
-        bodiedExtension: ExtensionNodeView(providerFactory, extensionHandlers),
-        inlineExtension: ExtensionNodeView(providerFactory, extensionHandlers),
+        extension: ExtensionNodeView(
+          providerFactory,
+          extensionHandlers,
+          eventDispatcher,
+        ),
+        bodiedExtension: ExtensionNodeView(
+          providerFactory,
+          extensionHandlers,
+          eventDispatcher,
+        ),
+        inlineExtension: ExtensionNodeView(
+          providerFactory,
+          extensionHandlers,
+          eventDispatcher,
+        ),
       },
     },
   });

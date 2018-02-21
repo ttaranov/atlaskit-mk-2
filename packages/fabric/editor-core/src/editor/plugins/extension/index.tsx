@@ -11,7 +11,7 @@ import { MacroState, pluginKey as macroPluginKey } from '../macro';
 import ExtensionEditPanel from '../../../ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
 
-const extensionPlugin = (props): EditorPlugin => ({
+const extensionPlugin = (props, eventDispatcher): EditorPlugin => ({
   nodes() {
     return [
       { rank: 2300, name: 'extension', node: extension },
@@ -29,6 +29,7 @@ const extensionPlugin = (props): EditorPlugin => ({
             dispatch,
             providerFactory,
             props.extensionHandlers || {},
+            eventDispatcher,
           ),
       },
     ];
@@ -36,6 +37,7 @@ const extensionPlugin = (props): EditorPlugin => ({
 
   contentComponent({ editorView, eventDispatcher }) {
     const { dispatch } = editorView;
+
     return (
       <WithPluginState
         editorView={editorView}
@@ -50,6 +52,7 @@ const extensionPlugin = (props): EditorPlugin => ({
         }) => (
           <ExtensionEditPanel
             element={extensionState.element}
+            editorState={editorView.state}
             onEdit={() =>
               editExtension(macroState.macroProvider)(
                 editorView.state,

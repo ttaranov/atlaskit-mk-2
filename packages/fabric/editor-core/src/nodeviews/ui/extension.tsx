@@ -6,6 +6,12 @@ import { Node as PmNode } from 'prosemirror-model';
 import Extension from '../../ui/Extension';
 import ContentNodeView from '../contentNodeView';
 import { ExtensionHandlers } from '../../editor/types';
+import { EventDispatcher } from '../../editor/event-dispatcher';
+import {
+  pluginKey,
+  ExtensionState,
+} from '../../editor/plugins/extension/plugin';
+import WithPluginState from '../../editor/ui/WithPluginState';
 
 export interface Props {
   node: PmNode;
@@ -16,21 +22,23 @@ export interface Props {
 class ExtensionNode extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
   private node: PmNode;
-  private nextNode: PmNode | null;
   private view: EditorView;
   private providerFactory: ProviderFactory;
   private extensionHandlers: ExtensionHandlers;
+  private eventDispatcher: EventDispatcher;
 
   constructor(
     node: PmNode,
     view: EditorView,
     providerFactory: ProviderFactory,
     extensionHandlers: ExtensionHandlers,
+    eventDispatcher: EventDispatcher,
   ) {
     super(node, view);
     const elementType = node.type.name === 'bodiedExtension' ? 'div' : 'span';
     this.node = node;
     this.view = view;
+    this.eventDispatcher = eventDispatcher;
     this.providerFactory = providerFactory;
     this.extensionHandlers = extensionHandlers;
     this.domRef = document.createElement(elementType);
@@ -46,9 +54,7 @@ class ExtensionNode extends ContentNodeView implements NodeView {
   update(node: PmNode) {
     // @see https://github.com/ProseMirror/prosemirror/issues/648
     const isValidUpdate = this.node.type.name === node.type.name;
-
     if (isValidUpdate) {
-      this.nextNode = node;
       // allow mutation when there is an update
       this.renderReactComponent(node);
     }
@@ -73,28 +79,25 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     return true;
   }
 
-  selectNode() {
-    this.renderReactComponent(this.node, true);
-  }
-
-  deselectNode() {
-    if (!this.domRef) {
-      return;
-    }
-
-    this.renderReactComponent(this.nextNode || this.node, false);
-  }
-
-  private renderReactComponent(node: PmNode, isSelected: Boolean = false) {
-    console.log('render component', node);
+  private renderReactComponent(node: PmNode) {
+    // Using WithPluginState so we can update the component on selection
     ReactDOM.render(
-      <Extension
+      <WithPluginState
         editorView={this.view}
-        node={node}
-        providerFactory={this.providerFactory}
-        handleContentDOMRef={this.handleRef}
-        extensionHandlers={this.extensionHandlers}
-        isSelected={isSelected}
+        eventDispatcher={this.eventDispatcher}
+        plugins={{
+          extensionState: pluginKey,
+        }}
+        render={({ extensionState = {} as ExtensionState }) => (
+          <Extension
+            editorView={this.view}
+            node={node}
+            providerFactory={this.providerFactory}
+            handleContentDOMRef={this.handleRef}
+            extensionHandlers={this.extensionHandlers}
+            isSelected={!!extensionState.element}
+          />
+        )}
       />,
       this.domRef,
     );
@@ -104,8 +107,15 @@ class ExtensionNode extends ContentNodeView implements NodeView {
 export default function ExtensionNodeView(
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
+  eventDispatcher: EventDispatcher,
 ) {
   return (node: PmNode, view: EditorView, getPos: () => number): NodeView => {
-    return new ExtensionNode(node, view, providerFactory, extensionHandlers);
+    return new ExtensionNode(
+      node,
+      view,
+      providerFactory,
+      extensionHandlers,
+      eventDispatcher,
+    );
   };
 }

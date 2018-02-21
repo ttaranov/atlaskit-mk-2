@@ -34,7 +34,6 @@ const Content = styled.div`
   display: flex;
   padding: 10px;
   background: #f5f5f5;
-  border-radius: 50%;
 `;
 
 export type State = {
@@ -48,23 +47,28 @@ export type Props = {
   parameters: any;
   content: any;
   node: any;
+  onClick: any;
+  onSelect: any;
 };
 
 export default class ProvidedExtensionComponent extends React.Component<
   Props,
   State
 > {
+  private timer: any;
+
   state = {
     content: '',
     isEditing: false,
   };
 
   componentWillMount() {
-    setTimeout(this.setContent, 500);
+    // simulate async DOM changes
+    this.timer = setTimeout(this.setContent, 500);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log({ nextProps });
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
 
   renderEditingForm() {
@@ -85,7 +89,7 @@ export default class ProvidedExtensionComponent extends React.Component<
   }
 
   render() {
-    const { isSelected, node } = this.props;
+    const { isSelected, node, onClick, onSelect } = this.props;
     const { macroParams } = node.parameters;
     const text = Object.keys(macroParams)
       .map(key => macroParams[key].value)
@@ -97,7 +101,7 @@ export default class ProvidedExtensionComponent extends React.Component<
         content={this.renderEditingForm()}
         isOpen={this.state.isEditing}
       >
-        <Wrapper>
+        <Wrapper onClick={onClick}>
           <Overlay isSelected={isSelected} />
           {isSelected && (
             <Toolbar>
@@ -106,8 +110,9 @@ export default class ProvidedExtensionComponent extends React.Component<
               </AkButton>
             </Toolbar>
           )}
-          <Content>
+          <Content onClick={onSelect}>
             {this.state.content} type extension - {text}
+            <div>isSelected={isSelected}</div>
           </Content>
         </Wrapper>
       </InlineDialog>

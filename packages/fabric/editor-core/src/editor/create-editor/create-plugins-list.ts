@@ -1,4 +1,5 @@
 import { EditorPlugin, EditorProps } from '../types';
+import { EventDispatcher } from '../../editor/event-dispatcher';
 import {
   basePlugin,
   placeholderPlugin,
@@ -53,7 +54,10 @@ export function getDefaultPluginsList(): EditorPlugin[] {
 /**
  * Maps EditorProps to EditorPlugins
  */
-export default function createPluginsList(props: EditorProps): EditorPlugin[] {
+export default function createPluginsList(
+  props: EditorProps,
+  eventDispatcher: EventDispatcher,
+): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
 
   if (props.allowTextColor) {
@@ -126,7 +130,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowExtension) {
     plugins.push(
-      extensionPlugin({ extensionHandlers: props.extensionHandlers }),
+      extensionPlugin(
+        { extensionHandlers: props.extensionHandlers },
+        eventDispatcher,
+      ),
     );
   }
 
