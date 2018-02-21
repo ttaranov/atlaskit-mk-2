@@ -349,6 +349,13 @@ function converter(
       case 'AC:TASK-LIST':
         return convertTaskList(schema, node) || unsupportedInline;
 
+      case 'AC:PLACEHOLDER':
+        const text = node.textContent;
+        if (text) {
+          return schema.nodes.placeholder.create({ text });
+        }
+        return null;
+
       case 'PRE':
         return schema.nodes.codeBlock.create(
           { language: null },

@@ -81,9 +81,10 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
       return encodeTaskList(node);
-    }
-    if (node.type === schema.nodes.date) {
+    } else if (node.type === schema.nodes.date) {
       return encodeDate(node);
+    } else if (node.type === schema.nodes.placeholder) {
+      return encodePlaceholder(node);
     } else {
       throw new Error(
         `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
@@ -519,6 +520,13 @@ export default function encode(node: PMNode, schema: Schema) {
     if (timestamp) {
       elem.setAttribute('datetime', timestampToIso(timestamp));
     }
+    return elem;
+  }
+
+  function encodePlaceholder(node: PMNode): Element {
+    let elem = doc.createElementNS(AC_XMLNS, 'ac:placeholder');
+    const { text } = node.attrs;
+    elem.textContent = text;
     return elem;
   }
 }
