@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.0.18
+- [patch] Fix the Floating toolbar styling - Bradleys wishlist [fe45969](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe45969)
+
 ## 62.0.17
 - [patch] Hide the 'Insert Placeholder Text' menu item by default [1274a31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1274a31)
 
