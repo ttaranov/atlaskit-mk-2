@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-next",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The 🆕 Atlaskit component analytics framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -29,8 +29,8 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/theme": "^2.3.0",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/theme": "^2.3.4",
     "enzyme": "^3.3.0",
     "redux": "^3.7.2"
   }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Component that allow users to pick, resize and drag his own and default avatars.",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,22 +19,22 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.3.0",
-    "@atlaskit/field-range": "^2.5.0",
-    "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/media-card": "^24.0.2",
-    "@atlaskit/modal-dialog": "^3.3.0",
+    "@atlaskit/button": "^6.4.2",
+    "@atlaskit/field-range": "^2.5.3",
+    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/media-card": "^24.0.4",
+    "@atlaskit/modal-dialog": "^3.3.15",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "styled-components": "^1.4.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^14.0.0",
+    "@atlaskit/media-core": "^14.0.1",
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/media-core": "^14.0.0",
-    "@atlaskit/media-test-helpers": "^9.0.1"
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/media-core": "^14.0.1",
+    "@atlaskit/media-test-helpers": "^9.0.2"
   }
 }

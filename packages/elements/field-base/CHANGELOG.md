@@ -1,5 +1,8 @@
 # @atlaskit/field-base
 
+## 8.1.13
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 8.1.12
 - [patch] Fix field base read view content overflowing in IE11 when isFitContainerWidthEnabled is set [4417234](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4417234)
 

@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 24.0.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 24.0.3
 - [patch] fixed issue where clicking on smart-card try-again and cancel links would trigger onClick [1e575b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e575b3)
 

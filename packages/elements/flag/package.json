@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "6.4.3",
+  "version": "6.4.5",
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -16,10 +16,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.4.1",
-    "@atlaskit/icon": "^10.9.1",
-    "@atlaskit/layer-manager": "^2.7.3",
-    "@atlaskit/theme": "^2.3.3",
+    "@atlaskit/button": "^6.4.2",
+    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/layer-manager": "^2.7.4",
+    "@atlaskit/theme": "^2.3.4",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6",
@@ -29,12 +29,12 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/field-radio-group": "^1.8.3",
-    "@atlaskit/modal-dialog": "^3.3.13",
-    "@atlaskit/navigation": "^29.0.0",
-    "@atlaskit/spinner": "^4.1.4",
-    "@atlaskit/theme": "^2.3.3",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/field-radio-group": "^1.8.4",
+    "@atlaskit/modal-dialog": "^3.3.15",
+    "@atlaskit/navigation": "^29.0.2",
+    "@atlaskit/spinner": "^4.1.5",
+    "@atlaskit/theme": "^2.3.4",
     "enzyme": "^3.3.0"
   },
   "keywords": [
