@@ -280,4 +280,4 @@ declare namespace MediaEditor {
   function createModule(): NativeModule;
 }
 
-export = EditorCore;
+export = MediaEditor;
