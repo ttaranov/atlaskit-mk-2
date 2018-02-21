@@ -9,6 +9,8 @@ import {
 
 export interface Props {
   taskId: string;
+  objectAri: string;
+  containerAri: string;
   isDone: boolean;
   contentRef?: ContentRef;
   onChange?: (taskId: string, isChecked: boolean) => void;
@@ -52,9 +54,18 @@ export default class TaskItemWithProviders extends Component<Props, State> {
   }
 
   render() {
-    const { contextIdentifierProvider, ...otherProps } = this.props;
+    const {
+      contextIdentifierProvider,
+      objectAri,
+      containerAri,
+      ...otherProps
+    } = this.props;
     const { objectId, containerId } =
-      this.state.resolvedContextProvider || ({} as ContextIdentifierProvider);
+      this.state.resolvedContextProvider ||
+      ({
+        objectId: objectAri,
+        containerId: containerAri,
+      } as ContextIdentifierProvider);
 
     return (
       <ResourcedTaskItem
