@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.0.20
+
 ## 62.0.19
 - [patch] Adding opt out instructions for bitbucket users. [14cc50f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14cc50f)
 - [patch] Changes in inline autoformatting rules to make then more well defined. [e6a5a14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6a5a14)
