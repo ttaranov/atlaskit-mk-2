@@ -14,6 +14,7 @@ import {
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 import { dataURItoFile, fileToDataURI } from '../util';
 import { CONTAINER_SIZE } from '../image-navigator/index';
+import { LoadParameters } from '../image-cropper';
 
 export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
 
@@ -22,7 +23,8 @@ export interface AvatarPickerDialogProps {
   defaultSelectedAvatar?: Avatar;
   onAvatarPicked: (avatar: Avatar) => void;
   imageSource?: string;
-  onImagePicked: (file: File, crop: CropProperties) => void;
+  onImagePicked?: (file: File, crop: CropProperties) => void;
+  onImagePickedDataURI?: (dataUri: string) => void;
   onCancel: () => void;
   title?: string;
   primaryButtonText?: string;
@@ -92,15 +94,35 @@ export class AvatarPickerDialog extends PureComponent<
     this.setState({ crop: { x, y, size } });
   };
 
+  onImageNavigatorLoad = (loadParams: LoadParameters) => {
+    this.exportCroppedImage = loadParams.export;
+  };
+
+  /**
+   * Initialised with no-op function.  Is assigned cropped image exporting
+   * function when internal ImageCropper mounts via this.onImageNavigatorLoad
+   */
+  exportCroppedImage = () => '';
+
   onSaveClick = () => {
-    const { imageSource, onImagePicked, onAvatarPicked } = this.props;
+    const {
+      imageSource,
+      onImagePicked,
+      onImagePickedDataURI,
+      onAvatarPicked,
+    } = this.props;
     const { selectedImage, crop, selectedAvatar } = this.state;
     const image = selectedImage
       ? selectedImage
       : imageSource && dataURItoFile(imageSource);
 
     if (image) {
-      onImagePicked(image, crop);
+      if (onImagePicked) {
+        onImagePicked(image, crop);
+      }
+      if (onImagePickedDataURI) {
+        onImagePickedDataURI(this.exportCroppedImage());
+      }
     } else if (selectedAvatar) {
       onAvatarPicked(selectedAvatar);
     }
@@ -214,6 +236,7 @@ export class AvatarPickerDialog extends PureComponent<
             <ImageNavigator
               imageSource={selectedImageSource}
               onImageChanged={this.setSelectedImageState}
+              onLoad={this.onImageNavigatorLoad}
               onPositionChanged={this.setPositionState}
               onSizeChanged={this.setSizeState}
               onRemoveImage={this.onRemoveImage}
