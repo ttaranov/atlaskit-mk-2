@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 5.2.4
+
 ## 5.2.3
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

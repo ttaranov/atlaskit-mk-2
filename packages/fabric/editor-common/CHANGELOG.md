@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 6.1.10
+
 ## 6.1.9
 - [patch] Encode and decode for Extension schemaVersion [0335988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0335988)
 
