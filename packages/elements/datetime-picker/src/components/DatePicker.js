@@ -39,6 +39,8 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
+  /** Props to apply to the select. */
+  selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value: string,
 };
@@ -189,6 +191,7 @@ class DatePicker extends Component<Props, State> {
       name,
       onBlur,
       onFocus,
+      selectProps,
     } = this.props;
     const { isOpen, value, view } = this.state;
     const Menu = () =>
@@ -235,6 +238,7 @@ class DatePicker extends Component<Props, State> {
               value,
             }
           }
+          {...selectProps}
         />
       </div>
     );

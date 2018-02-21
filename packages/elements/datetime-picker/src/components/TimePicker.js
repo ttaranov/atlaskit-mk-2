@@ -42,6 +42,8 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
+  /** Props to apply to the select. */
+  selectProps: Object,
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** The ISO time that should be used as the input value. */
@@ -107,6 +109,7 @@ class TimePicker extends Component<Props, State> {
       name,
       onBlur,
       onFocus,
+      selectProps,
     } = this.props;
     const { value } = this.state;
     return (
@@ -132,6 +135,7 @@ class TimePicker extends Component<Props, State> {
               value,
             }
           }
+          {...selectProps}
         />
       </div>
     );

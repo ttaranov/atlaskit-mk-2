@@ -79,22 +79,17 @@ const FlexItem = styled.div`
 `;
 
 // react-select overrides (via @atlaskit/select).
-const controlStyles = () => ({
-  backgroundColor: 'transparent',
-  border: 0,
-  borderRadius: 0,
-  padding: 4,
-  ':hover': {
-    backgroundColor: 'transparent',
-  },
-});
 const styles = {
-  date: {
-    control: controlStyles,
-  },
-  time: {
-    control: controlStyles,
-  },
+  control: style => ({
+    ...style,
+    backgroundColor: 'transparent',
+    border: 0,
+    borderRadius: 0,
+    paddingLeft: 0,
+    ':hover': {
+      backgroundColor: 'transparent',
+    },
+  }),
 };
 
 function formatDateTimeZoneIntoIso(
@@ -186,7 +181,7 @@ class DateTimePicker extends Component<Props, State> {
             icon={null}
             id={id}
             onChange={this.onDateChange}
-            styles={styles.date}
+            selectProps={{ styles }}
             value={_dateValue}
           />
         </FlexItem>
@@ -195,7 +190,7 @@ class DateTimePicker extends Component<Props, State> {
             {...bothProps}
             icon={CalendarIcon}
             onChange={this.onTimeChange}
-            styles={styles.time}
+            selectProps={{ styles }}
             value={_timeValue}
           />
         </FlexItem>
