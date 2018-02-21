@@ -2,6 +2,7 @@
 
 import React, { Component, type Node } from 'react';
 import Button from '@atlaskit/button';
+import InfoIcon from '@atlaskit/icon/glyph/info';
 import { gridSize } from '@atlaskit/theme';
 import Flag, { FlagGroup } from '../src';
 
@@ -20,7 +21,7 @@ export default class ProgrammaticFlagDismissExample extends Component<
         key="flag1"
         title="Can I leave yet?"
         description="Dismiss me by clicking the button on the page"
-        icon=""
+        icon={<InfoIcon label="Info" />}
       />,
     ],
   };

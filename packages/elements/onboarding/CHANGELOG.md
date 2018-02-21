@@ -1,5 +1,8 @@
 # @atlaskit/onboarding
 
+## 2.3.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 2.3.3
 
 ## 2.3.2

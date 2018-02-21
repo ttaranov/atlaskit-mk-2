@@ -128,7 +128,6 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-processing', onUploadProcessing);
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
-    this.mpDropzone.activate();
 
     this.mpBinary = MediaPicker('binary', mpConfig);
     this.mpBinary.on('uploads-start', onUploadsStart);
@@ -147,6 +146,20 @@ export class App extends Component<AppProps, AppState> {
       this.mpBrowser.cancel(uploadId);
       this.mpDropzone.cancel(uploadId);
     });
+  }
+
+  componentWillReceiveProps({ isVisible }: Readonly<AppProps>): void {
+    if (isVisible !== this.props.isVisible) {
+      if (isVisible) {
+        this.mpDropzone.activate();
+      } else {
+        this.mpDropzone.deactivate();
+      }
+    }
+  }
+
+  componentWillUnmount(): void {
+    this.mpDropzone.deactivate();
   }
 
   render() {

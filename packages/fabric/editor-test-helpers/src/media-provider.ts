@@ -30,7 +30,6 @@ export function storyMediaProviderFactory(
     serviceHost,
     collectionName,
     stateManager,
-    dropzoneContainer,
     includeUploadContext,
     includeLinkCreateContext,
     includeUserAuthProvider,
@@ -39,10 +38,7 @@ export function storyMediaProviderFactory(
 
   return Promise.resolve<MediaProvider>({
     stateManager,
-    uploadParams: {
-      collection,
-      dropzoneContainer,
-    },
+    uploadParams: { collection },
     viewContext: Promise.resolve<MediaContextConfig>({
       serviceHost: serviceHost || defaultParams.serviceHost,
       authProvider: StoryBookAuthProvider.create(false),

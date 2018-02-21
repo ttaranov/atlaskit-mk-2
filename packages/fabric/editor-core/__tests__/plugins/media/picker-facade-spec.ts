@@ -411,6 +411,7 @@ describe('Media PickerFacade', () => {
         );
       });
 
+      // Picker Specific Tests
       if (pickerType === 'clipboard' || pickerType === 'dropzone') {
         it(`should call picker's activate() during initialization`, () => {
           expect(spies.activate).toHaveBeenCalledTimes(1);
@@ -468,7 +469,51 @@ describe('Media PickerFacade', () => {
         });
       }
 
-      // Picker Specific Tests
+      if (pickerType === 'popup') {
+        it(`should call picker on close when onClose is called`, () => {
+          spies.on.mockClear();
+          const closeCb = jest.fn();
+          facade.onClose(closeCb);
+
+          expect(spies.on).toHaveBeenCalledTimes(1);
+          expect(spies.on).toHaveBeenCalledWith('closed', closeCb);
+        });
+      } else {
+        it(`should not call picker on close when onClose is called`, () => {
+          spies.on.mockClear();
+          facade.onClose(() => {});
+          expect(spies.on).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'dropzone' || pickerType === 'clipboard') {
+        it(`should call picker.activate when activate is called`, () => {
+          spies.activate.mockClear();
+          facade.activate();
+          expect(spies.activate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`should not call picker.activate when activate is called`, () => {
+          spies.activate.mockClear();
+          facade.activate();
+          expect(spies.activate).toHaveBeenCalledTimes(0);
+        });
+      }
+
+      if (pickerType === 'dropzone' || pickerType === 'clipboard') {
+        it(`should call picker.deactivate when deactivate is called`, () => {
+          spies.deactivate.mockClear();
+          facade.deactivate();
+          expect(spies.deactivate).toHaveBeenCalledTimes(1);
+        });
+      } else {
+        it(`should not call picker.deactivate when deactivate is called`, () => {
+          spies.deactivate.mockClear();
+          facade.deactivate();
+          expect(spies.deactivate).toHaveBeenCalledTimes(0);
+        });
+      }
+
       if (pickerType === 'popup') {
         it('should change the status to cancelled on cancel', () => {
           const spy = jest.fn();
@@ -520,122 +565,3 @@ describe('Media PickerFacade', () => {
     });
   });
 });
-
-/*
-describe('Media PickerFacade', () => {
-  let stateManager: MediaStateManager | undefined;
-  let facade: PickerFacade | undefined;
-  let mockPickerFactory: any;
-  // let mockPicker: MockMediaPicker;
-  const dropzoneContainer = document.createElement('div');
-  const uploadParams = {
-    collection: 'mock',
-    dropzoneContainer,
-  };
-  const contextConfig = {
-    serviceHost: 'http://test',
-    authProvider: StoryBookAuthProvider.create(false),
-    userAuthProvider: StoryBookUserAuthProvider.create(),
-  };
-  const testFileId = `${Math.round(Math.random() * 100000)}`;
-  const testTemporaryFileId = `temporary:${testFileId}`;
-  const testFilePublicId = '7899d969-c1b2-4460-ad3e-44d51ac85452';
-  const testFileData = {
-    id: testFileId,
-    name: 'test name',
-    size: Math.round(Math.random() * 1047552),
-    type: 'test/file',
-    creationDate: new Date().getTime(),
-  };
-  const apiUrl = '';
-  const authProvider = () => Promise.resolve({ clientId: '', token: '' });
-  const getPickerFacadeConfig = (stateManager: MediaStateManager) => ({
-    uploadParams,
-    contextConfig,
-    stateManager,
-    errorReporter,
-  });
-
-  describe('Generic Picker', () => {
-
-
-
-  describe('Popup Picker', () => {
-    it(`calls picker's teardown() on destruction`, () => {
-      const spy = (mockPopupPicker.teardown = jest.fn());
-      facade!.destroy();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it(`calls picker's show() on show`, () => {
-      const spy = (mockPopupPicker.show = jest.fn());
-      facade!.show();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it(`calls picker's hide() on hide`, () => {
-      const spy = (mockPopupPicker.hide = jest.fn());
-      facade!.hide();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it('for upload that has been cancelled', () => {
-      const spy = jest.fn();
-      stateManager!.updateState(testTemporaryFileId, {
-        id: testTemporaryFileId,
-        status: 'uploading',
-      });
-
-      stateManager!.on(testTemporaryFileId, spy);
-      facade!.cancel(testTemporaryFileId);
-
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith({
-        id: testTemporaryFileId,
-        status: 'cancelled',
-      });
-    });
-  });
-
-  describe('Browser Picker', () => {
-    const mockBrowserPicker = new Browser(
-      { trackEvent() {} },
-      { apiUrl, authProvider },
-    );
-
-    beforeEach(() => {
-      stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (
-        pickerType: string,
-        pickerConfig: any,
-        extraConfig?: any,
-      ) => mockBrowserPicker;
-      facade = new PickerFacade(
-        'browser',
-        getPickerFacadeConfig(stateManager!),
-      );
-    });
-
-    afterEach(() => {
-      stateManager = undefined;
-      facade!.destroy();
-      facade = undefined;
-    });
-
-    it(`calls picker's teardown() on destruction`, () => {
-      const spy = (mockBrowserPicker.teardown = jest.fn());
-      facade!.destroy();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it(`calls picker's browse() on show`, () => {
-      const spy = (mockBrowserPicker.browse = jest.fn());
-      facade!.show();
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  });
-
-});
-*/

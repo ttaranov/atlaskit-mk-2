@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 5.0.14
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 5.0.13
 
 ## 5.0.12

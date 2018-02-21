@@ -50,7 +50,9 @@ import DefaultMediaStateManager from './default-state-manager';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
-const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
+// We get `publicId` of `file` in `processing` stage so it's possible to send
+// consumers a ADF with media-ids before ready state
+const MEDIA_RESOLVED_STATES = ['ready', 'error', 'cancelled', 'processing'];
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -85,6 +87,7 @@ export class MediaPluginState {
   private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
+  private removeOnCloseListener: () => void = () => {};
 
   constructor(
     state: EditorState,
@@ -282,7 +285,7 @@ export class MediaPluginState {
     }
 
     const isEndState = (state: MediaState) =>
-      state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
+      state.status && MEDIA_RESOLVED_STATES.indexOf(state.status) !== -1;
 
     this.pendingTask = mediaStates
       .filter(state => !isEndState(state))
@@ -349,9 +352,7 @@ export class MediaPluginState {
     );
   };
 
-  splitMediaGroup = (): boolean => {
-    return splitMediaGroup(this.view);
-  };
+  splitMediaGroup = (): boolean => splitMediaGroup(this.view);
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
@@ -363,11 +364,20 @@ export class MediaPluginState {
     binaryPicker!.upload(url, fileName);
   };
 
+  // TODO [MSW-454]: remove this logic from Editor
+  onPopupPickerClose = () => {
+    if (this.dropzonePicker) {
+      this.dropzonePicker.activate();
+    }
+  };
+
   showMediaPicker = () => {
     if (!this.popupPicker) {
       return;
     }
-
+    if (this.dropzonePicker) {
+      this.dropzonePicker.deactivate();
+    }
     this.popupPicker.show();
   };
 
@@ -481,6 +491,7 @@ export class MediaPluginState {
     const { mediaNodes } = this;
     mediaNodes.splice(0, mediaNodes.length);
 
+    this.removeOnCloseListener();
     this.destroyPickers();
   }
 
@@ -536,6 +547,8 @@ export class MediaPluginState {
 
     this.popupPicker = undefined;
     this.binaryPicker = undefined;
+    this.clipboardPicker = undefined;
+    this.dropzonePicker = undefined;
   };
 
   private initPickers(
@@ -595,7 +608,11 @@ export class MediaPluginState {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
+
       this.dropzonePicker.onDrag(this.handleDrag);
+      this.removeOnCloseListener = this.popupPicker.onClose(
+        this.onPopupPickerClose,
+      );
     }
 
     if (this.popupPicker) {
@@ -638,6 +655,7 @@ export class MediaPluginState {
         }
         break;
 
+      case 'processing':
       case 'ready':
         this.stateManager.off(state.id, this.handleMediaState);
         this.replaceTemporaryNode(state);
