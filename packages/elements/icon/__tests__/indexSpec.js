@@ -389,17 +389,6 @@ describe(name, () => {
   });
 
   describe('component structure', () => {
-    it('should have role="img"', () => {
-      const wrapper = mount(
-        <div>
-          <AtlassianIcon label="My label" />
-        </div>,
-      );
-      const span = wrapper.find('span').first();
-
-      expect(span.is('[role="img"]')).toBe(true);
-    });
-
     it('should be possible to create the components', () => {
       Object.values(components).forEach(iconData => {
         // $FlowFixMe - Object.values does not have a consistent return value
