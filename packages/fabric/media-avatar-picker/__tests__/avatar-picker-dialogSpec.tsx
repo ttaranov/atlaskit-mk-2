@@ -17,7 +17,7 @@ describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {
     const component = shallow(
       <AvatarPickerDialog
-        avatars={[]}
+        avatars={[{ dataURI: 'http://an.avatar.com/453' }]}
         onAvatarPicked={jest.fn()}
         onImagePicked={jest.fn()}
         onImagePickedDataURI={jest.fn()}
@@ -120,6 +120,18 @@ describe('Avatar Picker Dialog', () => {
       .simulate('click');
 
     expect(onAvatarPicked).toBeCalledWith(selectedAvatar);
+  });
+
+  it('should render avatar list when avatars are passed', () => {
+    const component = renderWithProps({});
+    expect(component.find(PredefinedAvatarList)).toHaveLength(1);
+  });
+
+  it('should not render avatar list when no avatars are passed', () => {
+    const component = renderWithProps({
+      avatars: [],
+    });
+    expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 
   it('should not render avatar list when imageSource is passed', () => {
