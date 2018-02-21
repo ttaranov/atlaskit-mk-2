@@ -349,6 +349,13 @@ function converter(
       case 'AC:TASK-LIST':
         return convertTaskList(schema, node) || unsupportedInline;
 
+      case 'AC:PLACEHOLDER':
+        const text = node.textContent;
+        if (text) {
+          return schema.nodes.placeholder.create({ text });
+        }
+        return null;
+
       case 'PRE':
         return schema.nodes.codeBlock.create(
           { language: null },
@@ -411,6 +418,7 @@ function convertConfluenceMacro(
     ? parseDomNode(schema, richBodyNode).content
     : null;
   const plainTextBody = properties['ac:plain-text-body'] || '';
+  const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
 
   switch (macroName.toUpperCase()) {
     case 'CODE':
@@ -447,8 +455,7 @@ function convertConfluenceMacro(
       );
 
     case 'JIRA':
-      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
-      const { server, serverid: serverId, key: issueKey } = params;
+      const { server, serverId, key: issueKey } = params;
 
       // if this is an issue list, render it as unsupported node
       // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
@@ -483,6 +490,7 @@ function convertConfluenceMacro(
           macroParams: getExtensionMacroParams(params),
           macroMetadata: {
             macroId: { value: macroId },
+            schemaVersion: { value: schemaVersion },
             placeholder: [
               {
                 data: { url: properties['fab:placeholder-url'] },
@@ -500,6 +508,7 @@ function convertConfluenceMacro(
           macroParams: getExtensionMacroParams(params),
           macroMetadata: {
             macroId: { value: macroId },
+            schemaVersion: { value: schemaVersion },
             placeholder: [
               {
                 data: { url: properties['fab:placeholder-url'] },

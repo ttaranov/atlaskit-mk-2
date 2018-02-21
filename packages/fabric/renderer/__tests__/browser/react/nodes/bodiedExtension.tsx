@@ -39,8 +39,6 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   };
 
   const rendererContext: RendererContext = {
-    objectAri: '123',
-    containerAri: '321',
     adDoc: {
       version: 1,
       type: 'doc',

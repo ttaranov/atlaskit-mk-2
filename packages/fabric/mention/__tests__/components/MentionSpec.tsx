@@ -140,6 +140,13 @@ describe('<Mention />', () => {
         mention.getDOMNode().attributes.getNamedItem('data-access-level').value,
       ).toEqual('NONE');
     });
+
+    it('should have spell check disabled', () => {
+      const mention = mount(<Mention {...mentionData} />);
+      expect(
+        mention.getDOMNode().attributes.getNamedItem('spellcheck').value,
+      ).toEqual('false');
+    });
   });
 
   describe('ResourcedMention', () => {

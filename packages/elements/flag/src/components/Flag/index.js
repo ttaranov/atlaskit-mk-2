@@ -83,6 +83,7 @@ export default class Flag extends Component<FlagProps, State> {
     return (
       <DismissButton
         appearance={appearance}
+        aria-expanded={this.state.isExpanded}
         // $FlowFixMe TEMPORARY
         focusRingColor={flagFocusRingColor(this.props)}
         onClick={buttonAction}
@@ -135,12 +136,12 @@ export default class Flag extends Component<FlagProps, State> {
         onMouseDown={this.handleMouseDown}
         {...autoDismissProps}
       >
-        <Icon>{icon}</Icon>
+        <Header>
+          <Icon>{icon}</Icon>
+          <Title appearance={appearance}>{title}</Title>
+          <OptionalDismissButton />
+        </Header>
         <Content>
-          <Header>
-            <Title appearance={appearance}>{title}</Title>
-            <OptionalDismissButton />
-          </Header>
           <Body />
         </Content>
       </Container>

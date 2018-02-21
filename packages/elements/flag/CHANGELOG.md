@@ -1,5 +1,16 @@
 # @atlaskit/flag
 
+## 6.4.6
+- [patch] adds aria-expanded value to expander button in flag [7de4577](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7de4577)
+
+## 6.4.5
+- [patch] updates Flag to closer match ADG spec [5392b60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5392b60)
+
+## 6.4.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 6.4.3
+
 ## 6.4.2
 - [patch] Remove babel-plugin-react-flow-props-to-prop-types [06c1f08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06c1f08)
 

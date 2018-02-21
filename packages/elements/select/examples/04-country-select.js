@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import { CountrySelect } from './common/components';
+import { CountrySelect } from '../src';
 
-const CountryExample = () => <CountrySelect placeholder="Choose a Country" />;
+const CountryExample = () => <CountrySelect placeholder="Country" />;
 
 export default CountryExample;

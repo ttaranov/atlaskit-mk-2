@@ -25,12 +25,7 @@ export default class ExampleBasic extends PureComponent<{}, State> {
         <Button onClick={this.open}>Open Modal</Button>
 
         {isOpen && (
-          <Modal
-            actions={actions}
-            onClose={this.close}
-            heading="Modal Title"
-            scrollBehavior="outside"
-          >
+          <Modal actions={actions} onClose={this.close} heading="Modal Title">
             <Lorem count={2} />
           </Modal>
         )}
