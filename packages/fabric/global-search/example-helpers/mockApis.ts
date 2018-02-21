@@ -23,8 +23,8 @@ function mockRecentApi() {
 }
 
 function mockCrossProductSearchApi() {
-  fetchMock.post('http://localhost:8080/quicksearch/v1', (url, opts) => {
-    const body = JSON.parse(opts.body);
+  fetchMock.post('http://localhost:8080/quicksearch/v1', async request => {
+    const body = await request.json();
     const query = body.query;
     const results = queryMockSearch(query);
 
@@ -33,8 +33,8 @@ function mockCrossProductSearchApi() {
 }
 
 function mockPeopleApi() {
-  fetchMock.post('http://localhost:8080/graphql', (url, opts) => {
-    const body = JSON.parse(opts.body);
+  fetchMock.post('http://localhost:8080/graphql', async request => {
+    const body = await request.json();
     const query = body.variables.displayName;
     const results = queryPeopleSearch(query);
 
