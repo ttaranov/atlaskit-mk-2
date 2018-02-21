@@ -30,15 +30,15 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
-          - yarn build
-          - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
-          - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
-          - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
-          - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
-          - yarn test:changed
-          - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
+          # - yarn build
+          # - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
+          # - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+          # - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
+          # - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
+          # - yarn test:changed
+          # - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
+          # - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+          # - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
 
@@ -78,6 +78,20 @@ pipelines:
     # We deliberately don't use the cache here as well
 
     landkid:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - git merge master --no-edit
+            - bolt install --pure-lockfile
+            - yarn build
+            - yarn lint
+            - yarn typecheck
+            - yarn test
+            - yarn test:browser:browserstack
+
+    # This build should only be run on the master branch, once per day.
+    # It manually clears the cache and runs a very quick
+    reseed-pipelines-cache:
       - step:
           script:
             - source ./build-setup.sh
