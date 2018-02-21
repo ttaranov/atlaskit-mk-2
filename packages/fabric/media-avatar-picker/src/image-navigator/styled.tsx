@@ -18,8 +18,8 @@ export const Container = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
   *,
-  *:before,
-  *:after {
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 `;
@@ -64,7 +64,7 @@ export const DragZone = styled.div`
   border-radius: 100%;
   transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &:after {
+  &::after {
     content: '';
     border: 2px dashed #d0d6d0;
     border-radius: 100%;

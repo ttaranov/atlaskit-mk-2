@@ -54,7 +54,7 @@ export const Content = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-}`;
+`;
 Content.displayName = 'Content';
 
 // tslint:disable-next-line:no-console

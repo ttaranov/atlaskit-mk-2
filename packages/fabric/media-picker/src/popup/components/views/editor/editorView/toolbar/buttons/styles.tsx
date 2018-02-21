@@ -22,7 +22,7 @@ const colorSampleOutlineColor = 'rgba(255, 255, 255, 0.5)';
 
 const ButtonBase = styled.div`
   cursor: pointer;
-  position: relative; // for the child OptionsAreaBase which uses absolute positioning
+  position: relative; /* for the child OptionsAreaBase which uses absolute positioning */
   background-color: ${transparent};
   color: ${akColorN0};
   width: 40px;

@@ -49,7 +49,7 @@ export const FilmStripListItem = styled.li`
   padding: 0 4px;
   display: inline-block;
   vertical-align: middle;
-  // Fixes issue with child Cards using inline-block
+  /* Fixes issue with child Cards using inline-block */
   font-size: 0;
 
   &:first-child {
@@ -76,7 +76,7 @@ export const ArrowWrapper = styled.div`
   display: flex;
   cursor: pointer;
   transition: opacity 0.3s;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.6);
   color: black;
   width: 30px;
   height: 30px;

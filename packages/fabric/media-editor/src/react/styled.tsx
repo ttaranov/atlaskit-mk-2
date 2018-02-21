@@ -51,7 +51,7 @@ export const SupplementaryCanvas = styled.canvas`
 export const HiddenTextArea = styled.textarea`
   position: absolute;
   display: block;
-  visibility: hidden; // display:none won't allow to get the keyboard focus
+  visibility: hidden; /* display:none won't allow to get the keyboard focus */
   left: 0;
   top: 0;
   width: 0;
@@ -64,13 +64,13 @@ export const HiddenTextArea = styled.textarea`
 export const HiddenTextHelperDiv = styled.div`
   position: absolute;
   display: block;
-  visibility: hidden; // display:none won't allow us to call getClientBoundingRect() for children
+  visibility: hidden; /* display:none won't allow us to call getClientBoundingRect() for children */
   left: 0;
   top: 0;
   width: 100px;
   height: 100px;
   overflow: hidden;
-  white-space: pre; // to preserve multiple whitespace characters and not to break lines
+  white-space: pre; /* to preserve multiple whitespace characters and not to break lines */
 `;
 
 export const ToolbarContainer = styled.div`
@@ -110,7 +110,7 @@ export const LineWidthBackCircle = styled.div`
   width: 20px;
   height: 20px;
   margin: 6px;
-  background-color: ${akColorN200}
+  background-color: ${akColorN200};
   border-radius: 10px;
 `;
 
@@ -120,7 +120,7 @@ export const LineWidthFrontCircle = styled.div`
   height: ${(props: LineWidthFrontCircleProps) =>
     props.width ? `${props.width}px` : '0'};
   background-color: ${akColorN40};
-  borderradius: 50%;
+  border-radius: 50%;
   margin: ${(props: LineWidthFrontCircleProps) =>
     props.width ? `${10 - props.width / 2}px` : '0'};
 `;

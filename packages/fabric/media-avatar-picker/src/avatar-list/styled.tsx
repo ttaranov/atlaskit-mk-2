@@ -19,12 +19,12 @@ export const AvatarListWrapper = styled.div`
 
     li {
       padding-right: 5px;
-      margin: 0px;
+      margin: 0;
     }
   }
 
-  // hide tickbox and file type icon in overlay
-  // because those are not necessary for avatars
+  /* hide tickbox and file type icon in overlay
+   * because those are not necessary for avatars */
 
   .tickbox {
     visibility: hidden;

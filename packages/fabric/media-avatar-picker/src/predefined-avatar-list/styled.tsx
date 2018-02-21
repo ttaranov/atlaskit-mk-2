@@ -19,7 +19,7 @@ export const PredefinedAvatarsWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
   }
 `;
