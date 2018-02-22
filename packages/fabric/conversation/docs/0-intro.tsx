@@ -185,6 +185,9 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
+                returnType: {
+                  kind: 'void',
+                },
               },
             },
             leadingComments: [
