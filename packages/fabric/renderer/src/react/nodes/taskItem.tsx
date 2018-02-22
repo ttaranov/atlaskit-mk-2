@@ -29,16 +29,14 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   private renderWithProvider = providers => {
-    const {
-      taskDecisionProvider,
-      contextIdentifierProvider,
-      rendererContext,
-    } = providers;
-    const { children, localId, state } = this.props;
-    const { objectAri, containerAri } = rendererContext || {
-      objectAri: '',
-      containerAri: '',
-    };
+    const { taskDecisionProvider, contextIdentifierProvider } = providers;
+    const { children, localId, state, rendererContext } = this.props;
+    let objectAri = '';
+    let containerAri = '';
+    if (rendererContext) {
+      objectAri = rendererContext.objectAri || '';
+      containerAri = rendererContext.containerAri || '';
+    }
 
     return (
       <TaskItemWithProviders
