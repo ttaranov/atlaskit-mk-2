@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 62.1.0
+
+
+- [minor] advanced features for tables [e0bac20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bac20)
+
 ## 62.0.23
 - [patch] Fix Insert Toolbar throws error about context if not placed inside EditorContext [dca4821](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dca4821)
 
