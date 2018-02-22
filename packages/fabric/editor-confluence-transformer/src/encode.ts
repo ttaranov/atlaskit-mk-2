@@ -70,7 +70,7 @@ export default function encode(node: PMNode, schema: Schema) {
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.decisionList) {
-      return encodeADF(node);
+      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
     } else if (
@@ -531,8 +531,8 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.textContent = text;
     return elem;
   }
-  
-  function encodeADF(node: PMNode): Element {
+
+  function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
     nsNode.appendChild(
       doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
