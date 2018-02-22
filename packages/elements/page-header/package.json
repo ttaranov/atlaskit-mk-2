@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page-header",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "A React component that represents Header of an application page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
