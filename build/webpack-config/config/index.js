@@ -241,86 +241,13 @@ function plugins(
       chunks: ['main', 'examples'],
       minChunks(module, count) {
         const resource = module.resource;
-        return (
-          []
-            .concat(...module.getChunks().map(c => c.entrypoints))
-            .filter(e => e === 'main' || e === 'examples').length > 1
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          context &&
-          (context.includes('fabric/editor') ||
-            context.includes('fabric/renderer') ||
-            context.includes('fabric/conversation') ||
-            context.includes('prosemirror') ||
-            context.includes('fabric/mention') ||
-            context.includes('fabric/emoji') ||
-            context.includes('fabric/task-decision') ||
-            context.includes('fabric/reactions') ||
-            context.includes('fabric/media') ||
-            context.includes('elements/'))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-subdeps-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const isTransitiveAsyncDependency = function(
-          reasons,
-          seen = new Set(),
-        ) {
-          return reasons
-            .filter(r => r.constructor.name === 'ModuleReason')
-            .some(reason => {
-              if (seen.has(reason)) {
-                return false;
-              }
-              seen.add(reason);
-
-              if (
-                reason.module.context &&
-                [
-                  'fabric/editor',
-                  'fabric/renderer',
-                  'fabric/conversation',
-                  'prosemirror',
-                  'fabric/mention',
-                  'fabric/emoji',
-                  'fabric/task-decision',
-                  'fabric/reactions',
-                  'fabric/media',
-                  'elements/',
-                ].some(x => reason.module.context.includes(x))
-              ) {
-                return true;
-              }
-              return isTransitiveAsyncDependency(reason.module.reasons, seen);
-            });
-        };
-        return module.resource && isTransitiveAsyncDependency(module.reasons);
+        return !resource || !resource.includes('website/src/index.js');
       },
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
       async: 'used-two-or-more-times',
       minChunks(module, count) {
-        if (!hasWritten) {
-          console.log(module._chunks, module._chunksDebugIdent);
-          fs.writeFileSync(
-            'commonChunksList.json',
-            JSON.stringify(chunkslists),
-          );
-          hasWritten = true;
-        }
         return count >= 2;
       },
     }),
