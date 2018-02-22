@@ -12,7 +12,13 @@ import { borderRadius, size, linkCardShadow, ellipsis } from '../../styles';
 const wrapperPadding = 8;
 export const className = 'media-card-frame';
 
-function minWidth({ minWidth }: { minWidth?: number }) {
+export interface WrapperProps {
+  minWidth?: number;
+  maxWidth?: number;
+  isInteractive?: boolean;
+}
+
+function minWidth({ minWidth }: WrapperProps) {
   if (minWidth) {
     return `min-width: ${minWidth}px`;
   } else {
@@ -20,7 +26,7 @@ function minWidth({ minWidth }: { minWidth?: number }) {
   }
 }
 
-function maxWidth({ maxWidth }: { maxWidth?: number }) {
+function maxWidth({ maxWidth }: WrapperProps) {
   if (maxWidth) {
     return `max-width: ${maxWidth}px`;
   } else {
@@ -28,7 +34,7 @@ function maxWidth({ maxWidth }: { maxWidth?: number }) {
   }
 }
 
-function interactive({ isInteractive }: { isInteractive?: boolean }) {
+function interactive({ isInteractive }: WrapperProps) {
   if (isInteractive) {
     return `
       cursor: pointer;
