@@ -38,6 +38,10 @@ export default class Page {
     return this.browser.getCssProperty(selector, cssProperty);
   }
 
+  execute(script) {
+    return this.browser.execute(script);
+  }
+
   url() {
     return this.browser.getUrl();
   }
@@ -79,6 +83,12 @@ export default class Page {
   // Window
   setViewPort(size, type) {
     return this.browser.setViewPort(size, type);
+  }
+  //editor specific function
+  validatePMNode() {
+    return this.browser.execute(function() {
+      return document.querySelector('.ProseMirror').pmViewDesc.node.toJSON();
+    });
   }
 }
 //TODO: Maybe wrapping all functions?
