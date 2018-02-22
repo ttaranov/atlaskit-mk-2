@@ -145,7 +145,14 @@ export default class Example extends React.Component<Props, State> {
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
-              allowTables={{ allowColumnResizing: true }}
+              allowTables={{
+                allowColumnResizing: true,
+                allowMergeCells: true,
+                allowNumberColumn: true,
+                allowBackgroundColor: true,
+                allowHeaderRow: true,
+                allowHeaderColumn: true,
+              }}
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}

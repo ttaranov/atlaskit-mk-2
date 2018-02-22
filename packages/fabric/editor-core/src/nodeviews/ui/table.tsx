@@ -92,6 +92,7 @@ export default class TableView {
     }
     this.contentDOM = this.table.appendChild(document.createElement('tbody'));
     this.updateControls(node);
+    this.updateAttrs(node);
   }
 
   get dom() {
@@ -99,17 +100,29 @@ export default class TableView {
   }
 
   update(node: PmNode, decorations) {
-    if (node.type !== this.node.type) {
+    if (
+      node.attrs.isNumberColumnEnabled !==
+        this.node.attrs.isNumberColumnEnabled ||
+      node.type !== this.node.type
+    ) {
       return false;
     }
     this.node = node;
     this.updateControls(node);
+    this.updateAttrs(node);
 
     if (this.allowColumnResizing) {
       updateColumnsOnResize(node, this.colgroup, this.table, this.cellMinWidth);
     }
 
     return true;
+  }
+
+  updateAttrs(node: PmNode) {
+    this.table.setAttribute(
+      'data-number-column',
+      node.attrs.isNumberColumnEnabled,
+    );
   }
 
   ignoreMutation(record) {
