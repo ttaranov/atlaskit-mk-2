@@ -34,6 +34,7 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
+    "@atlaskit/docs": "^2.4.3",
     "@atlaskit/emoji": "^31.1.2",
     "@atlaskit/mention": "^9.1.4",
     "@atlaskit/single-select": "^3.2.4"

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { ResourceProvider } from '../api/ConversationResource';
 import Conversation from '../components/Conversation';
 import { connect, withProvider, Dispatch } from '../internal/connect';
 import {
@@ -18,6 +20,12 @@ export interface Props {
   id?: string;
   localId: string;
   containerId: string;
+  dataProviders?: ProviderFactory;
+  meta?: {
+    [key: string]: any;
+  };
+  isExpanded?: boolean;
+  onCancel?: () => void;
 }
 
 const mapStateToProps = (state: State, ownProps: Props) => {
@@ -74,7 +82,19 @@ const ResourcedConversation = withProvider(
   connect(mapStateToProps, mapDispatchToProps)(Conversation),
 );
 
-class ConversationContainer extends React.Component<any, any> {
+export interface ContainerProps {
+  id?: string;
+  containerId: string;
+  provider: ResourceProvider;
+  dataProviders?: ProviderFactory;
+  meta?: {
+    [key: string]: any;
+  };
+  isExpanded?: boolean;
+  onCancel?: () => void;
+}
+
+class ConversationContainer extends React.Component<ContainerProps, any> {
   constructor(props) {
     super(props);
     this.state = {
