@@ -34,6 +34,8 @@ const nodes = [
   'taskItem',
   'date',
   'placeholder',
+  'decisionList',
+  'decisionItem',
 ];
 
 const marks = [

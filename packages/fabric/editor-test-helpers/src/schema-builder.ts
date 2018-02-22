@@ -323,8 +323,9 @@ export const tdCursor = td()(p('{<>}'));
 export const thCursor = th()(p('{<>}'));
 export const decisionList = (attrs: { localId?: string } = {}) =>
   nodeFactory(sampleSchema.nodes.decisionList, attrs);
-export const decisionItem = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.decisionItem, attrs);
+export const decisionItem = (
+  attrs: { localId?: string; state?: string } = {},
+) => nodeFactory(sampleSchema.nodes.decisionItem, attrs);
 export const taskList = (attrs: { localId?: string } = {}) =>
   nodeFactory(sampleSchema.nodes.taskList, attrs);
 export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>
