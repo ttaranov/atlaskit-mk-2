@@ -193,6 +193,15 @@ function plugins(
     // Joins all vendor entry point packages into 1 chunk
 
     new webpack.optimize.CommonsChunkPlugin({
+      name: 'common-app',
+      chunks: ['main', 'examples'],
+      minChunks(module, count) {
+        const resource = module.resource;
+        return !resource || !resource.includes('website/src/index');
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'editor-packages',
       minChunks(module, count) {
         const context = module.context;
@@ -233,80 +242,6 @@ function plugins(
       minChunks(module, count) {
         const context = module.context;
         return context && context.includes('elements/');
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-app',
-      chunks: ['main', 'examples'],
-      minChunks(module, count) {
-        const resource = module.resource;
-        return (
-          []
-            .concat(...module.getChunks().map(c => c.entrypoints))
-            .filter(e => e === 'main' || e === 'examples').length > 1
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          context &&
-          (context.includes('fabric/editor') ||
-            context.includes('fabric/renderer') ||
-            context.includes('fabric/conversation') ||
-            context.includes('prosemirror') ||
-            context.includes('fabric/mention') ||
-            context.includes('fabric/emoji') ||
-            context.includes('fabric/task-decision') ||
-            context.includes('fabric/reactions') ||
-            context.includes('fabric/media') ||
-            context.includes('elements/'))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-subdeps-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const isTransitiveAsyncDependency = function(
-          reasons,
-          seen = new Set(),
-        ) {
-          return reasons
-            .filter(r => r.constructor.name === 'ModuleReason')
-            .some(reason => {
-              if (seen.has(reason)) {
-                return false;
-              }
-              seen.add(reason);
-
-              if (
-                reason.module.context &&
-                [
-                  'fabric/editor',
-                  'fabric/renderer',
-                  'fabric/conversation',
-                  'prosemirror',
-                  'fabric/mention',
-                  'fabric/emoji',
-                  'fabric/task-decision',
-                  'fabric/reactions',
-                  'fabric/media',
-                  'elements/',
-                ].some(x => reason.module.context.includes(x))
-              ) {
-                return true;
-              }
-              return isTransitiveAsyncDependency(reason.module.reasons, seen);
-            });
-        };
-        return module.resource && isTransitiveAsyncDependency(module.reasons);
       },
     }),
 
