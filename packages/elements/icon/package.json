@@ -5,7 +5,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
   "module": "dist/esm/index.js",
-  "atlaskit:src": "./",
+  "atlaskit:src": "src/index.js",
   "files": [
     "dist",
     "glyph",
