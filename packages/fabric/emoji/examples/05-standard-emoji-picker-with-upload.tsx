@@ -13,7 +13,7 @@ export default function Example() {
           <EmojiPicker
             emojiProvider={getEmojiResource({
               uploadSupported: true,
-              currentUser: { id: 'abcdefg' },
+              currentUser: { id: 'blackpanther' },
             })}
             onSelection={onSelection}
           />

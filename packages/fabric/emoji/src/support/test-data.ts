@@ -166,6 +166,7 @@ export const siteEmojiFoo: EmojiDescriptionWithVariations = {
   skinVariations: [],
 };
 
+// used in 05-standard-emoji-picker-with-upload example
 export const siteEmojiWtf: EmojiDescriptionWithVariations = {
   id: 'wtf',
   name: 'wtf',
@@ -179,7 +180,8 @@ export const siteEmojiWtf: EmojiDescriptionWithVariations = {
   representation: {
     height: 72,
     width: 92,
-    imagePath: 'https://image-path-wtf.png',
+    imagePath:
+      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
