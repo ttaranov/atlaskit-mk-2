@@ -463,6 +463,7 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
        */
       handlePaste(view: EditorView, event: any, slice: Slice) {
         const { clipboardData } = event;
+        console.log('into paste of hyperlink', clipboardData);
         const html = clipboardData && clipboardData.getData('text/html');
         if (html) {
           const sizeBeforePaste = view.state.doc.nodeSize;

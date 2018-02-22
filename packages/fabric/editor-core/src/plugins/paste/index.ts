@@ -44,9 +44,11 @@ export function createPlugin(
         if (!event.clipboardData) {
           return false;
         }
+        console.log('into handle paste of plugin', event.clipboardData);
 
         // Bail if copied content has files
         if (clipboard.isPastedFile(event)) {
+          console.log('pasted content is file');
           return true;
         }
 

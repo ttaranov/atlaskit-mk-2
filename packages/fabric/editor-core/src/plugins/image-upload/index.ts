@@ -243,7 +243,9 @@ export const createPlugin = (
         },
         paste(view: EditorView, event: ClipboardEvent) {
           const pluginState: ImageUploadState = stateKey.getState(view.state);
+          console.log('into paste of image upload', event.clipboardData);
           if (!isPastedFile(event) || !pluginState.enabled) {
+            console.log('pasted content is file type');
             return false;
           }
           analyticsService.trackEvent('atlassian.editor.image.paste');

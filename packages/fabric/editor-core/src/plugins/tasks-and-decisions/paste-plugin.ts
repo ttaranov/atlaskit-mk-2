@@ -14,7 +14,7 @@ export default function createPlugin() {
         if (!event.clipboardData) {
           return false;
         }
-
+        console.log('into handle pasete', clipboard);
         const { selection, schema } = view.state;
         const { nodes } = schema;
         const { decisionList, decisionItem, taskList, taskItem } = nodes;
@@ -25,6 +25,7 @@ export default function createPlugin() {
 
         // Bail if copied content has files
         if (clipboard.isPastedFile(event)) {
+          console.log('pasted content if file type');
           return true;
         }
 
