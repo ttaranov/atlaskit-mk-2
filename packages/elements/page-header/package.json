@@ -26,11 +26,14 @@
   "devDependencies": {
     "@atlaskit/breadcrumbs": "^3.2.1",
     "@atlaskit/button": "^6.4.2",
+    "@atlaskit/inline-edit": "^4.5.14",
+    "@atlaskit/input": "^1.6.3",
     "@atlaskit/docs": "^2.4.3",
     "@atlaskit/field-text": "^4.1.8",
     "@atlaskit/single-select": "^3.2.4",
     "@atlaskit/theme": "^2.3.4",
-    "enzyme": "^3.3.0"
+    "enzyme": "^3.3.0",
+    "react-test-renderer": "^16.2.0"
   },
   "keywords": [
     "atlaskit",
