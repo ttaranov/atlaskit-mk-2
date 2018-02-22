@@ -1,8 +1,11 @@
 // @flow
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import React from 'react';
+import { UIAnalyticsEvent, AnalyticsContext } from '@atlaskit/analytics-next';
 
+import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
+import AnalyticsListener from '../../analytics-next/dist/cjs/AnalyticsListener';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -117,6 +120,20 @@ describe('ak-button/default-behaviour', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('should pass analytics event as last argument to onClick handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<Button onClick={spy}>button</Button>);
+    wrapper.find('button').simulate('click');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'click',
+      }),
+    );
+  });
+
   it('should render tabIndex attribute when the tabIndex property is set', () => {
     let wrapper = mount(<Button tabIndex={0}>button</Button>);
     expect(wrapper.find('button').is('[tabIndex=0]')).toBe(true);
@@ -152,5 +169,35 @@ describe('ak-button/default-behaviour', () => {
     expect(mount(<Button id="test" />).find('button[id="test"]').length).toBe(
       1,
     );
+  });
+
+  it('should provide analytics context with component name and version', () => {
+    const wrapper = shallow(<Button />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: name,
+      version,
+    });
+  });
+
+  it('should fire an atlaskit analytics event on click', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <Button />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(Button).simulate('click');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'click' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: name,
+        version,
+      },
+    ]);
   });
 });

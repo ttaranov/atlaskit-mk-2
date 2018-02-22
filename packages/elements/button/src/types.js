@@ -1,5 +1,5 @@
 // @flow
-import type { Node, Element } from 'react';
+import type { Node, Element, ElementType } from 'react';
 
 type Func = () => any;
 
@@ -27,7 +27,7 @@ export type ButtonProps = {
   /** Add a classname to the button. */
   className?: string,
   /** A custom component to use instead of the default button. */
-  component?: Func | Node | Class<*>,
+  component?: ElementType,
   /** Name property of a linked form that the button submits when clicked. */
   form?: string,
   /** Provides a url for buttons being used as a link. */
@@ -45,7 +45,7 @@ export type ButtonProps = {
   /** Change the style to indicate the button is selected. */
   isSelected?: boolean,
   /** Handler to be called on click. */
-  onClick?: Func,
+  onClick?: (e: SyntheticEvent<>) => void,
   /** Set the amount of padding in the button. */
   spacing?: 'compact' | 'default' | 'none',
   /** Assign specific tabIndex order to the underlying html button. */
