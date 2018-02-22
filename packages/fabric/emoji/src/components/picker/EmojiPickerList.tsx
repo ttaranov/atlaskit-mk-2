@@ -43,7 +43,7 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
-  currentUser?: OptionalUser;
+  currentUser: OptionalUser;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
@@ -170,7 +170,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     super(props);
     this.state = {};
 
-    this.buildGroups(props.emojis);
+    this.buildGroups(props.emojis, props.currentUser);
     this.buildVirtualItems(props, this.state);
   }
 
@@ -192,7 +192,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     ) {
       if (!nextProps.query) {
         // Only refresh if no query
-        this.buildGroups(nextProps.emojis);
+        this.buildGroups(nextProps.emojis, nextProps.currentUser);
       }
       this.buildVirtualItems(nextProps, nextState);
     }
@@ -260,7 +260,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   };
 
   private buildVirtualItems = (props: Props, state: State): void => {
-    const { emojis, loading, query, currentUser } = props;
+    const { emojis, loading, query } = props;
 
     let items: Items.VirtualItem<any>[] = [];
 
@@ -293,26 +293,8 @@ export default class EmojiPickerVirtualList extends PureComponent<
         this.allEmojiGroups.forEach(group => {
           // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
           // by not passing it to irrelevant groups
-          let userCustomGroup: EmojiGroup | undefined;
-
-          if (group.category === customCategory) {
-            if (currentUser) {
-              const userCustomEmojis = group.emojis.filter(
-                e => e.creatorUserId === currentUser!.id,
-              );
-              userCustomGroup = {
-                emojis: userCustomEmojis,
-                title: userCustomTitle,
-                category: customCategory,
-              } as EmojiGroup;
-            }
-          }
-
           this.categoryTracker.add(group.category, items.length);
 
-          if (userCustomGroup && userCustomGroup.emojis.length > 0) {
-            items = [...items, ...this.buildCategory(userCustomGroup)];
-          }
           items = [...items, ...this.buildCategory(group)];
         });
       }
@@ -336,11 +318,20 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   };
 
-  private buildGroups = (emojis: EmojiDescription[]): void => {
+  private buildGroups = (
+    emojis: EmojiDescription[],
+    currentUser: OptionalUser,
+  ): void => {
     const existingCategories = new Map();
 
     let currentGroup;
     let currentCategory: string | undefined;
+
+    let userCustomGroup: EmojiGroup = {
+      emojis: [],
+      title: userCustomTitle,
+      category: customCategory,
+    };
 
     const list: EmojiGroup[] = [];
 
@@ -365,9 +356,28 @@ export default class EmojiPickerVirtualList extends PureComponent<
         }
       }
       currentGroup.emojis.push(emoji);
-    }
 
+      // separate user emojis
+      if (
+        currentCategory === customCategory &&
+        emoji &&
+        currentUser &&
+        emoji.creatorUserId === currentUser.id
+      ) {
+        userCustomGroup.emojis.push(emoji);
+      }
+    }
     this.allEmojiGroups = list.sort(categoryComparator);
+
+    if (userCustomGroup.emojis.length > 0) {
+      // append user emojis after the custom emojis
+      const idx: number = this.allEmojiGroups.findIndex(
+        g => g.category === customCategory,
+      );
+      if (idx !== -1) {
+        this.allEmojiGroups.splice(idx, 0, userCustomGroup);
+      }
+    }
   };
 
   private checkCategoryChange = ({ scrollTop }) => {

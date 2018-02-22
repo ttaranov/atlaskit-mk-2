@@ -50,13 +50,13 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   protected lastQuery: string = '';
   protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
-  protected user?: OptionalUser;
+  protected currentUser: OptionalUser;
 
   recordedSelections: EmojiDescription[] = [];
 
   constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
     super();
-    this.user = (config && config.user) || undefined;
+    this.currentUser = (config && config.currentUser) || undefined;
     this.emojiRepository = emojiService;
     this.promiseBuilder = result => Promise.resolve(result);
     if (config) {
@@ -73,7 +73,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   }
 
   getCurrentUser(): OptionalUser {
-    return this.user;
+    return this.currentUser;
   }
 
   filter(query?: string, options?: SearchOptions) {

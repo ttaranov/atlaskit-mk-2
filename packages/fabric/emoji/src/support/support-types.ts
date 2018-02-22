@@ -9,5 +9,5 @@ export interface MockEmojiResourceConfig {
   uploadSupported?: boolean;
   uploadError?: string;
   optimisticRendering?: boolean;
-  user: OptionalUser;
+  currentUser: OptionalUser;
 }

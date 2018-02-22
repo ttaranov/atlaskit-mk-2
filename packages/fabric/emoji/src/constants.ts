@@ -2,8 +2,8 @@ export const customCategory = 'CUSTOM';
 export const atlassianCategory = 'ATLASSIAN';
 export const frequentCategory = 'FREQUENT';
 export const customType = 'SITE';
-export const customTitle = 'All custom emoji';
-export const userCustomTitle = 'Your emoji uploads';
+export const customTitle = 'All uploads';
+export const userCustomTitle = 'Your uploads';
 
 /**
  * A constant used in sorting/ordering to represent a number 'obviously much bigger than any item in the set being handled'.
