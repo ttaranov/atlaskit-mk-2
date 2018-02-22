@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.0.23
+- [patch] Fix Insert Toolbar throws error about context if not placed inside EditorContext [dca4821](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dca4821)
+
 ## 62.0.22
 - [patch] [SMRT-156] Start tracking the containerId, objectId & mentioned user when a Mention is inserted into the Editor [36c1b22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c1b22)
 
