@@ -94,13 +94,12 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
 
     return (
       <div>
-        {/* // $FlowFixMe TEMPORARY */}
         <Label
           htmlFor={id}
           isDisabled={disabled}
           isLabelHidden={isLabelHidden}
           isRequired={required}
-          label={label}
+          label={label || ''}
         />
         <Base
           isCompact={compact}

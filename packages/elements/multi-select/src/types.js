@@ -34,6 +34,6 @@ export type ItemType = {
 };
 
 export type TagType = {
-  appearance?: string,
+  appearance?: 'default' | 'rounded',
   elemBefore?: Node,
 };

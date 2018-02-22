@@ -21,38 +21,29 @@ export default md`
 
   FieldBase components *will* work by themselves, but are really meant to be extended into a full field component.
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-example').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-example').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-example')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-stateless-example').default}
-        title="With Stateless FieldBase"
-        source={require('!!raw-loader!../examples/01-stateless-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-stateless-example').default}
+      title="With Stateless FieldBase"
+      source={require('!!raw-loader!../examples/01-stateless-example')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/02-label-example').default}
-        title="With Label"
-        source={require('!!raw-loader!../examples/02-label-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/02-label-example').default}
+      title="With Label"
+      source={require('!!raw-loader!../examples/02-label-example')}
+    />
+  )}
 
   ${(
     <Props

@@ -191,6 +191,9 @@ export default class Navigation extends PureComponent<Props, State> {
     const { containerTheme, globalTheme } = nextProps;
     // TODO work out why nextProps.theme.__ATLASKIT_THEME__.mode always returns the mode
     // that was applied at time of first page load.
+    // BC: We actually know the answer to this. Theme in styled-components only updates
+    // when its props change, but inherits initial context. This means future context
+    // updates do not trigger a refresh of the props
 
     // $FlowFixMe TEMPORARY
     const { mode } = getTheme(nextProps);

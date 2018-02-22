@@ -88,7 +88,6 @@ export default class Trigger extends PureComponent<Props, {}> {
           <Content>
             <TagGroup ref={tagGroupRefFunction}>
               {selectedItems.map(item => (
-                // $FlowFixMe TEMPORARY
                 <Tag
                   appearance={item.tag ? item.tag.appearance : undefined}
                   elemBefore={item.tag ? item.tag.elemBefore : undefined}
@@ -97,7 +96,7 @@ export default class Trigger extends PureComponent<Props, {}> {
                     handleItemRemove(item);
                   }}
                   removeButtonText={
-                    isDisabled ? null : `${item.content}, remove`
+                    isDisabled ? undefined : `${item.content}, remove`
                   }
                   text={item.content}
                 />

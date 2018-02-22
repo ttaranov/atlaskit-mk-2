@@ -10,10 +10,9 @@ type Props = {
   isOpen: ?boolean,
 };
 
-type themedType = (appearance: Props) => (string: string) => string;
+// type themedType = (appearance: any) => () => any;
 
-// $FlowFixMe TEMPORARY
-const getBaseColor: themedType = themed('appearance', {
+const getBaseColor = themed('appearance', {
   connectivity: { light: colors.B400, dark: colors.B100 },
   confirmation: { light: colors.G300, dark: colors.G300 },
   info: { light: colors.P300, dark: colors.P300 },
@@ -21,8 +20,7 @@ const getBaseColor: themedType = themed('appearance', {
   error: { light: colors.R400, dark: colors.R400 },
 });
 
-// $FlowFixMe TEMPORARY
-const getHoverColor: themedType = themed('appearance', {
+const getHoverColor = themed('appearance', {
   connectivity: { light: colors.B300, dark: colors.B75 },
   confirmation: { light: colors.G200, dark: colors.G200 },
   info: { light: colors.P200, dark: colors.P200 },
@@ -31,7 +29,9 @@ const getHoverColor: themedType = themed('appearance', {
 });
 
 const getColor = (props: Props) => {
+  // $FlowFixMe - cannot resolve props theme value
   if (props.isHovered || props.isOpen) return getHoverColor(props);
+  // $FlowFixMe - cannot resolve props theme value
   return getBaseColor(props);
 };
 

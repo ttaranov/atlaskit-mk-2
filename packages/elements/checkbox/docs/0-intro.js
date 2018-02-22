@@ -19,49 +19,37 @@ export default md`
   directly. There is also a wrapper component to display checkboxes in a
   group.
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-usage').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-usage')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-stateless-checkbox').default}
-        title="Stateless Checkbox"
-        source={require('!!raw-loader!../examples/01-stateless-checkbox')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-stateless-checkbox').default}
+      title="Stateless Checkbox"
+      source={require('!!raw-loader!../examples/01-stateless-checkbox')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/02-checkbox-group').default}
-        title="With CheckboxGroup"
-        source={require('!!raw-loader!../examples/02-checkbox-group')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/02-checkbox-group').default}
+      title="With CheckboxGroup"
+      source={require('!!raw-loader!../examples/02-checkbox-group')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/03-checkbox-form').default}
-        title="With a Form"
-        source={require('!!raw-loader!../examples/03-checkbox-form')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/03-checkbox-form').default}
+      title="With a Form"
+      source={require('!!raw-loader!../examples/03-checkbox-form')}
+    />
+  )}
 
   ## Checkbox Props
 

@@ -27,8 +27,8 @@ type State = {
 };
 
 export default class InlineEdit extends Component<StatelessProps, State> {
-  confirmButtonRef: HTMLElement | null;
-  cancelButtonRef: HTMLElement | null;
+  confirmButtonRef: ?Component<*>;
+  cancelButtonRef: ?Component<*>;
 
   static defaultProps = {
     areActionButtonsHidden: false,
@@ -168,7 +168,6 @@ export default class InlineEdit extends Component<StatelessProps, State> {
             onClick={this.onConfirmClick}
             shouldFitContainer
             ref={ref => {
-              // $FlowFixMe TEMPORARY
               this.confirmButtonRef = ref;
             }}
           />
@@ -179,7 +178,6 @@ export default class InlineEdit extends Component<StatelessProps, State> {
             onClick={this.onCancelClick}
             shouldFitContainer
             ref={ref => {
-              // $FlowFixMe TEMPORARY
               this.cancelButtonRef = ref;
             }}
           />

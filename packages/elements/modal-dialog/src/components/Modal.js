@@ -207,7 +207,6 @@ class Modal extends Component<Props, State> {
   };
 
   render() {
-    // NOTE: `in` is NOT public API, thus not documented (provided by react-transition-group)
     const {
       actions,
       appearance,
@@ -217,7 +216,7 @@ class Modal extends Component<Props, State> {
       footer,
       header,
       height,
-      // $FlowFixMe
+      // $FlowFixMe - `in` is NOT public API, thus not documented (provided by react-transition-group)
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
       onClose,
@@ -305,6 +304,5 @@ export default withRenderTarget(
     target: 'modal',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Modal,
 );
