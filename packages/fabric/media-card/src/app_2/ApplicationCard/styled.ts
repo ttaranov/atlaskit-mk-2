@@ -15,4 +15,6 @@ export const AlertWrapper = styled.div`
   left: 0;
   overflow: hidden;
   pointer-events: none;
+  /* z-index has to be 1 higher than the number of avatars in the avatar stack */
+  z-index: 6;
 `;

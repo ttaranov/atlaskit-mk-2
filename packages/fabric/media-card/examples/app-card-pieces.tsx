@@ -653,6 +653,15 @@ export default () => (
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
         />
+        <AppCardView
+          newDesign={newDesign}
+          model={{
+            ...modelWithMostOfTheThingsAndWithBackground,
+            actions: loadingStatesActions,
+          }}
+          onClick={handleClick}
+          onActionClick={handleActionWithLoadingStatesClick}
+        />
       </Section>
     </div>
   </div>
