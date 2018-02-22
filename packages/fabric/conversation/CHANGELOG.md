@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 5.2.5
+- [patch] Adding documentations and fixed prop-types [4430cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4430cbb)
+
 ## 5.2.4
 
 ## 5.2.3
