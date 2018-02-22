@@ -33,6 +33,7 @@ export {
 } from './editor/create-editor/create-plugins-list';
 export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
 export { default as EditorActions } from './editor/actions';
+export { default as ExtensionEditPanel } from './ui/ExtensionEditPanel';
 
 // Useless exports
 

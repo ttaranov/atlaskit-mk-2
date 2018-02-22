@@ -49,19 +49,24 @@ const extensionPlugin = (props, eventDispatcher): EditorPlugin => ({
         render={({
           macroState = {} as MacroState,
           extensionState = {} as ExtensionState,
-        }) => (
-          <ExtensionEditPanel
-            element={extensionState.element}
-            editorState={editorView.state}
-            onEdit={() =>
-              editExtension(macroState.macroProvider)(
-                editorView.state,
-                dispatch,
-              )
-            }
-            onRemove={() => removeExtension(editorView.state, dispatch)}
-          />
-        )}
+        }) => {
+          if (extensionState && extensionState.disableToolbar) {
+            return null;
+          }
+
+          return (
+            <ExtensionEditPanel
+              element={extensionState.element}
+              onEdit={() =>
+                editExtension(macroState.macroProvider)(
+                  editorView.state,
+                  dispatch,
+                )
+              }
+              onRemove={() => removeExtension(editorView.state, dispatch)}
+            />
+          );
+        }}
       />
     );
   },

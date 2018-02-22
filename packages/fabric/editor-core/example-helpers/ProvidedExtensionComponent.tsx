@@ -4,6 +4,7 @@ import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import styled from 'styled-components';
+import { ExtensionEditPanel } from '../src/index';
 
 const Wrapper = styled.span`
   position: relative;
@@ -22,12 +23,10 @@ const Overlay = styled.div`
   right: 1px;
 `;
 
-const Toolbar = styled.div`
-  border: 1px solid black;
-  background: white;
-  position: absolute;
-  top: 100%;
-  right: 1px;
+const ToolbarContent = styled.div`
+  padding: 8px;
+  margin: 0;
+  white-space: nowrap;
 `;
 
 const Content = styled.div`
@@ -49,6 +48,7 @@ export type Props = {
   node: any;
   onClick: any;
   onSelect: any;
+  element: HTMLElement | null;
 };
 
 export default class ProvidedExtensionComponent extends React.Component<
@@ -88,8 +88,15 @@ export default class ProvidedExtensionComponent extends React.Component<
     );
   }
 
-  render() {
-    const { isSelected, node, onClick, onSelect } = this.props;
+  render3() {
+    const {
+      isSelected,
+      node,
+      onClick,
+      onSelect,
+      element,
+      editorActions,
+    } = this.props;
     const { macroParams } = node.parameters;
     const text = Object.keys(macroParams)
       .map(key => macroParams[key].value)
@@ -104,12 +111,56 @@ export default class ProvidedExtensionComponent extends React.Component<
         <Wrapper onClick={onClick}>
           <Overlay isSelected={isSelected} />
           {isSelected && (
-            <Toolbar>
-              <AkButton onClick={this.openEditPanel}>
-                <EditIcon label="edit" />
-              </AkButton>
-            </Toolbar>
+            <ExtensionEditPanel
+              element={element}
+              onEdit={() => this.openEditPanel()}
+              onRemove={() => editorActions.replaceSelection('')}
+            >
+              <ToolbarContent>Macro {node.extensionKey}</ToolbarContent>
+            </ExtensionEditPanel>
           )}
+          <Content onClick={onSelect}>
+            {this.state.content} type extension - {text}
+            <div>isSelected={isSelected}</div>
+          </Content>
+        </Wrapper>
+      </InlineDialog>
+    );
+  }
+
+  render() {
+    const {
+      isSelected,
+      node,
+      onClick,
+      onSelect,
+      element,
+      editorActions,
+    } = this.props;
+    const { macroParams } = node.parameters;
+    const text = Object.keys(macroParams)
+      .map(key => macroParams[key].value)
+      .join(' - ');
+
+    const popupContainer = document.getElementById('extensionPopupContainer');
+
+    return (
+      <InlineDialog
+        position="bottom left"
+        content={this.renderEditingForm()}
+        isOpen={this.state.isEditing}
+      >
+        <Wrapper onClick={onClick}>
+          <Overlay isSelected={isSelected} />
+          <ExtensionEditPanel
+            element={element}
+            mountTo={popupContainer}
+            onEdit={() => this.openEditPanel()}
+            onRemove={() => editorActions.replaceSelection('')}
+          >
+            <ToolbarContent>Macro {node.extensionKey}</ToolbarContent>
+          </ExtensionEditPanel>
+
           <Content onClick={onSelect}>
             {this.state.content} type extension - {text}
             <div>isSelected={isSelected}</div>

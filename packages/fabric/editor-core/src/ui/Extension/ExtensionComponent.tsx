@@ -24,6 +24,7 @@ export interface Props {
     dispatch: (tr: Transaction) => void,
   ) => void;
   isSelected: Boolean;
+  element: HTMLElement | null;
 }
 
 export interface State {
@@ -104,32 +105,34 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   private tryExtensionHandler(props) {
-    const { node, isSelected, editorView } = props;
+    const { node, isSelected, editorView, element } = props;
 
-    const { state: editorState, dispatch } = editorView;
+    const { dispatch } = editorView;
 
     const handlerResult = this.getExtensionHandlerResult(
       node,
+      element,
       editorView,
       isSelected,
     );
+
     this.setState({ handlerResult });
 
     try {
-      const meta = pluginKey.getState(editorState);
+      const meta = pluginKey.getState(editorView.state);
 
       // disable default toolbar - extension handler should provide it
-      if (handlerResult && !meta.handledExternally) {
-        const tr = editorState.tr.setMeta(pluginKey, {
-          handledExternally: true,
+      if (handlerResult && !meta.disableToolbar) {
+        const tr = editorView.state.tr.setMeta(pluginKey, {
+          disableToolbar: true,
         });
         dispatch(tr);
       }
 
       // enable default toolbar
-      if (!handlerResult && meta.handledExternally) {
-        const tr = editorState.tr.setMeta(pluginKey, {
-          handledExternally: false,
+      if (!handlerResult && meta.disableToolbar) {
+        const tr = editorView.state.tr.setMeta(pluginKey, {
+          disableToolbar: false,
         });
         dispatch(tr);
       }
@@ -139,7 +142,7 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   }
 
-  private getExtensionHandlerResult(node, editorView, isSelected) {
+  private getExtensionHandlerResult(node, element, editorView, isSelected) {
     try {
       const extensionContent = this.handleExtension(node);
       if (extensionContent && React.isValidElement(extensionContent)) {
@@ -149,6 +152,7 @@ export default class ExtensionComponent extends Component<Props, State> {
           isSelected,
           editorActions: this.editorActions,
           editorView,
+          element,
         });
       }
     } catch (e) {
@@ -162,21 +166,13 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   private handleExtension = node => {
     const { extensionHandlers, editorView } = this.props;
-    const { extensionKey, extensionType, parameters } = node.attrs;
+    const { extensionType } = node.attrs;
 
     if (!extensionHandlers || !extensionHandlers[extensionType]) {
       return;
     }
 
-    return extensionHandlers[extensionType](
-      {
-        extensionKey,
-        type: node.type.name as any,
-        parameters,
-        content: node.content,
-      },
-      editorView.root,
-    );
+    return extensionHandlers[extensionType](node.attrs, editorView.root);
   };
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {

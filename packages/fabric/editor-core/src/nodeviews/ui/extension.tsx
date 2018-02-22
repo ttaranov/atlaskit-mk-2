@@ -35,7 +35,7 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     eventDispatcher: EventDispatcher,
   ) {
     super(node, view);
-    const elementType = node.type.name === 'bodiedExtension' ? 'div' : 'span';
+    const elementType = node.type.name === 'inlineExtension' ? 'span' : 'div';
     this.node = node;
     this.view = view;
     this.eventDispatcher = eventDispatcher;
@@ -63,6 +63,7 @@ class ExtensionNode extends ContentNodeView implements NodeView {
   }
 
   destroy() {
+    console.log('destroy', this.node);
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
     super.destroy();
@@ -88,16 +89,23 @@ class ExtensionNode extends ContentNodeView implements NodeView {
         plugins={{
           extensionState: pluginKey,
         }}
-        render={({ extensionState = {} as ExtensionState }) => (
-          <Extension
-            editorView={this.view}
-            node={node}
-            providerFactory={this.providerFactory}
-            handleContentDOMRef={this.handleRef}
-            extensionHandlers={this.extensionHandlers}
-            isSelected={!!extensionState.element}
-          />
-        )}
+        render={({ extensionState = {} as ExtensionState }) => {
+          const { element } = extensionState;
+          const isSelected =
+            (this.domRef && element && this.domRef.contains(element)) || false;
+
+          return (
+            <Extension
+              editorView={this.view}
+              node={node}
+              providerFactory={this.providerFactory}
+              handleContentDOMRef={this.handleRef}
+              extensionHandlers={this.extensionHandlers}
+              isSelected={isSelected}
+              element={extensionState.element}
+            />
+          );
+        }}
       />,
       this.domRef,
     );

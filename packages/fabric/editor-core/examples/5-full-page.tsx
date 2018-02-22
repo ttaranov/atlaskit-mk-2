@@ -212,6 +212,7 @@ export default class Example extends React.Component<Props, State> {
             />
           </EditorContext>
         </Content>
+        <div id="extensionPopupContainer" />
       </Wrapper>
     );
   }
