@@ -5,6 +5,7 @@ import SizeDetector from '@atlaskit/size-detector';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
+import EditorActions from '../../actions';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ const toolbarSizes: Array<{ width: number; size: ToolbarSize }> = [
 export interface ToolbarProps {
   items?: Array<ToolbarUIComponentFactory>;
   editorView: EditorView;
+  editorActions?: EditorActions;
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
@@ -67,6 +69,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     const {
       appearance,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       items,
@@ -88,6 +91,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
           const props: any = { key };
           const element = component({
             editorView,
+            editorActions: editorActions as EditorActions,
             eventDispatcher,
             providerFactory,
             appearance,
