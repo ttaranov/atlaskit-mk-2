@@ -1,13 +1,19 @@
 // @flow
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-
+const chunkslists = {
+  all: [],
+  includes: [],
+  excludes: [],
+};
+var hasWritten = false;
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -184,13 +190,32 @@ function plugins(
     //
     // Joins all vendor entry point packages into 1 chunk
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
+      name: 'common-app',
+      chunks: ['main', 'examples'],
+      minChunks(module, count) {
+        const resource = module.resource;
+        if (!resource || !resource.includes('website/src/index.js')) {
+          chunkslists.all.push(module.resource);
+          chunkslists.includes.push(module.resource);
+        } else {
+          chunkslists.all.push(module.resource);
+          chunkslists.excludes.push(module.resource);
+        }
+        return !resource || !resource.includes('website/src/index.js');
+      },
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
       async: 'used-two-or-more-times',
       minChunks(module, count) {
+        if (!hasWritten) {
+          console.log(module._chunks, module._chunksDebugIdent);
+          fs.writeFileSync(
+            'commonChunksList.json',
+            JSON.stringify(chunkslists),
+          );
+          hasWritten = true;
+        }
         return count >= 2;
       },
     }),
@@ -249,6 +274,7 @@ function plugins(
       filename: 'examples.html',
       template: path.join(cwd, 'public/examples.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['main'],
     }),
 
     new webpack.DefinePlugin({
