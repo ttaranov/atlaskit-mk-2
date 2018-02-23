@@ -2,7 +2,11 @@
 import styled from 'styled-components';
 
 export const AvatarPickerViewWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  min-height: 339px;
 `;
 
 export const ModalHeader = styled.div`
