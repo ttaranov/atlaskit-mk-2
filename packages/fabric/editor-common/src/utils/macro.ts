@@ -29,12 +29,15 @@ export const getExtensionLozengeData = ({
   }
 };
 
-export const getMacroId = (node: PmNode): string | undefined => {
+export const getExtensionMetadata = (
+  node: PmNode,
+  key: string,
+): string | undefined => {
   if (!node.attrs.parameters) {
     return;
   }
   const { macroMetadata } = node.attrs.parameters;
-  if (macroMetadata && macroMetadata.macroId) {
-    return macroMetadata.macroId.value;
+  if (macroMetadata && macroMetadata[key]) {
+    return macroMetadata[key].value;
   }
 };

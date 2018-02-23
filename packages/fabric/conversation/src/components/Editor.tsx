@@ -140,6 +140,7 @@ export default class Editor extends React.Component<Props, State> {
                     allowCodeBlocks={true}
                     allowTextFormatting={true}
                     allowLists={true}
+                    allowHyperlinks={true}
                     onSave={() => this.onSave(actions)}
                     onCancel={this.onCancel}
                     {...providers}

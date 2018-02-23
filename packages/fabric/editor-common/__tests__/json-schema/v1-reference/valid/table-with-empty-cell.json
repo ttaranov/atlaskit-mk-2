@@ -4,6 +4,9 @@
   "content": [
     {
       "type": "table",
+      "attrs": {
+        "isNumberColumnEnabled": false
+      },
       "content": [
         {
           "type": "tableRow",

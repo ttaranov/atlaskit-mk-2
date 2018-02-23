@@ -670,7 +670,7 @@
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@types/faker/-/faker-4.1.2.tgz#f8ab50c9f9af68c160dd71b63f83e24b712d0df5"
   
-"@types/fetch-mock@^5.8.0":
+"@types/fetch-mock@^5.12.1":
   version "5.12.2"
   resolved "https://registry.yarnpkg.com/@types/fetch-mock/-/fetch-mock-5.12.2.tgz#8c96517ff74303031c65c5da2d99858e34c844d2"
 
@@ -707,6 +707,10 @@
 "@types/orderedmap@*", "@types/orderedmap@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/orderedmap/-/orderedmap-1.0.0.tgz#807455a192bba52cbbb4517044bc82bdbfa8c596"
+
+"@types/p-queue@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/p-queue/-/p-queue-2.3.1.tgz#2fb251e46e884e31c4bd1bf58f0e188972353ff4"
 
 "@types/prop-types@^15.5.1":
   version "15.5.2"
@@ -3246,6 +3250,13 @@ chromatism@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
 
+chunkinator@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.15.tgz#52e88c4f7cd4f9384a7d5e6a9a9fa51730ea8ea6"
+  dependencies:
+    rxjs "^5.5.6"
+    rxjs-async-map "^0.1.0"
+
 ci-info@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.1.1.tgz#47b44df118c48d2597b56d342e7e25791060171a"
@@ -5328,9 +5339,9 @@ extglob@^2.0.2:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-react-types@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.7.1.tgz#28b0464d3984be38ac7f4ef1ba658977c7420d94"
+extract-react-types@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.8.0.tgz#7c34bbf4a1d01c79f0d1f8b07a0b137da54b3fae"
   dependencies:
     ast-pretty-print "^2.0.1"
     babel-core "7.0.0-alpha.19"
@@ -7753,6 +7764,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
+kind2string@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/kind2string/-/kind2string-0.2.0.tgz#2775f03965ef4876ecd33e84f7e2bf50fd64589a"
+
 klaw@^1.0.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/klaw/-/klaw-1.3.1.tgz#4088433b46b3b1ba259d78785d8e96f73ba02439"
@@ -7763,9 +7778,9 @@ knot.js@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/knot.js/-/knot.js-1.1.5.tgz#28e72522f703f50fe98812fde224dd72728fef5d"
 
-landkid@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.12.tgz#6a70d4392d197bc5bd9bfa05bd22bfb571283477"
+landkid@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.19.tgz#132e9d19dd93c6c2fc516d0d3273ccf8800d6a9c"
   dependencies:
     axios "^0.17.1"
     babel-cli "^6.26.0"
@@ -9471,6 +9486,10 @@ p-map@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-1.2.0.tgz#e4e94f311eabbc8633a1e79908165fca26241b6b"
 
+p-queue@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-2.3.0.tgz#65d55e71bc1500fc413122da98ae457ff8a7c038"
+
 package-json@^2.0.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/package-json/-/package-json-2.4.0.tgz#0d15bd67d1cbbddbb2ca222ff2edb86bcb31a8bb"
@@ -10763,6 +10782,10 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-node-resolver@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-node-resolver/-/react-node-resolver-1.0.1.tgz#1798a729c0e218bf2f0e8ddf79c550d4af61d83a"
+
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
@@ -10810,14 +10833,21 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-select@2.0.0-alpha.4:
-  version "2.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.4.tgz#76b93a5ac3f46a1def719783d47e38b4f7d2b1c3"
+react-scroll-captor@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-scroll-captor/-/react-scroll-captor-1.0.1.tgz#3f912df72ab8e7f46d4fa27d8707131ffe59b353"
+  dependencies:
+    react-node-resolver "^1.0.1"
+
+react-select@2.0.0-alpha.6:
+  version "2.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.6.tgz#422de89840538a8c09a25e9609f5e79777a79154"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
     react-input-autosize "^2.2.1"
+    react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"
 
 react-syntax-highlighter@^3.0.2:
@@ -11559,11 +11589,23 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rxjs@^5.0.0-beta.11, rxjs@^5.1.0:
+rxjs-async-map@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/rxjs-async-map/-/rxjs-async-map-0.1.1.tgz#5278bcccabc9a8232ebd993c558b8cae5adf1741"
+  dependencies:
+    rxjs "^5.5.6"
+
+rxjs@^5.0.0-beta.11:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.2.tgz#28d403f0071121967f18ad665563255d54236ac3"
   dependencies:
     symbol-observable "^1.0.1"
+
+rxjs@^5.1.0, rxjs@^5.5.6:
+  version "5.5.6"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.6.tgz#e31fb96d6fd2ff1fd84bcea8ae9c02d007179c02"
+  dependencies:
+    symbol-observable "1.0.1"
 
 safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
@@ -12512,6 +12554,10 @@ svgo@^0.7.0, svgo@^0.7.2:
     mkdirp "~0.5.1"
     sax "~1.2.1"
     whet.extend "~0.9.9"
+
+symbol-observable@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
 
 symbol-observable@1.0.4, symbol-observable@^1.0.1, symbol-observable@^1.0.3:
   version "1.0.4"

@@ -25,6 +25,7 @@ import {
   insertText,
   getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
+
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
@@ -44,13 +45,12 @@ const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
-const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory({
+const getFreshMediaProvider = () =>
+  storyMediaProviderFactory({
     collectionName: testCollectionName,
     stateManager,
     includeUserAuthProvider: true,
   });
-};
 
 describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
@@ -104,8 +104,6 @@ describe('Media plugin', () => {
     collectionFromProvider.mockImplementation(() => testCollectionName);
     const provider = await mediaProvider;
     await provider.uploadContext;
-
-    expect(typeof pluginState.binaryPicker!).toBe('object');
 
     pluginState.binaryPicker!.upload = jest.fn();
 
@@ -453,6 +451,7 @@ describe('Media plugin', () => {
     collectionFromProvider.mockImplementation(() => testCollectionName);
     const firstTemporaryFileId = `temporary:first`;
     const secondTemporaryFileId = `temporary:second`;
+    const secondFileId = `second`;
     const thirdTemporaryFileId = `temporary:third`;
 
     // wait until mediaProvider has been set
@@ -498,10 +497,12 @@ describe('Media plugin', () => {
     stateManager.updateState(secondTemporaryFileId, {
       id: secondTemporaryFileId,
       status: 'processing',
+      publicId: secondFileId,
     });
 
     stateManager.on(firstTemporaryFileId, spy);
     stateManager.on(secondTemporaryFileId, spy);
+    stateManager.on(secondFileId, spy);
     stateManager.on(thirdTemporaryFileId, spy);
 
     let pos: number;
@@ -512,7 +513,7 @@ describe('Media plugin', () => {
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = getNodePos(pluginState, secondTemporaryFileId);
+    pos = getNodePos(pluginState, secondFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 
@@ -530,17 +531,13 @@ describe('Media plugin', () => {
       ),
     );
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(1);
 
     expect(spy).toHaveBeenCalledWith({
       id: firstTemporaryFileId,
       status: 'cancelled',
     });
 
-    expect(spy).toHaveBeenCalledWith({
-      id: secondTemporaryFileId,
-      status: 'cancelled',
-    });
     collectionFromProvider.mockRestore();
     editorView.destroy();
     pluginState.destroy();
@@ -922,7 +919,7 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
-  it(`should copy optional attributes from MediaState to Node attrs`, () => {
+  it('should copy optional attributes from MediaState to Node attrs', () => {
     const { editorView, pluginState } = editor(doc(p('{<>}')));
     const collectionFromProvider = jest.spyOn(
       pluginState,

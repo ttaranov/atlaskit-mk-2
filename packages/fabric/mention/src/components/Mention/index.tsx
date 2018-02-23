@@ -101,7 +101,11 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     );
 
     return (
-      <MentionContainer data-mention-id={id} data-access-level={accessLevel}>
+      <MentionContainer
+        data-mention-id={id}
+        data-access-level={accessLevel}
+        spellCheck={false}
+      >
         {mentionType === MentionType.RESTRICTED ? (
           <Tooltip
             content={`${props.text} won't be notified as they have no access`}
