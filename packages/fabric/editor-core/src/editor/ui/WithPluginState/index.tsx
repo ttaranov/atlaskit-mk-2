@@ -36,6 +36,11 @@ export default class WithPluginState extends React.Component<State, any> {
   private debounce: number | null = null;
   private notAppliedState = {};
 
+  constructor(props) {
+    super(props);
+    this.state = this.getPluginsStates(props.plugins, props.editorView);
+  }
+
   private handlePluginStateChange = (
     propName: string,
     skipEqualityCheck?: boolean,
@@ -63,48 +68,64 @@ export default class WithPluginState extends React.Component<State, any> {
     }, 10);
   }
 
+  private getPluginsStates(
+    plugins: { [name: string]: PluginKey },
+    editorView: EditorView,
+  ) {
+    if (!editorView || !plugins) {
+      return {};
+    }
+
+    return Object.keys(plugins).reduce((acc, propName) => {
+      const pluginKey = plugins[propName];
+      if (!pluginKey) {
+        return acc;
+      }
+      acc[propName] = pluginKey.getState(editorView.state);
+      return acc;
+    }, {});
+  }
+
   private subscribe(props: Props): void {
     const { eventDispatcher, editorView, plugins } = props;
     if (!eventDispatcher || !editorView) {
       return;
     }
 
-    const pluginsState = Object.keys(plugins).reduce((acc, propName) => {
+    const pluginsStates = this.getPluginsStates(plugins, editorView);
+    this.setState(pluginsStates);
+
+    Object.keys(plugins).forEach(propName => {
       const pluginKey = plugins[propName];
       if (!pluginKey) {
-        return acc;
+        return;
       }
-      acc[propName] = pluginKey.getState(editorView.state);
 
-      const isPluginWithSubscribe = acc[propName] && acc[propName].subscribe;
+      const pluginState = pluginsStates[propName];
+      const isPluginWithSubscribe = pluginState && pluginState.subscribe;
       const handler = this.handlePluginStateChange(
         propName,
         isPluginWithSubscribe,
       );
 
       if (isPluginWithSubscribe) {
-        acc[propName].subscribe(handler);
+        pluginState.subscribe(handler);
       } else {
         eventDispatcher.on((pluginKey as any).key, handler);
       }
 
       this.listeners[(pluginKey as any).key] = { handler, pluginKey };
-
-      return acc;
-    }, {});
-
-    this.setState(pluginsState);
+    });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.subscribe(this.props as Props);
   }
 
-  componentWillReceiveProps(nextProps: Props, prevProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.eventDispatcher &&
-      nextProps.eventDispatcher &&
-      !prevProps.eventDispatcher
+      (!this.props.eventDispatcher || !this.props.editorView)
     ) {
       this.subscribe(nextProps);
     }
@@ -120,6 +141,7 @@ export default class WithPluginState extends React.Component<State, any> {
       const pluginState = this.listeners[key].pluginKey.getState(
         this.props.editorView.state,
       );
+
       if (pluginState && pluginState.unsubscribe) {
         pluginState.unsubscribe(this.listeners[key].handler);
       } else {
