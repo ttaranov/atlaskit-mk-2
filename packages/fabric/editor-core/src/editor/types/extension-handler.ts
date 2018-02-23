@@ -2,6 +2,7 @@ import { ADNode } from '@atlaskit/editor-common';
 
 export interface ExtensionParams<T> {
   extensionKey: string;
+  extensionType: string;
   type?: 'extension' | 'inlineExtension' | 'bodiedExtension';
   parameters?: T;
   content?: any; // This would be the original Atlassian Document Format

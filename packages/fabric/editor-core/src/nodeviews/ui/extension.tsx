@@ -63,7 +63,6 @@ class ExtensionNode extends ContentNodeView implements NodeView {
   }
 
   destroy() {
-    console.log('destroy', this.node);
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
     super.destroy();

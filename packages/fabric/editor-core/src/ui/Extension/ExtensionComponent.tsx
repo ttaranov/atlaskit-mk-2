@@ -7,7 +7,6 @@ import { MacroProvider } from '../../editor/plugins/macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '../../editor/types';
-import { pluginKey } from '../../editor/plugins/extension/plugin';
 import EditorActions from '../../editor/actions';
 
 export interface Props {
@@ -17,6 +16,7 @@ export interface Props {
   extensionHandlers?: ExtensionHandlers;
   setExtensionElement: (
     element: HTMLElement | null,
+    shouldDisableToolbar?: boolean,
   ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   selectExtension: (
@@ -29,13 +29,10 @@ export interface Props {
 
 export interface State {
   macroProvider?: MacroProvider;
-  handlerResult?: any;
 }
 
 export default class ExtensionComponent extends Component<Props, State> {
-  state: State = {
-    handlerResult: null,
-  };
+  state: State = {};
   mounted = false;
   editorActions = new EditorActions();
 
@@ -49,8 +46,6 @@ export default class ExtensionComponent extends Component<Props, State> {
     if (macroProvider) {
       macroProvider.then(this.handleMacroProvider);
     }
-
-    this.tryExtensionHandler(this.props);
   }
 
   componentWillUnmount() {
@@ -67,13 +62,13 @@ export default class ExtensionComponent extends Component<Props, State> {
         this.setState({ macroProvider });
       }
     }
-
-    this.tryExtensionHandler(nextProps);
   }
 
   render() {
-    const { macroProvider, handlerResult } = this.state;
+    const { macroProvider } = this.state;
     const { node, handleContentDOMRef } = this.props;
+
+    const handlerResult = this.tryExtensionHandler();
 
     if (handlerResult) {
       return handlerResult;
@@ -104,59 +99,31 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   }
 
-  private tryExtensionHandler(props) {
-    const { node, isSelected, editorView, element } = props;
+  private tryExtensionHandler() {
+    const { node, isSelected, element, handleContentDOMRef } = this.props;
 
-    const { dispatch } = editorView;
-
-    const handlerResult = this.getExtensionHandlerResult(
-      node,
-      element,
-      editorView,
-      isSelected,
-    );
-
-    this.setState({ handlerResult });
-
-    try {
-      const meta = pluginKey.getState(editorView.state);
-
-      // disable default toolbar - extension handler should provide it
-      if (handlerResult && !meta.disableToolbar) {
-        const tr = editorView.state.tr.setMeta(pluginKey, {
-          disableToolbar: true,
-        });
-        dispatch(tr);
-      }
-
-      // enable default toolbar
-      if (!handlerResult && meta.disableToolbar) {
-        const tr = editorView.state.tr.setMeta(pluginKey, {
-          disableToolbar: false,
-        });
-        dispatch(tr);
-      }
-    } catch (e) {
-      // first time is throwing an error (Invalid position 1) from HyperlinkState
-      console.log('error setting meta', e);
-    }
-  }
-
-  private getExtensionHandlerResult(node, element, editorView, isSelected) {
     try {
       const extensionContent = this.handleExtension(node);
+      /**
+       * The extension handler should return a react component. This component will receive:
+       * - onClick: handler to select a node
+       * - onSelect: bodied macros selection handler
+       * - editorActions: public api containing useful actions to interact with the document
+       * - element: the node's DOM node
+       * - handleContentDOMRef: used to identify the editable body of a bodied macro
+       */
       if (extensionContent && React.isValidElement(extensionContent)) {
         return React.cloneElement(extensionContent as any, {
-          onClick: this.handleClick,
+          onClick: this.handleClickForExtensionHandlers,
           onSelect: this.handleSelectExtension,
           isSelected,
           editorActions: this.editorActions,
-          editorView,
           element,
+          handleContentDOMRef,
         });
       }
     } catch (e) {
-      console.log('error rendering extension', e);
+      console.log('error coming from the extension handler', e);
       /** We don't want this error to block renderer */
       /** We keep rendering the default content */
     }
@@ -166,13 +133,22 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   private handleExtension = node => {
     const { extensionHandlers, editorView } = this.props;
-    const { extensionType } = node.attrs;
+    const { extensionType, extensionKey, parameters } = node.attrs;
 
     if (!extensionHandlers || !extensionHandlers[extensionType]) {
       return;
     }
 
-    return extensionHandlers[extensionType](node.attrs, editorView.root);
+    return extensionHandlers[extensionType](
+      {
+        type: node.type.name,
+        extensionType,
+        extensionKey,
+        parameters,
+        content: node.content,
+      },
+      editorView.state.doc,
+    );
   };
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {
@@ -188,6 +164,17 @@ export default class ExtensionComponent extends Component<Props, State> {
     event.nativeEvent.preventDefault();
     const { state, dispatch } = this.props.editorView;
     this.props.setExtensionElement(event.currentTarget)(state, dispatch);
+  };
+
+  private handleClickForExtensionHandlers = (
+    event: React.SyntheticEvent<any>,
+  ) => {
+    if (event.nativeEvent.defaultPrevented) {
+      return;
+    }
+    event.nativeEvent.preventDefault();
+    const { state, dispatch } = this.props.editorView;
+    this.props.setExtensionElement(event.currentTarget, true)(state, dispatch);
   };
 
   private handleSelectExtension = () => {

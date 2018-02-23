@@ -8,11 +8,11 @@ import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode, getExtensionRange } from './utils';
 
-export const setExtensionElement = (element: HTMLElement | null) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  let tr = state.tr.setMeta(pluginKey, { element });
+export const setExtensionElement = (
+  element: HTMLElement | null,
+  shouldDisableToolbar?: boolean,
+) => (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+  let tr = state.tr.setMeta(pluginKey, { element, shouldDisableToolbar });
   if (!element) {
     tr = tr.setSelection(
       TextSelection.create(state.doc, state.selection.$from.pos),

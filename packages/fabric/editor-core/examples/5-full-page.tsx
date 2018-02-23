@@ -19,7 +19,8 @@ import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
-import ProvidedExtensionComponent from '../example-helpers/ProvidedExtensionComponent';
+import ProvidedExtensionComponent from '../example-helpers/ProvidedExtension/ProvidedExtensionComponent';
+import BodiedProvidedExtensionComponent from '../example-helpers/ProvidedExtension/BodiedProvidedExtensionComponent';
 
 import {
   akEditorCodeBackground,
@@ -129,14 +130,18 @@ const DumbInlineExtension = props => (
 
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
-    const { extensionKey, parameters, content } = ext;
+    const { extensionKey } = ext;
 
     switch (extensionKey) {
       case 'info':
         return (
-          <DumbInlineExtension parameters={parameters} content={content} />
+          <DumbInlineExtension
+            parameters={ext.parameters}
+            content={ext.content}
+          />
         );
-      case 'block':
+      case 'expand':
+        return <BodiedProvidedExtensionComponent node={ext} />;
       case 'status':
         return <ProvidedExtensionComponent node={ext} />;
     }

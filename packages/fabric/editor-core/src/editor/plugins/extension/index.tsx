@@ -50,7 +50,7 @@ const extensionPlugin = (props, eventDispatcher): EditorPlugin => ({
           macroState = {} as MacroState,
           extensionState = {} as ExtensionState,
         }) => {
-          if (extensionState && extensionState.disableToolbar) {
+          if (extensionState && extensionState.shouldDisableToolbar) {
             return null;
           }
 

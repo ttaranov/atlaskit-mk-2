@@ -11,7 +11,7 @@ export const pluginKey = new PluginKey('extensionPlugin');
 
 export type ExtensionState = {
   element: HTMLElement | null;
-  disableToolbar: boolean;
+  shouldDisableToolbar?: boolean;
 };
 
 export default (
