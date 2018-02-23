@@ -371,14 +371,25 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
     if (userCustomGroup.emojis.length > 0) {
       // append user emojis after the custom emojis
-      const idx: number = this.allEmojiGroups.findIndex(
-        g => g.category === customCategory,
+      let idx = this.findElementIndex(
+        this.allEmojiGroups,
+        (item, index) => item.category === customCategory,
       );
       if (idx !== -1) {
         this.allEmojiGroups.splice(idx, 0, userCustomGroup);
       }
     }
   };
+
+  private findElementIndex(elements, callback) {
+    let idx = -1;
+    elements.filter((item, index) => {
+      if (callback(item, index)) {
+        idx = index;
+      }
+    });
+    return idx;
+  }
 
   private checkCategoryChange = ({ scrollTop }) => {
     this.lastScrollTop = scrollTop;
