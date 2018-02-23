@@ -56,7 +56,7 @@ export const BreadCrumbLinkSeparator = styled.span`
   color: ${akColorN500};
   display: ${(props: BreadCrumbLinkLabelProps) =>
     props.isLast ? 'none' : 'inline'};
-  margin: 0px 4px;
+  margin: 0 4px;
   text-decoration: none;
 `;
 

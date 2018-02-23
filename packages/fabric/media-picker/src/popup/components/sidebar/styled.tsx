@@ -23,7 +23,7 @@ export const ServiceList = styled.ul`
   padding: 0;
   float: left;
   width: 100%;
-  margin: 17px 0 0 0 !important; // We need important here due to default "ul" style overrides
+  margin: 17px 0 0 0 !important; /* We need important here due to default "ul" style overrides */
 `;
 
 export const Separator = styled.li`

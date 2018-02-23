@@ -52,7 +52,7 @@ export const PredefinedAvatarViewWrapper = styled.div`
       padding-right: 4px;
       padding-left: 4px;
       padding-bottom: 8px;
-      margin: 0px;
+      margin: 0;
     }
   }
 
@@ -75,13 +75,13 @@ export const PredefinedAvatarViewWrapper = styled.div`
       align-items: center;
       justify-content: center;
 
-      margin: 0px;
-      padding: 0px;
+      margin: 0;
+      padding: 0;
     }
   }
 
-  // hide tickbox and file type icon in overlay
-  // because those are not necessary for avatars
+  /* hide tickbox and file type icon in overlay
+   * because those are not necessary for avatars */
 
   .tickbox {
     visibility: hidden;

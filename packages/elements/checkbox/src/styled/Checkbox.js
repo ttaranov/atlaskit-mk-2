@@ -23,7 +23,7 @@ type LabelProps = {
 };
 
 export const Label = styled.label`
-  display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')}
+  display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')};
   color: ${(props: LabelProps): string =>
     // $FlowFixMe TEMPORARY
     props.isDisabled ? disabledColor(props) : colors.text(props)};
@@ -32,7 +32,7 @@ export const Label = styled.label`
       ? css`
           cursor: not-allowed;
         `
-      : ''}
+      : ''};
 `;
 
 type IconWrapperProps = {
@@ -69,7 +69,7 @@ const getBorderColor = (props: IconWrapperProps) => {
 export const IconWrapper = styled.span`
   line-height: 0;
   flex-shrink: 0;
-  margin: 0px 4px;
+  margin: 0 4px;
 
   /* This is adding a property to the inner svg, to add a border to the checkbox */
   & rect {

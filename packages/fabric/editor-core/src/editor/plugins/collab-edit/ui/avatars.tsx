@@ -41,7 +41,7 @@ const AvatarItem: any = styled.div`
     animation-fill-mode: both;
   }
 
-  &:before {
+  &::before {
     content: '${(props: any) => props.avatar}';
     display: block;
     position: absolute;

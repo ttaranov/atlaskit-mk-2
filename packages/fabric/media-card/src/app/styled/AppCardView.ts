@@ -37,11 +37,11 @@ const positionedBehindCard = `
 
 const cardColors = ({ background }: CardProps) => {
   if (background) {
-    return css`
+    return `
       color: ${akColorN0};
     `;
   } else {
-    return css`
+    return `
       color: ${akColorN800};
       background-color: ${akColorN20};
     `;
@@ -50,7 +50,7 @@ const cardColors = ({ background }: CardProps) => {
 
 const cardOverlay = ({ background }: CardProps) => {
   if (background) {
-    return css`
+    return `
       /* allow us to position the background underlay when we have a background */
       position: relative;
       z-index: 0;
@@ -64,9 +64,9 @@ const cardOverlay = ({ background }: CardProps) => {
       }
       &::after {
         ${positionedBehindCard} background-color: ${colorWithAlpha(
-            akColorN900,
-            0.5,
-          )};
+      akColorN900,
+      0.5,
+    )};
       }
     `;
   } else {
@@ -101,7 +101,7 @@ export interface CardContentProps {
 export const CardContent = styled.div`
   flex-grow: 1;
   max-width: ${({ hasPreview }: CardContentProps) =>
-    (hasPreview && css`calc(100% - ${previewWidth}px)`) || '100%'};
+    (hasPreview && `calc(100% - ${previewWidth}px)`) || '100%'};
 `;
 
 export const Footer = styled.div`

@@ -10,7 +10,7 @@ import { akColorN400 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Input = styled.input`
-  // Normal .className gets overridden by input[type=text] hence this hack to produce input.className
+  /* Normal .className gets overridden by input[type=text] hence this hack to produce input.className */
   input& {
     background: transparent;
     border: 0;

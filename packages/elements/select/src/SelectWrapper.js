@@ -19,7 +19,7 @@ type NoticeProps = { children: Node, state: ValidationState };
 
 const NoticeContainer = styled.div`
   align-items: center;
-  color: ${p => p.clr}
+  color: ${p => p.clr};
   display: flex;
   margin-top: ${gridSize}px;
 `;
