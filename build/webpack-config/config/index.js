@@ -1,19 +1,12 @@
 // @flow
 const os = require('os');
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-const chunkslists = {
-  all: [],
-  includes: [],
-  excludes: [],
-};
-var hasWritten = false;
 module.exports = function createWebpackConfig(
   {
     entry,
