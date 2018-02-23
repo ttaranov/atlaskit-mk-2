@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 0.5.3
+- [patch] Fix an indirect race condition vulnerability [b75c02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b75c02a)
+
 ## 0.5.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
