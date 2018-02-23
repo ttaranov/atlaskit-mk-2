@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 1.1.5
+- [patch] More specific onChange event types in field-text-area [94c93eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/94c93eb)
+
 ## 1.1.4
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
