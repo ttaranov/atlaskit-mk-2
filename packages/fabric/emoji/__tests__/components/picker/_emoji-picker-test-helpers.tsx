@@ -12,10 +12,6 @@ import AkButton from '@atlaskit/button';
 import * as commonStyles from '../../../src/components/common/styles';
 
 import EmojiPickerEmojiRow from '../../../src/components/picker/EmojiPickerEmojiRow';
-import {
-  UploadPromptMessage,
-  addEmojiClassName,
-} from '../../../src/components/picker/EmojiPickerUploadPrompts';
 import CategorySelector from '../../../src/components/picker/CategorySelector';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiPickerCategoryHeading from '../../../src/components/picker/EmojiPickerCategoryHeading';
@@ -24,7 +20,10 @@ import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerLis
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import { customCategory } from '../../../src/constants';
-import EmojiPreview from '../../../src/components/common/EmojiPreview';
+import EmojiPreview, {
+  addEmojiClassName,
+  previewSectionClassName,
+} from '../../../src/components/common/EmojiPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -82,8 +81,7 @@ const findAllVirtualRows = component =>
     n =>
       n.is(EmojiPickerListSearch) ||
       n.is(EmojiPickerCategoryHeading) ||
-      n.is(EmojiPickerEmojiRow) ||
-      n.is(UploadPromptMessage),
+      n.is(EmojiPickerEmojiRow),
     // ignore spinner
   );
 
@@ -184,8 +182,12 @@ const findCustomSection = component =>
 export const customSectionVisible = (component): boolean =>
   component.update() && component.findWhere(findCustomSection).length > 0;
 
+export const findEmojiPreviewSection = component =>
+  component.update() && component.find(`.${previewSectionClassName}`);
+
 export const findStartEmojiUpload = component =>
-  component.update() && component.find(`.${addEmojiClassName}`);
+  component.update() &&
+  component.find(`Button[className="${addEmojiClassName}"]`);
 
 export const startEmojiUploadVisible = (component): boolean =>
   findStartEmojiUpload(component).length > 0;

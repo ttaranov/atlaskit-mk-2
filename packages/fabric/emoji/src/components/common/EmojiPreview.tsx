@@ -2,6 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
+import AddIcon from '@atlaskit/icon/glyph/add';
+import AkButton from '@atlaskit/button';
 import * as styles from './styles';
 import EmojiButton from '../../components/common/EmojiButton';
 import CachingEmoji from '../../components/common/CachingEmoji';
@@ -13,20 +15,27 @@ import {
   ToneSelection,
 } from '../../types';
 
+export const addEmojiClassName = 'emoji-picker-add-emoji';
+export const previewSectionClassName = 'emojiPreviewSection';
+
 export interface Props {
   emoji?: EmojiDescription;
   toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
+  uploadSupported?: boolean;
+  onOpenUpload?: () => void;
 }
 
 export interface State {
   selectingTone: boolean;
+  showAddEmoji: boolean;
 }
 
 export default class EmojiPreview extends PureComponent<Props, State> {
   state = {
     selectingTone: false,
+    showAddEmoji: false,
   };
 
   onToneButtonClick = () => {
@@ -48,6 +57,13 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   onMouseLeave = () => {
     this.setState({
       selectingTone: false,
+      showAddEmoji: false,
+    });
+  };
+
+  onMouseEnter = () => {
+    this.setState({
+      showAddEmoji: true,
     });
   };
 
@@ -86,9 +102,10 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderEmojiPreview() {
+    const { showAddEmoji, selectingTone } = this.state;
     const emoji = this.props.emoji;
 
-    if (!emoji || this.state.selectingTone) {
+    if (!emoji || selectingTone || showAddEmoji) {
       return null;
     }
 
@@ -115,9 +132,39 @@ export default class EmojiPreview extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  renderAddOwnEmoji() {
+    const { onOpenUpload, uploadSupported } = this.props;
+    const { showAddEmoji, selectingTone } = this.state;
+
+    if (!uploadSupported || !showAddEmoji || selectingTone) {
+      return null;
+    }
     return (
-      <div className={styles.emojiPreview} onMouseLeave={this.onMouseLeave}>
+      <div className={styles.AddCustomEmoji}>
+        <AkButton
+          onClick={onOpenUpload}
+          iconBefore={<AddIcon size="small" />}
+          appearance="subtle"
+          className={addEmojiClassName}
+        >
+          Add your own emoji
+        </AkButton>
+      </div>
+    );
+  }
+
+  render() {
+    const sectionClasses = classNames([
+      styles.emojiPreview,
+      previewSectionClassName,
+    ]);
+    return (
+      <div
+        className={sectionClasses}
+        onMouseLeave={this.onMouseLeave}
+        onMouseEnter={this.onMouseEnter}
+      >
+        {this.renderAddOwnEmoji()}
         {this.renderEmojiPreview()}
         {this.renderTones()}
       </div>

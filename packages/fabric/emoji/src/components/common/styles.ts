@@ -358,3 +358,8 @@ export const uploadAddRow = style({
     },
   },
 });
+
+export const AddCustomEmoji = style({
+  alignSelf: 'center',
+  marginLeft: '10px',
+});

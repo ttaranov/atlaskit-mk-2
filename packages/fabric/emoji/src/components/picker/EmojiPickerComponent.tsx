@@ -535,13 +535,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
-          onOpenUpload={this.onOpenUpload}
           onSearch={this.onSearch}
           query={query}
           selectedTone={selectedTone}
           loading={loading}
-          showCustomCategory={uploadSupported}
-          showUploadOption={uploadSupported && !uploading}
           ref="emojiPickerList"
         />
         <EmojiPickerFooter
@@ -552,9 +549,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           toneEmoji={toneEmoji}
           uploading={uploading}
           uploadErrorMessage={uploadErrorMessage}
+          uploadSupported={uploadSupported}
           onUploadEmoji={this.onUploadEmoji}
           onUploadCancelled={this.onUploadCancelled}
           onFileChosen={this.onFileChosen}
+          onOpenUpload={this.onOpenUpload}
         />
       </div>
     );
