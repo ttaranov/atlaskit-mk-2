@@ -241,7 +241,7 @@ export const global: Provided = ((): Provided => {
   const activeBackground: string = colors.B200;
   const item: ItemTheme = {
     default: {
-      background: 'transparent',
+      background: primaryBackground,
     },
     hover: {
       background: themed({

@@ -1,7 +1,7 @@
 import { Fragment, Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import { normalizeHexColor } from '@atlaskit/editor-common';
-import { AC_XMLNS, RI_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS } from './encode-cxhtml';
 import { Macro } from './types';
 
 /**
@@ -306,21 +306,13 @@ export function parseMacro(node: Element): Macro {
     if (child.nodeType === 3) {
       continue;
     }
-    let value = child.textContent;
+    const value = child.textContent;
 
     // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
-    // example: <ac:parameter ac:name=\"colour\"><ri:node ri:param=\"Red\" /></ac:parameter>
     if (nodeName === 'ac:parameter') {
       const key = getAcName(child);
       if (key) {
-        const resourceIdentifier = MACRO_PARAM_TO_RI[key];
-        if (resourceIdentifier) {
-          const riNode = getAcTagNode(child, resourceIdentifier.name);
-          if (riNode) {
-            value = riNode.getAttribute(resourceIdentifier.param);
-          }
-        }
-        params[key.toLowerCase()] = value;
+        params[key] = value;
       }
     } else {
       // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
@@ -365,31 +357,6 @@ export const mapPanelTypeToCxhtml = (panelType: string) => {
   return panelType;
 };
 
-const MACRO_PARAM_TO_RI: {
-  [key: string]: { name: string; param: string };
-} = {
-  author: {
-    name: 'ri:user',
-    param: 'ri:userkey',
-  },
-  spaces: {
-    name: 'ri:space',
-    param: 'ri:space-key',
-  },
-  src: {
-    name: 'ri:url',
-    param: 'ri:value',
-  },
-  url: {
-    name: 'ri:url',
-    param: 'ri:value',
-  },
-  user: {
-    name: 'ri:user',
-    param: 'ri:userkey',
-  },
-};
-
 export const encodeMacroParams = (
   doc: Document,
   params: {
@@ -400,14 +367,7 @@ export const encodeMacroParams = (
   Object.keys(params).forEach(name => {
     const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
     el.setAttributeNS(AC_XMLNS, 'ac:name', name);
-    const resourceIdentifier = MACRO_PARAM_TO_RI[name];
-    if (resourceIdentifier) {
-      const ri = doc.createElementNS(RI_XMLNS, resourceIdentifier.name);
-      ri.setAttributeNS(RI_XMLNS, resourceIdentifier.param, params[name].value);
-      el.appendChild(ri);
-    } else {
-      el.textContent = params[name].value;
-    }
+    el.textContent = params[name].value;
     elem.appendChild(el);
   });
   return elem;

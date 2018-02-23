@@ -9,7 +9,11 @@ import styled, { StyledComponentClass } from 'styled-components';
 import { HTMLAttributes, ClassAttributes } from 'react';
 
 export const AvatarPickerViewWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  min-height: 339px;
 `;
 
 export const ModalHeader = styled.div`

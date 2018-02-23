@@ -101,7 +101,6 @@ export default class Icon extends Component<Props, {}> {
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
           size={size}
-          role="img"
           aria-label={this.props.label}
           dangerouslySetInnerHTML={{
             __html: Icon.insertDynamicGradientID(dangerouslySetGlyph),
@@ -116,7 +115,6 @@ export default class Icon extends Component<Props, {}> {
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
         size={size}
-        role="img"
         aria-label={this.props.label}
       >
         {Glyph ? <Glyph role="presentation" /> : null}

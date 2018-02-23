@@ -1,12 +1,15 @@
 // @flow
 
-const release = require('./build/releases/release');
 const karma = require('projector-karma');
+const spawn = require('spawndamnit');
+const release = require('./build/releases/release');
 const { getKarmaConfig } = require('./build/karma-config');
 
-exports.release = async () => {
-  await release.run({ cwd: __dirname });
-};
+const log = (type /*: string */ = 'log') => (
+  data /*: { toString: Function }*/,
+) =>
+  // eslint-disable-next-line
+  console[type](data.toString());
 
 const runKarma = async ({ watch, browserstack }) => {
   const config = await getKarmaConfig({
@@ -15,6 +18,25 @@ const runKarma = async ({ watch, browserstack }) => {
     browserstack,
   });
   await karma.run({ config, files: [] });
+};
+
+const spawnWithLog = async (...args) => {
+  const child = spawn(...args);
+  child.on('stdout', log());
+  child.on('stderr', log('error'));
+  return child;
+};
+
+exports.release = async () => {
+  await release.run({ cwd: __dirname });
+};
+
+exports.start = async ({ packages } /*: { packages: string } */) => {
+  const args = ['start'];
+  if (packages) {
+    args.push(`+(${packages.split(',').join('|')})`);
+  }
+  await spawnWithLog('yarn', args);
 };
 
 exports.testBrowser = async (

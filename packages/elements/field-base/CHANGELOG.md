@@ -1,5 +1,14 @@
 # @atlaskit/field-base
 
+## 8.1.13
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 8.1.12
+- [patch] Fix field base read view content overflowing in IE11 when isFitContainerWidthEnabled is set [4417234](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4417234)
+
+## 8.1.11
+- [patch] firing onblur in field-base only once [0223de2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0223de2)
+
 ## 8.1.10
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

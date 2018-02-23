@@ -1,17 +1,12 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
-import Item from '@atlaskit/item';
-import DropdownMenu from '../../src/ui/DropdownMenu';
 import { TableState, stateKey } from '../../src/plugins/table';
-import tableCommands from '../../src/plugins/table/commands';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../src/ui/TableFloatingToolbar';
-import { Toolbar } from '../../src/ui/TableFloatingToolbar/styles';
+import { Toolbar } from '../../src/ui/TableFloatingToolbar';
 
 import {
-  createEvent,
   doc,
   p,
   createEditor,
@@ -20,15 +15,10 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import {
-  selectRow,
-  selectColumn,
-} from '../../src/editor/plugins/table/actions';
 import tablesPlugin from '../../src/editor/plugins/table';
 
 describe('TableFloatingToolbar', () => {
   let trackEvent;
-  const event = createEvent('event');
   const editor = (doc: any) =>
     createEditor<TableState>({
       doc,
@@ -43,239 +33,52 @@ describe('TableFloatingToolbar', () => {
     trackEvent = jest.fn();
   });
 
-  describe('when cellElement is undefined', () => {
+  describe('when tableElement is undefined', () => {
     it('should not render toolbar', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = shallow(
-        <TableFloatingToolbar
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
+        <TableFloatingToolbar editorView={editorView} tableActive={true} />,
       );
-      expect(floatingToolbar.find(Toolbar).length).toBe(0);
-    });
-  });
-
-  describe('when cellElement is defined', () => {
-    it('should render toolbar', () => {
-      const { editorView, pluginState } = editor(
-        doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
-      );
-      const floatingToolbar = shallow(
-        <TableFloatingToolbar
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
-      );
-      floatingToolbar.setState({ cellElement: document.createElement('td') });
-      expect(floatingToolbar.find(Toolbar).length).toBe(1);
-    });
-  });
-
-  describe('when selecting a column inside table', () => {
-    it('should render toolbar', () => {
-      const { plugin, pluginState, editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectColumn(0)(editorView.state, editorView.dispatch);
-      const floatingToolbar = mount(
-        <TableFloatingToolbar
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
-      );
-      expect(floatingToolbar.html()).not.toBe(null);
-      floatingToolbar.unmount();
-    });
-  });
-
-  describe('when selecting a row inside table', () => {
-    it('should render toolbar', () => {
-      const { plugin, pluginState, editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectRow(0)(editorView.state, editorView.dispatch);
-      const floatingToolbar = mount(
-        <TableFloatingToolbar
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
-      );
-      expect(floatingToolbar.html()).not.toBe(null);
-      floatingToolbar.unmount();
-    });
-  });
-
-  describe('when editor is not focused', () => {
-    it('should not render toolbar', () => {
-      const { plugin, pluginState, editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectRow(0)(editorView.state, editorView.dispatch);
-      const floatingToolbar = mount(
-        <TableFloatingToolbar
-          pluginState={pluginState}
-          editorView={editorView}
-        />,
-      );
-      expect(floatingToolbar.html()).not.toBe(null);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(floatingToolbar.html()).toEqual(null);
-      floatingToolbar.unmount();
+      expect(floatingToolbar.find(Toolbar).length).toEqual(0);
     });
   });
 
   describe('TrashIcon', () => {
     it('should be rendered in the toolbar', () => {
-      const { pluginState, editorView } = editor(
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = mount(
         <TableFloatingToolbar
-          pluginState={pluginState}
+          tableElement={document.createElement('table')}
           editorView={editorView}
+          tableActive={true}
         />,
       );
-      floatingToolbar.setState({ cellElement: document.createElement('td') });
-      const button = floatingToolbar.find(ToolbarButton).first();
-      expect(button.length).toBe(1);
-      expect(button.find(RemoveIcon).length).toBe(1);
+      expect(floatingToolbar.find(RemoveIcon).length).toEqual(1);
       floatingToolbar.unmount();
     });
 
-    it('should call pluginState.remove() on click', () => {
-      const { pluginState, editorView } = editor(
+    it('should call remove() on click', () => {
+      const { editorView } = editor(
         doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
       );
+      const remove = jest.fn();
       const floatingToolbar = shallow(
         <TableFloatingToolbar
-          pluginState={pluginState}
+          tableElement={document.createElement('table')}
           editorView={editorView}
+          remove={remove}
+          tableActive={true}
         />,
       );
-      pluginState.remove = jest.fn();
-      floatingToolbar.setState({ cellElement: document.createElement('td') });
-      const button = floatingToolbar.find(ToolbarButton).first();
+
+      const button = floatingToolbar.find(ToolbarButton).last();
       button.simulate('click');
-      expect(pluginState.remove as any).toHaveBeenCalledTimes(1);
+      expect(remove as any).toHaveBeenCalledTimes(1);
       floatingToolbar.unmount();
-    });
-  });
-
-  describe('Advance menu', () => {
-    describe('icon', () => {
-      it('should be rendered in the toolbar', () => {
-        const { pluginState, editorView } = editor(
-          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const floatingToolbar = mount(
-          <TableFloatingToolbar
-            pluginState={pluginState}
-            editorView={editorView}
-          />,
-        );
-        floatingToolbar.setState({
-          cellElement: document.createElement('td'),
-          advancedMenuDisabled: false,
-        });
-        const button = floatingToolbar.find(ToolbarButton).at(1);
-        expect(button.find(EditorMoreIcon).length).toBe(1);
-        floatingToolbar.unmount();
-      });
-
-      it('should open DropdownMenu on click', () => {
-        const { pluginState, editorView } = editor(
-          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const floatingToolbar = mount(
-          <TableFloatingToolbar
-            pluginState={pluginState}
-            editorView={editorView}
-          />,
-        );
-        floatingToolbar.setState({
-          cellElement: document.createElement('td'),
-          advancedMenuDisabled: false,
-        });
-        floatingToolbar
-          .find(ToolbarButton)
-          .at(1)
-          .simulate('click');
-        expect(floatingToolbar.state('isOpen')).toBe(true);
-        floatingToolbar.unmount();
-      });
-    });
-
-    describe('DropdownMenu', () => {
-      it('should make isOpen false when a menu item is clicked', () => {
-        const { pluginState, editorView } = editor(
-          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const floatingToolbar = mount(
-          <TableFloatingToolbar
-            pluginState={pluginState}
-            editorView={editorView}
-          />,
-        );
-        floatingToolbar.setState({
-          cellElement: document.createElement('td'),
-          advancedMenuDisabled: false,
-        });
-        floatingToolbar
-          .find(ToolbarButton)
-          .at(1)
-          .simulate('click');
-        expect(floatingToolbar.state('isOpen')).toBe(true);
-        floatingToolbar
-          .find(DropdownMenu)
-          .find(Item)
-          .first()
-          .simulate('click');
-        expect(floatingToolbar.state('isOpen')).toBe(false);
-        floatingToolbar.unmount();
-      });
-
-      ['cut', 'copy', 'paste'].forEach((command, i) => {
-        it(`should call "${command}" command when "${command}" item is clicked`, () => {
-          const { pluginState, editorView } = editor(
-            doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-          );
-          const floatingToolbar = mount(
-            <TableFloatingToolbar
-              pluginState={pluginState}
-              editorView={editorView}
-            />,
-          );
-          tableCommands[command] = jest.fn(() => () => {});
-          floatingToolbar.setState({
-            cellElement: document.createElement('td'),
-            advancedMenuDisabled: false,
-          });
-
-          floatingToolbar
-            .find(ToolbarButton)
-            .at(1)
-            .simulate('click');
-          expect(floatingToolbar.state('isOpen')).toBe(true);
-
-          floatingToolbar
-            .find(DropdownMenu)
-            .find(Item)
-            .at(i)
-            .simulate('click');
-          expect(tableCommands[command] as any).toHaveBeenCalledTimes(1);
-          expect(trackEvent).toHaveBeenCalledWith(
-            `atlassian.editor.format.table.${command}.button`,
-          );
-
-          floatingToolbar.unmount();
-        });
-      });
     });
   });
 });

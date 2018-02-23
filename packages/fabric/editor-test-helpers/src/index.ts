@@ -50,12 +50,11 @@ export {
   mediaSingle,
   textColor,
   table,
+  tableWithAttrs,
   tr,
   td,
   th,
   tdEmpty,
-  td11,
-  th11,
   tdCursor,
   thEmpty,
   thCursor,
@@ -90,8 +89,10 @@ export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
 export { default as spyOnReturnValue } from './spy-on-return-value';
 export { macroProvider, MockMacroProvider } from './mock-macro-provider';
+export { customInsertMenuItems } from './mock-insert-menu';
 export {
   inlineExtensionData,
   extensionData,
   bodiedExtensionData,
 } from './mock-extension-data';
+export * from './schema-element-builder';

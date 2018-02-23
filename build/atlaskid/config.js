@@ -8,7 +8,58 @@ const devBaseUrl =
   'https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net';
 const repoOwner = 'atlassian';
 const repoName = 'atlaskit-mk-2';
-const usersAllowedToApprove = ['luke_batchelor', 'thejameskyle'];
+// Sorting these lists into teams to make this easier to maintain
+const atlaskitTeam = [
+  'luke_batchelor',
+  'treshugart',
+  'mathurajay',
+  'charles_tm',
+  'bconolly',
+  'raja07',
+  'thejameskyle',
+  'mblaszczyk-atlassian',
+  'jmackison',
+  'scurtis',
+  'jaredcroweatlassian',
+  'jedw',
+  'alexreardon',
+  'pete_gleeson',
+];
+const editorAndElementsTeam = [
+  'imsysoev',
+  'jyotiatl',
+  'ed919',
+  'scottsidwell',
+  'rifat_nabi',
+  'Craig_Petchell',
+  'ckrishnakumar',
+  'ttjandra',
+  'owallhult',
+  'dsorin',
+  'jmack2',
+  'supertong',
+  'pcurren',
+  'jhoarau',
+  'agnes',
+  'vsutrave',
+  'ahixon_atlassian',
+];
+const mediaTeam = [
+  'sattard',
+  'mjames91',
+  'alichamas',
+  'jluong',
+  'amotsjonov',
+  'hzarcogarcia',
+  'jamesnewell',
+  'abodera',
+  'vvvlasov',
+];
+const usersAllowedToApprove = [].concat(
+  atlaskitTeam,
+  editorAndElementsTeam,
+  mediaTeam,
+);
 
 module.exports = {
   host: 'bitbucket',

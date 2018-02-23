@@ -71,7 +71,7 @@ export default class Page {
   }
   // Wait
   waitForSelector(selector) {
-    return this.browser.waitForSelector(selector);
+    return this.browser.waitForExist(selector);
   }
   waitFor(selector, ms, reverse) {
     return this.browser.waitForVisible(selector, ms, reverse);

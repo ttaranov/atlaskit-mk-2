@@ -368,6 +368,11 @@ const ContentStyles = styled.div`
     .table-container.with-controls {
       margin-left: 8px;
     }
+    .table-container table[data-number-column='true'] td:first-child {
+      background-color: ${akEditorTableFloatingControls};
+      width: 40px;
+      text-align: center;
+    }
   }
 
   /* =============== TABLE COLUMN RESIZING ================== */

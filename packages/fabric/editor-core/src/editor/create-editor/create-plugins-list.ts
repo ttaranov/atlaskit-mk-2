@@ -148,11 +148,20 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowTemplatePlaceholders) {
-    plugins.push(placeholderTextPlugin);
+    const options =
+      props.allowTemplatePlaceholders === true
+        ? {}
+        : props.allowTemplatePlaceholders;
+    plugins.push(placeholderTextPlugin(options));
   }
 
   // UI only plugins
-  plugins.push(insertBlockPlugin);
+  plugins.push(
+    insertBlockPlugin({
+      insertMenuItems: props.insertMenuItems,
+    }),
+  );
+
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
 

@@ -34,6 +34,7 @@ export default class Editor extends React.Component<EditorProps, State> {
   };
 
   private providerFactory: ProviderFactory;
+  private editorActions?: EditorActions;
 
   constructor(props: EditorProps) {
     super(props);
@@ -101,17 +102,21 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   private registerEditorForActions(editor: EditorInstance) {
-    if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateRegisterEditor(
-        editor.editorView,
-        editor.contentTransformer,
-      );
-    }
+    // Create EditorActions object if doesn't exsit
+    this.editorActions =
+      this.editorActions ||
+      (this.context && this.context.editorActions) ||
+      new EditorActions();
+
+    this.editorActions._privateRegisterEditor(
+      editor.editorView,
+      editor.contentTransformer,
+    );
   }
 
   private unregisterEditorFromActions() {
-    if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateUnregisterEditor();
+    if (this.editorActions) {
+      this.editorActions._privateUnregisterEditor();
     }
   }
 
@@ -186,16 +191,18 @@ export default class Editor extends React.Component<EditorProps, State> {
       contentComponents,
       primaryToolbarComponents,
       secondaryToolbarComponents,
+      insertMenuItems,
       eventDispatcher,
     } = editor as EditorInstance;
 
     return (
       <Component
         onUiReady={this.initEditor}
-        disabled={this.props.disabled}
         editorView={editorView}
+        editorActions={this.editorActions}
         providerFactory={this.providerFactory}
         eventDispatcher={eventDispatcher}
+        disabled={this.props.disabled}
         maxHeight={this.props.maxHeight}
         onSave={this.props.onSave}
         onCancel={this.props.onCancel}
@@ -205,6 +212,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}
+        insertMenuItems={insertMenuItems}
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
         customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}

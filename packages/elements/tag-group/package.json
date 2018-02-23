@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "description": "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,19 +17,19 @@
     "name": "Tag group",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "styled-components": "1.4.6 - 3.1.6"
   },
   "peerDependencies": {
-    "@atlaskit/tag": "^3.1.2",
+    "@atlaskit/tag": "^3.1.3",
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.0.1",
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/tag": "^3.1.2",
+    "@atlaskit/avatar": "^9.0.4",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/tag": "^3.1.3",
     "enzyme": "^3.3.0"
   }
 }

@@ -16,6 +16,7 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
@@ -144,14 +145,21 @@ export default class Example extends React.Component<Props, State> {
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
-              allowTables={{ allowColumnResizing: true }}
+              allowTables={{
+                allowColumnResizing: true,
+                allowMergeCells: true,
+                allowNumberColumn: true,
+                allowBackgroundColor: true,
+                allowHeaderRow: true,
+                allowHeaderColumn: true,
+              }}
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}
               allowExtension={true}
               allowRule={true}
               allowDate={true}
-              allowTemplatePlaceholders={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."
@@ -175,6 +183,7 @@ export default class Example extends React.Component<Props, State> {
                 />
               }
               onSave={SAVE_ACTION}
+              insertMenuItems={customInsertMenuItems}
             />
           </EditorContext>
         </Content>

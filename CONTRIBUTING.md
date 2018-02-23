@@ -202,10 +202,16 @@ export default function Example() {
 }
 ```
 
-In order to view these examples within your browser, you can run:
+In order to view these examples within your browser, from the root of atlaskit-mk2 you can run:
 
 ```sh
 bolt start
+```
+
+To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
+
+```sh
+ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
 ## Browser testing your code

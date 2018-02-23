@@ -38,9 +38,14 @@ const toolbarSizeToButtons = toolbarSize => {
   }
 };
 
-const insertBlockPlugin: EditorPlugin = {
+export interface InsertBlockOptions {
+  insertMenuItems?: any;
+}
+
+const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
+    editorActions,
     eventDispatcher,
     providerFactory,
     popupsMountPoint,
@@ -90,7 +95,9 @@ const insertBlockPlugin: EditorPlugin = {
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
               dateEnabled={!!dateState}
-              placeholderTextEnabled={!!placeholderTextState}
+              placeholderTextEnabled={
+                placeholderTextState && placeholderTextState.allowInserting
+              }
               insertMentionQuery={
                 mentionsState && mentionsState.insertMentionQuery
               }
@@ -122,6 +129,8 @@ const insertBlockPlugin: EditorPlugin = {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
+              insertMenuItems={options.insertMenuItems}
+              editorActions={editorActions}
             />
           )}
         />
@@ -136,6 +145,6 @@ const insertBlockPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default insertBlockPlugin;

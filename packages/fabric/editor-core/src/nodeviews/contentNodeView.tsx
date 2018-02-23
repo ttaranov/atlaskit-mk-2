@@ -12,7 +12,11 @@ export default class ContentNodeView {
   contentDOM: HTMLElement | undefined;
 
   constructor(node: PMNode, view: EditorView) {
-    this.contentDOM = view.dom.appendChild(document.createElement('div'));
+    if (view.dom.parentNode) {
+      this.contentDOM = view.dom.parentNode.appendChild(
+        document.createElement('div'),
+      );
+    }
   }
 
   handleRef = (node: HTMLElement | undefined) => {

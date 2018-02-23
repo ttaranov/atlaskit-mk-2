@@ -1,5 +1,15 @@
 import { Node, NodeSpec } from 'prosemirror-model';
 
+/**
+ * @name placeholder_node
+ */
+export interface Definition {
+  type: 'placeholder';
+  attrs: {
+    text: string;
+  };
+}
+
 export const placeholder: NodeSpec = {
   inline: true,
   group: 'inline',

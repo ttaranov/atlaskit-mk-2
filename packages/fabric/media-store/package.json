@@ -1,0 +1,34 @@
+{
+  "name": "@atlaskit/media-store",
+  "version": "0.0.2",
+  "description": "Media Store API Web Client Library",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "types": "dist/es5/index.d.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "atlaskit:src": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jimmy Luong"
+  ],
+  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "dependencies": {
+    "@types/query-string": "^4.3.1",
+    "chunkinator": "^0.0.15",
+    "p-queue": "^2.3.0",
+    "query-string": "^4.3.2",
+    "rusha": "^0.8.11"
+  },
+  "devDependencies": {
+    "@atlaskit/media-test-helpers": "^9.0.1",
+    "@types/fetch-mock": "^5.12.1",
+    "@types/p-queue": "^2.3.1",
+    "fetch-mock": "^5.12.1",
+    "styled-components": "^1.4.6",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

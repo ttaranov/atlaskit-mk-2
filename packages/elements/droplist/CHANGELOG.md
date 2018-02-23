@@ -1,5 +1,13 @@
 # @atlaskit/droplist
 
+## 4.11.11
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 4.11.10
+- [patch] fixes AK-4178 , added fix for double color icon in navigation [c6121d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6121d6)
+
+## 4.11.9
+
 ## 4.11.8
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

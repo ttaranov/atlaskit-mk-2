@@ -67,7 +67,7 @@ export const addFakeTextCursor = (
   const { selection } = state;
   if (selection.empty) {
     const { selection: { $from } } = state;
-    dispatch(state.tr.setSelection(new FakeTextCursorSelection($from) as any));
+    dispatch(state.tr.setSelection(new FakeTextCursorSelection($from)));
   }
 };
 

@@ -6,13 +6,16 @@ import styled, { StyledComponentClass, css, ThemedStyleFunction } from 'styled-c
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ReactNode } from 'react';
-import { akColorN10 } from '@atlaskit/util-shared-styles';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { akColorN10, akBorderRadius } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
   border-radius: ${akBorderRadius};
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
+  /** Taken from the style of inline dialog components */
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
+    0 4px 8px -2px rgba(9, 30, 66, 0.25);
+
   display: flex;
   align-items: center;
   padding: 4px 8px 4px 4px;
