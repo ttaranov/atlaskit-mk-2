@@ -130,7 +130,7 @@ const PageOffset = styled.div`
   text-align: center;
 
   @media (min-width: 800px) {
-    margin-left: -64px;
+    margin-right: -64px;
   }
 `;
 
