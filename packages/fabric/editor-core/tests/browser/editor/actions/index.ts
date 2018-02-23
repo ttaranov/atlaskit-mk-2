@@ -428,6 +428,17 @@ describe(name, () => {
           doc(p('some new '), blockquote(p('text')), p(' content')),
         );
       });
+
+      it('should delete selection if passed an empty string', () => {
+        const editor = createEditor({
+          doc: doc(p('some new {<} hello {>}content')),
+        });
+        const editorView = editor.editorView;
+        const editorActions = new EditorActions();
+        editorActions._privateRegisterEditor(editorView);
+        editorActions.replaceSelection('');
+        expect(editorView.state.doc).to.deep.equal(doc(p('some new content')));
+      });
     });
 
     describe('#appendText', () => {
