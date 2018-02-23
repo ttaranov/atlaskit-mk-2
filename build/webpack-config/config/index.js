@@ -184,7 +184,6 @@ function plugins(
   } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
-    new webpack.NamedChunksPlugin(),
     new webpack.NamedModulesPlugin(),
     //
     // Order of CommonsChunkPlugins is important,
