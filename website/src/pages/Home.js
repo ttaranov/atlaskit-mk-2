@@ -206,7 +206,7 @@ export default class Home extends React.Component<HomeProps> {
             </Card> */}
           </Cards>
           <Button
-            href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md"
+            href="//bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CONTRIBUTING.md"
             target="_blank"
             rel="noopener noreferrer"
           >
