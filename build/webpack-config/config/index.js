@@ -247,14 +247,6 @@ function plugins(
     new webpack.optimize.CommonsChunkPlugin({
       async: 'used-two-or-more-times',
       minChunks(module, count) {
-        if (!hasWritten) {
-          console.log(module._chunks, module._chunksDebugIdent);
-          fs.writeFileSync(
-            'commonChunksList.json',
-            JSON.stringify(chunkslists),
-          );
-          hasWritten = true;
-        }
         return count >= 2;
       },
     }),
