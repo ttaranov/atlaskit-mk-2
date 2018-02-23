@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@atlaskit/editor-common": "^6.1.8",
-    "markdown-it-table": "^1.0.0",
+    "markdown-it-table": "^2.0.2",
     "prosemirror-markdown": "^1.0.1",
     "prosemirror-model": "^1.0.0"
   },

@@ -181,6 +181,16 @@ export const tableCell: any = {
   },
 };
 
+export const toJSONTableCell = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});
+
 export const tableHeader: any = {
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
@@ -197,3 +207,13 @@ export const tableHeader: any = {
     return ['th', setCellAttrs(node), 0];
   },
 };
+
+export const toJSONTableHeader = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});

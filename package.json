@@ -288,7 +288,7 @@
     "lodash.sample": "^4.2.1",
     "lru-fast": "^0.2.2",
     "markdown-it": "^8.4.0",
-    "markdown-it-table": "^1.0.0",
+    "markdown-it-table": "^2.0.2",
     "memoize-one": "^3.0.1",
     "minimatch": "^3.0.4",
     "npm-run": "^4.1.2",
