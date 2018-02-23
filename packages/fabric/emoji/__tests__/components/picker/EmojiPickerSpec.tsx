@@ -27,6 +27,7 @@ import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
 import EmojiRepository from '../../../src/api/EmojiRepository';
 import FileChooser from '../../../src/components/common/FileChooser';
 import { EmojiDescription, OptionalEmojiDescription } from '../../../src/types';
+import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import {
   customCategory,
   defaultCategories,
@@ -35,6 +36,7 @@ import {
   analyticsEmojiPrefix,
 } from '../../../src/constants';
 import * as helper from './_emoji-picker-test-helpers';
+import * as commonHelper from '../common/_common-test-helpers';
 
 declare var global: any;
 
@@ -45,15 +47,21 @@ describe('<EmojiPicker />', () => {
     component.update().find(EmojiPickerList);
 
   const enableCustomEmojiAddSection = async component => {
-    const emojiPreviewSection = () => helper.findEmojiPreviewSection(component);
+    const emojiPreviewSection = () =>
+      commonHelper.findEmojiPreviewSection(component);
     await waitUntil(() => emojiPreviewSection().exists());
     emojiPreviewSection().simulate('mouseenter');
   };
 
   const safeFindStartEmojiUpload = async component => {
-    await waitUntil(() => helper.startEmojiUploadVisible(component));
-    return helper.findStartEmojiUpload(component);
+    await waitUntil(() => commonHelper.startEmojiUploadVisible(component));
+    return commonHelper.findStartEmojiUpload(component);
   };
+
+  const findPreview = component =>
+    component.update() && component.find(EmojiPreview);
+
+  const previewVisible = component => findPreview(component).length > 0;
 
   beforeEach(async () => {
     firePrivateAnalyticsEvent = jest.fn();
@@ -427,7 +435,7 @@ describe('<EmojiPicker />', () => {
       await waitUntil(() => helper.customSectionVisible(component));
 
       await enableCustomEmojiAddSection(component);
-      const addEmoji = helper.findStartEmojiUpload(component);
+      const addEmoji = commonHelper.findStartEmojiUpload(component);
       expect(addEmoji).toHaveLength(0);
     });
 
@@ -435,7 +443,7 @@ describe('<EmojiPicker />', () => {
       const component = await helper.setupPicker();
       await waitUntil(() => helper.customSectionVisible(component));
       await enableCustomEmojiAddSection(component);
-      const addEmoji = helper.findStartEmojiUpload(component);
+      const addEmoji = commonHelper.findStartEmojiUpload(component);
       expect(addEmoji).toHaveLength(0);
     });
 
@@ -531,10 +539,10 @@ describe('<EmojiPicker />', () => {
       expect(shortName).toEqual(':cheese_burger:');
       expect(fallback).toEqual(':cheese_burger:');
 
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // preview is back with new emoji shown by default
-      const preview = helper.findPreview(component);
+      const preview = findPreview(component);
       expect(preview).toHaveLength(1);
 
       const previewEmoji = preview.find(Emoji);
@@ -653,10 +661,10 @@ describe('<EmojiPicker />', () => {
       expect(shortName).toEqual(':cheese_burger:');
       expect(fallback).toEqual(':cheese_burger:');
 
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // preview is back with new emoji shown by default
-      const preview = helper.findPreview(component);
+      const preview = findPreview(component);
       expect(preview).toHaveLength(1);
 
       const previewEmoji = preview.find(Emoji);
@@ -680,10 +688,10 @@ describe('<EmojiPicker />', () => {
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component);
 
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // save emoji initially shown in preview
-      let preview = helper.findPreview(component);
+      let preview = findPreview(component);
       expect(preview).toHaveLength(1);
       const initalPreviewEmoji = preview.find(Emoji);
       expect(initalPreviewEmoji).toHaveLength(1);
@@ -729,10 +737,10 @@ describe('<EmojiPicker />', () => {
       // cancel
       const cancelLink = helper.findCancelLink(component);
       cancelLink.simulate('click');
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // preview is back with previous emoji shown by default
-      preview = helper.findPreview(component);
+      preview = findPreview(component);
       expect(preview).toHaveLength(1);
       const previewEmoji = preview.find(Emoji);
       expect(previewEmoji).toHaveLength(1);
@@ -771,10 +779,10 @@ describe('<EmojiPicker />', () => {
 
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component);
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // save emoji initially shown in preview
-      let preview = helper.findPreview(component);
+      let preview = findPreview(component);
       expect(preview).toHaveLength(1);
       const initalPreviewEmoji = preview.find(Emoji);
       expect(initalPreviewEmoji).toHaveLength(1);
@@ -837,10 +845,10 @@ describe('<EmojiPicker />', () => {
       cancelLink.simulate('click');
 
       // wait for preview to return
-      await waitUntil(() => helper.previewVisible(component));
+      await waitUntil(() => previewVisible(component));
 
       // preview is back with previous emoji shown by default
-      preview = helper.findPreview(component);
+      preview = findPreview(component);
       expect(preview).toHaveLength(1);
       const previewEmoji = preview.find(Emoji);
       expect(previewEmoji).toHaveLength(1);

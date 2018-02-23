@@ -15,9 +15,6 @@ import {
   ToneSelection,
 } from '../../types';
 
-export const addEmojiClassName = 'emoji-picker-add-emoji';
-export const previewSectionClassName = 'emojiPreviewSection';
-
 export interface Props {
   emoji?: EmojiDescription;
   toneEmoji?: EmojiDescriptionWithVariations;
@@ -143,9 +140,9 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       <div className={styles.AddCustomEmoji}>
         <AkButton
           onClick={onOpenUpload}
-          iconBefore={<AddIcon size="small" />}
+          iconBefore={<AddIcon label="add custom emoji" size="small" />}
           appearance="subtle"
-          className={addEmojiClassName}
+          className="emoji-picker-add-emoji"
         >
           Add your own emoji
         </AkButton>
@@ -156,7 +153,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   render() {
     const sectionClasses = classNames([
       styles.emojiPreview,
-      previewSectionClassName,
+      'emojiPreviewSection',
     ]);
     return (
       <div

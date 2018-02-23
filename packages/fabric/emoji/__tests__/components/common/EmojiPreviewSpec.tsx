@@ -2,6 +2,7 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
+import { waitUntil } from '@atlaskit/util-common-test';
 import * as styles from '../../../src/components/common/styles';
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
@@ -12,6 +13,7 @@ import {
   imageEmoji,
   generateSkinVariation,
 } from '../../../src/support/test-data';
+import * as helper from './_common-test-helpers';
 
 const baseEmoji = imageEmoji;
 
@@ -160,6 +162,96 @@ describe('<EmojiPreview />', () => {
 
       wrapper.simulate('mouseLeave');
       expect(wrapper.state('selectingTone')).to.equal(false);
+    });
+  });
+
+  describe('Add custom emoji', () => {
+    const safeFindStartEmojiUpload = async component => {
+      await waitUntil(() => helper.startEmojiUploadVisible(component));
+      return helper.findStartEmojiUpload(component);
+    };
+
+    const waitUntilPreviewSectionIsVisible = async component => {
+      const emojiPreviewSection = () =>
+        helper.findEmojiPreviewSection(component);
+      await waitUntil(() => emojiPreviewSection().exists());
+      return emojiPreviewSection();
+    };
+
+    describe('Upload not supported', () => {
+      it('"Add custom emoji" button should not appear on mouse-enter event', async () => {
+        const component = mount(
+          <EmojiPreview
+            emoji={emoji}
+            toneEmoji={toneEmoji}
+            uploadSupported={false}
+          />,
+        );
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        emojiPreviewSection.simulate('mouseenter');
+
+        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+      });
+    });
+
+    describe('Upload supported', () => {
+      let component;
+
+      beforeEach(() => {
+        component = mount(
+          <EmojiPreview
+            emoji={emoji}
+            toneEmoji={toneEmoji}
+            uploadSupported={true}
+          />,
+        );
+      });
+
+      const assertCustomEmojiButtonShown = async () => {
+        const addCustomEmojiButton = await safeFindStartEmojiUpload(component);
+        expect(
+          addCustomEmojiButton,
+          'Add custom emoji button defined',
+        ).to.not.equal(undefined);
+      };
+
+      it('"Add custom emoji" button should appear on mouse-enter event', async () => {
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        emojiPreviewSection.simulate('mouseenter');
+
+        await assertCustomEmojiButtonShown();
+      });
+
+      it('"Add custom emoji" button should not appear after mouse-leave event', async () => {
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        emojiPreviewSection.simulate('mouseenter');
+
+        await assertCustomEmojiButtonShown();
+
+        emojiPreviewSection.simulate('mouseleave');
+        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+      });
+
+      it('"Add custom emoji" button should not appear when Tone is clicked', async () => {
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        emojiPreviewSection.simulate('mouseenter');
+
+        await assertCustomEmojiButtonShown();
+
+        const instance = component.instance() as EmojiPreview;
+        instance.onToneButtonClick();
+        component.update();
+
+        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+      });
     });
   });
 });

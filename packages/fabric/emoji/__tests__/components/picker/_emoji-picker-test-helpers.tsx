@@ -20,10 +20,6 @@ import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerLis
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import { customCategory } from '../../../src/constants';
-import EmojiPreview, {
-  addEmojiClassName,
-  previewSectionClassName,
-} from '../../../src/components/common/EmojiPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -182,16 +178,6 @@ const findCustomSection = component =>
 export const customSectionVisible = (component): boolean =>
   component.update() && component.findWhere(findCustomSection).length > 0;
 
-export const findEmojiPreviewSection = component =>
-  component.update() && component.find(`.${previewSectionClassName}`);
-
-export const findStartEmojiUpload = component =>
-  component.update() &&
-  component.find(`Button[className="${addEmojiClassName}"]`);
-
-export const startEmojiUploadVisible = (component): boolean =>
-  findStartEmojiUpload(component).length > 0;
-
 export const findEmojiNameInput = component =>
   component.update() &&
   component.find(`.${commonStyles.uploadChooseFileEmojiName} input`);
@@ -234,11 +220,6 @@ export const findEmojiWithId = (component, id) =>
 
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
-
-export const findPreview = component =>
-  component.update() && component.find(EmojiPreview);
-
-export const previewVisible = component => findPreview(component).length > 0;
 
 export const findUploadError = component =>
   component.update() && component.find(`.${commonStyles.uploadError}`);
