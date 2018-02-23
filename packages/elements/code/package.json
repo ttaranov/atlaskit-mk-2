@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "config": {
     "access": "public"
   },
@@ -13,12 +13,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^2.3.3",
+    "@atlaskit/theme": "^2.3.4",
     "react-syntax-highlighter": "^6.0.2",
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.1",
+    "@atlaskit/docs": "^2.4.3",
     "enzyme": "^3.3.0"
   },
   "peerDependencies": {
@@ -36,7 +36,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "keywords": [
     "atlaskit",

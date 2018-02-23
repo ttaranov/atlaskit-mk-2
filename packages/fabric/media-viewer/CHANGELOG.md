@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 10.0.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 10.0.3
 
 ## 10.0.2

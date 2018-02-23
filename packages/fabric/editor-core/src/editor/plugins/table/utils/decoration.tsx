@@ -4,6 +4,7 @@ import { TableMap } from 'prosemirror-tables';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { tableStartPos } from './position';
 import { stateKey as tablePluginKey } from '../../../../plugins/table';
+import { getTableNode } from './nodes';
 
 export const createHoverDecorationSet = (
   from: number,
@@ -42,4 +43,32 @@ export const createControlsDecorationSet = (
       class: `with-controls last-update-${new Date().valueOf()}`,
     }),
   ]);
+};
+
+export const createNumberColumnDecorationSet = (
+  state: EditorState,
+): DecorationSet | null => {
+  const tableNode = getTableNode(state);
+  if (!tableNode || !tableNode.attrs.isNumberColumnEnabled) {
+    return null;
+  }
+  const start = tableStartPos(state);
+  const map = TableMap.get(tableNode);
+  const set: Decoration[] = [];
+
+  for (let i = 0, count = tableNode.childCount; i < count; i++) {
+    const cell = tableNode.child(i).child(0);
+    if (cell.type === state.schema.nodes.tableHeader) {
+      continue;
+    }
+    const from = start + map.map[i * map.width];
+
+    set.push(
+      Decoration.node(from, from + cell.nodeSize, {
+        contentEditable: false,
+      } as any),
+    );
+  }
+
+  return DecorationSet.create(state.doc, set);
 };

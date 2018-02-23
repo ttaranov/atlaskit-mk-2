@@ -1,5 +1,11 @@
 # @atlaskit/media-avatar-picker
 
+## 5.1.0
+- [minor] AvatarPickerDialog: added onImagePickedDataURI prop.  The callback will be passed the base64 data URI of the cropped image as a string.  onImagePickedDataURI is now optional [eacb1d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eacb1d3)
+
+## 5.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 5.0.1
 
 ## 5.0.0

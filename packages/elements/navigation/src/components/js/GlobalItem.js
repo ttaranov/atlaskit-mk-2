@@ -61,10 +61,14 @@ export default class GlobalItem extends PureComponent<Props> {
       role,
       onKeyDown: this.handleKeyDown,
     };
+
+    const hoverOverrideStyles = href ? '&:hover { color: inherit; }' : '';
+
     // $FlowFixMe
     if (CustomComponent) {
       const StyledComponent = styled(CustomComponent)`
         ${globalItemStyles};
+        ${hoverOverrideStyles};
       `;
       return (
         <StyledComponent
@@ -81,9 +85,8 @@ export default class GlobalItem extends PureComponent<Props> {
     }
     if (href) {
       const StyledLink = styled(DefaultLinkComponent)`
-        ${globalItemStyles} &:hover {
-          color: inherit;
-        }
+        ${globalItemStyles};
+        ${hoverOverrideStyles};
       `;
       return (
         <StyledLink

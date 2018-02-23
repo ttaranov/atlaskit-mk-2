@@ -1,19 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import InlineEditStateless from './InlineEditStateless';
-
-type Props = {
-  /** Label above the input. */
-  label: string,
-  /** Component to be shown when reading only */
-  readView: Node | string | Object,
-  /** Function passed to stateless component, isEditing will be set to false
-   before the passed function is called. */
-  onConfirm: any => mixed,
-  /** Function passed to stateless component, isEditing will be set to false
-   before the passed function is called. */
-  onCancel: any => mixed,
-};
+import type { StatefulProps } from './types';
 
 type State = {
   isEditing: boolean,
@@ -24,7 +12,7 @@ type DefaultProps = {
   readView: string,
 };
 
-export default class InlineEditor extends Component<Props, State> {
+export default class InlineEditor extends Component<StatefulProps, State> {
   state = {
     isEditing: false,
   };

@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 6.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 6.0.1
 
 ## 6.0.0

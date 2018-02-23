@@ -2,11 +2,11 @@
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import k2s from 'kind2string';
 
 import Description from './Description';
-import convert from './kindToString';
-import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
+import { H2 } from './Heading';
 
 const Heading = styled.h3`
   border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
@@ -75,40 +75,15 @@ type PropTypeHeadingProps = {
   defaultValue?: any,
 };
 
-const resolveFromGeneric = type => {
-  if (type.value.kind === 'generic') return resolveFromGeneric(type.value);
-  return type.value;
-};
-
 function PropTypeHeading(props: PropTypeHeadingProps) {
-  let typeName = props.type.kind;
-  if (typeName === 'nullable') {
-    typeName = `?${props.type.arguments.kind}`;
-  } else if (typeName === 'union') {
-    typeName = 'union';
-  } else if (typeName === 'generic') {
-    const r = resolveFromGeneric(props.type);
-    if (r.kind === 'external') {
-      typeName = `${r.moduleSpecifier}.${r.name}`;
-    } else if (r.kind === 'null') {
-      typeName = r.kind;
-    } else {
-      typeName = r.kind;
-    }
-  }
-
-  let defaultValue = null;
-
-  if (props.defaultValue) {
-    defaultValue = `${convert(props.defaultValue)}`;
-  }
-
   return (
     <Heading>
       <code>
-        <HeadingName>{convert(props.name)}</HeadingName>
-        <HeadingType>{typeName}</HeadingType>
-        {defaultValue && <HeadingDefault> = {defaultValue}</HeadingDefault>}
+        <HeadingName>{props.name}</HeadingName>
+        <HeadingType>{props.type}</HeadingType>
+        {props.defaultValue && (
+          <HeadingDefault> = {props.defaultValue}</HeadingDefault>
+        )}
         {props.required ? <HeadingRequired> required</HeadingRequired> : null}
       </code>
     </Heading>
@@ -177,6 +152,7 @@ const renderPropType = propType => {
       '',
     );
   }
+
   if (!propType.value) {
     // eslint-disable-next-line no-console
     console.error(
@@ -188,12 +164,12 @@ const renderPropType = propType => {
   }
 
   return (
-    <PropTypeWrapper key={convert(propType.key)}>
+    <PropTypeWrapper key={k2s.convert(propType.key)}>
       <PropTypeHeading
-        name={propType.key}
+        name={k2s.convert(propType.key)}
         required={!propType.optional}
-        type={propType.value}
-        defaultValue={propType.default}
+        type={k2s.getKind(propType.value)}
+        defaultValue={propType.default && k2s.convert(propType.default)}
       />
       {description && <Description>{description}</Description>}
       <PrettyPropType type={propType.value} />

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "4.11.10",
+  "version": "4.11.11",
   "description": "Droplist component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,14 +15,14 @@
       "name": "Mike G"
     }
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^10.9.1",
-    "@atlaskit/item": "^5.0.1",
-    "@atlaskit/layer": "^2.7.1",
-    "@atlaskit/spinner": "^4.1.4",
-    "@atlaskit/theme": "^2.3.3",
-    "@atlaskit/tooltip": "^8.3.1",
+    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/item": "^5.0.2",
+    "@atlaskit/layer": "^2.7.2",
+    "@atlaskit/spinner": "^4.1.5",
+    "@atlaskit/theme": "^2.3.4",
+    "@atlaskit/tooltip": "^8.3.2",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.5",
     "keycode": "^2.1.7",
@@ -34,11 +34,11 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.0.3",
-    "@atlaskit/button": "^6.4.1",
-    "@atlaskit/docs": "^2.0.0",
-    "@atlaskit/field-base": "^8.1.10",
-    "@atlaskit/lozenge": "^3.5.1",
+    "@atlaskit/avatar": "^9.0.4",
+    "@atlaskit/button": "^6.4.2",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/field-base": "^8.1.13",
+    "@atlaskit/lozenge": "^3.5.2",
     "enzyme": "^3.3.0"
   },
   "keywords": [

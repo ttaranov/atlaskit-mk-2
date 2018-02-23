@@ -23,6 +23,7 @@ import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
+import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 
 export type EditorAppearance =
   | 'message'
@@ -71,7 +72,7 @@ export interface EditorProps {
   allowExtension?: boolean;
   allowConfluenceInlineComment?: boolean;
   allowPlaceholderCursor?: boolean;
-  allowTemplatePlaceholders?: boolean;
+  allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
 
   saveOnEnter?: boolean;

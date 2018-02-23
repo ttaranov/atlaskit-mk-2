@@ -1,5 +1,11 @@
 # @atlaskit/media-editor
 
+## 4.1.0
+- [minor] Improve mediaEditor core bundle binaries; reducing bundle size, es2015 usage and remave it to mediaEditor [91c1ce1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c1ce1)
+
+## 4.0.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 4.0.2
 
 ## 4.0.1

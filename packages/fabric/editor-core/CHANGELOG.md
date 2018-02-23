@@ -1,5 +1,47 @@
 # @atlaskit/editor-core
 
+## 62.1.2
+- [patch] fixes RangeError bug when shouldFocus=true [adbd055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adbd055)
+
+## 62.1.1
+- [patch] fix prosemirror-view when collab editing tables [111cc6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111cc6a)
+
+## 62.1.0
+
+
+- [minor] advanced features for tables [e0bac20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bac20)
+
+## 62.0.23
+- [patch] Fix Insert Toolbar throws error about context if not placed inside EditorContext [dca4821](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dca4821)
+
+## 62.0.22
+- [patch] [SMRT-156] Start tracking the containerId, objectId & mentioned user when a Mention is inserted into the Editor [36c1b22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c1b22)
+
+## 62.0.21
+- [patch] FS-1461 objectAri and containerAri are optional in RendererContext [1b20296](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b20296)
+
+## 62.0.20
+
+## 62.0.19
+- [patch] Adding opt out instructions for bitbucket users. [14cc50f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14cc50f)
+- [patch] Changes in inline autoformatting rules to make then more well defined. [e6a5a14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6a5a14)
+
+## 62.0.18
+- [patch] Fix the Floating toolbar styling - Bradleys wishlist [fe45969](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe45969)
+
+## 62.0.17
+- [patch] Hide the 'Insert Placeholder Text' menu item by default [1274a31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1274a31)
+
+## 62.0.16
+
+## 62.0.15
+
+## 62.0.14
+- [patch] Fix toolbar style in editor [ebe7265](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebe7265)
+
+## 62.0.13
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 62.0.12
 - [patch] Don't block getValue untill media is ready [2440642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2440642)
 

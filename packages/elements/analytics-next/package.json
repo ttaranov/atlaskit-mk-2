@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-next",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The 🆕 Atlaskit component analytics framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,7 +20,7 @@
     "name": "Analytics next",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "clone-deep": "^3.0.1",
     "prop-types": "^15.5.10"
@@ -29,8 +29,8 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/theme": "^2.3.0",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/theme": "^2.3.4",
     "enzyme": "^3.3.0",
     "redux": "^3.7.2"
   }

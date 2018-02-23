@@ -23,7 +23,7 @@ type Props = {
   /** The value of the input. */
   value?: string | number,
   /** Handler to be called when the input changes. */
-  onChange?: (event: Event) => mixed,
+  onChange?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */

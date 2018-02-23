@@ -1,5 +1,13 @@
 # @atlaskit/conversation
 
+## 5.2.5
+- [patch] Adding documentations and fixed prop-types [4430cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4430cbb)
+
+## 5.2.4
+
+## 5.2.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 5.2.2
 - [patch] Enabling hyperlinks in the conversation editor [a151fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a151fd3)
 
