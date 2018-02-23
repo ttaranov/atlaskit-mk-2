@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.1.2
+- [patch] fixes RangeError bug when shouldFocus=true [adbd055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adbd055)
+
 ## 62.1.1
 - [patch] fix prosemirror-view when collab editing tables [111cc6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111cc6a)
 
