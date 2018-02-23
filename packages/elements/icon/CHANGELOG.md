@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.9.3
+- [patch] removed role props to make it more accessible [88cc276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88cc276)
+
 ## 10.9.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
