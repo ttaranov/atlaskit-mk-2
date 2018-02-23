@@ -36,7 +36,6 @@ export interface ResourceProvider {
     containerId: string,
     value: any,
     meta: any,
-    duc,
   ): Promise<Conversation>;
   addComment(
     conversationId: string,
