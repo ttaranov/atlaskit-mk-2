@@ -3,6 +3,8 @@ import { AvatarGroup } from '@atlaskit/avatar';
 import { UserViewModel } from '../../../shared/ViewModel';
 import { Wrapper } from './styled';
 
+export const maxAvatarCount = 5;
+
 export interface UsersProps {
   users?: UserViewModel[];
 }
@@ -30,6 +32,7 @@ export default class Users extends React.Component<UsersProps> {
     return (
       <Wrapper>
         <AvatarGroup
+          maxCount={maxAvatarCount}
           appearance="stack"
           size="small"
           data={users.map(user => ({

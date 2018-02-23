@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { maxAvatarCount } from '../shared/CardDetails/Users';
 
 export const ActionsStateWrapper = styled.div`
   display: flex;
@@ -16,5 +17,5 @@ export const AlertWrapper = styled.div`
   overflow: hidden;
   pointer-events: none;
   /* z-index has to be 1 higher than the number of avatars in the avatar stack */
-  z-index: 6;
+  z-index: ${maxAvatarCount + 1};
 `;
