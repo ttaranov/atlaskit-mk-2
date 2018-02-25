@@ -298,7 +298,7 @@
     "prosemirror-commands": "^1.0.1",
     "prosemirror-history": "^1.0.0",
     "prosemirror-inputrules": "^1.0.0",
-    "prosemirror-keymap": "^1.0.0",
+    "prosemirror-keymap": "^1.0.1",
     "prosemirror-markdown": "^1.0.1",
     "prosemirror-model": "^1.0.0",
     "prosemirror-schema-basic": "^1.0.0",
