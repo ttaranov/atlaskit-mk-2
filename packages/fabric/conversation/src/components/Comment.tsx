@@ -42,12 +42,12 @@ export interface SharedProps {
 
   // Event Hooks
   onUserClick?: (user: User) => void;
+  onRetry?: (localId?: string) => void;
 }
 
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
-  onRetry?: (localId?: string) => void;
 }
 
 export interface State {
@@ -104,12 +104,13 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     if (
-      newComments.some(comment => {
+      newComments.some(newComment => {
         const [oldComment] = oldComments.filter(
-          c =>
-            c.commentId === comment.commentId || c.localId === comment.localId,
+          oldComment =>
+            oldComment.commentId === newComment.commentId ||
+            oldComment.localId === newComment.localId,
         );
-        return commentChanged(oldComment, comment);
+        return commentChanged(oldComment, newComment);
       })
     ) {
       return true;
@@ -268,7 +269,7 @@ export default class Comment extends React.Component<Props, State> {
 
     return comments.map(child => (
       <CommentContainer
-        key={child.commentId}
+        key={child.localId}
         comment={child}
         user={user}
         conversationId={conversationId}
@@ -280,6 +281,7 @@ export default class Comment extends React.Component<Props, State> {
         onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
+        renderComment={props => <Comment {...props} />}
       />
     ));
   }
