@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.2.0
+- [minor] replaceSelection with empty string removes selection [a764af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a764af6)
+
 ## 62.1.3
 
 ## 62.1.2
