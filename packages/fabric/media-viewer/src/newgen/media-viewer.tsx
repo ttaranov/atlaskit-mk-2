@@ -69,10 +69,9 @@ export const update = (model: Model, message: Message): Model => {
 };
 
 export type DispatchFn = (message: Message) => void;
-export type ComponentProps = Model & { dispatch: DispatchFn };
-
-export const Component = (props: ComponentProps) => {
-  switch (props.type) {
+export type ComponentProps = { model: Model } & { dispatch: DispatchFn };
+export const Component = ({ model }: ComponentProps) => {
+  switch (model.type) {
     case 'LOADING':
       return <Spinner />;
     case 'ERROR':
@@ -80,7 +79,7 @@ export const Component = (props: ComponentProps) => {
     case 'LOADED':
       // loaded means that we have a list of media items to start with.
       // those items doesn't necessarily mean that have been completely loaded.
-      return <div>{props.name}</div>;
+      return <div>{model.name}</div>;
   }
 };
 

@@ -44,7 +44,7 @@ describe('MediaViewer', () => {
         type: 'LOADING',
       };
 
-      const c = mount(<Component {...model} dispatch={() => {}} />);
+      const c = mount(<Component model={model} dispatch={() => {}} />);
       expect(c.find(Spinner)).toHaveLength(1);
     });
   });
