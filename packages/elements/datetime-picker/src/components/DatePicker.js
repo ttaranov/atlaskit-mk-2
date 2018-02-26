@@ -4,7 +4,7 @@ import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import withCtrl from 'react-ctrl';
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ type Props = {
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
   /** The icon to show in the field. */
-  icon: typeof Component,
+  icon: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
