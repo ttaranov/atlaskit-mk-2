@@ -61,26 +61,6 @@ ${code`
 { component: '@atlaskit/button', version: '6.4.2' }
 `}
 
-### Internal Atlaskit events
-
-We also create and fire our own internal events on the \`atlaskit\` channel. These events are designed to be used for our own analysis on how/where our components are used.
-These aren't captured unless your app uses a custom Atlaskit \`AnalyticsListener\` on the 'atlaskit' channel that we can provide you.
-
-E.g. Our default @atlaskit/button export:
-
-${code`
-withAnalyticsEvents({
-  onClick: createAnalyticsEvent => {
-    const consumerEvent = createAnalyticsEvent({
-      action: 'click',
-    });
-    consumerEvent.clone().fire('atlaskit');
-
-    return consumerEvent;
-  },
-})(Button),
-`}
-
 ## Instrumented Components
 
 Here is a list of components that are currently instrumented with analytics. Most, if not all, of their prop callback functions should have analytics events.

@@ -172,7 +172,8 @@ export type ButtonType = Button;
 export const ButtonBase = Button;
 
 export default withAnalyticsContext({
-  component: name,
+  component: 'button',
+  package: name,
   version,
 })(
   withAnalyticsEvents({

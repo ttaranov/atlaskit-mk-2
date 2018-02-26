@@ -45,7 +45,7 @@ export type ButtonProps = {
   isDisabled?: boolean,
   /** Change the style to indicate the button is selected. */
   isSelected?: boolean,
-  /** Handler to be called on click. Will be passed the DOM event and Analytics event as arguments. */
+  /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
   onClick?: (e: SyntheticEvent<>, analyticsEvent: UIAnalyticsEvent) => void,
   /** Set the amount of padding in the button. */
   spacing?: 'compact' | 'default' | 'none',
