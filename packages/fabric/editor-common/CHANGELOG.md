@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 6.3.1
+
 ## 6.3.0
 - [minor] Introduce the placeholder node to the ADF [2441f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2441f92)
 

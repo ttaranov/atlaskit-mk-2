@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 11.5.2
+
 ## 11.5.1
 - [patch] FS-1461 fixed rendererContext handling in TaskItem [6023540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6023540)
 

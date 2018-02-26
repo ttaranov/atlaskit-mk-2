@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 24.0.5
+- [patch] fix new smart-card design which is showing the dropdown below consecutive smart-cards [5574b67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5574b67)
+- [patch] fix issue with smart-card dropdown being hidden behind successive cards in new designs [ff01687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff01687)
+
 ## 24.0.4
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
