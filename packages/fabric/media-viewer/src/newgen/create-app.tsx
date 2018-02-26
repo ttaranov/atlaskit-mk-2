@@ -2,10 +2,14 @@ import * as React from 'react';
 
 // TODO Factor out dispatch fn here
 export type CreateAppOptions<Model, Message, Props> = {
-  initialModel: (props: Props) => Model;
-  initialMessage?: (props: Props) => Message;
+  initialModel: Model;
+  initialMessage?: Message;
   update: (model: Model, message: Message) => Model;
-  effects?: (message: Message, cfg: Props) => Promise<Message> | null;
+  effects: (
+    message: Message,
+    cfg: Props,
+    dispatch: (message: Message) => void,
+  ) => void;
   Component: React.StatelessComponent<{
     model: Model;
     dispatch: (message: Message) => void;
@@ -22,12 +26,12 @@ export function createApp<Model, Message, Props>({
   class App extends React.Component<Props, Model> {
     constructor() {
       super();
-      this.state = initialModel(this.props);
+      this.state = initialModel;
     }
 
     componentDidMount() {
       if (initialMessage) {
-        this.dispatch(initialMessage(this.props));
+        this.dispatch(initialMessage);
       }
     }
 
@@ -39,29 +43,20 @@ export function createApp<Model, Message, Props>({
           return newModel;
         },
         () => {
-          if (effects) {
-            const nextMessage = effects(message, this.props);
-            if (nextMessage) {
-              nextMessage.then(
-                message => {
-                  this.dispatch(message);
-                },
-                err => {
-                  console.error(err);
-                }, // TODO: crash hard
-              );
-            }
-          }
+          effects(message, this.props, message => this.dispatch(message));
         },
       );
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: Props, prevState: Model) {
+      // we can only call dispatch if props changed (not state)
+      // otherwise we end in an infinite loop
       // if any of the props change, we fully restart MV
-      this.state = initialModel(this.props);
-      if (initialMessage) {
-        // TODO: we can only call dispatch if props changed (not state)
-        // this.dispatch(initialMessage(this.props));
+      if (prevState === this.state) {
+        this.state = initialModel;
+        if (initialMessage) {
+          this.dispatch(initialMessage);
+        }
       }
     }
 

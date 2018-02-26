@@ -52,7 +52,7 @@ describe('MediaViewer', () => {
   });
 
   describe('effects', () => {
-    it('should emit the LOADED message when initialised successfully', () => {
+    it('should emit the LOADED message when initialised successfully', done => {
       const subject = new Subject<MediaItem>();
       const context = Stubs.context(
         contextConfig,
@@ -72,9 +72,8 @@ describe('MediaViewer', () => {
         dataSource: { list: [item] },
         initialItem: item,
       };
-
-      const p = effects(message, cfg)!.then(nextMessage => {
-        expect(nextMessage).toEqual({
+      const dispatch = message => {
+        expect(message).toEqual({
           type: 'LOADED',
           item: {
             type: 'file',
@@ -82,14 +81,14 @@ describe('MediaViewer', () => {
           },
           src: '',
         });
-      });
+        done();
+      };
 
+      effects(message, cfg, dispatch);
       subject.next({
         type: 'file',
         details: { id: 'my-id' },
       });
-
-      return p;
     });
   });
 });

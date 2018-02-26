@@ -7,14 +7,6 @@ import {
 } from '../components/media-viewer';
 import * as Blanket from './blanket';
 
-export type Config = {
-  context: Context;
-  dataSource: MediaViewerDataSource;
-  initialItem: MediaViewerItem;
-  collectionName?: string;
-  onClose?: () => void;
-};
-
 export type Model =
   | {
       state: 'LOADING';
@@ -28,9 +20,9 @@ export type Model =
       state: 'ERROR';
     };
 
-export const initialModel = (cfg: Config): Model => ({
+export const initialModel: Model = {
   state: 'LOADING',
-});
+};
 
 export type Message =
   | {
@@ -48,10 +40,8 @@ export type Message =
       type: 'CLOSE';
     };
 
-export const initialMessage = (cfg: Config): Message => {
-  return {
-    type: 'INIT',
-  };
+export const initialMessage: Message = {
+  type: 'INIT',
 };
 
 export const update = (model: Model, message: Message): Model => {
@@ -72,57 +62,6 @@ export const update = (model: Model, message: Message): Model => {
       };
     case 'CLOSE':
       return model;
-  }
-};
-
-export const effects = (
-  message: Message,
-  cfg: Config,
-): Promise<Message> | null => {
-  switch (message.type) {
-    case 'INIT':
-      return new Promise<Message>((resolve, reject) => {
-        const { context } = cfg;
-        context
-          .getMediaItemProvider(
-            cfg.initialItem.id,
-            cfg.initialItem.type,
-            cfg.collectionName,
-          )
-          .observable()
-          .subscribe({
-            next: item => {
-              context
-                .getDataUriService(cfg.collectionName)
-                .fetchImageDataUri(item, { width: 100, height: 100 })
-                .then(
-                  uri => {
-                    resolve({
-                      type: 'LOADED',
-                      item,
-                      src: uri,
-                    });
-                  },
-                  err => {
-                    resolve({
-                      type: 'LOADING_ERROR',
-                    });
-                  },
-                );
-            },
-            // TODO: complete handler
-            error: err => {
-              resolve({
-                type: 'LOADING_ERROR',
-              });
-            },
-          });
-      });
-    case 'CLOSE':
-      cfg.onClose && cfg.onClose();
-      return null;
-    default:
-      return null;
   }
 };
 
@@ -148,3 +87,62 @@ export const Component: React.StatelessComponent<Props> = ({
     )}
   </Blanket.Component>
 );
+
+export type Config = {
+  context: Context;
+  dataSource: MediaViewerDataSource;
+  initialItem: MediaViewerItem;
+  collectionName?: string;
+  onClose?: () => void;
+};
+
+export const effects = (
+  message: Message,
+  cfg: Config,
+  dispatch: (message: Message) => void,
+): void => {
+  switch (message.type) {
+    case 'INIT':
+      const { context } = cfg;
+      context
+        .getMediaItemProvider(
+          cfg.initialItem.id,
+          cfg.initialItem.type,
+          cfg.collectionName,
+        )
+        .observable()
+        .subscribe({
+          next: item => {
+            context
+              .getDataUriService(cfg.collectionName)
+              .fetchImageDataUri(item, { width: 100, height: 100 })
+              .then(
+                uri => {
+                  dispatch({
+                    type: 'LOADED',
+                    item,
+                    src: uri,
+                  });
+                },
+                err => {
+                  dispatch({
+                    type: 'LOADING_ERROR',
+                  });
+                },
+              );
+          },
+          // TODO: add "complete" handler
+          error: err => {
+            dispatch({
+              type: 'LOADING_ERROR',
+            });
+          },
+        });
+      break;
+    case 'CLOSE':
+      cfg.onClose && cfg.onClose();
+      break;
+    default:
+      break;
+  }
+};

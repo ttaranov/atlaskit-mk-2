@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { createApp } from './create-app';
 import * as MV from './media-viewer';
 
