@@ -31,13 +31,13 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
+          - (cd build/ci-scripts && yarn stop-if-older-build)
           - yarn build
-          - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
-          - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
-          - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
-          - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
+          - yarn lint
+          - yarn typecheck
+          - yarn test
           - yarn test:changed
-          - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
+          - yarn test:browser:browserstack
           - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
