@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.3.0
+- [minor] Multiline behaviour for Message editor [3f61a6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f61a6a)
+
 ## 62.2.2
 - [patch] Fix image disappears after set to left-aligned [0c79fc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c79fc3)
 
