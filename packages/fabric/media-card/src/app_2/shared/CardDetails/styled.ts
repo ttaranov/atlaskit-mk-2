@@ -18,15 +18,7 @@ export const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-
-  /* make ellipsis work */
-  overflow: hidden;
-
-  /* 
-    move the avatars below the alert - I'd like to not use z-index which can have flow-on affects, 
-    but I need to use it because the avatars use z-index 
-  */
-  z-index: 0;
+  min-width: 0;
 `;
 
 export const TopWrapper = styled.div`
@@ -43,9 +35,7 @@ export const LeftWrapper = styled.div`
 
 export const CopyWrapper = styled.div`
   flex-grow: 1;
-
-  /* make ellipsis work */
-  overflow: hidden;
+  min-width: 0;
 `;
 
 export const Title = styled.div`

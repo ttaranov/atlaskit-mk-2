@@ -2,6 +2,8 @@
 
 exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
 .c0 {
+  border-radius: 3px;
+  cursor: pointer;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-inline-flexbox;
@@ -16,9 +18,7 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
   -moz-box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   padding: 0 8px 8px 8px;
-  border-radius: 3px;
   width: 100%;
-  cursor: pointer;
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -48,6 +48,7 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
 
 exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] = `
 .c0 {
+  border-radius: 3px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-inline-flexbox;
@@ -62,7 +63,6 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
   -moz-box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   padding: 0 8px 8px 8px;
-  border-radius: 3px;
   width: 100%;
   user-select: none;
   -ms-user-select: none;
@@ -85,6 +85,8 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
 
 exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
 .c0 {
+  border-radius: 3px;
+  cursor: pointer;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-inline-flexbox;
@@ -99,9 +101,7 @@ exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
   -moz-box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   padding: 0 8px 8px 8px;
-  border-radius: 3px;
   width: 100%;
-  cursor: pointer;
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -127,6 +127,7 @@ exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
 
 exports[`Wrapper should not have hover styles when isInteractive=false 1`] = `
 .c0 {
+  border-radius: 3px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-inline-flexbox;
@@ -141,7 +142,6 @@ exports[`Wrapper should not have hover styles when isInteractive=false 1`] = `
   -moz-box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   padding: 0 8px 8px 8px;
-  border-radius: 3px;
   width: 100%;
   user-select: none;
   -ms-user-select: none;
