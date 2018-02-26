@@ -1,11 +1,10 @@
 {
   "name": "@atlaskit/icon",
-  "version": "10.9.2",
+  "version": "10.10.1",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
   "module": "dist/esm/index.js",
-  "atlaskit:src": "./",
   "files": [
     "dist",
     "glyph",

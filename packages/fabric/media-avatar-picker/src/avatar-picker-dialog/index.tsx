@@ -194,7 +194,7 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
-  getPredefinedAvatars() {
+  getPredefinedAvatars(): Avatar[] {
     const { avatars } = this.props;
     const { selectedAvatar } = this.state;
     const avatarsSubset = avatars.slice(0, DEFAULT_VISIBLE_PREDEFINED_AVATARS);
@@ -211,7 +211,7 @@ export class AvatarPickerDialog extends PureComponent<
     const { selectedAvatar, selectedImage, selectedImageSource } = this.state;
     const avatars = this.getPredefinedAvatars();
 
-    if (selectedImage || selectedImageSource) {
+    if (selectedImage || selectedImageSource || avatars.length === 0) {
       return null;
     }
 

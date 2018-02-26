@@ -6,6 +6,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { pluginKey as isMultilineContentPluginKey } from '../../plugins/is-multiline-content';
 import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
@@ -31,19 +32,16 @@ export interface MessageEditorProps {
   maxHeight?: number;
 }
 
-// tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   border: 1px solid
     ${(props: MessageEditorProps) =>
       props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'};
   border-radius: 3px;
   height: auto;
   min-height: 34px;
-  ${(props: MessageEditorProps) =>
-    props.maxHeight
-      ? 'max-height: ' + props.maxHeight + 'px;'
-      : ''} max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
   animation: ${(props: MessageEditorProps) =>
@@ -63,16 +61,18 @@ const MessageEditor: any = styled.div`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-const ContentArea = styled(ContentStyles)`
+const ContentArea: any = styled(ContentStyles)`
   padding: 6px 16px 4px 8px;
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  max-width: inherit;
+  width: ${(props: any) => (props.isMultiline ? '100%' : 'auto')};
+  max-height: ${(props: MessageEditorProps) =>
+    props.maxHeight ? props.maxHeight + 'px' : 'none'};
 `;
 
-// tslint:disable-next-line:variable-name
-const SecondaryToolbarContainer = styled.div`
+const SecondaryToolbarContainer: any = styled.div`
   padding: 2px 4px 0 0;
   margin-bottom: -1px;
   box-sizing: border-box;
@@ -89,7 +89,6 @@ export default class Editor extends React.Component<
   static displayName = 'MessageEditor';
 
   private flashToggle = false;
-
   private appearance: EditorAppearance = 'message';
 
   private handleRef = ref => {
@@ -98,7 +97,13 @@ export default class Editor extends React.Component<
     }
   };
 
-  private renderChrome = ({ maxContentSize }) => {
+  private focusEditor = e => {
+    if (this.props.editorActions) {
+      this.props.editorActions.focus();
+    }
+  };
+
+  private renderChrome = ({ maxContentSize, isMultilineContent }) => {
     const {
       disabled,
       editorView,
@@ -124,8 +129,13 @@ export default class Editor extends React.Component<
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
+        onClick={this.focusEditor}
       >
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea
+          innerRef={this.handleRef}
+          maxHeight={maxHeight}
+          isMultiline={isMultilineContent}
+        >
           {customContentComponents}
           <PluginSlot
             disabled={!!disabled}
@@ -170,7 +180,10 @@ export default class Editor extends React.Component<
       <WithPluginState
         editorView={editorView}
         eventDispatcher={eventDispatcher}
-        plugins={{ maxContentSize: maxContentSizePluginKey }}
+        plugins={{
+          maxContentSize: maxContentSizePluginKey,
+          isMultilineContent: isMultilineContentPluginKey,
+        }}
         render={this.renderChrome}
       />
     );

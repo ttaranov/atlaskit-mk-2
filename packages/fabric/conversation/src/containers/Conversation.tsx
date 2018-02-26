@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { Provider, connect, Dispatch } from 'react-redux';
+import Conversation, { Props as BaseProps } from '../components/Conversation';
 import { ResourceProvider } from '../api/ConversationResource';
-import Conversation from '../components/Conversation';
-import { connect, withProvider, Dispatch } from '../internal/connect';
 import {
   addComment,
   updateComment,
@@ -16,8 +16,7 @@ import { uuid } from '../internal/uuid';
 import { State } from '../internal/store';
 import { User } from '../model';
 
-export interface Props {
-  id?: string;
+export interface Props extends BaseProps {
   localId: string;
   containerId: string;
   dataProviders?: ProviderFactory;
@@ -26,6 +25,7 @@ export interface Props {
   };
   isExpanded?: boolean;
   onCancel?: () => void;
+  provider: ResourceProvider;
 }
 
 const mapStateToProps = (state: State, ownProps: Props) => {
@@ -35,6 +35,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   const user = getUser(state);
 
   return {
+    ...ownProps,
     conversation,
     comments,
     containerId,
@@ -42,30 +43,33 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch<State>,
+  { provider }: Props,
+) => ({
   onAddComment(
     conversationId: string,
     parentId: string,
     value: any,
     localId?: string,
   ) {
-    dispatch(addComment(conversationId, parentId, value, localId));
+    dispatch(addComment(conversationId, parentId, value, localId, provider));
   },
 
   onUpdateComment(conversationId: string, commentId: string, value: any) {
-    dispatch(updateComment(conversationId, commentId, value));
+    dispatch(updateComment(conversationId, commentId, value, provider));
   },
 
   onDeleteComment(conversationId: string, commentId: string) {
-    dispatch(deleteComment(conversationId, commentId));
+    dispatch(deleteComment(conversationId, commentId, provider));
   },
 
   onRevertComment(conversationId: string, commentId: string) {
-    dispatch(revertComment(conversationId, commentId));
+    dispatch(revertComment(conversationId, commentId, provider));
   },
 
   onUpdateUser(user: User) {
-    dispatch(updateUser(user));
+    dispatch(updateUser(user, provider));
   },
 
   onCreateConversation(
@@ -74,12 +78,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     value: any,
     meta: any,
   ) {
-    dispatch(createConversation(localId, containerId, value, meta));
+    dispatch(createConversation(localId, containerId, value, meta, provider));
   },
 });
 
-const ResourcedConversation = withProvider(
-  connect(mapStateToProps, mapDispatchToProps)(Conversation),
+const ResourcedConversation = connect(mapStateToProps, mapDispatchToProps)(
+  Conversation as any,
 );
 
 export interface ContainerProps {
@@ -104,7 +108,13 @@ class ConversationContainer extends React.Component<ContainerProps, any> {
 
   render() {
     const { props, state: { localId } } = this;
-    return <ResourcedConversation {...props} localId={localId} />;
+    const { store } = props.provider;
+
+    return (
+      <Provider store={store}>
+        <ResourcedConversation {...props} localId={localId} />
+      </Provider>
+    );
   }
 }
 

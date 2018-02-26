@@ -7,14 +7,17 @@ import UIAnalyticsEvent from './UIAnalyticsEvent';
 export type ObjectType = { [string]: any };
 
 // Basic events
-export type AnalyticsEventPayload = ObjectType;
+export type AnalyticsEventPayload = {
+  action: string,
+  [string]: any,
+};
 
 export type AnalyticsEventUpdater =
-  | AnalyticsEventPayload
+  | ObjectType
   | ((payload: AnalyticsEventPayload) => AnalyticsEventPayload);
 
 export type AnalyticsEventProps = {
-  payload: {},
+  payload: AnalyticsEventPayload,
 };
 
 export interface AnalyticsEventInterface {

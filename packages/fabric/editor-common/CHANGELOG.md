@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.0
+- [minor] Introduce the placeholder node to the ADF [2441f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2441f92)
+
 ## 6.2.0
 - [minor] add support for <fab:adf> and confluence decision list transforms [e08eccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e08eccc)
 - [minor] add support for <fab:adf> and confluence decision list transforms [f43f928](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f43f928)

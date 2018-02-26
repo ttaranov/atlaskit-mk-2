@@ -12,6 +12,7 @@ import {
   mediaPlugin,
   imageUploadPlugin,
   maxContentSizePlugin,
+  isMultilineContentPlugin,
   hyperlinkPlugin,
   codeBlockPlugin,
   pastePlugin,
@@ -164,6 +165,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
+
+  if (props.appearance === 'message') {
+    plugins.push(isMultilineContentPlugin);
+  }
 
   return plugins;
 }

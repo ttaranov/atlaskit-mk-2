@@ -1,5 +1,25 @@
 # @atlaskit/editor-core
 
+## 62.3.0
+- [minor] Multiline behaviour for Message editor [3f61a6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f61a6a)
+
+## 62.2.2
+- [patch] Fix image disappears after set to left-aligned [0c79fc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c79fc3)
+
+## 62.2.1
+- [patch] Enforce minimum version of w3c-keyname to be >= 1.1.8 [dc120b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc120b9)
+
+## 62.2.0
+- [minor] replaceSelection with empty string removes selection [a764af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a764af6)
+
+## 62.1.3
+
+## 62.1.2
+- [patch] fixes RangeError bug when shouldFocus=true [adbd055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adbd055)
+
+## 62.1.1
+- [patch] fix prosemirror-view when collab editing tables [111cc6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111cc6a)
+
 ## 62.1.0
 
 

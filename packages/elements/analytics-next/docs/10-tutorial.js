@@ -19,7 +19,7 @@ export default md`
 
   The \`withAnalyticsEvents\` HOC provides the wrapped component with a function for creating analytics events. This function takes an optional \`payload\` argument.
 
-  **Important:** The payload object can have any shape you please, but by convention all Atlaskit components will include an \`action\` property in the payload to capture the initial user interaction which triggered the event. Other Atlassian teams are encouraged to follow this convention.
+  **Important:** The payload object must contain an \`action\` property. Use this field to capture the initial user interaction which triggered the event.
 
   Creating an event is as simple as this:
 

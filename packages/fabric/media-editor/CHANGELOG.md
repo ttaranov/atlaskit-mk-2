@@ -1,5 +1,8 @@
 # @atlaskit/media-editor
 
+## 4.1.1
+- [patch] Update MediaEditor bundle to remove crypto module usage [3a779d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a779d8)
+
 ## 4.1.0
 - [minor] Improve mediaEditor core bundle binaries; reducing bundle size, es2015 usage and remave it to mediaEditor [91c1ce1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c1ce1)
 
