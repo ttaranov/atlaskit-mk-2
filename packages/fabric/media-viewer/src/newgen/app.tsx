@@ -6,8 +6,6 @@ export const App = createApp<MV.Model, MV.Message, MV.Props>({
   initialMessage: MV.initialMessage,
   initialModel: MV.initialModel,
   update: MV.update,
-  Component: ({ dispatch, model }) => (
-    <MV.Component model={model} dispatch={dispatch} />
-  ),
+  Component: MV.Component,
   effects: MV.effects,
 });
