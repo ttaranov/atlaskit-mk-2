@@ -1,20 +1,20 @@
 import * as React from 'react';
 
-export type CreateAppOptions<State, Action, Props> = {
-  update: (prevState: State, action: Action) => State;
-  render: (dispatch: (action: Action) => void, state: State) => any;
+export type CreateAppOptions<State, Message, Props> = {
+  update: (prevState: State, message: Message) => State;
+  render: (dispatch: (message: Message) => void, state: State) => any;
   initialState: State;
-  initialAction?: (props: Props) => Action;
-  effects?: (action: Action) => Promise<Action> | null;
+  initialMessage?: (props: Props) => Message;
+  effects?: (message: Message) => Promise<Message> | null;
 };
 
-export function createApp<State, Action, Props>({
+export function createApp<State, Message, Props>({
   initialState,
   update,
   render,
-  initialAction,
+  initialMessage,
   effects,
-}: CreateAppOptions<State, Action, Props>): React.ComponentClass<Props> {
+}: CreateAppOptions<State, Message, Props>): React.ComponentClass<Props> {
   class C extends React.Component<Props, State> {
     constructor() {
       super();
@@ -22,24 +22,24 @@ export function createApp<State, Action, Props>({
     }
 
     componentDidMount() {
-      if (initialAction) {
-        this.dispatch(initialAction(this.props));
+      if (initialMessage) {
+        this.dispatch(initialMessage(this.props));
       }
     }
 
-    dispatch(action: Action): void {
+    dispatch(message: Message): void {
       this.setState(
         prevState => {
-          const newState = update(prevState, action);
-          console.log('-- action', action, 'new state', newState);
+          const newState = update(prevState, message);
+          console.log('-- message', message, 'new state', newState);
           return newState;
         },
         () => {
           if (effects) {
-            const maybeAction = effects(action);
-            if (maybeAction) {
-              maybeAction.then(action => {
-                this.dispatch(action);
+            const nextMessage = effects(message);
+            if (nextMessage) {
+              nextMessage.then(message => {
+                this.dispatch(message);
               }); // TODO handle errors
             }
           }
@@ -50,14 +50,14 @@ export function createApp<State, Action, Props>({
     componentDidUpdate(prevProps: Props) {
       // if any of the props change, we fully restart MV
       this.state = initialState;
-      if (initialAction) {
+      if (initialMessage) {
         // TODO: we can only call dispatch if props changed (not state)
-        // this.dispatch(initialAction(this.props));
+        // this.dispatch(initialMessage(this.props));
       }
     }
 
     render() {
-      return render((action: Action) => this.dispatch(action), this.state);
+      return render((message: Message) => this.dispatch(message), this.state);
     }
   }
   return C;

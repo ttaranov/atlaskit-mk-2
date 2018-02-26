@@ -6,7 +6,7 @@ import {
 } from '../components/media-viewer';
 import Spinner from '@atlaskit/spinner';
 
-export type DispatchFn = (action: Action) => void;
+export type DispatchFn = (message: Message) => void;
 
 export interface Props {
   context: Context;
@@ -27,7 +27,7 @@ export type State =
       type: 'ERROR';
     };
 
-export type Action =
+export type Message =
   | {
       type: 'INIT';
       props: Props;
@@ -44,23 +44,24 @@ export const initialState: State = {
   type: 'LOADING',
 };
 
-// message
-export const initialAction = (props: Props): Action => {
+// better name, e.g. init? -> takes props, can return message / model?
+export const initialMessage = (props: Props): Message => {
   return {
     type: 'INIT',
     props,
   };
 };
 
-export const update = (prevState: State, action: Action): State => {
-  switch (action.type) {
+export const update = (prevState: State, message: Message): State => {
+  switch (message.type) {
     case 'INIT':
       return prevState;
     case 'LOADED':
       return {
         type: 'LOADED',
         name:
-          (action.item.type === 'file' && action.item.details.name) || 'unkown',
+          (message.item.type === 'file' && message.item.details.name) ||
+          'unkown',
       };
     case 'LOADING_ERROR':
       return {
@@ -85,11 +86,11 @@ export const Component = (props: ComponentProps) => {
   }
 };
 
-export const effects = (action: Action): Promise<Action> | null => {
-  switch (action.type) {
+export const effects = (message: Message): Promise<Message> | null => {
+  switch (message.type) {
     case 'INIT':
       return new Promise((resolve, reject) => {
-        const { props } = action;
+        const { props } = message;
         const { context } = props;
         context
           .getMediaItemProvider(

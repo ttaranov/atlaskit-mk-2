@@ -3,7 +3,7 @@ import {
   update,
   effects,
   State,
-  Action,
+  Message,
   Component,
 } from '../../src/newgen/media-viewer';
 import { mount } from 'enzyme';
@@ -27,11 +27,11 @@ describe('MediaViewer', () => {
       const initialState: State = {
         type: 'LOADING',
       };
-      const action: Action = {
+      const message: Message = {
         type: 'LOADED',
         item: { type: 'file', details: {} },
       };
-      expect(update(initialState, action)).toEqual({
+      expect(update(initialState, message)).toEqual({
         type: 'LOADED',
         name: 'unkown',
       });
@@ -50,7 +50,7 @@ describe('MediaViewer', () => {
   });
 
   describe('effects', () => {
-    it('should emit the LOADED action when initialised successfully', done => {
+    it('should emit the LOADED message when initialised successfully', done => {
       const subject = new Subject<MediaItem>();
       const context = Stubs.context(
         contextConfig,
@@ -62,7 +62,7 @@ describe('MediaViewer', () => {
         occurrenceKey: '',
         type: 'file' as MediaItemType,
       };
-      const action: Action = {
+      const message: Message = {
         type: 'INIT',
         props: {
           context,
@@ -71,8 +71,8 @@ describe('MediaViewer', () => {
         },
       };
 
-      effects(action)!.then(resultAction => {
-        expect(resultAction).toEqual({
+      effects(message)!.then(nextMessage => {
+        expect(nextMessage).toEqual({
           type: 'LOADED',
           item: {
             type: 'file',
