@@ -5,7 +5,9 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
   Editor as AkEditor,
+  EditorActions,
   EditorContext,
+  EditorProps,
   WithEditorActions,
   CollapsedEditor,
 } from '@atlaskit/editor-core';
@@ -22,6 +24,9 @@ export interface Props {
   // Provider
   dataProviders?: ProviderFactory;
   user?: User;
+
+  // Editor
+  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
 }
 
 export interface State {
@@ -95,6 +100,45 @@ export default class Editor extends React.Component<Props, State> {
     actions.clear();
   };
 
+  private renderEditor = (actions: EditorActions) => {
+    const { dataProviders, renderEditor, defaultValue } = this.props;
+    let providers = {};
+
+    // @TODO Remove and just pass the factory through once AkEditor is updated
+    if (dataProviders) {
+      (dataProviders as any).providers.forEach((provider, key) => {
+        providers[key] = provider;
+      });
+    }
+
+    const defaultProps: EditorProps = {
+      appearance: 'comment',
+      shouldFocus: true,
+      allowCodeBlocks: true,
+      allowTextFormatting: true,
+      allowLists: true,
+      allowHyperlinks: true,
+      onSave: () => this.onSave(actions),
+      onCancel: this.onCancel,
+      defaultValue,
+      ...providers,
+    };
+
+    return (
+      <CollapsedEditor
+        placeholder="What do you want to say?"
+        isExpanded={this.state.isExpanded}
+        onFocus={this.onFocus}
+      >
+        {renderEditor ? (
+          renderEditor(AkEditor, defaultProps)
+        ) : (
+          <AkEditor {...defaultProps} />
+        )}
+      </CollapsedEditor>
+    );
+  };
+
   renderAvatar() {
     const { isEditing } = this.state;
     const { user } = this.props;
@@ -111,43 +155,12 @@ export default class Editor extends React.Component<Props, State> {
   }
 
   render() {
-    const { dataProviders } = this.props;
-    let providers = {};
-
-    // @TODO Remove and just pass the factory through once AkEditor is updated
-    if (dataProviders) {
-      (dataProviders as any).providers.forEach((provider, key) => {
-        providers[key] = provider;
-      });
-    }
-
     return (
       <EditorContext>
         <Container>
           {this.renderAvatar()}
           <EditorSection>
-            <WithEditorActions
-              render={actions => (
-                <CollapsedEditor
-                  placeholder="What do you want to say?"
-                  isExpanded={this.state.isExpanded}
-                  onFocus={this.onFocus}
-                >
-                  <AkEditor
-                    appearance="comment"
-                    defaultValue={this.props.defaultValue}
-                    shouldFocus={true}
-                    allowCodeBlocks={true}
-                    allowTextFormatting={true}
-                    allowLists={true}
-                    allowHyperlinks={true}
-                    onSave={() => this.onSave(actions)}
-                    onCancel={this.onCancel}
-                    {...providers}
-                  />
-                </CollapsedEditor>
-              )}
-            />
+            <WithEditorActions render={actions => this.renderEditor(actions)} />
           </EditorSection>
         </Container>
       </EditorContext>
