@@ -29,7 +29,8 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          - bolt install --pure-lockfile
+          # - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
+          # - bolt install --pure-lockfile
           # - yarn build
           # - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
           # - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
@@ -39,8 +40,8 @@ pipelines:
           # - (node build/ci-scripts/should.run.js browserstack) && yarn test:browser:browserstack
           # - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
           # - node build/ci-scripts/update.build.status.with.netlify.link.js
-        caches:
-          - node
+        # caches:
+          # - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -101,7 +102,9 @@ pipelines:
           script:
             - cd build/ci-scripts
             - yarn install --pure-lockfile
+            - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
             - node clear.pipelines.node.cache.js
+            - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
       - step:
           name: Creating new cache
           script:
