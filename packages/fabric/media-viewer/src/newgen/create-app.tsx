@@ -2,7 +2,9 @@ import * as React from 'react';
 
 export type CreateAppOptions<Model, Message, Props> = {
   update: (model: Model, message: Message) => Model;
-  render: (dispatch: (message: Message) => void, model: Model) => any;
+  render: (
+    props: { dispatch: (message: Message) => void; model: Model },
+  ) => any;
   initialModel: Model;
   initialMessage?: (props: Props) => Message;
   effects?: (message: Message) => Promise<Message> | null;
@@ -57,7 +59,11 @@ export function createApp<Model, Message, Props>({
     }
 
     render() {
-      return render((message: Message) => this.dispatch(message), this.state);
+      const props = {
+        dispatch: (message: Message) => this.dispatch(message),
+        model: this.state,
+      };
+      return render(props);
     }
   }
   return C;
