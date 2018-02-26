@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.2.2
+- [patch] Fix image disappears after set to left-aligned [0c79fc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c79fc3)
+
 ## 62.2.1
 - [patch] Enforce minimum version of w3c-keyname to be >= 1.1.8 [dc120b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc120b9)
 
