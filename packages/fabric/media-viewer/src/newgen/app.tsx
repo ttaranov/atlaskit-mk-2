@@ -2,10 +2,10 @@ import * as React from 'react';
 import { createApp } from './create-app';
 import * as MV from './media-viewer';
 
-export const App = createApp<MV.Model, MV.Message, MV.Props>({
-  initialMessage: MV.initialMessage,
+export const App = createApp<MV.Model, MV.Message, MV.Config>({
   initialModel: MV.initialModel,
+  initialMessage: MV.initialMessage,
   update: MV.update,
-  Component: MV.Component,
   effects: MV.effects,
+  Component: MV.Component,
 });

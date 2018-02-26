@@ -2,27 +2,27 @@ import * as React from 'react';
 
 // TODO Factor out dispatch fn here
 export type CreateAppOptions<Model, Message, Props> = {
+  initialModel: (props: Props) => Model;
+  initialMessage?: (props: Props) => Message;
   update: (model: Model, message: Message) => Model;
+  effects?: (message: Message) => Promise<Message> | null;
   Component: React.StatelessComponent<{
     model: Model;
     dispatch: (message: Message) => void;
   }>;
-  initialModel: Model;
-  initialMessage?: (props: Props) => Message;
-  effects?: (message: Message) => Promise<Message> | null;
 };
 
 export function createApp<Model, Message, Props>({
   initialModel,
-  update,
-  Component,
   initialMessage,
+  update,
   effects,
+  Component,
 }: CreateAppOptions<Model, Message, Props>): React.ComponentClass<Props> {
-  class C extends React.Component<Props, Model> {
+  class App extends React.Component<Props, Model> {
     constructor() {
       super();
-      this.state = initialModel;
+      this.state = initialModel(this.props);
     }
 
     componentDidMount() {
@@ -42,9 +42,14 @@ export function createApp<Model, Message, Props>({
           if (effects) {
             const nextMessage = effects(message);
             if (nextMessage) {
-              nextMessage.then(message => {
-                this.dispatch(message);
-              }); // TODO handle errors
+              nextMessage.then(
+                message => {
+                  this.dispatch(message);
+                },
+                err => {
+                  console.error(err);
+                }, // TODO: crash hard
+              );
             }
           }
         },
@@ -53,7 +58,7 @@ export function createApp<Model, Message, Props>({
 
     componentDidUpdate(prevProps: Props) {
       // if any of the props change, we fully restart MV
-      this.state = initialModel;
+      this.state = initialModel(this.props);
       if (initialMessage) {
         // TODO: we can only call dispatch if props changed (not state)
         // this.dispatch(initialMessage(this.props));
@@ -65,5 +70,5 @@ export function createApp<Model, Message, Props>({
       return <Component model={this.state} dispatch={dispatch} />;
     }
   }
-  return C;
+  return App;
 }

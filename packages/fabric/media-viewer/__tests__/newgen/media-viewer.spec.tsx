@@ -25,14 +25,14 @@ describe('MediaViewer', () => {
   describe('update', () => {
     it('once loaded the name is saved as unkown', () => {
       const initialModel: Model = {
-        type: 'LOADING',
+        state: 'LOADING',
       };
       const message: Message = {
         type: 'LOADED',
         item: { type: 'file', details: {} },
       };
       expect(update(initialModel, message)).toEqual({
-        type: 'LOADED',
+        state: 'LOADED',
         name: 'unkown',
       });
     });
@@ -41,7 +41,7 @@ describe('MediaViewer', () => {
   describe('Component', () => {
     it('should render the spinner for the LOADING model', () => {
       const model: Model = {
-        type: 'LOADING',
+        state: 'LOADING',
       };
 
       const c = mount(<Component model={model} dispatch={() => {}} />);
@@ -64,7 +64,7 @@ describe('MediaViewer', () => {
       };
       const message: Message = {
         type: 'INIT',
-        props: {
+        cfg: {
           context,
           dataSource: { list: [item] },
           initialItem: item,

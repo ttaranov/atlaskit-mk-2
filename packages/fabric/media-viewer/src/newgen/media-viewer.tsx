@@ -1,34 +1,38 @@
 import * as React from 'react';
+import Spinner from '@atlaskit/spinner';
 import { Context, MediaItem } from '@atlaskit/media-core';
 import {
   MediaViewerDataSource,
   MediaViewerItem,
 } from '../components/media-viewer';
-import Spinner from '@atlaskit/spinner';
 
-export interface Props {
+export type Config = {
   context: Context;
   dataSource: MediaViewerDataSource;
   initialItem: MediaViewerItem;
   collectionName?: string;
-}
+};
 
 export type Model =
   | {
-      type: 'LOADING';
+      state: 'LOADING';
     }
   | {
-      type: 'LOADED';
+      state: 'LOADED';
       name: string;
     }
   | {
-      type: 'ERROR';
+      state: 'ERROR';
     };
+
+export const initialModel = (cfg: Config): Model => ({
+  state: 'LOADING',
+});
 
 export type Message =
   | {
       type: 'INIT';
-      props: Props;
+      cfg: Config;
     }
   | {
       type: 'LOADED';
@@ -38,15 +42,10 @@ export type Message =
       type: 'LOADING_ERROR';
     };
 
-export const initialModel: Model = {
-  type: 'LOADING',
-};
-
-// better name, e.g. init? -> takes props, can return message / model?
-export const initialMessage = (props: Props): Message => {
+export const initialMessage = (cfg: Config): Message => {
   return {
     type: 'INIT',
-    props,
+    cfg,
   };
 };
 
@@ -56,46 +55,29 @@ export const update = (model: Model, message: Message): Model => {
       return model;
     case 'LOADED':
       return {
-        type: 'LOADED',
+        state: 'LOADED',
         name:
           (message.item.type === 'file' && message.item.details.name) ||
           'unkown',
       };
     case 'LOADING_ERROR':
       return {
-        type: 'ERROR',
+        state: 'ERROR',
       };
-  }
-};
-
-export type DispatchFn = (message: Message) => void;
-export type ComponentProps = { model: Model } & { dispatch: DispatchFn };
-export const Component: React.StatelessComponent<ComponentProps> = ({
-  model,
-}) => {
-  switch (model.type) {
-    case 'LOADING':
-      return <Spinner />;
-    case 'ERROR':
-      return <div>ERROR view</div>;
-    case 'LOADED':
-      // loaded means that we have a list of media items to start with.
-      // those items doesn't necessarily mean that have been completely loaded.
-      return <div>{model.name}</div>;
   }
 };
 
 export const effects = (message: Message): Promise<Message> | null => {
   switch (message.type) {
     case 'INIT':
-      return new Promise((resolve, reject) => {
-        const { props } = message;
-        const { context } = props;
+      return new Promise<Message>((resolve, reject) => {
+        const { cfg } = message;
+        const { context } = cfg;
         context
           .getMediaItemProvider(
-            props.initialItem.id,
-            props.initialItem.type,
-            props.collectionName,
+            cfg.initialItem.id,
+            cfg.initialItem.type,
+            cfg.collectionName,
           )
           .observable()
           .subscribe({
@@ -114,5 +96,23 @@ export const effects = (message: Message): Promise<Message> | null => {
       });
     default:
       return null;
+  }
+};
+
+export type Props = {
+  model: Model;
+  dispatch: (message: Message) => void;
+};
+
+export const Component: React.StatelessComponent<Props> = ({ model }) => {
+  switch (model.state) {
+    case 'LOADING':
+      return <Spinner />;
+    case 'ERROR':
+      return <div>ERROR view</div>;
+    case 'LOADED':
+      // loaded means that we have a list of media items to start with.
+      // those items doesn't necessarily mean that have been completely loaded.
+      return <div>{model.name}</div>;
   }
 };
