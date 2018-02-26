@@ -22,7 +22,7 @@ class ButtonWithCreate extends Component<WrappedProps> {
   handleClick = e => {
     const { createAnalyticsEvent, onClick } = this.props;
     if (onClick) {
-      onClick(e, createAnalyticsEvent({ a: 'b' }));
+      onClick(e, createAnalyticsEvent({ action: 'b' }));
     }
   };
 
@@ -66,7 +66,7 @@ describe('createAnalyticsEvent function prop', () => {
 
     expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
     if (analyticsEvent) {
-      expect(analyticsEvent.payload).toEqual({ a: 'b' });
+      expect(analyticsEvent.payload).toEqual({ action: 'b' });
     }
   });
 

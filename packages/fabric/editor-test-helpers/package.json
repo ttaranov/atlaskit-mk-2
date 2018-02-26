@@ -22,7 +22,7 @@
     "@atlaskit/media-core": "^14.0.1",
     "@atlaskit/media-test-helpers": "^9.0.2",
     "prosemirror-commands": "^1.0.1",
-    "prosemirror-keymap": "^1.0.0",
+    "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.0.0",
     "prosemirror-state": "^1.0.1",
     "prosemirror-view": "^1.0.0"

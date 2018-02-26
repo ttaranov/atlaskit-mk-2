@@ -8,7 +8,7 @@ let standardEventArgs;
 beforeEach(() => {
   consoleHandler = jest.fn();
   standardEventArgs = {
-    payload: { a: 'b' },
+    payload: { action: 'b' },
     context: [{ product: 'abc' }, { location: 'xyz' }],
     handlers: [consoleHandler],
   };
@@ -16,10 +16,10 @@ beforeEach(() => {
 
 it('should construct with required args', () => {
   const analyticsEvent = new UIAnalyticsEvent({
-    payload: { a: 'b' },
+    payload: { action: 'b' },
   });
   expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-  expect(analyticsEvent.payload).toEqual({ a: 'b' });
+  expect(analyticsEvent.payload).toEqual({ action: 'b' });
   expect(analyticsEvent.context).toEqual([]);
   expect(analyticsEvent.handlers).toEqual([]);
 });
@@ -51,6 +51,7 @@ it('should deep clone event payloads when cloning', () => {
     context: [],
     handlers: [],
     payload: {
+      action: 'click',
       a: { b: 'c' },
     },
   });
@@ -65,17 +66,20 @@ it('payload can be updated with an object that is shallow merged', () => {
     context: [],
     handlers: [],
     payload: {
+      action: 'click',
       a: { b: 'c' },
     },
   });
   analyticsEvent.update({ d: 'e' });
   expect(analyticsEvent.payload).toEqual({
+    action: 'click',
     a: { b: 'c' },
     d: 'e',
   });
 
   analyticsEvent.update({ a: { f: 'g' } });
   expect(analyticsEvent.payload).toEqual({
+    action: 'click',
     a: { f: 'g' },
     d: 'e',
   });
@@ -86,6 +90,7 @@ it('payload can be updated with a function', () => {
     context: [],
     handlers: [],
     payload: {
+      action: 'click',
       a: { b: 'c' },
       d: 'e',
     },
@@ -99,6 +104,7 @@ it('payload can be updated with a function', () => {
     },
   }));
   expect(analyticsEvent.payload).toEqual({
+    action: 'click',
     a: { b: 'c', f: 'g' },
     d: 'e',
   });
@@ -143,7 +149,7 @@ it('method calls do not work after being fired', () => {
   expect(newEvent).toBeNull();
 
   analyticsEvent.update({ a: 'c' });
-  expect(analyticsEvent.payload).toEqual({ a: 'b' });
+  expect(analyticsEvent.payload).toEqual({ action: 'b' });
 
   analyticsEvent.fire();
   expect(consoleHandler).toHaveBeenCalledTimes(1);
