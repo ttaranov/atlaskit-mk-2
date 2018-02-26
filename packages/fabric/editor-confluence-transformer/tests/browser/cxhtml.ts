@@ -51,6 +51,9 @@ import {
   taskList,
   taskItem,
   date,
+  placeholder,
+  decisionList,
+  decisionItem,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -928,6 +931,15 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
   });
 
+  describe('placeholder', () => {
+    const text = 'Write something...';
+    check(
+      'placeholder node',
+      `<ac:placeholder>${text}</ac:placeholder>`,
+      doc(p(placeholder({ text }))),
+    );
+  });
+
   describe('taskList', () => {
     check(
       'taskList with incomplete task items',
@@ -950,6 +962,28 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ),
       ),
     );
+  });
+
+  describe('fab:adf', () => {
+    check(
+      'p encoded in fab:adf tag between two p',
+      String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"storage\"}]}]]></fab:adf><p>world</p>`,
+      doc(p('hello'), p('storage'), p('world')),
+    );
+
+    describe('decisionList', () => {
+      check(
+        'decisionList with single decided item between p',
+        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"decisionList\",\"attrs\":{\"localId\":\"test-list-id\"},\"content\":[{\"type\":\"decisionItem\",\"attrs\":{\"localId\":\"test-id\",\"state\":\"DECIDED\"},\"content\":[{\"type\":\"text\",\"text\":\"Heading\"}]}]}]]></fab:adf><p>world</p>`,
+        doc(
+          p('hello'),
+          decisionList({ localId: 'test-list-id' })(
+            decisionItem({ localId: 'test-id', state: 'DECIDED' })('Heading'),
+          ),
+          p('world'),
+        ),
+      );
+    });
   });
 
   describe('unsupported content', () => {

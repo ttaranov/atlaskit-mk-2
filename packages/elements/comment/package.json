@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "2.6.15",
+  "version": "2.6.16",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@atlaskit/avatar": "^9.0.4",
     "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/editor-core": "^62.0.13",
+    "@atlaskit/editor-core": "^62.0.16",
     "enzyme": "^3.3.0"
   },
   "keywords": [

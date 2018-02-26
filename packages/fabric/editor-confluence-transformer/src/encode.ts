@@ -69,6 +69,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
+    } else if (node.type === schema.nodes.decisionList) {
+      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
     } else if (
@@ -81,9 +83,10 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
       return encodeTaskList(node);
-    }
-    if (node.type === schema.nodes.date) {
+    } else if (node.type === schema.nodes.date) {
       return encodeDate(node);
+    } else if (node.type === schema.nodes.placeholder) {
+      return encodePlaceholder(node);
     } else {
       throw new Error(
         `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
@@ -520,5 +523,20 @@ export default function encode(node: PMNode, schema: Schema) {
       elem.setAttribute('datetime', timestampToIso(timestamp));
     }
     return elem;
+  }
+
+  function encodePlaceholder(node: PMNode): Element {
+    let elem = doc.createElementNS(AC_XMLNS, 'ac:placeholder');
+    const { text } = node.attrs;
+    elem.textContent = text;
+    return elem;
+  }
+
+  function encodeAsADF(node: PMNode): Element {
+    const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
+    nsNode.appendChild(
+      doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
+    );
+    return nsNode;
   }
 }

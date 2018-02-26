@@ -19,7 +19,8 @@ pipelines:
             - yarn lint
             - yarn typecheck
             - yarn test
-            - yarn test:browser:browserstack
+            # Disabled until we find the source of the flakeyness
+            # - yarn test:browser:browserstack
             - yarn release
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
@@ -87,4 +88,5 @@ pipelines:
             - yarn lint
             - yarn typecheck
             - yarn test
-            - yarn test:browser:browserstack
+            # Disabled until we find the source of the flakeyness
+            # - yarn test:browser:browserstack

@@ -2,7 +2,7 @@
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
-import k2s from 'kind2string';
+import convert, { getKind } from 'kind2string';
 
 import Description from './Description';
 import PrettyPropType from './PrettyPropType';
@@ -164,12 +164,12 @@ const renderPropType = propType => {
   }
 
   return (
-    <PropTypeWrapper key={k2s.convert(propType.key)}>
+    <PropTypeWrapper key={convert(propType.key)}>
       <PropTypeHeading
-        name={k2s.convert(propType.key)}
+        name={convert(propType.key)}
         required={!propType.optional}
-        type={k2s.getKind(propType.value)}
-        defaultValue={propType.default && k2s.convert(propType.default)}
+        type={getKind(propType.value)}
+        defaultValue={propType.default && convert(propType.default)}
       />
       {description && <Description>{description}</Description>}
       <PrettyPropType type={propType.value} />

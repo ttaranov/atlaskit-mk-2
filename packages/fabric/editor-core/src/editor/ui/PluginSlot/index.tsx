@@ -2,16 +2,18 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { EditorAppearance } from '../../types';
+import { EditorAppearance, UIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
+import EditorActions from '../../actions';
 
 const PluginsComponentsWrapper = styled.div`
   display: flex;
 `;
 
 export interface Props {
-  items?: any[];
+  items?: Array<UIComponentFactory>;
   editorView?: EditorView;
+  editorActions?: EditorActions;
   eventDispatcher?: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
@@ -25,6 +27,7 @@ export default class PluginSlot extends React.Component<Props, any> {
   shouldComponentUpdate(nextProps: Props) {
     const {
       editorView,
+      editorActions,
       items,
       providerFactory,
       eventDispatcher,
@@ -35,6 +38,7 @@ export default class PluginSlot extends React.Component<Props, any> {
     } = this.props;
     return !(
       nextProps.editorView === editorView &&
+      nextProps.editorActions === editorActions &&
       nextProps.items === items &&
       nextProps.providerFactory === providerFactory &&
       nextProps.eventDispatcher === eventDispatcher &&
@@ -49,6 +53,7 @@ export default class PluginSlot extends React.Component<Props, any> {
     const {
       items,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       appearance,
@@ -67,8 +72,9 @@ export default class PluginSlot extends React.Component<Props, any> {
         {items.map((component, key) => {
           const props: any = { key };
           const element = component({
-            editorView,
-            eventDispatcher,
+            editorView: editorView as EditorView,
+            editorActions: editorActions as EditorActions,
+            eventDispatcher: eventDispatcher as EventDispatcher,
             providerFactory,
             appearance,
             popupsMountPoint,

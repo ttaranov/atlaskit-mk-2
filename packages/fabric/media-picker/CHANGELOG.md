@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 1.0.9
+
+## 1.0.8
+
 ## 1.0.7
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

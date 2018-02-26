@@ -1,5 +1,8 @@
 # @atlaskit/page-header
 
+## 2.3.0
+- [minor] Add disableTitleStyles prop to enable the composition of components that may be affected by the default heading styles. This is a stop-gap measure until we can make a breaking change to update the API to inherently facilitate this. [0866a89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0866a89)
+
 ## 2.2.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

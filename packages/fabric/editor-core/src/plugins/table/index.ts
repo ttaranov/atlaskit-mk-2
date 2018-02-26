@@ -40,7 +40,6 @@ import {
   getSelectedColumn,
   getSelectedRow,
   containsTableHeader,
-  getFirstSelectedCellElement,
   getCurrentCell,
   getTableElement,
   getTableNode,
@@ -53,6 +52,11 @@ export type TableStateSubscriber = (state: TableState) => any;
 export interface PluginConfig {
   isHeaderRowRequired?: boolean;
   allowColumnResizing?: boolean;
+  allowMergeCells?: boolean;
+  allowNumberColumn?: boolean;
+  allowBackgroundColor?: boolean;
+  allowHeaderRow?: boolean;
+  allowHeaderColumn?: boolean;
 }
 
 export class TableState {
@@ -68,6 +72,11 @@ export class TableState {
   view: EditorView;
   set: DecorationSet = DecorationSet.empty;
   allowColumnResizing: boolean = false;
+  allowMergeCells: boolean = false;
+  allowNumberColumn: boolean = false;
+  allowBackgroundColor: boolean = false;
+  allowHeaderRow: boolean = false;
+  allowHeaderColumn: boolean = false;
 
   private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
@@ -79,6 +88,11 @@ export class TableState {
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
     this.isHeaderRowRequired = !!pluginConfig.isHeaderRowRequired;
     this.allowColumnResizing = !!pluginConfig.allowColumnResizing;
+    this.allowMergeCells = !!pluginConfig.allowMergeCells;
+    this.allowNumberColumn = !!pluginConfig.allowNumberColumn;
+    this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
+    this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
+    this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
   }
 
   insertColumn = (column: number): void => {
@@ -228,7 +242,6 @@ export class TableState {
     let dirty = this.updateSelection();
     let controlsDirty = dirty;
     const { state } = this.view;
-    const cellSelection = getCellSelection(state);
 
     const tableElement = getTableElement(state, this.view);
     if ((domEvent && tableElement) || tableElement !== this.tableElement) {
@@ -242,21 +255,6 @@ export class TableState {
       this.tableNode = tableNode;
       dirty = true;
       controlsDirty = true;
-    }
-
-    // show floating toolbar only when the whole row, column or table is selected
-    const toolbarVisible =
-      cellSelection &&
-      (cellSelection.isColSelection() || cellSelection.isRowSelection())
-        ? true
-        : false;
-
-    const cellElement = toolbarVisible
-      ? getFirstSelectedCellElement(state, this.view)
-      : undefined;
-    if (cellElement !== this.cellElement) {
-      this.cellElement = cellElement;
-      dirty = true;
     }
 
     const tableActive = this.editorFocused && !!tableElement;
@@ -328,7 +326,6 @@ export class TableState {
       }
       // drop selection if editor looses focus
       if (!this.editorFocused) {
-        this.cellElement = undefined;
         clearSelection(state, dispatch);
         return true;
       }

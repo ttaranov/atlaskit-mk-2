@@ -4,16 +4,16 @@ import { AnalyticsEvent } from '../src';
 
 it('should be constructed with both action and payload args', () => {
   const analyticsEvent = new AnalyticsEvent({
-    payload: { a: 'b' },
+    payload: { action: 'b' },
   });
   expect(analyticsEvent).toEqual(expect.any(AnalyticsEvent));
-  expect(analyticsEvent.payload).toEqual({ a: 'b' });
+  expect(analyticsEvent.payload).toEqual({ action: 'b' });
 });
 
 it('can be cloned into a new event which has the same action and payload', () => {
   const analyticsEvent = new AnalyticsEvent({
     payload: {
-      a: { b: 'c' },
+      action: 'c',
     },
   });
   const clonedEvent = analyticsEvent.clone();
@@ -23,30 +23,33 @@ it('can be cloned into a new event which has the same action and payload', () =>
 it('should deep clone event payloads when cloning', () => {
   const analyticsEvent = new AnalyticsEvent({
     payload: {
-      a: { b: 'c' },
+      action: 'a',
+      user: {
+        id: 1,
+      },
     },
   });
   const clonedEvent = analyticsEvent.clone();
   expect(analyticsEvent).not.toBe(clonedEvent);
   expect(analyticsEvent.payload).not.toBe(clonedEvent.payload);
-  expect(analyticsEvent.payload.a).not.toBe(clonedEvent.payload.a);
+  expect(analyticsEvent.payload.user).not.toBe(clonedEvent.payload.user);
 });
 
 it('payload can be updated with an object that is shallow merged', () => {
   const analyticsEvent = new AnalyticsEvent({
     payload: {
-      a: { b: 'c' },
+      action: 'c',
     },
   });
   analyticsEvent.update({ d: 'e' });
   expect(analyticsEvent.payload).toEqual({
-    a: { b: 'c' },
+    action: 'c',
     d: 'e',
   });
 
-  analyticsEvent.update({ a: { f: 'g' } });
+  analyticsEvent.update({ action: 'g' });
   expect(analyticsEvent.payload).toEqual({
-    a: { f: 'g' },
+    action: 'g',
     d: 'e',
   });
 });
@@ -54,20 +57,20 @@ it('payload can be updated with an object that is shallow merged', () => {
 it('payload can be updated with a function', () => {
   const analyticsEvent = new AnalyticsEvent({
     payload: {
-      a: { b: 'c' },
-      d: 'e',
+      d: { b: 'c' },
+      action: 'e',
     },
   });
 
   analyticsEvent.update(payload => ({
     ...payload,
-    a: {
-      ...payload.a,
+    d: {
+      ...payload.d,
       f: 'g',
     },
   }));
   expect(analyticsEvent.payload).toEqual({
-    a: { b: 'c', f: 'g' },
-    d: 'e',
+    d: { b: 'c', f: 'g' },
+    action: 'e',
   });
 });
