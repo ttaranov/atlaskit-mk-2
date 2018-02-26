@@ -1,5 +1,6 @@
 // @flow
 import type { Node, Element, ElementType } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 type Func = () => any;
 
@@ -45,7 +46,7 @@ export type ButtonProps = {
   /** Change the style to indicate the button is selected. */
   isSelected?: boolean,
   /** Handler to be called on click. */
-  onClick?: (e: SyntheticEvent<>) => void,
+  onClick?: (e: SyntheticEvent<>, analyticsEvent: UIAnalyticsEvent) => void,
   /** Set the amount of padding in the button. */
   spacing?: 'compact' | 'default' | 'none',
   /** Assign specific tabIndex order to the underlying html button. */
