@@ -5,7 +5,7 @@
 import styled, { StyledComponentClass } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
 import {
   akGridSizeUnitless,
   akBorderRadius,
@@ -32,12 +32,11 @@ export const Wrapper = styled.span`
 
 // tslint:disable-next-line:variable-name
 export const ConfirmationPopup = styled.div`
-  background: #ffffff;
+  background: #fff;
   border-radius: ${akBorderRadius};
   box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   box-sizing: border-box;
   overflow: auto;
   max-height: none;

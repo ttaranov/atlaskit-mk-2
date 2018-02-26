@@ -71,13 +71,17 @@ interface ItemsByDate {
   items: Item[];
 }
 
+interface LoadingWrapperProps {
+  height: string;
+}
+
 // tslint:disable-next-line:variable-name
 const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 20px 0;
-  height: ${props => props.height || 'auto'};
+  height: ${(props: LoadingWrapperProps) => props.height || 'auto'};
 `;
 
 export default class ResourcedItemList extends PureComponent<Props, State> {
