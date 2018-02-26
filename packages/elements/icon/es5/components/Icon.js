@@ -58,14 +58,9 @@ var _uuid2 = _interopRequireDefault(_uuid);
 
 var _theme = require('@atlaskit/theme');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _constants = require('../constants');
 
-var sizes = {
-  small: '16px',
-  medium: '24px',
-  large: '32px',
-  xlarge: '48px'
-};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // NOTE: spanStyles is exported for testing
 // Once styled-components is bumped > 2.X.X we can enjoy `toHaveStyleRule` from
@@ -73,7 +68,7 @@ var sizes = {
 
 var getSize = function getSize(props) {
   if (props.size) {
-    return 'height: ' + sizes[props.size] + '; width: ' + sizes[props.size] + ';';
+    return 'height: ' + _constants.sizes[props.size] + '; width: ' + _constants.sizes[props.size] + ';';
   }
   return null;
 };
@@ -161,6 +156,6 @@ Icon.defaultProps = {
   onClick: function onClick() {}
 };
 exports.default = Icon;
-var size = exports.size = (0, _keys2.default)(sizes).reduce(function (p, c) {
+var size = exports.size = (0, _keys2.default)(_constants.sizes).reduce(function (p, c) {
   return (0, _assign2.default)(p, (0, _defineProperty3.default)({}, c, c));
 }, {});
