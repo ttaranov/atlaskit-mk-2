@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { Icon } from '@atlaskit/skeleton';
+import { Skeleton as SkeletonIcon } from '@atlaskit/icon';
 
 import SkeletonNavigationItems from '../../styled/skeleton/SkeletonNavigationItems';
 import SkeletonGlobalPrimaryIconOuter from '../../styled/skeleton/SkeletonGlobalPrimaryIconOuter';
@@ -12,13 +12,13 @@ const SkeletonGlobalTopItems = () => (
   <SkeletonGlobalTopItemsInner>
     <SkeletonNavigationItems>
       <SkeletonGlobalPrimaryIconOuter>
-        <Icon size="xlarge" weight="strong" />
+        <SkeletonIcon size="xlarge" weight="strong" />
       </SkeletonGlobalPrimaryIconOuter>
       <SkeletonGlobalIconOuter>
-        <Icon size="large" />
+        <SkeletonIcon size="large" />
       </SkeletonGlobalIconOuter>
       <SkeletonGlobalIconOuter>
-        <Icon size="large" />
+        <SkeletonIcon size="large" />
       </SkeletonGlobalIconOuter>
     </SkeletonNavigationItems>
   </SkeletonGlobalTopItemsInner>

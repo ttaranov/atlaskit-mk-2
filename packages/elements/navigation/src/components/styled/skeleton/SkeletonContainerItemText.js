@@ -1,11 +1,16 @@
 // @flow
 import styled from 'styled-components';
 
-import { gridSize } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 const SkeletonContainerItemText = styled.div`
-  margin-left: ${gridSize()}px;
-  width: ${gridSize() * 20}px;
+  height: ${math.multiply(gridSize, 2.5)}px;
+  background-color: currentColor;
+  border-radius: ${math.divide(gridSize, 2)}px;
+  opacity: 0.15;
+
+  margin-left: ${gridSize() * 3}px;
+  width: ${gridSize() * 17}px;
 `;
 
 SkeletonContainerItemText.displayName = 'SkeletonContainerItemText';

@@ -46,7 +46,7 @@ exports[`<SkeletonGlobalNavigation /> collapses its inner components 1`] = `
                 "text": [Function],
               },
               "default": Object {
-                "background": "transparent",
+                "background": "#0747A6",
               },
               "dragging": Object {
                 "background": "#2684FF",
@@ -193,7 +193,7 @@ exports[`<SkeletonGlobalNavigation /> renders a skeleton representation of the n
                 "text": [Function],
               },
               "default": Object {
-                "background": "transparent",
+                "background": "#0747A6",
               },
               "dragging": Object {
                 "background": "#2684FF",

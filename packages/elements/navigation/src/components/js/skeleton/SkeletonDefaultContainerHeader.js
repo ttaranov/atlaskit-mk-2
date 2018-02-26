@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from 'react';
 
-import { Avatar, Paragraph } from '@atlaskit/skeleton';
+import { Skeleton as SkeletonAvatar } from '@atlaskit/avatar';
 
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
-import SkeletonContainerItemText from '../../styled/skeleton/SkeletonContainerItemText';
+import SkeletonContainerHeaderText from '../../styled/skeleton/SkeletonContainerHeaderText';
 import SkeletonDefaultContainerHeaderInner from '../../styled/skeleton/SkeletonDefaultContainerHeaderInner';
 
 export type Props = {
@@ -20,11 +20,9 @@ export default class SkeletonDefaultContainerHeader extends Component<Props> {
   render() {
     return (
       <SkeletonDefaultContainerHeaderInner>
-        <Avatar appearance="square" size="large" weight="strong" />
+        <SkeletonAvatar appearance="square" size="large" weight="strong" />
         <HiddenWhenCollapsed isCollapsed={this.props.isCollapsed}>
-          <SkeletonContainerItemText>
-            <Paragraph weight="strong" />
-          </SkeletonContainerItemText>
+          <SkeletonContainerHeaderText />
         </HiddenWhenCollapsed>
       </SkeletonDefaultContainerHeaderInner>
     );

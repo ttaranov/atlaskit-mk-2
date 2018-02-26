@@ -2,7 +2,7 @@
 
 exports[`<SkeletonContainerItem /> renders a skeleton representation of a container header 1`] = `
 <SkeletonDefaultContainerHeaderInner>
-  <Avatar
+  <Skeleton
     appearance="square"
     size="large"
     weight="strong"
@@ -10,18 +10,14 @@ exports[`<SkeletonContainerItem /> renders a skeleton representation of a contai
   <HiddenWhenCollapsed
     isCollapsed={false}
   >
-    <SkeletonContainerItemText>
-      <Paragraph
-        weight="strong"
-      />
-    </SkeletonContainerItemText>
+    <SkeletonContainerHeaderText />
   </HiddenWhenCollapsed>
 </SkeletonDefaultContainerHeaderInner>
 `;
 
 exports[`<SkeletonContainerItem /> shows a compact version when collapsed 1`] = `
 <SkeletonDefaultContainerHeaderInner>
-  <Avatar
+  <Skeleton
     appearance="square"
     size="large"
     weight="strong"
@@ -29,11 +25,7 @@ exports[`<SkeletonContainerItem /> shows a compact version when collapsed 1`] = 
   <HiddenWhenCollapsed
     isCollapsed={true}
   >
-    <SkeletonContainerItemText>
-      <Paragraph
-        weight="strong"
-      />
-    </SkeletonContainerItemText>
+    <SkeletonContainerHeaderText />
   </HiddenWhenCollapsed>
 </SkeletonDefaultContainerHeaderInner>
 `;

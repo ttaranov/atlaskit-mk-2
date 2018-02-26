@@ -6,7 +6,10 @@ import { gridSize } from '@atlaskit/theme';
 const SkeletonContainerItemWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: ${gridSize()}px;
+  width: 100%;
+  padding-left: ${gridSize() * 4}px;
+  margin-top: ${gridSize()}px;
+  margin-bottom: ${gridSize()}px;
 `;
 
 SkeletonContainerItemWrapper.displayName = 'SkeletonContainerItemWrapper';

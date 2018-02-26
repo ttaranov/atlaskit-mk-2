@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 
-import { Icon, Paragraph } from '@atlaskit/skeleton';
+import { Skeleton as SkeletonIcon } from '@atlaskit/icon';
 
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
@@ -19,11 +19,9 @@ export default class SkeletonContainerItem extends Component<Props> {
   render() {
     return (
       <SkeletonContainerItemWrapper>
-        <Icon />
+        <SkeletonIcon />
         <HiddenWhenCollapsed isCollapsed={this.props.isCollapsed}>
-          <SkeletonContainerItemText>
-            <Paragraph />
-          </SkeletonContainerItemText>
+          <SkeletonContainerItemText />
         </HiddenWhenCollapsed>
       </SkeletonContainerItemWrapper>
     );

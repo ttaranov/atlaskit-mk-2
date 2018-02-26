@@ -2,36 +2,28 @@
 
 exports[`<SkeletonContainerItem /> renders a skeleton representation of a container item 1`] = `
 <SkeletonContainerItemWrapper>
-  <Icon
+  <Skeleton
     size="medium"
     weight="normal"
   />
   <HiddenWhenCollapsed
     isCollapsed={false}
   >
-    <SkeletonContainerItemText>
-      <Paragraph
-        weight="normal"
-      />
-    </SkeletonContainerItemText>
+    <SkeletonContainerItemText />
   </HiddenWhenCollapsed>
 </SkeletonContainerItemWrapper>
 `;
 
 exports[`<SkeletonContainerItem /> shows a compact version when collapsed 1`] = `
 <SkeletonContainerItemWrapper>
-  <Icon
+  <Skeleton
     size="medium"
     weight="normal"
   />
   <HiddenWhenCollapsed
     isCollapsed={true}
   >
-    <SkeletonContainerItemText>
-      <Paragraph
-        weight="normal"
-      />
-    </SkeletonContainerItemText>
+    <SkeletonContainerItemText />
   </HiddenWhenCollapsed>
 </SkeletonContainerItemWrapper>
 `;
