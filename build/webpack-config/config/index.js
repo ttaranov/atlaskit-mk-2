@@ -57,7 +57,14 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), './src/examples-entry.js'),
             ]
           : path.join(cwd, './src/examples-entry.js'),
-      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'react-router',
+        'react-router-dom',
+      ],
     },
     output: {
       filename: '[name].js',
@@ -184,14 +191,44 @@ function plugins(
   } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
-    new webpack.NamedChunksPlugin(),
+    new webpack.NamedChunksPlugin(
+      chunk =>
+        chunk.name && path.isAbsolute(chunk.name) ? chunk.id : chunk.name,
+    ),
     new webpack.NamedModulesPlugin(),
     //
-    // Order of CommonsChunkPlugins is important,
-    // each next one of them can drag some dependencies from the previous ones.
-    //
-    // Joins all vendor entry point packages into 1 chunk
+    // Order of CommonsChunkPlugins is important!
+    // each next one of them can drag some dependencies from the previous ones, in general, it's
+    // best to start with the more generic "catch-all" bundles, then go more specific
 
+    // Pull **all** the asyncronously loaded deps into an async commons chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'async-deps',
+      minChunks: 1,
+    }),
+
+    // specifically pull out some of the larger, less common, async deps so that they only get
+    // downloaded when actually used
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'large-async-deps',
+      minChunks(module, count) {
+        const largeAsyncDeps = [
+          '@atlaskit/emoji',
+          'rxjs/',
+          'text-encoding/',
+          'moment/',
+          'date-fns',
+        ];
+        const context = module.context;
+
+        return (
+          context && largeAsyncDeps.some(depName => context.includes(depName))
+        );
+      },
+    }),
+
+    // We create an sync bundle for editor, media, elements and ak components to provide some logical
+    // separation (so that hopefully you only need to pull one or two instead of all)
     new webpack.optimize.CommonsChunkPlugin({
       async: 'editor-packages',
       minChunks(module, count) {
@@ -236,92 +273,15 @@ function plugins(
       },
     }),
 
+    // Here, we are pulling all the deps used in either entry point. This is because we are explicitly
+    // going to exlude the "main" entry point in our HTMLWebpack plugin for the examples.
+    // All that will be left in this bundle is the index page of the website.
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common-app',
       chunks: ['main', 'examples'],
       minChunks(module, count) {
         const resource = module.resource;
-        return (
-          []
-            .concat(...module.getChunks().map(c => c.entrypoints))
-            .filter(e => e === 'main' || e === 'examples').length > 1
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          context &&
-          (context.includes('fabric/editor') ||
-            context.includes('fabric/renderer') ||
-            context.includes('fabric/conversation') ||
-            context.includes('prosemirror') ||
-            context.includes('fabric/mention') ||
-            context.includes('fabric/emoji') ||
-            context.includes('fabric/task-decision') ||
-            context.includes('fabric/reactions') ||
-            context.includes('fabric/media') ||
-            context.includes('elements/'))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-shared-with-async-subdeps-app',
-      chunks: ['main'],
-      minChunks(module, count) {
-        const isTransitiveAsyncDependency = function(
-          reasons,
-          seen = new Set(),
-        ) {
-          return reasons
-            .filter(r => r.constructor.name === 'ModuleReason')
-            .some(reason => {
-              if (seen.has(reason)) {
-                return false;
-              }
-              seen.add(reason);
-
-              if (
-                reason.module.context &&
-                [
-                  'fabric/editor',
-                  'fabric/renderer',
-                  'fabric/conversation',
-                  'prosemirror',
-                  'fabric/mention',
-                  'fabric/emoji',
-                  'fabric/task-decision',
-                  'fabric/reactions',
-                  'fabric/media',
-                  'elements/',
-                ].some(x => reason.module.context.includes(x))
-              ) {
-                return true;
-              }
-              return isTransitiveAsyncDependency(reason.module.reasons, seen);
-            });
-        };
-        return module.resource && isTransitiveAsyncDependency(module.reasons);
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-two-or-more-times',
-      minChunks(module, count) {
-        if (!hasWritten) {
-          console.log(module._chunks, module._chunksDebugIdent);
-          fs.writeFileSync(
-            'commonChunksList.json',
-            JSON.stringify(chunkslists),
-          );
-          hasWritten = true;
-        }
-        return count >= 2;
+        return !resource || !resource.includes('website/src/index.js');
       },
     }),
 
@@ -335,6 +295,7 @@ function plugins(
       filename: 'examples.html',
       template: path.join(cwd, 'public/examples.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
+      // We explictly exlude main here so that we dont try to mount the main app inside the iframes!
       excludeChunks: ['main'],
     }),
 
@@ -343,6 +304,7 @@ function plugins(
     }),
   ];
 
+  // Generates the stats.json file if --report is passed in
   if (report) {
     plugins.push(
       new BundleAnalyzerPlugin({
@@ -354,9 +316,9 @@ function plugins(
     );
   }
 
-  // if (env === 'production' && !noMinimize) {
-  //   plugins.push(uglify());
-  // }
+  if (env === 'production' && !noMinimize) {
+    plugins.push(uglify());
+  }
 
   return plugins;
 }
