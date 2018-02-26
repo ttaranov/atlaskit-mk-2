@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  reducer,
+  update,
   effects,
   State,
   Action,
@@ -22,7 +22,7 @@ describe('MediaViewer', () => {
     authProvider,
   };
 
-  describe('reducer', () => {
+  describe('update', () => {
     it('once loaded the name is saved as unkown', () => {
       const initialState: State = {
         type: 'LOADING',
@@ -31,7 +31,7 @@ describe('MediaViewer', () => {
         type: 'LOADED',
         item: { type: 'file', details: {} },
       };
-      expect(reducer(initialState, action)).toEqual({
+      expect(update(initialState, action)).toEqual({
         type: 'LOADED',
         name: 'unkown',
       });

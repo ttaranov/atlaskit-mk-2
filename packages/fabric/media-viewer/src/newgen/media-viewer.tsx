@@ -14,7 +14,7 @@ export interface Props {
   initialItem: MediaViewerItem;
   collectionName?: string;
 }
-
+// model - and props alawys model, dispatch!
 export type State =
   | {
       type: 'LOADING';
@@ -44,6 +44,7 @@ export const initialState: State = {
   type: 'LOADING',
 };
 
+// message
 export const initialAction = (props: Props): Action => {
   return {
     type: 'INIT',
@@ -51,7 +52,7 @@ export const initialAction = (props: Props): Action => {
   };
 };
 
-export const reducer = (prevState: State, action: Action): State => {
+export const update = (prevState: State, action: Action): State => {
   switch (action.type) {
     case 'INIT':
       return prevState;

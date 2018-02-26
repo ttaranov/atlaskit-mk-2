@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export type CreateAppOptions<State, Action, Props> = {
-  reducer: (prevState: State, action: Action) => State;
+  update: (prevState: State, action: Action) => State;
   render: (dispatch: (action: Action) => void, state: State) => any;
   initialState: State;
   initialAction?: (props: Props) => Action;
@@ -10,13 +10,12 @@ export type CreateAppOptions<State, Action, Props> = {
 
 export function createApp<State, Action, Props>({
   initialState,
-  reducer,
+  update,
   render,
   initialAction,
-  effects
+  effects,
 }: CreateAppOptions<State, Action, Props>): React.ComponentClass<Props> {
   class C extends React.Component<Props, State> {
-
     constructor() {
       super();
       this.state = initialState;
@@ -25,24 +24,27 @@ export function createApp<State, Action, Props>({
     componentDidMount() {
       if (initialAction) {
         this.dispatch(initialAction(this.props));
-      }      
+      }
     }
 
     dispatch(action: Action): void {
-      this.setState(prevState => {
-        const newState = reducer(prevState, action);
-        console.log('-- action', action, 'new state', newState);
-        return newState;
-      }, () => {
-        if (effects) {
-          const maybeAction = effects(action);
-          if (maybeAction) {
-            maybeAction.then((action) => {
-              this.dispatch(action);
-            }); // TODO handle errors  
-          }          
-        }
-      });
+      this.setState(
+        prevState => {
+          const newState = update(prevState, action);
+          console.log('-- action', action, 'new state', newState);
+          return newState;
+        },
+        () => {
+          if (effects) {
+            const maybeAction = effects(action);
+            if (maybeAction) {
+              maybeAction.then(action => {
+                this.dispatch(action);
+              }); // TODO handle errors
+            }
+          }
+        },
+      );
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -51,7 +53,7 @@ export function createApp<State, Action, Props>({
       if (initialAction) {
         // TODO: we can only call dispatch if props changed (not state)
         // this.dispatch(initialAction(this.props));
-      }      
+      }
     }
 
     render() {
