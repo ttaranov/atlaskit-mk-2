@@ -6,9 +6,9 @@ export type CreateAppOptions<Model, Message, Props> = {
   initialMessage?: Message;
   update: (model: Model, message: Message) => Model;
   effects: (
-    message: Message,
     cfg: Props,
     dispatch: (message: Message) => void,
+    message: Message,
   ) => void;
   Component: React.StatelessComponent<{
     model: Model;
@@ -43,7 +43,7 @@ export function createApp<Model, Message, Props>({
           return newModel;
         },
         () => {
-          effects(message, this.props, message => this.dispatch(message));
+          effects(this.props, message => this.dispatch(message), message);
         },
       );
     }

@@ -84,7 +84,7 @@ describe('MediaViewer', () => {
         done();
       };
 
-      effects(message, cfg, dispatch);
+      effects(cfg, dispatch, message);
       subject.next({
         type: 'file',
         details: { id: 'my-id' },

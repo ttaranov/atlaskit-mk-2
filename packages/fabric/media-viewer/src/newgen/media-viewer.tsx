@@ -97,9 +97,9 @@ export type Config = {
 };
 
 export const effects = (
-  message: Message,
   cfg: Config,
   dispatch: (message: Message) => void,
+  message: Message,
 ): void => {
   switch (message.type) {
     case 'INIT':
