@@ -121,6 +121,7 @@ export default function Example() {
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               media={{
                 provider: mediaProvider1,
                 allowMediaSingle: true,
@@ -169,6 +170,7 @@ export default function Example() {
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               media={{
                 provider: mediaProvider2,
                 allowMediaSingle: true,
