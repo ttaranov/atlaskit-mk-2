@@ -18,10 +18,24 @@ const provider = new ConversationResource({
   user: {...}
 });
 
-const conversations = await provider.getConversations();
-conversations.forEach(({ conversationId}) => {
-  return <Conversation id={conversationId} containerId="ari:cloud:platform::conversation/demo" provider={provider} />;
+const [conversation] = await provider.getConversations();
+<Conversation id={conversation.conversationId} containerId="ari:cloud:platform::conversation/demo" provider={provider} />;
+`;
+
+const customEditorSource = `import { Conversation, ConversationResource } from '@atlaskit/conversation';
+
+const provider = new ConversationResource({
+  url: 'https://conversation-service/',
+  user: {...}
 });
+
+const [conversation] = await provider.getConversations();
+<Conversation
+  id={conversation.conversationId}
+  containerId="ari:cloud:platform::conversation/demo"
+  provider={provider}
+  renderEditor={(Editor, props) => <Editor {...props} appearance="message" saveOnEnter={true} />}
+/>;
 `;
 
 const props = {
@@ -198,6 +212,58 @@ const props = {
               },
             ],
           },
+          {
+            key: {
+              kind: 'id',
+              name: 'renderEditor',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'function',
+                returnType: {
+                  kind: 'generic',
+                  value: {
+                    kind: 'id',
+                    name: 'JSX.Element',
+                  },
+                },
+                parameters: [
+                  {
+                    kind: 'param',
+                    type: null,
+                    value: {
+                      kind: 'generic',
+                      value: {
+                        kind: 'id',
+                        name: 'Editor',
+                      },
+                    },
+                  },
+                  {
+                    kind: 'param',
+                    type: null,
+                    value: {
+                      kind: 'generic',
+                      value: {
+                        kind: 'id',
+                        name: 'EditorProps',
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally override the rendering of the editor. This is usefull if you need to customize the editor in any way.',
+              },
+            ],
+          },
         ],
       },
     },
@@ -217,7 +283,7 @@ export default md`
 
   The conversation component is a mini-app which comes with an internal store. It's completely driven by a provider (\`ConversationResource\`).
 
-  Using the component is fairly straight forward. Just import \`Conversation\` and \`ConversationResource\` from \`@atlaskit/conversation\`. You can then use the component like below.
+  Using the component is fairly straight forward. Just import \`Conversation\` and \`ConversationResource\` from \`@atlaskit/conversation\`. The component can then be used like below.
 
   ${(
     <Example
@@ -234,6 +300,16 @@ export default md`
       Component={require('../examples/1-Existing-Conversation').default}
       title="Existing Conversation Example"
       source={existingConversationSource}
+    />
+  )}
+
+  The rendering of the editor can be customized by using the \`renderEditor\` prop. Here's an example using the "message"-appearance and "saveOnEnter":
+
+  ${(
+    <Example
+      Component={require('../examples/2-Customized-Editor').default}
+      title="Customized Editor"
+      source={customEditorSource}
     />
   )}
 

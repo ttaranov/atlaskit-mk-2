@@ -38,6 +38,7 @@ export default class Conversation extends React.PureComponent<Props> {
       onCancel,
       user,
       dataProviders,
+      renderEditor,
     } = this.props;
 
     if (!conversation) {
@@ -61,6 +62,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onUserClick={onUserClick}
         dataProviders={dataProviders}
         renderComment={props => <Comment {...props} />}
+        renderEditor={renderEditor}
       />
     ));
   }
@@ -73,6 +75,7 @@ export default class Conversation extends React.PureComponent<Props> {
       dataProviders,
       user,
       conversation,
+      renderEditor,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -86,6 +89,7 @@ export default class Conversation extends React.PureComponent<Props> {
           onCancel={onCancel}
           dataProviders={dataProviders}
           user={user}
+          renderEditor={renderEditor}
         />
       );
     }

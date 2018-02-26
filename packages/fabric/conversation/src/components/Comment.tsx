@@ -6,6 +6,7 @@ import AkComment, {
   CommentAction,
   CommentTime,
 } from '@atlaskit/comment';
+import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
 import { ReactRenderer } from '@atlaskit/renderer';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
@@ -43,6 +44,9 @@ export interface SharedProps {
   // Event Hooks
   onUserClick?: (user: User) => void;
   onRetry?: (localId?: string) => void;
+
+  // Editor
+  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
 }
 
 export interface Props extends SharedProps {
@@ -219,7 +223,7 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private getContent() {
-    const { comment, dataProviders, user } = this.props;
+    const { comment, dataProviders, user, renderEditor } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -236,6 +240,7 @@ export default class Comment extends React.Component<Props, State> {
           onCancel={this.onCancelEdit}
           dataProviders={dataProviders}
           user={user}
+          renderEditor={renderEditor}
         />
       );
     }
@@ -261,6 +266,7 @@ export default class Comment extends React.Component<Props, State> {
       onRevertComment,
       onRetry,
       onCancel,
+      renderEditor,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -282,6 +288,7 @@ export default class Comment extends React.Component<Props, State> {
         onUserClick={onUserClick}
         dataProviders={dataProviders}
         renderComment={props => <Comment {...props} />}
+        renderEditor={renderEditor}
       />
     ));
   }
@@ -292,7 +299,7 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
-    const { dataProviders, user } = this.props;
+    const { dataProviders, user, renderEditor } = this.props;
 
     return (
       <Editor
@@ -301,6 +308,7 @@ export default class Comment extends React.Component<Props, State> {
         onSave={this.onSaveReply}
         dataProviders={dataProviders}
         user={user}
+        renderEditor={renderEditor}
       />
     );
   }
