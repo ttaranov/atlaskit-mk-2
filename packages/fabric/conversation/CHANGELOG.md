@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 6.1.0
+- [minor] Adding renderEditor prop [e2485f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2485f7)
+
 ## 6.0.0
 - [major] Replacing internal store with Redux [703bb99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/703bb99)
 
