@@ -1,11 +1,14 @@
 // @flow
 import { mount, shallow } from 'enzyme';
 import React from 'react';
-import { UIAnalyticsEvent, AnalyticsContext } from '@atlaskit/analytics-next';
+import {
+  UIAnalyticsEvent,
+  AnalyticsContext,
+  AnalyticsListener,
+} from '@atlaskit/analytics-next';
 
 import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
-import AnalyticsListener from '../../analytics-next/dist/cjs/AnalyticsListener';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -171,11 +174,12 @@ describe('ak-button/default-behaviour', () => {
     );
   });
 
-  it('should provide analytics context with component name and version', () => {
+  it('should provide analytics context with component, package and version fields', () => {
     const wrapper = shallow(<Button />);
 
     expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: name,
+      component: 'button',
+      package: name,
       version,
     });
   });
@@ -195,7 +199,8 @@ describe('ak-button/default-behaviour', () => {
     expect(analyticsEvent.payload).toEqual({ action: 'click' });
     expect(analyticsEvent.context).toEqual([
       {
-        component: name,
+        component: 'button',
+        package: name,
         version,
       },
     ]);
