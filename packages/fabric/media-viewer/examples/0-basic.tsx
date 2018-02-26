@@ -34,6 +34,9 @@ export default class BasicExample extends React.Component<
       MediaViewer: null as any, // we can ignore this one too
       basePath: '', // ignore this here
       experimental: true,
+      onClose: () => {
+        this.setState({ isOpen: false });
+      },
     };
     return (
       <div>

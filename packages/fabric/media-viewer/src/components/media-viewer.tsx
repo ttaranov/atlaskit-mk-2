@@ -7,7 +7,7 @@ import { MediaFileListViewer } from './media-file-list-viewer';
 
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 
-import { App as NewGenMediaViewer} from '../newgen/app';
+import { App as NewGenMediaViewer } from '../newgen/app';
 
 export interface MediaViewerItem {
   id: string;
@@ -48,6 +48,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           dataSource={this.props.dataSource}
           initialItem={this.props.selectedItem}
           collectionName={this.props.collectionName}
+          onClose={this.props.onClose}
         />
       );
     } else if (this.props.dataSource.list) {

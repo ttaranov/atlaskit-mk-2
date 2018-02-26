@@ -5,12 +5,14 @@ import {
   MediaViewerDataSource,
   MediaViewerItem,
 } from '../components/media-viewer';
+import * as Blanket from './blanket';
 
 export type Config = {
   context: Context;
   dataSource: MediaViewerDataSource;
   initialItem: MediaViewerItem;
   collectionName?: string;
+  onClose?: () => void;
 };
 
 export type Model =
@@ -33,7 +35,6 @@ export const initialModel = (cfg: Config): Model => ({
 export type Message =
   | {
       type: 'INIT';
-      cfg: Config;
     }
   | {
       type: 'LOADED';
@@ -42,12 +43,14 @@ export type Message =
     }
   | {
       type: 'LOADING_ERROR';
+    }
+  | {
+      type: 'CLOSE';
     };
 
 export const initialMessage = (cfg: Config): Message => {
   return {
     type: 'INIT',
-    cfg,
   };
 };
 
@@ -67,14 +70,18 @@ export const update = (model: Model, message: Message): Model => {
       return {
         state: 'ERROR',
       };
+    case 'CLOSE':
+      return model;
   }
 };
 
-export const effects = (message: Message): Promise<Message> | null => {
+export const effects = (
+  message: Message,
+  cfg: Config,
+): Promise<Message> | null => {
   switch (message.type) {
     case 'INIT':
       return new Promise<Message>((resolve, reject) => {
-        const { cfg } = message;
         const { context } = cfg;
         context
           .getMediaItemProvider(
@@ -103,7 +110,7 @@ export const effects = (message: Message): Promise<Message> | null => {
                   },
                 );
             },
-            // complete
+            // TODO: complete handler
             error: err => {
               resolve({
                 type: 'LOADING_ERROR',
@@ -111,6 +118,9 @@ export const effects = (message: Message): Promise<Message> | null => {
             },
           });
       });
+    case 'CLOSE':
+      cfg.onClose && cfg.onClose();
+      return null;
     default:
       return null;
   }
@@ -121,20 +131,20 @@ export type Props = {
   dispatch: (message: Message) => void;
 };
 
-export const Component: React.StatelessComponent<Props> = ({ model }) => {
-  switch (model.state) {
-    case 'LOADING':
-      return <Spinner />;
-    case 'ERROR':
-      return <div>ERROR view</div>;
-    case 'LOADED':
-      // loaded means that we have a list of media items to start with.
-      // those items doesn't necessarily mean that have been completely loaded.
-      return (
-        <div>
-          <h2>{model.name}</h2>
-          <img src={model.src} />
-        </div>
-      );
-  }
-};
+export const Component: React.StatelessComponent<Props> = ({
+  model,
+  dispatch,
+}) => (
+  <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
+    {model.state === 'LOADING' ? (
+      <Spinner />
+    ) : model.state === 'ERROR' ? (
+      <div>ERROR view</div>
+    ) : (
+      <div>
+        <h2>{model.name}</h2>
+        <img src={model.src} width={100} height={100} />
+      </div>
+    )}
+  </Blanket.Component>
+);

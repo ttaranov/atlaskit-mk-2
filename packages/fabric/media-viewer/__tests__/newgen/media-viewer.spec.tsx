@@ -66,14 +66,14 @@ describe('MediaViewer', () => {
       };
       const message: Message = {
         type: 'INIT',
-        cfg: {
-          context,
-          dataSource: { list: [item] },
-          initialItem: item,
-        },
+      };
+      const cfg = {
+        context,
+        dataSource: { list: [item] },
+        initialItem: item,
       };
 
-      const p = effects(message)!.then(nextMessage => {
+      const p = effects(message, cfg)!.then(nextMessage => {
         expect(nextMessage).toEqual({
           type: 'LOADED',
           item: {
