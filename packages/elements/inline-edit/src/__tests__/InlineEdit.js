@@ -296,7 +296,10 @@ describe('@atlaskit/inline-edit', () => {
         <InlineEditStateless {...defaultProps} isFitContainerWidthReadView />,
       );
       //$FlowFixMe
-      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
+        'display',
+        'block',
+      );
     });
 
     it('should stretch to container width when in edit mode', () => {
@@ -304,10 +307,13 @@ describe('@atlaskit/inline-edit', () => {
         <InlineEditStateless {...defaultProps} isEditing />,
       );
       //$FlowFixMe
-      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
+        'display',
+        'block',
+      );
     });
 
-    it('should have max-width so inline-flex text overflow using ellipses', () => {
+    it('should have max-width so inline-block text overflow using ellipses', () => {
       const wrapper = mount(<InlineEditStateless {...defaultProps} />);
 
       //$FlowFixMe
