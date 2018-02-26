@@ -25,6 +25,7 @@ import {
   JSONNode,
 } from '@atlaskit/editor-json-transformer';
 import { FakeTextCursorSelection } from '../editor/plugins/fake-text-cursor/cursor';
+import { stateKey as tableStateKey } from '../plugins/table';
 
 export {
   default as ErrorReporter,
@@ -47,6 +48,16 @@ function isMarkTypeAllowedInNode(
   state: EditorState,
 ): boolean {
   return toggleMark(markType)(state);
+}
+
+function closest(node: Element, s: string) {
+  var el = node;
+  if (!document.documentElement.contains(el)) return null;
+  do {
+    if (el.matches(s)) return el;
+    el = el.parentElement || el.parentNode;
+  } while (el !== null && el.nodeType === 1);
+  return null;
 }
 
 export const isImage = (fileType?: string): boolean => {
@@ -498,6 +509,14 @@ export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
 }
 
+/**
+ * Replacement for Element.closest, until it becomes widely implemented
+ * Returns the ancestor element of a particular type if exists or null
+ */
+export function closestElement(node: Element, s: string) {
+  return closest(node, s);
+}
+
 export function moveLeft(view: EditorView) {
   const event = new CustomEvent('keydown', {
     bubbles: true,
@@ -615,4 +634,22 @@ export const isEmptyNode = (schema: Schema) => {
     }
   };
   return innerIsEmptyNode;
+};
+
+export const isTableCell = (state: EditorState) => {
+  const { tableNode } = tableStateKey.getState(state);
+  return !!tableNode;
+};
+
+export const isElementInTableCell = (element: Element) => {
+  return closest(element, 'td') || closest(element, 'th');
+};
+
+export const isLastItemMediaGroup = (node: Node) => {
+  const { content } = node;
+  return (
+    content &&
+    content.content.slice(-1)[0] &&
+    content.content.slice(-1)[0].type.name === 'mediaGroup'
+  );
 };
