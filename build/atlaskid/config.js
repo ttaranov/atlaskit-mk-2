@@ -23,6 +23,7 @@ const atlaskitTeam = [
   'jaredcroweatlassian',
   'jedw',
   'alexreardon',
+  'pete_gleeson',
 ];
 const editorAndElementsTeam = [
   'imsysoev',
@@ -40,6 +41,8 @@ const editorAndElementsTeam = [
   'pcurren',
   'jhoarau',
   'agnes',
+  'vsutrave',
+  'ahixon_atlassian',
 ];
 const mediaTeam = [
   'sattard',

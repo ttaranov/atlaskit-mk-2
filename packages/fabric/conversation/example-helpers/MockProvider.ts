@@ -146,7 +146,7 @@ export class MockProvider extends AbstractConversationResource {
       dispatch({ type, payload });
     }, 1000);
 
-    return result;
+    return result as Comment;
   }
 
   private createComment(

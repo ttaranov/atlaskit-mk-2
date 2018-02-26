@@ -17,9 +17,10 @@ describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {
     const component = shallow(
       <AvatarPickerDialog
-        avatars={[]}
+        avatars={[{ dataURI: 'http://an.avatar.com/453' }]}
         onAvatarPicked={jest.fn()}
         onImagePicked={jest.fn()}
+        onImagePickedDataURI={jest.fn()}
         onCancel={jest.fn()}
         {...props}
       />,
@@ -52,7 +53,7 @@ describe('Avatar Picker Dialog', () => {
       .find({ appearance: 'primary' });
   };
 
-  it('when save button is clicked call onSaveImage should be called', () => {
+  it('when save button is clicked onImagePicked should be called', () => {
     const onImagePicked = jest.fn();
 
     const component = renderWithProps({
@@ -77,7 +78,32 @@ describe('Avatar Picker Dialog', () => {
     });
   });
 
-  it('when save button is clicked call onSaveAvatar should be called', () => {
+  it('when save button is clicked onImagePickedDataURI should be called', () => {
+    const onImagePickedDataURI = jest.fn();
+
+    const component = renderWithProps({
+      onImagePickedDataURI,
+      imageSource: smallImage,
+    });
+
+    // Stub internal function to facilitate shallow testing of `onImagePickedDataURI`
+    const croppedImgDataURI = 'data:image/meme;based64:w0w';
+    component.instance()['exportCroppedImage'] = () => croppedImgDataURI;
+
+    const { footer } = component.find(ModalDialog).props() as {
+      footer: any;
+    };
+
+    // click on the save button
+    shallow(footer())
+      .find(Button)
+      .find({ appearance: 'primary' })
+      .simulate('click');
+
+    expect(onImagePickedDataURI).toBeCalledWith(croppedImgDataURI);
+  });
+
+  it('when save button is clicked onSaveAvatar should be called', () => {
     const selectedAvatar: Avatar = { dataURI: 'http://an.avatar.com/453' };
     const avatars = [selectedAvatar];
     const onAvatarPicked = jest.fn();
@@ -94,6 +120,18 @@ describe('Avatar Picker Dialog', () => {
       .simulate('click');
 
     expect(onAvatarPicked).toBeCalledWith(selectedAvatar);
+  });
+
+  it('should render avatar list when avatars are passed', () => {
+    const component = renderWithProps({});
+    expect(component.find(PredefinedAvatarList)).toHaveLength(1);
+  });
+
+  it('should not render avatar list when no avatars are passed', () => {
+    const component = renderWithProps({
+      avatars: [],
+    });
+    expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 
   it('should not render avatar list when imageSource is passed', () => {

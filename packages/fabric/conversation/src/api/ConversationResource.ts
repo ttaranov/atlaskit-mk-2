@@ -1,4 +1,5 @@
-import { createStore, Store, Action, Handler } from '../internal/store';
+import { Store, Unsubscribe } from 'redux';
+import createStore, { State, Action, Handler } from '../internal/store';
 import {
   FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
@@ -17,7 +18,6 @@ import {
   CREATE_CONVERSATION_SUCCESS,
   CREATE_CONVERSATION_ERROR,
 } from '../internal/actions';
-import { reducers } from '../internal/reducers';
 import { Comment, Conversation, User } from '../model';
 import { uuid } from '../internal/uuid';
 import { HttpError } from './HttpError';
@@ -28,9 +28,9 @@ export interface ConversationResourceConfig {
 }
 
 export interface ResourceProvider {
+  store: Store<State | undefined>;
   getConversations(containerId: string): Promise<Conversation[]>;
-  subscribe(handler: Handler): void;
-  unsubscribe(handler: Handler): void;
+  subscribe(handler: Handler): Unsubscribe;
   create(
     localId: string,
     containerId: string,
@@ -60,7 +60,7 @@ export interface ResourceProvider {
 }
 
 export class AbstractConversationResource implements ResourceProvider {
-  private _store: Store;
+  private _store: Store<State | undefined>;
 
   get store() {
     return this._store;
@@ -71,7 +71,7 @@ export class AbstractConversationResource implements ResourceProvider {
   };
 
   constructor() {
-    this._store = createStore(reducers);
+    this._store = createStore();
   }
 
   /**
@@ -85,16 +85,11 @@ export class AbstractConversationResource implements ResourceProvider {
    * Subscribe to the provider's internal store
    * @param {Handler} handler
    */
-  subscribe(handler: Handler): void {
-    return this.store.subscribe(handler);
-  }
-
-  /**
-   * Unsubscribe from the provider's internal store
-   * @param {Handler} handler
-   */
-  unsubscribe(handler: Handler): void {
-    return this.store.unsubscribe(handler);
+  subscribe(handler: Handler): Unsubscribe {
+    return this.store.subscribe(() => {
+      const state = this.store.getState();
+      handler(state);
+    });
   }
 
   /**

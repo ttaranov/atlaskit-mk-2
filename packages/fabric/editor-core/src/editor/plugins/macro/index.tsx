@@ -38,11 +38,10 @@ export const createPlugin = (
     view: (view: EditorView) => {
       // make sure editable DOM node is mounted
       if (view.dom.parentNode) {
-        const { state, dispatch } = view;
         providerFactory.subscribe(
           'macroProvider',
           (name, provider: Promise<MacroProvider>) =>
-            setMacroProvider(provider)(state, dispatch),
+            setMacroProvider(provider)(view),
         );
       }
       return {};

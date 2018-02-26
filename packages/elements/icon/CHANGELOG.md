@@ -1,5 +1,17 @@
 # @atlaskit/icon
 
+## 10.10.1
+- [patch] update atlaskit src for internal consumption [4601bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4601bf0)
+
+## 10.10.0
+- [minor] Added 42 new icons for Objects [e00ff79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e00ff79)
+
+## 10.9.3
+- [patch] removed role props to make it more accessible [88cc276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88cc276)
+
+## 10.9.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 10.9.1
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

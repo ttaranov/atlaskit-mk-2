@@ -18,6 +18,7 @@ import {
 } from './actions';
 import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
+import { createReducer } from './create-reducer';
 
 const updateComment = (
   comments: Comment[] | undefined,
@@ -162,7 +163,11 @@ const getCommentFromConversation = (
   return comment;
 };
 
-export const reducers = {
+export const initialState = {
+  conversations: [],
+};
+
+export const reducers = createReducer(initialState, {
   [FETCH_CONVERSATIONS_REQUEST](state: State, action: Action) {
     return {
       ...state,
@@ -398,4 +403,4 @@ export const reducers = {
       conversations,
     };
   },
-};
+});

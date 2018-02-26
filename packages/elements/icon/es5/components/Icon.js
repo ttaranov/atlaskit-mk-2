@@ -108,7 +108,6 @@ var Icon = function (_Component) {
           primaryColor: primaryColor,
           secondaryColor: secondaryColor,
           size: size,
-          role: 'img',
           'aria-label': this.props.label,
           dangerouslySetInnerHTML: {
             __html: Icon.insertDynamicGradientID(dangerouslySetGlyph)
@@ -123,7 +122,6 @@ var Icon = function (_Component) {
           primaryColor: primaryColor,
           secondaryColor: secondaryColor,
           size: size,
-          role: 'img',
           'aria-label': this.props.label
         },
         Glyph ? _react2.default.createElement(Glyph, { role: 'presentation' }) : null

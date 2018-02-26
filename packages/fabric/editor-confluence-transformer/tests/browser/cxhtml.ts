@@ -51,6 +51,9 @@ import {
   taskList,
   taskItem,
   date,
+  placeholder,
+  decisionList,
+  decisionItem,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -827,13 +830,13 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     describe('jira issue', () => {
       check(
         'basic',
-        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="3" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
         doc(
           p(
             confluenceJiraIssue({
               issueKey: 'ED-1068',
               macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
-              schemaVersion: '1',
+              schemaVersion: '3',
               server: 'JIRA (product-fabric.atlassian.net)',
               serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
             })(),
@@ -856,6 +859,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           type: 'image',
         },
       ],
+      schemaVersion: { value: '2' },
     };
     const attrs = {
       extensionType: 'com.atlassian.confluence.macro.core',
@@ -877,7 +881,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -891,7 +895,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -905,7 +909,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
-        }" ac:schema-version="1" ac:macro-id="${
+        }" ac:schema-version="2" ac:macro-id="${
           macroMetadata.macroId.value
         }">${paramsAsCXHTML}<fab:placeholder-url>${
           macroMetadata.placeholder[0].data.url
@@ -924,6 +928,15 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       'date node',
       `<time datetime="${iso}"></time>`,
       doc(p(date({ timestamp: parseDate(iso).valueOf() }))),
+    );
+  });
+
+  describe('placeholder', () => {
+    const text = 'Write something...';
+    check(
+      'placeholder node',
+      `<ac:placeholder>${text}</ac:placeholder>`,
+      doc(p(placeholder({ text }))),
     );
   });
 
@@ -949,6 +962,28 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ),
       ),
     );
+  });
+
+  describe('fab:adf', () => {
+    check(
+      'p encoded in fab:adf tag between two p',
+      String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"storage\"}]}]]></fab:adf><p>world</p>`,
+      doc(p('hello'), p('storage'), p('world')),
+    );
+
+    describe('decisionList', () => {
+      check(
+        'decisionList with single decided item between p',
+        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"decisionList\",\"attrs\":{\"localId\":\"test-list-id\"},\"content\":[{\"type\":\"decisionItem\",\"attrs\":{\"localId\":\"test-id\",\"state\":\"DECIDED\"},\"content\":[{\"type\":\"text\",\"text\":\"Heading\"}]}]}]]></fab:adf><p>world</p>`,
+        doc(
+          p('hello'),
+          decisionList({ localId: 'test-list-id' })(
+            decisionItem({ localId: 'test-id', state: 'DECIDED' })('Heading'),
+          ),
+          p('world'),
+        ),
+      );
+    });
   });
 
   describe('unsupported content', () => {
