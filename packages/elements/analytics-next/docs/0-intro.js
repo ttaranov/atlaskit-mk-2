@@ -65,9 +65,12 @@ context: Array<{}>;
  * tree above where this event was created. */
 handlers: Array<(event: UIAnalyticsEvent, channel?: string) => void>;
 
-/** An object containing arbitrary data. Can be modified via the .update()
- * method. */
-payload: {};
+/** An object containing an action field and other arbitrary data. Can be
+ * modified via the .update() method. */
+payload: {
+  action: string,
+  [string]: any
+};
 
 /** Create a new event with the same context, handlers and payload as this
  * event. */
@@ -80,7 +83,13 @@ fire(channel?: string): void;
 /** Modify this event's payload. Accepts either a function, which will be passed
  * the current payload and must return a new payload, or an object, which will
  * be shallow merged into the current payload. */
-update(updater: {} | (payload: {}) => {}): UIAnalyticsEvent;
+update(
+  updater: | { [string]: any }
+  | ((payload: { action: string, [string]: any }) => {
+      action: string,
+      [string]: any,
+    }),
+) => UIAnalyticsEvent;
 `}
 
   <a name="AnalyticsListener"></a>

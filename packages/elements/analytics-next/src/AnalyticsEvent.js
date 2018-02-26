@@ -3,13 +3,14 @@
 import cloneDeep from 'clone-deep';
 
 import type {
+  AnalyticsEventPayload,
   AnalyticsEventUpdater,
   AnalyticsEventInterface,
   AnalyticsEventProps,
 } from './types';
 
 export default class AnalyticsEvent implements AnalyticsEventInterface {
-  payload: {};
+  payload: AnalyticsEventPayload;
 
   constructor(props: AnalyticsEventProps) {
     this.payload = props.payload;
