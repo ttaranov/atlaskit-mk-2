@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {
   standardOpenWidth,
   containerClosedWidth,
-} from '../../../shared-variables';
+} from '../../../../shared-variables';
 
 const SkeletonNavigationOuter = styled.div`
   width: ${({ isCollapsed }) =>

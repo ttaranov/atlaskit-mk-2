@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SkeletonContainerItem /> collapses its children container items 1`] = `
+exports[`collapses its children container items 1`] = `
 <SkeletonNavigationItems>
   <SkeletonContainerItem
     isCollapsed={true}
@@ -20,7 +20,7 @@ exports[`<SkeletonContainerItem /> collapses its children container items 1`] = 
 </SkeletonNavigationItems>
 `;
 
-exports[`<SkeletonContainerItem /> renders a skeleton representation of a container item 1`] = `
+exports[`renders a skeleton representation of a container item 1`] = `
 <SkeletonNavigationItems>
   <SkeletonContainerItem
     isCollapsed={false}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SkeletonGlobalNavigation /> renders a skeleton representation of the global sidebar 1`] = `
+exports[`renders a skeleton representation of the global sidebar 1`] = `
 <SkeletonGlobalNavigationInner>
   <SkeletonNavigationContentOuter>
     <SkeletonGlobalTopItems />

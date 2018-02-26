@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SkeletonGlobalNavigation /> collapses its inner components 1`] = `
+exports[`collapses its inner components 1`] = `
 <SkeletonNavigationOuter
   isCollapsed={true}
 >
@@ -147,7 +147,7 @@ exports[`<SkeletonGlobalNavigation /> collapses its inner components 1`] = `
 </SkeletonNavigationOuter>
 `;
 
-exports[`<SkeletonGlobalNavigation /> renders a skeleton representation of the navigation 1`] = `
+exports[`renders a skeleton representation of the navigation 1`] = `
 <SkeletonNavigationOuter
   isCollapsed={false}
 >

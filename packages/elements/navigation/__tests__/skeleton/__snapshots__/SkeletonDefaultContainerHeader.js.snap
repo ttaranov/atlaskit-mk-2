@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SkeletonContainerItem /> renders a skeleton representation of a container header 1`] = `
+exports[`renders a skeleton representation of a container header 1`] = `
 <SkeletonDefaultContainerHeaderInner>
   <Skeleton
     appearance="square"
@@ -15,7 +15,7 @@ exports[`<SkeletonContainerItem /> renders a skeleton representation of a contai
 </SkeletonDefaultContainerHeaderInner>
 `;
 
-exports[`<SkeletonContainerItem /> shows a compact version when collapsed 1`] = `
+exports[`shows a compact version when collapsed 1`] = `
 <SkeletonDefaultContainerHeaderInner>
   <Skeleton
     appearance="square"

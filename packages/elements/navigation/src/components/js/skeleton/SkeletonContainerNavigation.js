@@ -8,9 +8,9 @@ import SkeletonGlobalBottomItems from './SkeletonGlobalBottomItems';
 import SkeletonContainerItems from './SkeletonContainerItems';
 import { ShownWhenCollapsed } from './ToggleWhenCollapsed';
 
-import SkeletonContainerNavigationInner from '../../styled/skeleton/SkeletonContainerNavigationInner';
-import SkeletonNavigationContentOuter from '../../styled/skeleton/SkeletonNavigationContentOuter';
-import SkeletonContainerHeaderWrapper from '../../styled/skeleton/SkeletonContainerHeaderWrapper';
+import SkeletonContainerNavigationInner from './styled/SkeletonContainerNavigationInner';
+import SkeletonNavigationContentOuter from './styled/SkeletonNavigationContentOuter';
+import SkeletonContainerHeaderWrapper from './styled/SkeletonContainerHeaderWrapper';
 
 import type { ContainerHeaderProps } from './';
 

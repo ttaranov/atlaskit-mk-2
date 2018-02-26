@@ -3,10 +3,10 @@ import React from 'react';
 
 import { Skeleton as SkeletonIcon } from '@atlaskit/icon';
 
-import SkeletonNavigationItems from '../../styled/skeleton/SkeletonNavigationItems';
-import SkeletonGlobalPrimaryIconOuter from '../../styled/skeleton/SkeletonGlobalPrimaryIconOuter';
-import SkeletonGlobalIconOuter from '../../styled/skeleton/SkeletonGlobalIconOuter';
-import SkeletonGlobalTopItemsInner from '../../styled/skeleton/SkeletonGlobalTopItemsInner';
+import SkeletonNavigationItems from './styled/SkeletonNavigationItems';
+import SkeletonGlobalPrimaryIconOuter from './styled/SkeletonGlobalPrimaryIconOuter';
+import SkeletonGlobalIconOuter from './styled/SkeletonGlobalIconOuter';
+import SkeletonGlobalTopItemsInner from './styled/SkeletonGlobalTopItemsInner';
 
 const SkeletonGlobalTopItems = () => (
   <SkeletonGlobalTopItemsInner>

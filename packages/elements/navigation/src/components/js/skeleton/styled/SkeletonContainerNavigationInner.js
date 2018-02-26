@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {
   containerOpenWidth,
   containerClosedWidth,
-} from '../../../shared-variables';
-import { getProvided } from '../../../theme/util';
+} from '../../../../shared-variables';
+import { getProvided } from '../../../../theme/util';
 
 const SkeletonContainerNavigationInner = styled.div`
   height: 100%;

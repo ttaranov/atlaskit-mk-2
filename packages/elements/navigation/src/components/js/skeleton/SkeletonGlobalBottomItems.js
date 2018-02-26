@@ -3,8 +3,8 @@ import React from 'react';
 
 import { Skeleton as SkeletonIcon } from '@atlaskit/icon';
 
-import SkeletonNavigationItems from '../../styled/skeleton/SkeletonNavigationItems';
-import SkeletonGlobalIconOuter from '../../styled/skeleton/SkeletonGlobalIconOuter';
+import SkeletonNavigationItems from './styled/SkeletonNavigationItems';
+import SkeletonGlobalIconOuter from './styled/SkeletonGlobalIconOuter';
 
 const SkeletonGlobalBottomItems = () => (
   <SkeletonNavigationItems>

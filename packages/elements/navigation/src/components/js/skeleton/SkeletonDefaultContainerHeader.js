@@ -5,8 +5,8 @@ import { Skeleton as SkeletonAvatar } from '@atlaskit/avatar';
 
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
-import SkeletonContainerHeaderText from '../../styled/skeleton/SkeletonContainerHeaderText';
-import SkeletonDefaultContainerHeaderInner from '../../styled/skeleton/SkeletonDefaultContainerHeaderInner';
+import SkeletonContainerHeaderText from './styled/SkeletonContainerHeaderText';
+import SkeletonDefaultContainerHeaderInner from './styled/SkeletonDefaultContainerHeaderInner';
 
 export type Props = {
   isCollapsed: boolean,

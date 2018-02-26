@@ -6,8 +6,8 @@ import type { Provided } from '../../../theme/types';
 import SkeletonGlobalTopItems from './SkeletonGlobalTopItems';
 import SkeletonGlobalBottomItems from './SkeletonGlobalBottomItems';
 
-import SkeletonGlobalNavigationInner from '../../styled/skeleton/SkeletonGlobalNavigationInner';
-import SkeletonNavigationContentOuter from '../../styled/skeleton/SkeletonNavigationContentOuter';
+import SkeletonGlobalNavigationInner from './styled/SkeletonGlobalNavigationInner';
+import SkeletonNavigationContentOuter from './styled/SkeletonNavigationContentOuter';
 
 export type Props = {
   isCollapsed: boolean,

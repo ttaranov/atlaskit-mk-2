@@ -1,8 +1,8 @@
 // @flow
 import React, { Component, type ComponentType } from 'react';
 
-import SkeletonNavigationOuter from '../../styled/skeleton/SkeletonNavigationOuter';
-import SkeletonNavigationInner from '../../styled/skeleton/SkeletonNavigationInner';
+import SkeletonNavigationOuter from './styled/SkeletonNavigationOuter';
+import SkeletonNavigationInner from './styled/SkeletonNavigationInner';
 
 import SkeletonGlobalNavigation from './SkeletonGlobalNavigation';
 import SkeletonContainerNavigation from './SkeletonContainerNavigation';

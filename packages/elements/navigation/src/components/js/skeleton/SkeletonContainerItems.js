@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import SkeletonContainerItem from './SkeletonContainerItem';
 
-import SkeletonNavigationItems from '../../styled/skeleton/SkeletonNavigationItems';
+import SkeletonNavigationItems from './styled/SkeletonNavigationItems';
 
 export type Props = {
   isCollapsed: boolean,
