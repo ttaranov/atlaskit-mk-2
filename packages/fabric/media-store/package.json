@@ -21,7 +21,7 @@
     "chunkinator": "^0.0.15",
     "p-queue": "^2.3.0",
     "query-string": "^4.3.2",
-    "rusha": "^0.8.11"
+    "rusha": "^0.8.13"
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^9.0.1",
