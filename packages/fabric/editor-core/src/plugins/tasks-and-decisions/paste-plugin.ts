@@ -14,7 +14,11 @@ export default function createPlugin() {
         if (!event.clipboardData) {
           return false;
         }
-        console.log('into handle pasete', clipboard);
+        console.log('into handle pasete event', event);
+        console.log(
+          'into handle pasete event.clipboardData',
+          event.clipboardData,
+        );
         const { selection, schema } = view.state;
         const { nodes } = schema;
         const { decisionList, decisionItem, taskList, taskItem } = nodes;
