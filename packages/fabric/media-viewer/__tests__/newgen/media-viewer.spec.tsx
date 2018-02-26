@@ -30,10 +30,12 @@ describe('MediaViewer', () => {
       const message: Message = {
         type: 'LOADED',
         item: { type: 'file', details: {} },
+        src: '',
       };
       expect(update(initialModel, message)).toEqual({
         state: 'LOADED',
         name: 'unkown',
+        src: '',
       });
     });
   });
@@ -50,7 +52,7 @@ describe('MediaViewer', () => {
   });
 
   describe('effects', () => {
-    it('should emit the LOADED message when initialised successfully', done => {
+    it('should emit the LOADED message when initialised successfully', () => {
       const subject = new Subject<MediaItem>();
       const context = Stubs.context(
         contextConfig,
@@ -71,21 +73,23 @@ describe('MediaViewer', () => {
         },
       };
 
-      effects(message)!.then(nextMessage => {
+      const p = effects(message)!.then(nextMessage => {
         expect(nextMessage).toEqual({
           type: 'LOADED',
           item: {
             type: 'file',
             details: { id: 'my-id' },
           },
+          src: '',
         });
-        done();
       });
 
       subject.next({
         type: 'file',
         details: { id: 'my-id' },
       });
+
+      return p;
     });
   });
 });

@@ -6,6 +6,7 @@ import {
   MediaCollectionProvider,
   MediaItemProvider,
   MediaItem,
+  DataUriService,
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -54,10 +55,17 @@ export class Stubs {
     };
   }
 
+  static getDataUriService() {
+    return {
+      fetchImageDataUri: jest.fn(() => Promise.resolve('')),
+    };
+  }
+
   static context(
     config: ContextConfig,
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
+    dataUriService?: DataUriService,
   ) {
     return {
       config,
@@ -66,6 +74,9 @@ export class Stubs {
       ),
       getMediaItemProvider: jest.fn(
         () => mediaItemProvider || Stubs.mediaItemProvider(),
+      ),
+      getDataUriService: jest.fn(
+        () => dataUriService || Stubs.getDataUriService(),
       ),
     };
   }

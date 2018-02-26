@@ -20,6 +20,7 @@ export type Model =
   | {
       state: 'LOADED';
       name: string;
+      src: string;
     }
   | {
       state: 'ERROR';
@@ -37,6 +38,7 @@ export type Message =
   | {
       type: 'LOADED';
       item: MediaItem;
+      src: string;
     }
   | {
       type: 'LOADING_ERROR';
@@ -59,6 +61,7 @@ export const update = (model: Model, message: Message): Model => {
         name:
           (message.item.type === 'file' && message.item.details.name) ||
           'unkown',
+        src: message.src,
       };
     case 'LOADING_ERROR':
       return {
@@ -82,11 +85,25 @@ export const effects = (message: Message): Promise<Message> | null => {
           .observable()
           .subscribe({
             next: item => {
-              resolve({
-                type: 'LOADED',
-                item,
-              });
+              context
+                .getDataUriService(cfg.collectionName)
+                .fetchImageDataUri(item, { width: 100, height: 100 })
+                .then(
+                  uri => {
+                    resolve({
+                      type: 'LOADED',
+                      item,
+                      src: uri,
+                    });
+                  },
+                  err => {
+                    resolve({
+                      type: 'LOADING_ERROR',
+                    });
+                  },
+                );
             },
+            // complete
             error: err => {
               resolve({
                 type: 'LOADING_ERROR',
@@ -113,6 +130,11 @@ export const Component: React.StatelessComponent<Props> = ({ model }) => {
     case 'LOADED':
       // loaded means that we have a list of media items to start with.
       // those items doesn't necessarily mean that have been completely loaded.
-      return <div>{model.name}</div>;
+      return (
+        <div>
+          <h2>{model.name}</h2>
+          <img src={model.src} />
+        </div>
+      );
   }
 };
