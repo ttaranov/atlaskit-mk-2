@@ -69,6 +69,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
+    } else if (node.type === schema.nodes.decisionList) {
+      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
     } else if (
@@ -528,5 +530,13 @@ export default function encode(node: PMNode, schema: Schema) {
     const { text } = node.attrs;
     elem.textContent = text;
     return elem;
+  }
+
+  function encodeAsADF(node: PMNode): Element {
+    const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
+    nsNode.appendChild(
+      doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
+    );
+    return nsNode;
   }
 }

@@ -1,7 +1,8 @@
 import { Fragment, Node as PmNode, Schema, Slice } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { getFirstSelectedCellPos, tableStartPos } from './position';
+import { tableStartPos } from './position';
+import { TableMap } from 'prosemirror-tables';
 
 export const createTableNode = (
   rows: number,
@@ -80,19 +81,6 @@ export const containsTableHeader = (
   return contains;
 };
 
-export const getFirstSelectedCellElement = (
-  state: EditorState,
-  view: EditorView,
-): HTMLElement | undefined => {
-  const pos = getFirstSelectedCellPos(state);
-  if (pos) {
-    const { node } = view.domAtPos(pos);
-    if (node) {
-      return node as HTMLElement;
-    }
-  }
-};
-
 export const getTableElement = (
   state: EditorState,
   view: EditorView,
@@ -114,4 +102,35 @@ export const getTableNode = (state: EditorState): PmNode | undefined => {
       return node;
     }
   }
+};
+
+export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
+  const tableNode = getTableNode(state);
+  const map = TableMap.get(tableNode!);
+  for (let i = 0; i < map.width; i++) {
+    const cell = tableNode!.nodeAt(map.map[i]);
+    if (cell && cell.type !== state.schema.nodes.tableHeader) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
+  const tableNode = getTableNode(state);
+  const map = TableMap.get(tableNode!);
+  for (let i = 0; i < map.height; i++) {
+    // if number column is enabled, second column becomes header (next to the number column)
+    const column = tableNode!.attrs.isNumberColumnEnabled ? 1 : 0;
+    const cell = tableNode!.nodeAt(map.map[column + i * map.width]);
+    if (cell && cell.type !== state.schema.nodes.tableHeader) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const checkIfNumberColumnEnabled = (state: EditorState): boolean => {
+  const tableNode = getTableNode(state);
+  return !!tableNode!.attrs.isNumberColumnEnabled;
 };

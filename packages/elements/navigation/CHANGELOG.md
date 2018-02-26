@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 29.0.3
+- [patch] Fixed globalPrimaryIcon's hover state css override for collapsed navigation state when primaryItemHref is provided [dfaf464](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfaf464)
+
 ## 29.0.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

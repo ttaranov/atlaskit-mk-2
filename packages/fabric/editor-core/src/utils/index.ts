@@ -220,8 +220,10 @@ export function setTextSelection(
 export function moveCursorToTheEnd(view: EditorView) {
   const { state } = view;
   const anchor = Selection.atEnd(state.doc);
-  const tr = state.tr.setSelection(anchor).scrollIntoView();
-  view.dispatch(tr);
+  const validSelection = Selection.findFrom(anchor.$head, -1, true);
+  if (validSelection) {
+    view.dispatch(state.tr.setSelection(validSelection).scrollIntoView());
+  }
 }
 
 /**

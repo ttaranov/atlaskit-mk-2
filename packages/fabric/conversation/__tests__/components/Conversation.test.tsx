@@ -5,7 +5,7 @@ import Conversation from '../../src/components/Conversation';
 import Editor from '../../src/components/Editor';
 import CommentContainer from '../../src/containers/Comment';
 
-const containerId = 'abc:abc:abc/demo';
+const containerId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;
 const [user] = MOCK_USERS;
 

@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 62.2.0
+- [minor] replaceSelection with empty string removes selection [a764af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a764af6)
+
+## 62.1.3
+
+## 62.1.2
+- [patch] fixes RangeError bug when shouldFocus=true [adbd055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adbd055)
+
+## 62.1.1
+- [patch] fix prosemirror-view when collab editing tables [111cc6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111cc6a)
+
+## 62.1.0
+
+
+- [minor] advanced features for tables [e0bac20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bac20)
+
+## 62.0.23
+- [patch] Fix Insert Toolbar throws error about context if not placed inside EditorContext [dca4821](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dca4821)
+
 ## 62.0.22
 - [patch] [SMRT-156] Start tracking the containerId, objectId & mentioned user when a Mention is inserted into the Editor [36c1b22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c1b22)
 

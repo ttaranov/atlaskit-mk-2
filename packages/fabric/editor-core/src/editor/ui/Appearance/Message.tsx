@@ -102,6 +102,7 @@ export default class Editor extends React.Component<
     const {
       disabled,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       contentComponents,
@@ -129,6 +130,7 @@ export default class Editor extends React.Component<
           <PluginSlot
             disabled={!!disabled}
             editorView={editorView}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
@@ -142,6 +144,7 @@ export default class Editor extends React.Component<
           <PluginSlot
             disabled={disabled || maxContentSizeReached}
             editorView={editorView}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}

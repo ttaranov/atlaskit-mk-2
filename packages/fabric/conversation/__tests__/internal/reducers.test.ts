@@ -1,4 +1,4 @@
-import { createStore } from '../../src/internal/store';
+import createStore from '../../src/internal/store';
 import { reducers } from '../../src/internal/reducers';
 import {
   FETCH_CONVERSATIONS_REQUEST,
@@ -39,7 +39,7 @@ describe('Reducers', () => {
     mockComment2 = mockComment2Clean;
     mockComment = mockCommentClean;
 
-    store = createStore(reducers, {
+    store = createStore({
       conversations: [mockConversation],
     });
     dispatch = store.dispatch;
@@ -47,7 +47,7 @@ describe('Reducers', () => {
 
   describe('Fetch Conversations', () => {
     beforeEach(() => {
-      store = createStore(reducers);
+      store = createStore();
       dispatch = store.dispatch;
     });
 
@@ -75,7 +75,7 @@ describe('Reducers', () => {
 
   describe('Create Conversation', () => {
     it('should optimistically add a conversation to state on REQUEST', () => {
-      store = createStore(reducers);
+      store = createStore();
       dispatch = store.dispatch;
 
       dispatch({

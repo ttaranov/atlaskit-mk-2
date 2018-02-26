@@ -8,6 +8,11 @@ import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
 import { Command } from '../../../editor';
 import { getLineMarkerWidth } from '../utils';
+import {
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
+  checkIfNumberColumnEnabled,
+} from '../../../editor/plugins/table/utils';
 
 export interface Props {
   editorView: EditorView;
@@ -37,19 +42,24 @@ export default class CornerControls extends Component<Props, any> {
           onMouseOver={this.hoverTable}
           onMouseOut={this.resetHoverSelection}
         />
-        <InsertColumnButton
-          style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
-          index={0}
-          insertColumn={this.props.insertColumn}
-          lineMarkerHeight={tableHeight + toolbarSize}
-        />
-        <InsertRowButton
-          style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
-          index={0}
-          insertRow={this.props.insertRow}
-          lineMarkerWidth={lineMarkerWidth}
-          onMouseOver={this.props.updateScroll}
-        />
+        {!checkIfHeaderColumnEnabled(state) &&
+          !checkIfNumberColumnEnabled(state) && (
+            <InsertColumnButton
+              style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
+              index={0}
+              insertColumn={this.props.insertColumn}
+              lineMarkerHeight={tableHeight + toolbarSize}
+            />
+          )}
+        {!checkIfHeaderRowEnabled(state) && (
+          <InsertRowButton
+            style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
+            index={0}
+            insertRow={this.props.insertRow}
+            lineMarkerWidth={lineMarkerWidth}
+            onMouseOver={this.props.updateScroll}
+          />
+        )}
       </CornerContainer>
     );
   }
