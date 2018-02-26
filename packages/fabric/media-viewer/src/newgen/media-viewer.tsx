@@ -70,7 +70,9 @@ export const update = (model: Model, message: Message): Model => {
 
 export type DispatchFn = (message: Message) => void;
 export type ComponentProps = { model: Model } & { dispatch: DispatchFn };
-export const Component = ({ model }: ComponentProps) => {
+export const Component: React.StatelessComponent<ComponentProps> = ({
+  model,
+}) => {
   switch (model.type) {
     case 'LOADING':
       return <Spinner />;

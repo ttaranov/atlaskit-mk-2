@@ -1,10 +1,12 @@
 import * as React from 'react';
 
+// TODO Factor out dispatch fn here
 export type CreateAppOptions<Model, Message, Props> = {
   update: (model: Model, message: Message) => Model;
-  render: (
-    props: { dispatch: (message: Message) => void; model: Model },
-  ) => any;
+  Component: React.StatelessComponent<{
+    model: Model;
+    dispatch: (message: Message) => void;
+  }>;
   initialModel: Model;
   initialMessage?: (props: Props) => Message;
   effects?: (message: Message) => Promise<Message> | null;
@@ -13,7 +15,7 @@ export type CreateAppOptions<Model, Message, Props> = {
 export function createApp<Model, Message, Props>({
   initialModel,
   update,
-  render,
+  Component,
   initialMessage,
   effects,
 }: CreateAppOptions<Model, Message, Props>): React.ComponentClass<Props> {
@@ -59,11 +61,8 @@ export function createApp<Model, Message, Props>({
     }
 
     render() {
-      const props = {
-        dispatch: (message: Message) => this.dispatch(message),
-        model: this.state,
-      };
-      return render(props);
+      const dispatch = (message: Message) => this.dispatch(message);
+      return <Component model={this.state} dispatch={dispatch} />;
     }
   }
   return C;
