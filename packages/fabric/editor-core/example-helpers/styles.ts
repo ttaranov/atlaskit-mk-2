@@ -59,6 +59,7 @@ export const Content = styled.div`
   }
 
   & div.toolsDrawer {
+    margin-top: 16px;
     padding: 8px 16px;
     background: ${akColorN800};
 
