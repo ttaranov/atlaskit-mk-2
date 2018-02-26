@@ -21,6 +21,12 @@ import {
 } from 'prosemirror-tables';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import { TableNode } from '../../nodeviews';
+import {
+  isElementInTableCell,
+  setNodeSelection,
+  isLastItemMediaGroup,
+  closestElement,
+} from '../../utils/';
 
 import keymapPlugin from './keymap';
 import { analyticsService } from '../../analytics';
@@ -407,6 +413,37 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           pluginState.updateEditorFocused(true);
           pluginState.update(true);
           return false;
+        },
+        click(view: EditorView, event) {
+          const { target: element } = event;
+          const { tableNode }: TableState = stateKey.getState(view.state);
+          if (!tableNode || !isElementInTableCell(element)) {
+            return false;
+          }
+          const offset = tableStartPos(view.state);
+          const map = TableMap.get(tableNode);
+
+          /** Getting the offset of current item clicked */
+          const colIndex = (
+            closestElement(element, 'td') || closestElement(element, 'th')
+          ).cellIndex;
+          const rowIndex = closestElement(element, 'tr').rowIndex;
+          const cellIndex = map.width * rowIndex + colIndex;
+          const posInTable = map.map[cellIndex + 1] - 1;
+
+          const {
+            dispatch,
+            state: { tr, schema: { nodes: { paragraph } } },
+          } = view;
+          const editorElement = tableNode.nodeAt(map.map[cellIndex]);
+
+          /** Only if the last item is media group, insert a paragraph */
+          if (isLastItemMediaGroup(editorElement)) {
+            tr.insert(posInTable + offset, paragraph.create());
+            dispatch(tr);
+            setNodeSelection(view, posInTable + offset);
+          }
+          return true;
         },
         blur(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
