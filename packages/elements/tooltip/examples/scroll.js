@@ -17,7 +17,7 @@ const Parent = styled.div`
   margin-bottom: 8px;
   height: 64px;
   padding: 8px;
-  ${p => direction[p.scroll]}: scroll;
+  ${/* sc-prop */ p => direction[p.scroll]}: scroll;
 
   &:last-child {
     margin-bottom: 0;

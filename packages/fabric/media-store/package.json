@@ -28,7 +28,7 @@
     "@types/fetch-mock": "^5.12.1",
     "@types/p-queue": "^2.3.1",
     "fetch-mock": "^5.12.1",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3.1.6",
     "whatwg-fetch": "^2.0.3"
   }
 }

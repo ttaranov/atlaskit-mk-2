@@ -1,4 +1,8 @@
-import { css } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import { css, StyledComponentClass, Styles } from 'styled-components';
 import { akColorN900, akColorN300 } from '@atlaskit/util-shared-styles';
 
 export const title = css`

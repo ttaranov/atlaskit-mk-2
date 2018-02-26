@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 export const FixedWidthContainer = styled.div`
-  width: 380px
+  width: 380px;
   border: 1px dotted orange;
 `;
 

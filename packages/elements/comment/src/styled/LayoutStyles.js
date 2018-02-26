@@ -12,8 +12,10 @@ const ThemeColor = {
 
 export const AvatarSectionDiv = styled.div`
   /* -ms- properties are necessary until MS supports the latest version of the grid spec */
+  /* stylelint-disable value-no-vendor-prefix */
   -ms-grid-row: 1;
   -ms-grid-column: 1;
+  /* stylelint-enable */
   grid-area: avatar-area;
   /* Unfortunately it's still easier to use a margin here until MS supports grid-gap */
   margin-right: ${gridSize() * 2}px;
@@ -25,9 +27,11 @@ export const AvatarSectionDiv = styled.div`
 `;
 
 export const Container = styled.div`
+  /* stylelint-disable value-no-vendor-prefix, declaration-block-no-duplicate-properties */
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: auto 1fr;
+  /* stylelint-enable */
   grid-template:
     'avatar-area comment-area'
     '. nested-comments-area'

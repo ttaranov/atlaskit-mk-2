@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -26,7 +26,7 @@
     "@atlaskit/flag": "^6.4.4",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-card": "^24.0.4",
-    "@atlaskit/media-editor": "^4.1.0",
+    "@atlaskit/media-editor": "^4.1.1",
     "@atlaskit/modal-dialog": "^3.3.15",
     "@atlaskit/spinner": "^4.1.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -44,7 +44,7 @@
     "redux-devtools-extension": "^2.13.2",
     "resumablejs": "1.0.2",
     "rusha": "^0.8.11",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3.1.6",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
     "uuid": "^3.1.0"

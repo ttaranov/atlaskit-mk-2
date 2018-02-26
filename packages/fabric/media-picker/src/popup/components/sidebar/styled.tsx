@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, SVGProps, LiHTMLAttributes } from 'react';
 
 // TODO: ECEEF1 is not an atlaskit colour
 // https://product-fabric.atlassian.net/browse/MSW-156
@@ -16,7 +23,7 @@ export const ServiceList = styled.ul`
   padding: 0;
   float: left;
   width: 100%;
-  margin: 17px 0 0 0 !important; // We need important here due to default "ul" style overrides
+  margin: 17px 0 0 0 !important; /* We need important here due to default "ul" style overrides */
 `;
 
 export const Separator = styled.li`

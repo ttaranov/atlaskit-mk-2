@@ -1,8 +1,9 @@
 // @flow
 import PropTypes from 'prop-types';
-import { type Node } from 'react';
+import React, { type Node } from 'react';
 import { mount, shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
@@ -35,55 +36,38 @@ export const shallowWithTheme = (
     context: theme,
   });
 
-// Taken from https://github.com/styled-components/styled-components/issues/624#issuecomment-289944633
-// Ideally this would not be needed and we would use WithTheme,
-// but some tests rely on wrapper.setProps and this can only be done on the root.
 export const mountWithRootTheme = (
   children: Node,
-  theme?: Object = defaultTheme,
-  options: {} = {},
+  theme?: {} = defaultTheme,
+  options: Object = {},
 ) => {
-  const createBroadcast = initialValue => {
-    let listeners = [];
-    let currentValue = initialValue;
-
-    return {
-      publish(value: mixed) {
-        currentValue = value;
-        listeners.forEach(listener => listener(currentValue));
-      },
-      subscribe(listener) {
-        listeners.push(listener);
-        listener(currentValue);
-
-        return () => {
-          listeners = listeners.filter(item => item !== listener);
-        };
-      },
-    };
-  };
+  // Context type vars
   const CHANNEL = '__styled-components__';
-  const broadcast = createBroadcast(theme);
+  const CHANNEL_NEXT = `${CHANNEL}next__`;
+  const CONTEXT_CHANNEL_SHAPE = PropTypes.shape({
+    getTheme: PropTypes.func,
+    subscribe: PropTypes.func,
+    unsubscribe: PropTypes.func,
+  });
 
-  const themeContextTypes = Object.keys(theme).reduce(
-    (prev: Object, current: string): Object => ({
-      ...prev,
-      [current]: PropTypes.any,
-    }),
-    {},
-  );
+  // This handy way of getting context was taken from https://github.com/styled-components/jest-styled-components#theming
+  // but we need to set child context types as well which has been taken from https://github.com/styled-components/styled-components/blob/v3.1.6/src/models/ThemeProvider.js
+  const context = shallow(<ThemeProvider theme={theme} />)
+    .instance()
+    .getChildContext();
 
-  return mount(children, {
+  const mounted = mount(children, {
     ...options,
     context: {
-      [CHANNEL]: broadcast.subscribe,
-      ...theme,
-      ...(options.context || {}),
+      ...options.context,
+      ...context,
     },
     childContextTypes: {
-      [CHANNEL]: broadcast.publish,
-      ...themeContextTypes,
-      ...(options.childContextTypes || {}),
+      ...options.childContextTypes,
+      [CHANNEL]: PropTypes.func, // legacy
+      [CHANNEL_NEXT]: CONTEXT_CHANNEL_SHAPE,
     },
   });
+
+  return mounted;
 };

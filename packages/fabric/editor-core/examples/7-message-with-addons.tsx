@@ -18,7 +18,7 @@ const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 // tslint:disable-next-line:variable-name
 const AddonComponentExample = styled.div`
-  background: #ff0088;
+  background: #f08;
   border-radius: 5px;
   padding: 20px;
   display: flex;

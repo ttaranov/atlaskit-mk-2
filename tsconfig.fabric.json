@@ -23,7 +23,7 @@
       "es2015.iterable",
       "es2015.promise"
     ],
-    "types": ["jest", "react", "enzyme", "jest-styled-components"],
+    "types": ["jest", "react", "enzyme", "jest-styled-components", "styled-components"],
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "files": [

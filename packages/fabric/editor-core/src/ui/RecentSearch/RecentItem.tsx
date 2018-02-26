@@ -1,15 +1,24 @@
 import * as React from 'react';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
 import { ActivityItem } from '@atlaskit/activity';
 import {
   akColorN100,
   akColorN800,
   akColorN30,
 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
+
+interface ContainerProps {
+  selected: boolean;
+}
 
 // tslint:disable:next-line variable-name
 const Container = styled.li`
-  background-color: ${props => (props.selected ? akColorN30 : 'transparent')};
+  background-color: ${(props: ContainerProps) =>
+    props.selected ? akColorN30 : 'transparent'};
   padding: 5px;
   cursor: pointer;
   display: flex;

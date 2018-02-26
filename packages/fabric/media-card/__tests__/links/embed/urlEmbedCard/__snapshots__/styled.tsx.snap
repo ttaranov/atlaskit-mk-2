@@ -4,10 +4,6 @@ exports[`Wrapper should have the default width and a calculated height when aspe
 .c0 {
   position: relative;
   width: 480px;
-  /*
-          - cannot use a % height when the parent container does not have a fixed height
-          - padding-bottom % is calculated on the width of the parent container
-         */
   height: 0;
   padding-bottom: 75.18796992481202%;
 }

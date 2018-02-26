@@ -4,7 +4,7 @@
 import React, { type Node } from 'react';
 import { borderRadius, colors, gridSize, themed } from '@atlaskit/theme';
 import styled from 'styled-components';
-import k2s from 'kind2string';
+import convert, { resolveFromGeneric } from 'kind2string';
 
 const Wrapper = styled.code`
   display: inline-block;
@@ -90,9 +90,9 @@ type PrettyPropTypeProps = {
 const converters = {
   string: type => {
     if (type.value != null) {
-      return <StringType>{k2s.convert(type)}</StringType>;
+      return <StringType>{convert(type)}</StringType>;
     }
-    return <Type>{k2s.convert(type)}</Type>;
+    return <Type>{convert(type)}</Type>;
   },
   nullable: (type, depth) => {
     return prettyConvert(type.arguments, depth);
@@ -104,7 +104,7 @@ const converters = {
       return (
         <span>
           <TypeMeta>
-            {k2s.convert(type.value)} <Outline>{'<'}</Outline>
+            {convert(type.value)} <Outline>{'<'}</Outline>
           </TypeMeta>
           <Indent>
             {type.typeParams.params.map((param, i) => (
@@ -117,7 +117,7 @@ const converters = {
         </span>
       );
     }
-    return prettyConvert(k2s.resolveFromGeneric(type));
+    return prettyConvert(resolveFromGeneric(type));
   },
   object: (type, depth) => (
     <span>
@@ -127,7 +127,7 @@ const converters = {
       <Indent>
         {type.members.map(prop => {
           if (prop.kind === 'spread') {
-            const nestedObj = k2s.resolveFromGeneric(prop.value);
+            const nestedObj = resolveFromGeneric(prop.value);
             return nestedObj.members.map(newProp =>
               prettyConvert(newProp, depth),
             );
@@ -141,9 +141,9 @@ const converters = {
     </span>
   ),
   property: (type, depth) => (
-    <div key={k2s.convert(type.key)}>
+    <div key={convert(type.key)}>
       <TypeMinWidth>
-        <Type>{k2s.convert(type.key)}</Type>
+        <Type>{convert(type.key)}</Type>
       </TypeMinWidth>{' '}
       {type.value.kind !== 'generic' ? type.value.kind : ''}
       {type.optional ? null : <Required> required</Required>}{' '}
@@ -174,7 +174,7 @@ const prettyConvert = (type, depth = 1) => {
 
   const converter = converters[type.kind];
   if (!converter) {
-    return <Type>{k2s.convert(type)}</Type>;
+    return <Type>{convert(type)}</Type>;
   }
   return converter(type, depth);
 };
@@ -184,7 +184,7 @@ export default function PrettyPropType(props: PrettyPropTypeProps) {
   // be displayed elsewhere so we do not need to also include it here
   let type = props.type;
   if (type.kind === 'generic') {
-    type = k2s.resolveFromGeneric(props.type);
+    type = resolveFromGeneric(props.type);
   }
   if (SIMPLE_TYPES.includes(type.kind)) return null;
   if (

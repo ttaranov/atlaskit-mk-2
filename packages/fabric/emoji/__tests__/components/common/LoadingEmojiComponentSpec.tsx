@@ -10,6 +10,7 @@ import LoadingEmojiComponent, {
 } from '../../../src/components/common/LoadingEmojiComponent';
 
 class TestLoadingComponent extends LoadingEmojiComponent<Props, State> {
+  // @ts-ignore Unused var never read, should this be deleted?
   private loadedEmojiProvider: EmojiProvider;
 
   renderLoaded(loadedEmojiProvider: EmojiProvider) {
