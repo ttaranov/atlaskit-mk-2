@@ -69,11 +69,15 @@ const providers = {
     undefined: undefined,
   },
   mediaProvider: {
-    resolved: storyMediaProviderFactory({ includeUserAuthProvider: true }),
+    resolved: storyMediaProviderFactory({
+      includeUserAuthProvider: true,
+      includeLinkCreateContext: false,
+    }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({ includeUploadContext: false }),
-    'w/o link cards': storyMediaProviderFactory({
+    'w link cards': storyMediaProviderFactory({
+      includeUserAuthProvider: true,
       includeLinkCreateContext: false,
     }),
     'w/o userAuthProvider': storyMediaProviderFactory(),
