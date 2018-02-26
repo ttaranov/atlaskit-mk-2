@@ -13,17 +13,13 @@ const emojis = [imageEmoji];
 describe('<EmojiPickerList />', () => {
   describe('list', () => {
     it('should contain search ', () => {
-      const wrapper = mount(
-        <EmojiList emojis={emojis} showUploadOption={true} />,
-      );
+      const wrapper = mount(<EmojiList emojis={emojis} />);
 
       expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);
     });
 
     it('should show people category first if no frequently used', () => {
-      const wrapper = mount(
-        <EmojiList emojis={emojis} showUploadOption={true} />,
-      );
+      const wrapper = mount(<EmojiList emojis={emojis} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.get(0).props.title).to.equal('PEOPLE');
@@ -48,9 +44,7 @@ describe('<EmojiPickerList />', () => {
 
       const emojisWithFrequent = [...emojis, frequentEmoji];
 
-      const wrapper = mount(
-        <EmojiList emojis={emojisWithFrequent} showUploadOption={true} />,
-      );
+      const wrapper = mount(<EmojiList emojis={emojisWithFrequent} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.get(0).props.title).to.equal('FREQUENT');
