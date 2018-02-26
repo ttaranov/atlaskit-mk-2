@@ -11,6 +11,7 @@ import EditIcon from '@atlaskit/icon/glyph/edit';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ScreenIcon from '@atlaskit/icon/glyph/screen';
+import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { AkCodeBlock } from '@atlaskit/code';
@@ -18,6 +19,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import Tooltip from '@atlaskit/tooltip';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import Modal, {
+  ModalBody as Body,
   ModalHeader as OgModalHeader,
   ModalTitle,
 } from '@atlaskit/modal-dialog';
@@ -26,7 +28,9 @@ import Spinner from '@atlaskit/spinner';
 import { colors } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
+import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
 import type { Directory, RouterMatch } from '../../types';
+import ExampleDisplay from '../../components/Examples/ExampleDisplay';
 import Loading from '../../components/Loading';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData, getConfig } from '../../site';
@@ -70,9 +74,13 @@ const ErrorMessage = styled.div`
 // ==============================
 // MODAL
 // ==============================
-
-const ModalBody = styled.div`
+const ModalBody = styled(Body)`
   display: flex;
+  flex-direction: column;
+`;
+const ContentBody = styled.div`
+  display: flex;
+  flex: 1;
 `;
 const ModalContent = styled.div`
   flex: 1 1 auto;
@@ -165,47 +173,6 @@ function ExampleNavigation({ examples, exampleId, onExampleSelected }) {
   );
 }
 
-function ExampleDisplay(props) {
-  const ExampleComponent = Loadable({
-    loader: () => props.example && props.example.exports(),
-    loading: Loading,
-    render(loaded) {
-      if (!loaded.default) {
-        return (
-          <ErrorMessage>
-            Example{props.example ? ` "${props.example.id}"` : ''} doesn't have
-            default export.
-          </ErrorMessage>
-        );
-      }
-
-      return (
-        <ComponentContainer>
-          <loaded.default />
-        </ComponentContainer>
-      );
-    },
-  });
-
-  const ExampleCode = Loadable({
-    loader: () => props.example && props.example.contents(),
-    loading: Loading,
-    render(loaded) {
-      return (
-        <CodeContainer>
-          <CodeBlock grammar="jsx" content={loaded} name={props.name} />
-        </CodeContainer>
-      );
-    },
-  });
-
-  return (
-    <Content>
-      {props.displayCode ? <ExampleCode /> : <ExampleComponent />}
-    </Content>
-  );
-}
-
 type State = {
   displayCode: boolean,
   flags: Object,
@@ -292,50 +259,9 @@ export default class ExamplesModal extends Component<Props, State> {
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
-    let resolved = this.resolveProps(groupId, packageId, exampleId);
+    let resolved = packageResolver(groupId, packageId, exampleId);
     let url = toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
     this.context.router.history.push(url);
-  }
-
-  resolveProps(groupId?: string, packageId?: string, exampleId?: string) {
-    let groups = fs.getDirectories(packagesData.children);
-    let resolvedGroupId = groupId || groups[0].id;
-    let group = fs.getById(groups, resolvedGroupId);
-    let packages = fs.getDirectories(group.children);
-    let resolvedPackageId = packageId || packages[0].id;
-    let pkg = fs.getById(packages, resolvedPackageId);
-
-    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
-    let example;
-
-    if (examples) {
-      example = fs.find(examples, file => {
-        if (exampleId) {
-          return fs.normalize(file.id) === exampleId;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    let resolvedExampleId = example ? example.id : null;
-
-    let hasChanged =
-      groupId !== resolvedGroupId ||
-      packageId !== resolvedPackageId ||
-      (exampleId || null) !==
-        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
-
-    return {
-      hasChanged,
-      groups,
-      packages,
-      examples,
-      example,
-      groupId: resolvedGroupId,
-      packageId: resolvedPackageId,
-      exampleId: resolvedExampleId,
-    };
   }
 
   onCodeToggle = () =>
@@ -345,7 +271,7 @@ export default class ExamplesModal extends Component<Props, State> {
     if (event) event.stopPropagation();
 
     const { params } = this.props.match;
-    const { packageId, groupId } = this.resolveProps(
+    const { packageId, groupId } = packageResolver(
       params.groupId,
       params.pkgId,
       params.exampleId,
@@ -364,7 +290,7 @@ export default class ExamplesModal extends Component<Props, State> {
       packageId,
       groupId,
       exampleId,
-    } = this.resolveProps(
+    } = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
@@ -377,12 +303,18 @@ export default class ExamplesModal extends Component<Props, State> {
 
     const { displayCode } = this.state;
     const pkgJSON = getConfig(groupId, packageId).config;
+    const loaderUrl = getLoaderUrl(
+      groupId,
+      packageId,
+      this.props.match.params.exampleId,
+    );
 
     if (hasChanged) {
       return <Redirect to={toUrl(groupId, packageId, exampleId)} />;
     }
     return (
       <Modal
+        body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeader showKeyline={showKeyline}>
             <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
@@ -429,6 +361,15 @@ export default class ExamplesModal extends Component<Props, State> {
                     to={toExampleUrl(groupId, packageId, exampleId)}
                   />
                 </Tooltip>
+                <Tooltip content="Isolated View" position="bottom">
+                  <Button
+                    appearance="subtle"
+                    component={'a'}
+                    iconBefore={<LinkIcon label="Link Icon" />}
+                    href={loaderUrl}
+                    target={'_blank'}
+                  />
+                </Tooltip>
                 <Tooltip content="Close" position="bottom">
                   <Button
                     appearance="subtle"
@@ -444,7 +385,7 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={1180}
       >
-        <ModalBody>
+        <ContentBody>
           <ExampleNavigation
             groupId={groupId}
             packageId={packageId}
@@ -456,11 +397,24 @@ export default class ExamplesModal extends Component<Props, State> {
             loadingSandbox={this.state.loadingSandbox}
           />
           <ModalContent>
-            {examples && exampleId ? (
+            {examples && exampleId && loaderUrl ? (
               <ExampleDisplay
                 displayCode={displayCode}
-                example={example}
+                example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
+                src={`${loaderUrl}&mode=modal`}
+                render={(ExampleCode, ExampleComponent, displayCode) => {
+                  if (displayCode) {
+                    return (
+                      <Content>
+                        <CodeContainer>
+                          <ExampleCode />
+                        </CodeContainer>
+                      </Content>
+                    );
+                  }
+                  return <ExampleComponent />;
+                }}
               />
             ) : (
               <Content>
@@ -473,7 +427,7 @@ export default class ExamplesModal extends Component<Props, State> {
               {Object.keys(this.state.flags).map(key => this.state.flags[key])}
             </FlagGroup>
           </ModalContent>
-        </ModalBody>
+        </ContentBody>
       </Modal>
     );
   }

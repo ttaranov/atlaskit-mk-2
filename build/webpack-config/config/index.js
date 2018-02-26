@@ -1,13 +1,19 @@
 // @flow
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-
+const chunkslists = {
+  all: [],
+  includes: [],
+  excludes: [],
+};
+var hasWritten = false;
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -42,7 +48,23 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), entry),
             ]
           : path.join(cwd, entry),
-      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+      examples:
+        env === 'development' && host && port
+          ? [
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
+              path.join(process.cwd(), './src/examples-entry.js'),
+            ]
+          : path.join(cwd, './src/examples-entry.js'),
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'react-router',
+        'react-router-dom',
+      ],
     },
     output: {
       filename: '[name].js',
@@ -169,22 +191,18 @@ function plugins(
   } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
+    new webpack.NamedChunksPlugin(
+      chunk =>
+        chunk.name && path.isAbsolute(chunk.name) ? chunk.id : chunk.name,
+    ),
+    new webpack.NamedModulesPlugin(),
     //
     // Order of CommonsChunkPlugins is important,
     // each next one of them can drag some dependencies from the previous ones.
-    //
-
-    // Joins all vendor entry point packages into 1 chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-    }),
 
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-two-or-more-times',
-      minChunks(module, count) {
-        return count >= 2;
-      },
+      async: 'async-deps',
+      minChunks: 1,
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
@@ -231,9 +249,26 @@ function plugins(
       },
     }),
 
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common-app',
+      chunks: ['main', 'examples'],
+      minChunks(module, count) {
+        const resource = module.resource;
+        return !resource || !resource.includes('website/src/index.js');
+      },
+    }),
+
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['examples'],
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'examples.html',
+      template: path.join(cwd, 'public/examples.html.ejs'),
+      favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['main'],
     }),
 
     new webpack.DefinePlugin({
