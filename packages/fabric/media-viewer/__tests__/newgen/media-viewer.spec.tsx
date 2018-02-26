@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   update,
   effects,
-  State,
+  Model,
   Message,
   Component,
 } from '../../src/newgen/media-viewer';
@@ -24,14 +24,14 @@ describe('MediaViewer', () => {
 
   describe('update', () => {
     it('once loaded the name is saved as unkown', () => {
-      const initialState: State = {
+      const initialModel: Model = {
         type: 'LOADING',
       };
       const message: Message = {
         type: 'LOADED',
         item: { type: 'file', details: {} },
       };
-      expect(update(initialState, message)).toEqual({
+      expect(update(initialModel, message)).toEqual({
         type: 'LOADED',
         name: 'unkown',
       });
@@ -39,12 +39,12 @@ describe('MediaViewer', () => {
   });
 
   describe('Component', () => {
-    it('should render the spinner for the LOADING state', () => {
-      const state: State = {
+    it('should render the spinner for the LOADING model', () => {
+      const model: Model = {
         type: 'LOADING',
       };
 
-      const c = mount(<Component {...state} dispatch={() => {}} />);
+      const c = mount(<Component {...model} dispatch={() => {}} />);
       expect(c.find(Spinner)).toHaveLength(1);
     });
   });

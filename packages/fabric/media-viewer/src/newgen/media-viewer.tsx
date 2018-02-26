@@ -6,16 +6,14 @@ import {
 } from '../components/media-viewer';
 import Spinner from '@atlaskit/spinner';
 
-export type DispatchFn = (message: Message) => void;
-
 export interface Props {
   context: Context;
   dataSource: MediaViewerDataSource;
   initialItem: MediaViewerItem;
   collectionName?: string;
 }
-// model - and props alawys model, dispatch!
-export type State =
+
+export type Model =
   | {
       type: 'LOADING';
     }
@@ -40,7 +38,7 @@ export type Message =
       type: 'LOADING_ERROR';
     };
 
-export const initialState: State = {
+export const initialModel: Model = {
   type: 'LOADING',
 };
 
@@ -52,10 +50,10 @@ export const initialMessage = (props: Props): Message => {
   };
 };
 
-export const update = (prevState: State, message: Message): State => {
+export const update = (model: Model, message: Message): Model => {
   switch (message.type) {
     case 'INIT':
-      return prevState;
+      return model;
     case 'LOADED':
       return {
         type: 'LOADED',
@@ -70,7 +68,8 @@ export const update = (prevState: State, message: Message): State => {
   }
 };
 
-export type ComponentProps = State & { dispatch: DispatchFn };
+export type DispatchFn = (message: Message) => void;
+export type ComponentProps = Model & { dispatch: DispatchFn };
 
 export const Component = (props: ComponentProps) => {
   switch (props.type) {
@@ -81,7 +80,6 @@ export const Component = (props: ComponentProps) => {
     case 'LOADED':
       // loaded means that we have a list of media items to start with.
       // those items doesn't necessarily mean that have been completely loaded.
-
       return <div>{props.name}</div>;
   }
 };

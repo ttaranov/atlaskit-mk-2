@@ -2,12 +2,12 @@ import * as React from 'react';
 import { createApp } from './create-app';
 import * as MV from './media-viewer';
 
-export const App = createApp<MV.State, MV.Message, MV.Props>({
+export const App = createApp<MV.Model, MV.Message, MV.Props>({
   initialMessage: MV.initialMessage,
-  initialState: MV.initialState,
+  initialModel: MV.initialModel,
   update: MV.update,
-  render: (dispatch: MV.DispatchFn, state: MV.State) => (
-    <MV.Component {...state} dispatch={dispatch} />
+  render: (dispatch: MV.DispatchFn, model: MV.Model) => (
+    <MV.Component {...model} dispatch={dispatch} />
   ),
   effects: MV.effects,
 });

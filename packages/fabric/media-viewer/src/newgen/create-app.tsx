@@ -1,24 +1,24 @@
 import * as React from 'react';
 
-export type CreateAppOptions<State, Message, Props> = {
-  update: (prevState: State, message: Message) => State;
-  render: (dispatch: (message: Message) => void, state: State) => any;
-  initialState: State;
+export type CreateAppOptions<Model, Message, Props> = {
+  update: (model: Model, message: Message) => Model;
+  render: (dispatch: (message: Message) => void, model: Model) => any;
+  initialModel: Model;
   initialMessage?: (props: Props) => Message;
   effects?: (message: Message) => Promise<Message> | null;
 };
 
-export function createApp<State, Message, Props>({
-  initialState,
+export function createApp<Model, Message, Props>({
+  initialModel,
   update,
   render,
   initialMessage,
   effects,
-}: CreateAppOptions<State, Message, Props>): React.ComponentClass<Props> {
-  class C extends React.Component<Props, State> {
+}: CreateAppOptions<Model, Message, Props>): React.ComponentClass<Props> {
+  class C extends React.Component<Props, Model> {
     constructor() {
       super();
-      this.state = initialState;
+      this.state = initialModel;
     }
 
     componentDidMount() {
@@ -29,10 +29,10 @@ export function createApp<State, Message, Props>({
 
     dispatch(message: Message): void {
       this.setState(
-        prevState => {
-          const newState = update(prevState, message);
-          console.log('-- message', message, 'new state', newState);
-          return newState;
+        model => {
+          const newModel = update(model, message);
+          console.log('-- message', message, 'new model', newModel);
+          return newModel;
         },
         () => {
           if (effects) {
@@ -49,7 +49,7 @@ export function createApp<State, Message, Props>({
 
     componentDidUpdate(prevProps: Props) {
       // if any of the props change, we fully restart MV
-      this.state = initialState;
+      this.state = initialModel;
       if (initialMessage) {
         // TODO: we can only call dispatch if props changed (not state)
         // this.dispatch(initialMessage(this.props));
