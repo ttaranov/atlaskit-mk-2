@@ -159,7 +159,9 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.unsubscribe();
 
     // Setting the subscription after the state has been applied
-    this.loadNextPage = () => provider.loadNextPage();
+    this.loadNextPage = () => {
+      provider.loadNextPage();
+    };
     this.subscribe();
   }
 
@@ -310,7 +312,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     const { collection, shouldAnimate } = this.state;
     const { cardWidth, placeholder } = this;
     const { shouldLazyLoadCards } = this.props;
-
     const cards = collection
       ? collection.items.map((mediaItem: MediaCollectionItem) => {
           if (!mediaItem.details || !mediaItem.details.id) {

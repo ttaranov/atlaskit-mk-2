@@ -10797,9 +10797,9 @@ react-redux@^5.0.0, react-redux@^5.0.6:
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
 
-react-render-image@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-render-image/-/react-render-image-1.1.1.tgz#a3a12cbd877a28d51dd0ba25c6a0d8ca1ec3fbad"
+react-render-image@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-render-image/-/react-render-image-1.1.2.tgz#f96fa42b9e0dc83bb67fc1dafbbbf1a3064e702c"
 
 react-router-dom@^4.2.2:
   version "4.2.2"

@@ -6,12 +6,37 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
-import { MediaCollectionFileItem, FileDetails } from '@atlaskit/media-core';
+import {
+  MediaCollectionFileItem,
+  FileDetails,
+  Context,
+} from '@atlaskit/media-core';
 
+import { CardView } from '../../src/root/cardView';
 import { CardList, CardListProps, CardListState } from '../../src/list';
-import { MediaCard } from '../../src/root/mediaCard';
 import { InfiniteScroll } from '../../src/list/infiniteScroll';
 import { LazyContent } from '../../src/utils/lazyContent';
+
+function waitForCollectionToLoad(
+  context: Context,
+  collectionName: string,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const subscription = context
+      .getMediaCollectionProvider(collectionName, 10)
+      .observable()
+      .subscribe({
+        next: res => {
+          if (subscription) subscription.unsubscribe();
+          resolve();
+        },
+        error: () => {
+          if (subscription) subscription.unsubscribe();
+          reject();
+        },
+      });
+  });
+}
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';
@@ -31,6 +56,7 @@ describe('CardList', () => {
       details: {
         id: 'abcd',
         type: 'link',
+        processingStatus: 'succeeded',
       },
     },
     {
@@ -38,6 +64,7 @@ describe('CardList', () => {
       details: {
         id: 'efgh',
         type: 'file',
+        processingStatus: 'succeeded',
       },
     },
   ];
@@ -49,6 +76,7 @@ describe('CardList', () => {
           nextInclusiveStartKey: 'xyz',
         });
       },
+      loadNextPage() {},
     },
     getMediaItemProvider: {
       observable() {
@@ -65,55 +93,35 @@ describe('CardList', () => {
       },
     },
   });
-  it('should create a MediaItemProvider for each MediaItem in the collection', () => {
-    const context = contextWithInclusiveStartKey;
-    mount(<CardList context={context} collectionName={collectionName} />);
-
-    expect(context.getMediaCollectionProvider.callCount).toBe(
-      expectedMediaItems.length,
-    );
-    expect(context.getMediaItemProvider.callCount).toBe(
-      expectedMediaItems.length,
-    );
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        expectedMediaItems[0].details.id,
-        expectedMediaItems[0].type,
-        collectionName,
-        expectedMediaItems[0],
-      ),
-    ).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        expectedMediaItems[1].details.id,
-        expectedMediaItems[1].type,
-        collectionName,
-        expectedMediaItems[1],
-      ),
-    ).toBe(true);
-  });
-
-  it('should pass a provider to MediaCard', () => {
-    const collection = { items: expectedMediaItems };
-    const context = contextWithInclusiveStartKey;
-    const card = mount(
-      <CardList
-        context={context}
-        collectionName={collectionName}
-        shouldLazyLoadCards={false}
-      />,
-    );
-
-    card.setState({ loading: false, error: undefined, collection });
-    // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(card.find(MediaCard)).toHaveLength(2);
-    card
-      .find(MediaCard)
-      .forEach(mediaCard =>
-        expect((mediaCard.prop('provider').observable() as any).value).toBe(
-          expectedMediaItemProvider,
-        ),
-      );
+  const contextWithSucceededCollection = fakeContext({
+    getMediaCollectionProvider: {
+      observable() {
+        return Observable.create(observer => {
+          observer.next({
+            items: [
+              {
+                type: 'file',
+                details: {
+                  id: 'some-file-id',
+                  occurrenceKey: 'some-file-occurrence-key',
+                  processingStatus: 'succeeded',
+                  artifacts: {},
+                },
+              },
+              {
+                type: 'link',
+                details: {
+                  id: 'some-link-id',
+                  occurrenceKey: 'some-link-occurrence-key',
+                  processingStatus: 'succeeded',
+                },
+              },
+            ],
+          });
+        });
+      },
+      loadNextPage() {},
+    },
   });
 
   it('should be loading=true when mounted', () => {
@@ -230,59 +238,26 @@ describe('CardList', () => {
   });
 
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
-    const newItemDetails: FileDetails = {
-      processingStatus: 'succeeded',
-    };
-
-    const newItem: MediaCollectionFileItem = {
-      type: 'file',
-      details: {
-        ...oldItem.details,
-        ...newItemDetails,
-      },
-    };
-
-    const collection = {
-      items: [oldItem, oldItem, oldItem],
-      nextInclusiveStartKey: 'xyz',
-    };
-
-    const context = fakeContext({
-      getMediaCollectionProvider: {
-        observable() {
-          return Observable.create(observer => {
-            observer.next(collection);
-          });
-        },
-      },
-      getMediaItemProvider: {
-        observable() {
-          return Observable.create(observer => {
-            observer.next(newItemDetails);
-          });
-        },
-      },
-    });
+    const context = contextWithInclusiveStartKey;
 
     const onCardClickHandler = jest.fn();
 
-    const wrapper = shallow<CardListProps, CardListState>(
+    const wrapper = mount<CardListProps, CardListState>(
       <CardList
+        shouldLazyLoadCards={false}
         context={context}
         collectionName={collectionName}
         onCardClick={onCardClickHandler}
       />,
-      { disableLifecycleMethods: true },
     ) as any;
-    wrapper.setState({ loading: false, error: undefined, collection });
     wrapper
-      .find(MediaCard)
+      .find(CardView)
       .first()
-      .simulate('click', { mediaItemDetails: newItemDetails });
+      .simulate('click', { mediaItemDetails: expectedMediaItems[0] });
 
     expect(onCardClickHandler).toHaveBeenCalledTimes(1);
     expect(onCardClickHandler.mock.calls[0][0].mediaCollectionItem).toEqual(
-      newItem,
+      expectedMediaItems[0],
     );
     expect(onCardClickHandler.mock.calls[0][0].collectionName).toEqual(
       collectionName,
@@ -419,6 +394,89 @@ describe('CardList', () => {
         collection,
       });
       expect(list.find(LazyContent)).toHaveLength(0);
+    });
+
+    it('should render CardView with link details', async () => {
+      const context = contextWithSucceededCollection;
+      const list = mount(
+        <CardList
+          shouldLazyLoadCards={false}
+          useInfiniteScroll={false}
+          context={context}
+          collectionName={collectionName}
+        />,
+      );
+
+      // wait for the collection to be loaded
+      await waitForCollectionToLoad(context, collectionName);
+      list.update();
+
+      expect(
+        list
+          .find(CardView)
+          .last()
+          .props(),
+      ).toMatchObject({
+        status: 'complete',
+        metadata: {
+          id: 'some-link-id',
+          occurrenceKey: 'some-link-occurrence-key',
+          processingStatus: 'succeeded',
+        },
+      });
+    });
+
+    it('should render CardView with file details', async () => {
+      const context = contextWithSucceededCollection;
+      const list = mount(
+        <CardList
+          shouldLazyLoadCards={false}
+          useInfiniteScroll={false}
+          context={context}
+          collectionName={collectionName}
+        />,
+      );
+
+      // wait for the collection to be loaded
+      await waitForCollectionToLoad(context, collectionName);
+      list.update();
+
+      expect(
+        list
+          .find(CardView)
+          .first()
+          .props(),
+      ).toMatchObject({
+        status: 'complete',
+        metadata: {
+          id: 'some-file-id',
+          occurrenceKey: 'some-file-occurrence-key',
+          processingStatus: 'succeeded',
+        },
+      });
+    });
+
+    it('should render CardView with an image URI', async () => {
+      const context = contextWithSucceededCollection;
+      const list = mount(
+        <CardList
+          shouldLazyLoadCards={false}
+          useInfiniteScroll={false}
+          context={context}
+          collectionName={collectionName}
+        />,
+      );
+
+      // wait for the collection to be loaded
+      await waitForCollectionToLoad(context, collectionName);
+      list.update();
+
+      expect(
+        list
+          .find(CardView)
+          .first()
+          .prop('dataURI'),
+      ).toEqual('fake-image-data-uri');
     });
   });
 });
