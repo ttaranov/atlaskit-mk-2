@@ -104,9 +104,21 @@ pipelines:
             - yarn install --pure-lockfile
             - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
             - node clear.pipelines.node.cache.js
+            - sleep 5
             - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
       - step:
           name: Creating new cache
+          script:
+            - source ./build-setup.sh
+            - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
+            - bolt install --pure-lockfile
+            - yarn test
+            - curl 'https://api.bitbucket.org/internal/repositories/atlassian/atlaskit-mk-2/pipelines_caches/'
+          caches:
+            - node
+
+    run-tests:
+      - step:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
