@@ -29,6 +29,14 @@ function createEventData(iso, mix = {}) {
   };
 }
 
+function findDate(wrapper, filter) {
+  return wrapper.find(Date).filter(filter);
+}
+
+function findDateTd(wrapper, filter) {
+  return findDate(wrapper, filter).find(DateTd);
+}
+
 test('getNextMonth() / getPrevMonth()', () => {
   const wrapper = shallow(<Calendar month={1} year={2000} />);
   expect(wrapper.instance().getNextMonth()).toEqual({ month: 2, year: 2000 });
@@ -95,11 +103,10 @@ test('handleClickDay()', () => {
   const wrapper = mount(
     <Calendar onSelect={mockOnSelect} month={1} year={2000} />,
   );
-  wrapper
-    .find(Date)
-    .filter({ children: 1, month: 1, year: 2000 })
-    .find(DateTd)
-    .simulate('mouseup', createEvent());
+  findDateTd(wrapper, { children: 1, month: 1, year: 2000 }).simulate(
+    'mouseup',
+    createEvent(),
+  );
   expect(mockOnSelect).toHaveBeenCalledWith(createEventData('2000-01-01'));
 });
 
@@ -164,4 +171,13 @@ test('focus()', () => {
   instance.container.focus = jest.fn();
   instance.focus();
   expect(instance.container.focus).toHaveBeenCalledTimes(1);
+});
+
+test('disabled', () => {
+  const wrapper = mount(
+    <Calendar month={1} year={2000} disabled={['2000-01-01']} />,
+  );
+  expect(
+    findDate(wrapper, { children: 1, month: 1, year: 2000 }).props().disabled,
+  ).toBe(true);
 });
