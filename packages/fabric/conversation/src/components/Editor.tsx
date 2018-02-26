@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
-import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
   Editor as AkEditor,
