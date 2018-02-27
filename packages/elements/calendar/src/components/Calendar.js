@@ -27,6 +27,7 @@ const arrowKeys = {
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
+type ArrowKeys = 'down' | 'left' | 'right' | 'up';
 type Handler = (e: any) => void;
 type Props = {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
@@ -192,7 +193,7 @@ class Calendar extends Component<Props, State> {
     }
   }
 
-  navigate(type) {
+  navigate(type: ArrowKeys) {
     const { day, month, year } = this.state;
 
     if (type === 'down') {
