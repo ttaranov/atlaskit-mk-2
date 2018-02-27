@@ -71,7 +71,7 @@ export type Props = {
   dispatch: (message: Message) => void;
 };
 
-export const ImageViewerWrapper = styled.div`
+const ImageViewerWrapper = styled.div`
   overflow: hidden;
   height: 100%;
   display: flex;
@@ -79,12 +79,12 @@ export const ImageViewerWrapper = styled.div`
   justify-content: center;
 `;
 
-export const Img = styled.img`
+const Img = styled.img`
   max-height: 100%;
   transition: transform 0.3s;
 `;
 
-export const ItemPreviewWrapper = styled.div`
+const ItemPreviewWrapper = styled.div`
   flex: 1;
   padding: 10px;
   overflow: hidden;
