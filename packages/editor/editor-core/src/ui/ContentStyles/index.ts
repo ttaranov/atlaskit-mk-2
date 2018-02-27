@@ -15,10 +15,10 @@ import {
 } from '../../styles';
 import {
   akGridSizeUnitless,
-  akColorN80,
   akColorN20,
   akBorderRadius,
   akColorN40A,
+  akColorN300,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { tableStyle } from '@atlaskit/editor-common';
@@ -46,13 +46,13 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
     &::before {
       content: attr(data-text);
-      color: ${akColorN80};
+      color: ${akColorN300};
       pointer-events: none;
     }
   }
 
   .ProseMirror span[data-placeholder] {
-    color: ${akColorN80};
+    color: ${akColorN300};
   }
 
   .ProseMirror blockquote {
