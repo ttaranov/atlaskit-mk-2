@@ -1,6 +1,7 @@
 // @flow
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import { borderRadius, colors } from '@atlaskit/theme';
 import { format, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
@@ -61,15 +62,18 @@ type State = {
 };
 
 const Flex = styled.div`
-  background-color: #fafbfc;
-  border-radius: 4px;
+  background-color: ${colors.N10};
+  border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
   ${({ isFocused }) => `
-    border: ${isFocused ? '2px solid #4c9aff' : '1px solid #f4f5f7'};
+    border: ${
+      isFocused ? `2px solid ${colors.B100}` : `1px solid ${colors.N20}`
+    };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
-    background-color: ${({ isFocused }) => (isFocused ? 'inherit' : '#f4f5f7')};
+    background-color: ${({ isFocused }) =>
+      isFocused ? 'inherit' : colors.N20};
   }
 `;
 

@@ -3,6 +3,7 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select from '@atlaskit/select';
+import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component, type Node } from 'react';
 import withCtrl from 'react-ctrl';
@@ -70,15 +71,15 @@ const arrowKeys = {
 };
 
 const StyledMenu = styled.div`
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 1px 5px 10px #eee;
+  background-color: ${colors.N0};
+  border: 1px solid ${colors.N40};
+  border-radius: ${borderRadius()}px;
+  box-shadow: 1px 5px 10px ${colors.N30};
   margin-top: 7px;
   overflow: hidden;
   position: absolute;
   text-align: center;
-  z-index: 1000;
+  z-index: ${layers.dialog};
 `;
 
 class DatePicker extends Component<Props, State> {
