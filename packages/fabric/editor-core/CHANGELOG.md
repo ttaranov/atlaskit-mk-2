@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.4.0
+- [minor] Disable save button until media finishes upload [aeb54bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeb54bf)
+
 ## 62.3.3
 
 ## 62.3.2
