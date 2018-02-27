@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
-import { Context, MediaItem } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import {
   MediaViewerDataSource,
   MediaViewerItem,
