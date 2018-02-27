@@ -13,6 +13,7 @@ export default md`
     AvatarItem,
     Presence,
     Status,
+    Skeleton,
   } from '@atlaskit/avatar';
   ~~~
 
@@ -91,6 +92,14 @@ export default md`
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/components/Status')}
+    />
+  )}
+  
+  ## Skeleton Props
+
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Skeleton')}
     />
   )}
 

@@ -24,7 +24,7 @@ import {
   resizeClosedBreakpoint,
   standardOpenWidth,
 } from '../../shared-variables';
-import * as presets from '../../theme/presets';
+import { defaultContainerTheme, defaultGlobalTheme } from '../../theme/util';
 import WithElectronTheme from '../../theme/with-electron-theme';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
@@ -131,24 +131,6 @@ type State = {
   isTogglingIsOpen: boolean,
   resizeDelta: number,
 };
-
-// NOTE: Dark mode is a user preference that takes precedence over provided themes
-function defaultContainerTheme(containerTheme, mode) {
-  if (containerTheme && containerTheme.hasDarkmode) {
-    return containerTheme;
-  }
-  if (mode === 'dark') {
-    return presets.dark;
-  }
-  return containerTheme || presets.container;
-}
-function defaultGlobalTheme(globalTheme, mode) {
-  if (globalTheme && globalTheme.hasDarkmode) return globalTheme;
-  if (mode === 'dark') {
-    return presets.dark;
-  }
-  return globalTheme || presets.global;
-}
 
 export default class Navigation extends PureComponent<Props, State> {
   static defaultProps = {

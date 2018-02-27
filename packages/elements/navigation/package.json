@@ -58,6 +58,7 @@
     "@atlaskit/logo": "^6.1.2",
     "@atlaskit/page": "^5.0.14",
     "@atlaskit/single-select": "^3.2.4",
+    "@atlaskit/toggle": "^2.8.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "raf-stub": "^2.0.1",
