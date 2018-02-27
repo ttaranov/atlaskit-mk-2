@@ -311,6 +311,7 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'Enter' });
       wrapper.update();
       expect(onSearchSubmitSpy).toHaveBeenCalledTimes(1);
+      expect(onSearchSubmitSpy.mock.calls[0][0].target).toBeTruthy();
       expect(isInputFocused(searchInput)).toBe(true);
     });
     it("should run the onClick callback with the result's data on ENTER keystroke (when an item is selected)", () => {
