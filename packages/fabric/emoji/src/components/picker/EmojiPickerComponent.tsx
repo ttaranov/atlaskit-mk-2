@@ -73,6 +73,7 @@ export interface State {
   uploading: boolean;
   // the picker is considered loaded when at least 1 set of emojis have loaded
   loading: boolean;
+  showUploadButton: boolean;
 }
 
 export default class EmojiPickerComponent extends PureComponent<Props, State> {

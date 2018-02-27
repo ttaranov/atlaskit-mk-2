@@ -168,8 +168,8 @@ describe('<EmojiPreview />', () => {
 
   describe('Add custom emoji', () => {
     const safeFindStartEmojiUpload = async component => {
-      await waitUntil(() => helper.startEmojiUploadVisible(component));
-      return helper.findStartEmojiUpload(component);
+      await waitUntil(() => helper.customEmojiButtonVisible(component));
+      return helper.findCustomEmojiButton(component);
     };
 
     const waitUntilPreviewSectionIsVisible = async component => {
@@ -228,7 +228,7 @@ describe('<EmojiPreview />', () => {
 
         performToneButtonClick(component);
 
-        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
       });
 
       it('"Add custom emoji" button should appear after Tone is skipped', async () => {
@@ -239,7 +239,7 @@ describe('<EmojiPreview />', () => {
 
         performToneButtonClick(component);
 
-        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
 
         // this should cancel the Tone selection
         emojiPreviewSection.simulate('mouseleave');
