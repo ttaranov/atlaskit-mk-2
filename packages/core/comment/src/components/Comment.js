@@ -1,7 +1,9 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
+import { name, version } from '../../package.json';
 import CommentLayout from './Layout';
 import HeaderItems from './Header';
 import FooterItems from './Footer';
@@ -97,13 +99,15 @@ export default class Comment extends Component<Props, {}> {
     );
 
     return (
-      <CommentLayout
-        avatar={avatar}
-        content={layoutContent}
-        highlighted={highlighted}
-      >
-        {children}
-      </CommentLayout>
+      <AnalyticsContext data={{ component: 'comment', package: name, version }}>
+        <CommentLayout
+          avatar={avatar}
+          content={layoutContent}
+          highlighted={highlighted}
+        >
+          {children}
+        </CommentLayout>
+      </AnalyticsContext>
     );
   }
 }
