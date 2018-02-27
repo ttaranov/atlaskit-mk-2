@@ -3,6 +3,7 @@ import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import convert, { getKind } from 'kind2string';
+import md from 'react-markings';
 
 import Description from './Description';
 import PrettyPropType from './PrettyPropType';
@@ -171,7 +172,7 @@ const renderPropType = propType => {
         type={getKind(propType.value)}
         defaultValue={propType.default && convert(propType.default)}
       />
-      {description && <Description>{description}</Description>}
+      {description && <Description>{md([description])}</Description>}
       <PrettyPropType type={propType.value} />
     </PropTypeWrapper>
   );
