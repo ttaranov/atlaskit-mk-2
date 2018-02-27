@@ -7,6 +7,7 @@ import {
   MediaItemProvider,
   MediaItem,
   DataUriService,
+  MediaUrlPreviewProvider,
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -66,6 +67,7 @@ export class Stubs {
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     dataUriService?: DataUriService,
+    urlPreviewProvider?: MediaUrlPreviewProvider,
   ) {
     return {
       config,
@@ -78,6 +80,9 @@ export class Stubs {
       getDataUriService: jest.fn(
         () => dataUriService || Stubs.getDataUriService(),
       ),
+      getUrlPreviewProvider: jest.fn(() => urlPreviewProvider),
+      addLinkItem: jest.fn(),
+      refreshCollection: jest.fn(),
     };
   }
 }

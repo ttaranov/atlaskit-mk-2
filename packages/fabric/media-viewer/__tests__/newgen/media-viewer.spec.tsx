@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {
-  update,
-  effects,
   Model,
+  initialModel,
   Message,
+  update,
   Component,
+  LeftInfo,
+  effects,
 } from '../../src/newgen/media-viewer';
 import { mount } from 'enzyme';
 import { Stubs } from '../_stubs';
@@ -23,71 +25,133 @@ describe('MediaViewer', () => {
   };
 
   describe('update', () => {
-    it('once loaded the name is saved as unkown', () => {
-      const initialModel: Model = {
-        state: 'LOADING',
-      };
+    it('assigns file src when it was received', () => {
       const message: Message = {
-        type: 'LOADED',
-        item: { type: 'file', details: {} },
-        src: '',
+        type: 'RECEIVED_SRC',
+        src: 'https://atlassian.com',
       };
-      expect(update(initialModel, message)).toEqual({
-        state: 'LOADED',
-        name: 'unkown',
-        src: '',
+      const model = update(initialModel, message);
+      expect(model).toMatchObject({
+        state: 'OPEN',
+        src: 'https://atlassian.com',
       });
+    });
+
+    it('sets file attributes when they are received', () => {
+      const message: Message = {
+        type: 'RECEIVED_ATTRIBUTES',
+        name: 'test.jpg',
+      };
+      const model = update(initialModel, message);
+      expect(model).toMatchObject({ name: 'test.jpg' });
+    });
+
+    it('switches to the ERROR state when loading failed', () => {
+      const message: Message = {
+        type: 'LOADING_FAILED',
+      };
+      const model = update(initialModel, message);
+      expect(model).toMatchObject({ state: 'ERROR' });
     });
   });
 
   describe('Component', () => {
-    it('should render the spinner for the LOADING model', () => {
-      const model: Model = {
-        state: 'LOADING',
-      };
-
-      const c = mount(<Component model={model} dispatch={() => {}} />);
+    it('should render the spinner as long as no src is known', () => {
+      const c = mount(<Component model={initialModel} dispatch={() => {}} />);
       expect(c.find(Spinner)).toHaveLength(1);
+    });
+
+    it('renders "unknown" as the file name when name is an empty string', () => {
+      const model: Model = {
+        state: 'OPEN',
+        name: '',
+      };
+      const c = mount(<Component model={model} dispatch={() => {}} />);
+      expect(
+        c
+          .find(LeftInfo)
+          .find('span')
+          .text(),
+      ).toEqual('unknown');
+    });
+
+    it('renders no file name when name is undefined', () => {
+      const c = mount(<Component model={initialModel} dispatch={() => {}} />);
+      expect(
+        c
+          .find(LeftInfo)
+          .find('span')
+          .text(),
+      ).toEqual('');
     });
   });
 
   describe('effects', () => {
-    it('should emit the LOADED message when initialised successfully', done => {
-      const subject = new Subject<MediaItem>();
-      const context = Stubs.context(
-        contextConfig,
-        undefined,
-        Stubs.mediaItemProvider(subject),
-      ) as any;
-      const item = {
-        id: '',
-        occurrenceKey: '',
-        type: 'file' as MediaItemType,
-      };
-      const message: Message = {
-        type: 'INIT',
-      };
-      const cfg = {
-        context,
-        dataSource: { list: [item] },
-        initialItem: item,
-      };
-      const dispatch = message => {
-        expect(message).toEqual({
-          type: 'LOADED',
-          item: {
-            type: 'file',
-            details: { id: 'my-id' },
-          },
-          src: '',
-        });
-        done();
-      };
+    const subject = new Subject<MediaItem>();
+    const context = Stubs.context(
+      contextConfig,
+      undefined,
+      Stubs.mediaItemProvider(subject),
+    );
+    const item = {
+      id: '',
+      occurrenceKey: '',
+      type: 'file' as MediaItemType,
+    };
+    const message: Message = {
+      type: 'INIT',
+    };
+    const cfg = {
+      context,
+      dataSource: { list: [item] },
+      initialItem: item,
+    };
 
-      effects(cfg, dispatch, message);
-      subject.next({
-        type: 'file',
-        details: { id: 'my-id' },
+    it('should dispatch RECEIVED_ATTRIBUTES while processing is pending', async () => {
+      const dispatch = await new Promise((resolve, reject) => {
+        const dispatch = jest.fn((msg: Message) => {
+          if (msg.type === 'RECEIVED_ATTRIBUTES') {
+            resolve(dispatch);
+          }
+        });
+        effects(cfg, dispatch, message);
+        subject.next({
+          type: 'file',
+          details: {
+            id: 'my-id',
+            name: 'test.png',
+            processingStatus: 'pending',
+          },
+        });
+      });
+
+      expect(dispatch).toHaveBeenLastCalledWith({
+        type: 'RECEIVED_ATTRIBUTES',
+        name: 'test.png',
+      });
+    });
+
+    it('should dispatch RECEIVED_SRC when processing has succeeded', async () => {
+      const dispatch = await new Promise((resolve, reject) => {
+        const dispatch = jest.fn((msg: Message) => {
+          if (msg.type === 'RECEIVED_SRC') {
+            resolve(dispatch);
+          }
+        });
+        effects(cfg, dispatch, message);
+        subject.next({
+          type: 'file',
+          details: {
+            id: 'my-id',
+            name: 'test.png',
+            processingStatus: 'succeeded',
+          },
+        });
+      });
+
+      expect(dispatch).toHaveBeenLastCalledWith({
+        type: 'RECEIVED_SRC',
+        src: '',
       });
     });
   });

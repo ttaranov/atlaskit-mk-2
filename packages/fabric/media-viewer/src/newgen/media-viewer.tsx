@@ -10,19 +10,16 @@ import * as Blanket from './blanket';
 
 export type Model =
   | {
-      state: 'LOADING';
-    }
-  | {
-      state: 'LOADED';
-      name: string;
-      src: string;
+      state: 'OPEN';
+      name?: string;
+      src?: string;
     }
   | {
       state: 'ERROR';
     };
 
 export const initialModel: Model = {
-  state: 'LOADING',
+  state: 'OPEN',
 };
 
 export type Message =
@@ -30,12 +27,15 @@ export type Message =
       type: 'INIT';
     }
   | {
-      type: 'LOADED';
-      item: MediaItem;
+      type: 'RECEIVED_ATTRIBUTES';
+      name?: string;
+    }
+  | {
+      type: 'RECEIVED_SRC';
       src: string;
     }
   | {
-      type: 'LOADING_ERROR';
+      type: 'LOADING_FAILED';
     }
   | {
       type: 'CLOSE';
@@ -49,26 +49,15 @@ export const update = (model: Model, message: Message): Model => {
   switch (message.type) {
     case 'INIT':
       return model;
-    case 'LOADED':
-      return {
-        state: 'LOADED',
-        name:
-          (message.item.type === 'file' && message.item.details.name) ||
-          'unkown',
-        src: message.src,
-      };
-    case 'LOADING_ERROR':
-      return {
-        state: 'ERROR',
-      };
+    case 'RECEIVED_SRC':
+      return { ...model, src: message.src };
+    case 'RECEIVED_ATTRIBUTES':
+      return { ...model, name: message.name };
+    case 'LOADING_FAILED':
+      return { state: 'ERROR' };
     case 'CLOSE':
       return model;
   }
-};
-
-export type Props = {
-  model: Model;
-  dispatch: (message: Message) => void;
 };
 
 const ImageViewerWrapper = styled.div`
@@ -90,21 +79,63 @@ const ItemPreviewWrapper = styled.div`
   overflow: hidden;
 `;
 
+const DetailsWrapper = styled.div`
+  display: flex;
+`;
+
+export const LeftInfo = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  > span {
+    margin-left: 10px;
+  }
+`;
+
+const iconBaseStyle = `
+  margin: 0 10px;
+  border-radius: 5px;
+  padding: 1px 3px;
+  cursor: pointer;
+  transition: background-color .3s;
+
+  &:hover {
+    background-color: #2B3955;
+  }
+`;
+
+const RightIcons = styled.div`
+  > span {
+    ${iconBaseStyle} margin: 10px;
+  }
+`;
+
+export type Props = {
+  model: Model;
+  dispatch: (message: Message) => void;
+};
+
 export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
   <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
-    <h2>{model.state === 'LOADED' && model.name}</h2>
+    <DetailsWrapper>
+      <LeftInfo>
+        <span>
+          {(model.state === 'OPEN' &&
+            typeof model.name === 'string' &&
+            (model.name || 'unknown')) ||
+            ''}
+        </span>
+      </LeftInfo>
+      <RightIcons />
+    </DetailsWrapper>
     <ItemPreviewWrapper>
       <ImageViewerWrapper>
-        {model.state === 'LOADING' ? (
-          <Spinner size="large" />
-        ) : model.state === 'ERROR' ? (
-          <div>Something went wrong</div>
-        ) : (
-          <Img src={model.src} />
-        )}
+        {model.state === 'ERROR' && <div>Something went wrong</div>}
+        {model.state === 'OPEN' &&
+          (model.src ? <Img src={model.src} /> : <Spinner size="large" />)}
       </ImageViewerWrapper>
     </ItemPreviewWrapper>
   </Blanket.Component>
@@ -135,28 +166,35 @@ export const effects = (
         .observable()
         .subscribe({
           next: item => {
-            context
-              .getDataUriService(cfg.collectionName)
-              .fetchImageDataUri(item, { width: 800, height: 600 })
-              .then(
-                uri => {
-                  dispatch({
-                    type: 'LOADED',
-                    item,
-                    src: uri,
-                  });
-                },
-                err => {
-                  dispatch({
-                    type: 'LOADING_ERROR',
-                  });
-                },
-              );
+            dispatch({
+              type: 'RECEIVED_ATTRIBUTES',
+              name: item.type === 'file' ? item.details.name : void 0,
+            });
+
+            if (item.type === 'file') {
+              if (item.details.processingStatus === 'succeeded') {
+                context
+                  .getDataUriService(cfg.collectionName)
+                  .fetchImageDataUri(item, { width: 800, height: 600 })
+                  .then(
+                    uri => {
+                      dispatch({
+                        type: 'RECEIVED_SRC',
+                        src: uri,
+                      });
+                    },
+                    err => {
+                      dispatch({
+                        type: 'LOADING_FAILED',
+                      });
+                    },
+                  );
+              }
+            }
           },
-          // TODO: add "complete" handler
           error: err => {
             dispatch({
-              type: 'LOADING_ERROR',
+              type: 'LOADING_FAILED',
             });
           },
         });
