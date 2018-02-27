@@ -1,10 +1,20 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 
-import { Editor, mentionPluginKey, MentionsState } from '@atlaskit/editor-core';
+import {
+  Editor,
+  mentionPluginKey,
+  MentionsState,
+  TextFormattingState,
+  textFormattingStateKey,
+} from '@atlaskit/editor-core';
 import { MentionProvider, MentionDescription } from '@atlaskit/mention';
 import NativeToWebBridge from './native-to-web-bridge';
-import { MentionBridge } from './web-to-native-bridge';
+import {
+  MarkState,
+  MentionBridge,
+  TextFormattingBridge,
+} from './web-to-native-bridge';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -31,13 +41,20 @@ export class MentionProviderImpl implements MentionProvider {
 
 let mentionsPluginState: MentionsState | null = null;
 
+let textFormattingPluginState: TextFormattingState | null = null;
+let editorView: EditorView | null = null;
+
 export const bridge: NativeToWebBridge = ((window as any).bridge = {
-  makeBold() {
-    throw new Error('Method not implemented.');
+  onBoldClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleStrong(editorView);
+    }
   },
 
-  makeItalics() {
-    throw new Error('Method not implemented.');
+  onItalicClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleEm(editorView);
+    }
   },
 
   onMentionSelect(mention: string) {
@@ -68,6 +85,7 @@ class EditorWithState extends Editor {
     const { editor } = this.state;
     super.componentDidUpdate(prevProps, prevState);
     if (!prevState.editor && editor) {
+      editorView = editor.editorView;
       mentionsPluginState = mentionPluginKey.getState(editor.editorView.state);
       if (mentionsPluginState) {
         mentionsPluginState.subscribe(state => {
@@ -78,10 +96,50 @@ class EditorWithState extends Editor {
           }
         });
       }
-      let editorView: EditorView = editor.editorView;
       editorView.dom.addEventListener('keydown', event => {
-        // console.log(event)
+        console.log(event);
       });
+
+      textFormattingPluginState = textFormattingStateKey.getState(
+        editor.editorView.state,
+      );
+      if (textFormattingPluginState) {
+        textFormattingPluginState.subscribe(state => {
+          let states: MarkState[] = [
+            {
+              markName: 'strong',
+              active: state.strongActive,
+              enabled: !state.strongDisabled,
+            },
+            {
+              markName: 'em',
+              active: state.emActive,
+              enabled: !state.emDisabled,
+            },
+            {
+              markName: 'code',
+              active: state.codeActive,
+              enabled: !state.codeDisabled,
+            },
+            {
+              markName: 'underline',
+              active: state.underlineActive,
+              enabled: !state.underlineDisabled,
+            },
+            {
+              markName: 'strike',
+              active: state.strikeActive,
+              enabled: !state.strongDisabled,
+            },
+            {
+              markName: 'subsup',
+              active: state.subscriptActive || state.superscriptActive,
+              enabled: !state.subscriptDisabled && !state.superscriptDisabled,
+            },
+          ];
+          toNativeBridge.updateTextFormat(JSON.stringify(states));
+        });
+      }
     }
   }
 }
@@ -100,36 +158,20 @@ export default function mobileEditor() {
 declare global {
   interface Window {
     mentionsBridge?: MentionBridge;
+    textFormatBridge?: TextFormattingBridge;
     webkit?: any;
   }
 }
 
-class Bridge implements MentionBridge {
+interface Bridge extends MentionBridge, TextFormattingBridge {}
+
+class AndroidBridge implements Bridge {
   mentionBridge: MentionBridge;
+  textFormatBridge: TextFormattingBridge;
 
-  constructor() {
-    if (window.mentionsBridge) {
-      this.mentionBridge = new AndroidBridge();
-    } else if (window.webkit) {
-      this.mentionBridge = new IosBridge();
-    } else {
-      this.mentionBridge = new DummyBridge();
-    }
-  }
-
-  showMentions(query: String) {
-    this.mentionBridge.showMentions(query);
-  }
-
-  dismissMentions() {
-    this.mentionBridge.dismissMentions();
-  }
-}
-
-class AndroidBridge implements MentionBridge {
-  mentionBridge: MentionBridge;
   constructor() {
     this.mentionBridge = window.mentionsBridge as MentionBridge;
+    this.textFormatBridge = window.textFormatBridge as TextFormattingBridge;
   }
 
   showMentions(query: String) {
@@ -139,9 +181,13 @@ class AndroidBridge implements MentionBridge {
   dismissMentions() {
     this.mentionBridge.dismissMentions();
   }
+
+  updateTextFormat(markStates: string) {
+    this.textFormatBridge.updateTextFormat(markStates);
+  }
 }
 
-class IosBridge implements MentionBridge {
+class IosBridge implements Bridge {
   showMentions(query: String) {
     if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
       window.webkit.messageHandlers.mentionBridge.postMessage({
@@ -158,12 +204,30 @@ class IosBridge implements MentionBridge {
       });
     }
   }
+  updateTextFormat(markStates: string) {
+    if (window.webkit) {
+      window.webkit.messageHandlers.textFormatBridge.postMessage({
+        name: 'updateTextFormat',
+        states: markStates,
+      });
+    }
+  }
 }
 
-class DummyBridge implements MentionBridge {
+class DummyBridge implements Bridge {
   showMentions(query: String) {}
-
   dismissMentions() {}
+  updateTextFormat(markStates: string) {}
 }
 
-const toNativeBridge: Bridge = new Bridge();
+function getBridgeImpl(): Bridge {
+  if (window.mentionsBridge) {
+    return new AndroidBridge();
+  } else if (window.webkit) {
+    return new IosBridge();
+  } else {
+    return new DummyBridge();
+  }
+}
+
+const toNativeBridge: Bridge = getBridgeImpl();

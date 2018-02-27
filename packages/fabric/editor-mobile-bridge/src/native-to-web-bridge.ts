@@ -1,6 +1,6 @@
 export default interface NativeToWebBridge {
-  makeBold();
-  makeItalics();
+  onBoldClicked();
+  onItalicClicked();
   onMentionSelect(id: string, displayName: string);
   onMentionPickerResult(result: string);
 };
