@@ -1,7 +1,20 @@
-import styled from 'styled-components';
-import * as style from '@atlaskit/util-shared-styles';
+import styled, { keyframes } from 'styled-components';
+
+const fadeInKeyframe = keyframes`
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+`;
+
+export const fadeIn = `
+  animation: ${fadeInKeyframe} .2s forwards
+`;
 
 export const Component = styled.div`
+  ${fadeIn};
   position: fixed;
   top: 0;
   left: 0;
@@ -11,8 +24,8 @@ export const Component = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background-color: ${style.akColorN900};
-  overflow: hidden;
+  background-color: rgba(9, 30, 66, 0.9);
+  background-tra: hidden;
   z-index: 9;
 
   * {
