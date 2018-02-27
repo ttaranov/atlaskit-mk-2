@@ -52,7 +52,7 @@ type State = {
   view: string,
 };
 
-function isoToObj(iso) {
+function isoToObj(iso: string) {
   const parsed = parse(iso);
   return isValid(parsed)
     ? {
