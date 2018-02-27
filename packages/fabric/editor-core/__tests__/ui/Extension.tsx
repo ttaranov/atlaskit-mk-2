@@ -26,10 +26,11 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     extension.unmount();
   });
 
-  it('should pass macroProvider into ExtensionComponent', () => {
+  it('should pass props into ExtensionComponent', () => {
     const providerFactory = ProviderFactory.create({
       macroProvider: macroProviderPromise,
     });
+    const el = document.createElement('div');
 
     const extension = mount(
       <Extension
@@ -37,11 +38,15 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
         node={node}
         providerFactory={providerFactory}
         handleContentDOMRef={noop}
+        element={el}
+        isSelected
       />,
     );
     const component = extension.find(ExtensionComponent);
 
     expect(component.prop('macroProvider')).toBe(macroProviderPromise);
+    expect(component.prop('element')).toBe(el);
+    expect(component.prop('isSelected')).toBe(true);
     extension.unmount();
   });
 });

@@ -23,8 +23,8 @@ export interface Props {
     state: EditorState,
     dispatch: (tr: Transaction) => void,
   ) => void;
-  isSelected: Boolean;
-  element: HTMLElement | null;
+  isSelected?: boolean;
+  element?: HTMLElement | null;
 }
 
 export interface State {
@@ -123,7 +123,8 @@ export default class ExtensionComponent extends Component<Props, State> {
         });
       }
     } catch (e) {
-      console.log('error coming from the extension handler', e);
+      /* tslint:disable-next-line:no-console */
+      console.error('Provided extension handler has thrown an error\n', e);
       /** We don't want this error to block renderer */
       /** We keep rendering the default content */
     }
@@ -131,7 +132,7 @@ export default class ExtensionComponent extends Component<Props, State> {
     return null;
   }
 
-  private handleExtension = node => {
+  private handleExtension = (node: PMNode) => {
     const { extensionHandlers, editorView } = this.props;
     const { extensionType, extensionKey, parameters } = node.attrs;
 
@@ -141,7 +142,10 @@ export default class ExtensionComponent extends Component<Props, State> {
 
     return extensionHandlers[extensionType](
       {
-        type: node.type.name,
+        type: node.type.name as
+          | 'extension'
+          | 'inlineExtension'
+          | 'bodiedExtension',
         extensionType,
         extensionKey,
         parameters,

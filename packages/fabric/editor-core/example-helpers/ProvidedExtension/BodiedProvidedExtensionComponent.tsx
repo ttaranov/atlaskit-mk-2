@@ -1,23 +1,20 @@
 import * as React from 'react';
 import EditorActions from '../../src/editor/actions';
-import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import styled from 'styled-components';
-import { ExtensionEditPanel } from '../../src/index';
 import Toolbar from './Toolbar';
 import TitleBar from './TitleBar';
+
+const Wrapper = styled.div`
+  position: relative;
+`;
 
 // tslint:disable-next-line:variable-name
 export const Content = styled.div`
   padding: 8px;
   background: white;
-  border: ${props =>
-    props.isSelected ? '1px solid black' : '1px dashed #ccc'};
-`;
-
-const Wrapper = styled.div`
-  position: relative;
+  border: ${props => (props.selected ? '1px solid black' : '1px dashed #ccc')};
 `;
 
 export type State = {
@@ -25,18 +22,16 @@ export type State = {
 };
 
 export type Props = {
-  isSelected: Boolean;
-  editorActions: EditorActions;
-  parameters: any;
-  content: any;
+  isSelected?: boolean;
+  editorActions?: EditorActions;
   node: any;
-  onClick: any;
-  onSelect: any;
-  element: HTMLElement | null;
-  handleContentDOMRef: (node: HTMLElement | null) => void;
+  onClick?: any;
+  onSelect?: any;
+  element?: HTMLElement | null;
+  handleContentDOMRef?: (node: HTMLElement | null) => void;
 };
 
-export default class ProvidedExtensionComponent extends React.Component<
+export default class BodiedProvidedExtensionComponent extends React.Component<
   Props,
   State
 > {
@@ -61,6 +56,21 @@ export default class ProvidedExtensionComponent extends React.Component<
     );
   }
 
+  renderPreview() {
+    return <div>Preview</div>;
+  }
+  renderBody() {
+    const { isSelected, handleContentDOMRef } = this.props;
+
+    return (
+      <Content
+        selected={isSelected}
+        innerRef={handleContentDOMRef}
+        className="extension-content"
+      />
+    );
+  }
+
   render() {
     const {
       isSelected,
@@ -69,7 +79,6 @@ export default class ProvidedExtensionComponent extends React.Component<
       onSelect,
       element,
       editorActions,
-      handleContentDOMRef,
     } = this.props;
     const { type } = node;
 
@@ -94,11 +103,10 @@ export default class ProvidedExtensionComponent extends React.Component<
           <TitleBar onSelect={onSelect} node={node} isSelected={isSelected} />
 
           {type === 'bodiedExtension' && (
-            <Content
-              isSelected={isSelected}
-              innerRef={handleContentDOMRef}
-              className="extension-content"
-            />
+            <div>
+              {this.renderPreview()}
+              {this.renderBody()}
+            </div>
           )}
         </Wrapper>
       </InlineDialog>
@@ -112,7 +120,7 @@ export default class ProvidedExtensionComponent extends React.Component<
   private onFinishEditing = () => {
     const { editorActions } = this.props;
 
-    editorActions.replaceSelection({
+    editorActions!.replaceSelection({
       type: 'inlineExtension',
       attrs: {
         bodyType: 'none',

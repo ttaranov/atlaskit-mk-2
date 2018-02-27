@@ -16,14 +16,14 @@ import {
 } from '../../../src/editor/plugins/extension/actions';
 import { pluginKey } from '../../../src/editor/plugins/extension/plugin';
 import extensionPlugin from '../../../src/editor/plugins/extension';
-
+import { EventDispatcher } from '../../../src/index';
 const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
     return createEditor({
       doc,
-      editorPlugins: [extensionPlugin],
+      editorPlugins: [extensionPlugin({}, new EventDispatcher())],
     });
   };
 
@@ -65,6 +65,35 @@ describe('extension', () => {
         const pluginState = pluginKey.getState(editorView.state);
         expect(pluginState.element).toEqual(element);
         expect(result).toBe(true);
+        document.body.removeChild(element);
+      });
+
+      it('should set "shouldDisableToolbar" prop in plugin state', () => {
+        const { editorView } = editor(
+          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+        );
+
+        const element = document.createElement('span');
+        document.body.appendChild(element);
+
+        setExtensionElement(element, false)(
+          editorView.state,
+          editorView.dispatch,
+        );
+
+        expect(
+          pluginKey.getState(editorView.state).shouldDisableToolbar,
+        ).toEqual(false);
+
+        setExtensionElement(element, true)(
+          editorView.state,
+          editorView.dispatch,
+        );
+
+        expect(
+          pluginKey.getState(editorView.state).shouldDisableToolbar,
+        ).toEqual(true);
+
         document.body.removeChild(element);
       });
     });

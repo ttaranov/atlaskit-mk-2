@@ -1,10 +1,8 @@
 import * as React from 'react';
 import EditorActions from '../../src/editor/actions';
-import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import styled from 'styled-components';
-import { ExtensionEditPanel } from '../../src/index';
 import Toolbar from './Toolbar';
 import TitleBar from './TitleBar';
 
@@ -19,14 +17,12 @@ export type State = {
 };
 
 export type Props = {
-  isSelected: Boolean;
-  editorActions: EditorActions;
-  parameters: any;
-  content: any;
+  editorActions?: EditorActions;
   node: any;
-  onClick: any;
-  onSelect: any;
-  element: HTMLElement | null;
+  onClick?: any;
+  onSelect?: any;
+  isSelected?: boolean;
+  element?: HTMLElement | null;
 };
 
 export default class ProvidedExtensionComponent extends React.Component<
@@ -75,8 +71,6 @@ export default class ProvidedExtensionComponent extends React.Component<
       element,
       editorActions,
     } = this.props;
-    const { parameters } = node;
-
     const popupContainer = document.getElementById('extensionPopupContainer');
 
     return (
@@ -94,7 +88,6 @@ export default class ProvidedExtensionComponent extends React.Component<
               editorActions={editorActions}
             />
           )}
-
           <TitleBar onSelect={onSelect} node={node} isSelected={isSelected}>
             {this.state.content}
           </TitleBar>
@@ -114,7 +107,7 @@ export default class ProvidedExtensionComponent extends React.Component<
   private onFinishEditing = () => {
     const { editorActions } = this.props;
 
-    editorActions.replaceSelection({
+    editorActions!.replaceSelection({
       type: 'inlineExtension',
       attrs: {
         bodyType: 'none',

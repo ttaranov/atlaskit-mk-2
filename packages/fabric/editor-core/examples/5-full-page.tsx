@@ -131,6 +131,9 @@ const DumbInlineExtension = props => (
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
     const { extensionKey } = ext;
+    const macroProps = {
+      node: ext,
+    };
 
     switch (extensionKey) {
       case 'info':
@@ -141,9 +144,9 @@ const extensionHandlers: ExtensionHandlers = {
           />
         );
       case 'expand':
-        return <BodiedProvidedExtensionComponent node={ext} />;
+        return <BodiedProvidedExtensionComponent {...macroProps} />;
       case 'status':
-        return <ProvidedExtensionComponent node={ext} />;
+        return <ProvidedExtensionComponent {...macroProps} />;
     }
 
     return null;

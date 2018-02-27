@@ -10,9 +10,8 @@ const Wrapper = styled.div`
 
 // tslint:disable-next-line:variable-name
 const Overlay = styled.div`
-  border: ${props =>
-    props.isSelected ? '1px solid black' : '1px dashed #ccc'};
-  background: ${props => (props.isSelected ? 'rgba(0, 0, 0, .15)' : 'none')};
+  border: ${props => (props.selected ? '1px solid black' : '1px dashed #ccc')};
+  background: ${props => (props.selected ? 'rgba(0, 0, 0, .15)' : 'none')};
   position: absolute;
   top: 0px;
   bottom: 0px;
@@ -21,15 +20,12 @@ const Overlay = styled.div`
 `;
 
 export type Props = {
-  isSelected: Boolean;
+  isSelected?: boolean;
   node: any;
   onSelect: any;
 };
 
-export default class ProvidedExtensionComponent extends React.Component<
-  Props,
-  {}
-> {
+export default class TitleBar extends React.Component<Props, {}> {
   render() {
     const { isSelected, node, onSelect, children } = this.props;
 
@@ -43,7 +39,7 @@ export default class ProvidedExtensionComponent extends React.Component<
 
     return (
       <Wrapper onClick={onSelect}>
-        <Overlay isSelected={isSelected} />
+        <Overlay selected={isSelected} />
         <strong>{extensionKey} extension</strong>
         ({text}) (isSelected={isSelected})
         {children}

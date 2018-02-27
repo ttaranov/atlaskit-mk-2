@@ -5,8 +5,11 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import { Toolbar, Separator } from './styles';
 
+// Exporting these items so products can build toolbars that look exactly like this.
+export { Toolbar, Separator, ToolbarButton };
+
 export interface Props {
-  element: HTMLElement | null;
+  element?: HTMLElement | null;
   onEdit: () => void;
   onRemove: () => void;
   children?: any;

@@ -2,11 +2,13 @@ jest.mock('../../../src/editor/plugins', () => ({
   mediaPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
   placeholderTextPlugin: jest.fn(),
+  extensionPlugin: jest.fn(),
 }));
 
 import {
   tablePlugin,
   mediaPlugin,
+  extensionPlugin,
   helpDialogPlugin,
   fakeTextCursorPlugin,
   submitEditorPlugin,
@@ -15,30 +17,37 @@ import {
 } from '../../../src/editor/plugins';
 
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
+import { EventDispatcher } from '../../../src/editor/event-dispatcher/index';
 
 describe('createPluginsList', () => {
+  let eventDispatcher;
+
   beforeEach(() => {
+    eventDispatcher = new EventDispatcher();
     (insertBlockPlugin as any).mockReset();
     (placeholderTextPlugin as any).mockReset();
   });
 
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
-    const plugins = createPluginsList({ allowHelpDialog: true });
+    const plugins = createPluginsList(
+      { allowHelpDialog: true },
+      eventDispatcher,
+    );
     expect(plugins).toContain(helpDialogPlugin);
   });
 
   it('should add fakeTextCursorPlugin by default', () => {
-    const plugins = createPluginsList({});
+    const plugins = createPluginsList({}, eventDispatcher);
     expect(plugins).toContain(fakeTextCursorPlugin);
   });
 
   it('should add tablePlugin if allowTables is true', () => {
-    const plugins = createPluginsList({ allowTables: true });
+    const plugins = createPluginsList({ allowTables: true }, eventDispatcher);
     expect(plugins).toContain(tablePlugin);
   });
 
   it('should always add submitEditorPlugin to the editor', () => {
-    const plugins = createPluginsList({});
+    const plugins = createPluginsList({}, eventDispatcher);
     expect(plugins).toContain(submitEditorPlugin);
   });
 
@@ -47,25 +56,25 @@ describe('createPluginsList', () => {
       provider: Promise.resolve() as any,
       allowMediaSingle: true,
     };
-    createPluginsList({ media });
+    createPluginsList({ media }, eventDispatcher);
     expect(mediaPlugin).toHaveBeenCalledTimes(1);
     expect(mediaPlugin).toHaveBeenCalledWith(media);
   });
 
   it('should add placeholderText plugin if allowTemplatePlaceholders prop is provided', () => {
     (placeholderTextPlugin as any).mockReturnValue('placeholderText');
-    const plugins = createPluginsList({ allowTemplatePlaceholders: true });
+    const plugins = createPluginsList({ allowTemplatePlaceholders: true }, eventDispatcher);
     expect(plugins).toContain('placeholderText');
   });
 
   it('should pass empty options to placeholderText plugin if allowTemplatePlaceholders is true', () => {
-    createPluginsList({ allowTemplatePlaceholders: true });
+    createPluginsList({ allowTemplatePlaceholders: true }, eventDispatcher);
     expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
     expect(placeholderTextPlugin).toHaveBeenCalledWith({});
   });
 
   it('should enable allowInserting for placeholderText plugin if options.allowInserting is true', () => {
-    createPluginsList({ allowTemplatePlaceholders: { allowInserting: true } });
+    createPluginsList({ allowTemplatePlaceholders: { allowInserting: true } }, eventDispatcher);
     expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
     expect(placeholderTextPlugin).toHaveBeenCalledWith({
       allowInserting: true,
@@ -92,8 +101,22 @@ describe('createPluginsList', () => {
 
     const props = { insertMenuItems: customItems };
 
-    createPluginsList(props);
+    createPluginsList(props, eventDispatcher);
     expect(insertBlockPlugin).toHaveBeenCalledTimes(1);
     expect(insertBlockPlugin).toHaveBeenCalledWith(props);
+  });
+
+  it('should add extensionPlugin if allowExtension prop is provided', () => {
+    const props: any = {
+      allowExtension: true,
+      extensionHandlers: () => {},
+    };
+
+    createPluginsList(props, eventDispatcher);
+    expect(extensionPlugin).toHaveBeenCalledTimes(1);
+    expect(extensionPlugin).toHaveBeenCalledWith(
+      { extensionHandlers: props.extensionHandlers },
+      eventDispatcher,
+    );
   });
 });

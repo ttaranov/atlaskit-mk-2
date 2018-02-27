@@ -24,16 +24,21 @@ export {
 } from './utils';
 
 // Used in editor-test-helpers
-
 export { keyCodes } from './keymaps';
 export { reactNodeViewPlugins } from './plugins';
 export { ReactEditorView } from './editor/create-editor';
+
 export {
   getDefaultPluginsList,
 } from './editor/create-editor/create-plugins-list';
 export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
 export { default as EditorActions } from './editor/actions';
-export { default as ExtensionEditPanel } from './ui/ExtensionEditPanel';
+export {
+  default as ExtensionEditPanel,
+  Toolbar,
+  Separator,
+  ToolbarButton,
+} from './ui/ExtensionEditPanel';
 
 // Useless exports
 
@@ -42,6 +47,7 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
+
 export {
   MacroProvider,
   MacroAttributes,

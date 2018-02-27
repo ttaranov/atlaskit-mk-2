@@ -16,8 +16,8 @@ export interface Props {
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
   extensionHandlers?: ExtensionHandlers;
-  isSelected: Boolean;
-  element: HTMLElement | null;
+  isSelected?: boolean;
+  element?: HTMLElement | null;
 }
 
 export default class Extension extends Component<Props, any> {

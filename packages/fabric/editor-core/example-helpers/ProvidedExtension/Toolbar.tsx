@@ -10,19 +10,15 @@ const ToolbarContent = styled.div`
 `;
 
 export type Props = {
-  editorActions: EditorActions;
+  editorActions?: EditorActions;
   node: any;
-  element: HTMLElement | null;
+  element?: HTMLElement | null;
+  popupContainer: HTMLElement | null;
 };
 
-export default class ProvidedExtensionComponent extends React.Component<
-  Props,
-  {}
-> {
+export default class Toolbar extends React.Component<Props, {}> {
   render() {
-    const { node, element } = this.props;
-
-    const popupContainer = document.getElementById('extensionPopupContainer');
+    const { node, element, popupContainer } = this.props;
 
     return (
       <ExtensionEditPanel
@@ -42,6 +38,7 @@ export default class ProvidedExtensionComponent extends React.Component<
 
   private onClickRemove = () => {
     const { editorActions } = this.props;
-    editorActions.replaceSelection('');
+
+    editorActions!.replaceSelection('');
   };
 }
