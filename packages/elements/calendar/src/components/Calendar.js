@@ -259,7 +259,7 @@ class Calendar extends Component<Props, State> {
     }
   }
 
-  refContainer = e => {
+  refContainer = (e: HTMLElement | null) => {
     this.container = e;
   };
 
