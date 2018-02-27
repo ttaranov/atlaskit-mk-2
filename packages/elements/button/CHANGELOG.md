@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 6.5.0
+- [minor] Instrument button with analytics [4e84f5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e84f5b)
+
 ## 6.4.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
