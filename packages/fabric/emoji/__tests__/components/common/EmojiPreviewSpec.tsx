@@ -8,6 +8,7 @@ import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiButton from '../../../src/components/common/EmojiButton';
+import CachingEmoji from '../../../src/components/common/CachingEmoji';
 import { EmojiDescriptionWithVariations } from '../../../src/types';
 import {
   imageEmoji,
@@ -172,27 +173,22 @@ describe('<EmojiPreview />', () => {
     };
 
     const waitUntilPreviewSectionIsVisible = async component => {
-      const emojiPreviewSection = () =>
-        helper.findEmojiPreviewSection(component);
-      await waitUntil(() => emojiPreviewSection().exists());
-      return emojiPreviewSection();
+      await waitUntil(() => helper.findEmojiPreviewSection(component).exists());
+      return helper.findEmojiPreviewSection(component);
     };
 
     describe('Upload not supported', () => {
-      it('"Add custom emoji" button should not appear on mouse-enter event', async () => {
+      it('"Add custom emoji" button should not appear when uploadEnabled is false', async () => {
         const component = mount(
           <EmojiPreview
             emoji={emoji}
             toneEmoji={toneEmoji}
-            uploadSupported={false}
+            uploadEnabled={false}
           />,
         );
-        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
-          component,
+        await waitUntil(
+          () => component.update() && component.find(CachingEmoji).exists(),
         );
-        emojiPreviewSection.simulate('mouseenter');
-
-        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
       });
     });
 
@@ -204,7 +200,7 @@ describe('<EmojiPreview />', () => {
           <EmojiPreview
             emoji={emoji}
             toneEmoji={toneEmoji}
-            uploadSupported={true}
+            uploadEnabled={true}
           />,
         );
       });
@@ -217,40 +213,39 @@ describe('<EmojiPreview />', () => {
         ).to.not.equal(undefined);
       };
 
-      it('"Add custom emoji" button should appear on mouse-enter event', async () => {
-        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
-          component,
-        );
-        emojiPreviewSection.simulate('mouseenter');
-
-        await assertCustomEmojiButtonShown();
-      });
-
-      it('"Add custom emoji" button should not appear after mouse-leave event', async () => {
-        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
-          component,
-        );
-        emojiPreviewSection.simulate('mouseenter');
-
-        await assertCustomEmojiButtonShown();
-
-        emojiPreviewSection.simulate('mouseleave');
-        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
-      });
-
-      it('"Add custom emoji" button should not appear when Tone is clicked', async () => {
-        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
-          component,
-        );
-        emojiPreviewSection.simulate('mouseenter');
-
-        await assertCustomEmojiButtonShown();
-
+      const performToneButtonClick = component => {
         const instance = component.instance() as EmojiPreview;
         instance.onToneButtonClick();
         component.update();
+      };
+
+      it('"Add custom emoji" button should appear as default', async () => {
+        await assertCustomEmojiButtonShown();
+      });
+
+      it('"Add custom emoji" button should not appear when Tone is clicked', async () => {
+        await assertCustomEmojiButtonShown();
+
+        performToneButtonClick(component);
 
         expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+      });
+
+      it('"Add custom emoji" button should appear after Tone is skipped', async () => {
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        await assertCustomEmojiButtonShown();
+
+        performToneButtonClick(component);
+
+        expect(helper.findStartEmojiUpload(component).length).to.equal(0);
+
+        // this should cancel the Tone selection
+        emojiPreviewSection.simulate('mouseleave');
+
+        // ensure upload button is shown after Tone is cancelled
+        await assertCustomEmojiButtonShown();
       });
     });
   });

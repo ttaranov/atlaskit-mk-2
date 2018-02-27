@@ -43,6 +43,8 @@ export interface Props {
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
+  onMouseLeave?: () => void;
+  onMouseEnter?: () => void;
   selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
@@ -374,10 +376,15 @@ export default class EmojiPickerVirtualList extends PureComponent<
     virtualItemRenderer(this.virtualItems, context);
 
   render() {
+    const { onMouseLeave, onMouseEnter } = this.props;
     const classes = [styles.emojiPickerList];
 
     return (
-      <div className={classNames(classes)}>
+      <div
+        className={classNames(classes)}
+        onMouseLeave={onMouseLeave}
+        onMouseEnter={onMouseEnter}
+      >
         <VirtualList
           ref="list"
           height={sizes.listHeight}

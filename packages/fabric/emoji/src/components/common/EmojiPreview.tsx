@@ -20,19 +20,17 @@ export interface Props {
   toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
-  uploadSupported?: boolean;
+  uploadEnabled?: boolean;
   onOpenUpload?: () => void;
 }
 
 export interface State {
   selectingTone: boolean;
-  showAddEmoji: boolean;
 }
 
 export default class EmojiPreview extends PureComponent<Props, State> {
   state = {
     selectingTone: false,
-    showAddEmoji: false,
   };
 
   onToneButtonClick = () => {
@@ -54,13 +52,6 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   onMouseLeave = () => {
     this.setState({
       selectingTone: false,
-      showAddEmoji: false,
-    });
-  };
-
-  onMouseEnter = () => {
-    this.setState({
-      showAddEmoji: true,
     });
   };
 
@@ -99,10 +90,10 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderEmojiPreview() {
-    const { showAddEmoji, selectingTone } = this.state;
-    const emoji = this.props.emoji;
+    const { selectingTone } = this.state;
+    const { emoji, uploadEnabled } = this.props;
 
-    if (!emoji || selectingTone || showAddEmoji) {
+    if (!emoji || selectingTone || uploadEnabled) {
       return null;
     }
 
@@ -130,10 +121,10 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderAddOwnEmoji() {
-    const { onOpenUpload, uploadSupported } = this.props;
-    const { showAddEmoji, selectingTone } = this.state;
+    const { onOpenUpload, uploadEnabled } = this.props;
+    const { selectingTone } = this.state;
 
-    if (!uploadSupported || !showAddEmoji || selectingTone) {
+    if (!uploadEnabled || selectingTone) {
       return null;
     }
     return (
@@ -156,11 +147,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       'emojiPreviewSection',
     ]);
     return (
-      <div
-        className={sectionClasses}
-        onMouseLeave={this.onMouseLeave}
-        onMouseEnter={this.onMouseEnter}
-      >
+      <div className={sectionClasses} onMouseLeave={this.onMouseLeave}>
         {this.renderAddOwnEmoji()}
         {this.renderEmojiPreview()}
         {this.renderTones()}

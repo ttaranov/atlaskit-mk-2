@@ -100,6 +100,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       loading: true,
       uploadSupported: false,
       uploading: false,
+      showUploadButton: true,
     };
 
     this.openTime = 0;
@@ -179,6 +180,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     if (this.state.selectedEmoji !== emoji) {
       this.setState({
         selectedEmoji: emoji,
+        showUploadButton: false,
+      } as State);
+    } else {
+      this.setState({
+        showUploadButton: false,
       } as State);
     }
   };
@@ -219,6 +225,18 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   onFileChosen = () => {
     this.fireAnalytics('upload.file.selected');
+  };
+
+  onEmojiPickerMouseLeave = () => {
+    this.setState({
+      showUploadButton: true,
+    });
+  };
+
+  onEmojiPickerMouseEnter = () => {
+    this.setState({
+      showUploadButton: false,
+    });
   };
 
   private fireAnalytics = (eventName: string, data: any = {}): void => {
@@ -513,6 +531,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploading,
       uploadErrorMessage,
       uploadSupported,
+      showUploadButton,
     } = this.state;
 
     const recordUsageOnSelection = createRecordSelectionDefault(
@@ -535,6 +554,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
+          onMouseLeave={this.onEmojiPickerMouseLeave}
+          onMouseEnter={this.onEmojiPickerMouseEnter}
           onSearch={this.onSearch}
           query={query}
           selectedTone={selectedTone}
@@ -549,7 +570,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           toneEmoji={toneEmoji}
           uploading={uploading}
           uploadErrorMessage={uploadErrorMessage}
-          uploadSupported={uploadSupported}
+          uploadEnabled={uploadSupported && showUploadButton && !uploading}
           onUploadEmoji={this.onUploadEmoji}
           onUploadCancelled={this.onUploadCancelled}
           onFileChosen={this.onFileChosen}
