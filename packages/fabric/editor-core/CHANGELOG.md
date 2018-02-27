@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.3.2
+- [patch] Fix issue where removing placeholder-text on typing wouldn't trigger a collab transaction. Also fixed local collaborative editing storybook to not dispatch transactions to the same editor that fired them. [4567ab2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4567ab2)
+
 ## 62.3.1
 
 ## 62.3.0
