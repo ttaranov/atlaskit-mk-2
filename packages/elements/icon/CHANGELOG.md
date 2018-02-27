@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.11.0
+- [minor] Create skeleton representations of various components [cd628e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd628e4)
+
 ## 10.10.1
 - [patch] update atlaskit src for internal consumption [4601bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4601bf0)
 
