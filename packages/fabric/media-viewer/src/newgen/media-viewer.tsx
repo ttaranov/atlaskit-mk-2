@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
 import { Context, MediaItem } from '@atlaskit/media-core';
 import {
@@ -70,21 +71,42 @@ export type Props = {
   dispatch: (message: Message) => void;
 };
 
+export const ImageViewerWrapper = styled.div`
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Img = styled.img`
+  max-height: 100%;
+  transition: transform 0.3s;
+`;
+
+export const ItemPreviewWrapper = styled.div`
+  flex: 1;
+  padding: 10px;
+  overflow: hidden;
+`;
+
 export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
   <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
-    {model.state === 'LOADING' ? (
-      <Spinner />
-    ) : model.state === 'ERROR' ? (
-      <div>ERROR view</div>
-    ) : (
-      <div>
-        <h2>{model.name}</h2>
-        <img src={model.src} width={100} height={100} />
-      </div>
-    )}
+    <h2>{model.state === 'LOADED' && model.name}</h2>
+    <ItemPreviewWrapper>
+      <ImageViewerWrapper>
+        {model.state === 'LOADING' ? (
+          <Spinner size="large" />
+        ) : model.state === 'ERROR' ? (
+          <div>Something went wrong</div>
+        ) : (
+          <Img src={model.src} />
+        )}
+      </ImageViewerWrapper>
+    </ItemPreviewWrapper>
   </Blanket.Component>
 );
 
@@ -115,7 +137,7 @@ export const effects = (
           next: item => {
             context
               .getDataUriService(cfg.collectionName)
-              .fetchImageDataUri(item, { width: 100, height: 100 })
+              .fetchImageDataUri(item, { width: 800, height: 600 })
               .then(
                 uri => {
                   dispatch({
