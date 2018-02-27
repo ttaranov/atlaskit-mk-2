@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { SkeletonNavigation } from '../../src/components/js/skeleton';
+import SkeletonNavigation from '../../src/components/js/skeleton';
 import SkeletonContainerNavigation from '../../src/components/js/skeleton/SkeletonContainerNavigation';
 import SkeletonGlobalNavigation from '../../src/components/js/skeleton/SkeletonGlobalNavigation';
 

@@ -50,4 +50,4 @@ export { createGlobalTheme } from './theme/create-provided-theme';
 export { presets as presetThemes };
 export { resultTypes as quickSearchResultTypes };
 
-export { SkeletonNavigation as Skeleton } from './components/js/skeleton';
+export { default as Skeleton } from './components/js/skeleton';
