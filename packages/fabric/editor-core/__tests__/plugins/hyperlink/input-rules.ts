@@ -10,15 +10,13 @@ import {
   sendKeyToPm,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [hyperlinkPlugin, codeBlockPlugin, textFormatting()],
+      editorPlugins: [codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

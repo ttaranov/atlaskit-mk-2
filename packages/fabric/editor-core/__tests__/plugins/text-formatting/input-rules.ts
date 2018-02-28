@@ -12,9 +12,7 @@ import {
   code_block,
 } from '@atlaskit/editor-test-helpers';
 
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import {
   strongRegex1,
@@ -49,14 +47,10 @@ describe('text-formatting input rules', () => {
   const editor = (doc: any, disableCode = false) =>
     createEditor({
       doc,
-      editorPlugins: [
-        textFormatting({ disableCode }),
-        codeBlockPlugin,
-        hyperlinkPlugin,
-        mentionsPlugin,
-      ],
+      editorPlugins: [codeBlockPlugin, mentionsPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
+        textFormatting: { disableCode },
       },
     });
 

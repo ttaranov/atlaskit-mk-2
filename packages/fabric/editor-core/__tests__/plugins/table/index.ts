@@ -36,7 +36,6 @@ import {
   checkIfRowSelected,
 } from '../../../src/editor/plugins/table/utils';
 import tablesPlugin from '../../../src/editor/plugins/table';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('table plugin', () => {
@@ -44,7 +43,7 @@ describe('table plugin', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TableState>({
       doc,
-      editorPlugins: [tablesPlugin, textFormatting(), codeBlockPlugin],
+      editorPlugins: [tablesPlugin, codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: {

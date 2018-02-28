@@ -20,7 +20,6 @@ class DemoEditor extends React.PureComponent<any, State> {
     const editor = !dropzoneRef ? null : (
       <Editor
         appearance="comment"
-        allowHyperlinks
         media={{
           provider: mediaProvider,
           customDropzoneContainer: dropzoneRef,

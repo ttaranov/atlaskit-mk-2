@@ -15,7 +15,6 @@ import {
   DefaultMediaStateManager,
 } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import PickerFacade from '../../../src/plugins/media/picker-facade';
 
 const stateManager = new DefaultMediaStateManager();
@@ -45,7 +44,6 @@ describe('Media with mock facade', () => {
           allowMediaSingle: true,
           customDropzoneContainer: dropzoneContainer,
         }),
-        hyperlinkPlugin,
       ],
       editorProps: editorProps,
       providerFactory,

@@ -9,13 +9,11 @@ import AkButton from '@atlaskit/button';
 import ToolbarTextFormatting from '../../src/ui/ToolbarTextFormatting';
 import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
-import textFormatting from '../../src/editor/plugins/text-formatting';
 
 describe('ToolbarTextFormatting', () => {
   const editor = (doc: any) =>
     createEditor<TextFormattingState>({
       doc,
-      editorPlugins: [textFormatting()],
       pluginKey: stateKey,
     });
 

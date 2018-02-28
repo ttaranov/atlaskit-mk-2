@@ -15,7 +15,6 @@ import {
 import emojiPlugin from '../../../src/editor/plugins/emoji';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -25,12 +24,7 @@ describe('emojis - input rules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [
-        emojiPlugin,
-        codeBlockPlugin,
-        mentionsPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [emojiPlugin, codeBlockPlugin, mentionsPlugin],
       providerFactory,
       pluginKey: emojiPluginKey,
     });
