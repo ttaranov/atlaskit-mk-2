@@ -1,11 +1,7 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
-import {
-  withAnalyticsEvents,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import Button from '@atlaskit/button';
+import React, { type Node } from 'react';
+import SubtleLink from './SubtleLink';
 
 type Props = {
   /** The content to render inside the action button. */
@@ -18,45 +14,15 @@ type Props = {
   onMouseOver?: Function,
 };
 
-export class ActionItem extends Component<Props, {}> {
-  render() {
-    const { children, onClick, onFocus, onMouseOver } = this.props;
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
-    return (
-      <span onClick={onClick} onFocus={onFocus} onMouseOver={onMouseOver}>
-        <Button
-          appearance="subtle-link"
-          spacing="none"
-          type="button"
-          analyticsContext={{
-            component: 'commment-action',
-          }}
-        >
-          {children}
-        </Button>
-      </span>
-    );
-    /* eslint-enable jsx-a11y/no-static-element-interactions */
-  }
-}
+const ActionItem = ({ children, onClick, onFocus, onMouseOver }: Props) => (
+  <SubtleLink
+    onClick={onClick}
+    onFocus={onFocus}
+    onMouseOver={onMouseOver}
+    analyticsContext={{ component: 'comment-action' }}
+  >
+    {children}
+  </SubtleLink>
+);
 
-type CreateAnalyticsEvent = (payload: {
-  [string]: any,
-}) => UIAnalyticsEvent;
-
-const createAndFireEvent = (action: string) => (
-  createAnalyticsEvent: CreateAnalyticsEvent,
-) => {
-  const consumerEvent = createAnalyticsEvent({
-    action,
-  });
-  consumerEvent.clone().fire('atlaskit');
-
-  return consumerEvent;
-};
-
-export default withAnalyticsEvents({
-  onClick: createAndFireEvent('click'),
-  onFocus: createAndFireEvent('focus'),
-  onMouseOver: createAndFireEvent('mouseover'),
-})(ActionItem);
+export default ActionItem;

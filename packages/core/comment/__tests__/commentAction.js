@@ -7,13 +7,6 @@ import { CommentAction } from '../src/';
 
 describe('@atlaskit comments', () => {
   describe('CommentAction', () => {
-    describe('exports', () => {
-      it('the CommentAction component', () => {
-        expect(CommentAction).not.toBe(undefined);
-        expect(new CommentAction()).toBeInstanceOf(Component);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<CommentAction />);
