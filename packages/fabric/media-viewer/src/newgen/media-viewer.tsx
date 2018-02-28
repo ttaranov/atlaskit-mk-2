@@ -165,7 +165,7 @@ export const effects = (
         )
         .observable()
         .subscribe({
-          next: async (item) => {
+          next: async item => {
             dispatch({
               type: 'RECEIVED_ATTRIBUTES',
               name: item.type === 'file' ? item.details.name : void 0,
@@ -175,20 +175,26 @@ export const effects = (
               if (item.details.processingStatus === 'succeeded') {
                 try {
                   const service = context.getDataUriService(cfg.collectionName);
-                  const uriSmall = await service.fetchImageDataUri(item, { width: 100, height: 60 });
+                  const uriSmall = service.fetchImageDataUri(item, {
+                    width: 100,
+                    height: 60,
+                  });
+                  const uriLarge = service.fetchImageDataUri(item, {
+                    width: 800,
+                    height: 600,
+                  });
                   dispatch({
                     type: 'RECEIVED_SRC',
-                    src: uriSmall,
+                    src: await uriSmall,
                   });
-                  const uriLarge = await service.fetchImageDataUri(item, { width: 800, height: 600 });
                   dispatch({
                     type: 'RECEIVED_SRC',
-                    src: uriLarge,
+                    src: await uriLarge,
                   });
-                } catch(e) {
+                } catch (e) {
                   dispatch({
                     type: 'LOADING_FAILED',
-                  });              
+                  });
                 }
               }
             }
