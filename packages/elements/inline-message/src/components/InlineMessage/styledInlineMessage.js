@@ -13,6 +13,7 @@ const getFocusColor = themed('appearance', {
 
 export const Root = styled.div`
   display: inline-block;
+  width: 100%;
   &:focus {
     outline: 1px solid ${getFocusColor};
   }
@@ -40,6 +41,8 @@ export const Title = styled.span`
 `;
 
 export const Text = styled.span`
+  overflow: hidden;
+  textoverflow: ellipsis;
   color: ${getTextColor};
   padding: 0 ${itemSpacing}px;
 `;
