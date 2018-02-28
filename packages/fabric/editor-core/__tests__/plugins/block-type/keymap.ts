@@ -350,6 +350,20 @@ describe('codeBlock - keymaps', () => {
                   editorView.destroy();
                 });
               });
+              describe('nested list item', () => {
+                it('creates a new paragraph below at depth 0', () => {
+                  const { editorView } = editor(
+                    doc(ul(li(p('text'), ul(li(p('text{<>}')))))),
+                  );
+
+                  sendKeyToPm(editorView, 'ArrowDown');
+
+                  expect(editorView.state.doc).toEqualDocument(
+                    doc(ul(li(p('text'), ul(li(p('text'))))), p('')),
+                  );
+                  editorView.destroy();
+                });
+              });
             });
 
             describe('when cursor is in the last cell of the table', () => {
