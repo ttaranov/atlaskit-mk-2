@@ -13,7 +13,7 @@ const getFocusColor = themed('appearance', {
 
 export const Root = styled.div`
   display: inline-block;
-  width: 100%;
+  max-width: 100%;
   &:focus {
     outline: 1px solid ${getFocusColor};
   }
