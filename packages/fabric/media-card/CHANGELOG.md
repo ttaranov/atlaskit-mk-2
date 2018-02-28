@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 24.0.6
+- [patch] Introduce media-ui package [39579e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39579e2)
+
 ## 24.0.5
 - [patch] fix new smart-card design which is showing the dropdown below consecutive smart-cards [5574b67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5574b67)
 - [patch] fix issue with smart-card dropdown being hidden behind successive cards in new designs [ff01687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff01687)
