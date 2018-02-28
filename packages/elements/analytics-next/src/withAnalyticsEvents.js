@@ -31,7 +31,7 @@ export default function withAnalyticsEvents<
   Props: ObjectType,
   PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
 >(
-  createEventMap?: EventMap<PropsWithoutAnalyticsEvent> = {},
+  createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
 ): (
   WrappedComponent: ComponentType<Props>,
 ) => ComponentType<PropsWithoutAnalyticsEvent> {
