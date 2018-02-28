@@ -85,7 +85,7 @@ const SaveAndCancelButtons = props => (
         props.editorActions
           .getValue()
           // tslint:disable-next-line:no-console
-          .then(value => console.log(value.toJSON()))
+          .then(value => console.log(value))
       }
     >
       Publish
