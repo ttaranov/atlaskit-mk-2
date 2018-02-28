@@ -1,5 +1,12 @@
 // @flow
 import UtilPlugin from '../plugins/util';
+import analyticsEventMap from './analyticsEventMap';
+
+const getMapEntryFromPath = (filepath) => (
+  analyticsEventMap.find( eventConfig => (
+    filepath.indexOf(eventConfig.path) > -1
+  ))
+);
 
 const createImport = (j, specifierNames, source) => {
   const specifiers = specifierNames.map( name =>
@@ -7,12 +14,9 @@ const createImport = (j, specifierNames, source) => {
   );
 
   return j.importDeclaration(specifiers, j.literal(source));
-}
+};
 
 const createEventMapPropFn = (j, action) => {
-  const params = j.identifier('createAnalyticsEvent');
-  const body = j.blockStatement([
-  ]);
   const code = `
     createAnalyticsEvent => {
       const consumerEvent = createAnalyticsEvent({
@@ -25,18 +29,42 @@ const createEventMapPropFn = (j, action) => {
   `;
 
   return j(code).find(j.ArrowFunctionExpression).get().value;
-}
+};
 
 const createAnalyticsEventsHoc = (j, filePath, inner) => {
-  console.log(filePath);
-  const createEventMap = { onClick: 'click' };
-  const eventMap = j.objectExpression(Object.keys(createEventMap).map( propName => {
-    const action = createEventMap[propName];
+  const createEventMap = getMapEntryFromPath(filePath);
+  if (!createEventMap) {
+    throw new Error('Event map entry not found for this file');
+  }
+  const eventMap = j.objectExpression(Object.keys(createEventMap.props).map( propName => {
+    const action = createEventMap.props[propName];
     return j.property('init', j.identifier(propName), createEventMapPropFn(j, action));
   }));
   const firstCall = j.callExpression(j.identifier('withAnalyticsEvents'), [eventMap]);
+  return j.callExpression(firstCall, [inner]);
+};
 
-  return j.callExpression(firstCall, [inner.value.declaration]);
+const createAnalyticsContextHoc = (j, filePath, inner) => {
+  const createEventMap = getMapEntryFromPath(filePath);
+  if (!createEventMap) {
+    throw new Error('Event map entry not found for this file');
+  }
+  const versionProp = j.property('init', j.identifier('version'), j.identifier('version'));
+  const contextArgs = j.objectExpression([
+    j.property('init', j.identifier('component'), createEventMap.context),
+    j.property('init', j.identifier('package'), j.identifier('name')),
+    versionProp,
+  ]);
+
+  const firstCall = j.callExpression(j.identifier('withAnalyticsContext'), [contextArgs]);
+
+  const code = `
+    withAnalyticsContext({
+      component: 'button',
+      package: name,
+      version,
+    })(
+  `;
 }
 
 module.exports = (fileInfo: any, api: any) => {
@@ -71,7 +99,16 @@ module.exports = (fileInfo: any, api: any) => {
       // Wrap default export with HOCs
       .find(j.ExportDefaultDeclaration)
       .map( path => {
-        path.value.declaration = createAnalyticsEventsHoc(j, fileInfo.path, path);
+        if (j.Expression.check(path.value.declaration)) {
+          // If we're an expression, we can just wrap the current default export
+          path.value.declaration = createAnalyticsEventsHoc(j, fileInfo.path, path.value.declaration);
+        } else if (j.Declaration.check(path.value.declaration)) {
+          // Else if we're a declaration, we must extract the declaration out of the export
+          // and then wrap the declaration with a HOC within the export
+          const declarationId = path.value.declaration.id;
+          path.insertBefore(path.value.declaration);
+          path.value.declaration = createAnalyticsEventsHoc(j, fileInfo.path, declarationId);    
+        }
         return path;
       }).getAST();
     
