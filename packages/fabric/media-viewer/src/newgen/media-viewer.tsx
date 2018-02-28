@@ -200,7 +200,9 @@ export const effects = (
         });
       break;
     case 'CLOSE':
-      cfg.onClose && cfg.onClose();
+      if (cfg.onClose) {
+        cfg.onClose();
+      }
       break;
     default:
       break;

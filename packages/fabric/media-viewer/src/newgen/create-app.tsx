@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-// TODO Factor out dispatch fn here
 export type CreateAppOptions<Model, Message, Props> = {
   initialModel: Model;
   initialMessage?: Message;
@@ -39,6 +38,7 @@ export function createApp<Model, Message, Props>({
       this.setState(
         model => {
           const newModel = update(model, message);
+          /* tslint:disable:no-console */
           console.log('-- message', message, 'new model', newModel);
           return newModel;
         },
