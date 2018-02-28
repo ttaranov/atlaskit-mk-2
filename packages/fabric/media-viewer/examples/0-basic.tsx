@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@atlaskit/button';
 import { MediaViewer } from '../src/components/media-viewer';
 import { MediaItemType } from '@atlaskit/media-core';
 import { Card, FileIdentifier } from '@atlaskit/media-card';
@@ -18,13 +17,12 @@ export default class BasicExample extends React.Component<
   {},
   BasicExampleState
 > {
-
   constructor() {
     super();
     this.state = { isOpen: false };
   }
 
-  render() {        
+  render() {
     const selectedItem = {
       id: genericFileId.id,
       occurrenceKey: '',
@@ -33,7 +31,7 @@ export default class BasicExample extends React.Component<
     const identifier: FileIdentifier = {
       id: genericFileId.id,
       mediaItemType: 'file',
-      collectionName: genericFileId.collectionName
+      collectionName: genericFileId.collectionName,
     };
     const props = {
       context,
@@ -51,7 +49,11 @@ export default class BasicExample extends React.Component<
       <div>
         <p>Click on the image to open Media Viewer:</p>
         <p>
-          <Card onClick={() => this.setState({ isOpen: true })} context={context} identifier={identifier} />
+          <Card
+            onClick={() => this.setState({ isOpen: true })}
+            context={context}
+            identifier={identifier}
+          />
         </p>
         {this.state.isOpen && <MediaViewer {...props} />}
       </div>
