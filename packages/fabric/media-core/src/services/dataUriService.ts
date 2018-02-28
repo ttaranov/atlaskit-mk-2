@@ -35,7 +35,7 @@ export class MediaDataUriService implements DataUriService {
         authProvider: this.authProvider,
       },
       collectionName: this.collectionName,
-      preventPreflight,
+      preventPreflight: this.preventPreflight,
     });
   }
 
