@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@atlaskit/button';
 import { MediaViewer } from '../src/components/media-viewer';
 import { MediaItemType } from '@atlaskit/media-core';
+import { Card, FileIdentifier } from '@atlaskit/media-card';
 import {
   createStorybookContext,
   genericFileId,
@@ -11,23 +12,31 @@ export type BasicExampleState = {
   isOpen: boolean;
 };
 
+const context = createStorybookContext();
+
 export default class BasicExample extends React.Component<
   {},
   BasicExampleState
 > {
+
   constructor() {
     super();
     this.state = { isOpen: false };
   }
 
-  render() {
+  render() {        
     const selectedItem = {
       id: genericFileId.id,
       occurrenceKey: '',
       type: 'file' as MediaItemType,
     }; // // occurenceKey we can ignore here
+    const identifier: FileIdentifier = {
+      id: genericFileId.id,
+      mediaItemType: 'file',
+      collectionName: genericFileId.collectionName
+    };
     const props = {
-      context: createStorybookContext(),
+      context,
       selectedItem,
       dataSource: { list: [selectedItem] },
       collectionName: genericFileId.collectionName, // we need this to get a valid token (because the file is part of a collection)
@@ -40,12 +49,10 @@ export default class BasicExample extends React.Component<
     };
     return (
       <div>
+        <p>Click on the image to open Media Viewer:</p>
         <p>
-          <Button onClick={() => this.setState({ isOpen: true })}>
-            Open experimental Media Viewer
-          </Button>
+          <Card onClick={() => this.setState({ isOpen: true })} context={context} identifier={identifier} />
         </p>
-
         {this.state.isOpen && <MediaViewer {...props} />}
       </div>
     );

@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/media-card": "^24.0.6",
     "@atlaskit/media-core": "^14.0.1",
     "@atlaskit/media-test-helpers": "^9.0.2",
     "@atlaskit/spinner": "^4.1.5",
