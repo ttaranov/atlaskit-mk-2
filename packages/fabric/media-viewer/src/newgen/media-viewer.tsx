@@ -81,15 +81,14 @@ const ItemPreviewWrapper = styled.div`
 
 const DetailsWrapper = styled.div`
   display: flex;
+  position: absolute;
 `;
 
 export const LeftInfo = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  > span {
-    margin-left: 10px;
-  }
+  padding: 20px;
 `;
 
 const iconBaseStyle = `
