@@ -53,7 +53,8 @@
     "build:layer": "                         cd packages/elements/layer && yarn build",
     "build:mention:json": "                  cd packages/fabric/mention && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data",
     "build:emoji:json": "                    cd packages/fabric/emoji && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data",
-    "build:taskdecision:json": "             cd packages/fabric/task-decision && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data"
+    "build:taskdecision:json": "             cd packages/fabric/task-decision && cp -r src/support/json-data dist/es5/support/json-data && cp -r src/support/json-data dist/es2015/support/json-data",
+    "codemod:analytics": "                   jscodeshift -t codemods/analytics/"
   },
   "bolt": {
     "version": "^0.18.3 || ^0.19.2",
