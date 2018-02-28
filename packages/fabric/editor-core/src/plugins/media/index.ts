@@ -221,25 +221,25 @@ export class MediaPluginState {
     }
   }
 
-  updateUploadsStateDebounce: number | null = null;
-  updateUploadsState(): void {
+  updateUploadStateDebounce: number | null = null;
+  updateUploadState(): void {
     if (!this.waitForMediaUpload) {
       return;
     }
 
-    if (this.updateUploadsStateDebounce) {
-      clearTimeout(this.updateUploadsStateDebounce);
+    if (this.updateUploadStateDebounce) {
+      clearTimeout(this.updateUploadStateDebounce);
     }
 
-    this.updateUploadsStateDebounce = setTimeout(() => {
-      this.updateUploadsStateDebounce = null;
+    this.updateUploadStateDebounce = setTimeout(() => {
+      this.updateUploadStateDebounce = null;
       this.allUploadsFinished = false;
       this.notifyPluginStateSubscribers();
       this.waitForPendingTasks().then(() => {
         this.allUploadsFinished = true;
         this.notifyPluginStateSubscribers();
       });
-    }, 10);
+    }, 0);
   }
 
   updateLayout(layout: MediaSingleLayout): void {
@@ -854,7 +854,7 @@ export const createPlugin = (
 
       return {
         update: () => {
-          pluginState.updateUploadsState();
+          pluginState.updateUploadState();
           pluginState.insertLinks();
           pluginState.updateElement();
         },
