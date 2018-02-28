@@ -27,6 +27,8 @@ import {
   tr,
   tdEmpty,
   tdCursor,
+  td,
+  thEmpty,
 } from '@atlaskit/editor-test-helpers';
 import {
   selectTable,
@@ -40,6 +42,7 @@ import {
   checkIfTableSelected,
 } from '../../src/editor/plugins/table/utils';
 import tablesPlugin from '../../src/editor/plugins/table';
+import { setTextSelection } from '../../src';
 
 describe('TableFloatingControls', () => {
   const event = createEvent('event');
@@ -187,6 +190,61 @@ describe('TableFloatingControls', () => {
           expect(spy).toHaveBeenCalledTimes(1);
           expect(calledWithArgs![0]).toEqual(column);
           floatingControls.unmount();
+        });
+
+        it('should not move the cursor when hovering controls', () => {
+          const { plugin, editorView, pluginState, refs } = editor(
+            doc(
+              table(
+                tr(thEmpty, td({})(p('{nextPos}')), thEmpty),
+                tr(tdCursor, tdEmpty, tdEmpty),
+                tr(tdEmpty, tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+
+          const floatingControls = mount(
+            <ColumnControls
+              isTableHovered={false}
+              checkIfSelected={checkIfColumnSelected}
+              selectColumn={selectColumn}
+              insertColumn={pluginState.insertColumn}
+              hoverColumn={hoverColumn}
+              resetHoverSelection={resetHoverSelection}
+              tableElement={pluginState.tableElement!}
+              editorView={editorView}
+            />,
+          );
+
+          plugin.props.handleDOMEvents!.focus(editorView, event);
+
+          // move to header row
+          const { nextPos } = refs;
+          setTextSelection(editorView, nextPos);
+
+          // now hover the column
+          floatingControls
+            .find(ColumnControlsButton)
+            .at(column)
+            .find('button')
+            .first()
+            .simulate('mouseover');
+
+          // assert the cursor is still in same position
+          expect(editorView.state.selection.$from.pos).toBe(nextPos);
+          expect(editorView.state.selection.$to.pos).toBe(nextPos);
+
+          // release the hover
+          floatingControls
+            .find(ColumnControlsButton)
+            .at(column)
+            .find('button')
+            .first()
+            .simulate('mouseout');
+
+          // assert the cursor is still in same position
+          expect(editorView.state.selection.$from.pos).toBe(nextPos);
+          expect(editorView.state.selection.$to.pos).toBe(nextPos);
         });
       });
     });
