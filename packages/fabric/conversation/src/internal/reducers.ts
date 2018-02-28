@@ -403,5 +403,4 @@ export const reducers = createReducer(initialState, {
       conversations,
     };
   },
-
 });

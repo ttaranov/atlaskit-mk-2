@@ -17,7 +17,6 @@ export * from './errorIcon';
 export * from './fileIcon';
 export * from './menu';
 export * from './isRetina';
-export * from './ellipsify';
 export * from './mediaImage';
 export * from './cardImageView';
 export * from './cardLoading';

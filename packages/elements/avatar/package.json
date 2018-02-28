@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "9.0.4",
+  "version": "9.1.0",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@atlaskit/button": "^6.4.2",
     "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/icon": "^10.11.0",
     "@atlaskit/lozenge": "^3.5.2",
     "enzyme": "^3.3.0"
   },
