@@ -1,55 +1,72 @@
 import * as React from 'react';
 import { Component } from 'react';
-
-export type MediaApiConfig = {
-  clientId: string;
-  token: string;
-  serviceHost: string;
-};
+import {
+  MediaStore,
+  MediaStoreConfig,
+  MediaStoreGetFileImageParams,
+} from '@atlaskit/media-store';
+import { isObjectEqual } from './utils/isObjectEqual';
 
 export interface MediaImageProps {
   id: string;
-  mediaApiConfig: MediaApiConfig;
+  config: MediaStoreConfig;
+  params?: MediaStoreGetFileImageParams;
   className?: string;
-  width?: number;
-  height?: number;
-  collectionName?: string;
+
+  // allow extra props to be passed down to img element
+  [propName: string]: any;
 }
 
-export interface MediaImageState {}
+export interface MediaImageState {
+  imgSrc?: string;
+}
 
 export class MediaImage extends Component<MediaImageProps, MediaImageState> {
-  private get imgSrc(): string {
-    const {id, mediaApiConfig, collectionName} = this.props;
-    const {clientId, token, serviceHost} = mediaApiConfig;
-    const endpoint = `file/${id}/image`;
+  store: MediaStore;
 
-    return `${serviceHost}/${endpoint}?collection=${collectionName}&client=${clientId}&token=${token}`;
+  constructor(props) {
+    super(props);
+
+    const { id, config, params } = this.props;
+    this.store = new MediaStore(config);
+    this.setImgSrc(id, params);
+    this.state = {};
   }
 
-  private get hasAuth(): boolean {
-    const {clientId, token, serviceHost} = this.props.mediaApiConfig;
+  async componentWillReceiveProps(nextProps: MediaImageProps) {
+    const { id, config, params } = this.props;
+    const { id: newId, config: newConfig, params: newParams } = nextProps;
+    const [auth, newAuth] = await Promise.all([
+      config.authProvider(),
+      newConfig.authProvider(),
+    ]);
 
-    return !!clientId && !!token && !!serviceHost;
+    if (auth.token !== newAuth.token) {
+      this.store = new MediaStore(newConfig);
+      this.setImgSrc(newId, newParams);
+    } else if (id !== newId || isObjectEqual(params, newParams)) {
+      this.setImgSrc(newId, newParams);
+    }
   }
 
-  private get style() {
-    const {width, height} = this.props;
-
-    return {
-      width: `${width}px`,
-      height: `${height}px`
-    };
+  async setImgSrc(id: string, params?: MediaStoreGetFileImageParams) {
+    const imgSrc = await this.store.getFileImageURL(id, params);
+    this.setState({ imgSrc });
   }
 
   render() {
-    const {hasAuth, style, imgSrc} = this;
-    if (!hasAuth) { return null; }
+    // We need to declare "know props" here in order to only have "extra props" in otherProps
+    const { className, config, params, id, ...otherProps } = this.props;
+    const { imgSrc } = this.state;
 
-    const {className} = this.props;
+    if (!imgSrc) {
+      return null;
+    }
 
     return (
-      <img src={imgSrc} style={style} className={className} />
+      <div>
+        <img {...otherProps} src={imgSrc} className={className} />
+      </div>
     );
   }
 }

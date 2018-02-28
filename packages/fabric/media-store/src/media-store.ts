@@ -118,7 +118,7 @@ export class MediaStore {
     params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
     return createUrl(`${this.config.apiUrl}/file/${id}/image`, {
-      params,
+      params: { 'max-age': 3600, ...params },
       auth: await this.config.authProvider(),
     });
   };
@@ -198,13 +198,13 @@ export type MediaStoreGetFileParams = {
 
 export type MediaStoreGetFileImageParams = {
   readonly version?: number;
-  readonly collection?: number;
+  readonly collection?: string;
   readonly width?: number;
   readonly height?: number;
   readonly mode?: 'fit' | 'full-fit' | 'crop';
   readonly upscale?: boolean;
-  readonly 'max-age': number;
-  readonly allowAnimated: boolean;
+  readonly 'max-age'?: number;
+  readonly allowAnimated?: boolean;
 };
 
 export type MediaStoreGetCollectionItemsPrams = {

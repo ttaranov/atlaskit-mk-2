@@ -2,16 +2,21 @@ import * as React from 'react';
 import { Component } from 'react';
 import FieldText from '@atlaskit/field-text';
 import { Auth, isClientBasedAuth } from '@atlaskit/media-core';
-import { genericFileId,
+import {
+  genericFileId,
   defaultParams,
   defaultCollectionName,
-  StoryBookAuthProvider
+  StoryBookAuthProvider,
 } from '@atlaskit/media-test-helpers';
+import {
+  ImageWrapper,
+  OptionsWrapper,
+  ConfigWrapper,
+  ParamsWrapper,
+} from '../example-helpers/styled';
 import { MediaImage } from '../src';
 
-export interface ExampleProps {
-
-}
+export interface ExampleProps {}
 
 export interface ExampleState {
   token: string;
@@ -19,91 +24,141 @@ export interface ExampleState {
   collectionName: string;
   clientId: string;
   serviceHost: string;
+  width: number;
 }
 
 export default class Example extends Component<ExampleProps, ExampleState> {
-  constructor(props) {
-    super(props);
+  state: ExampleState = {
+    token: '',
+    imageId: genericFileId.id,
+    collectionName: defaultCollectionName,
+    clientId: defaultParams.clientId,
+    serviceHost: defaultParams.serviceHost,
+    width: 300,
+  };
 
-    this.state = {
-      token: '',
-      imageId: genericFileId.id,
-      collectionName: defaultCollectionName,
-      clientId: defaultParams.clientId,
-      serviceHost: defaultParams.serviceHost
-    };
-  }
-
-  componentDidMount() {
+  async componentDidMount() {
     const authProvider = StoryBookAuthProvider.create(false);
-    authProvider({collectionName: defaultCollectionName}).then((auth: Auth) => {
+    const auth = await authProvider({ collectionName: defaultCollectionName });
+
+    this.setState({
+      token: auth.token,
+    });
+
+    if (isClientBasedAuth(auth)) {
       this.setState({
-        token: auth.token
+        clientId: auth.clientId,
       });
-
-      if (isClientBasedAuth(auth)) {
-        this.setState({
-          clientId: auth.clientId
-        });
-      }
-    });
+    }
   }
 
-  onIdChange = (e) => {
+  onIdChange = e => {
     this.setState({
-      imageId: e.target.value
+      imageId: e.target.value,
     });
-  }
+  };
 
-  onCollectionChange = (e) => {
+  onCollectionChange = e => {
     this.setState({
-      collectionName: e.target.value
+      collectionName: e.target.value,
     });
-  }
+  };
 
-  onTokenChange = (e) => {
+  onTokenChange = e => {
     this.setState({
-      token: e.target.value
+      token: e.target.value,
     });
-  }
+  };
 
-  onClientIdChange = (e) => {
+  onClientIdChange = e => {
     this.setState({
-      clientId: e.target.value
+      clientId: e.target.value,
     });
-  }
+  };
 
-  onServiceHostChange = (e) => {
+  onServiceHostChange = e => {
     this.setState({
-      serviceHost: e.target.value
+      serviceHost: e.target.value,
     });
-  }
+  };
+
+  onWidthChange = e => {
+    this.setState({
+      width: e.target.value,
+    });
+  };
 
   render() {
-    const {token, imageId, collectionName, clientId, serviceHost} = this.state;
-    const apiConfig = {
+    const {
       token,
+      imageId,
+      collectionName,
       clientId,
-      serviceHost
+      serviceHost,
+      width,
+    } = this.state;
+    const authProvider = () => Promise.resolve({ clientId, token });
+    const config = {
+      authProvider,
+      apiUrl: serviceHost,
     };
 
     return (
       <div>
-        <div style={{display: 'flex', justifyContent: 'space-between', textAlign: 'center', borderBottom: '1px solid #ccc', padding: '10px', margin: '10px auto', width: '1000px'}}>
-          <FieldText label="Image id" placeholder="Image id..." value={imageId} onChange={this.onIdChange} />
-          <FieldText label="Collection name" placeholder="Collection name..." value={collectionName} onChange={this.onCollectionChange} />
-          <FieldText label="Token" placeholder="Token..." value={token} onChange={this.onTokenChange} />
-          <FieldText label="Client id" placeholder="Client id..." value={clientId} onChange={this.onClientIdChange} />
-          <FieldText label="Service host" placeholder="Service host..." value={serviceHost} onChange={this.onServiceHostChange} />
-        </div>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <OptionsWrapper>
+          <h1>Config</h1>
+          <ConfigWrapper>
+            <FieldText
+              label="Token"
+              placeholder="Token..."
+              value={token}
+              onChange={this.onTokenChange}
+            />
+            <FieldText
+              label="Client id"
+              placeholder="Client id..."
+              value={clientId}
+              onChange={this.onClientIdChange}
+            />
+            <FieldText
+              label="Service host"
+              placeholder="Service host..."
+              value={serviceHost}
+              onChange={this.onServiceHostChange}
+            />
+          </ConfigWrapper>
+          <h1>Params</h1>
+          <ParamsWrapper>
+            <FieldText
+              label="Image id"
+              placeholder="Image id..."
+              value={imageId}
+              onChange={this.onIdChange}
+            />
+            <FieldText
+              label="Collection name"
+              placeholder="Collection name..."
+              value={collectionName}
+              onChange={this.onCollectionChange}
+            />
+            <FieldText
+              label="Width"
+              placeholder="Width..."
+              value={`${width}`}
+              onChange={this.onWidthChange}
+            />
+          </ParamsWrapper>
+        </OptionsWrapper>
+        <ImageWrapper>
           <MediaImage
             id={imageId}
-            mediaApiConfig={apiConfig}
-            collectionName={collectionName}
-            width={300}
+            config={config}
+            params={{
+              width,
+              collection: collectionName,
+            }}
           />
-        </div>
+        </ImageWrapper>
       </div>
     );
   }
