@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EditorActions from '../../src/editor/actions';
-import AkButton, { ButtonGroup } from '@atlaskit/button';
 import styled from 'styled-components';
 import ExtensionToolbar from './ExtensionToolbar';
 import TitleBar from './TitleBar';
@@ -70,7 +69,7 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
   }
 
   render() {
-    const { isSelected, node, onClick, onSelect, element } = this.props;
+    const { isSelected, node, onClick, onSelect } = this.props;
 
     const { type } = node;
 
