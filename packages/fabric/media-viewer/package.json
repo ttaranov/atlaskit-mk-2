@@ -28,6 +28,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
+    "@atlaskit/icon": "^10.11.0",
     "@atlaskit/docs": "^2.4.3",
     "@atlaskit/media-card": "^24.0.6",
     "@atlaskit/media-core": "^14.0.1",

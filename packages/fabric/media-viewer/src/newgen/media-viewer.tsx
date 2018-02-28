@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import { Context } from '@atlaskit/media-core';
 import {
   MediaViewerDataSource,
@@ -82,13 +83,14 @@ const ItemPreviewWrapper = styled.div`
 const DetailsWrapper = styled.div`
   display: flex;
   position: absolute;
+  width: 100%;
 `;
 
 export const LeftInfo = styled.div`
-  flex: 1;
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
+  flex-grow: 1;
 `;
 
 const iconBaseStyle = `
@@ -128,7 +130,9 @@ export const Component: React.StatelessComponent<Props> = ({
             ''}
         </span>
       </LeftInfo>
-      <RightIcons />
+      <RightIcons>
+        <CrossIcon label="close" onClick={() => dispatch({ type: 'CLOSE' })} />
+      </RightIcons>
     </DetailsWrapper>
     <ItemPreviewWrapper>
       <ImageViewerWrapper>
