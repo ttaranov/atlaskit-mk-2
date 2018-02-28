@@ -65,7 +65,22 @@ export const isImage = (fileType?: string): boolean => {
 };
 
 export function canMoveUp(state: EditorState): boolean {
-  const { selection } = state;
+  const { selection, doc } = state;
+
+  if (selection instanceof NodeSelection) {
+    if (selection.node.type.name === 'media') {
+      return !!(
+        doc.nodeAt(selection.anchor - 3) &&
+        doc.nodeAt(selection.anchor - 3).type.name === 'paragraph'
+      );
+    } else if (selection.node.type.name === 'mediaGroup') {
+      return !!(
+        doc.nodeAt(selection.$anchor.before()) &&
+        doc.nodeAt(selection.$anchor.before()).type.name === 'paragraph'
+      );
+    }
+  }
+
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
       return true;
@@ -76,7 +91,19 @@ export function canMoveUp(state: EditorState): boolean {
 }
 
 export function canMoveDown(state: EditorState): boolean {
-  const { selection } = state;
+  const { selection, doc } = state;
+  if (selection instanceof NodeSelection) {
+    if (selection.node.type.name === 'media') {
+      return !!(
+        doc.nodeAt(selection.$head.after()) &&
+        doc.nodeAt(selection.$head.after()).type.name === 'paragraph'
+      );
+    } else if (selection.node.type.name === 'mediaGroup') {
+      return !(
+        selection.$head.parentOffset === selection.$anchor.parent.content.size
+      );
+    }
+  }
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
       return true;

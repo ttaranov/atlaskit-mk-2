@@ -417,7 +417,11 @@ export const plugin = (pluginConfig?: PluginConfig) =>
         click(view: EditorView, event) {
           const { target: element } = event;
           const { tableNode }: TableState = stateKey.getState(view.state);
-          if (!tableNode || !isElementInTableCell(element)) {
+          if (
+            !tableNode ||
+            !isElementInTableCell(element) ||
+            element.matches('.wrapper .image')
+          ) {
             return false;
           }
           const offset = tableStartPos(view.state);
