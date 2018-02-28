@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  display: flex;
   padding: 10px;
   background: #f5f5f5;
   position: relative;

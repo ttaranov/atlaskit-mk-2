@@ -12,22 +12,18 @@ export interface Props {
   element?: HTMLElement | null;
   onEdit: () => void;
   onRemove: () => void;
-  children?: any;
-  mountTo?: HTMLElement | null;
 }
 
 export default (props: Props) => {
-  const { element, children, mountTo } = props;
+  const { element } = props;
 
   if (!element) {
     return null;
   }
 
   return (
-    <Popup target={element} mountTo={mountTo} offset={[0, 8]} alignX="right">
+    <Popup target={element} offset={[0, 8]} alignX="right">
       <Toolbar>
-        {children}
-        {children && <Separator />}
         <ToolbarButton
           onClick={props.onEdit}
           iconBefore={<EditIcon label="Edit extension" />}
