@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 62.4.1
+
+- [patch] Fix: arrow down in nested list which is last item in editor should create a paragraph at depth 0. [9670417](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9670417)
+
 ## 62.4.0
 - [minor] Disable save button until media finishes upload [aeb54bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeb54bf)
 
