@@ -173,7 +173,7 @@ export const effects = (
             if (item.type === 'file') {
               if (item.details.processingStatus === 'succeeded') {
                 try {
-                  const service = context.getDataUriService(cfg.collectionName);
+                  const service = context.getDataUriService(cfg.collectionName, true);
                   const uriSmall = service.fetchImageDataUri(item, {
                     width: 100,
                     height: 60,

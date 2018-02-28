@@ -27,6 +27,7 @@ export class MediaDataUriService implements DataUriService {
     private readonly authProvider: AuthProvider,
     private readonly serviceHost: string,
     private readonly collectionName?: string,
+    private readonly preventPreflight?: boolean,
   ) {
     this.request = createRequest({
       config: {
@@ -34,6 +35,7 @@ export class MediaDataUriService implements DataUriService {
         authProvider: this.authProvider,
       },
       collectionName: this.collectionName,
+      preventPreflight,
     });
   }
 

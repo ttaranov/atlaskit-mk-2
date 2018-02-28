@@ -35,7 +35,7 @@ export interface Context {
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
 
-  getDataUriService(collectionName?: string): DataUriService;
+  getDataUriService(collectionName?: string, preventPreflight?: boolean): DataUriService;
 
   addLinkItem(
     url: string,
@@ -118,11 +118,12 @@ class ContextImpl implements Context {
     );
   }
 
-  getDataUriService(collectionName?: string): DataUriService {
+  getDataUriService(collectionName?: string, preventPreflight?: boolean): DataUriService {
     return new MediaDataUriService(
       this.config.authProvider,
       this.config.serviceHost,
       collectionName,
+      preventPreflight
     );
   }
 
