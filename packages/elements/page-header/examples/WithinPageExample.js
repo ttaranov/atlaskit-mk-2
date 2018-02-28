@@ -4,7 +4,7 @@ import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import TextField from '@atlaskit/field-text';
 import { StatelessSelect } from '@atlaskit/single-select';
-import Page, { Grid, GridColumn } from '@atlaskit/page';
+import Page from '@atlaskit/page';
 
 import PageHeader from '../src';
 
