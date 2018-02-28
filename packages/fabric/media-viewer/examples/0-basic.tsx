@@ -48,13 +48,11 @@ export default class BasicExample extends React.Component<
     return (
       <div>
         <p>Click on the image to open Media Viewer:</p>
-        <p>
-          <Card
-            onClick={() => this.setState({ isOpen: true })}
-            context={context}
-            identifier={identifier}
-          />
-        </p>
+        <Card
+          onClick={() => this.setState({ isOpen: true })}
+          context={context}
+          identifier={identifier}
+        />
         {this.state.isOpen && <MediaViewer {...props} />}
       </div>
     );

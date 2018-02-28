@@ -9,11 +9,14 @@ import {
 } from '../components/media-viewer';
 import * as Blanket from './blanket';
 
+export type ImageResolution = 'small' | 'large';
+
 export type Model =
   | {
       state: 'OPEN';
       name?: string;
       src?: string;
+      imgResolution?: ImageResolution;
     }
   | {
       state: 'ERROR';
@@ -34,6 +37,7 @@ export type Message =
   | {
       type: 'RECEIVED_SRC';
       src: string;
+      imgResolution: ImageResolution;
     }
   | {
       type: 'LOADING_FAILED';
@@ -51,7 +55,11 @@ export const update = (model: Model, message: Message): Model => {
     case 'INIT':
       return model;
     case 'RECEIVED_SRC':
-      return { ...model, src: message.src };
+      return {
+        ...model,
+        src: message.src,
+        imgResolution: message.imgResolution,
+      };
     case 'RECEIVED_ATTRIBUTES':
       return { ...model, name: message.name };
     case 'LOADING_FAILED':
@@ -69,9 +77,13 @@ const ImageViewerWrapper = styled.div`
   justify-content: center;
 `;
 
+type ImgProps = {
+  showBlurred: boolean;
+};
 const Img = styled.img`
   max-height: 100%;
   transition: transform 0.3s;
+  filter: ${(props: ImgProps) => (props.showBlurred ? 'blur(5px)' : 'none')};
 `;
 
 const ItemPreviewWrapper = styled.div`
@@ -139,7 +151,12 @@ export const Component: React.StatelessComponent<Props> = ({
         {model.state === 'ERROR' && <div>Something went wrong</div>}
         {model.state === 'OPEN' &&
           (model.src ? (
-            <Img src={model.src} width={800} height={600} />
+            <Img
+              src={model.src}
+              width={800}
+              height={600}
+              showBlurred={model.imgResolution === 'small'}
+            />
           ) : (
             <Spinner size="large" />
           ))}
@@ -196,10 +213,12 @@ export const effects = (
                   dispatch({
                     type: 'RECEIVED_SRC',
                     src: await uriSmall,
+                    imgResolution: 'small',
                   });
                   dispatch({
                     type: 'RECEIVED_SRC',
                     src: await uriLarge,
+                    imgResolution: 'large',
                   });
                 } catch (e) {
                   dispatch({

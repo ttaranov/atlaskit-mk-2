@@ -29,11 +29,13 @@ describe('MediaViewer', () => {
       const message: Message = {
         type: 'RECEIVED_SRC',
         src: 'https://atlassian.com',
+        imgResolution: 'small',
       };
       const model = update(initialModel, message);
       expect(model).toMatchObject({
         state: 'OPEN',
         src: 'https://atlassian.com',
+        imgResolution: 'small',
       });
     });
 
@@ -149,9 +151,10 @@ describe('MediaViewer', () => {
         });
       });
 
-      expect(dispatch).toHaveBeenLastCalledWith({
+      expect(dispatch).toHaveBeenCalledWith({
         type: 'RECEIVED_SRC',
         src: '',
+        imgResolution: 'small',
       });
     });
   });

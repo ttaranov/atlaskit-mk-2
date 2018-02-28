@@ -23,29 +23,37 @@ export function createApp<Model, Message, Props>({
   Component,
 }: CreateAppOptions<Model, Message, Props>): React.ComponentClass<Props> {
   class App extends React.Component<Props, Model> {
+    private _isMounted: boolean;
     constructor() {
       super();
       this.state = initialModel;
     }
 
     componentDidMount() {
+      this._isMounted = true;
       if (initialMessage) {
         this.dispatch(initialMessage);
       }
     }
 
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
+
     dispatch(message: Message): void {
-      this.setState(
-        model => {
-          const newModel = update(model, message);
-          /* tslint:disable:no-console */
-          console.log('-- message', message, 'new model', newModel);
-          return newModel;
-        },
-        () => {
-          effects(this.props, message => this.dispatch(message), message);
-        },
-      );
+      if (this._isMounted) {
+        this.setState(
+          model => {
+            const newModel = update(model, message);
+            /* tslint:disable:no-console */
+            console.log('-- message', message, 'new model', newModel);
+            return newModel;
+          },
+          () => {
+            effects(this.props, message => this.dispatch(message), message);
+          },
+        );
+      }
     }
 
     componentDidUpdate(prevProps: Props, prevState: Model) {
