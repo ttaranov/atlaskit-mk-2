@@ -41,8 +41,9 @@ export const Title = styled.span`
 `;
 
 export const Text = styled.span`
-  overflow: hidden;
-  text-overflow: ellipsis;
   color: ${getTextColor};
   padding: 0 ${itemSpacing}px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
