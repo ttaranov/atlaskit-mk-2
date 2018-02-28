@@ -6,6 +6,8 @@ const Wrapper = styled.div`
   ${({ inline }: { inline?: boolean }) => (inline && 'display: inline;') || ''};
 `;
 
+Wrapper.displayName = 'Ellipsify';
+
 export interface EllipsifyProps {
   text?: string;
   lines: number;
