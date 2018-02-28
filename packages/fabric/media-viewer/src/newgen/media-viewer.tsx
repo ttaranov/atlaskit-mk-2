@@ -134,7 +134,11 @@ export const Component: React.StatelessComponent<Props> = ({
       <ImageViewerWrapper>
         {model.state === 'ERROR' && <div>Something went wrong</div>}
         {model.state === 'OPEN' &&
-          (model.src ? <Img src={model.src} /> : <Spinner size="large" />)}
+          (model.src ? (
+            <Img src={model.src} width={800} height={600} />
+          ) : (
+            <Spinner size="large" />
+          ))}
       </ImageViewerWrapper>
     </ItemPreviewWrapper>
   </Blanket.Component>
@@ -173,10 +177,13 @@ export const effects = (
             if (item.type === 'file') {
               if (item.details.processingStatus === 'succeeded') {
                 try {
-                  const service = context.getDataUriService(cfg.collectionName, true);
+                  const service = context.getDataUriService(
+                    cfg.collectionName,
+                    true,
+                  );
                   const uriSmall = service.fetchImageDataUri(item, {
                     width: 100,
-                    height: 60,
+                    height: 75,
                   });
                   const uriLarge = service.fetchImageDataUri(item, {
                     width: 800,
