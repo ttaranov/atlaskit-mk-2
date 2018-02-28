@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import Ellipsify from '../../utils/ellipsify';
+import { Ellipsify } from '@atlaskit/media-ui';
 import { Wrapper } from '../styled/DescriptionView';
 
 export interface DescriptionViewProps {
