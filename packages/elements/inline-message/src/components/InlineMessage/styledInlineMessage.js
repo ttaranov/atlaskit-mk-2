@@ -42,7 +42,7 @@ export const Title = styled.span`
 
 export const Text = styled.span`
   overflow: hidden;
-  textoverflow: ellipsis;
+  text-overflow: ellipsis;
   color: ${getTextColor};
   padding: 0 ${itemSpacing}px;
 `;
