@@ -48,6 +48,10 @@ export {
 } from './editor/plugins/macro';
 
 export {
+  CollabEditProvider,
+} from './editor/plugins/collab-edit';
+
+export {
   EmojiProvider,
   AtlassianEmojiMigrationResource as EmojiResource,
 } from '@atlaskit/emoji';
@@ -59,6 +63,10 @@ export {
   MediaState,
 } from './plugins/media';
 
+export {
+  MediaOptions,
+} from './editor/plugins/media';
+  
 export {
   AbstractMentionResource,
   MentionProvider,
