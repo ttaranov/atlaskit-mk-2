@@ -52,6 +52,7 @@ import {
   canInsertTable,
 } from '../../editor/plugins/table/utils';
 import hoverSelectionPlugin from '../../editor/plugins/table/hover-selection-plugin';
+import { DOMElement } from '../../../../media-picker/node_modules/@types/react';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
@@ -415,7 +416,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           return false;
         },
         click(view: EditorView, event) {
-          const { target: element } = event;
+          const { target: element }: DOMElement = event;
           const { tableNode }: TableState = stateKey.getState(view.state);
           if (
             !tableNode ||
@@ -428,10 +429,11 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           const map = TableMap.get(tableNode);
 
           /** Getting the offset of current item clicked */
-          const colIndex = (
-            closestElement(element, 'td') || closestElement(element, 'th')
-          ).cellIndex;
-          const rowIndex = closestElement(element, 'tr').rowIndex;
+          const colElement =
+            closestElement(element, 'td') || closestElement(element, 'th');
+          const colIndex = colElement && colElement.cellIndex;
+          const rowElement = closestElement(element, 'tr');
+          const rowIndex = rowElement && rowElement.rowIndex;
           const cellIndex = map.width * rowIndex + colIndex;
           const posInTable = map.map[cellIndex + 1] - 1;
 
