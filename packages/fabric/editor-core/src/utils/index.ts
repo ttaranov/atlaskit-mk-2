@@ -67,8 +67,14 @@ export const isImage = (fileType?: string): boolean => {
 export function canMoveUp(state: EditorState): boolean {
   const { selection, doc } = state;
 
+  /**
+   * If there's a media element on the selection,
+   * add text blocks with arrow navigation.
+   * Also, the selection could be media | mediaGroup.
+   */
   if (selection instanceof NodeSelection) {
     if (selection.node.type.name === 'media') {
+      /** Weird way of checking if the previous element is a paragraph */
       return !!(
         doc.nodeAt(selection.anchor - 3) &&
         doc.nodeAt(selection.anchor - 3).type.name === 'paragraph'
@@ -92,6 +98,12 @@ export function canMoveUp(state: EditorState): boolean {
 
 export function canMoveDown(state: EditorState): boolean {
   const { selection, doc } = state;
+
+  /**
+   * If there's a media element on the selection,
+   * add text blocks with arrow navigation.
+   * Also, the selection could be media | mediaGroup.
+   */
   if (selection instanceof NodeSelection) {
     if (selection.node.type.name === 'media') {
       return !!(

@@ -52,7 +52,6 @@ import {
   canInsertTable,
 } from '../../editor/plugins/table/utils';
 import hoverSelectionPlugin from '../../editor/plugins/table/hover-selection-plugin';
-import { DOMElement } from '../../../../media-picker/node_modules/@types/react';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
@@ -416,12 +415,17 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           return false;
         },
         click(view: EditorView, event) {
-          const { target: element }: DOMElement = event;
+          const { target: element } = event;
           const { tableNode }: TableState = stateKey.getState(view.state);
+
+          /**
+           * Check if the table cell with an image is clicked
+           * and its not the image itself
+           */
           if (
             !tableNode ||
             !isElementInTableCell(element) ||
-            element.matches('.wrapper .image')
+            element.matches('td .image')
           ) {
             return false;
           }
