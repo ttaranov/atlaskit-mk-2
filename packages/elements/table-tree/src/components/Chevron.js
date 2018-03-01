@@ -1,9 +1,15 @@
 // @flow
 import React, { PureComponent } from 'react';
+import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 
-import { ChevronContainer, iconColor, iconColorFocus } from '../styled';
+import {
+  ChevronContainer,
+  ChevronIconContainer,
+  iconColor,
+  iconColorFocus,
+} from '../styled';
 
 type Props = {
   isExpanded: boolean,
@@ -53,21 +59,24 @@ export default class Chevron extends PureComponent<Props, State> {
     };
     return (
       <ChevronContainer>
-        <button
-          type={'button'}
-          aria-controls={ariaControls}
+        <Button
+          spacing="none"
+          appearance="subtle"
+          ariaControls={ariaControls}
           onClick={this.handleClick}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
         >
-          {isExpanded ? (
-            <ChevronDownIcon label="Collapse" {...iconProps} />
-          ) : (
-            <ChevronRightIcon label="Expand" {...iconProps} />
-          )}
-        </button>
+          <ChevronIconContainer>
+            {isExpanded ? (
+              <ChevronDownIcon label="Collapse" {...iconProps} />
+            ) : (
+              <ChevronRightIcon label="Expand" {...iconProps} />
+            )}
+          </ChevronIconContainer>
+        </Button>
       </ChevronContainer>
     );
   }

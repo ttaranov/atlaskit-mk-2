@@ -16,6 +16,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/button": "^6.5.0",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/spinner": "^4.1.5",
     "@atlaskit/theme": "^2.3.4",

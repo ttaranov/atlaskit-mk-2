@@ -19,9 +19,6 @@ type Props = {
   /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: RowData => void,
 
-  /** Called whenever this row's node is expanded to show its child rows. */
-  onExpand?: Function,
-
   /** Called whenever this row's node is collapsed to hide its child rows. */
   onCollapse?: RowData => void,
 
