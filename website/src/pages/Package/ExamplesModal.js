@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Loadable from 'react-loadable';
 import { Link, Redirect, Route, withRouter } from 'react-router-dom';
+import { akElevationMixins } from '@atlaskit/util-shared-styles';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import EditIcon from '@atlaskit/icon/glyph/edit';
@@ -81,11 +82,11 @@ const ModalBody = styled(Body)`
 const ContentBody = styled.div`
   display: flex;
   flex: 1;
+  padding-bottom: 17px;
 `;
 const ModalContent = styled.div`
-  flex: 1 1 auto;
+  ${akElevationMixins.e200} flex: 1 1 auto;
   min-height: 240px;
-  padding-bottom: 20px;
 `;
 
 // This seems to be an issue with styledComponent flow type compatibility
@@ -112,33 +113,19 @@ const keylineMask = css`
 `;
 const Nav = styled.nav`
   ${keylineMask} flex-shrink: 0;
-  padding-bottom: 20px;
-  padding-right: 20px;
+  padding-right: 16px;
   position: relative;
   width: 240px;
 `;
 const NavInner = styled.div`
-  max-height: calc(100% - 20px);
+  max-height: 100%;
   overflow-y: auto;
-  position: fixed;
-  width: 240px;
-`;
-const NavItem = styled.button`
-  background: ${p => (p.isSelected ? colors.N30 : 0)};
-  border-radius: 3px;
-  border: 0;
-  color: ${p => (p.isSelected ? colors.N800 : colors.N400)};
-  cursor: pointer;
-  display: block;
-  font-size: inherit;
-  font-weight: ${p => (p.isSelected ? 500 : 'inherit')};
-  outline: 0;
-  padding: 6px 8px;
-  text-align: left;
-  width: 100%;
+  padding: 2px;
 
-  &:hover {
-    color: ${colors.N800};
+  /* Not ideal to be overriding AkButton styles, but we don't have a link list component */
+  a {
+    margin: 2px 0 0 0;
+    width: 100%;
   }
 `;
 
@@ -153,16 +140,21 @@ function ExampleNavigation({ examples, exampleId, onExampleSelected }) {
             examples,
             (file, filePath) =>
               file.id.match(regex) && (
-                <NavItem
-                  children={fs.titleize(file.id)}
+                <Button
                   isSelected={file.id === exampleId}
                   key={file.id}
-                  onClick={() =>
+                  appearance="subtle"
+                  spacing="compact"
+                  href={fs.normalize(filePath.replace('examples/', ''))}
+                  onClick={event => {
+                    event.preventDefault();
                     onExampleSelected(
                       fs.normalize(filePath.replace('examples/', '')),
-                    )
-                  }
-                />
+                    );
+                  }}
+                >
+                  {fs.titleize(file.id)}
+                </Button>
               ),
           )
         ) : (
@@ -402,7 +394,7 @@ export default class ExamplesModal extends Component<Props, State> {
                 displayCode={displayCode}
                 example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
-                src={`${loaderUrl}&mode=modal`}
+                src={loaderUrl}
                 render={(ExampleCode, ExampleComponent, displayCode) => {
                   if (displayCode) {
                     return (
