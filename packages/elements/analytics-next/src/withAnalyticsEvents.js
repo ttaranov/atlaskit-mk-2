@@ -14,7 +14,7 @@ export type WithAnalyticsEventsProps = {
   createAnalyticsEvent: CreateUIAnalyticsEventSignature,
 };
 
-type WithAnalyticsEventsPropsDiff = {
+type AnalyticsEventsProps = {
   createAnalyticsEvent: CreateUIAnalyticsEventSignature | void,
 };
 
@@ -27,19 +27,16 @@ type EventMap<ProvidedProps> = {
       ) => UIAnalyticsEvent | void),
 };
 
-export default function withAnalyticsEvents<ProvidedProps: ObjectType>(
-  createEventMap: EventMap<
-    $Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>,
-  > = {},
+export default function withAnalyticsEvents<
+  Props: ObjectType,
+  PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
+>(
+  createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
 ): (
-  WrappedComponent: ComponentType<ProvidedProps>,
-) => ComponentType<$Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>> {
-  return (
-    WrappedComponent: ComponentType<ProvidedProps>,
-  ): ComponentType<$Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>> =>
-    class WithAnalyticsEvents extends Component<
-      $Diff<ProvidedProps, WithAnalyticsEventsPropsDiff>,
-    > {
+  WrappedComponent: ComponentType<Props>,
+) => ComponentType<PropsWithoutAnalyticsEvent> {
+  return WrappedComponent =>
+    class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
       static contextTypes = {
         getAtlaskitAnalyticsEventHandlers: PropTypes.func,
         getAtlaskitAnalyticsContext: PropTypes.func,
@@ -47,7 +44,7 @@ export default function withAnalyticsEvents<ProvidedProps: ObjectType>(
 
       propsWithEvents: ObjectType;
 
-      constructor(props: ProvidedProps) {
+      constructor(props: PropsWithoutAnalyticsEvent) {
         super(props);
         this.propsWithEvents = this.mapCreateEventsToProps();
       }

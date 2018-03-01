@@ -10,6 +10,7 @@ import {
   akColorY50,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
+import { akEditorTableCellBackgroundOpacity } from '../../styles';
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -41,7 +42,9 @@ const setCellAttrs = (node: PmNode) => {
   if (node.attrs.background) {
     const { background } = node.attrs;
     const color =
-      node.type.name === 'tableCell' ? hexToRgba(background, 0.5) : background;
+      node.type.name === 'tableCell'
+        ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
+        : background;
     attrs.style = (attrs.style || '') + `background-color: ${color};`;
   }
 

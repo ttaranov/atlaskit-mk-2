@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.2
+- [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
+
 ## 6.3.1
 
 ## 6.3.0
