@@ -22,6 +22,12 @@ type Props = {
   /** Called whenever this row's node is collapsed to hide its child rows. */
   onCollapse?: RowData => void,
 
+  /** Accessibility. Label used for the Expand button (chevron). */
+  expandLabel?: string,
+
+  /** Accessibility. Label used for the Collapse button (chevron). */
+  collapseLabel?: string,
+
   /** Passed implicitly. Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
 
@@ -50,7 +56,8 @@ export default class Row extends PureComponent<Props> {
   }
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
-    const { hasChildren, depth, isExpanded = false } = this.props;
+    const props = this.props;
+    const { hasChildren, depth, isExpanded = false } = props;
     const isFirstCell = cellIndex === 0;
     const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
@@ -58,9 +65,11 @@ export default class Row extends PureComponent<Props> {
       cellContent = [
         <Chevron
           key="chevron"
+          expandLabel={props.expandLabel}
+          collapseLabel={props.collapseLabel}
           isExpanded={isExpanded}
-          onExpandToggle={this.props.onExpandToggle}
-          ariaControls={toItemId(this.props.itemId)}
+          onExpandToggle={props.onExpandToggle}
+          ariaControls={toItemId(props.itemId)}
         />,
       ].concat(cellContent);
     }

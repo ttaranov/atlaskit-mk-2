@@ -15,6 +15,8 @@ type Props = {
   isExpanded: boolean,
   ariaControls: string,
   onExpandToggle?: Function,
+  expandLabel: string,
+  collapseLabel: string,
 };
 
 type State = {
@@ -26,6 +28,11 @@ export default class Chevron extends PureComponent<Props, State> {
   state: State = {
     isFocused: false,
     isHovered: false,
+  };
+
+  static defaultProps = {
+    expandLabel: 'Expand',
+    collapseLabel: 'Collapse',
   };
 
   handleClick = () => {
@@ -71,9 +78,12 @@ export default class Chevron extends PureComponent<Props, State> {
         >
           <ChevronIconContainer>
             {isExpanded ? (
-              <ChevronDownIcon label="Collapse" {...iconProps} />
+              <ChevronDownIcon
+                label={this.props.collapseLabel}
+                {...iconProps}
+              />
             ) : (
-              <ChevronRightIcon label="Expand" {...iconProps} />
+              <ChevronRightIcon label={this.props.expandLabel} {...iconProps} />
             )}
           </ChevronIconContainer>
         </Button>
