@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.5.2
+- [patch] ED-3873 fix horizontal rule and codeblock in help [6a3161e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3161e)
+
 ## 62.5.1
 - [patch] Remove keymap for link from help dialog in message editor. [0a47f8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a47f8e)
 
