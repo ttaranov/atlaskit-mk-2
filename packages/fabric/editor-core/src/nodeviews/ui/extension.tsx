@@ -29,6 +29,8 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     this.view = view;
     this.providerFactory = providerFactory;
     this.domRef = document.createElement(elementType);
+    // @see ED-3790
+    this.domRef.className = `${node.type.name}View-container`;
     this.renderReactComponent(node);
   }
 
