@@ -120,13 +120,13 @@ export const formatting: Format[] = [
     type: 'codeBlock',
     autoFormatting: () => (
       <span>
-        <CodeLg>```</CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>```</CodeLg>
       </span>
     ),
   },
   {
     name: 'Divider',
-    type: 'hardBreak',
+    type: 'rule',
     keymap: () => keymaps.insertRule,
     autoFormatting: () => (
       <span>
