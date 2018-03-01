@@ -9,32 +9,19 @@ import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import { defaultTimes } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
-  /** Default for `focused`. */
-  defaultFocused: string,
-  /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
-  /** Default for `times`. */
-  defaultTimes: Array<string>,
   /** Default for `value`. */
   defaultValue: string,
-  /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: Array<string>,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
   innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
-  /** Whether or not the dropdown is open. */
-  isOpen: boolean,
-  /** The time in the dropdown that should be focused. */
-  focused: string,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -43,8 +30,6 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
-  /** The times to show in the dropdown. */
-  times: Array<string>,
   /** The ISO time that should be used as the input value. */
   value: string,
 };
@@ -54,10 +39,7 @@ type State = {
   _timeValue: string,
   _zoneValue: string,
   active: 0 | 1 | 2,
-  focused: string,
   isFocused: boolean,
-  isOpen: boolean,
-  times: Array<string>,
   value: string,
 };
 
@@ -116,7 +98,6 @@ function parseDateIntoStateValues(value) {
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
-    disabled: [],
     isDisabled: false,
     name: '',
     onBlur: () => {},
@@ -129,10 +110,7 @@ class DateTimePicker extends Component<Props, State> {
     _timeValue: '',
     _zoneValue: '',
     active: 0,
-    focused: '',
     isFocused: false,
-    isOpen: false,
-    times: defaultTimes,
     value: '',
   };
 

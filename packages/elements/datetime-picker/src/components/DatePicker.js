@@ -225,6 +225,7 @@ class DatePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
+          menuIsOpen={isOpen}
           onBlur={onBlur}
           onFocus={onFocus}
           components={{
