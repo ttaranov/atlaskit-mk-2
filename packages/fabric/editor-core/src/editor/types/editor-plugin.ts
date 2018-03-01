@@ -17,19 +17,20 @@ export type PMPluginFactory = (
     dispatch: Dispatch;
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
+    eventDispatcher: EventDispatcher;
   },
 ) => Plugin | undefined;
 
 export type UiComponentFactoryParams = {
   editorView: EditorView;
   editorActions: EditorActions;
-  eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   disabled: boolean;
+  eventDispatcher: EventDispatcher;
 };
 
 export type ToolbarUiComponentFactoryParams = UiComponentFactoryParams & {

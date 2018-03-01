@@ -17,37 +17,30 @@ import {
 } from '../../../src/editor/plugins';
 
 import createPluginsList from '../../../src/editor/create-editor/create-plugins-list';
-import { EventDispatcher } from '../../../src/editor/event-dispatcher/index';
 
 describe('createPluginsList', () => {
-  let eventDispatcher;
-
   beforeEach(() => {
-    eventDispatcher = new EventDispatcher();
     (insertBlockPlugin as any).mockReset();
     (placeholderTextPlugin as any).mockReset();
   });
 
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
-    const plugins = createPluginsList(
-      { allowHelpDialog: true },
-      eventDispatcher,
-    );
+    const plugins = createPluginsList({ allowHelpDialog: true });
     expect(plugins).toContain(helpDialogPlugin);
   });
 
   it('should add fakeTextCursorPlugin by default', () => {
-    const plugins = createPluginsList({}, eventDispatcher);
+    const plugins = createPluginsList({});
     expect(plugins).toContain(fakeTextCursorPlugin);
   });
 
   it('should add tablePlugin if allowTables is true', () => {
-    const plugins = createPluginsList({ allowTables: true }, eventDispatcher);
+    const plugins = createPluginsList({ allowTables: true });
     expect(plugins).toContain(tablePlugin);
   });
 
   it('should always add submitEditorPlugin to the editor', () => {
-    const plugins = createPluginsList({}, eventDispatcher);
+    const plugins = createPluginsList({});
     expect(plugins).toContain(submitEditorPlugin);
   });
 
@@ -56,25 +49,25 @@ describe('createPluginsList', () => {
       provider: Promise.resolve() as any,
       allowMediaSingle: true,
     };
-    createPluginsList({ media }, eventDispatcher);
+    createPluginsList({ media });
     expect(mediaPlugin).toHaveBeenCalledTimes(1);
     expect(mediaPlugin).toHaveBeenCalledWith(media);
   });
 
   it('should add placeholderText plugin if allowTemplatePlaceholders prop is provided', () => {
     (placeholderTextPlugin as any).mockReturnValue('placeholderText');
-    const plugins = createPluginsList({ allowTemplatePlaceholders: true }, eventDispatcher);
+    const plugins = createPluginsList({ allowTemplatePlaceholders: true });
     expect(plugins).toContain('placeholderText');
   });
 
   it('should pass empty options to placeholderText plugin if allowTemplatePlaceholders is true', () => {
-    createPluginsList({ allowTemplatePlaceholders: true }, eventDispatcher);
+    createPluginsList({ allowTemplatePlaceholders: true });
     expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
     expect(placeholderTextPlugin).toHaveBeenCalledWith({});
   });
 
   it('should enable allowInserting for placeholderText plugin if options.allowInserting is true', () => {
-    createPluginsList({ allowTemplatePlaceholders: { allowInserting: true } }, eventDispatcher);
+    createPluginsList({ allowTemplatePlaceholders: { allowInserting: true } });
     expect(placeholderTextPlugin).toHaveBeenCalledTimes(1);
     expect(placeholderTextPlugin).toHaveBeenCalledWith({
       allowInserting: true,
@@ -101,7 +94,7 @@ describe('createPluginsList', () => {
 
     const props = { insertMenuItems: customItems };
 
-    createPluginsList(props, eventDispatcher);
+    createPluginsList(props);
     expect(insertBlockPlugin).toHaveBeenCalledTimes(1);
     expect(insertBlockPlugin).toHaveBeenCalledWith(props);
   });
@@ -112,11 +105,10 @@ describe('createPluginsList', () => {
       extensionHandlers: () => {},
     };
 
-    createPluginsList(props, eventDispatcher);
+    createPluginsList(props);
     expect(extensionPlugin).toHaveBeenCalledTimes(1);
-    expect(extensionPlugin).toHaveBeenCalledWith(
-      { extensionHandlers: props.extensionHandlers },
-      eventDispatcher,
-    );
+    expect(extensionPlugin).toHaveBeenCalledWith({
+      extensionHandlers: props.extensionHandlers,
+    });
   });
 });

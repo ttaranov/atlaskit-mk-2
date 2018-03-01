@@ -134,8 +134,6 @@ export default class EditorActions {
     const content = processRawValue(schema, rawValue);
 
     if (!content) {
-      const tr = state.tr.deleteSelection().scrollIntoView();
-      this.editorView.dispatch(tr);
       return false;
     }
 

@@ -4,7 +4,6 @@ import {
   createEditor,
   getDefaultPluginsList,
   setTextSelection,
-  EventDispatcher,
 } from '@atlaskit/editor-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { RefsNode, Refs } from './schema-builder';
@@ -35,13 +34,12 @@ export default function createEditorForTests<T = any>({
 } {
   const plugins = getDefaultPluginsList().concat(editorPlugins);
   const place = document.body.appendChild(document.createElement('div'));
-  const eventDispatcher = new EventDispatcher();
+
   const editor = createEditor(
     place,
     plugins,
     editorProps,
     providerFactory ? providerFactory : new ProviderFactory(),
-    eventDispatcher,
   );
 
   // Work around JSDOM/Node not supporting DOM Selection API

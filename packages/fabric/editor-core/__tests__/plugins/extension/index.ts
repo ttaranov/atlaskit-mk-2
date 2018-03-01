@@ -16,14 +16,13 @@ import {
 } from '../../../src/editor/plugins/extension/actions';
 import { pluginKey } from '../../../src/editor/plugins/extension/plugin';
 import extensionPlugin from '../../../src/editor/plugins/extension';
-import { EventDispatcher } from '../../../src/index';
 const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
     return createEditor({
       doc,
-      editorPlugins: [extensionPlugin({}, new EventDispatcher())],
+      editorPlugins: [extensionPlugin({})],
     });
   };
 
