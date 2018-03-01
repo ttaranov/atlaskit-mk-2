@@ -73,6 +73,19 @@ describe(name, () => {
     spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
   });
 
+  it("should set `key` on the ProseMirror div node to aid React's reconciler", () => {
+    const wrapper = mount(
+      <ReactEditorView
+        editorProps={{}}
+        providerFactory={ProviderFactory.create({})}
+        onEditorCreated={() => {}}
+        onEditorDestroyed={() => {}}
+      />,
+    );
+
+    expect(wrapper.children().key()).toEqual('ProseMirror');
+  });
+
   describe('when a transaction is dispatched', () => {
     it('should not trigger a re-render', () => {
       const wrapper = mount(

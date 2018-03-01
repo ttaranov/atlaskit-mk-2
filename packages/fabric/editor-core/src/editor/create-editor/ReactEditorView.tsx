@@ -154,7 +154,9 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
 
     const selection = doc ? Selection.atEnd(doc) : undefined;
     // Workaround for ED-3507: When media node is the last element, scrollIntoView throws an error
-    const patchedSelection = selection ? Selection.findFrom(selection.$head, -1, true) || undefined : undefined;
+    const patchedSelection = selection
+      ? Selection.findFrom(selection.$head, -1, true) || undefined
+      : undefined;
 
     return EditorState.create({
       schema,
@@ -202,7 +204,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   };
 
   render() {
-    const editor = <div ref={this.createEditorView} />;
+    const editor = <div key="ProseMirror" ref={this.createEditorView} />;
     return this.props.render
       ? this.props.render({
           editor,
