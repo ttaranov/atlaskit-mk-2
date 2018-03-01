@@ -64,13 +64,14 @@ describe('text-formatting input rules', () => {
     trackEvent = jest.fn();
   });
 
-  const autoformats = (string, editorContent, markName) => {
+  const autoformats = (string, editorContent, analyticsName) => {
     it(`should autoformat: ${string}`, () => {
       const { editorView } = editor(doc(p('{<>}')));
       insertText(editorView, string, 1);
       expect(editorView.state.doc).toEqualDocument(doc(editorContent));
+
       expect(trackEvent).toHaveBeenCalledWith(
-        `atlassian.editor.format.${markName}.autoformatting`,
+        `atlassian.editor.format.${analyticsName}.autoformatting`,
       );
     });
   };
@@ -89,15 +90,131 @@ describe('text-formatting input rules', () => {
     });
   };
 
-  const autoformatCombinations = (strings, editorContent) => {
+  const autoformatCombinations = (
+    strings,
+    editorContent,
+    analyticsName?: string,
+  ) => {
     it(`should autoformat combinations: ${strings}`, () => {
       const { editorView } = editor(doc(p('{<>}')));
       strings.forEach(str => {
         insertText(editorView, str, editorView.state.selection.$from.pos);
       });
       expect(editorView.state.doc).toEqualDocument(doc(p(editorContent)));
+
+      if (analyticsName) {
+        expect(trackEvent).toHaveBeenCalledWith(
+          `atlassian.editor.format.${analyticsName}.autoformatting`,
+        );
+      }
     });
   };
+
+  describe('atlassian product rule', () => {
+    autoformats('atlassian', p('Atlassian'), 'product');
+    notautoformats('something-atlassian');
+
+    autoformats('jira and JIRA', p('Jira and Jira'), 'product');
+    notautoformats('.jira');
+
+    autoformats('bitbucket', p('Bitbucket'), 'product');
+    notautoformats('.bitbucket');
+
+    autoformats('hipchat and HipChat', p('Hipchat and Hipchat'), 'product');
+    notautoformats('.hipchat');
+
+    autoformats('trello', p('Trello'), 'product');
+    notautoformats('.trello');
+
+    autoformats('  \t    atlassian   ', p('  \t    Atlassian   '), 'product');
+  });
+
+  describe('smart quotes rule', () => {
+    autoformats("'nice'", p('‘nice’'), 'quote');
+    autoformats("'hello' 'world'", p('‘hello’ ‘world’'), 'quote');
+
+    autoformats("don't hate, can't wait", p('don’t hate, can’t wait'), 'quote');
+    autoformats(
+      "don't hate, can't 'wait'",
+      p('don’t hate, can’t ‘wait’'),
+      'quote',
+    );
+
+    notautoformats("':)");
+    notautoformats("'t hate");
+    notautoformats("let'. it");
+    notautoformats("let' it 'be");
+
+    autoformats('"hello" "world"', p('“hello” “world”'), 'quote');
+    autoformats('let " it\'d close"', p('let “ it’d close”'), 'quote');
+    autoformats(
+      'let " it\'d close" \'hey',
+      p("let “ it’d close” 'hey"),
+      'quote',
+    );
+
+    // test spacing
+    autoformats(
+      '  \t   "hello" \'world\'   ',
+      p('  \t   “hello” ‘world’   '),
+      'quote',
+    );
+  });
+
+  describe('arrow rule', () => {
+    notautoformats('->');
+    notautoformats('-->');
+    notautoformats('<-');
+    notautoformats('<--');
+    notautoformats('>');
+    notautoformats('-!>');
+    notautoformats('- >');
+
+    notautoformats('-->>');
+    notautoformats('-->> ');
+    notautoformats('->> ');
+
+    notautoformats(' <-> ');
+
+    // autoformat only after space
+    autoformats('-> ', p('→ '), 'arrow');
+    autoformats('--> ', p('→ '), 'arrow');
+    autoformats('<- ', p('← '), 'arrow');
+    autoformats('<-- ', p('← '), 'arrow');
+
+    // test spacing
+    autoformatCombinations(
+      [' \t   -> ', ' \t  --> ', ' '],
+      ' \t   →  \t  →  ',
+      'arrow',
+    );
+  });
+
+  describe('typography rule', () => {
+    notautoformats('.. .');
+
+    autoformats('...', p('…'), 'typography');
+    autoformatCombinations(['...', '.'], '….', 'typography');
+    autoformatCombinations(['...', '...'], '……', 'typography');
+    autoformatCombinations(['...', '\t...'], '…\t…', 'typography');
+    autoformatCombinations(
+      ['\t ...', '  \t text'],
+      '\t …  \t text',
+      'typography',
+    );
+
+    notautoformats('--');
+    notautoformats('    --.');
+
+    autoformats('-- ', p('— '), 'typography');
+    autoformats('--\t', p('—\t'), 'typography');
+
+    autoformatCombinations(
+      ['\t -- ', '  \t text'],
+      '\t —   \t text',
+      'typography',
+    );
+  });
 
   describe('strong rule', () => {
     it('should convert text to strong for link also', () => {
