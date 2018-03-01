@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.5.0
+- [minor] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
 ## 62.4.3
 - [patch] Add autoformatting of atlassian product [2173e92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2173e92)
 
