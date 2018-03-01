@@ -1,5 +1,5 @@
-import { Schema, MarkSpec, Mark, Node } from 'prosemirror-model';
-import { EditorState, Plugin, Selection } from 'prosemirror-state';
+import { Schema, MarkSpec } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import { sanitizeNodes } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
 import { EditorPlugin, EditorProps, EditorConfig } from '../types';
@@ -123,25 +123,3 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
     version,
   });
 }
-
-export const reconfigureState = (
-  oldState: EditorState,
-  newSchema: Schema,
-  newPlugins?: Plugin[],
-  newDoc?: Node,
-): EditorState => {
-  // Since the schema has changed, we need to transform doc/selection/storedMarks ourselves
-  // see https://github.com/ProseMirror/prosemirror/issues/754
-  const newState = oldState.reconfigure({
-    schema: newSchema,
-    plugins: newPlugins,
-  });
-  const doc = newDoc || newSchema.nodeFromJSON(oldState.doc.toJSON());
-  const selection = Selection.fromJSON(doc, oldState.selection.toJSON());
-  const storedMarks = oldState.storedMarks
-    ? oldState.storedMarks.map(mark => Mark.fromJSON(newSchema, mark.toJSON()))
-    : undefined;
-
-  doc.check(); // Ensure the new document is valid the with schema
-  return Object.assign(newState, { doc, selection, storedMarks });
-};

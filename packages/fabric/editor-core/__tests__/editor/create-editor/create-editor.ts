@@ -1,14 +1,11 @@
 import { name } from '../../../package.json';
-import { Schema } from 'prosemirror-model';
-import { Selection, EditorState } from 'prosemirror-state';
-import { doc, p, panelNote, createEditor } from '@atlaskit/editor-test-helpers';
+import { Selection } from 'prosemirror-state';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import {
   sortByRank,
   fixExcludes,
   createPMPlugins,
-  reconfigureState,
 } from '../../../src/editor/create-editor/create-editor';
-import { defaultSchema } from '@atlaskit/editor-common';
 
 describe(name, () => {
   describe('create-editor', () => {
@@ -97,44 +94,6 @@ describe(name, () => {
       const { tr } = editorView.state;
       editorView.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(1))));
       expect(onChange).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('reconfigureState', () => {
-    const createSchema = () =>
-      new Schema({
-        nodes: {
-          doc: { content: 'block+' },
-          paragraph: { content: 'inline*', group: 'block' },
-          text: { group: 'inline' },
-        },
-        marks: {},
-      });
-
-    it('should throw an error if the new schema is not compatible with the old editor state', () => {
-      const oldState = EditorState.create({
-        doc: doc(panelNote(p('hello world')))(defaultSchema),
-      });
-      expect(() => reconfigureState(oldState, createSchema())).toThrowError(
-        'Unknown node type: panel',
-      );
-    });
-
-    it('should convert the existing document to use the new schema', () => {
-      const schema = createSchema();
-      const document = {
-        type: 'doc',
-        content: [
-          { type: 'paragraph', content: [{ type: 'text', text: 'hello!' }] },
-        ],
-      };
-      const oldState = EditorState.create({
-        doc: schema.nodeFromJSON(document),
-        schema,
-      });
-      expect(reconfigureState(oldState, defaultSchema).doc).toEqualDocument(
-        doc(p('hello!'))(defaultSchema),
-      );
     });
   });
 });
