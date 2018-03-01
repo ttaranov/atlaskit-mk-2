@@ -9,7 +9,7 @@ import {
 } from '../src';
 
 type Props = {
-  onClick: () => void,
+  onClick?: () => void,
   children: Node,
 };
 
