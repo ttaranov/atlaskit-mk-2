@@ -10657,11 +10657,12 @@ react-beautiful-dnd@^4.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
-react-codesandboxer@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-0.2.1.tgz#4ad16874b6bd5839a5682cd534873c59399acc9b"
+react-codesandboxer@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-0.3.0.tgz#6573243c1bc86cea5b074c343b74e205701c56f9"
   dependencies:
     codesandbox "^1.1.14"
+    react-node-resolver "^1.0.1"
 
 react-ctrl@^0.1.2:
   version "0.1.2"
