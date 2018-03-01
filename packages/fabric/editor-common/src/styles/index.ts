@@ -40,3 +40,4 @@ export const akEditorTableCellSelected = akColorB75;
 export const akEditorTableToolbarSelected = akColorB100;
 export const akEditorTableBorderSelected = akColorB300;
 export const akEditorTableBorderRadius = '3px';
+export const akEditorTableCellBackgroundOpacity = 0.5;

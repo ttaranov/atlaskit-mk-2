@@ -643,20 +643,36 @@ export const getValidNode = (
         break;
       }
       case 'tableCell': {
-        if (content) {
-          return {
-            type,
-            content,
-          };
+        if (content && attrs) {
+          if (attrs.colspan && attrs.rowspan) {
+            return {
+              type,
+              content,
+              attrs: {
+                colspan: attrs.colspan,
+                rowspan: attrs.rowspan,
+                background: attrs.background || undefined,
+                colwidth: attrs.colwidth || undefined,
+              },
+            };
+          }
         }
         break;
       }
       case 'tableHeader': {
-        if (content) {
-          return {
-            type,
-            content,
-          };
+        if (content && attrs) {
+          if (attrs.colspan && attrs.rowspan) {
+            return {
+              type,
+              content,
+              attrs: {
+                colspan: attrs.colspan,
+                rowspan: attrs.rowspan,
+                background: attrs.background || undefined,
+                colwidth: attrs.colwidth || undefined,
+              },
+            };
+          }
         }
         break;
       }
