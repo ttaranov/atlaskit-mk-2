@@ -415,7 +415,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           return false;
         },
         click(view: EditorView, event) {
-          const { target: element } = event;
+          const element = event.target as HTMLElement;
           const { tableNode }: TableState = stateKey.getState(view.state);
 
           /**
@@ -433,8 +433,10 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           const map = TableMap.get(tableNode);
 
           /** Getting the offset of current item clicked */
-          const colElement =
-            closestElement(element, 'td') || closestElement(element, 'th');
+          const colElement = (closestElement(element, 'td') ||
+            closestElement(element, 'th')) as
+            | HTMLTableRowElement
+            | HTMLTableColElement;
           const colIndex = colElement && colElement.cellIndex;
           const rowElement = closestElement(element, 'tr');
           const rowIndex = rowElement && rowElement.rowIndex;
@@ -445,7 +447,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
             dispatch,
             state: { tr, schema: { nodes: { paragraph } } },
           } = view;
-          const editorElement = tableNode.nodeAt(map.map[cellIndex]);
+          const editorElement = tableNode.nodeAt(map.map[cellIndex]) as PmNode;
 
           /** Only if the last item is media group, insert a paragraph */
           if (isLastItemMediaGroup(editorElement)) {

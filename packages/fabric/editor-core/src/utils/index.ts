@@ -50,12 +50,13 @@ function isMarkTypeAllowedInNode(
   return toggleMark(markType)(state);
 }
 
-function closest(node: Element, s: string) {
-  var el = node;
+function closest(node: HTMLElement | null, s: string): HTMLElement | null {
+  var el = node as HTMLElement;
+  if (!el) return null;
   if (!document.documentElement.contains(el)) return null;
   do {
     if (el.matches(s)) return el;
-    el = el.parentElement || el.parentNode;
+    el = (el.parentElement || el.parentNode) as HTMLElement;
   } while (el !== null && el.nodeType === 1);
   return null;
 }
@@ -75,14 +76,15 @@ export function canMoveUp(state: EditorState): boolean {
   if (selection instanceof NodeSelection) {
     if (selection.node.type.name === 'media') {
       /** Weird way of checking if the previous element is a paragraph */
+      const mediaAncestorNode = doc.nodeAt(selection.anchor - 3);
       return !!(
-        doc.nodeAt(selection.anchor - 3) &&
-        doc.nodeAt(selection.anchor - 3).type.name === 'paragraph'
+        mediaAncestorNode && mediaAncestorNode.type.name === 'paragraph'
       );
     } else if (selection.node.type.name === 'mediaGroup') {
+      const mediaGroupAncestorNode = doc.nodeAt(selection.$anchor.before());
       return !!(
-        doc.nodeAt(selection.$anchor.before()) &&
-        doc.nodeAt(selection.$anchor.before()).type.name === 'paragraph'
+        mediaGroupAncestorNode &&
+        mediaGroupAncestorNode.type.name === 'paragraph'
       );
     }
   }
@@ -106,10 +108,8 @@ export function canMoveDown(state: EditorState): boolean {
    */
   if (selection instanceof NodeSelection) {
     if (selection.node.type.name === 'media') {
-      return !!(
-        doc.nodeAt(selection.$head.after()) &&
-        doc.nodeAt(selection.$head.after()).type.name === 'paragraph'
-      );
+      const nodeAfter = doc.nodeAt(selection.$head.after());
+      return !!(nodeAfter && nodeAfter.type.name === 'paragraph');
     } else if (selection.node.type.name === 'mediaGroup') {
       return !(
         selection.$head.parentOffset === selection.$anchor.parent.content.size
@@ -552,7 +552,10 @@ export function arrayFrom(obj: any): any[] {
  * Replacement for Element.closest, until it becomes widely implemented
  * Returns the ancestor element of a particular type if exists or null
  */
-export function closestElement(node: Element, s: string) {
+export function closestElement(
+  node: HTMLElement | null,
+  s: string,
+): HTMLElement | null {
   return closest(node, s);
 }
 
@@ -680,15 +683,13 @@ export const isTableCell = (state: EditorState) => {
   return !!tableNode;
 };
 
-export const isElementInTableCell = (element: Element) => {
+export const isElementInTableCell = (
+  element: HTMLElement | null,
+): HTMLElement | null => {
   return closest(element, 'td') || closest(element, 'th');
 };
 
-export const isLastItemMediaGroup = (node: Node) => {
+export const isLastItemMediaGroup = (node: Node): boolean => {
   const { content } = node;
-  return (
-    content &&
-    content.content.slice(-1)[0] &&
-    content.content.slice(-1)[0].type.name === 'mediaGroup'
-  );
+  return !!content.lastChild && content.lastChild.type.name === 'mediaGroup';
 };
