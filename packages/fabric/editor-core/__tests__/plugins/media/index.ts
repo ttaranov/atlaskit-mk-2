@@ -35,7 +35,6 @@ import {
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import rulePlugin from '../../../src/editor/plugins/rule';
 import tablePlugin from '../../../src/editor/plugins/table';
@@ -71,7 +70,6 @@ describe('Media plugin', () => {
           allowMediaSingle: true,
           customDropzoneContainer: dropzoneContainer,
         }),
-        hyperlinkPlugin,
         codeBlockPlugin,
         rulePlugin,
         tablePlugin,

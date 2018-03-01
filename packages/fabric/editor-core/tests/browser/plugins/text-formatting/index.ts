@@ -13,7 +13,6 @@ import {
   TextFormattingState,
   stateKey,
 } from '../../../../src/plugins/text-formatting';
-import textFormatting from '../../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../../src/editor/plugins/code-block';
 
 chai.use(chaiPlugin);
@@ -23,7 +22,7 @@ describe('text-formatting', () => {
     createEditor<TextFormattingState>({
       doc,
       pluginKey: stateKey,
-      editorPlugins: [textFormatting(), codeBlockPlugin],
+      editorPlugins: [codeBlockPlugin],
     });
 
   describe('code', () => {

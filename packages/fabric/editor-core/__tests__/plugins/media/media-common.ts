@@ -16,7 +16,6 @@ import {
   splitMediaGroup,
 } from '../../../src/plugins/media/media-common';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import rulePlugin from '../../../src/editor/plugins/rule';
 
@@ -26,12 +25,7 @@ describe('media-common', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin(),
-        hyperlinkPlugin,
-        mentionsPlugin,
-        rulePlugin,
-      ],
+      editorPlugins: [mediaPlugin(), mentionsPlugin, rulePlugin],
     });
 
   describe('removeMediaNode', () => {

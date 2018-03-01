@@ -28,11 +28,9 @@ import {
   isEmptyNode,
 } from '../../src/utils';
 import mediaPlugin from '../../src/editor/plugins/media';
-import textFormatting from '../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../src/editor/plugins/code-block';
 import panelPlugin from '../../src/editor/plugins/panel';
 import listPlugin from '../../src/editor/plugins/lists';
-import hyperlinkPlugin from '../../src/editor/plugins/hyperlink';
 import mentionsPlugin from '../../src/editor/plugins/mentions';
 import tasksAndDecisionsPlugin from '../../src/editor/plugins/tasks-and-decisions';
 
@@ -42,11 +40,9 @@ describe('@atlaskit/editore-core/utils', () => {
       doc,
       editorPlugins: [
         mediaPlugin({ allowMediaSingle: true }),
-        textFormatting(),
         codeBlockPlugin,
         panelPlugin,
         listPlugin,
-        hyperlinkPlugin,
         mentionsPlugin,
         tasksAndDecisionsPlugin,
       ],

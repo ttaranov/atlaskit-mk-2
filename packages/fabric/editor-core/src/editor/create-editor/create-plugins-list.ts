@@ -3,7 +3,6 @@ import {
   basePlugin,
   placeholderPlugin,
   blockTypePlugin,
-  textFormattingPlugin,
   mentionsPlugin,
   emojiPlugin,
   tasksAndDecisionsPlugin,
@@ -13,7 +12,6 @@ import {
   imageUploadPlugin,
   maxContentSizePlugin,
   isMultilineContentPlugin,
-  hyperlinkPlugin,
   codeBlockPlugin,
   pastePlugin,
   listsPlugin,
@@ -33,6 +31,8 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   datePlugin,
   placeholderTextPlugin,
+  hyperlinkPlugin,
+  textFormattingPlugin,
 } from '../plugins';
 
 /**
@@ -45,6 +45,8 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     blockTypePlugin,
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
+    hyperlinkPlugin,
+    textFormattingPlugin,
   ];
 }
 
@@ -54,22 +56,12 @@ export function getDefaultPluginsList(): EditorPlugin[] {
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
 
-  if (props.allowTextFormatting) {
-    const options =
-      props.allowTextFormatting === true ? {} : props.allowTextFormatting;
-    plugins.push(textFormattingPlugin(options));
-  }
-
   if (props.allowTextColor) {
     plugins.push(textColorPlugin);
   }
 
   if (props.allowLists) {
     plugins.push(listsPlugin);
-  }
-
-  if (props.allowHyperlinks) {
-    plugins.push(hyperlinkPlugin);
   }
 
   if (props.allowRule) {

@@ -18,9 +18,7 @@ import {
   isMobileBrowser,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import imageUpload from '../../../../src/editor/plugins/image-upload';
-import textFormatting from '../../../../src/editor/plugins/text-formatting';
 
 chai.use(chaiPlugin);
 
@@ -28,7 +26,7 @@ describe('hyperlink', () => {
   const editor = (doc: any) =>
     createEditor<HyperlinkState>({
       doc,
-      editorPlugins: [hyperlinkPlugin, imageUpload, textFormatting()],
+      editorPlugins: [imageUpload],
       pluginKey: hyperlinkStateKey,
     });
 

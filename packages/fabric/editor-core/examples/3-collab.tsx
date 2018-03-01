@@ -114,9 +114,7 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
@@ -163,9 +161,7 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
