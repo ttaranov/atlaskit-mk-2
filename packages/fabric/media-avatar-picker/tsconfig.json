@@ -4,6 +4,10 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx"
+    "./__tests__/**/*.tsx",
+    "./examples/*.ts",
+    "./examples/*.tsx",
+    "./example-helpers/*.ts",
+    "./example-helpers/*.tsx"
   ]
 }

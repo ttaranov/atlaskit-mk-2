@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
 import { isImageRemote } from '@atlaskit/media-core';
@@ -13,6 +12,7 @@ import {
   RemoveImageButton,
   containerPadding,
 } from './styled';
+import { ERROR } from '../avatar-picker-dialog';
 
 export interface LoadParameters {
   export: () => string;
@@ -32,6 +32,7 @@ export interface ImageCropperProp {
   onImageSize: (width: number, height: number) => void;
   onLoad?: OnLoadHandler;
   onRemoveImage: () => void;
+  onImageError: (errorMessage: string) => void;
 }
 
 const defaultScale = 1;
@@ -48,11 +49,16 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   };
 
   componentDidMount() {
-    const { onLoad } = this.props;
+    const { onLoad, imageSource, onImageError } = this.props;
     if (onLoad) {
       onLoad({
         export: this.export,
       });
+    }
+    try {
+      isImageRemote(imageSource);
+    } catch (e) {
+      onImageError(ERROR.URL);
     }
   }
 
@@ -61,6 +67,10 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   onImageLoaded = e => {
     this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
     this.imageElement = e.target;
+  };
+
+  onImageError = () => {
+    this.props.onImageError(ERROR.FORMAT);
   };
 
   render() {
@@ -83,7 +93,12 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       top: `${top}px`,
       left: `${left}px`,
     };
-    const crossOrigin = isImageRemote(imageSource) ? 'anonymous' : undefined;
+    let crossOrigin;
+    try {
+      crossOrigin = isImageRemote(imageSource) ? 'anonymous' : undefined;
+    } catch (e) {
+      return null;
+    }
 
     return (
       <Container style={containerStyle}>
@@ -92,6 +107,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
           src={imageSource}
           style={imageStyle}
           onLoad={this.onImageLoaded}
+          onError={this.onImageError}
         />
         {isCircularMask ? <CircularMask /> : <RectMask />}
         <DragOverlay onMouseDown={this.onDragStarted} />
