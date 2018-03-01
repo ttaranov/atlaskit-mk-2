@@ -1,28 +1,33 @@
 // @flow
 /* eslint-disable no-mixed-operators */
 import styled, { css } from 'styled-components';
-import theme from './theme';
+import { colors } from '@atlaskit/theme';
+import { thumb, track } from './theme';
 
-const sliderThumbSize = 20;
+const sliderThumbSize = 16;
 const sliderThumbBorderThickness = 2;
-const sliderLineThickness = 6;
+const sliderLineThickness = 4;
 export const overallHeight = 40;
 
 const sliderThumbStyle = css`
-  background: ${theme.thumb.background.normal};
-  border-radius: ${sliderThumbSize / 2}px;
-  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${theme.thumb.border.normal};
-  cursor: pointer;
+  background: ${thumb.default.background};
+  border-radius: 50%;
+  box-shadow: 0 0 1px ${colors.N60A}, 0 2px 8px -2px ${colors.N50A};
   height: ${sliderThumbSize}px;
   width: ${sliderThumbSize}px;
 `;
 
 const sliderThumbFocusedStyle = css`
-  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${theme.thumb.border.focus};
+  border: ${sliderThumbBorderThickness}px solid ${colors.B200};
+  box-sizing: content-box;
 `;
 
 const sliderTrackStyle = css`
-  background: ${theme.track.background.normal};
+  backgound: ${colors.N30A};
+  background: ${props =>
+    `linear-gradient(${track.default.lower}, ${track.default.lower}) 0/ ${
+      props.value
+    }% 100% no-repeat ${track.default.upper}`};
   border-radius: ${sliderLineThickness / 2}px;
   border: 0;
   cursor: pointer;
@@ -31,13 +36,17 @@ const sliderTrackStyle = css`
 `;
 
 const sliderTrackFocusedStyle = css`
-  background: ${theme.track.background.focus};
+  background: ${props =>
+    `linear-gradient(${track.hover.lower}, ${track.hover.lower}) 0/ ${
+      props.value
+    }% 100% no-repeat ${track.hover.upper}`};
 `;
 
 const chromeRangeInputStyle = css`
   &::-webkit-slider-thumb {
-    ${sliderThumbStyle} -webkit-appearance: none;
+    -webkit-appearance: none;
     margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2}px;
+    ${sliderThumbStyle};
   }
 
   &::-webkit-slider-runnable-track {
@@ -49,6 +58,8 @@ const chromeRangeInputStyle = css`
   }
 
   &:focus::-webkit-slider-runnable-track {
+  &:hover::-webkit-slider-runnable-track,
+  &:active::-webkit-slider-runnable-track {
     ${sliderTrackFocusedStyle};
   }
 `;
@@ -66,10 +77,7 @@ const firefoxRangeInputStyle = css`
     ${sliderTrackStyle};
   }
 
-  &:focus::-moz-range-thumb {
-    ${sliderThumbFocusedStyle};
-  }
-
+  &:hover::-moz-range-track,
   &:focus::-moz-range-track {
     ${sliderTrackFocusedStyle};
   }
@@ -88,12 +96,12 @@ const IERangeInputStyle = css`
     width: 100%;
   }
   &::-ms-fill-lower {
-    background: ${theme.track.background.normal};
+    background: ${track.default.lower};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
   &::-ms-fill-upper {
-    background: ${theme.track.background.normal};
+    background: ${track.default.upper};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
@@ -101,10 +109,11 @@ const IERangeInputStyle = css`
     ${sliderThumbFocusedStyle};
   }
   &:focus::-ms-fill-lower {
-    ${sliderTrackFocusedStyle};
+    background: ${track.hover.lower};
   }
+  &:hover::-ms-fill-upper,
   &:focus::-ms-fill-upper {
-    ${sliderTrackFocusedStyle};
+    background: ${track.hover.upper};
   }
 `;
 

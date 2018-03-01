@@ -3,10 +3,15 @@ import React, { Component } from 'react';
 import { Input } from './styled';
 
 type Props = {
+  /** Value of the range */
   value: number,
+  /** Minimum value of the range */
   min?: number,
+  /** Maximum value of the range */
   max?: number,
+  /** Step value for the range */
   step?: number,
+  /** Hook to be invoked on change of the range */
   onChange?: (value: number) => mixed,
 };
 

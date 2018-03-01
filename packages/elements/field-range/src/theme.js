@@ -1,27 +1,28 @@
 // @flow
-import {
-  akColorN0,
-  akColorN20,
-  akColorN800,
-  akColorB50,
-  akColorB100,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
-export default {
-  thumb: {
-    background: {
-      normal: akColorN0,
-      focus: akColorN0,
-    },
-    border: {
-      normal: akColorN800,
-      focus: akColorB100,
-    },
+export const thumb = {
+  default: {
+    background: colors.N0,
+    border: colors.N800,
   },
-  track: {
-    background: {
-      normal: akColorN20,
-      focus: akColorB50,
-    },
+  focus: {
+    background: colors.N0,
+    border: colors.B100,
+  },
+};
+
+export const track = {
+  default: {
+    lower: colors.B400,
+    upper: colors.N30A,
+  },
+  disabled: {
+    lower: colors.N50,
+    upper: colors.N30A,
+  },
+  hover: {
+    lower: colors.B300,
+    upper: colors.N40A,
   },
 };
