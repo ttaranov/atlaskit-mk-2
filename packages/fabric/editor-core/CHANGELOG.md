@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.5.1
+- [patch] Remove keymap for link from help dialog in message editor. [0a47f8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a47f8e)
+
 ## 62.5.0
 - [minor] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
 
