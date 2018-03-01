@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.5.3
+- [patch] fix nodeViews with multiline content [af4d057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af4d057)
+
 ## 62.5.2
 - [patch] ED-3873 fix horizontal rule and codeblock in help [6a3161e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3161e)
 
