@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.4.3
+- [patch] Add autoformatting of atlassian product [2173e92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2173e92)
+
 ## 62.4.2
 - [patch] Expose more types for confluence [f95ce9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f95ce9f)
 
