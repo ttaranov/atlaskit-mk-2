@@ -117,17 +117,6 @@ export default class Editor extends React.Component<
       disabled,
     } = this.props;
 
-    if (!editorView) {
-      return (
-        <FullPageEditorWrapper>
-          <MainToolbar />
-          <ScrollContainer>
-            <ContentArea>{editorDOMElement}</ContentArea>
-          </ScrollContainer>
-        </FullPageEditorWrapper>
-      );
-    }
-
     return (
       <FullPageEditorWrapper>
         <MainToolbar>

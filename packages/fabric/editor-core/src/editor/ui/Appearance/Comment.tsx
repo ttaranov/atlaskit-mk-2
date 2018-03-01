@@ -166,16 +166,6 @@ export default class Editor extends React.Component<
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
-    if (!editorView) {
-      return (
-        <CommentEditor maxHeight={maxHeight}>
-          <MainToolbar />
-          <ContentArea>{editorDOMElement}</ContentArea>
-          <SecondaryToolbar />
-        </CommentEditor>
-      );
-    }
-
     return (
       <CommentEditor
         className={this.flashToggle ? '-flash' : ''}

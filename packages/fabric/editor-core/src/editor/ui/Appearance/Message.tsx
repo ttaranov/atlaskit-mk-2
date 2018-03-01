@@ -119,25 +119,13 @@ export default class Editor extends React.Component<
       maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
-    if (!editorView) {
-      return (
-        <MessageEditor maxHeight={maxHeight}>
-          <ContentArea>{editorDOMElement}</ContentArea>
-          <SecondaryToolbarContainer />
-        </MessageEditor>
-      );
-    }
-
     return (
       <MessageEditor
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         onClick={this.focusEditor}
       >
-        <ContentArea
-          maxHeight={maxHeight}
-          isMultiline={isMultilineContent}
-        >
+        <ContentArea maxHeight={maxHeight} isMultiline={isMultilineContent}>
           {customContentComponents}
           <PluginSlot
             disabled={!!disabled}
