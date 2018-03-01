@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.4.2
+- [patch] Expose more types for confluence [f95ce9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f95ce9f)
+
 ## 62.4.1
 
 - [patch] Fix: arrow down in nested list which is last item in editor should create a paragraph at depth 0. [9670417](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9670417)
