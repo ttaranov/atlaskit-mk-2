@@ -26,6 +26,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
+    "@atlaskit/select": "^0.1.7",
     "@atlaskit/docs": "^2.4.3",
     "enzyme": "^3.3.0"
   },
