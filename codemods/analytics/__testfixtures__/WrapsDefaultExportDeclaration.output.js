@@ -1,5 +1,9 @@
 class Button extends Component {}
-export default withAnalyticsEvents({
+export default withAnalyticsContext({
+  component: 'button',
+  package: name,
+  version: version
+})(withAnalyticsEvents({
   onClick: createAnalyticsEvent => {
     const consumerEvent = createAnalyticsEvent({
       action: 'click',
@@ -8,4 +12,5 @@ export default withAnalyticsEvents({
 
     return consumerEvent;
   }
-})(Button);
+})(Button));
+

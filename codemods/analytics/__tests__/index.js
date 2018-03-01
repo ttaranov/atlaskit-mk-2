@@ -8,5 +8,6 @@ describe('analytics', () => {
   defineTest(__dirname, 'index', null, 'NoDuplicateImports');
   defineTest(__dirname, 'index', null, 'WrapsDefaultExportExpression');
   defineTest(__dirname, 'index', null, 'WrapsDefaultExportDeclaration');
-  defineTest(__dirname, 'index', null, 'noDuplicateHocs');
+  defineTest(__dirname, 'index', null, 'noDuplicateHocsBoth');
+  defineTest(__dirname, 'index', null, 'noDuplicateHocsEvents');
 });

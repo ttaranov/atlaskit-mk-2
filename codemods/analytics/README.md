@@ -5,6 +5,7 @@ This codemod adds analytics to a package and/or component.
 How it works:
 
 1. Adds the component and its callbacks to the 'Instrumented Components' list markdown file (packages/elements/analytics-next/docs/20-our-component.js)
+1.5. Add analytics-next to package.json dependencies
 2. Adds analytics-next and package.json imports to the default export of the file specified to codemod
 3. Wraps the default export of the file specified to codemod with two HOCs
   a) WithAnalyticsEvents:
