@@ -1,5 +1,8 @@
 # @atlaskit/inline-message
 
+## 3.2.1
+- [patch] added truncating logic for text in inline message [0b59d44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b59d44)
+
 ## 3.2.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 
