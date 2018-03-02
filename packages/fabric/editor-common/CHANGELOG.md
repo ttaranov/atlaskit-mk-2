@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.3
+- [patch] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
 ## 6.3.2
 - [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
 
