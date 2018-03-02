@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 6.3.1
+
 ## 6.3.0
 - [minor] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
 

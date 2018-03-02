@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 6.3.4
+
 ## 6.3.3
 - [patch] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
 
