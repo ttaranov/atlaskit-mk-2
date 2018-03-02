@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 11.5.6
+- [patch] Fix missing styled-components dependency [64d89c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64d89c8)
+
 ## 11.5.5
 - [patch] Remove margin from first headings [c8c342d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8c342d)
 
