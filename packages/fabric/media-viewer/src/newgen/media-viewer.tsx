@@ -7,12 +7,14 @@ import {
   MediaViewerItem,
 } from '../components/media-viewer';
 import * as Blanket from './blanket';
+import { Editor } from './image-editor';
 
 export type Model =
   | {
       state: 'OPEN';
       name?: string;
       src?: string;
+      editorMode: boolean;
     }
   | {
       state: 'ERROR';
@@ -20,6 +22,7 @@ export type Model =
 
 export const initialModel: Model = {
   state: 'OPEN',
+  editorMode: false
 };
 
 export type Message =
@@ -39,16 +42,27 @@ export type Message =
     }
   | {
       type: 'CLOSE';
-    };
+    }
+  | {
+      type: 'CLOSE_ANNOTATIONS';
+    }
+  | {
+      type: 'OPEN_ANNOTATIONS';
+  };
 
 export const initialMessage: Message = {
   type: 'INIT',
 };
 
 export const update = (model: Model, message: Message): Model => {
+  console.log(model, message);  
   switch (message.type) {
     case 'INIT':
       return model;
+    case 'CLOSE_ANNOTATIONS':
+      return { ...model, editorMode: false }
+    case 'OPEN_ANNOTATIONS':
+      return { ...model, editorMode: true }
     case 'RECEIVED_SRC':
       return { ...model, src: message.src };
     case 'RECEIVED_ATTRIBUTES':
@@ -109,6 +123,24 @@ const RightIcons = styled.div`
   }
 `;
 
+const renderImageOrEditor = (editorMode: boolean, url: string, dispatch: (message: Message) => void) => {
+  if (editorMode) {
+    return (
+      <div>
+        <Editor model={{ url }} dispatch={() => {}}/>
+        <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'CLOSE_ANNOTATIONS' })}}>close editor</button>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Img src={url} />
+        <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'OPEN_ANNOTATIONS' })}}>open editor</button>
+      </div>
+    )
+  }
+};
+
 export type Props = {
   model: Model;
   dispatch: (message: Message) => void;
@@ -118,7 +150,7 @@ export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
-  <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
+  <Blanket.Component onClick={() => model.state === 'OPEN' && !model.editorMode && dispatch({ type: 'CLOSE' })}>
     <DetailsWrapper>
       <LeftInfo>
         <span>
@@ -134,7 +166,7 @@ export const Component: React.StatelessComponent<Props> = ({
       <ImageViewerWrapper>
         {model.state === 'ERROR' && <div>Something went wrong</div>}
         {model.state === 'OPEN' &&
-          (model.src ? <Img src={model.src} /> : <Spinner size="large" />)}
+          (model.src ? renderImageOrEditor(model.editorMode, model.src, dispatch) : <Spinner size="large" />)}
       </ImageViewerWrapper>
     </ItemPreviewWrapper>
   </Blanket.Component>

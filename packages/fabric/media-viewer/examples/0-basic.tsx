@@ -23,21 +23,22 @@ export default class BasicExample extends React.Component<
   }
 
   render() {
+    const fileId = genericFileId;
     const selectedItem = {
-      id: genericFileId.id,
+      id: fileId.id,
       occurrenceKey: '',
       type: 'file' as MediaItemType,
     }; // // occurenceKey we can ignore here
     const identifier: FileIdentifier = {
-      id: genericFileId.id,
+      id: fileId.id,
       mediaItemType: 'file',
-      collectionName: genericFileId.collectionName,
+      collectionName: fileId.collectionName,
     };
     const props = {
       context,
       selectedItem,
       dataSource: { list: [selectedItem] },
-      collectionName: genericFileId.collectionName, // we need this to get a valid token (because the file is part of a collection)
+      collectionName: fileId.collectionName, // we need this to get a valid token (because the file is part of a collection)
       MediaViewer: null as any, // we can ignore this one too
       basePath: '', // ignore this here
       experimental: true,
