@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.5
+- [patch] fix tables in json schema [4b67c37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b67c37)
+
 ## 6.3.4
 
 ## 6.3.3
