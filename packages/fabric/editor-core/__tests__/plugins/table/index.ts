@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import {
   TableState,
   stateKey as tablePluginKey,
