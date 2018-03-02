@@ -1024,7 +1024,7 @@ describe('table plugin', () => {
     });
   });
 
-  describe.only('when the cells contains only an image', () => {
+  describe('when the cells contains only an image', () => {
     it('should add a paragraph below when arrow down is pressed', () => {
       const { editorView } = editor(
         doc(

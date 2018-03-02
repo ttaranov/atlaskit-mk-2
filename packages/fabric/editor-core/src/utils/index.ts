@@ -51,11 +51,17 @@ function isMarkTypeAllowedInNode(
 }
 
 function closest(node: HTMLElement | null, s: string): HTMLElement | null {
-  var el = node as HTMLElement;
-  if (!el) return null;
-  if (!document.documentElement.contains(el)) return null;
+  let el = node as HTMLElement;
+  if (!el) {
+    return null;
+  }
+  if (!document.documentElement.contains(el)) {
+    return null;
+  }
   do {
-    if (el.matches(s)) return el;
+    if (el.matches(s)) {
+      return el;
+    }
     el = (el.parentElement || el.parentNode) as HTMLElement;
   } while (el !== null && el.nodeType === 1);
   return null;
