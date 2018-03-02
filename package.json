@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Fabric components for Atlassian's Atlaskit",
   "main": "index.js",
-  "repository": "atlaskit/fabric",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
