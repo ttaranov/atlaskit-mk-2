@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 11.5.5
+- [patch] Remove margin from first headings [c8c342d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8c342d)
+
 ## 11.5.4
 - [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
 
