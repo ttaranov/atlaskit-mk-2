@@ -685,8 +685,8 @@ export const isEmptyNode = (schema: Schema) => {
 };
 
 export const isTableCell = (state: EditorState) => {
-  const { tableNode } = tableStateKey.getState(state);
-  return !!tableNode;
+  const pluginState = tableStateKey.getState(state);
+  return !!(pluginState && pluginState.tableNode);
 };
 
 export const isElementInTableCell = (

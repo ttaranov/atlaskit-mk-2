@@ -40,19 +40,14 @@ import {
 } from '../../../src/editor/plugins/table/utils';
 import tablesPlugin from '../../../src/editor/plugins/table';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import { mediaPlugin, hyperlinkPlugin } from '../../../src/editor/plugins';
+import { mediaPlugin } from '../../../src/editor/plugins';
 
 describe('table plugin', () => {
   const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TableState>({
       doc,
-      editorPlugins: [
-        tablesPlugin,
-        codeBlockPlugin,
-        mediaPlugin(),
-        hyperlinkPlugin,
-      ],
+      editorPlugins: [tablesPlugin, codeBlockPlugin, mediaPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: {
