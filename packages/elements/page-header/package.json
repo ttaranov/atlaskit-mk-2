@@ -30,6 +30,7 @@
     "@atlaskit/input": "^1.6.3",
     "@atlaskit/docs": "^2.4.3",
     "@atlaskit/field-text": "^4.1.8",
+    "@atlaskit/page": "^5.0.14",
     "@atlaskit/single-select": "^3.2.4",
     "@atlaskit/theme": "^2.3.4",
     "enzyme": "^3.3.0",

@@ -17,20 +17,12 @@ import { analyticsService } from '../../../src/analytics';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import panelPlugin from '../../../src/editor/plugins/panel';
 import listPlugin from '../../../src/editor/plugins/lists';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 describe('inputrules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [
-        textFormatting(),
-        listPlugin,
-        codeBlockPlugin,
-        panelPlugin,
-        hyperlinkPlugin,
-      ],
+      editorPlugins: [listPlugin, codeBlockPlugin, panelPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

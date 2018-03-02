@@ -46,12 +46,12 @@ export const WidgetDetails = styled.div`
 export const Title = styled.div`
   color: ${akColorN300};
   font-size: 12px;
-  line-height: 16px;
+  line-height: ${16 / 12};
 `;
 
 export const Text = styled.div`
   ${ellipsis('none')};
   color: ${akColorN800};
   font-size: 12px;
-  line-height: 16px;
+  line-height: ${16 / 12};
 `;

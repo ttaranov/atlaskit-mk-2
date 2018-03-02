@@ -49,3 +49,5 @@ export { createGlobalTheme } from './theme/create-provided-theme';
 
 export { presets as presetThemes };
 export { resultTypes as quickSearchResultTypes };
+
+export { default as Skeleton } from './components/js/skeleton';

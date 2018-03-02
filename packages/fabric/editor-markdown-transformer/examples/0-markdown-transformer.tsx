@@ -60,9 +60,7 @@ class Example extends React.PureComponent<Props, State> {
         </div>
         <Editor
           appearance="comment"
-          allowTextFormatting={true}
           allowTasksAndDecisions={true}
-          allowHyperlinks={true}
           allowCodeBlocks={true}
           allowLists={true}
           allowRule={true}

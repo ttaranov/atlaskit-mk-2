@@ -15,7 +15,6 @@ import { uuid } from '@atlaskit/editor-common';
 import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
 import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 describe('tasks and decisions - commands', () => {
   beforeEach(() => {
@@ -29,7 +28,7 @@ describe('tasks and decisions - commands', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin(), hyperlinkPlugin],
+      editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin()],
     });
 
   describe('changeToTaskDecision', () => {

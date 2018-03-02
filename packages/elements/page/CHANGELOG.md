@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 5.0.15
+- [patch] added min-with on text to enable text truncating [44fc258](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44fc258)
+
 ## 5.0.14
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 31.1.6
+- [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
+
+## 31.1.5
+
 ## 31.1.4
 
 ## 31.1.3

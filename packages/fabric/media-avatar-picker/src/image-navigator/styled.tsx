@@ -8,6 +8,7 @@ import styled, { StyledComponentClass, keyframes } from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { AVATAR_DIALOG_WIDTH } from '../avatar-picker-dialog/layout-const';
 
 const spin = keyframes`
   from { transform: rotate(0deg); }
@@ -30,6 +31,11 @@ export const SliderContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: ${akGridSizeUnitless}px;
+
+  input {
+    box-sizing: content-box;
+    padding: 0;
+  }
 `;
 
 export const FileInput = styled.input`
@@ -50,6 +56,7 @@ const droppingAnimation = `
 
 export interface DragZoneProps {
   isDroppingFile: boolean;
+  showBorder: boolean;
 }
 
 export const DragZone = styled.div`
@@ -66,7 +73,8 @@ export const DragZone = styled.div`
 
   &::after {
     content: '';
-    border: 2px dashed #d0d6d0;
+    border: ${(props: DragZoneProps) =>
+      props.showBorder ? '2px dashed #d0d6d0' : 'none'};
     border-radius: 100%;
     position: absolute;
     top: 0;
@@ -91,8 +99,17 @@ export const DragZoneImage = styled.img`
   width: 100px;
 `;
 
+export interface DragZoneTextProps {
+  isFullSize: boolean;
+}
+
 export const DragZoneText = styled.div`
   text-align: center;
+
+  ${(props: DragZoneTextProps) =>
+    props.isFullSize
+      ? `width: ${AVATAR_DIALOG_WIDTH - akGridSizeUnitless * 8}px`
+      : 'width: auto'};
 `;
 
 export const SelectionBlocker = styled.div`

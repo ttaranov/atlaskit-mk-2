@@ -167,9 +167,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                 <Editor
                   appearance="full-page"
                   analyticsHandler={analyticsHandler}
-                  allowTextFormatting={true}
                   allowTasksAndDecisions={true}
-                  allowHyperlinks={true}
                   allowCodeBlocks={true}
                   allowLists={true}
                   allowTextColor={true}

@@ -42,8 +42,14 @@ export interface TextFormattingOptions {
   disableCode?: boolean;
 }
 
-const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
-  marks() {
+const textFormatting: EditorPlugin = {
+  marks({ allowTextFormatting, textFormatting }) {
+    const options = textFormatting
+      ? textFormatting
+      : allowTextFormatting === true || !allowTextFormatting
+        ? {}
+        : allowTextFormatting;
+
     return [
       { name: 'em', mark: em, rank: 200 },
       { name: 'strong', mark: strong, rank: 300 },
@@ -113,6 +119,6 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
       </ButtonsGroup>
     );
   },
-});
+};
 
 export default textFormatting;

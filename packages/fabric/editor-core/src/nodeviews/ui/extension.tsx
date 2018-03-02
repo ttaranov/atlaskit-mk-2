@@ -24,11 +24,13 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     providerFactory: ProviderFactory,
   ) {
     super(node, view);
-    const elementType = node.type.name === 'extension' ? 'div' : 'span';
+    const elementType = node.type.name === 'bodiedExtension' ? 'div' : 'span';
     this.node = node;
     this.view = view;
     this.providerFactory = providerFactory;
     this.domRef = document.createElement(elementType);
+    // @see ED-3790
+    this.domRef.className = `${node.type.name}View-container`;
     this.renderReactComponent(node);
   }
 

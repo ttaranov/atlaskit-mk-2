@@ -1,5 +1,14 @@
 # @atlaskit/icon
 
+## 10.11.0
+- [minor] Create skeleton representations of various components [cd628e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd628e4)
+
+## 10.10.1
+- [patch] update atlaskit src for internal consumption [4601bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4601bf0)
+
+## 10.10.0
+- [minor] Added 42 new icons for Objects [e00ff79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e00ff79)
+
 ## 10.9.3
 - [patch] removed role props to make it more accessible [88cc276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88cc276)
 

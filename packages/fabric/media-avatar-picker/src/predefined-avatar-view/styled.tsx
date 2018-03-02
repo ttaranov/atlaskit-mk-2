@@ -42,6 +42,9 @@ export const PredefinedAvatarViewWrapper = styled.div`
   ul {
     display: flex;
     flex-flow: row wrap;
+    width: 353px;
+    max-height: 294px;
+    overflow-y: auto;
 
     padding: 0;
     margin: 0;

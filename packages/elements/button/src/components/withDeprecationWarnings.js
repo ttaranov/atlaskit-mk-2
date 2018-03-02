@@ -1,8 +1,9 @@
 // @flow
 
 import React, { Component, type ComponentType } from 'react';
+import type { ButtonAppearances } from '../types';
 
-const getComponentName = (target: ComponentType<*>): string => {
+const getComponentName = (target: any): string => {
   if (target.displayName && typeof target.displayName === 'string') {
     return target.displayName;
   }
@@ -15,17 +16,15 @@ const warnIfDeprecatedAppearance = appearance => {
   if (appearance && deprecatedAppearances.includes(appearance)) {
     // eslint-disable-next-line no-console
     console.warn(
-      `Atlaskit: The Button appearance "${
-        appearance
-      }" is deprecated. Please use styled-components' ThemeProvider to provide a custom theme for Button instead.`,
+      `Atlaskit: The Button appearance "${appearance}" is deprecated. Please use styled-components' ThemeProvider to provide a custom theme for Button instead.`,
     );
   }
 };
 
-export default function withDeprecationWarnings(
-  WrappedComponent: ComponentType<*>,
-): ComponentType<*> {
-  return class WithDeprecationWarnings extends Component<*> {
+export default function withDeprecationWarnings<
+  Props: { appearance?: ButtonAppearances },
+>(WrappedComponent: ComponentType<Props>): ComponentType<Props> {
+  return class WithDeprecationWarnings extends Component<Props> {
     static displayName = `WithDeprecationWarnings(${getComponentName(
       WrappedComponent,
     )})`;

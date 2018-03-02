@@ -44,9 +44,7 @@ export default class Example extends React.PureComponent<
       <Container>
         <Editor
           appearance="comment"
-          allowTextFormatting={true}
           allowTasksAndDecisions={true}
-          allowHyperlinks={true}
           allowCodeBlocks={true}
           allowLists={true}
           allowRule={true}

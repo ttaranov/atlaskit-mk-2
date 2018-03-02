@@ -20,9 +20,7 @@ import {
 } from '../../../src/plugins/media/media-links';
 import * as utils from '../../../src/plugins/utils';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
 import { AnalyticsHandler, analyticsService } from '../../../src';
 
@@ -41,12 +39,7 @@ describe('media-links', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin(),
-        hyperlinkPlugin,
-        tasksAndDecisionsPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [mediaPlugin(), tasksAndDecisionsPlugin],
       editorProps: {
         uploadErrorHandler,
       },

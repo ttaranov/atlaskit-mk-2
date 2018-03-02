@@ -3,13 +3,7 @@ import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
 import { colors } from '@atlaskit/theme';
-
-const sizes = {
-  small: '16px',
-  medium: '24px',
-  large: '32px',
-  xlarge: '48px',
-};
+import { sizes } from '../constants';
 
 const getSize = props => {
   if (props.size) {

@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 6.3.2
+- [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
+
+## 6.3.1
+
 ## 6.3.0
 - [minor] Introduce the placeholder node to the ADF [2441f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2441f92)
 

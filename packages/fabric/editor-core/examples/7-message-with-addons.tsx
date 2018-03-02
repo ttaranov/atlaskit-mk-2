@@ -99,9 +99,7 @@ export default function Example() {
           <Editor
             appearance="message"
             analyticsHandler={analyticsHandler}
-            allowTextFormatting={true}
             allowTasksAndDecisions={true}
-            allowHyperlinks={true}
             allowCodeBlocks={true}
             allowHelpDialog={true}
             disabled={disabled}

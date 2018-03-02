@@ -38,7 +38,7 @@ mentionStyle[MentionType.DEFAULT] = {
 // tslint:disable-next-line:variable-name
 export const MentionStyle = styled.span`
   ${(props: MentionStyleProps) => `
-  display: table-cell;
+  display: inline-block;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;

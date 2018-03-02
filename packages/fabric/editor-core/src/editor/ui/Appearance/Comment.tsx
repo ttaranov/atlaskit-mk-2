@@ -13,6 +13,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { stateKey as mediaPluginKey } from '../../../plugins/media';
 
 const pulseBackground = keyframes`
   50% {
@@ -126,7 +127,6 @@ export default class Editor extends React.Component<
   static displayName = 'CommentEditorAppearance';
 
   private flashToggle = false;
-
   private appearance: EditorAppearance = 'comment';
 
   private handleRef = ref => {
@@ -147,7 +147,7 @@ export default class Editor extends React.Component<
     }
   };
 
-  private renderChrome = ({ maxContentSize }) => {
+  private renderChrome = ({ maxContentSize, mediaState }) => {
     const {
       editorView,
       editorActions,
@@ -214,7 +214,9 @@ export default class Editor extends React.Component<
               <Button
                 appearance="primary"
                 onClick={this.handleSave}
-                isDisabled={disabled}
+                isDisabled={
+                  disabled || (mediaState && !mediaState.allUploadsFinished)
+                }
               >
                 Save
               </Button>
@@ -243,7 +245,10 @@ export default class Editor extends React.Component<
       <WithPluginState
         editorView={editorView}
         eventDispatcher={eventDispatcher}
-        plugins={{ maxContentSize: maxContentSizePluginKey }}
+        plugins={{
+          maxContentSize: maxContentSizePluginKey,
+          mediaState: mediaPluginKey,
+        }}
         render={this.renderChrome}
       />
     );

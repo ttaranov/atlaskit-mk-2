@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 11.5.4
+- [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
+
+## 11.5.3
+
+## 11.5.2
+
 ## 11.5.1
 - [patch] FS-1461 fixed rendererContext handling in TaskItem [6023540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6023540)
 

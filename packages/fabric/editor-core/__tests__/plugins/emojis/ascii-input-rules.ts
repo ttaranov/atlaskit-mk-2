@@ -14,7 +14,6 @@ import {
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { MockEmojiResource } from '@atlaskit/emoji/dist/es5/support/MockEmojiResource';
 import emojiPlugin from '../../../src/editor/plugins/emoji';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
@@ -26,7 +25,7 @@ describe('ascii emojis - input rules', () => {
   const editor = (doc: any) => {
     const editor = createEditor({
       doc,
-      editorPlugins: [emojiPlugin, textFormatting(), codeBlockPlugin],
+      editorPlugins: [emojiPlugin, codeBlockPlugin],
       providerFactory,
     });
 

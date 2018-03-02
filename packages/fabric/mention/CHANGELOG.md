@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 9.1.5
+- [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
+
 ## 9.1.4
 - [patch] Disable browser's spell check in mention lozenge [c04bf36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c04bf36)
 

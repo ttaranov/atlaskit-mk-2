@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-
+import { Ellipsify } from '@atlaskit/media-ui';
 import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
 import {
   TitleWrapper,
@@ -8,7 +8,8 @@ import {
   ErrorMessage,
   Retry,
 } from '../../src/utils/cardImageView/cardOverlay/styled';
-import { Ellipsify, Menu } from '../../src/utils/';
+
+import { Menu } from '../../src/utils/';
 
 describe('CardOverlay', () => {
   const errorMessage = 'Loading failed';

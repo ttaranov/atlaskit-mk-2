@@ -40,6 +40,7 @@ export default class Editor extends React.Component<EditorProps, State> {
     super(props);
     this.providerFactory = new ProviderFactory();
     this.state = {};
+    this.deprecationWarnings(props);
   }
 
   componentDidMount() {
@@ -98,6 +99,21 @@ export default class Editor extends React.Component<EditorProps, State> {
       editor.editorView.setProps({
         editable: state => !this.props.disabled,
       } as DirectEditorProps);
+    }
+  }
+
+  private deprecationWarnings(props) {
+    if (props.hasOwnProperty('allowHyperlinks')) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        "allowHyperlinks property is deprecated. It's safe to remove it because hyperlink plugin is enabled by default.",
+      );
+    }
+    if (props.hasOwnProperty('allowTextFormatting')) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        'allowTextFormatting property is deprecated. TextFormatting plugin is enabled by default. If you need to pass options to textFormatting plugin use `textFormatting={{ textFormattingOptions }}` [Will be removed in editor-core@63.0.0]',
+      );
     }
   }
 

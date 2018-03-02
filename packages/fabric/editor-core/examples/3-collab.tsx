@@ -114,13 +114,12 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               media={{
                 provider: mediaProvider1,
                 allowMediaSingle: true,
@@ -162,13 +161,12 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               media={{
                 provider: mediaProvider2,
                 allowMediaSingle: true,

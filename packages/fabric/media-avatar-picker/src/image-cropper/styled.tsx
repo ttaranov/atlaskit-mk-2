@@ -80,6 +80,12 @@ export const RemoveImageButton = styled.button`
   cursor: pointer;
   padding: 0;
 
+  svg {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+
   &:hover {
     background-color: ${akColorN50A};
   }
