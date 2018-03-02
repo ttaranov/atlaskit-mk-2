@@ -16,8 +16,8 @@ const Container = styled.div`
     &:focus {
       outline: none;
     }
-    &:empty:not(:focus):before {
-      content: attr(data-placeholder)
+    &:empty:not(:focus)::before {
+      content: attr(data-placeholder);
       font-size: 14px;
     }
   }

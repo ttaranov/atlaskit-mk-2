@@ -55,7 +55,6 @@ const CommentEditor: any = styled.div`
   border-radius: ${akBorderRadius};
 
   max-width: inherit;
-  box-sizing: border-box;
   word-wrap: break-word;
 
   animation: ${(props: any) =>

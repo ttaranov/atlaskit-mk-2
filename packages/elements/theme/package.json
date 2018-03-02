@@ -16,7 +16,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.6"
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"

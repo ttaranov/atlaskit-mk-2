@@ -34,7 +34,7 @@ export default styled.div`
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
+    box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;
 
@@ -73,7 +73,7 @@ export const DismissButton = styled.button`
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
+    box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;
 

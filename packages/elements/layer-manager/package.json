@@ -19,7 +19,7 @@
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
     "react-transition-group": "^2.2.1",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "tabbable": "^1.1.0"
   },
   "peerDependencies": {

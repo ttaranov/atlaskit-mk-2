@@ -46,7 +46,7 @@
     "react-lazily-render": "^0.0.8",
     "react-render-image": "^1.1.1",
     "react-transition-group": "^2.2.1",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0"
   },

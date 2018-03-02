@@ -34,6 +34,7 @@ pipelines:
           - yarn build
           - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
           - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+          - (node build/ci-scripts/should.run.js stylelint) && yarn lint:stylelint
           - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
           - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
           - yarn test:changed

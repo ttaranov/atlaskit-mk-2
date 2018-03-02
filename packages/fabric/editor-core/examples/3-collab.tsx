@@ -53,7 +53,7 @@ export const Content = styled.div`
       border-radius: ${akBorderRadius};
     }
   }
-}`;
+`;
 Content.displayName = 'Content';
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);

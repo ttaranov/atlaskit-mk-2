@@ -47,9 +47,7 @@ export {
   ExtensionType,
 } from './editor/plugins/macro';
 
-export {
-  CollabEditProvider,
-} from './editor/plugins/collab-edit';
+export { CollabEditProvider } from './editor/plugins/collab-edit';
 
 export {
   EmojiProvider,
@@ -63,10 +61,8 @@ export {
   MediaState,
 } from './plugins/media';
 
-export {
-  MediaOptions,
-} from './editor/plugins/media';
-  
+export { MediaOptions } from './editor/plugins/media';
+
 export {
   AbstractMentionResource,
   MentionProvider,

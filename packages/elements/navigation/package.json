@@ -41,7 +41,7 @@
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-transition-group": "^2.2.1",
-    "styled-components": "^1.4.6"
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
