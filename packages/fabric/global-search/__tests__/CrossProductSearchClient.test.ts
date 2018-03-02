@@ -91,6 +91,12 @@ describe('CrossProductSearchClient', () => {
                 key: 'key-1',
                 fields: {
                   summary: 'summary',
+                  project: {
+                    name: 'projectName',
+                  },
+                  issuetype: {
+                    iconUrl: 'iconUrl',
+                  },
                 },
               },
             ],
@@ -104,6 +110,9 @@ describe('CrossProductSearchClient', () => {
       const item = result.jira[0];
       expect(item.type).toEqual('object');
       expect(item.name).toEqual('summary');
+      expect(item.avatarUrl).toEqual('iconUrl');
+      expect(item.href).toEqual('/browse/key-1');
+      expect(item.containerName).toEqual('projectName');
     });
   });
 
@@ -117,6 +126,12 @@ describe('CrossProductSearchClient', () => {
               key: 'key-1',
               fields: {
                 summary: 'summary',
+                project: {
+                  name: 'name',
+                },
+                issuetype: {
+                  iconUrl: 'iconUrl',
+                },
               },
             },
           ],
