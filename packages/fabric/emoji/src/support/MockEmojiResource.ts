@@ -237,7 +237,18 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource
     if (!this.emojiRepository) {
       return Promise.resolve([]);
     }
-    return Promise.resolve(this.emojiRepository.getDynamicCategoryList(true));
+    const customCategRequired = this.isCustomCategoryRequired();
+    return Promise.resolve(
+      this.emojiRepository.getDynamicCategoryList(customCategRequired),
+    );
+  }
+
+  protected isCustomCategoryRequired(): boolean {
+    if (!this.emojiRepository) {
+      return false;
+    }
+    const customEmoji = this.emojiRepository.findInCategory(customCategory);
+    return customEmoji.length > 0;
   }
 }
 

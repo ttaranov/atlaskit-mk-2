@@ -159,11 +159,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const prevEmojiProvider = prevProps.emojiProvider;
     const currentEmojiProvider = this.props.emojiProvider;
 
-    if (this.state.uploading && this.state.uploading !== prevState.uploading) {
-      // Showing upload panel, ensure custom category in view due to increased height
-      this.scrollToEndOfList();
-    }
-
     if (prevEmojiProvider !== currentEmojiProvider) {
       prevEmojiProvider.unsubscribe(this.onProviderChange);
       currentEmojiProvider.subscribe(this.onProviderChange);

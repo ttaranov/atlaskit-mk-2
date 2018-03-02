@@ -630,7 +630,7 @@ export default class UploadingEmojiResource extends EmojiResource
    */
   protected isCustomCategoryRequired(): Promise<boolean> {
     return this.isUploadSupported().then(supported => {
-      return supported || super.isCustomCategoryRequired();
+      return supported && super.isCustomCategoryRequired();
     });
   }
 }
