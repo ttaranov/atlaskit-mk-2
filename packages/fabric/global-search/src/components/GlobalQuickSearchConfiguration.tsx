@@ -6,11 +6,24 @@ import memoizeOne from 'memoize-one';
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
 export interface Props {
+  /**
+   * The cloudId of the site the component is embedded in.
+   */
   cloudId: string;
 
-  // Optional service url override for dev environments
+  /**
+   * For development purposes only: Overrides the URL to the activity service.
+   */
   activityServiceUrl?: string;
+
+  /**
+   * For development purposes only: Overrides the URL to the search aggregator service.
+   */
   searchAggregatorServiceUrl?: string;
+
+  /**
+   * For development purposes only: Overrides the URL to the directory service.
+   */
   directoryServiceUrl?: string;
 }
 
