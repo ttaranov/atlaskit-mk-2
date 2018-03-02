@@ -71,7 +71,7 @@ export const tableBackgroundColorPalette = new Map<string, string>();
  */
 export interface Table {
   type: 'table';
-  attrs: {
+  attrs?: {
     isNumberColumnEnabled?: boolean;
   };
   /**

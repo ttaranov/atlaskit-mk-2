@@ -741,7 +741,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
