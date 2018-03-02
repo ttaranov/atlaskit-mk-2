@@ -50,10 +50,12 @@ const RESPONSE_MESSAGES = {
   503: 'Service Unavailable',
 };
 
-export const getDataProviderFactory = () => {
+export const getDataProviderFactory = (onlyInclude: string[] = []) => {
   const dataProviderFactory = new ProviderFactory();
   Object.keys(MockDataProviders).forEach(provider => {
-    dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
+    if (onlyInclude.length === 0 || onlyInclude.indexOf(provider) !== -1) {
+      dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
+    }
   });
   return dataProviderFactory;
 };
