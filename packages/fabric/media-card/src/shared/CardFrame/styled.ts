@@ -27,7 +27,7 @@ export interface WrapperProps {
 
 function minWidth({ minWidth }: WrapperProps) {
   if (minWidth) {
-    return `min-width: ${minWidth}px`;
+    return `min-width: ${minWidth}px;`;
   } else {
     return '';
   }
@@ -35,7 +35,7 @@ function minWidth({ minWidth }: WrapperProps) {
 
 function maxWidth({ maxWidth }: WrapperProps) {
   if (maxWidth) {
-    return `max-width: ${maxWidth}px`;
+    return `max-width: ${maxWidth}px;`;
   } else {
     return '';
   }
