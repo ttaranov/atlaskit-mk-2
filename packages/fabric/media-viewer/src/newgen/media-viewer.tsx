@@ -7,7 +7,7 @@ import {
   MediaViewerItem,
 } from '../components/media-viewer';
 import * as Blanket from './blanket';
-import { Editor } from './image-editor';
+import * as ImageEditor from './image-editor';
 
 export type Model =
   | {
@@ -15,6 +15,7 @@ export type Model =
       name?: string;
       src?: string;
       editorMode: boolean;
+      editor?: ImageEditor.Model;
     }
   | {
       state: 'ERROR';
@@ -48,27 +49,37 @@ export type Message =
     }
   | {
       type: 'OPEN_ANNOTATIONS';
-  };
+  }
+  | {
+    type: 'MEDIA_EDITOR_MESSAGE';
+    refMessage: ImageEditor.Message;
+};
 
 export const initialMessage: Message = {
   type: 'INIT',
 };
 
 export const update = (model: Model, message: Message): Model => {
-  console.log(model, message);  
   switch (message.type) {
     case 'INIT':
       return model;
     case 'CLOSE_ANNOTATIONS':
-      return { ...model, editorMode: false }
+      return model.state !== 'ERROR' ? { ...model, editorMode: false, editor: undefined } : model
     case 'OPEN_ANNOTATIONS':
-      return { ...model, editorMode: true }
+      return model.state !== 'ERROR' ? { ...model, editorMode: true, editor: ImageEditor.initialModel(model.src) } : model;
     case 'RECEIVED_SRC':
-      return { ...model, src: message.src };
+      return model.state !== 'ERROR' ? { ...model, src: message.src } : model;
     case 'RECEIVED_ATTRIBUTES':
-      return { ...model, name: message.name };
+      return model.state !== 'ERROR' ? { ...model, name: message.name } : model;
     case 'LOADING_FAILED':
       return { state: 'ERROR' };
+    case 'MEDIA_EDITOR_MESSAGE':     
+      if (model.state !== 'ERROR' && model.editor) {
+        const editorModel = ImageEditor.update(model.editor, message.refMessage);
+        return  { ...model, editor: editorModel };  
+      } else {
+        return model;
+      }
     case 'CLOSE':
       return model;
   }
@@ -123,21 +134,40 @@ const RightIcons = styled.div`
   }
 `;
 
-const renderImageOrEditor = (editorMode: boolean, url: string, dispatch: (message: Message) => void) => {
-  if (editorMode) {
+type ImageContentProps = {
+  model: Model;
+  dispatch: (message: Message) => void; 
+}
+
+const ImageContent = ({ model, dispatch }: ImageContentProps) => {  
+  if (model.state === 'ERROR') {
     return (
-      <div>
-        <Editor model={{ url }} dispatch={() => {}}/>
-        <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'CLOSE_ANNOTATIONS' })}}>close editor</button>
-      </div>
+      <div>Something went wrong</div>
     );
   } else {
-    return (
-      <div>
-        <Img src={url} />
-        <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'OPEN_ANNOTATIONS' })}}>open editor</button>
-      </div>
-    )
+    if (!model.src) {
+      return (
+        <Spinner size="large" />
+      );
+    }    
+    if (model.editor) {
+      return (
+        <div>
+          <ImageEditor.Component 
+            model={ model.editor } 
+            dispatch={ (refMessage: ImageEditor.Message) => dispatch({ type: 'MEDIA_EDITOR_MESSAGE', refMessage }) }
+          />
+          <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'CLOSE_ANNOTATIONS' })}}>close editor</button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Img src={model.src} />
+          <button style={{display: 'block'}} onClick={(e) => { e.stopPropagation(); dispatch({ type: 'OPEN_ANNOTATIONS' })}}>open editor</button>
+        </div>
+      )
+    }  
   }
 };
 
@@ -150,7 +180,7 @@ export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
-  <Blanket.Component onClick={() => model.state === 'OPEN' && !model.editorMode && dispatch({ type: 'CLOSE' })}>
+  <Blanket.Component onClick={() => model.state === 'OPEN' && !model.editor && dispatch({ type: 'CLOSE' })}>
     <DetailsWrapper>
       <LeftInfo>
         <span>
@@ -164,9 +194,7 @@ export const Component: React.StatelessComponent<Props> = ({
     </DetailsWrapper>
     <ItemPreviewWrapper>
       <ImageViewerWrapper>
-        {model.state === 'ERROR' && <div>Something went wrong</div>}
-        {model.state === 'OPEN' &&
-          (model.src ? renderImageOrEditor(model.editorMode, model.src, dispatch) : <Spinner size="large" />)}
+          <ImageContent model={model} dispatch={dispatch} />
       </ImageViewerWrapper>
     </ItemPreviewWrapper>
   </Blanket.Component>

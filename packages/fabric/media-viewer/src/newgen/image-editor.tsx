@@ -5,14 +5,31 @@ import styled from 'styled-components';
 let loadParameters: LoadParameters;
 
 export type Model = {
-  url: string;  
+  url: string;
+  toolbarColor: Color;
 };
 
-export type Message = {};
-
-const handleToolbarColorChanged = color => {
-
+export type Message = {
+  type: 'TOOLBAR_COLOR_CHANGE';
+  color: Color;
 };
+
+export type Props = {
+  model: Model;
+  dispatch: (message: Message) => void;
+};
+
+const shapeColor = {
+  red: 0,
+  green: 0,
+  blue: 255
+};
+
+export const initialModel = (url) => ({
+  url,
+  toolbarColor: shapeColor
+});
+
 const handleToolbarLineWidthChanged = lineWidth => {
 
 };
@@ -24,11 +41,6 @@ const handleShapeParametersChanged = shapeParameters => {
 
 };
 
-export type Props = {
-  model: Model;
-  dispatch: (message: Message) => void;
-};
-
 const ToolbarWrapper = styled.div`
   position: absolute; 
   top: 50px;
@@ -36,17 +48,7 @@ const ToolbarWrapper = styled.div`
   transition: transform 0.3s;
 `;
 
-const bgColor = {
-  red: 0,
-  green: 0,
-  blue: 0
-};
-
-const shapeColor = {
-  red: 0,
-  green: 0,
-  blue: 255
-};
+const transparent = { red: 0, green: 0, blue: 0, alpha: 0 };
 
 const defaultTool = 'brush';
 
@@ -61,22 +63,34 @@ const save = () => {
   const image = loadParameters.imageGetter();
   if (image.isExported && image.content) {
     console.log('image received', image);
+    alert('this will call the media api to create a new version of the image');
   } else {
+    alert('error');
     console.log('image not received', image);
   }
 };
 
-export const Editor: React.StatelessComponent<Props> = ({
+export const update = (model: Model, message: Message): Model => {
+  switch (message.type) {
+    case 'TOOLBAR_COLOR_CHANGE': 
+      return {
+        ...model,
+        toolbarColor: message.color
+      };
+  }
+};
+
+export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
   <div>
     <ToolbarWrapper>
       <Toolbar
-        color={shapeColor}
+        color={model.toolbarColor}
         lineWidth={lineWidth}
         tool={defaultTool}
-        onColorChanged={handleToolbarColorChanged}
+        onColorChanged={(color) => dispatch({ type: 'TOOLBAR_COLOR_CHANGE', color })}
         onLineWidthChanged={handleToolbarLineWidthChanged}
         onToolChanged={handleToolbarToolChanged}
       />
@@ -84,9 +98,9 @@ export const Editor: React.StatelessComponent<Props> = ({
     <MediaEditor
       imageUrl={model.url}
       dimensions={{width: 800, height: 600}}
-      backgroundColor={bgColor}
+      backgroundColor={transparent}
       shapeParameters={{
-        color: shapeColor,
+        color: model.toolbarColor,
         lineWidth,
         addShadow: true,
       }}
