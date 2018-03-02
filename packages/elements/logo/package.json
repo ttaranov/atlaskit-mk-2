@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -23,9 +23,9 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.4.2",
-    "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/field-radio-group": "^1.8.4",
+    "@atlaskit/button": "^6.6.0",
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/field-radio-group": "^1.9.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "^3.3.0"
   }

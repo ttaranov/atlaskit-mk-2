@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 9.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 9.1.5
 - [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
 

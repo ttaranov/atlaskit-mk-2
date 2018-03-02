@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 1.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 1.0.11
 
 ## 1.0.10

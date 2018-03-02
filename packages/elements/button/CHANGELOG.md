@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 6.6.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 6.5.0
 - [minor] Instrument button with analytics [4e84f5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e84f5b)
 
