@@ -1,5 +1,4 @@
 'use strict';
-//increase test timeout
 //@flow
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
@@ -15,9 +14,11 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeAll(async function() {
+    beforeEach(async function() {
       for (let client of clients) {
         if (client) {
+          const browserName = client.driver.desiredCapabilities.browserName;
+          if (skipForBrowser && skipForBrowser[browserName]) continue;
           if (client.isReady) continue;
           await client.driver.init();
           client.isReady = true;
@@ -26,19 +27,33 @@ function BrowserTestCase(...args /*:Array<any> */) {
     });
 
     for (let client of clients) {
-      if (client) testRun(testcase, tester, client.driver, skipForBrowser);
+      if (client) {
+        testRun(testcase, tester, client.driver, skipForBrowser);
+      }
     }
 
-    afterAll(async function() {
+    afterEach(async function() {
       for (let client of clients) {
         if (client) {
-          await client.driver.end();
-          client.isReady = false;
+          const browserName = client.driver.desiredCapabilities.browserName;
+          if (skipForBrowser && skipForBrowser[browserName]) {
+            await client.driver.end();
+            client.isReady = false;
+          }
         }
       }
     });
   });
 }
+
+afterAll(async function() {
+  for (let client of clients) {
+    if (client) {
+      await client.driver.end();
+      client.isReady = false;
+    }
+  }
+});
 
 /*::
 type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
@@ -69,6 +84,7 @@ function testRun(
     testFn = test.skip;
   } else if (skipForBrowser) {
     testFn = test.skip;
+    client.end();
   } else {
     testFn = test;
   }
@@ -96,13 +112,13 @@ function setLocalClients() {
       desiredCapabilities: {
         browserName: launchers[key].browserName,
         //Disable headless here to run on real browsers
-        // chromeOptions: {
-        //   args: ['--headless', '--disable-gpu'],
-        // },
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu'],
+        },
       },
     };
     const driver = webdriverio.remote(option);
-    clis.push({ driver: driver, isReady: false });
+    clis.push({ driver: driver });
   });
   return clis;
 }
