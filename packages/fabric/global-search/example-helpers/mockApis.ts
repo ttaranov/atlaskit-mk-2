@@ -16,14 +16,11 @@ function delay<T>(millis: number, value?: T): Promise<T> {
 }
 
 function mockRecentApi() {
-  fetchMock.get(
-    'begin:http://localhost:8080/api/client/recent',
-    recentResponse,
-  );
+  fetchMock.get(new RegExp('/api/client/recent\\?'), recentResponse);
 }
 
 function mockCrossProductSearchApi() {
-  fetchMock.post('http://localhost:8080/quicksearch/v1', async request => {
+  fetchMock.post(new RegExp('/quicksearch/v1'), async request => {
     const body = await request.json();
     const query = body.query;
     const results = queryMockSearch(query);
@@ -33,7 +30,7 @@ function mockCrossProductSearchApi() {
 }
 
 function mockPeopleApi() {
-  fetchMock.post('http://localhost:8080/graphql', async request => {
+  fetchMock.post(new RegExp('/graphql'), async request => {
     const body = await request.json();
     const query = body.variables.displayName;
     const results = queryPeopleSearch(query);
