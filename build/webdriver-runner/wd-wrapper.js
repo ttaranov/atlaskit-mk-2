@@ -49,6 +49,14 @@ export default class Page {
     return this.browser.close();
   }
 
+  backspace(selector) {
+    this.browser.execute(selector => {
+      return document
+        .querySelector(selector)
+        .trigger({ type: 'keydown', which: 8 });
+    });
+  }
+
   // To be replaced by those puppeeter fucntions
   //  keyboard.down('KeyA');
   //  keyboard.press('KeyA');
@@ -87,7 +95,7 @@ export default class Page {
   }
   // Wait
   waitForSelector(selector) {
-    return this.browser.waitForExist(selector);
+    return this.browser.waitForExist(selector, 5000);
   }
   waitFor(selector, ms, reverse) {
     return this.browser.waitForVisible(selector, ms, reverse);
