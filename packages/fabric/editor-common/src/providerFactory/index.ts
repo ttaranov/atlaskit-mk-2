@@ -97,6 +97,10 @@ export default class ProviderFactory {
     this.subscribers.delete(name);
   }
 
+  hasProvider(name: string) {
+    return this.providers.has(name);
+  }
+
   private notifyUpdated(name: string, provider?: Promise<any>) {
     const handlers = this.subscribers.get(name);
     if (!handlers) {
