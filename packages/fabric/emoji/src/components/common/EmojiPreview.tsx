@@ -2,6 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
+import AddIcon from '@atlaskit/icon/glyph/add';
+import AkButton from '@atlaskit/button';
 import * as styles from './styles';
 import EmojiButton from '../../components/common/EmojiButton';
 import CachingEmoji from '../../components/common/CachingEmoji';
@@ -18,6 +20,8 @@ export interface Props {
   toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
+  uploadEnabled?: boolean;
+  onOpenUpload?: () => void;
 }
 
 export interface State {
@@ -86,9 +90,10 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderEmojiPreview() {
-    const emoji = this.props.emoji;
+    const { selectingTone } = this.state;
+    const { emoji, uploadEnabled } = this.props;
 
-    if (!emoji || this.state.selectingTone) {
+    if (!emoji || selectingTone || uploadEnabled) {
       return null;
     }
 
@@ -115,9 +120,35 @@ export default class EmojiPreview extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  renderAddOwnEmoji() {
+    const { onOpenUpload, uploadEnabled } = this.props;
+    const { selectingTone } = this.state;
+
+    if (!uploadEnabled || selectingTone) {
+      return null;
+    }
     return (
-      <div className={styles.emojiPreview} onMouseLeave={this.onMouseLeave}>
+      <div className={styles.AddCustomEmoji}>
+        <AkButton
+          onClick={onOpenUpload}
+          iconBefore={<AddIcon label="add custom emoji" size="small" />}
+          appearance="subtle"
+          className="emoji-picker-add-emoji"
+        >
+          Add your own emoji
+        </AkButton>
+      </div>
+    );
+  }
+
+  render() {
+    const sectionClasses = classNames([
+      styles.emojiPreview,
+      'emojiPreviewSection',
+    ]);
+    return (
+      <div className={sectionClasses} onMouseLeave={this.onMouseLeave}>
+        {this.renderAddOwnEmoji()}
         {this.renderEmojiPreview()}
         {this.renderTones()}
       </div>

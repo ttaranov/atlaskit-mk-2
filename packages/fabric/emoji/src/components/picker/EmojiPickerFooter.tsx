@@ -16,13 +16,15 @@ export interface Props {
   selectedEmoji?: EmojiDescription;
   selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
-  uploading: boolean;
-  initialUploadName?: string;
   toneEmoji?: EmojiDescriptionWithVariations;
+  uploading: boolean;
+  uploadEnabled: boolean;
+  initialUploadName?: string;
   uploadErrorMessage?: string;
   onUploadCancelled: () => void;
   onUploadEmoji: OnUploadEmoji;
   onFileChosen?: (name: string) => void;
+  onOpenUpload: () => void;
 }
 
 export default class EmojiPickerFooter extends PureComponent<Props, {}> {
@@ -38,6 +40,8 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
       uploadErrorMessage,
       uploading,
       onFileChosen,
+      onOpenUpload,
+      uploadEnabled,
     } = this.props;
 
     const previewFooterClassnames = classNames([
@@ -66,6 +70,8 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
           toneEmoji={toneEmoji}
           selectedTone={selectedTone}
           onToneSelected={onToneSelected}
+          onOpenUpload={onOpenUpload}
+          uploadEnabled={uploadEnabled}
         />
       </div>
     );
