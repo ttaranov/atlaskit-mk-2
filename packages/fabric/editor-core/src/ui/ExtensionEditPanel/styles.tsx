@@ -25,3 +25,9 @@ export const Separator = styled.span`
   display: inline-block;
   margin: 0 5px;
 `;
+
+// tslint:disable-next-line:variable-name
+export const ItemWrapper = styled.div`
+  display: flex;
+  flex-shrink: 0;
+`;

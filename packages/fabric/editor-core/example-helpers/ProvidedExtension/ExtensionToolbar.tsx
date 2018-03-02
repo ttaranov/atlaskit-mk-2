@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Popup } from '@atlaskit/editor-common';
-import { Toolbar } from '../../src/index';
+import { ExtensionToolbarWrapper } from '../../src/index';
 
 export type Props = {
   element?: HTMLElement | null;
@@ -40,7 +40,7 @@ export default class ExtensionToolbar extends React.Component<Props, {}> {
         alignX={alignX}
         alignY={alignY}
       >
-        <Toolbar>{children}</Toolbar>
+        <ExtensionToolbarWrapper>{children}</ExtensionToolbarWrapper>
       </Popup>
     );
   }

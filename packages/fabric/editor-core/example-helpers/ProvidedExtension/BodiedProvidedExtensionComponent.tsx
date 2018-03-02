@@ -3,7 +3,10 @@ import EditorActions from '../../src/editor/actions';
 import styled from 'styled-components';
 import ExtensionToolbar from './ExtensionToolbar';
 import TitleBar from './TitleBar';
-import { ToolbarButton, Separator } from '../../src/index';
+import {
+  ExtensionToolbarButton,
+  ExtensionToolbarSeparator,
+} from '../../src/index';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 
@@ -39,12 +42,12 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
 
     return (
       <ExtensionToolbar element={element} popupContainer={popupContainer}>
-        <ToolbarButton
+        <ExtensionToolbarButton
           onClick={() => {}}
           iconBefore={<EditIcon label="Edit extension" />}
         />
-        <Separator />
-        <ToolbarButton
+        <ExtensionToolbarSeparator />
+        <ExtensionToolbarButton
           onClick={() => {}}
           iconBefore={<RemoveIcon label="Remove extension" />}
         />

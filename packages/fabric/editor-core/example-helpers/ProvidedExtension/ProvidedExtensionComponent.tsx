@@ -4,7 +4,11 @@ import AkButton, { ButtonGroup } from '@atlaskit/button';
 import styled from 'styled-components';
 import ExtensionToolbar from './ExtensionToolbar';
 import TitleBar from './TitleBar';
-import { ToolbarButton, Separator } from '../../src/index';
+import {
+  ExtensionToolbarButton,
+  ExtensionToolbarSeparator,
+  ExtensionToolbarItemWrapper,
+} from '../../src/index';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 
@@ -14,8 +18,6 @@ const Wrapper = styled.span`
 
 const ToolbarItem = styled.div`
   width: 150px;
-  flex-shrink: 0;
-  display: inline-flex;
   padding: 8px 0;
 `;
 
@@ -113,13 +115,15 @@ export default class ProvidedExtensionComponent extends React.Component<
 
     return (
       <ExtensionToolbar element={element} popupContainer={popupContainer}>
-        <ToolbarItem>Extension ({node.extensionKey})</ToolbarItem>,
-        <ToolbarButton
+        <ExtensionToolbarItemWrapper>
+          <ToolbarItem>Extension ({node.extensionKey})</ToolbarItem>
+        </ExtensionToolbarItemWrapper>
+        <ExtensionToolbarButton
           onClick={this.onClickEdit}
           iconBefore={<EditIcon label="Edit extension" />}
         />
-        <Separator />
-        <ToolbarButton
+        <ExtensionToolbarSeparator />
+        <ExtensionToolbarButton
           onClick={this.onClickRemove}
           iconBefore={<RemoveIcon label="Remove extension" />}
         />

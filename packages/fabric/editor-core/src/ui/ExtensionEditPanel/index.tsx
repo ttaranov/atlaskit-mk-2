@@ -3,10 +3,15 @@ import { Popup } from '@atlaskit/editor-common';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
-import { Toolbar, Separator } from './styles';
+import { Toolbar, Separator, ItemWrapper } from './styles';
 
 // Exporting these items so products can build toolbars that look exactly like this.
-export { Toolbar, Separator, ToolbarButton };
+export {
+  Toolbar as ExtensionToolbarWrapper,
+  Separator as ExtensionToolbarSeparator,
+  ToolbarButton as ExtensionToolbarButton,
+  ItemWrapper as ExtensionToolbarItemWrapper,
+};
 
 export interface Props {
   element?: HTMLElement | null;

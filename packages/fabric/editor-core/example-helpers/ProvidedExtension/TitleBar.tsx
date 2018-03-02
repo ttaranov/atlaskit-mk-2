@@ -1,7 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const InlineWrapper = styled.span`
+  padding: 10px;
+  background: #f5f5f5;
+  position: relative;
+`;
+
+const BlockWrapper = styled.div`
   padding: 10px;
   background: #f5f5f5;
   position: relative;
@@ -35,6 +41,9 @@ export default class TitleBar extends React.Component<Props, {}> {
       Object.keys(macroParams)
         .map(key => macroParams[key].value)
         .join(' - ');
+
+    const Wrapper =
+      node.type === 'inlineExtension' ? InlineWrapper : BlockWrapper;
 
     return (
       <Wrapper onClick={onSelect}>

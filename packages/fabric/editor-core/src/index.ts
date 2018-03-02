@@ -26,18 +26,20 @@ export {
 // Used in editor-test-helpers
 export { keyCodes } from './keymaps';
 export { reactNodeViewPlugins } from './plugins';
-export { ReactEditorView } from './editor/create-editor';
+export { createEditor } from './editor/create-editor';
 
 export {
   getDefaultPluginsList,
 } from './editor/create-editor/create-plugins-list';
 export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
 export { default as EditorActions } from './editor/actions';
+
+// These items are used for consumers to ship a toolbar with consistent look and feel
 export {
-  default as ExtensionEditPanel,
-  Toolbar,
-  Separator,
-  ToolbarButton,
+  ExtensionToolbarWrapper,
+  ExtensionToolbarSeparator,
+  ExtensionToolbarButton,
+  ExtensionToolbarItemWrapper,
 } from './ui/ExtensionEditPanel';
 
 // Useless exports
@@ -47,14 +49,11 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-
 export {
   MacroProvider,
   MacroAttributes,
   ExtensionType,
 } from './editor/plugins/macro';
-
-export { CollabEditProvider } from './editor/plugins/collab-edit';
 
 export {
   EmojiProvider,
@@ -67,8 +66,6 @@ export {
   MediaProvider,
   MediaState,
 } from './plugins/media';
-
-export { MediaOptions } from './editor/plugins/media';
 
 export {
   AbstractMentionResource,
