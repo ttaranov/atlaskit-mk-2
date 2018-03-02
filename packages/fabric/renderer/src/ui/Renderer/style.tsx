@@ -118,26 +118,44 @@ export const Wrapper: ComponentClass<any> = styled.div`
 
   & h1 {
     ${akTypographyMixins.h800};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & h2 {
     ${akTypographyMixins.h700};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & h3 {
     ${akTypographyMixins.h600};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & h4 {
     ${akTypographyMixins.h500};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & h5 {
     ${akTypographyMixins.h400};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & h6 {
     ${akTypographyMixins.h300};
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   & hr {
