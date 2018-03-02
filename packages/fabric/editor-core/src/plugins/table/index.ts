@@ -434,11 +434,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
 
           /** Getting the offset of current item clicked */
           const colElement = (closestElement(element, 'td') ||
-            closestElement(element, 'th')) as
-            | HTMLTableRowElement
-            | HTMLTableColElement;
+            closestElement(element, 'th')) as HTMLTableDataCellElement;
           const colIndex = colElement && colElement.cellIndex;
-          const rowElement = closestElement(element, 'tr');
+          const rowElement = closestElement(
+            element,
+            'tr',
+          ) as HTMLTableRowElement;
           const rowIndex = rowElement && rowElement.rowIndex;
           const cellIndex = map.width * rowIndex + colIndex;
           const posInTable = map.map[cellIndex + 1] - 1;
