@@ -16,9 +16,11 @@ import {
   p as paragraph,
   dispatchPasteEvent,
   isMobileBrowser,
-  sendKeyToPm,
+  ol,
+  li,
 } from '@atlaskit/editor-test-helpers';
 import imageUpload from '../../../../src/editor/plugins/image-upload';
+import listPlugin from '../../../../src/editor/plugins/lists';
 
 chai.use(chaiPlugin);
 
@@ -26,7 +28,7 @@ describe('hyperlink', () => {
   const editor = (doc: any) =>
     createEditor<HyperlinkState>({
       doc,
-      editorPlugins: [imageUpload],
+      editorPlugins: [imageUpload, listPlugin],
       pluginKey: hyperlinkStateKey,
     });
 
@@ -363,21 +365,89 @@ describe('hyperlink', () => {
           editorView.destroy();
         });
       });
-    });
 
-    describe('edit toolbar', () => {
-      it('should be hidden when the esc key is pressed', async () => {
-        const { editorView } = editor(
-          doc(paragraph('http://www.atlassian.com')),
-        );
-        const hyperlinkState = hyperlinkStateKey.getState(editorView.state);
-        hyperlinkState.active = true;
-        sendKeyToPm(editorView, 'Esc');
-        expect(
-          hyperlinkState.active,
-          'Hyperlink plugin state.active should be false',
-        ).to.equal(false);
-        editorView.destroy();
+      describe('link pasting followed by typing a period', () => {
+        it('should not add period to link mark', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          const linkText = 'http://www.atlassian.com';
+          if (
+            !dispatchPasteEvent(editorView, {
+              plain: linkText,
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          insertText(editorView, '.', linkText.length + 1);
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({ href: 'http://www.atlassian.com' })(
+                  'http://www.atlassian.com',
+                ),
+                '.',
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('pasting link inside list', () => {
+        it('should create link correctly', function() {
+          const { editorView } = editor(
+            doc(ol(li(paragraph('item1')), li(paragraph('{<>}')))),
+          );
+          const linkText = 'http://www.atlassian.com';
+          if (
+            !dispatchPasteEvent(editorView, {
+              plain: linkText,
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              ol(
+                li(paragraph('item1')),
+                li(
+                  paragraph(
+                    link({
+                      href: 'http://www.atlassian.com',
+                    })('http://www.atlassian.com'),
+                  ),
+                ),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('pasting link with a bracket in it', () => {
+        it('should create link correctly', function() {
+          const { editorView } = editor(doc(paragraph('{<>}')));
+          const linkText = 'http://www.a(tl)as[si]an.com';
+          if (
+            !dispatchPasteEvent(editorView, {
+              plain: linkText,
+            })
+          ) {
+            // This environment does not allow mocking paste events
+            return this.skip();
+          }
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              paragraph(
+                link({
+                  href: 'http://www.a(tl)as%5Bsi%5Dan.com',
+                })('http://www.a(tl)as[si]an.com'),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
       });
     });
   }
