@@ -22,7 +22,7 @@ export interface Config {
 
 const defaultConfig: Config = {
   activityServiceUrl: '/gateway/api/activity',
-  searchAggregatorServiceUrl: '/gateway/api',
+  searchAggregatorServiceUrl: '/gateway/api/xpsearch-aggregator',
   directoryServiceUrl: '/gateway/api/directory',
 };
 
