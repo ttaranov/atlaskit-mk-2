@@ -33,4 +33,8 @@ export const Container = styled.div`
   max-width: ${math.multiply(gridSize, 56)}px;
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 3)}px;
   z-index: 200;
+
+  &:focus {
+    outline: none;
+  }
 `;
