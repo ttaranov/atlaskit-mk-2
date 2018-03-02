@@ -61,6 +61,7 @@ export interface AppCardDetails {
 }
 
 export interface AppCardAction {
+  key?: string;
   title: string;
   target: {
     receiver?: string;
