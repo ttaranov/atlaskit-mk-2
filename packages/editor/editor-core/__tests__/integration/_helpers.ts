@@ -20,3 +20,5 @@ export const editors = [
     placeholder: 'p',
   },
 ];
+
+export const clipboardHelper = `http://localhost:9000/examples.html?groupId=editor&packageId=editor-core&exampleId=clipboard-helper`;

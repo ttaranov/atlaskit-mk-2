@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should be possible to add link using toolbar button and recent search component comment editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "href": "https://www.atlassian.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "https://www.atlassian.com",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`it should be possible to add link using toolbar button and recent search component fullpage editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "href": "https://www.atlassian.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "https://www.atlassian.com",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`it should be possible to remove link using unlink button comment editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "https://www.atlassian.com ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`it should be possible to remove link using unlink button fullpage editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "https://www.atlassian.com ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link and adding punctuation should not linkify punctuation comment editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "href": "https://www.atlassian.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "https://www.atlassian.com",
+          "type": "text",
+        },
+        Object {
+          "text": ".",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link and adding punctuation should not linkify punctuation fullpage editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "href": "https://www.atlassian.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "https://www.atlassian.com",
+          "type": "text",
+        },
+        Object {
+          "text": ".",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link and adding punctuation should not linkify punctuation message editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "href": "https://www.atlassian.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "https://www.atlassian.com",
+          "type": "text",
+        },
+        Object {
+          "text": ".",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link in list should create link correctly comment editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "marks": Array [
+                    Object {
+                      "attrs": Object {
+                        "href": "https://www.atlassian.com",
+                      },
+                      "type": "link",
+                    },
+                  ],
+                  "text": "https://www.atlassian.com",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "listItem",
+        },
+      ],
+      "type": "bulletList",
+    },
+    Object {
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link in list should create link correctly fullpage editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "marks": Array [
+                    Object {
+                      "attrs": Object {
+                        "href": "https://www.atlassian.com",
+                      },
+                      "type": "link",
+                    },
+                  ],
+                  "text": "https://www.atlassian.com",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "listItem",
+        },
+      ],
+      "type": "bulletList",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`pasting link in list should create link correctly message editor 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "marks": Array [
+                    Object {
+                      "attrs": Object {
+                        "href": "https://www.atlassian.com",
+                      },
+                      "type": "link",
+                    },
+                  ],
+                  "text": "https://www.atlassian.com",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "listItem",
+        },
+      ],
+      "type": "bulletList",
+    },
+  ],
+  "type": "doc",
+}
+`;

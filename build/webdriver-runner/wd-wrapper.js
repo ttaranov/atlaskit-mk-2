@@ -163,7 +163,7 @@ export default class Page {
     } else {
       keys = ['Command', 'v'];
     }
-    return this.browser.setValue(selector, keys);
+    return this.browser.addValue(selector, keys);
   }
 
   // Wait
