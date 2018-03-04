@@ -40,8 +40,20 @@ export default j => {
       .findFirst(j.BlockStatement);
     
     if (block.size() > 0) {
-      console.log(block);
       block.get().node.body.push(testNode);
+    }
+    
+    return this;
+  }
+
+  const addToProgram = function(node, idempCondition) {
+    if (idempCondition(this)) {
+      const program = this.find(j.Program);
+      if (program.size() === 0) {
+        console.error('Could not find program node');
+      }
+
+      program.get().node.body.push(node);
     }
     
     return this;
@@ -52,5 +64,6 @@ export default j => {
     findLast,
     addImport,
     addTest,
+    addToProgram,
   });
 };

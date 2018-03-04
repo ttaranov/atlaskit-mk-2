@@ -1,7 +1,7 @@
 // @flow
 import UtilPlugin from '../plugins/util';
 import analyticsEventMap from './analyticsEventMap';
-import addTests from './addTests';
+import addTests from './tests';
 
 const getMapEntryFromPath = (filepath) => (
   analyticsEventMap.find( eventConfig => (
@@ -108,7 +108,7 @@ module.exports = (fileInfo: any, api: any) => {
 
   // Side-effect time!
   // Add tests to a completely different file than the one currently being modded
-  // addTests(j, fileInfo.path);
+  addTests({ path: fileInfo.path }, { jscodeshift: j }, {}, false);
     
   // Print source
   return j(sourceWithHOC).toSource({ quote: 'single' });
