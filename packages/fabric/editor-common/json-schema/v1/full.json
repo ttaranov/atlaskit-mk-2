@@ -1859,6 +1859,20 @@
         },
         {
           "$ref": "#/definitions/placeholder_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "example-failing"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -1887,6 +1901,20 @@
         },
         {
           "$ref": "#/definitions/code_inline_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "example-failing"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
         }
       ]
     },

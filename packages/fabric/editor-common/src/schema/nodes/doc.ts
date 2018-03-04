@@ -148,7 +148,8 @@ export type InlineAtomic =
   | Emoji
   | InlineExtension
   | Date
-  | Placeholder;
+  | Placeholder
+  | { type: 'example-failing' };
 
 /**
  * @name inline_node
