@@ -1,6 +1,7 @@
 // @flow
 import UtilPlugin from '../plugins/util';
 import analyticsEventMap from './analyticsEventMap';
+import addTests from './addTests';
 
 const getMapEntryFromPath = (filepath) => (
   analyticsEventMap.find( eventConfig => (
@@ -31,21 +32,21 @@ const createEventMapPropFn = (j, action) => {
   return j(code).find(j.ArrowFunctionExpression).get().value;
 };
 
-const createAnalyticsEventsHoc = (j, createEventMap, inner) => {
+const createAnalyticsEventsHoc = (j, eventConfig, inner) => {
   const existingHoc = j(inner).find(j.Identifier, { name: 'withAnalyticsEvents' });
   if (existingHoc.size() > 0) {
     return inner;
   }
 
-  const eventMap = j.objectExpression(Object.keys(createEventMap.props).map( propName => {
-    const action = createEventMap.props[propName];
+  const eventMap = j.objectExpression(Object.keys(eventConfig.props).map( propName => {
+    const action = eventConfig.props[propName];
     return j.property('init', j.identifier(propName), createEventMapPropFn(j, action));
   }));
   const firstCall = j.callExpression(j.identifier('withAnalyticsEvents'), [eventMap]);
   return j.callExpression(firstCall, [inner]);
 };
 
-const createAnalyticsContextHoc = (j, createEventMap, inner) => {
+const createAnalyticsContextHoc = (j, eventConfig, inner) => {
   const existingHoc = j(inner).find(j.Identifier, { name: 'withAnalyticsContext' });
   if (existingHoc.size() > 0) {
     return inner;
@@ -53,7 +54,7 @@ const createAnalyticsContextHoc = (j, createEventMap, inner) => {
 
   const versionProp = j.property('init', j.identifier('version'), j.identifier('version'));
   const contextArgs = j.objectExpression([
-    j.property('init', j.identifier('component'), j.literal(createEventMap.context)),
+    j.property('init', j.identifier('component'), j.literal(eventConfig.context)),
     j.property('init', j.identifier('package'), j.identifier('name')),
     versionProp,
   ]);
@@ -62,54 +63,52 @@ const createAnalyticsContextHoc = (j, createEventMap, inner) => {
   return j.callExpression(firstCall, [inner]);
 }
 
-const createAnalyticsHocs = (j, filePath, inner) => {
-  const createEventMap = getMapEntryFromPath(filePath);
-  if (!createEventMap) {
-    throw new Error('Event map entry not found for this file');
-  }
+const createAnalyticsHocs = (j, eventConfig, inner) => {
+  const withAnalyticsEvents = createAnalyticsEventsHoc(j, eventConfig, inner);
 
-  const withAnalyticsEvents = createAnalyticsEventsHoc(j, createEventMap, inner);
-
-  return createAnalyticsContextHoc(j, createEventMap, withAnalyticsEvents);
+  return createAnalyticsContextHoc(j, eventConfig, withAnalyticsEvents);
 }
 
 module.exports = (fileInfo: any, api: any) => {
   const j = api.jscodeshift;
+  const { statement } = j.template;
   j.use(UtilPlugin);
 
-  const existingImports = j(fileInfo.source)
-    .find(j.ImportDeclaration)
-    .filter( path => 
-      path.value.source.value === '@atlaskit/analytics-next'
-    );
+  const analyticsEventConfig = getMapEntryFromPath(fileInfo.path);
+  if (!analyticsEventConfig) {
+    return null;
+  }
   
-  const sourceWithImports = existingImports.size() > 0 ?
-    fileInfo.source
-  : j(fileInfo.source)
+  const sourceWithImports = j(fileInfo.source)
     // Add relevant imports
-    .findLast(j.ImportDeclaration)
-    .insertAfter(createImport(j, ['withAnalyticsEvents', 'withAnalyticsContext'], '@atlaskit/analytics-next'))
-    .closest(j.Program)
-    .findLast(j.ImportDeclaration)
-    .insertAfter(createImport(j, ['name', 'version'], '../../package.json'))
+    .addImport(statement`
+      import { withAnalyticsEvents, withAnalyticsContext } from '@atlaskit/analytics-next';
+    `)
+    .addImport(statement`
+      import { name, version } from '../../package.json';
+    `)
     .getAST();
 
   const sourceWithHOC = j(sourceWithImports)
       // Wrap default export with HOCs
       .find(j.ExportDefaultDeclaration)
       .map( path => {
-        if (j.Expression.check(path.value.declaration)) {
+        if (j.Expression.check(path.node.declaration)) {
           // If we're an expression, we can just wrap the current default export
-          path.value.declaration = createAnalyticsHocs(j, fileInfo.path, path.value.declaration);
-        } else if (j.Declaration.check(path.value.declaration)) {
+          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
+        } else if (j.Declaration.check(path.node.declaration)) {
           // Else if we're a declaration, we must extract the declaration out of the export
           // and then wrap the declaration with a HOC within the export
-          const declarationId = path.value.declaration.id;
-          path.insertBefore(path.value.declaration);
-          path.value.declaration = createAnalyticsHocs(j, fileInfo.path, declarationId);    
+          const declarationId = path.node.declaration.id;
+          path.insertBefore(path.node.declaration);
+          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);    
         }
         return path;
       }).getAST();
+
+  // Side-effect time!
+  // Add tests to a completely different file than the one currently being modded
+  // addTests(j, fileInfo.path);
     
   // Print source
   return j(sourceWithHOC).toSource({ quote: 'single' });

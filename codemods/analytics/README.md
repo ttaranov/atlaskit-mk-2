@@ -17,21 +17,21 @@ How it works:
 5. Add tests to the test file specified
   a) Adds relevant imports
   b) Adds a test for each prop callback that the last argument is an analytics event
-    ```
-      it('should pass analytics event as last argument to onClick handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<Button onClick={spy}>button</Button>);
-    wrapper.find('button').simulate('click');
+```
+    it('should pass analytics event as last argument to onClick handler', () => {
+  const spy = jest.fn();
+  const wrapper = mount(<Button onClick={spy}>button</Button>);
+  wrapper.find('button').simulate('click');
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'click',
-      }),
-    );
-  });
-  ```
+  const analyticsEvent = spy.mock.calls[0][1];
+  expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+  expect(analyticsEvent.payload).toEqual(
+    expect.objectContaining({
+      action: 'click',
+    }),
+  );
+});
+```
   c) Add a test for each prop callback that an atlaskit analytics event was fired
   ```
     it('should fire an atlaskit analytics event on click', () => {
