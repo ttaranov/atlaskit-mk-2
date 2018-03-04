@@ -29,7 +29,9 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
+    "@atlaskit/button": "^6.5.0",
     "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/field-text": "^4.1.8",
     "@atlaskit/theme": "^2.3.4",
     "enzyme": "^3.3.0",
     "redux": "^3.7.2"
