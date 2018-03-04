@@ -167,15 +167,29 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   };
 
   createEditorView = node => {
+    // Creates the editor-view from this.editorState. If an editor has been mounted
+    // previously, this will contain the previous state of the editor.
+    this.view = new EditorView(node, {
+      state: this.editorState,
+      dispatchTransaction: (transaction: Transaction) => {
+        transaction.setMeta('isLocal', true);
+        const editorState = this.view!.state.apply(transaction);
+        this.view!.updateState(editorState);
+        if (this.props.editorProps.onChange && transaction.docChanged) {
+          this.props.editorProps.onChange(this.view!);
+        }
+        this.editorState = editorState;
+      },
+      // Disables the contentEditable attribute of the editor if the editor is disabled
+      editable: state => !this.props.editorProps.disabled,
+    });
+  };
+
+  handleEditorViewRef = node => {
     if (!this.view && node) {
-      this.view = new EditorView(node, {
-        state: this.editorState,
-        dispatchTransaction: this.dispatchTransaction,
-        // Disables the contentEditable attribute of the editor if the editor is disabled
-        editable: state => !this.props.editorProps.disabled,
-      });
+      this.createEditorView(node);
       this.props.onEditorCreated({
-        view: this.view,
+        view: this.view!,
         config: this.config,
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
@@ -183,6 +197,9 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       // Force React to re-render so consumers get a reference to the editor view
       this.forceUpdate();
     } else if (this.view && !node) {
+      // When the appearance is changed, React will call handleEditorViewRef with node === null
+      // to destroy the old EditorView, before calling this method again with node === div to
+      // create the new EditorView
       this.props.onEditorDestroyed({
         view: this.view,
         config: this.config,
@@ -193,18 +210,8 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     }
   };
 
-  dispatchTransaction = (transaction: Transaction) => {
-    transaction.setMeta('isLocal', true);
-    const editorState = this.view!.state.apply(transaction);
-    this.view!.updateState(editorState);
-    if (this.props.editorProps.onChange && transaction.docChanged) {
-      this.props.editorProps.onChange(this.view!);
-    }
-    this.editorState = editorState;
-  };
-
   render() {
-    const editor = <div key="ProseMirror" ref={this.createEditorView} />;
+    const editor = <div key="ProseMirror" ref={this.handleEditorViewRef} />;
     return this.props.render
       ? this.props.render({
           editor,
