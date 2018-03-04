@@ -45,14 +45,18 @@ export default j => {
       .findFirst(j.BlockStatement);
     
     if (block.size() > 0) {
-      block.get().node.body.push(testNode);
+      block.getOrAdd(testNode, context => {
+        return context.find(j.ExpressionStatement, (node) =>
+          node.expression.callee.name === 'it' && node.expression.arguments[0].value === testNode.expression.arguments[0].value
+        );
+      }, false, (node) => block.get().node.body.push(node));
     }
     
     return this;
   }
 
   const addToProgram = function(node, idempCondition) {
-    if (idempCondition(this)) {
+    if (!idempCondition || idempCondition(this)) {
       const program = this.find(j.Program);
       if (program.size() === 0) {
         console.error('Could not find program node');
@@ -74,6 +78,22 @@ export default j => {
     return j(codeString).find(j.Program).get().node.body[0];
   }
 
+  const getOrAdd = function(node, getExisting, useExisting = true, addFn) {
+    const existing = getExisting(this);
+
+    if (existing.size() > 0) {
+      return useExisting ? existing : existing.replaceWith(node);
+    } else {
+      if (addFn) {
+        addFn(node)
+      } else {
+        this.addToProgram(node);
+      }
+    }
+
+    return this.find(node.type, node);
+  }
+
   j.registerMethods({
     findFirst,
     findLast,
@@ -81,5 +101,6 @@ export default j => {
     addTest,
     addToProgram,
     code,
+    getOrAdd,
   });
 };

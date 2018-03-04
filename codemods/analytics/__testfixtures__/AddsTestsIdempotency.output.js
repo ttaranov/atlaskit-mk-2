@@ -28,4 +28,17 @@ describe('analytics', () => {
       version,
     });
   });
+  it('should pass analytics event as last argument to onClick handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<Button onClick={spy} />);
+    wrapper.find('button').simulate('click');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'click',
+      }),
+    );
+  });
 });

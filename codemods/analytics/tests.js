@@ -24,6 +24,27 @@ const contextTest = (j, analyticsConfig) => {
   `);
 }
 
+const propTest = (j, analyticsConfig, prop, action) => {
+  const componentName = analyticsConfig.component;
+
+  return j('').code(`
+
+    it('should pass analytics event as last argument to ${prop} handler', () => {
+      const spy = jest.fn();
+      const wrapper = mount(<${componentName} ${prop}={spy} />);
+      wrapper.find('button').simulate('${action}');
+
+      const analyticsEvent = spy.mock.calls[0][1];
+      expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+      expect(analyticsEvent.payload).toEqual(
+        expect.objectContaining({
+          action: '${action}',
+        }),
+      );
+    });
+  `);
+}
+
 export const parser = 'flow';
 
 /**
@@ -51,17 +72,22 @@ export default (fileInfo, api) => {
     `));
   
     // Add describe block + tests
-  const describeBlock = j(source.code(`
+  const describeBlock = source.getOrAdd(source.code(`
     describe('analytics', () => {});
-  `))
+  `), context => {
+      return context.find(j.CallExpression, (node) =>
+        node.callee.name === 'describe' && node.arguments[0] && node.arguments[0].value === 'analytics'
+      );
+  });
+
+  describeBlock
     .addTest(contextTest(j, analyticsEventConfig));
 
-  source.addToProgram(describeBlock.get().node, (context) => {
-    const existing = context.find(j.CallExpression, (node) =>
-      node.callee.name === 'describe' && node.arguments[0] && node.arguments[0].value === 'analytics'
-    );
-    return existing.size() === 0;
-  });
+  Object.keys(analyticsEventConfig.props).forEach( prop => {
+    const action = analyticsEventConfig.props[prop];
+
+    describeBlock.addTest(propTest(j, analyticsEventConfig, prop, action));
+  })
   
   // Add describe block
   // Add context test
