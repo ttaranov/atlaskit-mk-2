@@ -45,6 +45,36 @@ const propTest = (j, analyticsConfig, prop, action) => {
   `);
 }
 
+const atlaskitTest = (j, analyticsConfig, prop, action) => {
+  const componentName = analyticsConfig.component;
+  const context = analyticsConfig.context;
+
+  return j('').code(`
+
+    it('should fire an atlaskit analytics event on ${action}', () => {
+      const spy = jest.fn();
+      const wrapper = mount(
+        <AnalyticsListener onEvent={spy} channel="atlaskit">
+          <${componentName} />
+        </AnalyticsListener>,
+      );
+
+      wrapper.find(${componentName}).simulate('${action}');
+      const [analyticsEvent, channel] = spy.mock.calls[0];
+
+      expect(channel).toBe('atlaskit');
+      expect(analyticsEvent.payload).toEqual({ action: '${action}' });
+      expect(analyticsEvent.context).toEqual([
+        {
+          component: '${context}',
+          package: name,
+          version,
+        },
+      ]);
+    });
+  `);
+}
+
 export const parser = 'flow';
 
 /**
@@ -65,7 +95,7 @@ export default (fileInfo, api) => {
   const packageJsonPath = getPackageJsonPath(absoluteFilePath);
   source
     .addImport(source.code(`
-      import { withAnalyticsEvents, withAnalyticsContext, AnalyticsContext } from '@atlaskit/analytics-next';
+      import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
     `))
     .addImport(source.code(`
       import { name, version } from '${packageJsonPath}';
@@ -87,7 +117,13 @@ export default (fileInfo, api) => {
     const action = analyticsEventConfig.props[prop];
 
     describeBlock.addTest(propTest(j, analyticsEventConfig, prop, action));
-  })
+  });
+
+  Object.keys(analyticsEventConfig.props).forEach(prop => {
+    const action = analyticsEventConfig.props[prop];
+
+    describeBlock.addTest(atlaskitTest(j, analyticsEventConfig, prop, action));
+  });
   
   // Add describe block
   // Add context test

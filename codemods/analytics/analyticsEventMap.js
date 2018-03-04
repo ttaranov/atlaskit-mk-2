@@ -27,6 +27,16 @@ export default [
     }
   },
   {
+    path: '__testfixtures__/addsTestsMultipleProps',
+    testPath: '__testfixtures__/addsTestsMultipleProps',
+    context: 'button',
+    component: 'Button',
+    props: {
+      onClick: 'click',
+      onChange: 'change',
+    }
+  },
+  {
     path: '__testfixtures__',
     testPath: '__testfixtures__',
     context: 'button',

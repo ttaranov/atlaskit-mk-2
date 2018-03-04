@@ -43,6 +43,20 @@ describe('analytics', () => {
     );
   });
 
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<Button onChange={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
   it('should fire an atlaskit analytics event on click', () => {
     const spy = jest.fn();
     const wrapper = mount(
@@ -56,6 +70,28 @@ describe('analytics', () => {
 
     expect(channel).toBe('atlaskit');
     expect(analyticsEvent.payload).toEqual({ action: 'click' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: Button,
+        package: name,
+        version,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <Button />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(Button).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
     expect(analyticsEvent.context).toEqual([
       {
         component: Button,
