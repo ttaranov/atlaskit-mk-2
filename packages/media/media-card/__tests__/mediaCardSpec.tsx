@@ -22,6 +22,12 @@ const createNoopProvider = () => ({
     }),
 });
 
+const callComponentDidMount = (instance: React.Component) => {
+  if (instance.componentDidMount) {
+    instance.componentDidMount();
+  }
+};
+
 describe('MediaCard', () => {
   const waitUntilCardIsLoaded = (
     card: ShallowWrapper<MediaCardProps, MediaCardState>,
@@ -33,7 +39,7 @@ describe('MediaCard', () => {
     it('should pass down other props', () => {
       const element = shallow(
         <MediaCard appearance="small" provider={createNoopProvider()} />,
-      ) as any;
+      );
       expect(element.props()).toMatchObject({
         appearance: 'small',
       });
@@ -42,9 +48,7 @@ describe('MediaCard', () => {
     it('should pass down the status when we have one', () => {
       const status = 'complete';
 
-      const element = shallow(
-        <MediaCard provider={createNoopProvider()} />,
-      ) as any;
+      const element = shallow(<MediaCard provider={createNoopProvider()} />);
 
       element.setState({ status });
 
@@ -118,7 +122,7 @@ describe('MediaCard', () => {
         <MediaCard provider={provider} />,
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
 
       return waitUntilCardIsLoaded(element).then(() => {
         expect(element.state().metadata).toBe(expectedMetadata);
@@ -142,7 +146,7 @@ describe('MediaCard', () => {
         <MediaCard provider={provider} />,
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
 
       return waitUntilCardIsLoaded(element).then(() => {
         expect(element.state().metadata).toBe(expectedMetadata);
@@ -160,7 +164,7 @@ describe('MediaCard', () => {
         { disableLifecycleMethods: true },
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
 
       expect(onLoadingChange).toHaveBeenCalledTimes(1);
       expect(onLoadingChange).toHaveBeenCalledWith({
@@ -193,7 +197,7 @@ describe('MediaCard', () => {
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
     });
 
     it('should call onLoadingStateChange() with type "complete" when the server has finished processing the media', done => {
@@ -221,7 +225,7 @@ describe('MediaCard', () => {
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
     });
 
     it('should call onLoadingStateChange() with type "error" when the server has errored whilst processing the media', done => {
@@ -250,7 +254,7 @@ describe('MediaCard', () => {
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
       ) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
     });
 
     it('should unsubscribe from the old provider and subscribe to the new provider when the provider changes', () => {
@@ -278,7 +282,7 @@ describe('MediaCard', () => {
         disableLifecycleMethods: true,
       }) as any;
 
-      (element.instance() as MediaCard).componentDidMount();
+      callComponentDidMount(element.instance());
       element.setProps({ provider: secondProvider });
 
       expect(oldUnsubscribe).toHaveBeenCalledTimes(1);
@@ -295,9 +299,8 @@ describe('MediaCard', () => {
         observable: () => Observable.throw(new Error(error)),
       } as any;
       const element = shallow(<MediaCard provider={provider} />) as any;
-      const instance = element.instance() as MediaCard;
 
-      instance.componentDidMount();
+      callComponentDidMount(element.instance());
       expect(element.prop('status')).toEqual('error');
       provider.observable = () => Observable.of(successResponse);
       element.simulate('retry');
@@ -310,7 +313,8 @@ describe('MediaCard', () => {
         observable: () => Observable.throw(new Error('some error')),
       };
       const element = mount(<MediaCard provider={provider} />);
-      const instance = element.instance() as MediaCard;
+      const instance = element.instance();
+      callComponentDidMount(instance);
 
       expect(element.find(CardOverlay).prop('onRetry')).toEqual(
         instance[/* prettier-ignore */ 'onRetry'],

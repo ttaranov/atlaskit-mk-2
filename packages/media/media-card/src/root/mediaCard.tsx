@@ -90,13 +90,19 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     };
   }
 
-  private updateState(props: MediaCardProps): void {
+  private onLoadingChange(loadingChange: OnLoadingChangeState) {
     const {
       onLoadingChange = () => {
         /* do nothing */
       },
     } = this.props;
+    onLoadingChange(loadingChange);
+  }
+
+  private updateState(props: MediaCardProps): void {
     this.unsubscribe();
+    const onLoadingChangeCallback = () =>
+      this.onLoadingChange(this.stateToCardProcessingStatus());
 
     this.setPartialState({ status: 'loading' }, () =>
       this.setPartialState(
@@ -105,25 +111,26 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
             next: metadata => {
               this.setPartialState(
                 { metadata, error: undefined, status: 'processing' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
+                onLoadingChangeCallback,
               );
             },
 
             complete: () => {
               this.setPartialState(
                 { error: undefined, status: 'complete' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
+                onLoadingChangeCallback,
               );
             },
 
             error: error => {
-              this.setPartialState({ error, status: 'error' }, () =>
-                onLoadingChange(this.stateToCardProcessingStatus()),
+              this.setPartialState(
+                { error, status: 'error' },
+                onLoadingChangeCallback,
               );
             },
           }),
         },
-        () => onLoadingChange(this.stateToCardProcessingStatus()),
+        onLoadingChangeCallback,
       ),
     );
   }

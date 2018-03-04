@@ -8,7 +8,10 @@ import {
   CardAction,
   MediaItemDetails,
   MediaCollectionItem,
+  MediaType,
+  FileProcessingStatus,
 } from '@atlaskit/media-core';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
@@ -77,8 +80,44 @@ export interface SharedCardProps {
 }
 
 export interface CardEventProps {
-  readonly onClick?: (result: CardEvent) => void;
+  readonly onClick?: (
+    result: CardEvent,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;
   readonly onLoadingChange?: OnLoadingChangeFunc;
+}
+
+export interface AnalyticsFileAttributes {
+  fileMediatype?: MediaType;
+  fileMimetype?: string;
+  fileStatus?: FileProcessingStatus;
+  fileSize?: number;
+}
+
+export interface AnalyticsLinkAttributes {
+  linkDomain: string;
+}
+
+export interface AnalyticsViewAttributes {
+  viewPreview: boolean;
+  viewActionmenu: boolean;
+  viewSize?: CardAppearance;
+}
+
+export interface CardViewAnalyticsContext {
+  // These fields are requested to be in all UI events. See guidelines:
+  // https://extranet.atlassian.com/display/PData/UI+Events
+  packageVersion: string; // string — in a format like '3.2.1'
+  packageName: string;
+  componentName: string;
+
+  actionSubject: string; // MediaCard
+  actionSubjectId: string | null; // file/link id
+  loadStatus: 'fail' | 'loading_metadata' | 'uploading' | 'complete';
+  type: 'file' | 'link' | 'smart';
+  viewAttributes: AnalyticsViewAttributes;
+  fileAttributes?: AnalyticsFileAttributes;
+  linkAttributes?: AnalyticsLinkAttributes;
 }

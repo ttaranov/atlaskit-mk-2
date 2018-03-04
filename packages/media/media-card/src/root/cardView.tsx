@@ -8,13 +8,16 @@ import {
   UrlPreview,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-
+import { version } from '../../package.json';
 import {
   SharedCardProps,
   CardStatus,
   CardEvent,
   OnSelectChangeFuncResult,
   CardDimensionValue,
+  CardViewAnalyticsContext,
+  AnalyticsLinkAttributes,
+  AnalyticsFileAttributes,
 } from '..';
 import { LinkCard } from '../links';
 import { FileCard } from '../files';
@@ -28,39 +31,70 @@ import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
+import {
+  AnalyticsContext,
+  withAnalyticsEvents,
+  WithCreateAnalyticsEventProps,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumnail';
 
-export interface CardViewProps extends SharedCardProps {
+export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
   readonly resizeMode?: ImageResizeMode;
 
   readonly onRetry?: () => void;
-  readonly onClick?: (result: CardEvent) => void;
+  readonly onClick?: (
+    result: CardEvent,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
 
-  // allow extra props to be passed down to lower views e.g. dataURI to FileCard
-  [propName: string]: any;
+  // FileCardProps
+  readonly dataURI?: string;
+  readonly progress?: number;
+
+  // LinkCardProps
+  readonly details?: FileDetails | UrlPreview;
 }
 
 export interface CardViewState {
+  hasBeenShown: boolean;
+  componentHasMountedAtTime: number;
   elementWidth?: number;
 }
 
-export class CardView extends React.Component<CardViewProps, CardViewState> {
+export type CardViewBaseProps = CardViewOwnProps &
+  WithCreateAnalyticsEventProps & {
+    readonly mediaItemType: MediaItemType;
+  };
+
+export class CardViewBase extends React.Component<
+  CardViewBaseProps,
+  CardViewState
+> {
   // tslint:disable-line:variable-name
-  static defaultProps = {
+  static defaultProps: Partial<CardViewBaseProps> = {
     appearance: 'auto',
   };
 
-  state: CardViewState = {};
+  state: CardViewState = {
+    hasBeenShown: false,
+    componentHasMountedAtTime: 0,
+  };
+
+  componentWillMount() {
+    this.setState({ componentHasMountedAtTime: Date.now() });
+  }
 
   componentDidMount() {
     this.saveElementWidth();
   }
 
-  componentWillReceiveProps(nextProps: CardViewProps) {
+  componentWillReceiveProps(nextProps: CardViewBaseProps) {
     const { selected: currSelected } = this.props;
     const { selectable: nextSelectable, selected: nextSelected } = nextProps;
 
@@ -70,6 +104,17 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
     if (nextSelectable && cs !== ns) {
       this.fireOnSelectChangeToConsumer(ns);
+    }
+
+    if (
+      !this.state.hasBeenShown &&
+      (nextProps.status === 'error' || nextProps.status === 'complete')
+    ) {
+      const loadTime = Date.now() - this.state.componentHasMountedAtTime;
+      this.props
+        .createAnalyticsEvent({ action: 'shown', loadTime })
+        .fire('media');
+      this.setState({ hasBeenShown: true });
     }
   }
 
@@ -118,32 +163,25 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     }
   }
 
-  private get mediaType(): MediaItemType {
-    const { mediaItemType, metadata } = this.props;
-    if (mediaItemType) {
-      return mediaItemType;
-    }
-
-    return isLinkDetails(metadata) ? 'link' : 'file';
-  }
-
   render() {
-    const { onClick, onMouseEnter, mediaType } = this;
-    const { dimensions, appearance } = this.props;
+    const { onClick, onMouseEnter } = this;
+    const { dimensions, appearance, mediaItemType } = this.props;
     const wrapperDimensions = dimensions
       ? dimensions
-      : mediaType === 'file' ? getDefaultCardDimensions(appearance) : undefined;
+      : mediaItemType === 'file'
+        ? getDefaultCardDimensions(appearance)
+        : undefined;
     let card;
 
-    if (mediaType === 'link') {
+    if (mediaItemType === 'link') {
       card = this.renderLink();
-    } else if (mediaType === 'file') {
+    } else if (mediaItemType === 'file') {
       card = this.renderFile();
     }
 
     return (
       <Wrapper
-        mediaItemType={mediaType}
+        mediaItemType={mediaItemType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
         dimensions={wrapperDimensions}
@@ -199,8 +237,12 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
   private onClick = (event: MouseEvent<HTMLDivElement>) => {
     const { onClick, metadata: mediaItemDetails } = this.props;
+    const analyticsEvent = this.props.createAnalyticsEvent({
+      action: 'clicked',
+    });
+    analyticsEvent.clone().fire('media');
     if (onClick) {
-      onClick({ event, mediaItemDetails });
+      onClick({ event, mediaItemDetails }, analyticsEvent);
     }
   };
 
@@ -210,4 +252,124 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       onMouseEnter({ event, mediaItemDetails });
     }
   };
+}
+
+export const CardViewWithAnalyticsEvents = withAnalyticsEvents()(CardViewBase);
+
+const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
+  if (status === 'error') {
+    return 'fail';
+  } else if (status === 'loading' || status === 'processing') {
+    return 'loading_metadata';
+  } else {
+    return status;
+  }
+};
+
+const dummyHrefElement = document.createElement('a');
+
+export class CardView extends React.Component<CardViewOwnProps, CardViewState> {
+  private get mediaItemType(): MediaItemType {
+    const { mediaItemType, metadata } = this.props;
+    if (mediaItemType) {
+      return mediaItemType;
+    }
+
+    return isLinkDetails(metadata) ? 'link' : 'file';
+  }
+
+  private getBaseAnalyticsContext(): CardViewAnalyticsContext {
+    const mediaItemType = this.mediaItemType;
+    const { status, appearance, actions } = this.props;
+    const loadStatus = mapStatusToAnalyticsLoadStatus(status);
+    const hasActionMenuItems = !!(actions && actions.length > 0);
+
+    return {
+      packageVersion: version,
+      packageName: '@atlaskit/media-card',
+      componentName: 'CardView',
+      actionSubject: 'MediaCard',
+      actionSubjectId: null,
+      type: mediaItemType,
+      loadStatus,
+      viewAttributes: {
+        viewPreview: false,
+        viewSize: appearance,
+        viewActionmenu: hasActionMenuItems,
+      },
+    };
+  }
+
+  private getLinkCardAnalyticsContext(
+    metadata: UrlPreview,
+  ): CardViewAnalyticsContext {
+    const analyticsContext = this.getBaseAnalyticsContext();
+
+    dummyHrefElement.href = metadata.url;
+    const hostname = dummyHrefElement.hostname;
+
+    analyticsContext.actionSubjectId = metadata.url;
+    analyticsContext.viewAttributes.viewPreview = !!(
+      metadata.resources &&
+      (metadata.resources.thumbnail || metadata.resources.image)
+    );
+
+    const linkAttributes: AnalyticsLinkAttributes = {
+      linkDomain: hostname,
+    };
+
+    return {
+      ...analyticsContext,
+      linkAttributes,
+    };
+  }
+
+  private getFileCardAnalyticsContext(metadata: FileDetails) {
+    const { dataURI } = this.props;
+    const analyticsContext = this.getBaseAnalyticsContext();
+
+    if (metadata.id) {
+      analyticsContext.actionSubjectId = metadata.id;
+    }
+    analyticsContext.viewAttributes.viewPreview = shouldDisplayImageThumbnail(
+      dataURI,
+      metadata.mediaType,
+    );
+    const fileAttributes: AnalyticsFileAttributes = {
+      fileMediatype: metadata.mediaType,
+      fileSize: metadata.size,
+      fileStatus: metadata.processingStatus,
+      fileMimetype: metadata.mimeType,
+    };
+    return {
+      ...analyticsContext,
+      fileAttributes,
+    };
+  }
+
+  private get analyticsContext(): CardViewAnalyticsContext {
+    if (this.props.metadata) {
+      const metadata = this.props.metadata;
+      if (isLinkDetails(metadata)) {
+        return this.getLinkCardAnalyticsContext(metadata);
+      } else {
+        return this.getFileCardAnalyticsContext(metadata);
+      }
+    } else {
+      return this.getBaseAnalyticsContext();
+    }
+  }
+
+  render() {
+    const mediaItemType = this.mediaItemType;
+
+    return (
+      <AnalyticsContext data={this.analyticsContext}>
+        <CardViewWithAnalyticsEvents
+          {...this.props}
+          mediaItemType={mediaItemType}
+        />
+      </AnalyticsContext>
+    );
+  }
 }
