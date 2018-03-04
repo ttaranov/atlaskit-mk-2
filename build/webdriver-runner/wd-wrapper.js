@@ -77,7 +77,6 @@ export default class Page {
       // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
       keys = ['Shift', 'Insert'];
     } else {
-      keys = ['Command', 'v'];
       keys = ['Shift', 'Insert'];
     }
     return this.browser.setValue(selector, keys);

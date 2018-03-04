@@ -4,15 +4,16 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 // eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
+const __baseUrl__ = `http://localhost:9000`;
 const clipboardHelper = `${
-  global.__baseUrl__
+  __baseUrl__
 }/examples/fabric/editor-core/clipboard-helper`;
 const clipboardInput = '#input';
 const copyAsPlaintextButton = '#copy-as-plaintext';
 const copyAsHTMLButton = '#copy-as-html';
 
 const messageEditor = `${
-  global.__baseUrl__
+  __baseUrl__
 }/examples/fabric/editor-core/message`;
 const editable = `[contenteditable="true"]`;
 
