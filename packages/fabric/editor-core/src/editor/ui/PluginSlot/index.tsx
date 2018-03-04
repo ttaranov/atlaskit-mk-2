@@ -63,7 +63,7 @@ export default class PluginSlot extends React.Component<Props, any> {
       disabled,
     } = this.props;
 
-    if (!items) {
+    if (!items || !editorView) {
       return null;
     }
 

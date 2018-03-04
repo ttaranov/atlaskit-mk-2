@@ -217,15 +217,6 @@ export function setTextSelection(
   view.dispatch(tr);
 }
 
-export function moveCursorToTheEnd(view: EditorView) {
-  const { state } = view;
-  const anchor = Selection.atEnd(state.doc);
-  const validSelection = Selection.findFrom(anchor.$head, -1, true);
-  if (validSelection) {
-    view.dispatch(state.tr.setSelection(validSelection).scrollIntoView());
-  }
-}
-
 /**
  * Determines if content inside a selection can be joined with the previous block.
  * We need this check since the built-in method for "joinUp" will join a orderedList with bulletList.

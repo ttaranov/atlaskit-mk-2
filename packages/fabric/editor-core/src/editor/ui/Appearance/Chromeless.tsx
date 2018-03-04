@@ -75,14 +75,9 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'chromeless';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   private renderChrome = ({ maxContentSize }) => {
     const {
+      editorDOMElement,
       editorView,
       editorActions,
       eventDispatcher,
@@ -105,7 +100,7 @@ export default class Editor extends React.Component<
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
       >
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
@@ -119,6 +114,7 @@ export default class Editor extends React.Component<
             popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
+          {editorDOMElement}
         </ContentArea>
       </ChromelessEditor>
     );
