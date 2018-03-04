@@ -9,3 +9,18 @@ import { name, version } from '../../package.json';
 
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
 const transparent = themed({ light: 'transparent', dark: 'transparent' });
+
+export default withAnalyticsContext({
+  component: 'button',
+  package: name,
+  version: version
+})(withAnalyticsEvents({
+  onClick: createAnalyticsEvent => {
+    const consumerEvent = createAnalyticsEvent({
+      action: 'click',
+    });
+    consumerEvent.clone().fire('atlaskit');
+
+    return consumerEvent;
+  }
+})(withDeprecationWarnings(Button)));

@@ -4,11 +4,8 @@ jest.autoMockOff();
 const defineTest = require('jscodeshift/dist/testUtils').defineTest;
 
 describe('analytics', () => {
-  defineTest(__dirname, 'index', null, 'AddsCorrectImports');
-  defineTest(__dirname, 'index', null, 'NoDuplicateImportStatements');
-  defineTest(__dirname, 'index', null, 'NoDuplicateImportSpecifiers');
-  defineTest(__dirname, 'index', null, 'WrapsDefaultExportExpression');
-  defineTest(__dirname, 'index', null, 'WrapsDefaultExportDeclaration');
-  defineTest(__dirname, 'index', null, 'noDuplicateHocsBoth');
-  defineTest(__dirname, 'index', null, 'noDuplicateHocsEvents');
+  defineTest(__dirname, 'index', null, 'AddsHocsToDeclaration');
+  defineTest(__dirname, 'index', null, 'AddsHocsToExpression');
+  defineTest(__dirname, 'index', null, 'AddsHocsToDeclarationIdempotency');
+  defineTest(__dirname, 'index', null, 'AddsHocsToExpressionIdempotency');
 });
