@@ -87,7 +87,7 @@ export function canMoveUp(state: EditorState): boolean {
         mediaAncestorNode && mediaAncestorNode.type.name === 'paragraph'
       );
     } else if (selection.node.type.name === 'mediaGroup') {
-      const mediaGroupAncestorNode = doc.nodeAt(selection.$anchor.before());
+      const mediaGroupAncestorNode = selection.$anchor.nodeBefore;
       return !!(
         mediaGroupAncestorNode &&
         mediaGroupAncestorNode.type.name === 'paragraph'

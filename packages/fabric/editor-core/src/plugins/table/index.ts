@@ -425,8 +425,7 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           if (
             !tableNode ||
             !isElementInTableCell(element) ||
-            element.matches('td .image') ||
-            element.matches('td p')
+            element.matches('table .image, table p, table .image div')
           ) {
             return false;
           }
