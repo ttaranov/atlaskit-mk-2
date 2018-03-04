@@ -20,15 +20,26 @@ const Button = ({ onClick, children }: Props) => (
 it('should create and fire analytics event', () => {
   const onEvent = jest.fn();
   const createAndFireOnAtlaskit = createAndFireEvent('atlaskit');
+  // written by the library
   const ButtonWithAnalytics = withAnalyticsEvents({
     onClick: createAndFireOnAtlaskit({ action: 'click' }),
   })(Button);
+  // written by the consumer
+  const AppButton = () => (
+    <ButtonWithAnalytics onClick={(e, event) => event && event.fire()}>
+      Save
+    </ButtonWithAnalytics>
+  );
   mount(
-    <AnalyticsListener channel="atlaskit" onEvent={onEvent}>
-      <ButtonWithAnalytics>Clicky</ButtonWithAnalytics>
+    <AnalyticsListener onEvent={onEvent}>
+      <div>
+        <AnalyticsListener channel="atlaskit" onEvent={onEvent}>
+          <AppButton />
+        </AnalyticsListener>,
+      </div>
     </AnalyticsListener>,
   )
     .find(Button)
     .simulate('click');
-  expect(onEvent).toHaveBeenCalled();
+  expect(onEvent).toHaveBeenCalledTimes(2);
 });
