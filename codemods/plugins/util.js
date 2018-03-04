@@ -1,3 +1,8 @@
+
+/**
+ * This file contains a Jscodeshift Util plugin that adds some helper methods to the jscodeshift
+ * collection object.
+ */
 export default j => {
   const findFirst = function (type) {
     const found = this.find(type);
@@ -59,11 +64,22 @@ export default j => {
     return this;
   }
 
+  // jscodeshift.template.statement is buggy when using nested template literals
+  // so lets make our own here
+  // Can be used like so: <Jscodeshift Collection>.code('my code here')
+  // Calling jscodeshift on an empty string is one way to get a jscodeshift
+  // collection if you don't already have one, e.g. j(''). Unfortunately it is
+  // not exposed via the jscodeshift API directly.
+  const code = function(codeString) {
+    return j(codeString).find(j.Program).get().node.body[0];
+  }
+
   j.registerMethods({
     findFirst,
     findLast,
     addImport,
     addTest,
     addToProgram,
+    code,
   });
 };

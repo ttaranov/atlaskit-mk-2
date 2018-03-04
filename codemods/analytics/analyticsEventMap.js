@@ -1,29 +1,36 @@
 export default [
   {
     path: 'avatar/src/components/Avatar.js',
-    testPath: 'avatar/src/component/__tests__/Avatar.js',
+    testPath: 'avatar/src/components/__tests__/Avatar.js',
     context: 'avatar',
+    component: 'Avatar',
     props: {
       onClick: 'click'
     }
   },
   {
     path: 'blanket/src/Blanket.js',
+    testPath: 'blanket/src/__tests__/blanket.js',
     context: 'blanket',
+    component: 'Blanket',
     props: {
       onBlanketClicked: 'click'
     }
   },
   {
     path: 'button/src/components/Button.js',
+    testPath: 'button/src/__tests__/testDefaultBehaviour.js',
     context: 'button',
+    component: 'Button',
     props: {
       onClick: 'click'
     }
   },
   {
     path: '__testfixtures__',
+    testPath: '__testfixtures__',
     context: 'button',
+    component: 'Button',
     props: {
       onClick: 'click'
     }

@@ -1,13 +1,9 @@
 // @flow
+import path from 'path';
 import UtilPlugin from '../plugins/util';
-import analyticsEventMap from './analyticsEventMap';
-import addTests from './tests';
 
-const getMapEntryFromPath = (filepath) => (
-  analyticsEventMap.find( eventConfig => (
-    filepath.indexOf(eventConfig.path) > -1
-  ))
-);
+import { getMapEntryFromPath, getPackageJsonPath } from './util';
+import addTests from './tests';
 
 const createImport = (j, specifierNames, source) => {
   const specifiers = specifierNames.map( name =>
@@ -74,43 +70,39 @@ module.exports = (fileInfo: any, api: any) => {
   const { statement } = j.template;
   j.use(UtilPlugin);
 
-  const analyticsEventConfig = getMapEntryFromPath(fileInfo.path);
+  const analyticsEventConfig = getMapEntryFromPath(fileInfo.path, 'path');
   if (!analyticsEventConfig) {
     return null;
   }
+  const source = j(fileInfo.source);
   
-  const sourceWithImports = j(fileInfo.source)
+  const absoluteFilePath = path.resolve(process.cwd(), fileInfo.path);
+  const packageJsonPath = getPackageJsonPath(absoluteFilePath);
+
+  source
     // Add relevant imports
-    .addImport(statement`
+    .addImport(source.code(`
       import { withAnalyticsEvents, withAnalyticsContext } from '@atlaskit/analytics-next';
-    `)
-    .addImport(statement`
-      import { name, version } from '../../package.json';
-    `)
-    .getAST();
-
-  const sourceWithHOC = j(sourceWithImports)
-      // Wrap default export with HOCs
-      .find(j.ExportDefaultDeclaration)
-      .map( path => {
-        if (j.Expression.check(path.node.declaration)) {
-          // If we're an expression, we can just wrap the current default export
-          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
-        } else if (j.Declaration.check(path.node.declaration)) {
-          // Else if we're a declaration, we must extract the declaration out of the export
-          // and then wrap the declaration with a HOC within the export
-          const declarationId = path.node.declaration.id;
-          path.insertBefore(path.node.declaration);
-          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);    
-        }
-        return path;
-      }).getAST();
-
-  // Side-effect time!
-  // Add tests to a completely different file than the one currently being modded
-  addTests({ path: fileInfo.path }, { jscodeshift: j }, {}, false);
+    `))
+    .addImport(source.code(`
+      import { name, version } from '${packageJsonPath}';
+    `))
+    .find(j.ExportDefaultDeclaration)
+    .map( path => {
+      if (j.Expression.check(path.node.declaration)) {
+        // If we're an expression, we can just wrap the current default export
+        path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
+      } else if (j.Declaration.check(path.node.declaration)) {
+        // Else if we're a declaration, we must extract the declaration out of the export
+        // and then wrap the declaration with a HOC within the export
+        const declarationId = path.node.declaration.id;
+        path.insertBefore(path.node.declaration);
+        path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);    
+      }
+      return path;
+    });
     
   // Print source
-  return j(sourceWithHOC).toSource({ quote: 'single' });
+  return source.toSource({ quote: 'single' });
 };
 module.exports.parser = 'flow';
