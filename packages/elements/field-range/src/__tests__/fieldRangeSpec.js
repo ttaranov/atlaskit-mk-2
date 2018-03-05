@@ -41,6 +41,12 @@ describe('FieldRange', () => {
       const input = fieldRange.find('input');
       expect(input.props().value).toBe('20.12');
     });
+
+    it('should not be disabled by default', () => {
+      fieldRange.setProps({ disabled: false });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeFalsy();
+    });
   });
 
   describe('with defined props', () => {
@@ -76,6 +82,18 @@ describe('FieldRange', () => {
       fieldRange.setProps({ value: 15 });
       const input = fieldRange.find('input');
       expect(input.props().value).toBe('15');
+    });
+
+    it('should be disabled if disabled prop is truthy', () => {
+      fieldRange.setProps({ disabled: true });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeTruthy();
+    });
+
+    it('should not be disabled if disabled prop is falsy', () => {
+      fieldRange.setProps({ disabled: false });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeFalsy();
     });
   });
 });
