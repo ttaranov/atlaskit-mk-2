@@ -502,9 +502,31 @@ describe('UploadService', () => {
 
       resumable.fire('fileSuccess', resumableFile as any, '');
 
-      expect(emitter.emit).not.toHaveBeenCalled();
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
       expect(uploadService['finalizeFile']).toHaveBeenCalledTimes(1);
       expect(uploadService['finalizeFile']).toHaveBeenCalledWith(resumableFile);
+    });
+
+    it('should emit a 100% upload percentage when the file has been uploaded', () => {
+      const { resumable, resumableFile, emitter } = setup({
+        uploadParams: { collection, autoFinalize: true },
+      });
+
+      resumable.fire('fileSuccess', resumableFile as any, '');
+
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(emitter.emit).toBeCalledWith(
+        'file-uploading',
+        expect.objectContaining({
+          progress: expect.objectContaining({
+            absolute: 1000,
+            max: 1000,
+            overallTime: 0,
+            portion: 1,
+            timeLeft: 0,
+          }),
+        }),
+      );
     });
 
     it('should emit "file-finalize-ready" if finalizeFile in uploadParams is false', () => {
@@ -514,7 +536,7 @@ describe('UploadService', () => {
 
       resumable.fire('fileSuccess', resumableFile as any, '');
 
-      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(emitter.emit).toHaveBeenCalledTimes(2);
       expect(emitter.emit).toHaveBeenCalledWith(
         'file-finalize-ready',
         expect.objectContaining({
@@ -525,7 +547,7 @@ describe('UploadService', () => {
       );
       expect(uploadService['finalizeFile']).not.toHaveBeenCalled();
 
-      const { finalize } = (emitter.emit as jest.Mock<void>).mock.calls[0][1];
+      const { finalize } = (emitter.emit as jest.Mock<void>).mock.calls[1][1];
 
       finalize();
 
