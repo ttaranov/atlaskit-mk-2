@@ -22,17 +22,21 @@ const sliderThumbFocusedStyle = css`
   box-sizing: content-box;
 `;
 
-const sliderTrackStyle = css`
-  backgound: ${colors.N30A};
+const sliderDefaultBackground = css`
   background: ${props =>
     `linear-gradient(${track.default.lower}, ${track.default.lower}) 0/ ${
       props.value
     }% 100% no-repeat ${track.default.upper}`};
+`;
+
+const sliderTrackStyle = css`
+  backgound: ${colors.N30A};
   border-radius: ${sliderLineThickness / 2}px;
   border: 0;
   cursor: pointer;
   height: ${sliderLineThickness}px;
   width: 100%;
+  ${sliderDefaultBackground};
 `;
 
 const sliderTrackFocusedStyle = css`
@@ -49,17 +53,21 @@ const chromeRangeInputStyle = css`
     ${sliderThumbStyle};
   }
 
+  &:focus::-webkit-slider-thumb {
+    margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2 + sliderThumbBorderThickness / 2}px;
+    ${sliderThumbFocusedStyle};
+  }
+
   &::-webkit-slider-runnable-track {
     ${sliderTrackStyle};
   }
 
-  &:focus::-webkit-slider-thumb {
-    ${sliderThumbFocusedStyle};
+  &:focus::-webkit-slider-runnable-track {
+    ${sliderDefaultBackground};
   }
 
-  &:focus::-webkit-slider-runnable-track {
-  &:hover::-webkit-slider-runnable-track,
-  &:active::-webkit-slider-runnable-track {
+  &:active::-webkit-slider-runnable-track,
+  &:hover::-webkit-slider-runnable-track {
     ${sliderTrackFocusedStyle};
   }
 `;
@@ -70,15 +78,24 @@ const firefoxRangeInputStyle = css`
   }
 
   &::-moz-range-thumb {
-    ${sliderThumbStyle} border:0;
+    border: 0;
+    ${sliderThumbStyle};
+  }
+
+  &:focus::-moz-range-thumb {
+    ${sliderThumbFocusedStyle};
   }
 
   &::-moz-range-track {
     ${sliderTrackStyle};
   }
 
-  &:hover::-moz-range-track,
   &:focus::-moz-range-track {
+    ${sliderDefaultBackground};
+  }
+
+  &:active::-moz-range-track,
+  &:hover::-moz-range-track {
     ${sliderTrackFocusedStyle};
   }
 `;
@@ -87,6 +104,7 @@ const IERangeInputStyle = css`
   &::-ms-thumb {
     ${sliderThumbStyle};
   }
+
   &::-ms-track {
     background: transparent;
     border-color: transparent;
@@ -95,24 +113,30 @@ const IERangeInputStyle = css`
     height: ${sliderLineThickness}px;
     width: 100%;
   }
+
   &::-ms-fill-lower {
     background: ${track.default.lower};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
+
   &::-ms-fill-upper {
     background: ${track.default.upper};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
+
   &:focus::-ms-thumb {
     ${sliderThumbFocusedStyle};
   }
-  &:focus::-ms-fill-lower {
+
+  &:active::-ms-fill-lower,
+  &:hover::-ms-fill-lower {
     background: ${track.hover.lower};
   }
-  &:hover::-ms-fill-upper,
-  &:focus::-ms-fill-upper {
+
+  &:active::-ms-fill-upper,
+  &:hover::-ms-fill-upper {
     background: ${track.hover.upper};
   }
 `;
