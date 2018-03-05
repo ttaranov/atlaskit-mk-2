@@ -90,8 +90,6 @@ class ExtensionNode extends ContentNodeView implements NodeView {
         }}
         render={({ extensionState = {} as ExtensionState }) => {
           const { element } = extensionState;
-          const isSelected =
-            (this.domRef && element && this.domRef.contains(element)) || false;
 
           return (
             <Extension
@@ -100,14 +98,32 @@ class ExtensionNode extends ContentNodeView implements NodeView {
               providerFactory={this.providerFactory}
               handleContentDOMRef={this.handleRef}
               extensionHandlers={this.extensionHandlers}
-              isSelected={isSelected}
-              element={extensionState.element}
+              isSelected={this.isSelected(element)}
+              element={element}
             />
           );
         }}
       />,
       this.domRef,
     );
+  }
+
+  private isSelected(element) {
+    if (!this.domRef || !element) {
+      return false;
+    }
+
+    if (
+      this.domRef.contains(element) &&
+      // selecting an extension within a bodied extension would pass the
+      // case above making the whole tree of extensions selected. To work
+      // around it we rely on the ProseMirror selection;
+      this.domRef.classList.contains('ProseMirror-selectednode')
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }
 
