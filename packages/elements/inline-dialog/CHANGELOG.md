@@ -1,5 +1,8 @@
 # @atlaskit/inline-dialog
 
+## 5.3.1
+- [patch] Removed focus ring from inline-dialogs focused via the mouse [a17adde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a17adde)
+
 ## 5.3.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 
