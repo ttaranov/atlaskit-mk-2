@@ -400,7 +400,7 @@ export class UploadService {
     const progress = new SmartMediaProgress(
       file.size,
       file.size,
-      file.creationDate || Date.now() - 1,
+      file.creationDate,
       Date.now(),
     );
 
