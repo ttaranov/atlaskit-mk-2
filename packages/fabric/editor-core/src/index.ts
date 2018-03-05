@@ -26,7 +26,7 @@ export {
 // Used in editor-test-helpers
 export { keyCodes } from './keymaps';
 export { reactNodeViewPlugins } from './plugins';
-export { createEditor } from './editor/create-editor';
+export { ReactEditorView } from './editor/create-editor';
 
 export {
   getDefaultPluginsList,
