@@ -70,10 +70,10 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
     const { type } = node;
 
     return (
-      <Wrapper>
+      <Wrapper onClick={onClick}>
         {isSelected && this.renderToolbar()}
 
-        <TitleBar onSelect={onClick} node={node} isSelected={isSelected} />
+        <TitleBar onSelect={onSelect} node={node} isSelected={isSelected} />
 
         {type === 'bodiedExtension' && <div>{this.renderBody()}</div>}
       </Wrapper>
