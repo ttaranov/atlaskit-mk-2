@@ -6,7 +6,7 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
+import { selectedToneStorageKey } from '../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -560,21 +560,10 @@ export class EmojiResource extends AbstractResource<
 
   calculateDynamicCategories(): Promise<string[]> {
     if (this.isLoaded()) {
-      return this.isCustomCategoryRequired().then(required => {
-        return this.emojiRepository.getDynamicCategoryList(required);
-      });
+      return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
-  }
-
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    if (!this.emojiRepository) {
-      return Promise.resolve(false);
-    }
-
-    const customEmoji = this.emojiRepository.findInCategory(customCategory);
-    return Promise.resolve(customEmoji.length > 0);
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {
