@@ -11,15 +11,18 @@ import {
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
-import { MediaPicker, Popup } from '../src';
+import { MediaPicker, Popup, MediaProgress } from '../src';
 import {
   PopupContainer,
   PopupHeader,
   PopupEventsWrapper,
   PreviewImage,
+  UploadingFilesWrapper,
+  FileProgress,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
 
+export type InflightUpload = { [key: string]: {} };
 export interface PopupWrapperState {
   isAutoFinalizeActive: boolean;
   isFetchMetadataActive: boolean;
@@ -27,7 +30,7 @@ export interface PopupWrapperState {
   closedTimes: number;
   events: any[];
   authEnvironment: AuthEnvironment;
-  inflightUploads: string[];
+  inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
 }
 
@@ -41,7 +44,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     closedTimes: 0,
     events: [],
     authEnvironment: 'client',
-    inflightUploads: [],
+    inflightUploads: {},
     hasTorndown: false,
   };
 
@@ -87,19 +90,24 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     if (eventName === 'uploads-start') {
-      const newInflightUploads = data.files.map(file => file.id);
+      const newInflightUploads = data.files.reduce((prev, { id }) => {
+        prev[id] = {};
+
+        return prev;
+      }, {});
 
       this.setState({
-        inflightUploads: [...this.state.inflightUploads, ...newInflightUploads],
+        inflightUploads: {
+          ...this.state.inflightUploads,
+          ...newInflightUploads,
+        },
       });
     }
 
-    if (eventName === 'upload-processing') {
-      const processingFileId = data.file.id;
-      const inflightUploads = this.state.inflightUploads.filter(
-        fileId => fileId !== processingFileId,
-      );
-
+    if (eventName === 'upload-status-update') {
+      const { inflightUploads } = this.state;
+      const id = data.file.id;
+      inflightUploads[id] = data.progress;
       this.setState({ inflightUploads });
     }
 
@@ -218,9 +226,34 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   onCancelUpload = () => {
     const { inflightUploads } = this.state;
 
-    inflightUploads.forEach(uploadId => this.popup.cancel(uploadId));
+    Object.keys(inflightUploads).forEach(uploadId =>
+      this.popup.cancel(uploadId),
+    );
 
-    this.setState({ inflightUploads: [] });
+    this.setState({ inflightUploads: {} });
+  };
+
+  renderUploadingFiles = () => {
+    const { inflightUploads } = this.state;
+    const keys = Object.keys(inflightUploads);
+    if (!keys.length) return;
+
+    const uploadingFiles = keys.map(id => {
+      const progress = inflightUploads[id].portion;
+
+      return (
+        <div key={id}>
+          {id} <FileProgress value={progress || 0} max="1" /> : ({progress})
+        </div>
+      );
+    });
+
+    return (
+      <UploadingFilesWrapper>
+        <h1>Uploading Files</h1>
+        {uploadingFiles}
+      </UploadingFilesWrapper>
+    );
   };
 
   render() {
@@ -234,7 +267,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       inflightUploads,
       hasTorndown,
     } = this.state;
-    const isCancelButtonDisabled = inflightUploads.length === 0;
+    const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (
       <PopupContainer>
@@ -284,6 +317,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           />
           Closed times: {closedTimes}
         </PopupHeader>
+        {this.renderUploadingFiles()}
         <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
       </PopupContainer>
     );
