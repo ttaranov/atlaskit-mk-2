@@ -1122,110 +1122,66 @@ describe('table plugin', () => {
     });
 
     it('should not add a paragraph, if there already is a paragraph below when arrow down is pressed', () => {
-      const { editorView } = editor(
-        doc(
-          table(
-            tr(
-              td()(
-                mediaGroup(
-                  media({
-                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
-                    type: 'file',
-                    collection: 'MediaServicesSample',
-                    __fileMimeType: 'image/jpeg',
-                  })(),
-                ),
-                p('1'),
-                p('2'),
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
               ),
-              tdEmpty,
-              tdEmpty,
+              p('1'),
+              p('2'),
             ),
-            tr(td()(p('3')), tdEmpty, tdEmpty),
+            tdEmpty,
+            tdEmpty,
           ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
         ),
       );
+
+      const { editorView } = editor(docWithTable);
 
       setNodeSelection(editorView, 4);
       sendKeyToPm(editorView, 'ArrowDown');
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table(
-            tr(
-              td()(
-                mediaGroup(
-                  media({
-                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
-                    type: 'file',
-                    collection: 'MediaServicesSample',
-                    __fileMimeType: 'image/jpeg',
-                  })(),
-                ),
-                p('1'),
-                p('2'),
-              ),
-              tdEmpty,
-              tdEmpty,
-            ),
-            tr(td()(p('3')), tdEmpty, tdEmpty),
-          ),
-        ),
-      );
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
       editorView.destroy();
     });
 
     it('should not add a paragraph, if there already is a paragraph above when arrow up is pressed', () => {
-      const { editorView } = editor(
-        doc(
-          table(
-            tr(
-              td()(
-                p('1'),
-                p('2'),
-                mediaGroup(
-                  media({
-                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
-                    type: 'file',
-                    collection: 'MediaServicesSample',
-                    __fileMimeType: 'image/jpeg',
-                  })(),
-                ),
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              p('1'),
+              p('2'),
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
               ),
-              tdEmpty,
-              tdEmpty,
             ),
-            tr(td()(p('3')), tdEmpty, tdEmpty),
+            tdEmpty,
+            tdEmpty,
           ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
         ),
       );
+
+      const { editorView } = editor(docWithTable);
 
       setNodeSelection(editorView, 6);
       sendKeyToPm(editorView, 'ArrowUp');
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table(
-            tr(
-              td()(
-                p('1'),
-                p('2'),
-                mediaGroup(
-                  media({
-                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
-                    type: 'file',
-                    collection: 'MediaServicesSample',
-                    __fileMimeType: 'image/jpeg',
-                  })(),
-                ),
-              ),
-              tdEmpty,
-              tdEmpty,
-            ),
-            tr(td()(p('3')), tdEmpty, tdEmpty),
-          ),
-        ),
-      );
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
       editorView.destroy();
     });
   });
