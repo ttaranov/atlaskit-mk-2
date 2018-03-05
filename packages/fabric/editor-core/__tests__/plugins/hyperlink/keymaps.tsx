@@ -14,14 +14,11 @@ import {
   code,
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink - keymap', () => {
   const editor = (doc: any, editorProps = {}) =>
     createEditor({
       doc,
-      editorPlugins: [hyperlinkPlugin, textFormatting()],
       editorProps,
       pluginKey: hyperlinkPluginKey,
     });

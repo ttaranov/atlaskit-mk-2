@@ -15,7 +15,6 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -33,7 +32,6 @@ describe('mediaSingle - keymap', () => {
     return createEditor({
       doc,
       editorPlugins: [
-        hyperlinkPlugin,
         mediaPlugin({ provider: mediaProvider, allowMediaSingle: true }),
         codeBlockPlugin,
       ],

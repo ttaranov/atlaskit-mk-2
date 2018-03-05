@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 6.1.1
+- [patch] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
 ## 6.1.0
 - [minor] Adding renderEditor prop [e2485f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2485f7)
 

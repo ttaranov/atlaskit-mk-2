@@ -14,7 +14,6 @@ import {
   createEditor,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import textFormatting from '../../src/editor/plugins/text-formatting';
 import panelPlugin from '../../src/editor/plugins/panel';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
@@ -23,7 +22,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [textFormatting(), panelPlugin],
+      editorPlugins: [panelPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

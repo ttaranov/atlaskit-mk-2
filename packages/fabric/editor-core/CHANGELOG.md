@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 62.5.3
+- [patch] fix nodeViews with multiline content [af4d057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af4d057)
+
+## 62.5.2
+- [patch] ED-3873 fix horizontal rule and codeblock in help [6a3161e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3161e)
+
+## 62.5.1
+- [patch] Remove keymap for link from help dialog in message editor. [0a47f8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a47f8e)
+
+## 62.5.0
+- [minor] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
 ## 62.4.3
 - [patch] Add autoformatting of atlassian product [2173e92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2173e92)
 

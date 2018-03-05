@@ -85,7 +85,7 @@ const SaveAndCancelButtons = props => (
         props.editorActions
           .getValue()
           // tslint:disable-next-line:no-console
-          .then(value => console.log(value.toJSON()))
+          .then(value => console.log(value))
       }
     >
       Publish
@@ -139,9 +139,7 @@ export default class Example extends React.Component<Props, State> {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}

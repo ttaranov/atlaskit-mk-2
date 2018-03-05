@@ -27,7 +27,7 @@ const AkModalDialog: React.ComponentClass<any> = Modal;
 export interface Format {
   name: string;
   type: string;
-  keymap?: keymaps.Keymap;
+  keymap?: Function;
   autoFormatting?: Function;
 }
 
@@ -35,7 +35,7 @@ export const formatting: Format[] = [
   {
     name: 'Bold',
     type: 'strong',
-    keymap: keymaps.toggleBold,
+    keymap: () => keymaps.toggleBold,
     autoFormatting: () => (
       <span>
         <CodeLg>**Bold**</CodeLg>
@@ -45,7 +45,7 @@ export const formatting: Format[] = [
   {
     name: 'Italic',
     type: 'em',
-    keymap: keymaps.toggleItalic,
+    keymap: () => keymaps.toggleItalic,
     autoFormatting: () => (
       <span>
         <CodeLg>*Italic*</CodeLg>
@@ -55,12 +55,12 @@ export const formatting: Format[] = [
   {
     name: 'Underline',
     type: 'underline',
-    keymap: keymaps.toggleUnderline,
+    keymap: () => keymaps.toggleUnderline,
   },
   {
     name: 'Strikethrough',
     type: 'strike',
-    keymap: keymaps.toggleStrikethrough,
+    keymap: () => keymaps.toggleStrikethrough,
     autoFormatting: () => (
       <span>
         <CodeLg>~~strikethrough~~</CodeLg>
@@ -88,7 +88,7 @@ export const formatting: Format[] = [
   {
     name: 'Numbered list',
     type: 'orderedList',
-    keymap: keymaps.toggleOrderedList,
+    keymap: () => keymaps.toggleOrderedList,
     autoFormatting: () => (
       <span>
         <CodeSm>1.</CodeSm> + <CodeLg>space</CodeLg>
@@ -98,7 +98,7 @@ export const formatting: Format[] = [
   {
     name: 'Bulleted list',
     type: 'bulletList',
-    keymap: keymaps.toggleBulletList,
+    keymap: () => keymaps.toggleBulletList,
     autoFormatting: () => (
       <span>
         <CodeSm>*</CodeSm> + <CodeLg>space</CodeLg>
@@ -108,7 +108,7 @@ export const formatting: Format[] = [
   {
     name: 'Quote',
     type: 'blockquote',
-    keymap: keymaps.toggleBlockQuote,
+    keymap: () => keymaps.toggleBlockQuote,
     autoFormatting: () => (
       <span>
         <CodeLg>></CodeLg> + <CodeLg>space</CodeLg>
@@ -120,14 +120,14 @@ export const formatting: Format[] = [
     type: 'codeBlock',
     autoFormatting: () => (
       <span>
-        <CodeLg>```</CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>```</CodeLg>
       </span>
     ),
   },
   {
     name: 'Divider',
-    type: 'hardBreak',
-    keymap: keymaps.insertRule,
+    type: 'rule',
+    keymap: () => keymaps.insertRule,
     autoFormatting: () => (
       <span>
         <CodeLg>---</CodeLg>
@@ -137,7 +137,8 @@ export const formatting: Format[] = [
   {
     name: 'Link',
     type: 'link',
-    keymap: keymaps.addLink,
+    keymap: ({ appearance }) =>
+      appearance && appearance !== 'message' ? keymaps.addLink : undefined,
     autoFormatting: () => (
       <span>
         <CodeLg>[Link](http://a.com)</CodeLg>
@@ -147,7 +148,7 @@ export const formatting: Format[] = [
   {
     name: 'Code',
     type: 'code',
-    keymap: keymaps.toggleCode,
+    keymap: () => keymaps.toggleCode,
     autoFormatting: () => (
       <span>
         <CodeLg>`code`</CodeLg>
@@ -194,7 +195,7 @@ export const formatting: Format[] = [
 
 export const getSupportedFormatting = (schema: Schema): Format[] => {
   return formatting.filter(
-    ({ type }) => schema.nodes[type] || schema.marks[type],
+    format => schema.nodes[format.type] || schema.marks[format.type],
   );
 };
 
@@ -224,6 +225,7 @@ export const getComponentFromKeymap = (keymap): any => {
 export interface Props {
   editorView: EditorView;
   isVisible: boolean;
+  appearance?: string;
 }
 
 // tslint:disable-next-line:variable-name
@@ -285,16 +287,19 @@ export default class HelpDialog extends React.Component<Props, any> {
             <ColumnLeft>
               <Title>Text Formatting</Title>
               <div>
-                {this.formatting.map(
-                  form =>
-                    form.keymap &&
-                    form.keymap[browser.mac ? 'mac' : 'windows'] && (
-                      <Row key={`textFormatting-${form.name}`}>
-                        <span>{form.name}</span>
-                        {getComponentFromKeymap(form.keymap)}
-                      </Row>
-                    ),
-                )}
+                {this.formatting
+                  .filter(form => {
+                    const keymap = form.keymap && form.keymap(this.props);
+                    return keymap && keymap[browser.mac ? 'mac' : 'windows'];
+                  })
+                  .map(form => (
+                    <Row key={`textFormatting-${form.name}`}>
+                      <span>{form.name}</span>
+                      {getComponentFromKeymap(
+                        form.keymap!({ appearance: this.props.appearance }),
+                      )}
+                    </Row>
+                  ))}
               </div>
             </ColumnLeft>
             <ColumnRight>
