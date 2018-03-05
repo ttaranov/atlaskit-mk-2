@@ -1,5 +1,16 @@
 # @atlaskit/editor-common
 
+## 6.3.6
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
+## 6.3.5
+- [patch] fix tables in json schema [4b67c37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b67c37)
+
+## 6.3.4
+
+## 6.3.3
+- [patch] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
 ## 6.3.2
 - [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
 

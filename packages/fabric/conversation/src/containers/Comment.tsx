@@ -8,6 +8,7 @@ import { State } from '../internal/store';
 export interface Props extends SharedProps {
   comment: CommentType;
   conversationId: string;
+  containerId?: string;
   renderComment: (props: any) => JSX.Element;
 }
 

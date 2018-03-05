@@ -17,10 +17,7 @@ const ResizerInner = styled.div`
   right: -${resizerClickableWidth}px;
   width: ${resizerClickableWidth}px;
 
-  &:hover::before {
-    background: ${unthemedColors.resizer};
-  }
-  &:before {
+  &::before {
     content: '';
     height: 100%;
     left: -${resizerVisibleWidth / 2}px;
@@ -28,6 +25,9 @@ const ResizerInner = styled.div`
     transition: background-color ${animationTimeUnitless + 100}ms ease-in-out
       ${animationTimeUnitless}ms;
     width: ${resizerVisibleWidth}px;
+  }
+  &:hover::before {
+    background: ${unthemedColors.resizer};
   }
 `;
 

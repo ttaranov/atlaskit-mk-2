@@ -1,4 +1,11 @@
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes } from 'react';
 import {
   akZIndexBlanket,
   akZIndexDialog,
@@ -66,7 +73,7 @@ export const ContentWrapper = styled.div`
   padding: 20px 5%;
   border-bottom-right-radius: ${akBorderRadius};
   overflow: auto;
-  box-shadow: inset 0px 2px 0px 0px ${akColorN30};
+  box-shadow: inset 0 2px 0 0 ${akColorN30};
   position: relative;
   width: 90%;
 `;
@@ -142,7 +149,7 @@ export const CodeMd = styled.span`
 // tslint:disable-next-line:variable-name
 export const CodeLg = styled.span`
   background-color: ${akColorN20};
-  codelg: ${akBorderRadius};
+  border-radius: ${akBorderRadius};
   display: inline-block;
   height: 24px;
   line-height: 24px;

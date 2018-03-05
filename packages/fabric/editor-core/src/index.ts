@@ -27,7 +27,7 @@ export {
 
 export { keyCodes } from './keymaps';
 export { reactNodeViewPlugins } from './plugins';
-export { createEditor } from './editor/create-editor';
+export { ReactEditorView } from './editor/create-editor';
 export {
   getDefaultPluginsList,
 } from './editor/create-editor/create-plugins-list';
@@ -47,9 +47,7 @@ export {
   ExtensionType,
 } from './editor/plugins/macro';
 
-export {
-  CollabEditProvider,
-} from './editor/plugins/collab-edit';
+export { CollabEditProvider } from './editor/plugins/collab-edit';
 
 export {
   EmojiProvider,
@@ -63,10 +61,8 @@ export {
   MediaState,
 } from './plugins/media';
 
-export {
-  MediaOptions,
-} from './editor/plugins/media';
-  
+export { MediaOptions } from './editor/plugins/media';
+
 export {
   AbstractMentionResource,
   MentionProvider,

@@ -46,7 +46,7 @@ const defaultNavGroups = [
     title: 'Resources',
     items: [
       {
-        to: 'https://bitbucket.org/atlassian/atlaskit',
+        to: 'https://bitbucket.org/atlassian/atlaskit-mk-2',
         title: 'Repository',
         icon: <BitbucketIcon label="Repository" />,
         external: true,

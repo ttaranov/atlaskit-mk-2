@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "11.5.4",
+  "version": "11.5.6",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -27,7 +27,8 @@
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.9.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^1.0.0"
+    "prosemirror-model": "^1.0.0",
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"

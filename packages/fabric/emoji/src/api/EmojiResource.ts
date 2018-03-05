@@ -621,16 +621,4 @@ export default class UploadingEmojiResource extends EmojiResource
     }
     return this.retryIfLoading(() => this.prepareForUpload(), undefined);
   }
-
-  /**
-   * Determine whether the CUSTOM category of emoji is required.
-   * If there are custom emoji in the EmojiResource then this is obviously true (which is decided from the
-   * super call). If not, then it depends on whether the EmojiResource is configured to allow upload and
-   * whether the siteEmojiResource has the capability.
-   */
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    return this.isUploadSupported().then(supported => {
-      return supported || super.isCustomCategoryRequired();
-    });
-  }
 }

@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
 import {
   akColorB200,
   akBorderRadius,
@@ -48,7 +55,7 @@ export const PredefinedAvatarViewWrapper = styled.div`
       padding-right: 4px;
       padding-left: 4px;
       padding-bottom: 8px;
-      margin: 0px;
+      margin: 0;
     }
   }
 
@@ -71,13 +78,13 @@ export const PredefinedAvatarViewWrapper = styled.div`
       align-items: center;
       justify-content: center;
 
-      margin: 0px;
-      padding: 0px;
+      margin: 0;
+      padding: 0;
     }
   }
 
-  // hide tickbox and file type icon in overlay
-  // because those are not necessary for avatars
+  /* hide tickbox and file type icon in overlay
+   * because those are not necessary for avatars */
 
   .tickbox {
     visibility: hidden;

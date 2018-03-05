@@ -120,6 +120,16 @@ expect.extend({
       };
     }
 
+    if (expected.type.schema !== actual.type.schema) {
+      return {
+        pass: false,
+        actual,
+        expected,
+        name: 'toEqualDocument',
+        message: 'Expected both values to be using the same schema.',
+      };
+    }
+
     const pass = this.equals(actual.toJSON(), expected.toJSON());
     const message = pass
       ? () =>

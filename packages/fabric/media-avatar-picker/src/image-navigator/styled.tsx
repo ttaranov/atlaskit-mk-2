@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled, { keyframes } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass, keyframes } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { AVATAR_DIALOG_WIDTH } from '../avatar-picker-dialog/layout-const';
 
@@ -12,8 +19,8 @@ export const Container = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
   *,
-  *:before,
-  *:after {
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 `;
@@ -64,7 +71,7 @@ export const DragZone = styled.div`
   border-radius: 100%;
   transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &:after {
+  &::after {
     content: '';
     border: ${(props: DragZoneProps) =>
       props.showBorder ? '2px dashed #d0d6d0' : 'none'};

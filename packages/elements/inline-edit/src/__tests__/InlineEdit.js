@@ -281,13 +281,13 @@ describe('@atlaskit/inline-edit', () => {
    * can properly use jest-styled-components without disabling mount(...) calls
    */
   // eslint-disable-next-line jest/no-disabled-tests
-  xdescribe('field width', () => {
+  describe('field width', () => {
     it('should not stretch to container width in read mode by default', () => {
       const wrapper = mount(<InlineEditStateless {...defaultProps} />);
       //$FlowFixMe
       expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
         'display',
-        'inline-flex',
+        'inline-block',
       );
     });
 
@@ -296,7 +296,10 @@ describe('@atlaskit/inline-edit', () => {
         <InlineEditStateless {...defaultProps} isFitContainerWidthReadView />,
       );
       //$FlowFixMe
-      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
+        'display',
+        'block',
+      );
     });
 
     it('should stretch to container width when in edit mode', () => {
@@ -304,10 +307,13 @@ describe('@atlaskit/inline-edit', () => {
         <InlineEditStateless {...defaultProps} isEditing />,
       );
       //$FlowFixMe
-      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule(
+        'display',
+        'block',
+      );
     });
 
-    it('should have max-width so inline-flex text overflow using ellipses', () => {
+    it('should have max-width so inline-block text overflow using ellipses', () => {
       const wrapper = mount(<InlineEditStateless {...defaultProps} />);
 
       //$FlowFixMe

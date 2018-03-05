@@ -246,6 +246,7 @@ export function createCodeFragment(
   title?: string | null,
 ): Fragment {
   const content: PMNode[] = [];
+  // @ts-ignore: Unused variable, delete me???
   let nodeSize = 0;
 
   if (!!title) {

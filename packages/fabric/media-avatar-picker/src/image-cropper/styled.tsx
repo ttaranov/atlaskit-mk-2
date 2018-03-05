@@ -1,6 +1,28 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import { akBorderRadius, akColorN50A } from '@atlaskit/util-shared-styles';
+
+// Using module augmentation to add crossOrigin attribute as it does not exist yet, PR has been opened in
+// DefinitelyTyped for it
+declare module 'react' {
+  interface ImgHTMLAttributes<T> {
+    alt?: string;
+    crossOrigin?: 'anonymous' | 'use-credentials' | '';
+    height?: number | string;
+    sizes?: string;
+    src?: string;
+    srcSet?: string;
+    useMap?: string;
+    width?: number | string;
+  }
+}
 
 export const Container = styled.div`
   position: relative;

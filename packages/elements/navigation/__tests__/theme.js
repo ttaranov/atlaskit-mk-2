@@ -16,9 +16,9 @@ import { withRootTheme } from './_theme-util';
 describe('theme', () => {
   describe('WithRootTheme', () => {
     it('should provide theme values to styled components', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       mount(
@@ -32,9 +32,9 @@ describe('theme', () => {
     });
 
     it('should publish updates to children if "provided" is changed', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       const wrapper = mount(
@@ -55,9 +55,9 @@ describe('theme', () => {
     });
 
     it('should publish updates to children if "isCollapsed" is changed', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       const wrapper = mount(
@@ -78,9 +78,9 @@ describe('theme', () => {
     });
 
     it('should not publish updates to children if "provided" or "isCollapsed" did not change', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       const wrapper = mount(
@@ -97,9 +97,9 @@ describe('theme', () => {
     });
 
     it('should preserve parent styled-component theme values', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       mount(
@@ -125,9 +125,9 @@ describe('theme', () => {
     });
 
     it('should override clashing theme values', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
+      const stub = jest.fn(() => 'block');
       const Item = styled.div`
-        fake: ${stub};
+        display: ${stub};
       `;
 
       mount(

@@ -3,6 +3,7 @@
 export class MockFile implements File {
   readonly size: number;
   readonly type: string;
+  readonly lastModified: number;
   readonly lastModifiedDate: any;
   readonly name: string;
   readonly webkitRelativePath: string;
