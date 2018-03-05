@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.2
+- [patch] Fix the cursor inside a tablecell with Media group [1f97e8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f97e8e)
+
 ## 62.7.1
 - [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
 
