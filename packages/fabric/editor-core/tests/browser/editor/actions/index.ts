@@ -58,7 +58,7 @@ describe(name, () => {
     let mediaPluginState: MediaPluginState;
     let providerFactory: ProviderFactory;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       providerFactory = new ProviderFactory();
       const editor = createEditor({
         editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin()],
@@ -75,7 +75,9 @@ describe(name, () => {
       editorView = editor.editorView;
 
       mediaPluginState = mediaPluginStateKey.getState(editorView.state) as any;
-
+      
+      setTimeout(done, 1000);
+      
       sinon
         .stub(mediaPluginState, 'collectionFromProvider' as any)
         .returns(testCollectionName);
