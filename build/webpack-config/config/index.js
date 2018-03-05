@@ -202,7 +202,15 @@ function plugins(
 
     new webpack.optimize.CommonsChunkPlugin({
       async: 'async-deps',
-      minChunks: 1,
+      minChunks(module, count) {
+        const context = module.context;
+        return (
+          count === 1 &&
+          (context &&
+            !context.includes('node_modules/p-queue') &&
+            (context && !context.includes('node_modules/rxjs-async-map')))
+        );
+      },
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
