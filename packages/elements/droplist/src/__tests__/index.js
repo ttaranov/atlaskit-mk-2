@@ -7,7 +7,7 @@ import Item, { ItemGroup } from '@atlaskit/item';
 
 import { name } from '../../package.json';
 
-import Droplist from '../../src';
+import Droplist, { Item as DroplistItem } from '../../src';
 import { Trigger, Content } from '../../src/styled/Droplist';
 
 const itemsList = (
