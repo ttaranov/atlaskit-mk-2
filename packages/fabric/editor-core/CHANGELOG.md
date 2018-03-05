@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.4
+- [patch] fix: prevent autoformatting for formatted-text across hard-breaks [84da82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84da82e)
+
 ## 62.7.3
 
 ## 62.7.2
