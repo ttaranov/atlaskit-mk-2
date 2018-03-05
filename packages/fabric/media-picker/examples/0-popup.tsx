@@ -90,11 +90,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     if (eventName === 'uploads-start') {
-      const newInflightUploads = data.files.reduce((prev, { id }) => {
-        prev[id] = {};
-
-        return prev;
-      }, {});
+      const newInflightUploads = data.files.reduce(
+        (prev, { id }) => ({ ...prev, [id]: {} }),
+        {},
+      );
 
       this.setState({
         inflightUploads: {
@@ -236,7 +235,9 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   renderUploadingFiles = () => {
     const { inflightUploads } = this.state;
     const keys = Object.keys(inflightUploads);
-    if (!keys.length) return;
+    if (!keys.length) {
+      return;
+    }
 
     const uploadingFiles = keys.map(id => {
       const progress = inflightUploads[id].portion;
