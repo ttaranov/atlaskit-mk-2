@@ -7,6 +7,7 @@ import { thumb, track } from './theme';
 const sliderThumbSize = 16;
 const sliderThumbBorderThickness = 2;
 const sliderLineThickness = 4;
+const transitionDuration = '0.2s';
 export const overallHeight = 40;
 
 const sliderThumbStyle = css`
@@ -23,6 +24,7 @@ const sliderThumbFocusedStyle = css`
 `;
 
 const sliderThumbDisabledStyle = css`
+  cursor: not-allowed;
   box-shadow: 0 0 1px ${colors.N60A};
 `;
 
@@ -48,6 +50,7 @@ const sliderTrackDisabledStyle = css`
     `linear-gradient(${track.disabled.lower}, ${track.disabled.lower}) 0/ ${
       props.value
     }% 100% no-repeat ${track.disabled.upper}`};
+  cursor: not-allowed;
 `;
 
 const sliderTrackFocusedStyle = css`
@@ -61,6 +64,7 @@ const chromeRangeInputStyle = css`
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2}px;
+    transition: border-color ${transitionDuration} ease-in-out;
     ${sliderThumbStyle};
   }
 
@@ -74,6 +78,7 @@ const chromeRangeInputStyle = css`
   }
 
   &::-webkit-slider-runnable-track {
+    transition: background-color ${transitionDuration} ease-in-out;
     ${sliderTrackStyle};
   }
 
@@ -98,6 +103,7 @@ const firefoxRangeInputStyle = css`
 
   &::-moz-range-thumb {
     border: 0;
+    transition: border-color ${transitionDuration} ease-in-out;
     ${sliderThumbStyle};
   }
 
@@ -110,6 +116,7 @@ const firefoxRangeInputStyle = css`
   }
 
   &::-moz-range-track {
+    transition: background-color ${transitionDuration} ease-in-out;
     ${sliderTrackStyle};
   }
 
@@ -129,6 +136,7 @@ const firefoxRangeInputStyle = css`
 
 const IERangeInputStyle = css`
   &::-ms-thumb {
+    transition: border-color ${transitionDuration} ease-in-out;
     ${sliderThumbStyle};
   }
 
@@ -146,6 +154,7 @@ const IERangeInputStyle = css`
     color: transparent;
     cursor: pointer;
     height: ${sliderLineThickness}px;
+    transition: background-color ${transitionDuration} ease-in-out;
     width: 100%;
   }
 
@@ -188,6 +197,10 @@ export const rangeInputStyle = css`
 
   &:focus {
     outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 
   ${chromeRangeInputStyle} ${firefoxRangeInputStyle} ${IERangeInputStyle};
