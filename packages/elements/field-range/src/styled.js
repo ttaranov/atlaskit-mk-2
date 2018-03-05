@@ -22,6 +22,10 @@ const sliderThumbFocusedStyle = css`
   box-sizing: content-box;
 `;
 
+const sliderThumbDisabledStyle = css`
+  box-shadow: 0 0 1px ${colors.N60A};
+`;
+
 const sliderDefaultBackground = css`
   background: ${props =>
     `linear-gradient(${track.default.lower}, ${track.default.lower}) 0/ ${
@@ -37,6 +41,13 @@ const sliderTrackStyle = css`
   height: ${sliderLineThickness}px;
   width: 100%;
   ${sliderDefaultBackground};
+`;
+
+const sliderTrackDisabledStyle = css`
+  background: ${props =>
+    `linear-gradient(${track.disabled.lower}, ${track.disabled.lower}) 0/ ${
+      props.value
+    }% 100% no-repeat ${track.disabled.upper}`};
 `;
 
 const sliderTrackFocusedStyle = css`
@@ -58,6 +69,10 @@ const chromeRangeInputStyle = css`
     ${sliderThumbFocusedStyle};
   }
 
+  &:disabled::-webkit-slider-thumb {
+    ${sliderThumbDisabledStyle};
+  }
+
   &::-webkit-slider-runnable-track {
     ${sliderTrackStyle};
   }
@@ -69,6 +84,10 @@ const chromeRangeInputStyle = css`
   &:active::-webkit-slider-runnable-track,
   &:hover::-webkit-slider-runnable-track {
     ${sliderTrackFocusedStyle};
+  }
+
+  &:disabled::-webkit-slider-runnable-track {
+    ${sliderTrackDisabledStyle};
   }
 `;
 
@@ -86,6 +105,10 @@ const firefoxRangeInputStyle = css`
     ${sliderThumbFocusedStyle};
   }
 
+  &:disabled::-moz-range-thumb {
+    ${sliderThumbDisabledStyle};
+  }
+
   &::-moz-range-track {
     ${sliderTrackStyle};
   }
@@ -98,11 +121,23 @@ const firefoxRangeInputStyle = css`
   &:hover::-moz-range-track {
     ${sliderTrackFocusedStyle};
   }
+
+  &:disabled::-moz-range-track {
+    ${sliderTrackDisabledStyle};
+  }
 `;
 
 const IERangeInputStyle = css`
   &::-ms-thumb {
     ${sliderThumbStyle};
+  }
+
+  &:focus::-ms-thumb {
+    ${sliderThumbFocusedStyle};
+  }
+
+  &:disabled::-ms-thumb {
+    ${sliderThumbDisabledStyle};
   }
 
   &::-ms-track {
@@ -126,10 +161,6 @@ const IERangeInputStyle = css`
     border: 0;
   }
 
-  &:focus::-ms-thumb {
-    ${sliderThumbFocusedStyle};
-  }
-
   &:active::-ms-fill-lower,
   &:hover::-ms-fill-lower {
     background: ${track.hover.lower};
@@ -138,6 +169,14 @@ const IERangeInputStyle = css`
   &:active::-ms-fill-upper,
   &:hover::-ms-fill-upper {
     background: ${track.hover.upper};
+  }
+
+  &:disabled::-ms-fill-lower {
+    background: ${track.disabled.lower};
+  }
+
+  &:disabled::-ms-fill-upper {
+    background: ${track.disabled.upper};
   }
 `;
 

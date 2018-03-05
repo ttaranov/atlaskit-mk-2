@@ -3,16 +3,18 @@ import React, { Component } from 'react';
 import { Input } from './styled';
 
 type Props = {
-  /** Value of the range */
-  value: number,
-  /** Minimum value of the range */
-  min?: number,
+  /** if the field range needs to be disabled */
+  disabled?: boolean,
   /** Maximum value of the range */
   max?: number,
-  /** Step value for the range */
-  step?: number,
+  /** Minimum value of the range */
+  min?: number,
   /** Hook to be invoked on change of the range */
   onChange?: (value: number) => mixed,
+  /** Step value for the range */
+  step?: number,
+  /** Value of the range */
+  value: number,
 };
 
 type State = {
@@ -32,6 +34,7 @@ export default class Slider extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {
+    disabled: false,
     value: 0,
     min: 0,
     max: 100,
@@ -98,7 +101,7 @@ export default class Slider extends Component<Props, State> {
   };
 
   render() {
-    const { min, max, step } = this.props;
+    const { min, max, step, disabled } = this.props;
     const { value } = this.state;
 
     return (
@@ -110,6 +113,7 @@ export default class Slider extends Component<Props, State> {
         max={max}
         step={step}
         onChange={dummyOnChangeHandler}
+        disabled={disabled}
       />
     );
   }
