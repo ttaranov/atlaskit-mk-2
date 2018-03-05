@@ -48,6 +48,7 @@ import {
 import DefaultMediaStateManager from './default-state-manager';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
+import { pickerFacadeLoader } from './picker-facade-loader';
 
 // We get `publicId` of `file` in `processing` stage so it's possible to send
 // consumers a ADF with media-ids before ready state
@@ -148,9 +149,9 @@ export class MediaPluginState {
     let Picker: typeof PickerFacade;
 
     try {
-      [ resolvedMediaProvider, { default: Picker } ] = await Promise.all([
+      [ resolvedMediaProvider, Picker ] = await Promise.all([
         mediaProvider,
-        import(/* webpackChunkName:"@atlaskit-internal_editor-core_picker-facade" */ './picker-facade'),
+        pickerFacadeLoader(),
       ]);
 
 
