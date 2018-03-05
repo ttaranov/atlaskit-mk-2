@@ -232,24 +232,6 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource
     }
     return emoji;
   }
-
-  calculateDynamicCategories(): Promise<string[]> {
-    if (!this.emojiRepository) {
-      return Promise.resolve([]);
-    }
-    const customCategRequired = this.isCustomCategoryRequired();
-    return Promise.resolve(
-      this.emojiRepository.getDynamicCategoryList(customCategRequired),
-    );
-  }
-
-  protected isCustomCategoryRequired(): boolean {
-    if (!this.emojiRepository) {
-      return false;
-    }
-    const customEmoji = this.emojiRepository.findInCategory(customCategory);
-    return customEmoji.length > 0;
-  }
 }
 
 class UsageClearEmojiRepository extends EmojiRepository {
