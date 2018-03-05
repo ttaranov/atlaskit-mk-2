@@ -5,21 +5,17 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 const __baseUrl__ = `http://localhost:9000`;
-const clipboardHelper = `${
-  __baseUrl__
-}/examples/fabric/editor-core/clipboard-helper`;
+const clipboardHelper = `${__baseUrl__}/examples/fabric/editor-core/clipboard-helper`;
 const clipboardInput = '#input';
 const copyAsPlaintextButton = '#copy-as-plaintext';
 const copyAsHTMLButton = '#copy-as-html';
 
-const messageEditor = `${
-  __baseUrl__
-}/examples/fabric/editor-core/message`;
+const messageEditor = `${__baseUrl__}/examples/fabric/editor-core/message`;
 const editable = `[contenteditable="true"]`;
 
 BrowserTestCase(
   'paste tests on message editor: plain text',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: [] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(clipboardHelper);
@@ -47,7 +43,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'paste tests on message editor: text formatting',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: [] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(clipboardHelper);
@@ -135,7 +131,7 @@ BrowserTestCase(
 describe.skip('Tables are not enabled in the message editor', () => {
   BrowserTestCase(
     'paste tests on message editor: table',
-    { skip: ['edge', 'ie', 'safari'] },
+    { skip: [] },
     async client => {
       const sample = await new Page(client);
       await sample.goto(clipboardHelper);
@@ -190,7 +186,7 @@ describe.skip('Tables are not enabled in the message editor', () => {
 
 BrowserTestCase(
   'paste tests on message editor: bullet list',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: [] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(clipboardHelper);
@@ -272,7 +268,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'paste tests on message editor: ordered list',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: [] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(clipboardHelper);
