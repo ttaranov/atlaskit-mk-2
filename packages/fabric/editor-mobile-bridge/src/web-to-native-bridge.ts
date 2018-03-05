@@ -11,4 +11,5 @@ export class MarkState {
 
 export interface TextFormattingBridge {
   updateTextFormat(markStates: string);
+  updateText(content: string);
 }

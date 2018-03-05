@@ -9,6 +9,7 @@ import {
   textFormattingStateKey,
 } from '@atlaskit/editor-core';
 import { MentionProvider, MentionDescription } from '@atlaskit/mention';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import NativeToWebBridge from './native-to-web-bridge';
 import {
   MarkState,
@@ -43,6 +44,7 @@ let mentionsPluginState: MentionsState | null = null;
 
 let textFormattingPluginState: TextFormattingState | null = null;
 let editorView: EditorView | null = null;
+let transformer: JSONTransformer = new JSONTransformer();
 
 export const bridge: NativeToWebBridge = ((window as any).bridge = {
   onBoldClicked() {
@@ -57,6 +59,31 @@ export const bridge: NativeToWebBridge = ((window as any).bridge = {
     }
   },
 
+  onUnderlineClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleUnderline(editorView);
+    }
+  },
+  onCodeClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleCode(editorView);
+    }
+  },
+  onStrikeClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleStrike(editorView);
+    }
+  },
+  onSuperClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleSuperscript(editorView);
+    }
+  },
+  onSubClicked() {
+    if (textFormattingPluginState && editorView) {
+      textFormattingPluginState.toggleSubscript(editorView);
+    }
+  },
   onMentionSelect(mention: string) {
     if (mentionsPluginState) {
       mentionsPluginState.insertMention(JSON.parse(mention));
@@ -77,6 +104,12 @@ export const bridge: NativeToWebBridge = ((window as any).bridge = {
     if (mentionsPluginState) {
       mentionsPluginState.dismiss();
     }
+  },
+  setContent(content: string) {},
+  getContent(): string {
+    return editorView
+      ? JSON.stringify(transformer.encode(editorView.state.doc), null, 2)
+      : '';
   },
 });
 
@@ -151,6 +184,9 @@ export default function mobileEditor() {
       allowHyperlinks={true}
       allowTextFormatting={true}
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
+      onChange={() => {
+        toNativeBridge.updateText(bridge.getContent());
+      }}
     />
   );
 }
@@ -185,6 +221,10 @@ class AndroidBridge implements Bridge {
   updateTextFormat(markStates: string) {
     this.textFormatBridge.updateTextFormat(markStates);
   }
+
+  updateText(content: string) {
+    this.textFormatBridge.updateText(content);
+  }
 }
 
 class IosBridge implements Bridge {
@@ -212,12 +252,21 @@ class IosBridge implements Bridge {
       });
     }
   }
+  updateText(content: string) {
+    if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
+      window.webkit.messageHandlers.textFormatBridge.postMessage({
+        name: 'updateText',
+        query: content,
+      });
+    }
+  }
 }
 
 class DummyBridge implements Bridge {
   showMentions(query: String) {}
   dismissMentions() {}
   updateTextFormat(markStates: string) {}
+  updateText(content: string) {}
 }
 
 function getBridgeImpl(): Bridge {

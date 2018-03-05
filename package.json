@@ -254,6 +254,7 @@
     "domready": "^1.0.8",
     "editor": "^1.0.0",
     "enzyme-to-json": "^3.3.0",
+    "babel-polyfill": "^6.26.0",
     "es6-object-assign": "^1.1.0",
     "eventemitter2": "^4.1.0",
     "filesize": "^3.2.1",
