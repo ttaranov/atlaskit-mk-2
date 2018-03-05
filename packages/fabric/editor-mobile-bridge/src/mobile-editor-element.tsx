@@ -238,14 +238,14 @@ class IosBridge implements Bridge {
   }
 
   dismissMentions() {
-    if (window.webkit) {
+    if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
       window.webkit.messageHandlers.mentionBridge.postMessage({
         name: 'dismissMentions',
       });
     }
   }
   updateTextFormat(markStates: string) {
-    if (window.webkit) {
+    if (window.webkit && window.webkit.messageHandlers.textFormatBridge) {
       window.webkit.messageHandlers.textFormatBridge.postMessage({
         name: 'updateTextFormat',
         states: markStates,
@@ -253,7 +253,7 @@ class IosBridge implements Bridge {
     }
   }
   updateText(content: string) {
-    if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
+    if (window.webkit && window.webkit.messageHandlers.textFormatBridge) {
       window.webkit.messageHandlers.textFormatBridge.postMessage({
         name: 'updateText',
         query: content,
