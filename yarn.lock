@@ -7996,9 +7996,9 @@ known-css-properties@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/known-css-properties/-/known-css-properties-0.5.0.tgz#6ff66943ed4a5b55657ee095779a91f4536f8084"
 
-landkid@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.19.tgz#132e9d19dd93c6c2fc516d0d3273ccf8800d6a9c"
+landkid@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.0.20.tgz#01318e78287b2d54d8883cdb37c82cd9d0411eb6"
   dependencies:
     axios "^0.17.1"
     babel-cli "^6.26.0"
