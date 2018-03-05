@@ -2,33 +2,69 @@ import * as React from 'react';
 import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
-import { getEmojiResource, lorem } from '../src/support/story-data';
+import {
+  getEmojiResource,
+  getEmojiResourceWithStandardAndAtlassianEmojis,
+  loggedUser,
+  lorem,
+} from '../src/support/story-data';
 import { onSelection } from '../example-helpers/index';
 
-export default function Example() {
-  return (
-    <div style={{ padding: '10px' }}>
-      <Layer
-        content={
-          <EmojiPicker
-            emojiProvider={getEmojiResource({
-              uploadSupported: true,
-              currentUser: { id: 'blackpanther' },
-            })}
-            onSelection={onSelection}
+class EmojiPickerWithUpload extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      siteEmojiEnabled: true,
+    };
+  }
+
+  enableSiteEmoji(value: boolean) {
+    this.setState({ siteEmojiEnabled: value });
+  }
+
+  render() {
+    const emojiProvider: Promise<EmojiProvider> =
+      this.state.siteEmojiEnabled === true
+        ? getEmojiResource({
+            uploadSupported: true,
+            currentUser: { id: loggedUser },
+          })
+        : getEmojiResourceWithStandardAndAtlassianEmojis({
+            uploadSupported: true,
+            currentUser: { id: loggedUser },
+          });
+    return (
+      <div style={{ padding: '10px' }}>
+        <Layer
+          content={
+            <EmojiPicker
+              emojiProvider={emojiProvider}
+              onSelection={onSelection}
+            />
+          }
+          position="bottom left"
+        >
+          <input
+            id="picker-input"
+            style={{
+              height: '20px',
+              margin: '10px',
+            }}
           />
-        }
-        position="bottom left"
-      >
-        <input
-          id="picker-input"
-          style={{
-            height: '20px',
-            margin: '10px',
-          }}
-        />
-      </Layer>
-      <p style={{ width: '400px' }}>{lorem}</p>
-    </div>
-  );
+        </Layer>
+        <p style={{ width: '400px' }}>{lorem}</p>
+
+        <button onClick={() => this.enableSiteEmoji(true)}>
+          EmojiProvider with Site emoji
+        </button>
+        <button onClick={() => this.enableSiteEmoji(false)}>
+          EmojiProvider without Site emoji
+        </button>
+      </div>
+    );
+  }
+}
+
+export default function Example() {
+  return <EmojiPickerWithUpload />;
 }

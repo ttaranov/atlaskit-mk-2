@@ -369,8 +369,8 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
     this.allEmojiGroups = list.sort(categoryComparator);
 
+    // append user emojis before the custom emojis
     if (userCustomGroup.emojis.length > 0) {
-      // append user emojis after the custom emojis
       let idx = this.findElementIndex(
         this.allEmojiGroups,
         (item, index) => item.category === customCategory,

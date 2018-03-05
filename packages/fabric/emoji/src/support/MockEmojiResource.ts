@@ -18,6 +18,7 @@ import EmojiRepository from '../api/EmojiRepository';
 import debug from '../util/logger';
 
 import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
+import { loggedUser } from './story-data';
 
 const emojiFromUpload = (upload: EmojiUpload) => {
   const { shortName, name, dataURL, height, width } = upload;
@@ -29,6 +30,7 @@ const emojiFromUpload = (upload: EmojiUpload) => {
     type: customType,
     category: customCategory,
     order: -1,
+    creatorUserId: loggedUser,
     representation: {
       width,
       height,

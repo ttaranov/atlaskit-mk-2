@@ -166,7 +166,6 @@ export const siteEmojiFoo: EmojiDescriptionWithVariations = {
   skinVariations: [],
 };
 
-// used in 05-standard-emoji-picker-with-upload example
 export const siteEmojiWtf: EmojiDescriptionWithVariations = {
   id: 'wtf',
   name: 'wtf',
@@ -176,7 +175,7 @@ export const siteEmojiWtf: EmojiDescriptionWithVariations = {
   order: -1000,
   searchable: true,
   shortName: ':wtf:',
-  creatorUserId: 'blackpanther',
+  creatorUserId: 'Thor',
   representation: {
     height: 72,
     width: 92,

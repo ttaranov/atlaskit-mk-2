@@ -96,5 +96,18 @@ export const getEmojiResource = (
 ): Promise<EmojiProvider> =>
   emojiProviderFactory(getEmojiRepository(), config) as Promise<EmojiProvider>;
 
+export const getEmojiResourceWithStandardAndAtlassianEmojis = (
+  config?: MockEmojiResourceConfig,
+): Promise<EmojiProvider> => {
+  const standardEmojis: EmojiDescription[] = getStandardEmojis();
+  const atlassianEmojis: EmojiDescription[] = getAtlassianEmojis();
+  return emojiProviderFactory(
+    new EmojiRepository([...standardEmojis, ...atlassianEmojis]),
+    config,
+  ) as Promise<EmojiProvider>;
+};
+
 export const getUsageClearEmojiResource = (): UsageClearEmojiResource =>
   new UsageClearEmojiResource(getEmojis());
+
+export const loggedUser = 'blackpanther';

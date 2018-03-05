@@ -30,7 +30,6 @@ import { EmojiDescription, OptionalEmojiDescription } from '../../../src/types';
 import {
   customCategory,
   customTitle,
-  userCustomTitle,
   defaultCategories,
   frequentCategory,
   selectedToneStorageKey,
