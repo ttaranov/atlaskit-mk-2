@@ -18,12 +18,13 @@
       "dom",
       "es5",
       "scripthost",
+      "es2015.core",
       "es2015.collection",
       "es2015.symbol",
       "es2015.iterable",
       "es2015.promise"
     ],
-    "types": ["jest", "react", "enzyme", "jest-styled-components", "styled-components"],
+    "types": ["jest", "react", "enzyme", "css-color-names", "jest-styled-components", "styled-components"],
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "files": [
