@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.1.8
+- [patch] show custom emojis regardless of upload support [efc7e9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efc7e9a)
+
 ## 31.1.7
 - [patch] removed UploadingEmojiResource.isCustomCategoryRequired function [9370179](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9370179)
 - [patch] only scroll to custom category after adding the emoji, fixed MockEmojiResource to not render custom category header if there is no custom emoji [22bc389](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22bc389)

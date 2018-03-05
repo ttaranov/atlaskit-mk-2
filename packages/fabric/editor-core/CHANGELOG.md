@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.7.3
+
 ## 62.7.2
 - [patch] Fix the cursor inside a tablecell with Media group [1f97e8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f97e8e)
 

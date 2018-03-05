@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 6.3.7
+
 ## 6.3.6
 - [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
 
