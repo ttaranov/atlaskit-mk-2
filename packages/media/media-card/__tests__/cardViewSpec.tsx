@@ -1,9 +1,16 @@
+jest.mock('../src/utils/breakpoint');
+jest.mock('../src/utils/shouldDisplayImageThumnail');
+
 import * as React from 'react';
 
-jest.mock('../src/utils/breakpoint');
-
 import { shallow, mount } from 'enzyme';
-import { FileDetails, LinkDetails } from '@atlaskit/media-core';
+import {
+  FileDetails,
+  LinkDetails,
+  CardAction,
+  CardActionType,
+  Resource,
+} from '@atlaskit/media-core';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import {
@@ -17,20 +24,30 @@ import { FileCard } from '../src/files';
 import { Wrapper } from '../src/root/styled';
 import { breakpointSize } from '../src/utils/breakpoint';
 
+import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumnail';
+import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { CardViewAnalyticsContext } from '../src/index';
+
 describe('CardView', () => {
   const file: FileDetails = {
     id: 'abcd',
     name: 'my-file',
+    mimeType: 'image/png',
+    size: 42,
+    processingStatus: 'pending',
+    mediaType: 'image',
   };
   const link: LinkDetails = {
     id: 'abcd',
     type: 'wha',
-    url: 'https://example.com',
+    url: 'https://example.com/some-path',
     title: 'foobar',
   };
+
   let createAnalyticsEventMock;
   beforeEach(() => {
     createAnalyticsEventMock = jest.fn();
+    (shouldDisplayImageThumbnail as any).mockReturnValue(true);
   });
 
   const shallowCardViewBaseElement = (
@@ -315,5 +332,201 @@ describe('CardView', () => {
 
       expect(linkCard.find(Wrapper).props().dimensions).toEqual(undefined);
     });
+  });
+
+  it('should fire "clicked" analytics event when loading link card clicked', () => {
+    const clickHandler = jest.fn();
+    const analyticsEventHandler = jest.fn();
+    const card = mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="loading" metadata={link} onClick={clickHandler} />
+      </AnalyticsListener>,
+    );
+
+    card.simulate('click');
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualEvent.payload).toEqual({ action: 'clicked' });
+    expect(actualEvent.context && actualEvent.context.length).toEqual(1);
+    const actualContext =
+      actualEvent.context &&
+      (actualEvent.context[0] as CardViewAnalyticsContext);
+    expect(actualContext).not.toBeUndefined();
+    if (actualContext) {
+      expect(actualContext.linkAttributes).toEqual({
+        linkDomain: 'example.com',
+      });
+      expect(actualContext.viewAttributes).toEqual({
+        viewPreview: false,
+        viewSize: 'auto',
+        viewActionmenu: false,
+      });
+      expect(actualContext.loadStatus).toEqual('loading_metadata');
+      expect(actualContext.componentName).toEqual('CardView');
+      expect(actualContext.actionSubject).toEqual('MediaCard');
+      expect(actualContext.packageVersion).toEqual(
+        require('../package.json').version,
+      );
+      expect(actualContext.type).toEqual('link');
+      expect(actualContext.actionSubjectId).toEqual(
+        'https://example.com/some-path',
+      );
+    }
+  });
+
+  it('should fire "clicked" analytics event when loading link card with preview clicked', () => {
+    const clickHandler = jest.fn();
+    const analyticsEventHandler = jest.fn();
+    const previewResource: Resource = {
+      url: 'http://resource.url',
+    };
+    const metadata: LinkDetails = {
+      ...link,
+      resources: {
+        thumbnail: previewResource,
+        image: previewResource,
+      },
+    };
+    const card = mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="loading" metadata={metadata} onClick={clickHandler} />
+      </AnalyticsListener>,
+    );
+
+    card.simulate('click');
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualEvent.payload).toEqual({ action: 'clicked' });
+    expect(actualEvent.context && actualEvent.context.length).toEqual(1);
+    const actualContext =
+      actualEvent.context &&
+      (actualEvent.context[0] as CardViewAnalyticsContext);
+    expect(actualContext).not.toBeUndefined();
+    if (actualContext) {
+      expect(actualContext.viewAttributes).toEqual({
+        viewPreview: true,
+        viewSize: 'auto',
+        viewActionmenu: false,
+      });
+    }
+  });
+
+  it('should fire "clicked" analytics event when loading file card clicked', () => {
+    const clickHandler = jest.fn();
+    const analyticsEventHandler = jest.fn();
+    const cardAction: CardAction = {
+      type: CardActionType.click,
+      handler: () => {},
+      label: 'Click me',
+    };
+    const card = mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView
+          status="processing"
+          appearance="small"
+          actions={[cardAction]}
+          metadata={{ ...file }}
+          onClick={clickHandler}
+        />
+      </AnalyticsListener>,
+    );
+
+    card.simulate('click');
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualEvent.payload).toEqual({ action: 'clicked' });
+    expect(actualEvent.context && actualEvent.context.length).toEqual(1);
+    const actualContext =
+      actualEvent.context &&
+      (actualEvent.context[0] as CardViewAnalyticsContext);
+    expect(actualContext).not.toBeUndefined();
+    if (actualContext) {
+      expect(actualContext.fileAttributes).toEqual({
+        fileMediatype: 'image',
+        fileSize: 42,
+        fileStatus: 'pending',
+        fileMimetype: 'image/png',
+      });
+      expect(actualContext.viewAttributes).toEqual({
+        viewPreview: true,
+        viewSize: 'small',
+        viewActionmenu: true,
+      });
+      expect(actualContext.loadStatus).toEqual('loading_metadata');
+      expect(actualContext.componentName).toEqual('CardView');
+      expect(actualContext.actionSubject).toEqual('MediaCard');
+      expect(actualContext.packageVersion).toEqual(
+        require('../package.json').version,
+      );
+      expect(actualContext.type).toEqual('file');
+      expect(actualContext.actionSubjectId).toEqual('abcd');
+    }
+  });
+
+  it('should fire "clicked" analytics event when metadata is not provided', () => {
+    const clickHandler = jest.fn();
+    const analyticsEventHandler = jest.fn();
+    const card = mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="error" onClick={clickHandler} />
+      </AnalyticsListener>,
+    );
+
+    card.simulate('click');
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualEvent.payload).toEqual({ action: 'clicked' });
+    expect(actualEvent.context && actualEvent.context.length).toEqual(1);
+    const actualContext =
+      actualEvent.context &&
+      (actualEvent.context[0] as CardViewAnalyticsContext);
+    expect(actualContext).not.toBeUndefined();
+    if (actualContext) {
+      expect(actualContext.fileAttributes).toBeUndefined();
+      expect(actualContext.linkAttributes).toBeUndefined();
+      expect(actualContext.viewAttributes).toEqual({
+        viewPreview: false,
+        viewSize: 'auto',
+        viewActionmenu: false,
+      });
+      expect(actualContext.loadStatus).toEqual('fail');
+      expect(actualContext.componentName).toEqual('CardView');
+      expect(actualContext.actionSubject).toEqual('MediaCard');
+      expect(actualContext.packageVersion).toEqual(
+        require('../package.json').version,
+      );
+      expect(actualContext.type).toEqual('file');
+      expect(actualContext.actionSubjectId).toEqual(null);
+    }
+  });
+
+  it('should return analytics event as a last argument when card is clicked', () => {
+    const clickHandler = jest.fn();
+    const analyticsEventHandler = jest.fn();
+    const card = mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="loading" metadata={link} onClick={clickHandler} />
+      </AnalyticsListener>,
+    );
+
+    card.simulate('click');
+
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    const actualReturnedEvent: UIAnalyticsEvent = clickHandler.mock.calls[0][1];
+    expect(actualFiredEvent.hasFired).toEqual(true);
+    expect(actualReturnedEvent.hasFired).toEqual(false);
+    expect(actualReturnedEvent.payload.action).toEqual('clicked');
+    expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
   });
 });

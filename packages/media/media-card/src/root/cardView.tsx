@@ -76,11 +76,6 @@ export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
 > {
-  // tslint:disable-line:variable-name
-  static defaultProps: Partial<CardViewBaseProps> = {
-    appearance: 'auto',
-  };
-
   state: CardViewState = {
     hasBeenShown: false,
     componentHasMountedAtTime: 0,
@@ -269,6 +264,10 @@ const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
 const dummyHrefElement = document.createElement('a');
 
 export class CardView extends React.Component<CardViewOwnProps, CardViewState> {
+  static defaultProps: Partial<CardViewOwnProps> = {
+    appearance: 'auto',
+  };
+
   private get mediaItemType(): MediaItemType {
     const { mediaItemType, metadata } = this.props;
     if (mediaItemType) {
