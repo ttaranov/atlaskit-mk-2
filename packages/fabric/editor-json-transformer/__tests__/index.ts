@@ -42,7 +42,6 @@ import emojiPlugin from '../../editor-core/src/editor/plugins/emoji';
 import mentionsPlugin from '../../editor-core/src/editor/plugins/mentions';
 import codeBlockPlugin from '../../editor-core/src/editor/plugins/code-block';
 import mediaPlugin from '../../editor-core/src/editor/plugins/media';
-import hyperlinkPlugin from '../../editor-core/src/editor/plugins/hyperlink';
 import textColorPlugin from '../../editor-core/src/editor/plugins/text-color';
 import panelPlugin from '../../editor-core/src/editor/plugins/panel';
 import listPlugin from '../../editor-core/src/editor/plugins/lists';
@@ -59,12 +58,10 @@ describe('JSONTransformer:', () => {
       createEditor({
         doc,
         editorPlugins: [
-          textFormatting(),
           emojiPlugin,
           mentionsPlugin,
           codeBlockPlugin,
           mediaPlugin(),
-          hyperlinkPlugin,
           textColorPlugin,
           panelPlugin,
           listPlugin,

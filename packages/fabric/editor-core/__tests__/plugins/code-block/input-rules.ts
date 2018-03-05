@@ -15,6 +15,11 @@ describe('inputrules', () => {
     createEditor({
       doc,
       editorPlugins: [codeBlockPlugin, listPlugin],
+      editorProps: {
+        textFormatting: {
+          disableCode: true,
+        },
+      },
     });
 
   describe('codeblock rule', () => {

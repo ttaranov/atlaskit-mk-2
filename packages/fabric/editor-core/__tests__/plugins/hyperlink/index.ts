@@ -17,15 +17,13 @@ import {
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
 import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [hyperlinkPlugin, codeBlockPlugin, textFormatting()],
+      editorPlugins: [codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -1095,7 +1093,6 @@ describe('hyperlink', () => {
     const messageEditor = (doc: any) =>
       createEditor({
         doc,
-        editorPlugins: [hyperlinkPlugin],
         editorProps: {
           appearance: 'message',
         },

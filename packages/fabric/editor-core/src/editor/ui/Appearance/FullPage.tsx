@@ -100,15 +100,11 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   render() {
     const {
+      editorDOMElement,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       primaryToolbarComponents,
@@ -126,6 +122,7 @@ export default class Editor extends React.Component<
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher!}
             providerFactory={providerFactory}
             appearance={this.appearance}
@@ -144,10 +141,11 @@ export default class Editor extends React.Component<
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
         <ScrollContainer>
-          <ContentArea innerRef={this.handleRef}>
+          <ContentArea>
             {customContentComponents}
             <PluginSlot
               editorView={editorView}
+              editorActions={editorActions}
               eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
@@ -157,6 +155,7 @@ export default class Editor extends React.Component<
               popupsScrollableElement={popupsScrollableElement}
               disabled={!!disabled}
             />
+            {editorDOMElement}
           </ContentArea>
         </ScrollContainer>
       </FullPageEditorWrapper>

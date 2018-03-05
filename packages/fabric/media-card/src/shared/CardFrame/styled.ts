@@ -1,4 +1,11 @@
-import styled, { css } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass, css } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, AnchorHTMLAttributes } from 'react';
 
 import {
   akColorN20,
@@ -13,9 +20,41 @@ const wrapperPadding = 8;
 export const className = 'media-card-frame';
 
 export interface WrapperProps {
-  isInteractive?: boolean;
   minWidth?: number;
   maxWidth?: number;
+  isInteractive?: boolean;
+}
+
+function minWidth({ minWidth }: WrapperProps) {
+  if (minWidth) {
+    return `min-width: ${minWidth}px;`;
+  } else {
+    return '';
+  }
+}
+
+function maxWidth({ maxWidth }: WrapperProps) {
+  if (maxWidth) {
+    return `max-width: ${maxWidth}px;`;
+  } else {
+    return '';
+  }
+}
+
+function interactive({ isInteractive }: WrapperProps) {
+  if (isInteractive) {
+    return `
+      cursor: pointer;
+      &:hover {
+        background-color: ${akColorN30};
+      }
+      &:active {
+        background-color: ${akColorB50};
+      }
+    `;
+  } else {
+    return '';
+  }
 }
 
 /*
@@ -41,39 +80,13 @@ export interface WrapperProps {
  */
 
 const wrapperStyles = css`
-  display: inline-flex;
+  ${borderRadius} ${minWidth} ${maxWidth} ${interactive} display: inline-flex;
   flex-direction: column;
   box-sizing: border-box;
   font-family: ${akFontFamily};
   padding: 0 ${wrapperPadding}px ${wrapperPadding}px ${wrapperPadding}px;
-  ${borderRadius} width: 100%;
-  ${({ minWidth }: WrapperProps) => {
-    if (minWidth) {
-      return `min-width: ${minWidth}px`;
-    } else {
-      return '';
-    }
-  }} ${({ maxWidth }: WrapperProps) => {
-      if (maxWidth) {
-        return `max-width: ${maxWidth}px`;
-      } else {
-        return '';
-      }
-    }} ${({ isInteractive }: WrapperProps) => {
-      if (isInteractive) {
-        return `
-          cursor: pointer;
-          &:hover {
-            background-color: ${akColorN30};
-          }
-          &:active {
-            background-color: ${akColorB50};
-          }
-        `;
-      } else {
-        return '';
-      }
-    }} user-select: none;
+  width: 100%;
+  user-select: none;
   background-color: ${akColorN20};
   line-height: initial;
   transition: background 0.3s;
@@ -108,8 +121,8 @@ export const IconWrapper = styled.div`
   ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
       if (isPlaceholder) {
         return `
-        background-color: ${akColorN30};
-      `;
+      background-color: ${akColorN30};
+    `;
       } else {
         return '';
       }

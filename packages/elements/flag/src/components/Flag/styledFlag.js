@@ -27,7 +27,6 @@ export default styled.div`
   box-sizing: border-box;
   box-shadow: ${getBoxShadow};
   color: ${flagTextColor};
-  display: flex;
   padding: ${math.multiply(gridSize, 2)}px;
   transition: background-color 200ms;
   width: 100%;
@@ -35,13 +34,20 @@ export default styled.div`
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
+    box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;
 
 // Header
 export const Header = styled.div`
   display: flex;
+  align-items: center;
+  height: ${math.multiply(gridSize, 4)}px;
+`;
+
+export const Icon = styled.div`
+  flex: 0 0 auto;
+  width: ${math.multiply(gridSize, 5)}px;
 `;
 
 export const Title = styled.span`
@@ -60,14 +66,14 @@ export const DismissButton = styled.button`
   border-radius: ${borderRadius}px;
   color: ${flagTextColor};
   cursor: pointer;
-  display: flex;
+  flex: 0 0 auto;
   margin-left: ${gridSize}px;
   padding: 0;
   white-space: nowrap;
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
+    box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;
 
@@ -78,6 +84,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   min-width: 0;
+  padding: 0 0 0 ${math.multiply(gridSize, 5)}px;
 `;
 
 export const Expander = styled.div`
@@ -89,14 +96,5 @@ export const Expander = styled.div`
 
 export const Description = styled.div`
   color: ${flagTextColor};
-  margin-top: ${gridSize}px;
   word-wrap: break-word;
-`;
-
-export const Icon = styled.div`
-  align-items: flex-start;
-  display: inline-flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  width: ${math.multiply(gridSize, 4)}px;
 `;

@@ -16,13 +16,11 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
 import { FakeTextCursorSelection } from '../../src/editor/plugins/fake-text-cursor/cursor';
-import hyperlinkPlugin from '../../src/editor/plugins/hyperlink';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
     createEditor<HyperlinkState>({
       doc,
-      editorPlugins: [hyperlinkPlugin],
       pluginKey: hyperlinkPluginKey,
     });
   const blurEvent = createEvent('blur');

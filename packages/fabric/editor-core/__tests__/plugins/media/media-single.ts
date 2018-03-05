@@ -13,7 +13,6 @@ import {
 } from '../../../src/plugins/media/media-single';
 import { MediaState, MediaStateStatus } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 const createMediaState = (
   id: string,
@@ -32,7 +31,7 @@ describe('media-single', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [mediaPlugin({ allowMediaSingle: true }), hyperlinkPlugin],
+      editorPlugins: [mediaPlugin({ allowMediaSingle: true })],
     });
 
   describe('insertMediaAsMediaSingle', () => {

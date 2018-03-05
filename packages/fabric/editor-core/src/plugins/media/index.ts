@@ -69,6 +69,7 @@ export class MediaPluginState {
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
+  public allUploadsFinished: boolean = true;
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
@@ -226,6 +227,27 @@ export class MediaPluginState {
       this.element = newElement;
       this.notifyPluginStateSubscribers();
     }
+  }
+
+  updateUploadStateDebounce: number | null = null;
+  updateUploadState(): void {
+    if (!this.waitForMediaUpload) {
+      return;
+    }
+
+    if (this.updateUploadStateDebounce) {
+      clearTimeout(this.updateUploadStateDebounce);
+    }
+
+    this.updateUploadStateDebounce = setTimeout(() => {
+      this.updateUploadStateDebounce = null;
+      this.allUploadsFinished = false;
+      this.notifyPluginStateSubscribers();
+      this.waitForPendingTasks().then(() => {
+        this.allUploadsFinished = true;
+        this.notifyPluginStateSubscribers();
+      });
+    }, 0);
   }
 
   updateLayout(layout: MediaSingleLayout): void {
@@ -841,6 +863,7 @@ export const createPlugin = (
 
       return {
         update: () => {
+          pluginState.updateUploadState();
           pluginState.insertLinks();
           pluginState.updateElement();
         },

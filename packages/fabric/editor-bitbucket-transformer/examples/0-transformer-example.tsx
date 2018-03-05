@@ -12,7 +12,8 @@ import exampleBitbucketHTML from '../example-helpers/exampleHTML';
 const Container = styled.div`
   display: grid;
   grid-template-columns: 33% 33% 33%;
-  #source,#output {
+  #source,
+  #output {
     border: 2px solid;
     margin: 8px;
     padding: 8px;
@@ -20,8 +21,8 @@ const Container = styled.div`
     &:focus {
       outline: none;
     }
-    &:empty:not(:focus):before {
-      content: attr(data-placeholder)
+    &:empty:not(:focus)::before {
+      content: attr(data-placeholder);
       font-size: 14px;
     }
   }
@@ -67,9 +68,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowTextFormatting={true}
             allowTasksAndDecisions={true}
-            allowHyperlinks={true}
             allowCodeBlocks={true}
             allowLists={true}
             allowRule={true}

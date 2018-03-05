@@ -183,6 +183,7 @@ export default class ApplicationCard extends React.Component<
         text={context && context.text}
         onClick={onClick}
       >
+        {this.renderAlert()}
         {preview ? <CardPreview url={preview} /> : null}
         <CardDetails
           title={title}
@@ -193,7 +194,6 @@ export default class ApplicationCard extends React.Component<
           details={details}
           actions={this.renderActions()}
         />
-        {this.renderAlert()}
       </CardFrame>
     );
   }

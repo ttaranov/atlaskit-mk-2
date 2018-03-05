@@ -10,7 +10,7 @@ export const traverseNode = (node: PMNode, schema: Schema): void => {
 
   const data: AnalyticsProperties = {
     type: node.type.name,
-    cxhtml: node.attrs.cxhtml as string,
+    cxhtml: cxhtml,
     text: node.text || '',
   };
 

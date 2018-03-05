@@ -5,25 +5,90 @@ import { analyticsService } from '../../analytics';
 import { transformToCodeAction } from './transform-to-code';
 import { InputRuleHandler, createInputRule } from '../utils';
 
+const validCombos = {
+  '**': ['_', '~~'],
+  '*': ['__', '~~'],
+  __: ['*', '~~'],
+  _: ['**', '~~'],
+  '~~': ['__', '_', '**', '*'],
+};
+
+const validRegex = (char: string, str: string): boolean => {
+  for (let i = 0; i < validCombos[char].length; i++) {
+    const ch = validCombos[char][i];
+    if (ch === str) {
+      return true;
+    }
+    const matchLength = str.length - ch.length;
+    if (str.substr(matchLength, str.length) === ch) {
+      return validRegex(ch, str.substr(0, matchLength));
+    }
+  }
+  return false;
+};
+
+/**
+ * Creates an InputRuleHandler that will match on a regular expression of the
+ * form `(prefix, content, suffix?)`, and replace it with some given text,
+ * maintaining prefix and suffix around the replacement.
+ *
+ * @param text text to replace with
+ */
+function replaceTextUsingCaptureGroup(
+  text: string,
+  trackingEventName?: string,
+): InputRuleHandler {
+  return (state, match, start, end): Transaction => {
+    const [, prefix, , suffix] = match;
+    const replacement = (prefix || '') + text + (suffix || '');
+
+    const charFrom = end - match[0].length + 1;
+    const charTo = end;
+
+    if (trackingEventName) {
+      analyticsService.trackEvent(
+        `atlassian.editor.format.${trackingEventName}.autoformatting`,
+      );
+    }
+
+    return state.tr.insertText(replacement, charFrom, charTo);
+  };
+}
+
+function createReplacementRule(
+  to: string,
+  from: RegExp,
+  trackingEventName?: string,
+): InputRule {
+  return createInputRule(
+    from,
+    replaceTextUsingCaptureGroup(to, trackingEventName),
+  );
+}
+
+function createReplacementRules(
+  replMap,
+  trackingEventName?: string,
+): Array<InputRule> {
+  const rules: Array<InputRule> = [];
+
+  for (const replacement of Object.keys(replMap)) {
+    const regex = replMap[replacement];
+    rules.push(createReplacementRule(replacement, regex, trackingEventName));
+  }
+
+  return rules;
+}
+
 function addMark(
   markType: MarkType,
   schema: Schema,
   charSize: number,
-  char?: string,
+  char: string,
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
-    if (match[1] && match[1][0] === '`') {
+    if (match[1] && match[1].length > 0 && !validRegex(char, match[1])) {
       return;
-    }
-    if (markType === schema.marks.em && match[1]) {
-      const strBefore = match[1];
-      const lastChar = strBefore[strBefore.length - 1];
-      if (
-        (lastChar === '*' && char === '*') ||
-        (lastChar === '_' && char === '_')
-      ) {
-        return;
-      }
     }
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
@@ -76,6 +141,9 @@ function addCodeMark(
   specialChar: string,
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
+    if (match[1] && match[1].length > 0) {
+      return;
+    }
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
     if (state.doc.resolve(start).sameParent(state.doc.resolve(end))) {
@@ -84,21 +152,84 @@ function addCodeMark(
       }
     }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
-    return transformToCodeAction(state, start, end)
-      .delete(start, start + specialChar.length)
+    const regexStart = end - match[2].length + 1;
+    return transformToCodeAction(state, regexStart, end)
+      .delete(regexStart, regexStart + specialChar.length)
       .removeStoredMark(markType);
   };
 }
 
-export const strongRegex1 = /([^0-9a-zA-Z])(\_\_([^\s]+)\_\_)$|^(\s{0})(\_\_([^\s]+)\_\_)$/;
-export const strongRegex2 = /(\S*)(\*\*([^\s]+)\*\*)$/;
-export const italicRegex1 = /([^0-9a-zA-Z])(\_([^\s\_]+?)\_)$|^(\s{0})(\_([^\s\_]+)\_)$/;
-export const italicRegex2 = /(\S*)(\*([^\s\*]+?)\*)$/;
-export const strikeRegex = /(\S*)(\~\~([^\s\~]+)\~\~)$/;
-export const codeRegex = /(`[^\s`].*`)$/;
+export const strongRegex1 = /(\S*)(\_\_(\S.*\S|\S)\_\_)$/;
+export const strongRegex2 = /(\S*)(\*\*(\S.*\S|\S)\*\*)$/;
+export const italicRegex1 = /(\S*)(\_([^\s\_].*[^\s\_]|[^\s\_])\_)$/;
+export const italicRegex2 = /(\S*)(\*([^\s\*].*[^\s\*]|[^\s\*])\*)$/;
+export const strikeRegex = /(\S*)(\~\~(\S.*\S|\S)\~\~)$/;
+export const codeRegex = /(\S*)(`[^\s][^`]*`)$/;
+
+// We don't agressively upgrade single quotes to smart quotes because
+// they may clash with an emoji. Only do that when we have a matching
+// single quote, or a contraction.
+function createSingleQuotesRules(trackingEventName): Array<InputRule> {
+  return [
+    // wrapped text
+    createInputRule(
+      /(\s+|^)'(.*)'$/,
+      (state, match, start, end): Transaction => {
+        const [, spacing, innerContent] = match;
+        const replacement = spacing + '‘' + innerContent + '’';
+
+        analyticsService.trackEvent(
+          `atlassian.editor.format.${trackingEventName}.autoformatting`,
+        );
+
+        return state.tr.insertText(replacement, start, end);
+      },
+    ),
+
+    // apostrophe
+    createReplacementRule('’', /(\w)(')(\w)$/, trackingEventName),
+  ];
+}
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
-  const rules: Array<InputRule> = [];
+  const rules: Array<InputRule> = [
+    ...createReplacementRules(
+      {
+        Atlassian: /(\s+|^)(atlassian)$/,
+        Jira: /(\s+|^)(jira|JIRA)$/,
+        Bitbucket: /(\s+|^)(bitbucket|BitBucket)$/,
+        Hipchat: /(\s+|^)(hipchat|HipChat)$/,
+        Trello: /(\s+|^)(trello)$/,
+      },
+      'product',
+    ),
+
+    ...createReplacementRules(
+      {
+        '→': /(\s+|^)(--?>)(\s)$/,
+        '←': /(\s+|^)(<--?)(\s)$/,
+      },
+      'arrow',
+    ),
+
+    ...createReplacementRules(
+      {
+        '—': /()(--)(\s)$/,
+        '…': /()(\.\.\.)$/,
+      },
+      'typography',
+    ),
+
+    ...createReplacementRules(
+      {
+        '“': /((?:^|[\s\{\[\(\<'"\u2018\u201C]))(")$/,
+        '”': /"$/,
+      },
+      'quote',
+    ),
+
+    ...createSingleQuotesRules('quote'),
+  ];
 
   if (schema.marks.strong) {
     // **string** or __strong__ should bold the text
@@ -106,13 +237,13 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         strongRegex1,
-        addMark(schema.marks.strong, schema, markLength),
+        addMark(schema.marks.strong, schema, markLength, '__'),
       ),
     );
     rules.push(
       createInputRule(
         strongRegex2,
-        addMark(schema.marks.strong, schema, markLength),
+        addMark(schema.marks.strong, schema, markLength, '**'),
       ),
     );
   }
@@ -140,7 +271,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         strikeRegex,
-        addMark(schema.marks.strike, schema, markLength),
+        addMark(schema.marks.strike, schema, markLength, '~~'),
       ),
     );
   }

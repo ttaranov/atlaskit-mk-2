@@ -1,5 +1,14 @@
 # @atlaskit/item
 
+## 5.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 5.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 5.0.1
+- [patch] fixes AK-4178 , added fix for double color icon in navigation [c6121d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6121d6)
+
 ## 5.0.0
 - [major] update navigation and item's usage of react-beautiful-dnd from 2.x to 4.x. [aeefa01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeefa01)
 

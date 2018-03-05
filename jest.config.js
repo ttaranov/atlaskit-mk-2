@@ -41,6 +41,7 @@ const config = {
     // ignore files under __tests__ that start with an underscore
     '/__tests__\\/.*?\\/_.*?',
   ],
+  cacheDirectory: 'node_modules/.jest-cache',
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TextColorState, stateKey } from '../../src/plugins/text-color';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../src/ui/ToolbarTextColor';
-import Color from '../../src/ui/ToolbarTextColor/Color';
+import Color from '../../src/ui/ColorPalette/Color';
 import {
   doc,
   code_block,

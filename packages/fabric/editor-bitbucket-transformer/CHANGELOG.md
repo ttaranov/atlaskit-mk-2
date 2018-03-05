@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.6.1
+
+## 2.6.0
+
+## 2.5.6
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 2.5.5
 
 ## 2.5.4

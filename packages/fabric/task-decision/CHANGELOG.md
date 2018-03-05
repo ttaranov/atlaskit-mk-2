@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 4.10.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 4.9.1
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 4.9.0
 - [patch] Fix package [4bf9e49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4bf9e49)
 - [minor] Migrated package to new repo [537be77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/537be77)

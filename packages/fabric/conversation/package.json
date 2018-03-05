@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "5.2.2",
+  "version": "6.3.1",
   "config": {
     "access": "public"
   },
@@ -17,25 +17,30 @@
   "maintainers": [
     "Oscar W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^9.0.0",
-    "@atlaskit/comment": "^2.6.13",
-    "@atlaskit/editor-common": "^6.1.6",
-    "@atlaskit/editor-core": "^62.0.7",
-    "@atlaskit/renderer": "^11.4.3",
+    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/comment": "^2.7.0",
+    "@atlaskit/editor-common": "^6.3.4",
+    "@atlaskit/editor-core": "^62.6.1",
+    "@atlaskit/reactions": "^10.8.1",
+    "@atlaskit/renderer": "^11.4.5",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.6",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/emoji": "^31.1.1",
-    "@atlaskit/mention": "^9.1.1",
-    "@atlaskit/single-select": "^3.2.1"
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/emoji": "^31.1.7",
+    "@atlaskit/mention": "^9.2.0",
+    "@atlaskit/single-select": "^3.3.0"
   }
 }

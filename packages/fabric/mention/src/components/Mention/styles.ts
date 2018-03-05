@@ -1,4 +1,11 @@
-import styled from 'styled-components';
+// StyledComponentClass and React are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes } from 'react';
 import {
   akColorB400,
   akColorN20,
@@ -31,7 +38,7 @@ mentionStyle[MentionType.DEFAULT] = {
 // tslint:disable-next-line:variable-name
 export const MentionStyle = styled.span`
   ${(props: MentionStyleProps) => `
-  display: table-cell;
+  display: inline-block;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;

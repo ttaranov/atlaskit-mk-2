@@ -3,10 +3,10 @@ import { MouseEvent, Component } from 'react';
 import * as cx from 'classnames';
 import { MediaType, CardAction, CardEventHandler } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
+import { Ellipsify } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
 import { FileIcon } from '../../fileIcon';
 import { ErrorIcon } from '../../errorIcon';
-import { Ellipsify } from '../../ellipsify';
 import { Menu } from '../../menu';
 
 import {

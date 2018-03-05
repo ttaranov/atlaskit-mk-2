@@ -123,32 +123,36 @@ export const Content = styled.div`
   ${getBorderAndPadding} ${getHoverState} ${getDisabledState};
 `;
 
+const getMaxWidth = (maxWidth?: number) =>
+  maxWidth ? `${maxWidth}px` : '100%';
+
+/* IE11 does not respect max-width when using flex-grow + nested flex content, similar to https://github.com/philipwalton/flexbugs#flexbug-11
+ * and https://github.com/philipwalton/flexbugs#flexbug-17.
+ * This can be fixed by setting the basis to 100%, allowing shrinking and setting the min-width to the original flex-basis value
+ * (or 0 if it was auto).
+ * Alternatively since we're just setting the contents to fit parent container when grow is set to true, we can just change flex-basis
+ * to 100% and not worry about shrinking or growing.
+ * See AK-4285.
+ */
 export const ContentWrapper = styled.div`
   ${props =>
     props.disabled &&
-    css`
+    `
       cursor: not-allowed;
     `} ${props =>
       props.grow
         ? css`
-            flex: 1 0 auto;
+            flex: 0 0 ${getMaxWidth(props.maxWidth)};
           `
-        : css`
-            flex: 0 0 auto;
-          `} ${props =>
+        : `
+          flex: 0 0 auto;
+        `} ${props =>
       props.grow
-        ? css`
-            display: block;
-          `
-        : css`
-            display: inline-block;
-            vertical-align: top;
-          `} ${props =>
-      props.maxWidth
-        ? css`
-            max-width: ${props.maxWidth}px;
-          `
-        : css`
-            max-width: 100%;
-          `};
+        ? `
+          display: block;
+        `
+        : `
+          display: inline-block;
+          vertical-align: top;
+        `} max-width: ${props => getMaxWidth(props.maxWidth)};
 `;

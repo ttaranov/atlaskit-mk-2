@@ -18,7 +18,7 @@ const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 // tslint:disable-next-line:variable-name
 const AddonComponentExample = styled.div`
-  background: #ff0088;
+  background: #f08;
   border-radius: 5px;
   padding: 20px;
   display: flex;
@@ -99,9 +99,7 @@ export default function Example() {
           <Editor
             appearance="message"
             analyticsHandler={analyticsHandler}
-            allowTextFormatting={true}
             allowTasksAndDecisions={true}
-            allowHyperlinks={true}
             allowCodeBlocks={true}
             allowHelpDialog={true}
             disabled={disabled}

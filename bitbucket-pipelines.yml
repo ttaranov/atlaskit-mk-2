@@ -19,7 +19,8 @@ pipelines:
             - yarn lint
             - yarn typecheck
             - yarn test
-            - yarn test:browser:browserstack
+            # Disabled until we find the source of the flakeyness
+            # - yarn test:browser:browserstack
             - yarn release
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
@@ -33,6 +34,7 @@ pipelines:
           - yarn build
           - (node build/ci-scripts/should.run.js eslint) && yarn lint:eslint
           - (node build/ci-scripts/should.run.js tslint) && yarn lint:tslint
+          - (node build/ci-scripts/should.run.js stylelint) && yarn lint:stylelint
           - (node build/ci-scripts/should.run.js flow) && yarn typecheck:flow
           - (node build/ci-scripts/should.run.js tsc) && yarn typecheck:typescript
           - yarn test:changed
@@ -81,10 +83,33 @@ pipelines:
       - step:
           script:
             - source ./build-setup.sh
-            - git rebase master
+            - git merge master --no-edit
             - bolt install --pure-lockfile
             - yarn build
             - yarn lint
             - yarn typecheck
             - yarn test
-            - yarn test:browser:browserstack
+            # Disabled until we find the source of the flakeyness
+            # - yarn test:browser:browserstack
+
+    # This build should only be run on the master branch, once per day.
+    # It manually clears the cache and runs a very quick install and test to seed the jest and node_modules
+    # We split into two steps so that one can clear the cache so that the second one starts with no cache
+    # (Which causes it to upload when it's finished).
+    # It's important for this to run fast and whilst nothing else is running, as any other build could
+    # seed the cache if they finished in time.
+    reseed-pipelines-cache:
+      - step:
+          name: Clearing old cache
+          script:
+            - cd build/ci-scripts
+            - yarn install --pure-lockfile
+            - node clear.pipelines.node.cache.js
+      - step:
+          name: Creating new cache
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn test
+          caches:
+            - node

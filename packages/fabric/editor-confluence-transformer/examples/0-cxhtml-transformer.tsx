@@ -54,7 +54,7 @@ export const Content = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-}`;
+`;
 Content.displayName = 'Content';
 
 // tslint:disable-next-line:no-console
@@ -167,9 +167,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                 <Editor
                   appearance="full-page"
                   analyticsHandler={analyticsHandler}
-                  allowTextFormatting={true}
                   allowTasksAndDecisions={true}
-                  allowHyperlinks={true}
                   allowCodeBlocks={true}
                   allowLists={true}
                   allowTextColor={true}

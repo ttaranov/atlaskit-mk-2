@@ -7,7 +7,7 @@ const Expand = styled.div`
   display: flex;
   flex: 0 0 ${math.multiply(gridSize, 3)}px;
   justify-content: center;
-  margin: 0px ${gridSize}px;
+  margin: 0 ${gridSize}px;
 `;
 
 Expand.displayName = 'SingleSelectExpand';

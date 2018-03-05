@@ -27,17 +27,17 @@ export const TopItem = styled.div`
   display: inline-block;
   margin-left: ${gridSize()}px;
 
+  [dir='rtl'] & {
+    margin-left: 0;
+    margin-right: ${gridSize()}px;
+  }
+
   &:first-child {
     margin-left: 0;
 
     [dir='rtl'] & {
       margin-right: 0;
     }
-  }
-
-  [dir='rtl'] & {
-    margin-left: 0;
-    margin-right: ${gridSize()}px;
   }
 `;
 

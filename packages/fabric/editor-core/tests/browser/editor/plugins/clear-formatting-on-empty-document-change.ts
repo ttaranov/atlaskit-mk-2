@@ -3,7 +3,6 @@ import { EditorView } from 'prosemirror-view';
 import { sendKeyToPm, insertText } from '@atlaskit/editor-test-helpers';
 
 import { createEditor } from '@atlaskit/editor-test-helpers';
-import textFormattingPlugins from '../../../../src/editor/plugins/text-formatting';
 
 /**
  * We need to simulate a backspace here as sendKeyToPm(view, 'Backspace') throws an error
@@ -16,7 +15,6 @@ const backspace = (view: EditorView) => {
 describe('clear-marks-on-empty-document-change', () => {
   const editor = () =>
     createEditor({
-      editorPlugins: [textFormattingPlugins()],
       editorProps: { shouldFocus: true },
     });
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
+import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
 
 export type PMPluginFactory = (
@@ -22,6 +22,7 @@ export type PMPluginFactory = (
 
 export type UiComponentFactoryParams = {
   editorView: EditorView;
+  editorActions: EditorActions;
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;

@@ -1,7 +1,6 @@
 import { TextSelection, Selection } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
 import { Slice } from 'prosemirror-model';
-import { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   doc,
   createEditor,
@@ -14,14 +13,9 @@ import {
   drawFakeTextCursor,
   FakeTextCursorBookmark,
 } from '../../../../src/editor/plugins/fake-text-cursor/cursor';
-import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 
 describe('FakeTextCursor -> Cursor', () => {
-  const editor = (doc: any) =>
-    createEditor<HyperlinkState>({
-      doc,
-      editorPlugins: [hyperlinkPlugin],
-    });
+  const editor = doc => createEditor({ doc });
 
   describe('addFakeTextCursor', () => {
     it('should add placeholder cursor', () => {

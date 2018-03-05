@@ -1,5 +1,10 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.4.9
+
+## 2.4.8
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 2.4.7
 
 ## 2.4.6

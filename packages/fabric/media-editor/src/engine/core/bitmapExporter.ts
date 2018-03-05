@@ -1,4 +1,4 @@
-import { Core } from './binaries/editorCore';
+import * as Core from './binaries/mediaEditor';
 
 // Responsible for receiving the image
 export class BitmapExporter implements Core.BitmapExporterInterop {

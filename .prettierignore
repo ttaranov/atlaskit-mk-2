@@ -5,4 +5,4 @@ packages/elements/icon/es5
 packages/elements/icon/glyph
 packages/elements/icon/utils
 packages/elements/layer/popper
-packages/fabric/media-editor/src/engine/core/binaries/editorCore.js
+packages/fabric/media-editor/src/engine/core/binaries/mediaEditor.js

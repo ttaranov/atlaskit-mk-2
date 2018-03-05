@@ -18,7 +18,6 @@ import {
   TextFormattingState,
   stateKey as textFormattingPluginKey,
 } from '../../../src/plugins/text-formatting';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
@@ -27,7 +26,7 @@ describe('text-formatting', () => {
   const editor = (doc: any) =>
     createEditor<TextFormattingState>({
       doc,
-      editorPlugins: [textFormatting(), mentionsPlugin, codeBlockPlugin],
+      editorPlugins: [mentionsPlugin, codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

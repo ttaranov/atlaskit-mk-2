@@ -28,8 +28,9 @@ export const addComment = (
   conversationId: string,
   parentId: string,
   value: any,
-  localId?: string,
-) => async (provider: ResourceProvider) => {
+  localId: string | undefined = undefined,
+  provider: ResourceProvider,
+) => async () => {
   provider.addComment(conversationId, parentId, value, localId);
 };
 
@@ -37,27 +38,31 @@ export const updateComment = (
   conversationId: string,
   commentId: string,
   value: any,
-) => async (provider: ResourceProvider) => {
+  provider: ResourceProvider,
+) => async () => {
   provider.updateComment(conversationId, commentId, value);
 };
 
 export const deleteComment = (
   conversationId: string,
   commentId: string,
-) => async (provider: ResourceProvider) => {
+  provider: ResourceProvider,
+) => async () => {
   provider.deleteComment(conversationId, commentId);
 };
 
 export const revertComment = (
   conversationId: string,
   commentId: string,
-) => async (provider: ResourceProvider) => {
+  provider: ResourceProvider,
+) => async () => {
   provider.revertComment(conversationId, commentId);
 };
 
-export const updateUser = (user: User) => async (
+export const updateUser = (
+  user: User,
   provider: ResourceProvider,
-) => {
+) => async () => {
   provider.updateUser(user);
 };
 
@@ -66,6 +71,7 @@ export const createConversation = (
   containerId: string,
   value: any,
   meta: any,
-) => async (provider: ResourceProvider) => {
+  provider: ResourceProvider,
+) => async () => {
   provider.create(localId, containerId, value, meta);
 };

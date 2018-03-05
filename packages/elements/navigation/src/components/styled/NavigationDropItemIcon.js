@@ -5,7 +5,7 @@ import { whenCollapsed } from '../../theme/util';
 
 // $FlowFixMe
 const NavigationDropItemIcon = styled(NavigationItemIcon)`
-  padding-right: 0px;
+  padding-right: 0;
 
   ${whenCollapsed`
     display: none;

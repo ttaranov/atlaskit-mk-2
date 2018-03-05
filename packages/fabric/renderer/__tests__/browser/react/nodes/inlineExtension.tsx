@@ -32,8 +32,6 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
   };
 
   const rendererContext: RendererContext = {
-    objectAri: '123',
-    containerAri: '321',
     adDoc: {
       version: 1,
       type: 'doc',

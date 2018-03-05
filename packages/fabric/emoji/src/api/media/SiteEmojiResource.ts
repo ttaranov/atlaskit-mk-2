@@ -53,6 +53,7 @@ export const mediaProportionOfProgress = 95 / 100;
 
 export default class SiteEmojiResource {
   private siteServiceConfig: ServiceConfig;
+  // @ts-ignore: I am not being read from, should I be deleted???
   private mediaApiToken: MediaApiToken;
   private mediaEmojiCache: MediaEmojiCache;
   protected tokenManager: TokenManager;

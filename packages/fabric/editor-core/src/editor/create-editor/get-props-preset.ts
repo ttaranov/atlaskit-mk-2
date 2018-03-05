@@ -5,10 +5,8 @@ const messageEditorPropsPreset: EditorProps = {
 
   saveOnEnter: true,
 
-  allowTextFormatting: true,
   allowLists: true,
   allowTextColor: true,
-  allowHyperlinks: true,
   allowCodeBlocks: true,
   allowTasksAndDecisions: true,
   allowHelpDialog: true,
