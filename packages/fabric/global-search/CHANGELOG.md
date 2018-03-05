@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 1.1.1
+- [patch] Support rendering of Jira results [0381f03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0381f03)
+
 ## 1.1.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 
