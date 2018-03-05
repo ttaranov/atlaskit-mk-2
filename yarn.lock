@@ -3443,6 +3443,12 @@ cliff@~0.1.9:
     eyes "~0.1.8"
     winston "0.8.x"
 
+clipboard-polyfill@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/clipboard-polyfill/-/clipboard-polyfill-2.4.3.tgz#81e8690fe1523cc1ed26fbc4304c86a50ba8421a"
+  dependencies:
+    es6-promise "4.1.1"
+
 clipboard@^1.5.5, clipboard@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-1.7.1.tgz#360d6d6946e99a7a1fef395e42ba92b5e9b5a16b"
@@ -4906,7 +4912,7 @@ es6-object-assign@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
 
-es6-promise@^4.0.3, es6-promise@^4.0.5:
+es6-promise@4.1.1, es6-promise@^4.0.3, es6-promise@^4.0.5:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"
 
