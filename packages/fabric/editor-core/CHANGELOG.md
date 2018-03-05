@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.1
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
 ## 62.7.0
 - [minor] Support dynamically changing the Editor's appearance prop to enable switching between different appearances. Changing props that affect features, e.g. `allowTables` is not supported and won't cause the supported nodes/marks of the editor to change. This support is currently experimental and subject to change. The prop `contentComponents` is no longer rendered inside the ProseMirror contenteditable, instead it is rendered directly before the ProseMirror component. [4497ea8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4497ea8)
 
