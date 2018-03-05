@@ -3,11 +3,18 @@ import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import styled from 'styled-components';
+import { Config } from '../src/api/configureSearchClients';
 
 const OuterBorder = styled.div`
   border: #ddd 1px solid;
   border-radius: 3px;
 `;
+
+const config: Config = {
+  activityServiceUrl: 'https://activity.staging.atlassian.io',
+  searchAggregatorServiceUrl: 'https://api-private.stg.atlassian.com',
+  directoryServiceUrl: 'https://api-private.stg.atlassian.com/directory',
+};
 
 export default class extends React.Component<{}, { cloudId: string }> {
   constructor(props) {
@@ -35,10 +42,7 @@ export default class extends React.Component<{}, { cloudId: string }> {
         <OuterBorder>
           <BasicNavigation
             searchDrawerContent={
-              <GlobalQuickSearch
-                cloudId={this.state.cloudId}
-                environment="staging"
-              />
+              <GlobalQuickSearch cloudId={this.state.cloudId} {...config} />
             }
           />
         </OuterBorder>

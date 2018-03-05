@@ -67,7 +67,7 @@ export default class extends React.Component<any, any> {
             <AnalyticsListener onEvent={this.onEvent}>
               <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
                 <AtlaskitThemeProvider mode="light">
-                  <GlobalQuickSearch cloudId="cloudId" environment="local" />
+                  <GlobalQuickSearch cloudId="cloudId" />
                 </AtlaskitThemeProvider>
               </AnalyticsListener>
             </AnalyticsListener>
