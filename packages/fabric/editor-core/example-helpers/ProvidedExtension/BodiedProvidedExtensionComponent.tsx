@@ -10,17 +10,6 @@ import {
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 
-const Wrapper = styled.div`
-  position: relative;
-`;
-
-// tslint:disable-next-line:variable-name
-export const Content = styled.div`
-  padding: 8px;
-  background: white;
-  border: ${props => (props.selected ? '1px solid black' : '1px dashed #ccc')};
-`;
-
 export type Props = {
   isSelected?: boolean;
   editorActions?: EditorActions;
@@ -30,6 +19,15 @@ export type Props = {
   element?: HTMLElement | null;
   handleContentDOMRef?: (node: HTMLElement | null) => void;
 };
+
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const Content = styled.div`
+  padding: 8px;
+  background: white;
+`;
 
 export default class BodiedProvidedExtensionComponent extends React.Component<
   Props,
@@ -55,18 +53,13 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
     );
   }
 
-  renderPreview() {
-    return <div>Preview</div>;
-  }
-
   renderBody() {
     const { isSelected, handleContentDOMRef } = this.props;
-
     return (
       <Content
-        selected={isSelected}
         innerRef={handleContentDOMRef}
         className="extension-content"
+        style={{ border: isSelected ? '1px solid black' : '1px dashed #ccc' }}
       />
     );
   }
@@ -77,17 +70,12 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
     const { type } = node;
 
     return (
-      <Wrapper onClick={onClick}>
+      <Wrapper>
         {isSelected && this.renderToolbar()}
 
-        <TitleBar onSelect={onSelect} node={node} isSelected={isSelected} />
+        <TitleBar onSelect={onClick} node={node} isSelected={isSelected} />
 
-        {type === 'bodiedExtension' && (
-          <div>
-            {this.renderPreview()}
-            {this.renderBody()}
-          </div>
-        )}
+        {type === 'bodiedExtension' && <div>{this.renderBody()}</div>}
       </Wrapper>
     );
   }

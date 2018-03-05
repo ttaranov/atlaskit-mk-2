@@ -15,8 +15,6 @@ const BlockWrapper = styled.div`
 
 // tslint:disable-next-line:variable-name
 const Overlay = styled.div`
-  border: ${props => (props.selected ? '1px solid black' : '1px dashed #ccc')};
-  background: ${props => (props.selected ? 'rgba(0, 0, 0, .15)' : 'none')};
   position: absolute;
   top: 0px;
   bottom: 0px;
@@ -47,7 +45,12 @@ export default class TitleBar extends React.Component<Props, {}> {
 
     return (
       <Wrapper onClick={onSelect}>
-        <Overlay selected={isSelected} />
+        <Overlay
+          style={{
+            border: isSelected ? '1px solid black' : '1px dashed #ccc',
+            background: isSelected ? 'rgba(0, 0, 0, .15)' : 'none',
+          }}
+        />
         <strong>{extensionKey} extension</strong>
         ({text}) (isSelected={isSelected})
         {children}

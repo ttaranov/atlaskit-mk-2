@@ -122,12 +122,6 @@ const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-const DumbInlineExtension = props => (
-  <div onClick={props.onClick}>
-    <span onClick={props.onSelectExtension}>inline type extension</span>
-  </div>
-);
-
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
     const { extensionKey } = ext;
@@ -136,13 +130,6 @@ const extensionHandlers: ExtensionHandlers = {
     };
 
     switch (extensionKey) {
-      case 'info':
-        return (
-          <DumbInlineExtension
-            parameters={ext.parameters}
-            content={ext.content}
-          />
-        );
       case 'expand':
         return <BodiedProvidedExtensionComponent {...macroProps} />;
       case 'status':
