@@ -30,7 +30,7 @@ const sliderDefaultBackground = css`
 `;
 
 const sliderTrackStyle = css`
-  backgound: ${colors.N30A};
+  background: ${colors.N30A};
   border-radius: ${sliderLineThickness / 2}px;
   border: 0;
   cursor: pointer;
