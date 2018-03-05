@@ -1,6 +1,6 @@
 import { defaultSchema, Transformer } from '@atlaskit/editor-common';
 import * as MarkdownIt from 'markdown-it';
-import table from 'markdown-it-table';
+import { markdownItTable } from 'markdown-it-table';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { Schema, Node as PMNode } from 'prosemirror-model';
 
@@ -117,7 +117,7 @@ export class MarkdownTransformer implements Transformer<Markdown> {
     });
 
     if (schema.nodes.table) {
-      md.use(table);
+      md.use(markdownItTable);
     }
 
     this.markdownParser = new MarkdownParser(

@@ -23,6 +23,10 @@ import {
   panelNote,
   p,
   hr,
+  table,
+  th,
+  tr,
+  td,
   // Marks
   code,
   em,
@@ -46,6 +50,7 @@ import textColorPlugin from '../../editor-core/src/editor/plugins/text-color';
 import panelPlugin from '../../editor-core/src/editor/plugins/panel';
 import listPlugin from '../../editor-core/src/editor/plugins/lists';
 import rulePlugin from '../../editor-core/src/editor/plugins/rule';
+import tablesPlugin from '../../editor-core/src/editor/plugins/table';
 
 const transformer = new JSONTransformer();
 const toJSON = node => transformer.encode(node);
@@ -66,6 +71,7 @@ describe('JSONTransformer:', () => {
           panelPlugin,
           listPlugin,
           rulePlugin,
+          tablesPlugin,
         ],
         providerFactory: ProviderFactory.create({ emojiProvider }),
       });
@@ -266,7 +272,56 @@ describe('JSONTransformer:', () => {
         ],
       });
     });
+
+    [
+      { nodeName: 'tableCell', schemaBuilder: td },
+      { nodeName: 'tableHeader', schemaBuilder: th },
+    ].forEach(({ nodeName, schemaBuilder }) => {
+      it(`should strip unused optional attrs from ${nodeName} node`, () => {
+        const { editorView } = editor(
+          doc(table(tr(schemaBuilder({ colspan: 2 })(p('foo'))))),
+        );
+
+        expect(toJSON(editorView.state.doc)).toEqual({
+          version: 1,
+          type: 'doc',
+          content: [
+            {
+              type: 'table',
+              attrs: {
+                isNumberColumnEnabled: false,
+              },
+              content: [
+                {
+                  type: 'tableRow',
+                  content: [
+                    {
+                      type: nodeName,
+                      attrs: {
+                        colspan: 2,
+                      },
+                      content: [
+                        {
+                          type: 'paragraph',
+                          content: [
+                            {
+                              type: 'text',
+                              text: 'foo',
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+      });
+    });
   });
+
   describe('parse', () => {
     it('should convert ADF to PM representation', () => {
       const adf = {

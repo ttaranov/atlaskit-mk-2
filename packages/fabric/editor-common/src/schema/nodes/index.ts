@@ -39,7 +39,9 @@ export {
 export {
   table,
   tableCell,
+  toJSONTableCell,
   tableHeader,
+  toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
 } from './tableNodes';

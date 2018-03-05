@@ -35,6 +35,13 @@ describe('hyperlink', () => {
       );
     });
 
+    it('should not convert a hash text to hyperlink', () => {
+      const trackEvent = jest.fn();
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
+      insertText(editorView, '#test ', sel, sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('#test ')));
+    });
+
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com', sel, sel);

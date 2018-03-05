@@ -7,6 +7,7 @@ import {
 } from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../src/ui/PanelTextInput';
+import ToolbarButton from '../../src/ui/ToolbarButton';
 import {
   createEvent,
   doc,
@@ -291,5 +292,29 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(
       editorView.state.selection instanceof FakeTextCursorSelection,
     ).toEqual(true);
+  });
+
+  it('unlinkify button should remove the linking', () => {
+    const { editorView, pluginState } = editor(
+      doc(
+        paragraph(
+          'before',
+          link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'),
+          'after',
+        ),
+      ),
+    );
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+    hyperlinkEdit.setState({ editorFocused: true });
+    hyperlinkEdit
+      .find(ToolbarButton)
+      .filterWhere(n => n.html().indexOf('Unlink') >= 0)
+      .childAt(0)
+      .simulate('click');
+    expect(editorView.state.doc).toEqualDocument(
+      doc(paragraph('beforewww.atlassian.comafter')),
+    );
   });
 });
