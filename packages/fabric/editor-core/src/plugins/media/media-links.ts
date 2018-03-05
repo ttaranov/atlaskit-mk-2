@@ -6,9 +6,12 @@ import { Context } from '@atlaskit/media-core';
 import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 
 import analyticsService from '../../analytics/service';
-import { endPositionOfParent } from '../../utils';
 import { uuid } from '../utils';
-import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
+import {
+  posOfMediaGroupBelow,
+  posOfParentMediaGroup,
+  endPositionForMedia,
+} from './utils';
 import { MediaStateManager, MediaState } from './types';
 
 export interface URLInfo {
@@ -61,7 +64,7 @@ export const insertLinks = async (
         const insertPos =
           posOfMediaGroupBelow(state, $latestPos, false) ||
           posOfParentMediaGroup(state, $latestPos, false) ||
-          endPositionOfParent($latestPos);
+          endPositionForMedia(state, $latestPos);
 
         // Insert an empty paragraph in case we've reached the end of the document
         if (insertPos === state.doc.nodeSize - 2) {
