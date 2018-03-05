@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
+import isEqual from 'lodash.isEqual';
 import { code, md } from '@atlaskit/docs';
 
 type InstrumentedItem = {
   packageName: string,
   component: string,
+  context: { component: string },
   prop: string,
   payload: Object,
 };
@@ -19,25 +21,34 @@ const scrubRepeatedInfo = (
     ...item,
     packageName: item.packageName !== prev.packageName ? item.packageName : '',
     component: item.component !== prev.component ? item.component : '',
+    context: !isEqual(item.context, prev.context) ? item.context : undefined,
   };
 };
 
 const InstrumentedTable = ({ packages }: { packages: InstrumentedItem[] }) => (
   <table>
-    <th>Package</th>
-    <th>Component</th>
-    <th>Prop</th>
-    <th>Payload</th>
-    {packages
-      .map(scrubRepeatedInfo)
-      .map(({ packageName, component, prop, payload }) => (
-        <tr key={packageName}>
-          <td>{packageName}</td>
-          <td>{component}</td>
-          <td>{prop}</td>
-          <td>{JSON.stringify(payload)}</td>
-        </tr>
-      ))}
+    <thead>
+      <tr>
+        <th>Package</th>
+        <th>Component</th>
+        <th>Context</th>
+        <th>Prop</th>
+        <th>Payload</th>
+      </tr>
+    </thead>
+    <tbody>
+      {packages
+        .map(scrubRepeatedInfo)
+        .map(({ packageName, context, component, prop, payload }) => (
+          <tr key={packageName}>
+            <td>{packageName}</td>
+            <td>{component}</td>
+            <td>{context ? JSON.stringify(context) : ''}</td>
+            <td>{prop}</td>
+            <td>{JSON.stringify(payload)}</td>
+          </tr>
+        ))}
+    </tbody>
   </table>
 );
 
@@ -59,7 +70,7 @@ const SaveButton = ({ onClick }) => (
 );
 `}
 
-  Button provides you a [UIAnalyticsEvent](#UIAnalyticsEvent) as the second arg
+  Button provides you a [UIAnalyticsEvent](#UIAnalyticsEvent) as the last arg
   to the onClick hander. This is the pattern used for all callback props that
   support analytics.
   
@@ -71,8 +82,8 @@ import Button from '@atlaskit/button';
 
 const SaveButton = ({ onClick }) => (
   <Button
-    onClick={(e, analytic) => {
-      analytic.fire();
+    onClick={(e, analyticsEvent) => {
+      analyticsEvent.fire();
       if (onClick) {
         onClick(e);
       }
@@ -114,7 +125,9 @@ const App = () => (
   <a name="InstrumentedComponents"></a>
   ## Instrumented Components
 
-  This table shows all the component interactions that are instrumented. 
+  This table shows all the component interactions that are instrumented. In addition to what is shown
+  in the "Context" column, all components include \`atlaskitPackageName\` and \`atlaskitPackageVersion\`
+  in the context.
 
   ${(
     <InstrumentedTable
@@ -122,6 +135,7 @@ const App = () => (
         {
           packageName: '@atlaskit/button',
           component: 'Button',
+          context: { component: 'button' },
           prop: 'onClick',
           payload: { action: 'click' },
         },

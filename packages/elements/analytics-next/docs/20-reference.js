@@ -20,7 +20,7 @@ export default md`
 
   &nbsp;
 
-  The class of used to represent an analytics event triggered by a user interaction. It has the following interface:
+  The class used to represent an analytics event triggered by a user interaction. It has the following interface:
 
 ${code`
 /** An array of objects containing data provided by any AnalyticsContext
@@ -65,7 +65,9 @@ update(
 
   ${code`import { withAnalyticsEvents } from '@atlaskit/analytics-next';`}
 
-  A HOC which provides the wrapped component with a method for creating \`UIAnalyticsEvent\`s, via \`props.createAnalyticsEvent\`. Please refer to the tutorial for a thorough explanation of events and how to use them.
+  A HOC which provides the wrapped component with a method for creating \`UIAnalyticsEvent\`s, via \`props.createAnalyticsEvent\`.
+  See the section on [creating your own events](/mk-2/packages/elements/analytics-next/docs/concepts#creating-your-own-events) 
+  in the Concepts page for a thorough explanation of how to use this component.
 
   Usage:
 
