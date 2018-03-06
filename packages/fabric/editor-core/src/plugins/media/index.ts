@@ -46,6 +46,7 @@ import {
   MediaStateManager,
 } from './types';
 import DefaultMediaStateManager from './default-state-manager';
+import pickerFacadeLoader from './picker-facade-loader';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -148,11 +149,10 @@ export class MediaPluginState {
     let Picker: typeof PickerFacade;
 
     try {
-      [ resolvedMediaProvider, { default: Picker } ] = await Promise.all([
+      [resolvedMediaProvider, Picker] = await Promise.all([
         mediaProvider,
-        import(/* webpackChunkName:"@atlaskit-internal_editor-core_picker-facade" */ './picker-facade'),
+        pickerFacadeLoader(),
       ]);
-
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
@@ -618,21 +618,14 @@ export class MediaPluginState {
       );
 
       pickers.push(
-        (this.clipboardPicker = new Picker(
-          'clipboard',
-          pickerFacadeConfig,
-        )),
+        (this.clipboardPicker = new Picker('clipboard', pickerFacadeConfig)),
       );
 
       pickers.push(
-        (this.dropzonePicker = new Picker(
-          'dropzone',
-          pickerFacadeConfig,
-          {
-            container: this.options.customDropzoneContainer,
-            headless: true,
-          },
-        )),
+        (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
+          container: this.options.customDropzoneContainer,
+          headless: true,
+        })),
       );
 
       pickers.forEach(picker => {

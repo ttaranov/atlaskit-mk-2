@@ -38,6 +38,7 @@ import mediaPlugin from '../../../src/editor/plugins/media';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import rulePlugin from '../../../src/editor/plugins/rule';
 import tablePlugin from '../../../src/editor/plugins/table';
+import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -89,14 +90,16 @@ describe('Media plugin', () => {
     return mediaNodeWithPos!.getPos();
   };
 
-  const waitForPluginStateChange = async (pluginState: MediaPluginState) => 
-    new Promise(resolve => pluginState.subscribe(resolve));
-  
+  const waitForMediaPickerReady = async (pluginState: MediaPluginState) =>
+    Promise.all([
+      new Promise(resolve => pluginState.subscribe(resolve)),
+      pickerFacadeLoader(),
+    ]);
 
   afterAll(() => {
     providerFactory.destroy();
   });
-  
+
   it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const collectionFromProvider = jest.spyOn(
@@ -104,12 +107,12 @@ describe('Media plugin', () => {
       'collectionFromProvider' as any,
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
     const provider = await mediaProvider;
     await provider.uploadContext;
-    
+
     expect(typeof pluginState.binaryPicker!).toBe('object');
-    
+
     pluginState.binaryPicker!.upload = jest.fn();
 
     pluginState.insertFileFromDataUrl(
@@ -127,7 +130,7 @@ describe('Media plugin', () => {
       const { editorView, pluginState } = editor(doc(p('')), {
         appearance: 'message',
       });
-      await waitForPluginStateChange(pluginState);
+      await waitForMediaPickerReady(pluginState);
 
       pluginState.insertFiles([
         { id: 'foo', fileMimeType: 'image/jpeg' },
@@ -160,7 +163,7 @@ describe('Media plugin', () => {
     describe('when all of the files are images', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await waitForPluginStateChange(pluginState);;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           {
@@ -228,7 +231,7 @@ describe('Media plugin', () => {
 
       it(`shouldn't insert multiple media in uploading triggers multiple times`, async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await waitForPluginStateChange(pluginState);;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           {
@@ -275,7 +278,7 @@ describe('Media plugin', () => {
           const { editorView, pluginState } = editor(
             doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
           );
-          await waitForPluginStateChange(pluginState);;
+          await waitForMediaPickerReady(pluginState);
 
           pluginState.insertFiles([
             {
@@ -340,7 +343,7 @@ describe('Media plugin', () => {
     describe('when it is a mix of pdf and image', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await waitForPluginStateChange(pluginState);;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           { id: 'foo', fileMimeType: 'pdf' },
@@ -381,7 +384,7 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
 
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
 
     pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
@@ -463,7 +466,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
 
     pluginState.insertFiles([
       { id: firstTemporaryFileId, status: 'uploading' },
@@ -712,7 +715,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
 
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
@@ -905,10 +908,10 @@ describe('Media plugin', () => {
 
   it('should focus the editor after files are added to the document', async () => {
     const { editorView, pluginState } = editor(doc(p('')));
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
 
     const spy = jest.spyOn(editorView, 'focus');
-    
+
     pluginState.insertFiles([{ id: 'foo' }]);
     expect(spy).toHaveBeenCalled();
 
