@@ -1,5 +1,5 @@
 jest.mock('../src/utils/breakpoint');
-jest.mock('../src/utils/shouldDisplayImageThumnail');
+jest.mock('../src/utils/shouldDisplayImageThumbnail');
 
 import * as React from 'react';
 
@@ -24,9 +24,9 @@ import { FileCard } from '../src/files';
 import { Wrapper } from '../src/root/styled';
 import { breakpointSize } from '../src/utils/breakpoint';
 
-import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumnail';
+import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumbnail';
 import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { CardViewAnalyticsContext } from '../src/index';
+import { CardViewAnalyticsContext, CardViewState } from '../src/index';
 
 describe('CardView', () => {
   const file: FileDetails = {
@@ -259,7 +259,7 @@ describe('CardView', () => {
       (breakpointSize as jest.Mock<void>).mockReturnValue('small');
       const element = shallowCardViewBaseElement(
         {
-          status: 'complete',
+          status: 'loading',
           metadata: file,
           dimensions,
         },
@@ -272,7 +272,7 @@ describe('CardView', () => {
 
     it('should render wrapper with default dimensions based on default appearance when dimensions and appearance are not provided', () => {
       const element = shallowCardViewBaseElement({
-        status: 'complete',
+        status: 'loading',
         metadata: file,
       });
       expect(element.find(Wrapper).props().dimensions).toEqual({
@@ -283,7 +283,7 @@ describe('CardView', () => {
 
     it('should use default dimensions based on passed appearance', () => {
       const element = shallowCardViewBaseElement({
-        status: 'complete',
+        status: 'loading',
         metadata: file,
         appearance: 'small',
       });
@@ -296,7 +296,7 @@ describe('CardView', () => {
     it('should use passed dimensions when provided', () => {
       const element = shallowCardViewBaseElement(
         {
-          status: 'complete',
+          status: 'loading',
           metadata: file,
           appearance: 'small',
           dimensions: { width: '70%', height: 100 },
@@ -312,7 +312,7 @@ describe('CardView', () => {
 
     it('should use item type to calculate default dimensions', () => {
       const element = shallowCardViewBaseElement({
-        status: 'complete',
+        status: 'loading',
         metadata: file,
       });
       const props = element.find(Wrapper).props();
@@ -326,7 +326,7 @@ describe('CardView', () => {
 
     it('should not use default dimensions for link cards', () => {
       const linkCard = shallowCardViewBaseElement({
-        status: 'complete',
+        status: 'loading',
         metadata: link,
       });
 
@@ -480,9 +480,9 @@ describe('CardView', () => {
 
     card.simulate('click');
 
-    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(2);
     const actualEvent: Partial<UIAnalyticsEvent> =
-      analyticsEventHandler.mock.calls[0][0];
+      analyticsEventHandler.mock.calls[1][0];
     expect(actualEvent.payload).toEqual({ action: 'clicked' });
     expect(actualEvent.context && actualEvent.context.length).toEqual(1);
     const actualContext =
@@ -528,5 +528,68 @@ describe('CardView', () => {
     expect(actualReturnedEvent.hasFired).toEqual(false);
     expect(actualReturnedEvent.payload.action).toEqual('clicked');
     expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
+  });
+
+  it('should fire "shown" analytics event when initially rendered with complete status', () => {
+    const analyticsEventHandler = jest.fn();
+    mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="complete" metadata={link} />
+      </AnalyticsListener>,
+    );
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
+      'shown',
+    );
+    expect(
+      actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
+    ).toBeGreaterThan(0);
+  });
+
+  it('should fire "shown" analytics event when status has changed', () => {
+    const analyticsEventHandler = jest.fn();
+    const card = mount<CardViewOwnProps, CardViewState>(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="loading" metadata={link} />
+      </AnalyticsListener>,
+    );
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(0);
+    const cardView = card.find(CardViewBase);
+    const instance = cardView.instance() as CardViewBase;
+    instance.componentWillReceiveProps({
+      ...cardView.props(),
+      status: 'complete',
+    });
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: Partial<UIAnalyticsEvent> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
+      'shown',
+    );
+  });
+
+  it('should fire "shown" analytics event only once when props are changing', () => {
+    const analyticsEventHandler = jest.fn();
+    const card = mount<CardViewOwnProps, CardViewState>(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <CardView status="loading" metadata={link} />
+      </AnalyticsListener>,
+    );
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(0);
+    const cardView = card.find(CardViewBase);
+    const instance = cardView.instance() as CardViewBase;
+    instance.componentWillReceiveProps({
+      ...cardView.props(),
+      status: 'complete',
+    });
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    instance.componentWillReceiveProps({
+      ...cardView.props(),
+      status: 'complete',
+      selected: true,
+    });
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
   });
 });

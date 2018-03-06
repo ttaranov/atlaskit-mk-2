@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { MediaType, MediaItemType } from '@atlaskit/media-core';
 import { MediaImage } from '../../mediaImage';
 import { CardLoading } from '../../cardLoading';
-import { shouldDisplayImageThumbnail } from '../../shouldDisplayImageThumnail';
+import { shouldDisplayImageThumbnail } from '../../shouldDisplayImageThumbnail';
 
 export interface CardContentProps {
   mediaItemType?: MediaItemType;

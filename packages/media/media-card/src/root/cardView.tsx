@@ -37,7 +37,7 @@ import {
   WithCreateAnalyticsEventProps,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
-import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumnail';
+import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
 
 export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -76,17 +76,31 @@ export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
 > {
-  state: CardViewState = {
-    hasBeenShown: false,
-    componentHasMountedAtTime: 0,
-  };
+  constructor(props) {
+    super(props);
 
-  componentWillMount() {
-    this.setState({ componentHasMountedAtTime: Date.now() });
+    this.state = {
+      hasBeenShown: false,
+      componentHasMountedAtTime: Date.now(),
+    };
   }
 
   componentDidMount() {
     this.saveElementWidth();
+    this.fireShowedAnalyticsEvent(this.props);
+  }
+
+  private fireShowedAnalyticsEvent(prop: CardViewBaseProps) {
+    if (
+      !this.state.hasBeenShown &&
+      (prop.status === 'error' || prop.status === 'complete')
+    ) {
+      const loadTime = Date.now() - this.state.componentHasMountedAtTime;
+      this.props
+        .createAnalyticsEvent({ action: 'shown', loadTime })
+        .fire('media');
+      this.setState({ hasBeenShown: true });
+    }
   }
 
   componentWillReceiveProps(nextProps: CardViewBaseProps) {
@@ -101,16 +115,7 @@ export class CardViewBase extends React.Component<
       this.fireOnSelectChangeToConsumer(ns);
     }
 
-    if (
-      !this.state.hasBeenShown &&
-      (nextProps.status === 'error' || nextProps.status === 'complete')
-    ) {
-      const loadTime = Date.now() - this.state.componentHasMountedAtTime;
-      this.props
-        .createAnalyticsEvent({ action: 'shown', loadTime })
-        .fire('media');
-      this.setState({ hasBeenShown: true });
-    }
+    this.fireShowedAnalyticsEvent(nextProps);
   }
 
   private fireOnSelectChangeToConsumer = (newSelectedState: boolean): void => {
