@@ -1,5 +1,7 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.6.3
+
 ## 2.6.2
 
 ## 2.6.1
