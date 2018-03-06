@@ -1,5 +1,7 @@
 # @atlaskit/task-decision
 
+## 4.10.2
+
 ## 4.10.1
 - [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
 

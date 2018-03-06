@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.7.9
+
 ## 62.7.8
 - [patch] Adding link in blockquote should not split it. [13dd62e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13dd62e)
 

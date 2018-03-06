@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 31.1.11
+
 ## 31.1.10
 - [patch] code clean up [b6ecb4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b6ecb4a)
 - [patch] kept currentUser attribute consistent in all places, fixed typescript errors [6f375f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f375f0)

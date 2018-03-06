@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 11.5.7
+
 ## 11.5.6
 - [patch] Fix missing styled-components dependency [64d89c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64d89c8)
 
