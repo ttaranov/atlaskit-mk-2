@@ -7,7 +7,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -42,7 +41,23 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), entry),
             ]
           : path.join(cwd, entry),
-      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+      examples:
+        env === 'development' && host && port
+          ? [
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
+              path.join(process.cwd(), './src/examples-entry.js'),
+            ]
+          : path.join(cwd, './src/examples-entry.js'),
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'react-router',
+        'react-router-dom',
+      ],
     },
     output: {
       filename: '[name].js',
@@ -169,21 +184,27 @@ function plugins(
   } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
+    new webpack.NamedChunksPlugin(
+      chunk =>
+        chunk.name && path.isAbsolute(chunk.name) ? chunk.id : chunk.name,
+    ),
+    new webpack.NamedModulesPlugin(),
     //
     // Order of CommonsChunkPlugins is important,
     // each next one of them can drag some dependencies from the previous ones.
-    //
-
-    // Joins all vendor entry point packages into 1 chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-    }),
 
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-two-or-more-times',
+      async: 'async-deps',
       minChunks(module, count) {
-        return count >= 2;
+        const context = module.context;
+        return (
+          count === 1 &&
+          (context &&
+            // We're intentionally excluding p-queue and rxjs-async-map from this chunk as it currently breaks our build
+            // These two packages are being used by the media-store package. Unfortunately neither of them are transpiled, and are thus breaking in ie11.
+            !context.includes('node_modules/p-queue') &&
+            (context && !context.includes('node_modules/rxjs-async-map')))
+        );
       },
     }),
 
@@ -231,9 +252,26 @@ function plugins(
       },
     }),
 
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common-app',
+      chunks: ['main', 'examples'],
+      minChunks(module, count) {
+        const resource = module.resource;
+        return !resource || !resource.includes('website/src/index.js');
+      },
+    }),
+
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
       favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['examples'],
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'examples.html',
+      template: path.join(cwd, 'public/examples.html.ejs'),
+      favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['main'],
     }),
 
     new webpack.DefinePlugin({

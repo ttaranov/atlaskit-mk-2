@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "webpack:dev": "./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",
+    "webpack:dev:examples": "./node_modules/@atlaskit/webpack-config/bin/dev-examples.js ./src/examples-entry.js",
     "webpack:build": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js",
+    "webpack:build:examples": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/examples-entry.js",
     "build": "yarn build:webpack && yarn build:copy && yarn build:zip",
     "build:no-minimize": "yarn build:webpack --no-minimize && yarn build:copy && yarn build:zip",
     "build:webpack": "rm -rf dist && yarn run webpack:build",
@@ -54,6 +56,7 @@
     "@atlaskit/tag": "^3.2.0",
     "@atlaskit/tag-group": "^3.6.0",
     "@atlaskit/theme": "^2.4.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/webpack-config": "^1.0.0",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
