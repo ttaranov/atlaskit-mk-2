@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "bunyan": "^1.8.12",
-    "landkid": "^0.0.19"
+    "landkid": "^0.0.20"
   }
 }

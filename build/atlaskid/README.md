@@ -43,5 +43,5 @@ PROD logs can be found [here](https://splunk.atlassian.io/en-GB/app/search/searc
 
 ```
 # Deploy staging (prod)
-docker build -t docker.atl-paas.net/atlaskit/atlaskid:v6 . && docker push docker.atl-paas.net/atlaskit/atlaskid:v6 && micros service:deploy atlaskit-atlaskid -e stg-west
+docker build -t docker.atl-paas.net/atlaskit/atlaskid:v7 . && docker push docker.atl-paas.net/atlaskit/atlaskid:v7 && micros service:deploy atlaskit-atlaskid -e stg-west
 ```
