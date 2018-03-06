@@ -2,13 +2,15 @@ import * as React from 'react';
 import EditorActions from '../../src/editor/actions';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
 import styled from 'styled-components';
-import ExtensionToolbar from './ExtensionToolbar';
+
 import TitleBar from './TitleBar';
 import {
+  ExtensionToolbar,
   ExtensionToolbarButton,
   ExtensionToolbarSeparator,
   ExtensionToolbarItemWrapper,
 } from '../../src/index';
+
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 
@@ -43,7 +45,7 @@ export type Props = {
   onClick?: any;
   onSelect?: any;
   isSelected?: boolean;
-  element?: HTMLElement | null;
+  element: HTMLElement;
 };
 
 export default class ProvidedExtensionComponent extends React.Component<
@@ -69,6 +71,10 @@ export default class ProvidedExtensionComponent extends React.Component<
   renderEditingForm() {
     const { node, element } = this.props;
     const popupContainer = document.getElementById('extensionPopupContainer');
+
+    if (!popupContainer) {
+      return;
+    }
 
     return (
       <ExtensionToolbar
@@ -112,6 +118,10 @@ export default class ProvidedExtensionComponent extends React.Component<
     }
 
     const popupContainer = document.getElementById('extensionPopupContainer');
+
+    if (!popupContainer) {
+      return;
+    }
 
     return (
       <ExtensionToolbar element={element} popupContainer={popupContainer}>

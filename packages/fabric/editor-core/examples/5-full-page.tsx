@@ -125,7 +125,10 @@ const mediaProvider = storyMediaProviderFactory({
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
     const { extensionKey } = ext;
-    const macroProps = {
+
+    // using any here because most props are going to be injected through the extension handler
+    // and typescript won't accept that as valid
+    const macroProps: any = {
       node: ext,
     };
 

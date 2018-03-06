@@ -36,7 +36,7 @@ export { default as EditorActions } from './editor/actions';
 
 // These items are used for consumers to ship a toolbar with consistent look and feel
 export {
-  ExtensionToolbarWrapper,
+  ExtensionToolbar,
   ExtensionToolbarSeparator,
   ExtensionToolbarButton,
   ExtensionToolbarItemWrapper,

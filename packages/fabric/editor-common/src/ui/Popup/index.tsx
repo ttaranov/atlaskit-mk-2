@@ -17,7 +17,7 @@ export interface Props {
   fitHeight?: number;
   fitWidth?: number;
   boundariesElement?: HTMLElement;
-  mountTo?: HTMLElement | null;
+  mountTo?: HTMLElement;
   // horizontal offset, vertical offset
   offset?: number[];
   onPositionCalculated?: (position: Position) => Position;

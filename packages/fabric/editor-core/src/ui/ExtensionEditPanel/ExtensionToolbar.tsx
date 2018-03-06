@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Popup } from '@atlaskit/editor-common';
-import { ExtensionToolbarWrapper } from '../../src/index';
+import { Toolbar } from './styles';
 
 export type Props = {
-  element?: HTMLElement | null;
-  popupContainer?: HTMLElement | null;
+  element: HTMLElement;
+  popupContainer: HTMLElement;
   children: any;
   offset?: number[];
   alignX?: 'left' | 'right';
@@ -28,19 +28,15 @@ export default class ExtensionToolbar extends React.Component<Props, {}> {
       alignY,
     } = this.props;
 
-    if (!element) {
-      return null;
-    }
-
     return (
       <Popup
         target={element}
-        mountTo={popupContainer}
         offset={offset}
         alignX={alignX}
         alignY={alignY}
+        mountTo={popupContainer}
       >
-        <ExtensionToolbarWrapper>{children}</ExtensionToolbarWrapper>
+        <Toolbar>{children}</Toolbar>
       </Popup>
     );
   }

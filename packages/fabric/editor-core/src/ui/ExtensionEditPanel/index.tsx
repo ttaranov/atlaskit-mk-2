@@ -4,10 +4,11 @@ import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import { Toolbar, Separator, ItemWrapper } from './styles';
+import ExtensionToolbar from './ExtensionToolbar';
 
 // Exporting these items so products can build toolbars that look exactly like this.
 export {
-  Toolbar as ExtensionToolbarWrapper,
+  ExtensionToolbar,
   Separator as ExtensionToolbarSeparator,
   ToolbarButton as ExtensionToolbarButton,
   ItemWrapper as ExtensionToolbarItemWrapper,

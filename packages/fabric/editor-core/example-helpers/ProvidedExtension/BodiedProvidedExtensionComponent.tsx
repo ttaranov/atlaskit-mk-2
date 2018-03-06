@@ -1,12 +1,14 @@
 import * as React from 'react';
 import EditorActions from '../../src/editor/actions';
 import styled from 'styled-components';
-import ExtensionToolbar from './ExtensionToolbar';
 import TitleBar from './TitleBar';
+
 import {
+  ExtensionToolbar,
   ExtensionToolbarButton,
   ExtensionToolbarSeparator,
 } from '../../src/index';
+
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 
@@ -16,7 +18,7 @@ export type Props = {
   node: any;
   onClick?: any;
   onSelect?: any;
-  element?: HTMLElement | null;
+  element: HTMLElement;
   handleContentDOMRef?: (node: HTMLElement | null) => void;
 };
 
@@ -37,6 +39,10 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
     const { element } = this.props;
 
     const popupContainer = document.getElementById('extensionPopupContainer');
+
+    if (!popupContainer) {
+      return null;
+    }
 
     return (
       <ExtensionToolbar element={element} popupContainer={popupContainer}>
@@ -71,10 +77,8 @@ export default class BodiedProvidedExtensionComponent extends React.Component<
 
     return (
       <Wrapper onClick={onClick}>
-        {isSelected && this.renderToolbar()}
-
         <TitleBar onSelect={onSelect} node={node} isSelected={isSelected} />
-
+        {isSelected && this.renderToolbar()}
         {type === 'bodiedExtension' && <div>{this.renderBody()}</div>}
       </Wrapper>
     );
