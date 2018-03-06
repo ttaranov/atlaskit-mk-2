@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { colors } from '@atlaskit/theme';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { ProgressTracker } from '../src';
 import type { Stage, LinkElement } from '../src/types';
@@ -72,4 +72,8 @@ const render = {
   link: (props: Props): LinkElement => <CustomProgressTrackerLink {...props} />,
 };
 
-export default () => <ProgressTracker items={items} render={render} />;
+export default () => (
+  <BrowserRouter>
+    <ProgressTracker items={items} render={render} />
+  </BrowserRouter>
+);
