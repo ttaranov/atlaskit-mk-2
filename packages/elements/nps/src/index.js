@@ -1,2 +1,2 @@
 // @flow
-export default {};
+export { default } from './NPS';
