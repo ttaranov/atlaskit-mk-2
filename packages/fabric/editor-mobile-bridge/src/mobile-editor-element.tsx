@@ -165,9 +165,14 @@ class EditorWithState extends Editor {
               enabled: !state.strongDisabled,
             },
             {
-              markName: 'subsup',
-              active: state.subscriptActive || state.superscriptActive,
-              enabled: !state.subscriptDisabled && !state.superscriptDisabled,
+              markName: 'sub',
+              active: state.subscriptActive,
+              enabled: !state.subscriptDisabled,
+            },
+            {
+              markName: 'sup',
+              active: state.superscriptActive,
+              enabled: !state.superscriptDisabled,
             },
           ];
           toNativeBridge.updateTextFormat(JSON.stringify(states));
