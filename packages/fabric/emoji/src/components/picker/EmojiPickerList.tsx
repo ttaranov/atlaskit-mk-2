@@ -11,6 +11,8 @@ import {
   defaultCategories,
   frequentCategory,
   MAX_ORDINAL,
+  customTitle,
+  userCustomTitle,
 } from '../../constants';
 import {
   EmojiDescription,
@@ -18,6 +20,7 @@ import {
   OnCategory,
   OnEmojiEvent,
   ToneSelection,
+  User,
 } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -40,6 +43,7 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
+  currentUser?: User;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
@@ -166,7 +170,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     super(props);
     this.state = {};
 
-    this.buildGroups(props.emojis);
+    this.buildGroups(props.emojis, props.currentUser);
     this.buildVirtualItems(props, this.state);
   }
 
@@ -188,7 +192,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     ) {
       if (!nextProps.query) {
         // Only refresh if no query
-        this.buildGroups(nextProps.emojis);
+        this.buildGroups(nextProps.emojis, nextProps.currentUser);
       }
       this.buildVirtualItems(nextProps, nextState);
     }
@@ -314,11 +318,20 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   };
 
-  private buildGroups = (emojis: EmojiDescription[]): void => {
+  private buildGroups = (
+    emojis: EmojiDescription[],
+    currentUser?: User,
+  ): void => {
     const existingCategories = new Map();
 
     let currentGroup;
     let currentCategory: string | undefined;
+
+    let userCustomGroup: EmojiGroup = {
+      emojis: [],
+      title: userCustomTitle,
+      category: customCategory,
+    };
 
     const list: EmojiGroup[] = [];
 
@@ -332,7 +345,10 @@ export default class EmojiPickerVirtualList extends PureComponent<
         } else {
           currentGroup = {
             emojis: [],
-            title: currentCategory,
+            title:
+              currentCategory === customCategory
+                ? customTitle
+                : currentCategory,
             category: currentCategory,
           };
           existingCategories.set(currentCategory, currentGroup);
@@ -340,10 +356,40 @@ export default class EmojiPickerVirtualList extends PureComponent<
         }
       }
       currentGroup.emojis.push(emoji);
-    }
 
+      // separate user emojis
+      if (
+        currentCategory === customCategory &&
+        emoji &&
+        currentUser &&
+        emoji.creatorUserId === currentUser.id
+      ) {
+        userCustomGroup.emojis.push(emoji);
+      }
+    }
     this.allEmojiGroups = list.sort(categoryComparator);
+
+    // append user emojis before the custom emojis
+    if (userCustomGroup.emojis.length > 0) {
+      let idx = this.findElementIndex(
+        this.allEmojiGroups,
+        (item, index) => item.category === customCategory,
+      );
+      if (idx !== -1) {
+        this.allEmojiGroups.splice(idx, 0, userCustomGroup);
+      }
+    }
   };
+
+  private findElementIndex(elements, callback) {
+    let idx = -1;
+    elements.filter((item, index) => {
+      if (callback(item, index)) {
+        idx = index;
+      }
+    });
+    return idx;
+  }
 
   private checkCategoryChange = ({ scrollTop }) => {
     this.lastScrollTop = scrollTop;
