@@ -30,6 +30,8 @@ export interface CardAction {
   label?: string;
   type?: CardActionType;
   handler: CardEventHandler;
+
+  icon?: ReactElement<any>;
 }
 
 export interface ListAction {
