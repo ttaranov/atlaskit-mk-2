@@ -17,8 +17,8 @@ const contextTest = (j, analyticsConfig) => {
 
       expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
         component: '${context}',
-        package: name,
-        version,
+        package: packageName,
+        version: packageVersion
       });
     });
   `);
@@ -67,8 +67,8 @@ const atlaskitTest = (j, analyticsConfig, prop, action) => {
       expect(analyticsEvent.context).toEqual([
         {
           component: '${context}',
-          package: name,
-          version,
+          package: packageName,
+          version: packageVersion
         },
       ]);
     });
@@ -98,7 +98,7 @@ export default (fileInfo, api) => {
       import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
     `))
     .addImport(source.code(`
-      import { name, version } from '${packageJsonPath}';
+      import { name as packageName, version as packageVersion } from '${packageJsonPath}';
     `));
   
     // Add describe block + tests

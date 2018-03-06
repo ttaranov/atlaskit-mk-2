@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
+import { name as packageName, version as packageVersion } from '../../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
-
-import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { name, version } from '../../package.json';
 
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
 const transparent = themed({ light: 'transparent', dark: 'transparent' });
@@ -24,8 +23,8 @@ describe('analytics', () => {
 
     expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
       component: 'button',
-      package: name,
-      version,
+      package: packageName,
+      version: packageVersion
     });
   });
 
@@ -58,9 +57,9 @@ describe('analytics', () => {
     expect(analyticsEvent.payload).toEqual({ action: 'click' });
     expect(analyticsEvent.context).toEqual([
       {
-        component: Button,
-        package: name,
-        version,
+        component: 'button',
+        package: packageName,
+        version: packageVersion
       },
     ]);
   });
