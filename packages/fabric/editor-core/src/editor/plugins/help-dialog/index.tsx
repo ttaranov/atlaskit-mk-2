@@ -51,7 +51,7 @@ const helpDialog: EditorPlugin = {
     ];
   },
 
-  contentComponent({ editorView, eventDispatcher }) {
+  contentComponent({ editorView, eventDispatcher, appearance }) {
     return (
       <WithPluginState
         editorView={editorView}
@@ -61,6 +61,7 @@ const helpDialog: EditorPlugin = {
         }}
         render={({ helpDialog = {} as any }) => (
           <HelpDialog
+            appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}
           />

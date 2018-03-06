@@ -1,16 +1,22 @@
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes } from 'react';
 import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
-import { padding } from '../styles';
+import { Wrapper as WrapperDefault, padding } from '../styles';
+
+export const Wrapper = styled(WrapperDefault)`
+  margin: 12px 0;
+`;
 
 export const Header = styled.div`
   cursor: pointer;
   padding: ${padding / 2}px ${padding / 2}px ${padding / 4}px;
   vertical-align: middle;
-
-  img {
-    height: 24px;
-    padding: ${padding / 2}px;
-  }
 `;
 
 // tslint:disable-next-line:variable-name

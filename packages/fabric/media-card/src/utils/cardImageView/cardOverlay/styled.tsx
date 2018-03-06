@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes } from 'react';
 import {
   rgba,
   centerX,
@@ -31,17 +38,17 @@ export const TickBox = styled.div`
   top: 8px;
   right: 8px;
   border-radius: 20px;
-  color: #798599; // TODO FIL-3884: Align color with new design
+  color: #798599; /* TODO FIL-3884: Align color with new design */
   display: flex;
   opacity: 0;
 
   &.selected {
     opacity: 1;
     color: white;
-    background-color: #0052cc; // TODO FIL-3884: Align with tickbox icons
+    background-color: #0052cc; /* TODO FIL-3884: Align with tickbox icons */
   }
 
-  // Enforce dimensions of "tick" icon
+  /* Enforce dimensions of "tick" icon */
   svg {
     width: 14px;
   }
@@ -96,7 +103,7 @@ export const Overlay = styled.div`
         background-color: ${akColorB200};
 
         &:hover {
-          // TODO FIL-3884 add new overlay with rgba(akColorN900, 0.16)
+          /* TODO FIL-3884 add new overlay with rgba(akColorN900, 0.16) */
         }
 
         .title,
@@ -126,9 +133,8 @@ export const Overlay = styled.div`
     .bottom-row {
       opacity: 0;
       transition: transform 0.2s, opacity 0.5s;
-      transform: translateY(
-        35px
-      ); // This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore
+      /* This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore */
+      transform: translateY(35px);
 
       .file-type-icon {
         display: none;
@@ -221,7 +227,6 @@ export const Overlay = styled.div`
 `;
 
 export const ErrorLine = styled.div`
-  display: block;
   height: 24px;
   display: flex;
   align-items: center;

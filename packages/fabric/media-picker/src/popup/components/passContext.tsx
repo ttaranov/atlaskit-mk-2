@@ -14,7 +14,7 @@ export default class PassContext extends Component<any, any> {
     };
   }
 
-  render() {
+  render(): any {
     const { children } = this.props;
 
     return children;

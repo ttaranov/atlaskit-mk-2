@@ -1,5 +1,5 @@
 // @flow
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { flexMaxHeightIEFix } from '../utils/flex-max-height-ie-fix';
@@ -34,7 +34,7 @@ const HeaderOrFooter = styled.div`
 export const Header = styled(HeaderOrFooter)`
   padding: ${outerGutter}px ${outerGutter}px ${innerGutter - keylineHeight}px;
   box-shadow: ${p =>
-    p.showKeyline ? css`0 ${keylineHeight}px 0 0 ${keylineColor}` : 'none'};
+    p.showKeyline ? ` 0 ${keylineHeight}px 0 0 ${keylineColor(p)}` : 'none'};
 `;
 
 // Title
@@ -69,12 +69,12 @@ export const Body = styled.div`
   flex: 1 1 auto;
   ${p =>
     p.shouldScroll
-      ? css`
+      ? `
           overflow-y: auto;
           overflow-x: hidden;
           padding: ${keylineHeight}px ${outerGutter}px;
         `
-      : css`
+      : `
           padding: 0 ${outerGutter}px;
         `};
 `;
@@ -86,7 +86,7 @@ export const Body = styled.div`
 export const Footer = styled(HeaderOrFooter)`
   padding: ${innerGutter - keylineHeight}px ${outerGutter}px ${outerGutter}px;
   box-shadow: ${p =>
-    p.showKeyline ? css`0 -${keylineHeight}px 0 0 ${keylineColor}` : 'none'};
+    p.showKeyline ? `0 -${keylineHeight}px 0 0 ${keylineColor(p)}` : 'none'};
 `;
 
 export const Actions = styled.div`

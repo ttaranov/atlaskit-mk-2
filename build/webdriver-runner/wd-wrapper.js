@@ -69,9 +69,28 @@ export default class Page {
   log(type) {
     return this.browser.log(type);
   }
+  paste(selector) {
+    let keys;
+    if (this.browser.desiredCapabilities.os === 'Windows') {
+      keys = ['Control', 'v'];
+    } else if (this.browser.desiredCapabilities.browserName === 'chrome') {
+      // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
+      keys = ['Shift', 'Insert'];
+    } else {
+      keys = ['Shift', 'Insert'];
+    }
+    return this.browser.setValue(selector, keys);
+  }
+  getProsemirrorNode(selector) {
+    const json = this.browser.selectorExecute(selector, function(elements) {
+      const result = elements[0];
+      return result.pmViewDesc.node.toJSON();
+    });
+    return json;
+  }
   // Wait
   waitForSelector(selector) {
-    return this.browser.waitForSelector(selector);
+    return this.browser.waitForExist(selector);
   }
   waitFor(selector, ms, reverse) {
     return this.browser.waitForVisible(selector, ms, reverse);

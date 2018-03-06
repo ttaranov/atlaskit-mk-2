@@ -1,5 +1,6 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
@@ -81,8 +82,7 @@ export const runMacroAutoConvert = (
 };
 
 export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  view: EditorView,
 ): Promise<boolean> => {
   let resolvedProvider: MacroProvider | null;
   try {
@@ -94,6 +94,8 @@ export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
   } catch (err) {
     resolvedProvider = null;
   }
-  dispatch(state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }));
+  view.dispatch(
+    view.state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }),
+  );
   return true;
 };

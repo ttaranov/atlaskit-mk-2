@@ -38,6 +38,7 @@ const PageContent = styled.div`
   flex: 1 1 auto;
   position: relative;
   z-index: 1;
+  min-width: 0;
 `;
 
 const emptyTheme = {};

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Ellipsify } from '../../../utils/ellipsify';
+import { Ellipsify } from '@atlaskit/media-ui';
 import { MediaImage } from '../../../utils/mediaImage';
 import {
   Wrapper,

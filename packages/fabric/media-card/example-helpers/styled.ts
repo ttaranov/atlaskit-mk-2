@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes } from 'react';
 
 export const CardSwitcherWrapper = styled.div`
   display: flex;
@@ -39,7 +46,7 @@ export const SliderWrapper = styled.div`
 `;
 
 export const EditableCardContent = styled.div`
-  // Not making the wrapper fancier or center elements in order to have a more realistic scenario
+  /* Not making the wrapper fancier or center elements in order to have a more realistic scenario */
   padding: 20px;
   border: 2px dashed;
   margin: 0 10px 50px 10px;

@@ -4,27 +4,14 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
 import CachingEmoji from '../common/CachingEmoji';
-import { UploadPromptButton } from './EmojiPickerUploadPrompts';
 
 export interface Props {
   emojis: EmojiDescription[];
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
-  showUploadButton?: boolean;
-  onOpenUpload?: () => void;
 }
 
 export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
-  private renderUploadPrompt() {
-    const { onOpenUpload, showUploadButton } = this.props;
-
-    if (!showUploadButton) {
-      return undefined;
-    }
-
-    return <UploadPromptButton onOpenUpload={onOpenUpload} />;
-  }
-
   render() {
     const { emojis, onSelected, onMouseMove } = this.props;
 
@@ -46,7 +33,6 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
             </span>
           );
         })}
-        {this.renderUploadPrompt()}
       </div>
     );
   }

@@ -257,11 +257,6 @@ export const fragment = (...content: BuilderContent[]) =>
 export const slice = (...content: BuilderContent[]) =>
   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
-export const createCell = (colspan, rowspan) =>
-  td({ colspan, rowspan })(p('x'));
-export const createHeaderCell = (colspan, rowspan) =>
-  th({ colspan, rowspan })(p('x'));
-
 //
 // Nodes
 //
@@ -303,21 +298,34 @@ export const emoji = (attrs: {
 export const mention = (attrs: MentionAttributes) =>
   nodeFactory(sampleSchema.nodes.mention, attrs);
 export const table = nodeFactory(sampleSchema.nodes.table, {});
+export const tableWithAttrs = (attrs: { isNumberColumnEnabled?: boolean }) =>
+  nodeFactory(sampleSchema.nodes.table, attrs);
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number; rowspan?: number }) =>
+export interface CellAttributes {
+  colspan?: number;
+  rowspan?: number;
+  background?: string | null;
+  colwidth?: number | null;
+}
+const defaultCellAttributes = {
+  colspan: 1,
+  rowspan: 1,
+  background: null,
+  colwidth: null,
+};
+export const td = (attrs: CellAttributes = defaultCellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number; rowspan?: number }) =>
+export const th = (attrs: CellAttributes = defaultCellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableHeader, attrs);
-export const tdEmpty = td({})(p(''));
-export const thEmpty = th({})(p(''));
-export const tdCursor = td({})(p('{<>}'));
-export const thCursor = th({})(p('{<>}'));
-export const td11 = createCell(1, 1);
-export const th11 = createHeaderCell(1, 1);
+export const tdEmpty = td()(p(''));
+export const thEmpty = th()(p(''));
+export const tdCursor = td()(p('{<>}'));
+export const thCursor = th()(p('{<>}'));
 export const decisionList = (attrs: { localId?: string } = {}) =>
   nodeFactory(sampleSchema.nodes.decisionList, attrs);
-export const decisionItem = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.decisionItem, attrs);
+export const decisionItem = (
+  attrs: { localId?: string; state?: string } = {},
+) => nodeFactory(sampleSchema.nodes.decisionItem, attrs);
 export const taskList = (attrs: { localId?: string } = {}) =>
   nodeFactory(sampleSchema.nodes.taskList, attrs);
 export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>

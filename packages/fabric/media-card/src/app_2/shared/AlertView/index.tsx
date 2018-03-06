@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as debounce from 'lodash.debounce';
-import { Ellipsify } from '../../../utils/ellipsify';
+import { Ellipsify } from '@atlaskit/media-ui';
 import { Wrapper } from './styled';
 
 const contentWidthWhenCardIs400px = 384;
@@ -25,14 +25,18 @@ export default class AlertView extends React.Component<
 
   el: HTMLDivElement;
 
-  handleTryAgain = () => {
+  handleTryAgain = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     const { onTryAgain } = this.props;
     if (onTryAgain) {
       onTryAgain();
     }
   };
 
-  handleCancel = () => {
+  handleCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();

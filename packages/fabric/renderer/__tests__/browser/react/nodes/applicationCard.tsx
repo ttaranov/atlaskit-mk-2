@@ -44,7 +44,11 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
       actions: actions,
     };
     applicationCard = shallow(
-      <ApplicationCard eventHandlers={eventHandlers} {...attrs} />,
+      <ApplicationCard
+        eventHandlers={eventHandlers}
+        useNewApplicationCard={true}
+        {...attrs}
+      />,
     );
   });
 
@@ -68,5 +72,9 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
     applicationCard.simulate('click');
     expect(spyOnClick.callCount).to.equal(1);
     expect(spyOnClick.calledWith('link-url')).to.equal(true);
+  });
+
+  it('should pass useNewApplicationCard to AppCardView', () => {
+    expect(applicationCard.find(AppCardView).prop('newDesign')).to.equal(true);
   });
 });

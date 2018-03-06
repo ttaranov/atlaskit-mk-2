@@ -87,6 +87,14 @@ export default md`
     />
   )}
 
+  ${(
+    <Example
+      Component={require('../examples/06-async-select').default}
+      source={require('!!raw-loader!../examples/06-async-select')}
+      title="Async Select"
+    />
+  )}
+
   ### Props
 
   Please refer to react-select for [prop documentation](https://github.com/JedWatson/react-select/blob/v2/src/Select.js#L36).

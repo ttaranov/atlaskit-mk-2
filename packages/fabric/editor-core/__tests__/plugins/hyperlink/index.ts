@@ -17,15 +17,13 @@ import {
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
 import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [hyperlinkPlugin, codeBlockPlugin, textFormatting()],
+      editorPlugins: [codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -1033,6 +1031,17 @@ describe('hyperlink', () => {
     });
   });
 
+  describe('edit toolbar', () => {
+    it('should be hidden when the esc key is pressed', async () => {
+      const { editorView, pluginState } = editor(
+        doc(paragraph('http://www.atlass{<>}ian.com')),
+      );
+      sendKeyToPm(editorView, 'Esc');
+      expect(pluginState.active).toEqual(false);
+      editorView.destroy();
+    });
+  });
+
   describe('Key Press Cmd-K', () => {
     describe('when called without any selection in the editor', () => {
       it('should call subscribers', () => {
@@ -1095,7 +1104,6 @@ describe('hyperlink', () => {
     const messageEditor = (doc: any) =>
       createEditor({
         doc,
-        editorPlugins: [hyperlinkPlugin],
         editorProps: {
           appearance: 'message',
         },

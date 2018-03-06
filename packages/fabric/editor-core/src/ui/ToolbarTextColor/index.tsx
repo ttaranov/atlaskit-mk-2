@@ -7,7 +7,7 @@ import { TextColorState } from '../../plugins/text-color';
 import ToolbarButton from '../ToolbarButton';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
-import ColorPalette from './ColorPalette';
+import ColorPalette from '../ColorPalette';
 import {
   TriggerWrapper,
   Separator,

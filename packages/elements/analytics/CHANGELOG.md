@@ -1,5 +1,11 @@
 # @atlaskit/analytics
 
+## 2.4.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.4.3
+- [patch] updated repository url to atlassian/atlaskit [9fb2698](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fb2698)
+
 ## 2.4.2
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 

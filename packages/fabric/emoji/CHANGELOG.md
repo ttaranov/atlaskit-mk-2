@@ -1,5 +1,30 @@
 # @atlaskit/emoji
 
+## 31.1.8
+- [patch] show custom emojis regardless of upload support [efc7e9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efc7e9a)
+
+## 31.1.7
+- [patch] removed UploadingEmojiResource.isCustomCategoryRequired function [9370179](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9370179)
+- [patch] only scroll to custom category after adding the emoji, fixed MockEmojiResource to not render custom category header if there is no custom emoji [22bc389](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22bc389)
+- [patch] refactored tests  [d9e3745](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9e3745)
+- [patch] show "add custom emoji" button if user moves mouse away from Footer area [38a1c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38a1c1c)
+- [patch] Fixed typescript error [26d187a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/26d187a)
+- [patch] added unit tests for EmojiPreview component [e136dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e136dff)
+- [patch] New UX button for adding a custom emoji [e86d2f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e86d2f4)
+
+## 31.1.6
+- [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
+
+## 31.1.5
+
+## 31.1.4
+
+## 31.1.3
+- [patch] IE11 does not calculate emoji picker width correctly so give it a min-width explicitly. [95bbc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95bbc84)
+
+## 31.1.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 31.1.1
 
 - [patch] fixed typescript errors [fe6676e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe6676e)

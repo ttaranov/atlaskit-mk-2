@@ -1,5 +1,11 @@
-/* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, CanvasHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import {
   akColorN40,
   akColorN50A,
@@ -7,6 +13,16 @@ import {
   akColorN200,
   akColorN600A,
 } from '@atlaskit/util-shared-styles';
+import { ButtonProps } from './toolbarButtons';
+
+export interface ToolbarButtonProps {
+  selected: boolean;
+  onClick: () => void;
+}
+
+export interface LineWidthFrontCircleProps {
+  width: number;
+}
 
 export const EditorContainer = styled.div`
   position: relative;
@@ -35,7 +51,7 @@ export const SupplementaryCanvas = styled.canvas`
 export const HiddenTextArea = styled.textarea`
   position: absolute;
   display: block;
-  visibility: hidden; // display:none won't allow to get the keyboard focus
+  visibility: hidden; /* display:none won't allow to get the keyboard focus */
   left: 0;
   top: 0;
   width: 0;
@@ -48,13 +64,13 @@ export const HiddenTextArea = styled.textarea`
 export const HiddenTextHelperDiv = styled.div`
   position: absolute;
   display: block;
-  visibility: hidden; // display:none won't allow us to call getClientBoundingRect() for children
+  visibility: hidden; /* display:none won't allow us to call getClientBoundingRect() for children */
   left: 0;
   top: 0;
   width: 100px;
   height: 100px;
   overflow: hidden;
-  white-space: pre; // to preserve multiple whitespace characters and not to break lines
+  white-space: pre; /* to preserve multiple whitespace characters and not to break lines */
 `;
 
 export const ToolbarContainer = styled.div`
@@ -69,7 +85,8 @@ export const ToolbarButton = styled.div`
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-color: ${props => (props.selected ? akColorN90 : 'transparent')};
+  background-color: ${(props: ButtonProps) =>
+    props.selected ? akColorN90 : 'transparent'};
   border-radius: 4px;
 
   &:hover {
@@ -93,17 +110,19 @@ export const LineWidthBackCircle = styled.div`
   width: 20px;
   height: 20px;
   margin: 6px;
-  background-color: ${akColorN200}
+  background-color: ${akColorN200};
   border-radius: 10px;
 `;
 
 export const LineWidthFrontCircle = styled.div`
-  width: ${props => (props.width ? `${props.width as number}px` : '0')};
-  height: ${props => (props.width ? `${props.width as number}px` : '0')};
+  width: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${props.width}px` : '0'};
+  height: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${props.width}px` : '0'};
   background-color: ${akColorN40};
-  borderradius: 50%;
-  margin: ${props =>
-    props.width ? `${10 - (props.width as number) / 2}px` : '0'};
+  border-radius: 50%;
+  margin: ${(props: LineWidthFrontCircleProps) =>
+    props.width ? `${10 - props.width / 2}px` : '0'};
 `;
 
 export const ToolIcon = styled.div`

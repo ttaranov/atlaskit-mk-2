@@ -1,6 +1,7 @@
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
+import EditorActions from '../actions';
 import {
   UIComponentFactory,
   ReactElement,
@@ -13,6 +14,8 @@ export interface EditorAppearanceComponentProps {
   onCancel?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
+  editorActions?: EditorActions;
+  editorDOMElement: JSX.Element;
   editorView?: EditorView;
 
   eventDispatcher?: EventDispatcher;

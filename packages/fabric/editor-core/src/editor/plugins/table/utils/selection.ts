@@ -96,3 +96,39 @@ export const getSelectedRow = (
 
   return { anchor, head };
 };
+
+export const checkIfNumberColumnSelected = (state: EditorState): boolean => {
+  const cellSelection = getCellSelection(state);
+  if (cellSelection) {
+    const tableNode = cellSelection.$anchorCell.node(-1);
+    if (
+      tableNode!.attrs.isNumberColumnEnabled &&
+      checkIfColumnSelected(0, state)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const checkIfNumberColumnCellsSelected = (
+  state: EditorState,
+): boolean => {
+  const cellSelection = getCellSelection(state);
+  if (cellSelection) {
+    const tableNode = cellSelection.$anchorCell.node(-1);
+    if (tableNode!.attrs.isNumberColumnEnabled) {
+      const map = TableMap.get(tableNode);
+      const start = cellSelection.$anchorCell.start(-1);
+      let selected = false;
+      cellSelection.forEachCell((cell, pos) => {
+        const rect = map.findCell(pos - start);
+        if (rect.left === 0) {
+          selected = true;
+        }
+      });
+      return selected;
+    }
+  }
+  return false;
+};

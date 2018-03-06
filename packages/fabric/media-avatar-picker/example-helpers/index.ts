@@ -1,7 +1,4 @@
 import { Avatar } from '../src/avatar-list';
-import { fileToDataURI } from '../src/util';
-import * as React from 'react';
-import { PureComponent } from 'react';
 
 function generateAvatarIds(start: number, count: number): Array<number> {
   const result: Array<number> = [];

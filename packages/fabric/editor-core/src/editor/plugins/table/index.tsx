@@ -7,11 +7,13 @@ import {
 } from '@atlaskit/editor-common';
 import { tableEditing, columnResizing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey, PluginConfig } from '../../../plugins/table';
+import { plugin, PluginConfig, stateKey } from '../../../plugins/table';
 import { keymapPlugin } from '../../../plugins/table/keymap';
 import hoverSelectionPlugin from './hover-selection-plugin';
+import tableNumberColumnPlugin from './number-column-plugin';
 import tableColumnResizingPlugin from './table-column-resizing-plugin';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
+import WithPluginState from '../../ui/WithPluginState';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -53,18 +55,43 @@ const tablesPlugin: EditorPlugin = {
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
       { rank: 940, plugin: () => hoverSelectionPlugin },
+      {
+        rank: 920,
+        plugin: ({ props: { allowTables } }) =>
+          pluginConfig(allowTables).allowNumberColumn
+            ? tableNumberColumnPlugin
+            : undefined,
+      },
     ];
   },
 
-  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
-    const pluginState = stateKey.getState(editorView.state);
-
+  contentComponent({
+    editorView,
+    eventDispatcher,
+    popupsMountPoint,
+    popupsBoundariesElement,
+  }) {
     return (
-      <TableFloatingToolbar
+      <WithPluginState
         editorView={editorView}
-        pluginState={pluginState}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
+        eventDispatcher={eventDispatcher}
+        plugins={{ tablesState: stateKey }}
+        render={({ tablesState }) => (
+          <TableFloatingToolbar
+            editorView={editorView}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            tableElement={tablesState.tableElement}
+            tableActive={tablesState.tableActive}
+            cellSelection={tablesState.cellSelection}
+            remove={tablesState.remove}
+            allowMergeCells={tablesState.allowMergeCells}
+            allowNumberColumn={tablesState.allowNumberColumn}
+            allowBackgroundColor={tablesState.allowBackgroundColor}
+            allowHeaderRow={tablesState.allowHeaderRow}
+            allowHeaderColumn={tablesState.allowHeaderColumn}
+          />
+        )}
       />
     );
   },

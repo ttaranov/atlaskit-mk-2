@@ -232,13 +232,6 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource
     }
     return emoji;
   }
-
-  calculateDynamicCategories(): Promise<string[]> {
-    if (!this.emojiRepository) {
-      return Promise.resolve([]);
-    }
-    return Promise.resolve(this.emojiRepository.getDynamicCategoryList(true));
-  }
 }
 
 class UsageClearEmojiRepository extends EmojiRepository {

@@ -147,6 +147,19 @@ describe('Flag', () => {
         expect(flag.find(ChevronUpIcon).exists()).toBe(true);
       });
 
+      it('should set aria-expanded to false if not expanded', () => {
+        flag.setProps({ description: 'Hello' });
+        const dismissProps = flag.find(DismissButton).props();
+        expect(dismissProps['aria-expanded']).toBe(false);
+      });
+
+      it('should set aria-expanded to true if expanded', () => {
+        flag.setProps({ description: 'Hello' });
+        flag.setState({ isExpanded: true });
+        const dismissProps = flag.find(DismissButton).props();
+        expect(dismissProps['aria-expanded']).toBe(true);
+      });
+
       it('should only render an expand button if either description or actions props are set', () => {
         expect(flag.find(DismissButton).exists()).toBe(false);
 

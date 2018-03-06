@@ -8,6 +8,7 @@ const getItemState = stateName => ({ theme }) => {
   return css`
     background-color: ${stateStyles.background};
     color: ${stateStyles.text};
+    fill: ${stateStyles.background};
     text-decoration: none;
 
     &:focus {

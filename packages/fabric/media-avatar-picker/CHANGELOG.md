@@ -1,5 +1,20 @@
 # @atlaskit/media-avatar-picker
 
+## 5.3.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 5.2.0
+- [minor] [MSW-418] add error state to avatar picker [19c9e98](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19c9e98)
+
+## 5.1.1
+- [patch] AvatarPickerDialog: Hide avatar list if avatars prop is empty. Vertically center dialog contents [9d496ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d496ad)
+
+## 5.1.0
+- [minor] AvatarPickerDialog: added onImagePickedDataURI prop.  The callback will be passed the base64 data URI of the cropped image as a string.  onImagePickedDataURI is now optional [eacb1d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eacb1d3)
+
+## 5.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 5.0.1
 
 ## 5.0.0

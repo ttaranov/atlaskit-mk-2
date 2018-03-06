@@ -1,4 +1,4 @@
-import { Core } from '../binaries/editorCore';
+import * as Core from '../binaries/mediaEditor';
 import { ImageProvider } from '../../components/imageProvider';
 import { Bitmap } from './bitmap';
 import { FragmentPosition } from './bitmapFragment';

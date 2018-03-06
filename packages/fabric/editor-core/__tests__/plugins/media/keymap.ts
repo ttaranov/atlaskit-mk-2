@@ -14,7 +14,6 @@ import {
   DefaultMediaStateManager,
 } from '../../../src/plugins/media';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -31,10 +30,7 @@ describe('media - keymaps', () => {
 
     return createEditor<MediaPluginState>({
       doc,
-      editorPlugins: [
-        hyperlinkPlugin,
-        mediaPlugin({ provider: mediaProvider }),
-      ],
+      editorPlugins: [mediaPlugin({ provider: mediaProvider })],
       editorProps: {
         uploadErrorHandler,
       },

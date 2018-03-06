@@ -25,6 +25,7 @@ import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
 import { Definition as Date } from './date';
+import { Definition as Placeholder } from './placeholder';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -141,7 +142,13 @@ export type InlineCode = Text & MarksObject<Code | Link>;
 /**
  * @name atomic_inline_node
  */
-export type InlineAtomic = HardBreak | Mention | Emoji | InlineExtension | Date;
+export type InlineAtomic =
+  | HardBreak
+  | Mention
+  | Emoji
+  | InlineExtension
+  | Date
+  | Placeholder;
 
 /**
  * @name inline_node

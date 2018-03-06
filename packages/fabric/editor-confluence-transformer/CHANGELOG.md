@@ -1,5 +1,29 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.9.0
+- [minor] add support for <fab:adf> and confluence decision list transforms [e08eccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e08eccc)
+- [minor] add support for <fab:adf> and confluence decision list transforms [f43f928](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f43f928)
+
+## 2.8.0
+
+- [minor] Support parse/encode of the <ac:placeholder /> node [79e0a2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79e0a2a)
+
+## 2.7.10
+- [patch] Encode and decode for Extension schemaVersion [0335988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0335988)
+
+## 2.7.9
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.7.8
+- [patch] Remove Confluence Macro resrouce identifier code [944c827](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/944c827)
+
+## 2.7.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
 ## 2.7.6
 
 ## 2.7.5

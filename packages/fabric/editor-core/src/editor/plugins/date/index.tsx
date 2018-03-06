@@ -36,7 +36,7 @@ const datePlugin: EditorPlugin = {
           dateState: pluginKey,
         }}
         render={({ dateState = {} as DateState }) =>
-          dateState.element && (
+          dateState.element ? (
             <DatePicker
               element={dateState.element}
               onSelect={({ iso }) =>
@@ -46,7 +46,7 @@ const datePlugin: EditorPlugin = {
                 selectElement(null)(editorView.state, dispatch)
               }
             />
-          )
+          ) : null
         }
       />
     );

@@ -17,7 +17,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
 import emojiPlugin from '../../../src/editor/plugins/emoji';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import listPlugin from '../../../src/editor/plugins/lists';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
@@ -42,7 +41,7 @@ describe('emojis', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [emojiPlugin, textFormatting(), listPlugin],
+      editorPlugins: [emojiPlugin, listPlugin],
       providerFactory,
       pluginKey: emojiPluginKey,
     });

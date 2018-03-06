@@ -26,7 +26,6 @@ import { analyticsService } from '../../../src/analytics';
 import * as keymaps from '../../../src/keymaps';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import listPlugin from '../../../src/editor/plugins/lists';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);
@@ -38,7 +37,7 @@ describe('mentions', () => {
   const editor = (doc: any) =>
     createEditor<MentionsState>({
       doc,
-      editorPlugins: [mentionsPlugin, listPlugin, textFormatting()],
+      editorPlugins: [mentionsPlugin, listPlugin],
       providerFactory: ProviderFactory.create({ mentionProvider }),
       pluginKey: mentionPluginKey,
     });

@@ -21,8 +21,8 @@ const Container = styled.div`
     &:focus {
       outline: none;
     }
-    &:empty:not(:focus):before {
-      content: attr(data-placeholder)
+    &:empty:not(:focus)::before {
+      content: attr(data-placeholder);
       font-size: 14px;
     }
   }
@@ -60,9 +60,7 @@ class Example extends React.PureComponent<Props, State> {
         </div>
         <Editor
           appearance="comment"
-          allowTextFormatting={true}
           allowTasksAndDecisions={true}
-          allowHyperlinks={true}
           allowCodeBlocks={true}
           allowLists={true}
           allowRule={true}

@@ -30,17 +30,17 @@ export default styled.div`
 
 const backgroundColor = themed({ light: colors.N0, dark: colors.DN50 });
 const boxShadow = css`
-  0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
-  gridSize,
-  4,
-)}px ${colors.N50A},
-  0 0 1px ${colors.N60A}
+  box-shadow: 0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
+        gridSize,
+        4,
+      )}px ${colors.N50A},
+    0 0 1px ${colors.N60A};
 `;
 
 export const Content = styled.div`
   background: ${backgroundColor};
   border-radius: ${borderRadius}px;
-  box-shadow: ${boxShadow};
+  ${boxShadow};
   box-sizing: border-box;
   overflow: auto;
   padding: ${math.divide(gridSize, 2)}px 0;

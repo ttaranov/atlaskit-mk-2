@@ -95,7 +95,7 @@ export class FullEditor extends React.Component<
         style={{
           position: 'absolute',
           width: '100%',
-          height: '100%',
+          height: '100vh',
           overflow: 'hidden',
         }}
       >

@@ -75,6 +75,9 @@ export default function Example() {
               >
                 Inser code block
               </Button>
+              <Button onClick={() => actions.replaceSelection('')}>
+                Delete selection
+              </Button>
             </ButtonGroup>
           )}
         />

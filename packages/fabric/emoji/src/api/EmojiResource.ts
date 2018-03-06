@@ -6,7 +6,7 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
+import { selectedToneStorageKey } from '../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -560,21 +560,10 @@ export class EmojiResource extends AbstractResource<
 
   calculateDynamicCategories(): Promise<string[]> {
     if (this.isLoaded()) {
-      return this.isCustomCategoryRequired().then(required => {
-        return this.emojiRepository.getDynamicCategoryList(required);
-      });
+      return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
-  }
-
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    if (!this.emojiRepository) {
-      return Promise.resolve(false);
-    }
-
-    const customEmoji = this.emojiRepository.findInCategory(customCategory);
-    return Promise.resolve(customEmoji.length > 0);
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {
@@ -620,17 +609,5 @@ export default class UploadingEmojiResource extends EmojiResource
       this.siteEmojiResource.prepareForUpload();
     }
     return this.retryIfLoading(() => this.prepareForUpload(), undefined);
-  }
-
-  /**
-   * Determine whether the CUSTOM category of emoji is required.
-   * If there are custom emoji in the EmojiResource then this is obviously true (which is decided from the
-   * super call). If not, then it depends on whether the EmojiResource is configured to allow upload and
-   * whether the siteEmojiResource has the capability.
-   */
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    return this.isUploadSupported().then(supported => {
-      return supported || super.isCustomCategoryRequired();
-    });
   }
 }
