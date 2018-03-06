@@ -4,11 +4,15 @@
  * collection object.
  */
 export default j => {
+  // Finds the preceding import that importNode should be inserted after
   function findPrecedingImport(root, importNode) {
+    // Determines if the import source 'a' should precede 'b' in the import order
+    // Places '@...' absolute imports after other absolute imports and relative imports
+    // after absolute imports
     function precedes(a, b) {
-      if (a[0] === '.' && b[0] !== '.') {
+      if ((a[0] === '.' || a[0] === '@') && b[0] !== '.') {
         return false;
-      } else if (a[0] !== '.' && b[0] === '.') {
+      } else if (a[0] !== '.' && (b[0] === '.' || b[0] === '@')) {
         return true;
       } else {
         return a < b;
@@ -23,7 +27,7 @@ export default j => {
       .forEach(path => {
         const name = path.node.source.value;
 
-        if ((precedes(name, importSource) || name === 'react') && (!targetName || !precedes(name, targetName))) {
+        if ((precedes(name, importSource)) && (!targetName || !precedes(name, targetName))) {
           targetName = name;
           targetPath = path;
         }

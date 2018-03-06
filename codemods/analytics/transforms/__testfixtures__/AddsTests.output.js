@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
+import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { name as packageName, version as packageVersion } from '../../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
@@ -42,20 +42,6 @@ describe('analytics', () => {
     );
   });
 
-  it('should pass analytics event as last argument to onChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<Button onChange={spy} />);
-    wrapper.find('button').simulate('change');
-
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'change',
-      }),
-    );
-  });
-
   it('should fire an atlaskit analytics event on click', () => {
     const spy = jest.fn();
     const wrapper = mount(
@@ -69,28 +55,6 @@ describe('analytics', () => {
 
     expect(channel).toBe('atlaskit');
     expect(analyticsEvent.payload).toEqual({ action: 'click' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'button',
-        package: packageName,
-        version: packageVersion
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on change', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <Button />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(Button).simulate('change');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'change' });
     expect(analyticsEvent.context).toEqual([
       {
         component: 'button',

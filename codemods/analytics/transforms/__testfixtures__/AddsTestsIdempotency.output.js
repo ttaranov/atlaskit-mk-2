@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
+import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { name as packageName, version as packageVersion } from '../../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
@@ -23,8 +23,8 @@ describe('analytics', () => {
 
     expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
       component: 'button',
-      package: name,
-      version,
+      package: packageName,
+      version: packageVersion
     });
   });
 
@@ -58,8 +58,8 @@ describe('analytics', () => {
     expect(analyticsEvent.context).toEqual([
       {
         component: 'button',
-        package: name,
-        version,
+        package: packageName,
+        version: packageVersion
       },
     ]);
   });

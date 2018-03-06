@@ -1,10 +1,10 @@
+// @flow
 /**
- * Add analytics tests for a component using jscodeshift.
- * Expected to be called from another codeshift.
+ * Add analytics tests for a component
  */
 import path from 'path';
-import UtilPlugin from '../plugins/util';
-import { getMapEntryFromPath, getPackageJsonPath } from './util';
+import UtilPlugin from '../../plugins/util';
+import { getMapEntryFromPath, getPackageJsonPath } from '../util';
 
 const contextTest = (j, analyticsConfig) => {
   const componentName = analyticsConfig.component;
@@ -78,10 +78,9 @@ const atlaskitTest = (j, analyticsConfig, prop, action) => {
 export const parser = 'flow';
 
 /**
- * Adds/modifies an analytics test file under a __tests__ folder that is
- * either a sibling or ancestor of componentFilePath.
+ * Inserts tests for the file if it exists in a testPath prop in the analytics event map
  */
-export default (fileInfo, api) => {
+export default (fileInfo: any, api: any) => {
   const j = api.jscodeshift;
   j.use(UtilPlugin);
   
@@ -127,8 +126,6 @@ export default (fileInfo, api) => {
   
   // Add describe block
   // Add context test
-  const parsedSource = source.toSource({ quote: 'single', tabWidth: 2 })
-
-  // console.log('time taken', Date.now() - start);
+  const parsedSource = source.toSource({ quote: 'single', tabWidth: 2 });
   return parsedSource;
 }

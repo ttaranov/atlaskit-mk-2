@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withAnalyticsEvents, withAnalyticsContext } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
+import { withAnalyticsEvents, withAnalyticsContext } from '@atlaskit/analytics-next';
 import { name as packageName, version as packageVersion } from '../../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 

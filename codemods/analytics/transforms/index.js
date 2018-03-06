@@ -1,8 +1,8 @@
 // @flow
 import path from 'path';
-import UtilPlugin from '../plugins/util';
+import UtilPlugin from '../../plugins/util';
 
-import { getMapEntryFromPath, getPackageJsonPath } from './util';
+import { getMapEntryFromPath, getPackageJsonPath } from '../util';
 import addTests from './tests';
 
 const createImport = (j, specifierNames, source) => {
