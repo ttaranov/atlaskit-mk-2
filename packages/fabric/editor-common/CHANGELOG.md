@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.8
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
 ## 6.3.7
 
 ## 6.3.6

@@ -81,7 +81,7 @@ const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
   return false;
 };
 
-const Reactions = styled.div`
+const Reactions: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   height: 20px;
   & > div {
     height: 20px;

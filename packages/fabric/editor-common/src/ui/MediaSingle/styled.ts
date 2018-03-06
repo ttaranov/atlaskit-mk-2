@@ -1,8 +1,5 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, css } from 'styled-components';
+import * as React from 'react';
+import styled, { css } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes } from 'react';
@@ -63,7 +60,13 @@ const MediaSingleDimensionHelper = ({
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper: React.ComponentClass<
+  HTMLAttributes<{}> & {
+    layout: string;
+    width: number;
+    height: number;
+  }
+> = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
   & > div {
