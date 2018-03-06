@@ -349,6 +349,37 @@ describe('media-links', () => {
           });
         });
 
+        describe('link inserted inside blockquote', () => {
+          it('should create media group below it', async () => {
+            const href = 'www.google.com';
+            const { editorView } = editor(doc(blockquote(p(`${href} {<>}`))));
+            const handle = jest.fn();
+
+            // -1 for space, simulate the scenario of autoformatting link
+            await insertLinks(
+              editorView,
+              mediaStateManager,
+              handle,
+              [{ href, pos: 1000 }],
+              linkCreateContextMock,
+              testCollectionName,
+            );
+
+            const id = createTempId(href);
+            expect(handle).toHaveBeenCalledWith(readyState(id));
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                blockquote(p(`${href} `)),
+                mediaGroup(
+                  media({ id, type: 'link', collection: testCollectionName })(),
+                ),
+                p(),
+              ),
+            );
+            editorView.destroy();
+          });
+        });
+
         describe('not at the end of the doc', () => {
           it('does not create a new p at the end of doc', async () => {
             const href = 'www.google.com';
