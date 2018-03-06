@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 31.1.9
+
 ## 31.1.8
 - [patch] show custom emojis regardless of upload support [efc7e9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efc7e9a)
 

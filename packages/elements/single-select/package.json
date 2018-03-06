@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -36,7 +36,7 @@
     "@atlaskit/avatar": "^9.2.0",
     "@atlaskit/docs": "^2.5.0",
     "@atlaskit/tooltip": "^8.4.0",
-    "@atlaskit/webdriver-runner": "^0.0.1",
+    "@atlaskit/webdriver-runner": "^0.0.2",
     "enzyme": "^3.3.0"
   }
 }
