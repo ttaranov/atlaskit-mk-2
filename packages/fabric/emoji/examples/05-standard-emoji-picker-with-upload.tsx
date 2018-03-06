@@ -9,9 +9,16 @@ import {
   lorem,
 } from '../src/support/story-data';
 import { onSelection } from '../example-helpers/index';
+import { EmojiProvider } from '../src/api/EmojiResource';
 
-class EmojiPickerWithUpload extends React.Component {
-  constructor(props) {
+export interface EmojiState {
+  siteEmojiEnabled: boolean;
+}
+
+export interface EmojiProps {}
+
+class EmojiPickerWithUpload extends React.Component<EmojiProps, EmojiState> {
+  constructor(props: EmojiProps) {
     super(props);
     this.state = {
       siteEmojiEnabled: true,

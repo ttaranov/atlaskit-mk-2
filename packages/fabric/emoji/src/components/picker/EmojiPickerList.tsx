@@ -20,7 +20,7 @@ import {
   OnCategory,
   OnEmojiEvent,
   ToneSelection,
-  OptionalUser,
+  User,
 } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -43,7 +43,7 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
-  currentUser: OptionalUser;
+  currentUser?: User;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
@@ -320,7 +320,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
   private buildGroups = (
     emojis: EmojiDescription[],
-    currentUser: OptionalUser,
+    currentUser?: User,
   ): void => {
     const existingCategories = new Map();
 

@@ -51,7 +51,7 @@ export interface EmojiResourceConfig {
   /**
    * Logged user in the Product.
    */
-  user?: User;
+  currentUser?: User;
 }
 
 export interface OnEmojiProviderChange
@@ -247,12 +247,12 @@ export class EmojiResource extends AbstractResource<
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected siteEmojiResource?: SiteEmojiResource;
   protected selectedTone: ToneSelection;
-  protected user?: User;
+  protected currentUser?: User;
 
   constructor(config: EmojiResourceConfig) {
     super();
     this.recordConfig = config.recordConfig;
-    this.user = config.user;
+    this.currentUser = config.currentUser;
 
     // Ensure order is retained by tracking until all done.
     const emojiResponses: EmojiResponse[] = [];
@@ -581,7 +581,7 @@ export class EmojiResource extends AbstractResource<
   }
 
   getCurrentUser(): OptionalUser {
-    return this.user;
+    return this.currentUser;
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {

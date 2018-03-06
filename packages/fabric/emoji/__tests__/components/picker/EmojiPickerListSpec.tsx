@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
@@ -59,11 +59,7 @@ describe('<EmojiPickerList />', () => {
 
     it('should render user custom emojis under Your Uploads', () => {
       const wrapper = mount(
-        <EmojiList
-          emojis={customEmojis}
-          currentUser={{ id: 'hulk' }}
-          showUploadOption={true}
-        />,
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
       );
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
@@ -82,11 +78,7 @@ describe('<EmojiPickerList />', () => {
 
     it('should not render user custom emojis section if user has none', () => {
       const wrapper = mount(
-        <EmojiList
-          emojis={customEmojis}
-          currentUser={{ id: 'alex' }}
-          showUploadOption={true}
-        />,
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
       );
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
@@ -101,9 +93,7 @@ describe('<EmojiPickerList />', () => {
     });
 
     it('should not render user custom emojis section if currentUser is undefined', () => {
-      const wrapper = mount(
-        <EmojiList emojis={customEmojis} showUploadOption={true} />,
-      );
+      const wrapper = mount(<EmojiList emojis={customEmojis} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.length).to.equal(1);

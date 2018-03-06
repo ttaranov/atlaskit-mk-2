@@ -10,6 +10,7 @@ import {
   OptionalEmojiDescription,
   SearchOptions,
   ToneSelection,
+  User,
   OptionalUser,
 } from '../types';
 import { selectedToneStorageKey } from '../constants';
@@ -52,7 +53,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   protected lastQuery: string = '';
   protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
-  protected currentUser: OptionalUser;
+  protected currentUser?: User;
 
   recordedSelections: EmojiDescription[] = [];
 
