@@ -69,7 +69,7 @@ describe('<EmojiPickerList />', () => {
 
       const cachedEmojis = wrapper.find(CachingEmoji);
 
-      // expected 4 emojis: foo in "Your Uploads", foo/wtf in "All uploads", grimacing in People
+      // expected 3 emojis: foo in "Your Uploads", foo/wtf in "All uploads", grimacing in People
       expect(cachedEmojis.length).to.equal(3);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('foo');

@@ -17,7 +17,10 @@ export interface EmojiState {
 
 export interface EmojiProps {}
 
-class EmojiPickerWithUpload extends React.Component<EmojiProps, EmojiState> {
+export default class EmojiPickerWithUpload extends React.Component<
+  EmojiProps,
+  EmojiState
+> {
   constructor(props: EmojiProps) {
     super(props);
     this.state = {
@@ -70,8 +73,4 @@ class EmojiPickerWithUpload extends React.Component<EmojiProps, EmojiState> {
       </div>
     );
   }
-}
-
-export default function Example() {
-  return <EmojiPickerWithUpload />;
 }
