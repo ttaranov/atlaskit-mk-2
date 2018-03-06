@@ -100,6 +100,7 @@ module.exports = {
   'editor/file': ['page', 'document', 'paper', 'sheet'],
   'editor/help': ['question'],
   'editor/hint': ['light', 'idea'],
+  'editor/horizontal-rule': ['rule', 'divider'],
   'editor/image-border': ['marquee', 'box'],
   'editor/image-resize': ['expand'],
   'editor/image': ['photo', 'picture'],

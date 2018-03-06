@@ -106,6 +106,7 @@ import EditorFeedbackIcon from '../glyph/editor/feedback';
 import EditorFileIcon from '../glyph/editor/file';
 import EditorHelpIcon from '../glyph/editor/help';
 import EditorHintIcon from '../glyph/editor/hint';
+import EditorHorizontalRuleIcon from '../glyph/editor/horizontal-rule';
 import EditorImageBorderIcon from '../glyph/editor/image-border';
 import EditorImageResizeIcon from '../glyph/editor/image-resize';
 import EditorImageIcon from '../glyph/editor/image';
@@ -996,6 +997,12 @@ export default {
     component: EditorHintIcon,
     componentName: 'EditorHintIcon',
     package: '@atlaskit/icon/glyph/editor/hint',
+  },
+  'editor/horizontal-rule': {
+    keywords: ['editor/horizontal-rule', 'editorhorizontalrule', 'rule', 'divider'],
+    component: EditorHorizontalRuleIcon,
+    componentName: 'EditorHorizontalRuleIcon',
+    package: '@atlaskit/icon/glyph/editor/horizontal-rule',
   },
   'editor/image-border': {
     keywords: ['editor/image-border', 'editorimageborder', 'marquee', 'box'],
