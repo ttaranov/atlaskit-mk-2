@@ -5337,6 +5337,10 @@ execall@^1.0.0:
   dependencies:
     clone-regexp "^1.0.0"
 
+exenv@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+
 exit-hook@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-1.1.1.tgz#f05ca233b48c05d54fff07765df8507e95c02ff8"
@@ -11189,6 +11193,12 @@ react-scroll-captor@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-scroll-captor/-/react-scroll-captor-1.0.1.tgz#3f912df72ab8e7f46d4fa27d8707131ffe59b353"
   dependencies:
     react-node-resolver "^1.0.1"
+
+react-scrolllock@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-2.0.1.tgz#dd323f5da9de75f0bb64b997ee5967dd47f0a3ff"
+  dependencies:
+    exenv "^1.2.2"
 
 react-select@2.0.0-alpha.6:
   version "2.0.0-alpha.6"
