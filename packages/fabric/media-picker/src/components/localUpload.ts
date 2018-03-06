@@ -80,10 +80,8 @@ export class LocalUploadComponent<
 
   private onFileConverted = ({
     file,
-    progress,
     metadata,
   }: FileConvertedEventPayload): void => {
-    this.emitUploadProgress(file, progress.toJSON());
     this.emitUploadEnd(file, metadata);
   };
 
