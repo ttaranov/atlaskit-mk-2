@@ -4,6 +4,14 @@ import { Calendar } from 'calendar-base';
 import keycode from 'keycode';
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
@@ -66,7 +74,7 @@ const nowDay = now.getDate();
 const nowMonth = now.getMonth() + 1;
 const nowYear = now.getFullYear();
 
-export default class CalendarStateless extends Component<Props> {
+class CalendarStateless extends Component<Props> {
   calendar: Object;
   props: Props;
   calendarEl: ?HTMLDivElement;
@@ -344,3 +352,20 @@ export default class CalendarStateless extends Component<Props> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'calendar',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onUpdate: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'update',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(CalendarStateless),
+);

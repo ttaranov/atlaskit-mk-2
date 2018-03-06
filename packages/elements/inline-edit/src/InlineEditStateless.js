@@ -1,10 +1,19 @@
 // @flow
 import React, { Component, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 import type { StatelessProps } from './types';
 import RootWrapper from './styled/RootWrapper';
@@ -26,7 +35,7 @@ type State = {
   startY?: number,
 };
 
-export default class InlineEdit extends Component<StatelessProps, State> {
+class InlineEdit extends Component<StatelessProps, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -250,3 +259,38 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'inline-edit',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onCancel: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'cancel',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onConfirm: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'confirm',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onEditRequested: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'edit',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(InlineEdit),
+);

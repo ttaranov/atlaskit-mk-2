@@ -1,5 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Div from './styled';
 
 type Props = {
@@ -11,7 +19,7 @@ type Props = {
   onBlanketClicked: (event: Event) => void,
 };
 
-export default class Blanket extends PureComponent<Props, void> {
+class Blanket extends PureComponent<Props, void> {
   static defaultProps = {
     canClickThrough: false,
     isTinted: false,
@@ -26,3 +34,20 @@ export default class Blanket extends PureComponent<Props, void> {
     return <Div {...containerProps} />;
   }
 }
+
+export default withAnalyticsContext({
+  component: 'blanket',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlanketClicked: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Blanket),
+);

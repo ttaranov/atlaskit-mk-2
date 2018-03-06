@@ -1,6 +1,15 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import Chrome from '../Chrome';
 import Content from '../Content';
 import RemoveButton from '../RemoveButton';
@@ -57,7 +66,7 @@ type State = {
   isFocused: boolean,
 };
 
-export default class Tag extends PureComponent<Props, State> {
+class Tag extends PureComponent<Props, State> {
   static defaultProps = {
     color: 'standard',
     appearance: 'default',
@@ -144,3 +153,20 @@ export default class Tag extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'tag',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onAfterRemoveAction: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'remove',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Tag),
+);

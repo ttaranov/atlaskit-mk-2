@@ -3,9 +3,18 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemClickManager from './context/DropdownItemClickManager';
@@ -27,7 +36,7 @@ type State = {
   id: string,
 };
 
-export default class DropdownMenuStateless extends Component<
+class DropdownMenuStateless extends Component<
   DropdownMenuStatelessProps,
   State,
 > {
@@ -443,3 +452,20 @@ export default class DropdownMenuStateless extends Component<
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'dropdown-menu',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onOpenChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'toggle',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(DropdownMenuStateless),
+);

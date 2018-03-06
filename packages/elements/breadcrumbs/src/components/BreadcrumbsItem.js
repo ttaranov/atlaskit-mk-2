@@ -1,7 +1,15 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
@@ -34,7 +42,7 @@ type State = {
   hasOverflow: boolean,
 };
 
-export default class BreadcrumbsItem extends Component<Props, State> {
+class BreadcrumbsItem extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   button: ?HTMLButtonElement;
 
@@ -138,3 +146,20 @@ export default class BreadcrumbsItem extends Component<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'breadrumbs-item',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(BreadcrumbsItem),
+);

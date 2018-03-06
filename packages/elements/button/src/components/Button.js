@@ -6,7 +6,10 @@ import {
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
 
-import { name, version } from '../../package.json';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
@@ -173,8 +176,8 @@ export const ButtonBase = Button;
 
 export default withAnalyticsContext({
   component: 'button',
-  package: name,
-  version,
+  package: packageName,
+  version: packageVersion,
 })(
   withAnalyticsEvents({
     onClick: createAnalyticsEvent => {

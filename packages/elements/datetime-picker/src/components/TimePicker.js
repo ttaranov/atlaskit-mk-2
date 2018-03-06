@@ -3,6 +3,14 @@
 import { isValid } from 'date-fns';
 import React, { Component, type ElementRef } from 'react';
 import withCtrl from 'react-ctrl';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import TimePickerStateless from './TimePickerStateless';
 import type { Event, Handler } from '../types';
 import { dateFromTime, formatTime } from '../util';
@@ -200,4 +208,19 @@ class TimePicker extends Component<Props, State> {
   }
 }
 
-export default withCtrl(TimePicker);
+export default withAnalyticsContext({
+  component: 'time-picker',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(withCtrl(TimePicker)),
+);

@@ -1,14 +1,19 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-export default class FieldTextStateless extends Component<
-  FieldTextProps,
-  void,
-> {
+class FieldTextStateless extends Component<FieldTextProps, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -81,3 +86,65 @@ export default class FieldTextStateless extends Component<
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'field-text',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'blur',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onFocus: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'focus',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onKeyDown: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'keydown',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onKeyPress: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'keypress',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onKeyUp: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'keyup',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(FieldTextStateless),
+);

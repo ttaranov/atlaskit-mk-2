@@ -1,8 +1,16 @@
 // @flow
 import uuid from 'uuid';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import React, { Component } from 'react';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
 import defaultBaseProps from './defaultBaseProps';
 import type { StatelessProps, DefaultBaseProps } from './types';
@@ -16,7 +24,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-export default class ToggleStateless extends Component<StatelessProps, State> {
+class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,
@@ -84,3 +92,38 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'toggle',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'blur',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onFocus: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'focus',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(ToggleStateless),
+);

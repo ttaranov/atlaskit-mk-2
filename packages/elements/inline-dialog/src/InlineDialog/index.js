@@ -2,8 +2,16 @@
 
 import React, { Component, type Node as NodeType } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { Container } from './styled';
 import type { PositionType, FlipPositionsType } from '../types';
 
@@ -41,8 +49,7 @@ type Props = {
   shouldFlip?: boolean | Array<FlipPositionsType>,
 };
 
-// TODO: expose applicable props from Layer and pull in here
-export default class InlineDialog extends Component<Props, {}> {
+class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
     isOpen: false,
     onContentBlur: () => {},
@@ -120,3 +127,48 @@ export default class InlineDialog extends Component<Props, {}> {
     );
   }
 }
+
+// TODO: expose applicable props from Layer and pull in here
+export default withAnalyticsContext({
+  component: 'inline-dialog',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onContentBlur: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'blur',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onContentClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onContentFocus: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'focus',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onClose: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'close',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(InlineDialog),
+);

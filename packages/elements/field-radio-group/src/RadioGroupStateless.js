@@ -1,7 +1,15 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Radio from './Radio';
 import type { RadioGroupStatelessPropTypes, ItemsPropType } from './types';
 
@@ -11,7 +19,7 @@ type DefaultPropsTypes = {
   label: string,
 };
 
-export default class FieldRadioGroupStateless extends Component<
+class FieldRadioGroupStateless extends Component<
   RadioGroupStatelessPropTypes,
   void,
 > {
@@ -59,3 +67,20 @@ export default class FieldRadioGroupStateless extends Component<
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'field-radio-group',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onRadioChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(FieldRadioGroupStateless),
+);

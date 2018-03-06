@@ -4,6 +4,15 @@ import React, { Component } from 'react';
 import { Transition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import { SIZES_MAP, DEFAULT_SIZE } from './constants';
 import Container from './styledContainer';
 import Svg from './styledSvg';
@@ -14,7 +23,7 @@ const Outer = styled.div`
 `;
 Outer.displayName = 'Outer';
 
-export default class Spinner extends Component<SpinnerProps, SpinnerState> {
+class Spinner extends Component<SpinnerProps, SpinnerState> {
   static defaultProps = {
     delay: 100,
     isCompleting: false,
@@ -114,3 +123,20 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'spinner',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onComplete: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'complete',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Spinner),
+);

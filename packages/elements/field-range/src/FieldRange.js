@@ -1,5 +1,13 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { Input } from './styled';
 
 type Props = {
@@ -23,7 +31,7 @@ const defaultStep = 0.1;
 // We need to pass an event handler to "input" element since we are using the "controlled" mode
 const dummyOnChangeHandler = () => {};
 
-export default class Slider extends Component<Props, State> {
+class Slider extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {
@@ -109,3 +117,20 @@ export default class Slider extends Component<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'field-range',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Slider),
+);

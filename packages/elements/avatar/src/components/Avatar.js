@@ -1,7 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 import type { Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
 import AvatarImage from './AvatarImage';
@@ -165,8 +173,25 @@ class Avatar extends Component<AvatarPropTypes> {
  *     - isFocus
  *     - isHover
  */
-export default mapProps({
-  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
-  isInteractive: props =>
-    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
-})(withPseudoState(Avatar)); // 3
+export default withAnalyticsContext({
+  component: 'avatar',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(
+    mapProps({
+      appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+      isInteractive: props =>
+        props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+    })(withPseudoState(Avatar)),
+  ),
+); // 3

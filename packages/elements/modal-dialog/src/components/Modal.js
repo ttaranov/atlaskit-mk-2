@@ -1,7 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import type {
   AppearanceType,
@@ -293,11 +302,27 @@ class Modal extends Component<Props, State> {
   }
 }
 
-export default withRenderTarget(
-  {
-    target: 'modal',
-    withTransitionGroup: true,
-  },
-  // $FlowFixMe TEMPORARY
-  Modal,
+export default withAnalyticsContext({
+  component: 'modal-dialog',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onClose: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'close',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(
+    withRenderTarget(
+      {
+        target: 'modal',
+        withTransitionGroup: true,
+      }, // $FlowFixMe TEMPORARY
+      Modal,
+    ),
+  ),
 );

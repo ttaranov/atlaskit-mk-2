@@ -1,6 +1,15 @@
 // @flow
 import React, { Component, type Component as ComponentType } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import { PaginationStateless } from '@atlaskit/pagination';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
 import {
@@ -42,7 +51,7 @@ type State = {
   isRanking: boolean,
 };
 
-export default class DynamicTable extends Component<Props, State> {
+class DynamicTable extends Component<Props, State> {
   tableBody: ?ComponentType<any, any>;
 
   state = {
@@ -227,3 +236,47 @@ export default class DynamicTable extends Component<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'dynamic-table',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onSetPage: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'setPage',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onSort: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'sort',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onRankStart: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'rankStart',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onRankEnd: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'rankEnd',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(DynamicTable),
+);

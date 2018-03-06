@@ -1,9 +1,17 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
 import Content from '../styled/Content';
@@ -136,8 +144,7 @@ type State = {
   droplistWidth?: number,
 };
 
-// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
-export default class StatelessSelect extends PureComponent<Props, State> {
+class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;
@@ -668,3 +675,39 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
+
+// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
+export default withAnalyticsContext({
+  component: 'single-select',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onFilterChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'filter',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onSelected: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onOpenChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'toggle',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(StatelessSelect),
+);

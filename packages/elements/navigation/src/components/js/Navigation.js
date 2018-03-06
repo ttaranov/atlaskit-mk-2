@@ -7,7 +7,15 @@ import React, {
   type Element,
   type ElementRef,
 } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import { getTheme } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -132,7 +140,7 @@ type State = {
   resizeDelta: number,
 };
 
-export default class Navigation extends PureComponent<Props, State> {
+class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -433,3 +441,47 @@ export default class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'navigation',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onResize: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'resize',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onResizeStart: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'resizeStart',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onToggleStart: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'toggle',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onToggleEnd: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'toggle',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Navigation),
+);

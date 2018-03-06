@@ -6,6 +6,15 @@ import React, {
   type ElementRef,
 } from 'react';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import styledRootElement from '../styled/Item';
 import {
   Before,
@@ -77,7 +86,8 @@ type Props = {
   /** Standard browser title to be displayed on the item when hovered. */
   title?: string,
 };
-export default class Item extends Component<Props, {}> {
+
+class Item extends Component<Props, {}> {
   static defaultProps = {
     autoFocus: false,
     description: '',
@@ -248,3 +258,47 @@ export default class Item extends Component<Props, {}> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'item',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onKeyDown: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'keydown',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onMouseEnter: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseenter',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onMouseLeave: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseleave',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Item),
+);

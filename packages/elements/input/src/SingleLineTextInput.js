@@ -4,6 +4,15 @@ import keyCode from 'keycode';
 import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+
 const common = `
   appearance: none;
   color: inherit;
@@ -43,7 +52,7 @@ type Props = {
   onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
-export default class SingleLineTextInput extends Component<Props, {}> {
+class SingleLineTextInput extends Component<Props, {}> {
   static defaultProps = {
     style: {},
     isInitiallySelected: false,
@@ -116,3 +125,29 @@ export default class SingleLineTextInput extends Component<Props, {}> {
     return this.props.isEditing ? this.renderEditView() : this.renderReadView();
   }
 }
+
+export default withAnalyticsContext({
+  component: 'input',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onConfirm: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'confirm',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onKeyDown: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'keydown',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(SingleLineTextInput),
+);

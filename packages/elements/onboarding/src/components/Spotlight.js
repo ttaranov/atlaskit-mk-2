@@ -2,9 +2,18 @@
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { getSpotlightTheme } from './theme';
 import type {
@@ -207,13 +216,30 @@ class Spotlight extends Component<Props> {
   }
 }
 
-export default withScrollMeasurements(
-  withRenderTarget(
-    {
-      target: 'spotlight',
-      withTransitionGroup: true,
+export default withAnalyticsContext({
+  component: 'spotlight',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    targetOnClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
     },
-    // $FlowFixMe TEMPORARY
-    Spotlight,
+  })(
+    withScrollMeasurements(
+      withRenderTarget(
+        {
+          target: 'spotlight',
+          withTransitionGroup: true,
+        },
+        // $FlowFixMe TEMPORARY
+        Spotlight,
+      ),
+    ),
   ),
 );

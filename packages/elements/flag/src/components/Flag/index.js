@@ -1,8 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import Container, {
   Description,
   DismissButton,
@@ -22,7 +30,7 @@ type State = {
   isExpanded: boolean,
 };
 
-export default class Flag extends Component<FlagProps, State> {
+class Flag extends Component<FlagProps, State> {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -148,3 +156,56 @@ export default class Flag extends Component<FlagProps, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'flag',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'blur',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onDismissed: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'dismiss',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onFocus: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'focus',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onMouseOut: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseout',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onMouseOver: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseover',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(Flag),
+);

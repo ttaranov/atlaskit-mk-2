@@ -10,6 +10,15 @@ import React, {
 } from 'react';
 import renamePropsWithWarning from 'react-deprecate';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import type { CoordinatesType, PositionType } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
@@ -226,6 +235,32 @@ class Tooltip extends Component<Props, State> {
 
 export type TooltipType = Tooltip;
 
-export default renamePropsWithWarning(Tooltip, {
-  description: 'content',
-});
+export default withAnalyticsContext({
+  component: 'tooltip',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onMouseOver: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseover',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onMouseOut: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'mouseout',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(
+    renamePropsWithWarning(Tooltip, {
+      description: 'content',
+    }),
+  ),
+);

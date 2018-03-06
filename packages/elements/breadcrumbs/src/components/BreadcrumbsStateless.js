@@ -1,5 +1,13 @@
 // @flow
 import React, { Children, Component, type Node, type Element } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import EllipsisItem from './EllipsisItem';
 import Container from '../styled/BreadcrumbsContainer';
 
@@ -21,7 +29,7 @@ type Props = {
   children?: Node,
 };
 
-export default class BreadcrumbsStateless extends Component<Props, {}> {
+class BreadcrumbsStateless extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -64,3 +72,20 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'breadcrumbs',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onExpand: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'expand',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(BreadcrumbsStateless),
+);

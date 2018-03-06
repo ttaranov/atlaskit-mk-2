@@ -2,9 +2,19 @@
 import React, { PureComponent, type Node } from 'react';
 import ReactDOM from 'react-dom';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { SelectWrapper } from '../styled/Stateless';
 import Trigger from './Trigger';
@@ -130,7 +140,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-export default class StatelessMultiSelect extends PureComponent<Props, State> {
+class StatelessMultiSelect extends PureComponent<Props, State> {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -567,3 +577,47 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'multi-select',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onFilterChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'filter',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onNewItemCreated: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'createItem',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onSelectedChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+
+    onOpenChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'toggle',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(StatelessMultiSelect),
+);

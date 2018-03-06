@@ -4,6 +4,14 @@ import React, { Component } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
@@ -179,7 +187,22 @@ class CheckboxStateless extends Component<Props, State> {
 // TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
 // possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
 // $FlowFixMe
-const CheckboxWithTheme = withTheme(CheckboxStateless);
+const CheckboxWithTheme = withAnalyticsContext({
+  component: 'checkbox',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(withTheme(CheckboxStateless)),
+);
 
 const emptyTheme = {};
 

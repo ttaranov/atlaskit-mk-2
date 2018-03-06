@@ -1,6 +1,14 @@
 // @flow
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import TextArea from './styled/TextArea';
 
 type Props = {
@@ -49,9 +57,7 @@ type Props = {
   type?: string, //eslint-disable-line react/no-unused-prop-types
 };
 
-// We are using any as FieldTextArea passes props via spread
-// TODO: if there is no impact props should be passed explicitly from FieldTextArea
-export default class FieldTextAreaStateless extends Component<Props, void> {
+class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -134,3 +140,22 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
     );
   }
 }
+
+// We are using any as FieldTextArea passes props via spread
+// TODO: if there is no impact props should be passed explicitly from FieldTextArea
+export default withAnalyticsContext({
+  component: 'field-text-area',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(FieldTextAreaStateless),
+);

@@ -2,6 +2,14 @@
 
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import DateField from './internal/DateField';
 import DateDialog from './internal/DateDialog';
 import DateTimePickerStateless from './DateTimePickerStateless';
@@ -350,4 +358,19 @@ class DateTimePicker extends Component<Props, State> {
   }
 }
 
-export default withCtrl(DateTimePicker);
+export default withAnalyticsContext({
+  component: 'date-picker',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'change',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(withCtrl(DateTimePicker)),
+);
