@@ -41,7 +41,8 @@ import { MacroProvider } from '../../editor/plugins/macro/types';
 import tableCommands from '../../plugins/table/commands';
 import { insertDate, openDatePicker } from '../../editor/plugins/date/actions';
 import { showPlaceholderFloatingToolbar } from '../../editor/plugins/placeholder-text/actions';
-import { Wrapper, ExpandIconWrapper } from './styles';
+import { TriggerWrapper } from './styles';
+import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../styles';
 
 import { InsertMenuCustomItem } from '../../editor/types';
 
@@ -229,18 +230,18 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         onClick={this.handleTriggerClick}
         spacing={isReducedSpacing ? 'none' : 'default'}
         iconBefore={
-          <Wrapper>
+          <TriggerWrapper>
             <AddIcon label="Open or close insert block dropdown" />
             <ExpandIconWrapper>
               <ExpandIcon label="Open or close insert block dropdown" />
             </ExpandIconWrapper>
-          </Wrapper>
+          </TriggerWrapper>
         }
       />
     );
 
     return (
-      <div style={{ display: 'flex' }}>
+      <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {buttons.map(btn => (
           <ToolbarButton
             ref={btn.handleRef || noop}
@@ -270,12 +271,10 @@ export default class ToolbarInsertBlock extends React.PureComponent<
                 {toolbarButtonFactory(false, dropdownItems)}
               </DropdownMenu>
             ) : (
-              <div>
-                <div>{toolbarButtonFactory(true, dropdownItems)}</div>
-              </div>
+              <div>{toolbarButtonFactory(true, dropdownItems)}</div>
             ))}
         </Wrapper>
-      </div>
+      </ButtonGroup>
     );
   }
 
