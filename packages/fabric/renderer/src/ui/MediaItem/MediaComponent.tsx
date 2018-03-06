@@ -4,6 +4,8 @@ import {
   CardView,
   CardStatus,
   CardDimensions,
+  CardDelete,
+  CardEventHandler,
   Identifier,
 } from '@atlaskit/media-card';
 
@@ -12,8 +14,6 @@ import {
   ContextConfig,
   ContextFactory,
   Context,
-  CardDelete,
-  CardEventHandler,
   FileDetails,
   ImageResizeMode,
 } from '@atlaskit/media-core';

@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
-import {
-  CardAction,
-  CardActionType,
-  CardEventHandler,
-} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
+import { CardAction, CardActionType, CardEventHandler } from '../../actions';
 import { Wrapper, DeleteBtn, MeatBallsWrapper } from './styled';
 
 export interface MenuProps {

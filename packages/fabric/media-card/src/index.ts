@@ -4,16 +4,15 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import { MouseEvent } from 'react';
-import {
-  CardAction,
-  MediaItemDetails,
-  MediaCollectionItem,
-} from '@atlaskit/media-core';
+import { MediaItemDetails, MediaCollectionItem } from '@atlaskit/media-core';
+
+import { CardAction } from './actions';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
 export * from './root/cardView';
 export * from './list';
+export * from './actions';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
 export { AppCardView } from './app_2/AppCardViewV2';
 

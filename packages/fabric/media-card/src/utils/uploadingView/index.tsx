@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, CardActionType } from '@atlaskit/media-core';
+import { Ellipsify } from '@atlaskit/media-ui';
 
 import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
 import { Menu } from '../menu';
-import { Ellipsify } from '@atlaskit/media-ui';
+import { CardAction, CardActionType } from '../../actions';
 import {
   Wrapper,
   Overlay,

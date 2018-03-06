@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { CardDimensions } from '@atlaskit/media-card';
-import { CardEventHandler } from '@atlaskit/media-core';
+import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
 
 import UIMedia from '../../ui/Media';
 import { ProviderFactory } from '@atlaskit/editor-common';
