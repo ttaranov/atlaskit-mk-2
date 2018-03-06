@@ -3,7 +3,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import analyticsEventMap from './analyticsEventMap';
+import { analyticsEventMap } from './analyticsEventMap';
 
 export const getMapEntryFromPath = (filepath, configKey) => (
   analyticsEventMap.find(eventConfig => (

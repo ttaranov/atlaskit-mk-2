@@ -48,11 +48,10 @@ const createAnalyticsContextHoc = (j, eventConfig, inner) => {
     return inner;
   }
 
-  const versionProp = j.property('init', j.identifier('version'), j.identifier('version'));
   const contextArgs = j.objectExpression([
     j.property('init', j.identifier('component'), j.literal(eventConfig.context)),
-    j.property('init', j.identifier('package'), j.identifier('name')),
-    versionProp,
+    j.property('init', j.identifier('package'), j.identifier('packageName')),
+    j.property('init', j.identifier('version'), j.identifier('packageVersion'))
   ]);
 
   const firstCall = j.callExpression(j.identifier('withAnalyticsContext'), [contextArgs]);
@@ -85,22 +84,36 @@ module.exports = (fileInfo: any, api: any) => {
       import { withAnalyticsEvents, withAnalyticsContext } from '@atlaskit/analytics-next';
     `))
     .addImport(source.code(`
-      import { name, version } from '${packageJsonPath}';
-    `))
-    .find(j.ExportDefaultDeclaration)
-    .map( path => {
-      if (j.Expression.check(path.node.declaration)) {
-        // If we're an expression, we can just wrap the current default export
-        path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
-      } else if (j.Declaration.check(path.node.declaration)) {
-        // Else if we're a declaration, we must extract the declaration out of the export
-        // and then wrap the declaration with a HOC within the export
-        const declarationId = path.node.declaration.id;
-        path.insertBefore(path.node.declaration);
-        path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);    
-      }
-      return path;
-    });
+      import { name as packageName, version as packageVersion } from '${packageJsonPath}';
+    `));
+
+  if (analyticsEventConfig.wrapTarget) {
+    source
+      .findLast(j.VariableDeclarator, (node) => node.id.name === analyticsEventConfig.wrapTarget)
+      .map( path => {
+        path.node.init = createAnalyticsHocs(j, analyticsEventConfig, path.node.init);
+      });
+  } else {
+    source
+      .find(j.ExportDefaultDeclaration)
+      .map( path => {
+        if (j.Expression.check(path.node.declaration)) {
+          // If we're an expression, we can just wrap the current default export
+          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
+        } else if (j.Declaration.check(path.node.declaration)) {
+          // Else if we're a declaration, we must extract the declaration out of the export
+          // and then wrap the declaration with a HOC within the export
+          if (j.ClassDeclaration.check(path.node.declaration)) {
+            const declarationId = path.node.declaration.id;
+            path.insertBefore(path.node.declaration);
+            path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);
+          } else {
+            throw new Error('Default function export found. Please specify a wrapTarget in analyticsEventMap or refactor the code first to provide a default class export or function call');
+          }   
+        }
+        return path;
+      });
+  }
     
   // Print source
   return source.toSource({ quote: 'single' });

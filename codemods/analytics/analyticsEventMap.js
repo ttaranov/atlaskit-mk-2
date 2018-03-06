@@ -1,4 +1,4 @@
-export default [
+const analyticsEventMap = [
   {
     path: 'avatar/src/components/Avatar.js',
     testPath: 'avatar/src/components/__tests__/Avatar.js',
@@ -28,7 +28,7 @@ export default [
   },
   {
     path: 'breadcrumbs/src/components/BreadcrumbsItem.js',
-    testPath: 'breadcrumbs/__tests__/Item.js',
+    testPath: 'breadcrumbs/__tests__/Item.test.js',
     context: 'breadrumbs-item',
     component: 'BreadcrumbsItem',
     // TODO: Implement this functionality
@@ -60,6 +60,7 @@ export default [
     testPath: 'checkbox/src/__tests__/index.js',
     context: 'checkbox',
     component: 'CheckboxStateless',
+    wrapTarget: 'CheckboxWithTheme',
     props: {
       onChange: 'change'
     }
@@ -150,6 +151,7 @@ export default [
     testPath: 'field-radio-group/src/__tests__/Radio.js',
     context: 'field-radio-group',
     component: 'AkRadio',
+    wrapTarget: 'RadioWithTheme',
     props: {
       onChange: 'change'
     }
@@ -164,7 +166,7 @@ export default [
     }
   },
   {
-    path: 'field-range/src/components/FieldRange.js',
+    path: 'field-range/src/FieldRange.js',
     testPath: 'field-range/src/__test__/fieldRangeSpec.js',
     context: 'field-range',
     component: 'FieldRange',
@@ -183,7 +185,7 @@ export default [
     }
   },
   {
-    path: 'field-text/src/components/FieldTextStateless.js',
+    path: 'field-text/src/FieldTextStateless.js',
     testPath: 'field-text/src/__tests__/index.js',
     context: 'field-text',
     component: 'FieldTextStateless',
@@ -365,7 +367,7 @@ export default [
   },
   {
     path: 'tabs/src/components/Tabs.js',
-    testPath: 'tabs/src/__tests__/index.js',
+    testPath: 'tabs/__tests__/index.js',
     context: 'tabs',
     component: 'Tabs',
     props: {
@@ -404,16 +406,6 @@ export default [
     }
   },
   {
-    path: 'select/src/Select.js',
-    testPath: 'select/src/__tests__/Select.js',
-    context: 'select',
-    component: 'Select',
-    props: {
-      onChange: 'change',
-      onKeyDown: 'keydown',
-    }
-  },
-  {
     path: '__testfixtures__/addsTestsMultipleProps',
     testPath: '__testfixtures__/addsTestsMultipleProps',
     context: 'button',
@@ -433,3 +425,13 @@ export default [
     }
   }, 
 ];
+
+module.exports.analyticsPackages = analyticsEventMap
+  .map(config => {
+    const path = config.path;
+
+    return path.substring(0, path.indexOf('/'));
+  })
+  .filter(pkg => pkg.length > 0 && pkg !== '__testfixtures__');
+
+module.exports.analyticsEventMap = analyticsEventMap;

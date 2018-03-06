@@ -4,14 +4,42 @@
  * collection object.
  */
 export default j => {
-  const findFirst = function (type) {
-    const found = this.find(type);
+  function findPrecedingImport(root, importNode) {
+    function precedes(a, b) {
+      if (a[0] === '.' && b[0] !== '.') {
+        return false;
+      } else if (a[0] !== '.' && b[0] === '.') {
+        return true;
+      } else {
+        return a < b;
+      }
+    }
+    let targetName;
+    let targetPath;
+    const importSource = importNode.source.value;
+    
+    root
+      .find(j.ImportDeclaration)
+      .forEach(path => {
+        const name = path.node.source.value;
+
+        if ((precedes(name, importSource) || name === 'react') && (!targetName || !precedes(name, targetName))) {
+          targetName = name;
+          targetPath = path;
+        }
+      });
+
+    return targetPath;
+  }
+
+  const findFirst = function (type, filter) {
+    const found = this.find(type, filter);
 
     return found.at(0);
   };
 
-  const findLast = function(type) {
-    const found = this.find(type);
+  const findLast = function(type, filter) {
+    const found = this.find(type, filter);
 
     return found.at(found.length - 1);
   };
@@ -33,7 +61,7 @@ export default j => {
       existingNode.node.specifiers = existingNode.node.specifiers.concat(missingSpecifiers);
 
     } else {
-      this.findLast(j.ImportDeclaration)
+      findPrecedingImport(this, node)
         .insertAfter(node);
     }
     
