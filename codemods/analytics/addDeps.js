@@ -4,24 +4,30 @@
  * Note this is not a codemod
  */
 
-const { spawn } = require('child_process');
+const { spawnSync } = require('child_process');
 
 
 const { analyticsPackages } = require('./analyticsEventMap');
 
 const packageStr = analyticsPackages.join(',');
 
-const child = spawn('bolt', ['workspaces', 'exec', '--only-fs', `packages/elements/{${packageStr}}`, '--', 'bolt', 'add', '@atlaskit/analytics-next']);
-
-child.stdout.on('data', chunk => {
-  console.log(chunk.toString());
-});
-
-child.on('close', code => {
-  if (code !== 0) {
-    throw new Error(`Bolt command was not successful, exited with code ${code}`);
+[{ name: '@atlaskit/analytics-next' }, { name: 'enzyme', flag: '--dev' }].forEach( pkg => {
+  let args = ['workspaces', 'exec', '--only-fs', `packages/elements/{${packageStr}}`, '--', 'bolt', 'add', pkg.name];
+  if (pkg.flag) {
+    args.push(pkg.flag);
   }
-});
-child.on('error', err => {
-  throw new Error('Bolt command error', err);
+  const child = spawnSync('bolt',
+    args,
+    { stdio: 'pipe', encoding: 'utf-8' }
+  );
+
+  console.log(child.output.join('\n'));
+
+  if (child.status !== 0) {
+    throw new Error(`Bolt command was not successful, exited with code ${child.status}`);
+  }
+
+  if (child.error) {
+    throw new Error('Bolt command error', child.error);
+  }
 });

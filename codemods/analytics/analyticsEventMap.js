@@ -104,7 +104,7 @@ const analyticsEventMap = [
   },
   {
     path: 'droplist/src/components/Droplist.js',
-    testPath: 'droplist/__tests__/index.js',
+    testPath: 'droplist/src/__tests__/index.js',
     context: 'droplist',
     component: 'Droplist',
     props: {
@@ -113,7 +113,7 @@ const analyticsEventMap = [
   },
   {
     path: 'droplist/src/components/Item.js',
-    testPath: 'droplist/__tests__/index.js',
+    testPath: 'droplist/src/__tests__/index.js',
     context: 'droplist-item',
     component: 'DroplistItem',
     overwrite: 'Item',

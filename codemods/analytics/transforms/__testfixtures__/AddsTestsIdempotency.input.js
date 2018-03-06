@@ -1,8 +1,9 @@
+import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
+import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
-import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { name as packageName, version as packageVersion } from '../../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
@@ -17,7 +18,7 @@ describe('ak-button/default-behaviour', () => {
         .props().type,
     ).toBe('button'));
 });
-describe('analytics', () => {
+describe('analytics - Button', () => {
   it('should provide analytics context with component, package and version fields', () => {
     const wrapper = shallow(<Button />);
 

@@ -5,7 +5,7 @@
  */
 export default j => {
   // Finds the preceding import that importNode should be inserted after
-  function findPrecedingImport(root, importNode) {
+  function findFollowingImport(root, importNode) {
     // Determines if the import source 'a' should precede 'b' in the import order
     // Places '@...' absolute imports after other absolute imports and relative imports
     // after absolute imports
@@ -26,13 +26,11 @@ export default j => {
       .find(j.ImportDeclaration)
       .forEach(path => {
         const name = path.node.source.value;
-
-        if ((precedes(name, importSource)) && (!targetName || !precedes(name, targetName))) {
+        if (!targetName && !precedes(name, importSource)) {
           targetName = name;
           targetPath = path;
         }
       });
-
     return targetPath;
   }
 
@@ -47,6 +45,10 @@ export default j => {
 
     return found.at(found.length - 1);
   };
+
+  const getFirstNode = function() {
+    return this.find(j.Program).get('body', 0).node;
+  }
 
   // Add an import to the end of the last import declaration
   // Note: Must have an existing import declaration in the file for this to work
@@ -65,8 +67,8 @@ export default j => {
       existingNode.node.specifiers = existingNode.node.specifiers.concat(missingSpecifiers);
 
     } else {
-      findPrecedingImport(this, node)
-        .insertAfter(node);
+      findFollowingImport(this, node)
+        .insertBefore(node);
     }
     
     return this;
@@ -134,5 +136,6 @@ export default j => {
     addToProgram,
     code,
     getOrAdd,
+    getFirstNode,
   });
 };

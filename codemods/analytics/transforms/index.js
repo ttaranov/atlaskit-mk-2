@@ -69,10 +69,11 @@ module.exports = (fileInfo: any, api: any) => {
   const { statement } = j.template;
   j.use(UtilPlugin);
 
-  const analyticsEventConfig = getMapEntryFromPath(fileInfo.path, 'path');
-  if (!analyticsEventConfig) {
+  const analyticsEventConfigs = getMapEntryFromPath(fileInfo.path, 'path');
+  if (!analyticsEventConfigs || analyticsEventConfigs.length === 0) {
     return null;
   }
+  const analyticsEventConfig = analyticsEventConfigs[0];
   const source = j(fileInfo.source);
   
   const absoluteFilePath = path.resolve(process.cwd(), fileInfo.path);
