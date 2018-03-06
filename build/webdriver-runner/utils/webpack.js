@@ -3,7 +3,7 @@
 
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
-
+const argv = require('yargs').argv;
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
 DirectoryWatcher.prototype.createNestedWatcher = function(
@@ -38,12 +38,18 @@ const WEBPACK_BUILD_TIMEOUT = 20000;
 let server;
 let config;
 
+const pattern = argv.pattern || '';
+
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
+    .filter(
+      workspace =>
+        pattern !== '' ? workspace.dir.includes(pattern) : workspace,
+    )
     .filter(workspace => workspace.files.webdriver.length)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
