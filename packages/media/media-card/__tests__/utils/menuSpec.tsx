@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { CardActionType } from '@atlaskit/media-core';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
 import { Menu } from '../../src/utils/menu/index';
 import { MeatBallsWrapper, DeleteBtn } from '../../src/utils/menu/styled';
+import { CardActionType } from '../../src/actions';
 
 describe('Menu', () => {
   const menuActions = [

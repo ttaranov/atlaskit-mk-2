@@ -8,7 +8,6 @@ import {
   MediaCollection,
   MediaCollectionItem,
   Context,
-  CollectionAction,
   DataUriService,
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -20,6 +19,7 @@ import {
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
+import { CollectionAction } from '../actions';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 

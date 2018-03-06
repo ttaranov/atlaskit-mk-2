@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import * as cx from 'classnames';
-import { CardAction, MediaType, MediaItemType } from '@atlaskit/media-core';
+import { MediaType, MediaItemType } from '@atlaskit/media-core';
 import { Menu, ErrorIcon } from '../../utils';
 import { MediaTypeIcon } from '../../utils/mediaTypeIcon';
 import { CardDimensions } from '../..';
+import { CardAction } from '../../actions';
 import { InfoView } from './infoView';
 import { ThumbnailView } from './thumbnailView';
 import {

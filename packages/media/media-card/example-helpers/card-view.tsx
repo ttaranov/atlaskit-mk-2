@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as deepcopy from 'deepcopy';
 import {
   ImageResizeMode,
-  CardActionType,
   MediaItemDetails,
   MediaItemType,
   FileDetails,
@@ -27,7 +26,12 @@ import {
   wideImage,
   genericUrlPreview,
 } from '@atlaskit/media-test-helpers';
-import { CardView, CardAppearance, CardDimensions } from '../src';
+import {
+  CardView,
+  CardAppearance,
+  CardDimensions,
+  CardActionType,
+} from '../src';
 import { actions, clickHandler, mouseEnterHandler } from './index';
 
 const images = [

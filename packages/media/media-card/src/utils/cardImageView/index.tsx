@@ -7,15 +7,15 @@ import { Component } from 'react';
 import {
   MediaType,
   MediaItemType,
-  CardAction,
-  CardActionType,
   ImageResizeMode,
 } from '@atlaskit/media-core';
+
 import { CardDimensions, CardStatus } from '../../index';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
 import { Wrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
+import { CardAction, CardActionType } from '../../actions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;

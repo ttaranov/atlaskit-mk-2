@@ -7,15 +7,11 @@ import {
   CardView,
   CardEvent,
   OnLoadingChangeState,
-} from '@atlaskit/media-card';
-import {
-  Context,
+  CardAction,
   CardActionType,
   CardEventHandler,
-  MediaItem,
-  FileDetails,
-  CardAction,
-} from '@atlaskit/media-core';
+} from '@atlaskit/media-card';
+import { Context, MediaItem, FileDetails } from '@atlaskit/media-core';
 
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';

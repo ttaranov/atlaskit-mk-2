@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, FileDetails, ImageResizeMode } from '@atlaskit/media-core';
+import { FileDetails, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import { CardAction } from '../../actions';
 import { FileCardImageView } from '../cardImageView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { toHumanReadableMediaSize } from '../../utils';

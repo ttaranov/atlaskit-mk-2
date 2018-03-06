@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { CardActionType } from '@atlaskit/media-core';
 
 import { UploadingView } from '../../src/utils/uploadingView';
 import { MediaImage, Menu } from '../../src/utils';
+import { CardActionType } from '../../src/actions';
 
 describe('UploadingView', () => {
   it('should not render the cancel action when deleteAction is not provided', () => {

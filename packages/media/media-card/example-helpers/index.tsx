@@ -11,6 +11,7 @@ import { createStorybookContext } from '@atlaskit/media-test-helpers';
 import { SelectableCard } from './selectableCard';
 import {
   Card,
+  CardActionType,
   Identifier,
   CardAppearance,
   CardEvent,
