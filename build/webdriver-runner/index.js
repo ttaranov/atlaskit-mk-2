@@ -5,12 +5,10 @@ const child = require('child_process');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
-const argv = require('yargs').argv;
 
 function runTests() {
-  const pattern = argv.pattern || '';
   return new Promise((resolve, reject) => {
-    let cmd = `INTEGRATION_TESTS=true jest ${pattern}`;
+    let cmd = `INTEGRATION_TESTS=true jest`;
 
     let tests = child.spawn(cmd, {
       stdio: 'inherit',
