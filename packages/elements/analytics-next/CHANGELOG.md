@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 1.1.0
+- [minor] adds createAndFireEvent utility method and updates docs [24a93fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24a93fc)
+
 ## 1.0.3
 - [patch] fixes flow type problem with wrapping stateless functional components in withAnalyticsEvents [8344ffb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8344ffb)
 
