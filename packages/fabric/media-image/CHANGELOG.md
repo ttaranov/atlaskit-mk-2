@@ -1,5 +1,12 @@
 # @atlaskit/media-image
 
+## 3.0.3
+
+## 3.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 3.0.1
+
 ## 3.0.0
 
 ## 2.3.0

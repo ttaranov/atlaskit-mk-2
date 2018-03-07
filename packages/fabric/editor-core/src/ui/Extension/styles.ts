@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import {
   akColorN20A,
   akColorN20,
@@ -9,8 +12,7 @@ import {
 
 export const padding = 8;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: ${akColorN20};
   border-radius: ${akBorderRadius};
   position: relative;
@@ -34,8 +36,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const Overlay = styled.div`
+export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   border-radius: ${akBorderRadius};
   position: absolute;
   width: 100%;
@@ -46,16 +47,22 @@ export const Overlay = styled.div`
   z-index: 1;
 `;
 
-// tslint:disable-next-line:variable-name
-export const PlaceholderFallback = styled.div`
+export const PlaceholderFallback: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: inline-flex;
   align-items: center;
+
+  & > img {
+    margin: 0 4px;
+  }
 `;
 
-// tslint:disable-next-line:variable-name
-export const PlaceholderFallbackParams = styled.span`
+export const PlaceholderFallbackParams: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
   display: inline-block;
-  width: 200px;
+  max-width: 200px;
   margin-left: 5px;
   color: ${akColorN70};
   text-overflow: ellipsis;

@@ -40,7 +40,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
     const rule = defaultInputRuleHandler(
-      headingRule(schema.nodes.heading, 5),
+      headingRule(schema.nodes.heading, 6),
       true,
     );
     const currentHandler = (rule as any).handler; // TODO: Fix types (ED-2987)
@@ -53,7 +53,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(rule);
     rules.push(
       createInputRule(
-        new RegExp(`${leafNodeReplacementCharacter}(#{1,5})\\s$`),
+        new RegExp(`${leafNodeReplacementCharacter}(#{1,6})\\s$`),
         (state, match, start, end): Transaction | undefined => {
           const level = match[1].length;
           return insertBlock(

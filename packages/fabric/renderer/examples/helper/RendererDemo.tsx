@@ -3,9 +3,13 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { CardEvent } from '@atlaskit/media-card';
 import { CardSurroundings, ProviderFactory } from '@atlaskit/editor-common';
-import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import {
+  storyMediaProviderFactory,
+  storyContextIdentifierProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 import * as Clock from 'react-live-clock';
 
 import { document } from './story-data';
@@ -57,11 +61,19 @@ const profilecardProvider = Promise.resolve({
   },
 });
 
+const taskDecisionProvider = Promise.resolve(
+  taskDecisionStoryData.getMockTaskDecisionResource(),
+);
+
+const contextIdentifierProvider = storyContextIdentifierProviderFactory();
+
 const providerFactory = ProviderFactory.create({
   mentionProvider,
   mediaProvider,
   emojiProvider,
   profilecardProvider,
+  taskDecisionProvider,
+  contextIdentifierProvider,
 });
 
 const extensionHandlers: ExtensionHandlers = {
@@ -222,7 +234,7 @@ export default class RendererDemo extends PureComponent<
           <div style={{ color: '#ccc', marginBottom: '8px' }}>
             &lt;Renderer&gt;
           </div>
-          <Renderer {...props} />
+          <Renderer {...props} useNewApplicationCard={true} />
           <div style={{ color: '#ccc', marginTop: '8px' }}>
             &lt;/Renderer&gt;
           </div>

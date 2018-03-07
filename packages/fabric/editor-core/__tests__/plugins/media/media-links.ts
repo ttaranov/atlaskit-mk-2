@@ -1,9 +1,3 @@
-import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import {
-  MediaPluginState,
-  AnalyticsHandler,
-  analyticsService,
-} from '../../../src';
 import {
   a,
   blockquote,
@@ -11,7 +5,7 @@ import {
   decisionList,
   doc,
   getLinkCreateContextMock,
-  makeEditor,
+  createEditor,
   media,
   mediaGroup,
   p,
@@ -19,12 +13,16 @@ import {
   taskItem,
   taskList,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+
 import {
   insertLinks,
   detectLinkRangesInSteps,
 } from '../../../src/plugins/media/media-links';
 import * as utils from '../../../src/plugins/utils';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import { DefaultMediaStateManager } from '../../../src/plugins/media';
+import { AnalyticsHandler, analyticsService } from '../../../src';
 
 describe('media-links', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -39,9 +37,12 @@ describe('media-links', () => {
   });
 
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
-    makeEditor<MediaPluginState>({
+    createEditor({
       doc,
-      schema: defaultSchema,
+      editorPlugins: [mediaPlugin(), tasksAndDecisionsPlugin],
+      editorProps: {
+        uploadErrorHandler,
+      },
     });
 
   let uuidStub: jest.SpyInstance<any>;
@@ -70,7 +71,9 @@ describe('media-links', () => {
 
         const link1 = a({ href: href1 })(title1);
         const link2 = a({ href: href2 })('baidu');
-        const nodes = link1.concat(link2);
+        const nodes = link1(editorView.state.schema).concat(
+          link2(editorView.state.schema),
+        );
         const tr = state.tr.replaceWith(sel, sel, nodes);
 
         const linksRanges = detectLinkRangesInSteps(
@@ -95,7 +98,7 @@ describe('media-links', () => {
 
         const link1 = a({ href: href1 })(title1);
         const link2 = a({ href: href2 })('baidu');
-        const node = blockquote(p(link1, link2));
+        const node = blockquote(p(link1, link2))(editorView.state.schema);
         const tr = state.tr.replaceWith(sel - 1, sel + 1, node);
 
         const linksRanges = detectLinkRangesInSteps(
@@ -123,7 +126,9 @@ describe('media-links', () => {
 
           const link1 = a({ href: href1 })(title1);
           const link2 = a({ href: href2 })('baidu');
-          const nodes = link1.concat(link2);
+          const nodes = link1(editorView.state.schema).concat(
+            link2(editorView.state.schema),
+          );
           const tr = state.tr.replaceWith(sel, sel, nodes);
 
           const linksRanges = detectLinkRangesInSteps(
@@ -190,7 +195,9 @@ describe('media-links', () => {
 
         const link1 = a({ href: href1 })(title1);
         const link2 = a({ href: href2 })('baidu');
-        const nodes = link1.concat(link2);
+        const nodes = link1(editorView.state.schema).concat(
+          link2(editorView.state.schema),
+        );
         const linkMark = state.schema.marks.link.create({ href: href3 });
         const tr = state.tr
           .replaceWith(sel, sel, nodes)
@@ -303,7 +310,7 @@ describe('media-links', () => {
             doc(
               p(`${href} `),
               mediaGroup(
-                media({ id, type: 'link', collection: testCollectionName }),
+                media({ id, type: 'link', collection: testCollectionName })(),
               ),
               p(),
             ),
@@ -333,7 +340,38 @@ describe('media-links', () => {
               doc(
                 p(`${href} `),
                 mediaGroup(
-                  media({ id, type: 'link', collection: testCollectionName }),
+                  media({ id, type: 'link', collection: testCollectionName })(),
+                ),
+                p(),
+              ),
+            );
+            editorView.destroy();
+          });
+        });
+
+        describe('link inserted inside blockquote', () => {
+          it('should create media group below it', async () => {
+            const href = 'www.google.com';
+            const { editorView } = editor(doc(blockquote(p(`${href} {<>}`))));
+            const handle = jest.fn();
+
+            // -1 for space, simulate the scenario of autoformatting link
+            await insertLinks(
+              editorView,
+              mediaStateManager,
+              handle,
+              [{ href, pos: 1000 }],
+              linkCreateContextMock,
+              testCollectionName,
+            );
+
+            const id = createTempId(href);
+            expect(handle).toHaveBeenCalledWith(readyState(id));
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                blockquote(p(`${href} `)),
+                mediaGroup(
+                  media({ id, type: 'link', collection: testCollectionName })(),
                 ),
                 p(),
               ),
@@ -363,7 +401,7 @@ describe('media-links', () => {
               doc(
                 p(`${href} `),
                 mediaGroup(
-                  media({ id, type: 'link', collection: testCollectionName }),
+                  media({ id, type: 'link', collection: testCollectionName })(),
                 ),
                 p('hello'),
               ),
@@ -407,7 +445,7 @@ describe('media-links', () => {
                   id: testLinkId,
                   type: 'link',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -433,8 +471,8 @@ describe('media-links', () => {
                   id: testLinkId,
                   type: 'link',
                   collection: testCollectionName,
-                }),
-                media({ id, type: 'link', collection: testCollectionName }),
+                })(),
+                media({ id, type: 'link', collection: testCollectionName })(),
               ),
             ),
           );
@@ -453,7 +491,7 @@ describe('media-links', () => {
                     id: testLinkId,
                     type: 'link',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
               ),
             );
@@ -479,8 +517,8 @@ describe('media-links', () => {
                     id: testLinkId,
                     type: 'link',
                     collection: testCollectionName,
-                  }),
-                  media({ id, type: 'link', collection: testCollectionName }),
+                  })(),
+                  media({ id, type: 'link', collection: testCollectionName })(),
                 ),
               ),
             );
@@ -533,7 +571,7 @@ describe('media-links', () => {
                 id: tempId1,
                 type: 'link',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p(`${href2} ${href3}`),
             mediaGroup(
@@ -541,12 +579,12 @@ describe('media-links', () => {
                 id: tempId2,
                 type: 'link',
                 collection: testCollectionName,
-              }),
+              })(),
               media({
                 id: tempId3,
                 type: 'link',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('hello'),
           ),
@@ -582,7 +620,7 @@ describe('media-links', () => {
         doc(
           p(`${href} `),
           mediaGroup(
-            media({ id, type: 'link', collection: testCollectionName }),
+            media({ id, type: 'link', collection: testCollectionName })(),
           ),
           p(),
         ),
@@ -593,7 +631,9 @@ describe('media-links', () => {
 
   describe('when selection is in a task or decision block', () => {
     it('link insertion ignored for task item', async () => {
-      const itemDoc = doc(taskList()(taskItem()('{<>}')));
+      const itemDoc = doc(
+        taskList({ localId: 'id' })(taskItem({ localId: 'id' })('{<>}')),
+      );
       const { editorView } = editor(itemDoc);
       const handle = jest.fn();
 
@@ -607,12 +647,16 @@ describe('media-links', () => {
       );
 
       expect(handle).not.toHaveBeenCalled();
-      expect(editorView.state.doc).toEqual(itemDoc);
+      expect(editorView.state.doc).toEqualDocument(itemDoc);
       editorView.destroy();
     });
 
     it('link insertion ignored for decision item', async () => {
-      const decisionDoc = doc(decisionList()(decisionItem()('{<>}')));
+      const decisionDoc = doc(
+        decisionList({ localId: 'id' })(
+          decisionItem({ localId: 'id' })('{<>}'),
+        ),
+      );
       const { editorView } = editor(decisionDoc);
       const handle = jest.fn();
 
@@ -626,7 +670,7 @@ describe('media-links', () => {
       );
 
       expect(handle).not.toHaveBeenCalled();
-      expect(editorView.state.doc).toEqual(decisionDoc);
+      expect(editorView.state.doc).toEqualDocument(decisionDoc);
       editorView.destroy();
     });
   });

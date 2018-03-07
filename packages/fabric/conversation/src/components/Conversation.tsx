@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Comment from '../containers/Comment';
+import CommentContainer from '../containers/Comment';
+import Comment from '../components/Comment';
 import Editor from './Editor';
 import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
@@ -17,7 +18,6 @@ export interface Props extends SharedProps {
     value: any,
     meta: any,
   ) => void;
-  onCancel?: () => void;
 
   isExpanded?: boolean;
   meta?: {
@@ -33,9 +33,13 @@ export default class Conversation extends React.PureComponent<Props> {
       onAddComment,
       onUpdateComment,
       onDeleteComment,
+      onRevertComment,
       onUserClick,
+      onCancel,
       user,
       dataProviders,
+      renderEditor,
+      containerId,
     } = this.props;
 
     if (!conversation) {
@@ -45,7 +49,7 @@ export default class Conversation extends React.PureComponent<Props> {
     const { conversationId } = conversation;
 
     return (comments || []).map(comment => (
-      <Comment
+      <CommentContainer
         key={comment.commentId}
         conversationId={conversationId}
         comment={comment}
@@ -53,8 +57,14 @@ export default class Conversation extends React.PureComponent<Props> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
+        onRetry={this.onRetry(comment.document)}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
+        renderComment={props => <Comment {...props} />}
+        renderEditor={renderEditor}
+        containerId={containerId}
       />
     ));
   }
@@ -67,6 +77,7 @@ export default class Conversation extends React.PureComponent<Props> {
       dataProviders,
       user,
       conversation,
+      renderEditor,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -80,12 +91,17 @@ export default class Conversation extends React.PureComponent<Props> {
           onCancel={onCancel}
           dataProviders={dataProviders}
           user={user}
+          renderEditor={renderEditor}
         />
       );
     }
   }
 
-  private onSave = async (value: any) => {
+  private onRetry = (document: any) => (commentLocalId?: string) => {
+    this.onSave(document, commentLocalId);
+  };
+
+  private onSave = async (value: any, commentLocalId?: string) => {
     const {
       containerId,
       id,
@@ -93,15 +109,17 @@ export default class Conversation extends React.PureComponent<Props> {
       meta,
       onAddComment,
       onCreateConversation,
+      conversation,
     } = this.props;
 
-    if (!id) {
+    if (!id && !commentLocalId) {
       if (onCreateConversation) {
         onCreateConversation(localId!, containerId, value, meta);
       }
     } else {
       if (onAddComment) {
-        onAddComment(id, id, value);
+        const conversationId = id || conversation!.conversationId;
+        onAddComment(conversationId, conversationId, value, commentLocalId);
       }
     }
   };

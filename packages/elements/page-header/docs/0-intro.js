@@ -21,5 +21,13 @@ export default md`
     />
   )}
 
+  ${(
+    <Example
+      Component={require('../examples/CustomTitleComponentExample').default}
+      source={require('!!raw-loader!../examples/CustomTitleComponentExample')}
+      title="Custom title component example"
+    />
+  )}
+
   ${<Props props={require('!!extract-react-types-loader!../src/PageHeader')} />}
 `;

@@ -1,7 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 
+import { name, version } from '../../package.json';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
@@ -166,4 +171,19 @@ class Button extends Component<ButtonProps, State> {
 export type ButtonType = Button;
 export const ButtonBase = Button;
 
-export default withDeprecationWarnings(Button);
+export default withAnalyticsContext({
+  component: 'button',
+  package: name,
+  version,
+})(
+  withAnalyticsEvents({
+    onClick: createAnalyticsEvent => {
+      const consumerEvent = createAnalyticsEvent({
+        action: 'click',
+      });
+      consumerEvent.clone().fire('atlaskit');
+
+      return consumerEvent;
+    },
+  })(withDeprecationWarnings(Button)),
+);

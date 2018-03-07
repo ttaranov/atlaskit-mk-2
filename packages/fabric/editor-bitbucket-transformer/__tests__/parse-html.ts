@@ -27,7 +27,7 @@ import {
   strong,
   em,
   strike,
-} from './_schema-builder';
+} from '@atlaskit/editor-test-helpers';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 
 const transformer = new BitbucketTransformer(schema);
@@ -69,7 +69,7 @@ describe('BitbucketTransformer: parser', () => {
     });
 
     it('should support horizontal rules', () => {
-      expect(parse('<hr>')).toEqualDocument(doc(hr));
+      expect(parse('<hr>')).toEqualDocument(doc(hr()));
     });
 
     it('should support images', () => {
@@ -77,7 +77,7 @@ describe('BitbucketTransformer: parser', () => {
         '<p><img alt="Alt text" src="http://path/to/image.jpg"></p>',
       );
       expect(parsed).toEqualDocument(
-        doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' }))),
+        doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' })())),
       );
     });
   });
@@ -389,7 +389,11 @@ describe('BitbucketTransformer: parser', () => {
         ),
       ).toEqualDocument(
         doc(
-          p('foo ', mention({ text: '@Artur Bodera', id: 'abodera' }), ' bar'),
+          p(
+            'foo ',
+            mention({ text: '@Artur Bodera', id: 'abodera' })(),
+            ' bar',
+          ),
         ),
       );
     });
@@ -415,7 +419,7 @@ describe('BitbucketTransformer: parser', () => {
         doc(
           p(
             'foo ',
-            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }),
+            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' })(),
             ' bar',
           ),
         ),
@@ -440,7 +444,7 @@ describe('BitbucketTransformer: parser', () => {
         doc(
           p(
             'foo ',
-            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' }),
+            emoji({ shortName: ':diamond_shape_with_a_dot_inside:' })(),
             ' bar',
           ),
         ),

@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as cx from 'classnames';
 import { CardAction, MediaType, MediaItemType } from '@atlaskit/media-core';
-import { getCSSUnitValue } from '../getCSSUnitValue';
-import { Menu, ErrorIcon, defaultSmallCardDimensions } from '../../utils';
+import { Menu, ErrorIcon } from '../../utils';
 import { MediaTypeIcon } from '../../utils/mediaTypeIcon';
-import { CardDimensions, CardDimensionValue } from '../..';
+import { CardDimensions } from '../..';
 import { InfoView } from './infoView';
 import { ThumbnailView } from './thumbnailView';
 import {
@@ -43,26 +42,6 @@ export class CardGenericViewSmall extends Component<
   state: CardGenericViewSmallState = {
     isMenuExpanded: false,
   };
-
-  private get width(): CardDimensionValue {
-    const { width } = this.props.dimensions || { width: undefined };
-
-    if (!width) {
-      return defaultSmallCardDimensions.width;
-    }
-
-    return getCSSUnitValue(width);
-  }
-
-  private get height(): CardDimensionValue {
-    const { height } = this.props.dimensions || { height: undefined };
-
-    if (!height) {
-      return defaultSmallCardDimensions.height;
-    }
-
-    return getCSSUnitValue(height);
-  }
 
   render() {
     const { error } = this.props;

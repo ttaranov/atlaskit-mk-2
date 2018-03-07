@@ -1,27 +1,28 @@
 import styled from 'styled-components';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 
-// tslint:disable-next-line:variable-name
-export const Toolbar = styled.div`
-  background-color: white;
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  padding: 3px 6px;
+export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
-  align-content: center;
-  & * {
+`;
+
+export const ExpandIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
+  margin-left: -8px;
+`;
+
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
+  display: flex;
+  align-items: center;
+  div {
     display: flex;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const AdvanceMenuItemWrap = styled.span`
+
+export const Spacer: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 110px;
-`;
-// tslint:disable-next-line:variable-name
-export const AdvanceMenuItemAfter = styled.span`
-  color: ${akColorN80};
-  font-size: 80%;
+  flex: 1;
+  padding: 12px;
 `;

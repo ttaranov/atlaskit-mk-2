@@ -17,6 +17,7 @@ const textColorPlugin: EditorPlugin = {
     editorView,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     disabled,
     isToolbarReducedSpacing,
   }) {
@@ -29,6 +30,7 @@ const textColorPlugin: EditorPlugin = {
         pluginState={pluginState}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        popupsScrollableElement={popupsScrollableElement}
       />
     );
   },

@@ -1,8 +1,10 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.span`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   width: 42px;
   display: flex;
   align-items: center;
@@ -11,12 +13,11 @@ export const Wrapper = styled.span`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const InnerWrapper = styled.span`
+export const InnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
   > * {
-    margin-right: ${({ width }) =>
+    margin-right: ${({ width }: { width: 'small' | 'large' }) =>
       width === 'large' ? 0 : akGridSizeUnitless}px;
   }
   div {
@@ -24,7 +25,6 @@ export const InnerWrapper = styled.span`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const ExpandIconWrapper = styled.div`
+export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-left: -8px;
 `;

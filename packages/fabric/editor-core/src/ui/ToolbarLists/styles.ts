@@ -1,13 +1,17 @@
-import { akGridSizeUnitless, akColorN30 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { akGridSizeUnitless, akColorN30 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const ButtonGroup = styled.span`
+export const ButtonGroup: ComponentClass<
+  HTMLAttributes<{}> & { width?: 'small' | 'large' }
+> = styled.span`
   display: flex;
   align-items: center;
 
   & > div:not(:first-child) {
-    margin-left: ${({ width }) =>
+    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
       width === 'large' ? 0 : akGridSizeUnitless}px;
   }
 
@@ -16,8 +20,7 @@ export const ButtonGroup = styled.span`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const Separator = styled.span`
+export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   background: ${akColorN30};
   width: 1px;
   height: 24px;
@@ -25,8 +28,7 @@ export const Separator = styled.span`
   margin: 0 8px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.span`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
   > div > div {
@@ -34,7 +36,6 @@ export const Wrapper = styled.span`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const ExpandIconWrapper = styled.div`
+export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-left: -8px;
 `;

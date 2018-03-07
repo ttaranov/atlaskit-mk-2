@@ -57,14 +57,13 @@ const getLinkElementProps = props => {
 };
 
 const getButtonElementProps = props => {
-  const { ariaHaspopup, ariaExpanded, ariaControls, form, id, type } = props;
+  const { ariaHaspopup, ariaExpanded, ariaControls, form, type } = props;
 
   return {
     'aria-haspopup': ariaHaspopup,
     'aria-expanded': ariaExpanded,
     'aria-controls': ariaControls,
     form,
-    id,
     type,
   };
 };
@@ -73,6 +72,7 @@ const getButtonProps = (component: ButtonType) => {
   const { props, state } = component;
 
   const defaultProps = {
+    id: props.id,
     ...getAppearanceProps(props, state),
     ...getInteractionProps(component),
   };

@@ -59,12 +59,7 @@ const ContentArea = styled.div`
       clear: none;
     }
   }
-
-  & .ProseMirror .table-decoration {
-    left: 0;
-  }
-
-  & .ProseMirror table {
+  & .ProseMirror .table-container table {
     margin-left: 0;
     margin-right: 0;
     width: 100%;
@@ -105,15 +100,11 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
-
   render() {
     const {
+      editorDOMElement,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       primaryToolbarComponents,
@@ -122,6 +113,7 @@ export default class Editor extends React.Component<
       customContentComponents,
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       disabled,
     } = this.props;
 
@@ -130,12 +122,14 @@ export default class Editor extends React.Component<
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher!}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={primaryToolbarComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
@@ -147,18 +141,21 @@ export default class Editor extends React.Component<
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
         <ScrollContainer>
-          <ContentArea innerRef={this.handleRef}>
+          <ContentArea>
             {customContentComponents}
             <PluginSlot
               editorView={editorView}
+              editorActions={editorActions}
               eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
               items={contentComponents}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
               disabled={!!disabled}
             />
+            {editorDOMElement}
           </ContentArea>
         </ScrollContainer>
       </FullPageEditorWrapper>

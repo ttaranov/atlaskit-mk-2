@@ -1,5 +1,14 @@
 # @atlaskit/docs
 
+## 2.5.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 2.4.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.4.2
+- [patch] Refactor code helper function to fix React re-render bug. [8dcb772](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dcb772)
+
 ## 2.4.1
 
 ## 2.4.0

@@ -4,6 +4,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Node as PmNode } from 'prosemirror-model';
 import Extension from '../../ui/Extension';
+import ContentNodeView from '../contentNodeView';
 
 export interface Props {
   node: PmNode;
@@ -11,9 +12,8 @@ export interface Props {
   view: EditorView;
 }
 
-class ExtensionNode implements NodeView {
+class ExtensionNode extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
-  private contentDOMRef: HTMLElement | undefined;
   private node: PmNode;
   private view: EditorView;
   private providerFactory: ProviderFactory;
@@ -23,20 +23,19 @@ class ExtensionNode implements NodeView {
     view: EditorView,
     providerFactory: ProviderFactory,
   ) {
-    const elementType = node.type.name === 'extension' ? 'div' : 'span';
+    super(node, view);
+    const elementType = node.type.name === 'bodiedExtension' ? 'div' : 'span';
     this.node = node;
     this.view = view;
     this.providerFactory = providerFactory;
     this.domRef = document.createElement(elementType);
+    // @see ED-3790
+    this.domRef.className = `${node.type.name}View-container`;
     this.renderReactComponent(node);
   }
 
   get dom() {
     return this.domRef;
-  }
-
-  get contentDOM() {
-    return this.contentDOMRef;
   }
 
   update(node: PmNode) {
@@ -53,7 +52,7 @@ class ExtensionNode implements NodeView {
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;
-    this.contentDOMRef = undefined;
+    super.destroy();
   }
 
   private renderReactComponent(node: PmNode) {
@@ -62,15 +61,11 @@ class ExtensionNode implements NodeView {
         editorView={this.view}
         node={node}
         providerFactory={this.providerFactory}
-        handleContentDOMRef={this.handleContentDOMRef}
+        handleContentDOMRef={this.handleRef}
       />,
       this.domRef,
     );
   }
-
-  private handleContentDOMRef = (node?: HTMLElement) => {
-    this.contentDOMRef = node;
-  };
 }
 
 export default function ExtensionNodeView(providerFactory: ProviderFactory) {

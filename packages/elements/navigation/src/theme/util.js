@@ -1,8 +1,9 @@
 // @flow
 import { css } from 'styled-components';
+
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, ScrollBarTheme } from '../theme/types';
-import { container } from './presets';
+import { container, global, dark } from './presets';
 
 export const prefix = (key: string): string =>
   `@atlaskit-private-theme-do-not-use/navigation:${key}`;
@@ -65,6 +66,27 @@ export const getProvidedScrollbar = (map?: Object): ScrollBarTheme => {
     return map[rootKey].provided.scrollBar;
   }
   return container.scrollBar;
+};
+
+// NOTE: Dark mode is a user preference that takes precedence over provided themes
+export const defaultContainerTheme = (
+  containerTheme?: Provided,
+  mode?: string,
+) => {
+  if (containerTheme && containerTheme.hasDarkmode) {
+    return containerTheme;
+  }
+  if (mode === 'dark') {
+    return dark;
+  }
+  return containerTheme || container;
+};
+export const defaultGlobalTheme = (globalTheme?: Provided, mode?: string) => {
+  if (globalTheme && globalTheme.hasDarkmode) return globalTheme;
+  if (mode === 'dark') {
+    return dark;
+  }
+  return globalTheme || global;
 };
 
 export { default as WithRootTheme } from './with-root-theme';

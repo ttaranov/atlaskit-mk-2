@@ -16,11 +16,16 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex;
 `;
 
 export const Content = styled.div`
   position: relative;
-  top: 48px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 `;
 
 // Example Component / Code
@@ -36,6 +41,7 @@ const transitionDistance = {
 
 export const ExampleComponentWrapper = styled.div`
   padding-right: ${p => (p.codeIsVisible ? `${codePaneWidth}px` : 0)};
+  flex: 1;
   transition: padding ${transitionDuration}ms;
 `;
 export const ComponentContainer = styled.div`
@@ -99,7 +105,6 @@ export const Nav = styled.nav`
   flex-direction: row;
   height: ${NAVBAR_HEIGHT};
   justify-content: space-between;
-  position: absolute;
   top: 0;
   width: 100%;
   z-index: 2;
@@ -126,8 +131,8 @@ const navButtonStyles = css`
   transition: all 150ms;
   width: 32px;
 
-  &:hover,
-  &:focus {
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
     border-color: ${p => (p.isSelected ? colors.primary : colors.B200)};
     color: ${p => (p.isSelected ? colors.N0 : colors.B200)};
     cursor: pointer;

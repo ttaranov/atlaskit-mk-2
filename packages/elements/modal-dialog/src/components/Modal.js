@@ -46,6 +46,7 @@ function getInitialState() {
   return {
     dialogNode: null,
     scrollDistance: getScrollDistance(),
+    hasEntered: false,
     isExiting: false,
   };
 }
@@ -68,10 +69,15 @@ type Props = {
     Providing a function should return the element you want to focus.
   */
   autoFocus?: boolean | (() => ElementType),
+  components: { Body: ComponentType },
   /**
     Content of the modal
   */
   children?: ChildrenType,
+  /**
+    Component to render the body of the modal, replaces the internal implementation.
+  */
+  body?: ComponentType,
   /**
     Component to render the footer of the modal, replaces internal implementation.
   */
@@ -103,7 +109,7 @@ type Props = {
   /**
     Function that will be called when the enter transition is complete.
   */
-  onOpenComplete?: ElementType => void,
+  onOpenComplete?: (node: ElementType, isAppearing: boolean) => void,
   /**
     Function that will be called when the modal changes position in the stack.
   */
@@ -142,6 +148,7 @@ type State = {
   dialogNode: Node | null,
   scrollDistance: number,
   isExiting: boolean,
+  hasEntered: boolean,
 };
 
 class Modal extends Component<Props, State> {
@@ -162,6 +169,19 @@ class Modal extends Component<Props, State> {
   //   this.setState(state => !state.dialogNode && ({ dialogNode }));
   // }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleWindowScroll);
+  }
+
+  /* Prevent window from being scrolled programatically so that the modal is positioned correctly
+   * and to prevent scrollIntoView from scrolling the window.
+   */
+  handleWindowScroll = () => {
+    if (getScrollDistance() !== this.state.scrollDistance) {
+      window.scrollTo(window.pageXOffset, this.state.scrollDistance);
+    }
+  };
+
   handleOverlayClick = e => {
     if (this.props.shouldCloseOnOverlayClick) {
       // $FlowFixMe TEMPORARY
@@ -171,7 +191,16 @@ class Modal extends Component<Props, State> {
   handleDialogClick = event => {
     event.stopPropagation();
   };
+  handleEntered = (...args) => {
+    this.setState({
+      hasEntered: true,
+    });
+    if (this.props.onOpenComplete) {
+      this.props.onOpenComplete(...args);
+    }
+  };
   handleExit = () => {
+    window.removeEventListener('scroll', this.handleWindowScroll);
     // disable FocusLock *before* unmount. animation may end after a new modal
     // has gained focus, breaking focus behaviour.
     this.setState({ isExiting: true });
@@ -183,6 +212,7 @@ class Modal extends Component<Props, State> {
       actions,
       appearance,
       autoFocus,
+      body,
       children,
       footer,
       header,
@@ -192,7 +222,6 @@ class Modal extends Component<Props, State> {
       isChromeless,
       onClose,
       onCloseComplete,
-      onOpenComplete,
       onStackChange,
       shouldCloseOnEscapePress,
       stackIndex,
@@ -211,6 +240,13 @@ class Modal extends Component<Props, State> {
     const widthName = WIDTH_ENUM.values.includes(width) ? width : null;
     const widthValue = widthName ? null : width;
 
+    // Pass an afterEnded custom transition to Positioner so we can update styles to remove the transform property
+    // This fixes an issue with react-beautiful-dnd within modals - AK-4328
+    const customTransition =
+      this.state.hasEntered && !this.state.isExiting && !isBackground
+        ? 'afterEntered'
+        : '';
+
     return (
       <FillScreen
         {...transitionProps}
@@ -221,8 +257,9 @@ class Modal extends Component<Props, State> {
         <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
         <Positioner
           {...transitionProps}
+          customTransition={customTransition}
           onClick={this.handleOverlayClick}
-          onEntered={onOpenComplete}
+          onEntered={this.handleEntered}
           onExited={onCloseComplete}
           scrollBehavior={scrollBehavior}
           widthName={widthName}
@@ -251,6 +288,7 @@ class Modal extends Component<Props, State> {
                 onStackChange={onStackChange}
                 isChromeless={isChromeless}
                 stackIndex={stackIndex}
+                body={body}
               >
                 {children}
               </Content>

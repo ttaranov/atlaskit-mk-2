@@ -2,7 +2,7 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
@@ -18,6 +18,7 @@ import { MediaClient, MediaApiError, isTokenError } from './mediaClient';
 import { MediaClientPool } from './mediaClientPool';
 import { MediaApi, MediaFileData } from './mediaApi';
 import { Preview } from '../domain/preview';
+import { UploadParams } from '../domain/config';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,
@@ -75,7 +76,6 @@ export interface FileConvertingEventPayload {
 
 export interface FileConvertedEventPayload {
   readonly file: PublicMediaFile;
-  readonly progress: SmartMediaProgress;
   readonly metadata: MediaFileData;
 }
 
@@ -395,8 +395,25 @@ export class UploadService {
     }
   };
 
+  private emitLastUploadingPercentage = (resumableFile: ResumableFile) => {
+    const file = this.mapResumableFileToMediaFile(resumableFile);
+    const progress = new SmartMediaProgress(
+      file.size,
+      file.size,
+      file.creationDate,
+      Date.now(),
+    );
+
+    this.emit('file-uploading', {
+      file,
+      progress,
+    });
+  };
+
   private onFileSuccess = (resumableFile: ResumableFile): void => {
     const { autoFinalize } = this.getResumableFileUploadParams(resumableFile);
+
+    this.emitLastUploadingPercentage(resumableFile);
 
     if (autoFinalize) {
       this.finalizeFile(resumableFile);
@@ -531,22 +548,15 @@ export class UploadService {
     fileId: string,
     resumableFile: ResumableFile,
   ): Promise<void> {
-    return this.fetchFileMetadata(mediaClient, fileId, resumableFile)
+    return this.pollForFileMetadata(mediaClient, fileId, resumableFile)
       .then(metadata => {
         const file = this.mapResumableFileToPublicMediaFile(
           resumableFile,
           metadata.id,
         );
-        const progress = new SmartMediaProgress(
-          file.size,
-          file.size,
-          file.creationDate,
-          Date.now(),
-        );
 
         this.emit('file-converted', {
           file,
-          progress,
           metadata,
         });
       })
@@ -555,7 +565,7 @@ export class UploadService {
       });
   }
 
-  private fetchFileMetadata(
+  private pollForFileMetadata(
     mediaClient: MediaClient,
     publicId: string,
     resumableFile: ResumableFile,

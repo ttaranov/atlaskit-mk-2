@@ -21,25 +21,36 @@ function devServerBanner(
   } /*: { entry: string, workspaces: Array<{ name: string, dir: string }>, workspacesGlob: string, isAll: boolean, port: number, host: string } */,
 ) {
   const msg /*: Array<any> */ = [''];
+  const wsNamePadLength = workspaces.reduce(
+    (acc, ws) => (ws.name.length > acc ? ws.name.length : acc),
+    0,
+  );
+
+  const serverUrl = `http://${host}:${port}`;
+  msg.push(chalk.bold(`> Open ${chalk.yellow(serverUrl)}`), '');
 
   if (isAll) {
-    msg.push(chalk.blue(`Running with ${chalk.bold('"all"')} packages.`));
+    msg.push(
+      chalk.blue(`Running dev server with ${chalk.bold('"all"')} packages.`),
+    );
   } else {
     msg.push(
       chalk.blue(
-        `Running with packages matching ${chalk.bold(
+        `Running dev server with packages matching ${chalk.bold(
           '"' + workspacesGlob + '"',
         )} pattern:`,
       ),
       '',
       ...workspaces.map(
-        ws => `– ${ws.name}   ${chalk.dim('[' + ws.dir + ']')}`,
+        ws =>
+          `– ${ws.name.padEnd(wsNamePadLength, ' ')}   ${chalk.dim(
+            `[http://${host}:${port}/packages${ws.dir.split('packages')[1]}]`,
+          )}`,
       ),
     );
   }
 
-  const serverUrl = `http://${host}:${port}`;
-  msg.push('', chalk.bold(`> Open ${chalk.yellow(serverUrl)}`), '');
+  msg.push('');
 
   return msg;
 }

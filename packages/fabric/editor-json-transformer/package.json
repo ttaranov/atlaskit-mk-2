@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-json-transformer",
-  "version": "2.5.1",
+  "version": "2.5.7",
   "description": "JSON transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -12,18 +12,20 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
-  "repository": "bitbucket:atlaskit/atlaskit-mk2",
+  "maintainers": [
+    "Rifat N"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^5.7.1"
+    "@atlaskit/editor-common": "^6.3.11"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/editor-core": "^61.3.9",
-    "@atlaskit/editor-test-helpers": "^1.8.2",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/editor-core": "^62.7.9",
+    "@atlaskit/editor-test-helpers": "^1.9.2",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0",
     "prosemirror-model": "^1.0.0"

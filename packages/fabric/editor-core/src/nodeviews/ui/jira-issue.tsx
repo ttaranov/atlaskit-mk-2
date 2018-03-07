@@ -38,7 +38,7 @@ const JiraChildNode = styled.span`
   line-height: 24px;
   vertical-align: top;
 
-  &:before {
+  &::before {
     color: black;
     content: 'JIRA | ';
   }

@@ -121,9 +121,10 @@ export class MockCollabEditProvider implements CollabEditProvider {
   }
 
   send(tr, oldState, newState) {
+    const { sid } = this;
     if (tr.steps && tr.steps.length) {
       const json = tr.steps.map(step => step.toJSON());
-      this.eventBus.emit('data', { json });
+      this.eventBus.emit('data', { json, sid });
     }
   }
 

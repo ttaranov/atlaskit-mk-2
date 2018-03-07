@@ -34,6 +34,7 @@ export default class LoaderItem extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
+    this.checkIsCompleting(this.props.isCompleting);
     this.delayTimeoutId = setTimeout(() => {
       if (this.state.phase === 'delaying') {
         this.setState({
@@ -48,7 +49,11 @@ export default class LoaderItem extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (this.state.phase === 'delaying' && nextProps.isCompleting) {
+    this.checkIsCompleting(nextProps.isCompleting);
+  }
+
+  checkIsCompleting(isCompleting: boolean) {
+    if (this.state.phase === 'delaying' && isCompleting) {
       this.setComplete();
     }
   }
@@ -63,21 +68,19 @@ export default class LoaderItem extends PureComponent<Props, State> {
   render() {
     const { isCompleting, depth } = this.props;
     const { phase } = this.state;
-    return (
-      phase === 'loading' && (
-        <TreeRowContainer>
-          <Cell indentLevel={depth} width={'100%'}>
-            <LoaderItemContainer isRoot={depth === 1}>
-              <Spinner
-                isCompleting={isCompleting}
-                onComplete={this.setComplete}
-                size="small"
-                invertColor={false}
-              />
-            </LoaderItemContainer>
-          </Cell>
-        </TreeRowContainer>
-      )
-    );
+    return phase === 'loading' ? (
+      <TreeRowContainer>
+        <Cell indentLevel={depth} width={'100%'}>
+          <LoaderItemContainer isRoot={depth === 1}>
+            <Spinner
+              isCompleting={isCompleting}
+              onComplete={this.setComplete}
+              size="small"
+              invertColor={false}
+            />
+          </LoaderItemContainer>
+        </Cell>
+      </TreeRowContainer>
+    ) : null;
   }
 }

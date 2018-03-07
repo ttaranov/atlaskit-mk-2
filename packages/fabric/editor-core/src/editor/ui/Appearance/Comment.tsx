@@ -13,6 +13,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { stateKey as mediaPluginKey } from '../../../plugins/media';
 
 const pulseBackground = keyframes`
   50% {
@@ -42,7 +43,7 @@ const CommentEditor: any = styled.div`
   display: flex;
   flex-direction: column;
 
-  min-width: 340px;
+  min-width: 272px;
   min-height: 30px;
   height: auto;
   ${(props: CommentEditorProps) =>
@@ -54,7 +55,6 @@ const CommentEditor: any = styled.div`
   border-radius: ${akBorderRadius};
 
   max-width: inherit;
-  box-sizing: border-box;
   word-wrap: break-word;
 
   animation: ${(props: any) =>
@@ -127,14 +127,7 @@ export default class Editor extends React.Component<
   static displayName = 'CommentEditorAppearance';
 
   private flashToggle = false;
-
   private appearance: EditorAppearance = 'comment';
-
-  private handleRef = ref => {
-    if (this.props.onUiReady) {
-      this.props.onUiReady(ref);
-    }
-  };
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
@@ -148,9 +141,11 @@ export default class Editor extends React.Component<
     }
   };
 
-  private renderChrome = ({ maxContentSize }) => {
+  private renderChrome = ({ maxContentSize, mediaState }) => {
     const {
+      editorDOMElement,
       editorView,
+      editorActions,
       eventDispatcher,
       providerFactory,
       contentComponents,
@@ -160,6 +155,7 @@ export default class Editor extends React.Component<
       customSecondaryToolbarComponents,
       popupsMountPoint,
       popupsBoundariesElement,
+      popupsScrollableElement,
       maxHeight,
       onSave,
       onCancel,
@@ -178,30 +174,35 @@ export default class Editor extends React.Component<
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher!}
             providerFactory={providerFactory!}
             appearance={this.appearance}
             items={primaryToolbarComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea>
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
+            editorActions={editorActions}
             eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
           />
+          {editorDOMElement}
         </ContentArea>
         <SecondaryToolbar>
           <ButtonGroup>
@@ -209,7 +210,9 @@ export default class Editor extends React.Component<
               <Button
                 appearance="primary"
                 onClick={this.handleSave}
-                isDisabled={disabled}
+                isDisabled={
+                  disabled || (mediaState && !mediaState.allUploadsFinished)
+                }
               >
                 Save
               </Button>
@@ -238,7 +241,10 @@ export default class Editor extends React.Component<
       <WithPluginState
         editorView={editorView}
         eventDispatcher={eventDispatcher}
-        plugins={{ maxContentSize: maxContentSizePluginKey }}
+        plugins={{
+          maxContentSize: maxContentSizePluginKey,
+          mediaState: mediaPluginKey,
+        }}
         render={this.renderChrome}
       />
     );

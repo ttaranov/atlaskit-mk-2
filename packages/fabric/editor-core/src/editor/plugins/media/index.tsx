@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
-import { MediaProvider } from '@atlaskit/media-core';
 import { EditorPlugin } from '../../types';
-import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
+import {
+  stateKey as pluginKey,
+  createPlugin,
+  MediaProvider,
+} from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
 import keymapMediaSinglePlugin from '../../../plugins/media/keymap-media-single';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
 import MediaSingleEdit from '../../../ui/MediaSingleEdit';
 
 export interface MediaOptions {
-  provider: Promise<MediaProvider>;
+  provider?: Promise<MediaProvider>;
   allowMediaSingle?: boolean;
+  customDropzoneContainer?: HTMLElement;
 }
 
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
@@ -37,6 +41,8 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
               waitForMediaUpload: props.waitForMediaUpload,
+              customDropzoneContainer:
+                options && options.customDropzoneContainer,
             },
             dispatch,
             props.appearance,

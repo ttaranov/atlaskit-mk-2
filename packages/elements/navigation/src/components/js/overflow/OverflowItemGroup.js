@@ -78,14 +78,6 @@ export default class OverflowItemGroup extends Component<Props> {
     if (!this.isInNavigation() || !this.rootNode || !this.hasAllItemHeights()) {
       return;
     }
-    console.warn(
-      'groupIndex',
-      this.props.overflowGroupIndex,
-      'itemHeights',
-      this.heights,
-      'nonItemHeight',
-      this.nonItemHeight(),
-    );
     this.context[overflowManagerNamespace].reportGroupHeightToManager({
       groupIndex: this.props.overflowGroupIndex,
       itemHeights: this.heights,

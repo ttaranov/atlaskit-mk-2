@@ -40,12 +40,12 @@ const chromeRangeInputStyle = css`
     margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2}px;
   }
 
-  &:focus::-webkit-slider-thumb {
-    ${sliderThumbFocusedStyle};
-  }
-
   &::-webkit-slider-runnable-track {
     ${sliderTrackStyle};
+  }
+
+  &:focus::-webkit-slider-thumb {
+    ${sliderThumbFocusedStyle};
   }
 
   &:focus::-webkit-slider-runnable-track {
@@ -62,12 +62,12 @@ const firefoxRangeInputStyle = css`
     ${sliderThumbStyle} border:0;
   }
 
-  &:focus::-moz-range-thumb {
-    ${sliderThumbFocusedStyle};
-  }
-
   &::-moz-range-track {
     ${sliderTrackStyle};
+  }
+
+  &:focus::-moz-range-thumb {
+    ${sliderThumbFocusedStyle};
   }
 
   &:focus::-moz-range-track {
@@ -78,9 +78,6 @@ const firefoxRangeInputStyle = css`
 const IERangeInputStyle = css`
   &::-ms-thumb {
     ${sliderThumbStyle};
-  }
-  &:focus::-ms-thumb {
-    ${sliderThumbFocusedStyle};
   }
   &::-ms-track {
     background: transparent;
@@ -100,7 +97,9 @@ const IERangeInputStyle = css`
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
-
+  &:focus::-ms-thumb {
+    ${sliderThumbFocusedStyle};
+  }
   &:focus::-ms-fill-lower {
     ${sliderTrackFocusedStyle};
   }

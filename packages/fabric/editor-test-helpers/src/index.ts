@@ -3,8 +3,9 @@ export { default as sendKeyToPm } from './send-key-to-pm';
 export { default as chaiPlugin } from './chai';
 export { default as createEvent } from './create-event';
 export { default as dispatchPasteEvent } from './dispatch-paste-event';
-export { default as makeEditor } from './make-editor';
+export { default as createEditor } from './create-editor';
 export { default as fixtures } from './fixtures';
+export { default as patchEditorViewForJSDOM } from './jsdom-fixtures';
 export * from './transactions';
 export {
   doc,
@@ -35,7 +36,6 @@ export {
   slice,
   mention,
   emoji,
-  plain,
   nodeFactory,
   markFactory,
   BuilderContent,
@@ -51,12 +51,11 @@ export {
   mediaSingle,
   textColor,
   table,
+  tableWithAttrs,
   tr,
   td,
   th,
   tdEmpty,
-  td11,
-  th11,
   tdCursor,
   thEmpty,
   thCursor,
@@ -67,6 +66,7 @@ export {
   confluenceJiraIssue,
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
+  confluenceInlineComment,
   inlineExtension,
   bodiedExtension,
   extension,
@@ -74,6 +74,7 @@ export {
   RefsTracker,
   sequence,
   date,
+  placeholder,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
@@ -89,8 +90,10 @@ export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
 export { default as spyOnReturnValue } from './spy-on-return-value';
 export { macroProvider, MockMacroProvider } from './mock-macro-provider';
+export { customInsertMenuItems } from './mock-insert-menu';
 export {
   inlineExtensionData,
   extensionData,
   bodiedExtensionData,
 } from './mock-extension-data';
+export * from './schema-element-builder';

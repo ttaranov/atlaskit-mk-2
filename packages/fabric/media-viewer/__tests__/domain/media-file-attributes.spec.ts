@@ -138,6 +138,14 @@ describe('MediaFileAttributes', () => {
       );
       expect(attributes.id).toBe('basic-file-no-occurrenceKey');
     });
+
+    it('should mark unprocessed files as unsupported so they can be processed propertly by MediaViewer classic', () => {
+      const attributes = MediaFileAttributesFactory.fromFileItem(
+        Mocks.unprocessedFile,
+        serviceHost,
+      );
+      expect(attributes.type).toBe('non-supported');
+    });
   });
 });
 
@@ -145,12 +153,14 @@ class Mocks {
   static basicFileWithoutOcurrenceKey = {
     details: {
       id: 'basic-file',
+      processingStatus: 'succeeded',
     },
   } as FileItemWithOccurrenceKey;
 
   static basicFile = {
     details: {
       id: 'basic-file',
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -160,6 +170,7 @@ class Mocks {
       id: 'gif-file',
       name: 'Some GIF',
       mimeType: 'image/gif',
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -169,6 +180,17 @@ class Mocks {
       id: 'jpg-file',
       name: 'Some JPG',
       mimeType: 'image/jpeg',
+      processingStatus: 'succeeded',
+    },
+    occurrenceKey: 'some-occurrenceKey',
+  } as FileItemWithOccurrenceKey;
+
+  static unprocessedFile = {
+    details: {
+      id: 'jpg-file',
+      name: 'Some JPG',
+      mimeType: 'image/jpeg',
+      processingStatus: 'pending',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -187,6 +209,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_640.mp4/binary',
         },
       },
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -211,6 +234,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_1280.mp4/binary',
         },
       },
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;
@@ -235,6 +259,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_1280.mp4/binary?param=1',
         },
       },
+      processingStatus: 'succeeded',
     },
     occurrenceKey: 'some-occurrenceKey',
   } as FileItemWithOccurrenceKey;

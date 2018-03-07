@@ -27,7 +27,8 @@ const ButtonsGroup = styled.div`
   display: flex;
 
   & > * {
-    margin-left: ${({ width }) => (width === 'large' ? 0 : 4)}px;
+    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
+      width === 'large' ? 0 : 4}px;
   }
 
   & > *:first-child {
@@ -38,16 +39,25 @@ const ButtonsGroup = styled.div`
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
   disableUnderline?: boolean;
+  disableCode?: boolean;
 }
 
-const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
-  marks() {
+const textFormatting: EditorPlugin = {
+  marks({ allowTextFormatting, textFormatting }) {
+    const options = textFormatting
+      ? textFormatting
+      : allowTextFormatting === true || !allowTextFormatting
+        ? {}
+        : allowTextFormatting;
+
     return [
       { name: 'em', mark: em, rank: 200 },
       { name: 'strong', mark: strong, rank: 300 },
       { name: 'strike', mark: strike, rank: 400 },
-      { name: 'code', mark: code, rank: 700 },
     ]
+      .concat(
+        options.disableCode ? [] : { name: 'code', mark: code, rank: 700 },
+      )
       .concat(
         options.disableSuperscriptAndSubscript
           ? []
@@ -78,6 +88,7 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
     popupsMountPoint,
+    popupsScrollableElement,
     isToolbarReducedSpacing,
     disabled,
   }) {
@@ -103,10 +114,11 @@ const textFormatting = (options: TextFormattingOptions = {}): EditorPlugin => ({
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}
+          popupsScrollableElement={popupsScrollableElement}
         />
       </ButtonsGroup>
     );
   },
-});
+};
 
 export default textFormatting;

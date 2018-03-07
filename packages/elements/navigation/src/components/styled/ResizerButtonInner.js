@@ -17,7 +17,7 @@ const toggleArrowTopVerticalOffset =
 const toggleArrowBottomVerticalOffset =
   toggleArrowTopVerticalOffset - toggleArrowWidth + toggleArrowHeight / 2;
 const opacityTransition = `opacity ${animationTimeUnitless +
-  100}ms ease-in-out`;
+  100}ms ease-in-out ${animationTimeUnitless}ms`;
 const transformTransition = `transform ${animationTime} ease-in-out`;
 
 const ResizerButtonInner = styled.button`
@@ -35,8 +35,8 @@ const ResizerButtonInner = styled.button`
     ${focusOutline(unthemedColors.resizer)};
   }
 
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     content: '';
     background-color: ${unthemedColors.resizer};
     width: ${toggleArrowWidth}px;
@@ -49,29 +49,29 @@ const ResizerButtonInner = styled.button`
     transform: rotate(0deg);
   }
 
-  &:before {
+  &::before {
     top: ${toggleArrowTopVerticalOffset}px;
     transform-origin: ${toggleArrowWidth / 2}px
       ${toggleArrowHeight / 2 - toggleArrowWidth / 2}px;
   }
 
-  &:after {
+  &::after {
     top: ${toggleArrowBottomVerticalOffset}px;
     transform-origin: ${toggleArrowWidth / 2}px ${toggleArrowWidth / 2}px;
   }
 
   &:hover,
   &:focus {
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       opacity: 1;
     }
-    &:before {
+    &::before {
       transform: rotate(
         ${({ isPointingRight }) => (isPointingRight ? '-40deg' : '40deg')}
       );
     }
-    &:after {
+    &::after {
       transform: rotate(
         ${({ isPointingRight }) => (isPointingRight ? '40deg' : '-40deg')}
       );

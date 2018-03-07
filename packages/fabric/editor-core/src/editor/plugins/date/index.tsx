@@ -6,7 +6,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import DatePicker from '../../../ui/DatePicker';
 import { insertDate, selectElement } from '../date/actions';
 
-const extensionPlugin: EditorPlugin = {
+const datePlugin: EditorPlugin = {
   nodes() {
     return [{ rank: 2400, name: 'date', node: date }];
   },
@@ -36,7 +36,7 @@ const extensionPlugin: EditorPlugin = {
           dateState: pluginKey,
         }}
         render={({ dateState = {} as DateState }) =>
-          dateState.element && (
+          dateState.element ? (
             <DatePicker
               element={dateState.element}
               onSelect={({ iso }) =>
@@ -46,11 +46,11 @@ const extensionPlugin: EditorPlugin = {
                 selectElement(null)(editorView.state, dispatch)
               }
             />
-          )
+          ) : null
         }
       />
     );
   },
 };
 
-export default extensionPlugin;
+export default datePlugin;

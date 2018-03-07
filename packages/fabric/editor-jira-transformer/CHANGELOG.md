@@ -1,5 +1,28 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.4.12
+
+## 2.4.11
+
+## 2.4.10
+
+## 2.4.9
+
+## 2.4.8
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.4.7
+
+## 2.4.6
+
+## 2.4.5
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 2.4.4
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 2.4.3
+
 ## 2.4.2
 
 ## 2.4.1

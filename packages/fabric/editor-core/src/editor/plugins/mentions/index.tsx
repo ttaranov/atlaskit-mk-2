@@ -33,6 +33,7 @@ const mentionsPlugin: EditorPlugin = {
     providerFactory,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
   }) {
     const renderNode = providers => {
       return (
@@ -40,9 +41,11 @@ const mentionsPlugin: EditorPlugin = {
           editorView={editorView}
           pluginKey={pluginKey}
           mentionProvider={providers.mentionProvider}
+          contextIdentifierProvider={providers.contextIdentifierProvider}
           presenceProvider={providers.presenceProvider}
           popupsMountPoint={popupsMountPoint}
           popupsBoundariesElement={popupsBoundariesElement}
+          popupsScrollableElement={popupsScrollableElement}
         />
       );
     };
@@ -50,7 +53,11 @@ const mentionsPlugin: EditorPlugin = {
     return (
       <WithProviders
         providerFactory={providerFactory}
-        providers={['mentionProvider', 'presenceProvider']}
+        providers={[
+          'mentionProvider',
+          'presenceProvider',
+          'contextIdentifierProvider',
+        ]}
         renderNode={renderNode}
       />
     );

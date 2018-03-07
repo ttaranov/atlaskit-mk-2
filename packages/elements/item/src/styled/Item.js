@@ -8,6 +8,7 @@ const getItemState = stateName => ({ theme }) => {
   return css`
     background-color: ${stateStyles.background};
     color: ${stateStyles.text};
+    fill: ${stateStyles.background};
     text-decoration: none;
 
     &:focus {
@@ -131,14 +132,15 @@ const styledRootElement = ({
   href?: ?string,
   linkComponent?: any,
 }) => {
+  if (linkComponent) {
+    return styled(linkComponent)`
+      ${ItemBase};
+    `;
+  }
   if (href) {
-    return linkComponent
-      ? styled(linkComponent)`
-          ${ItemBase};
-        `
-      : styled.a`
-          ${ItemBase};
-        `;
+    return styled.a`
+      ${ItemBase};
+    `;
   }
   return styled.span`
     ${ItemBase};

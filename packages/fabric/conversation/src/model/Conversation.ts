@@ -1,4 +1,5 @@
 import { Comment } from './Comment';
+
 export interface Conversation {
   conversationId: string;
   containerId: string;
@@ -7,4 +8,5 @@ export interface Conversation {
   meta: {
     [key: string]: any;
   };
+  error?: Error;
 }

@@ -78,16 +78,18 @@ export default class Flag extends Component<FlagProps, State> {
     const ButtonIcon = isBold ? ChevronIcon : CrossIcon;
     const buttonLabel = isBold ? 'Toggle flag body' : 'Dismiss flag';
     const buttonAction = isBold ? this.toggleExpand : this.dismissFlag;
+    const size = ButtonIcon === ChevronIcon ? 'large' : 'small';
 
     return (
       <DismissButton
         appearance={appearance}
+        aria-expanded={this.state.isExpanded}
         // $FlowFixMe TEMPORARY
         focusRingColor={flagFocusRingColor(this.props)}
         onClick={buttonAction}
         type="button"
       >
-        <ButtonIcon label={buttonLabel} size="small" />
+        <ButtonIcon label={buttonLabel} size={size} />
       </DismissButton>
     );
   };
@@ -134,12 +136,12 @@ export default class Flag extends Component<FlagProps, State> {
         onMouseDown={this.handleMouseDown}
         {...autoDismissProps}
       >
-        <Icon>{icon}</Icon>
+        <Header>
+          <Icon>{icon}</Icon>
+          <Title appearance={appearance}>{title}</Title>
+          <OptionalDismissButton />
+        </Header>
         <Content>
-          <Header>
-            <Title appearance={appearance}>{title}</Title>
-            <OptionalDismissButton />
-          </Header>
           <Body />
         </Content>
       </Container>

@@ -85,9 +85,27 @@ if (typeof window !== 'undefined' && !('cancelAnimationFrame' in window)) {
   };
 }
 
+function isNodeOrFragment(thing) {
+  // Using a simple `instanceof` check is intentionally avoided here to make
+  // this code agnostic to a specific instance of a Schema.
+  return thing && typeof thing.eq === 'function';
+}
+
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
+    // Because schema is created dynamically, expected value is a function (schema) => PMNode;
+    // That's why this magic is necessary. It simplifies writing assertions, so
+    // instead of expect(doc).toEqualDocument(doc(p())(schema)) we can just do:
+    // expect(doc).toEqualDocument(doc(p())).
+    //
+    // Also it fixes issues that happens sometimes when actual schema and expected schema
+    // are different objects, making this case impossible by always using actual schema to create expected node.
+    expected =
+      typeof expected === 'function' && actual.type && actual.type.schema
+        ? expected(actual.type.schema)
+        : expected;
+
     if (
       !(expected instanceof pmModel.Node) ||
       !(actual instanceof pmModel.Node)
@@ -99,6 +117,16 @@ expect.extend({
         name: 'toEqualDocument',
         message:
           'Expected both values to be instance of prosemirror-model Node.',
+      };
+    }
+
+    if (expected.type.schema !== actual.type.schema) {
+      return {
+        pass: false,
+        actual,
+        expected,
+        name: 'toEqualDocument',
+        message: 'Expected both values to be using the same schema.',
       };
     }
 

@@ -117,6 +117,7 @@ export default function withScrollMeasurements(
           offsetY = initialTop - window.innerHeight + height + gutter;
           top = window.innerHeight - (height + gutter);
         }
+        window.scrollBy(0, offsetY);
       } else {
         const {
           height: parentHeight,
@@ -132,9 +133,9 @@ export default function withScrollMeasurements(
           offsetY = initialTop + height - (parentTop + parentHeight) + gutter;
           top = parentHeight + parentTop - gutter - height;
         }
+        scrollParent.scrollTop += offsetY;
       }
 
-      scrollParent.scrollBy(0, offsetY);
       // get adjusted measurements after scrolling
       this.setState({
         clone: node.outerHTML,

@@ -1,8 +1,7 @@
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { emoji as emojiNode, ProviderFactory } from '@atlaskit/editor-common';
-import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import {
-  makeEditor,
+  createEditor,
   sendKeyToPm,
   blockquote,
   br,
@@ -13,10 +12,12 @@ import {
   p,
   ul,
   code,
-  defaultSchema,
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
+import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
+import emojiPlugin from '../../../src/editor/plugins/emoji';
+import listPlugin from '../../../src/editor/plugins/lists';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -38,9 +39,11 @@ describe('emojis', () => {
   const event = createEvent('event');
   const providerFactory = ProviderFactory.create({ emojiProvider });
   const editor = (doc: any) =>
-    makeEditor<EmojiState>({
+    createEditor({
       doc,
-      plugins: emojiPlugins(defaultSchema, providerFactory),
+      editorPlugins: [emojiPlugin, listPlugin],
+      providerFactory,
+      pluginKey: emojiPluginKey,
     });
 
   const forceUpdate = (editorView: any) => {
@@ -351,33 +354,33 @@ describe('emojis', () => {
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(emoji(grinEmojiId), ' ')),
+        doc(p(emoji(grinEmojiId)(), ' ')),
       );
       editorView.destroy();
     });
 
     it('should allow inserting multiple emojis next to each other', () => {
       const { editorView, pluginState } = editor(
-        doc(p(emoji(grinEmojiId), ' ', emojiQuery(':ev{<>}'))),
+        doc(p(emoji(grinEmojiId)(), ' ', emojiQuery(':ev{<>}'))),
       );
 
       pluginState.insertEmoji(evilburnsEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(emoji(grinEmojiId), ' ', emoji(evilburnsEmojiId), ' ')),
+        doc(p(emoji(grinEmojiId)(), ' ', emoji(evilburnsEmojiId)(), ' ')),
       );
       editorView.destroy();
     });
 
     it('should allow inserting emoji on new line after hard break', () => {
       const { editorView, pluginState } = editor(
-        doc(p(br, emojiQuery(':gr{<>}'))),
+        doc(p(br(), emojiQuery(':gr{<>}'))),
       );
 
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(br, emoji(grinEmojiId), ' ')),
+        doc(p(br(), emoji(grinEmojiId)(), ' ')),
       );
       editorView.destroy();
     });
@@ -385,13 +388,7 @@ describe('emojis', () => {
     it('should not break list into two when inserting emoji inside list item', () => {
       const { editorView, pluginState } = editor(
         doc(
-          p(
-            ul(
-              li(p('One')),
-              li(p('Two ', emojiQuery(':{<>}'))),
-              li(p('Three')),
-            ),
-          ),
+          ul(li(p('One')), li(p('Two ', emojiQuery(':{<>}'))), li(p('Three'))),
         ),
       );
 
@@ -399,12 +396,10 @@ describe('emojis', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          p(
-            ul(
-              li(p('One')),
-              li(p('Two ', emoji(grinEmojiId), ' ')),
-              li(p('Three')),
-            ),
+          ul(
+            li(p('One')),
+            li(p('Two ', emoji(grinEmojiId)(), ' ')),
+            li(p('Three')),
           ),
         ),
       );
@@ -419,7 +414,7 @@ describe('emojis', () => {
       pluginState.insertEmoji(grinEmojiId);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(blockquote(p('Hello ', emoji(grinEmojiId), ' '))),
+        doc(blockquote(p('Hello ', emoji(grinEmojiId)(), ' '))),
       );
 
       expect(editorView.state.doc.nodeAt(8)!.type.spec).toEqual(emojiNode);

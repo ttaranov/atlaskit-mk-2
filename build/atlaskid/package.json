@@ -1,0 +1,18 @@
+{
+  "name": "@atlaskit/atlaskid",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Atlaskit specific implementation of Landkid for hosting on micros",
+  "scripts": {
+    "start": "landkid"
+  },
+  "author": "Luke Batchelor",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "bunyan": "^1.8.12"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "landkid": "^0.0.20"
+  }
+}

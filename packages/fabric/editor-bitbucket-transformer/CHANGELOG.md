@@ -1,5 +1,30 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.6.4
+
+## 2.6.3
+
+## 2.6.2
+
+## 2.6.1
+
+## 2.6.0
+
+## 2.5.6
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.5.5
+
+## 2.5.4
+
+## 2.5.3
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 2.5.2
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 2.5.1
+
 ## 2.5.0
 - [minor] Fixed issue causing leading ' characters to be escaped [1b2140c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2140c)
 - [patch] Fix images with underscore in URL [42ed524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ed524)

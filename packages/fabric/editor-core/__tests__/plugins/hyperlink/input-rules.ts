@@ -1,7 +1,6 @@
-import hyperlinkPlugins from '../../../src/plugins/hyperlink';
 import {
   insertText,
-  makeEditor,
+  createEditor,
   doc,
   br,
   p,
@@ -11,21 +10,22 @@ import {
   sendKeyToPm,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 
 describe('hyperlink', () => {
-  const editor = (doc: any) =>
-    makeEditor({
+  const editor = (doc: any, trackEvent?: () => {}) =>
+    createEditor({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      editorPlugins: [codeBlockPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
     });
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {
       const trackEvent = jest.fn();
-      analyticsService.trackEvent = trackEvent;
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
       insertText(editorView, 'www.atlassian.com ', sel, sel);
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
@@ -33,6 +33,13 @@ describe('hyperlink', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
+    });
+
+    it('should not convert a hash text to hyperlink', () => {
+      const trackEvent = jest.fn();
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
+      insertText(editorView, '#test ', sel, sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('#test ')));
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {
@@ -216,9 +223,12 @@ describe('hyperlink', () => {
       );
     });
 
-    it('does convert to hyperlink if markdown formatting is used with pasting of link with spaces', () => {
+    // TODO: Unskip after ED-3688 is resolved
+    it.skip('does convert to hyperlink if markdown formatting is used with pasting of link with spaces', () => {
       const { editorView, sel } = editor(doc(p('[test]({<>}')));
-      dispatchPasteEvent(editorView, { plain: 'http://www.atla%20ssian.com' });
+      dispatchPasteEvent(editorView, {
+        plain: 'http://www.atla%20ssian.com',
+      });
       insertText(editorView, ')', sel + 'http://www.atla%20ssian.com'.length);
 
       expect(editorView.state.doc).toEqualDocument(
@@ -247,11 +257,11 @@ describe('hyperlink', () => {
       const secondLink = link({ href: 'http://www.baidu.com' })(
         'www.baidu.com',
       );
-      const { editorView, sel } = editor(doc(p(firstLink, br, p('{<>}'))));
+      const { editorView, sel } = editor(doc(p(firstLink, br()), p('{<>}')));
       insertText(editorView, 'www.baidu.com ', sel, sel);
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(firstLink, br, p(secondLink, ' '))),
+        doc(p(firstLink, br()), p(secondLink, ' ')),
       );
     });
 

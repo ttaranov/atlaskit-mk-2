@@ -1,7 +1,6 @@
-import { MediaPluginState } from '../../../src';
 import {
   doc,
-  makeEditor,
+  createEditor,
   mediaGroup,
   media,
   p,
@@ -15,18 +14,28 @@ import {
   taskItem,
   taskList,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
 import { insertMediaGroupNode } from '../../../src/plugins/media/media-files';
 import { setNodeSelection } from '../../../src/utils';
+import mediaPlugin from '../../../src/editor/plugins/media';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import rulePlugin from '../../../src/editor/plugins/rule';
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('media-files', () => {
   const temporaryFileId = `temporary:${randomId()}`;
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
-    makeEditor<MediaPluginState>({
+    createEditor({
       doc,
-      schema: defaultSchema,
+      editorPlugins: [
+        mediaPlugin(),
+        mentionsPlugin,
+        codeBlockPlugin,
+        rulePlugin,
+        tasksAndDecisionsPlugin,
+      ],
     });
 
   describe('when cursor is at the end of a text block', () => {
@@ -47,7 +56,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -64,14 +73,14 @@ describe('media-files', () => {
         testCollectionName,
       );
 
-      const paragraphNodeSize = p('text').nodeSize;
+      const paragraphNodeSize = p('text')(editorView.state.schema).nodeSize;
       const mediaGroupNodeSize = mediaGroup(
         media({
           id: temporaryFileId,
           type: 'file',
           collection: testCollectionName,
-        }),
-      ).nodeSize;
+        })(),
+      )(editorView.state.schema).nodeSize;
       expect(editorView.state.selection.from).toEqual(
         paragraphNodeSize + mediaGroupNodeSize + 1,
       );
@@ -87,7 +96,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
         ),
       );
@@ -106,12 +115,12 @@ describe('media-files', () => {
               id: 'mock2',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
             media({
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
         ),
       );
@@ -128,7 +137,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p('{<>}text'),
         ),
@@ -147,12 +156,12 @@ describe('media-files', () => {
               id: 'mock2',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
             media({
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p('text'),
         ),
@@ -180,7 +189,7 @@ describe('media-files', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('xt'),
           ),
@@ -191,14 +200,14 @@ describe('media-files', () => {
       it('moves cursor to the front of later part of the text', () => {
         const { editorView } = editor(doc(p('te{<>}xt')));
 
-        const paragraphNodeSize = p('te').nodeSize;
+        const paragraphNodeSize = p('te')(editorView.state.schema).nodeSize;
         const mediaGroupNodeSize = mediaGroup(
           media({
             id: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          }),
-        ).nodeSize;
+          })(),
+        )(editorView.state.schema).nodeSize;
 
         insertMediaGroupNode(
           editorView,
@@ -231,7 +240,7 @@ describe('media-files', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             h1('xt'),
           ),
@@ -260,7 +269,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('t'),
             ),
@@ -288,7 +297,7 @@ describe('media-files', () => {
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                   p(),
                 ),
@@ -315,7 +324,7 @@ describe('media-files', () => {
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                   p(),
                 ),
@@ -334,7 +343,7 @@ describe('media-files', () => {
                     id: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
                 p('{<}text{>}'),
                 mediaGroup(
@@ -342,7 +351,7 @@ describe('media-files', () => {
                     id: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
               ),
             );
@@ -360,7 +369,7 @@ describe('media-files', () => {
                     id: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
                 p(),
                 mediaGroup(
@@ -368,12 +377,12 @@ describe('media-files', () => {
                     id: 'new one',
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                   media({
                     id: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
               ),
             );
@@ -400,7 +409,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p(),
             ),
@@ -417,7 +426,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -436,12 +445,12 @@ describe('media-files', () => {
                   id: 'new one',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
             ),
           );
@@ -454,7 +463,7 @@ describe('media-files', () => {
       describe('when selection is an inline node', () => {
         it('replaces selection with a media node', () => {
           const { editorView, sel } = editor(
-            doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' }))),
+            doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' })())),
           );
           setNodeSelection(editorView, sel);
 
@@ -472,7 +481,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p(),
             ),
@@ -490,7 +499,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -510,12 +519,12 @@ describe('media-files', () => {
                   id: 'new one',
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
                 media({
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -531,7 +540,7 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
+                })(),
               ),
               p('text'),
             ),
@@ -548,13 +557,13 @@ describe('media-files', () => {
               id: 'new one',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
             media({
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
-          ).nodeSize;
+            })(),
+          )(editorView.state.schema).nodeSize;
 
           expect(editorView.state.selection.from).toEqual(mediaGroupNodeSize);
           editorView.destroy();
@@ -564,7 +573,7 @@ describe('media-files', () => {
       describe('when selection is a non media block node', () => {
         describe('when no exisiting media group', () => {
           it('replaces selection with a media node', () => {
-            const { editorView } = editor(doc(hr));
+            const { editorView } = editor(doc(hr()));
             setNodeSelection(editorView, 0);
 
             insertMediaGroupNode(
@@ -580,7 +589,7 @@ describe('media-files', () => {
                     id: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
-                  }),
+                  })(),
                 ),
                 p(),
               ),
@@ -599,9 +608,9 @@ describe('media-files', () => {
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
-                  hr,
+                  hr(),
                 ),
               );
               const mediaGroupNodeSize = mediaGroup(
@@ -609,8 +618,8 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
-              ).nodeSize;
+                })(),
+              )(editorView.state.schema).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
               insertMediaGroupNode(
@@ -626,12 +635,12 @@ describe('media-files', () => {
                       id: 'new one',
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                     media({
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                   p(),
                 ),
@@ -644,13 +653,13 @@ describe('media-files', () => {
             it('prepend media to the exisiting media group after', () => {
               const { editorView } = editor(
                 doc(
-                  hr,
+                  hr(),
                   mediaGroup(
                     media({
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                 ),
               );
@@ -669,12 +678,12 @@ describe('media-files', () => {
                       id: 'new one',
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                     media({
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                 ),
               );
@@ -691,15 +700,15 @@ describe('media-files', () => {
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
-                  hr,
+                  hr(),
                   mediaGroup(
                     media({
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                 ),
               );
@@ -708,8 +717,8 @@ describe('media-files', () => {
                   id: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
-                }),
-              ).nodeSize;
+                })(),
+              )(editorView.state.schema).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
               insertMediaGroupNode(
@@ -725,19 +734,19 @@ describe('media-files', () => {
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                   mediaGroup(
                     media({
                       id: 'new one',
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                     media({
                       id: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
-                    }),
+                    })(),
                   ),
                 ),
               );
@@ -765,7 +774,7 @@ describe('media-files', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('xt'),
           ),
@@ -781,7 +790,7 @@ describe('media-files', () => {
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('{<}te{>}xt'),
           ),
@@ -800,12 +809,12 @@ describe('media-files', () => {
                 id: 'new one',
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
               media({
                 id: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
-              }),
+              })(),
             ),
             p('xt'),
           ),
@@ -831,7 +840,7 @@ describe('media-files', () => {
             id: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          }),
+          })(),
         ),
         p(),
       ),
@@ -856,7 +865,7 @@ describe('media-files', () => {
             id: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
-          }),
+          })(),
         ),
         p(),
       ),
@@ -881,7 +890,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -906,7 +915,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -931,7 +940,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -947,7 +956,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p('{<>}'),
         ),
@@ -966,12 +975,12 @@ describe('media-files', () => {
               id: 'another one',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
             media({
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -995,7 +1004,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -1020,7 +1029,7 @@ describe('media-files', () => {
               id: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -1044,12 +1053,12 @@ describe('media-files', () => {
               id: 'mock1',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
             media({
               id: 'mock2',
               type: 'file',
               collection: testCollectionName,
-            }),
+            })(),
           ),
           p(),
         ),
@@ -1060,7 +1069,9 @@ describe('media-files', () => {
 
   describe('when selection is in a task or decision block', () => {
     it('media insertion ignored for task item', () => {
-      const itemDoc = doc(taskList()(taskItem()('{<>}')));
+      const itemDoc = doc(
+        taskList({ localId: 'id' })(taskItem({ localId: 'id' })('{<>}')),
+      );
       const { editorView } = editor(itemDoc);
 
       insertMediaGroupNode(
@@ -1074,7 +1085,11 @@ describe('media-files', () => {
     });
 
     it('media insertion ignored for decision item', () => {
-      const decisionDoc = doc(decisionList()(decisionItem()('{<>}')));
+      const decisionDoc = doc(
+        decisionList({ localId: 'id' })(
+          decisionItem({ localId: 'id' })('{<>}'),
+        ),
+      );
       const { editorView } = editor(decisionDoc);
 
       insertMediaGroupNode(

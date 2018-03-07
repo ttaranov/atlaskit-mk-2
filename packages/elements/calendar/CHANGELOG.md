@@ -1,5 +1,17 @@
 # @atlaskit/calendar
 
+## 3.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 3.1.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 3.1.2
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 3.1.1
+- [patch] Flatten examples for easier consumer use [145b632](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/145b632)
+
 ## 3.1.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 

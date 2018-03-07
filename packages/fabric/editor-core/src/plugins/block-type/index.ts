@@ -9,6 +9,7 @@ import {
   HEADING_3,
   HEADING_4,
   HEADING_5,
+  HEADING_6,
   BLOCK_QUOTE,
   CODE_BLOCK,
   PANEL,
@@ -17,8 +18,8 @@ import {
 } from './types';
 
 import * as commands from '../../commands';
-import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
+import keymapPlugin from './keymap';
 
 import { areBlockTypesDisabled } from '../../utils';
 
@@ -52,6 +53,7 @@ export class BlockTypeState {
       HEADING_3,
       HEADING_4,
       HEADING_5,
+      HEADING_6,
     ].filter(this.isBlockTypeSchemaSupported);
 
     this.availableWrapperBlockTypes = [BLOCK_QUOTE, CODE_BLOCK, PANEL].filter(
@@ -75,7 +77,7 @@ export class BlockTypeState {
   }
 
   insertBlockType(name: string, view: EditorView): boolean {
-    return commands.insertBlockType(view, name);
+    return commands.insertBlockType(name)(view.state, view.dispatch);
   }
 
   update(newEditorState, dirty = false) {
@@ -138,6 +140,8 @@ export class BlockTypeState {
           return HEADING_4;
         case 5:
           return HEADING_5;
+        case 6:
+          return HEADING_6;
       }
     } else if (node.type === this.state.schema.nodes.paragraph) {
       return NORMAL_TEXT;
@@ -155,6 +159,7 @@ export class BlockTypeState {
       case HEADING_3:
       case HEADING_4:
       case HEADING_5:
+      case HEADING_6:
         return !!state.schema.nodes.heading;
       case BLOCK_QUOTE:
         return !!state.schema.nodes.blockquote;
@@ -179,20 +184,10 @@ export const plugin = new Plugin({
     },
   },
   key: stateKey,
-  view: (view: EditorView) => {
-    const pluginState = stateKey.getState(view.state);
-    pluginState.keymapHandler = keymapHandler(view, pluginState);
-    return {};
-  },
-  props: {
-    handleKeyDown(view, event) {
-      return stateKey.getState(view.state).keymapHandler(view, event);
-    },
-  },
 });
 
 const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter(
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter(
     plugin => !!plugin,
   ) as Plugin[];
 };

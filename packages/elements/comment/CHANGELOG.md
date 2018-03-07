@@ -1,5 +1,23 @@
 # @atlaskit/comment
 
+## 2.7.1
+
+## 2.7.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 2.6.16
+
+## 2.6.15
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.6.14
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 2.6.13
+
+## 2.6.12
+- [patch] Fix comment layout to prevent unmount on every change [fbf6db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fbf6db3)
+
 ## 2.6.11
 
 ## 2.6.10

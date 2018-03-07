@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer-manager",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "description": "A React Component for managing layers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -14,12 +14,12 @@
     "Joss M",
     "Jed W"
   ],
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
     "react-transition-group": "^2.2.1",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "tabbable": "^1.1.0"
   },
   "peerDependencies": {
@@ -27,13 +27,13 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics": "^2.4.0",
-    "@atlaskit/button": "^6.3.0",
-    "@atlaskit/docs": "^2.4.0",
-    "@atlaskit/icon": "^10.7.0",
-    "@atlaskit/modal-dialog": "^3.3.6",
-    "@atlaskit/onboarding": "^2.2.0",
-    "@atlaskit/tooltip": "^8.1.0"
+    "@atlaskit/analytics": "^2.4.4",
+    "@atlaskit/button": "^6.6.0",
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/icon": "^10.12.0",
+    "@atlaskit/modal-dialog": "^3.4.0",
+    "@atlaskit/onboarding": "^2.4.0",
+    "@atlaskit/tooltip": "^8.4.0"
   },
   "keywords": [
     "atlaskit",

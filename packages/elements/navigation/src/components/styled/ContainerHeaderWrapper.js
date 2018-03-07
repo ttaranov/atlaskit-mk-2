@@ -1,5 +1,5 @@
 // @flow
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import {
   layout,
   containerTitleBottomMargin,
@@ -32,8 +32,8 @@ const flexBasis = props => {
   if (props.isFullWidth) {
     return 0;
   } else if (props.isInDrawer) {
-    return css`
-      ${props.iconOffset - layout.padding.top}px;
+    return `
+      ${props.iconOffset - layout.padding.top}px
     `;
   }
   return 'auto';

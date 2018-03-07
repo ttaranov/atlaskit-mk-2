@@ -2,7 +2,6 @@
 import type { DefaultBaseProps } from './types';
 
 const defaultBaseProps: DefaultBaseProps = {
-  isChecked: false,
   isDisabled: false,
   onBlur: () => {},
   onChange: () => {},

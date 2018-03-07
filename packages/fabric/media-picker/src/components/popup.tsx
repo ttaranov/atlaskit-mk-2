@@ -1,4 +1,4 @@
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -8,7 +8,8 @@ import { cancelUpload } from '../popup/actions/cancelUpload';
 import { showPopup } from '../popup/actions/showPopup';
 import { resetView } from '../popup/actions/resetView';
 import { setTenant } from '../popup/actions/setTenant';
-import { getFilesInRecentsCollection } from '../popup/actions/getFilesInRecentsCollection';
+import { getFilesInRecents } from '../popup/actions/getFilesInRecents';
+import { getConnectedRemoteAccounts } from '../popup/actions/getConnectedRemoteAccounts';
 import { WsProvider } from '../popup/tools/websocket/wsProvider';
 import { State } from '../popup/domain';
 
@@ -27,7 +28,7 @@ import {
 } from '../outer/analytics/events';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig } from '../domain/config';
+import { ModuleConfig, UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface PopupConfig {
@@ -111,8 +112,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
             uploadParams: this.uploadParams,
           }),
         );
+
         this.store.dispatch(resetView());
-        this.store.dispatch(getFilesInRecentsCollection());
+        this.store.dispatch(getFilesInRecents());
+        // TODO [MSW-466]: Fetch remote accounts only when needed
+        this.store.dispatch(getConnectedRemoteAccounts());
 
         this.store.dispatch(showPopup());
         this.context.trackEvent(new MPPopupShown());

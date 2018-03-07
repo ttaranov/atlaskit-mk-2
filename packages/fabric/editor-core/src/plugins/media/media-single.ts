@@ -1,11 +1,11 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaState } from '@atlaskit/media-core';
 import { ImagePreview } from '@atlaskit/media-picker';
 
 import { isImage } from '../../utils';
 import { insertNodesEndWithNewParagraph } from '../../commands';
 import { copyOptionalAttrsFromMediaState } from './media-common';
+import { MediaState } from './types';
 
 export interface MediaSingleState extends MediaState {
   thumbnail: ImagePreview;
@@ -41,14 +41,14 @@ export const insertMediaSingleNode = (
   view: EditorView,
   mediaState: MediaState,
   collection?: string,
-): void => {
+): boolean => {
   if (!collection || !isMediaSingleState(mediaState)) {
-    return;
+    return false;
   }
 
   const { state, dispatch } = view;
   const node = createMediaSingleNode(state.schema, collection)(mediaState);
-  insertNodesEndWithNewParagraph([node])(state, dispatch);
+  return insertNodesEndWithNewParagraph([node])(state, dispatch);
 };
 
 export const createMediaSingleNode = (schema: Schema, collection: string) => (

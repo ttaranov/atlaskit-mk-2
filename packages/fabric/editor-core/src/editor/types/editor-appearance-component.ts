@@ -1,7 +1,12 @@
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
-import { UIComponentFactory, ReactElement } from '../types';
+import EditorActions from '../actions';
+import {
+  UIComponentFactory,
+  ReactElement,
+  InsertMenuCustomItem,
+} from '../types';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
@@ -9,6 +14,8 @@ export interface EditorAppearanceComponentProps {
   onCancel?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
+  editorActions?: EditorActions;
+  editorDOMElement: JSX.Element;
   editorView?: EditorView;
 
   eventDispatcher?: EventDispatcher;
@@ -22,11 +29,13 @@ export interface EditorAppearanceComponentProps {
   customContentComponents?: ReactElement;
   customPrimaryToolbarComponents?: ReactElement;
   customSecondaryToolbarComponents?: ReactElement;
+  insertMenuItems?: InsertMenuCustomItem[];
 
   addonToolbarComponents?: ReactElement;
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 
   disabled?: boolean;
 }

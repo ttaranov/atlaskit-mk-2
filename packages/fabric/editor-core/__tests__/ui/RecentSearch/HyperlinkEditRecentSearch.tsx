@@ -2,9 +2,7 @@ import { ActivityResource, ActivityItem } from '@atlaskit/activity';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, {
-  HyperlinkState,
-} from '../../../src/plugins/hyperlink';
+import { HyperlinkState, stateKey } from '../../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import RecentSearch from '../../../src/ui/RecentSearch';
@@ -13,8 +11,7 @@ import {
   doc,
   p as paragraph,
   a as link,
-  makeEditor,
-  defaultSchema,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
 
 /**
@@ -95,9 +92,9 @@ function pressReturnInputField(recentSearch: ReactWrapper<any, any>) {
 
 describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
   const editor = (doc: any) =>
-    makeEditor<HyperlinkState>({
+    createEditor<HyperlinkState>({
       doc,
-      plugins: hyperlinkPlugins(defaultSchema),
+      pluginKey: stateKey,
     });
 
   it('should show the recent search input when inserting a new link', async () => {

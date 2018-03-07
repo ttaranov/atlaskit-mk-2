@@ -142,6 +142,7 @@ import EditorUndoIcon from '../glyph/editor/undo';
 import EditorUnlinkIcon from '../glyph/editor/unlink';
 import EditorWarningIcon from '../glyph/editor/warning';
 import EmailIcon from '../glyph/email';
+import EmojiAddIcon from '../glyph/emoji-add';
 import EmojiIcon from '../glyph/emoji';
 import EmojiActivityIcon from '../glyph/emoji/activity';
 import EmojiAtlassianIcon from '../glyph/emoji/atlassian';
@@ -253,6 +254,90 @@ import MoreIcon from '../glyph/more';
 import NotificationAllIcon from '../glyph/notification-all';
 import NotificationDirectIcon from '../glyph/notification-direct';
 import NotificationIcon from '../glyph/notification';
+import Objects16AccessRequestIcon from '../glyph/objects/16/access-request';
+import Objects16ActionIcon from '../glyph/objects/16/action';
+import Objects16AudioIcon from '../glyph/objects/16/audio';
+import Objects16BlogIcon from '../glyph/objects/16/blog';
+import Objects16BranchIcon from '../glyph/objects/16/branch';
+import Objects16BugIcon from '../glyph/objects/16/bug';
+import Objects16CalendarIcon from '../glyph/objects/16/calendar';
+import Objects16ChangesIcon from '../glyph/objects/16/changes';
+import Objects16CodeIcon from '../glyph/objects/16/code';
+import Objects16CommentIcon from '../glyph/objects/16/comment';
+import Objects16CommitIcon from '../glyph/objects/16/commit';
+import Objects16ConfigIcon from '../glyph/objects/16/config';
+import Objects16DecisionIcon from '../glyph/objects/16/decision';
+import Objects16EpicIcon from '../glyph/objects/16/epic';
+import Objects16EventIcon from '../glyph/objects/16/event';
+import Objects16FavoriteIcon from '../glyph/objects/16/favorite';
+import Objects16ImageIcon from '../glyph/objects/16/image';
+import Objects16ImprovementIcon from '../glyph/objects/16/improvement';
+import Objects16IncidentIcon from '../glyph/objects/16/incident';
+import Objects16IssueIcon from '../glyph/objects/16/issue';
+import Objects16KnowledgeBaseIcon from '../glyph/objects/16/knowledge-base';
+import Objects16MentionsIcon from '../glyph/objects/16/mentions';
+import Objects16NewFeatureIcon from '../glyph/objects/16/new-feature';
+import Objects16PageIcon from '../glyph/objects/16/page';
+import Objects16PdfIcon from '../glyph/objects/16/pdf';
+import Objects16PresentationIcon from '../glyph/objects/16/presentation';
+import Objects16ProblemIcon from '../glyph/objects/16/problem';
+import Objects16PullRequestIcon from '../glyph/objects/16/pull-request';
+import Objects16QuestionIcon from '../glyph/objects/16/question';
+import Objects16ServiceDeskApprovalIcon from '../glyph/objects/16/service-desk-approval';
+import Objects16ServiceDeskIcon from '../glyph/objects/16/service-desk';
+import Objects16SpaceIcon from '../glyph/objects/16/space';
+import Objects16SpreadsheetIcon from '../glyph/objects/16/spreadsheet';
+import Objects16StoryIcon from '../glyph/objects/16/story';
+import Objects16SubtaskIcon from '../glyph/objects/16/subtask';
+import Objects16SupportIcon from '../glyph/objects/16/support';
+import Objects16TaskIcon from '../glyph/objects/16/task';
+import Objects16UnwatchIcon from '../glyph/objects/16/unwatch';
+import Objects16UserIcon from '../glyph/objects/16/user';
+import Objects16VideoIcon from '../glyph/objects/16/video';
+import Objects16WatchIcon from '../glyph/objects/16/watch';
+import Objects16ZipIcon from '../glyph/objects/16/zip';
+import Objects24AccessRequestIcon from '../glyph/objects/24/access-request';
+import Objects24ActionIcon from '../glyph/objects/24/action';
+import Objects24AudioIcon from '../glyph/objects/24/audio';
+import Objects24BlogIcon from '../glyph/objects/24/blog';
+import Objects24BranchIcon from '../glyph/objects/24/branch';
+import Objects24BugIcon from '../glyph/objects/24/bug';
+import Objects24CalendarIcon from '../glyph/objects/24/calendar';
+import Objects24ChangesIcon from '../glyph/objects/24/changes';
+import Objects24CodeIcon from '../glyph/objects/24/code';
+import Objects24CommentIcon from '../glyph/objects/24/comment';
+import Objects24CommitIcon from '../glyph/objects/24/commit';
+import Objects24ConfigIcon from '../glyph/objects/24/config';
+import Objects24DecisionIcon from '../glyph/objects/24/decision';
+import Objects24EpicIcon from '../glyph/objects/24/epic';
+import Objects24EventIcon from '../glyph/objects/24/event';
+import Objects24FavoriteIcon from '../glyph/objects/24/favorite';
+import Objects24ImageIcon from '../glyph/objects/24/image';
+import Objects24ImprovementIcon from '../glyph/objects/24/improvement';
+import Objects24IncidentIcon from '../glyph/objects/24/incident';
+import Objects24IssueIcon from '../glyph/objects/24/issue';
+import Objects24KnowledgeBaseIcon from '../glyph/objects/24/knowledge-base';
+import Objects24MentionsIcon from '../glyph/objects/24/mentions';
+import Objects24NewFeatureIcon from '../glyph/objects/24/new-feature';
+import Objects24PageIcon from '../glyph/objects/24/page';
+import Objects24PdfIcon from '../glyph/objects/24/pdf';
+import Objects24PresentationIcon from '../glyph/objects/24/presentation';
+import Objects24ProblemIcon from '../glyph/objects/24/problem';
+import Objects24PullRequestIcon from '../glyph/objects/24/pull-request';
+import Objects24QuestionIcon from '../glyph/objects/24/question';
+import Objects24ServiceDeskApprovalIcon from '../glyph/objects/24/service-desk-approval';
+import Objects24ServiceDeskIcon from '../glyph/objects/24/service-desk';
+import Objects24SpaceIcon from '../glyph/objects/24/space';
+import Objects24SpreadsheetIcon from '../glyph/objects/24/spreadsheet';
+import Objects24StoryIcon from '../glyph/objects/24/story';
+import Objects24SubtaskIcon from '../glyph/objects/24/subtask';
+import Objects24SupportIcon from '../glyph/objects/24/support';
+import Objects24TaskIcon from '../glyph/objects/24/task';
+import Objects24UnwatchIcon from '../glyph/objects/24/unwatch';
+import Objects24UserIcon from '../glyph/objects/24/user';
+import Objects24VideoIcon from '../glyph/objects/24/video';
+import Objects24WatchIcon from '../glyph/objects/24/watch';
+import Objects24ZipIcon from '../glyph/objects/24/zip';
 import OfficeBuildingFilledIcon from '../glyph/office-building-filled';
 import OfficeBuildingIcon from '../glyph/office-building';
 import OpenIcon from '../glyph/open';
@@ -1128,6 +1213,12 @@ export default {
     componentName: 'EmailIcon',
     package: '@atlaskit/icon/glyph/email',
   },
+  'emoji-add': {
+    keywords: ['emoji-add', 'emojiadd'],
+    component: EmojiAddIcon,
+    componentName: 'EmojiAddIcon',
+    package: '@atlaskit/icon/glyph/emoji-add',
+  },
   emoji: {
     keywords: ['emoji', 'emoticon', 'smiley'],
     component: EmojiIcon,
@@ -1793,6 +1884,510 @@ export default {
     component: NotificationIcon,
     componentName: 'NotificationIcon',
     package: '@atlaskit/icon/glyph/notification',
+  },
+  'objects/16/access-request': {
+    keywords: ['objects/16/access-request', 'objects16accessrequest'],
+    component: Objects16AccessRequestIcon,
+    componentName: 'Objects16AccessRequestIcon',
+    package: '@atlaskit/icon/glyph/objects/16/access-request',
+  },
+  'objects/16/action': {
+    keywords: ['objects/16/action', 'objects16action'],
+    component: Objects16ActionIcon,
+    componentName: 'Objects16ActionIcon',
+    package: '@atlaskit/icon/glyph/objects/16/action',
+  },
+  'objects/16/audio': {
+    keywords: ['objects/16/audio', 'objects16audio'],
+    component: Objects16AudioIcon,
+    componentName: 'Objects16AudioIcon',
+    package: '@atlaskit/icon/glyph/objects/16/audio',
+  },
+  'objects/16/blog': {
+    keywords: ['objects/16/blog', 'objects16blog'],
+    component: Objects16BlogIcon,
+    componentName: 'Objects16BlogIcon',
+    package: '@atlaskit/icon/glyph/objects/16/blog',
+  },
+  'objects/16/branch': {
+    keywords: ['objects/16/branch', 'objects16branch'],
+    component: Objects16BranchIcon,
+    componentName: 'Objects16BranchIcon',
+    package: '@atlaskit/icon/glyph/objects/16/branch',
+  },
+  'objects/16/bug': {
+    keywords: ['objects/16/bug', 'objects16bug'],
+    component: Objects16BugIcon,
+    componentName: 'Objects16BugIcon',
+    package: '@atlaskit/icon/glyph/objects/16/bug',
+  },
+  'objects/16/calendar': {
+    keywords: ['objects/16/calendar', 'objects16calendar'],
+    component: Objects16CalendarIcon,
+    componentName: 'Objects16CalendarIcon',
+    package: '@atlaskit/icon/glyph/objects/16/calendar',
+  },
+  'objects/16/changes': {
+    keywords: ['objects/16/changes', 'objects16changes'],
+    component: Objects16ChangesIcon,
+    componentName: 'Objects16ChangesIcon',
+    package: '@atlaskit/icon/glyph/objects/16/changes',
+  },
+  'objects/16/code': {
+    keywords: ['objects/16/code', 'objects16code'],
+    component: Objects16CodeIcon,
+    componentName: 'Objects16CodeIcon',
+    package: '@atlaskit/icon/glyph/objects/16/code',
+  },
+  'objects/16/comment': {
+    keywords: ['objects/16/comment', 'objects16comment'],
+    component: Objects16CommentIcon,
+    componentName: 'Objects16CommentIcon',
+    package: '@atlaskit/icon/glyph/objects/16/comment',
+  },
+  'objects/16/commit': {
+    keywords: ['objects/16/commit', 'objects16commit'],
+    component: Objects16CommitIcon,
+    componentName: 'Objects16CommitIcon',
+    package: '@atlaskit/icon/glyph/objects/16/commit',
+  },
+  'objects/16/config': {
+    keywords: ['objects/16/config', 'objects16config'],
+    component: Objects16ConfigIcon,
+    componentName: 'Objects16ConfigIcon',
+    package: '@atlaskit/icon/glyph/objects/16/config',
+  },
+  'objects/16/decision': {
+    keywords: ['objects/16/decision', 'objects16decision'],
+    component: Objects16DecisionIcon,
+    componentName: 'Objects16DecisionIcon',
+    package: '@atlaskit/icon/glyph/objects/16/decision',
+  },
+  'objects/16/epic': {
+    keywords: ['objects/16/epic', 'objects16epic'],
+    component: Objects16EpicIcon,
+    componentName: 'Objects16EpicIcon',
+    package: '@atlaskit/icon/glyph/objects/16/epic',
+  },
+  'objects/16/event': {
+    keywords: ['objects/16/event', 'objects16event'],
+    component: Objects16EventIcon,
+    componentName: 'Objects16EventIcon',
+    package: '@atlaskit/icon/glyph/objects/16/event',
+  },
+  'objects/16/favorite': {
+    keywords: ['objects/16/favorite', 'objects16favorite'],
+    component: Objects16FavoriteIcon,
+    componentName: 'Objects16FavoriteIcon',
+    package: '@atlaskit/icon/glyph/objects/16/favorite',
+  },
+  'objects/16/image': {
+    keywords: ['objects/16/image', 'objects16image'],
+    component: Objects16ImageIcon,
+    componentName: 'Objects16ImageIcon',
+    package: '@atlaskit/icon/glyph/objects/16/image',
+  },
+  'objects/16/improvement': {
+    keywords: ['objects/16/improvement', 'objects16improvement'],
+    component: Objects16ImprovementIcon,
+    componentName: 'Objects16ImprovementIcon',
+    package: '@atlaskit/icon/glyph/objects/16/improvement',
+  },
+  'objects/16/incident': {
+    keywords: ['objects/16/incident', 'objects16incident'],
+    component: Objects16IncidentIcon,
+    componentName: 'Objects16IncidentIcon',
+    package: '@atlaskit/icon/glyph/objects/16/incident',
+  },
+  'objects/16/issue': {
+    keywords: ['objects/16/issue', 'objects16issue'],
+    component: Objects16IssueIcon,
+    componentName: 'Objects16IssueIcon',
+    package: '@atlaskit/icon/glyph/objects/16/issue',
+  },
+  'objects/16/knowledge-base': {
+    keywords: ['objects/16/knowledge-base', 'objects16knowledgebase'],
+    component: Objects16KnowledgeBaseIcon,
+    componentName: 'Objects16KnowledgeBaseIcon',
+    package: '@atlaskit/icon/glyph/objects/16/knowledge-base',
+  },
+  'objects/16/mentions': {
+    keywords: ['objects/16/mentions', 'objects16mentions'],
+    component: Objects16MentionsIcon,
+    componentName: 'Objects16MentionsIcon',
+    package: '@atlaskit/icon/glyph/objects/16/mentions',
+  },
+  'objects/16/new-feature': {
+    keywords: ['objects/16/new-feature', 'objects16newfeature'],
+    component: Objects16NewFeatureIcon,
+    componentName: 'Objects16NewFeatureIcon',
+    package: '@atlaskit/icon/glyph/objects/16/new-feature',
+  },
+  'objects/16/page': {
+    keywords: ['objects/16/page', 'objects16page'],
+    component: Objects16PageIcon,
+    componentName: 'Objects16PageIcon',
+    package: '@atlaskit/icon/glyph/objects/16/page',
+  },
+  'objects/16/pdf': {
+    keywords: ['objects/16/pdf', 'objects16pdf'],
+    component: Objects16PdfIcon,
+    componentName: 'Objects16PdfIcon',
+    package: '@atlaskit/icon/glyph/objects/16/pdf',
+  },
+  'objects/16/presentation': {
+    keywords: ['objects/16/presentation', 'objects16presentation'],
+    component: Objects16PresentationIcon,
+    componentName: 'Objects16PresentationIcon',
+    package: '@atlaskit/icon/glyph/objects/16/presentation',
+  },
+  'objects/16/problem': {
+    keywords: ['objects/16/problem', 'objects16problem'],
+    component: Objects16ProblemIcon,
+    componentName: 'Objects16ProblemIcon',
+    package: '@atlaskit/icon/glyph/objects/16/problem',
+  },
+  'objects/16/pull-request': {
+    keywords: ['objects/16/pull-request', 'objects16pullrequest'],
+    component: Objects16PullRequestIcon,
+    componentName: 'Objects16PullRequestIcon',
+    package: '@atlaskit/icon/glyph/objects/16/pull-request',
+  },
+  'objects/16/question': {
+    keywords: ['objects/16/question', 'objects16question'],
+    component: Objects16QuestionIcon,
+    componentName: 'Objects16QuestionIcon',
+    package: '@atlaskit/icon/glyph/objects/16/question',
+  },
+  'objects/16/service-desk-approval': {
+    keywords: ['objects/16/service-desk-approval', 'objects16servicedeskapproval'],
+    component: Objects16ServiceDeskApprovalIcon,
+    componentName: 'Objects16ServiceDeskApprovalIcon',
+    package: '@atlaskit/icon/glyph/objects/16/service-desk-approval',
+  },
+  'objects/16/service-desk': {
+    keywords: ['objects/16/service-desk', 'objects16servicedesk'],
+    component: Objects16ServiceDeskIcon,
+    componentName: 'Objects16ServiceDeskIcon',
+    package: '@atlaskit/icon/glyph/objects/16/service-desk',
+  },
+  'objects/16/space': {
+    keywords: ['objects/16/space', 'objects16space'],
+    component: Objects16SpaceIcon,
+    componentName: 'Objects16SpaceIcon',
+    package: '@atlaskit/icon/glyph/objects/16/space',
+  },
+  'objects/16/spreadsheet': {
+    keywords: ['objects/16/spreadsheet', 'objects16spreadsheet'],
+    component: Objects16SpreadsheetIcon,
+    componentName: 'Objects16SpreadsheetIcon',
+    package: '@atlaskit/icon/glyph/objects/16/spreadsheet',
+  },
+  'objects/16/story': {
+    keywords: ['objects/16/story', 'objects16story'],
+    component: Objects16StoryIcon,
+    componentName: 'Objects16StoryIcon',
+    package: '@atlaskit/icon/glyph/objects/16/story',
+  },
+  'objects/16/subtask': {
+    keywords: ['objects/16/subtask', 'objects16subtask'],
+    component: Objects16SubtaskIcon,
+    componentName: 'Objects16SubtaskIcon',
+    package: '@atlaskit/icon/glyph/objects/16/subtask',
+  },
+  'objects/16/support': {
+    keywords: ['objects/16/support', 'objects16support'],
+    component: Objects16SupportIcon,
+    componentName: 'Objects16SupportIcon',
+    package: '@atlaskit/icon/glyph/objects/16/support',
+  },
+  'objects/16/task': {
+    keywords: ['objects/16/task', 'objects16task'],
+    component: Objects16TaskIcon,
+    componentName: 'Objects16TaskIcon',
+    package: '@atlaskit/icon/glyph/objects/16/task',
+  },
+  'objects/16/unwatch': {
+    keywords: ['objects/16/unwatch', 'objects16unwatch'],
+    component: Objects16UnwatchIcon,
+    componentName: 'Objects16UnwatchIcon',
+    package: '@atlaskit/icon/glyph/objects/16/unwatch',
+  },
+  'objects/16/user': {
+    keywords: ['objects/16/user', 'objects16user'],
+    component: Objects16UserIcon,
+    componentName: 'Objects16UserIcon',
+    package: '@atlaskit/icon/glyph/objects/16/user',
+  },
+  'objects/16/video': {
+    keywords: ['objects/16/video', 'objects16video'],
+    component: Objects16VideoIcon,
+    componentName: 'Objects16VideoIcon',
+    package: '@atlaskit/icon/glyph/objects/16/video',
+  },
+  'objects/16/watch': {
+    keywords: ['objects/16/watch', 'objects16watch'],
+    component: Objects16WatchIcon,
+    componentName: 'Objects16WatchIcon',
+    package: '@atlaskit/icon/glyph/objects/16/watch',
+  },
+  'objects/16/zip': {
+    keywords: ['objects/16/zip', 'objects16zip'],
+    component: Objects16ZipIcon,
+    componentName: 'Objects16ZipIcon',
+    package: '@atlaskit/icon/glyph/objects/16/zip',
+  },
+  'objects/24/access-request': {
+    keywords: ['objects/24/access-request', 'objects24accessrequest'],
+    component: Objects24AccessRequestIcon,
+    componentName: 'Objects24AccessRequestIcon',
+    package: '@atlaskit/icon/glyph/objects/24/access-request',
+  },
+  'objects/24/action': {
+    keywords: ['objects/24/action', 'objects24action'],
+    component: Objects24ActionIcon,
+    componentName: 'Objects24ActionIcon',
+    package: '@atlaskit/icon/glyph/objects/24/action',
+  },
+  'objects/24/audio': {
+    keywords: ['objects/24/audio', 'objects24audio'],
+    component: Objects24AudioIcon,
+    componentName: 'Objects24AudioIcon',
+    package: '@atlaskit/icon/glyph/objects/24/audio',
+  },
+  'objects/24/blog': {
+    keywords: ['objects/24/blog', 'objects24blog'],
+    component: Objects24BlogIcon,
+    componentName: 'Objects24BlogIcon',
+    package: '@atlaskit/icon/glyph/objects/24/blog',
+  },
+  'objects/24/branch': {
+    keywords: ['objects/24/branch', 'objects24branch'],
+    component: Objects24BranchIcon,
+    componentName: 'Objects24BranchIcon',
+    package: '@atlaskit/icon/glyph/objects/24/branch',
+  },
+  'objects/24/bug': {
+    keywords: ['objects/24/bug', 'objects24bug'],
+    component: Objects24BugIcon,
+    componentName: 'Objects24BugIcon',
+    package: '@atlaskit/icon/glyph/objects/24/bug',
+  },
+  'objects/24/calendar': {
+    keywords: ['objects/24/calendar', 'objects24calendar'],
+    component: Objects24CalendarIcon,
+    componentName: 'Objects24CalendarIcon',
+    package: '@atlaskit/icon/glyph/objects/24/calendar',
+  },
+  'objects/24/changes': {
+    keywords: ['objects/24/changes', 'objects24changes'],
+    component: Objects24ChangesIcon,
+    componentName: 'Objects24ChangesIcon',
+    package: '@atlaskit/icon/glyph/objects/24/changes',
+  },
+  'objects/24/code': {
+    keywords: ['objects/24/code', 'objects24code'],
+    component: Objects24CodeIcon,
+    componentName: 'Objects24CodeIcon',
+    package: '@atlaskit/icon/glyph/objects/24/code',
+  },
+  'objects/24/comment': {
+    keywords: ['objects/24/comment', 'objects24comment'],
+    component: Objects24CommentIcon,
+    componentName: 'Objects24CommentIcon',
+    package: '@atlaskit/icon/glyph/objects/24/comment',
+  },
+  'objects/24/commit': {
+    keywords: ['objects/24/commit', 'objects24commit'],
+    component: Objects24CommitIcon,
+    componentName: 'Objects24CommitIcon',
+    package: '@atlaskit/icon/glyph/objects/24/commit',
+  },
+  'objects/24/config': {
+    keywords: ['objects/24/config', 'objects24config'],
+    component: Objects24ConfigIcon,
+    componentName: 'Objects24ConfigIcon',
+    package: '@atlaskit/icon/glyph/objects/24/config',
+  },
+  'objects/24/decision': {
+    keywords: ['objects/24/decision', 'objects24decision'],
+    component: Objects24DecisionIcon,
+    componentName: 'Objects24DecisionIcon',
+    package: '@atlaskit/icon/glyph/objects/24/decision',
+  },
+  'objects/24/epic': {
+    keywords: ['objects/24/epic', 'objects24epic'],
+    component: Objects24EpicIcon,
+    componentName: 'Objects24EpicIcon',
+    package: '@atlaskit/icon/glyph/objects/24/epic',
+  },
+  'objects/24/event': {
+    keywords: ['objects/24/event', 'objects24event'],
+    component: Objects24EventIcon,
+    componentName: 'Objects24EventIcon',
+    package: '@atlaskit/icon/glyph/objects/24/event',
+  },
+  'objects/24/favorite': {
+    keywords: ['objects/24/favorite', 'objects24favorite'],
+    component: Objects24FavoriteIcon,
+    componentName: 'Objects24FavoriteIcon',
+    package: '@atlaskit/icon/glyph/objects/24/favorite',
+  },
+  'objects/24/image': {
+    keywords: ['objects/24/image', 'objects24image'],
+    component: Objects24ImageIcon,
+    componentName: 'Objects24ImageIcon',
+    package: '@atlaskit/icon/glyph/objects/24/image',
+  },
+  'objects/24/improvement': {
+    keywords: ['objects/24/improvement', 'objects24improvement'],
+    component: Objects24ImprovementIcon,
+    componentName: 'Objects24ImprovementIcon',
+    package: '@atlaskit/icon/glyph/objects/24/improvement',
+  },
+  'objects/24/incident': {
+    keywords: ['objects/24/incident', 'objects24incident'],
+    component: Objects24IncidentIcon,
+    componentName: 'Objects24IncidentIcon',
+    package: '@atlaskit/icon/glyph/objects/24/incident',
+  },
+  'objects/24/issue': {
+    keywords: ['objects/24/issue', 'objects24issue'],
+    component: Objects24IssueIcon,
+    componentName: 'Objects24IssueIcon',
+    package: '@atlaskit/icon/glyph/objects/24/issue',
+  },
+  'objects/24/knowledge-base': {
+    keywords: ['objects/24/knowledge-base', 'objects24knowledgebase'],
+    component: Objects24KnowledgeBaseIcon,
+    componentName: 'Objects24KnowledgeBaseIcon',
+    package: '@atlaskit/icon/glyph/objects/24/knowledge-base',
+  },
+  'objects/24/mentions': {
+    keywords: ['objects/24/mentions', 'objects24mentions'],
+    component: Objects24MentionsIcon,
+    componentName: 'Objects24MentionsIcon',
+    package: '@atlaskit/icon/glyph/objects/24/mentions',
+  },
+  'objects/24/new-feature': {
+    keywords: ['objects/24/new-feature', 'objects24newfeature'],
+    component: Objects24NewFeatureIcon,
+    componentName: 'Objects24NewFeatureIcon',
+    package: '@atlaskit/icon/glyph/objects/24/new-feature',
+  },
+  'objects/24/page': {
+    keywords: ['objects/24/page', 'objects24page'],
+    component: Objects24PageIcon,
+    componentName: 'Objects24PageIcon',
+    package: '@atlaskit/icon/glyph/objects/24/page',
+  },
+  'objects/24/pdf': {
+    keywords: ['objects/24/pdf', 'objects24pdf'],
+    component: Objects24PdfIcon,
+    componentName: 'Objects24PdfIcon',
+    package: '@atlaskit/icon/glyph/objects/24/pdf',
+  },
+  'objects/24/presentation': {
+    keywords: ['objects/24/presentation', 'objects24presentation'],
+    component: Objects24PresentationIcon,
+    componentName: 'Objects24PresentationIcon',
+    package: '@atlaskit/icon/glyph/objects/24/presentation',
+  },
+  'objects/24/problem': {
+    keywords: ['objects/24/problem', 'objects24problem'],
+    component: Objects24ProblemIcon,
+    componentName: 'Objects24ProblemIcon',
+    package: '@atlaskit/icon/glyph/objects/24/problem',
+  },
+  'objects/24/pull-request': {
+    keywords: ['objects/24/pull-request', 'objects24pullrequest'],
+    component: Objects24PullRequestIcon,
+    componentName: 'Objects24PullRequestIcon',
+    package: '@atlaskit/icon/glyph/objects/24/pull-request',
+  },
+  'objects/24/question': {
+    keywords: ['objects/24/question', 'objects24question'],
+    component: Objects24QuestionIcon,
+    componentName: 'Objects24QuestionIcon',
+    package: '@atlaskit/icon/glyph/objects/24/question',
+  },
+  'objects/24/service-desk-approval': {
+    keywords: ['objects/24/service-desk-approval', 'objects24servicedeskapproval'],
+    component: Objects24ServiceDeskApprovalIcon,
+    componentName: 'Objects24ServiceDeskApprovalIcon',
+    package: '@atlaskit/icon/glyph/objects/24/service-desk-approval',
+  },
+  'objects/24/service-desk': {
+    keywords: ['objects/24/service-desk', 'objects24servicedesk'],
+    component: Objects24ServiceDeskIcon,
+    componentName: 'Objects24ServiceDeskIcon',
+    package: '@atlaskit/icon/glyph/objects/24/service-desk',
+  },
+  'objects/24/space': {
+    keywords: ['objects/24/space', 'objects24space'],
+    component: Objects24SpaceIcon,
+    componentName: 'Objects24SpaceIcon',
+    package: '@atlaskit/icon/glyph/objects/24/space',
+  },
+  'objects/24/spreadsheet': {
+    keywords: ['objects/24/spreadsheet', 'objects24spreadsheet'],
+    component: Objects24SpreadsheetIcon,
+    componentName: 'Objects24SpreadsheetIcon',
+    package: '@atlaskit/icon/glyph/objects/24/spreadsheet',
+  },
+  'objects/24/story': {
+    keywords: ['objects/24/story', 'objects24story'],
+    component: Objects24StoryIcon,
+    componentName: 'Objects24StoryIcon',
+    package: '@atlaskit/icon/glyph/objects/24/story',
+  },
+  'objects/24/subtask': {
+    keywords: ['objects/24/subtask', 'objects24subtask'],
+    component: Objects24SubtaskIcon,
+    componentName: 'Objects24SubtaskIcon',
+    package: '@atlaskit/icon/glyph/objects/24/subtask',
+  },
+  'objects/24/support': {
+    keywords: ['objects/24/support', 'objects24support'],
+    component: Objects24SupportIcon,
+    componentName: 'Objects24SupportIcon',
+    package: '@atlaskit/icon/glyph/objects/24/support',
+  },
+  'objects/24/task': {
+    keywords: ['objects/24/task', 'objects24task'],
+    component: Objects24TaskIcon,
+    componentName: 'Objects24TaskIcon',
+    package: '@atlaskit/icon/glyph/objects/24/task',
+  },
+  'objects/24/unwatch': {
+    keywords: ['objects/24/unwatch', 'objects24unwatch'],
+    component: Objects24UnwatchIcon,
+    componentName: 'Objects24UnwatchIcon',
+    package: '@atlaskit/icon/glyph/objects/24/unwatch',
+  },
+  'objects/24/user': {
+    keywords: ['objects/24/user', 'objects24user'],
+    component: Objects24UserIcon,
+    componentName: 'Objects24UserIcon',
+    package: '@atlaskit/icon/glyph/objects/24/user',
+  },
+  'objects/24/video': {
+    keywords: ['objects/24/video', 'objects24video'],
+    component: Objects24VideoIcon,
+    componentName: 'Objects24VideoIcon',
+    package: '@atlaskit/icon/glyph/objects/24/video',
+  },
+  'objects/24/watch': {
+    keywords: ['objects/24/watch', 'objects24watch'],
+    component: Objects24WatchIcon,
+    componentName: 'Objects24WatchIcon',
+    package: '@atlaskit/icon/glyph/objects/24/watch',
+  },
+  'objects/24/zip': {
+    keywords: ['objects/24/zip', 'objects24zip'],
+    component: Objects24ZipIcon,
+    componentName: 'Objects24ZipIcon',
+    package: '@atlaskit/icon/glyph/objects/24/zip',
   },
   'office-building-filled': {
     keywords: ['office-building-filled', 'officebuildingfilled'],

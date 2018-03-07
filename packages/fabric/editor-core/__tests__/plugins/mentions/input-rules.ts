@@ -1,8 +1,12 @@
-import mentionsPlugins, { MentionsState } from '../../../src/plugins/mentions';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import {
+  MentionsState,
+  stateKey as mentionPluginKey,
+} from '../../../src/plugins/mentions';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   insertText,
-  makeEditor,
+  createEditor,
   doc,
   p,
   code_block,
@@ -12,26 +16,36 @@ import {
   code,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { analyticsService } from '../../../src/analytics';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import emojiPlugin from '../../../src/editor/plugins/emoji';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
 describe('mentions - input rules', () => {
-  const editor = (doc: any) =>
-    makeEditor<MentionsState>({
-      doc,
-      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
-    });
   let trackEvent;
+  const editor = (doc: any) =>
+    createEditor<MentionsState>({
+      doc,
+      editorPlugins: [mentionsPlugin, emojiPlugin, codeBlockPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      providerFactory: ProviderFactory.create({
+        emojiProvider: Promise.resolve(emojiProvider),
+      }),
+      pluginKey: mentionPluginKey,
+    });
 
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(
       doc(docContents || p('{<>}')),
     );
+
     return pluginState
       .setMentionProvider(Promise.resolve(mentionStoryData.resourceProvider))
       .then(() => {
@@ -78,14 +92,14 @@ describe('mentions - input rules', () => {
   });
 
   it('should replace "@" if there is another emoji node in front of it', () => {
-    return assert('@', true, p(emoji({ shortName: ':smiley:' }), '{<>}'));
+    return assert('@', true, p(emoji({ shortName: ':smiley:' })(), '{<>}'));
   });
 
   it('should replace "@" if there is a mention node in front of it', () => {
     return assert(
       '@',
       true,
-      p(mention({ id: '1234', text: '@SpongeBob' }), '{<>}'),
+      p(mention({ id: '1234', text: '@SpongeBob' })(), '{<>}'),
     );
   });
 

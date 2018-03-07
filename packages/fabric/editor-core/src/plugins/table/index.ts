@@ -1,4 +1,4 @@
-import { Node } from 'prosemirror-model';
+import { Node as PmNode } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -19,9 +19,16 @@ import {
   TableMap,
   toggleHeaderRow,
 } from 'prosemirror-tables';
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { EditorView, DecorationSet } from 'prosemirror-view';
+import { TableNode } from '../../nodeviews';
+import {
+  isElementInTableCell,
+  setNodeSelection,
+  isLastItemMediaGroup,
+  closestElement,
+} from '../../utils/';
 
-import keymapHandler from './keymap';
+import keymapPlugin from './keymap';
 import { analyticsService } from '../../analytics';
 
 import {
@@ -35,38 +42,48 @@ import {
   tableStartPos,
   isHeaderRowSelected,
   getCellSelection,
-  createControlsDecoration,
+  createControlsDecorationSet,
   getSelectedColumn,
   getSelectedRow,
   containsTableHeader,
-  getFirstSelectedCellElement,
   getCurrentCell,
   getTableElement,
   getTableNode,
   canInsertTable,
 } from '../../editor/plugins/table/utils';
+import hoverSelectionPlugin from '../../editor/plugins/table/hover-selection-plugin';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
 export interface PluginConfig {
   isHeaderRowRequired?: boolean;
+  allowColumnResizing?: boolean;
+  allowMergeCells?: boolean;
+  allowNumberColumn?: boolean;
+  allowBackgroundColor?: boolean;
+  allowHeaderRow?: boolean;
+  allowHeaderColumn?: boolean;
 }
 
 export class TableState {
-  keymapHandler: Function;
   cellElement?: HTMLElement;
   tableElement?: HTMLElement;
   editorFocused: boolean = false;
-  tableNode?: Node;
+  tableNode?: PmNode;
   cellSelection?: CellSelection;
   tableHidden: boolean = false;
   tableDisabled: boolean = false;
   tableActive: boolean = false;
   domEvent: boolean = false;
-  decorations: DecorationSet;
   view: EditorView;
+  set: DecorationSet = DecorationSet.empty;
+  allowColumnResizing: boolean = false;
+  allowMergeCells: boolean = false;
+  allowNumberColumn: boolean = false;
+  allowBackgroundColor: boolean = false;
+  allowHeaderRow: boolean = false;
+  allowHeaderColumn: boolean = false;
 
-  private controlsDecoration?: Decoration[];
   private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
 
@@ -75,8 +92,13 @@ export class TableState {
 
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
-    this.isHeaderRowRequired = pluginConfig.isHeaderRowRequired || false;
-    this.decorations = DecorationSet.create(state.doc, []);
+    this.isHeaderRowRequired = !!pluginConfig.isHeaderRowRequired;
+    this.allowColumnResizing = !!pluginConfig.allowColumnResizing;
+    this.allowMergeCells = !!pluginConfig.allowMergeCells;
+    this.allowNumberColumn = !!pluginConfig.allowNumberColumn;
+    this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
+    this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
+    this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
   }
 
   insertColumn = (column: number): void => {
@@ -143,6 +165,7 @@ export class TableState {
     if (!cellSelection) {
       return;
     }
+    const tableNode = cellSelection.$anchorCell.node(-1);
     const isRowSelected = cellSelection.isRowSelection();
     const isColumnSelected = cellSelection.isColSelection();
 
@@ -159,14 +182,10 @@ export class TableState {
       );
 
       // move the cursor in the column to the left of the deleted column(s)
-      const map = TableMap.get(this.tableNode!);
+      const map = TableMap.get(tableNode);
       const { anchor, head } = getSelectedColumn(this.view.state);
       const column = Math.min(anchor, head);
-      const nextPos = map.positionAt(
-        0,
-        column > 0 ? column - 1 : 0,
-        this.tableNode!,
-      );
+      const nextPos = map.positionAt(0, column > 0 ? column - 1 : 0, tableNode);
       deleteColumn(state, dispatch);
       this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
@@ -180,7 +199,7 @@ export class TableState {
       const headerRowSelected = isHeaderRowSelected(this.view.state);
       // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
       const { anchor, head } = getSelectedRow(this.view.state);
-      const map = TableMap.get(this.tableNode!);
+      const map = TableMap.get(tableNode);
       const minRow = Math.min(anchor, head);
       const maxRow = Math.max(anchor, head);
       const isRemovingLastRow = maxRow === map.height - 1;
@@ -191,7 +210,7 @@ export class TableState {
       const nextPos = map.positionAt(
         isRemovingLastRow ? minRow - 1 : minRow,
         0,
-        this.tableNode!,
+        tableNode,
       );
       this.moveCursorTo(nextPos);
     } else {
@@ -229,7 +248,6 @@ export class TableState {
     let dirty = this.updateSelection();
     let controlsDirty = dirty;
     const { state } = this.view;
-    const cellSelection = getCellSelection(state);
 
     const tableElement = getTableElement(state, this.view);
     if ((domEvent && tableElement) || tableElement !== this.tableElement) {
@@ -243,21 +261,6 @@ export class TableState {
       this.tableNode = tableNode;
       dirty = true;
       controlsDirty = true;
-    }
-
-    // show floating toolbar only when the whole row, column or table is selected
-    const toolbarVisible =
-      cellSelection &&
-      (cellSelection.isColSelection() || cellSelection.isRowSelection())
-        ? true
-        : false;
-
-    const cellElement = toolbarVisible
-      ? getFirstSelectedCellElement(state, this.view)
-      : undefined;
-    if (cellElement !== this.cellElement) {
-      this.cellElement = cellElement;
-      dirty = true;
     }
 
     const tableActive = this.editorFocused && !!tableElement;
@@ -278,17 +281,11 @@ export class TableState {
     }
 
     if (controlsDirty) {
-      if (this.controlsDecoration) {
-        this.decorations = this.decorations.remove(this.controlsDecoration);
-        this.controlsDecoration = undefined;
-      }
-
-      if (tableActive) {
-        const decoration = createControlsDecoration(this.view);
-        this.controlsDecoration = [...decoration];
-        this.decorations = this.decorations.add(state.doc, decoration);
-      }
-      this.view.dispatch(state.tr);
+      this.view.dispatch(
+        state.tr.setMeta(stateKey, {
+          set: tableActive ? createControlsDecorationSet(this.view) : null,
+        }),
+      );
     }
   }
 
@@ -304,9 +301,9 @@ export class TableState {
 
   isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
 
-  addHeaderToTableNodes = (slice: Node, selectionStart: number): void => {
+  addHeaderToTableNodes = (slice: PmNode, selectionStart: number): void => {
     const { table } = this.view.state.schema.nodes;
-    slice.content.forEach((node: Node, offset: number) => {
+    slice.content.forEach((node: PmNode, offset: number) => {
       if (node.type === table && !containsTableHeader(this.view.state, node)) {
         const { state, dispatch } = this.view;
         const { tr, doc } = state;
@@ -335,7 +332,6 @@ export class TableState {
       }
       // drop selection if editor looses focus
       if (!this.editorFocused) {
-        this.cellElement = undefined;
         clearSelection(state, dispatch);
         return true;
       }
@@ -376,15 +372,21 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       init(config, state: EditorState) {
         return new TableState(state, pluginConfig);
       },
-      apply(tr, pluginState: TableState, oldState, newState) {
-        return pluginState;
+      apply(tr, state) {
+        const meta = tr.getMeta(stateKey);
+
+        if (meta) {
+          state.set = meta.set || DecorationSet.empty;
+          return state;
+        }
+
+        return state;
       },
     },
     key: stateKey,
     view: (editorView: EditorView) => {
       const pluginState: TableState = stateKey.getState(editorView.state);
       pluginState.setView(editorView);
-      pluginState.keymapHandler = keymapHandler(pluginState);
 
       return {
         update: (view: EditorView, prevState: EditorState) => {
@@ -393,10 +395,13 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       };
     },
     props: {
-      decorations: (state: EditorState) => stateKey.getState(state).decorations,
+      decorations: (state: EditorState) => stateKey.getState(state).set,
 
-      handleKeyDown(view, event) {
-        return stateKey.getState(view.state).keymapHandler(view, event);
+      nodeViews: {
+        table: (node: PmNode, view: EditorView) => {
+          const { allowColumnResizing } = stateKey.getState(view.state);
+          return new TableNode({ node, view, allowColumnResizing });
+        },
       },
       handleClick(view: EditorView, pos: number, event) {
         resetHoverSelection(view.state, view.dispatch);
@@ -408,6 +413,50 @@ export const plugin = (pluginConfig?: PluginConfig) =>
           pluginState.updateEditorFocused(true);
           pluginState.update(true);
           return false;
+        },
+        click(view: EditorView, event) {
+          const element = event.target as HTMLElement;
+          const { tableNode }: TableState = stateKey.getState(view.state);
+
+          /**
+           * Check if the table cell with an image is clicked
+           * and its not the image itself
+           */
+          if (
+            !tableNode ||
+            !isElementInTableCell(element) ||
+            element.matches('table .image, table p, table .image div')
+          ) {
+            return false;
+          }
+          const offset = tableStartPos(view.state);
+          const map = TableMap.get(tableNode);
+
+          /** Getting the offset of current item clicked */
+          const colElement = (closestElement(element, 'td') ||
+            closestElement(element, 'th')) as HTMLTableDataCellElement;
+          const colIndex = colElement && colElement.cellIndex;
+          const rowElement = closestElement(
+            element,
+            'tr',
+          ) as HTMLTableRowElement;
+          const rowIndex = rowElement && rowElement.rowIndex;
+          const cellIndex = map.width * rowIndex + colIndex;
+          const posInTable = map.map[cellIndex + 1] - 1;
+
+          const {
+            dispatch,
+            state: { tr, schema: { nodes: { paragraph } } },
+          } = view;
+          const editorElement = tableNode.nodeAt(map.map[cellIndex]) as PmNode;
+
+          /** Only if the last item is media group, insert a paragraph */
+          if (isLastItemMediaGroup(editorElement)) {
+            tr.insert(posInTable + offset, paragraph.create());
+            dispatch(tr);
+            setNodeSelection(view, posInTable + offset);
+          }
+          return true;
         },
         blur(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
@@ -421,16 +470,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
   });
 
 const plugins = (pluginConfig?: PluginConfig) => {
-  return [plugin(pluginConfig), tableEditing()].filter(
-    plugin => !!plugin,
-  ) as Plugin[];
+  return [
+    plugin(pluginConfig),
+    tableEditing(),
+    hoverSelectionPlugin,
+    keymapPlugin(),
+  ].filter(plugin => !!plugin) as Plugin[];
 };
 
 export default plugins;
-
-// Disable inline table editing and resizing controls in Firefox
-// https://github.com/ProseMirror/prosemirror/issues/432
-setTimeout(() => {
-  document.execCommand('enableObjectResizing', false, 'false');
-  document.execCommand('enableInlineTableEditing', false, 'false');
-});

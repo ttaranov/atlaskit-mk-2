@@ -9,7 +9,7 @@ import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
-import { Popup } from '@atlaskit/editor-common';
+import { Popup, ContextIdentifierProvider } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
 import {
   getInsertTypeForKey,
@@ -18,6 +18,7 @@ import {
 
 export interface Props {
   editorView?: EditorView;
+  contextIdentifierProvider: Promise<ContextIdentifierProvider>;
   mentionProvider: Promise<MentionProvider>;
   pluginKey: PluginKey;
   presenceProvider?: any;
@@ -25,12 +26,14 @@ export interface Props {
   target?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
 export interface State {
   query?: string;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
+  contextIdentifierProvider?: ContextIdentifierProvider;
   focused?: boolean;
 }
 
@@ -51,6 +54,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.resolveResourceProvider(this.props.mentionProvider);
+    this.resolveContextIdentifierProvider(this.props.contextIdentifierProvider);
   }
 
   componentWillUnmount() {
@@ -70,6 +74,14 @@ export default class MentionPicker extends PureComponent<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.mentionProvider !== this.props.mentionProvider) {
       this.resolveResourceProvider(nextProps.mentionProvider);
+    }
+    if (
+      nextProps.contextIdentifierProvider !==
+      this.props.contextIdentifierProvider
+    ) {
+      this.resolveContextIdentifierProvider(
+        nextProps.contextIdentifierProvider,
+      );
     }
   }
 
@@ -103,6 +115,18 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
+  private resolveContextIdentifierProvider(contextIdentifierPromise): void {
+    if (contextIdentifierPromise) {
+      contextIdentifierPromise.then(
+        (contextIdentifierProvider: ContextIdentifierProvider) => {
+          this.setState({ contextIdentifierProvider });
+        },
+      );
+    } else {
+      this.setState({ contextIdentifierProvider: undefined });
+    }
+  }
+
   private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query, focused } = state;
     this.setState({ anchorElement, query, focused });
@@ -132,6 +156,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsMountPoint,
       presenceProvider,
+      popupsScrollableElement,
     } = this.props;
 
     if (!focused || !anchorElement || query === undefined || !mentionProvider) {
@@ -145,6 +170,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         fitWidth={340}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
+        scrollableElement={popupsScrollableElement}
         offset={[0, 3]}
       >
         <AkMentionPicker
@@ -202,7 +228,14 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   private fireMentionInsertAnalytics = (mention: MentionDescription) => {
     const { accessLevel } = mention;
-    const lastQuery = this.pluginState!.lastQuery;
+    const lastQuery = this.pluginState && this.pluginState.lastQuery;
+
+    const contextIdentifier = this.state.contextIdentifierProvider
+      ? ({
+          objectId: this.state.contextIdentifierProvider.objectId,
+          containerId: this.state.contextIdentifierProvider.containerId,
+        } as ContextIdentifierProvider)
+      : {};
 
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
       mode: this.insertType || InsertType.SELECTED,
@@ -210,6 +243,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
       duration: this.pickerElapsedTime || 0,
+      mentionee: mention.id,
+      ...contextIdentifier,
     });
 
     this.insertType = undefined;

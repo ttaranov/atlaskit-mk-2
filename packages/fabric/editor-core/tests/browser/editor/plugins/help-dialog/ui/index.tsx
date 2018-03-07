@@ -8,7 +8,7 @@ import HelpDialog, {
   getComponentFromKeymap,
   getSupportedFormatting,
 } from '../../../../../../src/editor/plugins/help-dialog/ui';
-import createEditor from '../../../../../helpers/create-editor';
+import { createEditor } from '@atlaskit/editor-test-helpers';
 import helpDialog from '../../../../../../src/editor/plugins/help-dialog';
 import * as keymaps from '../../../../../../src/keymaps';
 import { browser, createSchema, doc } from '@atlaskit/editor-common';
@@ -18,7 +18,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
   let editorView: EditorView;
   beforeEach(() => {
-    const editor = createEditor([helpDialog]);
+    const editor = createEditor({ editorPlugins: [helpDialog] });
     editorActions = new EditorActions();
     editorActions._privateRegisterEditor(editor.editorView);
     editorView = editor.editorView;
@@ -59,9 +59,17 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 
     it('should have a value of type keymap in keymap property', () => {
       expect(
-        formatting.filter(f => f.name === 'Quote')[0].keymap ===
+        formatting.filter(f => f.name === 'Quote')[0].keymap!() ===
           keymaps.toggleBlockQuote,
       ).to.equal(true);
+    });
+
+    it('should return undefined keymap for links in message editor', () => {
+      expect(
+        formatting.filter(f => f.name === 'Link')[0].keymap!({
+          appearance: 'message',
+        }),
+      ).to.equal(undefined);
     });
 
     it('should have correct value for auto-formatting', () => {
@@ -74,35 +82,35 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   });
 
   describe('getSupportedFormatting', () => {
+    const completeSchema = createSchema({
+      nodes: [
+        'paragraph',
+        'text',
+        'mention',
+        'emoji',
+        'decisionList',
+        'decisionItem',
+        'taskList',
+        'taskItem',
+        'mediaGroup',
+        'media',
+        'codeBlock',
+        'orderedList',
+        'bulletList',
+        'listItem',
+      ],
+      marks: [
+        'link',
+        'em',
+        'underline',
+        'mentionQuery',
+        'emojiQuery',
+        'textColor',
+        'code',
+      ],
+      customNodeSpecs: { doc },
+    });
     it('should return only the list of formatting supported by schema', () => {
-      const completeSchema = createSchema({
-        nodes: [
-          'paragraph',
-          'text',
-          'mention',
-          'emoji',
-          'decisionList',
-          'decisionItem',
-          'taskList',
-          'taskItem',
-          'mediaGroup',
-          'media',
-          'codeBlock',
-          'orderedList',
-          'bulletList',
-          'listItem',
-        ],
-        marks: [
-          'link',
-          'em',
-          'underline',
-          'mentionQuery',
-          'emojiQuery',
-          'textColor',
-          'code',
-        ],
-        customNodeSpecs: { doc },
-      });
       const formatting = getSupportedFormatting(completeSchema);
       expect(formatting.filter(f => f.type === 'mention').length).to.equal(1);
       expect(formatting.filter(f => f.type === 'hardBreak').length).to.equal(0);

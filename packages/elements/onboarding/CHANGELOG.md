@@ -1,5 +1,23 @@
 # @atlaskit/onboarding
 
+## 2.4.1
+
+## 2.4.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 2.3.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.3.3
+
+## 2.3.2
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 2.3.1
+
+## 2.3.0
+- [minor] Replace scrollBy and add websdriver test [66e7a56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66e7a56)
+
 ## 2.2.3
 
 ## 2.2.2

@@ -1,4 +1,4 @@
-import { AuthProvider, UploadParams } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import {
   FilePreviewUpdateEventPayload,
   FileConvertedEventPayload,
@@ -11,7 +11,7 @@ import {
 } from '../service/uploadService';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig } from '../domain/config';
+import { ModuleConfig, UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export class LocalUploadComponent<
@@ -80,10 +80,8 @@ export class LocalUploadComponent<
 
   private onFileConverted = ({
     file,
-    progress,
     metadata,
   }: FileConvertedEventPayload): void => {
-    this.emitUploadProgress(file, progress.toJSON());
     this.emitUploadEnd(file, metadata);
   };
 

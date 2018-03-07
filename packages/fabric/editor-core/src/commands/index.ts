@@ -15,7 +15,6 @@ import {
   isRangeOfType,
   canMoveDown,
   canMoveUp,
-  setTextSelection,
   atTheEndOfDoc,
   atTheBeginningOfBlock,
 } from '../utils';
@@ -52,6 +51,11 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
     case blockTypes.HEADING_5.name:
       if (nodes.heading) {
         return toggleHeading(5)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_6.name:
+      if (nodes.heading) {
+        return toggleHeading(6)(view.state, view.dispatch);
       }
       break;
   }
@@ -227,27 +231,29 @@ export function liftListItems(): Command {
   };
 }
 
-export function insertBlockType(view: EditorView, name: string): boolean {
-  const { nodes } = view.state.schema;
+export function insertBlockType(name: string): Command {
+  return function(state, dispatch) {
+    const { nodes } = state.schema;
 
-  switch (name) {
-    case blockTypes.BLOCK_QUOTE.name:
-      if (nodes.paragraph && nodes.blockquote) {
-        return wrapSelectionIn(nodes.blockquote)(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.CODE_BLOCK.name:
-      if (nodes.codeBlock) {
-        return insertCodeBlock()(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.PANEL.name:
-      if (nodes.panel && nodes.paragraph) {
-        return wrapSelectionIn(nodes.panel)(view.state, view.dispatch);
-      }
-      break;
-  }
-  return false;
+    switch (name) {
+      case blockTypes.BLOCK_QUOTE.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          return wrapSelectionIn(nodes.blockquote)(state, dispatch);
+        }
+        break;
+      case blockTypes.CODE_BLOCK.name:
+        if (nodes.codeBlock) {
+          return insertCodeBlock()(state, dispatch);
+        }
+        break;
+      case blockTypes.PANEL.name:
+        if (nodes.panel && nodes.paragraph) {
+          return wrapSelectionIn(nodes.panel)(state, dispatch);
+        }
+        break;
+    }
+    return false;
+  };
 }
 
 /**
@@ -373,30 +379,30 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   };
 }
 
-export function createNewParagraphAbove(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = false;
+export function createNewParagraphAbove(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = false;
+  if (!canMoveUp(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    if (!canMoveUp(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
-
-    return false;
-  };
+  return false;
 }
 
-export function createNewParagraphBelow(view: EditorView): Command {
-  return function(state, dispatch) {
-    const append = true;
+export function createNewParagraphBelow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean {
+  const append = true;
+  if (!canMoveDown(state) && canCreateParagraphNear(state)) {
+    createParagraphNear(append)(state, dispatch);
+    return true;
+  }
 
-    if (!canMoveDown(state) && canCreateParagraphNear(state)) {
-      createParagraphNear(view, append);
-      return true;
-    }
-
-    return false;
-  };
+  return false;
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
@@ -407,71 +413,41 @@ function canCreateParagraphNear(state: EditorState): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-export function createParagraphNear(
-  view: EditorView,
-  append: boolean = true,
-): void {
-  const { state, dispatch } = view;
-  const paragraph = state.schema.nodes.paragraph;
+export function createParagraphNear(append: boolean = true): Command {
+  return function(state, dispatch) {
+    const paragraph = state.schema.nodes.paragraph;
 
-  if (!paragraph) {
-    return;
-  }
-
-  let insertPos;
-
-  if (state.selection instanceof TextSelection) {
-    if (topLevelNodeIsEmptyTextBlock(state)) {
-      return;
+    if (!paragraph) {
+      return false;
     }
-    insertPos = getInsertPosFromTextBlock(state, append);
-  } else {
-    insertPos = getInsertPosFromNonTextBlock(state, append);
-  }
 
-  dispatch(state.tr.insert(insertPos, paragraph.create()));
+    let insertPos;
 
-  setTextSelection(view, insertPos + 1);
+    if (state.selection instanceof TextSelection) {
+      if (topLevelNodeIsEmptyTextBlock(state)) {
+        return false;
+      }
+      insertPos = getInsertPosFromTextBlock(state, append);
+    } else {
+      insertPos = getInsertPosFromNonTextBlock(state, append);
+    }
+
+    const tr = state.tr.insert(insertPos, paragraph.createAndFill()!);
+    tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
+    dispatch(tr);
+
+    return true;
+  };
 }
 
 function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
   const { $from, $to } = state.selection;
   let pos;
-  const nodeType = $to.node($to.depth - 1).type;
-
   if (!append) {
-    pos = $from.start($from.depth) - 1;
-    pos = $from.depth > 1 ? pos - 1 : pos;
-
-    // Same theory as comment below.
-    if (nodeType === state.schema.nodes.listItem) {
-      pos = pos - 1;
-    }
-    if (
-      nodeType === state.schema.nodes.tableCell ||
-      nodeType === state.schema.nodes.tableHeader
-    ) {
-      pos = pos - 2;
-    }
+    pos = $from.start(0);
   } else {
-    pos = $to.end($to.depth) + 1;
-    pos = $to.depth > 1 ? pos + 1 : pos;
-
-    // List is a special case. Because from user point of view, the whole list is a unit,
-    // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
-    // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
-    if (nodeType === state.schema.nodes.listItem) {
-      pos = pos + 1;
-    }
-    // table has 4 level depth
-    if (
-      nodeType === state.schema.nodes.tableCell ||
-      nodeType === state.schema.nodes.tableHeader
-    ) {
-      pos = pos + 2;
-    }
+    pos = $to.end(0);
   }
-
   return pos;
 }
 
@@ -480,18 +456,22 @@ function getInsertPosFromNonTextBlock(
   append: boolean,
 ): void {
   const { $from, $to } = state.selection;
-  let pos;
+  const nodeAtSelection =
+    state.selection instanceof NodeSelection &&
+    state.doc.nodeAt(state.selection.$anchor.pos);
+  const isMediaSelection =
+    nodeAtSelection && nodeAtSelection.type.name === 'mediaGroup';
 
+  let pos;
   if (!append) {
     // The start position is different with text block because it starts from 0
     pos = $from.start($from.depth);
     // The depth is different with text block because it starts from 0
-    pos = $from.depth > 0 ? pos - 1 : pos;
+    pos = $from.depth > 0 && !isMediaSelection ? pos - 1 : pos;
   } else {
     pos = $to.end($to.depth);
-    pos = $to.depth > 0 ? pos + 1 : pos;
+    pos = $to.depth > 0 && !isMediaSelection ? pos + 1 : pos;
   }
-
   return pos;
 }
 

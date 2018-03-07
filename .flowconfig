@@ -1,10 +1,10 @@
 [ignore]
 .*/node_modules/styled-components/.*
 .*/node_modules/raf-schd/test/.*
-.*/node_modules/extract-react-types/.*
+.*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
-.*/node_modules/babel-normalize-comments/.*
 .*/packages/elements/icon/es5/.*
+.*/node_modules/stylelint/.*
 
 [include]
 
@@ -20,6 +20,9 @@ module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js
 module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
 module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
 module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/typings/md.js'
+
+suppress_comment=\\(.\\|\n\\)*\\$ExpectError
+suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
 
 [lints]
 all=warn

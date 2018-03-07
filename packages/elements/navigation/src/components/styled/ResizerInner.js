@@ -1,6 +1,7 @@
 // @flow
 import styled from 'styled-components';
 import {
+  animationTimeUnitless,
   unthemedColors,
   resizerClickableWidth,
   resizerVisibleWidth,
@@ -16,15 +17,17 @@ const ResizerInner = styled.div`
   right: -${resizerClickableWidth}px;
   width: ${resizerClickableWidth}px;
 
+  &::before {
+    content: '';
+    height: 100%;
+    left: -${resizerVisibleWidth / 2}px;
+    position: absolute;
+    transition: background-color ${animationTimeUnitless + 100}ms ease-in-out
+      ${animationTimeUnitless}ms;
+    width: ${resizerVisibleWidth}px;
+  }
   &:hover::before {
     background: ${unthemedColors.resizer};
-  }
-  &:before {
-    content: '';
-    width: ${resizerVisibleWidth}px;
-    height: 100%;
-    position: absolute;
-    left: -${resizerVisibleWidth / 2}px;
   }
 `;
 

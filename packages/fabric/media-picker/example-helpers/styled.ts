@@ -79,3 +79,16 @@ export const ClipboardContainer = styled.div`
   border: ${({ isWindowFocused }: ClipboardContainerProps) =>
     isWindowFocused ? `1px dashed gray` : `1px dashed transparent`};
 `;
+
+export const UploadingFilesWrapper = styled.div`
+  border: 1px solid;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-height: 250px;
+  min-height: 250px;
+  overflow: auto;
+`;
+
+export const FileProgress = styled.progress`
+  width: 400px;
+`;

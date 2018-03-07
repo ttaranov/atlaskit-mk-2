@@ -74,6 +74,66 @@ describe('App', () => {
 
     expect(handlers.onStartApp).toHaveBeenCalledTimes(1);
   });
+
+  it('should activate dropzone when visible', () => {
+    const { handlers, store } = setup();
+    const element = (
+      <App
+        store={store}
+        apiUrl={apiUrl}
+        selectedServiceName="google"
+        userAuthProvider={userAuthProvider}
+        isVisible={false}
+        {...handlers}
+      />
+    );
+    const wrapper = shallow(element);
+    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'activate');
+
+    wrapper.setProps({ isVisible: true });
+
+    expect(spy).toBeCalled();
+  });
+
+  it('should deactivate dropzone when not visible', () => {
+    const { handlers, store } = setup();
+    const element = (
+      <App
+        store={store}
+        apiUrl={apiUrl}
+        selectedServiceName="google"
+        userAuthProvider={userAuthProvider}
+        isVisible={true}
+        {...handlers}
+      />
+    );
+    const wrapper = shallow(element);
+    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+
+    wrapper.setProps({ isVisible: false });
+
+    expect(spy).toBeCalled();
+  });
+
+  it('should deactivate dropzone when unmounted', () => {
+    const { handlers, store } = setup();
+    const element = (
+      <App
+        store={store}
+        apiUrl={apiUrl}
+        selectedServiceName="google"
+        userAuthProvider={userAuthProvider}
+        isVisible={true}
+        {...handlers}
+      />
+    );
+    const wrapper = shallow(element);
+    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+
+    wrapper.unmount();
+
+    expect(spy).toBeCalled();
+  });
 });
 
 describe('Connected App', () => {

@@ -2,6 +2,7 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
+  ApplicationCardAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -43,11 +44,11 @@ export type RefsContentItem = RefsNode | RefsTracker;
  *     builder(aRefsTracker);
  *     builder([aNode, aRefsNode, aRefsTracker]);
  */
-export type BuilderContent =
-  | string
-  | Node
-  | RefsContentItem
-  | (Node | RefsContentItem)[];
+
+export type BuilderContentFn = (
+  schema: Schema,
+) => Node | RefsContentItem | Array<Node | RefsContentItem>;
+export type BuilderContent = string | BuilderContentFn;
 
 /**
  * ProseMirror doesn't support empty text nodes, which can be quite
@@ -189,7 +190,7 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
  */
 export function coerce(content: BuilderContent[], schema: Schema) {
   const refsContent = content.map(
-    item => (typeof item === 'string' ? text(item, schema) : item),
+    item => (typeof item === 'string' ? text(item, schema) : item(schema)),
   ) as (RefsContentItem | RefsContentItem[])[];
   return sequence(...flatten<RefsContentItem>(refsContent));
 }
@@ -198,11 +199,23 @@ export function coerce(content: BuilderContent[], schema: Schema) {
  * Create a factory for nodes.
  */
 export function nodeFactory(type: NodeType, attrs = {}) {
-  return function(...content: BuilderContent[]): RefsNode {
-    const { nodes, refs } = coerce(content, type.schema);
-    const node = type.create(attrs, nodes) as RefsNode;
-    node.refs = refs;
-    return node;
+  return function(...content: BuilderContent[]): (schema: Schema) => RefsNode {
+    return schema => {
+      const { nodes, refs } = coerce(content, schema);
+      const nodeBuilder = schema.nodes[type.name];
+      if (!nodeBuilder) {
+        throw new Error(
+          `Node: "${
+            type.name
+          }" doesn't exist in schema. It's usually caused by lacking of a plugin that contributes this node. Schema contains following nodes: ${Object.keys(
+            schema.nodes,
+          ).join(', ')}`,
+        );
+      }
+      const node = nodeBuilder.createChecked(attrs, nodes) as RefsNode;
+      node.refs = refs;
+      return node;
+    };
   };
 }
 
@@ -210,26 +223,43 @@ export function nodeFactory(type: NodeType, attrs = {}) {
  * Create a factory for marks.
  */
 export function markFactory(type: MarkType, attrs = {}, allowDupes = false) {
-  const mark = type.create(attrs);
-  return (...content: BuilderContent[]): RefsNode[] => {
-    const { nodes } = coerce(content, type.schema);
-    return nodes.map(node => {
-      if (!allowDupes && mark.type.isInSet(node.marks)) {
-        return node;
-      } else {
-        const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
-        refNode.refs = node.refs;
-        return refNode;
+  return function(
+    ...content: BuilderContent[]
+  ): (schema: Schema) => RefsNode[] {
+    return schema => {
+      const markBuilder = schema.marks[type.name];
+      if (!markBuilder) {
+        throw new Error(
+          `Mark: "${
+            type.name
+          }" doesn't exist in schema. It's usually caused by lacking of a plugin that contributes this mark. Schema contains following marks: ${Object.keys(
+            schema.marks,
+          ).join(', ')}`,
+        );
       }
-    });
+      const mark = markBuilder.create(attrs);
+      const { nodes } = coerce(content, schema);
+      return nodes.map(node => {
+        if (!allowDupes && mark.type.isInSet(node.marks)) {
+          return node;
+        } else {
+          const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
+          refNode.refs = node.refs;
+          return refNode;
+        }
+      });
+    };
   };
 }
 
-export const createCell = (colspan, rowspan) =>
-  td({ colspan, rowspan })(p('x'));
-export const createHeaderCell = (colspan, rowspan) =>
-  th({ colspan, rowspan })(p('x'));
+export const fragment = (...content: BuilderContent[]) =>
+  flatten<BuilderContent>(content);
+export const slice = (...content: BuilderContent[]) =>
+  new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
+//
+// Nodes
+//
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
@@ -242,33 +272,106 @@ export const h6 = nodeFactory(sampleSchema.nodes.heading, { level: 6 });
 export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
-export const br = sampleSchema.nodes.hardBreak.createChecked();
-export const panel = nodeFactory(sampleSchema.nodes.panel, {});
-export const panelNote = nodeFactory(sampleSchema.nodes.panel, {
-  panelType: 'note',
-});
-export const plain = nodeFactory(sampleSchema.nodes.plain, {});
+export const br = nodeFactory(sampleSchema.nodes.hardBreak, {});
+export const hr = nodeFactory(sampleSchema.nodes.rule, {});
+export const panel = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.panel, attrs);
+export const panelNote = panel({ panelType: 'note' });
 export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
-// tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) =>
   nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string; alt?: string; title?: string }) =>
-  sampleSchema.nodes.image.createChecked(attrs);
+  nodeFactory(sampleSchema.nodes.image, attrs);
 export const emoji = (attrs: {
   shortName: string;
   id?: string;
   fallback?: string;
+  text?: string;
 }) => {
   const emojiNodeAttrs = {
     shortName: attrs.shortName,
     id: attrs.id,
-    text: attrs.fallback || attrs.shortName,
+    text: attrs.text || attrs.fallback,
   };
-  return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
+  return nodeFactory(sampleSchema.nodes.emoji, emojiNodeAttrs);
 };
 export const mention = (attrs: MentionAttributes) =>
-  sampleSchema.nodes.mention.createChecked(attrs);
-export const hr = sampleSchema.nodes.rule.createChecked();
+  nodeFactory(sampleSchema.nodes.mention, attrs);
+export const table = nodeFactory(sampleSchema.nodes.table, {});
+export const tableWithAttrs = (attrs: { isNumberColumnEnabled?: boolean }) =>
+  nodeFactory(sampleSchema.nodes.table, attrs);
+export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
+export interface CellAttributes {
+  colspan?: number;
+  rowspan?: number;
+  background?: string | null;
+  colwidth?: number | null;
+}
+const defaultCellAttributes = {
+  colspan: 1,
+  rowspan: 1,
+  background: null,
+  colwidth: null,
+};
+export const td = (attrs: CellAttributes = defaultCellAttributes) =>
+  nodeFactory(sampleSchema.nodes.tableCell, attrs);
+export const th = (attrs: CellAttributes = defaultCellAttributes) =>
+  nodeFactory(sampleSchema.nodes.tableHeader, attrs);
+export const tdEmpty = td()(p(''));
+export const thEmpty = th()(p(''));
+export const tdCursor = td()(p('{<>}'));
+export const thCursor = th()(p('{<>}'));
+export const decisionList = (attrs: { localId?: string } = {}) =>
+  nodeFactory(sampleSchema.nodes.decisionList, attrs);
+export const decisionItem = (
+  attrs: { localId?: string; state?: string } = {},
+) => nodeFactory(sampleSchema.nodes.decisionItem, attrs);
+export const taskList = (attrs: { localId?: string } = {}) =>
+  nodeFactory(sampleSchema.nodes.taskList, attrs);
+export const taskItem = (attrs: { localId?: string; state?: string } = {}) =>
+  nodeFactory(sampleSchema.nodes.taskItem, attrs);
+export const confluenceUnsupportedBlock = (cxhtml: string) =>
+  nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) =>
+  nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const confluenceJiraIssue = (attrs: {
+  issueKey?: string;
+  macroId?: string;
+  schemaVersion?: string;
+  server?: string;
+  serverId?: string;
+}) => nodeFactory(sampleSchema.nodes.confluenceJiraIssue, attrs);
+export const inlineExtension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => nodeFactory(sampleSchema.nodes.inlineExtension, attrs);
+export const extension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => nodeFactory(sampleSchema.nodes.extension, attrs);
+export const bodiedExtension = (attrs: {
+  extensionKey: string;
+  extensionType: string;
+  parameters?: object;
+}) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
+export const date = (attrs: { timestamp: string | number }) =>
+  nodeFactory(sampleSchema.nodes.date, attrs)();
+export const mediaSingle = (
+  attrs: MediaSingleAttributes = { layout: 'center' },
+) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
+export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
+export const media = (attrs: MediaAttributes) =>
+  nodeFactory(sampleSchema.nodes.media, attrs);
+export const applicationCard = (attrs: ApplicationCardAttributes) =>
+  nodeFactory(sampleSchema.nodes.applicationCard, attrs);
+export const placeholder = (attrs: { text: string }) =>
+  nodeFactory(sampleSchema.nodes.placeholder, attrs)();
+
+//
+// Marks
+//
 export const em = markFactory(sampleSchema.marks.em, {});
 export const subsup = (attrs: { type: string }) =>
   markFactory(sampleSchema.marks.subsup, attrs);
@@ -280,73 +383,12 @@ export const mentionQuery = (attrs = { active: true }) =>
   markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {});
 export const a = (attrs: { href: string; title?: string }) =>
   markFactory(sampleSchema.marks.link, attrs);
-export const fragment = (...content: BuilderContent[]) =>
-  flatten<BuilderContent>(content);
-export const slice = (...content: BuilderContent[]) =>
-  new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
-export const mediaSingle = (
-  attrs: MediaSingleAttributes = { layout: 'center' },
-) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
-export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: MediaAttributes) =>
-  sampleSchema.nodes.media.create(attrs);
 export const textColor = (attrs: { color: string }) =>
   markFactory(sampleSchema.marks.textColor, attrs);
-export const table = nodeFactory(sampleSchema.nodes.table, {});
-export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number; rowspan?: number }) =>
-  nodeFactory(sampleSchema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number; rowspan?: number }) =>
-  nodeFactory(sampleSchema.nodes.tableHeader, attrs);
-export const tdEmpty = td({})(p(''));
-export const thEmpty = th({})(p(''));
-export const tdCursor = td({})(p('{<>}'));
-export const thCursor = th({})(p('{<>}'));
-export const td11 = createCell(1, 1);
-export const th11 = createHeaderCell(1, 1);
-export const decisionList = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.decisionList, attrs);
-export const decisionItem = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.decisionItem, attrs);
-export const taskList = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.taskList, attrs);
-export const taskItem = (attrs: { localId?: string } = {}) =>
-  nodeFactory(sampleSchema.nodes.taskItem, attrs);
-export const confluenceUnsupportedBlock = (cxhtml: string) =>
-  nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
-export const confluenceUnsupportedInline = (cxhtml: string) =>
-  nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
 export const confluenceInlineComment = (attrs: { reference: string }) =>
   markFactory(
     sampleSchema.marks.confluenceInlineComment,
     attrs ? attrs : {},
     true,
   );
-export const confluenceJiraIssue = (attrs: {
-  issueKey?: string;
-  macroId?: string;
-  schemaVersion?: string;
-  server?: string;
-  serverId?: string;
-}) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
-export const inlineExtension = (attrs: {
-  extensionKey: string;
-  extensionType: string;
-  parameters?: object;
-}) => sampleSchema.nodes.inlineExtension.create(attrs);
-export const extension = (attrs: {
-  extensionKey: string;
-  extensionType: string;
-  parameters?: object;
-}) => sampleSchema.nodes.extension.create(attrs);
-export const bodiedExtension = (
-  attrs: {
-    extensionKey: string;
-    extensionType: string;
-    parameters?: object;
-  },
-  content,
-) => sampleSchema.nodes.bodiedExtension.create(attrs, content);
-export const date = (attrs: { timestamp: string | number }) =>
-  nodeFactory(sampleSchema.nodes.date, attrs)();

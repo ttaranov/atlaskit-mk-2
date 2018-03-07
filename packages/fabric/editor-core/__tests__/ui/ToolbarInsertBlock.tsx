@@ -1,28 +1,31 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import blockTypePlugins from '../../src/plugins/block-type';
-import tablePlugins from '../../src/plugins/table';
-import tableCommands from '../../src/plugins/table/commands';
-import mediaPlugins from '../../src/plugins/media';
-import mentionsPlugins from '../../src/plugins/mentions';
-import DropdownMenu from '../../src/ui/DropdownMenu';
-import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
-import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import Item from '@atlaskit/item';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import {
   doc,
   p,
-  makeEditor,
+  createEditor,
   code_block,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import ToolbarButton from '../../src/ui/ToolbarButton';
-import { MediaProvider } from '@atlaskit/media-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { analyticsService } from '../../src/analytics';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+import blockTypePlugins from '../../src/plugins/block-type';
+import tableCommands from '../../src/plugins/table/commands';
+import DropdownMenu from '../../src/ui/DropdownMenu';
+import ToolbarInsertBlock from '../../src/ui/ToolbarInsertBlock';
+import ToolbarButton from '../../src/ui/ToolbarButton';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
+import panelPlugin from '../../src/editor/plugins/panel';
+import listPlugin from '../../src/editor/plugins/lists';
+import EditorActions from '../../src/editor/actions';
+import { MediaProvider } from '../../src/plugins/media';
+
+const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
+  EmojiProvider
+>;
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
   viewContext: Promise.resolve({} as any),
@@ -32,31 +35,26 @@ const mediaProvider: Promise<MediaProvider> = Promise.resolve({
 const providerFactory = ProviderFactory.create({ mediaProvider });
 
 describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
-  const blockTypePluginsSet = blockTypePlugins(defaultSchema);
-  const tablePluginsSet = tablePlugins();
-  const mediaPluginsSet = mediaPlugins(defaultSchema, { providerFactory });
-  const mentionsPluginsSet = mentionsPlugins(
-    defaultSchema,
-    new ProviderFactory(),
-  );
-  const editor = (doc: any) =>
-    makeEditor({
-      doc,
-      plugins: [
-        ...blockTypePluginsSet,
-        ...tablePluginsSet,
-        ...mediaPluginsSet,
-        ...mentionsPluginsSet,
-      ],
-    });
   let trackEvent;
+  let editorActions;
+
+  const blockTypePluginsSet = blockTypePlugins(defaultSchema);
+  const editor = (doc: any) =>
+    createEditor({
+      doc,
+      editorPlugins: [codeBlockPlugin, panelPlugin, listPlugin],
+      editorProps: { analyticsHandler: trackEvent },
+      providerFactory,
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
+    editorActions = new EditorActions();
   });
 
   it('should render disabled DropdownMenu trigger if isDisabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
         tableSupported={true}
@@ -353,6 +351,30 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
+  it('should track placeholder insert event when "Add Placeholder Text" option is clicked', () => {
+    const { editorView } = editor(doc(p('text')));
+
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        placeholderTextEnabled={true}
+        editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
+      />,
+    );
+
+    toolbarOption.find(ToolbarButton).simulate('click');
+    const button = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Placeholder Text') > -1);
+    button.simulate('click');
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.placeholder.button',
+    );
+    toolbarOption.unmount();
+  });
+
   describe('Options in insert toolbar', () => {
     it('should have table option if tableSupported is true', () => {
       const { editorView } = editor(doc(p('text')));
@@ -391,6 +413,65 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       const items = toolbarOption.find(DropdownMenu).prop('items');
       expect((items[0] as any).items.length).toEqual(3);
       toolbarOption.unmount();
+    });
+
+    it('should add custom items passed to the plus menu', () => {
+      const { editorView } = editor(doc(p('text')));
+
+      editorActions.appendText = jest.fn();
+
+      const customItems = [
+        {
+          content: 'Custom A',
+          value: { name: 'custom-a' },
+          tooltipDescription: 'Custom item a',
+          tooltipPosition: 'right',
+          onClick: editorActions => {
+            editorActions.appendText('adding custom-a');
+          },
+        },
+        {
+          content: 'Custom B',
+          value: { name: 'custom-b' },
+          tooltipDescription: 'Custom item b',
+          tooltipPosition: 'right',
+          onClick: editorActions => {
+            editorActions.appendText('adding custom-b');
+          },
+        },
+      ];
+
+      const plusMenu = mount(
+        <ToolbarInsertBlock
+          editorView={editorView}
+          editorActions={editorActions}
+          buttons={0}
+          isReducedSpacing={false}
+          insertMenuItems={customItems}
+        />,
+      );
+
+      const items = plusMenu.find(DropdownMenu).prop('items');
+      expect((items[0] as any).items.length).toEqual(2);
+
+      const onItemActivated = plusMenu
+        .find(DropdownMenu)
+        .prop('onItemActivated');
+
+      if (onItemActivated) {
+        onItemActivated.call(
+          {
+            props: {
+              editorActions: editorActions,
+              insertMenuItems: customItems,
+            },
+          },
+          { item: customItems[0] },
+        );
+      }
+
+      expect(editorActions.appendText).toHaveBeenCalledWith('adding custom-a');
+      plusMenu.unmount();
     });
   });
 });

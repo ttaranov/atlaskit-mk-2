@@ -1,8 +1,4 @@
-import {
-  ContextConfig as MediaContextConfig,
-  MediaProvider,
-  MediaStateManager,
-} from '@atlaskit/media-core';
+import { ContextConfig as MediaContextConfig } from '@atlaskit/media-core';
 import {
   defaultCollectionName,
   StoryBookAuthProvider,
@@ -11,6 +7,7 @@ import {
   defaultServiceHost,
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
+import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
 export interface MediaProviderFactoryConfig {
   serviceHost?: string;
@@ -33,7 +30,6 @@ export function storyMediaProviderFactory(
     serviceHost,
     collectionName,
     stateManager,
-    dropzoneContainer,
     includeUploadContext,
     includeLinkCreateContext,
     includeUserAuthProvider,
@@ -42,10 +38,7 @@ export function storyMediaProviderFactory(
 
   return Promise.resolve<MediaProvider>({
     stateManager,
-    uploadParams: {
-      collection,
-      dropzoneContainer,
-    },
+    uploadParams: { collection },
     viewContext: Promise.resolve<MediaContextConfig>({
       serviceHost: serviceHost || defaultParams.serviceHost,
       authProvider: StoryBookAuthProvider.create(false),

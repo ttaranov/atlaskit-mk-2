@@ -4,7 +4,7 @@ import {
   code,
   p,
   strong,
-  makeEditor,
+  createEditor,
   panel,
   blockquote,
   h1,
@@ -18,22 +18,33 @@ import {
   media,
   mediaGroup,
   mediaSingle,
-  defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { toggleMark } from 'prosemirror-commands';
 
 import {
   isMarkTypeAllowedInCurrentSelection,
   areBlockTypesDisabled,
-  moveCursorToTheEnd,
   isEmptyNode,
 } from '../../src/utils';
+import mediaPlugin from '../../src/editor/plugins/media';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
+import panelPlugin from '../../src/editor/plugins/panel';
+import listPlugin from '../../src/editor/plugins/lists';
+import mentionsPlugin from '../../src/editor/plugins/mentions';
+import tasksAndDecisionsPlugin from '../../src/editor/plugins/tasks-and-decisions';
 
 describe('@atlaskit/editore-core/utils', () => {
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      schema: defaultSchema,
+      editorPlugins: [
+        mediaPlugin({ allowMediaSingle: true }),
+        codeBlockPlugin,
+        panelPlugin,
+        listPlugin,
+        mentionsPlugin,
+        tasksAndDecisionsPlugin,
+      ],
     });
 
   describe('#isMarkTypeAllowedInCurrentSelection', () => {
@@ -175,38 +186,23 @@ describe('@atlaskit/editore-core/utils', () => {
   describe('#areBlockTypesDisabled', () => {
     it('should return true is selection has a blockquote', () => {
       const { editorView } = editor(
-        doc(blockquote(p('te{<}xt')), panel(p('te{>}xt'))),
+        doc(blockquote(p('te{<}xt')), panel()(p('te{>}xt'))),
       );
       const result = areBlockTypesDisabled(editorView.state);
       expect(result).toBe(true);
     });
 
     it('should return false is selection has no blockquote', () => {
-      const { editorView } = editor(doc(p('te{<}xt'), panel(p('te{>}xt'))));
+      const { editorView } = editor(doc(p('te{<}xt'), panel()(p('te{>}xt'))));
       const result = areBlockTypesDisabled(editorView.state);
       expect(result).toBe(false);
     });
   });
 
-  describe('#moveCursorToTheEnd', () => {
-    it('should move cursor to the end of a document', () => {
-      const { editorView, refs: { endPos } } = editor(
-        doc(p('Som{<>}e text after the cursor{endPos}')),
-      );
-      moveCursorToTheEnd(editorView);
-      expect(typeof endPos).toBe('number');
-      expect(editorView.state.selection.anchor).toBe(endPos);
-    });
-    it('should not blow up on empty document', () => {
-      const { editorView, refs: { endPos } } = editor(doc(p('{<>}{endPos}')));
-      moveCursorToTheEnd(editorView);
-      expect(typeof endPos).toBe('number');
-      expect(editorView.state.selection.anchor).toBe(endPos);
-    });
-  });
-
   describe('#isEmptyNode', () => {
-    const checkEmptyNode = isEmptyNode(defaultSchema);
+    const { editorView } = editor(doc(p('')));
+    const checkEmptyNode = node =>
+      isEmptyNode(editorView.state.schema)(node(editorView.state.schema));
 
     it('it should return true for empty paragraph', () => {
       expect(checkEmptyNode(p())).toBeTruthy();
@@ -240,10 +236,10 @@ describe('@atlaskit/editore-core/utils', () => {
     });
 
     it('it should return true for empty panel', () => {
-      expect(checkEmptyNode(panel(p()))).toBeTruthy();
+      expect(checkEmptyNode(panel()(p('')))).toBeTruthy();
     });
     it('it should return false for non-empty panel', () => {
-      expect(checkEmptyNode(panel(p('Hello! - A')))).toBeFalsy();
+      expect(checkEmptyNode(panel()(p('Hello! - A')))).toBeFalsy();
     });
 
     it('it should return true for empty unordered list', () => {
@@ -261,48 +257,52 @@ describe('@atlaskit/editore-core/utils', () => {
     });
 
     it('it should return true for empty task list', () => {
-      expect(checkEmptyNode(taskList()(taskItem()(p())))).toBeTruthy();
+      expect(checkEmptyNode(taskList()(taskItem()('')))).toBeTruthy();
     });
     it('it should return false for non-empty task list', () => {
-      expect(checkEmptyNode(taskList()(taskItem()(p('do it!'))))).toBeFalsy();
+      expect(checkEmptyNode(taskList()(taskItem()('do it!')))).toBeFalsy();
     });
 
     it('it should return true for empty decision list', () => {
-      expect(checkEmptyNode(decisionList()(decisionItem()(p())))).toBeTruthy();
+      expect(checkEmptyNode(decisionList()(decisionItem()('')))).toBeTruthy();
     });
     it('it should return false for non-empty decision list', () => {
       expect(
-        checkEmptyNode(decisionList()(decisionItem()(p('done!')))),
+        checkEmptyNode(decisionList()(decisionItem()('done!'))),
       ).toBeFalsy();
     });
 
     it('it should return false for any mediaGroup', () => {
       expect(
         checkEmptyNode(
-          mediaGroup(media({ id: '123', type: 'file', collection: 'test' })),
+          mediaGroup(media({ id: '123', type: 'file', collection: 'test' })()),
         ),
       ).toBeFalsy();
     });
     it('it should return false for any mediaSingle', () => {
       expect(
         checkEmptyNode(
-          mediaSingle()(media({ id: '123', type: 'file', collection: 'test' })),
+          mediaSingle()(
+            media({ id: '123', type: 'file', collection: 'test' })(),
+          ),
         ),
       ).toBeFalsy();
     });
 
     it('it should return true for empty doc', () => {
-      expect(checkEmptyNode(doc(p()))).toBeTruthy();
+      expect(checkEmptyNode(doc(p('')))).toBeTruthy();
     });
     it('it should return true for empty doc with empty panel', () => {
-      expect(checkEmptyNode(doc(panel(p())))).toBeTruthy();
+      expect(checkEmptyNode(doc(panel()(p(''))))).toBeTruthy();
     });
     it('it should return true for empty doc with empty heading', () => {
-      expect(checkEmptyNode(doc(panel(h1())))).toBeTruthy();
+      expect(checkEmptyNode(doc(panel()(h1())))).toBeTruthy();
     });
     it('it should return true for empty doc with multiple empty blocks', () => {
       expect(
-        checkEmptyNode(doc(panel(p()), h1(), code_block()(), ul(li(p())))),
+        checkEmptyNode(
+          doc(panel()(p('')), h1(), code_block()(), ul(li(p('')))),
+        ),
       ).toBeTruthy();
     });
 
@@ -310,19 +310,24 @@ describe('@atlaskit/editore-core/utils', () => {
       expect(checkEmptyNode(doc(p('hello')))).toBeFalsy();
     });
     it('it should return false for non-empty doc', () => {
-      expect(checkEmptyNode(doc(p(), h1('Hey!')))).toBeFalsy();
+      expect(checkEmptyNode(doc(p(''), h1('Hey!')))).toBeFalsy();
     });
     it('it should return false for non-empty doc with multiple empty blocks', () => {
       expect(
         checkEmptyNode(
-          doc(p('?'), panel(p()), h1(), code_block()(), ul(li(p()))),
+          doc(p('?'), panel()(p('')), h1(), code_block()(), ul(li(p()))),
         ),
       ).toBeFalsy();
     });
 
     it('it should throw for unknown nodes', () => {
       expect(() =>
-        checkEmptyNode({ type: { name: 'unknown' } } as any),
+        checkEmptyNode((() =>
+          ({
+            type: {
+              name: 'unknown',
+            },
+          } as any)) as any),
       ).toThrow('unknown node is not implemented');
     });
   });

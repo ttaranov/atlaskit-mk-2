@@ -74,7 +74,7 @@ const headers = {
 };
 const secondaryActions = [
   {
-    href: 'https://bitbucket.org/atlassian/atlaskit',
+    href: 'https://bitbucket.org/atlassian/atlaskit-mk-2',
     icon: BitbucketIcon,
     label: 'Atlaskit Repository',
   },
@@ -153,6 +153,7 @@ export default class Nav extends Component<{}, State> {
               .replace('/mk-2', '')
               .split('/')
               .filter(p => p)[0];
+
             const header = headers[headerKey];
 
             const groups = (

@@ -10,3 +10,4 @@ export const WIDTH_ENUM = {
   },
   defaultValue: 'medium',
 };
+export const gutter = 60;

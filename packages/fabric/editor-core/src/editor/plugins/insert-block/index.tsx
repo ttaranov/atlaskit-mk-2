@@ -10,6 +10,7 @@ import { stateKey as hyperlinkStateKey } from '../../../plugins/hyperlink';
 import { stateKey as mentionStateKey } from '../../../plugins/mentions';
 import { stateKey as tablesStateKey } from '../../../plugins/table';
 import { stateKey as imageUploadStateKey } from '../../../plugins/image-upload';
+import { pluginKey as placeholderTextStateKey } from '../../../editor/plugins/placeholder-text';
 import {
   pluginKey as macroStateKey,
   MacroState,
@@ -37,13 +38,19 @@ const toolbarSizeToButtons = toolbarSize => {
   }
 };
 
-const insertBlockPlugin: EditorPlugin = {
+export interface InsertBlockOptions {
+  insertMenuItems?: any;
+}
+
+const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
+    editorActions,
     eventDispatcher,
     providerFactory,
     popupsMountPoint,
     popupsBoundariesElement,
+    popupsScrollableElement,
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
@@ -64,6 +71,7 @@ const insertBlockPlugin: EditorPlugin = {
             emojiState: emojiStateKey,
             dateState: dateStateKey,
             imageUpload: imageUploadStateKey,
+            placeholderTextState: placeholderTextStateKey,
           }}
           render={({
             blockTypeState = {} as BlockTypeState,
@@ -75,6 +83,7 @@ const insertBlockPlugin: EditorPlugin = {
             emojiState,
             dateState,
             imageUpload,
+            placeholderTextState,
           }) => (
             <ToolbarInsertBlock
               buttons={buttons}
@@ -86,6 +95,9 @@ const insertBlockPlugin: EditorPlugin = {
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
               dateEnabled={!!dateState}
+              placeholderTextEnabled={
+                placeholderTextState && placeholderTextState.allowInserting
+              }
               insertMentionQuery={
                 mentionsState && mentionsState.insertMentionQuery
               }
@@ -116,6 +128,9 @@ const insertBlockPlugin: EditorPlugin = {
               macroProvider={macroState.macroProvider}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
+              insertMenuItems={options.insertMenuItems}
+              editorActions={editorActions}
             />
           )}
         />
@@ -130,6 +145,6 @@ const insertBlockPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default insertBlockPlugin;

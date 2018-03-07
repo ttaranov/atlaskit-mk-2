@@ -21,6 +21,12 @@ export const Button = styled.button`
   margin: 0;
   padding: 0;
 
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
   &:focus {
     box-shadow: 0 0 0 2px ${focusColor};
     outline: none;
@@ -33,11 +39,5 @@ export const Button = styled.button`
       box-shadow: 0 0 0 2px ${focusRingColor};
       outline: none;
     }
-  }
-
-  &::-moz-focus-inner {
-    border: 0;
-    margin: 0;
-    padding: 0;
   }
 `;

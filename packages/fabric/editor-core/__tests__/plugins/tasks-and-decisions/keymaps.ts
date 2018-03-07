@@ -1,6 +1,5 @@
-import tasksAndDecisionsPlugins from '../../../src/plugins/tasks-and-decisions';
 import {
-  makeEditor,
+  createEditor,
   doc,
   p,
   decisionList,
@@ -9,8 +8,8 @@ import {
   taskList,
   taskItem,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory, uuid } from '@atlaskit/editor-common';
+import { uuid } from '@atlaskit/editor-common';
+import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -22,13 +21,9 @@ describe('tasks and decisions - keymaps', () => {
   });
 
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: tasksAndDecisionsPlugins(
-        defaultSchema,
-        {},
-        new ProviderFactory(),
-      ),
+      editorPlugins: [tasksAndDecisionsPlugin],
     });
 
   describe('decisions', () => {

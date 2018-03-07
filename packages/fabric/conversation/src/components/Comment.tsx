@@ -6,11 +6,15 @@ import AkComment, {
   CommentAction,
   CommentTime,
 } from '@atlaskit/comment';
+import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
+import { WithProviders, ProviderFactory } from '@atlaskit/editor-common';
+import { ResourcedReactions } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
+import styled from 'styled-components';
 import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { HttpError } from '../api/HttpError';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -20,19 +24,33 @@ export interface SharedProps {
   comments?: CommentType[];
 
   // Dispatch
-  onAddComment?: (conversationId: string, parentId: string, value: any) => void;
+  onAddComment?: (
+    conversationId: string,
+    parentId: string,
+    value: any,
+    localId?: string,
+  ) => void;
   onUpdateComment?: (
     conversationId: string,
     commentId: string,
     value: any,
   ) => void;
   onDeleteComment?: (conversationId: string, commentId: string) => void;
+  onRevertComment?: (conversationId: string, commentId: string) => void;
+  onCancelComment?: (conversationId: string, commentId: string) => void;
+  onCancel?: () => void;
 
   // Provider
   dataProviders?: ProviderFactory;
 
   // Event Hooks
   onUserClick?: (user: User) => void;
+  onRetry?: (localId?: string) => void;
+
+  // Editor
+  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+
+  containerId?: string;
 }
 
 export interface Props extends SharedProps {
@@ -43,11 +61,34 @@ export interface Props extends SharedProps {
 export interface State {
   isEditing?: boolean;
   isReplying?: boolean;
+  lastDispatch?: {
+    handler: any;
+    args: any[];
+  };
 }
 
 export const DeletedMessage = () => <em>Comment deleted by the author</em>;
 
-export default class Comment extends React.PureComponent<Props, State> {
+const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
+  if (oldComment.state !== newComment.state) {
+    return true;
+  }
+
+  if (oldComment.deleted !== newComment.deleted) {
+    return true;
+  }
+
+  return false;
+};
+
+const Reactions: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
+  height: 20px;
+  & > div {
+    height: 20px;
+  }
+`;
+
+export default class Comment extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -56,6 +97,55 @@ export default class Comment extends React.PureComponent<Props, State> {
     };
   }
 
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const { isEditing, isReplying } = this.state;
+
+    if (
+      nextState.isEditing !== isEditing ||
+      nextState.isReplying !== isReplying
+    ) {
+      return true;
+    }
+
+    if (commentChanged(this.props.comment, nextProps.comment)) {
+      return true;
+    }
+
+    const { comments: oldComments = [] } = this.props;
+    const { comments: newComments = [] } = nextProps;
+
+    if (oldComments.length !== newComments.length) {
+      return true;
+    }
+
+    if (
+      newComments.some(newComment => {
+        const [oldComment] = oldComments.filter(
+          oldComment =>
+            oldComment.commentId === newComment.commentId ||
+            oldComment.localId === newComment.localId,
+        );
+        return commentChanged(oldComment, newComment);
+      })
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private dispatch = (dispatch: string, ...args: any[]) => {
+    const handler = this.props[dispatch];
+
+    if (handler) {
+      handler.apply(handler, args);
+
+      this.setState({
+        lastDispatch: { handler: dispatch, args },
+      });
+    }
+  };
+
   private onReply = () => {
     this.setState({
       isReplying: true,
@@ -63,13 +153,9 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private onSaveReply = async (value: any) => {
-    const { conversationId, comment, onAddComment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onAddComment) {
-      return;
-    }
-
-    onAddComment(conversationId, comment.commentId, value);
+    this.dispatch('onAddComment', conversationId, comment.commentId, value);
 
     this.setState({
       isReplying: false,
@@ -83,13 +169,9 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private onDelete = () => {
-    const { onDeleteComment, conversationId, comment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onDeleteComment) {
-      return;
-    }
-
-    onDeleteComment(conversationId, comment.commentId);
+    this.dispatch('onDeleteComment', conversationId, comment.commentId);
   };
 
   private onEdit = () => {
@@ -99,13 +181,9 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private onSaveEdit = async (value: any) => {
-    const { conversationId, comment, onUpdateComment } = this.props;
+    const { conversationId, comment } = this.props;
 
-    if (!onUpdateComment) {
-      return;
-    }
-
-    onUpdateComment(conversationId, comment.commentId, value);
+    this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
     this.setState({
       isEditing: false,
@@ -116,6 +194,32 @@ export default class Comment extends React.PureComponent<Props, State> {
     this.setState({
       isEditing: false,
     });
+  };
+
+  private onRequestCancel = () => {
+    const { comment, onCancel } = this.props;
+
+    // Invoke optional onCancel hook
+    if (onCancel) {
+      onCancel();
+    }
+
+    this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
+  };
+
+  private onRequestRetry = () => {
+    const { lastDispatch } = this.state;
+    const { onRetry, comment } = this.props;
+
+    if (onRetry && comment.isPlaceholder) {
+      return onRetry(comment.localId);
+    }
+
+    if (!lastDispatch) {
+      return;
+    }
+
+    this.dispatch(lastDispatch.handler, ...lastDispatch.args);
   };
 
   /**
@@ -130,7 +234,7 @@ export default class Comment extends React.PureComponent<Props, State> {
   };
 
   private getContent() {
-    const { comment, dataProviders, user } = this.props;
+    const { comment, dataProviders, user, renderEditor } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -147,6 +251,7 @@ export default class Comment extends React.PureComponent<Props, State> {
           onCancel={this.onCancelEdit}
           dataProviders={dataProviders}
           user={user}
+          renderEditor={renderEditor}
         />
       );
     }
@@ -166,6 +271,14 @@ export default class Comment extends React.PureComponent<Props, State> {
       user,
       onUserClick,
       dataProviders,
+      onAddComment,
+      onUpdateComment,
+      onDeleteComment,
+      onRevertComment,
+      onRetry,
+      onCancel,
+      renderEditor,
+      containerId,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -174,15 +287,21 @@ export default class Comment extends React.PureComponent<Props, State> {
 
     return comments.map(child => (
       <CommentContainer
-        key={child.commentId}
+        key={child.localId}
         comment={child}
         user={user}
         conversationId={conversationId}
-        onAddComment={this.props.onAddComment}
-        onUpdateComment={this.props.onUpdateComment}
-        onDeleteComment={this.props.onDeleteComment}
+        onAddComment={onAddComment}
+        onUpdateComment={onUpdateComment}
+        onDeleteComment={onDeleteComment}
+        onRevertComment={onRevertComment}
+        onRetry={onRetry}
+        onCancel={onCancel}
         onUserClick={onUserClick}
         dataProviders={dataProviders}
+        renderComment={props => <Comment {...props} />}
+        renderEditor={renderEditor}
+        containerId={containerId}
       />
     ));
   }
@@ -193,7 +312,7 @@ export default class Comment extends React.PureComponent<Props, State> {
       return null;
     }
 
-    const { dataProviders, user } = this.props;
+    const { dataProviders, user, renderEditor } = this.props;
 
     return (
       <Editor
@@ -202,35 +321,96 @@ export default class Comment extends React.PureComponent<Props, State> {
         onSave={this.onSaveReply}
         dataProviders={dataProviders}
         user={user}
+        renderEditor={renderEditor}
       />
     );
   }
 
-  render() {
-    const { comment, user, onUserClick } = this.props;
+  private getActions() {
+    const { comment, user, dataProviders, containerId } = this.props;
     const { isEditing } = this.state;
-    const { createdBy, state: commentState } = comment;
     const canReply = !!user && !isEditing && !comment.deleted;
-    let actions;
 
-    if (canReply) {
+    if (!canReply) {
+      return undefined;
+    }
+
+    const { createdBy, commentAri } = comment;
+    let actions = [
+      <CommentAction key="reply" onClick={this.onReply}>
+        Reply
+      </CommentAction>,
+    ];
+
+    if (createdBy && user && user.id === createdBy.id) {
       actions = [
-        <CommentAction key="reply" onClick={this.onReply}>
-          Reply
+        ...actions,
+        <CommentAction key="edit" onClick={this.onEdit}>
+          Edit
+        </CommentAction>,
+        <CommentAction key="delete" onClick={this.onDelete}>
+          Delete
         </CommentAction>,
       ];
+    }
 
-      if (createdBy && user && user.id === createdBy.id) {
-        actions = [
-          ...actions,
-          <CommentAction key="edit" onClick={this.onEdit}>
-            Edit
-          </CommentAction>,
-          <CommentAction key="delete" onClick={this.onDelete}>
-            Delete
+    if (
+      containerId &&
+      commentAri &&
+      dataProviders &&
+      dataProviders.hasProvider('reactionsProvider') &&
+      dataProviders.hasProvider('emojiProvider')
+    ) {
+      actions = [
+        ...actions,
+        <WithProviders
+          key="reactions"
+          providers={['emojiProvider', 'reactionsProvider']}
+          providerFactory={dataProviders}
+          renderNode={({ emojiProvider, reactionsProvider }) => (
+            <Reactions>
+              <ResourcedReactions
+                containerAri={containerId}
+                ari={commentAri}
+                emojiProvider={emojiProvider}
+                reactionsProvider={reactionsProvider}
+              />
+            </Reactions>
+          )}
+        />,
+      ];
+    }
+
+    return actions;
+  }
+
+  render() {
+    const { comment, onUserClick } = this.props;
+    const { createdBy, state: commentState, error } = comment;
+    const errorProps: {
+      actions?: any[];
+      message?: string;
+    } = {};
+
+    if (error) {
+      errorProps.actions = [];
+
+      if ((error as HttpError).canRetry) {
+        errorProps.actions = [
+          <CommentAction key="retry" onClick={this.onRequestRetry}>
+            Retry
           </CommentAction>,
         ];
       }
+
+      errorProps.actions = [
+        ...errorProps.actions,
+        <CommentAction key="cancel" onClick={this.onRequestCancel}>
+          Cancel
+        </CommentAction>,
+      ];
+
+      errorProps.message = error.message;
     }
 
     const comments = this.renderComments();
@@ -260,9 +440,12 @@ export default class Comment extends React.PureComponent<Props, State> {
             })}
           </CommentTime>
         }
-        actions={actions}
+        actions={this.getActions()}
         content={this.getContent()}
         isSaving={commentState === 'SAVING'}
+        isError={commentState === 'ERROR'}
+        errorActions={errorProps.actions}
+        errorIconLabel={errorProps.message}
       >
         {editor || comments ? (
           <div>

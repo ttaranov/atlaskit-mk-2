@@ -3,20 +3,22 @@ import {
   code,
   textColor,
   p,
-  makeEditor,
+  createEditor,
   a,
   strong,
 } from '@atlaskit/editor-test-helpers';
-import textColorPlugins, {
+import {
   TextColorState,
+  stateKey as textColorPluginKey,
 } from '../../../src/plugins/text-color';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+import textColorPlugin from '../../../src/editor/plugins/text-color';
 
 describe('text-color', () => {
   const editor = (doc: any) =>
-    makeEditor<TextColorState>({
+    createEditor<TextColorState>({
       doc,
-      plugins: textColorPlugins(defaultSchema),
+      editorPlugins: [textColorPlugin],
+      pluginKey: textColorPluginKey,
     });
 
   const testColor1 = '#97a0af';

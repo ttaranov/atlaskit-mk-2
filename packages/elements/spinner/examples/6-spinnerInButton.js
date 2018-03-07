@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Button from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
+import Spinner from '../src';
 
 type State = {
   isLoading: boolean,
@@ -37,8 +37,7 @@ class SpinnerButton extends React.PureComponent<{}, State> {
             onComplete={this.completeLoad}
           />
         }
-        isDisabled={isLoading}
-        onClick={this.fetchStuff}
+        onClick={!isLoading ? this.fetchStuff : undefined}
       >
         Load something
       </Button>

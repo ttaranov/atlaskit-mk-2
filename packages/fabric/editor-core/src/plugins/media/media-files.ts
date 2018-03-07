@@ -1,7 +1,6 @@
 import { Node as PMNode, NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { MediaState } from '@atlaskit/media-core';
 import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 
 import {
@@ -12,6 +11,7 @@ import {
   startPositionOfParent,
   setNodeSelection,
   setTextSelection,
+  isTableCell,
 } from '../../utils';
 import analyticsService from '../../analytics/service';
 import {
@@ -22,6 +22,7 @@ import {
   isInsidePotentialEmptyParagraph,
 } from './utils';
 import { copyOptionalAttrsFromMediaState } from './media-common';
+import { MediaState } from './types';
 
 export interface Range {
   start: number;
@@ -53,8 +54,10 @@ export const insertMediaGroupNode = (
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
   if (
-    atTheEndOfDoc(state) &&
-    (!posOfPreceedingMediaGroup(state) || isSelectionNonMediaBlockNode(state))
+    isTableCell(state) ||
+    (atTheEndOfDoc(state) &&
+      (!posOfPreceedingMediaGroup(state) ||
+        isSelectionNonMediaBlockNode(state)))
   ) {
     const paragraphInsertPos = isSelectionNonMediaBlockNode(state)
       ? $to.pos

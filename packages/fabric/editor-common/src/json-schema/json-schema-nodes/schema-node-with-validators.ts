@@ -4,14 +4,11 @@ export interface Indexed {
   [key: string]: number | string | boolean | undefined;
 }
 
-export default abstract class SchemaNodeWithVadators<
+export default abstract class SchemaNodeWithValidators<
   T extends Indexed
 > extends SchemaNode {
-  validators: T;
-
-  constructor(type: NodeType, validatiors: T) {
+  constructor(type: NodeType, protected validators: T) {
     super(type);
-    this.validators = validatiors;
   }
 
   mergeValidationInfo(keys: [keyof T], obj: any) {

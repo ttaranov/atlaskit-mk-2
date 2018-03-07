@@ -1,5 +1,17 @@
 # @atlaskit/inline-message
 
+## 3.2.1
+- [patch] added truncating logic for text in inline message [0b59d44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b59d44)
+
+## 3.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 3.1.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 3.1.2
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 3.1.1
 - [patch] Resolved low hanging flow errors in field-base field-text comment icon item and website, $ [007de27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/007de27)
 

@@ -1,10 +1,8 @@
-import { Conversation, User } from '../model';
+import { createStore as createReduxStore, Store, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { reducers } from './reducers';
 
-export interface Store {
-  getState(): undefined | State;
-  dispatch(action: Action): void;
-  subscribe(handler: Handler): void;
-}
+import { Conversation, User } from '../model';
 
 export interface State {
   conversations: Conversation[];
@@ -16,39 +14,10 @@ export interface Action {
   payload?: any;
 }
 
-export type Dispatch = (action: Action) => void;
-export type Handler = (state: State) => void;
-export interface Reducer {
-  [key: string]: (state: State, action: Action) => State;
+export type Handler = (state: State | undefined) => void;
+
+export default function createStore(
+  initialState?: State,
+): Store<State | undefined> {
+  return createReduxStore(reducers, initialState, applyMiddleware(thunk));
 }
-
-export const createStore = (
-  reducer: Reducer,
-  initialState: State = { conversations: [] },
-) => {
-  let subscribers: Handler[] = [];
-  let state: State = initialState;
-
-  return {
-    getState() {
-      return state;
-    },
-
-    dispatch(action: Action) {
-      if (!reducer[action.type]) {
-        return;
-      }
-
-      state = reducer[action.type](state, action);
-      subscribers.forEach(cb => cb(state));
-    },
-
-    subscribe(handler: Handler) {
-      subscribers.push(handler);
-    },
-
-    unsubscribe(handler: Handler) {
-      subscribers = subscribers.filter(h => h !== handler);
-    },
-  };
-};

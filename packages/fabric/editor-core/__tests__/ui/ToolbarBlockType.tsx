@@ -9,20 +9,23 @@ import AkButton from '@atlaskit/button';
 import {
   doc,
   p,
-  makeEditor,
+  createEditor,
   code_block,
   blockquote,
   panel,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../src/analytics';
+import panelPlugin from '../../src/editor/plugins/panel';
+import listPlugin from '../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../src/editor/plugins/code-block';
 
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: [...blockTypePluginsSet],
+      editorPlugins: [panelPlugin, listPlugin, codeBlockPlugin],
     });
 
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
@@ -39,7 +42,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   });
 
   it('should render disabled ToolbarButton if current selection is blockquote', () => {
-    const { editorView } = editor(doc(blockquote('te{<>}xt')));
+    const { editorView } = editor(doc(blockquote(p('te{<>}xt'))));
     const toolbarOption = mount(
       <ToolbarBlockType
         pluginState={blockTypePluginsSet[0].getState(editorView.state)}
@@ -52,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   });
 
   it('should not render disabled ToolbarButton if current selection is panel', () => {
-    const { editorView } = editor(doc(panel(p('te{<>}xt'))));
+    const { editorView } = editor(doc(panel()(p('te{<>}xt'))));
     const toolbarOption = mount(
       <ToolbarBlockType
         pluginState={blockTypePluginsSet[0].getState(editorView.state)}
@@ -163,6 +166,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       { value: 'heading3', name: 'Heading 3' },
       { value: 'heading4', name: 'Heading 4' },
       { value: 'heading5', name: 'Heading 5' },
+      { value: 'heading6', name: 'Heading 6' },
     ].forEach(blockType => {
       it(`should trigger analyticsService.trackEvent when ${
         blockType.name

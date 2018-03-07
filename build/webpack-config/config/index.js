@@ -1,10 +1,12 @@
 // @flow
-
+const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -14,7 +16,19 @@ module.exports = function createWebpackConfig(
     includePatterns = false,
     env = 'development',
     cwd = process.cwd(),
-  } /*: { entry: string, host?: string, port?: number, globs?: Array<string>, cwd?: string, includePatterns: boolean, env: string } */,
+    noMinimize = false,
+    report = false,
+  } /*: {
+    entry: string,
+    host?: string,
+    port?: number,
+    globs?: Array<string>,
+    cwd?: string,
+    includePatterns: boolean,
+    env: string,
+    noMinimize?: boolean,
+    report?: boolean,
+  }*/,
 ) {
   return {
     entry: {
@@ -27,7 +41,23 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), entry),
             ]
           : path.join(cwd, entry),
-      vendor: ['react', 'react-dom', 'styled-components', 'highlight.js'],
+      examples:
+        env === 'development' && host && port
+          ? [
+              `${require.resolve(
+                'webpack-dev-server/client',
+              )}?http://${host}:${port}/`,
+              path.join(process.cwd(), './src/examples-entry.js'),
+            ]
+          : path.join(cwd, './src/examples-entry.js'),
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'react-router',
+        'react-router-dom',
+      ],
     },
     output: {
       filename: '[name].js',
@@ -63,6 +93,9 @@ module.exports = function createWebpackConfig(
               'description',
               'atlaskit',
               'maintainers',
+              'peerDependencies',
+              'devDependencies',
+              'dependencies',
             ],
           },
         },
@@ -138,62 +171,174 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    plugins: [
-      //
-      // Order of CommonsChunkPlugins is important,
-      // each next one of them can drag some dependencies from the previous ones.
-      //
-
-      // Joins all vendor entry point packages into 1 chunk
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks: Infinity,
-      }),
-
-      new webpack.optimize.CommonsChunkPlugin({
-        async: 'used-two-or-more-times',
-        minChunks(module, count) {
-          return count >= 2;
-        },
-      }),
-
-      new webpack.optimize.CommonsChunkPlugin({
-        async: 'editor-packages',
-        minChunks(module, count) {
-          const context = module.context;
-          return (
-            context &&
-            (context.includes('fabric/editor') ||
-              context.includes('fabric/renderer') ||
-              context.includes('prosemirror'))
-          );
-        },
-      }),
-
-      new webpack.optimize.CommonsChunkPlugin({
-        async: 'media-packages',
-        minChunks(module, count) {
-          const context = module.context;
-          return context && context.includes('fabric/media');
-        },
-      }),
-
-      new webpack.optimize.CommonsChunkPlugin({
-        async: 'elements-packages',
-        minChunks(module, count) {
-          const context = module.context;
-          return context && context.includes('elements/');
-        },
-      }),
-
-      new HtmlWebpackPlugin({
-        template: path.join(cwd, 'public/index.html.ejs'),
-        favicon: path.join(cwd, 'public/favicon.ico'),
-      }),
-
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': `"${env}"`,
-      }),
-    ],
+    plugins: plugins({ cwd, env, noMinimize, report }),
   };
+};
+
+function plugins(
+  {
+    cwd,
+    env,
+    noMinimize,
+    report,
+  } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
+) {
+  const plugins = [
+    new webpack.NamedChunksPlugin(
+      chunk =>
+        chunk.name && path.isAbsolute(chunk.name) ? chunk.id : chunk.name,
+    ),
+    new webpack.NamedModulesPlugin(),
+    //
+    // Order of CommonsChunkPlugins is important,
+    // each next one of them can drag some dependencies from the previous ones.
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'async-deps',
+      minChunks(module, count) {
+        const context = module.context;
+        return (
+          count === 1 &&
+          (context &&
+            // We're intentionally excluding p-queue and rxjs-async-map from this chunk as it currently breaks our build
+            // These two packages are being used by the media-store package. Unfortunately neither of them are transpiled, and are thus breaking in ie11.
+            !context.includes('node_modules/p-queue') &&
+            (context && !context.includes('node_modules/rxjs-async-map')))
+        );
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'editor-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return (
+          context &&
+          (context.includes('fabric/editor') ||
+            context.includes('fabric/renderer') ||
+            context.includes('fabric/conversation') ||
+            context.includes('prosemirror'))
+        );
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'fabric-elements-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return (
+          context &&
+          (context.includes('fabric/mention') ||
+            context.includes('fabric/emoji') ||
+            context.includes('fabric/task-decision') ||
+            context.includes('fabric/reactions'))
+        );
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'media-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return context && context.includes('fabric/media');
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'elements-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return context && context.includes('elements/');
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common-app',
+      chunks: ['main', 'examples'],
+      minChunks(module, count) {
+        const resource = module.resource;
+        return !resource || !resource.includes('website/src/index.js');
+      },
+    }),
+
+    new HtmlWebpackPlugin({
+      template: path.join(cwd, 'public/index.html.ejs'),
+      favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['examples'],
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'examples.html',
+      template: path.join(cwd, 'public/examples.html.ejs'),
+      favicon: path.join(cwd, 'public/favicon.ico'),
+      excludeChunks: ['main'],
+    }),
+
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': `"${env}"`,
+    }),
+  ];
+
+  if (report) {
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: true,
+        generateStatsFile: true,
+        logLevel: 'error',
+      }),
+    );
+  }
+
+  if (env === 'production' && !noMinimize) {
+    plugins.push(uglify());
+  }
+
+  return plugins;
+}
+
+const uglify = () => {
+  return new UglifyJsPlugin({
+    parallel: Math.max(os.cpus().length - 1, 1),
+    uglifyOptions: {
+      compress: {
+        // Disabling following options speeds up minimization by 20 – 30s
+        // without any significant impact on a bundle size.
+        arrows: false,
+        booleans: false,
+        collapse_vars: false,
+
+        // https://product-fabric.atlassian.net/browse/MSW-436
+        comparisons: false,
+
+        computed_props: false,
+        hoist_funs: false,
+        hoist_props: false,
+        hoist_vars: false,
+        if_return: false,
+        inline: false,
+        join_vars: false,
+        keep_infinity: true,
+        loops: false,
+        negate_iife: false,
+        properties: false,
+        reduce_funcs: false,
+        reduce_vars: false,
+        sequences: false,
+        side_effects: false,
+        switches: false,
+        top_retain: false,
+        toplevel: false,
+        typeofs: false,
+        unused: false,
+
+        // Switch off all types of compression except those needed to convince
+        // react-devtools that we're using a production build
+        conditionals: true,
+        dead_code: true,
+        evaluate: true,
+      },
+      mangle: true,
+    },
+  });
 };

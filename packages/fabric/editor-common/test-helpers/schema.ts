@@ -46,6 +46,8 @@ export default createSchema({
     'inlineExtension',
     'bodiedExtension',
     'date',
+    'unknownBlock',
+    'placeholder',
   ],
   marks: [
     'em',

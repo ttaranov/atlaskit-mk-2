@@ -11,21 +11,13 @@ import {
   PluginKey,
   Transaction,
 } from 'prosemirror-state';
-import {
-  Context,
-  DefaultMediaStateManager,
-  MediaProvider,
-  MediaState,
-  MediaStateManager,
-  UploadParams,
-  ContextConfig,
-  ContextFactory,
-} from '@atlaskit/media-core';
+import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import {
   copyPrivateMediaAttributes,
   MediaType,
   MediaSingleLayout,
 } from '@atlaskit/editor-common';
+import { UploadParams } from '@atlaskit/media-picker';
 
 import analyticsService from '../../analytics/service';
 import { ErrorReporter, isImage } from '../../utils';
@@ -40,16 +32,27 @@ import {
   ReactMediaSingleNode,
 } from '../../nodeviews';
 
-import PickerFacadeType from './picker-facade';
 import { MediaPluginOptions } from './media-plugin-options';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertMediaGroupNode } from './media-files';
 import { insertMediaSingleNode } from './media-single';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import PickerFacade from './picker-facade';
+import PickerFacade, { PickerFacadeConfig } from './picker-facade';
+import {
+  MediaState,
+  MediaProvider,
+  MediaStateStatus,
+  MediaStateManager,
+} from './types';
+import DefaultMediaStateManager from './default-state-manager';
 
-const MEDIA_END_STATES = ['ready', 'error', 'cancelled'];
+export { DefaultMediaStateManager };
+export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
+
+// We get `publicId` of `file` in `processing` stage so it's possible to send
+// consumers a ADF with media-ids before ready state
+const MEDIA_RESOLVED_STATES = ['ready', 'error', 'cancelled', 'processing'];
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -63,10 +66,11 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacadeType[] = [];
-  public binaryPicker?: PickerFacadeType;
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
+  public allUploadsFinished: boolean = true;
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
@@ -79,11 +83,12 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacadeType;
-  private clipboardPicker?: PickerFacadeType;
-  private dropzonePicker?: PickerFacadeType;
+  private popupPicker?: PickerFacade;
+  private clipboardPicker?: PickerFacade;
+  private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
+  private removeOnCloseListener: () => void = () => {};
 
   constructor(
     state: EditorState,
@@ -216,6 +221,27 @@ export class MediaPluginState {
     }
   }
 
+  updateUploadStateDebounce: number | null = null;
+  updateUploadState(): void {
+    if (!this.waitForMediaUpload) {
+      return;
+    }
+
+    if (this.updateUploadStateDebounce) {
+      clearTimeout(this.updateUploadStateDebounce);
+    }
+
+    this.updateUploadStateDebounce = setTimeout(() => {
+      this.updateUploadStateDebounce = null;
+      this.allUploadsFinished = false;
+      this.notifyPluginStateSubscribers();
+      this.waitForPendingTasks().then(() => {
+        this.allUploadsFinished = true;
+        this.notifyPluginStateSubscribers();
+      });
+    }, 0);
+  }
+
   updateLayout(layout: MediaSingleLayout): void {
     this.layout = layout;
     this.notifyPluginStateSubscribers();
@@ -230,9 +256,10 @@ export class MediaPluginState {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
       const { node, offset } = docView.domFromPos(from);
-      const domElement = node.childNodes[offset].querySelector('.wrapper');
-
-      return domElement;
+      if (!node.childNodes.length) {
+        return node.parentNode;
+      }
+      return node.childNodes[offset].querySelector('.wrapper');
     }
   }
 
@@ -257,7 +284,7 @@ export class MediaPluginState {
     );
 
     mediaStates.forEach(mediaState =>
-      this.stateManager.subscribe(mediaState.id, this.handleMediaState),
+      this.stateManager.on(mediaState.id, this.handleMediaState),
     );
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
@@ -273,17 +300,14 @@ export class MediaPluginState {
       allowMediaSingle
     ) {
       mediaStates.forEach(mediaState =>
-        this.stateManager.subscribe(
-          mediaState.id,
-          this.handleMediaSingleInsertion,
-        ),
+        this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
 
     const isEndState = (state: MediaState) =>
-      state.status && MEDIA_END_STATES.indexOf(state.status) !== -1;
+      state.status && MEDIA_RESOLVED_STATES.indexOf(state.status) !== -1;
 
     this.pendingTask = mediaStates
       .filter(state => !isEndState(state))
@@ -293,12 +317,12 @@ export class MediaPluginState {
           const onStateChange = newState => {
             // When media item reaches its final state, remove listener and resolve
             if (isEndState(newState)) {
-              stateManager.unsubscribe(state.id, onStateChange);
+              stateManager.off(state.id, onStateChange);
               resolve(newState);
             }
           };
 
-          stateManager.subscribe(state.id, onStateChange);
+          stateManager.on(state.id, onStateChange);
         }).then(() => promise);
       }, this.pendingTask);
 
@@ -309,18 +333,11 @@ export class MediaPluginState {
   };
 
   handleMediaSingleInsertion = (state: MediaState) => {
-    if (state.status === 'uploading') {
+    if (state.status === 'preview') {
       const collection = this.collectionFromProvider();
       insertMediaSingleNode(this.view, state, collection);
-    } else {
-      /**
-       * There might be multiple `uploading` events for same id,
-       * introduced in 72ccc. Need to wait for other subsequent event
-       * to unsubscribe. It's ideal to have a new event for dimension but
-       * we are planning to get rid of `media-core` in near future.
-       */
-      this.stateManager.unsubscribe(state.id, this.handleMediaSingleInsertion);
     }
+    this.stateManager.off(state.id, this.handleMediaSingleInsertion);
   };
 
   insertLinks = async () => {
@@ -357,9 +374,7 @@ export class MediaPluginState {
     );
   };
 
-  splitMediaGroup = (): boolean => {
-    return splitMediaGroup(this.view);
-  };
+  splitMediaGroup = (): boolean => splitMediaGroup(this.view);
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
     const { binaryPicker } = this;
@@ -371,11 +386,20 @@ export class MediaPluginState {
     binaryPicker!.upload(url, fileName);
   };
 
+  // TODO [MSW-454]: remove this logic from Editor
+  onPopupPickerClose = () => {
+    if (this.dropzonePicker) {
+      this.dropzonePicker.activate();
+    }
+  };
+
   showMediaPicker = () => {
     if (!this.popupPicker) {
       return;
     }
-
+    if (this.dropzonePicker) {
+      this.dropzonePicker.deactivate();
+    }
     this.popupPicker.show();
   };
 
@@ -489,6 +513,7 @@ export class MediaPluginState {
     const { mediaNodes } = this;
     mediaNodes.splice(0, mediaNodes.length);
 
+    this.removeOnCloseListener();
     this.destroyPickers();
   }
 
@@ -544,9 +569,14 @@ export class MediaPluginState {
 
     this.popupPicker = undefined;
     this.binaryPicker = undefined;
+    this.clipboardPicker = undefined;
+    this.dropzonePicker = undefined;
   };
 
-  private initPickers(uploadParams: UploadParams, context: ContextConfig) {
+  private initPickers(
+    uploadParams: UploadParams,
+    contextConfig: ContextConfig,
+  ) {
     if (this.destroyed) {
       return;
     }
@@ -555,40 +585,44 @@ export class MediaPluginState {
 
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {
+      const pickerFacadeConfig: PickerFacadeConfig = {
+        uploadParams,
+        contextConfig,
+        stateManager,
+        errorReporter,
+      };
+
+      if (contextConfig.userAuthProvider) {
+        pickers.push(
+          (this.popupPicker = new PickerFacade('popup', pickerFacadeConfig, {
+            userAuthProvider: contextConfig.userAuthProvider,
+          })),
+        );
+      } else {
+        pickers.push(
+          (this.popupPicker = new PickerFacade('browser', pickerFacadeConfig)),
+        );
+      }
+
       pickers.push(
-        (this.binaryPicker = new PickerFacade(
-          'binary',
-          uploadParams,
-          context,
-          stateManager,
-          errorReporter,
-        )),
+        (this.binaryPicker = new PickerFacade('binary', pickerFacadeConfig)),
       );
-      pickers.push(
-        (this.popupPicker = new PickerFacade(
-          'popup',
-          uploadParams,
-          context,
-          stateManager,
-          errorReporter,
-        )),
-      );
+
       pickers.push(
         (this.clipboardPicker = new PickerFacade(
           'clipboard',
-          uploadParams,
-          context,
-          stateManager,
-          errorReporter,
+          pickerFacadeConfig,
         )),
       );
+
       pickers.push(
         (this.dropzonePicker = new PickerFacade(
           'dropzone',
-          uploadParams,
-          context,
-          stateManager,
-          errorReporter,
+          pickerFacadeConfig,
+          {
+            container: this.options.customDropzoneContainer,
+            headless: true,
+          },
         )),
       );
 
@@ -596,7 +630,11 @@ export class MediaPluginState {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
+
       this.dropzonePicker.onDrag(this.handleDrag);
+      this.removeOnCloseListener = this.popupPicker.onClose(
+        this.onPopupPickerClose,
+      );
     }
 
     if (this.popupPicker) {
@@ -639,8 +677,9 @@ export class MediaPluginState {
         }
         break;
 
+      case 'processing':
       case 'ready':
-        this.stateManager.unsubscribe(state.id, this.handleMediaState);
+        this.stateManager.off(state.id, this.handleMediaState);
         this.replaceTemporaryNode(state);
         break;
     }
@@ -815,6 +854,7 @@ export const createPlugin = (
 
       return {
         update: () => {
+          pluginState.updateUploadState();
           pluginState.insertLinks();
           pluginState.updateElement();
         },

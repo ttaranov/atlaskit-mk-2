@@ -1,5 +1,14 @@
 # @atlaskit/code
 
+## 3.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 3.0.6
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 3.0.5
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 3.0.4
 - [patch] Minor manual bump for packages desync'd from npm [e988c58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e988c58)
 

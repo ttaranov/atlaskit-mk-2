@@ -3,7 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.size = undefined;
+exports.Skeleton = exports.size = undefined;
+
+var _Skeleton = require('./components/Skeleton');
+
+Object.defineProperty(exports, 'Skeleton', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Skeleton).default;
+  }
+});
 
 var _Icon = require('./components/Icon');
 

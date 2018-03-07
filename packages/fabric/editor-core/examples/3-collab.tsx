@@ -24,6 +24,7 @@ import {
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 export const TitleInput = styled.input`
   border: none;
@@ -52,7 +53,7 @@ export const Content = styled.div`
       border-radius: ${akBorderRadius};
     }
   }
-}`;
+`;
 Content.displayName = 'Content';
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -101,6 +102,9 @@ class DropzoneEditorWrapper extends React.Component<
   }
 }
 
+const mediaProvider1 = storyMediaProviderFactory();
+const mediaProvider2 = storyMediaProviderFactory();
+
 export default function Example() {
   return (
     <div>
@@ -110,17 +114,20 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
-              mediaProvider={storyMediaProviderFactory({
-                dropzoneContainer: parentContainer,
-              })}
-              emojiProvider={emojiStoryData.getEmojiResource()}
+              allowTemplatePlaceholders={{ allowInserting: true }}
+              media={{
+                provider: mediaProvider1,
+                allowMediaSingle: true,
+                customDropzoneContainer: parentContainer,
+              }}
+              emojiProvider={
+                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+              }
               mentionProvider={Promise.resolve(
                 mentionStoryData.resourceProvider,
               )}
@@ -154,17 +161,20 @@ export default function Example() {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
-              mediaProvider={storyMediaProviderFactory({
-                dropzoneContainer: parentContainer,
-              })}
-              emojiProvider={emojiStoryData.getEmojiResource()}
+              allowTemplatePlaceholders={{ allowInserting: true }}
+              media={{
+                provider: mediaProvider2,
+                allowMediaSingle: true,
+                customDropzoneContainer: parentContainer,
+              }}
+              emojiProvider={
+                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+              }
               mentionProvider={Promise.resolve(
                 mentionStoryData.resourceProvider,
               )}

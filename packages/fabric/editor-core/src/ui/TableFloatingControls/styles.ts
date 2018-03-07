@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorTableToolbarSelected,
   akEditorTableBorder,
@@ -8,12 +11,21 @@ import {
 
 export const toolbarSize = 11;
 
-// tslint:disable-next-line:variable-name
-export const Container = styled.div`
+export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
+
+  .ProseMirror.table-resizing & {
+    top: 28px;
+    display: none;
+  }
+  .ProseMirror.table-resizing .with-controls & {
+    display: block;
+  }
 `;
-// tslint:disable-next-line:variable-name
-export const HeaderButtonDefault = styled.button`
+
+export const HeaderButtonDefault: ComponentClass<
+  ButtonHTMLAttributes<{}>
+> = styled.button`
   background: ${akEditorTableToolbar};
   border-top: 1px solid ${akEditorTableBorder};
   border-left: 1px solid ${akEditorTableBorder};
@@ -30,8 +42,10 @@ export const HeaderButtonDefault = styled.button`
     outline: none;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertButtonDefault = styled.div`
+
+export const InsertButtonDefault: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: absolute;
   z-index: 20;
   display: none;
@@ -46,8 +60,10 @@ export const InsertButtonDefault = styled.div`
     height: 100%;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertMarkerDefault = styled.div`
+
+export const InsertMarkerDefault: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   background-color: ${akEditorTableBorder};
   position: absolute;
   height: 4px;
@@ -57,8 +73,8 @@ export const InsertMarkerDefault = styled.div`
     background-color: ${akEditorTableBorderSelected};
   }
 `;
-// tslint:disable-next-line:variable-name
-export const LineMarkerDefault = styled.div`
+
+export const LineMarkerDefault: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: ${akEditorTableBorderSelected};
   display: none;
   position: absolute;

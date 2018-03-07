@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
+import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
 
 export type PMPluginFactory = (
@@ -22,11 +22,13 @@ export type PMPluginFactory = (
 
 export type UiComponentFactoryParams = {
   editorView: EditorView;
+  editorActions: EditorActions;
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
   disabled: boolean;
 };
 
@@ -52,12 +54,12 @@ export interface EditorPlugin {
   /*
    * List of Nodes to add to the schema. Needs to specify a rank for each node according to spec in Document Structure.
    */
-  nodes?: () => NodeConfig[];
+  nodes?: (editorProps: EditorProps) => NodeConfig[];
 
   /*
    * List of Marks to add to the schema. Needs to specify a rank for each mark according to spec in Document Structure.
    */
-  marks?: () => MarkConfig[];
+  marks?: (editorProps: EditorProps) => MarkConfig[];
 
   /*
    * Optional UI-component that lives inside the actual content-area (like mention-picker, floating toolbar for links, etc.)

@@ -2,11 +2,12 @@ import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import WithPluginState from '../../../src/editor/ui/WithPluginState';
+import { EditorPlugin } from '../../../src/editor/types/editor-plugin';
 import {
   EventDispatcher,
   createDispatch,
 } from '../../../src/editor/event-dispatcher';
-import { makeEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
 import { Plugin, PluginKey } from 'prosemirror-state';
 
 describe(name, () => {
@@ -15,18 +16,28 @@ describe(name, () => {
 
   const setTimeoutPromise = (cb, delay) =>
     new Promise(resolve => setTimeout(() => resolve(cb()), delay));
-  const createPlugin = (state, key) => {
-    return new Plugin({
-      key,
-      state: {
-        init() {
-          return state;
-        },
-        apply() {
-          return state;
-        },
+  const createPlugin = (state, key): EditorPlugin => {
+    return {
+      pmPlugins() {
+        return [
+          {
+            rank: 1,
+            plugin: () =>
+              new Plugin({
+                key,
+                state: {
+                  init() {
+                    return state;
+                  },
+                  apply() {
+                    return state;
+                  },
+                },
+              }),
+          },
+        ];
       },
-    });
+    };
   };
 
   let eventDispatcher;
@@ -41,7 +52,10 @@ describe(name, () => {
     it('should call render with current plugin state', () => {
       const pluginState = {};
       const plugin = createPlugin(pluginState, pluginKey);
-      const { editorView } = makeEditor({ doc: doc(p()), plugins: [plugin] });
+      const { editorView } = createEditor({
+        doc: doc(p()),
+        editorPlugins: [plugin],
+      });
       const wrapper = mount(
         <WithPluginState
           editorView={editorView}
@@ -63,9 +77,9 @@ describe(name, () => {
       const pluginState = {};
       const plugin = createPlugin(pluginState, pluginKey);
       const plugin2 = createPlugin(pluginState, pluginKey2);
-      const { editorView } = makeEditor({
+      const { editorView } = createEditor({
         doc: doc(p()),
-        plugins: [plugin, plugin2],
+        editorPlugins: [plugin, plugin2],
       });
       const wrapper = mount(
         <WithPluginState
@@ -101,9 +115,9 @@ describe(name, () => {
     const pluginState = {};
     const plugin = createPlugin(pluginState, pluginKey);
     const plugin2 = createPlugin(pluginState, pluginKey2);
-    const { editorView } = makeEditor({
+    const { editorView } = createEditor({
       doc: doc(p()),
-      plugins: [plugin, plugin2],
+      editorPlugins: [plugin, plugin2],
     });
     const wrapper = mount(
       <WithPluginState
@@ -134,9 +148,8 @@ describe(name, () => {
       unsubscribe: jest.fn(),
     };
     const plugin = createPlugin(pluginState, pluginKey);
-    const { editorView } = makeEditor({
-      doc: doc(p()),
-      plugins: [plugin],
+    const { editorView } = createEditor({
+      editorPlugins: [plugin],
     });
 
     const renderMock = jest.fn(() => null);
@@ -165,9 +178,9 @@ describe(name, () => {
       unsubscribe: unsubscribeMock,
     };
     const plugin = createPlugin(pluginState, pluginKey);
-    const { editorView } = makeEditor({
+    const { editorView } = createEditor({
       doc: doc(p()),
-      plugins: [plugin],
+      editorPlugins: [plugin],
     });
 
     const render = jest.fn(() => null);

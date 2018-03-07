@@ -1,13 +1,17 @@
-import tablePlugins, { TableState } from '../../../src/plugins/table';
+import {
+  TableState,
+  stateKey as tablePluginKey,
+} from '../../../src/plugins/table';
 import tableCommands from '../../../src/plugins/table/commands';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   createEvent,
   doc,
   p,
-  makeEditor,
+  createEditor,
   thEmpty,
   table,
+  tableWithAttrs,
   tr,
   td,
   th,
@@ -17,30 +21,47 @@ import {
   code,
   thCursor,
   strong,
+  mediaGroup,
+  media,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import { setTextSelection } from '../../../src/utils';
-import { analyticsService } from '../../../src/analytics';
+import { setTextSelection, setNodeSelection } from '../../../src/utils';
 import {
   selectRow,
   selectColumn,
   selectTable,
+  toggleHeaderRow,
+  toggleHeaderColumn,
+  toggleNumberColumn,
 } from '../../../src/editor/plugins/table/actions';
 import {
-  isColumnSelected,
-  isRowSelected,
+  checkIfColumnSelected,
+  checkIfRowSelected,
 } from '../../../src/editor/plugins/table/utils';
+import tablesPlugin from '../../../src/editor/plugins/table';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import { mediaPlugin } from '../../../src/editor/plugins';
 
 describe('table plugin', () => {
   const event = createEvent('event');
-  const editor = (doc: any) =>
-    makeEditor<TableState>({
+  const editor = (doc: any, trackEvent = () => {}) =>
+    createEditor<TableState>({
       doc,
-      plugins: tablePlugins(),
+      editorPlugins: [tablesPlugin, codeBlockPlugin, mediaPlugin()],
+      editorProps: {
+        analyticsHandler: trackEvent,
+        allowTables: {
+          allowNumberColumn: true,
+          allowHeaderRow: true,
+          allowHeaderColumn: true,
+        },
+      },
+      pluginKey: tablePluginKey,
     });
+
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
   });
 
   describe('subscribe', () => {
@@ -248,6 +269,7 @@ describe('table plugin', () => {
         it("it should prepend a new column and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(0);
@@ -268,6 +290,7 @@ describe('table plugin', () => {
         it("it should insert a new column in the middle and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(1);
@@ -288,6 +311,7 @@ describe('table plugin', () => {
         it("it should append a new column and move cursor inside it's first cell", () => {
           const { plugin, pluginState, editorView } = editor(
             doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(2);
@@ -315,6 +339,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(0);
@@ -338,6 +363,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(1);
@@ -363,6 +389,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
+            trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(2);
@@ -445,7 +472,7 @@ describe('table plugin', () => {
     });
   });
 
-  describe('isColumnSelected(number)', () => {
+  describe('checkIfColumnSelected(number)', () => {
     describe('when table has 3 columns', () => {
       [0, 1, 2].forEach(column => {
         describe(`when column ${column} is selected`, () => {
@@ -456,7 +483,9 @@ describe('table plugin', () => {
               );
               plugin.props.handleDOMEvents!.focus(editorView, event);
               selectColumn(column)(editorView.state, editorView.dispatch);
-              expect(isColumnSelected(column, editorView.state)).toEqual(true);
+              expect(checkIfColumnSelected(column, editorView.state)).toEqual(
+                true,
+              );
               editorView.destroy();
             });
           });
@@ -465,7 +494,7 @@ describe('table plugin', () => {
     });
   });
 
-  describe('isRowSelected(number)', () => {
+  describe('checkIfRowSelected(number)', () => {
     describe('when table has 3 rows', () => {
       [0, 1, 2].forEach(row => {
         describe(`when row ${row} is selected`, () => {
@@ -476,7 +505,7 @@ describe('table plugin', () => {
               );
               plugin.props.handleDOMEvents!.focus(editorView, event);
               selectRow(row)(editorView.state, editorView.dispatch);
-              expect(isRowSelected(row, editorView.state)).toEqual(true);
+              expect(checkIfRowSelected(row, editorView.state)).toEqual(true);
               editorView.destroy();
             });
           });
@@ -494,6 +523,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -517,6 +547,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -535,10 +566,17 @@ describe('table plugin', () => {
 
       describe('when the header row is selected', () => {
         const editorTableHeader = (doc: any) =>
-          makeEditor<TableState>({
+          createEditor<TableState>({
             doc,
-            plugins: tablePlugins({ isHeaderRowRequired: true }),
+            editorPlugins: [tablesPlugin],
+            editorProps: {
+              allowTables: {
+                isHeaderRowRequired: true,
+              },
+            },
+            pluginKey: tablePluginKey,
           });
+
         it('it should convert first following row to header if pluginState.isHeaderRowRequired is true', () => {
           const { plugin, pluginState, editorView } = editorTableHeader(
             doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
@@ -579,6 +617,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor, td({})(p('{nextPos}')), tdCursor)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -604,6 +643,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -627,6 +667,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -650,6 +691,7 @@ describe('table plugin', () => {
               p('text'),
               table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
+            trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -665,6 +707,482 @@ describe('table plugin', () => {
           editorView.destroy();
         });
       });
+    });
+  });
+
+  describe('toggleHeaderRow()', () => {
+    describe("when there's no header row yet", () => {
+      it('it should convert first row to a header row', () => {
+        // p('text') goes before table to ensure that conversion uses absolute position of cells relative to the document
+        const { editorView } = editor(
+          doc(p('text'), table(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        toggleHeaderRow(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        editorView.destroy();
+      });
+
+      describe('when header column is enabled', () => {
+        it('it should convert the rest of the cells from the first row to header cells', () => {
+          const { editorView } = editor(
+            doc(p('text'), table(tr(thCursor, tdEmpty), tr(thEmpty, tdEmpty))),
+          );
+          toggleHeaderRow(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('when number column is enabled', () => {
+        it('it should empty the first cell, start numbering from 2nd row and convert first row to a header row', () => {
+          const { editorView } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+                tr(td()(p('3')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          toggleHeaderRow(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(thEmpty, thEmpty, thEmpty),
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+    });
+
+    describe('when header row is enabled', () => {
+      it('it should convert first row to a normal row', () => {
+        const { editorView } = editor(
+          doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        toggleHeaderRow(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        editorView.destroy();
+      });
+
+      describe('when header column is enabled', () => {
+        it('it should convert the rest of the cells from the first row to normal cells', () => {
+          const { editorView } = editor(
+            doc(p('text'), table(tr(thCursor, thEmpty), tr(thEmpty, tdEmpty))),
+          );
+          toggleHeaderRow(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('when number column is enabled', () => {
+        it('it should start numbering from 1st row and convert first row to a normal row', () => {
+          const { editorView } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(thEmpty, thEmpty, thEmpty),
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          toggleHeaderRow(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+                tr(td()(p('3')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('when number column and header column are enabled', () => {
+        it('it should start numbering from 1st row and convert first row to a normal row, keeping 2nd cell of the 1st row as header', () => {
+          const { editorView } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(thEmpty, thEmpty, thEmpty),
+                tr(td()(p('1')), thEmpty, tdEmpty),
+                tr(td()(p('2')), thEmpty, tdEmpty),
+              ),
+            ),
+          );
+          toggleHeaderRow(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), thEmpty, tdEmpty),
+                tr(td()(p('2')), thEmpty, tdEmpty),
+                tr(td()(p('3')), thEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+    });
+  });
+
+  describe('toggleHeaderColumn()', () => {
+    describe("when there's no header column yet", () => {
+      it('it should convert first column to a header column', () => {
+        // p('text') goes before table to ensure that conversion uses absolute position of cells relative to the document
+        const { editorView } = editor(
+          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        toggleHeaderColumn(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+        );
+        editorView.destroy();
+      });
+
+      describe('when header row is enabled', () => {
+        it('it should convert the rest of the cells from the first column to header cells', () => {
+          const { editorView } = editor(
+            doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+          );
+          toggleHeaderColumn(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('when number column is enabled', () => {
+        it('it should convert second column to a header column', () => {
+          const { editorView } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          toggleHeaderColumn(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), thEmpty, tdEmpty),
+                tr(td()(p('2')), thEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+    });
+
+    describe('when header column is enabled', () => {
+      it('it should convert first column to a normal column', () => {
+        const { editorView } = editor(
+          doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+        );
+        toggleHeaderColumn(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        editorView.destroy();
+      });
+
+      describe('when header row is enabled', () => {
+        it('it should convert the rest of the cells from the first column to normal cells', () => {
+          const { editorView } = editor(
+            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+          );
+          toggleHeaderColumn(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+          );
+          editorView.destroy();
+        });
+      });
+
+      describe('when number column is enabled', () => {
+        it('it should convert second column to a normal column', () => {
+          const { editorView } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), thEmpty, tdEmpty),
+                tr(td()(p('2')), thEmpty, tdEmpty),
+              ),
+            ),
+          );
+          toggleHeaderColumn(editorView.state, editorView.dispatch);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+    });
+  });
+
+  describe('toggleNumberColumn()', () => {
+    describe('when number column is disabled', () => {
+      it('it should add number column before the first existing column', () => {
+        const { editorView } = editor(
+          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        toggleNumberColumn(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            p('text'),
+            tableWithAttrs({ isNumberColumnEnabled: true })(
+              tr(td()(p('1')), tdEmpty, tdEmpty),
+              tr(td()(p('2')), tdEmpty, tdEmpty),
+            ),
+          ),
+        );
+        editorView.destroy();
+      });
+    });
+
+    describe('when number column is enabled', () => {
+      it('it should remove number column', () => {
+        const { editorView } = editor(
+          doc(
+            p('text'),
+            tableWithAttrs({ isNumberColumnEnabled: true })(
+              tr(td()(p('1')), tdEmpty, tdEmpty),
+              tr(td()(p('2')), tdEmpty, tdEmpty),
+            ),
+          ),
+        );
+        toggleNumberColumn(editorView.state, editorView.dispatch);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+        );
+        editorView.destroy();
+      });
+
+      describe('when adding a new row', () => {
+        it('it should reset numbers', () => {
+          const { editorView, plugin, pluginState } = editor(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          plugin.props.handleDOMEvents!.focus(editorView, event);
+          pluginState.insertRow(1);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('text'),
+              tableWithAttrs({ isNumberColumnEnabled: true })(
+                tr(td()(p('1')), tdEmpty, tdEmpty),
+                tr(td()(p('2')), tdEmpty, tdEmpty),
+                tr(td()(p('3')), tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+      });
+    });
+  });
+
+  describe('when the cells contains only an image', () => {
+    it('should add a paragraph below when arrow down is pressed', () => {
+      const { editorView } = editor(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+                p(''),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      editorView.destroy();
+    });
+
+    it('should add a paragraph above when arrow up is pressed', () => {
+      const { editorView } = editor(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          table(
+            tr(
+              td()(
+                p(''),
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      editorView.destroy();
+    });
+
+    it('should not add a paragraph, if there already is a paragraph below when arrow down is pressed', () => {
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
+              ),
+              p('1'),
+              p('2'),
+            ),
+            tdEmpty,
+            tdEmpty,
+          ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
+        ),
+      );
+
+      const { editorView } = editor(docWithTable);
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
+    });
+
+    it('should not add a paragraph, if there already is a paragraph above when arrow up is pressed', () => {
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              p('1'),
+              p('2'),
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
+              ),
+            ),
+            tdEmpty,
+            tdEmpty,
+          ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
+        ),
+      );
+
+      const { editorView } = editor(docWithTable);
+
+      setNodeSelection(editorView, 6);
+      sendKeyToPm(editorView, 'ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
     });
   });
 });

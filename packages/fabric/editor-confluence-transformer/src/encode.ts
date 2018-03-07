@@ -2,8 +2,8 @@ import {
   MediaAttributes,
   getEmojiAcName,
   hexToRgb,
-  getPlaceholderUrl,
-  getMacroId,
+  getExtensionLozengeData,
+  getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
 } from '@atlaskit/editor-common';
@@ -11,7 +11,11 @@ import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
-import { getNodeMarkOfType, mapPanelTypeToCxhtml } from './utils';
+import {
+  getNodeMarkOfType,
+  encodeMacroParams,
+  mapPanelTypeToCxhtml,
+} from './utils';
 
 export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType(
@@ -65,6 +69,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
+    } else if (node.type === schema.nodes.decisionList) {
+      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
     } else if (
@@ -77,9 +83,10 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
       return encodeTaskList(node);
-    }
-    if (node.type === schema.nodes.date) {
+    } else if (node.type === schema.nodes.date) {
       return encodeDate(node);
+    } else if (node.type === schema.nodes.placeholder) {
+      return encodePlaceholder(node);
     } else {
       throw new Error(
         `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
@@ -304,13 +311,14 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeCodeBlock(node: PMNode) {
-    const elem = createMacroElement('code');
+    const elem = createMacroElement('code', '1');
 
     if (node.attrs.language) {
-      const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      langParam.setAttributeNS(AC_XMLNS, 'ac:name', 'language');
-      langParam.textContent = mapCodeLanguage(node.attrs.language);
-      elem.appendChild(langParam);
+      elem.appendChild(
+        encodeMacroParams(doc, {
+          language: { value: mapCodeLanguage(node.attrs.language) },
+        }),
+      );
     }
 
     const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
@@ -334,7 +342,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodePanel(node: PMNode) {
     const panelType = mapPanelTypeToCxhtml(node.attrs.panelType);
-    const elem = createMacroElement(panelType);
+    const elem = createMacroElement(panelType, '1');
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
     const fragment = doc.createDocumentFragment();
 
@@ -344,10 +352,11 @@ export default function encode(node: PMNode, schema: Schema) {
       if (node.isBlock) {
         // panel title
         if (node.type.name === 'heading' && pos === 0) {
-          const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-          title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
-          title.textContent = node.firstChild!.textContent;
-          elem.appendChild(title);
+          elem.appendChild(
+            encodeMacroParams(doc, {
+              title: { value: node.firstChild!.textContent },
+            }),
+          );
         } else {
           // panel content
           const domNode = encodeNode(node);
@@ -363,15 +372,12 @@ export default function encode(node: PMNode, schema: Schema) {
     // special treatment for <ac:structured-macro ac:name="panel" />
     // it should be converted to "purple" Confluence panel
     if (panelType === 'panel') {
-      const borderColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      borderColor.setAttributeNS(AC_XMLNS, 'ac:name', 'borderColor');
-      borderColor.textContent = '#998DD9';
-      elem.appendChild(borderColor);
-
-      const bgColor = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      bgColor.setAttributeNS(AC_XMLNS, 'ac:name', 'bgColor');
-      bgColor.textContent = '#EAE6FF';
-      elem.appendChild(bgColor);
+      elem.appendChild(
+        encodeMacroParams(doc, {
+          borderColor: { value: '#998DD9' },
+          bgColor: { value: '#EAE6FF' },
+        }),
+      );
     }
 
     body.appendChild(fragment);
@@ -385,10 +391,7 @@ export default function encode(node: PMNode, schema: Schema) {
     const mention = doc.createElementNS(FAB_XMLNS, 'fab:mention');
     mention.setAttribute('atlassian-id', node.attrs['id']);
 
-    // NOTE: (ED-1736) We're stripping @ from beginning of mention text, due to Confluence compatibility issues.
-    const cdata = doc.createCDATASection(node.attrs['text'].replace(/^@/, ''));
-    mention.appendChild(cdata);
-
+    // ED-3634: we're removing cdata completely
     link.appendChild(mention);
 
     return link;
@@ -403,62 +406,49 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeJiraIssue(node: PMNode) {
-    // if this is an issue list, parse it as unsupported node
-    // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
     if (!node.attrs.issueKey) {
-      return encodeUnsupported(node);
+      return encodeExtension(node);
     }
 
-    const elem = createMacroElement('jira');
+    const elem = createMacroElement('jira', node.attrs.schemaVersion);
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
-    const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    serverParam.setAttributeNS(AC_XMLNS, 'ac:name', 'server');
-    serverParam.textContent = node.attrs.server;
-    elem.appendChild(serverParam);
-
-    const serverIdParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    serverIdParam.setAttributeNS(AC_XMLNS, 'ac:name', 'serverId');
-    serverIdParam.textContent = node.attrs.serverId;
-    elem.appendChild(serverIdParam);
-
-    const keyParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-    keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
-    keyParam.textContent = node.attrs.issueKey;
-    elem.appendChild(keyParam);
+    elem.appendChild(
+      encodeMacroParams(doc, {
+        key: { value: node.attrs.issueKey },
+        server: { value: node.attrs.server },
+        serverId: { value: node.attrs.serverId },
+      }),
+    );
 
     return elem;
   }
 
   function encodeExtension(node: PMNode) {
-    const elem = createMacroElement(node.attrs.extensionKey);
+    const { parameters, extensionKey } = node.attrs;
 
-    if (node.attrs.parameters) {
-      const { macroParams } = node.attrs.parameters;
-      const macroId = getMacroId(node);
-      if (macroId) {
-        elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
-      }
+    const elem = createMacroElement(
+      extensionKey,
+      getExtensionMetadata(node, 'schemaVersion') || '1',
+    );
 
-      // parameters
+    const macroId = getExtensionMetadata(node, 'macroId');
+    if (macroId) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
+    }
+
+    if (parameters) {
+      const { macroParams } = parameters;
       if (macroParams) {
-        Object.keys(macroParams).forEach(paramName => {
-          const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-          el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
-          el.textContent = macroParams[paramName].value;
-          elem.appendChild(el);
-        });
+        elem.appendChild(encodeMacroParams(doc, macroParams));
       }
+    }
 
-      const placeholderUrl = getPlaceholderUrl({ node, type: 'image' });
-      if (placeholderUrl) {
-        const placeholder = doc.createElementNS(
-          FAB_XMLNS,
-          'fab:placeholder-url',
-        );
-        placeholder.textContent = placeholderUrl;
-        elem.appendChild(placeholder);
-      }
+    const placeholderData = getExtensionLozengeData({ node, type: 'image' });
+    if (placeholderData) {
+      const placeholder = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
+      placeholder.textContent = placeholderData.url;
+      elem.appendChild(placeholder);
     }
 
     const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
@@ -475,10 +465,10 @@ export default function encode(node: PMNode, schema: Schema) {
     return elem;
   }
 
-  function createMacroElement(name) {
+  function createMacroElement(name: string, version: string) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', version);
     return elem;
   }
 
@@ -533,5 +523,20 @@ export default function encode(node: PMNode, schema: Schema) {
       elem.setAttribute('datetime', timestampToIso(timestamp));
     }
     return elem;
+  }
+
+  function encodePlaceholder(node: PMNode): Element {
+    let elem = doc.createElementNS(AC_XMLNS, 'ac:placeholder');
+    const { text } = node.attrs;
+    elem.textContent = text;
+    return elem;
+  }
+
+  function encodeAsADF(node: PMNode): Element {
+    const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
+    nsNode.appendChild(
+      doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
+    );
+    return nsNode;
   }
 }

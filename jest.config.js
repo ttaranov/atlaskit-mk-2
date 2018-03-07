@@ -10,7 +10,7 @@ function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
     return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
-  return `${__dirname}/${packagePath}/**/__tests__/!(integration)/**/*.(js|tsx|ts)`;
+  return `${__dirname}/${packagePath}/**/__tests__/(!(integration)/**/|)*.(js|tsx|ts)`;
 }
 
 // by default we'll run tests in all directories (local and master builds)
@@ -41,6 +41,7 @@ const config = {
     // ignore files under __tests__ that start with an underscore
     '/__tests__\\/.*?\\/_.*?',
   ],
+  cacheDirectory: 'node_modules/.jest-cache',
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,

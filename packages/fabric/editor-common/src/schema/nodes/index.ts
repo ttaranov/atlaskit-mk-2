@@ -36,7 +36,15 @@ export {
   Layout as MediaSingleLayout,
   Attributes as MediaSingleAttributes,
 } from './media-single';
-export { table, tableCell, tableHeader, tableRow } from './tableNodes';
+export {
+  table,
+  tableCell,
+  toJSONTableCell,
+  tableHeader,
+  toJSONTableHeader,
+  tableRow,
+  tableBackgroundColorPalette,
+} from './tableNodes';
 export {
   applicationCard,
   Attributes as ApplicationCardAttributes,
@@ -50,3 +58,4 @@ export { extension } from './extension';
 export { inlineExtension } from './inline-extension';
 export { bodiedExtension } from './bodied-extension';
 export { date } from './date';
+export { placeholder } from './placeholder';

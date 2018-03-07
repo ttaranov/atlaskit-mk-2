@@ -1,5 +1,97 @@
 # @atlaskit/editor-common
 
+## 6.3.11
+
+## 6.3.10
+
+## 6.3.9
+
+## 6.3.8
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 6.3.7
+
+## 6.3.6
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
+## 6.3.5
+- [patch] fix tables in json schema [4b67c37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b67c37)
+
+## 6.3.4
+
+## 6.3.3
+- [patch] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
+## 6.3.2
+- [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
+
+## 6.3.1
+
+## 6.3.0
+- [minor] Introduce the placeholder node to the ADF [2441f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2441f92)
+
+## 6.2.0
+- [minor] add support for <fab:adf> and confluence decision list transforms [e08eccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e08eccc)
+- [minor] add support for <fab:adf> and confluence decision list transforms [f43f928](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f43f928)
+- [minor] advanced features for tables [e0bac20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bac20)
+
+## 6.1.10
+
+## 6.1.9
+- [patch] Encode and decode for Extension schemaVersion [0335988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0335988)
+
+## 6.1.8
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 6.1.7
+
+## 6.1.6
+
+## 6.1.5
+
+## 6.1.4
+
+## 6.1.3
+- [patch] Move media provider and state manager to editor-core [0601da7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0601da7)
+
+## 6.1.2
+
+
+- [patch] Add the placeholder text node to the schema [330993f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/330993f)
+
+## 6.1.1
+
+## 6.1.0
+- [minor] Fixing content expression of bodiedExtension node. [38b81ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b81ad)
+
+## 6.0.4
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 6.0.3
+
+- [patch] Remove monospace font-style for code marks. [b92c81e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b92c81e)
+
+## 6.0.2
+- [patch] Removing SMB from URL-whitelist [dfe77d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe77d2)
+
+## 6.0.1
+- [patch] Add additional inline nodes to unknownBlock [f330ca1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f330ca1)
+
+## 6.0.0
+- [patch] cket-transformer/__tests__/_schema-builder.ts [a6e77ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e77ff)
+- [major] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
+## 5.10.3
+
+- [patch] Change JSON schema to ensure that first child of list-item is always paragraph [9a36594](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a36594)
+
+## 5.10.2
+
+## 5.10.1
+
+## 5.10.0
+- [minor] FS-1624 Add new popupsScrollableElement props to editor to handle case when mountPoint is different than the scrollable element. [7d669bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d669bc)
+
 ## 5.9.4
 
 - [patch] Insert media group instead of single image inside table [5b4aaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b4aaa0)

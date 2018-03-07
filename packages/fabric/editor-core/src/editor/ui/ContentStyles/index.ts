@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorBlockquoteBorderColor,
   akEditorMentionSelected,
@@ -17,6 +20,7 @@ import {
   akColorN80,
   akColorN20,
   akBorderRadius,
+  akColorN40A,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
@@ -78,13 +82,16 @@ const tableStyle = `
   }
 `;
 
-export const StyledTable = styled.table`
+export const StyledTable: ComponentClass<
+  TableHTMLAttributes<{}>
+> = styled.table`
   ${tableStyle};
 `;
 
-const ContentStyles = styled.div`
-  // Hack for ie11 that is being used in code block.
-  // https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
+const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  /* Hack for ie11 that is being used in code block.
+   * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
+   */
   & .ie11 {
     overflow: visible;
     word-wrap: break-word;
@@ -107,6 +114,10 @@ const ContentStyles = styled.div`
       color: ${akColorN80};
       pointer-events: none;
     }
+  }
+
+  .ProseMirror span[data-placeholder] {
+    color: ${akColorN80};
   }
 
   .ProseMirror blockquote {
@@ -132,6 +143,10 @@ const ContentStyles = styled.div`
     &::after {
       content: '';
     }
+
+    & p {
+      display: block;
+    }
   }
 
   .ProseMirror pre {
@@ -150,8 +165,8 @@ const ContentStyles = styled.div`
     font-family: monospace;
     white-space: pre-wrap;
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       vertical-align: text-top;
       display: inline-block;
       width: 3px;
@@ -189,7 +204,7 @@ const ContentStyles = styled.div`
     & > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
       list-style-type: decimal;
     }
-
+    /* stylelint-disable selector-combinator-space-before */
     & > li > ol > li,
     & > li > ol > li > ol > li > ol > li > ol > li,
     &
@@ -234,7 +249,7 @@ const ContentStyles = styled.div`
       list-style-type: lower-roman;
     }
   }
-
+  /* stylelint-enable */
   .ProseMirror li > * {
     pointer-events: auto;
   }
@@ -271,7 +286,7 @@ const ContentStyles = styled.div`
     outline: none;
   }
 
-  li.ProseMirror-selectednode:after {
+  li.ProseMirror-selectednode::after {
     content: '';
     position: absolute;
     left: -32px;
@@ -286,14 +301,7 @@ const ContentStyles = styled.div`
   .ProseMirror blockquote table:last-child {
     display: inline-table;
   }
-  .ProseMirror
-    table
-    ${tableStyle}
-    .ProseMirror
-    .telepointer
-    ${telepointerStyle}
-    .ProseMirror
-    img {
+  .ProseMirror .telepointer ${/* sc-prop */ telepointerStyle} .ProseMirror img {
     max-width: 100%;
   }
 
@@ -303,7 +311,7 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
-  //=============== SINGLE IMAGE STYLES ==================
+  /* =============== SINGLE IMAGE STYLES ================== */
   && .ProseMirror {
     [layout='wide'] {
       max-width: 960px;
@@ -328,22 +336,108 @@ const ContentStyles = styled.div`
     }
   }
 
-  //=============== PLACEHOLDER CURSOR STYLES=========
+  /* =============== PLACEHOLDER CURSOR STYLES========= */
 
-  & .ProseMirror-placeholder-cursor {
+  & .ProseMirror-fake-text-cursor {
     display: inline;
     pointer-events: none;
     position: relative;
     height: 15px;
   }
 
-  & .ProseMirror-placeholder-cursor:after {
+  & .ProseMirror-fake-text-cursor::after {
     content: '';
     display: inline;
     top: 0;
     position: absolute;
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  /* =============== TABLE ================== */
+  .ProseMirror {
+    .table-container table ${tableStyle} .table-column-controls {
+      position: relative;
+    }
+    .table-container.with-controls table {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .table-container.with-controls {
+      margin-left: 8px;
+    }
+    .table-container table[data-number-column='true'] td:first-child {
+      background-color: ${akEditorTableFloatingControls};
+      width: 40px;
+      text-align: center;
+    }
+  }
+
+  /* =============== TABLE COLUMN RESIZING ================== */
+  .ProseMirror.table-resizing {
+    .table-container {
+      position: relative;
+    }
+    .table-container.with-controls {
+      margin-left: 0;
+    }
+    .table-shadow {
+      pointer-events: none;
+      display: none;
+      position: absolute;
+      top: 18px;
+      bottom: 20px;
+      width: 0;
+    }
+    .with-controls .table-shadow {
+      display: block;
+    }
+    .table-shadow.-left {
+      left: 0;
+      background: linear-gradient(
+        to left,
+        rgba(99, 114, 130, 0) 0,
+        ${akColorN40A} 100%
+      );
+    }
+    .table-shadow.-right {
+      background: linear-gradient(
+        to right,
+        rgba(99, 114, 130, 0) 0,
+        ${akColorN40A} 100%
+      );
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      padding-top: 8px;
+    }
+    .table-column-controls {
+      top: 20px;
+    }
+    .column-resize-handle {
+      background-color: ${akEditorTableBorderSelected};
+      position: absolute;
+      bottom: 0;
+      top: -1px;
+      right: -2px;
+      width: 2px;
+      height: calc(100% + 2px);
+      pointer-events: none;
+      z-index: 20;
+    }
+    .with-controls .column-resize-handle {
+      top: -11px;
+      height: calc(100% + 11px);
+    }
+  }
+
+  .ProseMirror.resize-cursor {
+    cursor: col-resize;
+
+    table td,
+    table th {
+      position: relative;
+    }
   }
 `;
 

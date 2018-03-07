@@ -107,17 +107,15 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-                    allowTextFormatting={true}
                     allowTasksAndDecisions={true}
-                    allowHyperlinks={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
                     allowLists={true}
                     allowRule={true}
                     allowTables={true}
                     allowHelpDialog={true}
-                    allowPlaceholderCursor={true}
                     disabled={disabled}
+                    activityProvider={activityProvider}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
                     mediaProvider={mediaProvider}
@@ -128,6 +126,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onCancel={CANCEL_ACTION}
                     primaryToolbarComponents={[
                       <ToolbarFeedback
+                        product={'bitbucket'}
                         packageVersion={version}
                         packageName={name}
                         key="toolbar-feedback"

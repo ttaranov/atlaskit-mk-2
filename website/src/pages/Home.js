@@ -65,6 +65,7 @@ const CardLink = styled(Link)`
     margin-left: ${gutter};
     margin-right: ${gutter};
   }
+
   @media (max-width: 799px) {
     margin-bottom: ${gutter};
     margin-top: ${gutter};
@@ -94,7 +95,7 @@ const CardTitleText = styled.h3`
   margin: 0;
 `;
 const CardBody = styled.div`
-  color: ${colors.subtleText}
+  color: ${colors.subtleText};
   margin-top: 8px;
   padding-left: 10px;
 `;
@@ -130,7 +131,7 @@ const PageOffset = styled.div`
   text-align: center;
 
   @media (min-width: 800px) {
-    margin-left: -64px;
+    margin-right: -64px;
   }
 `;
 
@@ -196,17 +197,17 @@ export default class Home extends React.Component<HomeProps> {
             >
               Documentation and usage guides for the packages in Atlaskit.
             </Card>
-            <Card
+            {/* <Card
               to="/patterns"
               icon={PatternsIcon}
               iconColor={colors.G300}
               title="Patterns"
             >
               Common ways to combine packages together for your application.
-            </Card>
+            </Card> */}
           </Cards>
           <Button
-            href="//bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md"
+            href="//bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CONTRIBUTING.md"
             target="_blank"
             rel="noopener noreferrer"
           >

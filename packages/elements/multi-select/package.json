@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/multi-select",
-  "version": "8.0.4",
+  "version": "8.1.1",
   "description": "React component which allows selection of multiple items from a dropdown list. Substitute for the native multiple select element",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,17 +17,17 @@
     "name": "Lozenge",
     "team": "elements"
   },
-  "repository": "bitbucket:atlaskit/atlaskit-mk-2",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/droplist": "^4.11.3",
-    "@atlaskit/field-base": "^8.1.9",
-    "@atlaskit/icon": "^10.7.1",
-    "@atlaskit/spinner": "^4.1.1",
-    "@atlaskit/tag": "^3.1.1",
-    "@atlaskit/tag-group": "^3.5.1",
-    "@atlaskit/theme": "^2.3.1",
+    "@atlaskit/droplist": "^4.12.0",
+    "@atlaskit/field-base": "^8.2.0",
+    "@atlaskit/icon": "^10.12.0",
+    "@atlaskit/spinner": "^4.2.0",
+    "@atlaskit/tag": "^3.2.0",
+    "@atlaskit/tag-group": "^3.6.0",
+    "@atlaskit/theme": "^2.4.0",
     "classnames": "^2.2.5",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
@@ -35,10 +35,10 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.0.0",
-    "@atlaskit/button": "^6.3.1",
-    "@atlaskit/code": "^3.0.1",
-    "@atlaskit/docs": "^2.4.1",
+    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/button": "^6.6.0",
+    "@atlaskit/code": "^3.1.0",
+    "@atlaskit/docs": "^2.5.0",
     "enzyme": "^3.3.0",
     "react-test-renderer": "^16.2.0"
   }

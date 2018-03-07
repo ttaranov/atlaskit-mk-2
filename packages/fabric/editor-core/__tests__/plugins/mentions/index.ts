@@ -1,9 +1,12 @@
 import createSandbox from 'jest-sandbox';
 import { mention as mentionNode } from '@atlaskit/editor-common';
-import mentionsPlugins, { MentionsState } from '../../../src/plugins/mentions';
+import {
+  MentionsState,
+  stateKey as mentionPluginKey,
+} from '../../../src/plugins/mentions';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
-  makeEditor,
+  createEditor,
   sendKeyToPm,
   blockquote,
   br,
@@ -15,13 +18,14 @@ import {
   ul,
   code,
   insertText,
-  defaultSchema,
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../src/analytics';
 import * as keymaps from '../../../src/keymaps';
+import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import listPlugin from '../../../src/editor/plugins/lists';
 
 const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);
@@ -31,9 +35,11 @@ describe('mentions', () => {
   const event = createEvent('event');
   let sandbox;
   const editor = (doc: any) =>
-    makeEditor<MentionsState>({
+    createEditor<MentionsState>({
       doc,
-      plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
+      editorPlugins: [mentionsPlugin, listPlugin],
+      providerFactory: ProviderFactory.create({ mentionProvider }),
+      pluginKey: mentionPluginKey,
     });
 
   const forceUpdate = (pluginState, editorView: any) => {
@@ -347,7 +353,7 @@ describe('mentions', () => {
             mention({
               text: '@Oscar Wallhult',
               id: '1234',
-            }),
+            })(),
             ' ',
           ),
         ),
@@ -372,7 +378,7 @@ describe('mentions', () => {
             mention({
               text: '@Oscar Wallhult',
               id: '1234',
-            }),
+            })(),
             ' text',
           ),
         ),
@@ -396,7 +402,7 @@ describe('mentions', () => {
             mention({
               text: '@tara',
               id: '1234',
-            }),
+            })(),
             ' ',
           ),
         ),
@@ -408,7 +414,7 @@ describe('mentions', () => {
       const { editorView, pluginState } = editor(
         doc(
           p(
-            mention({ id: '1234', text: '@Oscar Wallhult' }),
+            mention({ id: '1234', text: '@Oscar Wallhult' })(),
             ' ',
             mentionQuery()('@{<>}'),
           ),
@@ -427,12 +433,12 @@ describe('mentions', () => {
             mention({
               text: '@Oscar Wallhult',
               id: '1234',
-            }),
+            })(),
             ' ',
             mention({
               text: '@Bradley Ayers',
               id: '5678',
-            }),
+            })(),
             ' ',
           ),
         ),
@@ -442,7 +448,7 @@ describe('mentions', () => {
 
     it('should allow inserting @-mention on new line after hard break', () => {
       const { editorView, pluginState } = editor(
-        doc(p(br, mentionQuery()('@{<>}'))),
+        doc(p(br(), mentionQuery()('@{<>}'))),
       );
 
       pluginState.insertMention({
@@ -454,11 +460,11 @@ describe('mentions', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           p(
-            br,
+            br(),
             mention({
               id: '1234',
               text: '@Oscar Wallhult',
-            }),
+            })(),
             ' ',
           ),
         ),
@@ -469,12 +475,10 @@ describe('mentions', () => {
     it('should not break list into two when inserting mention inside list item', () => {
       const { editorView, pluginState } = editor(
         doc(
-          p(
-            ul(
-              li(p('One')),
-              li(p('Two ', mentionQuery()('@{<>}'))),
-              li(p('Three')),
-            ),
+          ul(
+            li(p('One')),
+            li(p('Two ', mentionQuery()('@{<>}'))),
+            li(p('Three')),
           ),
         ),
       );
@@ -487,21 +491,19 @@ describe('mentions', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          p(
-            ul(
-              li(p('One')),
-              li(
-                p(
-                  'Two ',
-                  mention({
-                    id: '1234',
-                    text: '@Oscar Wallhult',
-                  }),
-                  ' ',
-                ),
+          ul(
+            li(p('One')),
+            li(
+              p(
+                'Two ',
+                mention({
+                  id: '1234',
+                  text: '@Oscar Wallhult',
+                })(),
+                ' ',
               ),
-              li(p('Three')),
             ),
+            li(p('Three')),
           ),
         ),
       );
@@ -527,7 +529,7 @@ describe('mentions', () => {
               mention({
                 id: '1234',
                 text: '@Oscar Wallhult',
-              }),
+              })(),
               ' ',
             ),
           ),
@@ -563,7 +565,7 @@ describe('mentions', () => {
             mention({
               text: '@Oscar Wallhult',
               id: '1234',
-            }),
+            })(),
             ' text',
           ),
         ),

@@ -1,4 +1,4 @@
-import { ComponentClass } from 'react';
+import * as React from 'react';
 import { Fragment, Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
@@ -22,6 +22,7 @@ import InlineExtension, {
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
+import MediaSingle from './mediaSingle';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
@@ -55,6 +56,7 @@ export const nodeToReact = {
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
+  mediaSingle: MediaSingle,
   mention: Mention,
   orderedList: OrderedList,
   panel: Panel,
@@ -69,7 +71,7 @@ export const nodeToReact = {
   unknownBlock: UnknownBlock,
 };
 
-export const toReact = (node: Node): ComponentClass<any> => {
+export const toReact = (node: Node): React.ComponentClass<any> => {
   return nodeToReact[node.type.name];
 };
 
@@ -234,6 +236,7 @@ export {
   InlineExtensionProps,
   Media,
   MediaGroup,
+  MediaSingle,
   Mention,
   OrderedList,
   Panel,

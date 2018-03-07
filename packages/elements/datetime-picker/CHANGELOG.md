@@ -1,5 +1,18 @@
 # @atlaskit/datetime-picker
 
+## 0.7.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 0.6.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 0.6.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 0.6.0
+
+- [minor] Make all internal state able to be controlled or uncontrolled obviating the need for the usage of stateless components. [3d81d42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d81d42)
+
 ## 0.5.1
 
 ## 0.5.0

@@ -24,7 +24,8 @@ import {
   JSONDocNode,
   JSONNode,
 } from '@atlaskit/editor-json-transformer';
-import { PlaceholderCursor } from '../plugins/placeholder-cursor/cursor';
+import { FakeTextCursorSelection } from '../editor/plugins/fake-text-cursor/cursor';
+import { stateKey as tableStateKey } from '../plugins/table';
 
 export {
   default as ErrorReporter,
@@ -49,12 +50,51 @@ function isMarkTypeAllowedInNode(
   return toggleMark(markType)(state);
 }
 
+function closest(node: HTMLElement | null, s: string): HTMLElement | null {
+  let el = node as HTMLElement;
+  if (!el) {
+    return null;
+  }
+  if (!document.documentElement.contains(el)) {
+    return null;
+  }
+  do {
+    if (el.matches(s)) {
+      return el;
+    }
+    el = (el.parentElement || el.parentNode) as HTMLElement;
+  } while (el !== null && el.nodeType === 1);
+  return null;
+}
+
 export const isImage = (fileType?: string): boolean => {
   return !!fileType && fileType.indexOf('image/') > -1;
 };
 
 export function canMoveUp(state: EditorState): boolean {
-  const { selection } = state;
+  const { selection, doc } = state;
+
+  /**
+   * If there's a media element on the selection,
+   * add text blocks with arrow navigation.
+   * Also, the selection could be media | mediaGroup.
+   */
+  if (selection instanceof NodeSelection) {
+    if (selection.node.type.name === 'media') {
+      /** Weird way of checking if the previous element is a paragraph */
+      const mediaAncestorNode = doc.nodeAt(selection.anchor - 3);
+      return !!(
+        mediaAncestorNode && mediaAncestorNode.type.name === 'paragraph'
+      );
+    } else if (selection.node.type.name === 'mediaGroup') {
+      const mediaGroupAncestorNode = selection.$anchor.nodeBefore;
+      return !!(
+        mediaGroupAncestorNode &&
+        mediaGroupAncestorNode.type.name === 'paragraph'
+      );
+    }
+  }
+
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
       return true;
@@ -65,7 +105,23 @@ export function canMoveUp(state: EditorState): boolean {
 }
 
 export function canMoveDown(state: EditorState): boolean {
-  const { selection } = state;
+  const { selection, doc } = state;
+
+  /**
+   * If there's a media element on the selection,
+   * add text blocks with arrow navigation.
+   * Also, the selection could be media | mediaGroup.
+   */
+  if (selection instanceof NodeSelection) {
+    if (selection.node.type.name === 'media') {
+      const nodeAfter = doc.nodeAt(selection.$head.after());
+      return !!(nodeAfter && nodeAfter.type.name === 'paragraph');
+    } else if (selection.node.type.name === 'mediaGroup') {
+      return !(
+        selection.$head.parentOffset === selection.$anchor.parent.content.size
+      );
+    }
+  }
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
       return true;
@@ -121,7 +177,7 @@ export function isMarkTypeAllowedInCurrentSelection(
   markType: MarkType,
   state: EditorState,
 ) {
-  if (state.selection instanceof PlaceholderCursor) {
+  if (state.selection instanceof FakeTextCursorSelection) {
     return true;
   }
 
@@ -214,13 +270,6 @@ export function setTextSelection(
   const tr = state.tr.setSelection(
     TextSelection.create(state.doc, anchor, head),
   );
-  view.dispatch(tr);
-}
-
-export function moveCursorToTheEnd(view: EditorView) {
-  const { state } = view;
-  const anchor = Selection.atEnd(state.doc);
-  const tr = state.tr.setSelection(anchor).scrollIntoView();
   view.dispatch(tr);
 }
 
@@ -496,6 +545,17 @@ export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
 }
 
+/**
+ * Replacement for Element.closest, until it becomes widely implemented
+ * Returns the ancestor element of a particular type if exists or null
+ */
+export function closestElement(
+  node: HTMLElement | null,
+  s: string,
+): HTMLElement | null {
+  return closest(node, s);
+}
+
 export function moveLeft(view: EditorView) {
   const event = new CustomEvent('keydown', {
     bubbles: true,
@@ -551,9 +611,9 @@ export const isTemporary = (id: string): boolean => {
 
 // @see: https://github.com/ProseMirror/prosemirror/issues/710
 // @see: https://bugs.chromium.org/p/chromium/issues/detail?id=740085
-// Chrome > 58
+// Chrome >= 58
 export const isChromeWithSelectionBug =
-  parseInt((navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1], 10) > 58;
+  parseInt((navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1], 10) >= 58;
 
 export const isEmptyNode = (schema: Schema) => {
   const {
@@ -583,21 +643,24 @@ export const isEmptyNode = (schema: Schema) => {
       case paragraph:
       case codeBlock:
       case heading:
+      case taskItem:
+      case decisionItem:
         return node.content.size === 0;
       case blockquote:
       case panel:
       case listItem:
-      case taskItem:
-      case decisionItem:
         return (
           node.content.size === 2 && innerIsEmptyNode(node.content.firstChild!)
         );
       case bulletList:
       case orderedList:
+        return (
+          node.content.size === 4 && innerIsEmptyNode(node.content.firstChild!)
+        );
       case taskList:
       case decisionList:
         return (
-          node.content.size === 4 && innerIsEmptyNode(node.content.firstChild!)
+          node.content.size === 2 && innerIsEmptyNode(node.content.firstChild!)
         );
       case doc:
         let isEmpty = true;
@@ -610,4 +673,20 @@ export const isEmptyNode = (schema: Schema) => {
     }
   };
   return innerIsEmptyNode;
+};
+
+export const isTableCell = (state: EditorState) => {
+  const pluginState = tableStateKey.getState(state);
+  return !!(pluginState && pluginState.tableNode);
+};
+
+export const isElementInTableCell = (
+  element: HTMLElement | null,
+): HTMLElement | null => {
+  return closest(element, 'td') || closest(element, 'th');
+};
+
+export const isLastItemMediaGroup = (node: Node): boolean => {
+  const { content } = node;
+  return !!content.lastChild && content.lastChild.type.name === 'mediaGroup';
 };

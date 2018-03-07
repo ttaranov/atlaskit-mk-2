@@ -9,6 +9,7 @@ import { colors, gridSize, themed } from '@atlaskit/theme';
 // $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
+import { replaceImports } from 'react-codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;
@@ -32,7 +33,10 @@ type Props = {
 
 export default function CodeBlock(props: Props) {
   const syntax = Prism.languages[props.grammar];
-  const highlighted = Prism.highlight(props.content, syntax);
+  const importFixed = props.name
+    ? replaceImports(props.content, [['../src', props.name]])
+    : props.content;
+  const highlighted = Prism.highlight(importFixed, syntax);
 
   return (
     <Code>

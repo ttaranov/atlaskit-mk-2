@@ -1,5 +1,47 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.9.1
+
+## 2.9.0
+- [minor] add support for <fab:adf> and confluence decision list transforms [e08eccc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e08eccc)
+- [minor] add support for <fab:adf> and confluence decision list transforms [f43f928](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f43f928)
+
+## 2.8.0
+
+- [minor] Support parse/encode of the <ac:placeholder /> node [79e0a2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79e0a2a)
+
+## 2.7.10
+- [patch] Encode and decode for Extension schemaVersion [0335988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0335988)
+
+## 2.7.9
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.7.8
+- [patch] Remove Confluence Macro resrouce identifier code [944c827](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/944c827)
+
+## 2.7.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
+## 2.7.6
+
+## 2.7.5
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 2.7.4
+- [patch] Convert specific params to resource identifiers on encode and decode [778e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/778e2bf)
+
+## 2.7.3
+- [patch] remove mention name from encoder [130f15c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/130f15c)
+
+## 2.7.2
+- [patch] Allow macro provider to handle auto conversion during paste [b2c83f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2c83f8)
+
+## 2.7.1
+
 ## 2.7.0
 - [minor] added new panelType [9f693b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f693b9)
 

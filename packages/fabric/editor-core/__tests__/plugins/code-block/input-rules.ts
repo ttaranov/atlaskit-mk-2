@@ -1,20 +1,25 @@
-import codeBlockPlugin from '../../../src/plugins/code-block';
-
 import {
-  doc,
+  createEditor,
   insertText,
+  doc,
   li,
-  makeEditor,
   p,
   ul,
+  code_block,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-test-helpers';
+import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import listPlugin from '../../../src/editor/plugins/lists';
 
 describe('inputrules', () => {
   const editor = (doc: any) =>
-    makeEditor({
+    createEditor({
       doc,
-      plugins: codeBlockPlugin(defaultSchema),
+      editorPlugins: [codeBlockPlugin, listPlugin],
+      editorProps: {
+        textFormatting: {
+          disableCode: true,
+        },
+      },
     });
 
   describe('codeblock rule', () => {
@@ -33,12 +38,12 @@ describe('inputrules', () => {
 
     describe('when node is convertable to code block', () => {
       describe('when converted node has no content', () => {
-        it('should not convert "```" to a code block\t', () => {
+        it('should convert "```" to a code block\t', () => {
           const { editorView, sel } = editor(doc(p('{<>}')));
 
           insertText(editorView, '```', sel);
 
-          expect(editorView.state.doc).toEqualDocument(doc(p('```')));
+          expect(editorView.state.doc).toEqualDocument(doc(code_block({})()));
           editorView.destroy();
         });
       });

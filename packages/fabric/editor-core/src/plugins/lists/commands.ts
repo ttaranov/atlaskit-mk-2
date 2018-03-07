@@ -4,6 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import * as baseListCommand from 'prosemirror-schema-list';
 import * as commands from '../../commands';
 import { liftFollowingList } from '../../commands/lists';
+import { isEmptyNode } from '../../editor/utils/document';
 
 export const enterKeyCommand = (
   state: EditorState,
@@ -16,7 +17,7 @@ export const enterKeyCommand = (
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      if (node.textContent.length === 0) {
+      if (isEmptyNode(node)) {
         return commands.outdentList()(state, dispatch);
       } else {
         return baseListCommand.splitListItem(listItem)(state, dispatch);

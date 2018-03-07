@@ -1,5 +1,72 @@
 # @atlaskit/conversation
 
+## 6.3.5
+
+## 6.3.4
+
+## 6.3.3
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 6.3.2
+
+## 6.3.1
+
+## 6.3.0
+- [minor] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
+## 6.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 6.1.1
+- [patch] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
+## 6.1.0
+- [minor] Adding renderEditor prop [e2485f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2485f7)
+
+## 6.0.0
+- [major] Replacing internal store with Redux [703bb99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/703bb99)
+
+## 5.2.5
+- [patch] Adding documentations and fixed prop-types [4430cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4430cbb)
+
+## 5.2.4
+
+## 5.2.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 5.2.2
+- [patch] Enabling hyperlinks in the conversation editor [a151fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a151fd3)
+
+## 5.2.1
+
+## 5.2.0
+- [minor] Add subscribe/unsubscribe methods to resource provider [5c1e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c1e2bf)
+
+## 5.1.3
+
+## 5.1.2
+
+## 5.1.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 5.1.0
+
+- [minor] Add error state and cancel/retry [0c1bb6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c1bb6e)
+
+## 5.0.6
+
+## 5.0.5
+
+## 5.0.4
+
+## 5.0.3
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 5.0.2
+- [patch] Avoid unnecessary re-render of comments [402cc7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/402cc7c)
+
+## 5.0.1
+
 ## 5.0.0
 - [major] Added some tests for reducer/store and renamed actions [ba629ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba629ef)
 

@@ -1,5 +1,18 @@
 # @atlaskit/input
 
+## 1.7.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 1.6.6
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 1.6.5
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 1.6.4
+
+- [patch] Fixed font-size in Input component [bebf0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bebf0ab)
+
 ## 1.6.3
 
 

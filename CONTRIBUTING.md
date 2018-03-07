@@ -1,3 +1,41 @@
+# Contributing to Atlaskit
+
+## Code of Conduct
+
+This project is bound by a [Code of Conduct][codeofconduct].
+
+## Reporting Issues
+
+This section guides you through submitting a bug report for Atlaskit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
+
+When you are creating an issue, please include as many details as possible. Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks helps us resolve issues faster.
+
+### Before submitting an issue
+
+* **Perform a [cursory search][issuetracker]** to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+
+### How do I submit a (good) issue?
+
+* **Use a clear and descriptive title** for the issue to identify the problem.
+* **Describe the exact steps which reproduce the problem** in as many details as possible. Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point. When listing steps, **don't just say what you did, but explain how you did it**. For example, if you opened a inline dialog, explain if you used the mouse, or a keyboard shortcut.
+* **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
+
+Include details about your configuration and environment:
+
+* **Which version of the component are you using?** You can get this information by running `yarn list --pattern @atlaskit` or `npm list | grep '@atlaskit'` from the command line.
+* **What's the name and version of the browser and OS you're using**?
+
+### Code Contributions
+
+#### Why should I contribute?
+
+1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited resources, issues raised often don't get looked into soon enough.
+2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
+3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
+4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
+
+Please raise a new issue [here][issuetracker]. (Atlassians, please use this [internal link][atlassianbug].)
+
 # Contributing
 
 Welcome to the Atlaskit MK2 repo. This repo works a bit differently than the
@@ -202,10 +240,16 @@ export default function Example() {
 }
 ```
 
-In order to view these examples within your browser, you can run:
+In order to view these examples within your browser, from the root of atlaskit-mk2 you can run:
 
 ```sh
 bolt start
+```
+
+To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
+
+```sh
+ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
 ## Browser testing your code
@@ -265,3 +309,7 @@ create the changelog entry for each package being released.
 > merged to master, all the unreleased changesets are combined, new versions are
 > calculated, packages and dependencies are updated, changelogs are generated
 > and packages are released
+
+[codeofconduct]: ./CODE_OF_CONDUCT.md
+[issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
+[atlassianbug]: http://go/ak-bug

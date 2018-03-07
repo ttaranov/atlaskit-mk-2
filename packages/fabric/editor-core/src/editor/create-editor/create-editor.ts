@@ -1,18 +1,12 @@
-import { Node, Schema, MarkSpec } from 'prosemirror-model';
-import { EditorState, Plugin, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { Schema, MarkSpec } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import { sanitizeNodes } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import {
-  EditorInstance,
-  EditorPlugin,
-  EditorProps,
-  EditorConfig,
-} from '../types';
+import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../../utils/error-reporter';
-import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 import { name, version } from '../../version';
+import { Dispatch } from '../event-dispatcher';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -36,7 +30,10 @@ export function fixExcludes(marks: {
   return marks;
 }
 
-export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
+export function processPluginsList(
+  plugins: EditorPlugin[],
+  editorProps: EditorProps,
+): EditorConfig {
   return plugins.reduce(
     (acc, plugin) => {
       if (plugin.pmPlugins) {
@@ -44,11 +41,11 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
       }
 
       if (plugin.nodes) {
-        acc.nodes.push(...plugin.nodes());
+        acc.nodes.push(...plugin.nodes(editorProps));
       }
 
       if (plugin.marks) {
-        acc.marks.push(...plugin.marks());
+        acc.marks.push(...plugin.marks(editorProps));
       }
 
       if (plugin.contentComponent) {
@@ -125,114 +122,4 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
     name,
     version,
   });
-}
-
-export function processDefaultDocument(
-  schema: Schema,
-  rawDoc?: Node | string | Object,
-): Node | undefined {
-  if (!rawDoc) {
-    return;
-  }
-
-  if (rawDoc instanceof Node) {
-    return rawDoc;
-  }
-
-  let doc: Object;
-  if (typeof rawDoc === 'string') {
-    try {
-      doc = JSON.parse(rawDoc);
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.error(
-        `Error processing default value: ${rawDoc} isn't valid JSON document`,
-      );
-      return;
-    }
-  } else {
-    doc = rawDoc;
-  }
-
-  if (Array.isArray(doc)) {
-    // tslint:disable-next-line:no-console
-    console.error(
-      `Error processing default value: ${doc} is an array, but it must be an object with the following shape { type: 'doc', content: [...] }`,
-    );
-    return;
-  }
-
-  try {
-    const parsedDoc = Node.fromJSON(schema, doc);
-    // throws an error if the document is invalid
-    parsedDoc.check();
-    return parsedDoc;
-  } catch (e) {
-    // tslint:disable-next-line:no-console
-    console.error(`Error processing default value: ${doc} – ${e.message}`);
-    return;
-  }
-}
-
-/**
- * Creates and mounts EditorView to the provided place.
- */
-export default function createEditor(
-  place: HTMLElement | null,
-  editorPlugins: EditorPlugin[] = [],
-  props: EditorProps,
-  providerFactory: ProviderFactory,
-): EditorInstance {
-  const editorConfig = processPluginsList(editorPlugins);
-  const {
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-  } = editorConfig;
-  const { contentTransformerProvider, defaultValue, onChange } = props;
-
-  initAnalytics(props.analyticsHandler);
-
-  const errorReporter = createErrorReporter(props.errorReporterHandler);
-  const eventDispatcher = new EventDispatcher();
-  const dispatch = createDispatch(eventDispatcher);
-  const schema = createSchema(editorConfig);
-  const plugins = createPMPlugins(
-    editorConfig,
-    schema,
-    props,
-    dispatch,
-    providerFactory,
-    errorReporter,
-  );
-  const contentTransformer = contentTransformerProvider
-    ? contentTransformerProvider(schema)
-    : undefined;
-  const doc =
-    contentTransformer && typeof defaultValue === 'string'
-      ? contentTransformer.parse(defaultValue)
-      : processDefaultDocument(schema, defaultValue);
-
-  const state = EditorState.create({ doc, schema, plugins });
-  const editorView = new EditorView(place!, {
-    state,
-    dispatchTransaction(tr: Transaction) {
-      tr.setMeta('isLocal', true);
-      const newState = editorView.state.apply(tr);
-      editorView.updateState(newState);
-      if (onChange && tr.docChanged) {
-        onChange(editorView);
-      }
-    },
-    editable: () => true,
-  });
-
-  return {
-    editorView,
-    eventDispatcher,
-    contentComponents,
-    primaryToolbarComponents,
-    secondaryToolbarComponents,
-    contentTransformer,
-  };
 }

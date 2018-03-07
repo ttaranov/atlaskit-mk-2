@@ -2,11 +2,11 @@ import { deleteSelection, splitBlock } from 'prosemirror-commands';
 import { Node as PMNode } from 'prosemirror-model';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { MediaState } from '@atlaskit/media-core';
 
 import { createParagraphNear } from '../../commands';
 import { moveLeft, atTheBeginningOfDoc, isTemporary } from '../../utils';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
+import { MediaState } from './types';
 
 export const removeMediaNode = (
   view: EditorView,
@@ -58,7 +58,7 @@ export const splitMediaGroup = (view: EditorView): boolean => {
   // if selected media node is the last one, no need to insert a new p or split the block, prosemirror handled it.
   if (selection.$to.nodeAfter) {
     splitBlock(view.state, view.dispatch);
-    createParagraphNear(view, false);
+    createParagraphNear(false)(view.state, view.dispatch);
   }
 
   return true;

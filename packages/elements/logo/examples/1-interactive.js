@@ -14,7 +14,9 @@ import * as logos from '../src';
 
 const Centered = styled.div`
   display: flex;
-  >: 8px 0;
+  > * {
+    margin: 8px 0;
+  }
 `;
 const InlineFlex = styled.div`
   display: inline-flex;

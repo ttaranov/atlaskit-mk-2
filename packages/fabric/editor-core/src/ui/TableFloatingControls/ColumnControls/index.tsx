@@ -11,11 +11,16 @@ import {
 } from './styles';
 import InsertColumnButton from './InsertColumnButton';
 import { Command } from '../../../editor';
+import {
+  checkIfHeaderColumnEnabled,
+  checkIfNumberColumnEnabled,
+} from '../../../editor/plugins/table/utils';
 
 export interface Props {
   editorView: EditorView;
-  tableElement: HTMLElement;
-  isSelected: (column: number, state: EditorState) => boolean;
+  tableElement?: HTMLElement;
+  isTableHovered: boolean;
+  checkIfSelected: (column: number, state: EditorState) => boolean;
   selectColumn: (column: number) => Command;
   insertColumn: (column: number) => void;
   hoverColumn: (column: number) => Command;
@@ -24,30 +29,46 @@ export interface Props {
 
 export default class ColumnControls extends Component<Props, any> {
   render() {
-    const { editorView: { state, dispatch } } = this.props;
-    const cols = this.props.tableElement.querySelector('tr')!.children;
+    const {
+      editorView: { state },
+      tableElement,
+      checkIfSelected,
+      isTableHovered,
+    } = this.props;
+    if (!tableElement) {
+      return null;
+    }
+    const cols = tableElement.querySelector('tr')!.children;
     const nodes: any = [];
-    const tableHeight = this.props.tableElement.offsetHeight;
+    const tableHeight = tableElement.offsetHeight;
 
     for (let i = 0, len = cols.length; i < len; i++) {
+      const className =
+        checkIfSelected(i, state) || isTableHovered ? 'active' : '';
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
-          className={this.props.isSelected(i, state) ? 'active' : ''}
+          className={`${className} table-column`}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
+          onMouseDown={this.handleMouseDown}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onClick={() => this.props.selectColumn(i)(state, dispatch)}
-            onMouseOver={() => this.props.hoverColumn(i)(state, dispatch)}
-            onMouseOut={() => this.props.resetHoverSelection(state, dispatch)}
+            onMouseDown={() => this.selectColumn(i)}
+            onMouseOver={() => this.hoverColumn(i)}
+            onMouseOut={this.resetHoverSelection}
           />
-          {/* tslint:enable:jsx-no-lambda */}
-          <InsertColumnButton
-            insertColumn={this.props.insertColumn}
-            index={i + 1}
-            lineMarkerHeight={tableHeight + toolbarSize}
-          />
+          {!(
+            checkIfNumberColumnEnabled(state) &&
+            checkIfHeaderColumnEnabled(state) &&
+            i === 0
+          ) && (
+            <InsertColumnButton
+              insertColumn={this.props.insertColumn}
+              index={i + 1}
+              lineMarkerHeight={tableHeight + toolbarSize}
+            />
+          )}
         </ColumnControlsButtonWrap>,
       );
     }
@@ -58,4 +79,23 @@ export default class ColumnControls extends Component<Props, any> {
       </ColumnContainer>
     );
   }
+
+  private handleMouseDown = event => {
+    event.preventDefault();
+  };
+
+  private selectColumn = (column: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.selectColumn(column)(state, dispatch);
+  };
+
+  private hoverColumn = (column: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.hoverColumn(column)(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.resetHoverSelection(state, dispatch);
+  };
 }

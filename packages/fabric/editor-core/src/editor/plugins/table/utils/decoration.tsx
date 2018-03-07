@@ -1,24 +1,10 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { EditorState } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { TableMap } from 'prosemirror-tables';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { tableStartPos } from './position';
-import TableFloatingControls from '../../../../ui/TableFloatingControls';
 import { stateKey as tablePluginKey } from '../../../../plugins/table';
-
-import {
-  hoverColumn,
-  hoverTable,
-  hoverRow,
-  resetHoverSelection,
-  selectTable,
-  selectColumn,
-  selectRow,
-} from '../actions';
-
-import { isTableSelected, isColumnSelected, isRowSelected } from '../utils';
+import { getTableNode } from './nodes';
 
 export const createHoverDecorationSet = (
   from: number,
@@ -45,32 +31,44 @@ export const createHoverDecorationSet = (
   return DecorationSet.create(state.doc, deco);
 };
 
-export const createControlsDecoration = (
+export const createControlsDecorationSet = (
   editorView: EditorView,
-): Decoration[] => {
+): DecorationSet => {
   const pluginState = tablePluginKey.getState(editorView.state);
-  const pos = tableStartPos(editorView.state);
-  const node = document.createElement('div');
-  node.className = 'table-decoration';
+  const { tableNode } = pluginState;
+  const before = tableStartPos(editorView.state) - 1;
 
-  ReactDOM.render(
-    <TableFloatingControls
-      editorView={editorView}
-      pluginState={pluginState}
-      hoverTable={hoverTable}
-      hoverRow={hoverRow}
-      hoverColumn={hoverColumn}
-      resetHoverSelection={resetHoverSelection}
-      selectTable={selectTable}
-      selectColumn={selectColumn}
-      selectRow={selectRow}
-      isTableSelected={isTableSelected}
-      isColumnSelected={isColumnSelected}
-      isRowSelected={isRowSelected}
-    />,
-    node,
-  );
+  return DecorationSet.create(editorView.state.doc, [
+    Decoration.node(before, before + tableNode.nodeSize, {
+      class: `with-controls last-update-${new Date().valueOf()}`,
+    }),
+  ]);
+};
 
-  // -1 to place decoration before table instead of putting it inside
-  return [Decoration.widget(pos - 1, node)];
+export const createNumberColumnDecorationSet = (
+  state: EditorState,
+): DecorationSet | null => {
+  const tableNode = getTableNode(state);
+  if (!tableNode || !tableNode.attrs.isNumberColumnEnabled) {
+    return null;
+  }
+  const start = tableStartPos(state);
+  const map = TableMap.get(tableNode);
+  const set: Decoration[] = [];
+
+  for (let i = 0, count = tableNode.childCount; i < count; i++) {
+    const cell = tableNode.child(i).child(0);
+    if (cell.type === state.schema.nodes.tableHeader) {
+      continue;
+    }
+    const from = start + map.map[i * map.width];
+
+    set.push(
+      Decoration.node(from, from + cell.nodeSize, {
+        contentEditable: false,
+      } as any),
+    );
+  }
+
+  return DecorationSet.create(state.doc, set);
 };

@@ -1,5 +1,61 @@
 # @atlaskit/renderer
 
+## 11.5.7
+
+## 11.5.6
+- [patch] Fix missing styled-components dependency [64d89c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64d89c8)
+
+## 11.5.5
+- [patch] Remove margin from first headings [c8c342d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8c342d)
+
+## 11.5.4
+- [patch] add span and background attribs for table nodes in renderer [8af61df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af61df)
+
+## 11.5.3
+
+## 11.5.2
+
+## 11.5.1
+- [patch] FS-1461 fixed rendererContext handling in TaskItem [6023540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6023540)
+
+## 11.5.0
+- [minor] FS-1461 objectAri and containerAri are optional in RendererContext [1b20296](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b20296)
+
+## 11.4.5
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 11.4.4
+
+## 11.4.3
+
+
+
+- [patch] added a prop to enable the new applicationCard designs [3057eb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3057eb2)
+
+## 11.4.2
+
+## 11.4.1
+- [patch] bump editor-common to 6.1.2 [bb7802e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7802e)
+
+## 11.4.0
+- [minor] Support mediaSingle [400ff24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/400ff24)
+
+## 11.3.11
+
+## 11.3.10
+- [patch] bump mention to 9.1.1 to fix mention autocomplete bug [c7708c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7708c6)
+
+## 11.3.9
+
+## 11.3.8
+
+## 11.3.7
+
+- [patch] move MediaItem to renderer, bump icons [5e71725](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e71725)
+
+## 11.3.6
+- [patch] Bump editor versions [afa6885](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afa6885)
+
 ## 11.3.5
 
 ## 11.3.4

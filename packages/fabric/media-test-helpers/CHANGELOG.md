@@ -1,5 +1,13 @@
 # @atlaskit/media-test-helpers
 
+## 9.0.3
+- [patch] Pointing base urls to media-playground behind Stargate [4979dc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4979dc5)
+
+## 9.0.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 9.0.1
+
 ## 9.0.0
 
 - [patch] use impersonation endpoint in authProvider [85cf404](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85cf404)

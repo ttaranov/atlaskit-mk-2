@@ -54,38 +54,45 @@ export class Tokenizer implements ITokenizer {
 }
 
 /**
- * MentionDescription compare function.
- * Order mention descriptions by: context, weight
+ * Returns a comparator function for MentionDescription object.
  *
- * @param {MentionDescription} a
- * @param {MentionDescription} b
- * @returns {number}
+ * @param {Set<string>} inContextUsers
+ * @returns {(a: MentionDescription, b: MentionDescription) => number}
  */
-export function compareMentionDescription(
-  a: MentionDescription,
-  b: MentionDescription,
-) {
-  let aIsSpecialMention = isSpecialMention(a);
-  let bIsSpecialMention = isSpecialMention(b);
-  if (aIsSpecialMention && !bIsSpecialMention) {
-    return -1;
-  }
+export function mentionDescriptionComparator(inContextUsers: Set<string>) {
+  return (a: MentionDescription, b: MentionDescription) => {
+    let aIsSpecialMention = isSpecialMention(a);
+    let bIsSpecialMention = isSpecialMention(b);
+    if (aIsSpecialMention && !bIsSpecialMention) {
+      return -1;
+    }
 
-  if (bIsSpecialMention && !aIsSpecialMention) {
-    return 1;
-  }
+    if (bIsSpecialMention && !aIsSpecialMention) {
+      return 1;
+    }
 
-  if (a.inContext && !b.inContext) {
-    return -1;
-  }
+    const aInContext = inContextUsers.has(a.id);
+    const bInContext = inContextUsers.has(b.id);
+    if (aInContext && !bInContext) {
+      return -1;
+    }
 
-  if (b.inContext && !a.inContext) {
-    return 1;
-  }
+    if (bInContext && !aInContext) {
+      return 1;
+    }
 
-  const aWeight = a.weight !== undefined ? a.weight : DEFAULT_WEIGHT;
-  const bWeight = b.weight !== undefined ? b.weight : DEFAULT_WEIGHT;
-  return aWeight - bWeight;
+    const aWeight = a.weight !== undefined ? a.weight : DEFAULT_WEIGHT;
+    const bWeight = b.weight !== undefined ? b.weight : DEFAULT_WEIGHT;
+    if (aWeight !== bWeight) {
+      return aWeight - bWeight;
+    }
+
+    if (a.name && b.name) {
+      return a.name.localeCompare(b.name);
+    }
+
+    return a.id.localeCompare(b.id);
+  };
 }
 
 export class Highlighter {
@@ -136,7 +143,7 @@ export class Highlighter {
 
 export class SearchIndex {
   private index: Search | null;
-  private mentionCache: Map<string, MentionDescription>;
+  private indexedCount: number;
 
   constructor() {
     this.reset();
@@ -167,8 +174,6 @@ export class SearchIndex {
           return true;
         });
 
-      localResults.sort(compareMentionDescription);
-
       resolve({
         mentions: localResults,
         query,
@@ -177,31 +182,17 @@ export class SearchIndex {
   }
 
   public hasDocuments() {
-    return this.mentionCache.size > 0;
+    return this.indexedCount > 0;
   }
 
   public reset() {
     this.index = SearchIndex.createIndex();
-    this.mentionCache = new Map();
+    this.indexedCount = 0;
   }
 
   public indexResults(mentions: MentionDescription[]) {
-    this.index.addDocuments(
-      mentions.map((mention, index) =>
-        this.updateCachedMention(mention, index),
-      ),
-    );
-  }
-
-  private updateCachedMention(mention: MentionDescription, index: number) {
-    const indexedMention = this.mentionCache.get(mention.id);
-    let newMention = {
-      ...indexedMention,
-      ...mention,
-      weight: mention.weight !== undefined ? mention.weight : index,
-    };
-    this.mentionCache.set(mention.id, newMention);
-    return newMention;
+    this.index.addDocuments(mentions);
+    this.indexedCount += mentions.length;
   }
 
   private static createIndex(): Search {

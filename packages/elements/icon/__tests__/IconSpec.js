@@ -5,7 +5,7 @@ import { mount, render } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import { name } from '../package.json';
 import Icon, { size } from '../src';
-import { spanStyles } from '../src/components/Icon';
+import { IconWrapper } from '../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -111,73 +111,76 @@ describe(name, () => {
     describe('size property', () => {
       const sizes = ['small', 'medium', 'large', 'xlarge'];
       sizes.forEach(s => {
-        const span = mount(<Icon glyph={empty} label="My icon" size={s} />);
-        // $FlowFixMe - return type of styled components is bad
-        const iconSize = spanStyles[1](span.props());
+        const wrapper = mount(<Icon glyph={empty} label="My icon" size={s} />);
+        const iconWrapper = wrapper.find(IconWrapper);
 
         it(`with value ${s}`, () => {
-          expect(iconSize.includes(sizeValues[s])).toBe(true);
+          // $FlowFixMe - return type of styled components is bad
+          expect(iconWrapper).toHaveStyleRule('height', sizeValues[s]);
+          // $FlowFixMe - return type of styled components is bad
+          expect(iconWrapper).toHaveStyleRule('width', sizeValues[s]);
         });
       });
     });
 
     describe('primaryColor property', () => {
       it('is set to inherit the text color by default', () => {
-        const span = mount(<MyIcon label="default primaryColor" />);
+        const wrapper = mount(<MyIcon label="default primaryColor" />);
+        const iconWrapper = wrapper.find(IconWrapper);
+
         // $FlowFixMe - return type of styled components is bad
-        const color = spanStyles[3](span.props());
-        expect(color).toBe('currentColor');
+        expect(iconWrapper).toHaveStyleRule('color', 'currentColor');
       });
       it('can be changed to a hex value', () => {
         const primaryColor = '#ff0000';
-        const span = mount(
+        const wrapper = mount(
           <MyIcon label="hex primaryColor" primaryColor={primaryColor} />,
         );
-        // $FlowFixMe - return type of styled components is bad
-        const color = spanStyles[3](span.props());
+        const iconWrapper = wrapper.find(IconWrapper);
 
-        expect(color).toBe(primaryColor);
+        // $FlowFixMe - return type of styled components is bad
+        expect(iconWrapper).toHaveStyleRule('color', primaryColor);
       });
       it('can be changed to a named color', () => {
         const primaryColor = 'rebeccapurple';
-        const span = mount(
+        const wrapper = mount(
           <MyIcon label="hex primaryColor" primaryColor={primaryColor} />,
         );
-        // $FlowFixMe - return type of styled components is bad
-        const color = spanStyles[3](span.props());
+        const iconWrapper = wrapper.find(IconWrapper);
 
-        expect(color).toBe(primaryColor);
+        // $FlowFixMe - return type of styled components is bad
+        expect(iconWrapper).toHaveStyleRule('color', primaryColor);
       });
     });
 
     describe('secondaryColor property', () => {
       it('is set to the default theme background color by default', () => {
-        const span = mount(<MyIcon label="default secondaryColor" />);
-        const props = span.props();
-        // $FlowFixMe - return type of styled components is bad
-        const fill = spanStyles[5](props)(props);
+        const wrapper = mount(<MyIcon label="default secondaryColor" />);
+        const props = wrapper.props();
+        const iconWrapper = wrapper.find(IconWrapper);
 
-        expect(fill).toBe(colors.background(props));
+        // $FlowFixMe - return type of styled components is bad
+        expect(iconWrapper).toHaveStyleRule('fill', colors.background(props));
       });
       it('can be changed to a hex value', () => {
         const secondaryColor = '#ff0000';
-        const span = mount(
+        const wrapper = mount(
           <MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />,
         );
-        // $FlowFixMe - return type of styled components is bad
-        const fill = spanStyles[5](span.props());
+        const iconWrapper = wrapper.find(IconWrapper);
 
-        expect(fill).toBe(secondaryColor);
+        // $FlowFixMe - return type of styled components is bad
+        expect(iconWrapper).toHaveStyleRule('fill', secondaryColor);
       });
       it('can be changed to a named color', () => {
         const secondaryColor = 'rebeccapurple';
-        const span = mount(
+        const wrapper = mount(
           <MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />,
         );
-        // $FlowFixMe - return type of styled components is bad
-        const fill = spanStyles[5](span.props());
+        const iconWrapper = wrapper.find(IconWrapper);
 
-        expect(fill).toBe(secondaryColor);
+        // $FlowFixMe - return type of styled components is bad
+        expect(iconWrapper).toHaveStyleRule('fill', secondaryColor);
       });
     });
 

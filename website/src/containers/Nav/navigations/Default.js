@@ -35,18 +35,18 @@ const defaultNavGroups = [
         title: 'Packages',
         icon: <ComponentIcon label="Packages icon" />,
       },
-      {
-        to: '/patterns',
-        title: 'Patterns',
-        icon: <IssuesIcon label="Patterns icon" />,
-      },
+      // {
+      //   to: '/patterns',
+      //   title: 'Patterns',
+      //   icon: <IssuesIcon label="Patterns icon" />,
+      // },
     ],
   },
   {
     title: 'Resources',
     items: [
       {
-        to: 'https://bitbucket.org/atlassian/atlaskit',
+        to: 'https://bitbucket.org/atlassian/atlaskit-mk-2',
         title: 'Repository',
         icon: <BitbucketIcon label="Repository" />,
         external: true,

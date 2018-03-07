@@ -1,9 +1,14 @@
 /* tslint:disable:variable-name no-console */
 import * as React from 'react';
-import { ImageCropper } from '../src';
+import { ImageCropper } from '../src/image-cropper';
 import { tallImage } from '@atlaskit/media-test-helpers';
 
 const naturalWidth = 5360;
+
+const onImageSize = (width, height) =>
+  console.log('onImageSize', width, height);
+const onRemoveImage = () => console.log('onRemoveImage');
+const onImageError = errorMessage => console.log('onImageError', errorMessage);
 
 export default () => (
   <div>
@@ -16,6 +21,9 @@ export default () => (
         top={-80}
         left={-80}
         onDragStarted={() => console.log('DragStarted')}
+        onImageSize={onImageSize}
+        onRemoveImage={onRemoveImage}
+        onImageError={onImageError}
       />
     </div>
     <div>
@@ -25,6 +33,9 @@ export default () => (
         scale={0.14}
         top={-50}
         left={-115}
+        onImageSize={onImageSize}
+        onRemoveImage={onRemoveImage}
+        onImageError={onImageError}
       />
     </div>
     <div>
@@ -36,6 +47,9 @@ export default () => (
         top={-50}
         left={-115}
         containerSize={400}
+        onImageSize={onImageSize}
+        onRemoveImage={onRemoveImage}
+        onImageError={onImageError}
       />
     </div>
     <div>
@@ -47,6 +61,9 @@ export default () => (
         top={-70}
         left={-90}
         isCircularMask={true}
+        onImageSize={onImageSize}
+        onRemoveImage={onRemoveImage}
+        onImageError={onImageError}
       />
     </div>
   </div>

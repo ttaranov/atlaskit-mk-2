@@ -1,5 +1,17 @@
 # @atlaskit/dynamic-table
 
+## 7.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 7.1.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 7.1.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
+## 7.1.0
+- [minor] Added possibility to drag and drop rows in dynamic table. [e69e6f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e69e6f4)
+
 ## 7.0.1
 - [patch] package bump to resolve discrepencies with npm [be745da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be745da)
 

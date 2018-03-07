@@ -1,5 +1,17 @@
 # @atlaskit/page-header
 
+## 2.4.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 2.3.0
+- [minor] Add disableTitleStyles prop to enable the composition of components that may be affected by the default heading styles. This is a stop-gap measure until we can make a breaking change to update the API to inherently facilitate this. [0866a89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0866a89)
+
+## 2.2.2
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 2.2.1
+- [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
+
 ## 2.2.0
 - [minor] Update readme and docs [7a53047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a53047)
 

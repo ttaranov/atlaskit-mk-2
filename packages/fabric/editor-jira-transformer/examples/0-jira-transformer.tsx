@@ -6,6 +6,7 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { JIRATransformer } from '../src';
@@ -13,7 +14,8 @@ import { JIRATransformer } from '../src';
 const Container = styled.div`
   display: grid;
   grid-template-columns: 33% 33% 33%;
-  #source,#output {
+  #source,
+  #output {
     border: 2px solid;
     margin: 8px;
     padding: 8px;
@@ -21,8 +23,8 @@ const Container = styled.div`
     &:focus {
       outline: none;
     }
-    &:empty:not(:focus):before {
-      content: attr(data-placeholder)
+    &:empty:not(:focus)::before {
+      content: attr(data-placeholder);
       font-size: 14px;
     }
   }
@@ -31,7 +33,9 @@ const Container = styled.div`
   }
 `;
 
-const emojiProvider = emojiStoryData.getEmojiResource();
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
+  EmojiProvider
+>;
 const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
@@ -70,9 +74,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowTextFormatting={true}
             allowTasksAndDecisions={true}
-            allowHyperlinks={true}
             allowCodeBlocks={true}
             allowLists={true}
             allowMentions={true}
