@@ -247,7 +247,6 @@
     "chunkinator": "^0.0.15",
     "classnames": "^2.2.5",
     "clipboard-polyfill": "2.4.3",
-    "clone-deep": "^3.0.1",
     "codemirror": "^5.26.0",
     "codesandbox": "^1.1.14",
     "collapse-whitespace": "^1.1.6",
