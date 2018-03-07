@@ -126,8 +126,7 @@ const App = () => (
   ## Instrumented Components
 
   This table shows all the component interactions that are instrumented. In addition to what is shown
-  in the "Context" column, all components include \`atlaskitPackageName\` and \`atlaskitPackageVersion\`
-  in the context.
+  in the "Context" column, all components include \`package\` and \`version\` in the context.
 
   ${(
     <InstrumentedTable
