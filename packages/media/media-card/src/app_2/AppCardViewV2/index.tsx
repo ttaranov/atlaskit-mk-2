@@ -171,3 +171,4 @@ class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
 
 // export the new class as the old class
 export { AppCardViewV2 as AppCardView };
+export { OldViewModel as AppCardModel };
