@@ -1,11 +1,22 @@
 // @flow
 import React, { type Node } from 'react';
 import withCtrl from 'react-ctrl';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import CloseIcon from '@atlaskit/icon/glyph/cross';
+import { NPSWrapper, Header } from './styled/nps';
+/* eslint-disable import/no-named-as-default */
+import Feedback, { type Props as FeedbackProps } from './Feedback';
 
-type Rating = number;
-type Comment = string;
-type Role = string;
-type CanContact = boolean;
+export type Rating = number;
+export type Comment = string;
+export type Role = string;
+export type CanContact = boolean;
+
+const PAGES = {
+  FEEDBACK: 'feedback',
+  FOLLOWUP: 'followup',
+  THANKYOU: 'thankyou',
+};
 
 type NPSResult = {
   rating: Rating,
@@ -24,7 +35,7 @@ type NPSStrings = {
   optOut: Node,
   scaleLow: Node,
   scaleHigh: Node,
-  commentPlaceholder: Node,
+  commentPlaceholder: string,
   send: Node,
   roleQuestion: Node,
   contactQuestion: Node,
@@ -32,7 +43,7 @@ type NPSStrings = {
 };
 
 /* eslint-disable react/no-unused-prop-types */
-type Props = {
+export type Props = {
   /** The product the survey is for */
   product?: string,
   /** Can the survey be dismissed */
@@ -44,11 +55,11 @@ type Props = {
   /** Callback called when the user opts out of all future surveys */
   onOptOut: () => void,
   /** Callback called when the user selects a rating */
-  onRatingChange: Rating => void,
+  onRatingSelect: Rating => void,
   /** Callback called when the user updates the comment */
   onCommentChange: Comment => void,
   /** Callback called when user selects a role */
-  onRoleChange: Role => void,
+  onRoleSelect: Role => void,
   /** Callback called when the user updates the canContact field */
   onCanContactChange: CanContact => void,
   /** Callback called when the user submits the score/comment portion of the survey */
@@ -61,9 +72,12 @@ type Props = {
   roles: Array<string>,
   /** Override the default strings that are displayed in the survey */
   strings: NPSStrings,
+  /** Override the default feedback render component */
+  renderFeedback: any => Node,
 };
 
 type State = {
+  page: string,
   rating: number | null,
   comment: string | null,
   role: string | null,
@@ -78,6 +92,7 @@ export class NPS extends React.Component<Props, State> {
     onDismiss: () => {},
     canOptOut: () => {},
     onOptOut: () => {},
+    onRatingSelect: () => {},
     onSubmit: () => {},
     roles: [
       'Management',
@@ -89,6 +104,7 @@ export class NPS extends React.Component<Props, State> {
       'Other',
     ],
     strings: {},
+    renderFeedback: (props: FeedbackProps) => <Feedback {...props} />,
   };
 
   static defaultStrings(product: string) {
@@ -114,7 +130,8 @@ export class NPS extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      rating: 2,
+      page: PAGES.FEEDBACK,
+      rating: null,
       comment: '',
       role: null,
       canContact: false,
@@ -146,7 +163,7 @@ export class NPS extends React.Component<Props, State> {
   }
 
   _getNPSResult(): NPSResult {
-    if (!this.state.rating) {
+    if (this.state.rating === null) {
       throw new Error(
         'Could get create NPSResult from form values, rating is missing',
       );
@@ -160,6 +177,63 @@ export class NPS extends React.Component<Props, State> {
     };
   }
 
+  getTopButtonGroup() {
+    const dismissButton = (
+      <Button
+        appearance="subtle"
+        onClick={this.onDismiss}
+        iconBefore={<CloseIcon label="Close" size="small" />}
+      />
+    );
+    if (this.props.canOptOut) {
+      return (
+        <ButtonGroup>
+          <Button onClick={this.onOptOut} appearance="subtle">
+            {this.strings.optOut}
+          </Button>
+          {dismissButton}
+        </ButtonGroup>
+      );
+    }
+    return <ButtonGroup>{dismissButton}</ButtonGroup>;
+  }
+
+  getHeaders(): { title: Node, description: Node } {
+    const { page } = this.state;
+    let title;
+    let description;
+    switch (page) {
+      case PAGES.FEEDBACK: {
+        title = this.strings.feedbackTitle;
+        description = this.strings.feedbackDescription;
+        break;
+      }
+      default: {
+        throw new Error(`No headers found for Page ${page}`);
+      }
+    }
+
+    return { title, description };
+  }
+
+  getPage(): Node {
+    const { page } = this.state;
+    switch (page) {
+      case PAGES.FEEDBACK: {
+        const { renderFeedback } = this.props;
+        return renderFeedback({
+          strings: this.strings,
+          onRatingSelect: this.onRatingSelect,
+          onCommentChange: this.onCommentChange,
+          onSubmit: this.onFeedbackSubmit,
+        });
+      }
+      default: {
+        throw new Error(`Page ${page} not found`);
+      }
+    }
+  }
+
   onDismiss = () => {
     this.props.onDismiss();
   };
@@ -168,8 +242,17 @@ export class NPS extends React.Component<Props, State> {
     this.props.onOptOut();
   };
 
-  onFeedbackSubmit = (e: SyntheticEvent<>) => {
-    e.preventDefault();
+  onRatingSelect = (rating: Rating) => {
+    this.setState({ rating });
+    this.props.onRatingSelect(rating);
+  };
+
+  onCommentChange = (comment: Comment) => {
+    this.setState({ comment });
+    this.props.onCommentChange(comment);
+  };
+
+  onFeedbackSubmit = () => {
     try {
       const result = this._getNPSResult();
       this.props.onFeedbackSubmit(result);
@@ -189,15 +272,16 @@ export class NPS extends React.Component<Props, State> {
   };
 
   render() {
+    const { title, description } = this.getHeaders();
     return (
-      <div>
-        <div>Props</div>
-        <div>{JSON.stringify(this.props, null, 2)}</div>
-        <div>State</div>
-        <div>{JSON.stringify(this.state, null, 2)}</div>
-        <div>Strings</div>
-        <div>{JSON.stringify(this.strings, null, 2)}</div>
-      </div>
+      <NPSWrapper>
+        <Header>
+          <h2>{title}</h2>
+          {this.getTopButtonGroup()}
+        </Header>
+        <p>{description}</p>
+        {this.getPage()}
+      </NPSWrapper>
     );
   }
 }
