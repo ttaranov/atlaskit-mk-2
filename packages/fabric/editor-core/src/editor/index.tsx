@@ -45,17 +45,17 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.destroy();
   }
 
-  onEditorCreated = (instance: {
+  onEditorCreated(instance: {
     view: EditorView;
     transformer?: Transformer<string>;
-  }) => {
+  }) {
     this.registerEditorForActions(instance.view, instance.transformer);
     if (this.props.shouldFocus) {
       if (!instance.view.hasFocus()) {
         instance.view.focus();
       }
     }
-  };
+  }
 
   private deprecationWarnings(props) {
     if (props.hasOwnProperty('allowHyperlinks')) {
@@ -72,13 +72,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-
-  onEditorDestroyed = (instance: {
+  onEditorDestroyed(instance: {
     view: EditorView;
     transformer?: Transformer<string>;
-  }) => {
+  }) {
     this.unregisterEditorFromActions();
-  };
+  }
 
   private registerEditorForActions(
     editorView: EditorView,
