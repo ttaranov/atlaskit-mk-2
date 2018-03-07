@@ -2,11 +2,16 @@
 import React, { type Node } from 'react';
 import withCtrl from 'react-ctrl';
 
+type Rating = number;
+type Comment = string;
+type Role = string;
+type CanContact = boolean;
+
 type NPSResult = {
-  rating: number,
-  comment?: string | null,
-  role?: string | null,
-  canContact?: boolean,
+  rating: Rating,
+  comment?: Comment | null,
+  role?: Role | null,
+  canContact?: CanContact,
 };
 
 type NPSStrings = {
@@ -26,6 +31,7 @@ type NPSStrings = {
   done: Node,
 };
 
+/* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not the NPS survey is open */
   isOpen: boolean,
@@ -37,6 +43,14 @@ type Props = {
   canOptOut: boolean,
   /** Callback called when the user opts out of all future surveys */
   onOptOut: () => void,
+  /** Callback called when the user selects a rating */
+  onRatingChange: Rating => void,
+  /** Callback called when the user updates the comment */
+  onCommentChange: Comment => void,
+  /** Callback called when user selects a role */
+  onRoleChange: Role => void,
+  /** Callback called when the user updates the canContact field */
+  onCanContactChange: CanContact => void,
   /** Callback called when the user submits Page 1 */
   onSubmitPage1: NPSResult => void,
   /** Callback called when the user submits Page 2 */
