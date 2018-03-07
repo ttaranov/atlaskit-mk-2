@@ -41,6 +41,7 @@ export class ImageUploadState {
   changeHandlers: StateChangeHandler[] = [];
 
   private state: EditorState;
+  // @ts-ignore: UNREAD private config variable, do I need to be deleted or made public???
   private config: ImageUploadPluginOptions;
   private uploadHandler?: ImageUploadHandler;
 

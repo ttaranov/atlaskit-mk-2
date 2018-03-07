@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { colors, gridSize } from '@atlaskit/theme';
 
-// tslint:disable-next-line:variable-name
-export const Placeholder = styled.span`
+export const Placeholder: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin: 0 0 0 ${gridSize() * 3}px;
   position: absolute;
   color: ${colors.N80};

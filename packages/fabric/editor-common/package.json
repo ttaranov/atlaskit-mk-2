@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "6.3.1",
+  "version": "6.3.13",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,10 +22,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/emoji": "^31.1.4",
+    "@atlaskit/emoji": "^31.1.11",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-core": "^14.0.1",
-    "@atlaskit/mention": "^9.1.4",
+    "@atlaskit/mention": "^9.2.1",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
@@ -38,13 +38,14 @@
     "prosemirror-model": "^1.0.0",
     "prosemirror-schema-basic": "^1.0.0",
     "prosemirror-view": "^1.0.0",
-    "raf-schd": "^2.1.0"
+    "raf-schd": "^2.1.0",
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^1.9.0",
-    "@atlaskit/media-card": "^24.0.5",
-    "@atlaskit/webdriver-runner": "^0.0.1",
+    "@atlaskit/editor-test-helpers": "^1.9.2",
+    "@atlaskit/media-card": "^24.1.2",
+    "@atlaskit/webdriver-runner": "^0.0.2",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "json-schema-diff-validator": "^0.0.5",

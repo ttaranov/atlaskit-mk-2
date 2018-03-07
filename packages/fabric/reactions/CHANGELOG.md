@@ -1,5 +1,13 @@
 # @atlaskit/reactions
 
+## 10.8.4
+
+## 10.8.3
+
+## 10.8.2
+
+## 10.8.1
+
 ## 10.8.0
 - [minor] Moved Reactions to MK2 repo [d0cecbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0cecbf)
 

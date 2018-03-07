@@ -8,8 +8,8 @@ import { PredefinedAvatarList } from '../src/predefined-avatar-list';
 import {
   AvatarPickerDialog,
   AvatarPickerDialogProps,
-  DEFAULT_VISIBLE_PREDEFINED_AVATARS,
 } from '../src/avatar-picker-dialog';
+import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../src/avatar-picker-dialog/layout-const';
 import { dataURItoFile, fileToDataURI } from '../src/util';
 import { smallImage } from '@atlaskit/media-test-helpers';
 
@@ -39,8 +39,8 @@ describe('Avatar Picker Dialog', () => {
 
   const updateComponentWithNewImage = component => {
     // get the handler which the ImageNavigator triggers when the image loads, fire it
-    const { onImageChanged } = component.find(ImageNavigator).props();
-    onImageChanged(newImage, { x: 0, y: 0, size: CONTAINER_SIZE });
+    const { onImageLoaded } = component.find(ImageNavigator).props();
+    onImageLoaded(newImage, { x: 0, y: 0, size: CONTAINER_SIZE });
     component.update();
   };
 

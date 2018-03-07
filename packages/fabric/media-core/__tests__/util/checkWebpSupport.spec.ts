@@ -1,11 +1,6 @@
 declare var global: any;
 declare var require: any;
 
-/**
- * @jest-environment node
- * @see https://github.com/styled-components/jest-styled-components#styled-components--v2
- */
-
 describe('checkWebpSupport util', () => {
   let imageObjects;
 

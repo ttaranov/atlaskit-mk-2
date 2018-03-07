@@ -1242,6 +1242,53 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    ['tableCell', 'tableHeader'].forEach(nodeName => {
+      describe(nodeName, () => {
+        const cellAttrs = {
+          colspan: 2,
+          rowspan: 3,
+          colwidth: 4,
+          background: '#dabdab',
+        };
+
+        it('should pass through attrs', () => {
+          const { type, attrs } = getValidNode({
+            type: nodeName,
+            attrs: cellAttrs,
+            content: [],
+          });
+          expect(type).to.equal(nodeName);
+          expect(attrs).to.deep.equal(cellAttrs);
+        });
+
+        const attributeTests = new Map([
+          ['no attrs', undefined],
+          ['empty attrs', {}],
+          ['only colspan', { colspan: 2 }],
+          ['only rowspan', { rowspan: 2 }],
+        ]);
+
+        attributeTests.forEach((testAttr, testName) => {
+          it(`should reject ${nodeName} with ${testName}`, () => {
+            const { type } = getValidNode({
+              type: nodeName,
+              attrs: testAttr,
+              content: [],
+            });
+            expect(type).to.equal('text');
+          });
+        });
+
+        it(`should reject ${nodeName} without content`, () => {
+          const { type } = getValidNode({
+            type: nodeName,
+            attrs: cellAttrs,
+          });
+          expect(type).to.equal('text');
+        });
+      });
+    });
+
     it('should overwrite the default schema if it gets a docSchema parameter', () => {
       // rule is taken out in following schema
       const schema = createSchema({

@@ -12,10 +12,6 @@ import AkButton from '@atlaskit/button';
 import * as commonStyles from '../../../src/components/common/styles';
 
 import EmojiPickerEmojiRow from '../../../src/components/picker/EmojiPickerEmojiRow';
-import {
-  UploadPromptMessage,
-  addEmojiClassName,
-} from '../../../src/components/picker/EmojiPickerUploadPrompts';
 import CategorySelector from '../../../src/components/picker/CategorySelector';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiPickerCategoryHeading from '../../../src/components/picker/EmojiPickerCategoryHeading';
@@ -24,7 +20,6 @@ import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerLis
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import { customCategory } from '../../../src/constants';
-import EmojiPreview from '../../../src/components/common/EmojiPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -82,8 +77,7 @@ const findAllVirtualRows = component =>
     n =>
       n.is(EmojiPickerListSearch) ||
       n.is(EmojiPickerCategoryHeading) ||
-      n.is(EmojiPickerEmojiRow) ||
-      n.is(UploadPromptMessage),
+      n.is(EmojiPickerEmojiRow),
     // ignore spinner
   );
 
@@ -125,7 +119,11 @@ const getCategoryButton = (category: string, picker) => {
 export const categoryVisible = (category: string, component) =>
   findCategoryHeading(category, component).length > 0;
 
-export const showCategory = (category: string, component): Promise<any> => {
+export const showCategory = (
+  category: string,
+  component,
+  categoryTitle?: string,
+): Promise<any> => {
   const categoryButton = getCategoryButton(category, component);
   expect(categoryButton).toHaveLength(1);
 
@@ -135,7 +133,10 @@ export const showCategory = (category: string, component): Promise<any> => {
     return waitUntil(
       () =>
         component.update() &&
-        categoryVisible(category, component.find(EmojiPickerList)),
+        categoryVisible(
+          categoryTitle || category,
+          component.find(EmojiPickerList),
+        ),
     );
   });
 };
@@ -184,12 +185,6 @@ const findCustomSection = component =>
 export const customSectionVisible = (component): boolean =>
   component.update() && component.findWhere(findCustomSection).length > 0;
 
-export const findStartEmojiUpload = component =>
-  component.update() && component.find(`.${addEmojiClassName}`);
-
-export const startEmojiUploadVisible = (component): boolean =>
-  findStartEmojiUpload(component).length > 0;
-
 export const findEmojiNameInput = component =>
   component.update() &&
   component.find(`.${commonStyles.uploadChooseFileEmojiName} input`);
@@ -232,11 +227,6 @@ export const findEmojiWithId = (component, id) =>
 
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
-
-export const findPreview = component =>
-  component.update() && component.find(EmojiPreview);
-
-export const previewVisible = component => findPreview(component).length > 0;
 
 export const findUploadError = component =>
   component.update() && component.find(`.${commonStyles.uploadError}`);

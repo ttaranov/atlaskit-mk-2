@@ -21,8 +21,11 @@ import {
   code,
   thCursor,
   strong,
+  mediaGroup,
+  media,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import { setTextSelection } from '../../../src/utils';
+import { setTextSelection, setNodeSelection } from '../../../src/utils';
 import {
   selectRow,
   selectColumn,
@@ -36,15 +39,15 @@ import {
   checkIfRowSelected,
 } from '../../../src/editor/plugins/table/utils';
 import tablesPlugin from '../../../src/editor/plugins/table';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import { mediaPlugin } from '../../../src/editor/plugins';
 
 describe('table plugin', () => {
   const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TableState>({
       doc,
-      editorPlugins: [tablesPlugin, textFormatting(), codeBlockPlugin],
+      editorPlugins: [tablesPlugin, codeBlockPlugin, mediaPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: {
@@ -1012,6 +1015,174 @@ describe('table plugin', () => {
           editorView.destroy();
         });
       });
+    });
+  });
+
+  describe('when the cells contains only an image', () => {
+    it('should add a paragraph below when arrow down is pressed', () => {
+      const { editorView } = editor(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+                p(''),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      editorView.destroy();
+    });
+
+    it('should add a paragraph above when arrow up is pressed', () => {
+      const { editorView } = editor(
+        doc(
+          table(
+            tr(
+              td()(
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          table(
+            tr(
+              td()(
+                p(''),
+                mediaGroup(
+                  media({
+                    id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                    type: 'file',
+                    collection: 'MediaServicesSample',
+                    __fileMimeType: 'image/jpeg',
+                  })(),
+                ),
+              ),
+              tdEmpty,
+              tdEmpty,
+            ),
+            tr(td()(p('2')), tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      editorView.destroy();
+    });
+
+    it('should not add a paragraph, if there already is a paragraph below when arrow down is pressed', () => {
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
+              ),
+              p('1'),
+              p('2'),
+            ),
+            tdEmpty,
+            tdEmpty,
+          ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
+        ),
+      );
+
+      const { editorView } = editor(docWithTable);
+
+      setNodeSelection(editorView, 4);
+      sendKeyToPm(editorView, 'ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
+    });
+
+    it('should not add a paragraph, if there already is a paragraph above when arrow up is pressed', () => {
+      const docWithTable = doc(
+        table(
+          tr(
+            td()(
+              p('1'),
+              p('2'),
+              mediaGroup(
+                media({
+                  id: 'af9310df-fee5-459a-a968-99062ecbb756',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  __fileMimeType: 'image/jpeg',
+                })(),
+              ),
+            ),
+            tdEmpty,
+            tdEmpty,
+          ),
+          tr(td()(p('3')), tdEmpty, tdEmpty),
+        ),
+      );
+
+      const { editorView } = editor(docWithTable);
+
+      setNodeSelection(editorView, 6);
+      sendKeyToPm(editorView, 'ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
     });
   });
 });

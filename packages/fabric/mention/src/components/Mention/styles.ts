@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import {
   akColorB400,
   akColorN20,
@@ -28,10 +31,11 @@ mentionStyle[MentionType.DEFAULT] = {
   text: akColorN500,
 };
 
-// tslint:disable-next-line:variable-name
-export const MentionStyle = styled.span`
+export const MentionStyle: ComponentClass<
+  HTMLAttributes<{}> & MentionStyleProps
+> = styled.span`
   ${(props: MentionStyleProps) => `
-  display: table-cell;
+  display: inline-block;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;
@@ -43,8 +47,7 @@ export const MentionStyle = styled.span`
 `};
 `;
 
-// tslint:disable-next-line:variable-name
-export const MentionContainer = styled.span`
+export const MentionContainer: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: inline-table;
   white-space: nowrap;
 `;

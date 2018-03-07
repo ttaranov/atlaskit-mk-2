@@ -1,4 +1,8 @@
+import * as React from 'react';
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
 import {
   akEditorTableCellSelected,
   akEditorTableBorder,
@@ -12,6 +16,7 @@ const tableStyle = `
     margin: 20px 8px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
+    table-layout: fixed;
 
     & {
       * {
@@ -69,7 +74,9 @@ const tableStyle = `
 `;
 
 // tslint:disable-next-line:variable-name
-const StyledTable = styled.table`
+const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
   ${tableStyle};
 `;
+
+export { tableStyle };
 export default StyledTable;

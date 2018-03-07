@@ -8,4 +8,4 @@ npm install @atlaskit/page
 
 ## Usage
 
-See [here](https://ak-mk-2-prod.netlify.com/mk-2/packages/elements/page)
+See [here](https://atlaskit.atlassian.com/packages/elements/page)

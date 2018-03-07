@@ -106,7 +106,7 @@ export const CodeMd: ComponentClass = styled.span`
 
 export const CodeLg: ComponentClass = styled.span`
   background-color: ${akColorN20};
-  codelg: ${akBorderRadius};
+  border-radius: ${akBorderRadius};
   display: inline-block;
   height: 24px;
   line-height: 24px;

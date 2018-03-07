@@ -1,5 +1,10 @@
 # @atlaskit/media-store
 
+## 0.1.1
+
+## 0.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 0.0.3
 - [patch] Bump Rusha version to 0.8.13 [67a6312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67a6312)
 

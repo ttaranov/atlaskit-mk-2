@@ -193,9 +193,7 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
       >
         <FileMetadataGroup>
           <FileIcon>{itemIcon}</FileIcon>
-          <FileName type="name" isSelected={isSelected}>
-            {serviceFile.name}
-          </FileName>
+          <FileName isSelected={isSelected}>{serviceFile.name}</FileName>
         </FileMetadataGroup>
         {tail}
       </FolderViewerRow>
@@ -205,8 +203,8 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
   private renderFileCreateDateAndSize = ({ date, size }) => {
     return (
       <FileMetadataGroup>
-        <FileCreateDate type="date">{getDateString(date)}</FileCreateDate>
-        <FileSize type="size">{filesize(size)}</FileSize>
+        <FileCreateDate>{getDateString(date)}</FileCreateDate>
+        <FileSize>{filesize(size)}</FileSize>
       </FileMetadataGroup>
     );
   };

@@ -25,7 +25,7 @@ ${code`
 ${code`
   import { Editor } from '@atlaskit/editor-core';
 
-  <Editor appearance="comment" allowTextFormatting />;
+  <Editor appearance="comment" />;
 `}
 
   This will render the comment editor with only text formatting (bold / italics / underline / superscript/subscript) enabled.
@@ -42,7 +42,6 @@ ${code`
 
   <Editor
     appearance="comment"
-    allowTextFormatting
     mentionProvider={mentionProvider.get()}
   />;
 `}
@@ -73,7 +72,6 @@ ${code`
         >
           <Editor
             appearance="comment"
-            allowTextFormatting
             onSave={this.onSave}
             onCancel={this.collapseEditor}
           />
@@ -127,7 +125,6 @@ ${code`
 
   <Editor
     appearance="comment"
-    allowTextFormatting
     contentTransformerProvider={schema => new BitbucketTransformer(schema)}
   />;
 `}
@@ -153,7 +150,6 @@ ${code`
             render={actions => (
               <Editor
                 appearance="comment"
-                allowTextFormatting
                 onSave={this.onSubmit(actions)}
               />
             )}
@@ -181,7 +177,6 @@ ${code`
       return (
         <Editor
           appearance="comment"
-          allowTextFormatting
           onSave={this.onSubmit}
         />
       );

@@ -23,6 +23,12 @@ export interface JiraItem {
   key: string;
   fields: {
     summary: string;
+    project: {
+      name: string;
+    };
+    issuetype: {
+      iconUrl: string;
+    };
   };
 }
 
@@ -138,14 +144,13 @@ function confluenceItemToResult(item: ConfluenceItem): Result {
   };
 }
 
-// TODO populate props once API is ready
 function jiraItemToResult(item: JiraItem): Result {
   return {
     type: ResultType.Object,
-    resultId: 'search-' + item.key + 'TODO',
-    avatarUrl: 'TODO',
+    resultId: 'search-' + item.key,
+    avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
-    href: 'TODO',
-    containerName: item.key,
+    href: '/browse/' + item.key,
+    containerName: item.fields.project.name,
   };
 }

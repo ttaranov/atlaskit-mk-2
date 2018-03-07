@@ -1,3 +1,8 @@
+import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+
 import {
   akEditorCodeBackground,
   akEditorCodeBlockPadding,
@@ -12,10 +17,8 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-import styled from 'styled-components';
-
 // tslint:disable-next-line:variable-name
-export const Content = styled.div`
+export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   & .ProseMirror {
     outline: none;
     white-space: pre-wrap;
@@ -48,8 +51,8 @@ export const Content = styled.div`
       font-size: 12px;
       line-height: 1.4;
 
-      &:before,
-      &:after {
+      &::before,
+      &::after {
         vertical-align: text-top;
         display: inline-block;
         width: 3px;
@@ -71,7 +74,7 @@ export const Content = styled.div`
     }
 
     & > div {
-      // padding: 4px 0;
+      /* padding: 4px 0; */
     }
 
     & button {
@@ -89,7 +92,7 @@ export const Content = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-export const ButtonGroup = styled.span`
+export const ButtonGroup: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
 
   & > button {

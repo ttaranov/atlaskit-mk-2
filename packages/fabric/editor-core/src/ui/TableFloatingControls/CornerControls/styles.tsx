@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorTableToolbarSize,
   akEditorTableBorder,
@@ -8,8 +11,7 @@ import {
 } from '../../../styles';
 import { LineMarkerDefault } from '../styles';
 
-// tslint:disable-next-line:variable-name
-export const CornerContainer = styled.div`
+export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: -${akEditorTableToolbarSize}px;
   left: -${akEditorTableToolbarSize}px;
@@ -23,8 +25,9 @@ export const CornerContainer = styled.div`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const CornerButton = styled.button`
+export const CornerButton: ComponentClass<
+  ButtonHTMLAttributes<{}>
+> = styled.button`
   position: absolute;
   right: -1px;
   bottom: -1px;
@@ -61,14 +64,18 @@ export const CornerButton = styled.button`
     outline: none;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const ColumnLineMarker = styled(LineMarkerDefault)`
+
+export const ColumnLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  LineMarkerDefault,
+)`
   width: 2px;
   left: 8px;
   top: 20px;
 `;
-// tslint:disable-next-line:variable-name
-export const RowLineMarker = styled(LineMarkerDefault)`
+
+export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  LineMarkerDefault,
+)`
   height: 2px;
   top: 8px;
   left: 20px;

@@ -34,7 +34,7 @@ export interface State {
   isEditing?: boolean;
 }
 
-const Container = styled.div`
+const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   display: grid;
   grid-template:
     'avatar-area editor-area'
@@ -48,14 +48,18 @@ const Container = styled.div`
   }
 `;
 
-const AvatarSection = styled.div`
+const AvatarSection: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: avatar-area;
   margin-right: 10px;
 `;
 
-const EditorSection = styled.div`
+const EditorSection: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: editor-area;
@@ -115,9 +119,7 @@ export default class Editor extends React.Component<Props, State> {
       appearance: 'comment',
       shouldFocus: true,
       allowCodeBlocks: true,
-      allowTextFormatting: true,
       allowLists: true,
-      allowHyperlinks: true,
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
       defaultValue,

@@ -10,6 +10,8 @@ import {
   OptionalEmojiDescription,
   SearchOptions,
   ToneSelection,
+  User,
+  OptionalUser,
 } from '../types';
 import { selectedToneStorageKey } from '../constants';
 import { EmojiProvider, UploadingEmojiProvider } from '../api/EmojiResource';
@@ -17,6 +19,7 @@ import EmojiRepository from '../api/EmojiRepository';
 import debug from '../util/logger';
 
 import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
+import { loggedUser } from './story-data';
 
 const emojiFromUpload = (upload: EmojiUpload) => {
   const { shortName, name, dataURL, height, width } = upload;
@@ -28,6 +31,7 @@ const emojiFromUpload = (upload: EmojiUpload) => {
     type: customType,
     category: customCategory,
     order: -1,
+    creatorUserId: loggedUser,
     representation: {
       width,
       height,
@@ -49,11 +53,13 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   protected lastQuery: string = '';
   protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
+  protected currentUser?: User;
 
   recordedSelections: EmojiDescription[] = [];
 
   constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
     super();
+    this.currentUser = (config && config.currentUser) || undefined;
     this.emojiRepository = emojiService;
     this.promiseBuilder = result => Promise.resolve(result);
     if (config) {
@@ -67,6 +73,10 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
       const storedTone = window.localStorage.getItem(selectedToneStorageKey);
       this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
     }
+  }
+
+  getCurrentUser(): OptionalUser {
+    return this.currentUser;
   }
 
   filter(query?: string, options?: SearchOptions) {
@@ -231,13 +241,6 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource
       return this.promiseBuilder(emoji, 'loadMediaEmoji');
     }
     return emoji;
-  }
-
-  calculateDynamicCategories(): Promise<string[]> {
-    if (!this.emojiRepository) {
-      return Promise.resolve([]);
-    }
-    return Promise.resolve(this.emojiRepository.getDynamicCategoryList(true));
   }
 }
 

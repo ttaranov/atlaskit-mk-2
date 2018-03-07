@@ -1,10 +1,17 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, LiHTMLAttributes } from 'react';
 import {
   akColorB400,
   akColorN20,
   akColorN40,
-  akColorB50
+  akColorB50,
 } from '@atlaskit/util-shared-styles';
 
 export const FilmStripViewWrapper = styled.div`
@@ -42,7 +49,7 @@ export const FilmStripListItem = styled.li`
   padding: 0 4px;
   display: inline-block;
   vertical-align: middle;
-  // Fixes issue with child Cards using inline-block
+  /* Fixes issue with child Cards using inline-block */
   font-size: 0;
 
   &:first-child {
@@ -68,20 +75,20 @@ export const ArrowWrapper = styled.div`
   border-radius: 100%;
   display: flex;
   cursor: pointer;
-  transition: opacity .3s;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.6);
   color: black;
   width: 30px;
   height: 30px;
   justify-content: center;
   opacity: 0;
 
-  &:hover{
+  &:hover {
     color: black;
     background-color: ${akColorN40};
   }
 
-  &:active{
+  &:active {
     color: ${akColorB400};
     background-color: ${akColorB50};
   }
@@ -114,7 +121,7 @@ export const Shadow = styled.div`
   height: 100%;
   top: 0;
   width: 2px;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export const ShadowLeft = styled(Shadow)`

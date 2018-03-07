@@ -1,10 +1,14 @@
+import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ComponentClass } from 'react';
 import { akEditorSubtleAccent } from '../../styles';
 import { akBorderRadius, akColorN50 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
 
-// tslint:disable-next-line:variable-name
-export const Input = styled.input`
-  // Normal .className gets overridden by input[type=text] hence this hack to produce input.className
+export const Input: ComponentClass<
+  InputHTMLAttributes<{}> & { innerRef?: any }
+> = styled.input`
+  /* Normal .className gets overridden by input[type=text] hence this hack to produce input.className */
   input& {
     background-color: white;
     border: 1px solid ${akEditorSubtleAccent};

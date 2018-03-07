@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { Wrapper } from '../../src/utils/lazyContent/styled';

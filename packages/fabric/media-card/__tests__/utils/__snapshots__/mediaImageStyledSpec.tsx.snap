@@ -5,9 +5,9 @@ exports[`MediaImage styled default props 1`] = `
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background-repeat: no-repeat, repeat;
-  background-position: center, center;
-  background-size: contain, auto;
+  background-repeat: no-repeat,repeat;
+  background-position: center,center;
+  background-size: contain,auto;
 }
 
 <div
@@ -20,11 +20,11 @@ exports[`MediaImage styled fadeIn=true 1`] = `
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background-repeat: no-repeat, repeat;
-  background-position: center, center;
-  background-size: contain, auto;
-  animation: bcCCNc .3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  -webkit-animation: bcCCNc .3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-repeat: no-repeat,repeat;
+  background-position: center,center;
+  background-size: contain,auto;
+  -webkit-animation: bcCCNc .3s cubic-bezier(0.645,0.045,0.355,1);
+  animation: bcCCNc .3s cubic-bezier(0.645,0.045,0.355,1);
 }
 
 <div
@@ -37,10 +37,10 @@ exports[`MediaImage styled isCropped=true 1`] = `
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background-repeat: no-repeat, repeat;
-  background-position: center, center;
-  background-size: contain, auto;
-  background-size: cover, auto;
+  background-repeat: no-repeat,repeat;
+  background-position: center,center;
+  background-size: contain,auto;
+  background-size: cover,auto;
 }
 
 <div

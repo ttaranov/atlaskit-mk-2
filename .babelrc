@@ -3,7 +3,15 @@
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",
-    "syntax-dynamic-import"
+    "babel-plugin-transform-string-raw",
+    "syntax-dynamic-import",
+    [
+      "babel-plugin-styled-components",
+      {
+        "minify": false,
+        "uglifyPure": false
+      }
+    ]
   ],
   "env": {
     "production:cjs": {

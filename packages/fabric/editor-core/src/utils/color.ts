@@ -69,12 +69,12 @@ export function hexToRgb(color: string): string | null {
 
 /**
  * Converts hex color format to rgba.
- * Works with full hex color format only.
  *
- * @param hex - hex color string (#xxxxxx)
+ * @param hex - hex color string (#xxx, or #xxxxxx)
  */
-export function hexToRgba(color: string, alpha: number) {
-  if (!isHex(color) && color.length !== 7) {
+export function hexToRgba(rawColor: string, alpha: number) {
+  let color = normalizeHexColor(rawColor);
+  if (!color) {
     return null;
   }
   const hex2rgb = (color: string) =>

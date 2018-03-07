@@ -17,3 +17,6 @@ export {
   default as withAnalyticsEvents,
   WithAnalyticsEventsProps,
 } from './withAnalyticsEvents';
+
+// create and fire helper
+export { default as createAndFireEvent } from './createAndFireEvent';

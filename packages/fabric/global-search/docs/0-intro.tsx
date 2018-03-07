@@ -14,7 +14,7 @@ export default md`
   <Navigation
     drawers={[
       <AkSearchDrawer ...props>
-        <GlobalQuickSearch cloudId="{cloudId} environment="{environment}" />
+        <GlobalQuickSearch cloudId="{cloudId} />
       </AkSearchDrawer>,
     ]}
   </Navigation>

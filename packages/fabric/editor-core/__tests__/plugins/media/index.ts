@@ -35,7 +35,6 @@ import {
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import rulePlugin from '../../../src/editor/plugins/rule';
 import tablePlugin from '../../../src/editor/plugins/table';
@@ -71,7 +70,6 @@ describe('Media plugin', () => {
           allowMediaSingle: true,
           customDropzoneContainer: dropzoneContainer,
         }),
-        hyperlinkPlugin,
         codeBlockPlugin,
         rulePlugin,
         tablePlugin,
@@ -321,6 +319,7 @@ describe('Media plugin', () => {
                         __fileMimeType: 'image/png',
                       })(),
                     ),
+                    p(''),
                   ),
                   tdEmpty,
                   tdEmpty,
@@ -333,13 +332,62 @@ describe('Media plugin', () => {
     });
 
     describe('when it is a mix of pdf and image', () => {
-      it('inserts single medias', async () => {
+      it('inserts pdf as a media group and images as single', async () => {
+        const { editorView, pluginState } = editor(doc(p('')));
+        await mediaProvider;
+
+        pluginState.insertFiles([
+          { id: 'lala', fileMimeType: 'pdf' },
+          { id: 'bar', fileMimeType: 'image/png' },
+        ]);
+
+        stateManager.updateState('bar', {
+          id: 'bar',
+          status: 'preview',
+          fileName: 'bar.png',
+          fileSize: 200,
+          fileMimeType: 'image/png',
+          thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
+        });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaGroup(
+              media({
+                id: 'lala',
+                type: 'file',
+                __fileMimeType: 'pdf',
+                collection: testCollectionName,
+              })(),
+            ),
+            mediaSingle({ layout: 'center' })(
+              media({
+                id: 'bar',
+                __fileName: 'bar.png',
+                __fileSize: 200,
+                height: 200,
+                width: 200,
+                __fileMimeType: 'image/png',
+                type: 'file',
+
+                collection: testCollectionName,
+              })(),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
+
+    describe('when all media are non-images', () => {
+      it('should insert as media group', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
         await mediaProvider;
 
         pluginState.insertFiles([
           { id: 'foo', fileMimeType: 'pdf' },
-          { id: 'bar', fileMimeType: 'image/png' },
+          { id: 'bar', fileMimeType: 'pdf' },
+          { id: 'foobar', fileMimeType: 'pdf' },
         ]);
 
         expect(editorView.state.doc).toEqualDocument(
@@ -348,17 +396,23 @@ describe('Media plugin', () => {
               media({
                 id: 'foo',
                 type: 'file',
-                collection: testCollectionName,
                 __fileMimeType: 'pdf',
+                collection: testCollectionName,
               })(),
               media({
                 id: 'bar',
                 type: 'file',
+                __fileMimeType: 'pdf',
                 collection: testCollectionName,
-                __fileMimeType: 'image/png',
+              })(),
+              media({
+                id: 'foobar',
+                type: 'file',
+                __fileMimeType: 'pdf',
+                collection: testCollectionName,
               })(),
             ),
-            p(),
+            p(''),
           ),
         );
       });

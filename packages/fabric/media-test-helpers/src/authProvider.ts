@@ -3,7 +3,8 @@ import { defaultCollectionName } from './collectionNames';
 import { Auth, AuthProvider, AuthContext } from '@atlaskit/media-core';
 
 const cachedAuths: { [key: string]: Auth } = {};
-const authProviderBaseURL = 'https://media-playground.dev.atl-paas.net';
+const authProviderBaseURL =
+  'https://api-private.dev.atlassian.com/media-playground/api/';
 export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';
 
 export class StoryBookAuthProvider {
@@ -22,6 +23,7 @@ export class StoryBookAuthProvider {
       }
 
       const config: AxiosRequestConfig = {
+        withCredentials: true,
         baseURL: authProviderBaseURL,
         headers: {},
         params: {

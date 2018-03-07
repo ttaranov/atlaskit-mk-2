@@ -10,6 +10,7 @@ import {
   akColorY50,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
+import { akEditorTableCellBackgroundOpacity } from '../../styles';
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -41,7 +42,9 @@ const setCellAttrs = (node: PmNode) => {
   if (node.attrs.background) {
     const { background } = node.attrs;
     const color =
-      node.type.name === 'tableCell' ? hexToRgba(background, 0.5) : background;
+      node.type.name === 'tableCell'
+        ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
+        : background;
     attrs.style = (attrs.style || '') + `background-color: ${color};`;
   }
 
@@ -68,7 +71,7 @@ export const tableBackgroundColorPalette = new Map<string, string>();
  */
 export interface Table {
   type: 'table';
-  attrs: {
+  attrs?: {
     isNumberColumnEnabled?: boolean;
   };
   /**
@@ -178,6 +181,16 @@ export const tableCell: any = {
   },
 };
 
+export const toJSONTableCell = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});
+
 export const tableHeader: any = {
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
@@ -194,3 +207,13 @@ export const tableHeader: any = {
     return ['th', setCellAttrs(node), 0];
   },
 };
+
+export const toJSONTableHeader = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});

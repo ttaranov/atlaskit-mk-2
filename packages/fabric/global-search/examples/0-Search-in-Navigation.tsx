@@ -22,9 +22,7 @@ export default class extends React.Component {
     return (
       <OuterBorder>
         <BasicNavigation
-          searchDrawerContent={
-            <GlobalQuickSearch cloudId="cloudId" environment="local" />
-          }
+          searchDrawerContent={<GlobalQuickSearch cloudId="cloudId" />}
         />
       </OuterBorder>
     );

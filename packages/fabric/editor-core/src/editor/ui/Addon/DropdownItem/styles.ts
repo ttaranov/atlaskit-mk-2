@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akColorN20, akColorN800 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const DropdownItem = styled.div`
+export const DropdownItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;

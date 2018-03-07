@@ -1,4 +1,11 @@
-import styled, { css } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass, css } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, AnchorHTMLAttributes } from 'react';
 
 import {
   akColorN20,
@@ -20,7 +27,7 @@ export interface WrapperProps {
 
 function minWidth({ minWidth }: WrapperProps) {
   if (minWidth) {
-    return `min-width: ${minWidth}px`;
+    return `min-width: ${minWidth}px;`;
   } else {
     return '';
   }
@@ -28,7 +35,7 @@ function minWidth({ minWidth }: WrapperProps) {
 
 function maxWidth({ maxWidth }: WrapperProps) {
   if (maxWidth) {
-    return `max-width: ${maxWidth}px`;
+    return `max-width: ${maxWidth}px;`;
   } else {
     return '';
   }
@@ -114,8 +121,8 @@ export const IconWrapper = styled.div`
   ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
       if (isPlaceholder) {
         return `
-        background-color: ${akColorN30};
-      `;
+      background-color: ${akColorN30};
+    `;
       } else {
         return '';
       }

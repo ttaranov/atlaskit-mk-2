@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.5.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 6.4.6
 - [patch] adds aria-expanded value to expander button in flag [7de4577](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7de4577)
 

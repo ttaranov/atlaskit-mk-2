@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "4.9.1",
+  "version": "4.10.2",
   "config": {
     "access": "public"
   },
@@ -16,15 +16,15 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^2.4.4",
-    "@atlaskit/avatar": "^9.0.4",
-    "@atlaskit/button": "^6.4.2",
-    "@atlaskit/icon": "^10.9.2",
-    "@atlaskit/spinner": "^4.1.5",
-    "@atlaskit/theme": "^2.3.4",
+    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/button": "^6.6.0",
+    "@atlaskit/icon": "^10.12.0",
+    "@atlaskit/spinner": "^4.2.0",
+    "@atlaskit/theme": "^2.4.0",
     "@atlaskit/util-service-support": "^2.0.4",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0"
   },
@@ -39,9 +39,9 @@
     "react-dom": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/editor-common": "^6.1.8",
-    "@atlaskit/renderer": "^11.4.5",
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/editor-common": "^6.3.11",
+    "@atlaskit/renderer": "^11.5.7",
     "@atlaskit/util-common-test": "^2.4.2",
     "fetch-mock": "^5.12.1"
   },

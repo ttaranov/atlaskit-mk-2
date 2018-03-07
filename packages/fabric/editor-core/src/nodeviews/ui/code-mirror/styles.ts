@@ -74,7 +74,10 @@ injectGlobal`
     }
     /* Can style cursor different in overwrite (non-insert) mode */
     & .CodeMirror-overwrite .CodeMirror-cursor {}
-    & .cm-tab { display: inline-block; text-decoration: inherit; }
+    & .cm-tab {
+      display: inline-block;
+      text-decoration: inherit;
+    }
     & .CodeMirror-rulers {
       position: absolute;
       left: 0; right: 0; top: -50px; bottom: -20px;
@@ -293,11 +296,11 @@ injectGlobal`
     & .CodeMirror-line > span::-moz-selection,
     & .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
     & .cm-searching {
-      background: #ffa;
       background: rgba(255, 255, 0, .4);
     }
     /* Used to force a border model for a node */
     & .cm-force-border { padding-right: .1px; }
+
     @media print {
       /* Hide the cursor when printing */
       & .CodeMirror div.CodeMirror-cursors {
@@ -305,7 +308,7 @@ injectGlobal`
       }
     }
     /* See issue #2901 */
-    & .cm-tab-wrap-hack:after { content: ''; }
+    & .cm-tab-wrap-hack::after { content: ''; }
     /* Help users use markselection to safely style text background */
     & span.CodeMirror-selectedtext { background: none; }
   }

@@ -1,12 +1,14 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akColorN900,
   akColorN50,
   akColorN0,
 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Button = styled.button`
+export const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
   height: 26px;
   width: 26px;
   background: ${akColorN900};
@@ -16,12 +18,11 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ButtonWrapper = styled.span`
+export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: inline-block;
   border: 2px solid transparent;
   margin: 1px;
-  font-size: 0px;
+  font-size: 0;
   border-radius: 6px;
   &:hover {
     border-color: ${akColorN50};

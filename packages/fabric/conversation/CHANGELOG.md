@@ -1,5 +1,25 @@
 # @atlaskit/conversation
 
+## 6.3.5
+
+## 6.3.4
+
+## 6.3.3
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 6.3.2
+
+## 6.3.1
+
+## 6.3.0
+- [minor] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
+## 6.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 6.1.1
+- [patch] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
 ## 6.1.0
 - [minor] Adding renderEditor prop [e2485f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2485f7)
 

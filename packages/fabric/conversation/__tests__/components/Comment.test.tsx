@@ -2,11 +2,13 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, { CommentAuthor, CommentAction } from '@atlaskit/comment';
+import { ResourcedReactions } from '@atlaskit/reactions';
 import {
   mockComment,
   mockInlineComment,
   MOCK_USERS,
 } from '../../example-helpers/MockData';
+import { getDataProviderFactory } from '../../example-helpers/MockProvider';
 import Comment, { DeletedMessage } from '../../src/components/Comment';
 import Editor from '../../src/components/Editor';
 import CommentContainer from '../../src/containers/Comment';
@@ -346,6 +348,113 @@ describe('Comment', () => {
       expect(onUserClick.mock.calls.length).toBe(0);
       usernameLink.simulate('click');
       expect(onUserClick).toHaveBeenCalledWith(user);
+    });
+  });
+
+  describe('reactions', () => {
+    const [user] = MOCK_USERS;
+
+    it('should render reactions-component if dataProvider contains reactionsProvider and emojiProvider', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory()}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(1);
+
+      comment.unmount();
+    });
+
+    it('should not render reactions-component if reactionsProvider is missing', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory([
+            'mentionProvider',
+            'emojiProvider',
+          ])}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(0);
+
+      comment.unmount();
+    });
+
+    it('should not render reactions-component if emojiProvider is missing', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory([
+            'mentionProvider',
+            'reactionsProvider',
+          ])}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(0);
+
+      comment.unmount();
+    });
+
+    it('should not render reactions-component if containerId is missing', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+          dataProviders={getDataProviderFactory()}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(0);
+
+      comment.unmount();
+    });
+
+    it('should not render reactions-component if commentAri is missing', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={{
+            ...mockComment,
+            commentAri: undefined,
+          }}
+          dataProviders={getDataProviderFactory()}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(0);
+
+      comment.unmount();
+    });
+
+    it('should not render reactions-component if user is missing', () => {
+      const comment = mount(
+        <Comment
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory()}
+        />,
+      );
+
+      expect(comment.first().find(ResourcedReactions).length).toEqual(0);
+
+      comment.unmount();
     });
   });
 });

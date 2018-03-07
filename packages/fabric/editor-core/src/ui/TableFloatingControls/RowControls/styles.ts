@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorTableBorderRadius,
   akEditorTableBorder,
@@ -12,8 +15,7 @@ import {
   LineMarkerDefault,
 } from '../styles';
 
-// tslint:disable-next-line:variable-name
-export const RowContainer = styled.div`
+export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 1px;
   left: -${akEditorTableToolbarSize - 1}px;
@@ -25,16 +27,18 @@ export const RowContainer = styled.div`
     display: block;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const RowInner = styled.div`
+
+export const RowInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   & > div:last-child > button {
     border-bottom-left-radius: ${akEditorTableBorderRadius};
   }
 `;
-// tslint:disable-next-line:variable-name
-export const RowControlsButtonWrap = styled.div`
+
+export const RowControlsButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: relative;
   margin-top: -1px;
   &:hover,
@@ -42,8 +46,10 @@ export const RowControlsButtonWrap = styled.div`
     z-index: 1;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const HeaderButton = styled(HeaderButtonDefault)`
+
+export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
+  HeaderButtonDefault,
+)`
   border-right: none;
   border-bottom: 1px solid ${akEditorTableBorder};
   border-radius: 0;
@@ -57,8 +63,10 @@ export const HeaderButton = styled(HeaderButtonDefault)`
     width: ${akEditorTableToolbarSize}px;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertRowButtonWrap = styled.div`
+
+export const InsertRowButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: absolute;
   bottom: -10px;
   left: -20px;
@@ -70,17 +78,23 @@ export const InsertRowButtonWrap = styled.div`
     display: flex;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertRowMarker = styled(InsertMarkerDefault)`
+
+export const InsertRowMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  InsertMarkerDefault,
+)`
   top: 7px;
   right: 3px;
 `;
-// tslint:disable-next-line:variable-name
-export const InsertRowButtonInner = styled(InsertButtonDefault)`
+
+export const InsertRowButtonInner: ComponentClass<
+  ButtonHTMLAttributes<{}>
+> = styled(InsertButtonDefault)`
   left: 5px;
 `;
-// tslint:disable-next-line:variable-name
-export const RowLineMarker = styled(LineMarkerDefault)`
+
+export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  LineMarkerDefault,
+)`
   height: 2px;
   top: 8px;
   left: 20px;

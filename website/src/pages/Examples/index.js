@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 import { Redirect, Link } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import LinkIcon from '@atlaskit/icon/glyph/link';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { AkCodeBlock } from '@atlaskit/code';
 import CodeIcon from '@atlaskit/icon/glyph/code';
@@ -16,11 +17,12 @@ import Spinner from '@atlaskit/spinner';
 import Tooltip from '@atlaskit/tooltip';
 import { colors } from '@atlaskit/theme';
 
-import Loading from '../../components/Loading';
+import ExampleDisplay from '../../components/Examples/ExampleDisplay';
 import * as fs from '../../utils/fs';
 import type { Directory, RouterMatch } from '../../types';
 import CodeBlock from '../../components/Code';
 import { packages as packagesData, getConfig } from '../../site';
+import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
 import { packageUrl } from '../../utils/url';
 import CodeSandbox from '../Package/CodeSandbox';
 import CodeSandboxLogo from '../Package/CodeSandboxLogo';
@@ -122,6 +124,7 @@ function ExampleNavigation(props) {
     groups,
     exampleId,
     groupId,
+    loaderUrl,
     packageId,
     config,
   } = props;
@@ -185,49 +188,17 @@ function ExampleNavigation(props) {
             <CodeIcon label="Show source" />
           </NavButton>
         </Tooltip>
+        <Tooltip content="Isolated View" position="bottom">
+          <Button
+            appearance="subtle"
+            component={'a'}
+            iconBefore={<LinkIcon label="Link Icon" />}
+            href={loaderUrl}
+            target={'_blank'}
+          />
+        </Tooltip>
       </NavSection>
     </Nav>
-  );
-}
-
-function ExampleDisplay(props) {
-  const ExampleComponent = Loadable({
-    loader: () => props.example.exports(),
-    loading: Loading,
-    render(loaded) {
-      if (!loaded.default) {
-        return (
-          <ErrorMessage>
-            Example "{props.example.id}" doesn't have default export.
-          </ErrorMessage>
-        );
-      }
-
-      return (
-        <ComponentContainer>
-          <loaded.default />
-        </ComponentContainer>
-      );
-    },
-  });
-
-  const ExampleCode = Loadable({
-    loader: () => props.example.contents(),
-    loading: Loading,
-    render(loaded) {
-      return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
-    },
-  });
-
-  return (
-    <Content>
-      <ExampleComponentWrapper codeIsVisible={props.displayCode}>
-        <ExampleComponent />
-      </ExampleComponentWrapper>
-      <CodeContainer show={props.displayCode}>
-        <ExampleCode />
-      </CodeContainer>
-    </Content>
   );
 }
 
@@ -266,7 +237,7 @@ export default class Examples extends React.Component<Props, State> {
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
-    let resolved = this.resolveProps(groupId, packageId, exampleId);
+    let resolved = packageResolver(groupId, packageId, exampleId);
     let url = this.toUrl(
       resolved.groupId,
       resolved.packageId,
@@ -274,47 +245,6 @@ export default class Examples extends React.Component<Props, State> {
     );
 
     this.context.router.history.push(url);
-  }
-
-  resolveProps(groupId?: string, packageId?: string, exampleId?: string) {
-    let groups = fs.getDirectories(packagesData.children);
-    let resolvedGroupId = groupId || groups[0].id;
-    let group = fs.getById(groups, resolvedGroupId);
-    let packages = fs.getDirectories(group.children);
-    let resolvedPackageId = packageId || packages[0].id;
-    let pkg = fs.getById(packages, resolvedPackageId);
-
-    let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
-    let example;
-
-    if (examples) {
-      example = fs.find(examples, file => {
-        if (exampleId) {
-          return fs.normalize(file.id) === exampleId;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    let resolvedExampleId = example ? example.id : null;
-
-    let hasChanged =
-      groupId !== resolvedGroupId ||
-      packageId !== resolvedPackageId ||
-      (exampleId || null) !==
-        (resolvedExampleId ? fs.normalize(resolvedExampleId) : null);
-
-    return {
-      hasChanged,
-      groups,
-      packages,
-      examples,
-      example,
-      groupId: resolvedGroupId,
-      packageId: resolvedPackageId,
-      exampleId: resolvedExampleId,
-    };
   }
 
   toUrl(groupId?: string, packageId?: string, exampleId?: string | null) {
@@ -377,7 +307,7 @@ export default class Examples extends React.Component<Props, State> {
   };
 
   deploySandbox = async () => {
-    const props = this.resolveProps(
+    const props = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
       this.props.match.params.exampleId,
@@ -419,9 +349,15 @@ export default class Examples extends React.Component<Props, State> {
       packageId,
       groupId,
       exampleId,
-    } = this.resolveProps(
+    } = packageResolver(
       this.props.match.params.groupId,
       this.props.match.params.pkgId,
+      this.props.match.params.exampleId,
+    );
+
+    const loaderUrl = getLoaderUrl(
+      groupId,
+      packageId,
       this.props.match.params.exampleId,
     );
 
@@ -437,6 +373,7 @@ export default class Examples extends React.Component<Props, State> {
           exampleId={exampleId}
           groups={groups}
           examples={examples}
+          loaderUrl={loaderUrl}
           codeIsVisible={this.state.displayCode}
           onPackageSelected={this.onPackageSelected}
           onExampleSelected={this.onExampleSelected}
@@ -450,6 +387,19 @@ export default class Examples extends React.Component<Props, State> {
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
             name={config.name}
+            src={loaderUrl}
+            render={(ExampleCode, ExampleComponent, displayCode) => {
+              return (
+                <Content>
+                  <ExampleComponentWrapper codeIsVisible={displayCode}>
+                    <ExampleComponent />
+                  </ExampleComponentWrapper>
+                  <CodeContainer show={displayCode}>
+                    <ExampleCode />
+                  </CodeContainer>
+                </Content>
+              );
+            }}
           />
         ) : (
           <Content>

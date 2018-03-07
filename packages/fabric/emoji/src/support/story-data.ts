@@ -7,6 +7,7 @@ import {
 } from './MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../types';
 import { EmojiProvider } from '../api/EmojiResource';
+import { siteEmojiWtf } from './test-data';
 
 let emojisSets: Map<string, EmojiDescription[]>;
 
@@ -15,15 +16,27 @@ export const getStandardEmojiData = (): EmojiServiceResponse =>
 export const getAtlassianEmojiData = (): EmojiServiceResponse =>
   require('./json-data/service-data-atlassian.json') as EmojiServiceResponse;
 
+const siteEmojis = {
+  emojis: [siteEmojiWtf],
+};
+
+export const getSiteEmojiData = (): EmojiServiceResponse =>
+  siteEmojis as EmojiServiceResponse;
+
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();
   const atlassianEmojis = getAtlassianEmojiData();
+  const siteEmojis = getSiteEmojiData();
   const standardSprites =
     (standardEmojis.meta && standardEmojis.meta.spriteSheets) || {};
   const atlassianSprites =
     (atlassianEmojis.meta && atlassianEmojis.meta.spriteSheets) || {};
   return {
-    emojis: [...standardEmojis.emojis, ...atlassianEmojis.emojis],
+    emojis: [
+      ...standardEmojis.emojis,
+      ...atlassianEmojis.emojis,
+      ...siteEmojis.emojis,
+    ],
     meta: {
       spriteSheets: {
         ...standardSprites,
@@ -42,11 +55,14 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
     const atlassianEmojis = denormaliseEmojiServiceResponse(
       getAtlassianEmojiData(),
     ).emojis;
+    const siteEmojis = denormaliseEmojiServiceResponse(getSiteEmojiData())
+      .emojis;
 
     emojisSets = new Map<string, EmojiDescription[]>();
     emojisSets.set('all', emojis);
     emojisSets.set('standard', standardEmojis);
     emojisSets.set('atlassian', atlassianEmojis);
+    emojisSets.set('site', siteEmojis);
   }
   return emojisSets.get(name) || [];
 };
@@ -80,5 +96,18 @@ export const getEmojiResource = (
 ): Promise<EmojiProvider> =>
   emojiProviderFactory(getEmojiRepository(), config) as Promise<EmojiProvider>;
 
+export const getEmojiResourceWithStandardAndAtlassianEmojis = (
+  config?: MockEmojiResourceConfig,
+): Promise<EmojiProvider> => {
+  const standardEmojis: EmojiDescription[] = getStandardEmojis();
+  const atlassianEmojis: EmojiDescription[] = getAtlassianEmojis();
+  return emojiProviderFactory(
+    new EmojiRepository([...standardEmojis, ...atlassianEmojis]),
+    config,
+  ) as Promise<EmojiProvider>;
+};
+
 export const getUsageClearEmojiResource = (): UsageClearEmojiResource =>
   new UsageClearEmojiResource(getEmojis());
+
+export const loggedUser = 'blackpanther';

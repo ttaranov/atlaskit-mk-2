@@ -6,7 +6,7 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
+import { selectedToneStorageKey } from '../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -16,6 +16,8 @@ import {
   OptionalEmojiDescription,
   SearchOptions,
   ToneSelection,
+  User,
+  OptionalUser,
 } from '../types';
 import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
@@ -45,6 +47,11 @@ export interface EmojiResourceConfig {
    * must support upload for the UploadingEmojiResource implementation of UploadingEmojiProvider).
    */
   allowUpload?: boolean;
+
+  /**
+   * Logged user in the Product.
+   */
+  currentUser?: User;
 }
 
 export interface OnEmojiProviderChange
@@ -174,6 +181,11 @@ export interface EmojiProvider
    * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
    */
   calculateDynamicCategories?(): Promise<string[]>;
+
+  /**
+   * Returns the logged user passed by the Product
+   */
+  getCurrentUser?(): OptionalUser;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -235,10 +247,12 @@ export class EmojiResource extends AbstractResource<
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected siteEmojiResource?: SiteEmojiResource;
   protected selectedTone: ToneSelection;
+  protected currentUser?: User;
 
   constructor(config: EmojiResourceConfig) {
     super();
     this.recordConfig = config.recordConfig;
+    this.currentUser = config.currentUser;
 
     // Ensure order is retained by tracking until all done.
     const emojiResponses: EmojiResponse[] = [];
@@ -560,21 +574,14 @@ export class EmojiResource extends AbstractResource<
 
   calculateDynamicCategories(): Promise<string[]> {
     if (this.isLoaded()) {
-      return this.isCustomCategoryRequired().then(required => {
-        return this.emojiRepository.getDynamicCategoryList(required);
-      });
+      return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
   }
 
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    if (!this.emojiRepository) {
-      return Promise.resolve(false);
-    }
-
-    const customEmoji = this.emojiRepository.findInCategory(customCategory);
-    return Promise.resolve(customEmoji.length > 0);
+  getCurrentUser(): OptionalUser {
+    return this.currentUser;
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {
@@ -620,17 +627,5 @@ export default class UploadingEmojiResource extends EmojiResource
       this.siteEmojiResource.prepareForUpload();
     }
     return this.retryIfLoading(() => this.prepareForUpload(), undefined);
-  }
-
-  /**
-   * Determine whether the CUSTOM category of emoji is required.
-   * If there are custom emoji in the EmojiResource then this is obviously true (which is decided from the
-   * super call). If not, then it depends on whether the EmojiResource is configured to allow upload and
-   * whether the siteEmojiResource has the capability.
-   */
-  protected isCustomCategoryRequired(): Promise<boolean> {
-    return this.isUploadSupported().then(supported => {
-      return supported || super.isCustomCategoryRequired();
-    });
   }
 }

@@ -14,7 +14,7 @@ import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import Avatar from '@atlaskit/avatar';
 
 const FixNavigationDiv = styled.div`
-  transform: translate3d(0px, 0px, 0px);
+  transform: translate3d(0, 0, 0);
   height: calc(100vh - 250px);
 `;
 

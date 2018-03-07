@@ -2,16 +2,19 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
+import { waitUntil } from '@atlaskit/util-common-test';
 import * as styles from '../../../src/components/common/styles';
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiButton from '../../../src/components/common/EmojiButton';
+import CachingEmoji from '../../../src/components/common/CachingEmoji';
 import { EmojiDescriptionWithVariations } from '../../../src/types';
 import {
   imageEmoji,
   generateSkinVariation,
 } from '../../../src/support/test-data';
+import * as helper from './_common-test-helpers';
 
 const baseEmoji = imageEmoji;
 
@@ -160,6 +163,90 @@ describe('<EmojiPreview />', () => {
 
       wrapper.simulate('mouseLeave');
       expect(wrapper.state('selectingTone')).to.equal(false);
+    });
+  });
+
+  describe('Add custom emoji', () => {
+    const safeFindStartEmojiUpload = async component => {
+      await waitUntil(() => helper.customEmojiButtonVisible(component));
+      return helper.findCustomEmojiButton(component);
+    };
+
+    const waitUntilPreviewSectionIsVisible = async component => {
+      await waitUntil(() => helper.findEmojiPreviewSection(component).exists());
+      return helper.findEmojiPreviewSection(component);
+    };
+
+    describe('Upload not supported', () => {
+      it('"Add custom emoji" button should not appear when uploadEnabled is false', async () => {
+        const component = mount(
+          <EmojiPreview
+            emoji={emoji}
+            toneEmoji={toneEmoji}
+            uploadEnabled={false}
+          />,
+        );
+        await waitUntil(
+          () => component.update() && component.find(CachingEmoji).exists(),
+        );
+      });
+    });
+
+    describe('Upload supported', () => {
+      let component;
+
+      beforeEach(() => {
+        component = mount(
+          <EmojiPreview
+            emoji={emoji}
+            toneEmoji={toneEmoji}
+            uploadEnabled={true}
+          />,
+        );
+      });
+
+      const assertCustomEmojiButtonShown = async () => {
+        const addCustomEmojiButton = await safeFindStartEmojiUpload(component);
+        expect(
+          addCustomEmojiButton,
+          'Add custom emoji button defined',
+        ).to.not.equal(undefined);
+      };
+
+      const performToneButtonClick = component => {
+        const instance = component.instance() as EmojiPreview;
+        instance.onToneButtonClick();
+        component.update();
+      };
+
+      it('"Add custom emoji" button should appear as default', async () => {
+        await assertCustomEmojiButtonShown();
+      });
+
+      it('"Add custom emoji" button should not appear when Tone is clicked', async () => {
+        await assertCustomEmojiButtonShown();
+
+        performToneButtonClick(component);
+
+        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
+      });
+
+      it('"Add custom emoji" button should appear after Tone is skipped', async () => {
+        const emojiPreviewSection = await waitUntilPreviewSectionIsVisible(
+          component,
+        );
+        await assertCustomEmojiButtonShown();
+
+        performToneButtonClick(component);
+
+        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
+
+        // this should cancel the Tone selection
+        emojiPreviewSection.simulate('mouseleave');
+
+        // ensure upload button is shown after Tone is cancelled
+        await assertCustomEmojiButtonShown();
+      });
     });
   });
 });

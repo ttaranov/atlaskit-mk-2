@@ -1,14 +1,19 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 
-export const TriggerWrapper = styled.div`
+export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const ExpandIconWrapper = styled.span`
+export const ExpandIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
   margin-left: -8px;
 `;
 
-export const Wrapper = styled.span`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
   div {
@@ -16,7 +21,7 @@ export const Wrapper = styled.span`
   }
 `;
 
-export const Spacer = styled.span`
+export const Spacer: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   flex: 1;
   padding: 12px;

@@ -4,6 +4,7 @@
 .*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
 .*/packages/elements/icon/es5/.*
+.*/node_modules/stylelint/.*
 
 [include]
 

@@ -39,6 +39,7 @@ export default class Conversation extends React.PureComponent<Props> {
       user,
       dataProviders,
       renderEditor,
+      containerId,
     } = this.props;
 
     if (!conversation) {
@@ -63,6 +64,7 @@ export default class Conversation extends React.PureComponent<Props> {
         dataProviders={dataProviders}
         renderComment={props => <Comment {...props} />}
         renderEditor={renderEditor}
+        containerId={containerId}
       />
     ));
   }

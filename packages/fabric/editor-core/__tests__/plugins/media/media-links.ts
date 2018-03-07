@@ -20,9 +20,7 @@ import {
 } from '../../../src/plugins/media/media-links';
 import * as utils from '../../../src/plugins/utils';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
 import { AnalyticsHandler, analyticsService } from '../../../src';
 
@@ -41,12 +39,7 @@ describe('media-links', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin(),
-        hyperlinkPlugin,
-        tasksAndDecisionsPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [mediaPlugin(), tasksAndDecisionsPlugin],
       editorProps: {
         uploadErrorHandler,
       },
@@ -346,6 +339,37 @@ describe('media-links', () => {
             expect(editorView.state.doc).toEqualDocument(
               doc(
                 p(`${href} `),
+                mediaGroup(
+                  media({ id, type: 'link', collection: testCollectionName })(),
+                ),
+                p(),
+              ),
+            );
+            editorView.destroy();
+          });
+        });
+
+        describe('link inserted inside blockquote', () => {
+          it('should create media group below it', async () => {
+            const href = 'www.google.com';
+            const { editorView } = editor(doc(blockquote(p(`${href} {<>}`))));
+            const handle = jest.fn();
+
+            // -1 for space, simulate the scenario of autoformatting link
+            await insertLinks(
+              editorView,
+              mediaStateManager,
+              handle,
+              [{ href, pos: 1000 }],
+              linkCreateContextMock,
+              testCollectionName,
+            );
+
+            const id = createTempId(href);
+            expect(handle).toHaveBeenCalledWith(readyState(id));
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                blockquote(p(`${href} `)),
                 mediaGroup(
                   media({ id, type: 'link', collection: testCollectionName })(),
                 ),

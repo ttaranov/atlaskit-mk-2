@@ -1,4 +1,4 @@
-export type Language = { name: string; alias: [string] };
+export type Language = { name: string; alias: string[] };
 
 // We expect alias[0] to be used for the ADF attribute, see ED-2813
 export const DEFAULT_LANGUAGES: Language[] = [
