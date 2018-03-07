@@ -25,7 +25,7 @@ const LinkComponent = ({ href, children, onClick, className }) => (
 const NavItem = ({ dirId, id, closeDrawer }) => (
   <AkNavigationItem
     onClick={closeDrawer}
-    href={`/mk-2/packages/${dirId}/${id}`}
+    href={`/packages/${dirId}/${id}`}
     linkComponent={LinkComponent}
     text={fs.titleize(id)}
   />

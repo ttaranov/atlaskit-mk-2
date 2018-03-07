@@ -183,13 +183,13 @@ function toUrl(
   let url;
 
   if (!groupId) {
-    url = `/mk-2/packages`;
+    url = `/packages`;
   } else if (!packageId) {
-    url = `/mk-2/packages/${groupId}`;
+    url = `/packages/${groupId}`;
   } else if (!exampleId) {
-    url = `/mk-2/packages/${groupId}/${packageId}`;
+    url = `/packages/${groupId}/${packageId}`;
   } else {
-    url = `/mk-2/packages/${groupId}/${packageId}/example/${fs.normalize(
+    url = `/packages/${groupId}/${packageId}/example/${fs.normalize(
       exampleId,
     )}`;
   }
@@ -268,7 +268,7 @@ export default class ExamplesModal extends Component<Props, State> {
       params.pkgId,
       params.exampleId,
     );
-    const url = `/mk-2/packages/${groupId}/${packageId}`;
+    const url = `/packages/${groupId}/${packageId}`;
 
     this.context.router.history.push(url);
   };

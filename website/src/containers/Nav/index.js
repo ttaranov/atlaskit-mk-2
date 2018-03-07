@@ -24,7 +24,6 @@ import {
   ExternalNavigationItem,
 } from './utils/linkComponents';
 import atlasKitLogo from '../../assets/atlaskit-logo.png';
-import { OLD_WEBSITE_URL } from '../../utils/constants';
 import Groups from './Groups';
 import GroupDrawer from './GroupDrawer';
 import SearchDrawer from './SearchDrawer';
@@ -141,11 +140,6 @@ export default class Nav extends Component<{}, State> {
       <Switch>
         <Route
           render={({ location }) => {
-            const fromOldSite = matchPath(
-              location.pathname,
-              '/packages/:group/:name',
-            );
-            const navigateOut = fromOldSite && fromOldSite.isExact;
             const containerNavAvailable = location.pathname !== '/';
             // const containerNavAvailable = true;
             const theme = containerNavAvailable ? null : presetThemes.global;
@@ -157,12 +151,7 @@ export default class Nav extends Component<{}, State> {
             const header = headers[headerKey];
 
             const groups = (
-              <Groups
-                docs={docs}
-                packages={packages}
-                patterns={patterns}
-                navigateOut={navigateOut}
-              />
+              <Groups docs={docs} packages={packages} patterns={patterns} />
             );
 
             return (
@@ -181,7 +170,7 @@ export default class Nav extends Component<{}, State> {
                     <MenuIcon label="Menu" />
                   </Tooltip>
                 }
-                globalPrimaryItemHref={navigateOut ? OLD_WEBSITE_URL : '/'}
+                globalPrimaryItemHref={'/'}
                 globalSearchIcon={
                   <Tooltip content="Search" position="right">
                     <SearchIcon label="search" />
@@ -197,16 +186,12 @@ export default class Nav extends Component<{}, State> {
                     <AkContainerTitle
                       icon={<HeaderIcon {...header} />}
                       text={header.label}
-                      href={navigateOut ? OLD_WEBSITE_URL : `/${headerKey}`}
-                      linkComponent={
-                        navigateOut
-                          ? null
-                          : ({ href, children, className }) => (
-                              <Link to={href} className={className}>
-                                {children}
-                              </Link>
-                            )
-                      }
+                      href={`/${headerKey}`}
+                      linkComponent={({ href, children, className }) => (
+                        <Link to={href} className={className}>
+                          {children}
+                        </Link>
+                      )}
                     />
                   )
                 }
@@ -227,7 +212,6 @@ export default class Nav extends Component<{}, State> {
                     pathname={location.pathname}
                     packages={packages}
                     patterns={patterns}
-                    navigateOut={navigateOut}
                   >
                     {groups}
                   </GroupDrawer>,
