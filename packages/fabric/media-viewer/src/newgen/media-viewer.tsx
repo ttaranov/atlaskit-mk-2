@@ -8,6 +8,10 @@ import {
   MediaViewerItem,
 } from '../components/media-viewer';
 import * as Blanket from './blanket';
+import { addLocaleData, FormattedMessage, IntlProvider, injectIntl } from 'react-intl';
+import { languages } from './i18n';
+import es = require('react-intl/locale-data/es');
+import en = require('react-intl/locale-data/en');
 
 export type ImageResolution = 'small' | 'large';
 
@@ -123,46 +127,69 @@ const RightIcons = styled.div`
   }
 `;
 
+const errorView = () => {
+  return (
+    <div>
+      <h2>
+        <FormattedMessage id="error_title" defaultMesage="Ops!" />
+      </h2>
+      <p>
+        <FormattedMessage id="error_something_went_wrong" defaultMesage="Something went wrong" />
+      </p>
+    </div>      
+  );
+};
+
 export type Props = {
   model: Model;
   dispatch: (message: Message) => void;
 };
 
+addLocaleData(en);
+addLocaleData(es);
+
+const currentLanguage = 'es';
+const lan = languages[currentLanguage];
+
+console.log(currentLanguage, lan);
+
 export const Component: React.StatelessComponent<Props> = ({
   model,
   dispatch,
 }) => (
-  <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
-    <DetailsWrapper>
-      <LeftInfo>
-        <span>
-          {(model.state === 'OPEN' &&
-            typeof model.name === 'string' &&
-            (model.name || 'unknown')) ||
-            ''}
-        </span>
-      </LeftInfo>
-      <RightIcons>
-        <CrossIcon label="close" onClick={() => dispatch({ type: 'CLOSE' })} />
-      </RightIcons>
-    </DetailsWrapper>
-    <ItemPreviewWrapper>
-      <ImageViewerWrapper>
-        {model.state === 'ERROR' && <div>Something went wrong</div>}
-        {model.state === 'OPEN' &&
-          (model.src ? (
-            <Img
-              src={model.src}
-              width={800}
-              height={600}
-              showBlurred={model.imgResolution === 'small'}
-            />
-          ) : (
-            <Spinner size="large" />
-          ))}
-      </ImageViewerWrapper>
-    </ItemPreviewWrapper>
-  </Blanket.Component>
+  <IntlProvider locale={currentLanguage} messages={lan.messages}>
+    <Blanket.Component onClick={() => dispatch({ type: 'CLOSE' })}>
+      <DetailsWrapper>
+        <LeftInfo>
+          <span>
+            {(model.state === 'OPEN' &&
+              typeof model.name === 'string' &&
+              (model.name || 'unknown')) ||
+              ''}
+          </span>
+        </LeftInfo>
+        <RightIcons>
+          <CrossIcon label="close" onClick={() => dispatch({ type: 'CLOSE' })} />
+        </RightIcons>
+      </DetailsWrapper>
+      <ItemPreviewWrapper>
+        <ImageViewerWrapper>
+          {model.state === 'ERROR' && errorView()}
+          {model.state === 'OPEN' &&
+            (model.src ? (
+              <Img
+                src={model.src}
+                width={800}
+                height={600}
+                showBlurred={model.imgResolution === 'small'}
+              />
+            ) : (
+              <Spinner size="large" />
+            ))}
+        </ImageViewerWrapper>
+      </ItemPreviewWrapper>
+    </Blanket.Component>
+  </IntlProvider>
 );
 
 export type Config = {
