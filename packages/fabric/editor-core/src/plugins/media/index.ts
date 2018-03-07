@@ -279,8 +279,12 @@ export class MediaPluginState {
       return;
     }
 
-    const areImages = mediaStates.every(mediaState =>
-      isImage(mediaState.fileMimeType),
+    const imageAttachments = mediaStates.filter(media =>
+      isImage(media.fileMimeType),
+    );
+
+    const nonImageAttachements = mediaStates.filter(
+      media => !isImage(media.fileMimeType),
     );
 
     mediaStates.forEach(mediaState =>
@@ -295,13 +299,13 @@ export class MediaPluginState {
 
     if (
       this.editorAppearance !== 'message' &&
-      areImages &&
-      mediaSingle &&
-      allowMediaSingle
+      allowMediaSingle &&
+      mediaSingle
     ) {
-      mediaStates.forEach(mediaState =>
+      imageAttachments.forEach(mediaState =>
         this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );
+      insertMediaGroupNode(this.view, nonImageAttachements, collection);
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
