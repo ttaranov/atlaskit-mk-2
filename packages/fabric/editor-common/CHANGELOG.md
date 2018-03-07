@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.12
+- [patch] Table columns should not resize when typing [59728cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59728cc)
+
 ## 6.3.11
 
 ## 6.3.10
