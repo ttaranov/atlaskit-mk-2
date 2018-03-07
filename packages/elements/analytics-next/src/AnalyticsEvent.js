@@ -1,7 +1,5 @@
 // @flow
 
-import cloneDeep from 'clone-deep';
-
 import type {
   AnalyticsEventPayload,
   AnalyticsEventUpdater,
@@ -17,7 +15,7 @@ export default class AnalyticsEvent implements AnalyticsEventInterface {
   }
 
   clone = (): AnalyticsEvent => {
-    const payload = cloneDeep(this.payload);
+    const payload = JSON.parse(JSON.stringify(this.payload));
     return new AnalyticsEvent({ payload });
   };
 

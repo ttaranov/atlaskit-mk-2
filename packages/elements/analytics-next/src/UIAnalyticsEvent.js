@@ -1,7 +1,5 @@
 // @flow
 
-import cloneDeep from 'clone-deep';
-
 import AnalyticsEvent from './AnalyticsEvent';
 import type {
   AnalyticsEventUpdater,
@@ -33,7 +31,7 @@ export default class UIAnalyticsEvent extends AnalyticsEvent
     }
     const context = [...this.context];
     const handlers = [...this.handlers];
-    const payload = cloneDeep(this.payload);
+    const payload = JSON.parse(JSON.stringify(this.payload));
     return new UIAnalyticsEvent({ context, handlers, payload });
   };
 
