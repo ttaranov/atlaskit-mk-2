@@ -12,6 +12,7 @@ export const overallHeight = 40;
 
 const sliderThumbStyle = css`
   background: ${thumb.default.background};
+  border: ${sliderThumbBorderThickness}px solid transparent;
   border-radius: 50%;
   box-shadow: 0 0 1px ${colors.N60A}, 0 2px 8px -2px ${colors.N50A};
   height: ${sliderThumbSize}px;
@@ -102,7 +103,6 @@ const firefoxRangeInputStyle = css`
   }
 
   &::-moz-range-thumb {
-    border: 0;
     transition: border-color ${transitionDuration} ease-in-out;
     ${sliderThumbStyle};
   }
