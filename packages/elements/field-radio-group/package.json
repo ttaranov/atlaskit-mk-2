@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-radio-group",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "A radio group React component used for selecting discrete values in a form",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

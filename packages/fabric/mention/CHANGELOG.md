@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 9.2.2
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
 ## 9.2.1
 - [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
 
