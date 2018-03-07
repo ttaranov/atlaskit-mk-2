@@ -52,15 +52,21 @@ export default {
         active: themed({ light: hex2rgba(colors.B75, 0.6), dark: colors.B75 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
         selected: themed({ light: colors.N700, dark: colors.DN0 }),
+        focusSelected: themed({ light: colors.N700, dark: colors.DN0 }),
       },
       boxShadowColor: {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+        focusSelected: themed({
+          light: hex2rgba(colors.B200, 0.6),
+          dark: colors.B75,
+        }),
       },
       color: {
         default: themed({ light: colors.N400, dark: colors.DN400 }),
         active: themed({ light: colors.B400, dark: colors.B400 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
+        focusSelected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
     },
 
@@ -72,14 +78,20 @@ export default {
         active: themed({ light: colors.B500, dark: colors.B200 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
         selected: themed({ light: colors.N700, dark: colors.DN0 }),
+        focusSelected: themed({ light: colors.N700, dark: colors.DN0 }),
       },
       boxShadowColor: {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+        focusSelected: themed({
+          light: hex2rgba(colors.B200, 0.6),
+          dark: colors.B75,
+        }),
       },
       color: {
         default: themed({ light: colors.N0, dark: colors.DN30 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
+        focusSelected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
     },
 
@@ -91,14 +103,17 @@ export default {
         active: themed({ light: colors.Y400, dark: colors.Y400 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
         selected: themed({ light: colors.Y400, dark: colors.Y400 }),
+        focusSelected: themed({ light: colors.Y400, dark: colors.Y400 }),
       },
       boxShadowColor: {
         focus: themed({ light: colors.Y500, dark: colors.Y500 }),
+        focusSelected: themed({ light: colors.Y500, dark: colors.Y500 }),
       },
       color: {
         default: themed({ light: colors.N800, dark: colors.N800 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
         selected: themed({ light: colors.N800, dark: colors.N800 }),
+        focusSelected: themed({ light: colors.N800, dark: colors.N800 }),
       },
     },
 
@@ -110,14 +125,17 @@ export default {
         active: themed({ light: colors.R500, dark: colors.R500 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
         selected: themed({ light: colors.R500, dark: colors.R500 }),
+        focusSelected: themed({ light: colors.R500, dark: colors.R500 }),
       },
       boxShadowColor: {
         focus: themed({ light: colors.R100, dark: colors.R100 }),
+        focusSelected: themed({ light: colors.R100, dark: colors.R100 }),
       },
       color: {
         default: themed({ light: colors.N0, dark: colors.N0 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
         selected: themed({ light: colors.N0, dark: colors.N0 }),
+        focusSelected: themed({ light: colors.N0, dark: colors.N0 }),
       },
     },
 
@@ -129,14 +147,17 @@ export default {
         active: themed({ light: colors.P500, dark: colors.P500 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
         selected: themed({ light: colors.R500, dark: colors.R500 }),
+        focusSelected: themed({ light: colors.R500, dark: colors.R500 }),
       },
       boxShadowColor: {
         focus: themed({ light: colors.P100, dark: colors.P100 }),
+        focusSelected: themed({ light: colors.P100, dark: colors.P100 }),
       },
       color: {
         default: themed({ light: colors.N0, dark: colors.N0 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
         selected: themed({ light: colors.N0, dark: colors.N0 }),
+        focusSelected: themed({ light: colors.N0, dark: colors.N0 }),
       },
     },
 
@@ -145,9 +166,14 @@ export default {
       background: {
         default: themed({ light: 'none', dark: 'none' }),
         selected: themed({ light: colors.N700, dark: colors.N20 }),
+        focusSelected: themed({ light: colors.N700, dark: colors.N20 }),
       },
       boxShadowColor: {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+        focusSelected: themed({
+          light: hex2rgba(colors.B200, 0.6),
+          dark: colors.B75,
+        }),
       },
       color: {
         default: themed({ light: colors.B400, dark: colors.B100 }),
@@ -155,6 +181,7 @@ export default {
         active: themed({ light: colors.B500, dark: colors.B200 }),
         disabled: themed({ light: colors.N70, dark: colors.DN100 }),
         selected: themed({ light: colors.N20, dark: colors.N700 }),
+        focusSelected: themed({ light: colors.N20, dark: colors.N700 }),
       },
       textDecoration: {
         hover: 'underline',
@@ -169,15 +196,21 @@ export default {
         active: themed({ light: hex2rgba(colors.B75, 0.6), dark: colors.B75 }),
         disabled: themed({ light: 'none', dark: 'none' }),
         selected: themed({ light: colors.N700, dark: colors.DN0 }),
+        focusSelected: themed({ light: colors.N700, dark: colors.DN0 }),
       },
       boxShadowColor: {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+        focusSelected: themed({
+          light: hex2rgba(colors.B200, 0.6),
+          dark: colors.B75,
+        }),
       },
       color: {
         default: themed({ light: colors.N400, dark: colors.DN400 }),
         active: themed({ light: colors.B400, dark: colors.B400 }),
         disabled: themed({ light: colors.N70, dark: colors.DN100 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
+        focusSelected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
     },
 
@@ -186,9 +219,14 @@ export default {
       background: {
         default: themed({ light: 'none', dark: 'none' }),
         selected: themed({ light: colors.N700, dark: colors.N20 }),
+        focusSelected: themed({ light: colors.N700, dark: colors.N20 }),
       },
       boxShadowColor: {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+        focusSelected: themed({
+          light: hex2rgba(colors.B200, 0.6),
+          dark: colors.B75,
+        }),
       },
       color: {
         default: themed({ light: colors.N200, dark: colors.DN400 }),
@@ -196,6 +234,7 @@ export default {
         active: themed({ light: colors.N400, dark: colors.DN300 }),
         disabled: themed({ light: colors.N70, dark: colors.DN100 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
+        focusSelected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
       textDecoration: {
         hover: 'underline',
