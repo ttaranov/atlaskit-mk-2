@@ -1,10 +1,10 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
+import PropTypes from 'prop-types';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
-import PropTypes from 'prop-types';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
@@ -55,7 +55,7 @@ type State = {
   isPressed: boolean,
 };
 
-class Item extends PureComponent<Props, State> {
+export class Item extends PureComponent<Props, State> {
   static defaultProps = {
     appearance: 'default',
     children: null,

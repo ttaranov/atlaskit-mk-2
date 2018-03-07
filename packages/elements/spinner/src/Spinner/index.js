@@ -23,7 +23,7 @@ const Outer = styled.div`
 `;
 Outer.displayName = 'Outer';
 
-class Spinner extends Component<SpinnerProps, SpinnerState> {
+export class Spinner extends Component<SpinnerProps, SpinnerState> {
   static defaultProps = {
     delay: 100,
     isCompleting: false,

@@ -184,4 +184,52 @@ describe(name, () => {
     });
   });
 });
-describe('analytics - FieldRadioGroupStateless', () => {});
+describe('analytics - FieldRadioGroupStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<FieldRadioGroupStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'field-radio-group',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onRadioChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <FieldRadioGroupStatelessWithAnalytics onRadioChange={spy} />,
+    );
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <FieldRadioGroupStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(FieldRadioGroupStatelessWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'field-radio-group',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+});

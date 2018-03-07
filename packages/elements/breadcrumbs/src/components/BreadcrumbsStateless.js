@@ -29,7 +29,7 @@ type Props = {
   children?: Node,
 };
 
-class BreadcrumbsStateless extends Component<Props, {}> {
+export class BreadcrumbsStateless extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

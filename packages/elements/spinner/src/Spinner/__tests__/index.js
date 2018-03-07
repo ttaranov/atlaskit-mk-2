@@ -1,11 +1,20 @@
 // @flow
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
-import Spinner from '../';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+import SpinnerWithAnalytics, { Spinner } from '../index';
 import Container, { getContainerAnimation } from '../styledContainer';
 import Svg, { svgStyles, getStrokeColor } from '../styledSvg';
 
@@ -166,5 +175,52 @@ describe('Spinner', () => {
       const dashOffsetMatch = styles.match(/stroke-dashoffset: [0-9.]+px;/);
       expect(dashOffsetMatch).not.toBe(null);
     });
+  });
+});
+describe('analytics - Spinner', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<SpinnerWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'spinner',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onComplete handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<SpinnerWithAnalytics onComplete={spy} />);
+    wrapper.find('button').simulate('complete');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'complete',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on complete', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <SpinnerWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(SpinnerWithAnalytics).simulate('complete');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'complete' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'spinner',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

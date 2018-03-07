@@ -1,13 +1,13 @@
 // @flow
 
 import React, { Component } from 'react';
-import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import { colors, themed } from '@atlaskit/theme';
-import { withTheme, ThemeProvider } from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
+import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
+import { colors, themed } from '@atlaskit/theme';
+import { withTheme, ThemeProvider } from 'styled-components';
 import {
   name as packageName,
   version as packageVersion,

@@ -216,6 +216,19 @@ class Spotlight extends Component<Props> {
   }
 }
 
+const SpotlightWithoutAnalytics = withScrollMeasurements(
+  withRenderTarget(
+    {
+      target: 'spotlight',
+      withTransitionGroup: true,
+    },
+    // $FlowFixMe TEMPORARY
+    Spotlight,
+  ),
+);
+
+export { SpotlightWithoutAnalytics as Spotlight };
+
 export default withAnalyticsContext({
   component: 'spotlight',
   package: packageName,
@@ -230,16 +243,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(
-    withScrollMeasurements(
-      withRenderTarget(
-        {
-          target: 'spotlight',
-          withTransitionGroup: true,
-        },
-        // $FlowFixMe TEMPORARY
-        Spotlight,
-      ),
-    ),
-  ),
+  })(SpotlightWithoutAnalytics),
 );

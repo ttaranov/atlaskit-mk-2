@@ -1,9 +1,19 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
-import Blanket from '../../src';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { opacity } from '../../src/styled';
+
+import BlanketWithAnalytics, { Blanket } from '../Blanket';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -55,5 +65,52 @@ describe('ak-blanket', () => {
         expect(spy).toHaveBeenCalledTimes(1);
       });
     });
+  });
+});
+describe('analytics - Blanket', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<BlanketWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'blanket',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onBlanketClicked handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<BlanketWithAnalytics onBlanketClicked={spy} />);
+    wrapper.find('button').simulate('click');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'click',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on click', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <BlanketWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(BlanketWithAnalytics).simulate('click');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'click' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'blanket',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

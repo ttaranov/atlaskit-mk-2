@@ -208,6 +208,9 @@ class TimePicker extends Component<Props, State> {
   }
 }
 
+const TimePickerWithoutAnalytics = withCtrl(TimePicker);
+export { TimePickerWithoutAnalytics as TimePicker };
+
 export default withAnalyticsContext({
   component: 'time-picker',
   package: packageName,
@@ -222,5 +225,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(withCtrl(TimePicker)),
+  })(TimePickerWithoutAnalytics),
 );

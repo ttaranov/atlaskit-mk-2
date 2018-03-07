@@ -51,7 +51,7 @@ type State = {
   isRanking: boolean,
 };
 
-class DynamicTable extends Component<Props, State> {
+export class DynamicTable extends Component<Props, State> {
   tableBody: ?ComponentType<any, any>;
 
   state = {

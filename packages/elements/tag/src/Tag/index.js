@@ -66,7 +66,7 @@ type State = {
   isFocused: boolean,
 };
 
-class Tag extends PureComponent<Props, State> {
+export class Tag extends PureComponent<Props, State> {
   static defaultProps = {
     color: 'standard',
     appearance: 'default',

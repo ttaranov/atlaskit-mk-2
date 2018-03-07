@@ -19,7 +19,7 @@ type DefaultPropsTypes = {
   label: string,
 };
 
-class FieldRadioGroupStateless extends Component<
+export class FieldRadioGroupStateless extends Component<
   RadioGroupStatelessPropTypes,
   void,
 > {

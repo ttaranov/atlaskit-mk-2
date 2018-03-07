@@ -46,6 +46,8 @@ type Props = {|
   minimumRows?: number,
   /** Disables the resizing of the text area. */
   enableResize?: boolean,
+  /** A ref function to get a hold of the inner textarea DOM element. */
+  innerRef?: (ref: HTMLElement) => void,
 |};
 
 type State = {|

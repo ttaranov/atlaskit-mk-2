@@ -1,7 +1,17 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
-import TableTree, { Rows, Row, Cell, Header, Headers } from '../index';
+import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+import RowWithAnalytics, { Row } from '../components/Row';
+import TableTree, { Rows, Cell, Header, Headers } from '../index';
 import { Cell as StyledCell, Header as StyledHeader } from '../styled';
 
 const settleImmediatePromises = () =>
@@ -287,3 +297,64 @@ function createTreeHarness(treeWrapper) {
     collapseChevron,
   };
 }
+describe('analytics - Row', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<RowWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'table-tree',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onExpand handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<RowWithAnalytics onExpand={spy} />);
+    wrapper.find('button').simulate('toggle');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'toggle',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onCollapse handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<RowWithAnalytics onCollapse={spy} />);
+    wrapper.find('button').simulate('toggle');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'toggle',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on toggle', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <RowWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(RowWithAnalytics).simulate('toggle');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'table-tree',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+});

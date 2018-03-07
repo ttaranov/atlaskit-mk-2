@@ -14,7 +14,9 @@ import {
 } from '../../package.json';
 import { Input } from '../../src/styled';
 
-import ToggleWithAnalytics, { ToggleStateless } from '../ToggleStateless';
+import ToggleStatelessWithAnalytics, {
+  ToggleStateless,
+} from '../ToggleStateless';
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -80,3 +82,122 @@ describe('ToggleStateless', () => {
   });
 });
 describe('analytics - Toggle', () => {});
+describe('analytics - ToggleStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<ToggleStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'toggle',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onBlur handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<ToggleStatelessWithAnalytics onBlur={spy} />);
+    wrapper.find('button').simulate('blur');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'blur',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<ToggleStatelessWithAnalytics onChange={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onFocus handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<ToggleStatelessWithAnalytics onFocus={spy} />);
+    wrapper.find('button').simulate('focus');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'focus',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on blur', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <ToggleStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(ToggleStatelessWithAnalytics).simulate('blur');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'blur' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'toggle',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <ToggleStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(ToggleStatelessWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'toggle',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on focus', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <ToggleStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(ToggleStatelessWithAnalytics).simulate('focus');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'focus' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'toggle',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+});

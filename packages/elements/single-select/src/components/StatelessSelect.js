@@ -144,7 +144,7 @@ type State = {
   droplistWidth?: number,
 };
 
-class StatelessSelect extends PureComponent<Props, State> {
+export class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;

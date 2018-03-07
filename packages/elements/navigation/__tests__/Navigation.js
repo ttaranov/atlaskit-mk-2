@@ -4,12 +4,23 @@ import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
-import Navigation from '../src/components/js/Navigation';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import ContainerNavigationChildren from '../src/components/js/ContainerNavigationChildren';
 import Drawer from '../src/components/js/Drawer';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
+import NavigationWithAnalytics, {
+  Navigation,
+} from '../src/components/js/Navigation';
 import Resizer from '../src/components/js/Resizer';
 import Spacer from '../src/components/js/Spacer';
 import SpacerInner from '../src/components/styled/SpacerInner';
@@ -564,5 +575,138 @@ describe('<Navigation />', () => {
       const wrapper = shallow(<Navigation isElectronMac />);
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
     });
+  });
+});
+describe('analytics - Navigation', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<NavigationWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'navigation',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onResize handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<NavigationWithAnalytics onResize={spy} />);
+    wrapper.find('button').simulate('resize');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'resize',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onResizeStart handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<NavigationWithAnalytics onResizeStart={spy} />);
+    wrapper.find('button').simulate('resizeStart');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'resizeStart',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onToggleStart handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<NavigationWithAnalytics onToggleStart={spy} />);
+    wrapper.find('button').simulate('toggle');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'toggle',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onToggleEnd handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<NavigationWithAnalytics onToggleEnd={spy} />);
+    wrapper.find('button').simulate('toggle');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'toggle',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on resize', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <NavigationWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(NavigationWithAnalytics).simulate('resize');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'resize' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'navigation',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on resizeStart', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <NavigationWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(NavigationWithAnalytics).simulate('resizeStart');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'resizeStart' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'navigation',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on toggle', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <NavigationWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(NavigationWithAnalytics).simulate('toggle');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'navigation',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

@@ -54,10 +54,12 @@ type Props = {
   /** Disables the resizing of the text area. */
   enableResize?: boolean,
   /** Type of field */
-  type?: string, //eslint-disable-line react/no-unused-prop-types
+  type?: string, //eslint-disable-line react/no-unused-prop-types,
+  /** A ref function to get a hold of the inner textarea DOM element. */
+  innerRef?: (ref: HTMLElement) => void,
 };
 
-class FieldTextAreaStateless extends Component<Props, void> {
+export class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

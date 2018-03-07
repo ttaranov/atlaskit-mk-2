@@ -31,7 +31,7 @@ const defaultStep = 0.1;
 // We need to pass an event handler to "input" element since we are using the "controlled" mode
 const dummyOnChangeHandler = () => {};
 
-class Slider extends Component<Props, State> {
+export class Slider extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {

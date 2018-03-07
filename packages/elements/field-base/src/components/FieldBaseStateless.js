@@ -13,7 +13,7 @@ import { Content, ContentWrapper, ChildWrapper } from '../styled/Content';
 import ValidationElement from './ValidationElement';
 import type { FieldBaseStatelessProps } from '../types';
 
-class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
+export class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
   static defaultProps = {
     appearance: 'standard',
     invalidMessage: '',

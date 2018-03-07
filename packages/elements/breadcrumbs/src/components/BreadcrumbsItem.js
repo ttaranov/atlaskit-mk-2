@@ -42,7 +42,7 @@ type State = {
   hasOverflow: boolean,
 };
 
-class BreadcrumbsItem extends Component<Props, State> {
+export class BreadcrumbsItem extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   button: ?HTMLButtonElement;
 

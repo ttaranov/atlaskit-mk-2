@@ -59,7 +59,7 @@ type Props = {
   size?: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
-class Icon extends Component<Props, {}> {
+export class Icon extends Component<Props, {}> {
   static defaultProps = {
     onClick: () => {},
   };

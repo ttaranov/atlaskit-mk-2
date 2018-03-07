@@ -13,7 +13,7 @@ import {
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-class FieldTextStateless extends Component<FieldTextProps, void> {
+export class FieldTextStateless extends Component<FieldTextProps, void> {
   static defaultProps = {
     compact: false,
     disabled: false,

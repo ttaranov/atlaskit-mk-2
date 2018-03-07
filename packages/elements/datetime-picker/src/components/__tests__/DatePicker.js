@@ -2,8 +2,17 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { name } from '../../../package.json';
-import DatePicker from '../DatePicker';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+import DatePickerWithAnalytics, { DatePicker } from '../DatePicker';
 import DatePickerStateless from '../DatePickerStateless';
 
 describe(name, () => {
@@ -123,5 +132,52 @@ describe(name, () => {
       expect(datePickerStatelessProps.value).toBe(testValue);
       expect(datePickerStatelessProps.displayValue).toBe(formattedValue);
     });
+  });
+});
+describe('analytics - DatePicker', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<DatePickerWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'date-picker',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<DatePickerWithAnalytics onChange={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <DatePickerWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(DatePickerWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'date-picker',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

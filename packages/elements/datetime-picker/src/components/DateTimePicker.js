@@ -358,6 +358,9 @@ class DateTimePicker extends Component<Props, State> {
   }
 }
 
+const DateTimePickerWithoutAnalytics = withCtrl(DateTimePicker);
+export { DateTimePickerWithoutAnalytics as DateTimePicker };
+
 export default withAnalyticsContext({
   component: 'date-picker',
   package: packageName,
@@ -372,5 +375,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(withCtrl(DateTimePicker)),
+  })(DateTimePickerWithoutAnalytics),
 );

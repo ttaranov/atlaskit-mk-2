@@ -1,10 +1,19 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Blanket from '@atlaskit/blanket';
 
-import ModalDialog from '../src';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Content from '../src/components/Content';
+import ModalDialogWithAnalytics, { ModalDialog } from '../src/components/Modal';
 import { Body } from '../src/styled/Content';
 import {
   dialogHeight,
@@ -227,5 +236,52 @@ describe('modal-dialog', () => {
         expect(wrapper.contains(node)).toBe(false);
       });
     });
+  });
+});
+describe('analytics - ModalDialog', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<ModalDialogWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'modal-dialog',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onClose handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<ModalDialogWithAnalytics onClose={spy} />);
+    wrapper.find('button').simulate('close');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'close',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on close', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <ModalDialogWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(ModalDialogWithAnalytics).simulate('close');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'close' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'modal-dialog',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

@@ -1,9 +1,21 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Base from '@atlaskit/field-base';
 
-import FieldTextArea, { FieldTextAreaStateless } from '../';
+import FieldTextArea from '../';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+import FieldTextAreaStatelessWithAnalytics, {
+  FieldTextAreaStateless,
+} from '../FieldTextAreaStateless';
 import TextArea from '../styled/TextArea';
 
 describe('FieldTextAreaStateless', () => {
@@ -54,7 +66,13 @@ describe('FieldTextAreaStateless', () => {
       describe('set to true', () => {
         it('should sets its value on the input', () => {
           expect(
-            mount(<FieldTextArea onChange={() => {}} isReadOnly label="" />)
+            mount(
+              <FieldTextAreaStateless
+                onChange={() => {}}
+                isReadOnly
+                label=""
+              />,
+            )
               .find('textarea')
               .props().readOnly,
           ).toBe(true);
@@ -62,7 +80,13 @@ describe('FieldTextAreaStateless', () => {
 
         it('should reflect its value to the FieldBase', () => {
           expect(
-            mount(<FieldTextArea onChange={() => {}} isReadOnly label="" />)
+            mount(
+              <FieldTextAreaStateless
+                onChange={() => {}}
+                isReadOnly
+                label=""
+              />,
+            )
               .find(Base)
               .props().isReadOnly,
           ).toBe(true);
@@ -72,7 +96,7 @@ describe('FieldTextAreaStateless', () => {
       describe('set to false', () => {
         it('should sets its value on the input', () => {
           expect(
-            mount(<FieldTextArea onChange={() => {}} label="" />)
+            mount(<FieldTextAreaStateless onChange={() => {}} label="" />)
               .find('textarea')
               .props().readOnly,
           ).toBe(false);
@@ -80,7 +104,7 @@ describe('FieldTextAreaStateless', () => {
 
         it('should reflect its value to the FieldBase', () => {
           expect(
-            mount(<FieldTextArea onChange={() => {}} label="" />)
+            mount(<FieldTextAreaStateless onChange={() => {}} label="" />)
               .find(Base)
               .props().isReadOnly,
           ).toBe(false);
@@ -212,5 +236,54 @@ describe('FieldTextAreaStateless', () => {
 
       expect(hasFocus).toBe(1);
     });
+  });
+});
+describe('analytics - FieldTextAreaStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<FieldTextAreaStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'field-text-area',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <FieldTextAreaStatelessWithAnalytics onChange={spy} />,
+    );
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <FieldTextAreaStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(FieldTextAreaStatelessWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'field-text-area',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

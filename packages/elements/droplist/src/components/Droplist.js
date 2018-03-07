@@ -3,13 +3,13 @@
 import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import Layer from '@atlaskit/layer';
-import Spinner from '@atlaskit/spinner';
-import { ThemeProvider } from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
+import Layer from '@atlaskit/layer';
+import Spinner from '@atlaskit/spinner';
+import { ThemeProvider } from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import {
   name as packageName,
@@ -61,7 +61,7 @@ type Props = {
   trigger?: Node,
 };
 
-class Droplist extends Component<Props, void> {
+export class Droplist extends Component<Props, void> {
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',

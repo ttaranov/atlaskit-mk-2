@@ -36,7 +36,7 @@ type State = {
   id: string,
 };
 
-class DropdownMenuStateless extends Component<
+export class DropdownMenuStateless extends Component<
   DropdownMenuStatelessProps,
   State,
 > {

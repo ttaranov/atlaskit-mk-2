@@ -11,6 +11,9 @@ import {
 } from '../package.json';
 import createSelect from './createSelect';
 
+const SelectWithoutAnalytics = createSelect(Select);
+export { SelectWithoutAnalytics as Select };
+
 export default withAnalyticsContext({
   component: 'select',
   package: packageName,
@@ -34,5 +37,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(createSelect(Select)),
+  })(SelectWithoutAnalytics),
 );

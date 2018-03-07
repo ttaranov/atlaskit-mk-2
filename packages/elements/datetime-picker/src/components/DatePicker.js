@@ -152,6 +152,9 @@ class DatePicker extends Component<Props, State> {
   }
 }
 
+const DatePickerWithoutAnalytics = withCtrl(DatePicker);
+export { DatePickerWithoutAnalytics as DatePicker };
+
 export default withAnalyticsContext({
   component: 'date-picker',
   package: packageName,
@@ -166,5 +169,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(withCtrl(DatePicker)),
+  })(DatePickerWithoutAnalytics),
 );

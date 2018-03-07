@@ -30,7 +30,7 @@ type State = {
   isExpanded: boolean,
 };
 
-class Flag extends Component<FlagProps, State> {
+export class Flag extends Component<FlagProps, State> {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

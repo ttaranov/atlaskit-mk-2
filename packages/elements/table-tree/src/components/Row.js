@@ -46,7 +46,7 @@ type Props = {
   data?: RowData,
 };
 
-class Row extends PureComponent<Props> {
+export class Row extends PureComponent<Props> {
   componentWillUpdate(nextProps: Props) {
     const isExpandChanged =
       Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);

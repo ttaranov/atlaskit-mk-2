@@ -87,7 +87,7 @@ type Props = {
   title?: string,
 };
 
-class Item extends Component<Props, {}> {
+export class Item extends Component<Props, {}> {
   static defaultProps = {
     autoFocus: false,
     description: '',

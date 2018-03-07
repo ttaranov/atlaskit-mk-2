@@ -133,4 +133,50 @@ describe('BreadcrumbsStateless', () => {
     });
   });
 });
-describe('analytics - BreadcrumbsStateless', () => {});
+describe('analytics - BreadcrumbsStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<BreadcrumbsStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'breadcrumbs',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onExpand handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<BreadcrumbsStatelessWithAnalytics onExpand={spy} />);
+    wrapper.find('button').simulate('expand');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'expand',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on expand', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <BreadcrumbsStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(BreadcrumbsStatelessWithAnalytics).simulate('expand');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'expand' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'breadcrumbs',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+});

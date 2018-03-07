@@ -1,13 +1,22 @@
 // @flow
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 
 import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
-import { name } from '../../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 describe(name, () => {
   // Helper function to generate <Flag /> with base props
@@ -178,5 +187,52 @@ describe(name, () => {
       );
       expect(cb.find(Checkbox).length).toBe(4);
     });
+  });
+});
+describe('analytics - CheckboxStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<CheckboxStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'checkbox',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<CheckboxStatelessWithAnalytics onChange={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <CheckboxStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(CheckboxStatelessWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'checkbox',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

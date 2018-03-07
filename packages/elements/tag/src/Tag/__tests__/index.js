@@ -2,10 +2,20 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+
 import Chrome from '../../Chrome';
 import Content from '../../Content';
 import Remove from '../../RemoveButton';
-import Tag from '../index';
+import TagWithAnalytics, { Tag } from '../index';
 
 import Before from '../styledBefore';
 import Container from '../styledContainer';
@@ -250,5 +260,52 @@ describe('Tag component', () => {
       );
       expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
+  });
+});
+describe('analytics - Tag', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<TagWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'tag',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onAfterRemoveAction handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<TagWithAnalytics onAfterRemoveAction={spy} />);
+    wrapper.find('button').simulate('remove');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'remove',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on remove', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <TagWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(TagWithAnalytics).simulate('remove');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'remove' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'tag',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

@@ -1,3 +1,7 @@
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
 // @flow
 import '@atlaskit/polyfills/object-assign';
 import React, {
@@ -7,10 +11,6 @@ import React, {
   type Element,
   type ElementRef,
 } from 'react';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-} from '@atlaskit/analytics-next';
 import { getTheme } from '@atlaskit/theme';
 import {
   name as packageName,
@@ -140,7 +140,7 @@ type State = {
   resizeDelta: number,
 };
 
-class Navigation extends PureComponent<Props, State> {
+export class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',

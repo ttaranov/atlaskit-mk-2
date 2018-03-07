@@ -3,7 +3,18 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import { ProgressDots } from '../src';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import ProgressDotsWithAnalytics, {
+  ProgressDots,
+} from '../src/components/Dots';
 import { IndicatorButton, IndicatorDiv } from '../src/styled/Dots';
 
 // NOTE: "StubComponent" saves duplicating required props; avoids errors in the logs
@@ -83,5 +94,52 @@ describe('Progress Indicator', () => {
           .prop('selected'),
       ).toBe(true);
     });
+  });
+});
+describe('analytics - ProgressDots', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<ProgressDotsWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'progress-indicator',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onSelect handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<ProgressDotsWithAnalytics onSelect={spy} />);
+    wrapper.find('button').simulate('select');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'select',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on select', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <ProgressDotsWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(ProgressDotsWithAnalytics).simulate('select');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'select' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'progress-indicator',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

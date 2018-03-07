@@ -49,7 +49,7 @@ type Props = {
   shouldFlip?: boolean | Array<FlipPositionsType>,
 };
 
-class InlineDialog extends Component<Props, {}> {
+export class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
     isOpen: false,
     onContentBlur: () => {},

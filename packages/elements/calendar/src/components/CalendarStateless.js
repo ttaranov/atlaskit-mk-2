@@ -74,7 +74,7 @@ const nowDay = now.getDate();
 const nowMonth = now.getMonth() + 1;
 const nowYear = now.getFullYear();
 
-class CalendarStateless extends Component<Props> {
+export class CalendarStateless extends Component<Props> {
   calendar: Object;
   props: Props;
   calendarEl: ?HTMLDivElement;

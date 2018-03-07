@@ -235,6 +235,12 @@ class Tooltip extends Component<Props, State> {
 
 export type TooltipType = Tooltip;
 
+const TooltipWithoutAnalytics = renamePropsWithWarning(Tooltip, {
+  description: 'content',
+});
+
+export { TooltipWithoutAnalytics as Tooltip };
+
 export default withAnalyticsContext({
   component: 'tooltip',
   package: packageName,
@@ -258,9 +264,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(
-    renamePropsWithWarning(Tooltip, {
-      description: 'content',
-    }),
-  ),
+  })(TooltipWithoutAnalytics),
 );

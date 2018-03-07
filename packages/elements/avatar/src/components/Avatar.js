@@ -163,6 +163,14 @@ class Avatar extends Component<AvatarPropTypes> {
   }
 }
 
+const AvatarWithoutAnalytics = mapProps({
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+  isInteractive: props =>
+    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+})(withPseudoState(Avatar));
+
+export { AvatarWithoutAnalytics as Avatar };
+
 /**
  *  1. Higher order components seem to ignore default properties. Mapping
  *     `appearance` explicity here circumvents the issue.
@@ -187,11 +195,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(
-    mapProps({
-      appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
-      isInteractive: props =>
-        props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
-    })(withPseudoState(Avatar)),
-  ),
+  })(AvatarWithoutAnalytics),
 ); // 3

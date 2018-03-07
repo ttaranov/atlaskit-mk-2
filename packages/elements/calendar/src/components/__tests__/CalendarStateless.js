@@ -3,11 +3,24 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+
 import { getMonthName } from '../../util';
-import { CalendarStateless } from '../..';
 import { Announcer } from '../../styled/Calendar';
 import { MonthAndYear } from '../../styled/Heading';
 import DateComponent from '../../components/Date';
+
+import CalendarStatelessWithAnalytics, {
+  CalendarStateless,
+} from '../CalendarStateless';
 
 const now = new Date();
 const nowMonth = now.getMonth() + 1;
@@ -77,4 +90,51 @@ test('specifying selected days should select the specified days', () => {
       selected: true,
     }),
   ).toHaveLength(1);
+});
+describe('analytics - CalendarStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<CalendarStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'calendar',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onUpdate handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<CalendarStatelessWithAnalytics onUpdate={spy} />);
+    wrapper.find('button').simulate('update');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'update',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on update', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <CalendarStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(CalendarStatelessWithAnalytics).simulate('update');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'update' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'calendar',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
 });

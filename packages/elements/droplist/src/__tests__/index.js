@@ -1,14 +1,25 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import Item, { ItemGroup } from '@atlaskit/item';
 
-import { name } from '../../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
-import Droplist, { Item as DroplistItem } from '../../src';
 import { Trigger, Content } from '../../src/styled/Droplist';
+
+import DroplistWithAnalytics, { Droplist } from '../components/Droplist';
+import DroplistItemWithAnalytics, { DroplistItem } from '../components/Item';
 
 const itemsList = (
   <ItemGroup heading="test1">
@@ -115,5 +126,99 @@ describe(`${name} - core`, () => {
       const wrapper = mount(<Droplist isLoading>{itemsList}</Droplist>);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
+  });
+});
+describe('analytics - Droplist', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<DroplistWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'droplist',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onOpenChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<DroplistWithAnalytics onOpenChange={spy} />);
+    wrapper.find('button').simulate('toggle');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'toggle',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on toggle', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <DroplistWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(DroplistWithAnalytics).simulate('toggle');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'droplist',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+});
+describe('analytics - DroplistItem', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<DroplistItemWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'droplist-item',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onActivate handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<DroplistItemWithAnalytics onActivate={spy} />);
+    wrapper.find('button').simulate('activate');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'activate',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on activate', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <DroplistItemWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(DroplistItemWithAnalytics).simulate('activate');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'activate' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'droplist-item',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

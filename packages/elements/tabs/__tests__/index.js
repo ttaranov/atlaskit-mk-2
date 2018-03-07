@@ -2,12 +2,23 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import Tabs, { TabContent, TabItem } from '../src';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+
+import { TabContent, TabItem } from '../src';
+import TabsWithAnalytics, { Tabs } from '../src/components/Tabs';
 import type {
   TabContentComponentProvided,
   TabItemComponentProvided,
 } from '../src/types';
-import { name } from '../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 const tabs = [
   { content: 'Tab 1 content', label: 'Tab 1 label' },
@@ -257,5 +268,52 @@ describe(name, () => {
         });
       });
     });
+  });
+});
+describe('analytics - Tabs', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<TabsWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'tabs',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onSelect handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<TabsWithAnalytics onSelect={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <TabsWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(TabsWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'tabs',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

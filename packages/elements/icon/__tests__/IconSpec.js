@@ -1,11 +1,21 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import { mount, render } from 'enzyme';
+import { mount, render, shallow } from 'enzyme';
+
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 
 import { colors } from '@atlaskit/theme';
-import { name } from '../package.json';
-import Icon, { size } from '../src';
-import { IconWrapper } from '../src/components/Icon';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import { size } from '../src';
+import IconWithAnalytics, { IconWrapper, Icon } from '../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -197,5 +207,52 @@ describe(name, () => {
         expect(handler.mock.calls.length).toBe(1);
       });
     });
+  });
+});
+describe('analytics - Icon', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<IconWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'icon',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onClick handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<IconWithAnalytics onClick={spy} />);
+    wrapper.find('button').simulate('click');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'click',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on click', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <IconWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(IconWithAnalytics).simulate('click');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'click' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'icon',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

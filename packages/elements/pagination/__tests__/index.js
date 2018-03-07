@@ -1,12 +1,24 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
-import Pagination, { PaginationStateless } from '../src';
-import { pageRange } from '../src/components/Stateless';
+import Pagination from '../src';
+import PaginationStatelessWithAnalytics, {
+  pageRange,
+  PaginationStateless,
+} from '../src/components/Stateless';
 import { Ellipsis } from '../src/styled';
 
-import { name } from '../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 describe(name, () => {
   describe('stateless', () => {
@@ -202,5 +214,52 @@ describe(name, () => {
         expect(buttons.at(3).prop('isDisabled')).toBe(false);
       });
     });
+  });
+});
+describe('analytics - PaginationStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<PaginationStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'pagination',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onSetPage handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<PaginationStatelessWithAnalytics onSetPage={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <PaginationStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(PaginationStatelessWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'pagination',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

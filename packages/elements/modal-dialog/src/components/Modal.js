@@ -302,6 +302,14 @@ class Modal extends Component<Props, State> {
   }
 }
 
+export const ModalDialog = withRenderTarget(
+  {
+    target: 'modal',
+    withTransitionGroup: true,
+  }, // $FlowFixMe TEMPORARY
+  Modal,
+);
+
 export default withAnalyticsContext({
   component: 'modal-dialog',
   package: packageName,
@@ -316,13 +324,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(
-    withRenderTarget(
-      {
-        target: 'modal',
-        withTransitionGroup: true,
-      }, // $FlowFixMe TEMPORARY
-      Modal,
-    ),
-  ),
+  })(ModalDialog),
 );

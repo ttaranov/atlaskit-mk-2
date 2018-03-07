@@ -2,10 +2,21 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-import BreadcrumbsItem from '../src/components/BreadcrumbsItem';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import BreadcrumbsItemWithAnalytics, {
+  BreadcrumbsItem,
+} from '../src/components/BreadcrumbsItem';
 
 export const setItemWidth = (item: BreadcrumbsItem, width: number) => {
   // eslint-disable-line import/prefer-default-export
@@ -163,5 +174,52 @@ describe('BreadcrumbsItem', () => {
       setItemWidth(item, truncationWidth - 1);
       expect(item.updateOverflow()).toBe(false);
     });
+  });
+});
+describe('analytics - BreadcrumbsItem', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<BreadcrumbsItemWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'breadrumbs-item',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onClick handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<BreadcrumbsItemWithAnalytics onClick={spy} />);
+    wrapper.find('button').simulate('click');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'click',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on click', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <BreadcrumbsItemWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(BreadcrumbsItemWithAnalytics).simulate('click');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'click' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'breadrumbs-item',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

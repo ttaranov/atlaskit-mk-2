@@ -1,12 +1,24 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
-import InlineEditStateless from '../../src/InlineEditStateless';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
+
+import InlineEditStatelessWithAnalytics, {
+  InlineEditStateless,
+} from '../InlineEditStateless';
 
 const noop = () => {};
 const Input = props => <input {...props} onChange={noop} />;
@@ -322,5 +334,126 @@ describe('@atlaskit/inline-edit', () => {
         '100%',
       );
     });
+  });
+});
+describe('analytics - InlineEditStateless', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<InlineEditStatelessWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'inline-edit',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onCancel handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<InlineEditStatelessWithAnalytics onCancel={spy} />);
+    wrapper.find('button').simulate('cancel');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'cancel',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onConfirm handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<InlineEditStatelessWithAnalytics onConfirm={spy} />);
+    wrapper.find('button').simulate('confirm');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'confirm',
+      }),
+    );
+  });
+
+  it('should pass analytics event as last argument to onEditRequested handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <InlineEditStatelessWithAnalytics onEditRequested={spy} />,
+    );
+    wrapper.find('button').simulate('edit');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'edit',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on cancel', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <InlineEditStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(InlineEditStatelessWithAnalytics).simulate('cancel');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'cancel' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'inline-edit',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on confirm', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <InlineEditStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(InlineEditStatelessWithAnalytics).simulate('confirm');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'confirm' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'inline-edit',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
+  });
+
+  it('should fire an atlaskit analytics event on edit', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <InlineEditStatelessWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(InlineEditStatelessWithAnalytics).simulate('edit');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'edit' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'inline-edit',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

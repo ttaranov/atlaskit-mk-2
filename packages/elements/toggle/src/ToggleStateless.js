@@ -1,10 +1,10 @@
 // @flow
 import uuid from 'uuid';
+import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
-import React, { Component } from 'react';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import {
@@ -24,7 +24,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-class ToggleStateless extends Component<StatelessProps, State> {
+export class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,

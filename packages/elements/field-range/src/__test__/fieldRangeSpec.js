@@ -1,8 +1,17 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies */
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
-import FieldRange from '../FieldRange';
+import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+import FieldRangeWithAnalytics, { FieldRange } from '../FieldRange';
 
 // We need to simulate a real event on the DOM element due IE compatibility
 const simulateValueChange = (range, value) => {
@@ -77,5 +86,52 @@ describe('FieldRange', () => {
       const input = fieldRange.find('input');
       expect(input.props().value).toBe('15');
     });
+  });
+});
+describe('analytics - FieldRange', () => {
+  it('should provide analytics context with component, package and version fields', () => {
+    const wrapper = shallow(<FieldRangeWithAnalytics />);
+
+    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+      component: 'field-range',
+      package: packageName,
+      version: packageVersion,
+    });
+  });
+
+  it('should pass analytics event as last argument to onChange handler', () => {
+    const spy = jest.fn();
+    const wrapper = mount(<FieldRangeWithAnalytics onChange={spy} />);
+    wrapper.find('button').simulate('change');
+
+    const analyticsEvent = spy.mock.calls[0][1];
+    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
+    expect(analyticsEvent.payload).toEqual(
+      expect.objectContaining({
+        action: 'change',
+      }),
+    );
+  });
+
+  it('should fire an atlaskit analytics event on change', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener onEvent={spy} channel="atlaskit">
+        <FieldRangeWithAnalytics />
+      </AnalyticsListener>,
+    );
+
+    wrapper.find(FieldRangeWithAnalytics).simulate('change');
+    const [analyticsEvent, channel] = spy.mock.calls[0];
+
+    expect(channel).toBe('atlaskit');
+    expect(analyticsEvent.payload).toEqual({ action: 'change' });
+    expect(analyticsEvent.context).toEqual([
+      {
+        component: 'field-range',
+        package: packageName,
+        version: packageVersion,
+      },
+    ]);
   });
 });

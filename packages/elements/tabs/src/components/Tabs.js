@@ -35,7 +35,7 @@ const defaultComponents = {
   Item: DefaultTabItem,
 };
 
-class Tabs extends Component<TabsProps, TabsState> {
+export class Tabs extends Component<TabsProps, TabsState> {
   static defaultProps = {
     components: {},
   };
