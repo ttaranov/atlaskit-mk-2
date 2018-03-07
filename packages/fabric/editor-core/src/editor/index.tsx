@@ -29,6 +29,8 @@ export default class Editor extends React.Component<EditorProps, {}> {
   constructor(props: EditorProps) {
     super(props);
     this.providerFactory = new ProviderFactory();
+    this.onEditorCreated = this.onEditorCreated.bind(this);
+    this.onEditorDestroyed = this.onEditorDestroyed.bind(this);
     this.deprecationWarnings(props);
   }
 
