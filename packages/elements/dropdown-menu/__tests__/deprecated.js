@@ -8,7 +8,9 @@ import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
 
-import Menu, { DropdownMenuStateless as StatelessMenu } from '../src';
+import Menu from '../src';
+
+import { DropdownMenuStateless } from '../src/components/DropdownMenuStateless';
 
 const itemsList = [
   {
@@ -401,9 +403,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getPrevFocusable(1)).toBe(0);
@@ -424,9 +426,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getPrevFocusable(4)).toBe(1);
@@ -441,9 +443,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getPrevFocusable(0)).toBe(0);
@@ -462,9 +464,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getPrevFocusable(2)).toBe(2);
@@ -481,9 +483,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable()).toBe(0);
@@ -502,9 +504,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable()).toBe(2);
@@ -519,9 +521,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable(1)).toBe(2);
@@ -542,9 +544,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable(1)).toBe(4);
@@ -559,9 +561,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable(2)).toBe(2);
@@ -582,9 +584,9 @@ describe('dropdown menu', () => {
         ];
 
         const wrapper = mount(
-          <StatelessMenu items={Items} isOpen>
+          <DropdownMenuStateless items={Items} isOpen>
             test
-          </StatelessMenu>,
+          </DropdownMenuStateless>,
         );
 
         expect(wrapper.instance().getNextFocusable(2)).toBe(2);
@@ -592,3 +594,4 @@ describe('dropdown menu', () => {
     });
   });
 });
+describe('analytics - DropdownMenuStateless', () => {});

@@ -140,7 +140,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-class StatelessMultiSelect extends PureComponent<Props, State> {
+export class MultiSelectStateless extends PureComponent<Props, State> {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -619,5 +619,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(StatelessMultiSelect),
+  })(MultiSelectStateless),
 );

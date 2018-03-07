@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { FieldBaseStateless } from '@atlaskit/field-base';
-import { MultiSelectStateless } from '../src';
+import { MultiSelectStateless } from '../src/components/Stateless';
 
 import { name } from '../package.json';
 

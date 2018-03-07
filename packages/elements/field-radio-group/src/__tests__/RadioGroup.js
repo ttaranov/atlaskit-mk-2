@@ -1,15 +1,26 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Base from '@atlaskit/field-base';
 
 import Radio from '../../src/RadioBase';
-import AkFieldRadioGroup from '../../src/RadioGroupStateless';
-import { name } from '../../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+import FieldRadioGroupStatelessWithAnalytics, {
+  FieldRadioGroupStateless,
+} from '../RadioGroupStateless';
 import type { ItemPropTypeSmart } from '../types';
 
 describe(name, () => {
-  describe('AkFieldRadioGroup (stateless)', () => {
+  describe('FieldRadioGroupStateless (stateless)', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two', isSelected: true },
@@ -17,22 +28,27 @@ describe(name, () => {
     ];
 
     describe('exports', () => {
-      it('the AkFieldRadioGroup component', () => {
-        expect(AkFieldRadioGroup).not.toBe(undefined);
-        expect(new AkFieldRadioGroup()).toBeInstanceOf(Component);
+      it('the FieldRadioGroupStateless component', () => {
+        expect(FieldRadioGroupStateless).not.toBe(undefined);
+        expect(new FieldRadioGroupStateless()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<AkFieldRadioGroup onRadioChange={() => {}} />);
+        const wrapper = shallow(
+          <FieldRadioGroupStateless onRadioChange={() => {}} />,
+        );
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render a FieldBase containing a Radio for each item', () => {
         const wrapper = mount(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={sampleItems} />,
+          <FieldRadioGroupStateless
+            onRadioChange={() => {}}
+            items={sampleItems}
+          />,
         );
         expect(wrapper.find(Base).length).toBe(1);
         expect(wrapper.find(Base).find(Radio).length).toBe(3);
@@ -43,7 +59,10 @@ describe(name, () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
           const wrapper = mount(
-            <AkFieldRadioGroup onRadioChange={() => {}} items={sampleItems} />,
+            <FieldRadioGroupStateless
+              onRadioChange={() => {}}
+              items={sampleItems}
+            />,
           );
           expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
@@ -64,7 +83,7 @@ describe(name, () => {
         it('is reflected to the FieldBase', () => {
           const label = 'string label content';
           const wrapper = shallow(
-            <AkFieldRadioGroup onRadioChange={() => {}} label={label} />,
+            <FieldRadioGroupStateless onRadioChange={() => {}} label={label} />,
           );
           expect(wrapper.find(Base).prop('label')).toBe(label);
         });
@@ -74,7 +93,7 @@ describe(name, () => {
         it('is reflected to the FieldBase', () => {
           const isRequired = true;
           const wrapper = shallow(
-            <AkFieldRadioGroup
+            <FieldRadioGroupStateless
               onRadioChange={() => {}}
               isRequired={isRequired}
             />,
@@ -85,7 +104,7 @@ describe(name, () => {
         it('is reflected to each Radio item', () => {
           const isRequired = true;
           const wrapper = shallow(
-            <AkFieldRadioGroup
+            <FieldRadioGroupStateless
               onRadioChange={() => {}}
               isRequired={isRequired}
             />,
@@ -102,7 +121,10 @@ describe(name, () => {
         it('is called when a radio item is changed', () => {
           const spy = jest.fn();
           const wrapper = mount(
-            <AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />,
+            <FieldRadioGroupStateless
+              onRadioChange={spy}
+              items={sampleItems}
+            />,
           );
           wrapper
             .find(Radio)
@@ -133,7 +155,7 @@ describe(name, () => {
           { name: 'n', value: '2', isSelected: true },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <FieldRadioGroupStateless onRadioChange={() => {}} items={items} />,
         );
         expectRadioSelected(wrapper, 2);
       });
@@ -144,7 +166,7 @@ describe(name, () => {
           { name: 'n', value: '2' },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <FieldRadioGroupStateless onRadioChange={() => {}} items={items} />,
         );
         expectNoRadioSelected(wrapper);
       });
@@ -155,10 +177,11 @@ describe(name, () => {
           { name: 'n', value: '2', isSelected: true, isDisabled: true },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <FieldRadioGroupStateless onRadioChange={() => {}} items={items} />,
         );
         expectRadioSelected(wrapper, 2);
       });
     });
   });
 });
+describe('analytics - FieldRadioGroupStateless', () => {});

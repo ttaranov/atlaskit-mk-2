@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import type { GroupType } from '../src/types';
 
-import { MultiSelectStateless } from '../src';
+import { MultiSelectStateless } from '../src/components/Stateless';
 
 import { name } from '../package.json';
 

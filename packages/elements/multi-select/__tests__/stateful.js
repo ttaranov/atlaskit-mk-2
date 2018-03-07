@@ -3,7 +3,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import MultiSelect, { MultiSelectStateless } from '../src';
+import MultiSelect from '../src';
+import { MultiSelectStateless } from '../src/components/Stateless';
 import type { GroupType } from '../src/types';
 import { name } from '../package.json';
 

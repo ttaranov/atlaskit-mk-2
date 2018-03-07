@@ -125,7 +125,7 @@ const analyticsEventMap = [
     path: 'dynamic-table/src/components/Stateless.js',
     testPath: 'dynamic-table/__tests__/Stateless.js',
     context: 'dynamic-table',
-    component: 'StatelessDynamicTable',
+    component: 'DynamicTable',
     props: {
       onSetPage: 'setPage',
       onSort: 'sort',
@@ -160,7 +160,7 @@ const analyticsEventMap = [
     path: 'field-radio-group/src/RadioGroupStateless.js',
     testPath: 'field-radio-group/src/__tests__/RadioGroup.js',
     context: 'field-radio-group',
-    component: 'AkFieldRadioGroup',
+    component: 'FieldRadioGroupStateless',
     props: {
       onRadioChange: 'change'
     }
@@ -247,7 +247,7 @@ const analyticsEventMap = [
     path: 'input/src/SingleLineTextInput.js',
     testPath: 'input/src/__tests__/index.js',
     context: 'input',
-    component: 'Input',
+    component: 'SingleLineTextInput',
     props: {
       onConfirm: 'confirm',
       onKeyDown: 'keydown',
@@ -376,7 +376,7 @@ const analyticsEventMap = [
   },
   {
     path: 'tag/src/Tag/index.js',
-    testPath: 'tag/__tests__/index.js',
+    testPath: 'tag/src/Tag/__tests__/index.js',
     context: 'tag',
     component: 'Tag',
     props: {
@@ -387,7 +387,7 @@ const analyticsEventMap = [
     path: 'toggle/src/ToggleStateless.js',
     testPath: 'toggle/src/__tests__/index.js',
     context: 'toggle',
-    component: 'Toggle',
+    component: 'ToggleStateless',
     overwrite: 'Input',
     props: {
       onBlur: 'blur',

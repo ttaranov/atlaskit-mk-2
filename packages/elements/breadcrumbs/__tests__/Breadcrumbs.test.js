@@ -2,9 +2,23 @@
 
 import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 
-import { BreadcrumbsStateless, BreadcrumbsItem as Item } from '../src/';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+
+import { BreadcrumbsItem as Item } from '../src/components/BreadcrumbsItem';
+
+import BreadcrumbsStatelessWithAnalytics, {
+  BreadcrumbsStateless,
+} from '../src/components/BreadcrumbsStateless';
 
 import EllipsisItem from '../src/components/EllipsisItem';
 
@@ -119,3 +133,4 @@ describe('BreadcrumbsStateless', () => {
     });
   });
 });
+describe('analytics - BreadcrumbsStateless', () => {});

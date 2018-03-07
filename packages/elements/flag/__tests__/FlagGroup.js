@@ -45,6 +45,6 @@ describe('FlagGroup', () => {
       .first()
       .simulate('animationEnd');
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith('a');
+    expect(spy.mock.calls[0][0]).toBe('a');
   });
 });

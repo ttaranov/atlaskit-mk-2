@@ -35,7 +35,7 @@ type State = {
   startY?: number,
 };
 
-class InlineEdit extends Component<StatelessProps, State> {
+export class InlineEditStateless extends Component<StatelessProps, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -292,5 +292,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(InlineEdit),
+  })(InlineEditStateless),
 );

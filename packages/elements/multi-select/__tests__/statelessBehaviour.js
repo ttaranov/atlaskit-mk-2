@@ -1,10 +1,22 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
-import { MultiSelectStateless } from '../src';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 
-import { name } from '../package.json';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+
+import MultiSelectStatelessWithAnalytics, {
+  MultiSelectStateless,
+} from '../src/components/Stateless';
 
 describe(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;
@@ -32,3 +44,4 @@ describe(`${name} - stateless`, () => {
     });
   });
 });
+describe('analytics - MultiSelectStateless', () => {});

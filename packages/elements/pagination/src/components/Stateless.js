@@ -77,7 +77,7 @@ type Props = {
   total: number,
 };
 
-class Pagination extends Component<Props, {}> {
+export class PaginationStateless extends Component<Props, {}> {
   static defaultProps = {
     current: 1,
     i18n: defaultI18n,
@@ -158,5 +158,5 @@ export default withAnalyticsContext({
 
       return consumerEvent;
     },
-  })(Pagination),
+  })(PaginationStateless),
 );

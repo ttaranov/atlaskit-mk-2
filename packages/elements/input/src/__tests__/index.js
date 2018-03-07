@@ -1,15 +1,27 @@
 // @flow
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
-import Input from '../../src';
-import { name } from '../../package.json';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name,
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
+import InputWithAnalytics, {
+  SingleLineTextInput,
+} from '../SingleLineTextInput';
 
 describe(name, () => {
   it('selects the input when select() is called', () => {
     const value = 'my-value';
     const wrapper = mount(
-      <Input isEditing onChange={() => {}} value={value} />,
+      <SingleLineTextInput isEditing onChange={() => {}} value={value} />,
     );
 
     wrapper.instance().select();
@@ -19,3 +31,4 @@ describe(name, () => {
     expect(input.selectionEnd).toBe(value.length);
   });
 });
+describe('analytics - Input', () => {});

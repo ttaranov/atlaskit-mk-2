@@ -12,7 +12,8 @@ import RankableTableBody from '../src/components/rankable/Body';
 import LoadingContainer from '../src/components/LoadingContainer';
 import LoadingContainerAdvanced from '../src/components/LoadingContainerAdvanced';
 import { Caption } from '../src/styled/DynamicTable';
-import DynamicTable, { DynamicTableStateless } from '../src';
+import DynamicTable from '../src';
+import { DynamicTable as DynamicTableStateless } from '../src/components/Stateless';
 import { rows, head, rowsWithKeys } from './_data';
 
 import { name } from '../package.json';

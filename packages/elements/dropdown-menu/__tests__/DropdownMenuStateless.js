@@ -2,9 +2,20 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import {
+  AnalyticsListener,
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import Droplist from '@atlaskit/droplist';
 
-import { DropdownMenuStateless } from '../src';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import DropdownMenuStatelessWithAnalytics, {
+  DropdownMenuStateless,
+} from '../src/components/DropdownMenuStateless';
 import DropdownItemFocusManager from '../src/components/context/DropdownItemFocusManager';
 
 describe('dropdown menu - DropdownMenuStateless', () => {
@@ -13,7 +24,7 @@ describe('dropdown menu - DropdownMenuStateless', () => {
       const wrapper = shallow(<DropdownMenuStateless isOpen />);
       expect(
         wrapper
-          .find('Droplist')
+          .find(Droplist)
           .find(DropdownItemFocusManager)
           .exists(),
       ).toBe(true);
@@ -89,3 +100,4 @@ describe('dropdown menu - DropdownMenuStateless', () => {
     });
   });
 });
+describe('analytics - DropdownMenuStateless', () => {});
