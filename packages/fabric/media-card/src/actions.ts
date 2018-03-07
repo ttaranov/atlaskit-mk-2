@@ -4,7 +4,7 @@ import {
   MediaCollection,
   MediaCollectionItem,
 } from '@atlaskit/media-core';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
 export type ListEventHandler = (
@@ -31,7 +31,7 @@ export interface CardAction {
   type?: CardActionType;
   handler: CardEventHandler;
 
-  icon?: ReactElement<any>;
+  icon?: ReactNode;
 }
 
 export interface ListAction {
