@@ -1,6 +1,7 @@
 {
   "name": "@atlaskit/editor-mobile-bridge",
   "version": "0.0.1",
+  "private": true,
   "description": "Mobile destribution of the Editor",
   "main": "index.ts",
   "scripts": {

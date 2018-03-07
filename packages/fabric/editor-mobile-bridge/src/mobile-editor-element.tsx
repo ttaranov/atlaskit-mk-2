@@ -42,10 +42,6 @@ class EditorWithState extends Editor {
     bridge.editorView = instance.view;
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
-
-    instance.view.dom.addEventListener('keydown', event => {
-      console.log(event);
-    });
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {}
