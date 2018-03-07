@@ -30,7 +30,6 @@ export function mobileEditor() {
         <WithEditorActions render={actions => <div />} />
         <Editor
           appearance="mobile"
-          allowHyperlinks={true}
           allowTextFormatting={true}
           allowMentions={true}
           mentionProvider={Promise.resolve(new MentionProviderImpl())}
