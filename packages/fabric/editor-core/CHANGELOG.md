@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.12
+- [patch] Fix the media group when there is a mix of images and non images [d7f4f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7f4f67)
+
 ## 62.7.11
 - [patch] Fix the backspace in table cells in IE11 [4e58321](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e58321)
 
