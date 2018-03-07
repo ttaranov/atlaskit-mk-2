@@ -3,10 +3,10 @@
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",
-    "babel-plugin-transform-string-raw",
+    "transform-string-raw",
     "syntax-dynamic-import",
     [
-      "babel-plugin-styled-components",
+      "styled-components",
       {
         "minify": false,
         "uglifyPure": false
