@@ -1031,6 +1031,17 @@ describe('hyperlink', () => {
     });
   });
 
+  describe('edit toolbar', () => {
+    it('should be hidden when the esc key is pressed', async () => {
+      const { editorView, pluginState } = editor(
+        doc(paragraph('http://www.atlass{<>}ian.com')),
+      );
+      sendKeyToPm(editorView, 'Esc');
+      expect(pluginState.active).toEqual(false);
+      editorView.destroy();
+    });
+  });
+
   describe('Key Press Cmd-K', () => {
     describe('when called without any selection in the editor', () => {
       it('should call subscribers', () => {

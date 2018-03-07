@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 62.7.9
+
+## 62.7.8
+- [patch] Adding link in blockquote should not split it. [13dd62e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13dd62e)
+
+## 62.7.7
+
+## 62.7.6
+
+## 62.7.5
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 62.7.4
+- [patch] fix: prevent autoformatting for formatted-text across hard-breaks [84da82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84da82e)
+
+## 62.7.3
+
+## 62.7.2
+- [patch] Fix the cursor inside a tablecell with Media group [1f97e8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f97e8e)
+
+## 62.7.1
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
 ## 62.7.0
 - [minor] Support dynamically changing the Editor's appearance prop to enable switching between different appearances. Changing props that affect features, e.g. `allowTables` is not supported and won't cause the supported nodes/marks of the editor to change. This support is currently experimental and subject to change. The prop `contentComponents` is no longer rendered inside the ProseMirror contenteditable, instead it is rendered directly before the ProseMirror component. [4497ea8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4497ea8)
 

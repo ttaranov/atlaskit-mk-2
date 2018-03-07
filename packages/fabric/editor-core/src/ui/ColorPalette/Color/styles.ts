@@ -1,19 +1,14 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akColorN900,
   akColorN50,
   akColorN0,
 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Button = styled.button`
+export const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
   height: 26px;
   width: 26px;
   background: ${akColorN900};
@@ -23,8 +18,7 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ButtonWrapper = styled.span`
+export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: inline-block;
   border: 2px solid transparent;
   margin: 1px;

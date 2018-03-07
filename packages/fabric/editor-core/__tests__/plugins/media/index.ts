@@ -329,6 +329,7 @@ describe('Media plugin', () => {
                         __fileMimeType: 'image/png',
                       })(),
                     ),
+                    p(''),
                   ),
                   tdEmpty,
                   tdEmpty,

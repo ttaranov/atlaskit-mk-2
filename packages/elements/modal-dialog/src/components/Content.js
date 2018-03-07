@@ -37,6 +37,10 @@ type Props = {
   */
   appearance?: AppearanceType,
   /**
+    Component to render the body of the modal.
+  */
+  body: ComponentType,
+  /**
     Content of the modal
   */
   children?: ChildrenType,
@@ -89,6 +93,7 @@ export default class Content extends Component<Props, State> {
     autoFocus: false,
     isChromeless: false,
     stackIndex: 0,
+    body: Body,
   };
   static contextTypes = {
     /** available when invoked within @atlaskit/layer-manager */
@@ -193,6 +198,7 @@ export default class Content extends Component<Props, State> {
     const {
       actions,
       appearance,
+      body: ModalBody,
       children,
       footer,
       header,
@@ -221,9 +227,12 @@ export default class Content extends Component<Props, State> {
           onClose={onClose}
           showKeyline={showHeaderKeyline}
         />
-        <Body innerRef={this.getScrollContainer} shouldScroll={shouldScroll}>
+        <ModalBody
+          innerRef={this.getScrollContainer}
+          shouldScroll={shouldScroll}
+        >
           {children}
-        </Body>
+        </ModalBody>
         <Footer
           actions={actions}
           appearance={appearance}

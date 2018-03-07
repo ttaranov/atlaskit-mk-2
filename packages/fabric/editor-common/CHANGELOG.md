@@ -1,5 +1,19 @@
 # @atlaskit/editor-common
 
+## 6.3.11
+
+## 6.3.10
+
+## 6.3.9
+
+## 6.3.8
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 6.3.7
+
+## 6.3.6
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
 ## 6.3.5
 - [patch] fix tables in json schema [4b67c37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b67c37)
 

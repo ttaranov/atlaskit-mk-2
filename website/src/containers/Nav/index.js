@@ -153,6 +153,7 @@ export default class Nav extends Component<{}, State> {
               .replace('/mk-2', '')
               .split('/')
               .filter(p => p)[0];
+
             const header = headers[headerKey];
 
             const groups = (

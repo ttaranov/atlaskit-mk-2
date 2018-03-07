@@ -10,6 +10,7 @@ import {
   a as link,
   p,
   code_block,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
@@ -60,8 +61,8 @@ describe('text-formatting input rules', () => {
 
   const autoformats = (string, editorContent, analyticsName) => {
     it(`should autoformat: ${string}`, () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      insertText(editorView, string, 1);
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, string, sel);
       expect(editorView.state.doc).toEqualDocument(doc(editorContent));
 
       expect(trackEvent).toHaveBeenCalledWith(
@@ -78,8 +79,8 @@ describe('text-formatting input rules', () => {
 
   const notautoformats = string => {
     it(`should not autoformat: ${string}`, () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      insertText(editorView, string, 1);
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, string, sel);
       expect(editorView.state.doc).toEqualDocument(doc(p(string)));
     });
   };
@@ -255,7 +256,7 @@ describe('text-formatting input rules', () => {
   });
 
   describe('code rule', () => {
-    it('should convert mention to plaint text', () => {
+    it('should convert mention to plain text', () => {
       const mentionNode = mention({ id: '1234', text: '@helga' })();
       const { editorView, sel } = editor(
         doc(p('hey! `hello, ', mentionNode, ' there{<>}?')),
@@ -504,6 +505,31 @@ describe('text-formatting input rules', () => {
       notautoformats('___test_');
       notautoformats('***test**');
       notautoformats('***test*');
+    });
+
+    describe('across hardbreak', () => {
+      it(`should not autoformat:`, () => {
+        const { editorView, sel } = editor(
+          doc(p('**start', hardBreak(), 'end*{<>}')),
+        );
+        insertText(editorView, '*', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('**start', hardBreak(), 'end**')),
+        );
+      });
+    });
+
+    describe('containing inline node', () => {
+      it(`should autoformat:`, () => {
+        const mentioned = mention({ id: '1234', text: '@helga' })();
+        const { editorView, sel } = editor(
+          doc(p('**start', mentioned, 'end*{<>}')),
+        );
+        insertText(editorView, '*', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(strong('start'), strong(mentioned), strong('end'))),
+        );
+      });
     });
   });
 });

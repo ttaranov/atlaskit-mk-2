@@ -14,6 +14,15 @@ function pickRandom(array: Array<any>) {
   return array[index];
 }
 
+function jiraIconUrl() {
+  const urls = [
+    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
+    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
+  ];
+
+  return pickRandom(urls);
+}
+
 function objectIconUrl() {
   const urls = [
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
@@ -86,6 +95,12 @@ export function makeCrossProductSearchData(
       key: issueKey(),
       fields: {
         summary: faker.company.catchPhrase(),
+        project: {
+          name: faker.company.companyName(),
+        },
+        issuetype: {
+          iconUrl: jiraIconUrl(),
+        },
       },
     });
   }

@@ -384,7 +384,6 @@ export function createNewParagraphAbove(
   dispatch: (tr: Transaction) => void,
 ): boolean {
   const append = false;
-
   if (!canMoveUp(state) && canCreateParagraphNear(state)) {
     createParagraphNear(append)(state, dispatch);
     return true;
@@ -398,7 +397,6 @@ export function createNewParagraphBelow(
   dispatch: (tr: Transaction) => void,
 ): boolean {
   const append = true;
-
   if (!canMoveDown(state) && canCreateParagraphNear(state)) {
     createParagraphNear(append)(state, dispatch);
     return true;
@@ -458,18 +456,22 @@ function getInsertPosFromNonTextBlock(
   append: boolean,
 ): void {
   const { $from, $to } = state.selection;
-  let pos;
+  const nodeAtSelection =
+    state.selection instanceof NodeSelection &&
+    state.doc.nodeAt(state.selection.$anchor.pos);
+  const isMediaSelection =
+    nodeAtSelection && nodeAtSelection.type.name === 'mediaGroup';
 
+  let pos;
   if (!append) {
     // The start position is different with text block because it starts from 0
     pos = $from.start($from.depth);
     // The depth is different with text block because it starts from 0
-    pos = $from.depth > 0 ? pos - 1 : pos;
+    pos = $from.depth > 0 && !isMediaSelection ? pos - 1 : pos;
   } else {
     pos = $to.end($to.depth);
-    pos = $to.depth > 0 ? pos + 1 : pos;
+    pos = $to.depth > 0 && !isMediaSelection ? pos + 1 : pos;
   }
-
   return pos;
 }
 
