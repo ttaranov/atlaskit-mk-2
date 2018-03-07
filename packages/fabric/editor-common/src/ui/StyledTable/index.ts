@@ -16,6 +16,7 @@ const tableStyle = `
     margin: 20px 8px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
+    table-layout: fixed;
 
     & {
       * {
@@ -76,4 +77,6 @@ const tableStyle = `
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
   ${tableStyle};
 `;
+
+export { tableStyle };
 export default StyledTable;
