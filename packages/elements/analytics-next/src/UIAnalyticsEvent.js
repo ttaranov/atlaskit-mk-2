@@ -31,7 +31,12 @@ export default class UIAnalyticsEvent extends AnalyticsEvent
     }
     const context = [...this.context];
     const handlers = [...this.handlers];
+
+    // We stringify and parse here to get a hacky "deep clone" of the object.
+    // This has some limitations in that it wont support functions, regexs, Maps, Sets, etc,
+    // but none of those need to be represented in our payload, so we consider this fine
     const payload = JSON.parse(JSON.stringify(this.payload));
+
     return new UIAnalyticsEvent({ context, handlers, payload });
   };
 
