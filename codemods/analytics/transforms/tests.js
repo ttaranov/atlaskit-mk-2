@@ -4,10 +4,10 @@
  */
 import path from 'path';
 import UtilPlugin from '../../plugins/util';
-import { getMapEntryFromPath, getPackageJsonPath } from '../util';
+import { getMapEntryFromPath, getPackageJsonPath, getRelativeComponentPath } from '../util';
 
 const contextTest = (j, analyticsConfig) => {
-  const componentName = analyticsConfig.component;
+  const componentName = `${analyticsConfig.component}WithAnalytics`;
   const context = analyticsConfig.context;
 
   return j('').code(`
@@ -25,7 +25,7 @@ const contextTest = (j, analyticsConfig) => {
 }
 
 const propTest = (j, analyticsConfig, prop, action) => {
-  const componentName = analyticsConfig.component;
+  const componentName = `${analyticsConfig.component}WithAnalytics`;
 
   return j('').code(`
 
@@ -46,7 +46,7 @@ const propTest = (j, analyticsConfig, prop, action) => {
 }
 
 const atlaskitTest = (j, analyticsConfig, prop, action) => {
-  const componentName = analyticsConfig.component;
+  const componentName = `${analyticsConfig.component}WithAnalytics`;
   const context = analyticsConfig.context;
 
   return j('').code(`
@@ -73,6 +73,27 @@ const atlaskitTest = (j, analyticsConfig, prop, action) => {
       ]);
     });
   `);
+}
+
+const removeExistingComponentImport = (j, root, componentName) => {
+  [j.ImportDefaultSpecifier, j.ImportSpecifier].find( importType => {
+    const existingImport = root
+      .find(importType, { local: { name: componentName } });
+
+    if (existingImport.size() === 1) {
+      const importPath = existingImport.get();
+      // importPath.name is the index of the specifier
+      importPath.parent.node.specifiers.splice(importPath.name, 1);
+      if (importPath.parent.node.specifiers.length === 0) {
+        importPath.parent.prune();
+      }
+      return true;
+    } else if (existingImport.size() === 0) {
+      console.log(`No ${importType} was found for ${componentName}`);
+    } else {
+      throw new Error(`Found more than one default import for ${componentName}`);
+    }
+  });
 }
 
 export const parser = 'flow';
@@ -108,6 +129,14 @@ export default (fileInfo: any, api: any) => {
     `));
   
   analyticsEventConfigs.forEach( analyticsEventConfig => {
+    if (!analyticsEventConfig.wrapTarget) {
+      const componentName = analyticsEventConfig.component;
+      const componentPath = getRelativeComponentPath(analyticsEventConfig);
+      removeExistingComponentImport(j, source, componentName);
+      source.addImport(source.code(`
+        import ${componentName}WithAnalytics, { ${componentName} } from '${componentPath}';
+      `));
+    }
     // Add describe block + tests
     const describeBlock = source.getOrAdd(source.code(`
       describe('analytics - ${analyticsEventConfig.component}', () => {});

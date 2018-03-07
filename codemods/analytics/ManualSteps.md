@@ -8,6 +8,9 @@
 
 
 ## TODO:
-1. Add mount & shallow import from enzyme for tests
+~~~1. Add mount & shallow import from enzyme for tests~~~
 2. Add overwrite functionality for context HOC
 3. Lodge & fix bolt bug that occurs when adding multiple packages, possibly with exec?
+4. Fix imperative focus ref problem for field-text and field-text-area
+~~~5. Fix duplicate 'Select' declaration problem~~~
+~~~6. Fix pagination & icon test transforms not working~~~

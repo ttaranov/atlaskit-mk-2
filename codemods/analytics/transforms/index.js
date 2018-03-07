@@ -64,6 +64,67 @@ const createAnalyticsHocs = (j, eventConfig, inner) => {
   return createAnalyticsContextHoc(j, eventConfig, withAnalyticsEvents);
 }
 
+const hasAnalyticsHoc = (j, path) => (
+  j(path).find(j.Identifier, { name: 'withAnalyticsEvents' }).size() > 0
+);
+
+// Used to export an original default expression
+// Prevents naming conflicts
+const exportDefaultExpression = (j, root, eventConfig, original) => {
+  const componentName = eventConfig.component;
+  let statements = [];
+  const existingComponentNameVar = root
+    .find(j.Declaration, { id: { name: componentName }})
+    .filter( path => path.scope.isGlobal)
+    .size() > 0;
+  const existingComponentNameImport = root
+    .find(j.ModuleSpecifier, { local:  { name: componentName }})
+    .size() > 0;
+
+  console.log('Number of modules', root.find(j.ModuleSpecifier).size());
+  root.find(j.ModuleSpecifier).forEach( path => console.log(path.value));
+  
+  if (existingComponentNameVar || existingComponentNameImport) {
+    // Already have an identifier with the component name in the current scope
+    // Check whether it is exported
+    const isExported = root
+      .find(j.ExportNamedDeclaration)
+      .filter( path =>
+        path.find(j.ExportSpecifier, { exported: { name: componentName } }).size() > 0 ||
+        path.find(j.VariableDeclarator, { id: { name: componentName } }).size() > 0
+      )
+      .filter( path => path.scope.isGlobal)
+      .size() > 0;
+    if (isExported) {
+      throw new Error('Cannot export original component with the component name specified in config as something is already exported with that name');
+    }
+    const localComponentNameId = j.identifier(`${componentName}WithoutAnalytics`);
+    statements.push(
+      j.variableDeclaration(
+        'const',
+        [j.variableDeclarator(localComponentNameId, original)]
+      )
+    );
+    statements.push(
+      j.exportNamedDeclaration(
+        null,
+        [j.exportSpecifier(localComponentNameId, j.identifier(componentName))]
+      )
+    );
+  } else {
+    statements.push(
+      j.exportNamedDeclaration(
+        j.variableDeclaration(
+          'const',
+          [j.variableDeclarator(j.identifier(componentName), original)]
+        )
+      )
+    );
+  }
+
+  return statements;
+}
+
 module.exports = (fileInfo: any, api: any) => {
   const j = api.jscodeshift;
   const { statement } = j.template;
@@ -98,15 +159,26 @@ module.exports = (fileInfo: any, api: any) => {
     source
       .find(j.ExportDefaultDeclaration)
       .map( path => {
-        if (j.Expression.check(path.node.declaration)) {
-          // If we're an expression, we can just wrap the current default export
-          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
-        } else if (j.Declaration.check(path.node.declaration)) {
+        const exportContents = path.node.declaration;
+        if (hasAnalyticsHoc(j, path)) {
+          return path;
+        }
+        if (j.Expression.check(exportContents)) {
+          // If we're an expression, assign this to a variable and export it so we can use the original
+          // reference when unit testing
+          const exportStatements = exportDefaultExpression(j, source, analyticsEventConfig, exportContents);
+          exportStatements.forEach( s => {
+            path.insertBefore(s);
+          });
+          const exportId = j(exportStatements[0]).findFirst(j.VariableDeclarator);
+          path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, exportId.get().node.id);
+        } else if (j.Declaration.check(exportContents)) {
           // Else if we're a declaration, we must extract the declaration out of the export
           // and then wrap the declaration with a HOC within the export
-          if (j.ClassDeclaration.check(path.node.declaration)) {
-            const declarationId = path.node.declaration.id;
-            path.insertBefore(path.node.declaration);
+          if (j.ClassDeclaration.check(exportContents)) {
+            const declarationId = exportContents.id;
+            // Still export the original value as a named export so we can continue to use that in unit tests
+            path.insertBefore(j.exportNamedDeclaration(exportContents));
             path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, declarationId);
           } else {
             throw new Error('Default function export found. Please specify a wrapTarget in analyticsEventMap or refactor the code first to provide a default class export or function call');

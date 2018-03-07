@@ -53,22 +53,37 @@ export default j => {
   // Add an import to the end of the last import declaration
   // Note: Must have an existing import declaration in the file for this to work
   const addImport = function(node) {
-    const specifiers = node.specifiers;
+    const importSpecifiers = node.specifiers.filter(s => j.ImportSpecifier.check(s));
+    const defaultSpecifiers = node.specifiers.filter(s => j.ImportDefaultSpecifier.check(s));
     const source = node.source;
     const existingSource = this.find(j.ImportDeclaration, (node) => node.source.value === source.value);
 
     if (existingSource.size() > 0) {
+      // Add missing named imports
       const existingNode = existingSource.get();
-      const missingSpecifiers = specifiers.filter(importSpecifier =>
+      const missingImportSpecifiers = importSpecifiers.filter(importSpecifier =>
         existingSource.find(j.ImportSpecifier, (existingSpecifier) =>
           existingSpecifier.local.name === importSpecifier.local.name
         ).size() === 0
       );
-      existingNode.node.specifiers = existingNode.node.specifiers.concat(missingSpecifiers);
-
+      existingNode.node.specifiers = existingNode.node.specifiers.concat(missingImportSpecifiers);
+      if (defaultSpecifiers.length > 0) {
+        // Add or replace default import
+        const existingDefaultSpecifier = existingSource.find(j.ImportDefaultSpecifier);
+        if (existingDefaultSpecifier.size() > 0) {
+          existingDefaultSpecifier.get().replace(defaultSpecifiers[0]);
+        } else {
+          existingNode.node.specifiers.unshift(defaultSpecifiers[0]);
+        }
+      }
     } else {
-      findFollowingImport(this, node)
-        .insertBefore(node);
+      const followingImport = findFollowingImport(this, node);
+
+      if (followingImport) {
+        followingImport.insertBefore(node);
+      } else {
+        this.findLast(j.ImportDeclaration).insertAfter(node);
+      }
     }
     
     return this;

@@ -1,3 +1,5 @@
+import ButtonWithAnalytics, { Button } from '__testfixtures__';
+import ButtonWithAnalytics from 'addsTestsMultipleProps';
 import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
 import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
@@ -20,7 +22,7 @@ describe('ak-button/default-behaviour', () => {
 });
 describe('analytics - Button', () => {
   it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<Button />);
+    const wrapper = shallow(<ButtonWithAnalytics />);
 
     expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
       component: 'button',
@@ -31,7 +33,7 @@ describe('analytics - Button', () => {
 
   it('should pass analytics event as last argument to onClick handler', () => {
     const spy = jest.fn();
-    const wrapper = mount(<Button onClick={spy} />);
+    const wrapper = mount(<ButtonWithAnalytics onClick={spy} />);
     wrapper.find('button').simulate('click');
 
     const analyticsEvent = spy.mock.calls[0][1];
@@ -45,7 +47,7 @@ describe('analytics - Button', () => {
 
   it('should pass analytics event as last argument to onChange handler', () => {
     const spy = jest.fn();
-    const wrapper = mount(<Button onChange={spy} />);
+    const wrapper = mount(<ButtonWithAnalytics onChange={spy} />);
     wrapper.find('button').simulate('change');
 
     const analyticsEvent = spy.mock.calls[0][1];
@@ -61,11 +63,11 @@ describe('analytics - Button', () => {
     const spy = jest.fn();
     const wrapper = mount(
       <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <Button />
+        <ButtonWithAnalytics />
       </AnalyticsListener>,
     );
 
-    wrapper.find(Button).simulate('click');
+    wrapper.find(ButtonWithAnalytics).simulate('click');
     const [analyticsEvent, channel] = spy.mock.calls[0];
 
     expect(channel).toBe('atlaskit');
@@ -83,11 +85,11 @@ describe('analytics - Button', () => {
     const spy = jest.fn();
     const wrapper = mount(
       <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <Button />
+        <ButtonWithAnalytics />
       </AnalyticsListener>,
     );
 
-    wrapper.find(Button).simulate('change');
+    wrapper.find(ButtonWithAnalytics).simulate('change');
     const [analyticsEvent, channel] = spy.mock.calls[0];
 
     expect(channel).toBe('atlaskit');

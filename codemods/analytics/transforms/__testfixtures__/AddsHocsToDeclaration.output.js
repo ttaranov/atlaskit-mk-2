@@ -9,7 +9,7 @@ import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
 const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
-class Button extends Component {}
+export class Button extends Component {}
 
 export default withAnalyticsContext({
   component: 'button',

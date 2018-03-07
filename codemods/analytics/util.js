@@ -35,3 +35,10 @@ export const getPackageJsonPath = (filepath) => {
 
   return packageJsonPath;
 }
+
+export const getRelativeComponentPath = (analyticsEventConfig) => {  
+  return path.join(
+    path.relative(path.dirname(analyticsEventConfig.testPath), path.dirname(analyticsEventConfig.path)),
+    path.basename(analyticsEventConfig.path, '.js')
+  );
+}
