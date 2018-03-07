@@ -7,11 +7,10 @@ import * as assert from 'assert';
 
 const urlOnBoarding = `${
   global.__baseUrl__
-}/mk-2/packages/elements/onboarding/example/spotlight-autoscroll`;
+}/examples.html?groupId=elements&packageId=onboarding&exampleId=spotlight-autoscroll`;
 
-const OnBoardingDefault = '[role="dialog"] p:nth-child(3) > button';
-const OnBoardingMenuTitle =
-  '#app > div > div:nth-child(3) > div > div > div > div > div > div > h4';
+const OnBoardingDefault = '#examples p:nth-child(3) > button';
+const OnBoardingMenuTitle = 'span h4';
 
 BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',

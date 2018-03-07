@@ -6,10 +6,10 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 const urlSingleSelect = `${
   global.__baseUrl__
-}/mk-2/packages/elements/single-select/example/basic`;
+}/examples.html?groupId=elements&packageId=single-select&exampleId=basic`;
 
 const singleSelectDefault =
-  '[role="dialog"] > div > div > div > div > div > div > div > div:nth-child(2)';
+  '#examples > div > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div';
 const singleSelectMenu = '[data-role="droplistContent"]';
 
 BrowserTestCase(
