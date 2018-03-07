@@ -57,6 +57,7 @@ export default class CodeSandbox extends Component<{}, {}> {
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
+        preload
         gitInfo={{
           account: 'atlassian',
           repository: 'atlaskit-mk-2',
