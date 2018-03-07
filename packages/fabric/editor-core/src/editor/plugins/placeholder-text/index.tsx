@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Plugin, NodeSelection, Transaction } from 'prosemirror-state';
+import {
+  Plugin,
+  NodeSelection,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
 import { placeholder } from '@atlaskit/editor-common';
 import PlaceholderTextNodeView from '../../../nodeviews/ui/placeholder-text';
@@ -12,29 +17,46 @@ import {
   hidePlaceholderFloatingToolbar,
   insertPlaceholderTextAtSelection,
 } from './actions';
+import { FakeTextCursorSelection } from '../fake-text-cursor/cursor';
 
 export const pluginKey = new PluginKey('placeholderTextPlugin');
 
-export interface PluginState {
-  showInsertPanelAt: number | false;
+export interface PlaceholderTextOptions {
+  allowInserting?: boolean;
 }
 
-export function createPlugin(dispatch: Dispatch): Plugin | undefined {
+export interface PluginState {
+  showInsertPanelAt: number | null;
+  // Enables the "Insert Placeholder Text" dropdown item
+  allowInserting: boolean;
+}
+
+export function createPlugin(
+  dispatch: Dispatch<PluginState>,
+  options: PlaceholderTextOptions,
+): Plugin | undefined {
+  const allowInserting = !!options.allowInserting;
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => ({ showInsertPanelAt: false } as PluginState),
+      init: () =>
+        ({
+          showInsertPanelAt: null,
+          allowInserting,
+        } as PluginState),
       apply: (tr: Transaction, state: PluginState) => {
-        const meta = tr.getMeta(pluginKey) as PluginState;
-        if (meta) {
+        const meta = tr.getMeta(pluginKey) as Partial<PluginState>;
+        if (meta && meta.showInsertPanelAt !== undefined) {
           const newState = {
-            showInsertPanelAt: meta.showInsertPanelAt || false,
+            showInsertPanelAt: meta.showInsertPanelAt,
+            allowInserting,
           };
           dispatch(pluginKey, newState);
           return newState;
         } else if (state.showInsertPanelAt) {
           const newState = {
             showInsertPanelAt: tr.mapping.map(state.showInsertPanelAt),
+            allowInserting,
           };
           dispatch(pluginKey, newState);
           return newState;
@@ -71,15 +93,39 @@ export function createPlugin(dispatch: Dispatch): Plugin | undefined {
               newState.doc,
               adjacentNodePos,
             );
-            return newState.tr.deleteRange($from.pos, $to.pos);
+            return newState.tr
+              .setMeta('isLocal', true)
+              .deleteRange($from.pos, $to.pos);
           }
+        }
+      }
+
+      // Handle Fake Text Cursor for Floating Toolbar
+      if (
+        !(pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        (pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        return newState.tr.setSelection(
+          new FakeTextCursorSelection(newState.selection.$from),
+        );
+      }
+      if (
+        (pluginKey.getState(oldState) as PluginState).showInsertPanelAt &&
+        !(pluginKey.getState(newState) as PluginState).showInsertPanelAt
+      ) {
+        if (newState.selection instanceof FakeTextCursorSelection) {
+          return newState.tr.setSelection(
+            new TextSelection(newState.selection.$from),
+          );
         }
       }
     },
   });
 }
 
-const placeholderTextPlugin: EditorPlugin = {
+const placeholderTextPlugin = (
+  options: PlaceholderTextOptions,
+): EditorPlugin => ({
   nodes() {
     return [{ name: 'placeholder', node: placeholder, rank: 1600 }];
   },
@@ -88,7 +134,8 @@ const placeholderTextPlugin: EditorPlugin = {
     return [
       {
         rank: 400,
-        plugin: ({ schema, props, dispatch }) => createPlugin(dispatch),
+        plugin: ({ schema, props, dispatch }) =>
+          createPlugin(dispatch, options),
       },
     ];
   },
@@ -136,5 +183,5 @@ const placeholderTextPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 export default placeholderTextPlugin;

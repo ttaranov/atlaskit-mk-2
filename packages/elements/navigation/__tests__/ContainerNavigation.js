@@ -34,9 +34,9 @@ describe('<ContainerNavigation />', () => {
   describe('behaviour', () => {
     describe('putting isCollapsed on the theme', () => {
       it('should set isCollapsed to false when not collapsed', () => {
-        const stub = jest.fn(() => '');
+        const stub = jest.fn(() => 'block');
         const Item = styled.div`
-          property: ${({ theme }) => stub(isCollapsed(theme))};
+          display: ${({ theme }) => stub(isCollapsed(theme))};
         `;
 
         mount(
@@ -51,7 +51,7 @@ describe('<ContainerNavigation />', () => {
       it('should set isCollapsed to true when it is collapsed', () => {
         const stub = jest.fn(() => '');
         const Item = styled.div`
-          property: ${({ theme }) => stub(isCollapsed(theme))};
+          display: ${({ theme }) => stub(isCollapsed(theme))};
         `;
 
         mount(

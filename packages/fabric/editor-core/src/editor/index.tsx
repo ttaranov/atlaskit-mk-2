@@ -1,25 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
-import { DirectEditorProps } from 'prosemirror-view';
-import { createEditor, getUiComponent } from './create-editor';
-import { createPluginsList } from './create-editor';
+import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import {
-  EditorProps,
-  EditorInstance,
-  EditorAppearanceComponentProps,
-} from './types';
-import { moveCursorToTheEnd } from '../utils';
+import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
+import { EditorProps } from './types';
+import { ReactEditorView } from './create-editor';
+import { EditorView } from 'prosemirror-view';
 export * from './types';
 
-export interface State {
-  editor?: EditorInstance;
-  component?: React.ComponentClass<EditorAppearanceComponentProps>;
-}
-
-export default class Editor extends React.Component<EditorProps, State> {
+export default class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'message',
     disabled: false,
@@ -34,15 +24,15 @@ export default class Editor extends React.Component<EditorProps, State> {
   };
 
   private providerFactory: ProviderFactory;
+  private editorActions?: EditorActions;
 
   constructor(props: EditorProps) {
     super(props);
     this.providerFactory = new ProviderFactory();
-    this.state = {};
+    this.deprecationWarnings(props);
   }
 
   componentDidMount() {
-    this.initUi();
     this.handleProviders(this.props);
   }
 
@@ -51,89 +41,65 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   componentWillUnmount() {
-    if (!this.state.editor) {
-      return;
-    }
-
-    const { editor } = this.state;
-    const { editorView } = editor;
-    const { state: editorState } = editorView;
-
     this.unregisterEditorFromActions();
-
-    editorState.plugins.forEach(plugin => {
-      const state = plugin.getState(editor.editorView.state);
-      if (state && state.destroy) {
-        state.destroy();
-      }
-    });
-
-    editorView.destroy();
-
-    if (editor.eventDispatcher) {
-      editor.eventDispatcher.destroy();
-    }
+    this.providerFactory.destroy();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { editor } = this.state;
-    // Once the editor has been set for the first time
-    if (!prevState.editor && editor) {
-      // Focus editor first time we create it if shouldFocus prop is set to true.
-      if (this.props.shouldFocus) {
-        if (!editor.editorView.hasFocus()) {
-          editor.editorView.focus();
-        }
-
-        moveCursorToTheEnd(editor.editorView);
+  onEditorCreated = (instance: {
+    view: EditorView;
+    transformer?: Transformer<string>;
+  }) => {
+    this.registerEditorForActions(instance.view, instance.transformer);
+    if (this.props.shouldFocus) {
+      if (!instance.view.hasFocus()) {
+        instance.view.focus();
       }
     }
+  };
 
-    // Disables the contenteditable attribute of the editor if the editor is disabled
-    if (
-      (!prevState.editor && editor && this.props.disabled) ||
-      (editor && prevProps.disabled !== this.props.disabled)
-    ) {
-      editor.editorView.setProps({
-        editable: state => !this.props.disabled,
-      } as DirectEditorProps);
+  private deprecationWarnings(props) {
+    if (props.hasOwnProperty('allowHyperlinks')) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        "allowHyperlinks property is deprecated. It's safe to remove it because hyperlink plugin is enabled by default.",
+      );
     }
-  }
-
-  private registerEditorForActions(editor: EditorInstance) {
-    if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateRegisterEditor(
-        editor.editorView,
-        editor.contentTransformer,
+    if (props.hasOwnProperty('allowTextFormatting')) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        'allowTextFormatting property is deprecated. TextFormatting plugin is enabled by default. If you need to pass options to textFormatting plugin use `textFormatting={{ textFormattingOptions }}` [Will be removed in editor-core@63.0.0]',
       );
     }
   }
 
-  private unregisterEditorFromActions() {
-    if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateUnregisterEditor();
-    }
-  }
 
-  private initUi() {
-    const component = getUiComponent(this.props.appearance);
-    this.setState({ component });
-  }
-
-  private initEditor = place => {
-    if (!place) {
-      return;
-    }
-    const plugins = createPluginsList(this.props);
-    const editor = createEditor(
-      place,
-      plugins,
-      this.props,
-      this.providerFactory,
-    );
-    this.registerEditorForActions(editor);
-    this.setState({ editor });
+  onEditorDestroyed = (instance: {
+    view: EditorView;
+    transformer?: Transformer<string>;
+  }) => {
+    this.unregisterEditorFromActions();
   };
+
+  private registerEditorForActions(
+    editorView: EditorView,
+    contentTransformer?: Transformer<string>,
+  ) {
+    if (this.context && this.context.editorActions) {
+      this.editorActions = this.context.editorActions;
+      this.context.editorActions._privateRegisterEditor(
+        editorView,
+        contentTransformer,
+      );
+    } else {
+      this.editorActions = EditorActions.from(editorView, contentTransformer);
+    }
+  }
+
+  private unregisterEditorFromActions() {
+    if (this.editorActions) {
+      this.editorActions._privateUnregisterEditor();
+    }
+  }
 
   private handleProviders(props: EditorProps) {
     const {
@@ -174,43 +140,39 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   render() {
-    // tslint:disable-next-line:variable-name
-    const { component: Component, editor = {} } = this.state;
-
-    if (!Component) {
-      return null;
-    }
-
-    const {
-      editorView,
-      contentComponents,
-      primaryToolbarComponents,
-      secondaryToolbarComponents,
-      insertMenuItems,
-      eventDispatcher,
-    } = editor as EditorInstance;
+    const Component = getUiComponent(this.props.appearance);
 
     return (
-      <Component
-        onUiReady={this.initEditor}
-        disabled={this.props.disabled}
-        editorView={editorView}
+      <ReactEditorView
+        editorProps={this.props}
         providerFactory={this.providerFactory}
-        eventDispatcher={eventDispatcher}
-        maxHeight={this.props.maxHeight}
-        onSave={this.props.onSave}
-        onCancel={this.props.onCancel}
-        popupsMountPoint={this.props.popupsMountPoint}
-        popupsBoundariesElement={this.props.popupsBoundariesElement}
-        popupsScrollableElement={this.props.popupsScrollableElement}
-        contentComponents={contentComponents}
-        primaryToolbarComponents={primaryToolbarComponents}
-        secondaryToolbarComponents={secondaryToolbarComponents}
-        insertMenuItems={insertMenuItems}
-        customContentComponents={this.props.contentComponents}
-        customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
-        customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
-        addonToolbarComponents={this.props.addonToolbarComponents}
+        onEditorCreated={this.onEditorCreated}
+        onEditorDestroyed={this.onEditorDestroyed}
+        render={({ editor, view, eventDispatcher, config }) => (
+          <Component
+            disabled={this.props.disabled}
+            editorActions={this.editorActions}
+            editorDOMElement={editor}
+            editorView={view}
+            providerFactory={this.providerFactory}
+            eventDispatcher={eventDispatcher}
+            maxHeight={this.props.maxHeight}
+            onSave={this.props.onSave}
+            onCancel={this.props.onCancel}
+            popupsMountPoint={this.props.popupsMountPoint}
+            popupsBoundariesElement={this.props.popupsBoundariesElement}
+            contentComponents={config.contentComponents}
+            primaryToolbarComponents={config.primaryToolbarComponents}
+            secondaryToolbarComponents={config.secondaryToolbarComponents}
+            insertMenuItems={this.props.insertMenuItems}
+            customContentComponents={this.props.contentComponents}
+            customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
+            customSecondaryToolbarComponents={
+              this.props.secondaryToolbarComponents
+            }
+            addonToolbarComponents={this.props.addonToolbarComponents}
+          />
+        )}
       />
     );
   }

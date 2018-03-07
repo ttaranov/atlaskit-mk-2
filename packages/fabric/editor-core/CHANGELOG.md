@@ -1,5 +1,139 @@
 # @atlaskit/editor-core
 
+## 62.7.5
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 62.7.4
+- [patch] fix: prevent autoformatting for formatted-text across hard-breaks [84da82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84da82e)
+
+## 62.7.3
+
+## 62.7.2
+- [patch] Fix the cursor inside a tablecell with Media group [1f97e8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f97e8e)
+
+## 62.7.1
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
+## 62.7.0
+- [minor] Support dynamically changing the Editor's appearance prop to enable switching between different appearances. Changing props that affect features, e.g. `allowTables` is not supported and won't cause the supported nodes/marks of the editor to change. This support is currently experimental and subject to change. The prop `contentComponents` is no longer rendered inside the ProseMirror contenteditable, instead it is rendered directly before the ProseMirror component. [4497ea8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4497ea8)
+
+## 62.6.1
+
+## 62.6.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 62.5.3
+- [patch] fix nodeViews with multiline content [af4d057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af4d057)
+
+## 62.5.2
+- [patch] ED-3873 fix horizontal rule and codeblock in help [6a3161e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3161e)
+
+## 62.5.1
+- [patch] Remove keymap for link from help dialog in message editor. [0a47f8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a47f8e)
+
+## 62.5.0
+- [minor] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
+## 62.4.3
+- [patch] Add autoformatting of atlassian product [2173e92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2173e92)
+
+## 62.4.2
+- [patch] Expose more types for confluence [f95ce9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f95ce9f)
+
+## 62.4.1
+
+- [patch] Fix: arrow down in nested list which is last item in editor should create a paragraph at depth 0. [9670417](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9670417)
+
+## 62.4.0
+- [minor] Disable save button until media finishes upload [aeb54bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeb54bf)
+
+## 62.3.3
+
+## 62.3.2
+- [patch] Fix issue where removing placeholder-text on typing wouldn't trigger a collab transaction. Also fixed local collaborative editing storybook to not dispatch transactions to the same editor that fired them. [4567ab2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4567ab2)
+
+## 62.3.1
+
+## 62.3.0
+- [minor] Multiline behaviour for Message editor [3f61a6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f61a6a)
+
+## 62.2.2
+- [patch] Fix image disappears after set to left-aligned [0c79fc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c79fc3)
+
+## 62.2.1
+- [patch] Enforce minimum version of w3c-keyname to be >= 1.1.8 [dc120b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc120b9)
+
+## 62.2.0
+- [minor] replaceSelection with empty string removes selection [a764af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a764af6)
+
+## 62.1.3
+
+## 62.1.2
+- [patch] fixes RangeError bug when shouldFocus=true [adbd055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adbd055)
+
+## 62.1.1
+- [patch] fix prosemirror-view when collab editing tables [111cc6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111cc6a)
+
+## 62.1.0
+
+
+- [minor] advanced features for tables [e0bac20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bac20)
+
+## 62.0.23
+- [patch] Fix Insert Toolbar throws error about context if not placed inside EditorContext [dca4821](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dca4821)
+
+## 62.0.22
+- [patch] [SMRT-156] Start tracking the containerId, objectId & mentioned user when a Mention is inserted into the Editor [36c1b22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c1b22)
+
+## 62.0.21
+- [patch] FS-1461 objectAri and containerAri are optional in RendererContext [1b20296](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b20296)
+
+## 62.0.20
+
+## 62.0.19
+- [patch] Adding opt out instructions for bitbucket users. [14cc50f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14cc50f)
+- [patch] Changes in inline autoformatting rules to make then more well defined. [e6a5a14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6a5a14)
+
+## 62.0.18
+- [patch] Fix the Floating toolbar styling - Bradleys wishlist [fe45969](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe45969)
+
+## 62.0.17
+- [patch] Hide the 'Insert Placeholder Text' menu item by default [1274a31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1274a31)
+
+## 62.0.16
+
+## 62.0.15
+
+## 62.0.14
+- [patch] Fix toolbar style in editor [ebe7265](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebe7265)
+
+## 62.0.13
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 62.0.12
+- [patch] Don't block getValue untill media is ready [2440642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2440642)
+
+## 62.0.11
+- [patch] Fix issue with having multiple Dropzone elements listening at the same time with Editor and MediaPicker [d37de20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d37de20)
+
+## 62.0.10
+- [patch] fix setting selection inside of the content nodeView [5beb385](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5beb385)
+
+## 62.0.9
+- [patch] Show fake cursor when inserting a placeholder text element [ca557d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca557d0)
+
+## 62.0.8
+
+## 62.0.7
+
+
+
+
+- [patch] Allow width/height for placeholder and polish rendering [6d9f809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9f809)
+
+## 62.0.6
+- [patch] fix date when inserting from + menu [8f6bd7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f6bd7c)
+
 ## 62.0.5
 - [patch] ED-3270: Allow arbitrary items to be added to the plus menu [a88b921](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88b921)
 

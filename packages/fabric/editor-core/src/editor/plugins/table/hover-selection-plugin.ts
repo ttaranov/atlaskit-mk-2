@@ -14,6 +14,12 @@ const plugin = new Plugin({
 
     apply(tr, state: State): State {
       const meta = tr.getMeta(pluginKey);
+
+      // @see: https://product-fabric.atlassian.net/browse/ED-3796
+      if (tr.docChanged) {
+        return { ...state, decorationSet: DecorationSet.empty };
+      }
+
       if (meta) {
         return { ...state, ...meta };
       }

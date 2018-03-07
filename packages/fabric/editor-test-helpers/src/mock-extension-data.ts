@@ -14,9 +14,12 @@ export const inlineExtensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: {
+                width: 274,
+                height: 30,
                 url:
                   '//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpzdWJ0bGU9dHJ1ZXxjb2xvdXI9R3JlZW58dGl0bGU9T0t9&locale=en_GB&version=2',
               },
@@ -40,9 +43,36 @@ export const inlineExtensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
+              type: 'icon',
+            },
+          ],
+        },
+      },
+    },
+  },
+  {
+    type: 'inlineExtension' as ExtensionType,
+    attrs: {
+      extensionType: 'com.atlassian.confluence.macro.core',
+      extensionKey: 'status',
+      parameters: {
+        macroParams: {
+          color: { value: 'Grey' },
+          title: { value: 'Medium' },
+          subtle: { value: true },
+        },
+        macroMetadata: {
+          macroId: { value: new Date().valueOf() },
+          placeholder: [
+            {
+              data: {
+                url:
+                  '//pug.jira-dev.com/wiki/download/resources/com.atlassian.confluence.plugins.status-macro/images/status-icon.png',
+              },
               type: 'icon',
             },
           ],
@@ -64,6 +94,7 @@ export const extensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: {
@@ -88,6 +119,7 @@ export const extensionData = [
         },
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
@@ -109,6 +141,7 @@ export const bodiedExtensionData = [
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '2' },
           placeholder: [
             {
               data: {
@@ -158,6 +191,7 @@ export const bodiedExtensionData = [
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
+          schemaVersion: { value: '1' },
           placeholder: [
             {
               data: { url: '' },
@@ -193,6 +227,10 @@ export const bodiedExtensionData = [
             ],
           },
           {
+            type: 'text',
+            text: ' ',
+          },
+          {
             type: 'inlineExtension' as ExtensionType,
             attrs: {
               extensionType: 'com.atlassian.confluence.macro.core',
@@ -205,6 +243,7 @@ export const bodiedExtensionData = [
                 },
                 macroMetadata: {
                   macroId: { value: new Date().valueOf() },
+                  schemaVersion: { value: '1' },
                   placeholder: [
                     {
                       data: {

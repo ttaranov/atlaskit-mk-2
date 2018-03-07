@@ -74,7 +74,7 @@ const headers = {
 };
 const secondaryActions = [
   {
-    href: 'https://bitbucket.org/atlassian/atlaskit',
+    href: 'https://bitbucket.org/atlassian/atlaskit-mk-2',
     icon: BitbucketIcon,
     label: 'Atlaskit Repository',
   },

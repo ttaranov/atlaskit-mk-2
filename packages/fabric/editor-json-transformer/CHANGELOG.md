@@ -1,5 +1,11 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.6
+- [patch] JSON encoding results in invalid ADF for table nodes [8a8d663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a8d663)
+
+## 2.5.5
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
 ## 2.5.4
 
 ## 2.5.3

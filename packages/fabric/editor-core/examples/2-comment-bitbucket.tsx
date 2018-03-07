@@ -106,11 +106,10 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     appearance="comment"
                     analyticsHandler={analyticsHandler}
                     allowCodeBlocks={true}
-                    allowHyperlinks={true}
                     allowLists={true}
                     allowMentions={true}
                     allowTables={true}
-                    allowTextFormatting={{
+                    textFormatting={{
                       disableSuperscriptAndSubscript: true,
                       disableUnderline: true,
                     }}

@@ -12,32 +12,20 @@ import {
   dispatchPasteEvent,
   a as link,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import mediaPlugin from '../../../src/editor/plugins/media';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('paste plugins', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [
-        hyperlinkPlugin,
-        mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [mediaPlugin({ allowMediaSingle: true }), codeBlockPlugin],
     });
 
   const messageEditor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [
-        hyperlinkPlugin,
-        mediaPlugin(),
-        codeBlockPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [mediaPlugin(), codeBlockPlugin],
       editorProps: { appearance: 'message' },
     });
 

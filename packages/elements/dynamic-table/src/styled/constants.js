@@ -55,7 +55,7 @@ export const arrowsStyle = (props: Object) => {
   return css`
     & > span {
       position: relative;
-      &:before {
+      &::before {
         ${pseudoBase};
         border-bottom: 3px solid
           ${sortOrder === ASC
@@ -64,7 +64,7 @@ export const arrowsStyle = (props: Object) => {
         bottom: 8px;
         content: ' ';
       }
-      &:after {
+      &::after {
         ${pseudoBase};
         border-top: 3px solid
           ${sortOrder === DESC
@@ -76,13 +76,13 @@ export const arrowsStyle = (props: Object) => {
     }
 
     &:hover > span {
-      &:before {
+      &::before {
         border-bottom: 3px solid
           ${sortOrder === ASC
             ? arrow.selectedColor(props)
             : arrow.hoverColor(props)};
       }
-      &:after {
+      &::after {
         border-top: 3px solid
           ${sortOrder === DESC
             ? arrow.selectedColor(props)

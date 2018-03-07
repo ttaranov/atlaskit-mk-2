@@ -17,7 +17,6 @@ import {
 import { insertMediaGroupNode } from '../../../src/plugins/media/media-files';
 import { setNodeSelection } from '../../../src/utils';
 import mediaPlugin from '../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import rulePlugin from '../../../src/editor/plugins/rule';
@@ -32,7 +31,6 @@ describe('media-files', () => {
       doc,
       editorPlugins: [
         mediaPlugin(),
-        hyperlinkPlugin,
         mentionsPlugin,
         codeBlockPlugin,
         rulePlugin,

@@ -19,8 +19,7 @@ const ReadView = styled.div`
 `;
 
 const EditView = styled.input`
-  ${common}
-  background: transparent;
+  ${common} background: transparent;
   border: 0;
   box-sizing: border-box;
   cursor: inherit;
@@ -30,9 +29,9 @@ const EditView = styled.input`
   outline: none;
   padding: 0;
   width: 100%;
-  :invalid: {
-    boxshadow: none;
-  },
+  :invalid {
+    box-shadow: none;
+  }
 `;
 
 type Props = {

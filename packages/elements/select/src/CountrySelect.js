@@ -50,11 +50,18 @@ const formatOptionLabel = (opt: OptionType, { context }) =>
 // put it all together
 const CountrySelect = (props: any) => (
   <Select
-    options={groupedCountries}
-    isMulti={false}
+    // components={{ Menu }}
+    isClearable={false}
+    formatOptionLabel={formatOptionLabel}
     getOptionLabel={getOptionLabel}
     getOptionValue={getOptionValue}
-    formatOptionLabel={formatOptionLabel}
+    isMulti={false}
+    options={groupedCountries}
+    styles={{
+      container: css => ({ ...css, width: 105 }),
+      dropdownIndicator: css => ({ ...css, paddingLeft: 0 }),
+      menu: css => ({ ...css, width: 300 }),
+    }}
     {...props}
   />
 );

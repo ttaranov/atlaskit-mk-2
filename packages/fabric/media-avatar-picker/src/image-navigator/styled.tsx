@@ -1,6 +1,14 @@
 /* tslint:disable:variable-name */
-import styled, { keyframes } from 'styled-components';
+// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
+// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass, keyframes } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { AVATAR_DIALOG_WIDTH } from '../avatar-picker-dialog/layout-const';
 
 const spin = keyframes`
   from { transform: rotate(0deg); }
@@ -11,8 +19,8 @@ export const Container = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
   *,
-  *:before,
-  *:after {
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 `;
@@ -23,6 +31,11 @@ export const SliderContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: ${akGridSizeUnitless}px;
+
+  input {
+    box-sizing: content-box;
+    padding: 0;
+  }
 `;
 
 export const FileInput = styled.input`
@@ -43,6 +56,7 @@ const droppingAnimation = `
 
 export interface DragZoneProps {
   isDroppingFile: boolean;
+  showBorder: boolean;
 }
 
 export const DragZone = styled.div`
@@ -57,9 +71,10 @@ export const DragZone = styled.div`
   border-radius: 100%;
   transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &:after {
+  &::after {
     content: '';
-    border: 2px dashed #d0d6d0;
+    border: ${(props: DragZoneProps) =>
+      props.showBorder ? '2px dashed #d0d6d0' : 'none'};
     border-radius: 100%;
     position: absolute;
     top: 0;
@@ -84,8 +99,17 @@ export const DragZoneImage = styled.img`
   width: 100px;
 `;
 
+export interface DragZoneTextProps {
+  isFullSize: boolean;
+}
+
 export const DragZoneText = styled.div`
   text-align: center;
+
+  ${(props: DragZoneTextProps) =>
+    props.isFullSize
+      ? `width: ${AVATAR_DIALOG_WIDTH - akGridSizeUnitless * 8}px`
+      : 'width: auto'};
 `;
 
 export const SelectionBlocker = styled.div`

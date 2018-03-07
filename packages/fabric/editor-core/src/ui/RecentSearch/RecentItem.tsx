@@ -1,37 +1,46 @@
 import * as React from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
+import styled from 'styled-components';
 import { ActivityItem } from '@atlaskit/activity';
 import {
   akColorN100,
   akColorN800,
   akColorN30,
 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
 
-// tslint:disable:next-line variable-name
-const Container = styled.li`
-  background-color: ${props => (props.selected ? akColorN30 : 'transparent')};
+interface ContainerProps {
+  selected: boolean;
+}
+
+const Container: ComponentClass<
+  HTMLAttributes<{}> & ContainerProps
+> = styled.li`
+  background-color: ${(props: ContainerProps) =>
+    props.selected ? akColorN30 : 'transparent'};
   padding: 5px;
   cursor: pointer;
   display: flex;
 `;
 
-const NameWrapper = styled.span`
+const NameWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   overflow: hidden;
 `;
 
-export const Name = styled.div`
+export const Name: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN800};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-export const ContainerName = styled.div`
+export const ContainerName: ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   color: ${akColorN100};
   font-size: 12px;
 `;
 
-const Icon = styled.span`
+const Icon: ComponentClass<HTMLAttributes<{}>> = styled.span`
   min-width: 16px;
   margin-top: 3px;
   margin-right: 8px;

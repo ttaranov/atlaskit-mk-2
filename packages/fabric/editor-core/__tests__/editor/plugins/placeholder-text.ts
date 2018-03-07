@@ -7,6 +7,7 @@ import {
   showPlaceholderFloatingToolbar,
   hidePlaceholderFloatingToolbar,
 } from '../../../src/editor/plugins/placeholder-text/actions';
+import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
 import {
   createEditor,
   doc,
@@ -16,16 +17,25 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { Selection } from 'prosemirror-state';
 
-const editor = (doc: any) =>
+const editor = (doc: any, options = { allowInserting: true }) =>
   createEditor({
     doc,
-    editorPlugins: [placeholderTextPlugin],
+    editorProps: { allowTemplatePlaceholders: options },
   });
 
 describe(name, () => {
   describe('Plugins -> PlaceholderText', () => {
+    it('should set the `state.allowInserting` to true', () => {
+      const { editorView } = editor(
+        doc(p('Hello world', placeholder({ text: 'Type something' }))),
+        { allowInserting: true },
+      );
+      const pluginState = pluginKey.getState(editorView.state);
+      expect(pluginState.allowInserting).toBe(true);
+    });
+
     it('should provide the placeholderText node', () => {
-      const nodes = placeholderTextPlugin.nodes!({});
+      const nodes = placeholderTextPlugin({ allowInserting: true }).nodes!({});
       expect(nodes).toEqual([expect.objectContaining({ name: 'placeholder' })]);
     });
 
@@ -55,7 +65,59 @@ describe(name, () => {
       insertText(editorView, '!', sel);
       expect(editorView.state.doc).toEqualDocument(doc(p('Hello world!')));
     });
+
+    describe('when options.allowInserting is false', () => {
+      it('should set the `state.allowInserting` to false', () => {
+        const { editorView } = editor(
+          doc(p('Hello world', placeholder({ text: 'Type something' }))),
+          { allowInserting: false },
+        );
+        const pluginState = pluginKey.getState(editorView.state);
+        expect(pluginState.allowInserting).toBe(false);
+      });
+
+      it('should provide the placeholderText node', () => {
+        const nodes = placeholderTextPlugin({ allowInserting: false }).nodes!(
+          {},
+        );
+        expect(nodes).toEqual([
+          expect.objectContaining({ name: 'placeholder' }),
+        ]);
+      });
+
+      it('should not remove a placeholder when cursor is not directly before it', () => {
+        const { editorView, sel } = editor(
+          doc(p('Hello world{<>}!', placeholder({ text: 'Type something' }))),
+          { allowInserting: false },
+        );
+        insertText(editorView, '!', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('Hello world!!', placeholder({ text: 'Type something' }))),
+        );
+      });
+
+      it('should not remove a placeholder when cursor is directly after it', () => {
+        const { editorView, sel } = editor(
+          doc(p(placeholder({ text: 'Type something' }), '{<>}')),
+          { allowInserting: false },
+        );
+        insertText(editorView, '!', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(placeholder({ text: 'Type something' }), '!')),
+        );
+      });
+
+      it('should remove a placeholder when typing directly before it', () => {
+        const { editorView, sel } = editor(
+          doc(p('Hello world{<>}', placeholder({ text: 'Type something' }))),
+          { allowInserting: false },
+        );
+        insertText(editorView, '!', sel);
+        expect(editorView.state.doc).toEqualDocument(doc(p('Hello world!')));
+      });
+    });
   });
+
   describe('Plugins -> PlaceholderText -> actions', () => {
     describe('insertPlaceholderTextAtSelection', () => {
       it('should insert placeholder-text node to the document', () => {
@@ -88,7 +150,7 @@ describe(name, () => {
         );
         expect(dispatchSpy).toHaveBeenCalled();
         expect(dispatchSpy.mock.calls[0][0].getMeta(pluginKey)).toEqual({
-          showInsertPanelAt: false,
+          showInsertPanelAt: null,
         });
       });
     });
@@ -110,17 +172,36 @@ describe(name, () => {
         showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(doc(p('hel{<>}')));
       });
+
+      it('should show the Fake Text Cursor when inserting placeholder text ', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(
+          FakeTextCursorSelection,
+        );
+      });
     });
 
     describe('hidePlaceholderFloatingToolbar', () => {
-      it('should set the `showInsertPanelAt` meta value to false', () => {
+      it('should set the `showInsertPanelAt` meta value to null', () => {
         const { editorView } = editor(doc(p('hello{<>}')));
         const dispatchSpy = jest.spyOn(editorView, 'dispatch');
         hidePlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
         expect(dispatchSpy).toHaveBeenCalled();
         expect(dispatchSpy.mock.calls[0][0].getMeta(pluginKey)).toEqual({
-          showInsertPanelAt: false,
+          showInsertPanelAt: null,
         });
+      });
+
+      it('should remove the show the Fake Text Cursor when inserting placeholder text ', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(
+          FakeTextCursorSelection,
+        );
+
+        hidePlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+        expect(editorView.state.selection).toBeInstanceOf(Selection);
       });
     });
   });

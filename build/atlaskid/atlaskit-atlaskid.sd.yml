@@ -5,11 +5,14 @@ description: A Landkid server for coordinating builds in the Atlaskit repo
 network:
   # This allows the service to be hit from outside the Atlassian network
   ingress: external
+scaling:
+  min: 1
+  max: 1
 links:
   binary:
     # The name and tag of the docker image to use in deployment
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v1
+    tag: v7
     type: docker
   # Endpoint *must* return a 2xx resonse or Micros will fail
   healthcheck:

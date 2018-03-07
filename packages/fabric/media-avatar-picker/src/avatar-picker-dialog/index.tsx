@@ -14,18 +14,22 @@ import {
 import { PredefinedAvatarView } from '../predefined-avatar-view';
 import { dataURItoFile, fileToDataURI } from '../util';
 import { CONTAINER_SIZE } from '../image-navigator/index';
+import { LoadParameters } from '../image-cropper';
 
-export const DEFAULT_VISIBLE_PREDEFINED_AVATARS = 5;
+import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from './layout-const';
+import { AVATAR_DIALOG_WIDTH, AVATAR_DIALOG_HEIGHT } from './layout-const';
 
 export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
   defaultSelectedAvatar?: Avatar;
   onAvatarPicked: (avatar: Avatar) => void;
   imageSource?: string;
-  onImagePicked: (file: File, crop: CropProperties) => void;
+  onImagePicked?: (file: File, crop: CropProperties) => void;
+  onImagePickedDataURI?: (dataUri: string) => void;
   onCancel: () => void;
   title?: string;
   primaryButtonText?: string;
+  errorMessage?: string;
 }
 
 export enum Mode {
@@ -33,12 +37,23 @@ export enum Mode {
   PredefinedAvatars,
 }
 
+export const MAX_SIZE_MB = 10;
+
+export const ERROR = {
+  URL: 'Could not load image, the url is invalid.',
+  FORMAT: 'Could not load image, the format is invalid.',
+  SIZE: `Image is too large, must be no larger than ${MAX_SIZE_MB}Mb`,
+};
+
+export const ACCEPT = ['image/gif', 'image/jpeg', 'image/png'];
+
 export interface AvatarPickerDialogState {
   mode: Mode;
   selectedAvatar?: Avatar;
   selectedImage?: File;
   selectedImageSource?: string;
   crop: CropProperties;
+  errorMessage?: string;
 }
 
 export class AvatarPickerDialog extends PureComponent<
@@ -57,8 +72,11 @@ export class AvatarPickerDialog extends PureComponent<
       size: CONTAINER_SIZE,
     },
     selectedAvatar: this.props.defaultSelectedAvatar,
-    selectedImageSource: this.props.imageSource,
+    selectedImageSource: this.props.errorMessage
+      ? undefined
+      : this.props.imageSource,
     selectedImage: undefined,
+    errorMessage: this.props.errorMessage,
   };
 
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
@@ -92,15 +110,35 @@ export class AvatarPickerDialog extends PureComponent<
     this.setState({ crop: { x, y, size } });
   };
 
+  onImageNavigatorLoad = (loadParams: LoadParameters) => {
+    this.exportCroppedImage = loadParams.export;
+  };
+
+  /**
+   * Initialised with no-op function.  Is assigned cropped image exporting
+   * function when internal ImageCropper mounts via this.onImageNavigatorLoad
+   */
+  exportCroppedImage = () => '';
+
   onSaveClick = () => {
-    const { imageSource, onImagePicked, onAvatarPicked } = this.props;
+    const {
+      imageSource,
+      onImagePicked,
+      onImagePickedDataURI,
+      onAvatarPicked,
+    } = this.props;
     const { selectedImage, crop, selectedAvatar } = this.state;
     const image = selectedImage
       ? selectedImage
       : imageSource && dataURItoFile(imageSource);
 
     if (image) {
-      onImagePicked(image, crop);
+      if (onImagePicked) {
+        onImagePicked(image, crop);
+      }
+      if (onImagePickedDataURI) {
+        onImagePickedDataURI(this.exportCroppedImage());
+      }
     } else if (selectedAvatar) {
       onAvatarPicked(selectedAvatar);
     }
@@ -111,11 +149,10 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   onGoBack = () => {
-    this.setState({ mode: Mode.Cropping });
+    this.clearErrorState();
   };
 
   onRemoveImage = () => {
-    // TODO: clear scale from child components
     this.setState({
       selectedImageSource: undefined,
       selectedImage: undefined,
@@ -123,11 +160,33 @@ export class AvatarPickerDialog extends PureComponent<
     });
   };
 
+  clearErrorState = () => {
+    this.setState({
+      mode: Mode.Cropping,
+      errorMessage: undefined,
+    });
+  };
+
+  setErrorState = (errorMessage: string) => {
+    this.setState({
+      mode: Mode.Cropping,
+      errorMessage,
+    });
+  };
+
+  onImageUploaded = () => {
+    this.clearErrorState();
+  };
+
+  onImageError = (errorMessage: string) => {
+    this.setErrorState(errorMessage);
+  };
+
   render() {
     return (
       <ModalDialog
-        height="460px"
-        width="375px"
+        height={`${AVATAR_DIALOG_HEIGHT}px`}
+        width={`${AVATAR_DIALOG_WIDTH}px`}
         header={this.headerContent}
         footer={this.footerContent}
         onClose={this.props.onCancel}
@@ -172,7 +231,7 @@ export class AvatarPickerDialog extends PureComponent<
     );
   }
 
-  getPredefinedAvatars() {
+  getPredefinedAvatars(): Avatar[] {
     const { avatars } = this.props;
     const { selectedAvatar } = this.state;
     const avatarsSubset = avatars.slice(0, DEFAULT_VISIBLE_PREDEFINED_AVATARS);
@@ -189,7 +248,7 @@ export class AvatarPickerDialog extends PureComponent<
     const { selectedAvatar, selectedImage, selectedImageSource } = this.state;
     const avatars = this.getPredefinedAvatars();
 
-    if (selectedImage || selectedImageSource) {
+    if (selectedImage || selectedImageSource || avatars.length === 0) {
       return null;
     }
 
@@ -205,7 +264,12 @@ export class AvatarPickerDialog extends PureComponent<
 
   renderBody() {
     const { avatars } = this.props;
-    const { mode, selectedImageSource, selectedAvatar } = this.state;
+    const {
+      mode,
+      selectedImageSource,
+      selectedAvatar,
+      errorMessage,
+    } = this.state;
 
     switch (mode) {
       case Mode.Cropping:
@@ -213,10 +277,14 @@ export class AvatarPickerDialog extends PureComponent<
           <CroppingWrapper>
             <ImageNavigator
               imageSource={selectedImageSource}
-              onImageChanged={this.setSelectedImageState}
+              errorMessage={errorMessage}
+              onImageLoaded={this.setSelectedImageState}
+              onLoad={this.onImageNavigatorLoad}
               onPositionChanged={this.setPositionState}
               onSizeChanged={this.setSizeState}
               onRemoveImage={this.onRemoveImage}
+              onImageUploaded={this.onImageUploaded}
+              onImageError={this.onImageError}
             />
             {this.renderPredefinedAvatarList()}
           </CroppingWrapper>

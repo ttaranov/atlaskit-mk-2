@@ -1,0 +1,67 @@
+{
+  "name": "@atlaskit/reactions",
+  "version": "10.8.2",
+  "config": {
+    "access": "public"
+  },
+  "description": "Reactions component",
+  "main": "dist/es5/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "atlaskit:src": "src/index.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@atlaskit/button": "^6.4.1",
+    "@atlaskit/emoji": "^31.1.8",
+    "@atlaskit/icon": "^10.9.1",
+    "@atlaskit/layer": "^2.7.1",
+    "@atlaskit/theme": "^2.3.3",
+    "@atlaskit/tooltip": "^8.3.1",
+    "classnames": "^2.2.5",
+    "tslib": "^1.8.0",
+    "typestyle": "^1.3.8"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Eduardo S"
+    },
+    {
+      "name": "Julien H"
+    },
+    {
+      "name": "Paul C"
+    },
+    {
+      "name": "Sylvain G"
+    },
+    {
+      "name": "Tara T"
+    }
+  ],
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-readme": "^3.6.5",
+    "es6-promise": "^4.0.5",
+    "fetch-mock": "^5.12.1",
+    "whatwg-fetch": "^2.0.3",
+    "sinon": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
+}

@@ -158,6 +158,8 @@ export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
   { conversations: any[]; selectedUser: User; responseCode: number }
 > {
+  private unsubscribe: any;
+
   constructor(props) {
     super(props);
 
@@ -174,15 +176,16 @@ export class Demo extends React.Component<
     try {
       const conversations = await provider.getConversations(containerId);
       this.setState({ conversations });
-      provider.subscribe(this.handleDispatch);
+      this.unsubscribe = provider.subscribe(this.handleDispatch);
     } catch (err) {
       // Handle error
     }
   }
 
   async componentWillUnmount() {
-    const { provider } = this.props;
-    provider.unsubscribe(this.handleDispatch);
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
 
   handleDispatch = (state: State): void => {

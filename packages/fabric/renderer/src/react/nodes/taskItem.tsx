@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { PureComponent, Children, ReactElement } from 'react';
-import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
-import { RendererContext } from '../';
 import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
+import TaskItemWithProviders from './task-item-with-providers';
+import { RendererContext } from '../';
+
 export interface Props {
   localId: string;
-  state?: string;
   rendererContext?: RendererContext;
+  state?: string;
   providers?: ProviderFactory;
   children?: ReactElement<any>;
 }
@@ -28,23 +29,26 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   private renderWithProvider = providers => {
-    const { taskDecisionProvider } = providers;
+    const { taskDecisionProvider, contextIdentifierProvider } = providers;
     const { children, localId, state, rendererContext } = this.props;
-    const { objectAri, containerAri } = rendererContext || {
-      objectAri: '',
-      containerAri: '',
-    };
+    let objectAri = '';
+    let containerAri = '';
+    if (rendererContext) {
+      objectAri = rendererContext.objectAri || '';
+      containerAri = rendererContext.containerAri || '';
+    }
 
     return (
-      <AkTaskItem
-        taskId={localId}
-        isDone={state === 'DONE'}
+      <TaskItemWithProviders
         objectAri={objectAri}
         containerAri={containerAri}
+        taskId={localId}
+        isDone={state === 'DONE'}
         taskDecisionProvider={taskDecisionProvider}
+        contextIdentifierProvider={contextIdentifierProvider}
       >
         {children}
-      </AkTaskItem>
+      </TaskItemWithProviders>
     );
   };
 
@@ -57,7 +61,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
 
     return (
       <WithProviders
-        providers={['taskDecisionProvider']}
+        providers={['taskDecisionProvider', 'contextIdentifierProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />

@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
@@ -18,9 +17,11 @@ import {
   SelectionBlocker,
   PaddedBreak,
 } from './styled';
-import { uploadPlaceholder } from './images';
+import { uploadPlaceholder, errorIcon } from './images';
 import { constrainPos, constrainScale } from '../constraint-util';
-import { dataURItoFile } from '../util';
+import { dataURItoFile, fileSizeMb } from '../util';
+import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
+import { Ellipsify } from '@atlaskit/media-ui';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
@@ -38,11 +39,14 @@ export interface CropProperties {
 
 export interface Props {
   imageSource?: string;
-  onImageChanged: (file: File, crop: CropProperties) => void;
+  errorMessage?: string;
+  onImageLoaded: (file: File, crop: CropProperties) => void;
   onLoad?: OnLoadHandler;
   onPositionChanged: (x: number, y: number) => void;
   onSizeChanged: (size: number) => void;
   onRemoveImage: () => void;
+  onImageUploaded: (file: File) => void;
+  onImageError: (errorMessage: string) => void;
 }
 
 export interface Position {
@@ -65,6 +69,8 @@ export interface State {
 }
 
 export class ImageNavigator extends Component<Props, State> {
+  dragZoneText: HTMLElement;
+
   constructor(props) {
     super(props);
     this.state = this.defaultState;
@@ -203,7 +209,7 @@ export class ImageNavigator extends Component<Props, State> {
     // therefore we have to create a File, as one needs to be raised by dialog parent component when Save clicked.
     const file = imageFile || (this.dataURI && dataURItoFile(this.dataURI));
     if (file) {
-      this.props.onImageChanged(file, {
+      this.props.onImageLoaded(file, {
         ...imagePos,
         size: CONTAINER_SIZE / scale,
       });
@@ -220,17 +226,23 @@ export class ImageNavigator extends Component<Props, State> {
     return Math.max(CONTAINER_SIZE / width, CONTAINER_SIZE / height);
   }
 
-  readFile(imageFile: File) {
-    const { type } = imageFile;
-
-    // TODO FIL-4342: Show feedback about invalid file type
-    if (type.indexOf('image/') !== 0) {
-      return;
+  validateFile(imageFile: File): string | undefined {
+    if (ACCEPT.indexOf(imageFile.type) === -1) {
+      return ERROR.FORMAT;
+    } else if (fileSizeMb(imageFile) > MAX_SIZE_MB) {
+      return ERROR.SIZE;
     }
+  }
 
+  readFile(imageFile: File) {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent) => {
       const fileImageSource = (e.target as FileReader).result;
+      const { onImageUploaded } = this.props;
+
+      if (onImageUploaded) {
+        onImageUploaded(imageFile);
+      }
 
       this.setState({ fileImageSource, imageFile });
     };
@@ -249,8 +261,13 @@ export class ImageNavigator extends Component<Props, State> {
   onFileChange = e => {
     e.stopPropagation();
     const file = e.target.files[0];
+    const validationError = this.validateFile(file);
 
-    this.readFile(file);
+    if (validationError) {
+      this.props.onImageError(validationError);
+    } else {
+      this.readFile(file);
+    }
   };
 
   updateDroppingState(e: Event, state: boolean) {
@@ -276,33 +293,54 @@ export class ImageNavigator extends Component<Props, State> {
     e.preventDefault();
     const dt = e.dataTransfer;
     const file = dt.files[0];
+    const validationError = this.validateFile(file);
 
     this.setState({ isDroppingFile: false });
-    this.readFile(file);
+
+    if (validationError) {
+      this.props.onImageError(validationError);
+    } else {
+      this.readFile(file);
+    }
   };
+
+  getDragZoneTextRef = el => (this.dragZoneText = el);
 
   renderImageUploader() {
     const { isDroppingFile } = this.state;
+    const { errorMessage } = this.props;
+    const dropZoneImageSrc = errorMessage ? errorIcon : uploadPlaceholder;
+    let dragZoneText = errorMessage || 'Drop your photos here';
+    const dragZoneAlt = errorMessage || 'Upload image';
+    const separatorText = errorMessage ? 'Try again' : 'or';
+    const showBorder = !!!errorMessage;
 
     return (
       <ImageUploader>
         <DragZone
+          showBorder={showBorder}
           isDroppingFile={isDroppingFile}
           onDragLeave={this.onDragLeave}
           onDragEnter={this.onDragEnter}
           onDragOver={this.onDragOver}
           onDrop={this.onDrop}
         >
-          <DragZoneImage src={uploadPlaceholder} alt="upload image" />
-          <DragZoneText>Drag and drop your photos here</DragZoneText>
+          <DragZoneImage src={dropZoneImageSrc} alt={dragZoneAlt} />
+          <DragZoneText
+            innerRef={this.getDragZoneTextRef}
+            isFullSize={!!errorMessage}
+          >
+            <Ellipsify text={dragZoneText} lines={3} />
+          </DragZoneText>
         </DragZone>
-        <PaddedBreak>or</PaddedBreak>
+        <PaddedBreak>{separatorText}</PaddedBreak>
         <Button onClick={this.onUploadButtonClick as any}>
           Upload a photo
           <FileInput
             type="file"
             id="image-input"
             onChange={this.onFileChange}
+            accept={ACCEPT.join(',')}
           />
         </Button>
       </ImageUploader>
@@ -316,7 +354,7 @@ export class ImageNavigator extends Component<Props, State> {
 
   renderImageCropper(dataURI: string) {
     const { imageWidth, imagePos, scale, isDragging } = this.state;
-    const { onLoad } = this.props;
+    const { onLoad, onImageError } = this.props;
     const { onDragStarted, onImageSize, onRemoveImage } = this;
 
     const minScale = this.state.minScale as number;
@@ -335,6 +373,7 @@ export class ImageNavigator extends Component<Props, State> {
           onImageSize={onImageSize}
           onLoad={onLoad}
           onRemoveImage={onRemoveImage}
+          onImageError={onImageError}
         />
         <SliderContainer>
           <ScaleSmallIcon label="scale-small-icon" />
@@ -353,10 +392,10 @@ export class ImageNavigator extends Component<Props, State> {
 
   // We prioritize passed image rather than the one coming from the uploader
   private get dataURI(): string | undefined {
-    const { imageSource } = this.props;
+    const { imageSource, errorMessage } = this.props;
     const { fileImageSource } = this.state;
 
-    return imageSource || fileImageSource;
+    return errorMessage ? undefined : imageSource || fileImageSource;
   }
 
   render() {

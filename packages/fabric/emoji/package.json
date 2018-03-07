@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "31.1.1",
+  "version": "31.1.8",
   "config": {
     "access": "public"
   },
@@ -19,14 +19,14 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^2.4.1",
-    "@atlaskit/button": "^6.3.1",
-    "@atlaskit/field-base": "^8.1.5",
-    "@atlaskit/icon": "^10.3.2",
-    "@atlaskit/media-picker": "^1.0.1",
-    "@atlaskit/spinner": "^4.0.2",
-    "@atlaskit/theme": "^2.2.4",
-    "@atlaskit/tooltip": "^8.0.7",
+    "@atlaskit/analytics": "^2.4.4",
+    "@atlaskit/button": "^6.4.2",
+    "@atlaskit/field-base": "^8.1.13",
+    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/media-picker": "^1.0.10",
+    "@atlaskit/spinner": "^4.1.5",
+    "@atlaskit/theme": "^2.3.4",
+    "@atlaskit/tooltip": "^8.3.2",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^2.0.4",
     "babel-runtime": "^6.26.0",
@@ -57,8 +57,8 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/docs": "^2.1.1",
-    "@atlaskit/layer": "^2.5.8",
+    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/layer": "^2.7.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
@@ -69,7 +69,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "keywords": [
     "fabric",

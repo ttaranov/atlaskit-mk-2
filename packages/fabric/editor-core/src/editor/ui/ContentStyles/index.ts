@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorBlockquoteBorderColor,
   akEditorMentionSelected,
@@ -79,13 +82,16 @@ const tableStyle = `
   }
 `;
 
-export const StyledTable = styled.table`
+export const StyledTable: ComponentClass<
+  TableHTMLAttributes<{}>
+> = styled.table`
   ${tableStyle};
 `;
 
-const ContentStyles = styled.div`
-  // Hack for ie11 that is being used in code block.
-  // https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
+const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  /* Hack for ie11 that is being used in code block.
+   * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
+   */
   & .ie11 {
     overflow: visible;
     word-wrap: break-word;
@@ -159,8 +165,8 @@ const ContentStyles = styled.div`
     font-family: monospace;
     white-space: pre-wrap;
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       vertical-align: text-top;
       display: inline-block;
       width: 3px;
@@ -198,7 +204,7 @@ const ContentStyles = styled.div`
     & > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
       list-style-type: decimal;
     }
-
+    /* stylelint-disable selector-combinator-space-before */
     & > li > ol > li,
     & > li > ol > li > ol > li > ol > li > ol > li,
     &
@@ -243,7 +249,7 @@ const ContentStyles = styled.div`
       list-style-type: lower-roman;
     }
   }
-
+  /* stylelint-enable */
   .ProseMirror li > * {
     pointer-events: auto;
   }
@@ -280,7 +286,7 @@ const ContentStyles = styled.div`
     outline: none;
   }
 
-  li.ProseMirror-selectednode:after {
+  li.ProseMirror-selectednode::after {
     content: '';
     position: absolute;
     left: -32px;
@@ -295,7 +301,7 @@ const ContentStyles = styled.div`
   .ProseMirror blockquote table:last-child {
     display: inline-table;
   }
-  .ProseMirror .telepointer ${telepointerStyle} .ProseMirror img {
+  .ProseMirror .telepointer ${/* sc-prop */ telepointerStyle} .ProseMirror img {
     max-width: 100%;
   }
 
@@ -305,7 +311,7 @@ const ContentStyles = styled.div`
     top: 20px;
   }
 
-  //=============== SINGLE IMAGE STYLES ==================
+  /* =============== SINGLE IMAGE STYLES ================== */
   && .ProseMirror {
     [layout='wide'] {
       max-width: 960px;
@@ -330,7 +336,7 @@ const ContentStyles = styled.div`
     }
   }
 
-  //=============== PLACEHOLDER CURSOR STYLES=========
+  /* =============== PLACEHOLDER CURSOR STYLES========= */
 
   & .ProseMirror-fake-text-cursor {
     display: inline;
@@ -339,7 +345,7 @@ const ContentStyles = styled.div`
     height: 15px;
   }
 
-  & .ProseMirror-fake-text-cursor:after {
+  & .ProseMirror-fake-text-cursor::after {
     content: '';
     display: inline;
     top: 0;
@@ -348,7 +354,7 @@ const ContentStyles = styled.div`
     border-right: 1px solid rgba(0, 0, 0, 0.4);
   }
 
-  //=============== TABLE ==================
+  /* =============== TABLE ================== */
   .ProseMirror {
     .table-container table ${tableStyle} .table-column-controls {
       position: relative;
@@ -360,9 +366,14 @@ const ContentStyles = styled.div`
     .table-container.with-controls {
       margin-left: 8px;
     }
+    .table-container table[data-number-column='true'] td:first-child {
+      background-color: ${akEditorTableFloatingControls};
+      width: 40px;
+      text-align: center;
+    }
   }
 
-  //=============== TABLE COLUMN RESIZING ==================
+  /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
     .table-container {
       position: relative;
@@ -421,7 +432,6 @@ const ContentStyles = styled.div`
   }
 
   .ProseMirror.resize-cursor {
-    cursor: ew-resize;
     cursor: col-resize;
 
     table td,

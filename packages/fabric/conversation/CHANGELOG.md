@@ -1,5 +1,40 @@
 # @atlaskit/conversation
 
+## 6.3.3
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 6.3.2
+
+## 6.3.1
+
+## 6.3.0
+- [minor] Adding support for reactions [1b74cff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b74cff)
+
+## 6.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 6.1.1
+- [patch] Make textFormatting and hyperlink plugins default [689aa8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/689aa8d)
+
+## 6.1.0
+- [minor] Adding renderEditor prop [e2485f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2485f7)
+
+## 6.0.0
+- [major] Replacing internal store with Redux [703bb99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/703bb99)
+
+## 5.2.5
+- [patch] Adding documentations and fixed prop-types [4430cbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4430cbb)
+
+## 5.2.4
+
+## 5.2.3
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 5.2.2
+- [patch] Enabling hyperlinks in the conversation editor [a151fd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a151fd3)
+
+## 5.2.1
+
 ## 5.2.0
 - [minor] Add subscribe/unsubscribe methods to resource provider [5c1e2bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c1e2bf)
 

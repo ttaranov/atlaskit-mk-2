@@ -29,7 +29,6 @@ import {
 import { name } from '../../../../package.json';
 import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-decisions';
 import mediaPlugin from '../../../../src/editor/plugins/media';
-import hyperlinkPlugin from '../../../../src/editor/plugins/hyperlink';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
 
@@ -62,11 +61,7 @@ describe(name, () => {
     beforeEach(() => {
       providerFactory = new ProviderFactory();
       const editor = createEditor({
-        editorPlugins: [
-          tasksAndDecisionsPlugin,
-          mediaPlugin(),
-          hyperlinkPlugin,
-        ],
+        editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin()],
         editorProps: {
           mediaProvider,
           waitForMediaUpload: true,
@@ -276,12 +271,43 @@ describe(name, () => {
           expect(value.content[0].content[0].type).to.be.eq('media');
           expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
         });
+
+        it('should resolve after processing status', async () => {
+          stateManager.updateState(testTempFileId, {
+            id: testTempFileId,
+            status: 'uploading',
+          });
+
+          const provider = await mediaProvider;
+          await provider.uploadContext;
+
+          mediaPluginState.insertFiles([
+            { id: testTempFileId, status: 'uploading' },
+          ]);
+
+          // To simulate async behavior, trigger ready on next tick
+          setTimeout(() => {
+            stateManager.updateState(testTempFileId, {
+              status: 'processing',
+              id: testTempFileId,
+              publicId: testPubFileId,
+            });
+          }, 0);
+
+          const value = (await editorActions.getValue()) as any;
+
+          expect(value).to.be.an('object');
+          expect(value.content).to.be.of.length(2);
+          expect(value.content[0].type).to.be.eq('mediaGroup');
+          expect(value.content[0].content[0].type).to.be.eq('media');
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+        });
       });
 
       describe('with waitForMediaUpload === false', () => {
         it('should resolve even when media operations are pending', async () => {
           const editor = createEditor({
-            editorPlugins: [mediaPlugin(), hyperlinkPlugin],
+            editorPlugins: [mediaPlugin()],
             editorProps: {
               mediaProvider,
               waitForMediaUpload: false,
@@ -396,6 +422,17 @@ describe(name, () => {
         expect(editorView.state.doc).to.deep.equal(
           doc(p('some new '), blockquote(p('text')), p(' content')),
         );
+      });
+
+      it('should delete selection if passed an empty string', () => {
+        const editor = createEditor({
+          doc: doc(p('some new {<} hello {>}content')),
+        });
+        const editorView = editor.editorView;
+        const editorActions = new EditorActions();
+        editorActions._privateRegisterEditor(editorView);
+        editorActions.replaceSelection('');
+        expect(editorView.state.doc).to.deep.equal(doc(p('some new content')));
       });
     });
 

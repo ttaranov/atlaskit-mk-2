@@ -5,6 +5,7 @@ export { default as createEvent } from './create-event';
 export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as createEditor } from './create-editor';
 export { default as fixtures } from './fixtures';
+export { default as patchEditorViewForJSDOM } from './jsdom-fixtures';
 export * from './transactions';
 export {
   doc,
@@ -50,12 +51,11 @@ export {
   mediaSingle,
   textColor,
   table,
+  tableWithAttrs,
   tr,
   td,
   th,
   tdEmpty,
-  td11,
-  th11,
   tdCursor,
   thEmpty,
   thCursor,

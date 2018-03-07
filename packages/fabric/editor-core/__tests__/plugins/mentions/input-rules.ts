@@ -19,7 +19,6 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import mentionsPlugin from '../../../src/editor/plugins/mentions';
 import emojiPlugin from '../../../src/editor/plugins/emoji';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
@@ -28,12 +27,7 @@ describe('mentions - input rules', () => {
   const editor = (doc: any) =>
     createEditor<MentionsState>({
       doc,
-      editorPlugins: [
-        mentionsPlugin,
-        emojiPlugin,
-        codeBlockPlugin,
-        textFormatting(),
-      ],
+      editorPlugins: [mentionsPlugin, emojiPlugin, codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

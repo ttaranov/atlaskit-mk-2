@@ -11,6 +11,10 @@ import {
 } from './styles';
 import InsertColumnButton from './InsertColumnButton';
 import { Command } from '../../../editor';
+import {
+  checkIfHeaderColumnEnabled,
+  checkIfNumberColumnEnabled,
+} from '../../../editor/plugins/table/utils';
 
 export interface Props {
   editorView: EditorView;
@@ -54,12 +58,17 @@ export default class ColumnControls extends Component<Props, any> {
             onMouseOver={() => this.hoverColumn(i)}
             onMouseOut={this.resetHoverSelection}
           />
-          {/* tslint:enable:jsx-no-lambda */}
-          <InsertColumnButton
-            insertColumn={this.props.insertColumn}
-            index={i + 1}
-            lineMarkerHeight={tableHeight + toolbarSize}
-          />
+          {!(
+            checkIfNumberColumnEnabled(state) &&
+            checkIfHeaderColumnEnabled(state) &&
+            i === 0
+          ) && (
+            <InsertColumnButton
+              insertColumn={this.props.insertColumn}
+              index={i + 1}
+              lineMarkerHeight={tableHeight + toolbarSize}
+            />
+          )}
         </ColumnControlsButtonWrap>,
       );
     }

@@ -107,9 +107,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-                    allowTextFormatting={true}
                     allowTasksAndDecisions={true}
-                    allowHyperlinks={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
                     allowLists={true}

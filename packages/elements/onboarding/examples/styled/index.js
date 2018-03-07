@@ -49,7 +49,7 @@ export const Code = styled.code`
   background-color: ${colors.P50};
   border: 1px solid ${colors.P75};
   border-radius: 0.2em;
-  color: ${colors.P500}
+  color: ${colors.P500};
   display: inline-block;
   font-size: 0.85em;
   font-family: Monaco, monospace;

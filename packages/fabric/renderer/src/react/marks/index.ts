@@ -1,4 +1,5 @@
-import { ComponentClass } from 'react';
+// @ts-ignore: Props needed for inferred type declaration
+import { ComponentClass, Props } from 'react';
 import { Mark } from 'prosemirror-model';
 
 import Code from './code';

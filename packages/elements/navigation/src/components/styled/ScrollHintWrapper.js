@@ -15,8 +15,8 @@ const ContainerNavigationChildrenWrapper = styled.div`
   flex-direction: column;
   flex: 1 1 100%;
   overflow: hidden;
-  // Position relative is required so products can position fixed items at top or bottom
-  // of the container scrollable area.
+  /* Position relative is required so products can position fixed items at top or bottom
+   * of the container scrollable area. */
   position: relative;
 
   ${whenNotCollapsed`

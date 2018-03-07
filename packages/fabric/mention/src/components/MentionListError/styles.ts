@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import {
   akBorderRadius,
   akColorN500,
@@ -6,7 +9,9 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable:next-line variable-name
-export const MentionListErrorStyle = styled.div`
+export const MentionListErrorStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -17,18 +22,25 @@ export const MentionListErrorStyle = styled.div`
   border-radius: ${akBorderRadius};
 `;
 
-export const GenericErrorVisualStyle = styled.div`
+export const GenericErrorVisualStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   height: 108px;
   margin-bottom: 8px;
   margin-top: 36px;
   width: 83px;
 `;
 
-export const MentionListErrorHeadlineStyle = styled.div`
-  ${akTypographyMixins.h400};
+// TODO: Figure out why the themed css function is causing type errors when passed prop children
+export const MentionListErrorHeadlineStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  ${akTypographyMixins.h400 as any};
   margin-bottom: 8px;
 `;
 
-export const MentionListAdviceStyle = styled.div`
+export const MentionListAdviceStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   margin-bottom: 48px;
 `;

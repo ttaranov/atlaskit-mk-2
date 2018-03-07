@@ -1,5 +1,16 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { TableCellContent } from './doc';
+import {
+  akColorN30,
+  akColorB50,
+  akColorT50,
+  akColorP50,
+  akColorR50,
+  akColorG50,
+  akColorY50,
+} from '@atlaskit/util-shared-styles';
+import { hexToRgba } from '../../utils';
+import { akEditorTableCellBackgroundOpacity } from '../../styles';
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -29,18 +40,40 @@ const setCellAttrs = (node: PmNode) => {
     attrs['data-colwidth'] = node.attrs.colwidth.join(',');
   }
   if (node.attrs.background) {
-    attrs.style =
-      (attrs.style || '') + `backgroundcolor: ${node.attrs.background};`;
+    const { background } = node.attrs;
+    const color =
+      node.type.name === 'tableCell'
+        ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
+        : background;
+    attrs.style = (attrs.style || '') + `background-color: ${color};`;
   }
 
   return attrs;
 };
+
+export const tableBackgroundColorPalette = new Map<string, string>();
+[
+  // [akColorN800, default],
+  [akColorB50, 'Blue'],
+  [akColorT50, 'Teal'],
+  [akColorR50, 'Red'],
+  [akColorN30, 'Grey'],
+  [akColorP50, 'Purple'],
+  [akColorG50, 'Green'],
+  [akColorY50, 'Yellow'],
+  ['', 'White'],
+].forEach(([color, label]) =>
+  tableBackgroundColorPalette.set(color.toLowerCase(), label),
+);
 
 /**
  * @name table_node
  */
 export interface Table {
   type: 'table';
+  attrs?: {
+    isNumberColumnEnabled?: boolean;
+  };
   /**
    * @minItems 1
    */
@@ -92,12 +125,26 @@ export interface CellAttributes {
 // "any", because NodeSpec doesn't support "tableRole" yet
 export const table: any = {
   content: 'tableRow+',
+  attrs: {
+    isNumberColumnEnabled: { default: false },
+  },
   tableRole: 'table',
   isolating: true,
   group: 'block',
-  parseDOM: [{ tag: 'table' }],
-  toDOM() {
-    return ['table', ['tbody', 0]];
+  parseDOM: [
+    {
+      tag: 'table',
+      getAttrs: (dom: Element) => ({
+        isNumberColumnEnabled:
+          dom.getAttribute('data-number-column') === 'true' ? true : false,
+      }),
+    },
+  ],
+  toDOM(node) {
+    const attrs = {
+      'data-number-column': node.attrs.isNumberColumnEnabled,
+    };
+    return ['table', attrs, ['tbody', 0]];
   },
 };
 
@@ -134,6 +181,16 @@ export const tableCell: any = {
   },
 };
 
+export const toJSONTableCell = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});
+
 export const tableHeader: any = {
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
@@ -150,3 +207,13 @@ export const tableHeader: any = {
     return ['th', setCellAttrs(node), 0];
   },
 };
+
+export const toJSONTableHeader = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+    if (cellAttrs[key].default !== node.attrs[key]) {
+      obj[key] = node.attrs[key];
+    }
+
+    return obj;
+  }, {}),
+});

@@ -5,8 +5,8 @@ import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 export const Content = styled.div`
   align-items: center;
-  background-color: ${themed({ light: colors.N20, dark: colors.DN10 })}
-  border-radius: ${borderRadius}px
+  background-color: ${themed({ light: colors.N20, dark: colors.DN10 })};
+  border-radius: ${borderRadius}px;
   color: ${colors.subtleText};
   display: flex;
   flex-direction: column;

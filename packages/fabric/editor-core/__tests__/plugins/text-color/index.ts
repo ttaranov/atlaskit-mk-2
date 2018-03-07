@@ -12,14 +12,12 @@ import {
   stateKey as textColorPluginKey,
 } from '../../../src/plugins/text-color';
 import textColorPlugin from '../../../src/editor/plugins/text-color';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('text-color', () => {
   const editor = (doc: any) =>
     createEditor<TextColorState>({
       doc,
-      editorPlugins: [textColorPlugin, hyperlinkPlugin, textFormatting()],
+      editorPlugins: [textColorPlugin],
       pluginKey: textColorPluginKey,
     });
 

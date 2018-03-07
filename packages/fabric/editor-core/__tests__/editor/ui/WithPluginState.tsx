@@ -149,7 +149,6 @@ describe(name, () => {
     };
     const plugin = createPlugin(pluginState, pluginKey);
     const { editorView } = createEditor({
-      doc: doc(p()),
       editorPlugins: [plugin],
     });
 

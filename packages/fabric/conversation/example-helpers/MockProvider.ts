@@ -8,6 +8,7 @@ import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { reactionsProvider } from '@atlaskit/reactions';
 import { HttpError } from '../src/api/HttpError';
 
 import {
@@ -34,6 +35,7 @@ const MockDataProviders = {
   emojiProvider: Promise.resolve(
     emojiStoryData.getEmojiResource({ uploadSupported: true }),
   ),
+  reactionsProvider: Promise.resolve(reactionsProvider),
 };
 
 const RESPONSE_MESSAGES = {
@@ -48,10 +50,12 @@ const RESPONSE_MESSAGES = {
   503: 'Service Unavailable',
 };
 
-export const getDataProviderFactory = () => {
+export const getDataProviderFactory = (onlyInclude: string[] = []) => {
   const dataProviderFactory = new ProviderFactory();
   Object.keys(MockDataProviders).forEach(provider => {
-    dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
+    if (onlyInclude.length === 0 || onlyInclude.indexOf(provider) !== -1) {
+      dataProviderFactory.setProvider(provider, MockDataProviders[provider]);
+    }
   });
   return dataProviderFactory;
 };
@@ -146,7 +150,7 @@ export class MockProvider extends AbstractConversationResource {
       dispatch({ type, payload });
     }, 1000);
 
-    return result;
+    return result as Comment;
   }
 
   private createComment(
@@ -156,6 +160,7 @@ export class MockProvider extends AbstractConversationResource {
     localId: string = <string>uuid.generate(),
   ): Comment {
     return {
+      commentAri: `abc:cloud:platform::comment/${localId}`,
       createdBy: this.config.user,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),

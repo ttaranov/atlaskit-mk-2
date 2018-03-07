@@ -32,7 +32,6 @@ export const emoji = style({
 
 export const emojiContainer = style({
   display: 'inline-block',
-  verticalAlign: 'middle',
   // Ensure along with vertical align middle, we don't increase the line height for h1..h6, and p
   margin: '-1px 0',
 
@@ -43,7 +42,8 @@ export const emojiContainer = style({
 
     [`.${emojiSprite}`]: {
       background: 'transparent no-repeat',
-      display: 'block',
+      display: 'inline-block',
+      verticalAlign: 'middle',
       height: `${defaultEmojiHeight}px`,
       width: `${defaultEmojiHeight}px`,
     },
@@ -357,4 +357,9 @@ export const uploadAddRow = style({
       marginRight: '5px',
     },
   },
+});
+
+export const AddCustomEmoji = style({
+  alignSelf: 'center',
+  marginLeft: '10px',
 });

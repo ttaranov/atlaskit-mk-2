@@ -1,13 +1,17 @@
 import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { pluginKey } from './plugin';
+import * as getTime from 'date-fns/get_time';
+import * as format from 'date-fns/format';
 
 export const insertDate = (iso?: string) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { schema } = state;
-  const date = iso ? new Date(iso) : new Date();
-  const dateNode = schema.nodes.date.create({ timestamp: date.valueOf() });
+  const timestamp = iso
+    ? getTime(iso)
+    : getTime(format(new Date(), 'YYYY-MM-DD'));
+  const dateNode = schema.nodes.date.create({ timestamp });
   dispatch(
     state.tr
       .replaceSelectionWith(dateNode)

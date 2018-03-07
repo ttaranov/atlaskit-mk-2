@@ -96,7 +96,9 @@ describe('getButtonProps', () => {
     const onClick = () => {};
     const cmp = mount(<Button onClick={onClick} />);
 
-    expect(cmp.find('StyledComponent').prop('onClick')).toBe(onClick);
+    expect(cmp.find('StyledComponent').prop('onClick')).toEqual(
+      expect.anything(),
+    );
   });
 
   it('should add aria, form, id and type props to a button', () => {

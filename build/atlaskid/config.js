@@ -8,7 +8,70 @@ const devBaseUrl =
   'https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net';
 const repoOwner = 'atlassian';
 const repoName = 'atlaskit-mk-2';
-const usersAllowedToApprove = ['luke_batchelor', 'thejameskyle'];
+// Sorting these lists into teams to make this easier to maintain
+const atlaskitTeam = [
+  'luke_batchelor',
+  'treshugart',
+  'mathurajay',
+  'charles_tm',
+  'bconolly',
+  'raja07',
+  'thejameskyle',
+  'mblaszczyk-atlassian',
+  'jmackison',
+  'scurtis',
+  'jaredcroweatlassian',
+  'jedw',
+  'alexreardon',
+  'pete_gleeson',
+];
+const editorTeam = [
+  'imsysoev',
+  'jyotiatl',
+  'ed919',
+  'scottsidwell',
+  'rifat_nabi',
+  'ckrishnakumar',
+  'ttjandra',
+  'owallhult',
+  'dsorin',
+  'jmack2',
+  'supertong',
+  'pcurren',
+  'agnes',
+  'vsutrave',
+  'ahixon_atlassian',
+];
+const elementsTeam = [
+  'sguillope',
+  'eduardo_soares',
+  'Craig_Petchell',
+  'jhoarau',
+  'ttjandra',
+  'pcurren',
+];
+// Jono is a special case atm, and his team doesn't have a name
+const jono = ['jonathan_yeo'];
+const mediaTeam = [
+  'sattard',
+  'mjames91',
+  'alichamas',
+  'jluong',
+  'amotsjonov',
+  'hzarcogarcia',
+  'jamesnewell',
+  'abodera',
+  'vvvlasov',
+];
+const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
+const usersAllowedToApprove = [].concat(
+  atlaskitTeam,
+  editorTeam,
+  elementsTeam,
+  jono,
+  mediaTeam,
+  searchAndSmartsTeam,
+);
 
 module.exports = {
   host: 'bitbucket',

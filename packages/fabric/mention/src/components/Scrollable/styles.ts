@@ -1,9 +1,13 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { scrollableMaxHeight } from '../../shared-styles';
 
-// tslint:disable:next-line variable-name
-export const ScrollableStyle = styled.div`
+export const ScrollableStyle: ComponentClass<
+  HTMLAttributes<{}> & { innerRef?: any }
+> = styled.div`
   display: block;
   overflow-x: hidden;
   overflow-y: auto;

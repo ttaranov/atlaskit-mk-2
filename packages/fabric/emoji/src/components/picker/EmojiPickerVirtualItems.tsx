@@ -15,10 +15,6 @@ import EmojiPickerEmojiRow, {
 import EmojiPickerCategoryHeading, {
   Props as CategoryHeadingProps,
 } from './EmojiPickerCategoryHeading';
-import {
-  UploadPromptMessage,
-  Props as UploadPromptProps,
-} from './EmojiPickerUploadPrompts';
 
 export interface RenderItem {
   (context?: VirtualRenderContext): ReactNode;
@@ -80,14 +76,6 @@ export class CategoryHeadingItem extends AbstractItem<CategoryHeadingProps> {
   }
 
   renderItem = () => <EmojiPickerCategoryHeading {...this.props} />;
-}
-
-export class UploadPromptMessageItem extends AbstractItem<UploadPromptProps> {
-  constructor(props: UploadPromptProps) {
-    super(props, sizes.uploadActionHeight);
-  }
-
-  renderItem = () => <UploadPromptMessage {...this.props} />;
 }
 
 /**

@@ -85,7 +85,7 @@ const SaveAndCancelButtons = props => (
         props.editorActions
           .getValue()
           // tslint:disable-next-line:no-console
-          .then(value => console.log(value.toJSON()))
+          .then(value => console.log(value))
       }
     >
       Publish
@@ -139,20 +139,25 @@ export default class Example extends React.Component<Props, State> {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
-              allowTextFormatting={true}
               allowTasksAndDecisions={true}
-              allowHyperlinks={true}
               allowCodeBlocks={true}
               allowLists={true}
               allowTextColor={true}
-              allowTables={{ allowColumnResizing: true }}
+              allowTables={{
+                allowColumnResizing: true,
+                allowMergeCells: true,
+                allowNumberColumn: true,
+                allowBackgroundColor: true,
+                allowHeaderRow: true,
+                allowHeaderColumn: true,
+              }}
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}
               allowExtension={true}
               allowRule={true}
               allowDate={true}
-              allowTemplatePlaceholders={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
               placeholder="Write something..."

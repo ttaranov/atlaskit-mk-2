@@ -4,7 +4,10 @@ export interface Listeners {
   [name: string]: Listener[];
 }
 export type Listener = (data: any) => void;
-export type Dispatch = (eventName: PluginKey | string, data: any) => void;
+export type Dispatch<T = any> = (
+  eventName: PluginKey | string,
+  data: T,
+) => void;
 
 export class EventDispatcher {
   private listeners: Listeners = {};

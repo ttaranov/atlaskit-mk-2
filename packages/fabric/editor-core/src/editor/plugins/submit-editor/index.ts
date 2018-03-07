@@ -4,6 +4,7 @@ import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
 import * as keymaps from '../../../keymaps';
+import { stateKey as mediaPluginKey } from '../../../plugins/media';
 
 export function createPlugin(
   onSave?: (editorView: EditorView) => void,
@@ -18,6 +19,16 @@ export function createPlugin(
       dispatch: (tr) => void,
       editorView: EditorView,
     ) => {
+      const mediaState = mediaPluginKey.getState(state);
+
+      if (
+        mediaState &&
+        mediaState.waitForMediaUpload &&
+        !mediaState.allUploadsFinished
+      ) {
+        return true;
+      }
+
       analyticsService.trackEvent('atlassian.editor.stop.submit');
       onSave(editorView);
       return true;

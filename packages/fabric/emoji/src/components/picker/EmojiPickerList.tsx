@@ -25,7 +25,6 @@ import {
   EmojisRowItem,
   LoadingItem,
   SearchItem,
-  UploadPromptMessageItem,
   virtualItemRenderer,
   VirtualItem,
 } from './EmojiPickerVirtualItems';
@@ -41,12 +40,11 @@ export interface OnSearch {
 
 export interface Props {
   emojis: EmojiDescription[];
-  showCustomCategory?: boolean;
-  showUploadOption?: boolean;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
-  onOpenUpload?: () => void;
+  onMouseLeave?: () => void;
+  onMouseEnter?: () => void;
   selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
@@ -186,7 +184,6 @@ export default class EmojiPickerVirtualList extends PureComponent<
       this.props.emojis !== nextProps.emojis ||
       this.props.selectedTone !== nextProps.selectedTone ||
       this.props.loading !== nextProps.loading ||
-      this.props.showUploadOption !== nextProps.showUploadOption ||
       this.props.query !== nextProps.query
     ) {
       if (!nextProps.query) {
@@ -229,11 +226,8 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
-  private buildCategory = (
-    group: EmojiGroup,
-    showUploadPrompt: boolean,
-  ): VirtualItem<any>[] => {
-    const { onEmojiSelected, onOpenUpload } = this.props;
+  private buildCategory = (group: EmojiGroup): VirtualItem<any>[] => {
+    const { onEmojiSelected } = this.props;
     const items: VirtualItem<any>[] = [];
 
     items.push(
@@ -244,42 +238,16 @@ export default class EmojiPickerVirtualList extends PureComponent<
       }),
     );
 
-    const showUploadButton = showUploadPrompt && group.emojis.length > 0;
-    let showUploadButtonNow = false;
     let remainingEmojis = group.emojis;
     while (remainingEmojis.length > 0) {
       const rowEmojis = remainingEmojis.slice(0, sizes.emojiPerRow);
       remainingEmojis = remainingEmojis.slice(sizes.emojiPerRow);
-      showUploadButtonNow =
-        showUploadButton && rowEmojis.length < sizes.emojiPerRow;
 
       items.push(
         new EmojisRowItem({
           emojis: rowEmojis,
           onSelected: onEmojiSelected,
           onMouseMove: this.onEmojiMouseEnter,
-          showUploadButton: showUploadButtonNow,
-          onOpenUpload: onOpenUpload,
-        }),
-      );
-    }
-
-    if (showUploadButton && !showUploadButtonNow) {
-      // Upload button wasn't rendered (last row was full) add to new row
-      items.push(
-        new EmojisRowItem({
-          emojis: [],
-          showUploadButton: true,
-          onOpenUpload: onOpenUpload,
-        }),
-      );
-    }
-
-    // No emoji, but we want to show the upload prompt, show upload action in this case
-    if (showUploadPrompt && !showUploadButton) {
-      items.push(
-        new UploadPromptMessageItem({
-          onOpenUpload,
         }),
       );
     }
@@ -288,13 +256,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   };
 
   private buildVirtualItems = (props: Props, state: State): void => {
-    const {
-      emojis,
-      loading,
-      query,
-      showCustomCategory,
-      showUploadOption,
-    } = props;
+    const { emojis, loading, query } = props;
 
     let items: Items.VirtualItem<any>[] = [];
 
@@ -314,49 +276,23 @@ export default class EmojiPickerVirtualList extends PureComponent<
         // Only a single "result" category
         items = [
           ...items,
-          ...this.buildCategory(
-            {
-              category: 'Search',
-              title: 'Search results',
-              emojis,
-            },
-            !!showUploadOption,
-          ),
+          ...this.buildCategory({
+            category: 'Search',
+            title: 'Search results',
+            emojis,
+          }),
         ];
       } else {
         // Group by category
-        let customGroupRendered = false;
+
         // Not searching show in categories.
         this.allEmojiGroups.forEach(group => {
           // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
           // by not passing it to irrelevant groups
-          let showUploadPrompt = false;
-          if (group.category === customCategory) {
-            customGroupRendered = true;
-            showUploadPrompt = !!showUploadOption;
-          }
-
           this.categoryTracker.add(group.category, items.length);
 
-          items = [...items, ...this.buildCategory(group, showUploadPrompt)];
+          items = [...items, ...this.buildCategory(group)];
         });
-
-        if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
-          // Custom group wasn't rendered, but upload is supported, so add group with lone upload action
-          this.categoryTracker.add(customCategory, items.length);
-
-          items = [
-            ...items,
-            ...this.buildCategory(
-              {
-                category: customCategory,
-                title: customCategory,
-                emojis: [],
-              },
-              true,
-            ),
-          ];
-        }
       }
     }
 
@@ -440,10 +376,15 @@ export default class EmojiPickerVirtualList extends PureComponent<
     virtualItemRenderer(this.virtualItems, context);
 
   render() {
+    const { onMouseLeave, onMouseEnter } = this.props;
     const classes = [styles.emojiPickerList];
 
     return (
-      <div className={classNames(classes)}>
+      <div
+        className={classNames(classes)}
+        onMouseLeave={onMouseLeave}
+        onMouseEnter={onMouseEnter}
+      >
         <VirtualList
           ref="list"
           height={sizes.listHeight}

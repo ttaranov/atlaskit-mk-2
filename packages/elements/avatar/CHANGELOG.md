@@ -1,5 +1,16 @@
 # @atlaskit/avatar
 
+## 9.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 9.1.0
+- [minor] Create skeleton representations of various components [cd628e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd628e4)
+
+## 9.0.4
+- [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
+
+## 9.0.3
+
 ## 9.0.2
 - [patch] Remove babel-plugin-react-flow-props-to-prop-types [06c1f08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06c1f08)
 

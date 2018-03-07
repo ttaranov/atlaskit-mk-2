@@ -35,6 +35,13 @@ const { getPackagesWithKarmaTests } = require('../karma-config');
     tslint: ['packages/fabric/', 'build/tslint-rules/'],
     tsc: ['packages/fabric/'],
     browserstack: [...packagesWithKarmaTests, 'build/karma-config/'],
+    stylelint: [
+      'packages/fabric/',
+      'packages/elements/',
+      'packages/utils/',
+      'website/',
+      'patterns/',
+    ],
   };
 
   if (args.length !== 1) {

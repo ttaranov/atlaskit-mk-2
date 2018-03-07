@@ -14,6 +14,12 @@ export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
 
+  static from(view: EditorView, transformer?: Transformer<any>) {
+    const editorActions = new EditorActions();
+    editorActions._privateRegisterEditor(view, transformer);
+    return editorActions;
+  }
+
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
     return this.editorView;
@@ -112,11 +118,18 @@ export default class EditorActions {
   }
 
   replaceSelection(rawValue: Node | Object | string): boolean {
-    if (!this.editorView || rawValue === undefined || rawValue === null) {
+    if (!this.editorView) {
       return false;
     }
 
     const { state } = this.editorView;
+
+    if (!rawValue) {
+      const tr = state.tr.deleteSelection().scrollIntoView();
+      this.editorView.dispatch(tr);
+      return true;
+    }
+
     const { schema } = state;
     const content = processRawValue(schema, rawValue);
 

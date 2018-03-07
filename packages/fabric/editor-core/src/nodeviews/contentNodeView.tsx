@@ -12,7 +12,15 @@ export default class ContentNodeView {
   contentDOM: HTMLElement | undefined;
 
   constructor(node: PMNode, view: EditorView) {
-    this.contentDOM = view.dom.appendChild(document.createElement('div'));
+    if (view.dom.parentNode) {
+      this.contentDOM = view.dom.parentNode.appendChild(
+        document.createElement('div'),
+      );
+      // @see ED-3790
+      // something gets messed up during mutation processing inside of a nodeView if DOM structure has nested plain "div"s,
+      // it doesn't see the difference between them and it kills the nodeView
+      this.contentDOM.className = `${node.type.name}View-content-wrap`;
+    }
   }
 
   handleRef = (node: HTMLElement | undefined) => {

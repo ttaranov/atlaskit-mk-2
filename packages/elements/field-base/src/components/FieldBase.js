@@ -47,8 +47,10 @@ export default class FieldBase extends Component<FieldBaseProps, State> {
   onBlur = (e: SyntheticEvent<*>) => {
     // Because the blur event fires before the focus event, we want to make sure that we don't
     // render and close the dialog before we can check if the dialog is focused.
-    this.reschedule(ON_BLUR_KEY, () => this.setState({ isFocused: false }));
-    this.props.onBlur(e);
+    this.reschedule(ON_BLUR_KEY, () => {
+      this.setState({ isFocused: false });
+      this.props.onBlur(e);
+    });
   };
 
   onContentFocus = () => {
