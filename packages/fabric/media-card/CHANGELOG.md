@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 24.1.2
+- [patch] fix issues with ellipsing of new smart-card designs [ec2bed9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec2bed9)
+
 ## 24.1.1
 
 ## 24.1.0
