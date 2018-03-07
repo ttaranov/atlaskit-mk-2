@@ -8,6 +8,9 @@ import {
   Context,
 } from '@atlaskit/media-core';
 import { createStorybookContext } from '@atlaskit/media-test-helpers';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+
 import { SelectableCard } from './selectableCard';
 import {
   Card,
@@ -92,6 +95,16 @@ export const deleteAction = {
   handler: () => {
     console.log('delete');
   },
+  icon: <CrossIcon size="small" label="delete" />,
+};
+
+export const annotateCardAction = {
+  type: -1,
+  label: 'Annotate',
+  handler: () => {
+    console.log('annotate');
+  },
+  icon: <AnnotateIcon size="small" label="annotate" />,
 };
 
 export const actions = [openAction, closeAction, deleteAction];

@@ -32,7 +32,13 @@ import {
   CardDimensions,
   CardActionType,
 } from '../src';
-import { actions, clickHandler, mouseEnterHandler } from './index';
+import {
+  actions,
+  annotateCardAction,
+  deleteAction,
+  clickHandler,
+  mouseEnterHandler,
+} from './index';
 
 const images = [
   wideTransparentImage,
@@ -193,6 +199,17 @@ export const createMenuActionCards = (
           status="complete"
           metadata={metadata}
           actions={actions.filter(a => a.type === CardActionType.delete)}
+        />
+      ),
+    },
+    {
+      title: '2 primary actions',
+      content: (
+        <CardView
+          appearance={appearance}
+          status="complete"
+          metadata={metadata}
+          actions={[annotateCardAction, deleteAction]}
         />
       ),
     },

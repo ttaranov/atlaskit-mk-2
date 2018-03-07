@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
 import MoreIcon from '@atlaskit/icon/glyph/more';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
-import { CardAction, CardActionType, CardEventHandler } from '../../actions';
+import { CardAction, CardEventHandler } from '../../actions';
 import { Wrapper, DeleteBtn, MeatBallsWrapper } from './styled';
 
 export interface MenuProps {
@@ -25,18 +24,26 @@ export class Menu extends Component<MenuProps, {}> {
     if (!actions.length) {
       return null;
     }
-    const content = this.shouldRenderDeleteButton(actions)
-      ? this.renderDeleteButton(actions[0])
-      : this.renderDropdown(actions);
 
-    return <Wrapper>{content}</Wrapper>;
+    const primaryAction = actions.find(
+      ({ icon }) => icon !== undefined && icon !== null,
+    );
+
+    const otherActions = actions.filter(action => action !== primaryAction);
+
+    if (primaryAction) {
+      return (
+        <Wrapper>
+          {this.renderPrimaryActionButton(primaryAction)}
+          {this.renderOtherActionButtons(otherActions)}
+        </Wrapper>
+      );
+    } else {
+      return <Wrapper>{this.renderOtherActionButtons(otherActions)}</Wrapper>;
+    }
   }
 
-  private shouldRenderDeleteButton(actions: Array<CardAction>) {
-    return actions.length === 1 && actions[0].type === CardActionType.delete;
-  }
-
-  private renderDeleteButton(action) {
+  private renderPrimaryActionButton(action: CardAction) {
     const { triggerColor } = this.props;
 
     return (
@@ -44,9 +51,26 @@ export class Menu extends Component<MenuProps, {}> {
         onClick={this.deleteBtnClick(action.handler)}
         style={{ color: triggerColor }}
       >
-        <CrossIcon size="small" label="delete" />
+        {action.icon}
       </DeleteBtn>
     );
+  }
+
+  private renderOtherActionButtons(actions: CardAction[]) {
+    if (actions.length === 0) {
+      return null;
+    } else {
+      const primaryAction = actions.find(
+        ({ icon }) => icon !== undefined && icon !== null,
+      );
+      const otherActions = actions.filter(action => action !== primaryAction);
+
+      if (primaryAction && otherActions.length === 0) {
+        return this.renderPrimaryActionButton(primaryAction);
+      } else {
+        return this.renderDropdown(actions);
+      }
+    }
   }
 
   private renderDropdown(actions: Array<CardAction>) {

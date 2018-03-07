@@ -97,6 +97,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           // TODO remove || guarding and update action signature to be correct
           action.handler({ type: 'file', details: details || {} });
         },
+        icon: action.icon,
       };
     });
   }
