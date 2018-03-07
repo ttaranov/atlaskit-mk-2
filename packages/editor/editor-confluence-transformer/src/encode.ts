@@ -6,6 +6,7 @@ import {
   getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
+  tableBackgroundColorPalette,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -175,28 +176,63 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeTable(node: PMNode): Element {
     const elem = doc.createElement('table');
+    const colgroup = doc.createElement('colgroup');
     const tbody = doc.createElement('tbody');
+    const { isNumberColumnEnabled } = node.attrs;
+    let tableColumnWidths = [];
 
-    node.descendants(rowNode => {
+    node.content.forEach((rowNode, _, i) => {
       const rowElement = doc.createElement('tr');
 
-      rowNode.descendants(colNode => {
+      rowNode.content.forEach((colNode, _, j) => {
+        const { attrs: { colwidth, background, rowspan, colspan } } = colNode;
         const cellElement =
           colNode.type === schema.nodes.tableCell
             ? doc.createElement('td')
             : doc.createElement('th');
+
+        if (isNumberColumnEnabled && j === 0) {
+          cellElement.className = 'numberingColumn';
+        }
+
+        // if we have a colwidth attr for this cell, and it contains new
+        // colwidths we haven't seen for the whole table yet, add those
+        // (colwidths over the table are defined as-we-go)
+        if (colwidth && colwidth.length + j > tableColumnWidths.length) {
+          tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
+        }
+
+        if (background) {
+          cellElement.setAttribute(
+            'data-highlight-colour',
+            (
+              tableBackgroundColorPalette.get(background.toLowerCase()) ||
+              background
+            ).toLowerCase(),
+          );
+        }
+        cellElement.setAttribute('colspan', colspan || 1);
+        cellElement.setAttribute('rowspan', rowspan || 1);
+
         cellElement.appendChild(encodeFragment(colNode.content));
         rowElement.appendChild(cellElement);
-
-        return false;
       });
 
       tbody.appendChild(rowElement);
-      return false;
     });
 
+    // now we have all the column widths, assign them to each <col> in the <colgroup>
+    tableColumnWidths.forEach((colwidth, i) => {
+      const colInfoElement = document.createElement('col');
+      if (!(i === 0 && isNumberColumnEnabled)) {
+        colInfoElement.style.width = colwidth + 'px';
+      }
+      colgroup.appendChild(colInfoElement);
+    });
+
+    elem.appendChild(colgroup);
     elem.appendChild(tbody);
-    elem.setAttribute('class', 'confluenceTable');
+    elem.setAttribute('class', 'fixed-table wrapped');
 
     return elem;
   }

@@ -21,7 +21,10 @@ import {
   akColorN40A,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import { tableStyle } from '@atlaskit/editor-common';
+import {
+  tableStyle,
+  akEditorTableNumberColumnWidth,
+} from '@atlaskit/editor-common';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -299,7 +302,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
-      width: 40px;
+      width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
     }
   }

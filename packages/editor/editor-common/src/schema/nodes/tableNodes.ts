@@ -52,6 +52,7 @@ const setCellAttrs = (node: PmNode) => {
 };
 
 export const tableBackgroundColorPalette = new Map<string, string>();
+export const tableBackgroundColorNames = new Map<string, string>();
 [
   // [akColorN800, default],
   [akColorB50, 'Blue'],
@@ -62,9 +63,10 @@ export const tableBackgroundColorPalette = new Map<string, string>();
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
   ['', 'White'],
-].forEach(([color, label]) =>
-  tableBackgroundColorPalette.set(color.toLowerCase(), label),
-);
+].forEach(([color, label]) => {
+  tableBackgroundColorPalette.set(color.toLowerCase(), label);
+  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase())
+});
 
 /**
  * @name table_node
