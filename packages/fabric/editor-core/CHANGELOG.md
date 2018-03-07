@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.11
+- [patch] Fix the backspace in table cells in IE11 [4e58321](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e58321)
+
 ## 62.7.10
 - [patch] Table columns should not resize when typing [59728cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59728cc)
 
