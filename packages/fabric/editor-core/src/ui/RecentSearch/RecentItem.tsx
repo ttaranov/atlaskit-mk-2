@@ -1,9 +1,6 @@
 import * as React from 'react';
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
+import { HTMLAttributes, ComponentClass } from 'react';
+import styled from 'styled-components';
 import { ActivityItem } from '@atlaskit/activity';
 import {
   akColorN100,
@@ -15,8 +12,9 @@ interface ContainerProps {
   selected: boolean;
 }
 
-// tslint:disable:next-line variable-name
-const Container = styled.li`
+const Container: ComponentClass<
+  HTMLAttributes<{}> & ContainerProps
+> = styled.li`
   background-color: ${(props: ContainerProps) =>
     props.selected ? akColorN30 : 'transparent'};
   padding: 5px;
@@ -24,23 +22,25 @@ const Container = styled.li`
   display: flex;
 `;
 
-const NameWrapper = styled.span`
+const NameWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   overflow: hidden;
 `;
 
-export const Name = styled.div`
+export const Name: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN800};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-export const ContainerName = styled.div`
+export const ContainerName: ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   color: ${akColorN100};
   font-size: 12px;
 `;
 
-const Icon = styled.span`
+const Icon: ComponentClass<HTMLAttributes<{}>> = styled.span`
   min-width: 16px;
   margin-top: 3px;
   margin-right: 8px;

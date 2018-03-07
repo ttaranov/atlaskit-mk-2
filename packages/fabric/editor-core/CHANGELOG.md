@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.5
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
 ## 62.7.4
 - [patch] fix: prevent autoformatting for formatted-text across hard-breaks [84da82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84da82e)
 

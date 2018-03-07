@@ -1,13 +1,8 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
-import { Component } from 'react';
 import { CellSelection } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
 import ToolbarButton from '../ToolbarButton';
@@ -23,7 +18,7 @@ import {
   checkIfTableSelected,
 } from '../../editor/plugins/table/utils';
 
-export const Toolbar = styled.div`
+export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: white;
   border-radius: 3px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);

@@ -1,26 +1,23 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { borderRadius, gridSize, colors } from '@atlaskit/theme';
-import { ComponentClass } from 'react';
 
 const akGridSize = gridSize();
 
-// tslint:disable-next-line:variable-name
-export const ContentWrapper = styled.div`
+export const ContentWrapper: ComponentClass<
+  HTMLAttributes<{}> & { innerRef?: any }
+> = styled.div`
   margin: 0;
   word-wrap: break-word;
   min-width: 0;
   flex: 1 1 auto;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & { theme?: any }
+> = styled.div`
   display: flex;
   flex-direction: ${props =>
     props.theme.appearance === 'card' ? 'column' : 'row'};
@@ -43,23 +40,26 @@ export const Wrapper = styled.div`
         : 'none'};
     transition: box-shadow 0.2s ease-in-out;
   }
-` as ComponentClass<any>;
+`;
 
-// tslint:disable-next-line:variable-name
-export const ParticipantWrapper = styled.div`
+export const ParticipantWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   margin: -2px 8px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CardHeadingWrapper = styled.div`
+export const CardHeadingWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
   min-height: 24px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const AttributionWrapper = styled.div`
+export const AttributionWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   color: ${colors.N200};
   margin-top: ${akGridSize}px;
   font-size: 12px;

@@ -28,7 +28,7 @@ export interface Props {
 export class MentionInternal extends React.PureComponent<Props, {}> {
   private startTime: number = 0;
 
-  private handleOnClick = (e: React.SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { id, text, onClick } = this.props;
     if (onClick) {
       onClick(id, text, e);
@@ -36,7 +36,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     this.fireAnalytics('lozenge.select');
   };
 
-  private handleOnMouseEnter = (e: React.SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnMouseEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { id, text, onMouseEnter } = this.props;
     this.startTime = Date.now();
     if (onMouseEnter) {
@@ -44,7 +44,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     }
   };
 
-  private handleOnMouseLeave = (e: React.SyntheticEvent<HTMLSpanElement>) => {
+  private handleOnMouseLeave = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { id, text, onMouseLeave } = this.props;
     if (onMouseLeave) {
       onMouseLeave(id, text, e);
