@@ -55,7 +55,7 @@ import {
   decisionList,
   decisionItem,
 } from '@atlaskit/editor-test-helpers';
-import stringRaw from 'string-raw';
+import * as stringRaw from 'string-raw';
 
 import {
   ConfluenceTransformer,
