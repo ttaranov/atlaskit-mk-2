@@ -3,7 +3,7 @@
 import React, { type Node } from 'react';
 import {
   withAnalyticsEvents,
-  UIAnalyticsEvent,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 
@@ -41,23 +41,9 @@ const SubtleLink = ({
   /* eslint-enable jsx-a11y/no-static-element-interactions */
 );
 
-type CreateAnalyticsEvent = (payload: {
-  [string]: any,
-}) => UIAnalyticsEvent;
-
-const createAndFireEvent = (action: string) => (
-  createAnalyticsEvent: CreateAnalyticsEvent,
-) => {
-  const consumerEvent = createAnalyticsEvent({
-    action,
-  });
-  consumerEvent.clone().fire('atlaskit');
-
-  return consumerEvent;
-};
-
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 export default withAnalyticsEvents({
-  onClick: createAndFireEvent('click'),
-  onFocus: createAndFireEvent('focus'),
-  onMouseOver: createAndFireEvent('mouseover'),
+  onClick: createAndFireEventOnAtlaskit({ action: 'click' }),
+  onFocus: createAndFireEventOnAtlaskit({ action: 'focus' }),
+  onMouseOver: createAndFireEventOnAtlaskit({ action: 'mouseover' }),
 })(SubtleLink);
