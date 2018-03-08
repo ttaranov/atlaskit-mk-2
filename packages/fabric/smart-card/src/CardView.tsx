@@ -1,3 +1,3 @@
 import { AppCardView } from '@atlaskit/media-card';
 
-export { AppCardView as SmartCardView };
+export { AppCardView as CardView };

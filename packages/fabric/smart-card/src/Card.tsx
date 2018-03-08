@@ -2,60 +2,60 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
 import { AppCardModel } from '@atlaskit/media-card';
-import { SmartCardClient } from './SmartCardClient';
-import { SmartCardView } from './SmartCardView';
+import { Client } from './Client';
+import { CardView } from './CardView';
 
 export const LoadingView = () => null;
 
-export const LoadedView = SmartCardView;
+export const LoadedView = CardView;
 
 // TODO: use link horizontal error view
 export const ErroredView = () => <span>Error!</span>;
 
-export interface SmartCardProps {
-  client?: SmartCardClient;
+export interface CardProps {
+  client?: Client;
   url: string;
 }
 
-export interface SmartCardContext {
-  smartCardClient?: SmartCardClient;
+export interface CardContext {
+  smartCardClient?: Client;
 }
 
-export interface SmartCardState {
+export interface CardState {
   status: 'loading' | 'loaded' | 'errored';
   data?: AppCardModel;
 }
 
-function loading(): Pick<SmartCardState, 'status' | 'data'> {
+function loading(): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loading',
     data: undefined,
   };
 }
 
-function loaded(data: AppCardModel): Pick<SmartCardState, 'status' | 'data'> {
+function loaded(data: AppCardModel): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loaded',
     data,
   };
 }
 
-function errored(): Pick<SmartCardState, 'status'> {
+function errored(): Pick<CardState, 'status'> {
   return {
     status: 'errored',
   };
 }
 
-export class SmartCard extends React.Component<SmartCardProps, SmartCardState> {
+export class Card extends React.Component<CardProps, CardState> {
   static contextTypes = {
     smartCardClient: PropTypes.object,
   };
 
-  context: SmartCardContext;
+  context: CardContext;
 
-  state: SmartCardState = loading();
+  state: CardState = loading();
 
-  get client(): SmartCardClient {
+  get client(): Client {
     const client = this.context.smartCardClient || this.props.client;
     if (!client) {
       console.error(
@@ -66,14 +66,14 @@ export class SmartCard extends React.Component<SmartCardProps, SmartCardState> {
     return client;
   }
 
-  shouldFetch(prevProps: SmartCardProps, nextProps: SmartCardProps) {
+  shouldFetch(prevProps: CardProps, nextProps: CardProps) {
     return prevProps.url !== nextProps.url;
   }
 
-  async fetch() {
+  async load() {
     const { url } = this.props;
     try {
-      const json = await this.client.fetch(url);
+      const json = await this.client.get(url);
       this.setState(loaded(json.data as AppCardModel));
     } catch (error) {
       this.setState(errored());
@@ -81,18 +81,18 @@ export class SmartCard extends React.Component<SmartCardProps, SmartCardState> {
   }
 
   handleRender = () => {
-    this.fetch();
+    this.load();
   };
 
-  componentWillReceiveProps(nextProps: SmartCardProps) {
+  componentWillReceiveProps(nextProps: CardProps) {
     if (this.shouldFetch(this.props, nextProps)) {
       this.setState(loading());
     }
   }
 
-  componentDidUpdate(prevProps: SmartCardProps) {
+  componentDidUpdate(prevProps: CardProps) {
     if (this.shouldFetch(prevProps, this.props)) {
-      this.fetch();
+      this.load();
     }
   }
 

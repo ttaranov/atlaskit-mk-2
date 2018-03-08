@@ -1,21 +1,27 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { SmartCardClient } from './SmartCardClient';
+import { Client } from './Client';
 
 export interface SmartCardProviderProps {
-  client: SmartCardClient;
+  client?: Client;
   children: React.ReactElement<any>;
 }
 
-export class SmartCardProvider extends React.Component<SmartCardProviderProps> {
+export class Provider extends React.Component<SmartCardProviderProps> {
   static childContextTypes = {
     smartCardClient: PropTypes.object,
   };
 
+  client: Client;
+
+  constructor(props: SmartCardProviderProps) {
+    super(props);
+    this.client = new Client();
+  }
+
   getChildContext() {
-    const { client } = this.props;
     return {
-      smartCardClient: client,
+      smartCardClient: this.props.client || this.client,
     };
   }
 
