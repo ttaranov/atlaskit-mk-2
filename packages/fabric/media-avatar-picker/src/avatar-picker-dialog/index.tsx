@@ -30,6 +30,7 @@ export interface AvatarPickerDialogProps {
   title?: string;
   primaryButtonText?: string;
   errorMessage?: string;
+  isLoading?: boolean;
 }
 
 export enum Mode {

@@ -20,7 +20,7 @@ const Layout = styled.div`
   }
 `;
 
-interface State {
+export interface State {
   isOpen: boolean;
   imagePreviewSource: string;
 }
