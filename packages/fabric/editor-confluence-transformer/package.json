@@ -28,7 +28,6 @@
     "@atlaskit/editor-core": "^62.7.9",
     "@atlaskit/editor-test-helpers": "^1.9.2",
     "@types/prosemirror-model": "^1.0.0",
-    "chai-as-promised": "^6.0.0",
-    "string-raw": "^1.0.1"
+    "chai-as-promised": "^6.0.0"
   }
 }
