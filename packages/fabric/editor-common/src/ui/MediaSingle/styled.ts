@@ -1,4 +1,8 @@
+import * as React from 'react';
 import styled, { css } from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes } from 'react';
 import { MediaSingleLayout } from '../../schema';
 
 function float(layout: MediaSingleLayout): string {
@@ -49,14 +53,20 @@ const MediaSingleDimensionHelper = ({
   max-width: ${width}px;
   max-height: ${height}px;
   width: ${calcWidth(layout)};
-  &:after {
+  &::after {
     content: '';
     display: block;
     padding-bottom: ${height / width * 100}%;
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper: React.ComponentClass<
+  HTMLAttributes<{}> & {
+    layout: string;
+    width: number;
+    height: number;
+  }
+> = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
   & > div {

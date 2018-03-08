@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 0.6.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 0.5.3
 - [patch] Fix an indirect race condition vulnerability [b75c02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b75c02a)
 

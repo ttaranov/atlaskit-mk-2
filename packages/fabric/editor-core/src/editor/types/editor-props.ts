@@ -56,10 +56,8 @@ export interface EditorProps {
   addonToolbarComponents?: ReactElement;
 
   allowBlockType?: { exclude?: Array<string> };
-  allowTextFormatting?: boolean | TextFormattingOptions;
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
-  allowHyperlinks?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean;
   allowLists?: boolean;
@@ -95,7 +93,9 @@ export interface EditorProps {
   macroProvider?: Promise<MacroProvider>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
+
   media?: MediaOptions;
+  textFormatting?: TextFormattingOptions;
 
   maxHeight?: number;
   maxContentSize?: number;
@@ -112,4 +112,7 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
+
+  // TODO: Deprecated remove after v63.0.0
+  allowTextFormatting?: boolean | TextFormattingOptions;
 }

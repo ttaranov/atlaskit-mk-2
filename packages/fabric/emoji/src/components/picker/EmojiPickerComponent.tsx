@@ -73,6 +73,7 @@ export interface State {
   uploading: boolean;
   // the picker is considered loaded when at least 1 set of emojis have loaded
   loading: boolean;
+  showUploadButton: boolean;
 }
 
 export default class EmojiPickerComponent extends PureComponent<Props, State> {
@@ -100,6 +101,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       loading: true,
       uploadSupported: false,
       uploading: false,
+      showUploadButton: true,
     };
 
     this.openTime = 0;
@@ -157,11 +159,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const prevEmojiProvider = prevProps.emojiProvider;
     const currentEmojiProvider = this.props.emojiProvider;
 
-    if (this.state.uploading && this.state.uploading !== prevState.uploading) {
-      // Showing upload panel, ensure custom category in view due to increased height
-      this.scrollToEndOfList();
-    }
-
     if (prevEmojiProvider !== currentEmojiProvider) {
       prevEmojiProvider.unsubscribe(this.onProviderChange);
       currentEmojiProvider.subscribe(this.onProviderChange);
@@ -179,6 +176,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     if (this.state.selectedEmoji !== emoji) {
       this.setState({
         selectedEmoji: emoji,
+        showUploadButton: false,
+      } as State);
+    } else {
+      this.setState({
+        showUploadButton: false,
       } as State);
     }
   };
@@ -219,6 +221,18 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   onFileChosen = () => {
     this.fireAnalytics('upload.file.selected');
+  };
+
+  onEmojiPickerMouseLeave = () => {
+    this.setState({
+      showUploadButton: true,
+    });
+  };
+
+  onEmojiPickerMouseEnter = () => {
+    this.setState({
+      showUploadButton: false,
+    });
   };
 
   private fireAnalytics = (eventName: string, data: any = {}): void => {
@@ -513,6 +527,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploading,
       uploadErrorMessage,
       uploadSupported,
+      showUploadButton,
     } = this.state;
 
     const recordUsageOnSelection = createRecordSelectionDefault(
@@ -532,16 +547,16 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         />
         <EmojiPickerList
           emojis={filteredEmojis}
+          currentUser={emojiProvider.getCurrentUser!()}
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
-          onOpenUpload={this.onOpenUpload}
+          onMouseLeave={this.onEmojiPickerMouseLeave}
+          onMouseEnter={this.onEmojiPickerMouseEnter}
           onSearch={this.onSearch}
           query={query}
           selectedTone={selectedTone}
           loading={loading}
-          showCustomCategory={uploadSupported}
-          showUploadOption={uploadSupported && !uploading}
           ref="emojiPickerList"
         />
         <EmojiPickerFooter
@@ -552,9 +567,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           toneEmoji={toneEmoji}
           uploading={uploading}
           uploadErrorMessage={uploadErrorMessage}
+          uploadEnabled={uploadSupported && showUploadButton && !uploading}
           onUploadEmoji={this.onUploadEmoji}
           onUploadCancelled={this.onUploadCancelled}
           onFileChosen={this.onFileChosen}
+          onOpenUpload={this.onOpenUpload}
         />
       </div>
     );

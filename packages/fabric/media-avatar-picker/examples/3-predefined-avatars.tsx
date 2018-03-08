@@ -1,8 +1,6 @@
 /* tslint:disable:no-console */
-
 import * as React from 'react';
 import styled from 'styled-components';
-
 import { Avatar } from '../src';
 import { AvatarList } from '../src/avatar-list';
 import { PredefinedAvatarList } from '../src/predefined-avatar-list';
@@ -20,9 +18,7 @@ export default () => (
     <div>
       <h1>Avatar List</h1>
       <Wrapper>
-        <AvatarList
-          avatars={avatars.map(a => ({ avatar: a, selected: false }))}
-        />
+        <AvatarList avatars={avatars} />
       </Wrapper>
     </div>
     <div>

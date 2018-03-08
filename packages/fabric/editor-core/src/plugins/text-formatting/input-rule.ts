@@ -27,6 +27,59 @@ const validRegex = (char: string, str: string): boolean => {
   return false;
 };
 
+/**
+ * Creates an InputRuleHandler that will match on a regular expression of the
+ * form `(prefix, content, suffix?)`, and replace it with some given text,
+ * maintaining prefix and suffix around the replacement.
+ *
+ * @param text text to replace with
+ */
+function replaceTextUsingCaptureGroup(
+  text: string,
+  trackingEventName?: string,
+): InputRuleHandler {
+  return (state, match, start, end): Transaction => {
+    const [, prefix, , suffix] = match;
+    const replacement = (prefix || '') + text + (suffix || '');
+
+    const charFrom = end - match[0].length + 1;
+    const charTo = end;
+
+    if (trackingEventName) {
+      analyticsService.trackEvent(
+        `atlassian.editor.format.${trackingEventName}.autoformatting`,
+      );
+    }
+
+    return state.tr.insertText(replacement, charFrom, charTo);
+  };
+}
+
+function createReplacementRule(
+  to: string,
+  from: RegExp,
+  trackingEventName?: string,
+): InputRule {
+  return createInputRule(
+    from,
+    replaceTextUsingCaptureGroup(to, trackingEventName),
+  );
+}
+
+function createReplacementRules(
+  replMap,
+  trackingEventName?: string,
+): Array<InputRule> {
+  const rules: Array<InputRule> = [];
+
+  for (const replacement of Object.keys(replMap)) {
+    const regex = replMap[replacement];
+    rules.push(createReplacementRule(replacement, regex, trackingEventName));
+  }
+
+  return rules;
+}
+
 function addMark(
   markType: MarkType,
   schema: Schema,
@@ -34,14 +87,15 @@ function addMark(
   char: string,
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
-    if (match[1] && match[1].length > 0 && !validRegex(char, match[1])) {
+    const [, prefix, textWithCombo] = match;
+    if (prefix && prefix.length > 0 && !validRegex(char, prefix)) {
       return;
     }
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
     // because we want ** to work for strong text
     // that's why "start" argument is wrong and we need to calculate it ourselves
-    const from = match[2] ? to - match[2].length + 1 : start;
+    const from = textWithCombo ? start + prefix.length : start;
 
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
@@ -49,6 +103,19 @@ function addMark(
       state.schema.marks.code &&
       state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())
     ) {
+      return;
+    }
+
+    // Prevent autoformatting across hardbreaks
+    let containsHardBreak;
+    state.doc.nodesBetween(from, to, node => {
+      if (node.type === schema.nodes.hardBreak) {
+        containsHardBreak = true;
+        return false;
+      }
+      return !containsHardBreak;
+    });
+    if (containsHardBreak) {
       return;
     }
 
@@ -113,8 +180,70 @@ export const italicRegex2 = /(\S*)(\*([^\s\*].*[^\s\*]|[^\s\*])\*)$/;
 export const strikeRegex = /(\S*)(\~\~(\S.*\S|\S)\~\~)$/;
 export const codeRegex = /(\S*)(`[^\s][^`]*`)$/;
 
+// We don't agressively upgrade single quotes to smart quotes because
+// they may clash with an emoji. Only do that when we have a matching
+// single quote, or a contraction.
+function createSingleQuotesRules(trackingEventName): Array<InputRule> {
+  return [
+    // wrapped text
+    createInputRule(
+      /(\s+|^)'(.*)'$/,
+      (state, match, start, end): Transaction => {
+        const [, spacing, innerContent] = match;
+        const replacement = spacing + '‘' + innerContent + '’';
+
+        analyticsService.trackEvent(
+          `atlassian.editor.format.${trackingEventName}.autoformatting`,
+        );
+
+        return state.tr.insertText(replacement, start, end);
+      },
+    ),
+
+    // apostrophe
+    createReplacementRule('’', /(\w)(')(\w)$/, trackingEventName),
+  ];
+}
+
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
-  const rules: Array<InputRule> = [];
+  const rules: Array<InputRule> = [
+    ...createReplacementRules(
+      {
+        Atlassian: /(\s+|^)(atlassian)$/,
+        Jira: /(\s+|^)(jira|JIRA)$/,
+        Bitbucket: /(\s+|^)(bitbucket|BitBucket)$/,
+        Hipchat: /(\s+|^)(hipchat|HipChat)$/,
+        Trello: /(\s+|^)(trello)$/,
+      },
+      'product',
+    ),
+
+    ...createReplacementRules(
+      {
+        '→': /(\s+|^)(--?>)(\s)$/,
+        '←': /(\s+|^)(<--?)(\s)$/,
+      },
+      'arrow',
+    ),
+
+    ...createReplacementRules(
+      {
+        '—': /()(--)(\s)$/,
+        '…': /()(\.\.\.)$/,
+      },
+      'typography',
+    ),
+
+    ...createReplacementRules(
+      {
+        '“': /((?:^|[\s\{\[\(\<'"\u2018\u201C]))(")$/,
+        '”': /"$/,
+      },
+      'quote',
+    ),
+
+    ...createSingleQuotesRules('quote'),
+  ];
 
   if (schema.marks.strong) {
     // **string** or __strong__ should bold the text

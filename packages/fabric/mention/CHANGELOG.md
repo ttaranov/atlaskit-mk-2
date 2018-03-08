@@ -1,5 +1,17 @@
 # @atlaskit/mention
 
+## 9.2.2
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
+## 9.2.1
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
+## 9.2.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 9.1.5
+- [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
+
 ## 9.1.4
 - [patch] Disable browser's spell check in mention lozenge [c04bf36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c04bf36)
 

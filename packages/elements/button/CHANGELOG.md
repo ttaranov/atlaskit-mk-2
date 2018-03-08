@@ -1,5 +1,14 @@
 # @atlaskit/button
 
+## 6.6.1
+- [patch] added selected focus state for button [dad190d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dad190d)
+
+## 6.6.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 6.5.0
+- [minor] Instrument button with analytics [4e84f5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e84f5b)
+
 ## 6.4.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

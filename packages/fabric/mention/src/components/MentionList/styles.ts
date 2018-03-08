@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 
 import {
   mentionListWidth,
@@ -11,8 +14,9 @@ export interface MentionListStyleProps {
   empty?: boolean;
 }
 
-// tslint:disable:next-line variable-name
-export const MentionListStyle = styled.div`
+export const MentionListStyle: ComponentClass<
+  HTMLAttributes<{}> & MentionListStyleProps
+> = styled.div`
   display: ${(props: MentionListStyleProps) =>
     props.empty ? 'none' : 'block'};
 

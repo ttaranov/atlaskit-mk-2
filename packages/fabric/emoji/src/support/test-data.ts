@@ -148,6 +148,43 @@ export const loadedAltMediaEmoji: EmojiDescriptionWithVariations = {
   },
 };
 
+export const siteEmojiFoo: EmojiDescriptionWithVariations = {
+  id: 'foo',
+  name: 'foo',
+  fallback: ':foo:',
+  type: 'SITE',
+  category: 'CUSTOM',
+  order: -1000,
+  searchable: true,
+  shortName: ':foo:',
+  creatorUserId: 'hulk',
+  representation: {
+    height: 72,
+    width: 92,
+    imagePath: 'https://image-path-foo.png',
+  },
+  skinVariations: [],
+};
+
+export const siteEmojiWtf: EmojiDescriptionWithVariations = {
+  id: 'wtf',
+  name: 'wtf',
+  fallback: ':wtf:',
+  type: 'SITE',
+  category: 'CUSTOM',
+  order: -1000,
+  searchable: true,
+  shortName: ':wtf:',
+  creatorUserId: 'Thor',
+  representation: {
+    height: 72,
+    width: 92,
+    imagePath:
+      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+  },
+  skinVariations: [],
+};
+
 const missingMediaId = 'some-new-emoji';
 
 export const missingMediaEmojiId: EmojiId = {

@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { gridSize, colors } from '@atlaskit/theme';
 
-// tslint:disable-next-line:variable-name
-export const CheckBoxWrapper = styled.span`
+export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   flex: 0 0 16px;
   width: 16px;
   height: 16px;
@@ -29,7 +31,6 @@ export const CheckBoxWrapper = styled.span`
       &::after {
         background: ${colors.N0};
         background-size: 16px;
-        border-color: transparent;
         border-radius: 3px;
         border-style: solid;
         border-width: 1px;

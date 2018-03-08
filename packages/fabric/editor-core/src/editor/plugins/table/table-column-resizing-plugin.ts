@@ -10,13 +10,23 @@ const updateControls = (state: EditorState) => {
   if (!tableElement) {
     return;
   }
+
   const cols = tableElement.querySelector('tr')!.children;
-  const headerCols: any = tableElement.parentElement.querySelectorAll(
+  const columnControls: any = tableElement.parentElement.querySelectorAll(
     '.table-column',
   );
+  const rows = tableElement.querySelectorAll('tr');
+  const rowControls: any = tableElement.parentElement.parentElement.querySelectorAll(
+    '.table-row',
+  );
 
-  for (let i = 0, count = headerCols.length; i < count; i++) {
-    headerCols[i].style.width = `${cols[i].offsetWidth + 1}px`;
+  // update column controls width on resize
+  for (let i = 0, count = columnControls.length; i < count; i++) {
+    columnControls[i].style.width = `${cols[i].offsetWidth + 1}px`;
+  }
+  // update rows controls height on resize
+  for (let i = 0, count = rowControls.length; i < count; i++) {
+    rowControls[i].style.height = `${rows[i].offsetHeight + 1}px`;
   }
 
   const rightShadow = tableElement.parentElement.parentElement.querySelector(

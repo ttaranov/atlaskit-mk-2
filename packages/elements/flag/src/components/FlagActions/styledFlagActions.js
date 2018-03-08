@@ -64,18 +64,18 @@ export const Button = styled.button`
   white-space: nowrap;
   width: auto;
 
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
   &:hover {
     text-decoration: underline;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
-  }
-
-  &::-moz-focus-inner {
-    border: 0;
-    margin: 0;
-    padding: 0;
+    box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;

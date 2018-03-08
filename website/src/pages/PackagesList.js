@@ -68,7 +68,7 @@ const renderRow = (
         key: id,
         content: (
           <RowCell>
-            <a href={`/mk-2/packages/${groupId}/${id}`}>{fs.titleize(id)}</a>
+            <a href={`/packages/${groupId}/${id}`}>{fs.titleize(id)}</a>
           </RowCell>
         ),
       },

@@ -5,7 +5,7 @@ import { CardAction, CardActionType } from '@atlaskit/media-core';
 import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
 import { Menu } from '../menu';
-import { Ellipsify } from '../ellipsify';
+import { Ellipsify } from '@atlaskit/media-ui';
 import {
   Wrapper,
   Overlay,

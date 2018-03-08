@@ -1,87 +1,49 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  AnalyticsContext,
-  AnalyticsListener,
-  UIAnalyticsEvent,
-  withAnalyticsContext,
-  withAnalyticsEvents,
-} from '../src';
+import FieldText from '@atlaskit/field-text';
+import Button from '@atlaskit/button';
+import { AnalyticsListener } from '../src';
 
-const Button = withAnalyticsContext({ component: 'button' })(
-  withAnalyticsEvents({ onClick: { action: 'click' } })(
-    ({ createAnalyticsEvent, ...props }) => <button {...props} />,
-  ),
-);
-
-const Input = withAnalyticsContext({ component: 'text-field' })(
-  withAnalyticsEvents({ onKeyDown: { action: 'keydown' } })(
-    ({ createAnalyticsEvent, ...props }) => <input {...props} type="text" />,
-  ),
-);
-
-// eslint-disable-next-line react/no-multi-comp
 class Form extends Component<*, { value: string }> {
   state = {
-    value: 'Field value',
+    value: 'Joe Bloggs',
   };
 
-  handleInputChange = e => this.setState({ value: e.target.value });
-
-  handleInputKeyDown = (e, analyticsEvent) => {
-    if (e.key === 'Enter') {
-      this.onSubmit(analyticsEvent);
-    }
-  };
+  handleInputChange = e => this.setState({ value: e.currentTarget.value });
 
   handleSubmitButtonClick = (e, analyticsEvent) => {
-    this.onSubmit(analyticsEvent);
-  };
-
-  onSubmit = analyticsEvent => {
     analyticsEvent
       .update(payload => ({
         ...payload,
-        action: 'submit',
-        originalInteraction: payload.action,
         value: this.state.value,
       }))
-      .fire('jira');
+      .fire();
   };
 
   render() {
     return (
-      <AnalyticsContext data={{ component: 'form' }}>
-        <div>
-          <Input
-            onChange={this.handleInputChange}
-            onKeyDown={this.handleInputKeyDown}
-            value={this.state.value}
-          />
-          <Button
-            analyticsContext={{ component: 'submit-button' }}
-            onClick={this.handleSubmitButtonClick}
-          >
+      <div>
+        <FieldText
+          label="Name"
+          onChange={this.handleInputChange}
+          value={this.state.value}
+        />
+        <p>
+          <Button appearance="primary" onClick={this.handleSubmitButtonClick}>
             Submit
           </Button>
-        </div>
-      </AnalyticsContext>
+        </p>
+      </div>
     );
   }
 }
 
-// eslint-disable-next-line react/no-multi-comp
-export default class App extends Component<void> {
-  handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
-    const { payload, context } = analyticsEvent;
-    console.log('Received event:', { payload, context });
-  };
+const App = () => (
+  <AnalyticsListener
+    onEvent={({ payload }) => console.log('Event payload:', payload)}
+  >
+    <Form />
+  </AnalyticsListener>
+);
 
-  render() {
-    return (
-      <AnalyticsListener channel="jira" onEvent={this.handleEvent}>
-        <Form />
-      </AnalyticsListener>
-    );
-  }
-}
+export default App;

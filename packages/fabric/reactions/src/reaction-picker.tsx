@@ -91,6 +91,7 @@ const popupStyle = style({
 });
 
 export default class ReactionPicker extends PureComponent<Props, State> {
+  // @ts-ignore: unused variable, TODO: delete?
   private trigger?: Trigger | Button;
 
   constructor(props) {

@@ -1,5 +1,19 @@
 # @atlaskit/media-picker
 
+## 1.1.2
+
+## 1.1.1
+
+- [patch] Emit 100% upload progress when last file chunk has been uploaded [db24bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db24bed)
+
+## 1.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 1.0.11
+
+## 1.0.10
+- [patch] Bump Rusha version to 0.8.13 [67a6312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67a6312)
+
 ## 1.0.9
 
 ## 1.0.8

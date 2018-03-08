@@ -14,6 +14,12 @@ export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
 
+  static from(view: EditorView, transformer?: Transformer<any>) {
+    const editorActions = new EditorActions();
+    editorActions._privateRegisterEditor(view, transformer);
+    return editorActions;
+  }
+
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
     return this.editorView;

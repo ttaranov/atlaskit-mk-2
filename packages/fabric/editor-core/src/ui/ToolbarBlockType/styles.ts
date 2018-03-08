@@ -1,17 +1,18 @@
-import { akColorN30 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const ButtonContent = styled.span`
+export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   width: 80px;
   height: 24px;
   align-items: center;
-  padding: ${props => (props.width ? 0 : '0 8px')};
+  padding: ${(props: any) => (props.width ? 0 : '0 8px')};
 `;
 
-// tslint:disable-next-line:variable-name
-export const Separator = styled.span`
+export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   background: ${akColorN30};
   width: 1px;
   height: 24px;
@@ -19,14 +20,12 @@ export const Separator = styled.span`
   margin: 0 8px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.span`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const MenuWrapper = styled.span`
+export const MenuWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
   > div > div {
@@ -34,7 +33,8 @@ export const MenuWrapper = styled.span`
   }
 `;
 
-// tslint:disable-next-line:variable-name
-export const ExpandIconWrapper = styled.span`
+export const ExpandIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
   margin-left: -8px;
 `;

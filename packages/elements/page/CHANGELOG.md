@@ -1,5 +1,14 @@
 # @atlaskit/page
 
+## 5.1.1
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
+## 5.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 5.0.15
+- [patch] added min-with on text to enable text truncating [44fc258](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44fc258)
+
 ## 5.0.14
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

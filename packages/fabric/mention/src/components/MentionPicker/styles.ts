@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import {
@@ -12,19 +15,21 @@ export interface MentionPickerStyleProps {
   visible?: boolean | string;
 }
 
-// tslint:disable:next-line variable-name
-export const MentionPickerStyle = styled.div`
+export const MentionPickerStyle: ComponentClass<
+  HTMLAttributes<{}> & MentionPickerStyleProps
+> = styled.div`
   display: ${(props: MentionPickerStyleProps) =>
     props.visible ? 'block' : 'none'};
 `;
 
-// tslint:disable:next-line variable-name
-export const MentionPickerInfoStyle = styled.div`
+export const MentionPickerInfoStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   background: #fff;
   color: ${akColorN100};
   border: 1px solid ${noDialogContainerBorderColor};
   border-radius: ${noDialogContainerBorderRadius};
-  box-shadow: ${noDialogContainerBoxShadow}
+  box-shadow: ${noDialogContainerBoxShadow};
   display: block;
   width: ${mentionListWidth};
   white-space: nowrap;

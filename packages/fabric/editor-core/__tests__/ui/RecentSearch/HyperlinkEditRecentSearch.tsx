@@ -13,7 +13,6 @@ import {
   a as link,
   createEditor,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 
 /**
  * Provides sample data for this suite of tests.
@@ -95,7 +94,6 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
   const editor = (doc: any) =>
     createEditor<HyperlinkState>({
       doc,
-      editorPlugins: [hyperlinkPlugin],
       pluginKey: stateKey,
     });
 

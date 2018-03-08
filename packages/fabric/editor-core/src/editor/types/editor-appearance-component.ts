@@ -15,6 +15,7 @@ export interface EditorAppearanceComponentProps {
 
   providerFactory: ProviderFactory;
   editorActions?: EditorActions;
+  editorDOMElement: JSX.Element;
   editorView?: EditorView;
 
   eventDispatcher?: EventDispatcher;

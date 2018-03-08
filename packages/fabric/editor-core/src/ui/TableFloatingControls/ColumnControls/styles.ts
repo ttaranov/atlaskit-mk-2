@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorTableBorderRadius,
   akEditorTableBorder,
@@ -12,8 +15,7 @@ import {
   LineMarkerDefault,
 } from '../styles';
 
-// tslint:disable-next-line:variable-name
-export const ColumnContainer = styled.div`
+export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: -${akEditorTableToolbarSize - 1}px;
   left: 0;
@@ -25,15 +27,17 @@ export const ColumnContainer = styled.div`
     display: block;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const ColumnInner = styled.div`
+
+export const ColumnInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   & > div:last-child > button {
     border-top-right-radius: ${akEditorTableBorderRadius};
   }
 `;
-// tslint:disable-next-line:variable-name
-export const ColumnControlsButtonWrap = styled.div`
+
+export const ColumnControlsButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: relative;
   margin-right: -1px;
   &:hover,
@@ -41,8 +45,10 @@ export const ColumnControlsButtonWrap = styled.div`
     z-index: 1;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const HeaderButton = styled(HeaderButtonDefault)`
+
+export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
+  HeaderButtonDefault,
+)`
   border-right: 1px solid ${akEditorTableBorder};
   border-bottom: none;
   border-radius: 0;
@@ -56,8 +62,10 @@ export const HeaderButton = styled(HeaderButtonDefault)`
     height: ${akEditorTableToolbarSize}px;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertColumnButtonWrap = styled.div`
+
+export const InsertColumnButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: absolute;
   top: -20px;
   right: -10px;
@@ -69,17 +77,23 @@ export const InsertColumnButtonWrap = styled.div`
     display: flex;
   }
 `;
-// tslint:disable-next-line:variable-name
-export const InsertColumnMarker = styled(InsertMarkerDefault)`
+
+export const InsertColumnMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  InsertMarkerDefault,
+)`
   bottom: 3px;
   left: 7px;
 `;
-// tslint:disable-next-line:variable-name
-export const InsertColumnButtonInner = styled(InsertButtonDefault)`
+
+export const InsertColumnButtonInner: ComponentClass<
+  HTMLAttributes<{}>
+> = styled(InsertButtonDefault)`
   top: 5px;
 `;
-// tslint:disable-next-line:variable-name
-export const ColumnLineMarker = styled(LineMarkerDefault)`
+
+export const ColumnLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
+  LineMarkerDefault,
+)`
   width: 2px;
   left: 8px;
   top: 20px;

@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import {
   akColorN30,
   akColorN100,
@@ -22,8 +25,7 @@ export interface InfoSectionStyleProps {
   restricted?: boolean;
 }
 
-// tslint:disable:next-line variable-name
-export const RowStyle = styled.div`
+export const RowStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -34,16 +36,18 @@ export const RowStyle = styled.div`
   vertical-align: middle;
 `;
 
-// tslint:disable:next-line variable-name
-export const AvatarStyle = styled.span`
+export const AvatarStyle: ComponentClass<
+  HTMLAttributes<{}> & AvatarSectionStyleProps
+> = styled.span`
   position: relative;
   flex: initial;
   opacity: ${(props: AvatarSectionStyleProps) =>
     props.restricted ? '0.5' : 'inherit'};
 `;
 
-// tslint:disable:next-line variable-name
-export const NameSectionStyle = styled.div`
+export const NameSectionStyle: ComponentClass<
+  HTMLAttributes<{}> & NameSectionStyleProps
+> = styled.div`
   flex: 1;
   min-width: 0;
   margin-left: 14px;
@@ -51,8 +55,7 @@ export const NameSectionStyle = styled.div`
     props.restricted ? '0.5' : 'inherit'};
 `;
 
-// tslint:disable:next-line variable-name
-export const FullNameStyle = styled.span`
+export const FullNameStyle: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -60,8 +63,7 @@ export const FullNameStyle = styled.span`
   color: ${akColorN900};
 `;
 
-// tslint:disable:next-line variable-name
-export const NicknameStyle = styled.span`
+export const NicknameStyle: ComponentClass<HTMLAttributes<{}>> = styled.span`
   color: ${akColorN100};
   font-size: 12px;
 
@@ -73,8 +75,9 @@ export const NicknameStyle = styled.span`
   white-space: nowrap;
 `;
 
-// tslint:disable:next-line variable-name
-export const InfoSectionStyle = styled.div`
+export const InfoSectionStyle: ComponentClass<
+  HTMLAttributes<{}> & InfoSectionStyleProps
+> = styled.div`
   display: flex;
   flex-direction: column;
   text-align: right;
@@ -90,15 +93,16 @@ export const InfoSectionStyle = styled.div`
 `;
 
 // tslint:disable:next-line variable-name
-export const TimeStyle = styled.div`
+export const TimeStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-left: 20px;
   flex: none;
   color: ${akColorN100};
   font-size: 12px;
 `;
 
-// tslint:disable:next-line variable-name
-export const MentionItemStyle = styled.div`
+export const MentionItemStyle: ComponentClass<
+  HTMLAttributes<{}> & MentionItemStyleProps
+> = styled.div`
   background-color: ${(props: MentionItemStyleProps) =>
     props.selected ? akColorN30 : 'transparent'};
   display: block;
@@ -109,8 +113,9 @@ export const MentionItemStyle = styled.div`
   cursor: pointer;
 `;
 
-// tslint:disable:next-line variable-name
-export const AccessSectionStyle = styled.div`
+export const AccessSectionStyle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   padding-left: 5px;
   color: ${akColorN500};
 `;

@@ -1,9 +1,13 @@
 import styled from 'styled-components';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { Wrapper as WrapperDefault } from '../styles';
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled(WrapperDefault)`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
+  WrapperDefault,
+)`
   cursor: pointer;
   display: inline-flex;
   margin: 1px;

@@ -10,15 +10,13 @@ import {
   sendKeyToPm,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import hyperlinkPlugin from '../../../src/editor/plugins/hyperlink';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textFormatting from '../../../src/editor/plugins/text-formatting';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [hyperlinkPlugin, codeBlockPlugin, textFormatting()],
+      editorPlugins: [codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -35,6 +33,13 @@ describe('hyperlink', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
+    });
+
+    it('should not convert a hash text to hyperlink', () => {
+      const trackEvent = jest.fn();
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
+      insertText(editorView, '#test ', sel, sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('#test ')));
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {

@@ -69,4 +69,19 @@ describe('MediaLocalUpload', () => {
       },
     });
   });
+
+  it('should only emitUploadEnd when file is converted', () => {
+    const { emitter, emitUploadServiceEvent } = setup();
+
+    emitUploadServiceEvent('file-converted', {
+      file: imageFile,
+      metadata: { id: 'some-id' },
+    });
+
+    expect(emitter.emit).toHaveBeenCalledTimes(1);
+    expect(emitter.emit).toBeCalledWith('upload-end', {
+      file: imageFile,
+      public: { id: 'some-id' },
+    });
+  });
 });

@@ -1,23 +1,37 @@
+declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case FileReader
+import * as util from '../src/util';
+const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { CONTAINER_SIZE, ImageNavigator } from '../src/image-navigator';
-import { ImageUploader, DragZone } from '../src/image-navigator/styled';
+import { ERROR, MAX_SIZE_MB } from '../src/avatar-picker-dialog';
+import {
+  ImageUploader,
+  DragZone,
+  DragZoneImage,
+} from '../src/image-navigator/styled';
 import { ImageCropper } from '../src/image-cropper';
 import Slider from '@atlaskit/field-range';
 import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
+import { errorIcon } from '../src/image-navigator/images';
+import { Ellipsify } from '@atlaskit/media-ui';
 
 describe('Image navigator', () => {
   let component;
-  let onImageChanged;
+  let onImageLoaded;
   let onPositionChanged;
   let onSizeChanged;
   let onRemoveImage;
+  let onImageError;
+  let onImageUploaded;
 
   beforeEach(() => {
-    onImageChanged = jest.fn();
+    onImageLoaded = jest.fn();
     onPositionChanged = jest.fn();
     onSizeChanged = jest.fn();
     onRemoveImage = jest.fn();
+    onImageError = jest.fn();
+    onImageUploaded = jest.fn();
   });
 
   describe('with an imageSource', () => {
@@ -27,10 +41,12 @@ describe('Image navigator', () => {
       component = mount(
         <ImageNavigator
           imageSource={smallImage}
-          onImageChanged={onImageChanged}
+          onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
           onSizeChanged={onSizeChanged}
           onRemoveImage={onRemoveImage}
+          onImageError={onImageError}
+          onImageUploaded={onImageUploaded}
         />,
       );
       imageCropper = () => component.find(ImageCropper);
@@ -48,6 +64,7 @@ describe('Image navigator', () => {
     describe('when landscape image is loaded', () => {
       const imageHeight = CONTAINER_SIZE * 2;
       const imageWidth = CONTAINER_SIZE * 4;
+
       beforeEach(() => {
         imageCropper()
           .props()
@@ -226,10 +243,12 @@ describe('Image navigator', () => {
     beforeEach(() => {
       component = mount(
         <ImageNavigator
-          onImageChanged={onImageChanged}
+          onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
           onSizeChanged={onSizeChanged}
           onRemoveImage={onRemoveImage}
+          onImageError={onImageError}
+          onImageUploaded={onImageUploaded}
         />,
       );
     });
@@ -239,6 +258,14 @@ describe('Image navigator', () => {
     });
 
     describe('when a file is dropped', () => {
+      class MockFileReader {
+        onload: (e: any) => {};
+
+        readAsDataURL(file: File) {
+          this.onload({ target: this });
+        }
+      }
+
       const mockDropEvent = file => ({
         stopPropagation: jest.fn(),
         preventDefault: jest.fn(),
@@ -247,23 +274,33 @@ describe('Image navigator', () => {
         },
       });
 
-      it('should set imageFile state with the image', done => {
-        const droppedImage = new File(['dsjklDFljk'], 'nice-photo.png', {
-          type: 'image/png',
-        });
+      const droppedImage = new File(['dsjklDFljk'], 'nice-photo.png', {
+        type: 'image/png',
+      });
+
+      let FileReaderSpy;
+
+      beforeEach(() => {
+        FileReaderSpy = jest
+          .spyOn(global, 'FileReader')
+          .mockImplementation(() => new MockFileReader());
+      });
+
+      afterEach(() => {
+        FileReaderSpy.mockReset();
+        FileReaderSpy.mockRestore();
+      });
+
+      it('should set imageFile state with the image', () => {
         const { onDrop } = component.find(DragZone).props();
 
         onDrop(mockDropEvent(droppedImage));
 
-        setTimeout(() => {
-          expect(component.state('imageFile')).toBe(droppedImage);
-          done();
-        });
-        // a better test would be something like
-        // expect(onImageChanged).toHaveBeenCalledWith(droppedImage, { x: 0, y: 0, size: width });
+        expect(component.state('imageFile')).toBe(droppedImage);
+        expect(onImageUploaded).toHaveBeenCalledWith(droppedImage);
       });
 
-      it('should not call onImageDropped when file is not an image', () => {
+      it('should not call onImageUploaded when file is not an image', () => {
         const droppedImage = new File(['not an image'], 'text.txt', {
           type: 'text/plain',
         });
@@ -271,7 +308,17 @@ describe('Image navigator', () => {
 
         onDrop(mockDropEvent(droppedImage));
 
-        expect(onImageChanged).not.toHaveBeenCalled();
+        expect(onImageUploaded).not.toHaveBeenCalled();
+      });
+
+      it('should not allow images greater than defined MB limit', () => {
+        const { onDrop } = component.find(DragZone).props();
+        fileSizeMbSpy.mockReturnValue(MAX_SIZE_MB + 1);
+
+        onDrop(mockDropEvent(droppedImage));
+
+        expect(onImageError).toHaveBeenCalledWith(ERROR.SIZE);
+        expect(onImageUploaded).not.toHaveBeenCalled();
       });
     });
   });
@@ -281,10 +328,12 @@ describe('Image navigator', () => {
       component = shallow(
         <ImageNavigator
           imageSource={smallImage}
-          onImageChanged={onImageChanged}
+          onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
           onSizeChanged={onSizeChanged}
           onRemoveImage={onRemoveImage}
+          onImageError={onImageError}
+          onImageUploaded={onImageUploaded}
         />,
       );
       const { onRemoveImage: onRemoveImageProp } = component
@@ -293,6 +342,37 @@ describe('Image navigator', () => {
       onRemoveImageProp();
       expect(component.state().fileImageSource).toBeUndefined();
       expect(component.state().imageFile).toBeUndefined();
+    });
+  });
+
+  describe('when an error state is set', () => {
+    const errorMessage = 'Error message!';
+
+    beforeEach(() => {
+      component = mount(
+        <ImageNavigator
+          imageSource={smallImage}
+          onImageLoaded={onImageLoaded}
+          onPositionChanged={onPositionChanged}
+          onSizeChanged={onSizeChanged}
+          onRemoveImage={onRemoveImage}
+          errorMessage={errorMessage}
+          onImageError={onImageError}
+          onImageUploaded={onImageUploaded}
+        />,
+      );
+    });
+
+    it('should display error message', () => {
+      expect(component.find(Ellipsify).prop('text')).toBe(errorMessage);
+    });
+
+    it('should display error icon', () => {
+      expect(component.find(DragZoneImage).props().src).toBe(errorIcon);
+    });
+
+    it('should not display image cropper', () => {
+      expect(component.find(ImageCropper)).toHaveLength(0);
     });
   });
 });

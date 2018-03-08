@@ -26,6 +26,7 @@ export interface DropzoneWrapperState {
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
+  inflightUploads: string[];
 }
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
@@ -38,6 +39,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
+    inflightUploads: [],
   };
 
   // TODO: Move into example-helpers
@@ -78,7 +80,11 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
     dropzone.on('uploads-start', data => {
       console.log('uploads-start');
-      console.log(data);
+      const newInflightUploads = data.files.map(file => file.id);
+
+      this.setState({
+        inflightUploads: [...this.state.inflightUploads, ...newInflightUploads],
+      });
     });
 
     dropzone.on('upload-preview-update', data => {
@@ -92,7 +98,12 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
     dropzone.on('upload-processing', data => {
       console.log('file processing');
-      console.log(data);
+      const processingFileId = data.file.id;
+      const inflightUploads = this.state.inflightUploads.filter(
+        fileId => fileId !== processingFileId,
+      );
+
+      this.setState({ inflightUploads });
     });
 
     dropzone.on('upload-end', data => {
@@ -146,7 +157,11 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   };
 
   onCancel = () => {
-    this.dropzone.cancel();
+    const { inflightUploads } = this.state;
+
+    inflightUploads.forEach(uploadId => this.dropzone.cancel(uploadId));
+
+    this.setState({ inflightUploads: [] });
   };
 
   renderLastItems = () => {
@@ -170,7 +185,12 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   };
 
   render() {
-    const { isConnectedToUsersCollection, isActive } = this.state;
+    const {
+      isConnectedToUsersCollection,
+      isActive,
+      inflightUploads,
+    } = this.state;
+    const isCancelButtonDisabled = inflightUploads.length === 0;
 
     return (
       <PopupContainer>
@@ -178,8 +198,12 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
           <Button appearance="primary" onClick={this.onFetchLastItems}>
             Fetch last items
           </Button>
-          <Button appearance="danger" onClick={this.onCancel}>
-            Cancel
+          <Button
+            appearance="danger"
+            onClick={this.onCancel}
+            isDisabled={isCancelButtonDisabled}
+          >
+            Cancel uploads
           </Button>
           Connected to users collection
           <Toggle

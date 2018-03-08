@@ -175,7 +175,7 @@ export default class Package extends Component<PackageProps, PackageState> {
     if (!res) return null;
 
     return inModal
-      ? `/mk-2/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
+      ? `/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
       : `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`;
   };
 
@@ -218,9 +218,7 @@ export default class Package extends Component<PackageProps, PackageState> {
         <Intro>{pkg.description}</Intro>
         <MetaData
           packageName={pkg.name}
-          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${
-            groupId
-          }/${pkgId}`}
+          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`}
         />
         <LatestChangelog
           changelog={changelog}

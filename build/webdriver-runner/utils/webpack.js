@@ -3,7 +3,6 @@
 
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
-
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
 DirectoryWatcher.prototype.createNestedWatcher = function(

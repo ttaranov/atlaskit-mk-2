@@ -1,5 +1,20 @@
 # @atlaskit/media-image
 
+## 24.1.2
+- [patch] fix issues with ellipsing of new smart-card designs [ec2bed9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec2bed9)
+
+## 24.1.1
+
+## 24.1.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
+## 24.0.6
+- [patch] Introduce media-ui package [39579e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39579e2)
+
+## 24.0.5
+- [patch] fix new smart-card design which is showing the dropdown below consecutive smart-cards [5574b67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5574b67)
+- [patch] fix issue with smart-card dropdown being hidden behind successive cards in new designs [ff01687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff01687)
+
 ## 24.0.4
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

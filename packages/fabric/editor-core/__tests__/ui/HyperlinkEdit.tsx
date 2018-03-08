@@ -7,26 +7,27 @@ import {
 } from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../src/ui/PanelTextInput';
+import ToolbarButton from '../../src/ui/ToolbarButton';
 import {
   createEvent,
   doc,
   p as paragraph,
   a as link,
   createEditor,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../src/utils';
 import { FakeTextCursorSelection } from '../../src/editor/plugins/fake-text-cursor/cursor';
-import hyperlinkPlugin from '../../src/editor/plugins/hyperlink';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) =>
     createEditor<HyperlinkState>({
       doc,
-      editorPlugins: [hyperlinkPlugin],
       pluginKey: hyperlinkPluginKey,
     });
   const blurEvent = createEvent('blur');
   const focusEvent = createEvent('focus');
+  const clickEvent = createEvent('click');
 
   it('should produce null HTML when another block on editor is focused', () => {
     const { editorView, plugin, pluginState } = editor(
@@ -293,5 +294,105 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     expect(
       editorView.state.selection instanceof FakeTextCursorSelection,
     ).toEqual(true);
+  });
+
+  it('unlinkify button should remove the linking', () => {
+    const { editorView, pluginState } = editor(
+      doc(
+        paragraph(
+          'before',
+          link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'),
+          'after',
+        ),
+      ),
+    );
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+    hyperlinkEdit.setState({ editorFocused: true });
+    hyperlinkEdit
+      .find(ToolbarButton)
+      .filterWhere(n => n.html().indexOf('Unlink') >= 0)
+      .childAt(0)
+      .simulate('click');
+    expect(editorView.state.doc).toEqualDocument(
+      doc(paragraph('beforewww.atlassian.comafter')),
+    );
+  });
+
+  it('should display a popup on hotkey, and maintain document contents', () => {
+    const { editorView, plugin, pluginState } = editor(
+      doc(paragraph('before', '<text>', 'after')),
+    );
+
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+
+    // ensure editor is focused and plugin recognises this
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
+    expect(pluginState.editorFocused).toBe(true);
+
+    // we should not be rendering anything at this stage, since it's plain text
+    expect(hyperlinkEdit.html()).toBeNull();
+
+    // use the shortcut to activate the editing popup
+    sendKeyToPm(editorView, 'Mod-k');
+
+    // ensure the document content remains
+    expect(editorView.state.doc).toEqualDocument(
+      doc(paragraph('before', '<text>', 'after')),
+    );
+
+    // and the popup should be displayed
+    expect(hyperlinkEdit.html()).not.toBeNull();
+    hyperlinkEdit.unmount();
+  });
+
+  it('should re-display a popup after blur, and maintain document contents', () => {
+    const initialDocument = doc(
+      paragraph(
+        'bef{<>}ore',
+        link({ href: 'http://www.atlassian.com' })('www.atla{link}ssian.com'),
+        'after',
+      ),
+    );
+
+    const { editorView, plugin, pluginState, refs } = editor(initialDocument);
+    const { link: linkRef } = refs;
+
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+
+    // ensure editor is focused and plugin recognises this
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
+    expect(pluginState.editorFocused).toBe(true);
+
+    // we should not be rendering anything at this stage, since it's plain text
+    expect(hyperlinkEdit.html()).toBeNull();
+
+    // move into link; popup should appear
+    setTextSelection(editorView, linkRef);
+    expect(hyperlinkEdit.html()).not.toBeNull();
+
+    // ensure the document content remains
+    expect(editorView.state.doc).toEqualDocument(initialDocument);
+
+    // click outside editor
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
+    expect(pluginState.editorFocused).toBe(false);
+
+    // popup should disappear
+    expect(hyperlinkEdit.html()).toBeNull();
+
+    // now refocus the editor and click, not modifying selection
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
+    plugin.props.handleClick!(editorView, clickEvent);
+    expect(pluginState.editorFocused).toBe(true);
+
+    // popup should reappear
+    expect(hyperlinkEdit.html()).not.toBeNull();
+    hyperlinkEdit.unmount();
   });
 });

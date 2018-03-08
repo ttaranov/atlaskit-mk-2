@@ -1,5 +1,37 @@
 # @atlaskit/emoji
 
+## 31.1.12
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
+## 31.1.11
+
+## 31.1.10
+- [patch] code clean up [b6ecb4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b6ecb4a)
+- [patch] kept currentUser attribute consistent in all places, fixed typescript errors [6f375f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f375f0)
+- [patch] added implementation for missing ES6 findIndex function [3ead412](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ead412)
+- [patch] removed service-data-site.json [653f2df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/653f2df)
+- [patch] user parameter renamed to currentUser, user custom group logic moved to EmojiPickerList.buildGroups, tests added [7796a7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7796a7c)
+- [patch] render user custom emoji separately [18f45ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18f45ff)
+
+## 31.1.9
+
+## 31.1.8
+- [patch] show custom emojis regardless of upload support [efc7e9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efc7e9a)
+
+## 31.1.7
+- [patch] removed UploadingEmojiResource.isCustomCategoryRequired function [9370179](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9370179)
+- [patch] only scroll to custom category after adding the emoji, fixed MockEmojiResource to not render custom category header if there is no custom emoji [22bc389](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22bc389)
+- [patch] refactored tests  [d9e3745](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9e3745)
+- [patch] show "add custom emoji" button if user moves mouse away from Footer area [38a1c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38a1c1c)
+- [patch] Fixed typescript error [26d187a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/26d187a)
+- [patch] added unit tests for EmojiPreview component [e136dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e136dff)
+- [patch] New UX button for adding a custom emoji [e86d2f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e86d2f4)
+
+## 31.1.6
+- [patch] fix mention and emoji bug related to MutationObserver API [dd0a69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd0a69c)
+
+## 31.1.5
+
 ## 31.1.4
 
 ## 31.1.3

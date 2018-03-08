@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
 import { Provider, connect, Dispatch } from 'react-redux';
 import Conversation, { Props as BaseProps } from '../components/Conversation';
 import { ResourceProvider } from '../api/ConversationResource';
@@ -96,6 +97,7 @@ export interface ContainerProps {
   };
   isExpanded?: boolean;
   onCancel?: () => void;
+  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {

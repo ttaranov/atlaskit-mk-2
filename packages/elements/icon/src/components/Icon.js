@@ -1,19 +1,9 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import uuid from 'uuid';
 import { colors } from '@atlaskit/theme';
-
-const sizes = {
-  small: '16px',
-  medium: '24px',
-  large: '32px',
-  xlarge: '48px',
-};
-
-// NOTE: spanStyles is exported for testing
-// Once styled-components is bumped > 2.X.X we can enjoy `toHaveStyleRule` from
-// https://github.com/styled-components/jest-styled-components#tohavestylerule
+import { sizes } from '../constants';
 
 const getSize = props => {
   if (props.size) {
@@ -22,7 +12,7 @@ const getSize = props => {
   return null;
 };
 
-export const spanStyles = css`
+export const IconWrapper = styled.span`
   ${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
@@ -41,10 +31,6 @@ export const spanStyles = css`
   stop {
     stop-color: currentColor;
   }
-`;
-
-export const IconWrapper = styled.span`
-  ${spanStyles};
 `;
 
 type Props = {

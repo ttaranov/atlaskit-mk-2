@@ -70,6 +70,7 @@ export class MediaPluginState {
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
+  public allUploadsFinished: boolean = true;
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
@@ -220,6 +221,27 @@ export class MediaPluginState {
     }
   }
 
+  updateUploadStateDebounce: number | null = null;
+  updateUploadState(): void {
+    if (!this.waitForMediaUpload) {
+      return;
+    }
+
+    if (this.updateUploadStateDebounce) {
+      clearTimeout(this.updateUploadStateDebounce);
+    }
+
+    this.updateUploadStateDebounce = setTimeout(() => {
+      this.updateUploadStateDebounce = null;
+      this.allUploadsFinished = false;
+      this.notifyPluginStateSubscribers();
+      this.waitForPendingTasks().then(() => {
+        this.allUploadsFinished = true;
+        this.notifyPluginStateSubscribers();
+      });
+    }, 0);
+  }
+
   updateLayout(layout: MediaSingleLayout): void {
     this.layout = layout;
     this.notifyPluginStateSubscribers();
@@ -257,8 +279,12 @@ export class MediaPluginState {
       return;
     }
 
-    const areImages = mediaStates.every(mediaState =>
-      isImage(mediaState.fileMimeType),
+    const imageAttachments = mediaStates.filter(media =>
+      isImage(media.fileMimeType),
+    );
+
+    const nonImageAttachements = mediaStates.filter(
+      media => !isImage(media.fileMimeType),
     );
 
     mediaStates.forEach(mediaState =>
@@ -273,13 +299,13 @@ export class MediaPluginState {
 
     if (
       this.editorAppearance !== 'message' &&
-      areImages &&
-      mediaSingle &&
-      allowMediaSingle
+      allowMediaSingle &&
+      mediaSingle
     ) {
-      mediaStates.forEach(mediaState =>
+      imageAttachments.forEach(mediaState =>
         this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );
+      insertMediaGroupNode(this.view, nonImageAttachements, collection);
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
@@ -832,6 +858,7 @@ export const createPlugin = (
 
       return {
         update: () => {
+          pluginState.updateUploadState();
           pluginState.insertLinks();
           pluginState.updateElement();
         },
