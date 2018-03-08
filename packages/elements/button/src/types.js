@@ -45,8 +45,12 @@ export type ButtonProps = {
   isDisabled?: boolean,
   /** Change the style to indicate the button is selected. */
   isSelected?: boolean,
+  /** Handler to be called on blur */
+  onBlur?: (e: SyntheticEvent<>) => void,
   /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
   onClick?: (e: SyntheticEvent<>, analyticsEvent: UIAnalyticsEvent) => void,
+  /** Handler to be called on focus */
+  onFocus?: (e: SyntheticEvent<>) => void,
   /** Set the amount of padding in the button. */
   spacing?: 'compact' | 'default' | 'none',
   /** Assign specific tabIndex order to the underlying html button. */
