@@ -25,6 +25,7 @@ const getAppearanceProperty = (
 
 const getState = ({ disabled, isActive, isFocus, isHover, isSelected }) => {
   if (disabled) return 'disabled';
+  if (isSelected && isFocus) return 'focusSelected';
   if (isSelected) return 'selected';
   if (isActive) return 'active';
   if (isHover) return 'hover';

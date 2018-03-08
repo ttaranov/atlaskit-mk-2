@@ -87,6 +87,73 @@ describe('block-type – keymaps', () => {
           ).to.eq(true);
           editorView.destroy();
         });
+
+        it('can insert multiple hard-breaks', () => {
+          const { editorView } = editor(doc(h1('t{<}ex{>}t')));
+          sendKeyToPm(editorView, 'Shift-Enter');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(h1('t', hardBreak(), 't'))(editorView.state.schema),
+          );
+
+          expect(
+            trackEvent.calledWith('atlassian.editor.newline.keyboard'),
+          ).to.eq(true);
+
+          sendKeyToPm(editorView, 'Shift-Enter');
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(h1('t', hardBreak(), hardBreak(), 't'))(
+              editorView.state.schema,
+            ),
+          );
+
+          expect(
+            trackEvent.calledWith('atlassian.editor.newline.keyboard'),
+          ).to.eq(true);
+
+          sinon.assert.callCount(trackEvent, 3);
+
+          editorView.destroy();
+        });
+
+        it('moves selection along with hard-breaks', () => {
+          const { editorView } = editor(doc(h1('t{<}ex{>}t')));
+          const { from: initialFrom } = editorView.state.selection;
+
+          sinon.assert.callCount(trackEvent, 1);
+
+          // first line break
+          sendKeyToPm(editorView, 'Shift-Enter');
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(h1('t', hardBreak(), 't'))(editorView.state.schema),
+          );
+
+          const { from: firstFrom, to: firstTo } = editorView.state.selection;
+          expect(firstFrom).to.eq(firstTo);
+          expect(firstFrom).to.eq(initialFrom + 1);
+
+          // second line break
+          sendKeyToPm(editorView, 'Shift-Enter');
+
+          expect(editorView.state.doc).to.deep.equal(
+            doc(h1('t', hardBreak(), hardBreak(), 't'))(
+              editorView.state.schema,
+            ),
+          );
+
+          const { from: secondFrom, to: secondTo } = editorView.state.selection;
+          expect(secondFrom).to.eq(secondTo);
+          expect(secondFrom).to.eq(firstFrom + 1);
+
+          expect(
+            trackEvent.calledWith('atlassian.editor.newline.keyboard'),
+          ).to.eq(true);
+
+          sinon.assert.callCount(trackEvent, 3);
+
+          editorView.destroy();
+        });
       });
     });
   }

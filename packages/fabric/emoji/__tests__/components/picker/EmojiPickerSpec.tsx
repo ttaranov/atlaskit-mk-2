@@ -29,6 +29,7 @@ import FileChooser from '../../../src/components/common/FileChooser';
 import { EmojiDescription, OptionalEmojiDescription } from '../../../src/types';
 import {
   customCategory,
+  customTitle,
   defaultCategories,
   frequentCategory,
   selectedToneStorageKey,
@@ -131,14 +132,16 @@ describe('<EmojiPicker />', () => {
         },
       };
       const component = await helper.setupPicker({} as Props, mockConfig);
-      await helper.showCategory(customCategory, component);
+
+      await helper.showCategory(customCategory, component, customTitle);
+
       const list = getUpdatedList(component);
-      const customHeading = helper.findCategoryHeading(customCategory, list);
+      const customHeading = helper.findCategoryHeading(customTitle, list);
       expect(customHeading).toHaveLength(1);
-      expect(customHeading.prop('title')).toEqual(customCategory);
+      expect(customHeading.prop('title')).toEqual(customTitle);
 
       const customEmojiRows = helper.emojiRowsVisibleInCategory(
-        customCategory,
+        customTitle,
         component,
       );
       const placeholders = customEmojiRows.find(EmojiPlaceholder);
@@ -191,8 +194,9 @@ describe('<EmojiPicker />', () => {
         helper.emojisVisible(component, getUpdatedList(component)),
       );
       expect(helper.categoryVisible(customCategory, component)).toBe(false);
-      helper.showCategory(customCategory, component);
-      await waitUntil(() => helper.categoryVisible(customCategory, component));
+      helper.showCategory(customCategory, component, customTitle);
+      await waitUntil(() => helper.categoryVisible(customTitle, component));
+
       const list = getUpdatedList(component);
       const emoji = helper.findEmojiInCategory(
         helper.findEmoji(list),
@@ -272,8 +276,8 @@ describe('<EmojiPicker />', () => {
 
     it('adds non-standard categories to the selector dynamically based on whether they are populated with emojis', async () => {
       const component = await helper.setupPicker();
-      helper.showCategory(customCategory, component);
-      await waitUntil(() => helper.categoryVisible(customCategory, component));
+      helper.showCategory(customCategory, component, customTitle);
+      await waitUntil(() => helper.categoryVisible(customTitle, component));
       const categorySelector = component.find(CategorySelector);
       const buttons = categorySelector.find('button');
       expect(buttons).toHaveLength(defaultCategories.length + 2);
@@ -441,7 +445,7 @@ describe('<EmojiPicker />', () => {
     it('UploadingEmojiResource - "with media token" - upload UI', async () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = await helper.setupPicker({ emojiProvider });
-      await helper.showCategory(customCategory, component);
+      await helper.showCategory(customCategory, component, customTitle);
       await waitUntil(() =>
         commonHelper.findEmojiPreviewSection(component).exists(),
       );
@@ -460,7 +464,7 @@ describe('<EmojiPicker />', () => {
         firePrivateAnalyticsEvent,
       });
       const provider = await emojiProvider;
-      await helper.showCategory(customCategory, component);
+      await helper.showCategory(customCategory, component, customTitle);
 
       // click add
       await waitUntil(() =>
@@ -673,7 +677,7 @@ describe('<EmojiPicker />', () => {
         firePrivateAnalyticsEvent,
       });
       const provider = await emojiProvider;
-      await helper.showCategory(customCategory, component);
+      await helper.showCategory(customCategory, component, customTitle);
 
       await waitUntil(() => commonHelper.previewVisible(component));
 
@@ -763,7 +767,7 @@ describe('<EmojiPicker />', () => {
       });
 
       const provider = await emojiProvider;
-      await helper.showCategory(customCategory, component);
+      await helper.showCategory(customCategory, component, customTitle);
       await waitUntil(() => commonHelper.previewVisible(component));
 
       // save emoji initially shown in preview

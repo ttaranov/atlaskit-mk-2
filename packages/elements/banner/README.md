@@ -8,7 +8,7 @@ intended to be used at the top of the page.
 ## Try it out
 
 Detailed docs and example usage can be found
-[here](http://ak-mk-2-prod.netlify.com/mk-2/packages/elements/banner).
+[here](https://atlaskit.atlassian.com/packages/elements/banner).
 
 ## Installation
 

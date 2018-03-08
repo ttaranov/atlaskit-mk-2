@@ -8,4 +8,4 @@ npm install @atlaskit/droplist
 
 ## Usage
 
-See [here](https://ak-mk-2-prod.netlify.com/mk-2/packages/elements/droplist)
+See [here](https://atlaskit.atlassian.com/packages/elements/droplist)

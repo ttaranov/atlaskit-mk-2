@@ -422,10 +422,11 @@ export const plugin = (pluginConfig?: PluginConfig) =>
            * Check if the table cell with an image is clicked
            * and its not the image itself
            */
+          const matches = element.matches ? 'matches' : 'msMatchesSelector';
           if (
             !tableNode ||
             !isElementInTableCell(element) ||
-            element.matches('table .image, table p, table .image div')
+            element[matches]('table .image, table p, table .image div')
           ) {
             return false;
           }

@@ -39,7 +39,7 @@ export const insertMediaGroupNode = (
   const { tr, schema } = state;
   const { media, paragraph } = schema.nodes;
 
-  if (!collection || !media) {
+  if (!collection || !media || !mediaStates.length) {
     return;
   }
 

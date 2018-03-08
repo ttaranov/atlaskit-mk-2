@@ -1,5 +1,11 @@
 # @atlaskit/media-picker
 
+## 1.1.2
+
+## 1.1.1
+
+- [patch] Emit 100% upload progress when last file chunk has been uploaded [db24bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db24bed)
+
 ## 1.1.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 

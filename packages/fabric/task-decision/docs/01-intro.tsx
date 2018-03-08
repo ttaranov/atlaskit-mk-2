@@ -7,7 +7,7 @@ export default md`
 
   ## Try it out
 
-  Interact with a [live demo of the @atlaskit/task-decision component](https://ak-mk-2-prod.netlify.com/mk-2/packages/fabric/task-decision).
+  Interact with a [live demo of the @atlaskit/task-decision component](https://atlaskit.atlassian.com/packages/fabric/task-decision).
 
   ## Installation
 

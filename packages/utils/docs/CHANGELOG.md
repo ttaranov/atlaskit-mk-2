@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.5.1
+- [patch] Update kind2string dependency to 0.3.1 [2c432fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c432fd)
+
 ## 2.5.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 

@@ -17,19 +17,16 @@ import {
   ExternalNavigationItem,
 } from './utils/linkComponents';
 import type { Directory } from '../../types';
-import { OLD_WEBSITE_URL } from '../../utils/constants';
 
 export type GroupsProps = {
   docs: Directory,
   patterns: Directory,
   packages: Directory,
-  navigateOut: boolean,
 };
 
 export type GroupsState = {
   parentRoute: ?Object,
   stack: Array<Node>,
-  navigateOut: boolean,
 };
 
 export type GroupsContext = {
@@ -44,7 +41,6 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   state = {
     parentRoute: null,
     stack: [[]],
-    navigateOut: false,
   };
 
   componentWillMount() {
@@ -59,7 +55,7 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   }
 
   resolveRoutes(pathname: string) {
-    const { docs, navigateOut, packages, patterns } = this.props;
+    const { docs, packages, patterns } = this.props;
 
     const menus = [
       <Route path="/">
@@ -69,18 +65,10 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
         <DocsNav pathname={pathname} docs={docs} />
       </Route>,
       <Route path="/packages">
-        <PackagesNav
-          pathname={pathname}
-          packages={packages}
-          navigateOut={navigateOut}
-        />
+        <PackagesNav pathname={pathname} packages={packages} />
       </Route>,
-      <Route path="/mk-2/packages">
-        <PackagesNav
-          pathname={pathname}
-          packages={packages}
-          navigateOut={navigateOut}
-        />
+      <Route path="/packages">
+        <PackagesNav pathname={pathname} packages={packages} />
       </Route>,
       <Route path="/patterns">
         <PatternsNav pathname={pathname} patterns={patterns} />
@@ -99,9 +87,7 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
   }
 
   render() {
-    const { parentRoute, stack } = this.state;
-    const { navigateOut } = this.props;
-
+    const { stack } = this.state;
     return <NestedNav stack={stack} />;
   }
 }

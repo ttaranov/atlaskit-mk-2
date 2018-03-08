@@ -215,3 +215,9 @@ export interface EmojiUpload {
   width: number;
   height: number;
 }
+
+export interface User {
+  id: string;
+}
+
+export type OptionalUser = User | undefined;

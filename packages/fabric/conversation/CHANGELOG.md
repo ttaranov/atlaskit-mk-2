@@ -1,5 +1,12 @@
 # @atlaskit/conversation
 
+## 6.3.5
+
+## 6.3.4
+
+## 6.3.3
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
 ## 6.3.2
 
 ## 6.3.1

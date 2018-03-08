@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.6.2
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
 ## 4.6.1
 
 ## 4.6.0

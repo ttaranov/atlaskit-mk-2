@@ -58,8 +58,10 @@ function closest(node: HTMLElement | null, s: string): HTMLElement | null {
   if (!document.documentElement.contains(el)) {
     return null;
   }
+  const matches = el.matches ? 'matches' : 'msMatchesSelector';
+
   do {
-    if (el.matches(s)) {
+    if (el[matches](s)) {
       return el;
     }
     el = (el.parentElement || el.parentNode) as HTMLElement;

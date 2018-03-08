@@ -1,5 +1,29 @@
 # @atlaskit/editor-core
 
+## 62.7.13
+- [patch] Fix lifecycle issue where we wouldn't call EditorView.destroy on a lifecycle change (i.e. switching from one appearance to another) potentially causing a memory leak. Also fixes an error where Prosemirror would append itself into the child of the <div /> container, rather than using the node as the root of the Editor. [9d0da7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d0da7a)
+
+## 62.7.12
+- [patch] Fix the media group when there is a mix of images and non images [d7f4f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7f4f67)
+
+## 62.7.11
+- [patch] Fix the backspace in table cells in IE11 [4e58321](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e58321)
+
+## 62.7.10
+- [patch] Table columns should not resize when typing [59728cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59728cc)
+
+## 62.7.9
+
+## 62.7.8
+- [patch] Adding link in blockquote should not split it. [13dd62e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13dd62e)
+
+## 62.7.7
+
+## 62.7.6
+
+## 62.7.5
+- [patch] Fix for styled-components types to support v1.4.x [75a2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75a2375)
+
 ## 62.7.4
 - [patch] fix: prevent autoformatting for formatted-text across hard-breaks [84da82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84da82e)
 
