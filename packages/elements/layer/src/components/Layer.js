@@ -169,7 +169,9 @@ export default class Layer extends Component<Props, State> {
    */
   // eslint-disable-next-line class-methods-use-this
   fixPositionTopUnderflow(popperTop: number, cssPosition: CSSPositionType) {
-    return popperTop >= 0 || cssPosition !== 'fixed' ? popperTop : 0;
+    return popperTop >= 0 || cssPosition !== 'fixed'
+      ? Math.round(popperTop)
+      : 0;
   }
 
   extractStyles = (state: PopperStateType) => {
