@@ -82,7 +82,17 @@ export default function App() {
                         />
                       )}
                     />
-
+                    <Route
+                      path="/components"
+                      render={props => (
+                        <Redirect
+                          to={props.location.pathname.replace(
+                            '/components',
+                            '/packages/elements',
+                          )}
+                        />
+                      )}
+                    />
                     <Route exact path="/" component={Home} />
                     <Route path="/docs/:docId*" component={Document} />
                     <Route path="/patterns" component={PatternsInfo} exact />
