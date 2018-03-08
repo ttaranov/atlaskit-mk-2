@@ -80,6 +80,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     this.eventDispatcher.destroy();
 
     if (this.view) {
+      // Destroy the state if the Editor is being unmounted
       const editorState = this.view.state;
       editorState.plugins.forEach(plugin => {
         const state = plugin.getState(editorState);
@@ -87,9 +88,8 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
           state.destroy();
         }
       });
-
-      this.view.destroy();
     }
+    // this.view will be destroyed when React unmounts in handleEditorViewRef
   }
 
   // Helper to allow tests to inject plugins directly
@@ -169,20 +169,23 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   createEditorView = node => {
     // Creates the editor-view from this.editorState. If an editor has been mounted
     // previously, this will contain the previous state of the editor.
-    this.view = new EditorView(node, {
-      state: this.editorState,
-      dispatchTransaction: (transaction: Transaction) => {
-        transaction.setMeta('isLocal', true);
-        const editorState = this.view!.state.apply(transaction);
-        this.view!.updateState(editorState);
-        if (this.props.editorProps.onChange && transaction.docChanged) {
-          this.props.editorProps.onChange(this.view!);
-        }
-        this.editorState = editorState;
+    this.view = new EditorView(
+      { mount: node },
+      {
+        state: this.editorState,
+        dispatchTransaction: (transaction: Transaction) => {
+          transaction.setMeta('isLocal', true);
+          const editorState = this.view!.state.apply(transaction);
+          this.view!.updateState(editorState);
+          if (this.props.editorProps.onChange && transaction.docChanged) {
+            this.props.editorProps.onChange(this.view!);
+          }
+          this.editorState = editorState;
+        },
+        // Disables the contentEditable attribute of the editor if the editor is disabled
+        editable: state => !this.props.editorProps.disabled,
       },
-      // Disables the contentEditable attribute of the editor if the editor is disabled
-      editable: state => !this.props.editorProps.disabled,
-    });
+    );
   };
 
   handleEditorViewRef = node => {
@@ -206,6 +209,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
       });
+      this.view.destroy(); // Destroys the dom node & all node views
       this.view = undefined;
     }
   };

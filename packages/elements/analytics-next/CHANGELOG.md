@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 1.1.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 1.1.1
 - [patch] Remove min requirement of node 8 for analytics-next [c864671](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c864671)
 

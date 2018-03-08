@@ -141,7 +141,6 @@ export default class Nav extends Component<{}, State> {
         <Route
           render={({ location }) => {
             const containerNavAvailable = location.pathname !== '/';
-            // const containerNavAvailable = true;
             const theme = containerNavAvailable ? null : presetThemes.global;
             const headerKey = location.pathname
               .replace('/mk-2', '')
@@ -182,7 +181,8 @@ export default class Nav extends Component<{}, State> {
                 onSearchDrawerOpen={this.openSearchDrawer}
                 onCreateDrawerOpen={this.openGroupDrawer}
                 containerHeaderComponent={() =>
-                  containerNavAvailable && (
+                  containerNavAvailable &&
+                  header && (
                     <AkContainerTitle
                       icon={<HeaderIcon {...header} />}
                       text={header.label}
