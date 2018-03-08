@@ -7,7 +7,7 @@ import { Ellipsify } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
 import { FileIcon } from '../../fileIcon';
 import { ErrorIcon } from '../../errorIcon';
-import { Menu } from '../../menu';
+import CardActions from '../../cardActions';
 import { CardAction, CardEventHandler } from '../../../actions';
 
 import {
@@ -91,8 +91,8 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         <BottomRow className={'bottom-row'}>
           <LeftColumn>{this.bottomLeftColumn()}</LeftColumn>
           <RightColumn>
-            <Menu
-              actions={actions}
+            <CardActions
+              actions={actions || []}
               onToggle={this.onMenuToggle}
               triggerColor={menuTriggerColor}
             />

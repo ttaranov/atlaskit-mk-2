@@ -4,7 +4,7 @@ import { Ellipsify } from '@atlaskit/media-ui';
 
 import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
-import { Menu } from '../menu';
+import CardActions from '../cardActions';
 import { CardAction, CardActionType } from '../../actions';
 import {
   Wrapper,
@@ -29,7 +29,7 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
     const cancelButton =
       deleteAction && deleteAction.type === CardActionType.delete ? (
         <CancelButtonWrapper>
-          <Menu actions={[deleteAction]} triggerColor="white" />
+          <CardActions actions={[deleteAction]} triggerColor="white" />
         </CancelButtonWrapper>
       ) : null;
 
