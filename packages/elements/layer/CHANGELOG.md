@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.9.1
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 2.9.0
 - [minor]  Inline dialog the text is blurred [c73ed72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c73ed72)
 

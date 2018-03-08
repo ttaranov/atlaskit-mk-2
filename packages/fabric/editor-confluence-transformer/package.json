@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-confluence-transformer",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "Editor Confluence Transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -24,7 +24,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/docs": "^2.5.2",
     "@atlaskit/editor-core": "^62.7.9",
     "@atlaskit/editor-test-helpers": "^1.9.2",
     "@types/prosemirror-model": "^1.0.0",

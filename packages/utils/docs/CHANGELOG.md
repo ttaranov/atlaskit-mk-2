@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.5.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 2.5.1
 - [patch] Update kind2string dependency to 0.3.1 [2c432fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c432fd)
 

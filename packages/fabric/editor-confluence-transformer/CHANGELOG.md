@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.9.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 2.9.1
 
 ## 2.9.0
