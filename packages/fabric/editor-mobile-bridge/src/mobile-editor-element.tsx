@@ -80,7 +80,6 @@ export default function mobileEditor() {
   return (
     <EditorWithState
       appearance="mobile"
-      allowTextFormatting={true}
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());

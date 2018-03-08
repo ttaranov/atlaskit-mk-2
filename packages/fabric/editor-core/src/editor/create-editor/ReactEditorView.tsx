@@ -211,7 +211,13 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   };
 
   render() {
-    const editor = <div key="ProseMirror" ref={this.handleEditorViewRef} />;
+    const editor = (
+      <div
+        key="ProseMirror"
+        className="ProseMirrorWrapper"
+        ref={this.handleEditorViewRef}
+      />
+    );
     return this.props.render
       ? this.props.render({
           editor,

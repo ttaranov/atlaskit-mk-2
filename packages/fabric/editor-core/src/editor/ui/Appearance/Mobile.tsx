@@ -34,7 +34,8 @@ MobileEditor.displayName = 'MobileEditor';
 const ContentArea = styled(ContentStyles)`
   height: 100%;
 
-  .ProseMirror {
+  .ProseMirror,
+  .ProseMirrorWrapper {
     height: 100%;
   }
 `;
@@ -64,6 +65,7 @@ export default class Editor extends React.Component<
       customContentComponents,
       maxHeight,
       disabled,
+      editorDOMElement,
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
@@ -83,6 +85,7 @@ export default class Editor extends React.Component<
             appearance={this.appearance}
             disabled={!!disabled}
           />
+          {editorDOMElement}
         </ContentArea>
       </MobileEditor>
     );
