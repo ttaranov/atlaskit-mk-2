@@ -65,16 +65,9 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent({
-    editorView,
-    eventDispatcher,
-    popupsMountPoint,
-    popupsBoundariesElement,
-  }) {
+  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{ tablesState: stateKey }}
         render={({ tablesState }) => (
           <TableFloatingToolbar

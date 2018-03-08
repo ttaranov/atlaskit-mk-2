@@ -30,12 +30,10 @@ const extensionPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent({ editorView, eventDispatcher }) {
+  contentComponent({ editorView }) {
     const { dispatch } = editorView;
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{
           macroState: macroPluginKey,
           extensionState: pluginKey,
