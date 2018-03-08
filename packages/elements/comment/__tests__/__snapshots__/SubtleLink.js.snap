@@ -7,7 +7,11 @@ exports[`@atlaskit comments SubtleLink should render a span and a button 1`] = `
   onMouseOver={[Function]}
 >
   <WithAnalyticsContext
-    analyticsContext={Object {}}
+    analyticsContext={
+      Object {
+        "component": "comment-action",
+      }
+    }
     appearance="subtle-link"
     spacing="none"
     type="button"
