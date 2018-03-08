@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import * as analytics from '@atlaskit/analytics-next';
 import Field from './Field';
 
 type Props = {
@@ -16,7 +17,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-export default class Author extends Component<Props, {}> {
+export class Author extends Component<Props, {}> {
   render() {
     const { children, href, onClick, onFocus, onMouseOver } = this.props;
     return (
@@ -32,3 +33,12 @@ export default class Author extends Component<Props, {}> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = analytics.createAndFireEvent('atlaskit');
+export default analytics.withAnalyticsContext({ component: 'comment-author' })(
+  analytics.withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({ action: 'click' }),
+    onFocus: createAndFireEventOnAtlaskit({ action: 'focus' }),
+    onMouseOver: createAndFireEventOnAtlaskit({ action: 'mouseover' }),
+  })(Author),
+);
