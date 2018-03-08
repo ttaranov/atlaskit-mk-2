@@ -32,7 +32,7 @@ const sliderThumbDisabledStyle = css`
 const sliderDefaultBackground = css`
   background: ${props =>
     `linear-gradient(${track.default.lower}, ${track.default.lower}) 0/ ${
-      props.value
+      props.valuePercent
     }% 100% no-repeat ${track.default.upper}`};
 `;
 
@@ -49,7 +49,7 @@ const sliderTrackStyle = css`
 const sliderTrackDisabledStyle = css`
   background: ${props =>
     `linear-gradient(${track.disabled.lower}, ${track.disabled.lower}) 0/ ${
-      props.value
+      props.valuePercent
     }% 100% no-repeat ${track.disabled.upper}`};
   cursor: not-allowed;
 `;
@@ -57,7 +57,7 @@ const sliderTrackDisabledStyle = css`
 const sliderTrackFocusedStyle = css`
   background: ${props =>
     `linear-gradient(${track.hover.lower}, ${track.hover.lower}) 0/ ${
-      props.value
+      props.valuePercent
     }% 100% no-repeat ${track.hover.upper}`};
 `;
 
@@ -209,3 +209,5 @@ export const rangeInputStyle = css`
 export const Input = styled.input`
   ${rangeInputStyle};
 `;
+
+Input.displayName = 'InputRange';

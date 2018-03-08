@@ -30,7 +30,12 @@ describe('FieldRange', () => {
       expect(input.props().type).toBe('range');
     });
 
-    it('should have min, max and step set to default values', () => {
+    it('should have percent value on styled component', () => {
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('20.12');
+    });
+
+    it('should have min, max, step and valuePercent set to default values', () => {
       const input = fieldRange.find('input');
       expect(input.props().min).toBe(0);
       expect(input.props().max).toBe(100);
