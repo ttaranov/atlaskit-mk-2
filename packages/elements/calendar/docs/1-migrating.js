@@ -11,11 +11,25 @@ export default md`
 
   Instead of using the stateless component, you now just use the stateful component and supply the props you want to be stateless.
 
-  ~~~js
+  ~~~
   - import { CalendarStateless } from '@atlaskit/calendar';
   + import { Calendar } from '@atlaskit/calendar';
 
   - <CalendarStateless month={1} />
   - <Calendar month={1} />
+  ~~~
+
+  ### \`focused\` -> \`day\`
+
+  ~~~
+  - <CalendarStateless focused={1} />
+  + <Calendar day={1} />;
+  ~~~
+
+  ### \`onUpdate\` -> \`onChange\`
+
+  ~~~
+  - <Calendar onUpdate={() => {}} />
+  + <Calendar onChange={() => {}} />
   ~~~
 `;
