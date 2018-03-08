@@ -80,9 +80,6 @@ const exportDefaultExpression = (j, root, eventConfig, original) => {
   const existingComponentNameImport = root
     .find(j.ModuleSpecifier, { local:  { name: componentName }})
     .size() > 0;
-
-  console.log('Number of modules', root.find(j.ModuleSpecifier).size());
-  root.find(j.ModuleSpecifier).forEach( path => console.log(path.value));
   
   if (existingComponentNameVar || existingComponentNameImport) {
     // Already have an identifier with the component name in the current scope
@@ -155,6 +152,7 @@ module.exports = (fileInfo: any, api: any) => {
       .map( path => {
         path.node.init = createAnalyticsHocs(j, analyticsEventConfig, path.node.init);
       });
+    console.log('Component with "wrapTarget" detected, make sure you manually update the file to export the class');
   } else {
     source
       .find(j.ExportDefaultDeclaration)

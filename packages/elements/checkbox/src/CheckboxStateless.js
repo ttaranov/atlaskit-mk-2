@@ -48,7 +48,7 @@ type State = {|
   mouseIsDown: boolean,
 |};
 
-class CheckboxStateless extends Component<Props, State> {
+export class CheckboxStateless extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,

@@ -11,6 +11,8 @@ import {
 } from '../package.json';
 import Radio from './RadioBase';
 
+export { Radio as AkRadio };
+
 // $FlowFixMe
 const RadioWithTheme = withAnalyticsContext({
   component: 'field-radio-group',

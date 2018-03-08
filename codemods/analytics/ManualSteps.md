@@ -14,3 +14,4 @@
 4. Fix imperative focus ref problem for field-text and field-text-area
 ~~~5. Fix duplicate 'Select' declaration problem~~~
 ~~~6. Fix pagination & icon test transforms not working~~~
+7. Handle `wrapTarget` export

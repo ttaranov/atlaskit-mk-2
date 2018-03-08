@@ -10,10 +10,12 @@ const contextTest = (j, analyticsConfig) => {
   const componentName = `${analyticsConfig.component}WithAnalytics`;
   const context = analyticsConfig.context;
 
+  const mountOrShallow = analyticsConfig.wrapTarget ? 'mount' : 'shallow';
+
   return j('').code(`
 
     it('should provide analytics context with component, package and version fields', () => {
-      const wrapper = shallow(<${componentName} />);
+      const wrapper = ${mountOrShallow}(<${componentName} />);
 
       expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
         component: '${context}',
@@ -30,17 +32,6 @@ const propTest = (j, analyticsConfig, prop, action) => {
   return j('').code(`
 
     it('should pass analytics event as last argument to ${prop} handler', () => {
-      const spy = jest.fn();
-      const wrapper = mount(<${componentName} ${prop}={spy} />);
-      wrapper.find('button').simulate('${action}');
-
-      const analyticsEvent = spy.mock.calls[0][1];
-      expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-      expect(analyticsEvent.payload).toEqual(
-        expect.objectContaining({
-          action: '${action}',
-        }),
-      );
     });
   `);
 }
@@ -52,25 +43,6 @@ const atlaskitTest = (j, analyticsConfig, prop, action) => {
   return j('').code(`
 
     it('should fire an atlaskit analytics event on ${action}', () => {
-      const spy = jest.fn();
-      const wrapper = mount(
-        <AnalyticsListener onEvent={spy} channel="atlaskit">
-          <${componentName} />
-        </AnalyticsListener>,
-      );
-
-      wrapper.find(${componentName}).simulate('${action}');
-      const [analyticsEvent, channel] = spy.mock.calls[0];
-
-      expect(channel).toBe('atlaskit');
-      expect(analyticsEvent.payload).toEqual({ action: '${action}' });
-      expect(analyticsEvent.context).toEqual([
-        {
-          component: '${context}',
-          package: packageName,
-          version: packageVersion
-        },
-      ]);
     });
   `);
 }
@@ -129,14 +101,12 @@ export default (fileInfo: any, api: any) => {
     `));
   
   analyticsEventConfigs.forEach( analyticsEventConfig => {
-    if (!analyticsEventConfig.wrapTarget) {
-      const componentName = analyticsEventConfig.component;
-      const componentPath = getRelativeComponentPath(analyticsEventConfig);
-      removeExistingComponentImport(j, source, componentName);
-      source.addImport(source.code(`
-        import ${componentName}WithAnalytics, { ${componentName} } from '${componentPath}';
-      `));
-    }
+    const componentName = analyticsEventConfig.component;
+    const componentPath = getRelativeComponentPath(analyticsEventConfig);
+    removeExistingComponentImport(j, source, componentName);
+    source.addImport(source.code(`
+      import ${componentName}WithAnalytics, { ${componentName} } from '${componentPath}';
+    `));
     // Add describe block + tests
     const describeBlock = source.getOrAdd(source.code(`
       describe('analytics - ${analyticsEventConfig.component}', () => {});
