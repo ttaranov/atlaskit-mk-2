@@ -7,21 +7,20 @@ Related reading:
 
 ## History
 
-We used to separate our components into stateful and stateless versions. This allowed us to offer safe defaults while giving the consumer of our API full control. Unfortunately, this draws a hard line between the two patterns and offers no in between state.
+We used to separate our components into stateful and stateless versions. This allowed us to offer safe defaults while giving the consumer of our API full control. Unfortunately, this draws a hard line between the two patterns and offers no flexibility in between the two.
 
-It was sort of the hot thing at the time when we made the decision to follow this pattern. It was a fairly simple separation that we could easily follow and apply to all components. This made our lives easier, but over time, we discovered that it made our consumers' lives harder and we'd selectively add this pattern to individual props for whichever component we had the complaint for.
-
-This breeds inconsistency between components where we had originally introduced this pattern to help with consistency and flexibility. The downfall is that there is a hard line between the two patterns and most of the time, consumers need to do stuff in between that.
+It was sort of the hot thing at the time when we made the decision to follow this pattern. It was a fairly simple separation that we could easily follow and apply to all components. This made our lives easier, but over time, we discovered that it made our consumers' lives harder and we'd selectively add this pattern to individual props for whichever component we had the complaint for, which bred inconsistency.
 
 ## Learning
 
-We've recently been spiking some patterns to be able to give consumers the ability to selectively apply the controlled / uncontrolled pattern to any given piece of state within a component. This means that not only form fields and the `value` prop get this treatment, all props / state do. On the component developer's end, the steps are pretty simple:
+We've recently been spiking some patterns to be able to give consumers the ability to selectively apply the controlled / uncontrolled pattern to any given piece of state within a component. This means that not only form fields and the `defaultValue` / `value` props get this treatment, all `state` can have corresponding default props (uncontrolled) or props (controlled).
 
-1. Expose a prop that corresponds to a state key. Usually this is the same name, but can be mapped if they're different.
-2. Access the `state` value. Prop / default prop values are automatically resolved and returned via `state`. This actually isn't really a step as the component is likely already doing this.
-3. Wrap their component with [`react-ctrl`](https://github.com/treshugart/react-ctrl).
+On the component developer's end, the steps are pretty simple:
 
-Most of the common cases are now automatically taken care of.
+1. Expose a default prop and normal prop that correspond to a state key that you want to have this behaviour. The default convention for this is that the controlled prop is the same name as the state, and the default prop is prefixed with `default`. For `value`, this would mean you have a `value` prop and a `defaultValue` prop. This is configurable by specifying your own `mapPropsToState` function when wrapping your component with [`react-ctrl`](https://github.com/treshugart/react-ctrl).
+2. Wrap their component with [`react-ctrl`](https://github.com/treshugart/react-ctrl).
+
+Since your component is already accessing `state` and using it as needed, it's likely you won't need to do much more than those two steps to enable this behaviour as `state` is the source of truth for everything now.
 
 ## Usage
 
@@ -51,7 +50,7 @@ import { DatePicker } from '@atlaskit/datetime-picker';
 <DatePicker value="2000-01-01" />
 ```
 
-Internally, this enables us to reuse a lot more code. Externally, the consumer gets a more consistent and predictable API. What's neat about this approach is that you can also control other props such as `isOpen`:
+Internally, this enables us to reuse a lot more code. Externally, the consumer gets a more consistent and predictable API. It doesn't look like much initially, but because of this, you can now control - or specify defaults for - other props such as `isOpen`.
 
 ```js
 <DatePicker isOpen />
@@ -64,7 +63,3 @@ Or just have it open by default, and state will take over:
 ```
 
 The component developer doesn't need to do any more work here; this automatically just happens.
-
-## Moving forward
-
-Moving forward, we should strive to wrap our stateful components with [`react-ctrl`](https://github.com/treshugart/react-ctrl) so that we can provide this behavour out of the box for all of our components to reduce both the burden of consumption as well as the burden of development.
