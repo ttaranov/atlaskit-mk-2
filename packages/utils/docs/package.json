@@ -25,6 +25,7 @@
     "babel-runtime": "^6.26.0",
     "kind2string": "^0.3.0",
     "react-markings": "^1.1.7",
+    "string-raw": "^1.0.1",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {

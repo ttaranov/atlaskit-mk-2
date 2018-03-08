@@ -56,11 +56,11 @@ export default md`
   ## Usage
 
   Many of our components support analytics out of the box. These components create
-  analytics events and hand them to you. This puts you in control of firing, listening 
-  and recording these events in which ever way you like. 
-  
-  Let's look at a simple component to understand how to use Button's click analytics. 
-  
+  analytics events and hand them to you. This puts you in control of firing, listening
+  and recording these events in which ever way you like.
+
+  Let's look at a simple component to understand how to use Button's click analytics.
+
   ##### SaveButton.js
 ${code`
 import Button from '@atlaskit/button';
@@ -73,7 +73,7 @@ const SaveButton = ({ onClick }) => (
   Button provides you a [UIAnalyticsEvent](#UIAnalyticsEvent) as the last arg
   to the onClick hander. This is the pattern used for all callback props that
   support analytics.
-  
+
   Now you have the event, it is up to you to fire it.
 
   ##### SaveButton.js
@@ -94,8 +94,8 @@ const SaveButton = ({ onClick }) => (
 );
 `}
 
-  This is a good opportunity to add more information to the analytics event before firing. 
-  
+  This is a good opportunity to add more information to the analytics event before firing.
+
   The next step is to set up a listener which receives the events.
 
   #### App.js
@@ -114,7 +114,7 @@ const App = () => (
 
   The \`onEvent\` handler will be called every time an analytics event is fired.
   This where you can record the event by sending information to a backend service.
-  
+
   That's it! Below are some links to handy resources.
 
   * [More information on UIAnalyticsEvent](/mk-2/packages/elements/analytics-next/docs/reference#UIAnalyticsEvent)

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
+import stringRaw from 'string-raw';
 import { AkCodeBlock } from '@atlaskit/code';
 
 /*
@@ -12,7 +13,7 @@ export default function code(
   sources: any,
   ...substitutions: any[]
 ) {
-  let source = String.raw(sources, substitutions);
+  let source = stringRaw(sources, substitutions);
   source = source.replace(/^(\s*\n)+/g, ''); // Remove leading newlines
   source = source.replace(/(\n\s*)+$/g, ''); // Remove trailing newlines
   return (
