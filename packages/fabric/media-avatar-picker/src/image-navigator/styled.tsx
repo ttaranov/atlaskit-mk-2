@@ -95,6 +95,8 @@ export const DragZone = styled.div`
     ''};
 `;
 
+DragZone.displayName = 'DragZone';
+
 export const DragZoneImage = styled.img`
   width: 100px;
 `;

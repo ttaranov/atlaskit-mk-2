@@ -287,4 +287,13 @@ describe('Avatar Picker Dialog', () => {
     expect(component.state().selectedImage).toBeUndefined();
     expect(component.state().selectedImageSource).toBeUndefined();
   });
+
+  it('should pass "isLoading" to ImageNavigator component', () => {
+    const component = renderWithProps({
+      imageSource: smallImage,
+      isLoading: true,
+    });
+
+    expect(component.find(ImageNavigator).prop('isLoading')).toBeTruthy();
+  });
 });

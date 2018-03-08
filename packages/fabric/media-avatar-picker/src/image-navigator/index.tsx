@@ -6,6 +6,7 @@ import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import { ImageCropper, OnLoadHandler } from '../image-cropper';
 import Slider from '@atlaskit/field-range';
+import Spinner from '@atlaskit/spinner';
 import {
   Container,
   SliderContainer,
@@ -47,6 +48,7 @@ export interface Props {
   onRemoveImage: () => void;
   onImageUploaded: (file: File) => void;
   onImageError: (errorMessage: string) => void;
+  isLoading?: boolean;
 }
 
 export interface Position {
@@ -68,26 +70,19 @@ export interface State {
   isDroppingFile: boolean;
 }
 
+const defaultState = {
+  imageWidth: undefined,
+  imagePos: { x: 0, y: 0 },
+  minScale: 1,
+  scale: 1,
+  isDragging: false,
+  imageDragStartPos: { x: 0, y: 0 },
+  fileImageSource: undefined,
+  isDroppingFile: false,
+};
+
 export class ImageNavigator extends Component<Props, State> {
-  dragZoneText: HTMLElement;
-
-  constructor(props) {
-    super(props);
-    this.state = this.defaultState;
-  }
-
-  get defaultState() {
-    return {
-      imageWidth: undefined,
-      imagePos: { x: 0, y: 0 },
-      minScale: 1,
-      scale: 1,
-      isDragging: false,
-      imageDragStartPos: { x: 0, y: 0 },
-      fileImageSource: undefined,
-      isDroppingFile: false,
-    };
-  }
+  state: State = defaultState;
 
   componentWillMount() {
     document.addEventListener('mousemove', this.onMouseMove);
@@ -304,37 +299,49 @@ export class ImageNavigator extends Component<Props, State> {
     }
   };
 
-  getDragZoneTextRef = el => (this.dragZoneText = el);
-
-  renderImageUploader() {
+  renderDrazone = () => {
     const { isDroppingFile } = this.state;
-    const { errorMessage } = this.props;
+    const { errorMessage, isLoading } = this.props;
+    const showBorder = !isLoading && !!!errorMessage;
     const dropZoneImageSrc = errorMessage ? errorIcon : uploadPlaceholder;
     let dragZoneText = errorMessage || 'Drop your photos here';
     const dragZoneAlt = errorMessage || 'Upload image';
+
+    return (
+      <DragZone
+        showBorder={showBorder}
+        isDroppingFile={isDroppingFile}
+        onDragLeave={this.onDragLeave}
+        onDragEnter={this.onDragEnter}
+        onDragOver={this.onDragOver}
+        onDrop={this.onDrop}
+      >
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div>
+            <DragZoneImage src={dropZoneImageSrc} alt={dragZoneAlt} />
+            <DragZoneText isFullSize={!!errorMessage}>
+              <Ellipsify text={dragZoneText} lines={3} />
+            </DragZoneText>
+          </div>
+        )}
+      </DragZone>
+    );
+  };
+
+  renderImageUploader() {
+    const { errorMessage, isLoading } = this.props;
     const separatorText = errorMessage ? 'Try again' : 'or';
-    const showBorder = !!!errorMessage;
 
     return (
       <ImageUploader>
-        <DragZone
-          showBorder={showBorder}
-          isDroppingFile={isDroppingFile}
-          onDragLeave={this.onDragLeave}
-          onDragEnter={this.onDragEnter}
-          onDragOver={this.onDragOver}
-          onDrop={this.onDrop}
-        >
-          <DragZoneImage src={dropZoneImageSrc} alt={dragZoneAlt} />
-          <DragZoneText
-            innerRef={this.getDragZoneTextRef}
-            isFullSize={!!errorMessage}
-          >
-            <Ellipsify text={dragZoneText} lines={3} />
-          </DragZoneText>
-        </DragZone>
+        {this.renderDrazone()}
         <PaddedBreak>{separatorText}</PaddedBreak>
-        <Button onClick={this.onUploadButtonClick as any}>
+        <Button
+          onClick={this.onUploadButtonClick as any}
+          isDisabled={isLoading}
+        >
           Upload a photo
           <FileInput
             type="file"
@@ -348,7 +355,7 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   onRemoveImage = () => {
-    this.setState(this.defaultState);
+    this.setState(defaultState);
     this.props.onRemoveImage();
   };
 
@@ -399,10 +406,12 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   render() {
+    const { isLoading } = this.props;
     const { dataURI } = this;
-    const content = dataURI
-      ? this.renderImageCropper(dataURI)
-      : this.renderImageUploader();
+    const content =
+      dataURI && !isLoading
+        ? this.renderImageCropper(dataURI)
+        : this.renderImageUploader();
 
     return <Container>{content}</Container>;
   }

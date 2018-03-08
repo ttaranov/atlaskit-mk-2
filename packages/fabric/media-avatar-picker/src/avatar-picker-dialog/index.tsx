@@ -264,7 +264,7 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderBody() {
-    const { avatars } = this.props;
+    const { avatars, isLoading } = this.props;
     const {
       mode,
       selectedImageSource,
@@ -286,6 +286,7 @@ export class AvatarPickerDialog extends PureComponent<
               onRemoveImage={this.onRemoveImage}
               onImageUploaded={this.onImageUploaded}
               onImageError={this.onImageError}
+              isLoading={isLoading}
             />
             {this.renderPredefinedAvatarList()}
           </CroppingWrapper>
