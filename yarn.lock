@@ -11112,11 +11112,10 @@ react-json-tree@^0.10.7:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
-react-lazily-render@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-0.0.8.tgz#8c2a070e72044dcda56fbf4cac5aa45da95f27a4"
+react-lazily-render@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-1.0.1.tgz#9a3826443b97ab291b69f4b45c5530d4e6680089"
   dependencies:
-    raf-schd "^2.1.0"
     scrollparent "^2.0.1"
 
 react-live-clock@^2.0.2:
@@ -11188,9 +11187,9 @@ react-redux@^5.0.0, react-redux@^5.0.6:
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
 
-react-render-image@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-render-image/-/react-render-image-1.1.1.tgz#a3a12cbd877a28d51dd0ba25c6a0d8ca1ec3fbad"
+react-render-image@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-render-image/-/react-render-image-1.1.2.tgz#f96fa42b9e0dc83bb67fc1dafbbbf1a3064e702c"
 
 react-router-dom@^4.2.2:
   version "4.2.2"

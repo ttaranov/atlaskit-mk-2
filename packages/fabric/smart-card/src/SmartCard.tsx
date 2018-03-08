@@ -1,9 +1,24 @@
 import * as React from 'react';
-import SmartCardView from './SmartCardView';
+import * as PropTypes from 'prop-types';
+import LazyRender from 'react-lazily-render';
 import { AppCardModel } from '@atlaskit/media-card';
+import { SmartCardClient } from './SmartCardClient';
+import { SmartCardView } from './SmartCardView';
+
+export const LoadingView = () => null;
+
+export const LoadedView = SmartCardView;
+
+// TODO: use link horizontal error view
+export const ErroredView = () => <span>Error!</span>;
 
 export interface SmartCardProps {
+  client?: SmartCardClient;
   url: string;
+}
+
+export interface SmartCardContext {
+  smartCardClient?: SmartCardClient;
 }
 
 export interface SmartCardState {
@@ -31,10 +46,26 @@ function errored(): Pick<SmartCardState, 'status'> {
   };
 }
 
-export default class SmartCard extends React.Component<
-  SmartCardProps,
-  SmartCardState
-> {
+export class SmartCard extends React.Component<SmartCardProps, SmartCardState> {
+  static contextTypes = {
+    smartCardClient: PropTypes.object,
+  };
+
+  context: SmartCardContext;
+
+  state: SmartCardState = loading();
+
+  get client(): SmartCardClient {
+    const client = this.context.smartCardClient || this.props.client;
+    if (!client) {
+      console.error(
+        'No client provided. Provide a client like <SmartCard client={new SmartCardClient()} url=""/> or <SmartCardProvider client={new SmartCardClient()}><SmartCard url=""/></SmartCardProvider>.',
+      );
+      throw new Error();
+    }
+    return client;
+  }
+
   shouldFetch(prevProps: SmartCardProps, nextProps: SmartCardProps) {
     return prevProps.url !== nextProps.url;
   }
@@ -42,31 +73,16 @@ export default class SmartCard extends React.Component<
   async fetch() {
     const { url } = this.props;
     try {
-      const res = await fetch(
-        'https://wt-34857ffa982ba1dd8c0b8b61fe8d2c53-0.sandbox.auth0-extend.com/trello-smartcard',
-        {
-          method: 'POST',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Content-Type': 'application/json',
-          },
-          body: `{"resourceUrl": "${encodeURI(url)}"}`,
-        },
-      );
-      const json = await res.json();
+      const json = await this.client.fetch(url);
       this.setState(loaded(json.data as AppCardModel));
     } catch (error) {
       this.setState(errored());
     }
   }
 
-  componentWillMount() {
-    this.setState(loading());
-  }
-
-  componentDidMount() {
+  handleRender = () => {
     this.fetch();
-  }
+  };
 
   componentWillReceiveProps(nextProps: SmartCardProps) {
     if (this.shouldFetch(this.props, nextProps)) {
@@ -80,14 +96,38 @@ export default class SmartCard extends React.Component<
     }
   }
 
-  render() {
-    const { status, data } = this.state;
+  renderLoaded() {
+    const { data } = this.state;
+    if (data) {
+      return <LoadedView newDesign={true} model={data} />;
+    } else {
+      return <ErroredView />;
+    }
+  }
 
-    if (status === 'loaded' && data) {
-      return <SmartCardView newDesign={true} model={data} />;
+  render() {
+    const { status } = this.state;
+
+    let content;
+    switch (status) {
+      case 'loading':
+        content = <LoadingView />;
+        break;
+      case 'loaded':
+        content = this.renderLoaded();
+        break;
+      case 'errored':
+        content = <ErroredView />;
+        break;
     }
 
-    // I'm unsure of what the loading and errored states should look like
-    return null;
+    return (
+      <LazyRender
+        offset={100}
+        placeholder={<LoadingView />}
+        content={content}
+        onRender={this.handleRender}
+      />
+    );
   }
 }

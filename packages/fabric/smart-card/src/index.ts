@@ -1,6 +1,4 @@
-import SmartCard, { SmartCardProps } from './SmartCard';
-import SmartCardView from './SmartCardView';
-
-export default SmartCard;
-export { SmartCardProps };
-export { SmartCardView };
+export * from './SmartCardClient';
+export * from './SmartCardProvider';
+export * from './SmartCard';
+export * from './SmartCardView';

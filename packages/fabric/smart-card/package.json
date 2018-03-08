@@ -19,7 +19,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-card": "^24.1.0"
+    "@atlaskit/media-card": "^24.1.0",
+    "prop-types": "^15.5.10",
+    "react-lazily-render": "^1.0.1"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
