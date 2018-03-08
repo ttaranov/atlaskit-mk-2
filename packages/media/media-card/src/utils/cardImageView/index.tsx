@@ -15,7 +15,7 @@ import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
 import { Wrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
-import { CardAction, CardActionType } from '../../actions';
+import { CardAction } from '../../actions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;

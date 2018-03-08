@@ -5,15 +5,8 @@ import { Ellipsify } from '@atlaskit/media-ui';
 import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
 import CardActions from '../cardActions';
-import { CardAction, CardActionType } from '../../actions';
-import {
-  Wrapper,
-  Overlay,
-  Title,
-  Body,
-  ProgressWrapper,
-  CancelButtonWrapper,
-} from './styled';
+import { CardAction } from '../../actions';
+import { Wrapper, Overlay, Title, Body, ProgressWrapper } from './styled';
 
 export interface UploadingViewProps {
   title?: string;
