@@ -1,5 +1,6 @@
 export {
   CardActionsView as default,
+  CardActionsView,
   CardActionsViewProps,
 } from './cardActionsView';
 export {

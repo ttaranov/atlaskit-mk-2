@@ -21,29 +21,33 @@ export type CardActionsDropdownMenuProps = {
 export class CardActionsDropdownMenu extends Component<
   CardActionsDropdownMenuProps
 > {
-  render(): JSX.Element {
+  render(): JSX.Element | null {
     const { actions, triggerColor, onOpenChange } = this.props;
 
-    return (
-      <PreventClickThrough>
-        <DropdownMenu
-          onOpenChange={onOpenChange}
-          trigger={
-            <CardActionIconButton
-              icon={<MoreIcon label="more" />}
-              triggerColor={triggerColor}
-            />
-          }
-        >
-          <DropdownItemGroup>
-            {actions.map(({ label, handler }, index) => (
-              <DropdownItem key={index} onClick={() => handler()}>
-                {label}
-              </DropdownItem>
-            ))}
-          </DropdownItemGroup>
-        </DropdownMenu>
-      </PreventClickThrough>
-    );
+    if (actions.length > 0) {
+      return (
+        <PreventClickThrough>
+          <DropdownMenu
+            onOpenChange={onOpenChange}
+            trigger={
+              <CardActionIconButton
+                icon={<MoreIcon label="more" />}
+                triggerColor={triggerColor}
+              />
+            }
+          >
+            <DropdownItemGroup>
+              {actions.map(({ label, handler }, index) => (
+                <DropdownItem key={index} onClick={() => handler()}>
+                  {label}
+                </DropdownItem>
+              ))}
+            </DropdownItemGroup>
+          </DropdownMenu>
+        </PreventClickThrough>
+      );
+    } else {
+      return null;
+    }
   }
 }
