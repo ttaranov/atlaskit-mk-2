@@ -9,7 +9,7 @@ import DropdownMenu, {
 
 import { CardAction } from '../../actions';
 import { PreventClickThrough } from '../preventClickThrough';
-import { MeatBallsWrapper } from './styled';
+import { CardActionIconButton } from './cardActionIconButton';
 
 export type CardActionsDropdownMenuProps = {
   readonly actions: CardAction[];
@@ -24,22 +24,16 @@ export class CardActionsDropdownMenu extends Component<
   render(): JSX.Element {
     const { actions, triggerColor, onOpenChange } = this.props;
 
-    const iconBefore = (
-      <MeatBallsWrapper style={{ color: triggerColor }}>
-        <MoreIcon label="more" />
-      </MeatBallsWrapper>
-    );
-
     return (
       <PreventClickThrough>
         <DropdownMenu
           onOpenChange={onOpenChange}
-          triggerType="button"
-          triggerButtonProps={{
-            className: 'meat-balls-button',
-            appearance: 'subtle',
-            iconBefore,
-          }}
+          trigger={
+            <CardActionIconButton
+              icon={<MoreIcon label="more" />}
+              triggerColor={triggerColor}
+            />
+          }
         >
           <DropdownItemGroup>
             {actions.map(({ label, handler }, index) => (

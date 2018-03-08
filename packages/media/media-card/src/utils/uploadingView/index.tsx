@@ -19,19 +19,12 @@ export interface UploadingViewProps {
   title?: string;
   progress: number;
   dataURI?: string;
-  deleteAction?: CardAction;
+  actions?: CardAction[];
 }
 
 export class UploadingView extends Component<UploadingViewProps, {}> {
   render() {
-    const { title, progress, dataURI, deleteAction } = this.props;
-
-    const cancelButton =
-      deleteAction && deleteAction.type === CardActionType.delete ? (
-        <CancelButtonWrapper>
-          <CardActions actions={[deleteAction]} triggerColor="white" />
-        </CancelButtonWrapper>
-      ) : null;
+    const { title, progress, dataURI, actions = [] } = this.props;
 
     return (
       <Wrapper>
@@ -43,7 +36,7 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
             <ProgressWrapper>
               <ProgressBar progress={progress} />
             </ProgressWrapper>
-            {cancelButton}
+            <CardActions actions={actions} triggerColor="white" />
           </Body>
         </Overlay>
         {dataURI && <MediaImage dataURI={dataURI} />}
