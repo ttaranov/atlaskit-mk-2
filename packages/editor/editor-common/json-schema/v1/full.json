@@ -794,16 +794,15 @@
               "type": "number"
             },
             "colwidth": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             },
             "background": {
               "type": "string"
             }
           },
-          "required": [
-            "colspan",
-            "rowspan"
-          ],
           "additionalProperties": false
         },
         "content": {
@@ -835,16 +834,15 @@
               "type": "number"
             },
             "colwidth": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             },
             "background": {
               "type": "string"
             }
           },
-          "required": [
-            "colspan",
-            "rowspan"
-          ],
           "additionalProperties": false
         },
         "content": {

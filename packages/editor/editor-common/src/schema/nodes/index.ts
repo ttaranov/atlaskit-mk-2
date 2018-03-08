@@ -44,6 +44,7 @@ export {
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
+  CellAttributes,
 } from './tableNodes';
 export {
   applicationCard,
