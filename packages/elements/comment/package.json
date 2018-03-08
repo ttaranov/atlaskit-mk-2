@@ -6,6 +6,8 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/patterns/comments",
+
   "files": [
     "dist"
   ],

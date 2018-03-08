@@ -6,6 +6,7 @@
   "main": "dist/bundle.css",
   "module": "dist/bundle.css",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/overview",
   "files": [
     "dist/bundle.css",
     "dist/icons-sprite.svg"

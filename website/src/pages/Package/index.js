@@ -212,6 +212,11 @@ export default class Package extends Component<PackageProps, PackageState> {
               <Button component={Link} to={exampleModalPath}>
                 Examples
               </Button>
+              {pkg['atlaskit:designLink'] && (
+                <Button href={pkg['atlaskit:designLink']}>
+                  Design Guidelines
+                </Button>
+              )}
             </ButtonGroup>
           )}
         </Title>

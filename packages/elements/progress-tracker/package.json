@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/progress-tracker",
   "files": [
     "dist"
   ],
