@@ -31,12 +31,15 @@ import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
 import {
   AnalyticsContext,
-  withAnalyticsEvents,
   WithCreateAnalyticsEventProps,
   UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
+  WithAnalyticsEventsWrapper,
+} from '../analytics-next-types';
+
 import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
 
 export interface CardViewOwnProps extends SharedCardProps {
@@ -254,7 +257,9 @@ export class CardViewBase extends React.Component<
   };
 }
 
-export const CardViewWithAnalyticsEvents = withAnalyticsEvents()(CardViewBase);
+export const CardViewWithAnalyticsEvents = (withAnalyticsEvents as WithAnalyticsEventsWrapper)()(
+  CardViewBase,
+);
 
 const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
   if (status === 'error') {

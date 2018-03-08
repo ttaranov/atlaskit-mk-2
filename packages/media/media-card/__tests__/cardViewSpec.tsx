@@ -25,7 +25,10 @@ import { Wrapper } from '../src/root/styled';
 import { breakpointSize } from '../src/utils/breakpoint';
 
 import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumbnail';
-import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import {
+  AnalyticsListener,
+  UIAnalyticsEvent,
+} from '../src/analytics-next-types';
 import { CardViewAnalyticsContext, CardViewState } from '../src/index';
 
 describe('CardView', () => {

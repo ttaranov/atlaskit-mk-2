@@ -1,8 +1,5 @@
 {
   "extends": "../../../tsconfig.fabric.json",
-  "exclude": [
-    "../../../typings/atlaskit.d.ts"
-  ],
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
@@ -14,7 +11,6 @@
     "./examples/*.tsx",
     "./example-helpers/*.ts",
     "./example-helpers/*.tsx",
-    "./typings/**/*.d.ts",
-    "../../../typings/atlaskit.d.ts"
+    "./typings/**/*.d.ts"
   ]
 }

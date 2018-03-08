@@ -13,7 +13,10 @@ import {
 
 import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
-import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import {
+  AnalyticsListener,
+  UIAnalyticsEvent,
+} from '../src/analytics-next-types';
 
 const context = createStorybookContext();
 const onClick = ({ event, mediaItemDetails }, analyticsEvent) => {

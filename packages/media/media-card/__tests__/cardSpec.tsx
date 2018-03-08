@@ -185,7 +185,7 @@ describe('Card', () => {
 
     expect(clickHandler).not.toHaveBeenCalled();
 
-    mediaCardOnClick({} as any);
+    mediaCardOnClick({} as any, {} as any);
     expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
