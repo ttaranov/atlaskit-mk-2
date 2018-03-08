@@ -89,6 +89,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         }
       });
     }
+    // this.view will be destroyed when React unmounts in handleEditorViewRef
   }
 
   // Helper to allow tests to inject plugins directly
