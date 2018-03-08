@@ -4,6 +4,17 @@ This service exposes Landkid on micros for use in the Atlaskit repo
 
 # Developing Locally
 
+# Scripts
+
+There are some helpers scripts that can be run here:
+
+* `yarn get-state` - outputs the current state of landkid (queue, allowed to merge, lock state, etc)
+* `yarn pause` - pauses any new builds from landking, but allows queues to empty (usually used if an important build is landing, or we are upgrading service)
+* `yarn pause -- "Some sort of reason"` - pauses server also showing a custom reason for why builds are paused. Reason is visible in PR screen and in `/current-state`
+* `yarn unpause` - unpauses builds
+* `yarn fix-locked` - used to fix a specific issue that we've hit a few times where the `locked` flag is true but no builds are running.
+  * This essentially just runs `unlock` and `next()`, two debugging functions we've left in so that we dont have to redeploy if things go wrong.
+
 # Deploying
 
 This service runs on a docker image called `atlaskit/atlaskid` that lives on the Atlassian dockerhub `docker.atl-paas.net`;

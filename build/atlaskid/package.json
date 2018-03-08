@@ -4,11 +4,17 @@
   "private": true,
   "description": "Atlaskit specific implementation of Landkid for hosting on micros",
   "scripts": {
-    "start": "landkid"
+    "start": "landkid",
+    "get-state": "node scripts/get-state.js",
+    "pause": "node scripts/pause.js",
+    "unpause": "node scripts/unpause.js",
+    "fix-locked": "node scripts/fix-locked",
+    "watch-for-empty": "node scripts/watch-for-empty.js"
   },
   "author": "Luke Batchelor",
   "license": "Apache-2.0",
   "devDependencies": {
+    "axios": "^0.17.1",
     "bunyan": "^1.8.12"
   },
   "dependencies": {
