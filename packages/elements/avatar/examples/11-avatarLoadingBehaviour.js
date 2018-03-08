@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { gridSize } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 import { Note } from '../examples-util/helpers';
-import Avatar from '../src/';
+import Avatar from '../src';
 
 const Btn = props => (
   <span style={{ marginLeft: gridSize() }}>

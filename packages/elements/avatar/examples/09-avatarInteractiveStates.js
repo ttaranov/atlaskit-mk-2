@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import Avatar from '../src/';
+import Avatar from '../src';
 import { Code, Note } from '../examples-util/helpers';
 import { avatarUrl } from '../examples-util/data';
 
