@@ -319,145 +319,19 @@ describe('analytics - FieldBaseStateless', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onBlur handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldBaseStatelessWithAnalytics onBlur={spy} />);
-    wrapper.find('button').simulate('blur');
+  it('should pass analytics event as last argument to onBlur handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'blur',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onDialogBlur handler', () => {});
 
-  it('should pass analytics event as last argument to onDialogBlur handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <FieldBaseStatelessWithAnalytics onDialogBlur={spy} />,
-    );
-    wrapper.find('button').simulate('blur');
+  it('should pass analytics event as last argument to onDialogClick handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'blur',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onDialogFocus handler', () => {});
 
-  it('should pass analytics event as last argument to onDialogClick handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <FieldBaseStatelessWithAnalytics onDialogClick={spy} />,
-    );
-    wrapper.find('button').simulate('click');
+  it('should pass analytics event as last argument to onFocus handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'click',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on blur', () => {});
 
-  it('should pass analytics event as last argument to onDialogFocus handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <FieldBaseStatelessWithAnalytics onDialogFocus={spy} />,
-    );
-    wrapper.find('button').simulate('focus');
+  it('should fire an atlaskit analytics event on click', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'focus',
-      }),
-    );
-  });
-
-  it('should pass analytics event as last argument to onFocus handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldBaseStatelessWithAnalytics onFocus={spy} />);
-    wrapper.find('button').simulate('focus');
-
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'focus',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on blur', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldBaseStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldBaseStatelessWithAnalytics).simulate('blur');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'blur' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-base',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on click', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldBaseStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldBaseStatelessWithAnalytics).simulate('click');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'click' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-base',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on focus', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldBaseStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldBaseStatelessWithAnalytics).simulate('focus');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'focus' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-base',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on focus', () => {});
 });

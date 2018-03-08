@@ -963,113 +963,15 @@ describe('analytics - StatelessSelect', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onFilterChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <StatelessSelectWithAnalytics onFilterChange={spy} />,
-    );
-    wrapper.find('button').simulate('filter');
+  it('should pass analytics event as last argument to onFilterChange handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'filter',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onSelected handler', () => {});
 
-  it('should pass analytics event as last argument to onSelected handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<StatelessSelectWithAnalytics onSelected={spy} />);
-    wrapper.find('button').simulate('change');
+  it('should pass analytics event as last argument to onOpenChange handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'change',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on filter', () => {});
 
-  it('should pass analytics event as last argument to onOpenChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<StatelessSelectWithAnalytics onOpenChange={spy} />);
-    wrapper.find('button').simulate('toggle');
+  it('should fire an atlaskit analytics event on change', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'toggle',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on filter', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <StatelessSelectWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(StatelessSelectWithAnalytics).simulate('filter');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'filter' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'single-select',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on change', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <StatelessSelectWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(StatelessSelectWithAnalytics).simulate('change');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'change' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'single-select',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on toggle', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <StatelessSelectWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(StatelessSelectWithAnalytics).simulate('toggle');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'single-select',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on toggle', () => {});
 });

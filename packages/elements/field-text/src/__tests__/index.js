@@ -240,219 +240,27 @@ describe('analytics - FieldTextStateless', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onBlur handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onBlur={spy} />);
-    wrapper.find('button').simulate('blur');
+  it('should pass analytics event as last argument to onBlur handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'blur',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onChange handler', () => {});
 
-  it('should pass analytics event as last argument to onChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onChange={spy} />);
-    wrapper.find('button').simulate('change');
+  it('should pass analytics event as last argument to onFocus handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'change',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onKeyDown handler', () => {});
 
-  it('should pass analytics event as last argument to onFocus handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onFocus={spy} />);
-    wrapper.find('button').simulate('focus');
+  it('should pass analytics event as last argument to onKeyPress handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'focus',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onKeyUp handler', () => {});
 
-  it('should pass analytics event as last argument to onKeyDown handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onKeyDown={spy} />);
-    wrapper.find('button').simulate('keydown');
+  it('should fire an atlaskit analytics event on blur', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'keydown',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on change', () => {});
 
-  it('should pass analytics event as last argument to onKeyPress handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onKeyPress={spy} />);
-    wrapper.find('button').simulate('keypress');
+  it('should fire an atlaskit analytics event on focus', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'keypress',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on keydown', () => {});
 
-  it('should pass analytics event as last argument to onKeyUp handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FieldTextStatelessWithAnalytics onKeyUp={spy} />);
-    wrapper.find('button').simulate('keyup');
+  it('should fire an atlaskit analytics event on keypress', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'keyup',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on blur', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('blur');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'blur' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on change', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('change');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'change' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on focus', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('focus');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'focus' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on keydown', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('keydown');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'keydown' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on keypress', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('keypress');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'keypress' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on keyup', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FieldTextStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FieldTextStatelessWithAnalytics).simulate('keyup');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'keyup' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-text',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on keyup', () => {});
 });

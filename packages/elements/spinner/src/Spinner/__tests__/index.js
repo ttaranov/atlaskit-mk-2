@@ -188,39 +188,7 @@ describe('analytics - Spinner', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onComplete handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<SpinnerWithAnalytics onComplete={spy} />);
-    wrapper.find('button').simulate('complete');
+  it('should pass analytics event as last argument to onComplete handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'complete',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on complete', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <SpinnerWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(SpinnerWithAnalytics).simulate('complete');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'complete' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'spinner',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on complete', () => {});
 });

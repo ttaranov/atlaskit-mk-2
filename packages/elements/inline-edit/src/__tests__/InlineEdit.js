@@ -347,113 +347,15 @@ describe('analytics - InlineEditStateless', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onCancel handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineEditStatelessWithAnalytics onCancel={spy} />);
-    wrapper.find('button').simulate('cancel');
+  it('should pass analytics event as last argument to onCancel handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'cancel',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onConfirm handler', () => {});
 
-  it('should pass analytics event as last argument to onConfirm handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineEditStatelessWithAnalytics onConfirm={spy} />);
-    wrapper.find('button').simulate('confirm');
+  it('should pass analytics event as last argument to onEditRequested handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'confirm',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on cancel', () => {});
 
-  it('should pass analytics event as last argument to onEditRequested handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <InlineEditStatelessWithAnalytics onEditRequested={spy} />,
-    );
-    wrapper.find('button').simulate('edit');
+  it('should fire an atlaskit analytics event on confirm', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'edit',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on cancel', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineEditStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineEditStatelessWithAnalytics).simulate('cancel');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'cancel' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-edit',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on confirm', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineEditStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineEditStatelessWithAnalytics).simulate('confirm');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'confirm' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-edit',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on edit', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineEditStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineEditStatelessWithAnalytics).simulate('edit');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'edit' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-edit',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on edit', () => {});
 });

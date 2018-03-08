@@ -8,13 +8,13 @@ import {
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 
-import AkRadio from '../../src/Radio';
 import Radio from '../../src/RadioBase';
 import {
   name,
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
+import AkRadioWithAnalytics, { AkRadio } from '../Radio';
 
 describe(name, () => {
   describe('Radio', () => {
@@ -100,7 +100,7 @@ describe(name, () => {
 });
 describe('analytics - AkRadio', () => {
   it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<AkRadioWithAnalytics />);
+    const wrapper = mount(<AkRadioWithAnalytics />);
 
     expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
       component: 'field-radio-group',
@@ -109,39 +109,7 @@ describe('analytics - AkRadio', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<AkRadioWithAnalytics onChange={spy} />);
-    wrapper.find('button').simulate('change');
+  it('should pass analytics event as last argument to onChange handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'change',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on change', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <AkRadioWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(AkRadioWithAnalytics).simulate('change');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'change' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'field-radio-group',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on change', () => {});
 });

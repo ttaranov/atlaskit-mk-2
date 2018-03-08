@@ -111,41 +111,7 @@ describe('analytics - DropdownMenuStateless', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onOpenChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <DropdownMenuStatelessWithAnalytics onOpenChange={spy} />,
-    );
-    wrapper.find('button').simulate('toggle');
+  it('should pass analytics event as last argument to onOpenChange handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'toggle',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on toggle', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DropdownMenuStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DropdownMenuStatelessWithAnalytics).simulate('toggle');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'dropdown-menu',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on toggle', () => {});
 });

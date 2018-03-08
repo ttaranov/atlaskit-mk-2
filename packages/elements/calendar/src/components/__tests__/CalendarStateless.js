@@ -102,39 +102,7 @@ describe('analytics - CalendarStateless', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onUpdate handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<CalendarStatelessWithAnalytics onUpdate={spy} />);
-    wrapper.find('button').simulate('update');
+  it('should pass analytics event as last argument to onUpdate handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'update',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on update', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <CalendarStatelessWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(CalendarStatelessWithAnalytics).simulate('update');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'update' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'calendar',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on update', () => {});
 });

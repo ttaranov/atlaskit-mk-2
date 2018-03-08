@@ -223,147 +223,19 @@ describe('analytics - InlineDialog', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onContentBlur handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineDialogWithAnalytics onContentBlur={spy} />);
-    wrapper.find('button').simulate('blur');
+  it('should pass analytics event as last argument to onContentBlur handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'blur',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onContentClick handler', () => {});
 
-  it('should pass analytics event as last argument to onContentClick handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineDialogWithAnalytics onContentClick={spy} />);
-    wrapper.find('button').simulate('click');
+  it('should pass analytics event as last argument to onContentFocus handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'click',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onClose handler', () => {});
 
-  it('should pass analytics event as last argument to onContentFocus handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineDialogWithAnalytics onContentFocus={spy} />);
-    wrapper.find('button').simulate('focus');
+  it('should fire an atlaskit analytics event on blur', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'focus',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on click', () => {});
 
-  it('should pass analytics event as last argument to onClose handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<InlineDialogWithAnalytics onClose={spy} />);
-    wrapper.find('button').simulate('close');
+  it('should fire an atlaskit analytics event on focus', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'close',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on blur', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineDialogWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineDialogWithAnalytics).simulate('blur');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'blur' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-dialog',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on click', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineDialogWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineDialogWithAnalytics).simulate('click');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'click' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-dialog',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on focus', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineDialogWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineDialogWithAnalytics).simulate('focus');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'focus' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-dialog',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on close', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <InlineDialogWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(InlineDialogWithAnalytics).simulate('close');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'close' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'inline-dialog',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on close', () => {});
 });

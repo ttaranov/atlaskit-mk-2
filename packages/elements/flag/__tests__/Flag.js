@@ -239,183 +239,23 @@ describe('analytics - Flag', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onBlur handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FlagWithAnalytics onBlur={spy} />);
-    wrapper.find('button').simulate('blur');
+  it('should pass analytics event as last argument to onBlur handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'blur',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onDismissed handler', () => {});
 
-  it('should pass analytics event as last argument to onDismissed handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FlagWithAnalytics onDismissed={spy} />);
-    wrapper.find('button').simulate('dismiss');
+  it('should pass analytics event as last argument to onFocus handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'dismiss',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onMouseOut handler', () => {});
 
-  it('should pass analytics event as last argument to onFocus handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FlagWithAnalytics onFocus={spy} />);
-    wrapper.find('button').simulate('focus');
+  it('should pass analytics event as last argument to onMouseOver handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'focus',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on blur', () => {});
 
-  it('should pass analytics event as last argument to onMouseOut handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FlagWithAnalytics onMouseOut={spy} />);
-    wrapper.find('button').simulate('mouseout');
+  it('should fire an atlaskit analytics event on dismiss', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'mouseout',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on focus', () => {});
 
-  it('should pass analytics event as last argument to onMouseOver handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<FlagWithAnalytics onMouseOver={spy} />);
-    wrapper.find('button').simulate('mouseover');
+  it('should fire an atlaskit analytics event on mouseout', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'mouseover',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on blur', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FlagWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FlagWithAnalytics).simulate('blur');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'blur' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'flag',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on dismiss', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FlagWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FlagWithAnalytics).simulate('dismiss');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'dismiss' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'flag',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on focus', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FlagWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FlagWithAnalytics).simulate('focus');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'focus' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'flag',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on mouseout', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FlagWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FlagWithAnalytics).simulate('mouseout');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'mouseout' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'flag',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on mouseover', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <FlagWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(FlagWithAnalytics).simulate('mouseover');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'mouseover' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'flag',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on mouseover', () => {});
 });

@@ -104,147 +104,19 @@ describe('analytics - DynamicTable', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onSetPage handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<DynamicTableWithAnalytics onSetPage={spy} />);
-    wrapper.find('button').simulate('setPage');
+  it('should pass analytics event as last argument to onSetPage handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'setPage',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onSort handler', () => {});
 
-  it('should pass analytics event as last argument to onSort handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<DynamicTableWithAnalytics onSort={spy} />);
-    wrapper.find('button').simulate('sort');
+  it('should pass analytics event as last argument to onRankStart handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'sort',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onRankEnd handler', () => {});
 
-  it('should pass analytics event as last argument to onRankStart handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<DynamicTableWithAnalytics onRankStart={spy} />);
-    wrapper.find('button').simulate('rankStart');
+  it('should fire an atlaskit analytics event on setPage', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'rankStart',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on sort', () => {});
 
-  it('should pass analytics event as last argument to onRankEnd handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<DynamicTableWithAnalytics onRankEnd={spy} />);
-    wrapper.find('button').simulate('rankEnd');
+  it('should fire an atlaskit analytics event on rankStart', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'rankEnd',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on setPage', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DynamicTableWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DynamicTableWithAnalytics).simulate('setPage');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'setPage' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'dynamic-table',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on sort', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DynamicTableWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DynamicTableWithAnalytics).simulate('sort');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'sort' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'dynamic-table',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on rankStart', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DynamicTableWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DynamicTableWithAnalytics).simulate('rankStart');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'rankStart' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'dynamic-table',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on rankEnd', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DynamicTableWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DynamicTableWithAnalytics).simulate('rankEnd');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'rankEnd' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'dynamic-table',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on rankEnd', () => {});
 });

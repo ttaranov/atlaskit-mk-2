@@ -138,39 +138,7 @@ describe('analytics - Spotlight', () => {
     });
   });
 
-  it('should pass analytics event as last argument to targetOnClick handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<SpotlightWithAnalytics targetOnClick={spy} />);
-    wrapper.find('button').simulate('click');
+  it('should pass analytics event as last argument to targetOnClick handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'click',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on click', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <SpotlightWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(SpotlightWithAnalytics).simulate('click');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'click' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'spotlight',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on click', () => {});
 });

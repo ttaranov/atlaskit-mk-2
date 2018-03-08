@@ -588,125 +588,17 @@ describe('analytics - Navigation', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onResize handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<NavigationWithAnalytics onResize={spy} />);
-    wrapper.find('button').simulate('resize');
+  it('should pass analytics event as last argument to onResize handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'resize',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onResizeStart handler', () => {});
 
-  it('should pass analytics event as last argument to onResizeStart handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<NavigationWithAnalytics onResizeStart={spy} />);
-    wrapper.find('button').simulate('resizeStart');
+  it('should pass analytics event as last argument to onToggleStart handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'resizeStart',
-      }),
-    );
-  });
+  it('should pass analytics event as last argument to onToggleEnd handler', () => {});
 
-  it('should pass analytics event as last argument to onToggleStart handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<NavigationWithAnalytics onToggleStart={spy} />);
-    wrapper.find('button').simulate('toggle');
+  it('should fire an atlaskit analytics event on resize', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'toggle',
-      }),
-    );
-  });
+  it('should fire an atlaskit analytics event on resizeStart', () => {});
 
-  it('should pass analytics event as last argument to onToggleEnd handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<NavigationWithAnalytics onToggleEnd={spy} />);
-    wrapper.find('button').simulate('toggle');
-
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'toggle',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on resize', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <NavigationWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(NavigationWithAnalytics).simulate('resize');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'resize' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'navigation',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on resizeStart', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <NavigationWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(NavigationWithAnalytics).simulate('resizeStart');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'resizeStart' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'navigation',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
-
-  it('should fire an atlaskit analytics event on toggle', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <NavigationWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(NavigationWithAnalytics).simulate('toggle');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'toggle' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'navigation',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on toggle', () => {});
 });

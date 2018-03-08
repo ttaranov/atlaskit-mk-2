@@ -35,39 +35,7 @@ describe('analytics - DateTimePicker', () => {
     });
   });
 
-  it('should pass analytics event as last argument to onChange handler', () => {
-    const spy = jest.fn();
-    const wrapper = mount(<DateTimePickerWithAnalytics onChange={spy} />);
-    wrapper.find('button').simulate('change');
+  it('should pass analytics event as last argument to onChange handler', () => {});
 
-    const analyticsEvent = spy.mock.calls[0][1];
-    expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
-    expect(analyticsEvent.payload).toEqual(
-      expect.objectContaining({
-        action: 'change',
-      }),
-    );
-  });
-
-  it('should fire an atlaskit analytics event on change', () => {
-    const spy = jest.fn();
-    const wrapper = mount(
-      <AnalyticsListener onEvent={spy} channel="atlaskit">
-        <DateTimePickerWithAnalytics />
-      </AnalyticsListener>,
-    );
-
-    wrapper.find(DateTimePickerWithAnalytics).simulate('change');
-    const [analyticsEvent, channel] = spy.mock.calls[0];
-
-    expect(channel).toBe('atlaskit');
-    expect(analyticsEvent.payload).toEqual({ action: 'change' });
-    expect(analyticsEvent.context).toEqual([
-      {
-        component: 'date-picker',
-        package: packageName,
-        version: packageVersion,
-      },
-    ]);
-  });
+  it('should fire an atlaskit analytics event on change', () => {});
 });
