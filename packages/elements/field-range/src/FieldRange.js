@@ -6,7 +6,7 @@ type Props = {
   /** if the field range needs to be disabled */
   disabled?: boolean,
   /** Maximum value of the range */
-  max?: number,
+  max: number,
   /** Minimum value of the range */
   min?: number,
   /** Hook to be invoked on change of the range */
@@ -71,7 +71,7 @@ export default class Slider extends Component<Props, State> {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  getPercentValue = (value: number, max: ?number): string => {
+  getPercentValue = (value: number, max: number): string => {
     return (value / max * 100).toFixed(2);
   };
 
