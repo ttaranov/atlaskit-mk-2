@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { isImageRemote } from '@atlaskit/media-core';
+import { isImageRemote } from './isImageRemote';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {
   CircularMask,

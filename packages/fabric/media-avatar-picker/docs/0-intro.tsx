@@ -49,15 +49,19 @@ export default md`
 
   ## API
 
-  \`onImagePicked: Function\`
+  \`onImagePicked?: (file: File, crop: CropProperties) => void\`
 
-  This property is raised when the user clicks the **Save** button and there is a selected image. Two arguments are passed, the \`selectedImage:File\` which is a blob which can be uploaded or converted to a dataURI, and the crop settings which is an object containing \`x:number\`,\`y:number\`, and \`size:number\` values, which are all relative to the coordinates of the selected image.
+  This property is raised when the user clicks the **Save** button and there is a selected image. Two arguments are passed, the \`file:File\` which is a blob, and the crop settings which is an object containing \`x:number\`,\`y:number\`, and \`size:number\` values, which are all relative to the coordinates of the selected image.
 
   **Note** Due to limitations on Safari <= 10.0 and IE11, a \`Blob\` object will be returned instead of a \`File\`. This still allows access to the image byte data to facilitate uploads, essentially minus the filename and date attributes.
 
   The \`x\` and \`y\` represent the origin of the crop area. The \`size\` value is a single value which represents the width and height of the crop area. To get the crop area from the selected image, simply take the clipped rect of (\`x\`, \`y\`, \`size\`, \`size\`) from the given image.
 
-  \`onAvatarPicked: Function\`
+  \`onImagePickedDataURI?: (dataURI: string) => void\`
+
+  This property is raised when the user clicks the **Save** button and there is a selected image. The selected image is provided as a dataURI string.
+
+  \`onAvatarPicked: (avatar: Avatar) => void\`
 
   This property is raised when the user clicks the **Save** button and there is a pre-defined avatar selected, and no image selected. An \`Avatar\` object with a \`dataURI\` property is passed.
 
