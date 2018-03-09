@@ -54,21 +54,21 @@ export function storyMediaProviderFactory(
               'urn:filestore:upload': ['create'],
               'urn:filestore:upload:*': ['read', 'update'],
             }),
-            userAuthProvider: !includeUserAuthProvider
-              ? undefined
-              : StoryBookUserAuthProvider.create(),
+            userAuthProvider:
+              includeUserAuthProvider === false
+                ? undefined
+                : StoryBookUserAuthProvider.create(),
           }),
-    linkCreateContext:
-      includeLinkCreateContext === false
-        ? undefined
-        : Promise.resolve<MediaContextConfig>({
-            serviceHost: defaultServiceHost,
-            authProvider: StoryBookAuthProvider.create(false, {
-              [`urn:filestore:collection:${collection}`]: ['read', 'update'],
-              'urn:filestore:file:*': ['read'],
-              'urn:filestore:chunk:*': ['read'],
-            }),
+    linkCreateContext: !includeLinkCreateContext
+      ? undefined
+      : Promise.resolve<MediaContextConfig>({
+          serviceHost: defaultServiceHost,
+          authProvider: StoryBookAuthProvider.create(false, {
+            [`urn:filestore:collection:${collection}`]: ['read', 'update'],
+            'urn:filestore:file:*': ['read'],
+            'urn:filestore:chunk:*': ['read'],
           }),
+        }),
   });
 }
 

@@ -32,7 +32,7 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 
 const HOST = 'localhost';
 const PORT = 9000;
-const WEBPACK_BUILD_TIMEOUT = 20000;
+const WEBPACK_BUILD_TIMEOUT = 5000;
 
 let server;
 let config;
@@ -64,6 +64,7 @@ async function startDevServer() {
   const globs = workspacesGlob
     ? utils.createWorkspacesGlob(flattenDeep(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
+
   if (!globs.length) {
     print(
       errorMsg({
@@ -85,12 +86,6 @@ async function startDevServer() {
   });
 
   const compiler = webpack(config);
-  compiler.plugin('invalid', () =>
-    console.log(
-      'Something has changed and Webpack needs to invalidate dependencies graph',
-    ),
-  );
-  compiler.plugin('done', () => console.log('Compiled Packages!!'));
 
   //
   // Starting Webpack Dev Server
@@ -105,6 +100,7 @@ async function startDevServer() {
     quiet: false,
     noInfo: false,
     overlay: false,
+    hot: false,
 
     //change stats to verbose to get detailed information
     stats: 'minimal',
@@ -112,6 +108,25 @@ async function startDevServer() {
   });
 
   return new Promise((resolve, reject) => {
+    let hasValidDepGraph = true;
+
+    compiler.plugin('invalid', () => {
+      hasValidDepGraph = false;
+      console.log(
+        'Something has changed and Webpack needs to invalidate dependencies graph',
+      );
+    });
+
+    compiler.plugin('done', () => {
+      hasValidDepGraph = true;
+      setTimeout(() => {
+        if (hasValidDepGraph) {
+          resolve();
+          console.log('Compiled Packages!!');
+        }
+      }, WEBPACK_BUILD_TIMEOUT);
+    });
+
     server.listen(PORT, HOST, err => {
       if (err) {
         console.log(err.stack || err);
@@ -123,7 +138,6 @@ async function startDevServer() {
           htmlAcceptHeaders: ['text/html'],
         }),
       );
-      setTimeout(() => resolve(), WEBPACK_BUILD_TIMEOUT);
     });
   });
 }

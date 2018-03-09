@@ -9,7 +9,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import {
-  MediaProvider,
   MediaStateManager,
   DefaultMediaStateManager,
 } from '../../src/plugins/media';
@@ -46,14 +45,25 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const defaultStateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
-  const getFreshResolvedProvider = (stateManager?: MediaStateManager) => {
-    return Promise.resolve(
-      storyMediaProviderFactory({
-        collectionName: testCollectionName,
-        stateManager: stateManager || defaultStateManager,
-      }),
-    ) as Promise<MediaProvider>;
-  };
+  interface GetFreshResolvedProviderOptions {
+    stateManager?: MediaStateManager;
+    includeLinkCreateContext?: boolean;
+  }
+
+  const getFreshResolvedProvider = (
+    {
+      stateManager,
+      includeLinkCreateContext,
+    }: GetFreshResolvedProviderOptions = {
+      stateManager: defaultStateManager,
+      includeLinkCreateContext: false,
+    },
+  ) =>
+    storyMediaProviderFactory({
+      collectionName: testCollectionName,
+      stateManager,
+      includeLinkCreateContext,
+    });
 
   it('should render a CardView component if the media type is file without provider', () => {
     const mediaComponent = shallow(
@@ -102,7 +112,9 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should render nothing if media type is link without provider', async () => {
-    const mediaProvider = getFreshResolvedProvider();
+    const mediaProvider = getFreshResolvedProvider({
+      includeLinkCreateContext: true,
+    });
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -138,7 +150,9 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should render a Card component if media type is link with provider', async () => {
-    const mediaProvider = getFreshResolvedProvider();
+    const mediaProvider = getFreshResolvedProvider({
+      includeLinkCreateContext: true,
+    });
     const mediaComponent = shallow(
       <MediaComponent
         id={link.attrs.id}
@@ -160,7 +174,9 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
   describe('when appearance is set', () => {
     it('renders a Card component with the customized appearance', async () => {
-      const mediaProvider = getFreshResolvedProvider();
+      const mediaProvider = getFreshResolvedProvider({
+        includeLinkCreateContext: true,
+      });
       const mediaComponent = shallow(
         <MediaComponent
           id={link.attrs.id}
@@ -185,7 +201,9 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
   describe('when appearance is not set', () => {
     it('renders a link Card component with the default appearance', async () => {
-      const mediaProvider = getFreshResolvedProvider();
+      const mediaProvider = getFreshResolvedProvider({
+        includeLinkCreateContext: true,
+      });
       const mediaComponent = shallow(
         <MediaComponent
           id={link.attrs.id}
@@ -215,7 +233,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       off: () => {},
       destroy: () => {},
     };
-    const mediaProvider = getFreshResolvedProvider(stateManager);
+
+    const mediaProvider = getFreshResolvedProvider({ stateManager });
 
     shallow(
       <MediaComponent
