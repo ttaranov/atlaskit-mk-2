@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.8.0
+- [minor] Add width plugin [66128a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66128a0)
+
 ## 62.7.16
 - [patch] add horizontal rule toolbar item [48c36f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48c36f4)
 
