@@ -88,6 +88,14 @@ type PrettyPropTypeProps = {
 };
 
 const converters = {
+  intersection: type =>
+    type.types.reduce(
+      (acc, t, i) =>
+        i < type.types.length - 1
+          ? [...acc, prettyConvert(t), <div>&</div>]
+          : [...acc, prettyConvert(t)],
+      [],
+    ),
   string: type => {
     if (type.value != null) {
       return <StringType>{convert(type)}</StringType>;
