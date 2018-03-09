@@ -24,7 +24,7 @@ const packageStr = analyticsPackages.join(',');
   console.log(child.output.join('\n'));
 
   if (child.status !== 0) {
-    throw new Error(`Bolt command was not successful, exited with code ${child.status}`);
+    throw new Error(`Bolt command was not successful, exited with code ${child.status} with args ${args}`);
   }
 
   if (child.error) {

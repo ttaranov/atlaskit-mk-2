@@ -23,7 +23,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^1.0.3",
+    "@atlaskit/analytics-next": "^1.1.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",

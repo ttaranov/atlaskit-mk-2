@@ -17,6 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-next": "^1.1.2",
     "@atlaskit/theme": "^2.4.1",
     "babel-runtime": "^6.26.0",
     "keycode": "^2.1.7",

@@ -6,7 +6,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/text-field",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/text-field",
   "types": "src/index.d.ts",
   "files": [
     "dist",
@@ -23,6 +23,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-next": "^1.1.2",
     "@atlaskit/field-base": "^8.2.1",
     "@atlaskit/theme": "^2.4.1",
     "styled-components": "1.4.6 - 3"

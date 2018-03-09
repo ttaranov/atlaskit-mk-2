@@ -6,7 +6,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/tooltips",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/tooltips",
   "files": [
     "dist"
   ],
@@ -17,6 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-next": "^1.1.2",
     "@atlaskit/layer-manager": "^2.8.1",
     "@atlaskit/theme": "^2.4.1",
     "react-deprecate": "^0.1.0",
@@ -30,7 +31,8 @@
   "devDependencies": {
     "@atlaskit/button": "^6.6.2",
     "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/icon": "^10.12.1"
+    "@atlaskit/icon": "^10.12.1",
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",
