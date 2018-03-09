@@ -91,9 +91,19 @@ class Button extends Component<ButtonProps, State> {
 
   onMouseUp = () => this.setState({ isActive: false });
 
-  onFocus = () => this.setState({ isFocus: true });
+  onFocus = (event: SyntheticEvent<>) => {
+    this.setState({ isFocus: true });
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
+  };
 
-  onBlur = () => this.setState({ isFocus: false });
+  onBlur = (event: SyntheticEvent<>) => {
+    this.setState({ isFocus: false });
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
+  };
 
   /* Swallow click events when the button is disabled to prevent inner child clicks bubbling up */
   onInnerClick = (e: Event) => {

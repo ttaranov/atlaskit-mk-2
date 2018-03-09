@@ -205,4 +205,28 @@ describe('ak-button/default-behaviour', () => {
       },
     ]);
   });
+
+  it('should trigger onFocus handler on focus', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <Button tabIndex={0} onFocus={spy}>
+        button
+      </Button>,
+    );
+    const button = wrapper.find('StyledButton');
+    button.prop('onFocus')();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should trigger onBlur handler on blur', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <Button tabIndex={0} onBlur={spy}>
+        button
+      </Button>,
+    );
+    const button = wrapper.find('StyledButton');
+    button.prop('onBlur')();
+    expect(spy).toHaveBeenCalled();
+  });
 });
