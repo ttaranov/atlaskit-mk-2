@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.12.2
+- [patch] add horizontal rule toolbar item [48c36f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48c36f4)
+
 ## 10.12.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

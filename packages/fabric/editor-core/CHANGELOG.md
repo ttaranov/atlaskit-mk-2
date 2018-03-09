@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 62.7.16
+- [patch] add horizontal rule toolbar item [48c36f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48c36f4)
+
 ## 62.7.15
 - [patch] fix button spacing on toolbars and panel edit toolbar [23ca4d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23ca4d0)
 
