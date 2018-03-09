@@ -35,7 +35,9 @@ export interface State {
 }
 
 const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: auto 1fr;
   grid-template:
     'avatar-area editor-area'
     / auto 1fr;
@@ -54,16 +56,16 @@ const AvatarSection: React.ComponentClass<
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: avatar-area;
-  margin-right: 10px;
+  margin-right: 16px;
 `;
 
 const EditorSection: React.ComponentClass<
   React.HTMLAttributes<{}>
 > = styled.div`
   -ms-grid-row: 1;
-  -ms-grid-column: 1;
+  -ms-grid-column: 2;
   grid-area: editor-area;
-  margin-right: 10px;
+  margin-right: 16px;
 `;
 
 export default class Editor extends React.Component<Props, State> {
