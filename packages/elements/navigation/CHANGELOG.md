@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 29.2.1
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+- [patch] blocked the scrolling of background when nav is full width [ad65c8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad65c8a)
+
 ## 29.2.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 

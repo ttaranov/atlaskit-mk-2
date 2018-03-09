@@ -1,5 +1,8 @@
 # @atlaskit/inline-message
 
+## 3.2.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 3.2.1
 - [patch] added truncating logic for text in inline message [0b59d44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b59d44)
 
