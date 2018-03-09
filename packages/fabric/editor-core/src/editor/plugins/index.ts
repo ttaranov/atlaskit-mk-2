@@ -29,6 +29,7 @@ export { default as extensionPlugin } from './extension';
 export { default as datePlugin } from './date';
 export { default as placeholderTextPlugin } from './placeholder-text';
 export { default as isMultilineContentPlugin } from './is-multiline-content';
+export { default as widthPlugin } from './width';
 
 export {
   default as confluenceInlineComment,
