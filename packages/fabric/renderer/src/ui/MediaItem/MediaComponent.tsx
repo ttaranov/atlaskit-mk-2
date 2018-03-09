@@ -83,10 +83,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     status: 'unknown',
   };
 
-  constructor(props: Props) {
-    super(props);
-  }
-
   componentWillMount() {
     const { mediaProvider } = this.props;
 
