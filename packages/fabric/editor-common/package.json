@@ -26,7 +26,6 @@
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-core": "^14.0.1",
     "@atlaskit/mention": "^9.2.1",
-    "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-schema-basic": "^1.0.0",
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^1.9.2",
     "@atlaskit/media-card": "^24.1.2",
+    "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/webdriver-runner": "^0.0.2",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
