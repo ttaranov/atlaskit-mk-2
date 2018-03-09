@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 5.4.1
+- [patch] Clean up avatar picker dependencies, update readme [a98a141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a98a141)
+
 ## 5.4.0
 - [minor] implement loading state in media-avatar-picker [13f9d50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13f9d50)
 
