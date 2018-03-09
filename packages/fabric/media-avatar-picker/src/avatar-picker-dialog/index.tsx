@@ -245,10 +245,16 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderPredefinedAvatarList() {
+    const { isLoading } = this.props;
     const { selectedAvatar, selectedImage, selectedImageSource } = this.state;
     const avatars = this.getPredefinedAvatars();
 
-    if (selectedImage || selectedImageSource || avatars.length === 0) {
+    if (
+      isLoading ||
+      selectedImage ||
+      selectedImageSource ||
+      avatars.length === 0
+    ) {
       return null;
     }
 

@@ -297,5 +297,6 @@ describe('Avatar Picker Dialog', () => {
 
     expect(button.prop('isDisabled')).toBeTruthy();
     expect(component.find(ImageNavigator).prop('isLoading')).toBeTruthy();
+    expect(component.find(PredefinedAvatarList)).toHaveLength(0);
   });
 });
