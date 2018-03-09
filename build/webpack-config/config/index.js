@@ -76,7 +76,7 @@ module.exports = function createWebpackConfig(
               includePatterns && 'patterns/**/*.js',
               ...globs,
             ].filter(p => !!p),
-            exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+            exclude: ['**/node_modules/**', 'packages/build/docs/**'],
           },
         },
         {
@@ -86,7 +86,7 @@ module.exports = function createWebpackConfig(
             include: [...globs]
               .filter(p => p.includes('package.json'))
               .map(p => p.replace('/package.json', '')),
-            exclude: ['**/node_modules/**', 'packages/utils/docs/**'],
+            exclude: ['**/node_modules/**', 'packages/build/docs/**'],
             configProps: [
               'name',
               'version',
