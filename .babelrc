@@ -3,7 +3,6 @@
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",
-    "babel-plugin-transform-string-raw",
     "syntax-dynamic-import",
     [
       "babel-plugin-styled-components",
@@ -15,7 +14,7 @@
   ],
   "env": {
     "production:cjs": {
-      "presets": ["env", "react", "flow"],
+      "presets": [["env", {"modules": "commonjs"}], "react", "flow"],
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",

@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.1.12
+- [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
+
 ## 31.1.11
 
 ## 31.1.10

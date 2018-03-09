@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 6.3.6
+- [patch] Fixes rendering of the editor in IE11 [df91076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df91076)
+
 ## 6.3.5
 
 ## 6.3.4
