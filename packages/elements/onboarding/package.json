@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/onboarding",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -37,6 +37,6 @@
     "@atlaskit/dropdown-menu": "^3.12.1",
     "@atlaskit/navigation": "^29.2.1",
     "@atlaskit/tooltip": "^8.4.1",
-    "@atlaskit/webdriver-runner": "^0.0.2"
+    "@atlaskit/webdriver-runner": "^0.0.3"
   }
 }

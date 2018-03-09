@@ -1,5 +1,7 @@
 # @atlaskit/onboarding
 
+## 2.4.3
+
 ## 2.4.2
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

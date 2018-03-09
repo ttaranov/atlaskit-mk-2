@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/single-select",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/single-select",
   "files": [
     "dist"
   ],
@@ -37,7 +37,7 @@
     "@atlaskit/avatar": "^9.2.1",
     "@atlaskit/docs": "^2.5.2",
     "@atlaskit/tooltip": "^8.4.1",
-    "@atlaskit/webdriver-runner": "^0.0.2",
+    "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "^3.3.0"
   }
 }
