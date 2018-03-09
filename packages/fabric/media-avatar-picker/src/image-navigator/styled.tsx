@@ -7,7 +7,7 @@ import styled, { StyledComponentClass, keyframes } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless, akColorN200 } from '@atlaskit/util-shared-styles';
 import { AVATAR_DIALOG_WIDTH } from '../avatar-picker-dialog/layout-const';
 
 const spin = keyframes`
@@ -95,6 +95,8 @@ export const DragZone = styled.div`
     ''};
 `;
 
+DragZone.displayName = 'DragZone';
+
 export const DragZoneImage = styled.img`
   width: 100px;
 `;
@@ -105,7 +107,7 @@ export interface DragZoneTextProps {
 
 export const DragZoneText = styled.div`
   text-align: center;
-
+  color: ${akColorN200};
   ${(props: DragZoneTextProps) =>
     props.isFullSize
       ? `width: ${AVATAR_DIALOG_WIDTH - akGridSizeUnitless * 8}px`
@@ -123,6 +125,6 @@ export const SelectionBlocker = styled.div`
 `;
 
 export const PaddedBreak = styled.p`
-  margin-top: 10px;
+  margin-top: 10px !important;
   margin-bottom: 10px;
 `;

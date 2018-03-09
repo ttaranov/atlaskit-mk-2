@@ -30,6 +30,7 @@ export interface AvatarPickerDialogProps {
   title?: string;
   primaryButtonText?: string;
   errorMessage?: string;
+  isLoading?: boolean;
 }
 
 export enum Mode {
@@ -224,11 +225,10 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   get isDisabled() {
-    return !(
-      this.props.imageSource ||
-      this.state.selectedImage ||
-      this.state.selectedAvatar
-    );
+    const { selectedImage, selectedAvatar } = this.state;
+    const { imageSource, isLoading } = this.props;
+
+    return isLoading || !(imageSource || selectedImage || selectedAvatar);
   }
 
   getPredefinedAvatars(): Avatar[] {
@@ -245,10 +245,16 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderPredefinedAvatarList() {
+    const { isLoading } = this.props;
     const { selectedAvatar, selectedImage, selectedImageSource } = this.state;
     const avatars = this.getPredefinedAvatars();
 
-    if (selectedImage || selectedImageSource || avatars.length === 0) {
+    if (
+      isLoading ||
+      selectedImage ||
+      selectedImageSource ||
+      avatars.length === 0
+    ) {
       return null;
     }
 
@@ -263,7 +269,7 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderBody() {
-    const { avatars } = this.props;
+    const { avatars, isLoading } = this.props;
     const {
       mode,
       selectedImageSource,
@@ -285,6 +291,7 @@ export class AvatarPickerDialog extends PureComponent<
               onRemoveImage={this.onRemoveImage}
               onImageUploaded={this.onImageUploaded}
               onImageError={this.onImageError}
+              isLoading={isLoading}
             />
             {this.renderPredefinedAvatarList()}
           </CroppingWrapper>

@@ -3,12 +3,16 @@ import * as util from '../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { CONTAINER_SIZE, ImageNavigator } from '../src/image-navigator';
+import Spinner from '@atlaskit/spinner';
+import Button from '@atlaskit/button';
+import { CONTAINER_SIZE, ImageNavigator, Props } from '../src/image-navigator';
 import { ERROR, MAX_SIZE_MB } from '../src/avatar-picker-dialog';
 import {
   ImageUploader,
   DragZone,
   DragZoneImage,
+  DragZoneText,
+  PaddedBreak,
 } from '../src/image-navigator/styled';
 import { ImageCropper } from '../src/image-cropper';
 import Slider from '@atlaskit/field-range';
@@ -24,6 +28,23 @@ describe('Image navigator', () => {
   let onRemoveImage;
   let onImageError;
   let onImageUploaded;
+  let isLoading;
+
+  const setup = (props?: Partial<Props>) => {
+    return mount(
+      <ImageNavigator
+        imageSource={smallImage}
+        onImageLoaded={onImageLoaded}
+        onPositionChanged={onPositionChanged}
+        onSizeChanged={onSizeChanged}
+        onRemoveImage={onRemoveImage}
+        onImageError={onImageError}
+        onImageUploaded={onImageUploaded}
+        isLoading={isLoading}
+        {...props}
+      />,
+    );
+  };
 
   beforeEach(() => {
     onImageLoaded = jest.fn();
@@ -32,23 +53,14 @@ describe('Image navigator', () => {
     onRemoveImage = jest.fn();
     onImageError = jest.fn();
     onImageUploaded = jest.fn();
+    isLoading = false;
   });
 
   describe('with an imageSource', () => {
     let imageCropper;
     let slider;
     beforeEach(() => {
-      component = mount(
-        <ImageNavigator
-          imageSource={smallImage}
-          onImageLoaded={onImageLoaded}
-          onPositionChanged={onPositionChanged}
-          onSizeChanged={onSizeChanged}
-          onRemoveImage={onRemoveImage}
-          onImageError={onImageError}
-          onImageUploaded={onImageUploaded}
-        />,
-      );
+      component = setup();
       imageCropper = () => component.find(ImageCropper);
       slider = () => component.find(Slider);
     });
@@ -235,6 +247,17 @@ describe('Image navigator', () => {
 
         // this need to be more specific
         expect(onPositionChanged).toHaveBeenCalled();
+      });
+      it('should render loading state when "isLoading" is true', () => {
+        const component = setup({ isLoading: true });
+
+        expect(component.find(Spinner)).toHaveLength(1);
+        expect(component.find(DragZone).prop('showBorder')).toBeFalsy();
+        expect(component.find(DragZoneImage)).toHaveLength(0);
+        expect(component.find(DragZoneText)).toHaveLength(0);
+        expect(component.find(ImageCropper)).toHaveLength(0);
+        expect(component.find(Button)).toHaveLength(0);
+        expect(component.find(PaddedBreak)).toHaveLength(0);
       });
     });
   });
