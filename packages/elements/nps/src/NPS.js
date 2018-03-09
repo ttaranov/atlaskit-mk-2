@@ -15,12 +15,12 @@ type NPSResult = {
 };
 
 type NPSStrings = {
-  product: string,
-  header: Node,
-  page1Subheader: Node,
-  page2Subheader: Node,
-  page3Header: Node,
-  page3Subheader: Node,
+  feedbackTitle: Node,
+  feedbackDescription: Node,
+  followupTitle: Node,
+  followupDescription: Node,
+  thankyouTitle: Node,
+  thankyouDescription: Node,
   optOut: Node,
   scaleLow: Node,
   scaleHigh: Node,
@@ -33,8 +33,8 @@ type NPSStrings = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Whether or not the NPS survey is open */
-  isOpen: boolean,
+  /** The product the survey is for */
+  product?: string,
   /** Can the survey be dismissed */
   isDismissable: boolean,
   /** Callback called when the user dismisses a survey */
@@ -51,10 +51,12 @@ type Props = {
   onRoleChange: Role => void,
   /** Callback called when the user updates the canContact field */
   onCanContactChange: CanContact => void,
-  /** Callback called when the user submits Page 1 */
-  onSubmitPage1: NPSResult => void,
-  /** Callback called when the user submits Page 2 */
-  onSubmit: NPSResult => void,
+  /** Callback called when the user submits the score/comment portion of the survey */
+  onFeedbackSubmit: NPSResult => void,
+  /** Callback called when the user submits the followup portion of the survey */
+  onFollowupSubmit: NPSResult => void,
+  /** Callback called when the user finishes the survey */
+  onFinish: NPSResult => void,
   /** List of roles for user to select from on Page 2 */
   roles: Array<string>,
   /** Override the default strings that are displayed in the survey */
@@ -62,13 +64,10 @@ type Props = {
 };
 
 type State = {
-  isOpen: boolean,
-  values: {
-    rating: number | null,
-    comment: string | null,
-    role: string | null,
-    canContact: boolean,
-  },
+  rating: number | null,
+  comment: string | null,
+  role: string | null,
+  canContact: boolean,
 };
 
 export class NPS extends React.Component<Props, State> {
@@ -94,11 +93,12 @@ export class NPS extends React.Component<Props, State> {
 
   static defaultStrings(product: string) {
     return {
-      header: 'Tell us what you think',
-      page1Subheader: `How likely are you to recommend ${product} to a friend or colleague?`,
-      page2Subheader: `Thanks for your response! To help us improve ${product}, we'd love to discuss your comment in more detail. If you're not keen to discuss it, uncheck the box below.`,
-      page3Header: 'Thanks for your comment!',
-      page3Subheader: `We'll use your comment to improve ${product}.`,
+      feedbackTitle: 'Tell us what you think',
+      feedbackDescription: `How likely are you to recommend ${product} to a friend or colleague?`,
+      followupTitle: 'Tell us what you think',
+      followupDescription: `Thanks for your response! To help us improve ${product}, we'd love to discuss your comment in more detail. If you're not keen to discuss it, uncheck the box below.`,
+      thankyouTitle: 'Thanks for your comment!',
+      thankyouDescription: `We'll use your comment to improve ${product}.`,
       optOut: 'Dismiss Forever',
       scaleLow: 'Not likely',
       scaleHigh: 'Extremely likely',
@@ -114,27 +114,24 @@ export class NPS extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isOpen: true,
-      values: {
-        rating: 2,
-        comment: '',
-        role: null,
-        canContact: false,
-      },
+      rating: 2,
+      comment: '',
+      role: null,
+      canContact: false,
     };
 
     this._setStrings();
   }
 
   _setStrings() {
-    const { strings } = this.props;
+    const { product, strings } = this.props;
     // Some of the default strings require a product string. If any of these strings
     // are missing along with the product string, throw
-    if (!strings.product) {
+    if (!product) {
       const productRequiredStringMissing = !(
-        strings.pageSubheader &&
-        strings.page2Subheader &&
-        strings.page3Subheader
+        strings.feedbackDescription &&
+        strings.followupDescription &&
+        strings.thankyouDescription
       );
       if (productRequiredStringMissing) {
         throw new Error(
@@ -143,75 +140,57 @@ export class NPS extends React.Component<Props, State> {
       }
     }
     this.strings = {
-      ...NPS.defaultStrings(strings.product),
+      ...NPS.defaultStrings(((product: any): string)),
       ...strings,
     };
   }
 
   _getNPSResult(): NPSResult {
-    if (!this.state.values.rating) {
+    if (!this.state.rating) {
       throw new Error(
         'Could get create NPSResult from form values, rating is missing',
       );
     }
-    const { rating, comment, role, canContact } = this.state.values;
+    const { rating, comment, role, canContact } = this.state;
     return {
       comment,
       role,
       canContact,
-      rating: (rating: number),
+      rating: ((rating: any): number),
     };
   }
 
   onDismiss = () => {
-    this.setState({ isOpen: false });
     this.props.onDismiss();
   };
 
   onOptOut = () => {
-    this.setState({ isOpen: false });
     this.props.onOptOut();
   };
 
-  onSubmitPage1 = (e: SyntheticEvent<>) => {
+  onFeedbackSubmit = (e: SyntheticEvent<>) => {
     e.preventDefault();
     try {
       const result = this._getNPSResult();
-      this.props.onSubmitPage1(result);
+      this.props.onFeedbackSubmit(result);
     } catch (error) {
       /* Form submitted in invalid state, do nothing */
     }
   };
 
-  onSubmit = (e: SyntheticEvent<>) => {
+  onFinish = (e: SyntheticEvent<>) => {
     e.preventDefault();
     try {
       const result = this._getNPSResult();
-      this.props.onSubmit(result);
+      this.props.onFinish(result);
     } catch (error) {
       /* Form submitted in invalid state, do nothing */
     }
   };
 
   render() {
-    const dismissButton = this.props.isDismissable ? (
-      <button onClick={this.onDismiss}>Dismiss</button>
-    ) : null;
-
-    const optOutButton = this.props.canOptOut ? (
-      <button onClick={this.onOptOut}>Dismiss Forever </button>
-    ) : null;
-
-    return this.state.isOpen ? (
+    return (
       <div>
-        <div> {dismissButton}</div>
-        <div>{optOutButton}</div>
-        <form onSubmit={this.onSubmitPage1}>
-          <button type="submit">Submit Page 1</button>
-        </form>
-        <form onSubmit={this.onSubmit}>
-          <button type="submit">Submit</button>
-        </form>
         <div>Props</div>
         <div>{JSON.stringify(this.props, null, 2)}</div>
         <div>State</div>
@@ -219,7 +198,7 @@ export class NPS extends React.Component<Props, State> {
         <div>Strings</div>
         <div>{JSON.stringify(this.strings, null, 2)}</div>
       </div>
-    ) : null;
+    );
   }
 }
 
