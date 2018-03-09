@@ -68,28 +68,46 @@ const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
 const encode = (node: PMNode) => transformer.encode(node);
 
-const checkBuilder = (
-  fn: any,
+const checkFromCxhtmlToADF = (
   description: string,
   cxhtml: string,
-  doc: PMNode,
-) => {
-  fn(`parses CXHTML: ${description}`, () => {
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`parses CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
     const actual = parse(cxhtml);
-    expect(actual).to.deep.equal(doc);
+    expect(actual).to.deep.equal(docNode);
   });
 
-  fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(doc));
-    expect(roundTripped).to.deep.equal(doc);
+const checkFromADFtoADF = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`round-trips ADF: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = parse(encode(docNode));
+    expect(roundTripped).to.deep.equal(docNode);
   });
-};
+
+const checkFromADFtoCxhtml = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+  cxhtml: string,
+) =>
+  it(`converts ADF to CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = encode(docNode);
+    expect(roundTripped).to.deep.equal(cxhtml);
+  });
 
 const check = (
   description: string,
   cxhtml: string,
   doc: (schema: Schema) => PMNode,
-) => checkBuilder(it, description, cxhtml, doc(schema));
+) => {
+  checkFromCxhtmlToADF(description, cxhtml, doc);
+  checkFromADFtoADF(description, doc);
+};
 
 describe('ConfluenceTransformer: encode - parse:', () => {
   describe('empty', () => {
@@ -877,7 +895,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     describe('inlineExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -888,10 +906,18 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
       );
+
+      checkFromADFtoCxhtml(
+        'basic',
+        doc(p(inlineExtension(attrs)())),
+        `<p><fab:adf><![CDATA[${JSON.stringify(
+          JSON.stringify(inlineExtension(attrs)()(schema).toJSON()),
+        )}]]></fab:adf></p>`,
+      );
     });
 
     describe('bodyless', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -905,7 +931,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('bodiedExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey

@@ -2,8 +2,6 @@ import {
   MediaAttributes,
   getEmojiAcName,
   hexToRgb,
-  getExtensionLozengeData,
-  getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
 } from '@atlaskit/editor-common';
@@ -69,16 +67,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
-    } else if (node.type === schema.nodes.decisionList) {
-      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    } else if (
-      node.type === schema.nodes.extension ||
-      node.type === schema.nodes.bodiedExtension ||
-      node.type === schema.nodes.inlineExtension
-    ) {
-      return encodeExtension(node);
     } else if (node.type === schema.nodes.emoji) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
@@ -87,11 +77,9 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeDate(node);
     } else if (node.type === schema.nodes.placeholder) {
       return encodePlaceholder(node);
-    } else {
-      throw new Error(
-        `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
-      );
     }
+
+    return encodeAsADF(node);
   }
 
   function encodeBlockquote(node: PMNode) {
@@ -406,10 +394,6 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeJiraIssue(node: PMNode) {
-    if (!node.attrs.issueKey) {
-      return encodeExtension(node);
-    }
-
     const elem = createMacroElement('jira', node.attrs.schemaVersion);
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
@@ -420,47 +404,6 @@ export default function encode(node: PMNode, schema: Schema) {
         serverId: { value: node.attrs.serverId },
       }),
     );
-
-    return elem;
-  }
-
-  function encodeExtension(node: PMNode) {
-    const { parameters, extensionKey } = node.attrs;
-
-    const elem = createMacroElement(
-      extensionKey,
-      getExtensionMetadata(node, 'schemaVersion') || '1',
-    );
-
-    const macroId = getExtensionMetadata(node, 'macroId');
-    if (macroId) {
-      elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
-    }
-
-    if (parameters) {
-      const { macroParams } = parameters;
-      if (macroParams) {
-        elem.appendChild(encodeMacroParams(doc, macroParams));
-      }
-    }
-
-    const placeholderData = getExtensionLozengeData({ node, type: 'image' });
-    if (placeholderData) {
-      const placeholder = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
-      placeholder.textContent = placeholderData.url;
-      elem.appendChild(placeholder);
-    }
-
-    const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
-    displayType.textContent =
-      node.type.name === 'inlineExtension' ? 'INLINE' : 'BLOCK';
-    elem.appendChild(displayType);
-
-    if (node.type.name === 'bodiedExtension') {
-      const content = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
-      content.appendChild(encodeFragment(node.content));
-      elem.appendChild(content);
-    }
 
     return elem;
   }
