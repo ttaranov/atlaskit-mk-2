@@ -288,12 +288,14 @@ describe('Avatar Picker Dialog', () => {
     expect(component.state().selectedImageSource).toBeUndefined();
   });
 
-  it('should pass "isLoading" to ImageNavigator component', () => {
+  it('should render loading state when "isLoading" is true', () => {
     const component = renderWithProps({
       imageSource: smallImage,
       isLoading: true,
     });
+    const button = renderSaveButton({ isLoading: true });
 
+    expect(button.prop('isDisabled')).toBeTruthy();
     expect(component.find(ImageNavigator).prop('isLoading')).toBeTruthy();
   });
 });

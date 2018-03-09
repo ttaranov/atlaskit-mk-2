@@ -299,7 +299,7 @@ export class ImageNavigator extends Component<Props, State> {
     }
   };
 
-  renderDrazone = () => {
+  renderDraZone = () => {
     const { isDroppingFile } = this.state;
     const { errorMessage, isLoading } = this.props;
     const showBorder = !isLoading && !!!errorMessage;
@@ -317,7 +317,7 @@ export class ImageNavigator extends Component<Props, State> {
         onDrop={this.onDrop}
       >
         {isLoading ? (
-          <Spinner />
+          <Spinner size="medium" />
         ) : (
           <div>
             <DragZoneImage src={dropZoneImageSrc} alt={dragZoneAlt} />
@@ -336,20 +336,24 @@ export class ImageNavigator extends Component<Props, State> {
 
     return (
       <ImageUploader>
-        {this.renderDrazone()}
-        <PaddedBreak>{separatorText}</PaddedBreak>
-        <Button
-          onClick={this.onUploadButtonClick as any}
-          isDisabled={isLoading}
-        >
-          Upload a photo
-          <FileInput
-            type="file"
-            id="image-input"
-            onChange={this.onFileChange}
-            accept={ACCEPT.join(',')}
-          />
-        </Button>
+        {this.renderDraZone()}
+        {isLoading ? null : (
+          <div>
+            <PaddedBreak>{separatorText}</PaddedBreak>
+            <Button
+              onClick={this.onUploadButtonClick as any}
+              isDisabled={isLoading}
+            >
+              Upload a photo
+              <FileInput
+                type="file"
+                id="image-input"
+                onChange={this.onFileChange}
+                accept={ACCEPT.join(',')}
+              />
+            </Button>
+          </div>
+        )}
       </ImageUploader>
     );
   }

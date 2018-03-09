@@ -23,16 +23,24 @@ const Layout = styled.div`
 export interface State {
   isOpen: boolean;
   imagePreviewSource: string;
+  isLoading: boolean;
 }
 
 export default class StatefulAvatarPickerDialog extends React.Component<
   Partial<AvatarPickerDialogProps>,
   State
 > {
+  timeoutId: number;
+
   state = {
     isOpen: true,
     imagePreviewSource: '',
+    isLoading: false,
   };
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutId);
+  }
 
   openPicker = () => {
     this.setState({ isOpen: true });
@@ -43,14 +51,26 @@ export default class StatefulAvatarPickerDialog extends React.Component<
   };
 
   save = dataURI => {
-    this.setState({
-      imagePreviewSource: dataURI,
-      isOpen: false,
-    });
+    this.setState(
+      {
+        isLoading: true,
+      },
+      () => {
+        // Fake "uploading" call by adding a delay
+        this.timeoutId = setTimeout(() => {
+          this.setState({
+            imagePreviewSource: dataURI,
+            isOpen: false,
+            isLoading: false,
+          });
+        }, 2000);
+      },
+    );
   };
 
   renderPicker() {
-    if (!this.state.isOpen) {
+    const { isOpen, isLoading } = this.state;
+    if (!isOpen) {
       return null;
     }
 
@@ -69,6 +89,7 @@ export default class StatefulAvatarPickerDialog extends React.Component<
           this.save(exportedImg);
         }}
         onCancel={this.closePicker}
+        isLoading={isLoading}
         {...this.props}
       />
     );

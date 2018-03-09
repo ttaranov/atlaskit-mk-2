@@ -225,11 +225,10 @@ export class AvatarPickerDialog extends PureComponent<
   };
 
   get isDisabled() {
-    return !(
-      this.props.imageSource ||
-      this.state.selectedImage ||
-      this.state.selectedAvatar
-    );
+    const { selectedImage, selectedAvatar } = this.state;
+    const { imageSource, isLoading } = this.props;
+
+    return isLoading || !(imageSource || selectedImage || selectedAvatar);
   }
 
   getPredefinedAvatars(): Avatar[] {

@@ -12,6 +12,7 @@ import {
   DragZone,
   DragZoneImage,
   DragZoneText,
+  PaddedBreak,
 } from '../src/image-navigator/styled';
 import { ImageCropper } from '../src/image-cropper';
 import Slider from '@atlaskit/field-range';
@@ -255,7 +256,8 @@ describe('Image navigator', () => {
         expect(component.find(DragZoneImage)).toHaveLength(0);
         expect(component.find(DragZoneText)).toHaveLength(0);
         expect(component.find(ImageCropper)).toHaveLength(0);
-        expect(component.find(Button).prop('isDisabled')).toBeTruthy();
+        expect(component.find(Button)).toHaveLength(0);
+        expect(component.find(PaddedBreak)).toHaveLength(0);
       });
     });
   });
