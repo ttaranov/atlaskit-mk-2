@@ -299,7 +299,7 @@ export class ImageNavigator extends Component<Props, State> {
     }
   };
 
-  renderDraZone = () => {
+  renderDragZone = () => {
     const { isDroppingFile } = this.state;
     const { errorMessage, isLoading } = this.props;
     const showBorder = !isLoading && !!!errorMessage;
@@ -336,7 +336,7 @@ export class ImageNavigator extends Component<Props, State> {
 
     return (
       <ImageUploader>
-        {this.renderDraZone()}
+        {this.renderDragZone()}
         {isLoading ? null : (
           <div>
             <PaddedBreak>{separatorText}</PaddedBreak>
