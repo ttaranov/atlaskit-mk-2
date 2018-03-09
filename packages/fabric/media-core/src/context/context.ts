@@ -61,6 +61,9 @@ class ContextImpl implements Context {
   private readonly fileItemCache: LRUCache<string, FileItem>;
 
   constructor(readonly config: ContextConfig) {
+    if (!config) {
+      console.log('I HAVE NO CONFIG!');
+    }
     this.fileItemCache = new LRUCache<string, FileItem>(
       config.cacheSize || DEFAULT_CACHE_SIZE,
     );
