@@ -25,7 +25,8 @@ export const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-width: 0;
+  min-width: 0; /* for Chrome ellipsis */
+  flex-basis: 0; /* for IE ellipsis */
 `;
 
 export const TopWrapper = styled.div`
@@ -42,7 +43,8 @@ export const LeftWrapper = styled.div`
 
 export const CopyWrapper = styled.div`
   flex-grow: 1;
-  min-width: 0;
+  min-width: 0; /* for Chrome ellipsis */
+  flex-basis: 0; /* for IE ellipsis */
 `;
 
 export const Title = styled.div`

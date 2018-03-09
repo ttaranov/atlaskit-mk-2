@@ -78,10 +78,15 @@ type Props = {
     Providing a function should return the element you want to focus.
   */
   autoFocus?: boolean | (() => ElementType),
+  components: { Body: ComponentType },
   /**
     Content of the modal
   */
   children?: ChildrenType,
+  /**
+    Component to render the body of the modal, replaces the internal implementation.
+  */
+  body?: ComponentType,
   /**
     Component to render the footer of the modal, replaces internal implementation.
   */
@@ -216,6 +221,7 @@ class Modal extends Component<Props, State> {
       actions,
       appearance,
       autoFocus,
+      body,
       children,
       footer,
       header,
@@ -291,6 +297,7 @@ class Modal extends Component<Props, State> {
                 onStackChange={onStackChange}
                 isChromeless={isChromeless}
                 stackIndex={stackIndex}
+                body={body}
               >
                 {children}
               </Content>

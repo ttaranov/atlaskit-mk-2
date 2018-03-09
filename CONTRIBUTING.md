@@ -51,7 +51,7 @@ or Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
 contributions can be found at
-[http://ak-mk-2-prod.netlify.com/docs/guides/contributing](http://ak-mk-2-prod.netlify.com/docs/guides/contributing).
+[atlaskit.atlassian.com/docs/guides/contributing](atlaskit.atlassian.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 

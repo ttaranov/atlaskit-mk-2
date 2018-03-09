@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/tags",
   "files": [
     "dist"
   ],
@@ -23,13 +24,13 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "@atlaskit/tag": "^3.2.0",
+    "@atlaskit/tag": "^3.2.1",
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.2.0",
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/tag": "^3.2.0",
+    "@atlaskit/avatar": "^9.2.1",
+    "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/tag": "^3.2.1",
     "enzyme": "^3.3.0"
   }
 }

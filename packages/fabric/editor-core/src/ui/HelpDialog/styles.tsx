@@ -1,11 +1,8 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import * as React from 'react';
 import {
   akZIndexBlanket,
   akZIndexDialog,
@@ -16,8 +13,7 @@ import {
   akColorN30,
 } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Container = styled.div`
+export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
@@ -29,8 +25,7 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   bottom: 0;
   left: 0;
   opacity: 0.5;
@@ -41,8 +36,7 @@ export const Wrapper = styled.div`
   background-color: ${akColorN400};
 `;
 
-// tslint:disable-next-line:variable-name
-export const Dialog = styled.div`
+export const Dialog: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 80%;
   height: 80%;
   display: flex;
@@ -55,8 +49,7 @@ export const Dialog = styled.div`
   border-radius: ${akBorderRadius};
 `;
 
-// tslint:disable-next-line:variable-name
-export const Header = styled.div`
+export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`
   min-height: 24px;
   padding: 20px 40px;
   font-size: 24px;
@@ -65,11 +58,11 @@ export const Header = styled.div`
   align-items: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const IconWrapper = styled.div``;
+export function IconWrapper(props) {
+  return <div>{props.children}</div>;
+}
 
-// tslint:disable-next-line:variable-name
-export const ContentWrapper = styled.div`
+export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 20px 5%;
   border-bottom-right-radius: ${akBorderRadius};
   overflow: auto;
@@ -78,8 +71,7 @@ export const ContentWrapper = styled.div`
   width: 90%;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Line = styled.div`
+export const Line: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: #fff;
   content: '';
   display: block;
@@ -92,8 +84,7 @@ export const Line = styled.div`
   min-width: 604px;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Content = styled.div`
+export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   min-width: 524px;
   width: 100%;
   position: relative;
@@ -101,31 +92,26 @@ export const Content = styled.div`
   justify-content: space-between;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ColumnLeft = styled.div`
+export const ColumnLeft: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 44%;
 `;
 
-// tslint:disable-next-line:variable-name
-export const ColumnRight = styled.div`
+export const ColumnRight: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 44%;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Row = styled.div`
+export const Row: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin: 20px 0;
   display: flex;
   justify-content: space-between;
 `;
 
-// tslint:disable-next-line:variable-name
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 18px;
   font-weight: 400;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeSm = styled.span`
+export const CodeSm: ComponentClass<HTMLAttributes<{}>> = styled.span`
   background-color: ${akColorN20};
   border-radius: ${akBorderRadius};
   width: 24px;
@@ -135,8 +121,7 @@ export const CodeSm = styled.span`
   text-align: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeMd = styled.span`
+export const CodeMd: ComponentClass<HTMLAttributes<{}>> = styled.span`
   background-color: ${akColorN20};
   border-radius: ${akBorderRadius};
   display: inline-block;
@@ -146,8 +131,7 @@ export const CodeMd = styled.span`
   text-align: center;
 `;
 
-// tslint:disable-next-line:variable-name
-export const CodeLg = styled.span`
+export const CodeLg: ComponentClass<HTMLAttributes<{}>> = styled.span`
   background-color: ${akColorN20};
   border-radius: ${akBorderRadius};
   display: inline-block;

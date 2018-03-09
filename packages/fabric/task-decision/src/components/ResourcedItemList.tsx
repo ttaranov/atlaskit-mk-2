@@ -241,7 +241,7 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
   private renderItemsUngrouped(items: Item[]) {
     const { appearance, renderDocument, taskDecisionProvider } = this.props;
     return (
-      <ListWrapper theme={{ appearance }}>
+      <ListWrapper>
         {items.map(item => {
           const objectKey = toObjectKey(item);
 

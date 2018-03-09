@@ -9,7 +9,7 @@ export default md`
 
   ## Try it out
 
-  Interact with a [live demo of the @atlaskit/mention component](https://ak-mk-2-prod.netlify.com/mk-2/packages/fabric/mention).
+  Interact with a [live demo of the @atlaskit/mention component](https://atlaskit.atlassian.com/packages/fabric/mention).
 
   ## Installation
 

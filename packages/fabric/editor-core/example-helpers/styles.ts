@@ -1,11 +1,7 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
+import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 
 import {
   akEditorCodeBackground,
@@ -22,7 +18,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
-export const Content = styled.div`
+export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   & .ProseMirror {
     outline: none;
     white-space: pre-wrap;
@@ -96,7 +92,7 @@ export const Content = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-export const ButtonGroup = styled.span`
+export const ButtonGroup: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
 
   & > button {

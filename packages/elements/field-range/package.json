@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-range",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Component which renders a slider and is a substitute of the native input[range] element",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -33,7 +33,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/docs": "^2.5.2",
     "enzyme": "^3.3.0"
   },
   "keywords": [

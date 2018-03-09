@@ -5,11 +5,7 @@ import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
 import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
-import {
-  customCategory,
-  defaultCategories,
-  frequentCategory,
-} from '../constants';
+import { defaultCategories, frequentCategory } from '../constants';
 import {
   EmojiDescription,
   EmojiSearchResult,
@@ -254,6 +250,7 @@ export default class EmojiRepository {
     this.emojis = [...this.emojis, emoji];
     this.fullSearch.addDocuments([emoji]);
     this.addToMaps(emoji);
+    this.addToDynamicCategories(emoji);
   }
 
   getAsciiMap(): Map<string, EmojiDescription> {
@@ -280,15 +277,8 @@ export default class EmojiRepository {
     return emojiResult;
   }
 
-  getDynamicCategoryList(includeCustom?: boolean): string[] {
-    const categories = this.dynamicCategoryList.slice();
-    if (
-      this.dynamicCategoryList.indexOf(customCategory) === -1 &&
-      includeCustom
-    ) {
-      categories.push(customCategory);
-    }
-    return categories;
+  getDynamicCategoryList(): string[] {
+    return this.dynamicCategoryList.slice();
   }
 
   /**
@@ -432,6 +422,15 @@ export default class EmojiRepository {
     addAllVariants(emoji, e => e.id, this.idMap);
     if (emoji.ascii) {
       emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
+    }
+  }
+
+  private addToDynamicCategories(emoji: EmojiDescription): void {
+    if (
+      defaultCategories.indexOf(emoji.category) === -1 &&
+      this.dynamicCategoryList.indexOf(emoji.category) === -1
+    ) {
+      this.dynamicCategoryList.push(emoji.category);
     }
   }
 }

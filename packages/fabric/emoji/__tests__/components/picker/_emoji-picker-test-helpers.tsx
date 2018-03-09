@@ -119,7 +119,11 @@ const getCategoryButton = (category: string, picker) => {
 export const categoryVisible = (category: string, component) =>
   findCategoryHeading(category, component).length > 0;
 
-export const showCategory = (category: string, component): Promise<any> => {
+export const showCategory = (
+  category: string,
+  component,
+  categoryTitle?: string,
+): Promise<any> => {
   const categoryButton = getCategoryButton(category, component);
   expect(categoryButton).toHaveLength(1);
 
@@ -129,7 +133,10 @@ export const showCategory = (category: string, component): Promise<any> => {
     return waitUntil(
       () =>
         component.update() &&
-        categoryVisible(category, component.find(EmojiPickerList)),
+        categoryVisible(
+          categoryTitle || category,
+          component.find(EmojiPickerList),
+        ),
     );
   });
 };

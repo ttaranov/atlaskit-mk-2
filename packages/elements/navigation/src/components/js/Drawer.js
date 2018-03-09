@@ -3,6 +3,7 @@
 import React, { PureComponent, type Node } from 'react';
 import Blanket from '@atlaskit/blanket';
 import { withAnalytics } from '@atlaskit/analytics';
+import ScrollLock from 'react-scrolllock';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
@@ -140,7 +141,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
           iconOffset={iconOffset}
           isFullWidth={actualFullWidth}
         >
-          {width !== 'full' ? header : null}
+          {width !== 'full' ? header : <ScrollLock />}
         </ContainerHeader>
         <DrawerContent>{this.props.children}</DrawerContent>
       </DrawerMain>

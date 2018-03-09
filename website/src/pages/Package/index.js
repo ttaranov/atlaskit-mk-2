@@ -8,6 +8,7 @@ import Button from '@atlaskit/button';
 import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import WatchIcon from '@atlaskit/icon/glyph/watch';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import LinkButton from '../../components/LinkButton';
 import Loading from '../../components/Loading';
@@ -175,7 +176,7 @@ export default class Package extends Component<PackageProps, PackageState> {
     if (!res) return null;
 
     return inModal
-      ? `/mk-2/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
+      ? `/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
       : `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`;
   };
 
@@ -212,15 +213,21 @@ export default class Package extends Component<PackageProps, PackageState> {
               <Button component={Link} to={exampleModalPath}>
                 Examples
               </Button>
+              {pkg['atlaskit:designLink'] && (
+                <Button
+                  iconBefore={<AtlassianIcon />}
+                  href={pkg['atlaskit:designLink']}
+                >
+                  Design docs
+                </Button>
+              )}
             </ButtonGroup>
           )}
         </Title>
         <Intro>{pkg.description}</Intro>
         <MetaData
           packageName={pkg.name}
-          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${
-            groupId
-          }/${pkgId}`}
+          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`}
         />
         <LatestChangelog
           changelog={changelog}

@@ -4,7 +4,7 @@ import {
   endPositionOfParent,
   startPositionOfParent,
 } from '../../utils';
-import { ResolvedPos } from 'prosemirror-model';
+import { ResolvedPos, Fragment } from 'prosemirror-model';
 import { EditorState, NodeSelection } from 'prosemirror-state';
 
 export const posOfMediaGroupNearby = (
@@ -138,3 +138,21 @@ export const appendTimestamp = (name: string, time: number) => {
 
   return `${fileName}-${formattedDate}-${formattedTime}${extension}`;
 };
+
+/**
+ * The function will return the position after current selection where mediaGroup can be inserted.
+ */
+export function endPositionForMedia(
+  state: EditorState,
+  resolvedPos: ResolvedPos,
+): number {
+  const { mediaGroup } = state.schema.nodes;
+  let i = resolvedPos.depth;
+  for (; i > 1; i--) {
+    const nodeType = resolvedPos.node(i).type;
+    if (nodeType.validContent(Fragment.from(mediaGroup.create()))) {
+      break;
+    }
+  }
+  return resolvedPos.end(i) + 1;
+}

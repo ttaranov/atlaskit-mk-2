@@ -1,5 +1,10 @@
 # @atlaskit/single-select
 
+## 3.3.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
+## 3.3.1
+
 ## 3.3.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 

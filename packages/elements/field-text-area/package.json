@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/field-text-area",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/text-field",
   "files": [
     "dist"
   ],
@@ -20,11 +21,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^1.0.3",
-    "@atlaskit/button": "^6.6.0",
-    "@atlaskit/field-base": "^8.2.0",
-    "@atlaskit/icon": "^10.12.0",
-    "@atlaskit/theme": "^2.4.0",
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/field-base": "^8.2.1",
+    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/theme": "^2.4.1",
     "@atlaskit/util-readme": "^3.6.5",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",
@@ -34,8 +34,8 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.0",
-    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/docs": "^2.5.2",
     "@atlaskit/util-readme": "^1.0.0",
     "enzyme": "^3.3.0"
   },

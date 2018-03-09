@@ -48,7 +48,7 @@ export default class RowControls extends Component<Props, any> {
       nodes.push(
         <RowControlsButtonWrap
           key={i}
-          className={className}
+          className={`${className} table-row`}
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
         >
           {/* tslint:disable:jsx-no-lambda */}

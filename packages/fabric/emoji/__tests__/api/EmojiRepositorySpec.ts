@@ -404,6 +404,18 @@ describe('EmojiRepository', () => {
       ).to.be.deep.equal(siteTest);
     });
 
+    it('add custom category when the first custom emoji is added', () => {
+      const repository = new EmojiRepository(standardEmojis);
+
+      expect(repository.getDynamicCategoryList()).to.not.contain(
+        customCategory,
+      ); // no custom emojis in the repository yet
+
+      repository.addUnknownEmoji(siteTest);
+
+      expect(repository.getDynamicCategoryList()).to.contain(customCategory);
+    });
+
     it('add non-custom emoji', () => {
       const standardTest = allEmojis[0];
       const repository = new EmojiRepository(allEmojis.slice(1));
@@ -543,13 +555,6 @@ describe('EmojiRepository', () => {
         'ATLASSIAN',
         'CUSTOM',
         'FREQUENT',
-      ]);
-    });
-
-    it('adds customCategory to the list of dynamic categories if includeCustom flag is present', () => {
-      const repository = new EmojiRepository(standardEmojis);
-      expect(repository.getDynamicCategoryList(true)).to.deep.equal([
-        customCategory,
       ]);
     });
 

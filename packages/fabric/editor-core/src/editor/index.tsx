@@ -72,7 +72,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-
   onEditorDestroyed = (instance: {
     view: EditorView;
     transformer?: Transformer<string>;

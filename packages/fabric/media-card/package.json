@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "24.1.0",
+  "version": "24.1.2",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -60,7 +60,7 @@
     "@atlaskit/field-radio-group": "^1.9.0",
     "@atlaskit/field-range": "^2.6.0",
     "@atlaskit/media-core": "^14.1.0",
-    "@atlaskit/media-test-helpers": "^9.0.2",
+    "@atlaskit/media-test-helpers": "^9.0.3",
     "@atlaskit/toggle": "^2.9.0",
     "deepcopy": "0.6.3",
     "scrollparent": "^2.0.1"

@@ -87,14 +87,15 @@ function addMark(
   char: string,
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
-    if (match[1] && match[1].length > 0 && !validRegex(char, match[1])) {
+    const [, prefix, textWithCombo] = match;
+    if (prefix && prefix.length > 0 && !validRegex(char, prefix)) {
       return;
     }
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
     // because we want ** to work for strong text
     // that's why "start" argument is wrong and we need to calculate it ourselves
-    const from = match[2] ? to - match[2].length + 1 : start;
+    const from = textWithCombo ? start + prefix.length : start;
 
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
@@ -102,6 +103,19 @@ function addMark(
       state.schema.marks.code &&
       state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())
     ) {
+      return;
+    }
+
+    // Prevent autoformatting across hardbreaks
+    let containsHardBreak;
+    state.doc.nodesBetween(from, to, node => {
+      if (node.type === schema.nodes.hardBreak) {
+        containsHardBreak = true;
+        return false;
+      }
+      return !containsHardBreak;
+    });
+    if (containsHardBreak) {
       return;
     }
 

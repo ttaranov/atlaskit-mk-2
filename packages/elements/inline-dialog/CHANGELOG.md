@@ -1,5 +1,8 @@
 # @atlaskit/inline-dialog
 
+## 5.3.2
+- [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
+
 ## 5.3.1
 - [patch] Removed focus ring from inline-dialogs focused via the mouse [a17adde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a17adde)
 

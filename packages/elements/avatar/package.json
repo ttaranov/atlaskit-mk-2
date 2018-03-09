@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "9.2.0",
+  "version": "9.2.1",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/avatars",
   "files": [
     "dist"
   ],
@@ -15,22 +16,21 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^1.0.3",
-    "@atlaskit/dropdown-menu": "^3.12.0",
-    "@atlaskit/item": "^5.1.0",
+    "@atlaskit/dropdown-menu": "^3.12.1",
+    "@atlaskit/item": "^5.1.1",
     "@atlaskit/polyfills": "^1.4.3",
-    "@atlaskit/theme": "^2.4.0",
-    "@atlaskit/tooltip": "^8.4.0",
+    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/tooltip": "^8.4.1",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.0",
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/icon": "^10.12.0",
-    "@atlaskit/lozenge": "^3.6.0",
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/lozenge": "^3.6.1",
     "enzyme": "^3.3.0"
   },
   "keywords": [

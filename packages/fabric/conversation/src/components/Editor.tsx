@@ -34,8 +34,13 @@ export interface State {
   isEditing?: boolean;
 }
 
-const Container = styled.div`
+const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
+  /* -ms- properties are necessary until MS supports the latest version of the grid spec */
+  /* stylelint-disable value-no-vendor-prefix, declaration-block-no-duplicate-properties */
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: auto 1fr;
+  /* stylelint-enable */
   grid-template:
     'avatar-area editor-area'
     / auto 1fr;
@@ -48,18 +53,26 @@ const Container = styled.div`
   }
 `;
 
-const AvatarSection = styled.div`
+const AvatarSection: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
+  /* stylelint-disable value-no-vendor-prefix */
   -ms-grid-row: 1;
   -ms-grid-column: 1;
+  /* stylelint-enable */
   grid-area: avatar-area;
-  margin-right: 10px;
+  margin-right: 16px;
 `;
 
-const EditorSection = styled.div`
+const EditorSection: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
+  /* stylelint-disable value-no-vendor-prefix */
   -ms-grid-row: 1;
-  -ms-grid-column: 1;
+  -ms-grid-column: 2;
+  /* stylelint-enable */
   grid-area: editor-area;
-  margin-right: 10px;
+  margin-right: 16px;
 `;
 
 export default class Editor extends React.Component<Props, State> {
