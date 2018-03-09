@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "10.8.4",
+  "version": "10.8.5",
   "config": {
     "access": "public"
   },
@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^6.4.1",
-    "@atlaskit/emoji": "^31.1.11",
+    "@atlaskit/emoji": "^31.1.13",
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/layer": "^2.7.1",
     "@atlaskit/theme": "^2.3.3",
@@ -48,13 +48,13 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/docs": "^2.1.1",
+    "@atlaskit/docs": "^2.5.3",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-readme": "^3.6.5",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
-    "whatwg-fetch": "^2.0.3",
-    "sinon": "^2.2.0"
+    "sinon": "^2.2.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "repository": {
     "type": "git",

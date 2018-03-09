@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket-transformer",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "description": "Editor Bitbucket transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -24,11 +24,11 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/editor-common": "^6.3.14",
-    "@atlaskit/editor-core": "^62.7.14",
+    "@atlaskit/docs": "^2.5.3",
+    "@atlaskit/editor-common": "^6.3.15",
+    "@atlaskit/editor-core": "^62.8.1",
     "@atlaskit/editor-test-helpers": "^2.0.0",
-    "@atlaskit/emoji": "^31.1.11",
+    "@atlaskit/emoji": "^31.1.13",
     "@atlaskit/mention": "^9.1.1",
     "chai-as-promised": "^6.0.0"
   }

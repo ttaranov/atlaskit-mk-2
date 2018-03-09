@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 62.8.1
+
 ## 62.8.0
 - [minor] Add width plugin [66128a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66128a0)
 

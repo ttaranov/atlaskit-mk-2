@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.5.3
+- [patch] Add converter for intersection in prettyPropType [0d6b5fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d6b5fa)
+
 ## 2.5.2
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
