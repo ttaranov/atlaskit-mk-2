@@ -8,6 +8,7 @@ import Button from '@atlaskit/button';
 import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import WatchIcon from '@atlaskit/icon/glyph/watch';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import LinkButton from '../../components/LinkButton';
 import Loading from '../../components/Loading';
@@ -213,8 +214,11 @@ export default class Package extends Component<PackageProps, PackageState> {
                 Examples
               </Button>
               {pkg['atlaskit:designLink'] && (
-                <Button href={pkg['atlaskit:designLink']}>
-                  Design Guidelines
+                <Button
+                  iconBefore={<AtlassianIcon />}
+                  href={pkg['atlaskit:designLink']}
+                >
+                  Design docs
                 </Button>
               )}
             </ButtonGroup>
