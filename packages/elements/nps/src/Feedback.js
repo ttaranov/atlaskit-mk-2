@@ -1,9 +1,9 @@
 //@flow
 import React, { type Node } from 'react';
-import withCtrl from 'react-ctrl';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import FieldTextArea from '@atlaskit/field-text-area';
 import { type Rating, type Comment } from './NPS';
+import { Header } from './common';
 import {
   ScoreContainer,
   Scale,
@@ -11,8 +11,72 @@ import {
 } from './styled/feedback';
 import { Section } from './styled/common';
 
+const CommentBox = ({
+  placeholder,
+  onCommentChange,
+}: {
+  placeholder: string,
+  onCommentChange: Comment => void,
+}) => {
+  return (
+    <CommentStyled>
+      <FieldTextArea
+        autoFocus
+        shouldFitContainer
+        placeholder={placeholder}
+        isLabelHidden
+        minimumRows={3}
+        onChange={onCommentChange}
+      />
+    </CommentStyled>
+  );
+};
+
+const SendButton = ({
+  onClick,
+  sendLabel,
+}: {
+  onClick: () => void,
+  sendLabel: Node,
+}) => {
+  return (
+    <Button appearance="primary" onClick={onClick}>
+      {sendLabel}
+    </Button>
+  );
+};
+
+const RatingsButtons = ({
+  selected,
+  onRatingSelect,
+}: {
+  selected: Rating | null,
+  onRatingSelect: Rating => void,
+}) => {
+  return (
+    <ButtonGroup>
+      {Array.from(Array(11), (_, i) => {
+        return (
+          <Button
+            key={`nps-button-rating-${i}`}
+            isSelected={selected === i}
+            onClick={() => {
+              onRatingSelect(i);
+            }}
+          >
+            {i.toString()}
+          </Button>
+        );
+      })}
+    </ButtonGroup>
+  );
+};
+
 export type Props = {
   strings: {
+    title: Node,
+    description: Node,
+    optOut: Node,
     scaleLow: Node,
     scaleHigh: Node,
     // Comment placeholder is a string because it gets passed down
@@ -20,9 +84,13 @@ export type Props = {
     commentPlaceholder: string,
     send: Node,
   },
+  isDismissable: boolean,
+  onDismiss: () => void,
+  canOptOut: boolean,
+  onOptOut: () => void,
   onRatingSelect: Rating => void,
   onCommentChange: Comment => void,
-  onSubmit: () => void,
+  onSubmit: ({ rating: Rating | null, comment: Comment }) => void,
 };
 
 type State = {
@@ -44,49 +112,6 @@ export class Feedback extends React.Component<Props, State> {
     onCommentChange: () => {},
   };
 
-  getRatingsButtonGroup() {
-    return (
-      <ButtonGroup>
-        {Array.from(Array(11), (_, i) => {
-          return (
-            <Button
-              key={`nps-button-rating-${i}`}
-              isSelected={this.state.rating === i}
-              onClick={() => {
-                this.onRatingSelect(i);
-              }}
-            >
-              {i.toString()}
-            </Button>
-          );
-        })}
-      </ButtonGroup>
-    );
-  }
-
-  getCommentBox() {
-    return (
-      <CommentStyled>
-        <FieldTextArea
-          autoFocus
-          shouldFitContainer
-          placeholder={this.props.strings.commentPlaceholder}
-          isLabelHidden
-          minimumRows={3}
-          onChange={this.onCommentChange}
-        />
-      </CommentStyled>
-    );
-  }
-
-  getSendButton() {
-    return (
-      <Button appearance="primary" onClick={this.props.onSubmit}>
-        {this.props.strings.send}
-      </Button>
-    );
-  }
-
   onRatingSelect = (rating: Rating) => {
     this.setState({ rating });
     this.props.onRatingSelect(rating);
@@ -99,19 +124,38 @@ export class Feedback extends React.Component<Props, State> {
   };
 
   onSubmit = () => {
-    this.props.onSubmit();
+    const { rating, comment } = this.state;
+    this.props.onSubmit({ rating, comment });
   };
 
   render() {
-    const { strings } = this.props;
+    const {
+      strings,
+      isDismissable,
+      onDismiss,
+      canOptOut,
+      onOptOut,
+    } = this.props;
     return (
       <div>
+        <Header
+          title={strings.title}
+          isDismissable={isDismissable}
+          onDismiss={onDismiss}
+          canOptOut={canOptOut}
+          onOptOut={onOptOut}
+          optOutLabel={strings.optOut}
+        />
+        <p>{strings.description}</p>
         <Section>
           <ScoreContainer>
             <Scale>
               <small>{strings.scaleLow}</small>
             </Scale>
-            {this.getRatingsButtonGroup()}
+            <RatingsButtons
+              selected={this.state.rating}
+              onRatingSelect={this.onRatingSelect}
+            />
             <Scale>
               <small>{strings.scaleHigh}</small>
             </Scale>
@@ -119,8 +163,11 @@ export class Feedback extends React.Component<Props, State> {
         </Section>
         {this.state.rating !== null ? (
           <Section>
-            {this.getCommentBox()}
-            {this.getSendButton()}
+            <CommentBox
+              placeholder={strings.commentPlaceholder}
+              onCommentChange={this.onCommentChange}
+            />
+            <SendButton onClick={this.onSubmit} sendLabel={strings.send} />
           </Section>
         ) : null}
       </div>
@@ -128,4 +175,4 @@ export class Feedback extends React.Component<Props, State> {
   }
 }
 
-export default withCtrl(Feedback);
+export default Feedback;
