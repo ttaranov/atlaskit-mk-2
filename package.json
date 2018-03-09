@@ -150,6 +150,7 @@
     "lint-staged": "^4.3.0",
     "loader-utils": "^1.1.0",
     "lodash.chunk": "^4.2.0",
+    "lodash.get": "^4.4.2",
     "mkdirp": "^0.5.1",
     "mocha": "^3.5.0",
     "netlify-cli": "^1.2.2",

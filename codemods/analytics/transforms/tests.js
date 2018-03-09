@@ -3,6 +3,7 @@
  * Add analytics tests for a component
  */
 import path from 'path';
+import get from 'lodash.get';
 import UtilPlugin from '../../plugins/util';
 import { getMapEntryFromPath, getPackageJsonPath, getRelativeComponentPath } from '../util';
 
@@ -13,11 +14,8 @@ const contextTest = (j, analyticsConfig) => {
   const mountOrShallow = analyticsConfig.wrapTarget ? 'mount' : 'shallow';
 
   return j('').code(`
-
-    it('should provide analytics context with component, package and version fields', () => {
-      const wrapper = ${mountOrShallow}(<${componentName} />);
-
-      expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
+    it('should be wrapped with analytics context', () => {
+      expect(withAnalyticsContext).toHaveBeenCalledWith({
         component: '${context}',
         package: packageName,
         version: packageVersion
@@ -26,23 +24,21 @@ const contextTest = (j, analyticsConfig) => {
   `);
 }
 
-const propTest = (j, analyticsConfig, prop, action) => {
+const propTest = (j, analyticsConfig) => {
   const componentName = `${analyticsConfig.component}WithAnalytics`;
+
+  const props = Object.keys(analyticsConfig.props).map( prop => {
+    const action = analyticsConfig.props[prop];
+    return `${prop}: { action: '${action}' },`;
+  })
 
   return j('').code(`
 
-    it('should pass analytics event as last argument to ${prop} handler', () => {
-    });
-  `);
-}
-
-const atlaskitTest = (j, analyticsConfig, prop, action) => {
-  const componentName = `${analyticsConfig.component}WithAnalytics`;
-  const context = analyticsConfig.context;
-
-  return j('').code(`
-
-    it('should fire an atlaskit analytics event on ${action}', () => {
+    it('should be wrapped with analytics events', () => {
+      expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
+      expect(withAnalyticsEvents).toHaveBeenCalledWith({
+        ${props.join('\n')}
+      });
     });
   `);
 }
@@ -68,6 +64,18 @@ const removeExistingComponentImport = (j, root, componentName) => {
   });
 }
 
+const jestMock = () => {
+  return `
+
+    jest.mock('@atlaskit/analytics-next', () => ({
+      withAnalyticsEvents: jest.fn(() => jest.fn()),
+      withAnalyticsContext: jest.fn(() => jest.fn()),
+      createAndFireEvent: jest.fn(() => jest.fn(args => args)),
+    }));
+
+  `;
+}
+
 export const parser = 'flow';
 
 /**
@@ -91,45 +99,42 @@ export default (fileInfo: any, api: any) => {
   const packageJsonPath = getPackageJsonPath(absoluteFilePath);
   source
     .addImport(source.code(`
-      import { AnalyticsListener, AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+      import { withAnalyticsEvents, withAnalyticsContext, createAndFireEvent } from '@atlaskit/analytics-next';
     `))
     .addImport(source.code(`
       import { name as packageName, version as packageVersion } from '${packageJsonPath}';
     `))
-    .addImport(source.code(`
-      import { mount, shallow } from 'enzyme';
-    `));
+    .getOrAdd(source.code(jestMock()), context => {
+      return context.find(j.CallExpression, (node) => {
+        get(node, 'callee.object.name') === 'jest' &&
+        get(node, 'callee.property.name') === 'mock'
+      });
+    });
+    // .addImport(source.code(`
+    //   import { mount, shallow } from 'enzyme';
+    // `));
   
   analyticsEventConfigs.forEach( analyticsEventConfig => {
     const componentName = analyticsEventConfig.component;
     const componentPath = getRelativeComponentPath(analyticsEventConfig);
     removeExistingComponentImport(j, source, componentName);
     source.addImport(source.code(`
-      import ${componentName}WithAnalytics, { ${componentName} } from '${componentPath}';
+      import '${componentPath}';
+
     `));
     // Add describe block + tests
     const describeBlock = source.getOrAdd(source.code(`
-      describe('analytics - ${analyticsEventConfig.component}', () => {});
+      describe('${analyticsEventConfig.component}', () => {});
     `), context => {
         return context.find(j.CallExpression, (node) =>
-          node.callee.name === 'describe' && node.arguments[0] && node.arguments[0].value === `analytics - ${analyticsEventConfig.component}`
+          get(node, 'callee.name') === 'describe' &&
+          get(node, 'arguments[0].value') === `${analyticsEventConfig.component}`
         );
     });
 
     describeBlock
-      .addTest(contextTest(j, analyticsEventConfig));
-
-    Object.keys(analyticsEventConfig.props).forEach( prop => {
-      const action = analyticsEventConfig.props[prop];
-
-      describeBlock.addTest(propTest(j, analyticsEventConfig, prop, action));
-    });
-
-    Object.keys(analyticsEventConfig.props).forEach(prop => {
-      const action = analyticsEventConfig.props[prop];
-
-      describeBlock.addTest(atlaskitTest(j, analyticsEventConfig, prop, action));
-    });
+      .addTest(contextTest(j, analyticsEventConfig))
+      .addTest(propTest(j, analyticsEventConfig));
   });
 
   // If the first node has been modified or deleted, reattach the comments

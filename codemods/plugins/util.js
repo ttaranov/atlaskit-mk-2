@@ -127,7 +127,7 @@ export default j => {
     return j(codeString).find(j.Program).get().node.body[0];
   }
 
-  const getOrAdd = function(node, getExisting, useExisting = true, addFn) {
+  const getOrAdd = function(node, getExisting, useExisting = false, addFn) {
     const existing = getExisting(this);
 
     if (existing.size() > 0) {
