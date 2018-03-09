@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 6.6.3
+- [patch] added onBlur and onFocus hooks [27d01b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27d01b7)
+
 ## 6.6.2
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
