@@ -19,6 +19,7 @@ export const AvatarPickerViewWrapper = styled.div`
 export const ModalHeader = styled.div`
   margin: 15px;
   font-weight: 500;
+  font-size: 20px;
 `;
 
 export const CroppingWrapper = styled.div`

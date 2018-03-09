@@ -304,7 +304,7 @@ export class ImageNavigator extends Component<Props, State> {
     const { errorMessage, isLoading } = this.props;
     const showBorder = !isLoading && !!!errorMessage;
     const dropZoneImageSrc = errorMessage ? errorIcon : uploadPlaceholder;
-    let dragZoneText = errorMessage || 'Drop your photos here';
+    let dragZoneText = errorMessage || 'Drag and drop your images here';
     const dragZoneAlt = errorMessage || 'Upload image';
 
     return (
