@@ -63,7 +63,6 @@ export default class CodeSandbox extends Component<{}, {}> {
           branch: 'master',
           host: 'bitbucket',
         }}
-        onLoadComplete={console.log}
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
           ['packages/elements/icon/glyph/*', '@atlaskit/icon/glyph/'],
