@@ -378,7 +378,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "prettier --write",
+      "prettier --no-editorconfig --write",
       "git add"
     ]
   },
