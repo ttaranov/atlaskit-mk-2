@@ -15,6 +15,7 @@ import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
+import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import {
   EmojiId,
   EmojiPicker as AkEmojiPicker,
@@ -45,6 +46,7 @@ import { TriggerWrapper } from './styles';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../styles';
 
 import { InsertMenuCustomItem } from '../../editor/types';
+import { createHorizontalRule } from '../../plugins/rule/input-rule';
 
 export interface Props {
   buttons: number;
@@ -64,6 +66,7 @@ export interface Props {
   imageUploadEnabled?: boolean;
   handleImageUpload?: (editorView: EditorView) => {};
   dateEnabled?: boolean;
+  horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
@@ -93,6 +96,7 @@ const blockTypeIcons = {
   codeblock: CodeIcon,
   panel: InfoIcon,
   blockquote: QuoteIcon,
+
 };
 
 /**
@@ -298,6 +302,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       insertMenuItems,
       dateEnabled,
       placeholderTextEnabled,
+      horizontalRuleEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -374,6 +379,17 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         });
       });
     }
+
+    if (horizontalRuleEnabled && this.props.editorView.state.schema.nodes.rule) {
+      items.push({
+        content: 'Horizontal Rule',
+        value: { name: 'horizontalrule' },
+        tooltipDescription: 'Insert horizontal rule',
+        tooltipPosition: 'right',
+        elemBefore: <HorizontalRuleIcon label="Insert horizontal rule" />,
+      });
+    }
+
     if (dateEnabled) {
       items.push({
         content: 'Date',
@@ -457,6 +473,19 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
+  @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
+  private insertHorizontalRule = (): boolean => {
+    const { editorView } = this.props;
+    editorView.dispatch(
+      createHorizontalRule(
+        editorView.state,
+        editorView.state.selection.from,
+        editorView.state.selection.to
+      )
+    );
+    return true;
+  };
+
   @analyticsDecorator('atlassian.editor.emoji.button')
   private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
     this.props.insertEmoji!(emojiId);
@@ -502,6 +531,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
           `atlassian.editor.format.${item.value.name}.button`,
         );
         onInsertBlockType!(item.value.name, editorView);
+        break;
+      case 'horizontalrule':
+        this.insertHorizontalRule();
         break;
       case 'macro':
         analytics.trackEvent(

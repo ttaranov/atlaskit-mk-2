@@ -4,19 +4,23 @@ import { Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 
-const createHorizontalRule = (state, match, start, end) => {
+export const createHorizontalRule = (state, start, end) => {
   if (state.doc.resolve(start).depth > 1) {
     return;
   }
-  analyticsService.trackEvent(
-    `atlassian.editor.format.horizontalrule.autoformatting`,
-  );
   return state.tr.replaceWith(
     start,
     end,
     Fragment.from(state.schema.nodes.rule.create()),
   );
 };
+
+const createHorizontalRuleAutoformat = (state, start, end) => {
+  analyticsService.trackEvent(
+    `atlassian.editor.format.horizontalrule.autoformatting`,
+  );
+  return createHorizontalRule(state, start, end);
+}
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
@@ -28,7 +32,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(
         /^\-\-\-$|^\*\*\*$/,
         (state, match, start, end) =>
-          createHorizontalRule(state, match, start - 1, end),
+        createHorizontalRuleAutoformat(state, start - 1, end),
         true,
       ),
     );
@@ -44,7 +48,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
           if (state.doc.resolve(start).nodeAfter!.type !== hardBreak) {
             return;
           }
-          return createHorizontalRule(state, match, start, end);
+          return createHorizontalRuleAutoformat(state, start, end);
         },
         true,
       ),

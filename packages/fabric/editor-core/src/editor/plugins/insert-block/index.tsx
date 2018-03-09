@@ -40,6 +40,7 @@ const toolbarSizeToButtons = toolbarSize => {
 
 export interface InsertBlockOptions {
   insertMenuItems?: any;
+  horizontalRuleEnabled?: boolean
 }
 
 const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
@@ -123,6 +124,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               emojiDisabled={!emojiState || !emojiState.enabled}
               insertEmoji={emojiState && emojiState.insertEmoji}
               emojiProvider={providers.emojiProvider}
+              horizontalRuleEnabled={options.horizontalRuleEnabled}
               onInsertBlockType={blockTypeState.insertBlockType}
               onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
               macroProvider={macroState.macroProvider}
