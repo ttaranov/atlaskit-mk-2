@@ -37,7 +37,7 @@
     "lint:tslint": "                         tslint-config-prettier-check ./tslint.json && tslint -c ./tslint.json 'packages/*/*/+(src|tests|__tests__|examples|docs|example-helpers)/**/*.+(ts|tsx)' --format stylish",
     "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "                      flow check",
-    "typecheck:typescript": "                bolt workspaces exec --only-fs \"$(./build/ci-scripts/get.glob.packages.for.tool.js typescript)\" -- tsc --noEmit --project ./",
+    "typecheck:typescript": "                bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --noEmit --project ./",
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",
     "start:bitbucket": "                     yarn run website:start **/packages/bitbucket/**",
