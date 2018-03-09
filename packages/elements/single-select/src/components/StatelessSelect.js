@@ -3,6 +3,7 @@ import React, { PureComponent, type Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
@@ -676,6 +677,8 @@ export class StatelessSelect extends PureComponent<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 // $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
 export default withAnalyticsContext({
   component: 'single-select',
@@ -683,31 +686,16 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onFilterChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'filter',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onFilterChange: createAndFireEventOnAtlaskit({
+      action: 'filter',
+    }),
 
-      return consumerEvent;
-    },
+    onSelected: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
 
-    onSelected: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onOpenChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(StatelessSelect),
 );

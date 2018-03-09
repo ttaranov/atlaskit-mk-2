@@ -3,6 +3,7 @@ import React, { Children, Component, type Node, type Element } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -73,19 +74,16 @@ export class BreadcrumbsStateless extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'breadcrumbs',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onExpand: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'expand',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onExpand: createAndFireEventOnAtlaskit({
+      action: 'expand',
+    }),
   })(BreadcrumbsStateless),
 );

@@ -1,6 +1,7 @@
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 // @flow
 import '@atlaskit/polyfills/object-assign';
@@ -442,46 +443,28 @@ export class Navigation extends PureComponent<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'navigation',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onResize: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'resize',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onResize: createAndFireEventOnAtlaskit({
+      action: 'resize',
+    }),
 
-      return consumerEvent;
-    },
+    onResizeStart: createAndFireEventOnAtlaskit({
+      action: 'resizeStart',
+    }),
 
-    onResizeStart: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'resizeStart',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onToggleStart: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
 
-      return consumerEvent;
-    },
-
-    onToggleStart: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onToggleEnd: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onToggleEnd: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(Navigation),
 );

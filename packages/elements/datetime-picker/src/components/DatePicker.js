@@ -5,6 +5,7 @@ import withCtrl from 'react-ctrl';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -155,19 +156,16 @@ class DatePicker extends Component<Props, State> {
 const DatePickerWithoutAnalytics = withCtrl(DatePicker);
 export { DatePickerWithoutAnalytics as DatePicker };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'date-picker',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(DatePickerWithoutAnalytics),
 );

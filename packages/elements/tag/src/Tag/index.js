@@ -4,6 +4,7 @@ import React, { PureComponent, type Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -154,19 +155,16 @@ export class Tag extends PureComponent<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'tag',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onAfterRemoveAction: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'remove',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onAfterRemoveAction: createAndFireEventOnAtlaskit({
+      action: 'remove',
+    }),
   })(Tag),
 );

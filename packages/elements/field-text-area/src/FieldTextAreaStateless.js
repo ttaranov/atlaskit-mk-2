@@ -3,6 +3,7 @@ import React, { Component, type Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
 import {
@@ -143,6 +144,8 @@ export class FieldTextAreaStateless extends Component<Props, void> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 // We are using any as FieldTextArea passes props via spread
 // TODO: if there is no impact props should be passed explicitly from FieldTextArea
 export default withAnalyticsContext({
@@ -151,13 +154,8 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(FieldTextAreaStateless),
 );

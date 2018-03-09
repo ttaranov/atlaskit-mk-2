@@ -7,6 +7,7 @@ import uuid from 'uuid/v1';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -353,19 +354,16 @@ export class CalendarStateless extends Component<Props> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'calendar',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onUpdate: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'update',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onUpdate: createAndFireEventOnAtlaskit({
+      action: 'update',
+    }),
   })(CalendarStateless),
 );

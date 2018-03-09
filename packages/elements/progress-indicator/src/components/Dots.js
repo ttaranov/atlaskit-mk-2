@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -130,19 +131,16 @@ export class ProgressDots extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'progress-indicator',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onSelect: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'select',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onSelect: createAndFireEventOnAtlaskit({
+      action: 'select',
+    }),
   })(ProgressDots),
 );

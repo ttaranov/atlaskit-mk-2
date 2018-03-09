@@ -5,6 +5,7 @@ import uuid from 'uuid';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import {
@@ -125,20 +126,17 @@ export class Icon extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'icon',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(Icon),
 );
 

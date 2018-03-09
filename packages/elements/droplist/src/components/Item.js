@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
@@ -185,19 +186,16 @@ export class Item extends PureComponent<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'droplist-item',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onActivate: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'activate',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onActivate: createAndFireEventOnAtlaskit({
+      action: 'activate',
+    }),
   })(Item),
 );

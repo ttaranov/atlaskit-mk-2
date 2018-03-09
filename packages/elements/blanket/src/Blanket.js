@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -35,19 +36,16 @@ export class Blanket extends PureComponent<Props, void> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'blanket',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onBlanketClicked: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onBlanketClicked: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(Blanket),
 );

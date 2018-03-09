@@ -13,6 +13,7 @@ import renamePropsWithWarning from 'react-deprecate';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -241,28 +242,20 @@ const TooltipWithoutAnalytics = renamePropsWithWarning(Tooltip, {
 
 export { TooltipWithoutAnalytics as Tooltip };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'tooltip',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onMouseOver: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseover',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onMouseOver: createAndFireEventOnAtlaskit({
+      action: 'mouseover',
+    }),
 
-      return consumerEvent;
-    },
-
-    onMouseOut: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseout',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onMouseOut: createAndFireEventOnAtlaskit({
+      action: 'mouseout',
+    }),
   })(TooltipWithoutAnalytics),
 );

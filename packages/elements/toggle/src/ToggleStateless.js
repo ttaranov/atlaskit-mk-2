@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
@@ -93,37 +94,24 @@ export class ToggleStateless extends Component<StatelessProps, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'toggle',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
 
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
   })(ToggleStateless),
 );

@@ -9,6 +9,7 @@ import React, {
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -259,46 +260,28 @@ export class Item extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'item',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
 
-      return consumerEvent;
-    },
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keydown',
+    }),
 
-    onKeyDown: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keydown',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onMouseEnter: createAndFireEventOnAtlaskit({
+      action: 'mouseenter',
+    }),
 
-      return consumerEvent;
-    },
-
-    onMouseEnter: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseenter',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onMouseLeave: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseleave',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onMouseLeave: createAndFireEventOnAtlaskit({
+      action: 'mouseleave',
+    }),
   })(Item),
 );

@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
@@ -216,19 +217,16 @@ export class Droplist extends Component<Props, void> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'droplist',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onOpenChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(Droplist),
 );

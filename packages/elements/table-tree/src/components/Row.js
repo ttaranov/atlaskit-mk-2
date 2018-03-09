@@ -3,6 +3,7 @@ import React, { PureComponent, type Element, type ChildrenArray } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -105,28 +106,20 @@ export class Row extends PureComponent<Props> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'table-tree',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onExpand: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onExpand: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
 
-      return consumerEvent;
-    },
-
-    onCollapse: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onCollapse: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(Row),
 );

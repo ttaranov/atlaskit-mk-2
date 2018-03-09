@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
 import {
@@ -147,19 +148,16 @@ export class BreadcrumbsItem extends Component<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'breadrumbs-item',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(BreadcrumbsItem),
 );

@@ -3,6 +3,7 @@ import React, { Component, type Component as ComponentType } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { PaginationStateless } from '@atlaskit/pagination';
 
@@ -237,46 +238,28 @@ export class DynamicTable extends Component<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'dynamic-table',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onSetPage: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'setPage',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onSetPage: createAndFireEventOnAtlaskit({
+      action: 'setPage',
+    }),
 
-      return consumerEvent;
-    },
+    onSort: createAndFireEventOnAtlaskit({
+      action: 'sort',
+    }),
 
-    onSort: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'sort',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onRankStart: createAndFireEventOnAtlaskit({
+      action: 'rankStart',
+    }),
 
-      return consumerEvent;
-    },
-
-    onRankStart: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'rankStart',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onRankEnd: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'rankEnd',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onRankEnd: createAndFireEventOnAtlaskit({
+      action: 'rankEnd',
+    }),
   })(DynamicTable),
 );

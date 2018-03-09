@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import InlineDialog from '@atlaskit/inline-dialog';
 import {
@@ -110,55 +111,32 @@ export class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'field-base',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-      return consumerEvent;
-    },
+    onDialogBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-    onDialogBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onDialogClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
 
-      return consumerEvent;
-    },
+    onDialogFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
 
-    onDialogClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onDialogFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
   })(FieldBaseStateless),
 );

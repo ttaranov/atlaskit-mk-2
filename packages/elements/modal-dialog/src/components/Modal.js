@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
@@ -317,19 +318,16 @@ export const ModalDialog = withRenderTarget(
   Modal,
 );
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'modal-dialog',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClose: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'close',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'close',
+    }),
   })(ModalDialog),
 );

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 
@@ -144,19 +145,16 @@ export class PaginationStateless extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'pagination',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onSetPage: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onSetPage: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(PaginationStateless),
 );

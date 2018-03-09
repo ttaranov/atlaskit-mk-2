@@ -4,6 +4,7 @@ import { ThemeProvider, withTheme } from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -13,6 +14,8 @@ import Radio from './RadioBase';
 
 export { Radio as AkRadio };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 // $FlowFixMe
 const RadioWithTheme = withAnalyticsContext({
   component: 'field-radio-group',
@@ -20,14 +23,9 @@ const RadioWithTheme = withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(withTheme(Radio)),
 );
 

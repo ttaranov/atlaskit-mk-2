@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
 import {
@@ -68,19 +69,16 @@ export class FieldRadioGroupStateless extends Component<
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'field-radio-group',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onRadioChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onRadioChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(FieldRadioGroupStateless),
 );

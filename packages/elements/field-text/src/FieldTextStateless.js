@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
 import {
@@ -87,64 +88,36 @@ export class FieldTextStateless extends Component<FieldTextProps, void> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'field-text',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
 
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
 
-      return consumerEvent;
-    },
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keydown',
+    }),
 
-    onFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onKeyPress: createAndFireEventOnAtlaskit({
+      action: 'keypress',
+    }),
 
-      return consumerEvent;
-    },
-
-    onKeyDown: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keydown',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onKeyPress: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keypress',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onKeyUp: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keyup',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onKeyUp: createAndFireEventOnAtlaskit({
+      action: 'keyup',
+    }),
   })(FieldTextStateless),
 );

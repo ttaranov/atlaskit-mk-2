@@ -4,6 +4,7 @@ import Select from 'react-select';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -14,28 +15,20 @@ import createSelect from './createSelect';
 const SelectWithoutAnalytics = createSelect(Select);
 export { SelectWithoutAnalytics as Select };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'select',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
 
-      return consumerEvent;
-    },
-
-    onKeyDown: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keydown',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keydown',
+    }),
   })(SelectWithoutAnalytics),
 );

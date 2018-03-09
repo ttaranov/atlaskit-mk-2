@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
@@ -260,37 +261,24 @@ export class InlineEditStateless extends Component<StatelessProps, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'inline-edit',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onCancel: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'cancel',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onCancel: createAndFireEventOnAtlaskit({
+      action: 'cancel',
+    }),
 
-      return consumerEvent;
-    },
+    onConfirm: createAndFireEventOnAtlaskit({
+      action: 'confirm',
+    }),
 
-    onConfirm: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'confirm',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onEditRequested: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'edit',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onEditRequested: createAndFireEventOnAtlaskit({
+      action: 'edit',
+    }),
   })(InlineEditStateless),
 );

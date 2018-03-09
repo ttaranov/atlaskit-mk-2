@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
@@ -157,55 +158,32 @@ export class Flag extends Component<FlagProps, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'flag',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-      return consumerEvent;
-    },
+    onDismissed: createAndFireEventOnAtlaskit({
+      action: 'dismiss',
+    }),
 
-    onDismissed: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'dismiss',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
 
-      return consumerEvent;
-    },
+    onMouseOut: createAndFireEventOnAtlaskit({
+      action: 'mouseout',
+    }),
 
-    onFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onMouseOut: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseout',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onMouseOver: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'mouseover',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onMouseOver: createAndFireEventOnAtlaskit({
+      action: 'mouseover',
+    }),
   })(Flag),
 );

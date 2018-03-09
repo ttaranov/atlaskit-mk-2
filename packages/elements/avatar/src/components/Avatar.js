@@ -4,6 +4,7 @@ import type { Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
 import {
@@ -163,14 +164,6 @@ class Avatar extends Component<AvatarPropTypes> {
   }
 }
 
-const AvatarWithoutAnalytics = mapProps({
-  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
-  isInteractive: props =>
-    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
-})(withPseudoState(Avatar));
-
-export { AvatarWithoutAnalytics as Avatar };
-
 /**
  *  1. Higher order components seem to ignore default properties. Mapping
  *     `appearance` explicity here circumvents the issue.
@@ -181,19 +174,24 @@ export { AvatarWithoutAnalytics as Avatar };
  *     - isFocus
  *     - isHover
  */
+const AvatarWithoutAnalytics = mapProps({
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+  isInteractive: props =>
+    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+})(withPseudoState(Avatar));
+
+export { AvatarWithoutAnalytics as Avatar };
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'avatar',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(AvatarWithoutAnalytics),
 ); // 3

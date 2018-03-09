@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
@@ -184,6 +185,7 @@ export class CheckboxStateless extends Component<Props, State> {
     );
   }
 }
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 // TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
 // possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
 // $FlowFixMe
@@ -193,14 +195,9 @@ const CheckboxWithTheme = withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(withTheme(CheckboxStateless)),
 );
 

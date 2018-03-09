@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
@@ -128,6 +129,8 @@ export class InlineDialog extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 // TODO: expose applicable props from Layer and pull in here
 export default withAnalyticsContext({
   component: 'inline-dialog',
@@ -135,40 +138,20 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onContentBlur: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'blur',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onContentBlur: createAndFireEventOnAtlaskit({
+      action: 'blur',
+    }),
 
-      return consumerEvent;
-    },
+    onContentClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
 
-    onContentClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onContentFocus: createAndFireEventOnAtlaskit({
+      action: 'focus',
+    }),
 
-      return consumerEvent;
-    },
-
-    onContentFocus: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'focus',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onClose: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'close',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'close',
+    }),
   })(InlineDialog),
 );

@@ -4,6 +4,7 @@ import keyCode from 'keycode';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
@@ -126,28 +127,20 @@ export class SingleLineTextInput extends Component<Props, {}> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'input',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onConfirm: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'confirm',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onConfirm: createAndFireEventOnAtlaskit({
+      action: 'confirm',
+    }),
 
-      return consumerEvent;
-    },
-
-    onKeyDown: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'keydown',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keydown',
+    }),
   })(SingleLineTextInput),
 );

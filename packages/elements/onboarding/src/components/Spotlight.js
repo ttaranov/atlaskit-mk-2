@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
@@ -229,19 +230,16 @@ const SpotlightWithoutAnalytics = withScrollMeasurements(
 
 export { SpotlightWithoutAnalytics as Spotlight };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'spotlight',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    targetOnClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    targetOnClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(SpotlightWithoutAnalytics),
 );

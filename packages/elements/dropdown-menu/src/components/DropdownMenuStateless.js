@@ -6,6 +6,7 @@ import uuid from 'uuid/v1';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
@@ -453,19 +454,16 @@ export class DropdownMenuStateless extends Component<
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'dropdown-menu',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onOpenChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(DropdownMenuStateless),
 );

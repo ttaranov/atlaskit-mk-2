@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -123,19 +124,16 @@ export class Tabs extends Component<TabsProps, TabsState> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'tabs',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onSelect: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onSelect: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(Tabs),
 );

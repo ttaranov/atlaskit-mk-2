@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 
 import Droplist from '@atlaskit/droplist';
@@ -578,46 +579,28 @@ export class MultiSelectStateless extends PureComponent<Props, State> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'multi-select',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onFilterChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'filter',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onFilterChange: createAndFireEventOnAtlaskit({
+      action: 'filter',
+    }),
 
-      return consumerEvent;
-    },
+    onNewItemCreated: createAndFireEventOnAtlaskit({
+      action: 'createItem',
+    }),
 
-    onNewItemCreated: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'createItem',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onSelectedChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
 
-      return consumerEvent;
-    },
-
-    onSelectedChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
-
-    onOpenChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'toggle',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
   })(MultiSelectStateless),
 );

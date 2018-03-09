@@ -6,6 +6,7 @@ import withCtrl from 'react-ctrl';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -211,19 +212,16 @@ class TimePicker extends Component<Props, State> {
 const TimePickerWithoutAnalytics = withCtrl(TimePicker);
 export { TimePickerWithoutAnalytics as TimePicker };
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'time-picker',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'change',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
   })(TimePickerWithoutAnalytics),
 );

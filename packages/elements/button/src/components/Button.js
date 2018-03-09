@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 
 import {
@@ -176,19 +177,16 @@ class Button extends Component<ButtonProps, State> {
 export type ButtonType = Button;
 export const ButtonBase = Button;
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'button',
-  package: name,
-  version,
+  package: packageName,
+  version: packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'click',
+    }),
   })(withDeprecationWarnings(Button)),
 );

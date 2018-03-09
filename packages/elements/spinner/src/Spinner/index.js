@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -124,19 +125,16 @@ export class Spinner extends Component<SpinnerProps, SpinnerState> {
   }
 }
 
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
   component: 'spinner',
   package: packageName,
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onComplete: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'complete',
-      });
-      consumerEvent.clone().fire('atlaskit');
-
-      return consumerEvent;
-    },
+    onComplete: createAndFireEventOnAtlaskit({
+      action: 'complete',
+    }),
   })(Spinner),
 );
