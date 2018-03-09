@@ -30,7 +30,12 @@ describe('FieldRange', () => {
       expect(input.props().type).toBe('range');
     });
 
-    it('should have min, max and step set to default values', () => {
+    it('should have percent value on styled component', () => {
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('20.12');
+    });
+
+    it('should have min, max, step and valuePercent set to default values', () => {
       const input = fieldRange.find('input');
       expect(input.props().min).toBe(0);
       expect(input.props().max).toBe(100);
@@ -40,6 +45,12 @@ describe('FieldRange', () => {
     it('should input with defined value', () => {
       const input = fieldRange.find('input');
       expect(input.props().value).toBe('20.12');
+    });
+
+    it('should not be disabled by default', () => {
+      fieldRange.setProps({ disabled: false });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeFalsy();
     });
   });
 
@@ -76,6 +87,18 @@ describe('FieldRange', () => {
       fieldRange.setProps({ value: 15 });
       const input = fieldRange.find('input');
       expect(input.props().value).toBe('15');
+    });
+
+    it('should be disabled if disabled prop is truthy', () => {
+      fieldRange.setProps({ disabled: true });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeTruthy();
+    });
+
+    it('should not be disabled if disabled prop is falsy', () => {
+      fieldRange.setProps({ disabled: false });
+      const input = fieldRange.find('input');
+      expect(input.props().disabled).toBeFalsy();
     });
   });
 });

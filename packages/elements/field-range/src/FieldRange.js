@@ -3,15 +3,23 @@ import React, { Component } from 'react';
 import { Input } from './styled';
 
 type Props = {
-  value: number,
+  /** if the field range needs to be disabled */
+  disabled?: boolean,
+  /** Maximum value of the range */
+  max: number,
+  /** Minimum value of the range */
   min?: number,
-  max?: number,
-  step?: number,
+  /** Hook to be invoked on change of the range */
   onChange?: (value: number) => mixed,
+  /** Step value for the range */
+  step?: number,
+  /** Value of the range */
+  value: number,
 };
 
 type State = {
   value: number,
+  valuePercent: string,
 };
 
 const isIE =
@@ -27,6 +35,7 @@ export default class Slider extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {
+    disabled: false,
     value: 0,
     min: 0,
     max: 100,
@@ -43,6 +52,7 @@ export default class Slider extends Component<Props, State> {
     this.inputElement = null;
     this.state = {
       value: props.value,
+      valuePercent: this.getPercentValue(props.value, props.max),
     };
   }
 
@@ -61,6 +71,10 @@ export default class Slider extends Component<Props, State> {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
+  getPercentValue = (value: number, max: number): string => {
+    return (value / max * 100).toFixed(2);
+  };
+
   onInputChange = (e: Event) => {
     // Event.target is typed as an EventTarget but we need to access properties on it which are
     // specific to HTMLInputElement. Due limitations of the HTML spec flow doesn't know that an
@@ -69,9 +83,10 @@ export default class Slider extends Component<Props, State> {
     // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
     const target: HTMLInputElement = (e.target: Object);
     const value = parseFloat(target.value);
-    const { onChange } = this.props;
+    const { max, onChange } = this.props;
+    const valuePercent = this.getPercentValue(value, max);
 
-    this.setState({ value });
+    this.setState({ value, valuePercent });
 
     if (onChange) {
       onChange(value);
@@ -93,8 +108,8 @@ export default class Slider extends Component<Props, State> {
   };
 
   render() {
-    const { min, max, step } = this.props;
-    const { value } = this.state;
+    const { min, max, step, disabled } = this.props;
+    const { value, valuePercent } = this.state;
 
     return (
       <Input
@@ -105,6 +120,8 @@ export default class Slider extends Component<Props, State> {
         max={max}
         step={step}
         onChange={dummyOnChangeHandler}
+        disabled={disabled}
+        valuePercent={valuePercent}
       />
     );
   }
