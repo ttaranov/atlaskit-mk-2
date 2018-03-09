@@ -14,7 +14,7 @@ import {
   tooltip,
 } from '../../keymaps';
 import DropdownMenu from '../DropdownMenu';
-import { TriggerWrapper, Wrapper, Separator } from './styles';
+import { TriggerWrapper, Wrapper, Separator } from '../styles';
 
 export interface Props {
   isDisabled?: boolean;

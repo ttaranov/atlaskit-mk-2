@@ -98,7 +98,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     if (toolbarVisible || languageSelectFocused) {
       return (
-        <FloatingToolbar target={element} offset={[0, 3]} fitHeight={40}>
+        <FloatingToolbar target={element} offset={[0, 3]}>
           <div
             tabIndex={0}
             onMouseDown={this.onLanguageSelectMouseDown}

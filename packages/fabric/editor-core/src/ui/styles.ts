@@ -2,20 +2,21 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akGridSizeUnitless, akColorN30 } from '@atlaskit/util-shared-styles';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const ButtonGroup: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
 > = styled.span`
-  display: flex;
+  display: inline-flex;
   align-items: center;
 
-  & > div:not(:first-child) {
+  & > div:not(:first-child),
+  & > span:not(:first-child) {
     margin-left: ${({ width }: { width: 'small' | 'large' }) =>
-      width === 'large' ? 0 : akGridSizeUnitless}px;
+      width !== 'large' ? 4 : 0}px;
   }
 
-  div {
+  & > div {
     display: flex;
   }
 `;
@@ -31,11 +32,33 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   align-items: center;
+
+  > div,
+  > span {
+    display: flex;
+  }
+
   > div > div {
     display: flex;
   }
 `;
 
-export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const ExpandIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
   margin-left: -8px;
+`;
+
+export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  display: flex;
+`;
+
+export const MenuWrapper: ComponentClass<HTMLAttributes<{}>> = Wrapper;
+
+export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
+  display: flex;
+  width: 80px;
+  height: 24px;
+  align-items: center;
+  padding: ${(props: any) => (props.width ? 0 : '0 8px')};
 `;

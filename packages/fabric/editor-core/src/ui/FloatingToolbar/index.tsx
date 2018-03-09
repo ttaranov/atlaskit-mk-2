@@ -33,7 +33,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       target,
       offset,
       fitWidth,
-      fitHeight,
+      fitHeight = 40,
       onPositionCalculated,
       popupsMountPoint,
       popupsBoundariesElement,

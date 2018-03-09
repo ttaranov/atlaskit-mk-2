@@ -7,7 +7,7 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { toggleBold, toggleItalic, tooltip } from '../../keymaps';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
-import { ButtonGroup } from './styles';
+import { ButtonGroup } from '../styles';
 
 export interface Props {
   editorView: EditorView;

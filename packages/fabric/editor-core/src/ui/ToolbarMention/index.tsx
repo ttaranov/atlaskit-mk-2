@@ -5,7 +5,7 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { MentionsState } from '../../plugins/mentions';
-import { ToolbarButton } from './styles';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   editorView?: EditorView;

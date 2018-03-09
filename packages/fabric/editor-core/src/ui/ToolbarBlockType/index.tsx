@@ -14,7 +14,7 @@ import {
   Wrapper,
   MenuWrapper,
   ExpandIconWrapper,
-} from './styles';
+} from '../styles';
 
 export interface Props {
   isDisabled?: boolean;

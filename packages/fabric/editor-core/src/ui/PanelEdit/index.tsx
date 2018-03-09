@@ -51,7 +51,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
     const { target, activePanelType, toolbarVisible } = this.state;
     if (toolbarVisible) {
       return (
-        <FloatingToolbar target={target} offset={[0, 3]}>
+        <FloatingToolbar target={target} offset={[0, 3]} fitHeight={32}>
           {availablePanelType.map((panelType, index) => {
             // tslint:disable-next-line:variable-name
             const Icon = icons[panelType.panelType];

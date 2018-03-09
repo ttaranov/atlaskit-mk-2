@@ -11,7 +11,7 @@ import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
 import DropdownMenu from '../DropdownMenu';
-import { ButtonGroup, Separator, Wrapper, ExpandIconWrapper } from './styles';
+import { ButtonGroup, Separator, Wrapper, ExpandIconWrapper } from '../styles';
 import { changeToTaskDecision } from '../../plugins/tasks-and-decisions/commands';
 
 export interface Props {

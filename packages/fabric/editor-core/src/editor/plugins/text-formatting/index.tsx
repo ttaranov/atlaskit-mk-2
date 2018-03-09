@@ -7,7 +7,6 @@ import {
   underline,
   code,
 } from '@atlaskit/editor-common';
-import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
 import {
   plugin as textFormattingPlugin,
@@ -21,20 +20,7 @@ import textFormattingInputRulePlugin from '../../../plugins/text-formatting/inpu
 import clearFormattingKeymapPlugin from '../../../plugins/clear-formatting/keymap';
 import ToolbarTextFormatting from '../../../ui/ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../../../ui/ToolbarAdvancedTextFormatting';
-
-// tslint:disable-next-line:variable-name
-const ButtonsGroup = styled.div`
-  display: flex;
-
-  & > * {
-    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
-      width === 'large' ? 0 : 4}px;
-  }
-
-  & > *:first-child {
-    margin-left: 0;
-  }
-`;
+import { ButtonGroup } from '../../../ui/styles';
 
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
@@ -100,7 +86,7 @@ const textFormatting: EditorPlugin = {
     );
 
     return (
-      <ButtonsGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
+      <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
         <ToolbarTextFormatting
           disabled={disabled}
           editorView={editorView}
@@ -116,7 +102,7 @@ const textFormatting: EditorPlugin = {
           popupsMountPoint={popupsMountPoint}
           popupsScrollableElement={popupsScrollableElement}
         />
-      </ButtonsGroup>
+      </ButtonGroup>
     );
   },
 };
