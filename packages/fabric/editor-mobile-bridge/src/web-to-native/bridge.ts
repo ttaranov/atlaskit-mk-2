@@ -3,13 +3,11 @@ export interface MentionBridge {
   dismissMentions();
 }
 
-export class MarkState {
-  markName: string;
-  active: boolean;
-  enabled: boolean;
-}
-
 export interface TextFormattingBridge {
   updateTextFormat(markStates: string);
   updateText(content: string);
 }
+
+export default interface NativeBridge
+  extends MentionBridge,
+    TextFormattingBridge {};
