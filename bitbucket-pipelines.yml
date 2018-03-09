@@ -30,9 +30,9 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
-          # - git merge master --no-edit
+          - git merge master --no-edit
           - bolt install --pure-lockfile
-          - yarn build
+          # - yarn build
           - yarn test
         caches:
           - node
