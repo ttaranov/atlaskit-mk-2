@@ -123,43 +123,51 @@ export default class Package extends Component<PackageProps, PackageState> {
   loadDoc() {
     this.setState(initialState, () => {
       let { groupId, pkgId } = this.props.match.params;
-      let pkg = getPkg(packages, groupId, pkgId);
-      let dirs = fs.getDirectories(pkg.children);
-      let files = fs.getFiles(pkg.children);
+      try {
+        let pkg = getPkg(packages, groupId, pkgId);
+        let dirs = fs.getDirectories(pkg.children);
+        let files = fs.getFiles(pkg.children);
 
-      let json = fs.getById(files, 'package.json');
-      let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
-      let docs = fs.maybeGetById(dirs, 'docs');
-      let examples = fs.maybeGetById(dirs, 'examples');
+        let json = fs.getById(files, 'package.json');
+        let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
+        let docs = fs.maybeGetById(dirs, 'docs');
+        let examples = fs.maybeGetById(dirs, 'examples');
 
-      let doc;
-      if (docs) {
-        doc = fs.find(docs, () => {
-          return true;
-        });
-      }
-
-      Promise.all([
-        json.exports(),
-        doc && doc.exports().then(mod => mod.default),
-        changelog &&
-          changelog.contents().then(changelog => divvyChangelog(changelog)),
-      ])
-        .then(([pkg, doc, changelog]) => {
-          this.setState({
-            pkg,
-            doc,
-            examples: examples && examples.children,
-            changelog: changelog || [],
+        let doc;
+        if (docs) {
+          doc = fs.find(docs, () => {
+            return true;
           });
-        })
-        .catch(err => {
-          if (isModuleNotFoundError(err)) {
-            this.setState({ missing: true });
-          } else {
-            throw err;
-          }
-        });
+        }
+
+        Promise.all([
+          json.exports(),
+          doc && doc.exports().then(mod => mod.default),
+          changelog &&
+            changelog.contents().then(changelog => divvyChangelog(changelog)),
+        ])
+          .then(([pkg, doc, changelog]) => {
+            this.setState({
+              pkg,
+              doc,
+              examples: examples && examples.children,
+              changelog: changelog || [],
+            });
+          })
+          .catch(err => {
+            if (isModuleNotFoundError(err, pkgId)) {
+              this.setState({ missing: true });
+            } else {
+              throw err;
+            }
+          });
+      } catch (err) {
+        if (isModuleNotFoundError(err, pkgId)) {
+          this.setState({ missing: true });
+        } else {
+          throw err;
+        }
+      }
     });
   }
 

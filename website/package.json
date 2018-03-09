@@ -70,7 +70,7 @@
     "prop-types": "^15.5.10",
     "react": "15.6.0 - 16.2.0",
     "react-addons-text-content": "^0.0.4",
-    "react-codesandboxer": "^0.3.0",
+    "react-codesandboxer": "^0.4.1",
     "react-dom": "15.6.0 - 16.2.0",
     "react-ga": "^2.3.5",
     "react-loadable": "^5.1.0",

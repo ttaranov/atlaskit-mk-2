@@ -2,7 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { colors } from '@atlaskit/theme';
-import Avatar from '../src/';
+import Avatar from '../src';
 import { Code, Note } from '../examples-util/helpers';
 import nucleusImage from '../examples-util/nucleus.png';
 import { avatarUrl } from '../examples-util/data';

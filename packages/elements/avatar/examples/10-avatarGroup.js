@@ -4,7 +4,7 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import ArrowDown from '@atlaskit/icon/glyph/arrow-down';
 import ArrowUp from '@atlaskit/icon/glyph/arrow-up';
 import { Note, Code } from '../examples-util/helpers';
-import { AvatarGroup } from '../src/';
+import { AvatarGroup } from '../src';
 import { AVATAR_SIZES } from '../src/styled/constants';
 import { avatarUrl } from '../examples-util/data';
 
