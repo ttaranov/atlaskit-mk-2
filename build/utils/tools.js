@@ -19,6 +19,7 @@ async function getPackagesInfo(cwd /*: string */) {
       );
 
       let isBrowserPackage = !relativeDir.startsWith('build');
+      let isWebsitePackage = !relativeDir.startsWith('website');
 
       let allDependencies = Object.assign(
         {},
@@ -32,9 +33,9 @@ async function getPackagesInfo(cwd /*: string */) {
       let isTypeScript = tsConfigExists;
       let isTSLint = isTypeScript || tslintConfigExists;
 
-      let isBabel = srcExists && !isTypeScript;
-      let isFlow = isBabel;
-      let isESLint = isBabel;
+      let isBabel = srcExists && !isTypeScript && !isWebsitePackage;
+      let isFlow = isBabel || isWebsitePackage;
+      let isESLint = isBabel || isWebsitePackage;
 
       let isKarma = testBrowserExists || hasKarmaDep;
       let isBrowserStack = isKarma;

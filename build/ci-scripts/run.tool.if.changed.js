@@ -63,7 +63,7 @@ const {
   try {
     let res = await spawndamnit(command[0], command.slice(1), {
       stdio: 'inherit',
-      tty: process.stdout.isTTY,
+      tty: (process.stdout && process.stdout.isTTY) || false,
     });
 
     throw process.exit(res.code);
