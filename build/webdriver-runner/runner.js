@@ -18,10 +18,16 @@ function BrowserTestCase(...args /*:Array<any> */) {
       for (let client of clients) {
         if (client) {
           const browserName = client.driver.desiredCapabilities.browserName;
-          if (skipForBrowser && skipForBrowser[browserName]) continue;
+          if (skipForBrowser && skipForBrowser[browserName]) {
+            if (client.isReady) {
+              client.isReady = false;
+              await client.driver.end();
+            }
+            continue;
+          }
           if (client.isReady) continue;
-          await client.driver.init();
           client.isReady = true;
+          await client.driver.init();
         }
       }
     });
@@ -31,26 +37,14 @@ function BrowserTestCase(...args /*:Array<any> */) {
         testRun(testcase, tester, client.driver, skipForBrowser);
       }
     }
-
-    afterEach(async function() {
-      for (let client of clients) {
-        if (client) {
-          const browserName = client.driver.desiredCapabilities.browserName;
-          if (skipForBrowser && skipForBrowser[browserName]) {
-            await client.driver.end();
-            client.isReady = false;
-          }
-        }
-      }
-    });
   });
 }
 
 afterAll(async function() {
   for (let client of clients) {
     if (client) {
-      await client.driver.end();
       client.isReady = false;
+      await client.driver.end();
     }
   }
 });
@@ -88,39 +82,39 @@ function testRun(
   } else {
     testFn = test;
   }
-  let callbk;
+
+  let callback;
   if (client && tester && tester.length > 1) {
-    callbk = done => tester(client, done);
+    callback = done => tester(client, done);
   } else {
-    callbk = () => tester(client);
+    callback = () => tester(client);
   }
-  testFn(browserName, callbk);
+  testFn(browserName, callback);
 }
 
 function setLocalClients() {
   const launchers = {
     chrome: {
       browserName: 'chrome',
+      // Disable headless here to run on real browsers
+      chromeOptions: {
+        args: ['--headless', '--disable-gpu'],
+      },
+    },
+    safari: {
+      browserName: 'safari',
     },
     firefox: {
       browserName: 'firefox',
     },
   };
-  let clis = [];
-  Object.keys(launchers).forEach(key => {
+
+  return Object.keys(launchers).map(key => {
     const option = {
-      desiredCapabilities: {
-        browserName: launchers[key].browserName,
-        //Disable headless here to run on real browsers
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu'],
-        },
-      },
+      desiredCapabilities: launchers[key],
     };
-    const driver = webdriverio.remote(option);
-    clis.push({ driver: driver });
+    return { driver: webdriverio.remote(option) };
   });
-  return clis;
 }
 
 function setBrowserStackClients() {
@@ -169,6 +163,7 @@ function setBrowserStackClients() {
         build: process.env.BITBUCKET_BRANCH || 'Unknown_Branch',
         'browserstack.local': true,
         'browserstack.debug': true,
+        'browserstack.idleTimeout': 300,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',
