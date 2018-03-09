@@ -214,9 +214,7 @@ function plugins(
         const context = module.context;
         return (
           context &&
-          (context.includes('fabric/editor') ||
-            context.includes('fabric/renderer') ||
-            context.includes('fabric/conversation') ||
+          (context.includes('packages/editor') ||
             context.includes('prosemirror'))
         );
       },
@@ -226,13 +224,7 @@ function plugins(
       async: 'fabric-elements-packages',
       minChunks(module, count) {
         const context = module.context;
-        return (
-          context &&
-          (context.includes('fabric/mention') ||
-            context.includes('fabric/emoji') ||
-            context.includes('fabric/task-decision') ||
-            context.includes('fabric/reactions'))
-        );
+        return context && context.includes('packages/elements');
       },
     }),
 
@@ -240,15 +232,15 @@ function plugins(
       async: 'media-packages',
       minChunks(module, count) {
         const context = module.context;
-        return context && context.includes('fabric/media');
+        return context && context.includes('packages/media');
       },
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'elements-packages',
+      async: 'core-packages',
       minChunks(module, count) {
         const context = module.context;
-        return context && context.includes('elements/');
+        return context && context.includes('packages/core');
       },
     }),
 
