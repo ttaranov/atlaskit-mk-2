@@ -1,3 +1,4 @@
+import get from 'lodash.get';
 
 /**
  * This file contains a Jscodeshift Util plugin that adds some helper methods to the jscodeshift
@@ -98,7 +99,7 @@ export default j => {
         return context.find(j.ExpressionStatement, (node) =>
           node.expression.callee.name === 'it' && node.expression.arguments[0].value === testNode.expression.arguments[0].value
         );
-      }, false, (node) => block.get().node.body.push(node));
+      }, (node) => block.get().node.body.push(node));
     }
     
     return this;
@@ -127,7 +128,7 @@ export default j => {
     return j(codeString).find(j.Program).get().node.body[0];
   }
 
-  const getOrAdd = function(node, getExisting, useExisting = false, addFn) {
+  const getOrAdd = function (node, getExisting, addFn, useExisting = false) {
     const existing = getExisting(this);
 
     if (existing.size() > 0) {
@@ -142,6 +143,19 @@ export default j => {
 
     return this.find(node.type, node);
   }
+
+  // const addFileComment = function(comment, type = 'prepend') {
+  //   const program = this.find(j.Program);
+  //   if (program.size() === 0) {
+  //     console.error('Could not find program node');
+  //   }
+
+  //   const firstNode = get(program.get(), 'node.body[0]');
+  //   if (!firstNode) {
+  //     console.error('Could not find a program body node to attach comment to');
+  //   }
+  //   firstNode.comments.unshift()
+  // }
 
   j.registerMethods({
     findFirst,
