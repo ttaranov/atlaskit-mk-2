@@ -13,10 +13,13 @@ import {
 
 import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
+
 import {
-  AnalyticsListener,
-  UIAnalyticsEvent,
+  AnalyticsListener as AnalyticsListenerClass,
+  UIAnalyticsEventInterface,
 } from '../src/analytics-next-types';
+import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
+const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
 
 const context = createStorybookContext();
 const onClick = ({ event, mediaItemDetails }, analyticsEvent) => {
@@ -210,7 +213,7 @@ const embedCards = [
   },
 ];
 
-const handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
   const { payload, context } = analyticsEvent;
   console.log('Received event:', { payload, context });
 };

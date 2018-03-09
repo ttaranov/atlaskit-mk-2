@@ -31,14 +31,21 @@ import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 import {
-  AnalyticsContext,
+  AnalyticsContext as AnalyticsContextClass,
   WithCreateAnalyticsEventProps,
-  UIAnalyticsEvent,
-  WithAnalyticsEventsWrapper,
+  UIAnalyticsEventInterface,
+  WithAnalyticsEventsSignature as WithAnalyticsEventsWrapper,
 } from '../analytics-next-types';
+
+import {
+  withAnalyticsEvents as withAnalyticsEventsImpl,
+  AnalyticsContext as AnalyticsContextImpl,
+} from '@atlaskit/analytics-next';
+
+const withAnalyticsEvents = withAnalyticsEventsImpl as WithAnalyticsEventsWrapper;
+const AnalyticsContext = AnalyticsContextImpl as AnalyticsContextClass;
 
 import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
 
@@ -51,7 +58,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly onRetry?: () => void;
   readonly onClick?: (
     result: CardEvent,
-    analyticsEvent: UIAnalyticsEvent,
+    analyticsEvent: UIAnalyticsEventInterface,
   ) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
@@ -66,7 +73,6 @@ export interface CardViewOwnProps extends SharedCardProps {
 
 export interface CardViewState {
   hasBeenShown: boolean;
-  componentHasMountedAtTime: number;
   elementWidth?: number;
 }
 
@@ -79,16 +85,18 @@ export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
 > {
+  private componentHasMountedAtTime: number;
+
   constructor(props) {
     super(props);
-
+    this.componentHasMountedAtTime = 0;
     this.state = {
       hasBeenShown: false,
-      componentHasMountedAtTime: Date.now(),
     };
   }
 
   componentDidMount() {
+    this.componentHasMountedAtTime = Date.now();
     this.saveElementWidth();
     this.fireShowedAnalyticsEvent(this.props);
   }
@@ -98,7 +106,7 @@ export class CardViewBase extends React.Component<
       !this.state.hasBeenShown &&
       (prop.status === 'error' || prop.status === 'complete')
     ) {
-      const loadTime = Date.now() - this.state.componentHasMountedAtTime;
+      const loadTime = Date.now() - this.componentHasMountedAtTime;
       this.props
         .createAnalyticsEvent({ action: 'shown', loadTime })
         .fire('media');
@@ -243,7 +251,7 @@ export class CardViewBase extends React.Component<
     const analyticsEvent = this.props.createAnalyticsEvent({
       action: 'clicked',
     });
-    analyticsEvent.clone().fire('media');
+    analyticsEvent.clone()!.fire('media');
     if (onClick) {
       onClick({ event, mediaItemDetails }, analyticsEvent);
     }
@@ -257,9 +265,7 @@ export class CardViewBase extends React.Component<
   };
 }
 
-export const CardViewWithAnalyticsEvents = (withAnalyticsEvents as WithAnalyticsEventsWrapper)()(
-  CardViewBase,
-);
+export const CardViewWithAnalyticsEvents = withAnalyticsEvents()(CardViewBase);
 
 const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
   if (status === 'error') {

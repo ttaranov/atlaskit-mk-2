@@ -25,11 +25,32 @@ import { Wrapper } from '../src/root/styled';
 import { breakpointSize } from '../src/utils/breakpoint';
 
 import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumbnail';
+
 import {
-  AnalyticsListener,
-  UIAnalyticsEvent,
+  AnalyticsListener as AnalyticsListenerClass,
+  UIAnalyticsEventInterface,
+  AnalyticsListenerProps,
 } from '../src/analytics-next-types';
+import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
+const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
+
 import { CardViewAnalyticsContext, CardViewState } from '../src/index';
+
+// Enzyme doesn't allow to change props for non-root element. This means I can't change "status"
+// for CardView after it has been mounted. This class allows me to do that.
+type CardViewWithAnalyticsProps = CardViewOwnProps & AnalyticsListenerProps;
+class CardViewWithAnalytics extends React.Component<
+  CardViewWithAnalyticsProps
+> {
+  render() {
+    const props = this.props;
+    return (
+      <AnalyticsListener {...props}>
+        <CardView {...props} />
+      </AnalyticsListener>
+    );
+  }
+}
 
 describe('CardView', () => {
   const file: FileDetails = {
@@ -349,7 +370,7 @@ describe('CardView', () => {
     card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualEvent: Partial<UIAnalyticsEvent> =
+    const actualEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[0][0];
     expect(actualEvent.payload).toEqual({ action: 'clicked' });
     expect(actualEvent.context && actualEvent.context.length).toEqual(1);
@@ -401,7 +422,7 @@ describe('CardView', () => {
     card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualEvent: Partial<UIAnalyticsEvent> =
+    const actualEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[0][0];
     expect(actualEvent.payload).toEqual({ action: 'clicked' });
     expect(actualEvent.context && actualEvent.context.length).toEqual(1);
@@ -441,7 +462,7 @@ describe('CardView', () => {
     card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualEvent: Partial<UIAnalyticsEvent> =
+    const actualEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[0][0];
     expect(actualEvent.payload).toEqual({ action: 'clicked' });
     expect(actualEvent.context && actualEvent.context.length).toEqual(1);
@@ -484,7 +505,7 @@ describe('CardView', () => {
     card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(2);
-    const actualEvent: Partial<UIAnalyticsEvent> =
+    const actualEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[1][0];
     expect(actualEvent.payload).toEqual({ action: 'clicked' });
     expect(actualEvent.context && actualEvent.context.length).toEqual(1);
@@ -524,9 +545,10 @@ describe('CardView', () => {
 
     expect(clickHandler).toHaveBeenCalledTimes(1);
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualFiredEvent: Partial<UIAnalyticsEvent> =
+    const actualFiredEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[0][0];
-    const actualReturnedEvent: UIAnalyticsEvent = clickHandler.mock.calls[0][1];
+    const actualReturnedEvent: UIAnalyticsEventInterface =
+      clickHandler.mock.calls[0][1];
     expect(actualFiredEvent.hasFired).toEqual(true);
     expect(actualReturnedEvent.hasFired).toEqual(false);
     expect(actualReturnedEvent.payload.action).toEqual('clicked');
@@ -540,8 +562,36 @@ describe('CardView', () => {
         <CardView status="complete" metadata={link} />
       </AnalyticsListener>,
     );
+
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualFiredEvent: Partial<UIAnalyticsEvent> =
+    const actualFiredEvent: Partial<UIAnalyticsEventInterface> =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
+      'shown',
+    );
+
+    // Since we start timer when component has been mounted and stop it when it was rendered with "complete" status,
+    // This means we end up with almost the same event loop execution, which means 0 for time difference
+    expect(
+      actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
+    ).toEqual(0);
+  });
+
+  it('should fire "shown" analytics event when status has changed', () => {
+    const analyticsEventHandler = jest.fn();
+    const card = mount(
+      <CardViewWithAnalytics
+        channel="media"
+        onEvent={analyticsEventHandler}
+        status="loading"
+        metadata={link}
+      />,
+    );
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(0);
+    card.setProps({ status: 'complete' });
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: Partial<UIAnalyticsEventInterface> =
       analyticsEventHandler.mock.calls[0][0];
     expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
       'shown',
@@ -549,28 +599,6 @@ describe('CardView', () => {
     expect(
       actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
     ).toBeGreaterThan(0);
-  });
-
-  it('should fire "shown" analytics event when status has changed', () => {
-    const analyticsEventHandler = jest.fn();
-    const card = mount<CardViewOwnProps, CardViewState>(
-      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
-        <CardView status="loading" metadata={link} />
-      </AnalyticsListener>,
-    );
-    expect(analyticsEventHandler).toHaveBeenCalledTimes(0);
-    const cardView = card.find(CardViewBase);
-    const instance = cardView.instance() as CardViewBase;
-    instance.componentWillReceiveProps({
-      ...cardView.props(),
-      status: 'complete',
-    });
-    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualFiredEvent: Partial<UIAnalyticsEvent> =
-      analyticsEventHandler.mock.calls[0][0];
-    expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
-      'shown',
-    );
   });
 
   it('should fire "shown" analytics event only once when props are changing', () => {

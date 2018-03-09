@@ -11,7 +11,7 @@ import {
   MediaType,
   FileProcessingStatus,
 } from '@atlaskit/media-core';
-import { UIAnalyticsEvent } from './analytics-next-types';
+import { UIAnalyticsEventInterface } from './analytics-next-types';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
@@ -82,7 +82,7 @@ export interface SharedCardProps {
 export interface CardEventProps {
   readonly onClick?: (
     result: CardEvent,
-    analyticsEvent: UIAnalyticsEvent,
+    analyticsEvent: UIAnalyticsEventInterface,
   ) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;

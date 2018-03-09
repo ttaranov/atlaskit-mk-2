@@ -1,22 +1,16 @@
 // For version "1.0.2"
 import * as React from 'react';
+
+// This is not needed for classes UIAnalyticsEvent and AnalyticsEvent,
+// since they are classes (classes are used to create instances) and
+// instances of UIAnalyticsEvent are meant to be created inside analytics-next library itself only.
+// So we need only interfaces to describe an instances created with those Classes.
+
 /*
   UIAnalyticsEvent.js
  */
-export declare class UIAnalyticsEvent extends AnalyticsEvent
-  implements UIAnalyticsEventInterface {
-  constructor(props: UIAnalyticsEventProps);
 
-  context: Array<ObjectType>;
-  handlers: Array<UIAnalyticsEventHandlerSignature>;
-  hasFired: boolean;
-
-  clone: () => UIAnalyticsEvent;
-
-  fire(channel?: ChannelIdentifier): void;
-
-  update(updater: AnalyticsEventUpdater): AnalyticsEvent;
-}
+// See remark on classes above
 
 /*
   types.js
@@ -31,135 +25,115 @@ export type AnalyticsEventPayload = {
   [key: string]: any;
 };
 
-export declare type AnalyticsEventUpdater =
+export type AnalyticsEventUpdater =
   | ObjectType
   | ((payload: AnalyticsEventPayload) => AnalyticsEventPayload);
 
-export declare type AnalyticsEventProps = {
+export type AnalyticsEventProps = {
   action: string;
   payload: AnalyticsEventPayload;
 };
 
-export declare interface AnalyticsEventInterface {
+export interface AnalyticsEventInterface {
   payload: AnalyticsEventPayload;
 
-  clone: () => AnalyticsEvent;
+  clone: () => AnalyticsEventInterface;
 
-  update(updater: AnalyticsEventUpdater): AnalyticsEvent;
+  update(updater: AnalyticsEventUpdater): AnalyticsEventInterface;
 }
 
-export declare type ChannelIdentifier = string;
+export type ChannelIdentifier = string;
 
-export declare interface UIAnalyticsEventHandlerSignature {
-  (event: UIAnalyticsEvent, channel?: ChannelIdentifier): void;
+export interface UIAnalyticsEventHandlerSignature {
+  (event: UIAnalyticsEventInterface, channel?: ChannelIdentifier): void;
 }
 
-export declare type UIAnalyticsEventProps = AnalyticsEventProps & {
+export type UIAnalyticsEventProps = AnalyticsEventProps & {
   context?: Array<ObjectType>;
   handlers?: Array<UIAnalyticsEventHandlerSignature>;
 };
 
-export declare interface UIAnalyticsEventInterface {
+export interface UIAnalyticsEventInterface {
   context: Array<ObjectType>;
   handlers?: Array<UIAnalyticsEventHandlerSignature>;
   hasFired: boolean;
   payload: AnalyticsEventPayload;
 
-  clone: () => UIAnalyticsEvent | null;
+  clone: () => UIAnalyticsEventInterface | null;
 
   fire(channel?: ChannelIdentifier): void;
 
-  update(updater: AnalyticsEventUpdater): AnalyticsEvent;
+  update(updater: AnalyticsEventUpdater): UIAnalyticsEventInterface;
 }
 
 /*
   AnalyticsEvent.js
 */
-export declare class AnalyticsEvent implements AnalyticsEventInterface {
-  constructor(props: AnalyticsEventProps);
 
-  payload: AnalyticsEventPayload;
-
-  clone: () => AnalyticsEvent;
-
-  update(updater: AnalyticsEventUpdater): AnalyticsEvent;
-}
+// See remark on classes above
 
 /*
   AnalyticsListener.js
  */
-export declare interface AnalyticsListenerProps {
+export interface AnalyticsListenerProps {
   children?: React.ReactNode;
   channel?: string;
-  onEvent: (event: UIAnalyticsEvent, channel?: string) => void;
+  onEvent: (event: UIAnalyticsEventInterface, channel?: string) => void;
 }
 
-export declare class AnalyticsListener extends React.Component<
-  AnalyticsListenerProps
-> {}
+export type AnalyticsListener = React.ComponentClass<AnalyticsListenerProps>;
 
 /*
   AnalyticsContext.js
  */
-export declare interface AnalyticsContextProps {
+export interface AnalyticsContextProps {
   children: React.ReactNode;
   data: ObjectType;
 }
 
-export declare class AnalyticsContext extends React.Component<
-  AnalyticsContextProps,
-  any
-> {}
+export type AnalyticsContext = React.ComponentClass<AnalyticsContextProps>;
 
 /*
   withAnalyticsContext.js
  */
-export declare type WithAnalyticsContextProps = {
+export type WithAnalyticsContextProps = {
   analyticsContext?: ObjectType;
 };
 
-export declare interface WithAnalyticsContextFunction {
-  <TOwnProps>(component: React.ComponentClass<TOwnProps>): React.ComponentClass<
-    TOwnProps & WithAnalyticsContextProps
-  >;
-}
+export type WithAnalyticsContextFunction = <TOwnProps>(
+  component: React.ComponentClass<TOwnProps>,
+) => React.ComponentClass<TOwnProps & WithAnalyticsContextProps>;
 
-export declare function withAnalyticsContext(
+// Signature for withAnalyticsContext function
+export type WithAnalyticsContextSignature = (
   defaultData?: any,
-): WithAnalyticsContextFunction;
+) => WithAnalyticsContextFunction;
 
 /*
   withAnalyticsEvents.js
  */
-export declare interface CreateUIAnalyticsEventSignature {
-  (payload?: AnalyticsEventPayload): UIAnalyticsEvent;
-}
+export type CreateUIAnalyticsEventSignature = (
+  payload?: AnalyticsEventPayload,
+) => UIAnalyticsEventInterface;
 
-export declare interface EventMap<TOwnProps> {
+export interface EventMap<TOwnProps> {
   [k: string]:
     | ObjectType
     | ((
         create: CreateUIAnalyticsEventSignature,
         props: TOwnProps,
-      ) => UIAnalyticsEvent | void);
+      ) => UIAnalyticsEventInterface | void);
 }
 
-export declare interface WithCreateAnalyticsEventProps {
+export interface WithCreateAnalyticsEventProps {
   createAnalyticsEvent: CreateUIAnalyticsEventSignature;
 }
 
-export declare interface WithCreateAnalyticsEventFunction {
-  <TOwnProps>(
-    component: React.ComponentClass<WithCreateAnalyticsEventProps & TOwnProps>,
-  ): React.ComponentClass<TOwnProps>;
-}
+export type WithCreateAnalyticsEventFunction = <TOwnProps>(
+  component: React.ComponentClass<WithCreateAnalyticsEventProps & TOwnProps>,
+) => React.ComponentClass<TOwnProps>;
 
-export declare interface WithAnalyticsEventsWrapper {
-  <TOwnProps>(
-    createEventMap?: EventMap<TOwnProps>,
-  ): WithCreateAnalyticsEventFunction;
-}
-
-// export declare function withAnalyticsEvents<TOwnProps>(
-//   createEventMap?: EventMap<TOwnProps>,
-// ): WithCreateAnalyticsEventFunction;
+// Signature for withAnalyticsEvents function
+export type WithAnalyticsEventsSignature = <TOwnProps>(
+  createEventMap?: EventMap<TOwnProps>,
+) => WithCreateAnalyticsEventFunction;

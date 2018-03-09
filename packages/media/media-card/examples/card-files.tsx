@@ -9,10 +9,13 @@ import {
 
 import { Card, FileIdentifier } from '../src';
 import { createApiCards } from '../example-helpers';
+
 import {
-  AnalyticsListener,
-  UIAnalyticsEvent,
+  AnalyticsListener as AnalyticsListenerClass,
+  UIAnalyticsEventInterface,
 } from '../src/analytics-next-types';
+import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
+const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
 
 const action = args => console.log;
 
@@ -159,7 +162,7 @@ const collectionConfigCards = [
     content: <Card identifier={successIdentifier} context={context} />,
   },
 ];
-const handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
   const { payload, context } = analyticsEvent;
   console.log('Received event:', { payload, context });
 };
