@@ -19,7 +19,7 @@ async function getPackagesInfo(cwd /*: string */) {
       );
 
       let isBrowserPackage = !relativeDir.startsWith('build');
-      let isWebsitePackage = !relativeDir.startsWith('website');
+      let isWebsitePackage = relativeDir.startsWith('website');
 
       let allDependencies = Object.assign(
         {},
