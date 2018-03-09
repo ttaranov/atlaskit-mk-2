@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 5.4.0
+- [minor] implement loading state in media-avatar-picker [13f9d50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13f9d50)
+
 ## 5.3.1
 
 ## 5.3.0
