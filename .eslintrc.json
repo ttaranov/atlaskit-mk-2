@@ -18,7 +18,9 @@
     }],
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
-    "react/prefer-stateless-function": "off",
+    "import/extensions": ["error", {
+      "ignorePackages": true
+    }],
 
     "no-labels": "off",
     "no-restricted-syntax": "off",
