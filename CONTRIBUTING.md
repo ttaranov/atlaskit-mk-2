@@ -156,7 +156,7 @@ yarn jest --watch
 You can also choose to only run the tests under certain directories by passing a path in as well
 
 ```sh
-yarn jest packages/elements/
+yarn jest packages/core/
 ```
 
 ## Type checking your code
@@ -207,29 +207,19 @@ If you want to run the linter on all files from the command line you can run:
 bolt lint
 ```
 
-## Creating examples and patterns
+## Creating examples
 
 To create a new example for a component, you can create a new file in the
 component package's `examples/` folder.
 
 ```
-/atlaskit-mk2/packages/elements/avatar/examples/
+/atlaskit-mk2/packages/core/avatar/examples/
 ├── 0-overview.js
 └── 1-groups.js (New File)
 ```
 
-Or if you want to create a cross-component pattern example, you can create a new
-file inside of the `patterns/` folder.
-
-```
-/atlaskit-mk2/patterns/
-└── jira
-    ├── 0-navigation.js
-    └── 1-drag-and-drop.js (New File)
-```
-
-Inside of the example or pattern you should import components by their package
-name instead of a relative path.
+Inside of the example you should import components by their package name
+instead of a relative path.
 
 ```js
 import React from 'react';
@@ -262,7 +252,7 @@ Inside of every package is a `docs/` folder which includes all of the
 documentation pages (there's generally only one).
 
 ```
-/atlaskit-mk2/packages/elements/avatar/docs/
+/atlaskit-mk2/packages/core/avatar/docs/
 ├── 0-overview.js
 └── 1-groups.js
 ```

@@ -12,22 +12,22 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const contexts = {
   'editor-core': require.context(
-    '../../packages/fabric/editor-core/tests/browser/',
+    '../../packages/editor/editor-core/tests/browser/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-test-helpers': require.context(
-    '../../packages/fabric/editor-test-helpers/tests/browser/',
+    '../../packages/editor/editor-test-helpers/tests/browser/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-common': require.context(
-    '../../packages/fabric/editor-common/tests/browser/',
+    '../../packages/editor/editor-common/tests/browser/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-confluence-transformer': require.context(
-    '../../packages/fabric/editor-confluence-transformer/tests/browser/',
+    '../../packages/editor/editor-confluence-transformer/tests/browser/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
