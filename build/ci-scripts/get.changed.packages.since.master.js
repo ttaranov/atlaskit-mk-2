@@ -6,7 +6,7 @@ const packages = require('../utils/packages');
  * NOTE: This prints the list of changed packages since master ONLY if they have been commited.
  * It will print them all out as a json array of relative paths
  * i.e: $ node build/ci-scripts/get.changed.packages.since.master.js
- *        ["packages/elements/avatar", "packages/elements/badge"]
+ *        ["packages/core/avatar", "packages/core/badge"]
  * */
 (async () => {
   const cwd = process.cwd();

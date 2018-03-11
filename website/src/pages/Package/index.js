@@ -8,6 +8,7 @@ import Button from '@atlaskit/button';
 import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import WatchIcon from '@atlaskit/icon/glyph/watch';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import LinkButton from '../../components/LinkButton';
 import Loading from '../../components/Loading';
@@ -122,43 +123,51 @@ export default class Package extends Component<PackageProps, PackageState> {
   loadDoc() {
     this.setState(initialState, () => {
       let { groupId, pkgId } = this.props.match.params;
-      let pkg = getPkg(packages, groupId, pkgId);
-      let dirs = fs.getDirectories(pkg.children);
-      let files = fs.getFiles(pkg.children);
+      try {
+        let pkg = getPkg(packages, groupId, pkgId);
+        let dirs = fs.getDirectories(pkg.children);
+        let files = fs.getFiles(pkg.children);
 
-      let json = fs.getById(files, 'package.json');
-      let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
-      let docs = fs.maybeGetById(dirs, 'docs');
-      let examples = fs.maybeGetById(dirs, 'examples');
+        let json = fs.getById(files, 'package.json');
+        let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
+        let docs = fs.maybeGetById(dirs, 'docs');
+        let examples = fs.maybeGetById(dirs, 'examples');
 
-      let doc;
-      if (docs) {
-        doc = fs.find(docs, () => {
-          return true;
-        });
-      }
-
-      Promise.all([
-        json.exports(),
-        doc && doc.exports().then(mod => mod.default),
-        changelog &&
-          changelog.contents().then(changelog => divvyChangelog(changelog)),
-      ])
-        .then(([pkg, doc, changelog]) => {
-          this.setState({
-            pkg,
-            doc,
-            examples: examples && examples.children,
-            changelog: changelog || [],
+        let doc;
+        if (docs) {
+          doc = fs.find(docs, () => {
+            return true;
           });
-        })
-        .catch(err => {
-          if (isModuleNotFoundError(err)) {
-            this.setState({ missing: true });
-          } else {
-            throw err;
-          }
-        });
+        }
+
+        Promise.all([
+          json.exports(),
+          doc && doc.exports().then(mod => mod.default),
+          changelog &&
+            changelog.contents().then(changelog => divvyChangelog(changelog)),
+        ])
+          .then(([pkg, doc, changelog]) => {
+            this.setState({
+              pkg,
+              doc,
+              examples: examples && examples.children,
+              changelog: changelog || [],
+            });
+          })
+          .catch(err => {
+            if (isModuleNotFoundError(err, pkgId)) {
+              this.setState({ missing: true });
+            } else {
+              throw err;
+            }
+          });
+      } catch (err) {
+        if (isModuleNotFoundError(err, pkgId)) {
+          this.setState({ missing: true });
+        } else {
+          throw err;
+        }
+      }
     });
   }
 
@@ -175,7 +184,7 @@ export default class Package extends Component<PackageProps, PackageState> {
     if (!res) return null;
 
     return inModal
-      ? `/mk-2/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
+      ? `/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
       : `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`;
   };
 
@@ -212,15 +221,21 @@ export default class Package extends Component<PackageProps, PackageState> {
               <Button component={Link} to={exampleModalPath}>
                 Examples
               </Button>
+              {pkg['atlaskit:designLink'] && (
+                <Button
+                  iconBefore={<AtlassianIcon />}
+                  href={pkg['atlaskit:designLink']}
+                >
+                  Design docs
+                </Button>
+              )}
             </ButtonGroup>
           )}
         </Title>
         <Intro>{pkg.description}</Intro>
         <MetaData
           packageName={pkg.name}
-          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${
-            groupId
-          }/${pkgId}`}
+          packageSrc={`https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/${groupId}/${pkgId}`}
         />
         <LatestChangelog
           changelog={changelog}

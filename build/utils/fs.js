@@ -17,9 +17,28 @@ function mkdtemp(prefix) {
   return util.promisify(cb => fs.mkdtemp(prefix, cb))();
 }
 
+function stat(filePath) {
+  return util.promisify(cb => fs.stat(filePath, cb))();
+}
+
+async function exists(filePath) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return false;
+    } else {
+      throw err;
+    }
+  }
+}
+
 module.exports = {
   writeFile,
   readFile,
   rename,
   mkdtemp,
+  stat,
+  exists,
 };

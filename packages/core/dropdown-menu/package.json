@@ -1,0 +1,45 @@
+{
+  "name": "@atlaskit/dropdown-menu",
+  "version": "3.12.1",
+  "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/drop-menu",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ajay N Mathur"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/droplist": "^4.12.2",
+    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/item": "^5.1.1",
+    "@atlaskit/theme": "^2.4.1",
+    "array-find": "^1.0.0",
+    "prop-types": "^15.5.10",
+    "styled-components": "1.4.6 - 3",
+    "uuid": "^3.1.0"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0",
+    "react-dom": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^9.2.1",
+    "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/lozenge": "3.6.1",
+    "@atlaskit/tooltip": "^8.4.1",
+    "enzyme": "^3.3.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

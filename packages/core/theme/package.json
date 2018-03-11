@@ -1,0 +1,36 @@
+{
+  "name": "@atlaskit/theme",
+  "version": "2.4.1",
+  "description": "The Atlaskit theme framework",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Jed W"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "styled-components": "1.4.6 - 3"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/docs": "^2.5.2",
+    "enzyme": "^3.3.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "css",
+    "theme",
+    "react",
+    "ui"
+  ]
+}
