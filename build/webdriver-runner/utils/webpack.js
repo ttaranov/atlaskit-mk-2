@@ -37,8 +37,6 @@ const WEBPACK_BUILD_TIMEOUT = 5000;
 let server;
 let config;
 
-const pattern = process.argv.slice(2)[1] || '';
-
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
@@ -47,7 +45,9 @@ async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   return project.workspaces
     .filter(
       workspace =>
-        pattern !== '' ? workspace.dir.includes(pattern) : workspace,
+        process.argv.slice(2)[1]
+          ? workspace.dir.includes(process.argv.slice(2)[1])
+          : workspace,
     )
     .filter(workspace => workspace.files.webdriver.length)
     .map(workspace => workspace.pkg.name.split('/')[1]);
