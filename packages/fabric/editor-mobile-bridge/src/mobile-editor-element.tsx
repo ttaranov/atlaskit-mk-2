@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
-
-import { Editor, mentionPluginKey, MentionsState } from '@atlaskit/editor-core';
-import { MentionProvider, MentionDescription } from '@atlaskit/mention';
-import NativeToWebBridge from './native-to-web-bridge';
-import { MentionBridge } from './web-to-native-bridge';
+import {
+  Editor,
+  mentionPluginKey,
+  textFormattingStateKey,
+} from '@atlaskit/editor-core';
+import { MentionDescription, MentionProvider } from '@atlaskit/mention';
+import { valueOf } from './web-to-native/markState';
+import { toNativeBridge } from './web-to-native';
+import WebBridgeImpl from './native-to-web/implementation';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -29,60 +33,46 @@ export class MentionProviderImpl implements MentionProvider {
   unsubscribe(key: string): void {}
 }
 
-let mentionsPluginState: MentionsState | null = null;
-
-export const bridge: NativeToWebBridge = ((window as any).bridge = {
-  makeBold() {
-    throw new Error('Method not implemented.');
-  },
-
-  makeItalics() {
-    throw new Error('Method not implemented.');
-  },
-
-  onMentionSelect(mention: string) {
-    if (mentionsPluginState) {
-      mentionsPluginState.insertMention(JSON.parse(mention));
-    }
-  },
-
-  onMentionPickerResult(result: string) {
-    if (mentionsPluginState) {
-      let all: MentionDescription[] = JSON.parse(result);
-      mentionsPluginState.onMentionResult(
-        all,
-        mentionsPluginState.query ? mentionsPluginState.query : '',
-      );
-    }
-  },
-
-  onMentionPickerDismissed() {
-    if (mentionsPluginState) {
-      mentionsPluginState.dismiss();
-    }
-  },
-});
+const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 
 class EditorWithState extends Editor {
-  componentDidUpdate(prevProps, prevState) {
-    const { editor } = this.state;
-    super.componentDidUpdate(prevProps, prevState);
-    if (!prevState.editor && editor) {
-      mentionsPluginState = mentionPluginKey.getState(editor.editorView.state);
-      if (mentionsPluginState) {
-        mentionsPluginState.subscribe(state => {
-          if (state.queryActive) {
-            toNativeBridge.showMentions(state.query || '');
-          } else {
-            toNativeBridge.dismissMentions();
-          }
-        });
-      }
-      let editorView: EditorView = editor.editorView;
-      editorView.dom.addEventListener('keydown', event => {
-        // console.log(event)
-      });
-    }
+  onEditorCreated(instance: { view: EditorView; transformer?: any }) {
+    super.onEditorCreated(instance);
+
+    bridge.editorView = instance.view;
+    subscribeForMentionStateChanges(instance.view);
+    subscribeForTextFormatChanges(instance.view);
+  }
+
+  onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
+    super.onEditorDestroyed(instance);
+    bridge.editorView = null;
+    bridge.mentionsPluginState = null;
+    bridge.textFormattingPluginState = null;
+  }
+}
+
+function subscribeForMentionStateChanges(view) {
+  let mentionsPluginState = mentionPluginKey.getState(view.state);
+  bridge.mentionsPluginState = mentionsPluginState;
+  if (mentionsPluginState) {
+    mentionsPluginState.subscribe(state => sendToNative(state));
+  }
+}
+function sendToNative(state) {
+  if (state.queryActive) {
+    toNativeBridge.showMentions(state.query || '');
+  } else {
+    toNativeBridge.dismissMentions();
+  }
+}
+function subscribeForTextFormatChanges(view: EditorView) {
+  let textFormattingPluginState = textFormattingStateKey.getState(view.state);
+  bridge.textFormattingPluginState = textFormattingPluginState;
+  if (textFormattingPluginState) {
+    textFormattingPluginState.subscribe(state =>
+      toNativeBridge.updateTextFormat(JSON.stringify(valueOf(state))),
+    );
   }
 }
 
@@ -90,80 +80,10 @@ export default function mobileEditor() {
   return (
     <EditorWithState
       appearance="mobile"
-      allowHyperlinks={true}
-      allowTextFormatting={true}
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
+      onChange={() => {
+        toNativeBridge.updateText(bridge.getContent());
+      }}
     />
   );
 }
-
-declare global {
-  interface Window {
-    mentionsBridge?: MentionBridge;
-    webkit?: any;
-  }
-}
-
-class Bridge implements MentionBridge {
-  mentionBridge: MentionBridge;
-
-  constructor() {
-    if (window.mentionsBridge) {
-      this.mentionBridge = new AndroidBridge();
-    } else if (window.webkit) {
-      this.mentionBridge = new IosBridge();
-    } else {
-      this.mentionBridge = new DummyBridge();
-    }
-  }
-
-  showMentions(query: String) {
-    this.mentionBridge.showMentions(query);
-  }
-
-  dismissMentions() {
-    this.mentionBridge.dismissMentions();
-  }
-}
-
-class AndroidBridge implements MentionBridge {
-  mentionBridge: MentionBridge;
-  constructor() {
-    this.mentionBridge = window.mentionsBridge as MentionBridge;
-  }
-
-  showMentions(query: String) {
-    this.mentionBridge.showMentions(query);
-  }
-
-  dismissMentions() {
-    this.mentionBridge.dismissMentions();
-  }
-}
-
-class IosBridge implements MentionBridge {
-  showMentions(query: String) {
-    if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
-      window.webkit.messageHandlers.mentionBridge.postMessage({
-        name: 'showMentions',
-        query: query,
-      });
-    }
-  }
-
-  dismissMentions() {
-    if (window.webkit) {
-      window.webkit.messageHandlers.mentionBridge.postMessage({
-        name: 'dismissMentions',
-      });
-    }
-  }
-}
-
-class DummyBridge implements MentionBridge {
-  showMentions(query: String) {}
-
-  dismissMentions() {}
-}
-
-const toNativeBridge: Bridge = new Bridge();

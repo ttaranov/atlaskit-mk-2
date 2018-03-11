@@ -78,3 +78,7 @@ export * from './analytics'; // ?
 
 export { default as mentionPluginKey } from './plugins/mentions/plugin-key';
 export { MentionsState } from './plugins/mentions';
+export {
+  TextFormattingState,
+  stateKey as textFormattingStateKey,
+} from './plugins/text-formatting';
