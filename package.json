@@ -29,7 +29,7 @@
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
     "test:browser:browserstack": "           projector ./projector testBrowserCI --browserstack",
     "test:integration": "                    INTEGRATION_TESTS=true yarn jest",
-    "test:webdriver": "                      node ./build/webdriver-runner/index.js",
+    "test:webdriver:local": "                RUN_ENV=DEV node ./build/webdriver-runner/index.js",
     "test:webdriver:browserstack": "         TEST_ENV=browserstack node ./build/webdriver-runner/index.js",
     "test:webdriver:browserstack:ci": "      RUN_ENV=CI TEST_ENV=browserstack node ./build/webdriver-runner/index.js",
     "lint": "                                yarn run lint:eslint && yarn run lint:tslint && yarn run lint:stylelint",
