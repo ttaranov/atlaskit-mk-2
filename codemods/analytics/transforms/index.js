@@ -198,7 +198,6 @@ module.exports = (fileInfo: any, api: any) => {
       .map( path => {
         const exportContents = path.node.declaration;
         if (hasAnalyticsHoc(j, path)) {
-          addCreateAndFireStatement(j, source, path);
           // If we already have analytics HOCs around our default export, we just recreate them
           path.node.declaration = createAnalyticsHocs(j, analyticsEventConfig, path.node.declaration);
         } else {
@@ -226,6 +225,9 @@ module.exports = (fileInfo: any, api: any) => {
             }   
           }
         }
+
+        addCreateAndFireStatement(j, source, path);
+        
         return path;
       });
   }
