@@ -4,19 +4,9 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { toClass } from 'recompose';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-
 import { itemThemeNamespace } from '../src';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import ItemWithAnalytics, { Item } from '../src/components/Item';
+import { name } from '../package.json';
+import { Item } from '../src/components/Item';
 import { After, Before, Content, Description } from '../src/styled/ItemParts';
 
 describe(`${name} - Item`, () => {
@@ -492,31 +482,4 @@ describe(`${name} - Item`, () => {
       expect(itemThemeNamespace).toBe('@atlaskit-shared-theme/item');
     });
   });
-});
-describe('analytics - Item', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<ItemWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'item',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onClick handler', () => {});
-
-  it('should pass analytics event as last argument to onKeyDown handler', () => {});
-
-  it('should pass analytics event as last argument to onMouseEnter handler', () => {});
-
-  it('should pass analytics event as last argument to onMouseLeave handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
-
-  it('should fire an atlaskit analytics event on keydown', () => {});
-
-  it('should fire an atlaskit analytics event on mouseenter', () => {});
-
-  it('should fire an atlaskit analytics event on mouseleave', () => {});
 });

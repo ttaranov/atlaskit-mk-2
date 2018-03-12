@@ -1,19 +1,9 @@
 // @flow
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import { opacity } from '../../src/styled';
-
-import BlanketWithAnalytics, { Blanket } from '../Blanket';
+import { Blanket } from '../Blanket';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -66,19 +56,4 @@ describe('ak-blanket', () => {
       });
     });
   });
-});
-describe('analytics - Blanket', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<BlanketWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'blanket',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onBlanketClicked handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
 });

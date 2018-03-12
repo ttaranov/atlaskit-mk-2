@@ -1,24 +1,12 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Base from '@atlaskit/field-base';
-
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 
 import FieldText from '../../src';
 import Input from '../../src/styled/Input';
 
-import FieldTextStatelessWithAnalytics, {
-  FieldTextStateless,
-} from '../FieldTextStateless';
+import { FieldTextStateless } from '../FieldTextStateless';
 
 describe('FieldTextStateless', () => {
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
@@ -228,39 +216,4 @@ describe('FieldTextStateless', () => {
       expect(focusSpy).toHaveBeenCalledTimes(1);
     });
   });
-});
-describe('analytics - FieldTextStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<FieldTextStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'field-text',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onBlur handler', () => {});
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should pass analytics event as last argument to onFocus handler', () => {});
-
-  it('should pass analytics event as last argument to onKeyDown handler', () => {});
-
-  it('should pass analytics event as last argument to onKeyPress handler', () => {});
-
-  it('should pass analytics event as last argument to onKeyUp handler', () => {});
-
-  it('should fire an atlaskit analytics event on blur', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-
-  it('should fire an atlaskit analytics event on focus', () => {});
-
-  it('should fire an atlaskit analytics event on keydown', () => {});
-
-  it('should fire an atlaskit analytics event on keypress', () => {});
-
-  it('should fire an atlaskit analytics event on keyup', () => {});
 });

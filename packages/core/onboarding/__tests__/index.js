@@ -1,22 +1,11 @@
 // @flow
-import { mount, shallow } from 'enzyme';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 import { SpotlightManager, SpotlightTarget } from '../src';
 
-import SpotlightWithAnalytics, { Spotlight } from '../src/components/Spotlight';
+import { Spotlight } from '../src/components/Spotlight';
 
 function render(jsx) {
   return ReactDOMServer.renderToStaticMarkup(jsx);
@@ -126,19 +115,4 @@ describe(name, () => {
       );
     });
   });
-});
-describe('analytics - Spotlight', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<SpotlightWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'spotlight',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to targetOnClick handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
 });

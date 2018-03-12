@@ -1,21 +1,11 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import { mount, render, shallow } from 'enzyme';
-
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
+import { mount, render } from 'enzyme';
 
 import { colors } from '@atlaskit/theme';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 import { size } from '../src';
-import IconWithAnalytics, { IconWrapper, Icon } from '../src/components/Icon';
+import { IconWrapper, Icon } from '../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -208,19 +198,4 @@ describe(name, () => {
       });
     });
   });
-});
-describe('analytics - Icon', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<IconWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'icon',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onClick handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
 });

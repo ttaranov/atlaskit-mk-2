@@ -1,24 +1,12 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Pagination from '../src';
-import PaginationStatelessWithAnalytics, {
-  pageRange,
-  PaginationStateless,
-} from '../src/components/Stateless';
+import { pageRange, PaginationStateless } from '../src/components/Stateless';
 import { Ellipsis } from '../src/styled';
 
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 
 describe(name, () => {
   describe('stateless', () => {
@@ -215,19 +203,4 @@ describe(name, () => {
       });
     });
   });
-});
-describe('analytics - PaginationStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<PaginationStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'pagination',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onSetPage handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
 });

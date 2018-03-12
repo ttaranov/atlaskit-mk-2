@@ -2,17 +2,8 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-import TimePickerWithAnalytics, { TimePicker } from '../TimePicker';
+import { name } from '../../../package.json';
+import { TimePicker } from '../TimePicker';
 import TimePickerStateless from '../TimePickerStateless';
 
 describe(name, () => {
@@ -104,19 +95,4 @@ describe(name, () => {
       });
     });
   });
-});
-describe('analytics - TimePicker', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<TimePickerWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'time-picker',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
 });

@@ -2,23 +2,13 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-
 import { TabContent, TabItem } from '../src';
-import TabsWithAnalytics, { Tabs } from '../src/components/Tabs';
+import { Tabs } from '../src/components/Tabs';
 import type {
   TabContentComponentProvided,
   TabItemComponentProvided,
 } from '../src/types';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 
 const tabs = [
   { content: 'Tab 1 content', label: 'Tab 1 label' },
@@ -269,19 +259,4 @@ describe(name, () => {
       });
     });
   });
-});
-describe('analytics - Tabs', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<TabsWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'tabs',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onSelect handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
 });

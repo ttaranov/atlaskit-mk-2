@@ -133,18 +133,4 @@ describe('BreadcrumbsStateless', () => {
     });
   });
 });
-describe('analytics - BreadcrumbsStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<BreadcrumbsStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'breadcrumbs',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onExpand handler', () => {});
-
-  it('should fire an atlaskit analytics event on expand', () => {});
-});
+describe('analytics - BreadcrumbsStateless', () => {});

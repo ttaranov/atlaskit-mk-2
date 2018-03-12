@@ -1,28 +1,17 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import Spinner from '@atlaskit/spinner';
 
-import StatelessSelectWithAnalytics, {
-  StatelessSelect,
-} from '../src/components/StatelessSelect';
+import { StatelessSelect } from '../src/components/StatelessSelect';
 import InitialLoadingElement from '../src/styled/InitialLoading';
 import Content from '../src/styled/Content';
 import Trigger from '../src/styled/Trigger';
 
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 
 describe(name, () => {
   const animStub = window.cancelAnimationFrame;
@@ -951,27 +940,4 @@ describe(name, () => {
       expect(wrapper.find(InitialLoadingElement).length).toBe(0);
     });
   });
-});
-describe('analytics - StatelessSelect', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<StatelessSelectWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'single-select',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onFilterChange handler', () => {});
-
-  it('should pass analytics event as last argument to onSelected handler', () => {});
-
-  it('should pass analytics event as last argument to onOpenChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on filter', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
 });

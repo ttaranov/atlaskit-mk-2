@@ -3,24 +3,11 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-
 import { getMonthName } from '../../util';
 import { Announcer } from '../../styled/Calendar';
 import { MonthAndYear } from '../../styled/Heading';
 import DateComponent from '../../components/Date';
-
-import CalendarStatelessWithAnalytics, {
-  CalendarStateless,
-} from '../CalendarStateless';
+import { CalendarStateless } from '../CalendarStateless';
 
 const now = new Date();
 const nowMonth = now.getMonth() + 1;
@@ -90,19 +77,4 @@ test('specifying selected days should select the specified days', () => {
       selected: true,
     }),
   ).toHaveLength(1);
-});
-describe('analytics - CalendarStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<CalendarStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'calendar',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onUpdate handler', () => {});
-
-  it('should fire an atlaskit analytics event on update', () => {});
 });

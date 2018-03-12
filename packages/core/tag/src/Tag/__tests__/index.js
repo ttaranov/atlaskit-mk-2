@@ -2,20 +2,10 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-
 import Chrome from '../../Chrome';
 import Content from '../../Content';
 import Remove from '../../RemoveButton';
-import TagWithAnalytics, { Tag } from '../index';
+import { Tag } from '../index';
 
 import Before from '../styledBefore';
 import Container from '../styledContainer';
@@ -261,19 +251,4 @@ describe('Tag component', () => {
       expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
   });
-});
-describe('analytics - Tag', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<TagWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'tag',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onAfterRemoveAction handler', () => {});
-
-  it('should fire an atlaskit analytics event on remove', () => {});
 });

@@ -2,21 +2,10 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import BreadcrumbsItemWithAnalytics, {
-  BreadcrumbsItem,
-} from '../src/components/BreadcrumbsItem';
+import { BreadcrumbsItem } from '../src/components/BreadcrumbsItem';
 
 export const setItemWidth = (item: BreadcrumbsItem, width: number) => {
   // eslint-disable-line import/prefer-default-export
@@ -175,19 +164,4 @@ describe('BreadcrumbsItem', () => {
       expect(item.updateOverflow()).toBe(false);
     });
   });
-});
-describe('analytics - BreadcrumbsItem', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<BreadcrumbsItemWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'breadrumbs-item',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onClick handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
 });

@@ -1,18 +1,7 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import DynamicTableWithAnalytics, {
-  DynamicTable,
-} from '../src/components/Stateless';
+import { shallow } from 'enzyme';
+import { DynamicTable } from '../src/components/Stateless';
 import TableHead from '../src/components/TableHead';
 import { head, rowsWithKeys, sortKey, secondSortKey } from './_data';
 
@@ -92,31 +81,4 @@ test('onSort should change to ASC if table is rankable and was sorted using on d
     item,
     sortOrder: 'ASC',
   });
-});
-describe('analytics - DynamicTable', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<DynamicTableWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'dynamic-table',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onSetPage handler', () => {});
-
-  it('should pass analytics event as last argument to onSort handler', () => {});
-
-  it('should pass analytics event as last argument to onRankStart handler', () => {});
-
-  it('should pass analytics event as last argument to onRankEnd handler', () => {});
-
-  it('should fire an atlaskit analytics event on setPage', () => {});
-
-  it('should fire an atlaskit analytics event on sort', () => {});
-
-  it('should fire an atlaskit analytics event on rankStart', () => {});
-
-  it('should fire an atlaskit analytics event on rankEnd', () => {});
 });

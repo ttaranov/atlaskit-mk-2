@@ -1,21 +1,10 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Spinner from '@atlaskit/spinner';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import FieldBase from '../../src';
-import FieldBaseStatelessWithAnalytics, {
-  FieldBaseStateless,
-} from '../components/FieldBaseStateless';
+import { FieldBaseStateless } from '../components/FieldBaseStateless';
 import { ChildWrapper, Content } from '../styled/Content';
 import { WarningIcon } from '../components/ValidationElement';
 
@@ -307,31 +296,4 @@ describe('ak-field-base', () => {
       expect(wrapper.state('isFocused')).toBe(true);
     });
   });
-});
-describe('analytics - FieldBaseStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<FieldBaseStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'field-base',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onBlur handler', () => {});
-
-  it('should pass analytics event as last argument to onDialogBlur handler', () => {});
-
-  it('should pass analytics event as last argument to onDialogClick handler', () => {});
-
-  it('should pass analytics event as last argument to onDialogFocus handler', () => {});
-
-  it('should pass analytics event as last argument to onFocus handler', () => {});
-
-  it('should fire an atlaskit analytics event on blur', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
-
-  it('should fire an atlaskit analytics event on focus', () => {});
 });

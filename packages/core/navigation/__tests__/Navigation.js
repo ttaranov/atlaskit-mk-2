@@ -4,23 +4,12 @@ import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
 import ContainerNavigationChildren from '../src/components/js/ContainerNavigationChildren';
 import Drawer from '../src/components/js/Drawer';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
-import NavigationWithAnalytics, {
-  Navigation,
-} from '../src/components/js/Navigation';
+import { Navigation } from '../src/components/js/Navigation';
 import Resizer from '../src/components/js/Resizer';
 import Spacer from '../src/components/js/Spacer';
 import SpacerInner from '../src/components/styled/SpacerInner';
@@ -576,29 +565,4 @@ describe('<Navigation />', () => {
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
     });
   });
-});
-describe('analytics - Navigation', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<NavigationWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'navigation',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onResize handler', () => {});
-
-  it('should pass analytics event as last argument to onResizeStart handler', () => {});
-
-  it('should pass analytics event as last argument to onToggleStart handler', () => {});
-
-  it('should pass analytics event as last argument to onToggleEnd handler', () => {});
-
-  it('should fire an atlaskit analytics event on resize', () => {});
-
-  it('should fire an atlaskit analytics event on resizeStart', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
 });

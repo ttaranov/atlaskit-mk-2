@@ -1,25 +1,15 @@
 // @flow
 
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
+import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 
 import Checkbox, { CheckboxGroup } from '../';
-import CheckboxStatelessWithAnalytics, {
-  CheckboxStateless,
-} from '../CheckboxStateless';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+import { name } from '../../package.json';
+
+import { CheckboxStateless } from '../CheckboxStateless';
 
 describe(name, () => {
   // Helper function to generate <Flag /> with base props
@@ -191,19 +181,4 @@ describe(name, () => {
       expect(cb.find(Checkbox).length).toBe(4);
     });
   });
-});
-describe('analytics - CheckboxStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = mount(<CheckboxStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'checkbox',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
 });

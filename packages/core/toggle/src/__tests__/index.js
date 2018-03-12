@@ -14,9 +14,7 @@ import {
 } from '../../package.json';
 import { Input } from '../../src/styled';
 
-import ToggleStatelessWithAnalytics, {
-  ToggleStateless,
-} from '../ToggleStateless';
+import ToggleWithAnalytics, { ToggleStateless } from '../ToggleStateless';
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -82,26 +80,3 @@ describe('ToggleStateless', () => {
   });
 });
 describe('analytics - Toggle', () => {});
-describe('analytics - ToggleStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<ToggleStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'toggle',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onBlur handler', () => {});
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should pass analytics event as last argument to onFocus handler', () => {});
-
-  it('should fire an atlaskit analytics event on blur', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-
-  it('should fire an atlaskit analytics event on focus', () => {});
-});

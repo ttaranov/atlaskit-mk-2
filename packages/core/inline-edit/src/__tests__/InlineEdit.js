@@ -1,24 +1,12 @@
 // @flow
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
-
-import InlineEditStatelessWithAnalytics, {
-  InlineEditStateless,
-} from '../InlineEditStateless';
+import { InlineEditStateless } from '../InlineEditStateless';
 
 const noop = () => {};
 const Input = props => <input {...props} onChange={noop} />;
@@ -335,27 +323,4 @@ describe('@atlaskit/inline-edit', () => {
       );
     });
   });
-});
-describe('analytics - InlineEditStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<InlineEditStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'inline-edit',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onCancel handler', () => {});
-
-  it('should pass analytics event as last argument to onConfirm handler', () => {});
-
-  it('should pass analytics event as last argument to onEditRequested handler', () => {});
-
-  it('should fire an atlaskit analytics event on cancel', () => {});
-
-  it('should fire an atlaskit analytics event on confirm', () => {});
-
-  it('should fire an atlaskit analytics event on edit', () => {});
 });

@@ -100,18 +100,4 @@ describe('dropdown menu - DropdownMenuStateless', () => {
     });
   });
 });
-describe('analytics - DropdownMenuStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<DropdownMenuStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'dropdown-menu',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onOpenChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
-});
+describe('analytics - DropdownMenuStateless', () => {});

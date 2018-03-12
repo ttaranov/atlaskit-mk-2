@@ -1,17 +1,8 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-import AvatarWithAnalytics, { Avatar } from '../Avatar';
+import { Avatar } from '../Avatar';
 import AvatarImage from '../AvatarImage';
 import Presence from '../Presence';
 import { getSize } from '../../styled/utils';
@@ -135,19 +126,4 @@ describe('Avatar', () => {
       expect(presence.find('.my-icon')).toHaveLength(1);
     });
   });
-});
-describe('analytics - Avatar', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<AvatarWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'avatar',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onClick handler', () => {});
-
-  it('should fire an atlaskit analytics event on click', () => {});
 });

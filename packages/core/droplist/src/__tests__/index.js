@@ -1,25 +1,16 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import Item, { ItemGroup } from '@atlaskit/item';
 
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+import { name } from '../../package.json';
 
 import { Trigger, Content } from '../../src/styled/Droplist';
 
-import DroplistWithAnalytics, { Droplist } from '../components/Droplist';
-import DroplistItemWithAnalytics, { DroplistItem } from '../components/Item';
+import { Droplist } from '../components/Droplist';
+import { DroplistItem } from '../components/Item';
 
 const itemsList = (
   <ItemGroup heading="test1">
@@ -127,34 +118,4 @@ describe(`${name} - core`, () => {
       expect(wrapper.find(Spinner).length).toBe(0);
     });
   });
-});
-describe('analytics - Droplist', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<DroplistWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'droplist',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onOpenChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
-});
-describe('analytics - DroplistItem', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<DroplistItemWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'droplist-item',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onActivate handler', () => {});
-
-  it('should fire an atlaskit analytics event on activate', () => {});
 });

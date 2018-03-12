@@ -13,7 +13,7 @@ import {
   version as packageVersion,
 } from '../../package.json';
 
-import SingleLineTextInputWithAnalytics, {
+import InputWithAnalytics, {
   SingleLineTextInput,
 } from '../SingleLineTextInput';
 
@@ -32,22 +32,3 @@ describe(name, () => {
   });
 });
 describe('analytics - Input', () => {});
-describe('analytics - SingleLineTextInput', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<SingleLineTextInputWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'input',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onConfirm handler', () => {});
-
-  it('should pass analytics event as last argument to onKeyDown handler', () => {});
-
-  it('should fire an atlaskit analytics event on confirm', () => {});
-
-  it('should fire an atlaskit analytics event on keydown', () => {});
-});

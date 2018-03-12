@@ -44,30 +44,4 @@ describe(`${name} - stateless`, () => {
     });
   });
 });
-describe('analytics - MultiSelectStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<MultiSelectStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'multi-select',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onFilterChange handler', () => {});
-
-  it('should pass analytics event as last argument to onNewItemCreated handler', () => {});
-
-  it('should pass analytics event as last argument to onSelectedChange handler', () => {});
-
-  it('should pass analytics event as last argument to onOpenChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on filter', () => {});
-
-  it('should fire an atlaskit analytics event on createItem', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
-});
+describe('analytics - MultiSelectStateless', () => {});

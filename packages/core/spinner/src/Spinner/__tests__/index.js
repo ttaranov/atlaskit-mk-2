@@ -1,20 +1,11 @@
 // @flow
 
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
+import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-import SpinnerWithAnalytics, { Spinner } from '../index';
+import { Spinner } from '../index';
 import Container, { getContainerAnimation } from '../styledContainer';
 import Svg, { svgStyles, getStrokeColor } from '../styledSvg';
 
@@ -176,19 +167,4 @@ describe('Spinner', () => {
       expect(dashOffsetMatch).not.toBe(null);
     });
   });
-});
-describe('analytics - Spinner', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<SpinnerWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'spinner',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onComplete handler', () => {});
-
-  it('should fire an atlaskit analytics event on complete', () => {});
 });

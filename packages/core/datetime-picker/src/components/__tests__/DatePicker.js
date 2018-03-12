@@ -2,17 +2,8 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-import DatePickerWithAnalytics, { DatePicker } from '../DatePicker';
+import { name } from '../../../package.json';
+import { DatePicker } from '../DatePicker';
 import DatePickerStateless from '../DatePickerStateless';
 
 describe(name, () => {
@@ -133,19 +124,4 @@ describe(name, () => {
       expect(datePickerStatelessProps.displayValue).toBe(formattedValue);
     });
   });
-});
-describe('analytics - DatePicker', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<DatePickerWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'date-picker',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
 });

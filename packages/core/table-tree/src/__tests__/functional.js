@@ -1,16 +1,7 @@
 // @flow
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
-import RowWithAnalytics, { Row } from '../components/Row';
+import { mount } from 'enzyme';
+import { Row } from '../components/Row';
 import TableTree, { Rows, Cell, Header, Headers } from '../index';
 import { Cell as StyledCell, Header as StyledHeader } from '../styled';
 
@@ -297,20 +288,3 @@ function createTreeHarness(treeWrapper) {
     collapseChevron,
   };
 }
-describe('analytics - Row', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<RowWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'table-tree',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onExpand handler', () => {});
-
-  it('should pass analytics event as last argument to onCollapse handler', () => {});
-
-  it('should fire an atlaskit analytics event on toggle', () => {});
-});

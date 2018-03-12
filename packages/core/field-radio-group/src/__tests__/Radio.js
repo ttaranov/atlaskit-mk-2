@@ -14,7 +14,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
-import AkRadioWithAnalytics, { AkRadio } from '../Radio';
+import { AkRadio } from '../Radio';
 
 describe(name, () => {
   describe('Radio', () => {
@@ -98,18 +98,4 @@ describe(name, () => {
     });
   });
 });
-describe('analytics - AkRadio', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = mount(<AkRadioWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'field-radio-group',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-});
+describe('analytics - AkRadio', () => {});

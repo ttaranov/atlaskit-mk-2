@@ -1,19 +1,10 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Blanket from '@atlaskit/blanket';
 
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
 import Content from '../src/components/Content';
-import ModalDialogWithAnalytics, { ModalDialog } from '../src/components/Modal';
+import { ModalDialog } from '../src/components/Modal';
 import { Body } from '../src/styled/Content';
 import {
   dialogHeight,
@@ -237,19 +228,4 @@ describe('modal-dialog', () => {
       });
     });
   });
-});
-describe('analytics - ModalDialog', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<ModalDialogWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'modal-dialog',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onClose handler', () => {});
-
-  it('should fire an atlaskit analytics event on close', () => {});
 });

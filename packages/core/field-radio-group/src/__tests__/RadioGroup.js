@@ -184,18 +184,4 @@ describe(name, () => {
     });
   });
 });
-describe('analytics - FieldRadioGroupStateless', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<FieldRadioGroupStatelessWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'field-radio-group',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onRadioChange handler', () => {});
-
-  it('should fire an atlaskit analytics event on change', () => {});
-});
+describe('analytics - FieldRadioGroupStateless', () => {});

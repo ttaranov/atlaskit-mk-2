@@ -3,18 +3,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import ProgressDotsWithAnalytics, {
-  ProgressDots,
-} from '../src/components/Dots';
+import { ProgressDots } from '../src/components/Dots';
 import { IndicatorButton, IndicatorDiv } from '../src/styled/Dots';
 
 // NOTE: "StubComponent" saves duplicating required props; avoids errors in the logs
@@ -95,19 +84,4 @@ describe('Progress Indicator', () => {
       ).toBe(true);
     });
   });
-});
-describe('analytics - ProgressDots', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<ProgressDotsWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'progress-indicator',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onSelect handler', () => {});
-
-  it('should fire an atlaskit analytics event on select', () => {});
 });

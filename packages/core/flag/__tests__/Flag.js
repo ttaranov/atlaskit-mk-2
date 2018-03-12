@@ -1,19 +1,10 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import FlagWithAnalytics, { Flag } from '../src/components/Flag/index';
+import { Flag } from '../src/components/Flag/index';
 import Container, {
   Description,
   DismissButton,
@@ -227,35 +218,4 @@ describe('Flag', () => {
       });
     });
   });
-});
-describe('analytics - Flag', () => {
-  it('should provide analytics context with component, package and version fields', () => {
-    const wrapper = shallow(<FlagWithAnalytics />);
-
-    expect(wrapper.find(AnalyticsContext).prop('data')).toEqual({
-      component: 'flag',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should pass analytics event as last argument to onBlur handler', () => {});
-
-  it('should pass analytics event as last argument to onDismissed handler', () => {});
-
-  it('should pass analytics event as last argument to onFocus handler', () => {});
-
-  it('should pass analytics event as last argument to onMouseOut handler', () => {});
-
-  it('should pass analytics event as last argument to onMouseOver handler', () => {});
-
-  it('should fire an atlaskit analytics event on blur', () => {});
-
-  it('should fire an atlaskit analytics event on dismiss', () => {});
-
-  it('should fire an atlaskit analytics event on focus', () => {});
-
-  it('should fire an atlaskit analytics event on mouseout', () => {});
-
-  it('should fire an atlaskit analytics event on mouseover', () => {});
 });
