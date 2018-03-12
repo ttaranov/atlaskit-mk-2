@@ -11,8 +11,8 @@ import {
 import '../FieldRange';
 
 jest.mock('@atlaskit/analytics-next', () => ({
-  withAnalyticsEvents: jest.fn(() => jest.fn()),
-  withAnalyticsContext: jest.fn(() => jest.fn()),
+  withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),
+  withAnalyticsContext: jest.fn(() => jest.fn(() => () => null)),
   createAndFireEvent: jest.fn(() => jest.fn(args => args)),
 }));
 
