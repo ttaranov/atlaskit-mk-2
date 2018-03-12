@@ -2,8 +2,11 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
-import { Menu } from '../../src/utils/menu/index';
-import { MeatBallsWrapper, DeleteBtn } from '../../src/utils/menu/styled';
+import { CardActionsView } from '../../src/utils/cardActions';
+import {
+  MeatBallsWrapper,
+  CardActionButton,
+} from '../../src/utils/cardActions/styled';
 import { CardActionType } from '../../src/actions';
 
 describe('Menu', () => {
@@ -27,26 +30,28 @@ describe('Menu', () => {
   });
 
   it('should render the meatballs menu when supplied with multiple actions', () => {
-    const card = mount(<Menu actions={menuActions} />);
+    const card = mount(<CardActionsView actions={menuActions} />);
     expect(card.find(MeatBallsWrapper)).toHaveLength(1);
-    expect(card.find(DeleteBtn)).toHaveLength(0);
+    expect(card.find(CardActionButton)).toHaveLength(0);
   });
 
   it('should render the meatballs menu when supplied with multiple actions including one with type "delete"', () => {
-    const card = mount(<Menu actions={[deleteAction]} />);
+    const card = mount(<CardActionsView actions={[deleteAction]} />);
     expect(card.find(MeatBallsWrapper)).toHaveLength(0);
-    expect(card.find(DeleteBtn)).toHaveLength(1);
+    expect(card.find(CardActionButton)).toHaveLength(1);
   });
 
   it('should render the delete button when supplied with a single action with type "delete"', () => {
-    const card = mount(<Menu actions={[deleteAction]} />);
+    const card = mount(<CardActionsView actions={[deleteAction]} />);
     expect(card.find(MeatBallsWrapper)).toHaveLength(0);
-    expect(card.find(DeleteBtn)).toHaveLength(1);
+    expect(card.find(CardActionButton)).toHaveLength(1);
   });
 
   it('should call onToggle callback when meatballs are pressed', () => {
     const onToggle = jest.fn();
-    const card = mount(<Menu actions={menuActions} onToggle={onToggle} />);
+    const card = mount(
+      <CardActionsView actions={menuActions} onToggle={onToggle} />,
+    );
 
     card
       .find(DropdownMenu)
@@ -77,7 +82,7 @@ describe('Menu', () => {
 
     const triggerColor = 'some-color-string';
     const card = mount(
-      <Menu actions={menuActions} triggerColor={triggerColor} />,
+      <CardActionsView actions={menuActions} triggerColor={triggerColor} />,
     );
     expect(card.find(MeatBallsWrapper).prop('style')).toMatchObject({
       color: triggerColor,
@@ -89,9 +94,9 @@ describe('Menu', () => {
 
     const triggerColor = 'some-color-string';
     const card = mount(
-      <Menu actions={menuActions} triggerColor={triggerColor} />,
+      <CardActionsView actions={menuActions} triggerColor={triggerColor} />,
     );
-    expect(card.find(DeleteBtn).prop('style')).toMatchObject({
+    expect(card.find(CardActionButton).prop('style')).toMatchObject({
       color: triggerColor,
     });
   });
