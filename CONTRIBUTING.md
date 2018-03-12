@@ -244,7 +244,7 @@ ATLASKIT_DEV_PORT=9001 bolt start
 
 ## Browser testing your code
 
-> This is not yet supported
+> This is internally supported, please review this link [Adding webdriver][addingwebdriver]
 
 ## Documenting your code
 
@@ -303,3 +303,4 @@ create the changelog entry for each package being released.
 [codeofconduct]: ./CODE_OF_CONDUCT.md
 [issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
 [atlassianbug]: http://go/ak-bug
+[addingwebdriver]: https://product-fabric.atlassian.net/wiki/spaces/~ckrishnakumar/pages/437356103/Adding+webdriver+browser+tests+in+atlaskit
