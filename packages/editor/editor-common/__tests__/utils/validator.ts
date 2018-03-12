@@ -257,6 +257,31 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.actions[].key is not valid string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [
+              {
+                key: 123,
+                title: 'test',
+                target: {
+                  receiver: 'some.app',
+                  key: 'test.target',
+                },
+                parameters: {
+                  test: 10,
+                  ext: 'ext',
+                },
+              },
+            ],
+          },
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
       it('should return "text" if attrs.actions[].target.receiver is not valid string', () => {
         const applicationCard = {
           type: 'applicationCard',
@@ -305,6 +330,7 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             actions: [
               {
+                key: 'test-key',
                 title: 'test',
                 target: {
                   receiver: 'some.app',
@@ -779,6 +805,7 @@ describe('Renderer - Validator', () => {
         const data = {
           type: 'action',
           attrs: {
+            key: 'test-action-key',
             title: 'title',
             target: {
               key: 'somу-key',

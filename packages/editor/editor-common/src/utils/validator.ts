@@ -283,7 +283,10 @@ export const getValidNode = (
         if (
           actions &&
           actions.some(meta => {
-            const { title, target, parameters } = meta;
+            const { key, title, target, parameters } = meta;
+            if (key && !isValidString(key)) {
+              return true;
+            }
             if (!isValidString(title)) {
               return true;
             }
@@ -709,11 +712,7 @@ export const getValidMark = (mark: ADMark): ADMark | null => {
         if (attrs && attrs.target && attrs.target.key) {
           return {
             type,
-            attrs: {
-              title: attrs.title,
-              target: attrs.target,
-              parameters: attrs.parameters,
-            },
+            attrs,
           };
         }
         break;
