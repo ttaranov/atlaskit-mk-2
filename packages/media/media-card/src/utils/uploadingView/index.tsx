@@ -6,7 +6,14 @@ import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
 import CardActions from '../cardActions';
 import { CardAction } from '../../actions';
-import { Wrapper, Overlay, Title, Body, ProgressWrapper } from './styled';
+import {
+  Wrapper,
+  Overlay,
+  Title,
+  Body,
+  ProgressWrapper,
+  CardActionsWrapper,
+} from './styled';
 
 export interface UploadingViewProps {
   title?: string;
@@ -29,7 +36,9 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
             <ProgressWrapper>
               <ProgressBar progress={progress} />
             </ProgressWrapper>
-            <CardActions actions={actions} triggerColor="white" />
+            <CardActionsWrapper>
+              <CardActions actions={actions} triggerColor="white" />
+            </CardActionsWrapper>
           </Body>
         </Overlay>
         {dataURI && <MediaImage dataURI={dataURI} />}
