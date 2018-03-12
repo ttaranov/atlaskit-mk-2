@@ -4,6 +4,8 @@ import {
   MediaCollection,
   MediaCollectionItem,
 } from '@atlaskit/media-core';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import * as React from 'react';
 import { ReactNode } from 'react';
 
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
@@ -66,6 +68,7 @@ export const CardDelete: CardActionCreator = (
     label: 'Delete',
     type: CardActionType.delete,
     handler: eventHander,
+    icon: <CrossIcon size="small" label="delete" />,
   };
 };
 
