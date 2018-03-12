@@ -6,7 +6,8 @@ const analyticsEventMap = [
     component: 'Avatar',
     props: {
       onClick: 'click'
-    }
+    },
+    componentTestPath: 'avatar/src/components/__tests__/Avatar.js'
   },
   {
     path: 'blanket/src/Blanket.js',
@@ -15,7 +16,8 @@ const analyticsEventMap = [
     component: 'Blanket',
     props: {
       onBlanketClicked: 'click'
-    }
+    },
+    componentTestPath: 'blanket/src/__tests__/blanket.js'
   },
   {
     path: 'breadcrumbs/src/components/BreadcrumbsStateless.js',
@@ -24,19 +26,20 @@ const analyticsEventMap = [
     component: 'BreadcrumbsStateless',
     props: {
       onExpand: 'expand'
-    }
+    },
+    componentTestPath: 'breadcrumbs/__tests__/Breadcrumbs.test.js'
   },
   {
     path: 'breadcrumbs/src/components/BreadcrumbsItem.js',
     testPath: 'breadcrumbs/__tests__/analytics-item.js',
     context: 'breadcrumbs-item',
     component: 'BreadcrumbsItem',
-    // TODO: Implement this functionality
     overwrite: 'Button',
     overwritePackage: '@atlaskit/button',
     props: {
       onClick: 'click'
-    }
+    },
+    componentTestPath: 'breadcrumbs/__tests__/Item.test.js'
   },
   {
     path: 'button/src/components/Button.js',
@@ -45,7 +48,8 @@ const analyticsEventMap = [
     component: 'Button',
     props: {
       onClick: 'click'
-    }
+    },
+    componentTestPath: 'button/src/__tests__/testDefaultBehaviour.js'
   },
   {
     path: 'calendar/src/components/CalendarStateless.js',
@@ -54,7 +58,8 @@ const analyticsEventMap = [
     component: 'CalendarStateless',
     props: {
       onUpdate: 'update'
-    }
+    },
+    componentTestPath: 'calendar/src/components/__tests__/CalendarStateless.js'
   },
   {
     path: 'checkbox/src/CheckboxStateless.js',
@@ -64,7 +69,8 @@ const analyticsEventMap = [
     wrapTarget: 'CheckboxWithTheme',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'checkbox/src/__tests__/index.js'
   },
   {
     path: 'datetime-picker/src/components/DatePicker.js',
@@ -73,7 +79,8 @@ const analyticsEventMap = [
     component: 'DatePicker',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'datetime-picker/src/components/__tests__/DatePicker.js'
   },
   {
     path: 'datetime-picker/src/components/TimePicker.js',
@@ -82,7 +89,8 @@ const analyticsEventMap = [
     component: 'TimePicker',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'datetime-picker/src/components/__tests__/TimePicker.js'
   },
   {
     path: 'datetime-picker/src/components/DateTimePicker.js',
@@ -91,7 +99,8 @@ const analyticsEventMap = [
     component: 'DateTimePicker',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'datetime-picker/src/components/__tests__/DateTimePicker.js'
   },
   {
     path: 'dropdown-menu/src/components/DropdownMenuStateless.js',
@@ -102,7 +111,8 @@ const analyticsEventMap = [
     overwritePackage: '@atlaskit/droplist',
     props: {
       onOpenChange: 'toggle'
-    }
+    },
+    componentTestPath: 'dropdown-menu/__tests__/DropdownMenuStateless.js'
   },
   {
     path: 'droplist/src/components/Droplist.js',
@@ -111,7 +121,8 @@ const analyticsEventMap = [
     component: 'Droplist',
     props: {
       onOpenChange: 'toggle'
-    }
+    },
+    componentTestPath: 'droplist/src/__tests__/index.js'
   },
   {
     path: 'droplist/src/components/Item.js',
@@ -120,7 +131,8 @@ const analyticsEventMap = [
     component: 'DroplistItem',
     props: {
       onActivate: 'activate'
-    }
+    },
+    componentTestPath: 'droplist/src/__tests__/index.js'
   },
   {
     path: 'dynamic-table/src/components/Stateless.js',
@@ -131,8 +143,9 @@ const analyticsEventMap = [
       onSetPage: 'setPage',
       onSort: 'sort',
       onRankStart: 'rankStart',
-      onRankEnd: 'rankEnd',
-    }
+      onRankEnd: 'rankEnd'
+    },
+    componentTestPath: 'dynamic-table/__tests__/Stateless.js'
   },
   {
     path: 'field-base/src/components/FieldBaseStateless.js',
@@ -144,8 +157,9 @@ const analyticsEventMap = [
       onDialogBlur: 'blur',
       onDialogClick: 'click',
       onDialogFocus: 'focus',
-      onFocus: 'focus',
-    }
+      onFocus: 'focus'
+    },
+    componentTestPath: 'field-base/src/__tests__/index.js'
   },
   {
     path: 'field-radio-group/src/Radio.js',
@@ -155,7 +169,8 @@ const analyticsEventMap = [
     wrapTarget: 'RadioWithTheme',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'field-radio-group/src/__tests__/Radio.js'
   },
   {
     path: 'field-radio-group/src/RadioGroupStateless.js',
@@ -164,7 +179,8 @@ const analyticsEventMap = [
     component: 'FieldRadioGroupStateless',
     props: {
       onRadioChange: 'change'
-    }
+    },
+    componentTestPath: 'field-radio-group/src/__tests__/RadioGroup.js'
   },
   {
     path: 'field-range/src/FieldRange.js',
@@ -173,7 +189,8 @@ const analyticsEventMap = [
     component: 'FieldRange',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'field-range/src/__test__/fieldRangeSpec.js'
   },
   {
     path: 'field-text-area/src/FieldTextAreaStateless.js',
@@ -182,7 +199,8 @@ const analyticsEventMap = [
     component: 'FieldTextAreaStateless',
     props: {
       onChange: 'change'
-    }
+    },
+    componentTestPath: 'field-text-area/src/__tests__/index.js'
   },
   {
     path: 'field-text/src/FieldTextStateless.js',
@@ -195,8 +213,9 @@ const analyticsEventMap = [
       onFocus: 'focus',
       onKeyDown: 'keydown',
       onKeyPress: 'keypress',
-      onKeyUp: 'keyup',
-    }
+      onKeyUp: 'keyup'
+    },
+    componentTestPath: 'field-text/src/__tests__/index.js'
   },
   {
     path: 'flag/src/components/Flag/index.js',
@@ -208,8 +227,9 @@ const analyticsEventMap = [
       onDismissed: 'dismiss',
       onFocus: 'focus',
       onMouseOut: 'mouseout',
-      onMouseOver: 'mouseover',
-    }
+      onMouseOver: 'mouseover'
+    },
+    componentTestPath: 'flag/__tests__/Flag.js'
   },
   {
     path: 'icon/src/components/Icon.js',
@@ -218,7 +238,8 @@ const analyticsEventMap = [
     component: 'Icon',
     props: {
       onClick: 'click'
-    }
+    },
+    componentTestPath: 'icon/__tests__/IconSpec.js'
   },
   {
     path: 'inline-dialog/src/InlineDialog/index.js',
@@ -229,8 +250,9 @@ const analyticsEventMap = [
       onContentBlur: 'blur',
       onContentClick: 'click',
       onContentFocus: 'focus',
-      onClose: 'close',
-    }
+      onClose: 'close'
+    },
+    componentTestPath: 'inline-dialog/__tests__/index.js'
   },
   {
     path: 'inline-edit/src/InlineEditStateless.js',
@@ -240,8 +262,9 @@ const analyticsEventMap = [
     props: {
       onCancel: 'cancel',
       onConfirm: 'confirm',
-      onEditRequested: 'edit',
-    }
+      onEditRequested: 'edit'
+    },
+    componentTestPath: 'inline-edit/src/__tests__/InlineEdit.js'
   },
   {
     path: 'input/src/SingleLineTextInput.js',
@@ -250,8 +273,9 @@ const analyticsEventMap = [
     component: 'SingleLineTextInput',
     props: {
       onConfirm: 'confirm',
-      onKeyDown: 'keydown',
-    }
+      onKeyDown: 'keydown'
+    },
+    componentTestPath: 'input/src/__tests__/index.js'
   },
   {
     path: 'item/src/components/Item.js',
@@ -262,8 +286,9 @@ const analyticsEventMap = [
       onClick: 'click',
       onKeyDown: 'keydown',
       onMouseEnter: 'mouseenter',
-      onMouseLeave: 'mouseleave',
-    }
+      onMouseLeave: 'mouseleave'
+    },
+    componentTestPath: 'item/__tests__/Item.js'
   },
   {
     path: 'modal-dialog/src/components/Modal.js',
@@ -271,8 +296,9 @@ const analyticsEventMap = [
     context: 'modal-dialog',
     component: 'ModalDialog',
     props: {
-      onClose: 'close',
-    }
+      onClose: 'close'
+    },
+    componentTestPath: 'modal-dialog/__tests__/modalDialog.js'
   },
   {
     path: 'multi-select/src/components/Stateless.js',
@@ -283,8 +309,9 @@ const analyticsEventMap = [
       onFilterChange: 'filter',
       onNewItemCreated: 'createItem',
       onSelectedChange: 'change',
-      onOpenChange: 'toggle',
-    }
+      onOpenChange: 'toggle'
+    },
+    componentTestPath: 'multi-select/__tests__/statelessBehaviour.js'
   },
   {
     path: 'navigation/src/components/js/Navigation.js',
@@ -295,8 +322,9 @@ const analyticsEventMap = [
       onResize: 'resize',
       onResizeStart: 'resizeStart',
       onToggleStart: 'toggle',
-      onToggleEnd: 'toggle',
-    }
+      onToggleEnd: 'toggle'
+    },
+    componentTestPath: 'navigation/__tests__/Navigation.js'
   },
   {
     path: 'onboarding/src/components/Spotlight.js',
@@ -305,7 +333,8 @@ const analyticsEventMap = [
     component: 'Spotlight',
     props: {
       targetOnClick: 'click'
-    }
+    },
+    componentTestPath: 'onboarding/__tests__/index.js'
   },
   {
     path: 'pagination/src/components/Stateless.js',
@@ -314,7 +343,8 @@ const analyticsEventMap = [
     component: 'PaginationStateless',
     props: {
       onSetPage: 'change'
-    }
+    },
+    componentTestPath: 'pagination/__tests__/index.js'
   },
   {
     path: 'progress-indicator/src/components/Dots.js',
@@ -323,7 +353,8 @@ const analyticsEventMap = [
     component: 'ProgressDots',
     props: {
       onSelect: 'select'
-    }
+    },
+    componentTestPath: 'progress-indicator/__tests__/index.js'
   },
   {
     path: 'select/src/Select.js',
@@ -332,8 +363,9 @@ const analyticsEventMap = [
     component: 'Select',
     props: {
       onChange: 'change',
-      onKeyDown: 'keydown',
-    }
+      onKeyDown: 'keydown'
+    },
+    componentTestPath: 'select/src/__tests__/Select.js'
   },
   {
     path: 'single-select/src/components/StatelessSelect.js',
@@ -343,8 +375,9 @@ const analyticsEventMap = [
     props: {
       onFilterChange: 'filter',
       onSelected: 'change',
-      onOpenChange: 'toggle',
-    }
+      onOpenChange: 'toggle'
+    },
+    componentTestPath: 'single-select/__tests__/stateless.js'
   },
   {
     path: 'spinner/src/Spinner/index.js',
@@ -352,8 +385,9 @@ const analyticsEventMap = [
     context: 'spinner',
     component: 'Spinner',
     props: {
-      onComplete: 'complete',
-    }
+      onComplete: 'complete'
+    },
+    componentTestPath: 'spinner/src/Spinner/__tests__/index.js'
   },
   {
     path: 'table-tree/src/components/Row.js',
@@ -362,8 +396,9 @@ const analyticsEventMap = [
     component: 'Row',
     props: {
       onExpand: 'toggle',
-      onCollapse: 'toggle',
-    }
+      onCollapse: 'toggle'
+    },
+    componentTestPath: 'table-tree/src/__tests__/functional.js'
   },
   {
     path: 'tabs/src/components/Tabs.js',
@@ -371,8 +406,9 @@ const analyticsEventMap = [
     context: 'tabs',
     component: 'Tabs',
     props: {
-      onSelect: 'change',
-    }
+      onSelect: 'change'
+    },
+    componentTestPath: 'tabs/__tests__/index.js'
   },
   {
     path: 'tag/src/Tag/index.js',
@@ -380,8 +416,9 @@ const analyticsEventMap = [
     context: 'tag',
     component: 'Tag',
     props: {
-      onAfterRemoveAction: 'remove',
-    }
+      onAfterRemoveAction: 'remove'
+    },
+    componentTestPath: 'tag/src/Tag/__tests__/index.js'
   },
   {
     path: 'toggle/src/ToggleStateless.js',
@@ -391,8 +428,9 @@ const analyticsEventMap = [
     props: {
       onBlur: 'blur',
       onChange: 'change',
-      onFocus: 'focus',
-    }
+      onFocus: 'focus'
+    },
+    componentTestPath: 'toggle/src/__tests__/index.js'
   },
   {
     path: 'tooltip/src/components/Tooltip.js',
@@ -401,8 +439,9 @@ const analyticsEventMap = [
     component: 'Tooltip',
     props: {
       onMouseOver: 'mouseover',
-      onMouseOut: 'mouseout',
-    }
+      onMouseOut: 'mouseout'
+    },
+    componentTestPath: 'tooltip/src/components/__tests__/Tooltip.js'
   },
   {
     path: '__testfixtures__/addsTestsMultipleProps',
@@ -411,7 +450,7 @@ const analyticsEventMap = [
     component: 'Button',
     props: {
       onClick: 'click',
-      onChange: 'change',
+      onChange: 'change'
     }
   },
   {
@@ -422,7 +461,7 @@ const analyticsEventMap = [
     props: {
       onClick: 'click'
     }
-  }, 
+  }
 ];
 
 module.exports.analyticsPackages = analyticsEventMap
