@@ -49,6 +49,7 @@ const doc = {
             {
               type: 'action',
               attrs: {
+                key: 'test-action-key',
                 target: {
                   key: 'test',
                 },
@@ -137,6 +138,19 @@ describe('Renderer - ReactSerializer', () => {
       expect(reactDoc.find(Action).prop('eventHandlers')).to.equal(
         eventHandlers,
       );
+      reactDoc.unmount();
+    });
+
+    it('should pass key from attrs as markKey', () => {
+      const eventHandlers = {};
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        eventHandlers,
+      });
+      const reactDoc = mount(reactSerializer.serializeFragment(
+        docFromSchema.content,
+      ) as any);
+      expect(reactDoc.find(Action).prop('markKey')).to.equal('test-action-key');
+      expect(reactDoc.find(Action).key()).to.not.equal('test-action-key');
       reactDoc.unmount();
     });
   });

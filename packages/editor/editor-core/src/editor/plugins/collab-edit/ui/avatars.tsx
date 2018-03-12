@@ -121,12 +121,8 @@ export default class Avatars extends React.Component<Props, any> {
   };
 
   render() {
-    const { eventDispatcher, editorView } = this.props;
-
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{ data: collabEditPluginKey }}
         render={this.renderAvatars}
       />

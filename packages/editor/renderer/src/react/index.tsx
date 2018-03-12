@@ -166,9 +166,11 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   private getMarkProps(mark: Mark): any {
+    const { key, ...otherAttrs } = mark.attrs;
     return {
       eventHandlers: this.eventHandlers,
-      ...mark.attrs,
+      markKey: key,
+      ...otherAttrs,
     };
   }
 
