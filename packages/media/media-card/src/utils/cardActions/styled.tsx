@@ -16,7 +16,7 @@ export const MeatBallsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 23px;
 `;
 
-export const DeleteBtn: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const CardActionButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${center} ${borderRadius} ${size(26)} color: ${akColorN500};
 
   &:hover {
