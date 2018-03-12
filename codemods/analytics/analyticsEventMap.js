@@ -29,10 +29,11 @@ const analyticsEventMap = [
   {
     path: 'breadcrumbs/src/components/BreadcrumbsItem.js',
     testPath: 'breadcrumbs/__tests__/analytics-item.js',
-    context: 'breadrumbs-item',
+    context: 'breadcrumbs-item',
     component: 'BreadcrumbsItem',
     // TODO: Implement this functionality
     overwrite: 'Button',
+    overwritePackage: '@atlaskit/button',
     props: {
       onClick: 'click'
     }
@@ -98,6 +99,7 @@ const analyticsEventMap = [
     context: 'dropdown-menu',
     component: 'DropdownMenuStateless',
     overwrite: 'Droplist',
+    overwritePackage: '@atlaskit/droplist',
     props: {
       onOpenChange: 'toggle'
     }
@@ -116,7 +118,6 @@ const analyticsEventMap = [
     testPath: 'droplist/src/__tests__/analytics-item.js',
     context: 'droplist-item',
     component: 'DroplistItem',
-    overwrite: 'Item',
     props: {
       onActivate: 'activate'
     }
@@ -170,7 +171,6 @@ const analyticsEventMap = [
     testPath: 'field-range/src/__tests__/analytics.js',
     context: 'field-range',
     component: 'FieldRange',
-    overwrite: 'Input',
     props: {
       onChange: 'change'
     }
@@ -388,7 +388,6 @@ const analyticsEventMap = [
     testPath: 'toggle/src/__tests__/analytics.js',
     context: 'toggle',
     component: 'ToggleStateless',
-    overwrite: 'Input',
     props: {
       onBlur: 'blur',
       onChange: 'change',

@@ -7,21 +7,37 @@ import get from 'lodash.get';
 import UtilPlugin from '../../plugins/util';
 import { getMapEntryFromPath, getPackageJsonPath, getRelativeComponentPath } from '../util';
 
+const contextOverwriteTest = (j, analyticsConfig) => {
+  return j('').code(`
+    it('should override the existing analytics context of ${analyticsConfig.overwrite}', () => {
+      const wrapper = mount(<${analyticsConfig.component} />);
+
+      expect(wrapper.find(${analyticsConfig.overwrite}).prop('analyticsContext')).toEqual({
+        component: '${analyticsConfig.context}',
+        package: packageName,
+        version: packageVersion
+      });
+    });
+  `);
+}
+
 const contextTest = (j, analyticsConfig) => {
   const componentName = `${analyticsConfig.component}WithAnalytics`;
   const context = analyticsConfig.context;
 
   const mountOrShallow = analyticsConfig.wrapTarget ? 'mount' : 'shallow';
 
-  return j('').code(`
-    it('should be wrapped with analytics context', () => {
-      expect(withAnalyticsContext).toHaveBeenCalledWith({
-        component: '${context}',
-        package: packageName,
-        version: packageVersion
+  return analyticsConfig.overwrite
+    ? contextOverwriteTest(j, analyticsConfig)
+    : j('').code(`
+      it('should be wrapped with analytics context', () => {
+        expect(withAnalyticsContext).toHaveBeenCalledWith({
+          component: '${context}',
+          package: packageName,
+          version: packageVersion
+        });
       });
-    });
-  `);
+    `);
 }
 
 const propTest = (j, analyticsConfig) => {
@@ -89,10 +105,14 @@ export default (fileInfo: any, api: any) => {
   if (!analyticsEventConfigs || analyticsEventConfigs.length === 0) {
     return null;
   }
+  if (analyticsEventConfigs.length > 1) {
+    throw new Error('Each entry must have a unique testPath file');
+  }
   const source = j(fileInfo.source);
 
   const firstNodeBefore = source.getFirstNode();
   
+  const analyticsConfig = analyticsEventConfigs[0];
 
   // Add imports
   const absoluteFilePath = path.resolve(process.cwd(), fileInfo.path);
@@ -110,32 +130,43 @@ export default (fileInfo: any, api: any) => {
         get(node, 'expression.callee.property.name') === 'mock'
       ));
     });
-    // .addImport(source.code(`
-    //   import { mount, shallow } from 'enzyme';
-    // `));
+  if (analyticsConfig.overwrite) {
+    source
+      .addImport(source.code(`
+      import React from 'react';
+      `))
+      .addImport(source.code(`
+        import { mount } from 'enzyme';
+      `))
+      .addImport(source.code(`
+        import ${analyticsConfig.overwrite} from '${analyticsConfig.overwritePackage}';
+      `));
+  }
   
-  analyticsEventConfigs.forEach( analyticsEventConfig => {
-    const componentName = analyticsEventConfig.component;
-    const componentPath = getRelativeComponentPath(analyticsEventConfig);
-    removeExistingComponentImport(j, source, componentName);
-    source.addImport(source.code(`
-      import '${componentPath}';
+  const componentName = analyticsConfig.component;
+  const componentPath = getRelativeComponentPath(analyticsConfig);
+  // No longer needed since we're now running analytics tests in their own file
+  // removeExistingComponentImport(j, source, componentName);
+  const componentImport = analyticsConfig.overwrite
+    ? `import { ${componentName} } from '${componentPath}';`
+    : `import '${componentPath}';`;
+  source.addImport(source.code(`
+    ${componentImport}
 
-    `));
-    // Add describe block + tests
-    const describeBlock = source.getOrAdd(source.code(`
-      describe('${analyticsEventConfig.component}', () => {});
-    `), context => {
-        return context.find(j.ExpressionStatement, (node) =>
-          get(node, 'expression.callee.name') === 'describe' &&
-          get(node, 'expression.arguments[0].value') === `${analyticsEventConfig.component}`
-        );
-    });
-
-    describeBlock
-      .addTest(contextTest(j, analyticsEventConfig))
-      .addTest(propTest(j, analyticsEventConfig));
+  `));
+  // Add describe block + tests
+  const describeBlock = source.getOrAdd(source.code(`
+    describe('${analyticsConfig.component}', () => {});
+  `), context => {
+      return context.find(j.ExpressionStatement, (node) =>
+        get(node, 'expression.callee.name') === 'describe' &&
+        get(node, 'expression.arguments[0].value') === `${analyticsConfig.component}`
+      );
   });
+
+  describeBlock
+    .addTest(contextTest(j, analyticsConfig))
+    .addTest(propTest(j, analyticsConfig));
 
   // If the first node has been modified or deleted, reattach the comments
   const firstNodeAfter = source.getFirstNode();
