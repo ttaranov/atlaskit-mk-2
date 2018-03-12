@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN500 } from '@atlaskit/util-shared-styles';
-import { Root, borderRadius, size, center } from '../../styles';
+import { borderRadius, size, center } from '@atlaskit/media-ui';
+import { Root } from '../../styles';
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   display: flex;

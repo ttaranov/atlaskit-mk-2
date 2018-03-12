@@ -20,7 +20,7 @@ export interface CardFrameProps {
   onClick?: () => void;
 }
 
-export default class CardFrame extends React.Component<CardFrameProps> {
+export class CardFrame extends React.Component<CardFrameProps> {
   get isInteractive() {
     const { isPlaceholder, href, onClick } = this.props;
     return !isPlaceholder && (Boolean(href) || Boolean(onClick));

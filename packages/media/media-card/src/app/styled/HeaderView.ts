@@ -8,7 +8,7 @@ import {
   akColorN0,
   akColorN900,
 } from '@atlaskit/util-shared-styles';
-import { ellipsis } from '../../styles';
+import { ellipsis } from '@atlaskit/media-ui';
 
 const largeMarginSize = akGridSizeUnitless * 2;
 

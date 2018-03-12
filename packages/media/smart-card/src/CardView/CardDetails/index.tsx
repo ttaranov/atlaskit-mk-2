@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
-import IconImage from '../../../shared/IconImage';
+import { IconImage } from '@atlaskit/media-ui';
 import {
   TextWithTooltip,
   IconWithTooltip,
   UserViewModel,
   DetailViewModel,
-} from '../../shared/ViewModel';
+} from '../ViewModel';
 import Users from './Users';
 import Widgets from './Widgets';
 import {

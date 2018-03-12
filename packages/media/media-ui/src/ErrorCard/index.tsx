@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@atlaskit/button';
 import WarningGlyph from '@atlaskit/icon/glyph/warning';
 import { akColorY400 } from '@atlaskit/util-shared-styles';
-import CardFrame from '../CardFrame';
+import { CardFrame } from '../CardFrame';
 import { linkErrorIcon } from './icons';
 import {
   ErrorContainer,
@@ -18,11 +18,9 @@ export interface ErrorCardProps {
   onRetry?: () => void;
 }
 
-export default class ErrorCard extends React.Component<ErrorCardProps> {
+export class ErrorCard extends React.Component<ErrorCardProps> {
   render() {
     const { hasPreview, minWidth, maxWidth, onRetry } = this.props;
-
-    const appearance = hasPreview ? 'square' : 'horizontal';
 
     const icon = (
       <WarningGlyph label="error" size="small" primaryColor={akColorY400} />
@@ -34,10 +32,10 @@ export default class ErrorCard extends React.Component<ErrorCardProps> {
 
     return (
       <CardFrame icon={icon} text="" minWidth={minWidth} maxWidth={maxWidth}>
-        <ErrorWrapper appearance={appearance}>
-          <ErrorContainer appearance={appearance}>
+        <ErrorWrapper hasPreview={hasPreview}>
+          <ErrorContainer hasPreview={hasPreview}>
             {hasPreview ? <ErrorImage src={linkErrorIcon} alt="Error" /> : null}
-            <ErrorMessage appearance={appearance}>
+            <ErrorMessage hasPreview={hasPreview}>
               We stumbled a bit here.
             </ErrorMessage>
             {retryButton}

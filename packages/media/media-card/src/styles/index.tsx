@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akFontFamily } from '@atlaskit/util-shared-styles';
-import { fadeIn } from './animations';
+import { fadeIn } from '@atlaskit/media-ui';
 
 export * from './config';
 export * from './mixins';

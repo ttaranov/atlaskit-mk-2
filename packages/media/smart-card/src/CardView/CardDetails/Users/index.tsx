@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AvatarGroup } from '@atlaskit/avatar';
-import { UserViewModel } from '../../../shared/ViewModel';
+import { UserViewModel } from '../../ViewModel';
 import { Wrapper } from './styled';
 
 export const maxAvatarCount = 5;

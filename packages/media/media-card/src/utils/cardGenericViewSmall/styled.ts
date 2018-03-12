@@ -1,18 +1,9 @@
 /* tslint:disable:variable-name */
-
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import {
-  Root,
-  cardShadow,
-  center,
-  antialiased,
-  ellipsis,
-  borderRadius,
-  easeOutExpo,
-  size,
-} from '../../styles';
+import { Root, cardShadow, antialiased, easeOutExpo } from '../../styles';
+import { center, ellipsis, borderRadius, size } from '@atlaskit/media-ui';
 import {
   akColorN20,
   akColorN70,

@@ -9,7 +9,7 @@ import {
   akColorN300,
   akFontFamily,
 } from '@atlaskit/util-shared-styles';
-import { borderRadius, size, linkCardShadow, ellipsis } from '../../styles';
+import { borderRadius, size, linkCardShadow, ellipsis } from '../mixins';
 
 const wrapperPadding = 8;
 export const className = 'media-card-frame';
@@ -164,7 +164,7 @@ export const Content: ComponentClass<
 
   ${({ isInteractive }: ContentProps) => {
     if (isInteractive) {
-      return ` 
+      return `
           .${className}:hover & {
             box-shadow: 0 4px 8px -2px rgba(23, 43, 77, 0.32),
               0 0 1px rgba(23, 43, 77, 0.25);

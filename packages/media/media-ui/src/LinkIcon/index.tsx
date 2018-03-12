@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ImageLoader from 'react-render-image';
 import LinkGlyph from '@atlaskit/icon/glyph/link';
-import IconImage from '../../shared/IconImage';
+import { IconImage } from '../IconImage';
 
 export const DefaultIcon = () => <LinkGlyph label="icon" size="small" />;
 
@@ -13,7 +13,7 @@ export interface LinkIconProps {
   src?: string;
 }
 
-export default class LinkIcon extends React.Component<LinkIconProps> {
+export class LinkIcon extends React.Component<LinkIconProps> {
   render() {
     const { src } = this.props;
 

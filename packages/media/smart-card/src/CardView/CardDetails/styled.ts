@@ -2,8 +2,14 @@ import styled, { css } from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { ellipsis, borderRadius, size } from '../../../styles';
-import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
+import {
+  cardTitle,
+  cardDescription,
+  ellipsis,
+  borderRadius,
+  size,
+  newCardDetailsHeight,
+} from '@atlaskit/media-ui';
 
 const thumbnailWidth = 40;
 
@@ -57,13 +63,13 @@ export const CopyWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 `;
 
 export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  ${title} ${ellipsis('100%')};
+  ${cardTitle} ${ellipsis('100%')};
 `;
 
 export const Description: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: 4px;
   height: 16px;
-  ${description} ${ellipsis('100%')};
+  ${cardDescription} ${ellipsis('100%')};
 `;
 
 export interface BottomWrapperProps {

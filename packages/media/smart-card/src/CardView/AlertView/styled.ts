@@ -7,7 +7,7 @@ import {
   akColorG300,
   akColorY300,
 } from '@atlaskit/util-shared-styles';
-import { borderRadiusBottom } from '../../../styles';
+import { borderRadiusBottom } from '@atlaskit/media-ui';
 
 export interface WrapperProps {
   type: 'success' | 'failure';
@@ -30,12 +30,12 @@ export const Wrapper: ComponentClass<
       if (type === 'failure') {
         return `
         color: ${akColorN600};
-        background-color: ${akColorY300}; 
+        background-color: ${akColorY300};
       `;
       } else {
         return `
         color: ${akColorN0};
-        background-color: ${akColorG300}; 
+        background-color: ${akColorG300};
       `;
       }
     }};

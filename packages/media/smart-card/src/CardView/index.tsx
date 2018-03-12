@@ -2,28 +2,31 @@ import * as React from 'react';
 import { akColorY300 } from '@atlaskit/util-shared-styles';
 import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import ViewModel from '../shared/ViewModel';
-import CardFrame from '../../shared/CardFrame';
-import CardPreview from '../../shared/CardPreview';
-import LinkIcon from '../../shared/LinkIcon';
-import CardDetails from '../shared/CardDetails';
-import AlertView from '../shared/AlertView';
-import ActionsView, { Action } from '../shared/ActionsView';
+import ViewModel from './ViewModel';
+import { CardFrame, CardPreview, LinkIcon } from '@atlaskit/media-ui';
+import CardDetails from './CardDetails';
+import AlertView from './AlertView';
+import ActionsView, { Action } from './ActionsView';
 import Transition from './Transition';
 import { ActionsStateWrapper, AlertWrapper } from './styled';
 
-export interface ApplicationCardProps extends ViewModel {}
+export function minWidth() {
+  return 240;
+}
 
-export interface ApplicationCardState {
+export function maxWidth({ hasPreview }: { hasPreview: boolean }) {
+  return hasPreview ? 400 : 664;
+}
+
+export interface CardViewProps extends ViewModel {}
+
+export interface CardViewState {
   action?: Action;
   actionState?: 'pending' | 'success' | 'failure';
   actionMessage?: string;
 }
 
-function progress(): Pick<
-  ApplicationCardState,
-  'actionState' | 'actionMessage'
-> {
+function progress(): Pick<CardViewState, 'actionState' | 'actionMessage'> {
   return {
     actionState: 'pending',
     actionMessage: undefined,
@@ -32,7 +35,7 @@ function progress(): Pick<
 
 function success(
   message?: string,
-): Pick<ApplicationCardState, 'actionState' | 'actionMessage'> {
+): Pick<CardViewState, 'actionState' | 'actionMessage'> {
   return {
     actionState: 'success',
     actionMessage: message,
@@ -41,28 +44,22 @@ function success(
 
 function failure(
   message?: string,
-): Pick<ApplicationCardState, 'actionState' | 'actionMessage'> {
+): Pick<CardViewState, 'actionState' | 'actionMessage'> {
   return {
     actionState: 'failure',
     actionMessage: message,
   };
 }
 
-function dismiss(): Pick<
-  ApplicationCardState,
-  'actionState' | 'actionMessage'
-> {
+function dismiss(): Pick<CardViewState, 'actionState' | 'actionMessage'> {
   return {
     actionState: undefined,
     actionMessage: undefined,
   };
 }
 
-export default class ApplicationCard extends React.Component<
-  ApplicationCardProps,
-  ApplicationCardState
-> {
-  state: ApplicationCardState = {};
+export class CardView extends React.Component<CardViewProps, CardViewState> {
+  state: CardViewState = {};
 
   timeout?: number;
 
@@ -176,8 +173,8 @@ export default class ApplicationCard extends React.Component<
     } = this.props;
     return (
       <CardFrame
-        minWidth={240}
-        maxWidth={Boolean(preview) ? 400 : 664}
+        minWidth={minWidth()}
+        maxWidth={maxWidth({ hasPreview: Boolean(preview) })}
         href={link}
         icon={<LinkIcon src={context && context.icon} />}
         text={context && context.text}

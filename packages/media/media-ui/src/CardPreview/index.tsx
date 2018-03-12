@@ -25,7 +25,7 @@ export interface CardPreviewProps {
   url?: string;
 }
 
-export default class CardPreview extends React.Component<CardPreviewProps> {
+export class CardPreview extends React.Component<CardPreviewProps> {
   renderContent() {
     const { isPlaceholder, url } = this.props;
 

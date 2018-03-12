@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN300, akColorN800 } from '@atlaskit/util-shared-styles';
-import { ellipsis } from '../../../../styles';
+import { ellipsis } from '@atlaskit/media-ui';
 
 const widgetHeight = 28;
 

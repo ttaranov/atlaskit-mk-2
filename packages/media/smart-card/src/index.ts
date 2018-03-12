@@ -1,4 +1,4 @@
-export * from './Client';
-export * from './Provider';
-export * from './Card';
-export * from './CardView';
+export { Client, ClientOptions } from './Client';
+export { Provider, ProviderProps } from './Provider';
+export { Card, CardProps } from './Card';
+export { CardView, CardViewProps } from './CardView';

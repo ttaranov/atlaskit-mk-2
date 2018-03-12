@@ -1,16 +1,22 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
-import { AppCardModel } from '@atlaskit/media-card';
+import { ErrorCard } from '@atlaskit/media-ui';
+import { convertAppCardToSmartCard } from '@atlaskit/media-card';
 import { Client } from './Client';
-import { CardView } from './CardView';
+import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
 
 export const LoadingView = () => null;
 
 export const LoadedView = CardView;
 
-// TODO: use link horizontal error view
-export const ErroredView = () => <span>Error!</span>;
+export const ErroredView = () => (
+  <ErrorCard
+    hasPreview={false}
+    minWidth={minWidth()}
+    maxWidth={maxWidth({ hasPreview: false })}
+  />
+);
 
 export interface CardProps {
   client?: Client;
@@ -23,7 +29,7 @@ export interface CardContext {
 
 export interface CardState {
   status: 'loading' | 'loaded' | 'errored';
-  data?: AppCardModel;
+  data?: CardViewProps;
 }
 
 function loading(): Pick<CardState, 'status' | 'data'> {
@@ -33,7 +39,7 @@ function loading(): Pick<CardState, 'status' | 'data'> {
   };
 }
 
-function loaded(data: AppCardModel): Pick<CardState, 'status' | 'data'> {
+function loaded(data: CardViewProps): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loaded',
     data,
@@ -74,7 +80,7 @@ export class Card extends React.Component<CardProps, CardState> {
     const { url } = this.props;
     try {
       const json = await this.client.get(url);
-      this.setState(loaded(json.data as AppCardModel));
+      this.setState(loaded(json.data as CardViewProps));
     } catch (error) {
       this.setState(errored());
     }
@@ -99,7 +105,7 @@ export class Card extends React.Component<CardProps, CardState> {
   renderLoaded() {
     const { data } = this.state;
     if (data) {
-      return <LoadedView newDesign={true} model={data} />;
+      return <LoadedView {...convertAppCardToSmartCard(data)} />;
     } else {
       return <ErroredView />;
     }
