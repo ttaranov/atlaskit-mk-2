@@ -97,15 +97,18 @@ function setLocalClients() {
     chrome: {
       browserName: 'chrome',
       // Disable headless here to run on real browsers
-      chromeOptions: {
-        args: ['--headless', '--disable-gpu'],
-      },
+      // chromeOptions: {
+      //   args: ['--headless', '--disable-gpu'],
+      // },
     },
     safari: {
       browserName: 'safari',
     },
     firefox: {
       browserName: 'firefox',
+      // chromeOptions: {
+      //   args: ['--headless', '--disable-gpu'],
+      // },
     },
   };
 
@@ -152,6 +155,9 @@ function setBrowserStackClients() {
   };
 
   let clis = [];
+  if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+  }
 
   Object.keys(launchers).forEach(key => {
     const option = {
