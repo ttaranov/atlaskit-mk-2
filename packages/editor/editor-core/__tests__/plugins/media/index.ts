@@ -394,7 +394,7 @@ describe('Media plugin', () => {
     describe('when all media are non-images', () => {
       it('should insert as media group', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           { id: 'foo', fileMimeType: 'pdf' },
