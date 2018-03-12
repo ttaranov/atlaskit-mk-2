@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 63.1.0
+- [minor] Makes WithPluginState work inside EditorContext [f572201](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f572201)
+
 ## 63.0.1
 
 ## 63.0.0
