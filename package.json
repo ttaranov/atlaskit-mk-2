@@ -368,6 +368,7 @@
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
     "string-raw": "^1.0.1",
+    "strip-indent": "^2.0.0",
     "styled-components": "1.4.6 - 3",
     "stylelint": "^8.4.0",
     "stylelint-config-prettier": "^2.0.0",

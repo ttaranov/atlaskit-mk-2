@@ -15,6 +15,7 @@
   "dependencies": {
     "@atlaskit/theme": "^2.4.1",
     "react-syntax-highlighter": "^6.0.2",
+    "strip-indent": "^2.0.0",
     "styled-components": "1.4.6 - 3"
   },
   "devDependencies": {
