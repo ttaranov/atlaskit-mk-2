@@ -82,3 +82,7 @@ export {
   TextFormattingState,
   stateKey as textFormattingStateKey,
 } from './plugins/text-formatting';
+
+export {
+  default as pickerFacadeLoader,
+} from './plugins/media/picker-facade-loader';
