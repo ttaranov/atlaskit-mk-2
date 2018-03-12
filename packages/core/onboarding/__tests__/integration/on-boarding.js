@@ -7,13 +7,14 @@ import * as assert from 'assert';
 
 const urlOnBoarding = `${
   global.__baseUrl__
-}/examples.html?groupId=elements&packageId=onboarding&exampleId=spotlight-autoscroll`;
+}/examples.html?groupId=core&packageId=onboarding&exampleId=spotlight-autoscroll`;
 
 const OnBoardingDefault = '#examples p:nth-child(3) > button';
 const OnBoardingMenuTitle = 'span h4';
 
 BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
+  { skip: ['safari'] }, // Safari has an issue at the moment
   async client => {
     const onBoardingTest = await new Page(client);
     await onBoardingTest.goto(urlOnBoarding);
