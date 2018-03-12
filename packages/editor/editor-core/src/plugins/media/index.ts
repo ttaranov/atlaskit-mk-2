@@ -46,7 +46,7 @@ import {
   MediaStateManager,
 } from './types';
 import DefaultMediaStateManager from './default-state-manager';
-
+import pickerFacadeLoader from './picker-facade-loader';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -146,9 +146,13 @@ export class MediaPluginState {
 
     // TODO disable (not destroy!) pickers until mediaProvider is resolved
     let resolvedMediaProvider: MediaProvider;
+    let Picker: typeof PickerFacade;
 
     try {
-      resolvedMediaProvider = await mediaProvider;
+      [resolvedMediaProvider, Picker] = await Promise.all([
+        mediaProvider,
+        pickerFacadeLoader(),
+      ]);
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
@@ -198,7 +202,11 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
-        this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
+        this.initPickers(
+          resolvedMediaProvider.uploadParams,
+          uploadContext,
+          Picker,
+        );
       } else {
         this.destroyPickers();
       }
@@ -580,6 +588,7 @@ export class MediaPluginState {
   private initPickers(
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
+    Picker: typeof PickerFacade,
   ) {
     if (this.destroyed) {
       return;
@@ -598,36 +607,29 @@ export class MediaPluginState {
 
       if (contextConfig.userAuthProvider) {
         pickers.push(
-          (this.popupPicker = new PickerFacade('popup', pickerFacadeConfig, {
+          (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
             userAuthProvider: contextConfig.userAuthProvider,
           })),
         );
       } else {
         pickers.push(
-          (this.popupPicker = new PickerFacade('browser', pickerFacadeConfig)),
+          (this.popupPicker = new Picker('browser', pickerFacadeConfig)),
         );
       }
 
       pickers.push(
-        (this.binaryPicker = new PickerFacade('binary', pickerFacadeConfig)),
+        (this.binaryPicker = new Picker('binary', pickerFacadeConfig)),
       );
 
       pickers.push(
-        (this.clipboardPicker = new PickerFacade(
-          'clipboard',
-          pickerFacadeConfig,
-        )),
+        (this.clipboardPicker = new Picker('clipboard', pickerFacadeConfig)),
       );
 
       pickers.push(
-        (this.dropzonePicker = new PickerFacade(
-          'dropzone',
-          pickerFacadeConfig,
-          {
-            container: this.options.customDropzoneContainer,
-            headless: true,
-          },
-        )),
+        (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
+          container: this.options.customDropzoneContainer,
+          headless: true,
+        })),
       );
 
       pickers.forEach(picker => {
