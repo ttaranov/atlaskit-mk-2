@@ -12,9 +12,18 @@ export type CardActionIconButtonProps = {
 
 export class CardActionIconButton extends Component<CardActionIconButtonProps> {
   render(): JSX.Element {
-    const { icon, triggerColor, onClick = () => {} } = this.props;
+    const { icon, triggerColor, onClick } = this.props;
     return (
-      <CardActionButton onClick={onClick} style={{ color: triggerColor }}>
+      <CardActionButton
+        onClick={event => {
+          event.stopPropagation();
+          event.preventDefault();
+          if (onClick) {
+            onClick(event);
+          }
+        }}
+        style={{ color: triggerColor }}
+      >
         {icon}
       </CardActionButton>
     );
