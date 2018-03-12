@@ -12,11 +12,12 @@ export type Comment = string;
 export type Role = string;
 export type CanContact = boolean;
 
-const PAGES = {
+const Pages = {
   FEEDBACK: 'feedback',
   FOLLOWUP: 'followup',
   THANKYOU: 'thankyou',
 };
+type Page = $Values<typeof Pages>;
 
 type NPSResult = {
   rating: Rating,
@@ -73,11 +74,11 @@ export type Props = {
   /** Override the default strings that are displayed in the survey */
   strings: NPSStrings,
   /** Override the default feedback render component */
-  renderFeedback: any => Node,
+  renderFeedback: FeedbackProps => Node,
 };
 
 type State = {
-  page: string,
+  page: Page,
   rating: number | null,
   comment: string | null,
   role: string | null,
@@ -88,12 +89,13 @@ export class NPS extends React.Component<Props, State> {
   strings: NPSStrings;
 
   static defaultProps = {
-    isDismissable: false,
+    isDismissable: true,
     onDismiss: () => {},
-    canOptOut: () => {},
+    canOptOut: true,
     onOptOut: () => {},
     onRatingSelect: () => {},
-    onSubmit: () => {},
+    onCommentChange: () => {},
+    onFinish: () => {},
     roles: [
       'Management',
       'Software Engineering',
@@ -130,7 +132,7 @@ export class NPS extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: PAGES.FEEDBACK,
+      page: Pages.FEEDBACK,
       rating: null,
       comment: '',
       role: null,
@@ -198,12 +200,12 @@ export class NPS extends React.Component<Props, State> {
     return <ButtonGroup>{dismissButton}</ButtonGroup>;
   }
 
-  getHeaders(): { title: Node, description: Node } {
+  getTitleAndDescription(): { title: Node, description: Node } {
     const { page } = this.state;
     let title;
     let description;
     switch (page) {
-      case PAGES.FEEDBACK: {
+      case Pages.FEEDBACK: {
         title = this.strings.feedbackTitle;
         description = this.strings.feedbackDescription;
         break;
@@ -219,7 +221,7 @@ export class NPS extends React.Component<Props, State> {
   getPage(): Node {
     const { page } = this.state;
     switch (page) {
-      case PAGES.FEEDBACK: {
+      case Pages.FEEDBACK: {
         const { renderFeedback } = this.props;
         return renderFeedback({
           strings: this.strings,
@@ -272,7 +274,7 @@ export class NPS extends React.Component<Props, State> {
   };
 
   render() {
-    const { title, description } = this.getHeaders();
+    const { title, description } = this.getTitleAndDescription();
     return (
       <NPSWrapper>
         <Header>

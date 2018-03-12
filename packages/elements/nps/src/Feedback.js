@@ -42,7 +42,6 @@ export class Feedback extends React.Component<Props, State> {
   static defaultProps = {
     onRatingSelect: () => {},
     onCommentChange: () => {},
-    onSubmit: () => {},
   };
 
   getRatingsButtonGroup() {
@@ -66,7 +65,7 @@ export class Feedback extends React.Component<Props, State> {
   }
 
   getCommentBox() {
-    return this.state.rating !== null ? (
+    return (
       <CommentStyled>
         <FieldTextArea
           autoFocus
@@ -77,15 +76,15 @@ export class Feedback extends React.Component<Props, State> {
           onChange={this.onCommentChange}
         />
       </CommentStyled>
-    ) : null;
+    );
   }
 
   getSendButton() {
-    return this.state.rating !== null ? (
+    return (
       <Button appearance="primary" onClick={this.props.onSubmit}>
         {this.props.strings.send}
       </Button>
-    ) : null;
+    );
   }
 
   onRatingSelect = (rating: Rating) => {
@@ -104,23 +103,26 @@ export class Feedback extends React.Component<Props, State> {
   };
 
   render() {
+    const { strings } = this.props;
     return (
       <div>
         <Section>
           <ScoreContainer>
             <Scale>
-              <small>{this.props.strings.scaleLow}</small>
+              <small>{strings.scaleLow}</small>
             </Scale>
             {this.getRatingsButtonGroup()}
             <Scale>
-              <small>{this.props.strings.scaleHigh}</small>
+              <small>{strings.scaleHigh}</small>
             </Scale>
           </ScoreContainer>
         </Section>
-        <Section>
-          {this.getCommentBox()}
-          {this.getSendButton()}
-        </Section>
+        {this.state.rating !== null ? (
+          <Section>
+            {this.getCommentBox()}
+            {this.getSendButton()}
+          </Section>
+        ) : null}
       </div>
     );
   }
