@@ -19,8 +19,7 @@ type CodeBlockProps = {
 
 // TODO clone sindresorhus/strip-indent and write a test case for this and fix.
 function strip(code) {
-  if (code[0] === '\n') code = code.substring(1);
-  return stripIndent(code);
+  return stripIndent(code[0] === '\n' ? code.substring(1) : code);
 }
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
