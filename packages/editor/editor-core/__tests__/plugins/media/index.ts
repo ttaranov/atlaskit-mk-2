@@ -111,7 +111,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     await provider.uploadContext;
 
-    await waitForPluginStateChange(pluginState);
+    await waitForMediaPickerReady(pluginState);
 
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
