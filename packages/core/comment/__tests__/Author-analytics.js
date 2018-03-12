@@ -4,6 +4,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+import { name, version } from '../package.json';
 import '../src/components/Author';
 
 jest.mock('@atlaskit/analytics-next', () => ({
@@ -17,6 +18,8 @@ describe('@atlaskit comments', () => {
     it('should be wrapped with analytics context', () => {
       expect(withAnalyticsContext).toHaveBeenCalledWith({
         component: 'comment-author',
+        package: name,
+        version,
       });
     });
     it('should be wrapped with analytics events', () => {

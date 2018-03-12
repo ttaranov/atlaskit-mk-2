@@ -8,6 +8,7 @@ import {
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Field from './Field';
+import { name, version } from '../../package.json';
 
 type Props = {
   /** The time of the comment. */
@@ -42,7 +43,11 @@ export class Time extends Component<Props> {
 }
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-export default withAnalyticsContext({ component: 'comment-time' })(
+export default withAnalyticsContext({
+  component: 'comment-time',
+  package: name,
+  version,
+})(
   withAnalyticsEvents({
     onClick: createAndFireEventOnAtlaskit({ action: 'click' }),
     onFocus: createAndFireEventOnAtlaskit({ action: 'focus' }),

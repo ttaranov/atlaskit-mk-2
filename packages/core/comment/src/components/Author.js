@@ -8,6 +8,7 @@ import {
   type UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Field from './Field';
+import { name, version } from '../../package.json';
 
 type Props = {
   /** The name of the author. */
@@ -43,7 +44,11 @@ export class Author extends Component<Props, {}> {
 }
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-export default withAnalyticsContext({ component: 'comment-author' })(
+export default withAnalyticsContext({
+  component: 'comment-author',
+  package: name,
+  version,
+})(
   withAnalyticsEvents({
     onClick: createAndFireEventOnAtlaskit({ action: 'click' }),
     onFocus: createAndFireEventOnAtlaskit({ action: 'focus' }),
