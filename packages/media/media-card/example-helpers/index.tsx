@@ -5,6 +5,8 @@ import {
   CardActionType,
   MediaCollectionItem,
   MediaCollection,
+  // @ts-ignore: unused variable
+  Context,
 } from '@atlaskit/media-core';
 import { createStorybookContext } from '@atlaskit/media-test-helpers';
 import { SelectableCard } from './selectableCard';

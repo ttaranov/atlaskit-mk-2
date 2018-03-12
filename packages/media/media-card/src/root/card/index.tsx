@@ -123,21 +123,33 @@ export class Card extends Component<CardProps, {}> {
 
   render() {
     const {
-      context,
       isLazy,
       appearance,
       resizeMode,
-      identifier,
-      ...otherProps
+      dimensions,
+      actions,
+      selectable,
+      selected,
+      onClick,
+      onMouseEnter,
+      onSelectChange,
+      onLoadingChange,
     } = this.props;
     const card = (
       <MediaCard
-        {...otherProps}
-        resizeMode={resizeMode}
-        appearance={appearance}
-        mediaItemType={this.mediaItemType}
         provider={this.provider}
+        mediaItemType={this.mediaItemType}
         dataURIService={this.dataURIService}
+        appearance={appearance}
+        resizeMode={resizeMode}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onSelectChange={onSelectChange}
+        onLoadingChange={onLoadingChange}
       />
     );
 

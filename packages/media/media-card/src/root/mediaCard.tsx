@@ -104,26 +104,26 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     const onLoadingChangeCallback = () =>
       this.onLoadingChange(this.stateToCardProcessingStatus());
 
-    this.setPartialState({ status: 'loading' }, () =>
-      this.setPartialState(
+    this.setState({ status: 'loading' }, () =>
+      this.setState(
         {
           subscription: this.observable(props).subscribe({
             next: metadata => {
-              this.setPartialState(
+              this.setState(
                 { metadata, error: undefined, status: 'processing' },
                 onLoadingChangeCallback,
               );
             },
 
             complete: () => {
-              this.setPartialState(
+              this.setState(
                 { error: undefined, status: 'complete' },
                 onLoadingChangeCallback,
               );
             },
 
             error: error => {
-              this.setPartialState(
+              this.setState(
                 { error, status: 'error' },
                 onLoadingChangeCallback,
               );
@@ -133,15 +133,6 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         onLoadingChangeCallback,
       ),
     );
-  }
-
-  private setPartialState(
-    partialState: Partial<MediaCardState>,
-    callback?: () => any,
-  ) {
-    this.setState((previousState, props) => {
-      return { ...previousState, ...partialState };
-    }, callback);
   }
 
   private unsubscribe(): void {
@@ -158,23 +149,35 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   render() {
     const {
       mediaItemType,
-      provider,
       dataURIService,
-      onLoadingChange,
       resizeMode,
-      ...otherProps
+      onClick,
+      onMouseEnter,
+      onSelectChange,
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
     const { metadata, status } = this.state;
 
     return (
       <CardViewWithDataURI
-        {...otherProps}
-        resizeMode={resizeMode}
         dataURIService={dataURIService}
         status={status}
-        metadata={metadata}
         mediaItemType={mediaItemType}
+        metadata={metadata}
+        resizeMode={resizeMode}
         onRetry={this.onRetry}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onSelectChange={onSelectChange}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   }

@@ -79,11 +79,12 @@ export interface SharedCardProps {
   readonly selected?: boolean;
 }
 
+export interface CardOnClickCallback {
+  (result: CardEvent, analyticsEvent: UIAnalyticsEventInterface): void;
+}
+
 export interface CardEventProps {
-  readonly onClick?: (
-    result: CardEvent,
-    analyticsEvent: UIAnalyticsEventInterface,
-  ) => void;
+  readonly onClick?: CardOnClickCallback;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;
   readonly onLoadingChange?: OnLoadingChangeFunc;

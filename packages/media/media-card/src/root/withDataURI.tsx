@@ -37,7 +37,6 @@ export interface WithDataURI<TOwnProps>
       TOwnProps & WithDataURIServiceProps,
       WithDataURIState
     > {
-  // componentDidMount(): void;
   componentWillReceiveProps(
     nextProps: Readonly<TOwnProps & WithDataURIServiceProps>,
     nextContext: any,
@@ -50,9 +49,9 @@ export interface WithDataURI<TOwnProps>
 export function withDataURI<TOwnProps>(
   Component: React.ComponentClass<TOwnProps & WithDataURIProps>,
 ): React.ComponentClass<TOwnProps & WithDataURIServiceProps> {
-  // tslint:disable-line:variable-name
+  type WithDataURIImplProps = TOwnProps & WithDataURIServiceProps;
   class WithDataURIImpl extends React.Component<
-    TOwnProps & WithDataURIServiceProps,
+    WithDataURIImplProps,
     WithDataURIState
   > implements WithDataURI<TOwnProps> {
     state: WithDataURIState = {};

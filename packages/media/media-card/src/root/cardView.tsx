@@ -8,17 +8,15 @@ import {
   UrlPreview,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-import { version } from '../../package.json';
+
 import {
   SharedCardProps,
   CardStatus,
   CardEvent,
   OnSelectChangeFuncResult,
   CardDimensionValue,
-  CardViewAnalyticsContext,
-  AnalyticsLinkAttributes,
-  AnalyticsFileAttributes,
-} from '..';
+  CardOnClickCallback,
+} from '../index';
 import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
@@ -32,22 +30,19 @@ import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
 
+// Until we decide on how to distribute analytics-next TS types, this is the way.
+// Compared to other approaches, with this way we are not blocking analytics-next development,
+// and we export types consumer would need. Also we still have TDs we can used for internal development.
 import {
-  AnalyticsContext as AnalyticsContextClass,
   WithCreateAnalyticsEventProps,
-  UIAnalyticsEventInterface,
   WithAnalyticsEventsSignature as WithAnalyticsEventsWrapper,
 } from '../analytics-next-types';
 
-import {
-  withAnalyticsEvents as withAnalyticsEventsImpl,
-  AnalyticsContext as AnalyticsContextImpl,
-} from '@atlaskit/analytics-next';
+import { withAnalyticsEvents as withAnalyticsEventsImpl } from '@atlaskit/analytics-next';
 
 const withAnalyticsEvents = withAnalyticsEventsImpl as WithAnalyticsEventsWrapper;
-const AnalyticsContext = AnalyticsContextImpl as AnalyticsContextClass;
 
-import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
+import { WithCardViewAnalyticsContext } from './withCardViewAnalyticsContext';
 
 export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -56,19 +51,13 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly resizeMode?: ImageResizeMode;
 
   readonly onRetry?: () => void;
-  readonly onClick?: (
-    result: CardEvent,
-    analyticsEvent: UIAnalyticsEventInterface,
-  ) => void;
+  readonly onClick?: CardOnClickCallback;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
 
   // FileCardProps
   readonly dataURI?: string;
   readonly progress?: number;
-
-  // LinkCardProps
-  readonly details?: FileDetails | UrlPreview;
 }
 
 export interface CardViewState {
@@ -81,6 +70,10 @@ export type CardViewBaseProps = CardViewOwnProps &
     readonly mediaItemType: MediaItemType;
   };
 
+/**
+ * This is classic vanilla CardView class. To create an instance of class one would need to supply
+ * `createAnalyticsEvent` prop to satisfy it's Analytics Events needs.
+ */
 export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
@@ -101,10 +94,10 @@ export class CardViewBase extends React.Component<
     this.fireShowedAnalyticsEvent(this.props);
   }
 
-  private fireShowedAnalyticsEvent(prop: CardViewBaseProps) {
+  private fireShowedAnalyticsEvent({ status }: CardViewBaseProps) {
     if (
       !this.state.hasBeenShown &&
-      (prop.status === 'error' || prop.status === 'complete')
+      (status === 'error' || status === 'complete')
     ) {
       const loadTime = Date.now() - this.componentHasMountedAtTime;
       this.props
@@ -206,42 +199,60 @@ export class CardViewBase extends React.Component<
 
   private renderLink = () => {
     const {
-      mediaItemType,
       status,
       metadata,
-      onClick,
-      onMouseEnter,
-      onSelectChange,
+      resizeMode,
       onRetry,
-      ...otherProps
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
 
     return (
       <LinkCard
-        {...otherProps}
-        onRetry={onRetry}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
+        resizeMode={resizeMode}
+        onRetry={onRetry}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   };
 
   private renderFile = () => {
     const {
-      mediaItemType,
       status,
       metadata,
-      onClick,
-      onMouseEnter,
-      onSelectChange,
-      ...otherProps
+      dataURI,
+      progress,
+      onRetry,
+      resizeMode,
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
 
     return (
       <FileCard
-        {...otherProps}
         status={status}
         details={metadata as FileDetails}
+        dataURI={dataURI}
+        progress={progress}
+        onRetry={onRetry}
+        resizeMode={resizeMode}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   };
@@ -265,20 +276,17 @@ export class CardViewBase extends React.Component<
   };
 }
 
+/**
+ * With this CardView class constructor version `createAnalyticsEvent` props is supplied for you, so
+ * when creating instance of that class you don't need to worry about it.
+ */
 export const CardViewWithAnalyticsEvents = withAnalyticsEvents()(CardViewBase);
 
-const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
-  if (status === 'error') {
-    return 'fail';
-  } else if (status === 'loading' || status === 'processing') {
-    return 'loading_metadata';
-  } else {
-    return status;
-  }
-};
-
-const dummyHrefElement = document.createElement('a');
-
+/**
+ * This if final version of CardView that is exported to the consumer. This version wraps everything
+ * with Analytics Context information so that all the Analytics Events created anywhere inside CardView
+ * will have it automatically.
+ */
 export class CardView extends React.Component<CardViewOwnProps, CardViewState> {
   static defaultProps: Partial<CardViewOwnProps> = {
     appearance: 'auto',
@@ -293,98 +301,19 @@ export class CardView extends React.Component<CardViewOwnProps, CardViewState> {
     return isLinkDetails(metadata) ? 'link' : 'file';
   }
 
-  private getBaseAnalyticsContext(): CardViewAnalyticsContext {
-    const mediaItemType = this.mediaItemType;
-    const { status, appearance, actions } = this.props;
-    const loadStatus = mapStatusToAnalyticsLoadStatus(status);
-    const hasActionMenuItems = !!(actions && actions.length > 0);
-
-    return {
-      packageVersion: version,
-      packageName: '@atlaskit/media-card',
-      componentName: 'CardView',
-      actionSubject: 'MediaCard',
-      actionSubjectId: null,
-      type: mediaItemType,
-      loadStatus,
-      viewAttributes: {
-        viewPreview: false,
-        viewSize: appearance,
-        viewActionmenu: hasActionMenuItems,
-      },
-    };
-  }
-
-  private getLinkCardAnalyticsContext(
-    metadata: UrlPreview,
-  ): CardViewAnalyticsContext {
-    const analyticsContext = this.getBaseAnalyticsContext();
-
-    dummyHrefElement.href = metadata.url;
-    const hostname = dummyHrefElement.hostname;
-
-    analyticsContext.actionSubjectId = metadata.url;
-    analyticsContext.viewAttributes.viewPreview = !!(
-      metadata.resources &&
-      (metadata.resources.thumbnail || metadata.resources.image)
-    );
-
-    const linkAttributes: AnalyticsLinkAttributes = {
-      linkDomain: hostname,
-    };
-
-    return {
-      ...analyticsContext,
-      linkAttributes,
-    };
-  }
-
-  private getFileCardAnalyticsContext(metadata: FileDetails) {
-    const { dataURI } = this.props;
-    const analyticsContext = this.getBaseAnalyticsContext();
-
-    if (metadata.id) {
-      analyticsContext.actionSubjectId = metadata.id;
-    }
-    analyticsContext.viewAttributes.viewPreview = shouldDisplayImageThumbnail(
-      dataURI,
-      metadata.mediaType,
-    );
-    const fileAttributes: AnalyticsFileAttributes = {
-      fileMediatype: metadata.mediaType,
-      fileSize: metadata.size,
-      fileStatus: metadata.processingStatus,
-      fileMimetype: metadata.mimeType,
-    };
-    return {
-      ...analyticsContext,
-      fileAttributes,
-    };
-  }
-
-  private get analyticsContext(): CardViewAnalyticsContext {
-    if (this.props.metadata) {
-      const metadata = this.props.metadata;
-      if (isLinkDetails(metadata)) {
-        return this.getLinkCardAnalyticsContext(metadata);
-      } else {
-        return this.getFileCardAnalyticsContext(metadata);
-      }
-    } else {
-      return this.getBaseAnalyticsContext();
-    }
-  }
-
   render() {
     const mediaItemType = this.mediaItemType;
 
     return (
-      <AnalyticsContext data={this.analyticsContext}>
+      <WithCardViewAnalyticsContext
+        {...this.props}
+        mediaItemType={mediaItemType}
+      >
         <CardViewWithAnalyticsEvents
           {...this.props}
           mediaItemType={mediaItemType}
         />
-      </AnalyticsContext>
+      </WithCardViewAnalyticsContext>
     );
   }
 }
