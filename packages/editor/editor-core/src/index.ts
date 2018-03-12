@@ -73,3 +73,7 @@ export {
 } from '@atlaskit/mention';
 
 export * from './analytics'; // ?
+
+export {
+  default as pickerFacadeLoader,
+} from './plugins/media/picker-facade-loader';

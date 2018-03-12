@@ -38,6 +38,7 @@ import mediaPlugin from '../../../src/editor/plugins/media';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
 import rulePlugin from '../../../src/editor/plugins/rule';
 import tablePlugin from '../../../src/editor/plugins/table';
+import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -89,6 +90,12 @@ describe('Media plugin', () => {
     return mediaNodeWithPos!.getPos();
   };
 
+  const waitForMediaPickerReady = async (pluginState: MediaPluginState) =>
+    Promise.all([
+      new Promise(resolve => pluginState.subscribe(resolve)),
+      pickerFacadeLoader(),
+    ]);
+
   afterAll(() => {
     providerFactory.destroy();
   });
@@ -100,8 +107,13 @@ describe('Media plugin', () => {
       'collectionFromProvider' as any,
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
+    await waitForMediaPickerReady(pluginState);
     const provider = await mediaProvider;
     await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
 
     pluginState.binaryPicker!.upload = jest.fn();
 
@@ -120,7 +132,7 @@ describe('Media plugin', () => {
       const { editorView, pluginState } = editor(doc(p('')), {
         appearance: 'message',
       });
-      await mediaProvider;
+      await waitForMediaPickerReady(pluginState);
 
       pluginState.insertFiles([
         { id: 'foo', fileMimeType: 'image/jpeg' },
@@ -153,7 +165,7 @@ describe('Media plugin', () => {
     describe('when all of the files are images', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           {
@@ -221,7 +233,7 @@ describe('Media plugin', () => {
 
       it(`shouldn't insert multiple media in uploading triggers multiple times`, async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           {
@@ -268,7 +280,7 @@ describe('Media plugin', () => {
           const { editorView, pluginState } = editor(
             doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
           );
-          await mediaProvider;
+          await waitForMediaPickerReady(pluginState);
 
           pluginState.insertFiles([
             {
@@ -334,7 +346,7 @@ describe('Media plugin', () => {
     describe('when it is a mix of pdf and image', () => {
       it('inserts pdf as a media group and images as single', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           { id: 'lala', fileMimeType: 'pdf' },
@@ -382,7 +394,7 @@ describe('Media plugin', () => {
     describe('when all media are non-images', () => {
       it('should insert as media group', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
-        await mediaProvider;
+        await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
           { id: 'foo', fileMimeType: 'pdf' },
@@ -430,7 +442,7 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
 
-    await mediaProvider;
+    await waitForMediaPickerReady(pluginState);
 
     pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
 
@@ -512,6 +524,7 @@ describe('Media plugin', () => {
     const provider = await mediaProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
+    await waitForMediaPickerReady(pluginState);
 
     pluginState.insertFiles([
       { id: firstTemporaryFileId, status: 'uploading' },
@@ -668,9 +681,9 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
     const resolvedMediaProvider2 = await mediaProvider2;
@@ -685,14 +698,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1.length).toBe(4);
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     const pickersAfterMediaProvider2 = pluginState.pickers;
@@ -712,14 +725,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
     const spy = jest.spyOn((pluginState as any).popupPicker, 'hide');
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     expect(spy).toHaveBeenCalledTimes(1);
@@ -730,7 +743,7 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider1);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
@@ -739,7 +752,7 @@ describe('Media plugin', () => {
     });
 
     const mediaProvider2 = getFreshMediaProvider();
-    pluginState.setMediaProvider(mediaProvider2);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
@@ -759,6 +772,8 @@ describe('Media plugin', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
 
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
@@ -951,7 +966,7 @@ describe('Media plugin', () => {
 
   it('should focus the editor after files are added to the document', async () => {
     const { editorView, pluginState } = editor(doc(p('')));
-    await mediaProvider;
+    await waitForMediaPickerReady(pluginState);
 
     const spy = jest.spyOn(editorView, 'focus');
 

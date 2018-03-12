@@ -31,6 +31,7 @@ import tasksAndDecisionsPlugin from '../../../../src/editor/plugins/tasks-and-de
 import mediaPlugin from '../../../../src/editor/plugins/media';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
+import { pickerFacadeLoader } from '../../../../src';
 
 chai.use(chaiPlugin);
 
@@ -155,6 +156,7 @@ describe(name, () => {
             status: 'uploading',
           });
 
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
@@ -182,6 +184,7 @@ describe(name, () => {
             status: 'uploading',
           });
 
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
@@ -210,6 +213,7 @@ describe(name, () => {
             status: 'uploading',
           });
 
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
@@ -246,7 +250,7 @@ describe(name, () => {
             id: testTempFileId,
             status: 'uploading',
           });
-
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
@@ -278,6 +282,7 @@ describe(name, () => {
             status: 'uploading',
           });
 
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
@@ -331,6 +336,7 @@ describe(name, () => {
             status: 'uploading',
           });
 
+          await pickerFacadeLoader();
           const provider = await mediaProvider;
           await provider.uploadContext;
 
