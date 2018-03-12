@@ -1,4 +1,6 @@
 // @flow
+import { mount } from 'enzyme';
+import React from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -8,7 +10,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
-import '../FieldRange';
+import { FieldRange } from '../FieldRange';
 
 jest.mock('@atlaskit/analytics-next', () => ({
   withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),

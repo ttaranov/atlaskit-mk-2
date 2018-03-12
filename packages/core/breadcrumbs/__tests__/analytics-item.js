@@ -1,4 +1,7 @@
 // @flow
+import { mount } from 'enzyme';
+import React from 'react';
+import Button from '@atlaskit/button';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -8,7 +11,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../package.json';
-import '../src/components/BreadcrumbsItem';
+import { BreadcrumbsItem } from '../src/components/BreadcrumbsItem';
 
 jest.mock('@atlaskit/analytics-next', () => ({
   withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),
@@ -17,9 +20,11 @@ jest.mock('@atlaskit/analytics-next', () => ({
 }));
 
 describe('BreadcrumbsItem', () => {
-  it('should be wrapped with analytics context', () => {
-    expect(withAnalyticsContext).toHaveBeenCalledWith({
-      component: 'breadrumbs-item',
+  it('should override the existing analytics context of Button', () => {
+    const wrapper = mount(<BreadcrumbsItem />);
+
+    expect(wrapper.find(Button).prop('analyticsContext')).toEqual({
+      component: 'breadcrumbs-item',
       package: packageName,
       version: packageVersion,
     });

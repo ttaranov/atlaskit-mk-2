@@ -40,7 +40,7 @@ const defaultStep = 0.1;
 // We need to pass an event handler to "input" element since we are using the "controlled" mode
 const dummyOnChangeHandler = () => {};
 
-export class Slider extends Component<Props, State> {
+export class FieldRange extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {
@@ -131,6 +131,11 @@ export class Slider extends Component<Props, State> {
         onChange={dummyOnChangeHandler}
         disabled={disabled}
         valuePercent={valuePercent}
+        analyticsContext={{
+          component: 'field-range',
+          package: packageName,
+          version: packageVersion,
+        }}
       />
     );
   }
@@ -147,5 +152,5 @@ export default withAnalyticsContext({
     onChange: createAndFireEventOnAtlaskit({
       action: 'change',
     }),
-  })(Slider),
+  })(FieldRange),
 );

@@ -121,6 +121,11 @@ export class BreadcrumbsItem extends Component<Props, State> {
           this.button = el;
         }}
         component={component}
+        analyticsContext={{
+          component: 'breadcrumbs-item',
+          package: packageName,
+          version: packageVersion,
+        }}
       >
         {text}
       </Button>
@@ -150,14 +155,8 @@ export class BreadcrumbsItem extends Component<Props, State> {
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
-  component: 'breadrumbs-item',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onClick: createAndFireEventOnAtlaskit({
-      action: 'click',
-    }),
-  })(BreadcrumbsItem),
-);
+export default withAnalyticsEvents({
+  onClick: createAndFireEventOnAtlaskit({
+    action: 'click',
+  }),
+})(BreadcrumbsItem);

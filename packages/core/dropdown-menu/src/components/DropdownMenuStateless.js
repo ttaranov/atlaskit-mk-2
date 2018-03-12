@@ -429,6 +429,11 @@ export class DropdownMenuStateless extends Component<
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
           {...deprecatedProps}
+          analyticsContext={{
+            component: 'dropdown-menu',
+            package: packageName,
+            version: packageVersion,
+          }}
         >
           {isDeprecated ? (
             this.renderDeprecated()
@@ -456,14 +461,8 @@ export class DropdownMenuStateless extends Component<
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
-  component: 'dropdown-menu',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onOpenChange: createAndFireEventOnAtlaskit({
-      action: 'toggle',
-    }),
-  })(DropdownMenuStateless),
-);
+export default withAnalyticsEvents({
+  onOpenChange: createAndFireEventOnAtlaskit({
+    action: 'toggle',
+  }),
+})(DropdownMenuStateless);

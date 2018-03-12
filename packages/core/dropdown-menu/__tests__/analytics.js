@@ -1,4 +1,7 @@
 // @flow
+import { mount } from 'enzyme';
+import React from 'react';
+import Droplist from '@atlaskit/droplist';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -8,7 +11,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../package.json';
-import '../src/components/DropdownMenuStateless';
+import { DropdownMenuStateless } from '../src/components/DropdownMenuStateless';
 
 jest.mock('@atlaskit/analytics-next', () => ({
   withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),
@@ -17,8 +20,10 @@ jest.mock('@atlaskit/analytics-next', () => ({
 }));
 
 describe('DropdownMenuStateless', () => {
-  it('should be wrapped with analytics context', () => {
-    expect(withAnalyticsContext).toHaveBeenCalledWith({
+  it('should override the existing analytics context of Droplist', () => {
+    const wrapper = mount(<DropdownMenuStateless />);
+
+    expect(wrapper.find(Droplist).prop('analyticsContext')).toEqual({
       component: 'dropdown-menu',
       package: packageName,
       version: packageVersion,
