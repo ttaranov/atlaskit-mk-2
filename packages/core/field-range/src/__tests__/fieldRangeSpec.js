@@ -74,7 +74,7 @@ describe('FieldRange', () => {
     it('should call spy when value is changed', () => {
       simulateValueChange(fieldRange, 15);
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
-      expect(onChangeSpy).toHaveBeenCalledWith(15);
+      expect(onChangeSpy.mock.calls[0][0]).toBe(15);
     });
 
     it('should change input value when value is changed', () => {
