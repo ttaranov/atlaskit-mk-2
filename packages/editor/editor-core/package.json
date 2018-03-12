@@ -34,7 +34,6 @@
     "@atlaskit/layer": "^2.8.0",
     "@atlaskit/logo": "^6.2.0",
     "@atlaskit/media-card": "^24.1.1",
-    "@atlaskit/media-core": "^14.1.0",
     "@atlaskit/media-filmstrip": "^6.1.1",
     "@atlaskit/media-picker": "^1.1.2",
     "@atlaskit/mention": "^9.2.1",
@@ -82,6 +81,7 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
+    "@atlaskit/media-core": "^14.1.0",
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0"
   },
@@ -91,6 +91,7 @@
     "@atlaskit/editor-bitbucket-transformer": "^2.6.7",
     "@atlaskit/editor-test-helpers": "^2.0.1",
     "@atlaskit/layer-manager": "^2.8.0",
+    "@atlaskit/media-core": "^14.1.0",
     "@atlaskit/media-test-helpers": "^9.0.3",
     "@atlaskit/renderer": "^11.5.10",
     "@atlaskit/util-data-test": "^7.2.1",

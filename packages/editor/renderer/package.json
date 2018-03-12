@@ -22,7 +22,6 @@
     "@atlaskit/editor-json-transformer": "^2.5.9",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-card": "^24.1.2",
-    "@atlaskit/media-core": "^14.0.1",
     "@atlaskit/media-filmstrip": "^6.1.1",
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.10.2",
@@ -31,6 +30,7 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
+    "@atlaskit/media-core": "^14.0.1",
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
