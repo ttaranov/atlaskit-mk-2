@@ -6,7 +6,7 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 const urlSingleSelect = `${
   global.__baseUrl__
-}/examples.html?groupId=elements&packageId=single-select&exampleId=basic`;
+}/examples.html?groupId=core&packageId=single-select&exampleId=basic`;
 
 const singleSelectDefault =
   '#examples > div > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div';
