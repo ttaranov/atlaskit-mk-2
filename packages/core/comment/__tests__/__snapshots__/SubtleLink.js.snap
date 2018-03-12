@@ -10,6 +10,8 @@ exports[`@atlaskit comments SubtleLink should render a span and a button 1`] = `
     analyticsContext={
       Object {
         "component": "comment-action",
+        "package": "@atlaskit/comment",
+        "version": "2.7.2",
       }
     }
     appearance="subtle-link"

@@ -7,6 +7,7 @@ import {
   type UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
+import { name, version } from '../../package.json';
 
 type Props = {
   /** The content to render inside the action button. */
@@ -37,7 +38,7 @@ const SubtleLink = ({
       appearance="subtle-link"
       spacing="none"
       type="button"
-      analyticsContext={analyticsContext}
+      analyticsContext={{ ...analyticsContext, package: name, version }}
     >
       {children}
     </Button>
