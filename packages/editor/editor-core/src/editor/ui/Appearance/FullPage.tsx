@@ -133,10 +133,7 @@ export default class Editor extends React.Component<
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
-            <Avatars
-              editorView={editorView}
-              eventDispatcher={eventDispatcher}
-            />
+            <Avatars />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>

@@ -91,6 +91,7 @@
     "@atlaskit/editor-bitbucket-transformer": "^2.6.7",
     "@atlaskit/editor-test-helpers": "^2.0.1",
     "@atlaskit/layer-manager": "^2.8.0",
+    "@atlaskit/lozenge": "^3.6.0",
     "@atlaskit/media-test-helpers": "^9.0.3",
     "@atlaskit/renderer": "^11.5.11",
     "@atlaskit/util-data-test": "^7.2.1",

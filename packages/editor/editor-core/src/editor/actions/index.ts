@@ -9,14 +9,26 @@ import {
 import { toJSON } from '../../utils';
 import { processRawValue } from '../utils/document';
 import { Transformer } from '@atlaskit/editor-common';
+import { EventDispatcher } from '../event-dispatcher';
+
+export type ContextUpdateHandler = (
+  editorView: EditorView,
+  eventDispatcher: EventDispatcher,
+) => void;
 
 export default class EditorActions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
+  private eventDispatcher?: EventDispatcher;
+  private listeners: Array<ContextUpdateHandler> = [];
 
-  static from(view: EditorView, transformer?: Transformer<any>) {
+  static from(
+    view: EditorView,
+    eventDispatcher: EventDispatcher,
+    transformer?: Transformer<any>,
+  ) {
     const editorActions = new EditorActions();
-    editorActions._privateRegisterEditor(view, transformer);
+    editorActions._privateRegisterEditor(view, eventDispatcher, transformer);
     return editorActions;
   }
 
@@ -25,24 +37,42 @@ export default class EditorActions {
     return this.editorView;
   }
 
+  _privateGetEventDispathcer(): EventDispatcher | undefined {
+    return this.eventDispatcher;
+  }
+
   // This method needs to be public for EditorContext component.
   _privateRegisterEditor(
     editorView: EditorView,
+    eventDispatcher: EventDispatcher,
     contentTransformer?: Transformer<any>,
   ): void {
+    this.contentTransformer = contentTransformer;
+    this.eventDispatcher = eventDispatcher;
+
     if (!this.editorView && editorView) {
       this.editorView = editorView;
+      this.listeners.forEach(cb => cb(editorView, eventDispatcher));
     } else if (this.editorView !== editorView) {
       throw new Error(
         "Editor has already been registered! It's not allowed to re-register editor with the new Editor instance.",
       );
     }
-    this.contentTransformer = contentTransformer;
   }
 
   // This method needs to be public for EditorContext component.
   _privateUnregisterEditor(): void {
     this.editorView = undefined;
+    this.contentTransformer = undefined;
+    this.eventDispatcher = undefined;
+  }
+
+  _privateSubscribe(cb: ContextUpdateHandler): void {
+    this.listeners.push(cb);
+  }
+
+  _privateUnsubscribe(cb: ContextUpdateHandler): void {
+    this.listeners = this.listeners.filter(c => c !== cb);
   }
 
   focus(): boolean {

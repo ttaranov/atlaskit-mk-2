@@ -10,6 +10,7 @@ import { EditorView } from 'prosemirror-view';
 import EditorActions from '../../../../../src/editor/actions';
 import { sendKeyToPm } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../../src/analytics';
+import { EventDispatcher } from '../../../../../src/editor/event-dispatcher';
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
@@ -18,7 +19,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   beforeEach(() => {
     const editor = createEditor({ editorPlugins: [helpDialog] });
     editorActions = new EditorActions();
-    editorActions._privateRegisterEditor(editor.editorView);
+    editorActions._privateRegisterEditor(
+      editor.editorView,
+      new EventDispatcher(),
+    );
     editorView = editor.editorView;
   });
 
