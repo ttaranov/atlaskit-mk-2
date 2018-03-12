@@ -1,8 +1,11 @@
 import * as React from 'react';
-import Editor from '../../../fabric/editor-core/src/editor/index';
+import Editor from '../src/editor/index';
 import EditorContext from '../src/editor/ui/EditorContext';
 import WithEditorActions from '../src/editor/ui/WithEditorActions';
-import { MentionDescription, MentionProvider } from '../../mention/dist/es5';
+import {
+  MentionDescription,
+  MentionProvider,
+} from '../../../elements/mention/dist/es5';
 
 class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
