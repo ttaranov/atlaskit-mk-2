@@ -13,7 +13,7 @@ analyticsEventMap.forEach( pkg => {
   if (pkg.path.indexOf('testfixtures') >= 0) {
     return;
   }
-  const testPath = path.resolve(__dirname, '..', '..', 'packages', 'elements', pkg.testPath);
+  const testPath = path.resolve(__dirname, '..', '..', 'packages', 'core', pkg.testPath);
   const child = spawnSync('touch',
     [testPath],
     { stdio: 'pipe', encoding: 'utf-8' }

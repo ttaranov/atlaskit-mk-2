@@ -167,7 +167,7 @@ const analyticsEventMap = [
   },
   {
     path: 'field-range/src/FieldRange.js',
-    testPath: 'field-range/src/__test__/fieldRangeSpec.js',
+    testPath: 'field-range/src/__tests__/analytics.js',
     context: 'field-range',
     component: 'FieldRange',
     overwrite: 'Input',

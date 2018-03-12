@@ -12,7 +12,7 @@ const { analyticsPackages } = require('./analyticsEventMap');
 const packageStr = analyticsPackages.join(',');
 
 [{ name: '@atlaskit/analytics-next' }, { name: 'enzyme', flag: '--dev' }].forEach( pkg => {
-  let args = ['workspaces', 'exec', '--only-fs', `packages/elements/{${packageStr}}`, '--', 'bolt', 'add', pkg.name];
+  let args = ['workspaces', 'exec', '--only-fs', `packages/core/{${packageStr}}`, '--', 'bolt', 'add', pkg.name];
   if (pkg.flag) {
     args.push(pkg.flag);
   }
