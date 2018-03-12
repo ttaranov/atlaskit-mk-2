@@ -1,5 +1,4 @@
 // @flow
-
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import stripIndent from 'strip-indent';
