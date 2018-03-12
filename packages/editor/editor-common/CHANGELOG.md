@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 6.3.16
+- [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
+
 ## 6.3.15
 
 ## 6.3.14
