@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import stripIndent from 'strip-indent';
+import trimNewlines from 'trim-newlines';
 import { normalizeLanguage } from './supportedLanguages';
 import { type Theme, applyTheme } from './themes/themeBuilder';
 
@@ -15,11 +16,6 @@ type CodeBlockProps = {
   /** A custom theme to be applied, implements the Theme interface */
   theme?: Theme,
 };
-
-// TODO clone sindresorhus/strip-indent and write a test case for this and fix.
-function strip(code) {
-  return stripIndent(code[0] === '\n' ? code.substring(1) : code);
-}
 
 export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
@@ -64,7 +60,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
     return (
       <SyntaxHighlighter {...props} onCopy={this.handleCopy}>
-        {strip(codeText)}
+        {stripIndent(trimNewlines(codeText))}
       </SyntaxHighlighter>
     );
   }
