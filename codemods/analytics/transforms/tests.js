@@ -68,8 +68,8 @@ const jestMock = () => {
   return `
 
     jest.mock('@atlaskit/analytics-next', () => ({
-      withAnalyticsEvents: jest.fn(() => jest.fn()),
-      withAnalyticsContext: jest.fn(() => jest.fn()),
+      withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),
+      withAnalyticsContext: jest.fn(() => jest.fn(() => () => null)),
       createAndFireEvent: jest.fn(() => jest.fn(args => args)),
     }));
 
@@ -105,10 +105,10 @@ export default (fileInfo: any, api: any) => {
       import { name as packageName, version as packageVersion } from '${packageJsonPath}';
     `))
     .getOrAdd(source.code(jestMock()), context => {
-      return context.find(j.CallExpression, (node) => {
-        get(node, 'callee.object.name') === 'jest' &&
-        get(node, 'callee.property.name') === 'mock'
-      });
+      return context.find(j.ExpressionStatement, (node) => (
+        get(node, 'expression.callee.object.name') === 'jest' &&
+        get(node, 'expression.callee.property.name') === 'mock'
+      ));
     });
     // .addImport(source.code(`
     //   import { mount, shallow } from 'enzyme';
@@ -126,9 +126,9 @@ export default (fileInfo: any, api: any) => {
     const describeBlock = source.getOrAdd(source.code(`
       describe('${analyticsEventConfig.component}', () => {});
     `), context => {
-        return context.find(j.CallExpression, (node) =>
-          get(node, 'callee.name') === 'describe' &&
-          get(node, 'arguments[0].value') === `${analyticsEventConfig.component}`
+        return context.find(j.ExpressionStatement, (node) =>
+          get(node, 'expression.callee.name') === 'describe' &&
+          get(node, 'expression.arguments[0].value') === `${analyticsEventConfig.component}`
         );
     });
 

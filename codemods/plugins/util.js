@@ -97,7 +97,8 @@ export default j => {
     if (block.size() > 0) {
       block.getOrAdd(testNode, context => {
         return context.find(j.ExpressionStatement, (node) =>
-          node.expression.callee.name === 'it' && node.expression.arguments[0].value === testNode.expression.arguments[0].value
+          get(node, 'expression.callee.name') === 'it' &&
+          get(node, 'expression.arguments[0].value') === get(testNode, 'expression.arguments[0].value')
         );
       }, (node) => block.get().node.body.push(node));
     }
