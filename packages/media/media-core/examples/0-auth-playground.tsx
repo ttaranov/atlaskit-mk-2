@@ -11,7 +11,7 @@ import { Auth, AuthProvider, isClientBasedAuth } from '../src/auth';
 const collectionName = 'MediaServicesSample';
 const serviceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
 const playgroundBaseURL =
-  'https://media-playground.internal.app.dev.atlassian.io';
+  'https://api-private.dev.atlassian.com/media-playground/api';
 const access = {
   [`urn:filestore:collection:${collectionName}`]: ['read', 'insert'],
   'urn:filestore:file:*': ['read'],
@@ -26,7 +26,7 @@ const FormattedBlock = styled.pre`
 const requestToken = ({ access, withAsapIssuer, collectionName }) => {
   return axios
     .post(
-      '/token',
+      '/token/tenant',
       { access },
       {
         baseURL: playgroundBaseURL,
@@ -39,7 +39,7 @@ const requestToken = ({ access, withAsapIssuer, collectionName }) => {
     .then(response => response.data);
 };
 
-// We leverage the fact, that our internal /token API returns data in the same format as Auth
+// We leverage the fact, that our internal /toke/tenant API returns data in the same format as Auth
 const tokenDataToAuth = (tokenData: any): Auth => tokenData as Auth;
 
 const clientIdBaseAuthProvider = (collection): Promise<Auth> =>
