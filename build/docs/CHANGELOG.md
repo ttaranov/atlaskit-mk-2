@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.5.4
+- [patch] Make header not display when passed a string [cff04f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cff04f2)
+
 ## 2.5.3
 - [patch] Add converter for intersection in prettyPropType [0d6b5fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d6b5fa)
 
