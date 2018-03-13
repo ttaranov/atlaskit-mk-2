@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akFontFamily } from '@atlaskit/util-shared-styles';
 import { fadeIn } from './animations';
 
@@ -15,7 +11,7 @@ export * from './mixins';
 export * from './easing';
 export * from './animations';
 
-export const Root = styled.div`
+export const Root: ComponentClass<HTMLAttributes<{}>> = styled.div`
   box-sizing: border-box;
   font-family: ${akFontFamily};
 
@@ -31,7 +27,7 @@ export const cardShadow = `
 export const linkCardShadow = `
   box-shadow: 0 0 1px 0 rgba(23, 43, 77, 0.24);`;
 
-export const FadeinImage = styled.div`
+export const FadeinImage: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${fadeIn};
 `;
 

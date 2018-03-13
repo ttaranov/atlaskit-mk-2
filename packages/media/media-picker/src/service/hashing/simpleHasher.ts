@@ -1,4 +1,3 @@
-/* tslint:disable:no-var-requires */
 import * as Rusha from 'rusha';
 
 import { Hasher } from './hasher';

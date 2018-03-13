@@ -1,18 +1,13 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akColorN30,
   akColorN100,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 
-export const IconWrapper = styled.div`
+export const IconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN30};
   display: flex;
   align-items: center;
@@ -29,11 +24,11 @@ export const IconWrapper = styled.div`
   }
 `;
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   text-align: center;
 `;
 
-export const TextDescription = styled.div`
+export const TextDescription: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: 18px;
   color: ${akColorN500};
   opacity: 0.7;
@@ -41,13 +36,13 @@ export const TextDescription = styled.div`
   text-align: center;
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   text-align: center;
   font-size: 16px;
   color: ${akColorN100};
 `;
 
-export const ConnectWrapper = styled.div`
+export const ConnectWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

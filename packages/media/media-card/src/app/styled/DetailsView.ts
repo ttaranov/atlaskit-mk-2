@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
 import {
   akGridSizeUnitless,
   akColorN0,
@@ -21,7 +17,9 @@ export interface WrapperProps {
   contentMaxWidth: number;
 }
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & WrapperProps
+> = styled.div`
   display: flex;
   box-sizing: border-box;
   max-width: ${({ contentMaxWidth }: WrapperProps) => contentMaxWidth}px;
@@ -29,7 +27,7 @@ export const Wrapper = styled.div`
   padding-left: 16px;
 `;
 
-export const Widget = styled.div`
+export const Widget: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${center} height: 18px;
   max-width: calc(100% - (2 * ${marginSize}px));
   margin-right: ${marginSize}px;
@@ -45,14 +43,16 @@ export interface TitleProps {
   inverse?: boolean;
 }
 
-export const Title = styled.div`
+export const Title: ComponentClass<
+  HTMLAttributes<{}> & TitleProps
+> = styled.div`
   color: ${({ inverse }: TitleProps) => (inverse && akColorN0) || akColorN300};
 `;
 
-export const Text = styled.div`
+export const Text: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${ellipsis('none')};
 `;
 
-export const IconImage = styled.img`
+export const IconImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   ${size(iconSize)};
 `;

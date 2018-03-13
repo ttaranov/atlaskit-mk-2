@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, css } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled, { css } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akGridSizeUnitless,
   akFontFamily,
@@ -25,7 +21,7 @@ export const AVATAR_SIZES = {
 
 const borderWidth = 3;
 
-export const StackWrapper = styled.div`
+export const StackWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-flex;
   flex-direction: row-reverse;
 `;
@@ -34,7 +30,9 @@ export interface ItemWrapperProps {
   borderColor: string;
 }
 
-export const ItemWrapper = styled.div`
+export const ItemWrapper: ComponentClass<
+  HTMLAttributes<{}> & ItemWrapperProps
+> = styled.div`
   background-color: ${({ borderColor }: ItemWrapperProps) => borderColor};
   border-radius: 100%;
   display: flex;
@@ -51,7 +49,9 @@ export interface MoreAvatarProps {
   avatarSize: 'small' | 'medium';
 }
 
-export const MoreAvatar = styled.div`
+export const MoreAvatar: ComponentClass<
+  HTMLAttributes<{}> & MoreAvatarProps
+> = styled.div`
   align-items: center;
   background-color: ${akColorN20};
   border-radius: 100%;

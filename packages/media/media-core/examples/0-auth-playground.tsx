@@ -17,8 +17,9 @@ const access = {
   'urn:filestore:file:*': ['read'],
 };
 
-/* tslint:disable-next-line:variable-name */
-const FormattedBlock = styled.pre`
+const FormattedBlock: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.pre`
   white-space: pre-wrap;
   word-wrap: break-word;
 `;

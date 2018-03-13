@@ -105,10 +105,12 @@ export const absolute = (top = 0, left = 0) => `
   top: ${top}px;
   left: ${left}px;
 `;
-
+export interface WithAppearanceProps {
+  appearance?: CardAppearance;
+}
 export const withAppearance = (
   styleMap: { [key in CardAppearance]?: string },
-) => ({ appearance }: { appearance?: CardAppearance }) =>
+) => ({ appearance }: WithAppearanceProps) =>
   (appearance && styleMap[appearance]) || '';
 
 export default ellipsis;

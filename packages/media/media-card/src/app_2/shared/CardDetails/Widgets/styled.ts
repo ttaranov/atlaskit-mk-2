@@ -1,17 +1,12 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN300, akColorN800 } from '@atlaskit/util-shared-styles';
 import { ellipsis } from '../../../../styles';
 
 const widgetHeight = 28;
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
@@ -25,7 +20,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const WidgetWrapper = styled.div`
+export const WidgetWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -33,7 +28,7 @@ export const WidgetWrapper = styled.div`
   max-width: calc(100% - (2 * 8px));
 `;
 
-export const WidgetDetails = styled.div`
+export const WidgetDetails: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
 
@@ -43,13 +38,13 @@ export const WidgetDetails = styled.div`
   }
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN300};
   font-size: 12px;
   line-height: ${16 / 12};
 `;
 
-export const Text = styled.div`
+export const Text: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${ellipsis('none')};
   color: ${akColorN800};
   font-size: 12px;

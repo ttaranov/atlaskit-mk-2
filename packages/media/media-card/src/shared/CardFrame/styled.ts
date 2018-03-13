@@ -1,11 +1,6 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, css } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, AnchorHTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, AnchorHTMLAttributes } from 'react';
 
 import {
   akColorN20,
@@ -92,21 +87,25 @@ const wrapperStyles = css`
   transition: background 0.3s;
 `;
 
-export interface ContentProps {
-  maxWidth?: number;
-}
+// export interface ContentProps {
+//   maxWidth?: number;
+// }
 
-export const LinkWrapper = styled.a`
+export const LinkWrapper: ComponentClass<
+  AnchorHTMLAttributes<{}> & WrapperProps
+> = styled.a`
   ${wrapperStyles} &:hover {
     text-decoration: none;
   }
 `;
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & WrapperProps
+> = styled.div`
   ${wrapperStyles};
 `;
 
-export const Header = styled.div`
+export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 32px;
   display: flex;
   align-items: center;
@@ -117,7 +116,9 @@ export interface PlaceholderProps {
   isPlaceholder: boolean;
 }
 
-export const IconWrapper = styled.div`
+export const IconWrapper: ComponentClass<
+  HTMLAttributes<{}> & PlaceholderProps
+> = styled.div`
   ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
       if (isPlaceholder) {
         return `
@@ -129,7 +130,9 @@ export const IconWrapper = styled.div`
     }} margin-right: 4px;
 `;
 
-export const TextWrapper = styled.div`
+export const TextWrapper: ComponentClass<
+  HTMLAttributes<{}> & PlaceholderProps
+> = styled.div`
   ${({ isPlaceholder }: PlaceholderProps) => {
     if (isPlaceholder) {
       return `
@@ -151,7 +154,9 @@ export interface ContentProps {
   isInteractive: boolean;
 }
 
-export const Content = styled.div`
+export const Content: ComponentClass<
+  HTMLAttributes<{}> & ContentProps
+> = styled.div`
   position: relative;
 
   ${borderRadius} ${linkCardShadow} background-color: white;
