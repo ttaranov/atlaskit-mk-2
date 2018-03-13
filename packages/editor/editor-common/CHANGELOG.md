@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 7.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
 ## 6.3.17
 - [patch] make colwidth an array of numbers in schema [369b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/369b522)
 

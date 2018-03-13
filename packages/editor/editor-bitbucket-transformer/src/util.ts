@@ -107,13 +107,17 @@ export function transformHtml(
 
   if (!options.disableBitbucketLinkStripping) {
     // Convert all automatic links to plain text, because they will be re-created on render by the server
-    arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach(
-      (a: HTMLLinkElement) => {
+    arrayFrom(el.querySelectorAll('a'))
+      // Don't convert external links (i.e. not automatic links)
+      .filter(
+        (a: HTMLLinkElement) =>
+          a.getAttribute('data-is-external-link') !== 'true',
+      )
+      .forEach((a: HTMLLinkElement) => {
         const text = document.createTextNode(a.innerText);
         a.parentNode!.insertBefore(text, a);
         a.parentNode!.removeChild(a);
-      },
-    );
+      });
   }
 
   return el;

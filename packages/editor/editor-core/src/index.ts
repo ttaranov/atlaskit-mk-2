@@ -80,6 +80,15 @@ export {
 
 export * from './analytics'; // ?
 
+// plugin keys
+
+export { default as mentionPluginKey } from './plugins/mentions/plugin-key';
+export { MentionsState } from './plugins/mentions';
+export {
+  TextFormattingState,
+  stateKey as textFormattingStateKey,
+} from './plugins/text-formatting';
+
 export {
   default as pickerFacadeLoader,
 } from './plugins/media/picker-facade-loader';

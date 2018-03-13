@@ -1,5 +1,10 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.7.0
+- [minor] Use `data-` attribute to recognise auto-linked Bitbucket URLs instead of rel="nofollow" [d9df1c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9df1c4)
+
+## 2.6.8
+
 ## 2.6.7
 
 ## 2.6.6

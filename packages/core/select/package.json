@@ -6,7 +6,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/single-select",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/single-select",
   "files": [
     "dist"
   ],
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "^3.3.0",
     "react-value": "^0.2.0"
   }
