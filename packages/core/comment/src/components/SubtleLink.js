@@ -25,7 +25,7 @@ type Props = {
   analyticsContext: { [string]: any },
 };
 
-const SubtleLink = ({
+export const SubtleLink = ({
   onClick,
   onFocus,
   onMouseOver,
