@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
+import { withAnalyticsContext } from '@atlaskit/analytics-next';
 
 import { name, version } from '../../package.json';
 import CommentLayout from './Layout';
@@ -42,7 +42,7 @@ type Props = {
   errorIconLabel?: string,
 };
 
-export default class Comment extends Component<Props, {}> {
+export class Comment extends Component<Props, {}> {
   static defaultProps = {
     actions: [],
     restrictedTo: '',
@@ -99,15 +99,19 @@ export default class Comment extends Component<Props, {}> {
     );
 
     return (
-      <AnalyticsContext data={{ component: 'comment', package: name, version }}>
-        <CommentLayout
-          avatar={avatar}
-          content={layoutContent}
-          highlighted={highlighted}
-        >
-          {children}
-        </CommentLayout>
-      </AnalyticsContext>
+      <CommentLayout
+        avatar={avatar}
+        content={layoutContent}
+        highlighted={highlighted}
+      >
+        {children}
+      </CommentLayout>
     );
   }
 }
+
+export default withAnalyticsContext({
+  component: 'comment',
+  package: name,
+  version,
+})(Comment);

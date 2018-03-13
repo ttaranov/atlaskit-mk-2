@@ -8,7 +8,8 @@ import Button from '@atlaskit/button';
 
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
-import Comment, {
+import CommentWithAnalytics, {
+  Comment,
   CommentAction,
   CommentAuthor,
   CommentEdited,
@@ -351,6 +352,33 @@ describe('@atlaskit comments', () => {
           </Comment>,
         );
         expect(wrapper.find(CommentLayout).prop('children')).toBe(childComment);
+      });
+    });
+
+    describe('CommmentWithAnalytics', () => {
+      beforeEach(() => {
+        jest.spyOn(global.console, 'warn');
+        jest.spyOn(global.console, 'error');
+      });
+      afterEach(() => {
+        global.console.warn.mockRestore();
+        global.console.error.mockRestore();
+      });
+      it('should mount CommmentWithAnalyitcs without errors', () => {
+        const wrapper = mount(
+          <Comment
+            avatar={<Avatar src={''} label="Atlaskit avatar" size="medium" />}
+            author={<CommentAuthor>John Smith</CommentAuthor>}
+            type="author"
+            edited={<CommentEdited>Edited</CommentEdited>}
+            restrictedTo="Admins Only"
+            time={<CommentTime>30 August, 2016</CommentTime>}
+            content={<p>Hi!</p>}
+            actions={[<CommentAction>Like</CommentAction>]}
+          />,
+        );
+        expect(console.warn).not.toHaveBeenCalled();
+        expect(console.error).not.toHaveBeenCalled();
       });
     });
   });
