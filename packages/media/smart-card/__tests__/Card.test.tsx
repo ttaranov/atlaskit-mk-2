@@ -29,7 +29,7 @@ function createClientWithOKResponse(): Client {
   return client;
 }
 
-describe('SmartCard', () => {
+describe('Card', () => {
   it('should render the loading view when loading', () => {
     const client = createClientWithNoResponse();
     const wrapper = mount(
