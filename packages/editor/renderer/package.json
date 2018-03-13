@@ -26,7 +26,7 @@
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.10.4",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^1.0.0",
+    "prosemirror-model": "^1.1.0",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {

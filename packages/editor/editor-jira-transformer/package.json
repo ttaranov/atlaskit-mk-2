@@ -19,7 +19,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^7.0.0",
     "collapse-whitespace": "^1.1.6",
-    "prosemirror-model": "^1.0.0"
+    "prosemirror-model": "^1.1.0"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
