@@ -8,7 +8,6 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 
 import { CardAction } from '../../actions';
-import { CardActionIconButton } from './cardActionIconButton';
 import { CardActionButton } from './styled';
 
 export type CardActionsDropdownMenuProps = {
