@@ -11,12 +11,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   position: relative;
 `;
 
-// We need to set a explicit value to the Icon (svg) wrapper since otherwise will grow up too much
-export const MeatBallsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 23px;
-`;
-
-export const CardActionButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const CardActionButton = styled.div`
   ${center} ${borderRadius} ${size(26)} color: ${akColorN500};
 
   &:hover {

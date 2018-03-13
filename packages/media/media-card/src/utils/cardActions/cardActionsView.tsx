@@ -5,6 +5,7 @@ import { CardAction } from '../../actions';
 import { Wrapper } from './styled';
 import { CardActionIconButton } from './cardActionIconButton';
 import { CardActionsDropdownMenu } from './cardActionsDropdownMenu';
+import { PreventClickThrough } from '../preventClickThrough';
 
 export interface CardActionsViewProps {
   readonly actions: CardAction[];
@@ -32,14 +33,16 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     if (primaryAction) {
       const { icon, handler } = primaryAction;
       return (
-        <Wrapper>
-          <CardActionIconButton
-            icon={icon}
-            triggerColor={triggerColor}
-            onClick={() => handler()}
-          />
-          {this.renderOtherActionButtons(otherActions)}
-        </Wrapper>
+        <PreventClickThrough>
+          <Wrapper>
+            <CardActionIconButton
+              icon={icon}
+              triggerColor={triggerColor}
+              onClick={() => handler()}
+            />
+            {this.renderOtherActionButtons(otherActions)}
+          </Wrapper>
+        </PreventClickThrough>
       );
     } else {
       return <Wrapper>{this.renderOtherActionButtons(otherActions)}</Wrapper>;

@@ -8,8 +8,8 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 
 import { CardAction } from '../../actions';
-import { PreventClickThrough } from '../preventClickThrough';
 import { CardActionIconButton } from './cardActionIconButton';
+import { CardActionButton } from './styled';
 
 export type CardActionsDropdownMenuProps = {
   readonly actions: CardAction[];
@@ -26,25 +26,22 @@ export class CardActionsDropdownMenu extends Component<
 
     if (actions.length > 0) {
       return (
-        <PreventClickThrough>
-          <DropdownMenu
-            onOpenChange={onOpenChange}
-            trigger={
-              <CardActionIconButton
-                icon={<MoreIcon label="more" />}
-                triggerColor={triggerColor}
-              />
-            }
-          >
-            <DropdownItemGroup>
-              {actions.map(({ label, handler }, index) => (
-                <DropdownItem key={index} onClick={() => handler()}>
-                  {label}
-                </DropdownItem>
-              ))}
-            </DropdownItemGroup>
-          </DropdownMenu>
-        </PreventClickThrough>
+        <DropdownMenu
+          onOpenChange={onOpenChange}
+          trigger={
+            <CardActionButton style={{ color: triggerColor }}>
+              <MoreIcon label="more" />
+            </CardActionButton>
+          }
+        >
+          <DropdownItemGroup>
+            {actions.map(({ label, handler }, index) => (
+              <DropdownItem key={index} onClick={() => handler()}>
+                {label}
+              </DropdownItem>
+            ))}
+          </DropdownItemGroup>
+        </DropdownMenu>
       );
     } else {
       return null;

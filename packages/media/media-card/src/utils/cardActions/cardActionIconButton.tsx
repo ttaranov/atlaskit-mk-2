@@ -3,6 +3,8 @@ import { Component, ReactNode, MouseEvent } from 'react';
 
 import { CardActionButton } from './styled';
 
+const NOOP = () => {};
+
 export type CardActionIconButtonProps = {
   readonly icon: ReactNode;
 
@@ -12,18 +14,9 @@ export type CardActionIconButtonProps = {
 
 export class CardActionIconButton extends Component<CardActionIconButtonProps> {
   render(): JSX.Element {
-    const { icon, triggerColor, onClick } = this.props;
+    const { icon, triggerColor, onClick = NOOP } = this.props;
     return (
-      <CardActionButton
-        onClick={event => {
-          event.stopPropagation();
-          event.preventDefault();
-          if (onClick) {
-            onClick(event);
-          }
-        }}
-        style={{ color: triggerColor }}
-      >
+      <CardActionButton onClick={onClick} style={{ color: triggerColor }}>
         {icon}
       </CardActionButton>
     );
