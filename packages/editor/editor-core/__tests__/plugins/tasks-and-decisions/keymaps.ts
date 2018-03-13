@@ -9,7 +9,7 @@ import {
   taskItem,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {

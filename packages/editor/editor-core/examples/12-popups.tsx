@@ -189,7 +189,7 @@ class JiraSidebarEditor extends PureComponent<any, any> {
           <div style={{ display: 'table-cell', width: 480 }}>JIRA</div>
           <div style={{ display: 'table-cell' }}>
             <div
-              style={{ width: 300, 'overflow-y': 'scroll', height: 200 }}
+              style={{ width: 300, overflowY: 'scroll', height: 200 }}
               ref={this.handleScrollableRef}
             >
               <div style={{ height: 500 }}>

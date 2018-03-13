@@ -15,11 +15,11 @@ import {
 import {
   stateKey as blockTypePluginKey,
   BlockTypeState,
-} from '../../../src/plugins/block-type';
+} from '../../../src/plugins/block-type/pm-plugins/main';
 import { setTextSelection } from '../../../src/utils';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import panelPlugin from '../../../src/editor/plugins/panel';
-import listPlugin from '../../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import panelPlugin from '../../../src/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
 
 describe('block-type', () => {
   const editor = (doc: any) =>

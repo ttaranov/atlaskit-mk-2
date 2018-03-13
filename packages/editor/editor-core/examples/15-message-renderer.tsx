@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Editor from './../src/editor';
 import RefApp from '../example-helpers/RefApp';
-import getPropsPreset from '../src/editor/create-editor/get-props-preset';
+import getPropsPreset from '../src/create-editor/get-props-preset';
 
 export default class MessageRenderer extends React.PureComponent<any, any> {
   render() {

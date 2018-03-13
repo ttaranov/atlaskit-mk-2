@@ -6,7 +6,7 @@ import {
   mention,
   defaultSchema,
 } from '@atlaskit/editor-test-helpers';
-import { isMultiline } from '../../../src/editor/plugins/is-multiline-content';
+import { isMultiline } from '../../../src/plugins/is-multiline-content';
 
 describe('is-multiline-content plugin', () => {
   describe('#isMultiline', () => {

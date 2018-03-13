@@ -8,8 +8,8 @@ import {
   hardBreak,
   blockquote,
 } from '@atlaskit/editor-test-helpers';
-import rulePlugin from '../../../src/editor/plugins/rule';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import rulePlugin from '../../../src/plugins/rule';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('inputrules', () => {
   const editor = (doc: any, trackEvent = () => {}) =>

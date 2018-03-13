@@ -15,9 +15,9 @@ import {
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
-import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
-import emojiPlugin from '../../../src/editor/plugins/emoji';
-import listPlugin from '../../../src/editor/plugins/lists';
+import { emojiPluginKey } from '../../../src/plugins/emoji/pm-plugins/main';
+import emojiPlugin from '../../../src/plugins/emoji';
+import listPlugin from '../../../src/plugins/lists';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 

@@ -17,10 +17,10 @@ import {
 import {
   insertLinks,
   detectLinkRangesInSteps,
-} from '../../../src/plugins/media/media-links';
-import * as utils from '../../../src/plugins/utils';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+} from '../../../src/plugins/media/utils/media-links';
+import * as utils from '../../../src/utils/input-rules';
+import mediaPlugin from '../../../src/plugins/media';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
 import { AnalyticsHandler, analyticsService } from '../../../src';
 

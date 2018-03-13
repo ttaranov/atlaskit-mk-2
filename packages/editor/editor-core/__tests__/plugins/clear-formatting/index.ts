@@ -19,11 +19,11 @@ import {
   underline,
   textColor,
 } from '@atlaskit/editor-test-helpers';
-import { stateKey as clearFormattingPluginKey } from '../../../src/plugins/clear-formatting';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import textColorPlugin from '../../../src/editor/plugins/text-color';
-import listPlugin from '../../../src/editor/plugins/lists';
-import panelPlugin from '../../../src/editor/plugins/panel';
+import { stateKey as clearFormattingPluginKey } from '../../../src/plugins/text-formatting/pm-plugins/clear-formatting';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import textColorPlugin from '../../../src/plugins/text-color';
+import listPlugin from '../../../src/plugins/lists';
+import panelPlugin from '../../../src/plugins/panel';
 
 describe('clear-formatting', () => {
   const editor = (
