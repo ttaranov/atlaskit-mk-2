@@ -35,7 +35,7 @@ export class CardActionsDropdownMenu extends Component<
         >
           <DropdownItemGroup>
             {actions.map(({ label, handler }, index) => (
-              <DropdownItem key={index} onClick={() => handler()}>
+              <DropdownItem key={index} onClick={handler}>
                 {label}
               </DropdownItem>
             ))}

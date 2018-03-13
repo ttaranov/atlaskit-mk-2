@@ -14,7 +14,6 @@ import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { SelectableCard } from './selectableCard';
 import {
   Card,
-  CardActionType,
   Identifier,
   CardAppearance,
   CardEvent,
@@ -91,7 +90,6 @@ export const closeAction = {
 };
 export const deleteAction = {
   label: 'Delete',
-  type: CardActionType.delete,
   handler: () => {
     console.log('delete');
   },
@@ -140,9 +138,3 @@ export const wrongContext: Context = createStorybookContext({
   authType: 'client',
 });
 export const wrongCollection = 'adfasdf';
-// TODO: Add CollectionCardDelete into media-core. see: https://jira.atlassian.com/browse/FIL-4004
-// const deleteAction = CollectionCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
-//   console.log('delete')(item, items);
-// });
-
-// TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004

@@ -16,19 +16,14 @@ export interface CardActionsViewProps {
 
 export class CardActionsView extends Component<CardActionsViewProps> {
   render() {
-    const { actions } = this.props;
+    const { actions, triggerColor } = this.props;
 
     if (!actions.length) {
       return null;
     }
 
-    const primaryAction = actions.find(
-      ({ icon }) => icon !== undefined && icon !== null,
-    );
-
+    const primaryAction = actions.find(({ icon }) => !!icon);
     const otherActions = actions.filter(action => action !== primaryAction);
-
-    const { triggerColor } = this.props;
 
     if (primaryAction) {
       const { icon, handler } = primaryAction;

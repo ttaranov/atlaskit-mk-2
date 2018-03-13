@@ -24,7 +24,7 @@ export interface UploadingViewProps {
 
 export class UploadingView extends Component<UploadingViewProps, {}> {
   render() {
-    const { title, progress, dataURI, actions = [] } = this.props;
+    const { title, progress, dataURI, actions } = this.props;
 
     return (
       <Wrapper>
@@ -37,7 +37,9 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
               <ProgressBar progress={progress} />
             </ProgressWrapper>
             <CardActionsWrapper>
-              <CardActions actions={actions} triggerColor="white" />
+              {actions ? (
+                <CardActions actions={actions} triggerColor="white" />
+              ) : null}
             </CardActionsWrapper>
           </Body>
         </Overlay>

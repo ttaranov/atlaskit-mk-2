@@ -8,7 +8,6 @@ import {
   CardEvent,
   OnLoadingChangeState,
   CardAction,
-  CardActionType,
   CardEventHandler,
 } from '@atlaskit/media-card';
 import { Context, MediaItem, FileDetails } from '@atlaskit/media-core';
@@ -42,7 +41,6 @@ import { Wrapper, SpinnerWrapper } from './styled';
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
     label: menuEdit,
-    type: CardActionType.custom,
     handler,
   };
 };

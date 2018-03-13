@@ -1,10 +1,10 @@
 import * as React from 'react';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {
   Card,
   CardView,
   CardStatus,
   CardDimensions,
-  CardDelete,
   CardEventHandler,
   Identifier,
 } from '@atlaskit/media-card';
@@ -178,7 +178,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (onDelete) {
-      (otherProps as any).actions = [CardDelete(onDelete)];
+      (otherProps as any).actions = [createDeleteAction(onDelete)];
     }
 
     return (
@@ -221,7 +221,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const otherProps: any = {};
 
     if (onDelete) {
-      otherProps.actions = [CardDelete(onDelete)];
+      otherProps.actions = [createDeleteAction(onDelete)];
     }
 
     if (onClick) {
@@ -273,7 +273,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     const otherProps: any = {};
     if (onDelete) {
-      otherProps.actions = [CardDelete(onDelete)];
+      otherProps.actions = [createDeleteAction(onDelete)];
     }
 
     return (
@@ -352,3 +352,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return resizeMode || 'full-fit';
   }
 }
+
+export const createDeleteAction = (eventHander: CardEventHandler) => {
+  return {
+    label: 'Delete',
+    handler: eventHander,
+    icon: <CrossIcon size="small" label="delete" />,
+  };
+};

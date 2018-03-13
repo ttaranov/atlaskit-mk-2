@@ -115,7 +115,7 @@ export class CardGenericViewSmall extends Component<
         <ImgWrapper shadow={!loading && !error}>{left}</ImgWrapper>
         <InfoWrapper>{right}</InfoWrapper>
         <ActionsWrapper>
-          <CardActions actions={actions || []} />
+          {actions ? <CardActions actions={actions} /> : null}
         </ActionsWrapper>
       </SmallCard>
     );

@@ -91,11 +91,13 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         <BottomRow className={'bottom-row'}>
           <LeftColumn>{this.bottomLeftColumn()}</LeftColumn>
           <RightColumn>
-            <CardActions
-              actions={actions || []}
-              onToggle={this.onMenuToggle}
-              triggerColor={menuTriggerColor}
-            />
+            {actions ? (
+              <CardActions
+                actions={actions}
+                onToggle={this.onMenuToggle}
+                triggerColor={menuTriggerColor}
+              />
+            ) : null}
           </RightColumn>
         </BottomRow>
       </Overlay>

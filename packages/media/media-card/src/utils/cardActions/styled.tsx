@@ -9,6 +9,7 @@ import { Root, borderRadius, size, center } from '../../styles';
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   display: flex;
   position: relative;
+  line-height: 0;
 `;
 
 export const CardActionButton = styled.div`

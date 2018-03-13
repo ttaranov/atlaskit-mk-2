@@ -1,4 +1,3 @@
-// @flow
 import { Component, ReactNode } from 'react';
 import textContent from 'react-addons-text-content';
 

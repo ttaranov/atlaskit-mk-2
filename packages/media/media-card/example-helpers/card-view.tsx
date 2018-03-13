@@ -26,12 +26,7 @@ import {
   wideImage,
   genericUrlPreview,
 } from '@atlaskit/media-test-helpers';
-import {
-  CardView,
-  CardAppearance,
-  CardDimensions,
-  CardActionType,
-} from '../src';
+import { CardView, CardAppearance, CardDimensions } from '../src';
 import {
   actions,
   annotateCardAction,
@@ -198,7 +193,7 @@ export const createMenuActionCards = (
           appearance={appearance}
           status="complete"
           metadata={metadata}
-          actions={actions.filter(a => a.type === CardActionType.delete)}
+          actions={[deleteAction]}
         />
       ),
     },
@@ -664,7 +659,7 @@ export const generateStoriesForFilesWithAppearance = (
           appearance={appearance}
           metadata={genericFileDetails}
           progress={0.6}
-          actions={actions.filter(a => a.type === CardActionType.delete)}
+          actions={[deleteAction]}
         />
       ),
     },

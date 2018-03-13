@@ -91,13 +91,11 @@ export class FileCard extends Component<FileCardProps, {}> {
 
     return actions.map((action: CardAction) => {
       return {
-        label: action.label,
-        type: action.type,
+        ...action,
         handler: () => {
           // TODO remove || guarding and update action signature to be correct
           action.handler({ type: 'file', details: details || {} });
         },
-        icon: action.icon,
       };
     });
   }

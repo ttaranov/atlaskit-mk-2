@@ -2,15 +2,16 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 import {
   CardActionsView,
   CardActionIconButton,
 } from '../../src/utils/cardActions';
 import { CardActionButton } from '../../src/utils/cardActions/styled';
-import { CardAction, CardDelete } from '../../src/actions';
+import { CardAction } from '../../src/actions';
 
-describe('Menu', () => {
+describe('CardActions', () => {
   const openAction = {
     label: 'Open',
     handler: jest.fn(),
@@ -24,7 +25,11 @@ describe('Menu', () => {
     handler: jest.fn(),
     icon: <AnnotateIcon size="small" label="annotate" />,
   };
-  const deleteAction = CardDelete(jest.fn());
+  const deleteAction = {
+    label: 'Delete',
+    handler: jest.fn(),
+    icon: <CrossIcon size="small" label="delete" />,
+  };
 
   const menuActions = [openAction, closeAction, annotateAction, deleteAction];
 
