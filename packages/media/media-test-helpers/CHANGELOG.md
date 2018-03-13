@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 9.0.4
+- [patch] fix(media-test-helpers): configure fetch to send credentials and point calls to correct endpoint [8978f4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8978f4e)
+
 ## 9.0.3
 - [patch] Pointing base urls to media-playground behind Stargate [4979dc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4979dc5)
 

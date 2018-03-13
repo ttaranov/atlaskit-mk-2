@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.3
+
 ## 2.0.2
 - [patch] make colwidth an array of numbers in schema [369b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/369b522)
 

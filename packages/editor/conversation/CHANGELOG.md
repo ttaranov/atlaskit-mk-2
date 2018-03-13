@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 6.3.9
+
 ## 6.3.8
 
 ## 6.3.7

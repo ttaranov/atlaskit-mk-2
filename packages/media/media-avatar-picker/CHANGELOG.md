@@ -1,5 +1,7 @@
 # @atlaskit/media-avatar-picker
 
+## 5.4.2
+
 ## 5.4.1
 - [patch] Clean up avatar picker dependencies, update readme [a98a141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a98a141)
 

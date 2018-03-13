@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 1.1.3
+- [patch] adds displayName to analytics HOCs [f69ccad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f69ccad)
+
 ## 1.1.2
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
