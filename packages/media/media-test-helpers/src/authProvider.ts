@@ -34,9 +34,9 @@ export class StoryBookAuthProvider {
 
       let response: AxiosResponse;
       if (access) {
-        response = await axios.post('/token', { access }, config);
+        response = await axios.post('/token/tenant', { access }, config);
       } else {
-        response = await axios.get('/token', config);
+        response = await axios.get('/token/tenant', config);
       }
 
       const auth = response.data as Auth;
