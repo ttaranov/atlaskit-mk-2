@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 24.1.4
+
 ## 24.1.3
 - [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
 

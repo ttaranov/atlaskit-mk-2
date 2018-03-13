@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 64.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
 ## 63.1.1
 
 ## 63.1.0

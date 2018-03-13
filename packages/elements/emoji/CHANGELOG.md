@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 31.1.14
+
 ## 31.1.13
 - [patch] add guard condition for nullable function emojiProvider.getCurrentUser [b8780e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8780e4)
 

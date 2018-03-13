@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 12.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
 ## 11.5.12
 
 ## 11.5.11
