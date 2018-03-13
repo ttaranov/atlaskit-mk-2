@@ -11,8 +11,6 @@ import { MainContainer } from './styles';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
-// TODO [MSW-421]: re-enable code splitting once Stride support is merged
-// import { EditorView } from './editorView/editorView';
 import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;
