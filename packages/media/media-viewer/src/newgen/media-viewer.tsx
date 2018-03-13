@@ -1,9 +1,13 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Positioner, ErrorMessage } from './styled';
+import { FileViewer, FileDetails } from './file-viewer';
 
 export type Props = {
   onClose?: () => void;
+};
+
+const fileDetails: FileDetails = {
+  mediaType: 'unknown'
 };
 
 export class MediaViewer extends React.Component<Props, {}> {
@@ -12,9 +16,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     return (
       <div>
         <Blanket onBlanketClicked={onClose} isTinted />
-        <Positioner>
-          <ErrorMessage>The current file type is unsupported.</ErrorMessage>
-        </Positioner>
+        <FileViewer fileDetails={fileDetails}/>
       </div>
     );
   }

@@ -11,3 +11,4 @@ describe('<MediaViewer />', () => {
     expect(onClose).toHaveBeenCalled();
   });
 });
+
