@@ -33,6 +33,8 @@ export default class Editor extends React.Component<EditorProps, {}> {
     super(props);
     this.providerFactory = new ProviderFactory();
     this.deprecationWarnings(props);
+    this.onEditorCreated = this.onEditorCreated.bind(this);
+    this.onEditorDestroyed = this.onEditorDestroyed.bind(this);
     this.editorActions = (context || {}).editorActions || new EditorActions();
   }
 
@@ -49,11 +51,11 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.destroy();
   }
 
-  onEditorCreated = (instance: {
+  onEditorCreated(instance: {
     view: EditorView;
     eventDispatcher: EventDispatcher;
     transformer?: Transformer<string>;
-  }) => {
+  }) {
     this.registerEditorForActions(
       instance.view,
       instance.eventDispatcher,
@@ -64,7 +66,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
         instance.view.focus();
       }
     }
-  };
+  }
 
   private deprecationWarnings(props) {
     if (props.hasOwnProperty('allowHyperlinks')) {
@@ -81,12 +83,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  onEditorDestroyed = (instance: {
+  onEditorDestroyed(instance: {
     view: EditorView;
     transformer?: Transformer<string>;
-  }) => {
+  }) {
     this.unregisterEditorFromActions();
-  };
+  }
 
   private registerEditorForActions(
     editorView: EditorView,
