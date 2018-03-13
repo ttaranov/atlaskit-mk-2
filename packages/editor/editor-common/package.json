@@ -42,11 +42,11 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^14.0.1"
+    "@atlaskit/media-core": "^14.1.0"
   },
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^2.0.0",
-    "@atlaskit/media-core": "^14.0.1",
+    "@atlaskit/media-core": "^14.1.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
