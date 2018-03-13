@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 64.1.1
+- [patch] ED-3914: fix table errors when table looses focus [711e733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/711e733)
+
 ## 64.1.0
 - [minor] editor-mobile-bridge module introduced [4a338f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a338f6)
 
