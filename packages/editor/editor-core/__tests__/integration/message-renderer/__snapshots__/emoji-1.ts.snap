@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Emoji:should be able to see emoji if typed the name in full 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "id": "1f600",
+            "shortName": ":grinning:",
+            "text": "😀",
+          },
+          "type": "emoji",
+        },
+        Object {
+          "text": " ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Emoji:should close emoji picker on Escape 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "this :smile",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Emoji:should convert :) to emoji 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "level": 1,
+      },
+      "content": Array [
+        Object {
+          "text": "heading ",
+          "type": "text",
+        },
+        Object {
+          "attrs": Object {
+            "id": "1f642",
+            "shortName": ":slight_smile:",
+            "text": "🙂",
+          },
+          "type": "emoji",
+        },
+        Object {
+          "text": " ",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`user should not be able to see emoji inside inline code 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "this is code :)",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;

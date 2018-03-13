@@ -1,0 +1,75 @@
+import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { getDocFromElement } from '../_helpers';
+import {
+  messageEditor,
+  editable,
+  insertEmoji,
+  emojiItem,
+  typeahead,
+} from './_emoji-helpers';
+
+BrowserTestCase(
+  'Emoji:should be able to see emoji if typed the name in full',
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await insertEmoji(browser, 'grinning');
+    await browser.waitForSelector(emojiItem('grinning'));
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+
+    // validate big emojis show up
+    await browser.waitForSelector('.emoji-common-emoji-sprite');
+    const emojiSprite = await browser.getElementSize(
+      '.emoji-common-emoji-sprite',
+    );
+    expect(await emojiSprite[0].width).toBe(20);
+    expect(await emojiSprite[0].height).toBe(20);
+    expect(await emojiSprite[1].width).toBe(40);
+    expect(await emojiSprite[1].height).toBe(40);
+  },
+);
+
+BrowserTestCase('Emoji:should convert :) to emoji', async client => {
+  const browser = await new Page(client);
+  await browser.goto(messageEditor);
+  await browser.waitForSelector(editable);
+  await browser.type(editable, ['# heading', ' :) ']);
+  await browser.waitForSelector(emojiItem('slight_smile'));
+  const doc = await browser.$eval(editable, getDocFromElement);
+  expect(doc).toMatchDocSnapshot();
+});
+
+BrowserTestCase(
+  'user should not be able to see emoji inside inline code',
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, ['`this is code :)`']);
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
+
+BrowserTestCase(
+  'Emoji:should close emoji picker on Escape',
+  { skip: ['edge'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, ['this ', ':smile']);
+
+    await browser.waitForSelector(typeahead);
+    expect(await browser.isExisting(typeahead)).toBe(true);
+
+    await browser.type(editable, 'Escape');
+    expect(await browser.isExisting(typeahead)).toBe(false);
+
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
