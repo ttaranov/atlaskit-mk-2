@@ -37,6 +37,9 @@ import {
 import {
   checkIfColumnSelected,
   checkIfRowSelected,
+  checkIfNumberColumnEnabled,
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
 } from '../../../src/editor/plugins/table/utils';
 import tablesPlugin from '../../../src/editor/plugins/table';
 import codeBlockPlugin from '../../../src/editor/plugins/code-block';
@@ -1182,6 +1185,39 @@ describe('table plugin', () => {
       sendKeyToPm(editorView, 'ArrowUp');
 
       expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfNumberColumnEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfNumberColumnEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfHeaderColumnEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfHeaderColumnEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfHeaderRowEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
       editorView.destroy();
     });
   });
