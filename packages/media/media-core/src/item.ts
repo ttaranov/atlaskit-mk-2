@@ -7,6 +7,27 @@ export type MediaItem = FileItem | LinkItem;
 
 export type MediaItemDetails = FileDetails | LinkDetails | UrlPreview;
 
+export interface FileIdentifier {
+  readonly mediaItemType: 'file';
+  readonly id: string;
+  readonly occurrenceKey?: string;
+  readonly collectionName?: string; // files can exist outside of a collection
+}
+
+export interface LinkIdentifier {
+  readonly mediaItemType: 'link';
+  readonly id: string;
+  readonly occurrenceKey?: string;
+  readonly collectionName: string; // links always exist within a collection
+}
+
+export interface UrlPreviewIdentifier {
+  readonly mediaItemType: 'link';
+  readonly url: string;
+}
+
+export type Identifier = FileIdentifier | LinkIdentifier | UrlPreviewIdentifier;
+
 export interface FileItem {
   type: 'file';
   details: FileDetails;

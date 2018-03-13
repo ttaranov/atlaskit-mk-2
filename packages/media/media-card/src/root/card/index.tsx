@@ -4,10 +4,13 @@ import * as deepEqual from 'deep-equal';
 import {
   Context,
   MediaItemType,
-  MediaItemProvider,
-  UrlPreviewProvider,
   DataUriService,
   ImageResizeMode,
+  Identifier,
+  MediaItemProvider, 
+  UrlPreviewProvider,
+  UrlPreviewIdentifier
+
 } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardEventProps } from '../..';
@@ -15,27 +18,9 @@ import { MediaCard } from '../mediaCard';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 
-export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
 
-export interface FileIdentifier {
-  readonly mediaItemType: 'file';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName?: string; // files can exist outside of a collection
-}
-
-export interface LinkIdentifier {
-  readonly mediaItemType: 'link';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName: string; // links always exist within a collection
-}
-
-export interface UrlPreviewIdentifier {
-  readonly mediaItemType: 'link';
-  readonly url: string;
-}
+export { Identifier, UrlPreviewIdentifier, LinkIdentifier, FileIdentifier } from '@atlaskit/media-core';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
