@@ -54,9 +54,6 @@ const Content = styled.div`
   flex: 1 1 auto;
 `;
 
-const SANDBOX_DEPLOY_ENDPOINT =
-  'https://atlaskit-deploy-sandbox.glitch.me/deploy';
-
 const ComponentContainer = styled.div`
   height: 100%;
   position: relative;
@@ -217,6 +214,81 @@ function toExampleUrl(
   return url;
 }
 
+const ModalHeaderComp = ({
+  showKeyline,
+  packageId,
+  example,
+  examples,
+  groupId,
+  pkgJSON,
+  displayCode,
+  exampleId,
+  loaderUrl,
+  onCodeToggle,
+  close,
+}) => (
+  <ModalHeader showKeyline={showKeyline}>
+    <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
+    <ModalActions>
+      <ButtonGroup>
+        <CodeSandbox
+          example={example}
+          examples={examples}
+          groupId={groupId}
+          packageId={packageId}
+          pkgJSON={pkgJSON}
+          loadingButton={() => (
+            <Button type="submit" isDisabled iconBefore={<CodeSandboxLogo />}>
+              Loading...
+            </Button>
+          )}
+          deployButton={({ isDisabled }) => (
+            <Button
+              type="submit"
+              isDisabled={isDisabled}
+              iconBefore={<CodeSandboxLogo />}
+            >
+              Sandbox
+            </Button>
+          )}
+        />
+        <Button
+          iconBefore={<CodeIcon label="Toggle code snippet" />}
+          onClick={onCodeToggle}
+          isSelected={displayCode}
+          title={displayCode ? 'Hide Source' : 'Show Source'}
+        >
+          Source
+        </Button>
+        <Tooltip content="Fullscreen" position="bottom">
+          <Button
+            appearance="subtle"
+            component={Link}
+            iconBefore={<ScreenIcon label="Screen Icon" />}
+            to={toExampleUrl(groupId, packageId, exampleId)}
+          />
+        </Tooltip>
+        <Tooltip content="Isolated View" position="bottom">
+          <Button
+            appearance="subtle"
+            component={'a'}
+            iconBefore={<LinkIcon label="Link Icon" />}
+            href={loaderUrl}
+            target={'_blank'}
+          />
+        </Tooltip>
+        <Tooltip content="Close" position="bottom">
+          <Button
+            appearance="subtle"
+            iconBefore={<CloseIcon label="Close Modal" />}
+            onClick={close}
+          />
+        </Tooltip>
+      </ButtonGroup>
+    </ModalActions>
+  </ModalHeader>
+);
+
 export default class ExamplesModal extends Component<Props, State> {
   state = {
     displayCode: false,
@@ -308,70 +380,20 @@ export default class ExamplesModal extends Component<Props, State> {
       <Modal
         body={ModalBody}
         header={({ showKeyline }) => (
-          <ModalHeader showKeyline={showKeyline}>
-            <ModalTitle>{fs.titleize(packageId)} Examples</ModalTitle>
-            <ModalActions>
-              <ButtonGroup>
-                <CodeSandbox
-                  example={example}
-                  examples={examples}
-                  groupId={groupId}
-                  packageId={packageId}
-                  pkgJSON={pkgJSON}
-                  loadingButton={() => (
-                    <Button
-                      type="submit"
-                      isDisabled
-                      iconBefore={<CodeSandboxLogo />}
-                    >
-                      Loading...
-                    </Button>
-                  )}
-                  deployButton={({ isDisabled }) => (
-                    <Button
-                      type="submit"
-                      isDisabled={isDisabled}
-                      iconBefore={<CodeSandboxLogo />}
-                    >
-                      Sandbox
-                    </Button>
-                  )}
-                />
-                <Button
-                  iconBefore={<CodeIcon label="Toggle code snippet" />}
-                  onClick={this.onCodeToggle}
-                  isSelected={displayCode}
-                  title={displayCode ? 'Hide Source' : 'Show Source'}
-                >
-                  Source
-                </Button>
-                <Tooltip content="Fullscreen" position="bottom">
-                  <Button
-                    appearance="subtle"
-                    component={Link}
-                    iconBefore={<ScreenIcon label="Screen Icon" />}
-                    to={toExampleUrl(groupId, packageId, exampleId)}
-                  />
-                </Tooltip>
-                <Tooltip content="Isolated View" position="bottom">
-                  <Button
-                    appearance="subtle"
-                    component={'a'}
-                    iconBefore={<LinkIcon label="Link Icon" />}
-                    href={loaderUrl}
-                    target={'_blank'}
-                  />
-                </Tooltip>
-                <Tooltip content="Close" position="bottom">
-                  <Button
-                    appearance="subtle"
-                    iconBefore={<CloseIcon label="Close Modal" />}
-                    onClick={this.close}
-                  />
-                </Tooltip>
-              </ButtonGroup>
-            </ModalActions>
-          </ModalHeader>
+          <ModalHeaderComp
+            showKeyline={showKeyline}
+            packageId={packageId}
+            example={example}
+            examples={examples}
+            exampleId={exampleId}
+            groupId={groupId}
+            packageId={packageId}
+            pkgJSON={pkgJSON}
+            displayCode={displayCode}
+            loaderUrl={loaderUrl}
+            onCodeToggle={this.onCodeToggle}
+            close={this.close}
+          />
         )}
         height="100%"
         onClose={this.close}

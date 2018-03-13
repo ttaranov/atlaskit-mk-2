@@ -1,0 +1,28 @@
+{
+  "name": "@atlaskit/editor-markdown-transformer",
+  "version": "0.2.3",
+  "description": "Editor Markdown transformer",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "atlaskit:src": "src/index.ts",
+  "types": "dist/es5/index.d.ts",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "license": "MIT",
+  "dependencies": {
+    "@atlaskit/editor-common": "^6.3.11",
+    "markdown-it-table": "^2.0.2",
+    "prosemirror-markdown": "^1.0.1",
+    "prosemirror-model": "^1.0.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/editor-core": "^63.0.0",
+    "styled-components": "1.4.6 - 3"
+  }
+}

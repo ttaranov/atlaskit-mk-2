@@ -1,10 +1,7 @@
 //@flow
 /* eslint-disable no-console */
 const RUN_ONLY = process.env.RUN_ONLY || 'all';
-const INTEGRATION_TESTS =
-  typeof process.env.INTEGRATION_TESTS === 'undefined'
-    ? false
-    : process.env.INTEGRATION_TESTS;
+const INTEGRATION_TESTS = typeof process.env.INTEGRATION_TESTS !== 'undefined';
 
 function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {

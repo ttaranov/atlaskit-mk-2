@@ -88,7 +88,7 @@ export default function App() {
                         <Redirect
                           to={props.location.pathname.replace(
                             '/components',
-                            '/packages/elements',
+                            '/packages/core',
                           )}
                         />
                       )}

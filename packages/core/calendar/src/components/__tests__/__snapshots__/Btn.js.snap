@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`children 1`] = `
+.c0 {
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background: none;
+  border-radius: 3px;
+  border-width: 0;
+  box-sizing: border-box;
+  color: #505F79 !important;
+  cursor: default;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: inherit;
+  font-style: normal;
+  height: auto;
+  line-height: inherit;
+  margin: 0;
+  max-width: 100%;
+  outline: none !important;
+  padding: 0;
+  pointer-events: 'auto';
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition: background 0.1s ease-out,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38);
+  transition: background 0.1s ease-out,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38);
+  -webkit-transition-duration: 0.1s,0.15s;
+  transition-duration: 0.1s,0.15s;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: auto;
+}
+
+.c0::-moz-focus-inner {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+<Component>
+  <WithAnalyticsContext
+    analyticsContext={Object {}}
+    appearance="subtle"
+    spacing="none"
+    tabIndex={-1}
+  >
+    <AnalyticsContext
+      data={
+        Object {
+          "component": "button",
+          "package": "@atlaskit/button",
+          "version": "6.6.1",
+        }
+      }
+    >
+      <WithAnalyticsEvents
+        appearance="subtle"
+        spacing="none"
+        tabIndex={-1}
+      >
+        <WithDeprecationWarnings(Button)
+          appearance="subtle"
+          createAnalyticsEvent={[Function]}
+          onClick={[Function]}
+          spacing="none"
+          tabIndex={-1}
+        >
+          <Button
+            appearance="subtle"
+            createAnalyticsEvent={[Function]}
+            isDisabled={false}
+            isSelected={false}
+            onClick={[Function]}
+            shouldFitContainer={false}
+            spacing="none"
+            tabIndex={-1}
+            type="button"
+          >
+            <StyledButton
+              appearance="subtle"
+              disabled={false}
+              fit={false}
+              isActive={false}
+              isFocus={false}
+              isHover={false}
+              isSelected={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              spacing="none"
+              tabIndex={-1}
+              type="button"
+            >
+              <button
+                className="c0"
+                disabled={false}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                onMouseUp={[Function]}
+                spacing="none"
+                tabIndex={-1}
+                type="button"
+              >
+                <ButtonWrapper
+                  fit={false}
+                  onClick={[Function]}
+                >
+                  <span
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "alignSelf": "center",
+                        "display": "inline-flex",
+                        "flexWrap": "nowrap",
+                        "maxWidth": "100%",
+                      }
+                    }
+                  />
+                </ButtonWrapper>
+              </button>
+            </StyledButton>
+          </Button>
+        </WithDeprecationWarnings(Button)>
+      </WithAnalyticsEvents>
+    </AnalyticsContext>
+  </WithAnalyticsContext>
+</Component>
+`;
+
+exports[`children 2`] = `
+.c0 {
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  background: none;
+  border-radius: 3px;
+  border-width: 0;
+  box-sizing: border-box;
+  color: #505F79 !important;
+  cursor: default;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: inherit;
+  font-style: normal;
+  height: auto;
+  line-height: inherit;
+  margin: 0;
+  max-width: 100%;
+  outline: none !important;
+  padding: 0;
+  pointer-events: 'auto';
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition: background 0.1s ease-out,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38);
+  transition: background 0.1s ease-out,box-shadow 0.15s cubic-bezier(0.47,0.03,0.49,1.38);
+  -webkit-transition-duration: 0.1s,0.15s;
+  transition-duration: 0.1s,0.15s;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: auto;
+}
+
+.c0::-moz-focus-inner {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+<Component>
+  <WithAnalyticsContext
+    analyticsContext={Object {}}
+    appearance="subtle"
+    spacing="none"
+    tabIndex={-1}
+  >
+    <AnalyticsContext
+      data={
+        Object {
+          "component": "button",
+          "package": "@atlaskit/button",
+          "version": "6.6.1",
+        }
+      }
+    >
+      <WithAnalyticsEvents
+        appearance="subtle"
+        spacing="none"
+        tabIndex={-1}
+      >
+        <WithDeprecationWarnings(Button)
+          appearance="subtle"
+          createAnalyticsEvent={[Function]}
+          onClick={[Function]}
+          spacing="none"
+          tabIndex={-1}
+        >
+          <Button
+            appearance="subtle"
+            createAnalyticsEvent={[Function]}
+            isDisabled={false}
+            isSelected={false}
+            onClick={[Function]}
+            shouldFitContainer={false}
+            spacing="none"
+            tabIndex={-1}
+            type="button"
+          >
+            <StyledButton
+              appearance="subtle"
+              disabled={false}
+              fit={false}
+              isActive={false}
+              isFocus={false}
+              isHover={false}
+              isSelected={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onMouseDown={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              spacing="none"
+              tabIndex={-1}
+              type="button"
+            >
+              <button
+                className="c0"
+                disabled={false}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                onMouseUp={[Function]}
+                spacing="none"
+                tabIndex={-1}
+                type="button"
+              >
+                <ButtonWrapper
+                  fit={false}
+                  onClick={[Function]}
+                >
+                  <span
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "alignSelf": "center",
+                        "display": "inline-flex",
+                        "flexWrap": "nowrap",
+                        "maxWidth": "100%",
+                      }
+                    }
+                  >
+                    <ButtonContent
+                      followsIcon={false}
+                      spacing="none"
+                    >
+                      <span
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "alignSelf": "center",
+                            "flex": "1 1 auto",
+                            "margin": 0,
+                            "maxWidth": "100%",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap",
+                          }
+                        }
+                      >
+                        children
+                      </span>
+                    </ButtonContent>
+                  </span>
+                </ButtonWrapper>
+              </button>
+            </StyledButton>
+          </Button>
+        </WithDeprecationWarnings(Button)>
+      </WithAnalyticsEvents>
+    </AnalyticsContext>
+  </WithAnalyticsContext>
+</Component>
+`;

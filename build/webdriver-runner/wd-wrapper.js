@@ -1,10 +1,56 @@
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
 
+const TODO = () => {
+  throw new Error('To be implemented!');
+};
+
+export class JSHandle {
+  constructor(client, selector) {
+    this.browser = client;
+    this.selector = selector;
+  }
+
+  asElement() {
+    return new ElementHandle(this.browser, this.selector);
+  }
+
+  getProperty(propertyName) {
+    return this.browser.getAttribute(this.selector, propertyName);
+  }
+
+  dispose = TODO;
+  executionContext = TODO;
+  getProperties = TODO;
+  jsonValue = TODO;
+}
+
+export class ElementHandle extends JSHandle {
+  $ = TODO;
+  $$ = TODO;
+  $x = TODO;
+  asElement = TODO;
+  boundingBox = TODO;
+  click = TODO;
+  dispose = TODO;
+  executionContext = TODO;
+  focus = TODO;
+  getProperties = TODO;
+  hover = TODO;
+  jsonValue = TODO;
+  press = TODO;
+  screenshot = TODO;
+  tap = TODO;
+  toString = TODO;
+  type = TODO;
+  uploadFile = TODO;
+}
+
 export default class Page {
   constructor(client) {
     this.browser = client;
   }
+
   // Navigation
   goto(url) {
     return this.browser.url(url);
@@ -15,11 +61,19 @@ export default class Page {
   }
 
   $(selector) {
-    return this.browser.element(selector);
+    return new ElementHandle(this.browser, selector);
   }
 
   $$(selector) {
     return this.browser.elements(selector);
+  }
+
+  $eval(selector, pageFunction) {
+    return this.browser
+      .execute(
+        `return (${pageFunction}(document.querySelector("${selector}")))`,
+      )
+      .then(obj => obj.value);
   }
 
   type(selector, text) {
@@ -29,6 +83,7 @@ export default class Page {
   click(selector) {
     return this.browser.click(selector);
   }
+
   keys(value) {
     return this.browser.keys(value);
   }
@@ -41,15 +96,17 @@ export default class Page {
   url() {
     return this.browser.getUrl();
   }
+
   // Protocol
   goBack() {
     return this.browser.back();
   }
+
   close() {
     return this.browser.close();
   }
 
-  // To be replaced by those puppeeter fucntions
+  // To be replaced by those puppeeter functions
   //  keyboard.down('KeyA');
   //  keyboard.press('KeyA');
   //  keyboard.up('Shift');
@@ -60,15 +117,19 @@ export default class Page {
     // for puppteer
     return this.browser.getText(selector);
   }
+
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
   }
+
   isVisible(selector) {
     return this.browser.isVisible(selector);
   }
+
   log(type) {
     return this.browser.log(type);
   }
+
   paste(selector) {
     let keys;
     if (this.browser.desiredCapabilities.os === 'Windows') {
@@ -77,24 +138,20 @@ export default class Page {
       // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
       keys = ['Shift', 'Insert'];
     } else {
-      keys = ['Shift', 'Insert'];
+      keys = ['Command', 'v'];
     }
     return this.browser.setValue(selector, keys);
   }
-  getProsemirrorNode(selector) {
-    const json = this.browser.selectorExecute(selector, function(elements) {
-      const result = elements[0];
-      return result.pmViewDesc.node.toJSON();
-    });
-    return json;
-  }
+
   // Wait
   waitForSelector(selector) {
     return this.browser.waitForExist(selector);
   }
+
   waitFor(selector, ms, reverse) {
     return this.browser.waitForVisible(selector, ms, reverse);
   }
+
   // Window
   setViewPort(size, type) {
     return this.browser.setViewPort(size, type);

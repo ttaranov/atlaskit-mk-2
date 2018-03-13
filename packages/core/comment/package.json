@@ -1,0 +1,40 @@
+{
+  "name": "@atlaskit/comment",
+  "version": "2.7.3",
+  "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/patterns/comments",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Sean C"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/lozenge": "^3.6.1",
+    "@atlaskit/theme": "^2.4.1",
+    "styled-components": "1.4.6 - 3"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/avatar": "^9.2.1",
+    "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/editor-core": "^63.0.0",
+    "enzyme": "^3.3.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "comment",
+    "react",
+    "ui"
+  ]
+}
