@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/editor-core": "^64.1.2",
     "@atlaskit/editor-test-helpers": "^2.0.4",
     "@atlaskit/media-core": "^14.1.1",
     "@atlaskit/media-test-helpers": "^9.0.5",

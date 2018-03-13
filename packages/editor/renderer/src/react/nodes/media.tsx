@@ -1,53 +1,28 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { CardDimensions } from '@atlaskit/media-card';
-import { ImageResizeMode } from '@atlaskit/media-core';
-import {
-  EventHandlers,
-  ProviderFactory,
-  MediaType,
-} from '@atlaskit/editor-common';
-import { MediaItem, Appearance } from '../../ui';
+import { WithProviders } from '@atlaskit/editor-common';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { MediaCard, MediaCardProps } from '../../ui/MediaCard';
 
-export interface MediaProps {
-  id: string;
+export interface MediaProps extends MediaCardProps {
   providers?: ProviderFactory;
-  eventHandlers?: EventHandlers;
-  type: MediaType;
-  occurrenceKey?: string;
-  collection: string;
-  cardDimensions?: CardDimensions;
-  appearance?: Appearance;
-  resizeMode?: ImageResizeMode;
 }
 
 export default class Media extends PureComponent<MediaProps, {}> {
+  private renderNode = (providers: any) => {
+    const { mediaProvider } = providers;
+
+    return <MediaCard mediaProvider={mediaProvider} {...this.props} />;
+  };
+
   render() {
-    const {
-      eventHandlers,
-      id,
-      providers,
-      type,
-      occurrenceKey,
-      collection,
-      cardDimensions,
-      appearance,
-      resizeMode,
-    } = this.props;
+    const { providers } = this.props;
 
     return (
-      <MediaItem
-        id={id}
-        type={type}
-        occurrenceKey={occurrenceKey}
-        collection={collection}
-        providers={providers}
-        onClick={
-          eventHandlers && eventHandlers.media && eventHandlers.media.onClick
-        }
-        cardDimensions={cardDimensions}
-        appearance={appearance}
-        resizeMode={resizeMode}
+      <WithProviders
+        providers={['mediaProvider']}
+        providerFactory={providers!}
+        renderNode={this.renderNode}
       />
     );
   }
