@@ -19,7 +19,7 @@ export interface MainEditorViewStateProps {
 }
 
 export interface MainEditorViewState {
-  editorViewComponent?: ReactNode;
+  EditorViewComponent?: ReactNode;
 }
 
 export interface MainEditorViewOwnProps {
@@ -44,18 +44,30 @@ export class MainEditorView extends Component<
   MainEditorViewProps,
   MainEditorViewState
 > {
-  async componentDidMount() {
-    console.log('MainEditorView mounted');
-    const editorViewComponent = await editorViewLoader();
+  state: MainEditorViewState = {};
 
-    this.setState({
-      editorViewComponent,
-    });
+  componentDidMount() {
+    this.loadEditorView(this.props);
   }
+
+  componentWillReceiveProps(newProps: MainEditorViewProps) {
+    this.loadEditorView(newProps);
+  }
+
+  private loadEditorView = async (props: MainEditorViewProps) => {
+    const { editorData } = props;
+    if (!editorData) {
+      return;
+    }
+
+    const EditorViewComponent = await editorViewLoader();
+    this.setState({
+      EditorViewComponent,
+    });
+  };
 
   render(): JSX.Element | null {
     const { editorData } = this.props;
-    console.log('MainEditorView data', editorData);
     if (editorData) {
       return <MainContainer>{this.renderContent(editorData)}</MainContainer>;
     } else {
@@ -63,15 +75,16 @@ export class MainEditorView extends Component<
     }
   }
 
-  private renderContent(editorData: EditorData): JSX.Element {
-    const { editorViewComponent: EditorViewComponent } = this.state;
+  private renderContent = (editorData: EditorData): JSX.Element => {
+    const { EditorViewComponent } = this.state;
     const { imageUrl, originalFile, error } = editorData;
+    const EditorViewComponentUnsafe = EditorViewComponent as any;
 
     if (error) {
       return this.renderError(error);
     } else if (imageUrl && originalFile) {
       return (
-        <EditorViewComponent
+        <EditorViewComponentUnsafe
           imageUrl={imageUrl}
           onSave={this.onEditorSave(originalFile)}
           onCancel={this.onCancel}
@@ -81,7 +94,7 @@ export class MainEditorView extends Component<
     } else {
       return <SpinnerView onCancel={this.onCancel} />;
     }
-  }
+  };
 
   private renderError({ message, retryHandler }: EditorError): JSX.Element {
     return (
