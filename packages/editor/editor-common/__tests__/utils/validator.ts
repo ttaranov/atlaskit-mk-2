@@ -1274,7 +1274,7 @@ describe('Renderer - Validator', () => {
         const cellAttrs = {
           colspan: 2,
           rowspan: 3,
-          colwidth: 4,
+          colwidth: [4],
           background: '#dabdab',
         };
 
@@ -1296,13 +1296,14 @@ describe('Renderer - Validator', () => {
         ]);
 
         attributeTests.forEach((testAttr, testName) => {
-          it(`should reject ${nodeName} with ${testName}`, () => {
-            const { type } = getValidNode({
+          it(`should allow ${nodeName} with ${testName}`, () => {
+            const { type, attrs } = getValidNode({
               type: nodeName,
               attrs: testAttr,
               content: [],
             });
-            expect(type).to.equal('text');
+            expect(type).to.equal(nodeName);
+            expect(attrs).to.deep.equal(testAttr);
           });
         });
 

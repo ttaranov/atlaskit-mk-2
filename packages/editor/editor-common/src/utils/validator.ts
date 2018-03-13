@@ -3,6 +3,7 @@ import { defaultSchema } from '../schema';
 import { Mark as PMMark, Schema } from 'prosemirror-model';
 import { isSafeUrl } from '.';
 import { inlineNodes } from '../schema';
+import { CellAttributes } from '../schema/nodes/tableNodes';
 
 export interface ADDoc {
   version: 1;
@@ -645,37 +646,34 @@ export const getValidNode = (
         }
         break;
       }
-      case 'tableCell': {
-        if (content && attrs) {
-          if (attrs.colspan && attrs.rowspan) {
-            return {
-              type,
-              content,
-              attrs: {
-                colspan: attrs.colspan,
-                rowspan: attrs.rowspan,
-                background: attrs.background || undefined,
-                colwidth: attrs.colwidth || undefined,
-              },
-            };
-          }
-        }
-        break;
-      }
+      case 'tableCell':
       case 'tableHeader': {
-        if (content && attrs) {
-          if (attrs.colspan && attrs.rowspan) {
-            return {
-              type,
-              content,
-              attrs: {
-                colspan: attrs.colspan,
-                rowspan: attrs.rowspan,
-                background: attrs.background || undefined,
-                colwidth: attrs.colwidth || undefined,
-              },
-            };
+        if (content) {
+          const cellAttrs: CellAttributes = {};
+
+          if (attrs) {
+            if (attrs.colspan && attrs.colspan > 1) {
+              cellAttrs.colspan = attrs.colspan;
+            }
+
+            if (attrs.rowspan && attrs.rowspan > 1) {
+              cellAttrs.rowspan = attrs.rowspan;
+            }
+
+            if (attrs.background) {
+              cellAttrs.background = attrs.background;
+            }
+
+            if (attrs.colwidth && Array.isArray(attrs.colwidth)) {
+              cellAttrs.colwidth = attrs.colwidth;
+            }
           }
+
+          return {
+            type,
+            content,
+            attrs: attrs ? cellAttrs : undefined,
+          };
         }
         break;
       }
