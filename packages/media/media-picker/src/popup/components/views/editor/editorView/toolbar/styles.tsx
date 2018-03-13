@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import Button, { Props as ButtonProps } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import { akColorN700A } from '@atlaskit/util-shared-styles';
 
 const transparent = 'rgba(0, 0, 0, 0)';
@@ -40,8 +40,6 @@ export const RightButtons: ComponentClass<HTMLAttributes<{}>> = styled.div`
   justify-content: center;
 `;
 
-export const RightButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)`
+export const RightButton: ComponentClass<any> = styled(Button)`
   margin-left: 4px;
-` as any;
+`;

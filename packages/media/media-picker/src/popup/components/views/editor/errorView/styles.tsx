@@ -8,7 +8,7 @@ import {
   akColorN70,
   akColorN900,
 } from '@atlaskit/util-shared-styles';
-import Button, { Props as ButtonProps } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 
 export const ErrorPopup: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 290px;
@@ -42,11 +42,9 @@ export const ErrorHint: ComponentClass<HTMLAttributes<{}>> = styled.div`
   text-align: center;
 `;
 
-export const ErrorButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)`
+export const ErrorButton: ComponentClass<any> = styled(Button)`
   display: inline-flex;
   width: 84px;
   margin: 2px;
   justify-content: center;
-` as any;
+`;

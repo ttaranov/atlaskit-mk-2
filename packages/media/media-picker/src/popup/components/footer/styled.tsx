@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import Button, { Props as ButtonProps } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
@@ -11,12 +11,8 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 26px 15px 23px 18px;
 `;
 
-export const InsertButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)`
+export const InsertButton: ComponentClass<any> = styled(Button)`
   margin-right: 5px;
-` as any;
+`;
 
-export const CancelButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)``;
+export const CancelButton: ComponentClass<any> = styled(Button)``;

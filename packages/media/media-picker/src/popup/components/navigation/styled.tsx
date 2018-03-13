@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import Button, { Props as ButtonProps } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import {
   akColorN900,
   akColorN500,
@@ -29,9 +29,7 @@ export const Controls: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const ControlButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)`
+export const ControlButton: ComponentClass<any> = styled(Button)`
   margin-right: 5px;
 `;
 
@@ -74,9 +72,7 @@ export const BreadCrumbLink: ComponentClass<
     props.isLast ? '20px' : '14px'};
 `;
 
-export const AccountItemButton: ComponentClass<
-  HTMLAttributes<{}> & ButtonProps
-> = styled(Button)``;
+export const AccountItemButton: ComponentClass<any> = styled(Button)``;
 
 // Dropdown is NOT intentionally extended by this component to allow HACK style below to work
 export const AccountDropdownWrapper: ComponentClass<
