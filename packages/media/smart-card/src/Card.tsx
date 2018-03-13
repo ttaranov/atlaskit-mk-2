@@ -64,6 +64,7 @@ export class Card extends React.Component<CardProps, CardState> {
   get client(): Client {
     const client = this.context.smartCardClient || this.props.client;
     if (!client) {
+      // tslint:disable-next-line:no-console
       console.error(
         'No client provided. Provide a client like <SmartCard client={new SmartCardClient()} url=""/> or <SmartCardProvider client={new SmartCardClient()}><SmartCard url=""/></SmartCardProvider>.',
       );
