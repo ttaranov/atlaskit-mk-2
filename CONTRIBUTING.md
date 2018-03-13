@@ -303,4 +303,4 @@ create the changelog entry for each package being released.
 [codeofconduct]: ./CODE_OF_CONDUCT.md
 [issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
 [atlassianbug]: http://go/ak-bug
-[addingwebdriver]: https://product-fabric.atlassian.net/wiki/spaces/~ckrishnakumar/pages/437356103/Adding+webdriver+browser+tests+in+atlaskit
+[addingwebdriver]: https://extranet.atlassian.com/pages/viewpage.action?pageId=3791427559&moved=true
