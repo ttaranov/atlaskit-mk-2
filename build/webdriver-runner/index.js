@@ -6,7 +6,7 @@ const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
 
-const JEST_WAIT_FOR_INPUT_TIMEOUT = 10000;
+const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
