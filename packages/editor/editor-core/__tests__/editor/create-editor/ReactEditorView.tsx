@@ -6,6 +6,8 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   p,
+  mediaGroup,
+  media,
   defaultSchema,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
@@ -46,23 +48,34 @@ describe(name, () => {
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
     });
-  });
 
-  it("should set `key` on the ProseMirror div node to aid React's reconciler", () => {
-    const wrapper = mount(
-      <ReactEditorView
-        editorProps={{}}
-        providerFactory={ProviderFactory.create({})}
-        onEditorCreated={() => {}}
-        onEditorDestroyed={() => {}}
-      />,
-    );
+    it('should place the initial selection near the end if a valid selection at the end does not exist', () => {
+      // See ED-3507
+      const mediaNode = media({ id: '1', type: 'file', collection: '2' });
+      const document = doc(p('Start'), mediaGroup(mediaNode()))(defaultSchema);
+      const mediaProvider = storyMediaProviderFactory();
+      const wrapper = shallow(
+        <ReactEditorView
+          editorProps={{
+            defaultValue: toJSON(document),
+            media: { provider: mediaProvider },
+          }}
+          providerFactory={ProviderFactory.create({ mediaProvider })}
+          onEditorCreated={() => {}}
+          onEditorDestroyed={() => {}}
+        />,
+      );
+      const { editorState } = wrapper.instance() as ReactEditorView;
+      const selectionAtEndOfDocument = TextSelection.atEnd(editorState.doc);
+      expect(editorState.selection.eq(selectionAtEndOfDocument)).toBe(false);
+      expect(editorState.selection.toJSON()).toEqual({
+        head: 6,
+        anchor: 6,
+        type: 'text',
+      });
+    });
 
-    expect(wrapper.children().key()).toEqual('ProseMirror');
-  });
-
-  describe('when a transaction is dispatched', () => {
-    it('should not trigger a re-render', () => {
+    it("should set `key` on the ProseMirror div node to aid React's reconciler", () => {
       const wrapper = mount(
         <ReactEditorView
           editorProps={{}}
@@ -72,114 +85,57 @@ describe(name, () => {
         />,
       );
 
-      const editor = wrapper.instance() as ReactEditorView;
-      patchEditorViewForJSDOM(editor.view);
-
-      const renderSpy = jest.spyOn(editor, 'render');
-      editor.view!.dispatch(editor.view!.state.tr);
-
-      expect(renderSpy).toHaveBeenCalledTimes(0);
+      expect(wrapper.children().key()).toEqual('ProseMirror');
     });
-  });
 
-  it('should call onEditorCreated once the editor is initialised', () => {
-    let handleEditorCreated = jest.fn();
-    mount(
-      <ReactEditorView
-        editorProps={{ appearance: 'message' }}
-        providerFactory={new ProviderFactory()}
-        onEditorCreated={handleEditorCreated}
-        onEditorDestroyed={() => {}}
-      />,
-    );
+    describe('when a transaction is dispatched', () => {
+      it('should not trigger a re-render', () => {
+        const wrapper = mount(
+          <ReactEditorView
+            editorProps={{}}
+            providerFactory={ProviderFactory.create({})}
+            onEditorCreated={() => {}}
+            onEditorDestroyed={() => {}}
+          />,
+        );
 
-    expect(handleEditorCreated).toHaveBeenCalledTimes(1);
-    expect(handleEditorCreated).toHaveBeenCalledWith({
-      view: expect.any(EditorView),
-      eventDispatcher: expect.any(EventDispatcher),
-      config: {
-        contentComponents: expect.anything(),
-        marks: expect.anything(),
-        nodes: expect.anything(),
-        pmPlugins: expect.anything(),
-        primaryToolbarComponents: expect.anything(),
-        secondaryToolbarComponents: expect.anything(),
-      },
+        const editor = wrapper.instance() as ReactEditorView;
+        patchEditorViewForJSDOM(editor.view);
+
+        const renderSpy = jest.spyOn(editor, 'render');
+        editor.view!.dispatch(editor.view!.state.tr);
+
+        expect(renderSpy).toHaveBeenCalledTimes(0);
+      });
     });
-  });
 
-  it('should call onEditorDestroyed when the editor is unmounting', () => {
-    let handleEditorDestroyed = jest.fn();
-    const wrapper = mount(
-      <ReactEditorView
-        editorProps={{ appearance: 'message' }}
-        providerFactory={new ProviderFactory()}
-        onEditorCreated={() => {}}
-        onEditorDestroyed={handleEditorDestroyed}
-      />,
-    );
-    wrapper.unmount();
+    it('should call onEditorCreated once the editor is initialised', () => {
+      let handleEditorCreated = jest.fn();
+      mount(
+        <ReactEditorView
+          editorProps={{ appearance: 'message' }}
+          providerFactory={new ProviderFactory()}
+          onEditorCreated={handleEditorCreated}
+          onEditorDestroyed={() => {}}
+        />,
+      );
 
-    expect(handleEditorDestroyed).toHaveBeenCalledTimes(1);
-    expect(handleEditorDestroyed).toHaveBeenCalledWith({
-      view: expect.any(EditorView),
-      eventDispatcher: expect.any(EventDispatcher),
-      config: {
-        contentComponents: expect.anything(),
-        marks: expect.anything(),
-        nodes: expect.anything(),
-        pmPlugins: expect.anything(),
-        primaryToolbarComponents: expect.anything(),
-        secondaryToolbarComponents: expect.anything(),
-      },
+      expect(handleEditorCreated).toHaveBeenCalledTimes(1);
+      expect(handleEditorCreated).toHaveBeenCalledWith({
+        view: expect.any(EditorView),
+        eventDispatcher: expect.any(EventDispatcher),
+        config: {
+          contentComponents: expect.anything(),
+          marks: expect.anything(),
+          nodes: expect.anything(),
+          pmPlugins: expect.anything(),
+          primaryToolbarComponents: expect.anything(),
+          secondaryToolbarComponents: expect.anything(),
+        },
+      });
     });
-  });
 
-  it('should call destroy() on plugin states when it gets unmounted', () => {
-    let spies;
-    const mediaProvider = storyMediaProviderFactory({
-      includeUserAuthProvider: true,
-    });
-    const wrapper = mount(
-      <ReactEditorView
-        editorProps={{
-          mediaProvider: mediaProvider,
-        }}
-        providerFactory={ProviderFactory.create({ mediaProvider })}
-        onEditorCreated={({ view }) => {
-          spies = view.state.plugins
-            .map(plugin => plugin.getState(view.state))
-            .filter(state => !!state && !!state.destroy)
-            .map(state => jest.spyOn(state, 'destroy'));
-        }}
-        onEditorDestroyed={() => {}}
-      />,
-    );
-
-    expect(spies.length).toBeGreaterThan(0);
-    wrapper.unmount();
-
-    spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
-  });
-
-  it('should call destroy() on EventDispatcher when it gets unmounted', () => {
-    let eventDispatcherDestroySpy;
-    const wrapper = mount(
-      <ReactEditorView
-        editorProps={{}}
-        providerFactory={new ProviderFactory()}
-        onEditorCreated={({ eventDispatcher }) => {
-          eventDispatcherDestroySpy = jest.spyOn(eventDispatcher, 'destroy');
-        }}
-        onEditorDestroyed={() => {}}
-      />,
-    );
-    wrapper.unmount();
-    expect(eventDispatcherDestroySpy).toHaveBeenCalledTimes(1);
-  });
-
-  describe('when re-creating the editor view after a props change', () => {
-    it('should call onEditorDestroyed', () => {
+    it('should call onEditorDestroyed when the editor is unmounting', () => {
       let handleEditorDestroyed = jest.fn();
       const wrapper = mount(
         <ReactEditorView
@@ -189,9 +145,7 @@ describe(name, () => {
           onEditorDestroyed={handleEditorDestroyed}
         />,
       );
-
-      // Force a re-mount of the editor-view by changing the React tree
-      wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+      wrapper.unmount();
 
       expect(handleEditorDestroyed).toHaveBeenCalledTimes(1);
       expect(handleEditorDestroyed).toHaveBeenCalledWith({
@@ -208,79 +162,153 @@ describe(name, () => {
       });
     });
 
-    it('should call destroy on the old EditorView', () => {
-      let editorViewDestroy;
+    it('should call destroy() on plugin states when it gets unmounted', () => {
+      let spies;
+      const mediaProvider = storyMediaProviderFactory({
+        includeUserAuthProvider: true,
+      });
       const wrapper = mount(
         <ReactEditorView
-          editorProps={{}}
-          providerFactory={new ProviderFactory()}
+          editorProps={{
+            mediaProvider: mediaProvider,
+          }}
+          providerFactory={ProviderFactory.create({ mediaProvider })}
           onEditorCreated={({ view }) => {
-            // So we don't accidently re-set this when we create the new editor view
-            if (!editorViewDestroy) {
-              editorViewDestroy = jest.spyOn(view, 'destroy');
-            }
+            spies = view.state.plugins
+              .map(plugin => plugin.getState(view.state))
+              .filter(state => !!state && !!state.destroy)
+              .map(state => jest.spyOn(state, 'destroy'));
           }}
           onEditorDestroyed={() => {}}
         />,
       );
 
-      // Force a re-mount of the editor-view by changing the React tree
-      wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+      expect(spies.length).toBeGreaterThan(0);
+      wrapper.unmount();
 
-      expect(editorViewDestroy).toHaveBeenCalled();
+      spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
     });
 
-    it('should call onEditorCreated with the new EditorView', () => {
-      let oldEditorView;
-      let newEditorView;
-      const wrapper = mount(
-        <ReactEditorView
-          editorProps={{}}
-          providerFactory={new ProviderFactory()}
-          onEditorCreated={({ view }) => {
-            newEditorView = view;
-          }}
-          onEditorDestroyed={({ view }) => {
-            oldEditorView = view;
-          }}
-        />,
-      );
-
-      // Force a re-mount of the editor-view by changing the React tree
-      wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
-
-      expect(newEditorView).toBeInstanceOf(EditorView);
-      expect(oldEditorView).not.toBe(newEditorView);
-    });
-
-    it('should not re-create the event dispatcher', () => {
-      let oldEventDispatcher;
+    it('should call destroy() on EventDispatcher when it gets unmounted', () => {
       let eventDispatcherDestroySpy;
       const wrapper = mount(
         <ReactEditorView
           editorProps={{}}
           providerFactory={new ProviderFactory()}
           onEditorCreated={({ eventDispatcher }) => {
-            // So we don't accidently re-set this when we create the new editor view
-            if (!oldEventDispatcher) {
-              oldEventDispatcher = eventDispatcher;
-              eventDispatcherDestroySpy = jest.spyOn(
-                eventDispatcher,
-                'destroy',
-              );
-            }
+            eventDispatcherDestroySpy = jest.spyOn(eventDispatcher, 'destroy');
           }}
           onEditorDestroyed={() => {}}
         />,
       );
+      wrapper.unmount();
+      expect(eventDispatcherDestroySpy).toHaveBeenCalledTimes(1);
+    });
 
-      // Force a re-mount of the editor-view by changing the React tree
-      wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+    describe('when re-creating the editor view after a props change', () => {
+      it('should call onEditorDestroyed', () => {
+        let handleEditorDestroyed = jest.fn();
+        const wrapper = mount(
+          <ReactEditorView
+            editorProps={{ appearance: 'message' }}
+            providerFactory={new ProviderFactory()}
+            onEditorCreated={() => {}}
+            onEditorDestroyed={handleEditorDestroyed}
+          />,
+        );
 
-      expect(oldEventDispatcher).toBe(
-        (wrapper.instance() as ReactEditorView).eventDispatcher,
-      );
-      expect(eventDispatcherDestroySpy).not.toHaveBeenCalled();
+        // Force a re-mount of the editor-view by changing the React tree
+        wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+
+        expect(handleEditorDestroyed).toHaveBeenCalledTimes(1);
+        expect(handleEditorDestroyed).toHaveBeenCalledWith({
+          view: expect.any(EditorView),
+          eventDispatcher: expect.any(EventDispatcher),
+          config: {
+            contentComponents: expect.anything(),
+            marks: expect.anything(),
+            nodes: expect.anything(),
+            pmPlugins: expect.anything(),
+            primaryToolbarComponents: expect.anything(),
+            secondaryToolbarComponents: expect.anything(),
+          },
+        });
+      });
+
+      it('should call destroy on the old EditorView', () => {
+        let editorViewDestroy;
+        const wrapper = mount(
+          <ReactEditorView
+            editorProps={{}}
+            providerFactory={new ProviderFactory()}
+            onEditorCreated={({ view }) => {
+              // So we don't accidently re-set this when we create the new editor view
+              if (!editorViewDestroy) {
+                editorViewDestroy = jest.spyOn(view, 'destroy');
+              }
+            }}
+            onEditorDestroyed={() => {}}
+          />,
+        );
+
+        // Force a re-mount of the editor-view by changing the React tree
+        wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+
+        expect(editorViewDestroy).toHaveBeenCalled();
+      });
+
+      it('should call onEditorCreated with the new EditorView', () => {
+        let oldEditorView;
+        let newEditorView;
+        const wrapper = mount(
+          <ReactEditorView
+            editorProps={{}}
+            providerFactory={new ProviderFactory()}
+            onEditorCreated={({ view }) => {
+              newEditorView = view;
+            }}
+            onEditorDestroyed={({ view }) => {
+              oldEditorView = view;
+            }}
+          />,
+        );
+
+        // Force a re-mount of the editor-view by changing the React tree
+        wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+
+        expect(newEditorView).toBeInstanceOf(EditorView);
+        expect(oldEditorView).not.toBe(newEditorView);
+      });
+
+      it('should not re-create the event dispatcher', () => {
+        let oldEventDispatcher;
+        let eventDispatcherDestroySpy;
+        const wrapper = mount(
+          <ReactEditorView
+            editorProps={{}}
+            providerFactory={new ProviderFactory()}
+            onEditorCreated={({ eventDispatcher }) => {
+              // So we don't accidently re-set this when we create the new editor view
+              if (!oldEventDispatcher) {
+                oldEventDispatcher = eventDispatcher;
+                eventDispatcherDestroySpy = jest.spyOn(
+                  eventDispatcher,
+                  'destroy',
+                );
+              }
+            }}
+            onEditorDestroyed={() => {}}
+          />,
+        );
+
+        // Force a re-mount of the editor-view by changing the React tree
+        wrapper.setProps({ render: ({ editor }) => <div>{editor}</div> });
+
+        expect(oldEventDispatcher).toBe(
+          (wrapper.instance() as ReactEditorView).eventDispatcher,
+        );
+        expect(eventDispatcherDestroySpy).not.toHaveBeenCalled();
+      });
     });
   });
 });
