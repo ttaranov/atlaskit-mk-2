@@ -1,10 +1,13 @@
-import { MediaItemDetails } from '../../media-core/src/item';
-
 jest.mock('../src/utils/getElementDimension');
 jest.mock('../src/utils/isRetina');
 
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
+import {
+  MediaItemDetails,
+  DataUri,
+  DataUriService,
+} from '@atlaskit/media-core';
 import { waitUntil } from '@atlaskit/media-test-helpers';
 import {
   withDataURI,
@@ -14,10 +17,6 @@ import {
 } from '../src/root/withDataURI';
 import { getElementDimension } from '../src/utils/getElementDimension';
 import { isRetina } from '../src/utils/isRetina';
-import {
-  DataUri,
-  DataUriService,
-} from '../../media-core/src/services/dataUriService';
 
 interface DemoComponentProps {
   foo?: string;

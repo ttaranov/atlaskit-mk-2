@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { FileDetails, MediaItemType, UrlPreview } from '@atlaskit/media-core';
+
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { version, name } from '../../package.json';
 import { isLinkDetails } from '../utils/isLinkDetails';
@@ -12,11 +14,6 @@ import {
   AnalyticsFileAttributes,
   CardStatus,
 } from '../index';
-import {
-  FileDetails,
-  MediaItemType,
-  UrlPreview,
-} from '../../../media-core/src/item';
 
 const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
   if (status === 'error') {
