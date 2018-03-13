@@ -22,7 +22,6 @@
     "@atlaskit/editor-json-transformer": "^2.5.10",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-card": "^24.1.3",
-    "@atlaskit/media-core": "^14.0.1",
     "@atlaskit/media-filmstrip": "^6.1.1",
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.10.2",
@@ -31,10 +30,12 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
+    "@atlaskit/media-core": "^14.1.0",
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/media-core": "^14.1.0",
     "@atlaskit/editor-core": "^63.1.1",
     "@atlaskit/editor-test-helpers": "^2.0.2",
     "@atlaskit/media-test-helpers": "^9.0.3",

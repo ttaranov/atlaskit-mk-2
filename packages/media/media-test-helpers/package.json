@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@atlaskit/field-text": "^4.1.8",
-    "@atlaskit/media-core": "^14.0.1",
+    "@atlaskit/media-core": "^14.1.0",
     "@atlaskit/media-test-helpers": "^9.0.3"
   }
 }
