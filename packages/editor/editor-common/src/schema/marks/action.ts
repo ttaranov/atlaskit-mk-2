@@ -37,7 +37,9 @@ export const action: MarkSpec = {
       tag: 'span[data-mark-type="action"]',
       getAttrs: (dom: Element) => {
         const key = dom.getAttribute('data-action-mark-key');
-        const targetReceiver = dom.getAttribute('data-action-mark-target-receiver');
+        const targetReceiver = dom.getAttribute(
+          'data-action-mark-target-receiver',
+        );
         const targetKey = dom.getAttribute('data-action-mark-target-key');
         const title = dom.getAttribute('data-action-mark-title');
 
