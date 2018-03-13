@@ -43,7 +43,7 @@ exports[`children 1`] = `
 }
 
 <Component>
-  <WithAnalyticsContext
+  <WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))
     analyticsContext={Object {}}
     appearance="subtle"
     spacing="none"
@@ -54,11 +54,11 @@ exports[`children 1`] = `
         Object {
           "component": "button",
           "package": "@atlaskit/button",
-          "version": "6.6.1",
+          "version": "6.6.3",
         }
       }
     >
-      <WithAnalyticsEvents
+      <WithAnalyticsEvents(WithDeprecationWarnings(Button))
         appearance="subtle"
         spacing="none"
         tabIndex={-1}
@@ -134,9 +134,9 @@ exports[`children 1`] = `
             </StyledButton>
           </Button>
         </WithDeprecationWarnings(Button)>
-      </WithAnalyticsEvents>
+      </WithAnalyticsEvents(WithDeprecationWarnings(Button))>
     </AnalyticsContext>
-  </WithAnalyticsContext>
+  </WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))>
 </Component>
 `;
 
@@ -183,7 +183,7 @@ exports[`children 2`] = `
 }
 
 <Component>
-  <WithAnalyticsContext
+  <WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))
     analyticsContext={Object {}}
     appearance="subtle"
     spacing="none"
@@ -194,11 +194,11 @@ exports[`children 2`] = `
         Object {
           "component": "button",
           "package": "@atlaskit/button",
-          "version": "6.6.1",
+          "version": "6.6.3",
         }
       }
     >
-      <WithAnalyticsEvents
+      <WithAnalyticsEvents(WithDeprecationWarnings(Button))
         appearance="subtle"
         spacing="none"
         tabIndex={-1}
@@ -296,8 +296,8 @@ exports[`children 2`] = `
             </StyledButton>
           </Button>
         </WithDeprecationWarnings(Button)>
-      </WithAnalyticsEvents>
+      </WithAnalyticsEvents(WithDeprecationWarnings(Button))>
     </AnalyticsContext>
-  </WithAnalyticsContext>
+  </WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))>
 </Component>
 `;

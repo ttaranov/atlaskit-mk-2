@@ -94,7 +94,7 @@ exports[`render 1`] = `
       >
         <div>
           <Component>
-            <WithAnalyticsContext
+            <WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))
               analyticsContext={Object {}}
               appearance="subtle"
               spacing="none"
@@ -105,11 +105,11 @@ exports[`render 1`] = `
                   Object {
                     "component": "button",
                     "package": "@atlaskit/button",
-                    "version": "6.6.1",
+                    "version": "6.6.3",
                   }
                 }
               >
-                <WithAnalyticsEvents
+                <WithAnalyticsEvents(WithDeprecationWarnings(Button))
                   appearance="subtle"
                   spacing="none"
                   tabIndex={-1}
@@ -243,9 +243,9 @@ exports[`render 1`] = `
                       </StyledButton>
                     </Button>
                   </WithDeprecationWarnings(Button)>
-                </WithAnalyticsEvents>
+                </WithAnalyticsEvents(WithDeprecationWarnings(Button))>
               </AnalyticsContext>
-            </WithAnalyticsContext>
+            </WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))>
           </Component>
         </div>
         <styled.div>
@@ -257,7 +257,7 @@ exports[`render 1`] = `
         </styled.div>
         <div>
           <Component>
-            <WithAnalyticsContext
+            <WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))
               analyticsContext={Object {}}
               appearance="subtle"
               spacing="none"
@@ -268,11 +268,11 @@ exports[`render 1`] = `
                   Object {
                     "component": "button",
                     "package": "@atlaskit/button",
-                    "version": "6.6.1",
+                    "version": "6.6.3",
                   }
                 }
               >
-                <WithAnalyticsEvents
+                <WithAnalyticsEvents(WithDeprecationWarnings(Button))
                   appearance="subtle"
                   spacing="none"
                   tabIndex={-1}
@@ -406,9 +406,9 @@ exports[`render 1`] = `
                       </StyledButton>
                     </Button>
                   </WithDeprecationWarnings(Button)>
-                </WithAnalyticsEvents>
+                </WithAnalyticsEvents(WithDeprecationWarnings(Button))>
               </AnalyticsContext>
-            </WithAnalyticsContext>
+            </WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button)))>
           </Component>
         </div>
       </div>
