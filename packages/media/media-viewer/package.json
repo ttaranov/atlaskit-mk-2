@@ -20,9 +20,10 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/blanket": "^4.1.1",
+    "@atlaskit/spinner": "^4.2.1",
     "query-string": "^4.3.2",
-    "tslib": "^1.8.0",
-    "styled-components": "1.4.6 - 3"
+    "styled-components": "1.4.6 - 3",
+    "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^14.1.1",
@@ -33,6 +34,7 @@
     "@atlaskit/button": "^6.6.3",
     "@atlaskit/docs": "^2.4.3",
     "@atlaskit/media-core": "^14.1.1",
+    "@atlaskit/media-test-helpers": "^9.0.5",
     "@types/jquery": "^2.0.41",
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",
