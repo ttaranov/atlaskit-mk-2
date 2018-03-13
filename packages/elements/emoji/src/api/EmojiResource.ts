@@ -241,7 +241,7 @@ export class EmojiResource extends AbstractResource<
   SearchOptions
 > implements EmojiProvider {
   protected recordConfig?: ServiceConfig;
-  protected emojiRepository: EmojiRepository;
+  protected emojiRepository?: EmojiRepository;
   protected lastQuery: LastQuery;
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
@@ -264,10 +264,10 @@ export class EmojiResource extends AbstractResource<
       const emojis = loader.loadEmoji();
       emojis
         .then(emojiResponse => {
-          this.activeLoaders--;
           emojiResponses[index] = emojiResponse;
           this.initEmojiRepository(emojiResponses);
           this.initSiteEmojiResource(emojiResponse, provider).then(() => {
+            this.activeLoaders--;
             this.performRetries();
             this.refreshLastFilter();
           });
@@ -432,7 +432,7 @@ export class EmojiResource extends AbstractResource<
   findByShortName(
     shortName: string,
   ): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    if (this.isLoaded()) {
+    if (this.emojiRepository) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
       return this.emojiRepository.findByShortName(shortName);
     }
@@ -497,14 +497,14 @@ export class EmojiResource extends AbstractResource<
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    if (this.isLoaded()) {
+    if (this.emojiRepository) {
       return Promise.resolve(this.emojiRepository.getAsciiMap());
     }
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
   getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
-    if (this.isLoaded()) {
+    if (this.emojiRepository) {
       return Promise.resolve(this.emojiRepository.getFrequentlyUsed(options));
     }
 
@@ -544,7 +544,7 @@ export class EmojiResource extends AbstractResource<
   deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
     if (this.siteEmojiResource && emoji.id) {
       return this.siteEmojiResource.deleteEmoji(emoji).then(success => {
-        if (success) {
+        if (this.emojiRepository && success) {
           this.emojiRepository.delete(emoji);
         }
         return success;
@@ -573,7 +573,7 @@ export class EmojiResource extends AbstractResource<
   }
 
   calculateDynamicCategories(): Promise<string[]> {
-    if (this.isLoaded()) {
+    if (this.emojiRepository) {
       return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
     }
 
@@ -585,7 +585,9 @@ export class EmojiResource extends AbstractResource<
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {
-    this.emojiRepository.addUnknownEmoji(emoji);
+    if (this.emojiRepository) {
+      this.emojiRepository.addUnknownEmoji(emoji);
+    }
   }
 }
 
