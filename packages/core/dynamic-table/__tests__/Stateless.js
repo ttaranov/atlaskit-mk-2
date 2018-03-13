@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import { shallow } from 'enzyme';
-import { DynamicTable } from '../src/components/Stateless';
+import DynamicTableWithAnalytics, {
+  DynamicTable,
+} from '../src/components/Stateless';
 import TableHead from '../src/components/TableHead';
 import { head, rowsWithKeys, sortKey, secondSortKey } from './_data';
 
@@ -80,5 +82,21 @@ test('onSort should change to ASC if table is rankable and was sorted using on d
     key: sortKey,
     item,
     sortOrder: 'ASC',
+  });
+});
+describe('DynamicTableWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DynamicTableWithAnalytics {...props} sortOrder="DESC" />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

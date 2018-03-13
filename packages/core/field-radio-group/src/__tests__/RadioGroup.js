@@ -184,4 +184,19 @@ describe(name, () => {
     });
   });
 });
-describe('analytics - FieldRadioGroupStateless', () => {});
+describe('FieldRadioGroupStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<FieldRadioGroupStatelessWithAnalytics onRadioChange={() => {}} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

@@ -6,7 +6,7 @@ import { toClass } from 'recompose';
 
 import { itemThemeNamespace } from '../src';
 import { name } from '../package.json';
-import { Item } from '../src/components/Item';
+import ItemWithAnalytics, { Item } from '../src/components/Item';
 import { After, Before, Content, Description } from '../src/styled/ItemParts';
 
 describe(`${name} - Item`, () => {
@@ -481,5 +481,26 @@ describe(`${name} - Item`, () => {
     it('should export a named itemThemeNamespace string', () => {
       expect(itemThemeNamespace).toBe('@atlaskit-shared-theme/item');
     });
+  });
+});
+describe('ItemWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <ItemWithAnalytics
+        href="//atlassian.com"
+        linkComponent={MyLinkComponent}
+      />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

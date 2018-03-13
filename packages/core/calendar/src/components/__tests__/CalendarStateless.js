@@ -7,7 +7,9 @@ import { getMonthName } from '../../util';
 import { Announcer } from '../../styled/Calendar';
 import { MonthAndYear } from '../../styled/Heading';
 import DateComponent from '../../components/Date';
-import { CalendarStateless } from '../CalendarStateless';
+import CalendarStatelessWithAnalytics, {
+  CalendarStateless,
+} from '../CalendarStateless';
 
 const now = new Date();
 const nowMonth = now.getMonth() + 1;
@@ -77,4 +79,20 @@ test('specifying selected days should select the specified days', () => {
       selected: true,
     }),
   ).toHaveLength(1);
+});
+describe('CalendarStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<CalendarStatelessWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
 });

@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { opacity } from '../../src/styled';
-import { Blanket } from '../Blanket';
+import BlanketWithAnalytics, { Blanket } from '../Blanket';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -55,5 +55,21 @@ describe('ak-blanket', () => {
         expect(spy).toHaveBeenCalledTimes(1);
       });
     });
+  });
+});
+describe('BlanketWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<BlanketWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

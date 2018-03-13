@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { Row } from '../components/Row';
+import RowWithAnalytics, { Row } from '../components/Row';
 import TableTree, { Rows, Cell, Header, Headers } from '../index';
 import { Cell as StyledCell, Header as StyledHeader } from '../styled';
 
@@ -288,3 +288,19 @@ function createTreeHarness(treeWrapper) {
     collapseChevron,
   };
 }
+describe('RowWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<RowWithAnalytics itemId={title} hasChildren={false} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

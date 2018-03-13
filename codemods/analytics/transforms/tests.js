@@ -4,6 +4,7 @@
  */
 import path from 'path';
 import get from 'lodash.get';
+import cloneDeep from 'lodash.clonedeep';
 import UtilPlugin from '../../plugins/util';
 import { getMapEntryFromPath, getPackageJsonPath, getRelativeComponentPath } from '../util';
 
@@ -19,10 +20,9 @@ const contextOverwriteTest = (j, analyticsConfig) => {
       });
     });
   `);
-}
+};
 
 const contextTest = (j, analyticsConfig) => {
-  const componentName = `${analyticsConfig.component}WithAnalytics`;
   const context = analyticsConfig.context;
 
   const mountOrShallow = analyticsConfig.wrapTarget ? 'mount' : 'shallow';
@@ -41,9 +41,7 @@ const contextTest = (j, analyticsConfig) => {
 }
 
 const propTest = (j, analyticsConfig) => {
-  const componentName = `${analyticsConfig.component}WithAnalytics`;
-
-  const props = Object.keys(analyticsConfig.props).map( prop => {
+  const props = Object.keys(analyticsConfig.props).map(prop => {
     const action = analyticsConfig.props[prop];
     return `${prop}: { action: '${action}' },`;
   })
@@ -57,10 +55,38 @@ const propTest = (j, analyticsConfig) => {
       });
     });
   `);
-}
+};
+
+const mountTest = (j, root, analyticsConfig) => {
+  const existingComponentEls = root
+    .find(j.JSXOpeningElement, { name: { name: analyticsConfig.component } });
+
+  let attributes = [];
+  if (existingComponentEls.size() > 0) {
+    attributes = existingComponentEls.get().node.attributes.map(attr => cloneDeep(attr));
+  } else {
+    console.log(`Could not find existing example of ${analyticsConfig.component} being used`);
+  }
+  const componentEl = j.jsxElement(
+    j.jsxOpeningElement(
+      j.jsxIdentifier(`${analyticsConfig.component}WithAnalytics`),
+      attributes,
+      true
+    )
+  );
+
+  return j('').code(`
+
+    it('should mount without errors', () => {
+      mount(${j(componentEl).toSource({ quote: 'single', tabWidth: 2 })});
+      expect(console.warn).not.toHaveBeenCalled();
+      expect(console.error).not.toHaveBeenCalled();
+    });
+  `);
+};
 
 const removeExistingComponentImport = (j, root, componentName) => {
-  [j.ImportDefaultSpecifier, j.ImportSpecifier].find( importType => {
+  [j.ImportDefaultSpecifier, j.ImportSpecifier].find(importType => {
     const existingImport = root
       .find(importType, { local: { name: componentName } });
 
@@ -78,7 +104,7 @@ const removeExistingComponentImport = (j, root, componentName) => {
       throw new Error(`Found more than one default import for ${componentName}`);
     }
   });
-}
+};
 
 const jestMock = () => {
   return `
@@ -93,32 +119,12 @@ const jestMock = () => {
     }));
 
   `;
-}
+};
 
-export const parser = 'flow';
-
-/**
- * Inserts tests for the file if it exists in a testPath prop in the analytics event map
- */
-export default (fileInfo: any, api: any) => {
-  const j = api.jscodeshift;
-  j.use(UtilPlugin);
-  
-  const analyticsEventConfigs = getMapEntryFromPath(fileInfo.path, 'testPath');
-  if (!analyticsEventConfigs || analyticsEventConfigs.length === 0) {
-    return null;
-  }
-  if (analyticsEventConfigs.length > 1) {
-    throw new Error('Each entry must have a unique testPath file');
-  }
-  const source = j(fileInfo.source);
-
-  const firstNodeBefore = source.getFirstNode();
-  
-  const analyticsConfig = analyticsEventConfigs[0];
+const updateAnalyticsTestFile = (j, source, analyticsConfig, filePath) => {
 
   // Add imports
-  const absoluteFilePath = path.resolve(process.cwd(), fileInfo.path);
+  const absoluteFilePath = path.resolve(process.cwd(), filePath);
   const packageJsonPath = getPackageJsonPath(absoluteFilePath);
   source
     .addImport(source.code(`
@@ -145,7 +151,7 @@ export default (fileInfo: any, api: any) => {
         import ${analyticsConfig.overwrite} from '${analyticsConfig.overwritePackage}';
       `));
   }
-  
+
   const componentName = analyticsConfig.component;
   const componentPath = getRelativeComponentPath(analyticsConfig);
   // No longer needed since we're now running analytics tests in their own file
@@ -158,18 +164,84 @@ export default (fileInfo: any, api: any) => {
 
   `));
   // Add describe block + tests
+  const describeBlockName = analyticsConfig.component;
   const describeBlock = source.getOrAdd(source.code(`
-    describe('${analyticsConfig.component}', () => {});
+    describe('${describeBlockName}', () => {});
   `), context => {
       return context.find(j.ExpressionStatement, (node) =>
         get(node, 'expression.callee.name') === 'describe' &&
-        get(node, 'expression.arguments[0].value') === `${analyticsConfig.component}`
+        get(node, 'expression.arguments[0].value') === `${describeBlockName}`
       );
-  });
+    });
 
   describeBlock
-    .addTest(contextTest(j, analyticsConfig))
-    .addTest(propTest(j, analyticsConfig));
+    .addToTestSuite(contextTest(j, analyticsConfig))
+    .addToTestSuite(propTest(j, analyticsConfig));
+};
+
+const updateComponentTestFile = (j, source, analyticsConfig, filePath) => {
+  const componentPath = getRelativeComponentPath(analyticsConfig);
+  source
+    .addImport(source.code(`import ${analyticsConfig.component}WithAnalytics from '${componentPath}';`));
+
+  // Remove an older iteration of the describe block that had a different name
+  source
+    .find(j.ExpressionStatement, (node) =>
+      get(node, 'expression.callee.name') === 'describe' &&
+      get(node, 'expression.arguments[0].value') === `analytics - ${analyticsConfig.component}`
+    )
+    .remove();
+
+  const describeBlockName = `${analyticsConfig.component}WithAnalytics`;
+  // Add describe block + tests
+  const describeBlock = source.getOrAdd(source.code(`
+    describe('${describeBlockName}', () => {});
+  `), context => {
+      return context.find(j.ExpressionStatement, (node) =>
+        get(node, 'expression.callee.name') === 'describe' &&
+        get(node, 'expression.arguments[0].value') === describeBlockName
+      );
+    });
+
+  describeBlock
+    .addToTestSuite(source.code(`
+      beforeEach(() => {
+        jest.spyOn(global.console, 'warn');
+        jest.spyOn(global.console, 'error');
+      });
+    `))
+    .addToTestSuite(source.code(`
+      afterEach(() => {
+        global.console.warn.mockRestore();
+        global.console.error.mockRestore();
+      });
+    `))
+    .addToTestSuite(mountTest(j, source, analyticsConfig));
+}
+
+export const parser = 'flow';
+
+/**
+ * Inserts tests for the file if it exists in a testPath prop in the analytics event map
+ */
+export default (fileInfo: any, api: any) => {
+  const j = api.jscodeshift;
+  j.use(UtilPlugin);
+
+  const analyticsTestConfig = getMapEntryFromPath(fileInfo.path, 'testPath');
+  const componentTestConfig = getMapEntryFromPath(fileInfo.path, 'componentTestPath');
+  if (!analyticsTestConfig && !componentTestConfig) {
+    return null;
+  }
+
+  const source = j(fileInfo.source);
+  const firstNodeBefore = source.getFirstNode();
+
+  if (analyticsTestConfig) {
+    updateAnalyticsTestFile(j, source, analyticsTestConfig, fileInfo.path);
+  } else {
+    updateComponentTestFile(j, source, componentTestConfig, fileInfo.path)
+  }
 
   // If the first node has been modified or deleted, reattach the comments
   const firstNodeAfter = source.getFirstNode();
@@ -177,7 +249,7 @@ export default (fileInfo: any, api: any) => {
     firstNodeAfter.comments = firstNodeBefore.comments;
     delete firstNodeBefore.comments;
   }
-  
+
   // Add describe block
   // Add context test
   const parsedSource = source.toSource({ quote: 'single', tabWidth: 2 });

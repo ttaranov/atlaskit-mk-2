@@ -3,7 +3,10 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import Pagination from '../src';
-import { pageRange, PaginationStateless } from '../src/components/Stateless';
+import PaginationStatelessWithAnalytics, {
+  pageRange,
+  PaginationStateless,
+} from '../src/components/Stateless';
 import { Ellipsis } from '../src/styled';
 
 import { name } from '../package.json';
@@ -202,5 +205,21 @@ describe(name, () => {
         expect(buttons.at(3).prop('isDisabled')).toBe(false);
       });
     });
+  });
+});
+describe('PaginationStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<PaginationStatelessWithAnalytics total={0} current={0} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

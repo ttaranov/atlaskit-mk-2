@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-import { BreadcrumbsItem } from '../src/components/BreadcrumbsItem';
+import BreadcrumbsItemWithAnalytics, {
+  BreadcrumbsItem,
+} from '../src/components/BreadcrumbsItem';
 
 export const setItemWidth = (item: BreadcrumbsItem, width: number) => {
   // eslint-disable-line import/prefer-default-export
@@ -163,5 +165,21 @@ describe('BreadcrumbsItem', () => {
       setItemWidth(item, truncationWidth - 1);
       expect(item.updateOverflow()).toBe(false);
     });
+  });
+});
+describe('BreadcrumbsItemWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<BreadcrumbsItemWithAnalytics text="arbitrary" />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

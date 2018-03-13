@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { name } from '../../../package.json';
-import { TimePicker } from '../TimePicker';
+import TimePickerWithAnalytics, { TimePicker } from '../TimePicker';
 import TimePickerStateless from '../TimePickerStateless';
 
 describe(name, () => {
@@ -94,5 +94,21 @@ describe(name, () => {
         value: testValue,
       });
     });
+  });
+});
+describe('TimePickerWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<TimePickerWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

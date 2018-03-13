@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import { Flag } from '../src/components/Flag/index';
+import FlagWithAnalytics, { Flag } from '../src/components/Flag/index';
 import Container, {
   Description,
   DismissButton,
@@ -217,5 +217,23 @@ describe('Flag', () => {
         expect(spy).not.toHaveBeenCalled();
       });
     });
+  });
+});
+describe('FlagWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <FlagWithAnalytics id="" icon={<div />} title="Flag" {...extraProps} />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

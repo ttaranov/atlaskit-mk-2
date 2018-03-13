@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Chrome from '../../Chrome';
 import Content from '../../Content';
 import Remove from '../../RemoveButton';
-import { Tag } from '../index';
+import TagWithAnalytics, { Tag } from '../index';
 
 import Before from '../styledBefore';
 import Container from '../styledContainer';
@@ -250,5 +250,21 @@ describe('Tag component', () => {
       );
       expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
+  });
+});
+describe('TagWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<TagWithAnalytics {...testProps} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

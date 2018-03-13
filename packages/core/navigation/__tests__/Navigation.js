@@ -9,7 +9,9 @@ import Drawer from '../src/components/js/Drawer';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import GlobalSecondaryActions from '../src/components/js/GlobalSecondaryActions';
-import { Navigation } from '../src/components/js/Navigation';
+import NavigationWithAnalytics, {
+  Navigation,
+} from '../src/components/js/Navigation';
 import Resizer from '../src/components/js/Resizer';
 import Spacer from '../src/components/js/Spacer';
 import SpacerInner from '../src/components/styled/SpacerInner';
@@ -564,5 +566,21 @@ describe('<Navigation />', () => {
       const wrapper = shallow(<Navigation isElectronMac />);
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
     });
+  });
+});
+describe('NavigationWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<NavigationWithAnalytics isOpen />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

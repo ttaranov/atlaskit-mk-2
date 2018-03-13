@@ -13,7 +13,7 @@ import {
   version as packageVersion,
 } from '../../package.json';
 
-import InputWithAnalytics, {
+import SingleLineTextInputWithAnalytics, {
   SingleLineTextInput,
 } from '../SingleLineTextInput';
 
@@ -32,3 +32,25 @@ describe(name, () => {
   });
 });
 describe('analytics - Input', () => {});
+describe('SingleLineTextInputWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <SingleLineTextInputWithAnalytics
+        isEditing
+        onChange={() => {}}
+        value={value}
+      />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

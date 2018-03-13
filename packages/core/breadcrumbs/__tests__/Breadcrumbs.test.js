@@ -133,4 +133,19 @@ describe('BreadcrumbsStateless', () => {
     });
   });
 });
-describe('analytics - BreadcrumbsStateless', () => {});
+describe('BreadcrumbsStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<BreadcrumbsStatelessWithAnalytics onExpand={() => {}} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

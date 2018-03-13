@@ -9,7 +9,7 @@ import { name } from '../../package.json';
 
 import { Trigger, Content } from '../../src/styled/Droplist';
 
-import { Droplist } from '../components/Droplist';
+import DroplistWithAnalytics, { Droplist } from '../components/Droplist';
 import { DroplistItem } from '../components/Item';
 
 const itemsList = (
@@ -117,5 +117,21 @@ describe(`${name} - core`, () => {
       const wrapper = mount(<Droplist isLoading>{itemsList}</Droplist>);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
+  });
+});
+describe('DroplistWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DroplistWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
 import Content from '../src/components/Content';
-import { ModalDialog } from '../src/components/Modal';
+import ModalDialogWithAnalytics, { ModalDialog } from '../src/components/Modal';
 import { Body } from '../src/styled/Content';
 import {
   dialogHeight,
@@ -227,5 +227,21 @@ describe('modal-dialog', () => {
         expect(wrapper.contains(node)).toBe(false);
       });
     });
+  });
+});
+describe('ModalDialogWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<ModalDialogWithAnalytics onClose={noop} {...props} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

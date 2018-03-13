@@ -6,7 +6,7 @@ import path from 'path';
 import { analyticsEventMap } from './analyticsEventMap';
 
 export const getMapEntryFromPath = (filepath, configKey) => (
-  analyticsEventMap.filter(eventConfig => (
+  analyticsEventMap.find(eventConfig => (
     filepath.indexOf(eventConfig[configKey]) > -1
   ))
 );

@@ -9,7 +9,9 @@ import Checkbox, { CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
 import { name } from '../../package.json';
 
-import { CheckboxStateless } from '../CheckboxStateless';
+import CheckboxStatelessWithAnalytics, {
+  CheckboxStateless,
+} from '../CheckboxStateless';
 
 describe(name, () => {
   // Helper function to generate <Flag /> with base props
@@ -180,5 +182,29 @@ describe(name, () => {
       );
       expect(cb.find(Checkbox).length).toBe(4);
     });
+  });
+});
+describe('CheckboxStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <CheckboxStatelessWithAnalytics
+        label=""
+        isChecked={false}
+        onChange={() => {}}
+        name="stub"
+        value="stub value"
+      />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

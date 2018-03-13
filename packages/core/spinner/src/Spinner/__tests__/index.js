@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
-import { Spinner } from '../index';
+import SpinnerWithAnalytics, { Spinner } from '../index';
 import Container, { getContainerAnimation } from '../styledContainer';
 import Svg, { svgStyles, getStrokeColor } from '../styledSvg';
 
@@ -166,5 +166,21 @@ describe('Spinner', () => {
       const dashOffsetMatch = styles.match(/stroke-dashoffset: [0-9.]+px;/);
       expect(dashOffsetMatch).not.toBe(null);
     });
+  });
+});
+describe('SpinnerWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<SpinnerWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

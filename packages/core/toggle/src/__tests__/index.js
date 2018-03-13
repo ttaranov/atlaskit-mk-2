@@ -14,7 +14,9 @@ import {
 } from '../../package.json';
 import { Input } from '../../src/styled';
 
-import ToggleWithAnalytics, { ToggleStateless } from '../ToggleStateless';
+import ToggleStatelessWithAnalytics, {
+  ToggleStateless,
+} from '../ToggleStateless';
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -80,3 +82,19 @@ describe('ToggleStateless', () => {
   });
 });
 describe('analytics - Toggle', () => {});
+describe('ToggleStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<ToggleStatelessWithAnalytics isChecked />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

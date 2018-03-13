@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { name } from '../../../package.json';
-import { DatePicker } from '../DatePicker';
+import DatePickerWithAnalytics, { DatePicker } from '../DatePicker';
 import DatePickerStateless from '../DatePickerStateless';
 
 describe(name, () => {
@@ -123,5 +123,21 @@ describe(name, () => {
       expect(datePickerStatelessProps.value).toBe(testValue);
       expect(datePickerStatelessProps.displayValue).toBe(formattedValue);
     });
+  });
+});
+describe('DatePickerWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DatePickerWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

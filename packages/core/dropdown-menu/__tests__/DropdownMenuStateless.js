@@ -100,4 +100,19 @@ describe('dropdown menu - DropdownMenuStateless', () => {
     });
   });
 });
-describe('analytics - DropdownMenuStateless', () => {});
+describe('DropdownMenuStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DropdownMenuStatelessWithAnalytics isOpen />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

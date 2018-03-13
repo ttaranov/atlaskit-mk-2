@@ -14,7 +14,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
-import { AkRadio } from '../Radio';
+import AkRadioWithAnalytics, { AkRadio } from '../Radio';
 
 describe(name, () => {
   describe('Radio', () => {
@@ -98,4 +98,19 @@ describe(name, () => {
     });
   });
 });
-describe('analytics - AkRadio', () => {});
+describe('AkRadioWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<AkRadioWithAnalytics onChange={() => {}} {...props} />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});

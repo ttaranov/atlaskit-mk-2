@@ -6,7 +6,9 @@ import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
-import { InlineEditStateless } from '../InlineEditStateless';
+import InlineEditStatelessWithAnalytics, {
+  InlineEditStateless,
+} from '../InlineEditStateless';
 
 const noop = () => {};
 const Input = props => <input {...props} onChange={noop} />;
@@ -322,5 +324,26 @@ describe('@atlaskit/inline-edit', () => {
         '100%',
       );
     });
+  });
+});
+describe('InlineEditStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <InlineEditStatelessWithAnalytics
+        {...defaultProps}
+        readView={readView}
+      />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

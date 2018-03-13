@@ -90,15 +90,16 @@ export default j => {
     return this;
   }
 
-  const addTest = function(testNode) {
+  // Add a call expression statement to a describe block, e.g. beforeEach, afterEach, it
+  const addToTestSuite = function(insertNode) {
     const block = this.findFirst(j.ArrowFunctionExpression)
       .findFirst(j.BlockStatement);
     
     if (block.size() > 0) {
-      block.getOrAdd(testNode, context => {
+      block.getOrAdd(insertNode, context => {
         return context.find(j.ExpressionStatement, (node) =>
-          get(node, 'expression.callee.name') === 'it' &&
-          get(node, 'expression.arguments[0].value') === get(testNode, 'expression.arguments[0].value')
+          get(node, 'expression.callee.name') === get(insertNode, 'expression.callee.name') &&
+          get(node, 'expression.arguments[0].value') === get(insertNode, 'expression.arguments[0].value')
         );
       }, (node) => block.get().node.body.push(node));
     }
@@ -125,6 +126,7 @@ export default j => {
   // Calling jscodeshift on an empty string is one way to get a jscodeshift
   // collection if you don't already have one, e.g. j(''). Unfortunately it is
   // not exposed via the jscodeshift API directly.
+  // Only works for statements.
   const code = function(codeString) {
     return j(codeString).find(j.Program).get().node.body[0];
   }
@@ -162,7 +164,7 @@ export default j => {
     findFirst,
     findLast,
     addImport,
-    addTest,
+    addToTestSuite,
     addToProgram,
     code,
     getOrAdd,

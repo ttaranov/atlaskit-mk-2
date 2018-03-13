@@ -5,7 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import { name } from '../package.json';
 import { SpotlightManager, SpotlightTarget } from '../src';
 
-import { Spotlight } from '../src/components/Spotlight';
+import SpotlightWithAnalytics, { Spotlight } from '../src/components/Spotlight';
 
 function render(jsx) {
   return ReactDOMServer.renderToStaticMarkup(jsx);
@@ -114,5 +114,27 @@ describe(name, () => {
         </div>,
       );
     });
+  });
+});
+describe('SpotlightWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <SpotlightWithAnalytics
+        header={() => <span>foo</span>}
+        footer={() => <span>baz</span>}
+        target="qux"
+      />,
+    );
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 });

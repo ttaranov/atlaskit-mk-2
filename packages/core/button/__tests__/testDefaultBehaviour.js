@@ -219,14 +219,13 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should trigger onBlur handler on blur', () => {
-    const spy = jest.fn(() => console.log('test test test'));
+    const spy = jest.fn();
     const wrapper = mount(
       <Button tabIndex={0} onBlur={spy}>
         button
       </Button>,
     );
     const button = wrapper.find('StyledButton');
-    console.log(button.prop('onBlur')());
     button.prop('onBlur')();
     expect(spy).toHaveBeenCalled();
   });
