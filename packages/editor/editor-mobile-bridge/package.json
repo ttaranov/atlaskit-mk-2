@@ -19,7 +19,7 @@
   "dependencies": {
     "@atlaskit/editor-core": "^63.0.0",
     "@atlaskit/mention": "^9.1.3",
-    "@atlaskit/editor-json-transformer": "2.5.9",
+    "@atlaskit/editor-json-transformer": "2.5.10",
     "@types/react": "^16.0.5",
     "prosemirror-view": "^1.0.0",
     "ajv": "^4.11.3",
