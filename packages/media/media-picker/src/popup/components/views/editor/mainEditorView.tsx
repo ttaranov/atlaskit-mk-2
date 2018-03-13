@@ -1,6 +1,6 @@
 import { deselectItem } from '../../../actions/deselectItem';
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 
 import { BinaryUploader } from '../../../../components/binary';
@@ -12,9 +12,14 @@ import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
 // TODO [MSW-421]: re-enable code splitting once Stride support is merged
-import { EditorView } from './editorView/editorView';
+// import { EditorView } from './editorView/editorView';
+import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;
+}
+
+export interface MainEditorViewState {
+  editorViewComponent?: ReactNode;
 }
 
 export interface MainEditorViewOwnProps {
@@ -35,9 +40,22 @@ export type MainEditorViewProps = MainEditorViewStateProps &
   MainEditorViewOwnProps &
   MainEditorViewDispatchProps;
 
-export class MainEditorView extends Component<MainEditorViewProps, {}> {
+export class MainEditorView extends Component<
+  MainEditorViewProps,
+  MainEditorViewState
+> {
+  async componentDidMount() {
+    console.log('MainEditorView mounted');
+    const editorViewComponent = await editorViewLoader();
+
+    this.setState({
+      editorViewComponent,
+    });
+  }
+
   render(): JSX.Element | null {
     const { editorData } = this.props;
+    console.log('MainEditorView data', editorData);
     if (editorData) {
       return <MainContainer>{this.renderContent(editorData)}</MainContainer>;
     } else {
@@ -46,13 +64,14 @@ export class MainEditorView extends Component<MainEditorViewProps, {}> {
   }
 
   private renderContent(editorData: EditorData): JSX.Element {
+    const { editorViewComponent: EditorViewComponent } = this.state;
     const { imageUrl, originalFile, error } = editorData;
 
     if (error) {
       return this.renderError(error);
     } else if (imageUrl && originalFile) {
       return (
-        <EditorView
+        <EditorViewComponent
           imageUrl={imageUrl}
           onSave={this.onEditorSave(originalFile)}
           onCancel={this.onCancel}
