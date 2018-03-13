@@ -17,9 +17,7 @@ const access = {
   'urn:filestore:file:*': ['read'],
 };
 
-const FormattedBlock: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.pre`
+const FormattedBlock = styled.pre`
   white-space: pre-wrap;
   word-wrap: break-word;
 `;
