@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 64.1.0
+- [minor] editor-mobile-bridge module introduced [4a338f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a338f6)
+
 ## 64.0.0
 
 
