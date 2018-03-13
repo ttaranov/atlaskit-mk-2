@@ -9,6 +9,7 @@ import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf } from './web-to-native/markState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web/implementation';
+import { EventDispatcher } from '../../editor-core/dist/es5/editor/event-dispatcher';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -36,9 +37,12 @@ export class MentionProviderImpl implements MentionProvider {
 const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 
 class EditorWithState extends Editor {
-  onEditorCreated(instance: { view: EditorView; transformer?: any }) {
+  onEditorCreated(instance: {
+    view: EditorView;
+    eventDispatcher: EventDispatcher;
+    transformer?: any;
+  }) {
     super.onEditorCreated(instance);
-
     bridge.editorView = instance.view;
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
