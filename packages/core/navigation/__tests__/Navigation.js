@@ -579,13 +579,15 @@ describe('<Navigation />', () => {
     });
 
     it('should not throw errors on mounting closed Navigation with primary icon', () => {
-      mount(
-        <Navigation
-          globalPrimaryIcon={<AddIcon />}
-          globalPrimaryItemHref="http://a.com"
-          isOpen={false}
-        />,
-      );
+      expect(() => {
+        mount(
+          <Navigation
+            globalPrimaryIcon={<AddIcon />}
+            globalPrimaryItemHref="http://a.com"
+            isOpen={false}
+          />,
+        ).not.toThrow();
+      });
     });
   });
 });
