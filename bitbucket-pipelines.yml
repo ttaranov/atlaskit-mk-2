@@ -35,6 +35,8 @@ pipelines:
           - yarn lint
           - yarn typecheck
           - yarn test
+          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+          - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
 
