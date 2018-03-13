@@ -7,6 +7,7 @@ import {
   CardDimensions,
   CardEventHandler,
   Identifier,
+  CardAction,
 } from '@atlaskit/media-card';
 import {
   MediaItemType,
@@ -353,7 +354,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 }
 
-export const createDeleteAction = (eventHander: CardEventHandler) => {
+export const createDeleteAction = (
+  eventHander: CardEventHandler,
+): CardAction => {
   return {
     label: 'Delete',
     handler: eventHander,
