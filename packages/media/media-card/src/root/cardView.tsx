@@ -8,6 +8,10 @@ import {
   UrlPreview,
   ImageResizeMode,
 } from '@atlaskit/media-core';
+import {
+  withAnalyticsEvents,
+  WithCreateAnalyticsEventProps,
+} from '@atlaskit/analytics-next';
 
 import {
   SharedCardProps,
@@ -29,18 +33,6 @@ import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
-
-// Until we decide on how to distribute analytics-next TS types, this is the way.
-// Compared to other approaches, with this way we are not blocking analytics-next development,
-// and we export types consumer would need. Also we still have TDs we can used for internal development.
-import {
-  WithCreateAnalyticsEventProps,
-  WithAnalyticsEventsSignature as WithAnalyticsEventsWrapper,
-} from '../analytics-next-types';
-
-import { withAnalyticsEvents as withAnalyticsEventsImpl } from '@atlaskit/analytics-next';
-
-const withAnalyticsEvents = withAnalyticsEventsImpl as WithAnalyticsEventsWrapper;
 
 import { WithCardViewAnalyticsContext } from './withCardViewAnalyticsContext';
 

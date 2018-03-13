@@ -1,12 +1,8 @@
 import * as React from 'react';
-import { AnalyticsContext } from '../analytics-next-types';
+
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { version, name } from '../../package.json';
 import { isLinkDetails } from '../utils/isLinkDetails';
-import { AnalyticsContext as AnalyticsContextClass } from '../analytics-next-types';
-
-import { AnalyticsContext as AnalyticsContextImpl } from '@atlaskit/analytics-next';
-
-const AnalyticsContext = AnalyticsContextImpl as AnalyticsContextClass;
 
 import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
 import { CardViewOwnProps } from './cardView';

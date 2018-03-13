@@ -11,6 +11,11 @@ import {
   CardActionType,
   Resource,
 } from '@atlaskit/media-core';
+import {
+  AnalyticsListenerProps,
+  AnalyticsListener,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import {
@@ -25,14 +30,6 @@ import { Wrapper } from '../src/root/styled';
 import { breakpointSize } from '../src/utils/breakpoint';
 
 import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumbnail';
-
-import {
-  AnalyticsListener as AnalyticsListenerClass,
-  UIAnalyticsEventInterface,
-  AnalyticsListenerProps,
-} from '../src/analytics-next-types';
-import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
-const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
 
 import { CardViewAnalyticsContext, CardViewState } from '../src/index';
 

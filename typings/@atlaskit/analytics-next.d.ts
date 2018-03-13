@@ -17,7 +17,7 @@ import * as React from 'react';
  */
 
 // Utils
-export declare type ObjectType = { [key: string]: any };
+export type ObjectType = { [key: string]: any };
 
 // Basic events
 export type AnalyticsEventPayload = {
@@ -81,7 +81,9 @@ export interface AnalyticsListenerProps {
   onEvent: (event: UIAnalyticsEventInterface, channel?: string) => void;
 }
 
-export type AnalyticsListener = React.ComponentClass<AnalyticsListenerProps>;
+export declare class AnalyticsListener extends React.Component<
+  AnalyticsListenerProps
+> {}
 
 /*
   AnalyticsContext.js
@@ -91,7 +93,9 @@ export interface AnalyticsContextProps {
   data: ObjectType;
 }
 
-export type AnalyticsContext = React.ComponentClass<AnalyticsContextProps>;
+export declare class AnalyticsContext extends React.Component<
+  AnalyticsContextProps
+> {}
 
 /*
   withAnalyticsContext.js
@@ -104,10 +108,9 @@ export type WithAnalyticsContextFunction = <TOwnProps>(
   component: React.ComponentClass<TOwnProps>,
 ) => React.ComponentClass<TOwnProps & WithAnalyticsContextProps>;
 
-// Signature for withAnalyticsContext function
-export type WithAnalyticsContextSignature = (
+export declare function withAnalyticsContext(
   defaultData?: any,
-) => WithAnalyticsContextFunction;
+): WithAnalyticsContextFunction;
 
 /*
   withAnalyticsEvents.js
@@ -133,7 +136,6 @@ export type WithCreateAnalyticsEventFunction = <TOwnProps>(
   component: React.ComponentClass<WithCreateAnalyticsEventProps & TOwnProps>,
 ) => React.ComponentClass<TOwnProps>;
 
-// Signature for withAnalyticsEvents function
-export type WithAnalyticsEventsSignature = <TOwnProps>(
+export declare function withAnalyticsEvents<TOwnProps>(
   createEventMap?: EventMap<TOwnProps>,
-) => WithCreateAnalyticsEventFunction;
+): WithCreateAnalyticsEventFunction;

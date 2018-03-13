@@ -11,7 +11,8 @@ import {
   MediaType,
   FileProcessingStatus,
 } from '@atlaskit/media-core';
-import { UIAnalyticsEventInterface } from './analytics-next-types';
+
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
