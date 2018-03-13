@@ -1,53 +1,109 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import { mount, ReactWrapper } from 'enzyme';
+import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 
-import { CardActionsView } from '../../src/utils/cardActions';
 import {
-  MeatBallsWrapper,
-  CardActionButton,
-} from '../../src/utils/cardActions/styled';
-import { CardActionType } from '../../src/actions';
+  CardActionsView,
+  CardActionIconButton,
+} from '../../src/utils/cardActions';
+import { CardActionButton } from '../../src/utils/cardActions/styled';
+import { CardAction, CardDelete } from '../../src/actions';
 
 describe('Menu', () => {
-  const menuActions = [
-    { label: 'Open', handler: () => {} },
-    { label: 'Close', handler: () => {} },
-  ];
-  const deleteAction = {
-    type: CardActionType.delete,
-    label: 'Delete',
-    handler: () => {},
+  const openAction = {
+    label: 'Open',
+    handler: jest.fn(),
   };
-  const animStub = window.cancelAnimationFrame;
-  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
-  beforeEach(() => {
-    window.cancelAnimationFrame = () => {};
+  const closeAction = {
+    label: 'Close',
+    handler: jest.fn(),
+  };
+  const annotateAction = {
+    label: 'Annotate',
+    handler: jest.fn(),
+    icon: <AnnotateIcon size="small" label="annotate" />,
+  };
+  const deleteAction = CardDelete(jest.fn());
+
+  const menuActions = [openAction, closeAction, annotateAction, deleteAction];
+
+  const openDropdownMenuIfExists = (card: ReactWrapper) => {
+    const dropdownMenu = card.find(DropdownMenu);
+    if (dropdownMenu.length > 0) {
+      dropdownMenu.find(CardActionButton).simulate('click');
+    }
+  };
+
+  const setup = (actions: CardAction[], triggerColor?: string) => {
+    const card = mount(
+      <CardActionsView actions={actions} triggerColor={triggerColor} />,
+    );
+    openDropdownMenuIfExists(card);
+
+    const iconButtons = card.find(CardActionIconButton);
+    const dropdownMenu = card.find(DropdownMenu);
+    const dropdownItems = dropdownMenu.find(DropdownItem);
+
+    return {
+      card,
+      iconButtons,
+      dropdownMenu,
+      dropdownItems,
+    };
+  };
+
+  it('should render only dropdown menu given one action with no icon', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup([openAction]);
+
+    expect(iconButtons).toHaveLength(0);
+    expect(dropdownMenu).toHaveLength(1);
+    expect(dropdownItems).toHaveLength(1);
+
+    expect(openAction.handler).not.toHaveBeenCalled();
   });
 
-  afterEach(() => {
-    window.cancelAnimationFrame = animStub;
+  it('should render only dropdown menu given multiple actions with no icon', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup([
+      openAction,
+      closeAction,
+    ]);
+
+    expect(iconButtons).toHaveLength(0);
+    expect(dropdownMenu).toHaveLength(1);
+    expect(dropdownItems).toHaveLength(2);
   });
 
-  it('should render the meatballs menu when supplied with multiple actions', () => {
-    const card = mount(<CardActionsView actions={menuActions} />);
-    expect(card.find(MeatBallsWrapper)).toHaveLength(1);
-    expect(card.find(CardActionButton)).toHaveLength(0);
+  it('should render only icon button given one action with an icon', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup([
+      annotateAction,
+    ]);
+
+    expect(iconButtons).toHaveLength(1);
+    expect(dropdownMenu).toHaveLength(0);
+    expect(dropdownItems).toHaveLength(0);
   });
 
-  it('should render the meatballs menu when supplied with multiple actions including one with type "delete"', () => {
-    const card = mount(<CardActionsView actions={[deleteAction]} />);
-    expect(card.find(MeatBallsWrapper)).toHaveLength(0);
-    expect(card.find(CardActionButton)).toHaveLength(1);
+  it('should render two icon button given two actions with an icon', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup([
+      annotateAction,
+      deleteAction,
+    ]);
+
+    expect(iconButtons).toHaveLength(2);
+    expect(dropdownMenu).toHaveLength(0);
+    expect(dropdownItems).toHaveLength(0);
   });
 
-  it('should render the delete button when supplied with a single action with type "delete"', () => {
-    const card = mount(<CardActionsView actions={[deleteAction]} />);
-    expect(card.find(MeatBallsWrapper)).toHaveLength(0);
-    expect(card.find(CardActionButton)).toHaveLength(1);
+  it('should render one icon button and a dropdown menu given more than two actions', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup(menuActions);
+
+    expect(iconButtons).toHaveLength(1);
+    expect(dropdownMenu).toHaveLength(1);
+    expect(dropdownItems).toHaveLength(3);
   });
 
-  it('should call onToggle callback when meatballs are pressed', () => {
+  it('should call onToggle callback when dropdown menu trigger is clicked', () => {
     const onToggle = jest.fn();
     const card = mount(
       <CardActionsView actions={menuActions} onToggle={onToggle} />,
@@ -55,49 +111,33 @@ describe('Menu', () => {
 
     card
       .find(DropdownMenu)
-      .find('button')
+      .find(CardActionButton)
       .simulate('click');
+
     expect(onToggle).toHaveBeenCalled();
   });
 
-  // This is not currently testable. This requires that DropdownMenu exposes its own version of Item
-  // to test against. Since there is already some refactor work being done in this area, we believe its
-  // okay to remove this test until that time.
-  // See: AK-3051, AK-2642 and AK-2978
-  /* it('should call action handler when item is pressed', () => {
-    const handler = jest.fn();
-    const menuActions = [{label: 'x', handler}];
-    const card = mount(<Menu actions={menuActions}/>);
-
-    card.find(DropdownMenu).simulate('click');
-    // The event listener is on the `Element` in Item which we cant select with a css selector
-    // check /packages/droplist/test/unit/item.js
-    card.find(Item).first().childAt(0).simulate('click');
-    expect(handler).toHaveBeenCalled();
-  }); */
-
-  it('should pass supplied trigger color to meatballs wrapper when there are multiple actions', () => {
-    const handler = jest.fn();
-    const menuActions = [{ label: 'x', handler }, { label: 'y', handler }];
-
+  it('should call action handler when item is pressed', () => {
     const triggerColor = 'some-color-string';
-    const card = mount(
-      <CardActionsView actions={menuActions} triggerColor={triggerColor} />,
-    );
-    expect(card.find(MeatBallsWrapper).prop('style')).toMatchObject({
-      color: triggerColor,
-    });
+    const { dropdownItems } = setup([openAction], triggerColor);
+
+    dropdownItems.simulate('click');
+
+    expect(openAction.handler).toHaveBeenCalled();
+  });
+
+  it('should pass supplied trigger color to dropdown menu trigger when there are multiple actions', () => {
+    const triggerColor = 'some-color-string';
+    const { dropdownMenu } = setup(menuActions, triggerColor);
+    const trigger = dropdownMenu.find(CardActionButton);
+
+    expect(trigger.prop('style')).toMatchObject({ color: triggerColor });
   });
 
   it('should pass supplied trigger color to delete button when there is a single action', () => {
-    const menuActions = [deleteAction];
-
     const triggerColor = 'some-color-string';
-    const card = mount(
-      <CardActionsView actions={menuActions} triggerColor={triggerColor} />,
-    );
-    expect(card.find(CardActionButton).prop('style')).toMatchObject({
-      color: triggerColor,
-    });
+    const { iconButtons } = setup([deleteAction], triggerColor);
+
+    expect(iconButtons.prop('triggerColor')).toEqual(triggerColor);
   });
 });
