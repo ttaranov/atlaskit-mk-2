@@ -4,6 +4,7 @@ import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import Navigation from '../src/components/js/Navigation';
 import ContainerNavigationChildren from '../src/components/js/ContainerNavigationChildren';
 import Drawer from '../src/components/js/Drawer';
@@ -563,6 +564,30 @@ describe('<Navigation />', () => {
     it('should pass isElectronMac prop to WithElectronTheme', () => {
       const wrapper = shallow(<Navigation isElectronMac />);
       expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
+    });
+  });
+  describe('reactWarnings', () => {
+    beforeEach(() => {
+      // $FlowFixMe
+      console.error = jest.fn(error => {
+        throw new Error(error);
+      });
+    });
+
+    afterEach(() => {
+      console.error.mockRestore();
+    });
+
+    it('should not throw errors on mounting closed Navigation with primary icon', () => {
+      expect(() => {
+        mount(
+          <Navigation
+            globalPrimaryIcon={<AddIcon />}
+            globalPrimaryItemHref="http://a.com"
+            isOpen={false}
+          />,
+        );
+      }).not.toThrow();
     });
   });
 });
