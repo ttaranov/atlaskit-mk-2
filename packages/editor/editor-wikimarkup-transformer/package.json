@@ -1,0 +1,30 @@
+{
+  "name": "@atlaskit/editor-wikimarkup-transformer",
+  "version": "0.0.0",
+  "description": "Wiki markup transformer for JIRA and Confluence",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Dmitrii S",
+    "Jarred M",
+    "Oscar W",
+    "Tong L"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/editor-common": "^7.0.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.5.2",
+    "@types/prosemirror-model": "^1.0.0",
+    "prosemirror-model": "^1.0.0"
+  }
+}
