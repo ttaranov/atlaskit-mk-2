@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+// @flow
 const path = require('path');
 
 module.exports = {
