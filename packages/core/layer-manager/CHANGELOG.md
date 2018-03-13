@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 2.8.2
+- [patch] Fix flow type error and bug not calling preventDefault [aac58a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aac58a9)
+
 ## 2.8.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
