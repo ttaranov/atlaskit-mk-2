@@ -23,9 +23,6 @@ export const Root: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const cardShadow = `
   box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);
 `;
-// Reference: http://proto/shadows/
-export const linkCardShadow = `
-  box-shadow: 0 0 1px 0 rgba(23, 43, 77, 0.24);`;
 
 export const FadeinImage: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${fadeIn};

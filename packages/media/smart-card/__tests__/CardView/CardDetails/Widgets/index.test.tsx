@@ -2,13 +2,13 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
-import IconImage from '../../../../../src/shared/IconImage';
-import Widgets from '../../../../../src/app_2/shared/CardDetails/Widgets';
+import { IconImage } from '@atlaskit/media-ui';
+import Widgets from '../../../../src/CardView/CardDetails/Widgets';
 import {
   WidgetDetails,
   Title,
   Text,
-} from '../../../../../src/app_2/shared/CardDetails/Widgets/styled';
+} from '../../../../src/CardView/CardDetails/Widgets/styled';
 
 describe('Widgets', () => {
   it('should render zero details as null', () => {

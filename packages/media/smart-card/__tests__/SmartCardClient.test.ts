@@ -1,4 +1,4 @@
-import { SmartCardClient } from '../src/SmartCardClient';
+import { Client } from '../src/Client';
 
 declare namespace NodeJS {
   interface Global {
@@ -26,11 +26,11 @@ function createFetchWithFailedParse() {
   );
 }
 
-describe('SmartCardClient', () => {
+describe('Client', () => {
   it('should use the baseUrl', async () => {
     global.fetch = createFetchWithResponse();
-    const client = new SmartCardClient({ baseUrl: 'https://foo-bar.com/' });
-    const res = await client.fetch('https://www.atlassian.com/');
+    const client = new Client({ baseUrl: 'https://foo-bar.com/' });
+    const res = await client.get('https://www.atlassian.com/');
     expect(global.fetch).toBeCalledWith(
       expect.stringMatching(/^https:\/\/foo-bar.com\//),
       expect.anything(),
@@ -39,24 +39,24 @@ describe('SmartCardClient', () => {
 
   it('should reject when the request fails', () => {
     global.fetch = createFetchWithFailedRequest();
-    const client = new SmartCardClient();
+    const client = new Client();
     return expect(
-      client.fetch('https://www.atlassian.com/'),
+      client.get('https://www.atlassian.com/'),
     ).rejects.toBeInstanceOf(Error);
   });
 
   it('should reject when the request parsing fails', () => {
     global.fetch = createFetchWithFailedParse();
-    const client = new SmartCardClient();
+    const client = new Client();
     return expect(
-      client.fetch('https://www.atlassian.com/'),
+      client.get('https://www.atlassian.com/'),
     ).rejects.toBeInstanceOf(Error);
   });
 
   it('should resolve when the request succeeds', async () => {
     global.fetch = createFetchWithResponse();
-    const client = new SmartCardClient();
-    const res = await client.fetch('https://www.atlassian.com/');
+    const client = new Client();
+    const res = await client.get('https://www.atlassian.com/');
     expect(res).toEqual({
       data: {},
     });

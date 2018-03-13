@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
 import { ErrorCard } from '@atlaskit/media-ui';
-import { convertAppCardToSmartCard } from '@atlaskit/media-card';
+import { AppCardModel, convertAppCardToSmartCard } from '@atlaskit/media-card';
 import { Client } from './Client';
-import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
+import { CardView, minWidth, maxWidth } from './CardView';
 
 export const LoadingView = () => null;
 
@@ -29,7 +29,7 @@ export interface CardContext {
 
 export interface CardState {
   status: 'loading' | 'loaded' | 'errored';
-  data?: CardViewProps;
+  data?: AppCardModel;
 }
 
 function loading(): Pick<CardState, 'status' | 'data'> {
@@ -39,7 +39,7 @@ function loading(): Pick<CardState, 'status' | 'data'> {
   };
 }
 
-function loaded(data: CardViewProps): Pick<CardState, 'status' | 'data'> {
+function loaded(data: AppCardModel): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loaded',
     data,
@@ -80,7 +80,7 @@ export class Card extends React.Component<CardProps, CardState> {
     const { url } = this.props;
     try {
       const json = await this.client.get(url);
-      this.setState(loaded(json.data as CardViewProps));
+      this.setState(loaded(json.data as AppCardModel));
     } catch (error) {
       this.setState(errored());
     }

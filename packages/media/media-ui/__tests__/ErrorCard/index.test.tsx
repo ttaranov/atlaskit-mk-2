@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import ErrorCard from '../../../src/shared/ErrorCard';
-import { ErrorImage } from '../../../src/shared/ErrorCard/styled';
+import { ErrorCard } from '../../src/ErrorCard';
+import { ErrorImage } from '../../src/ErrorCard/styled';
 
 describe('ErrorCard', () => {
   it('should render the retry button when there is a retry fn', () => {

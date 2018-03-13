@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import ImageLoader from 'react-render-image';
-import CardPreview, {
+import {
+  CardPreview,
   LoadingView,
   NoImageView,
   LoadedView,
-} from '../../../src/shared/CardPreview';
+} from '../../src/CardPreview';
 
 const exampleURL = 'https://placekitten.com/g/200/300';
 

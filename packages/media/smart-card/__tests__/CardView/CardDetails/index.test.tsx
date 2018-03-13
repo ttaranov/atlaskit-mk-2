@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
-import IconImage from '../../../../src/shared/IconImage';
-import CardDetails from '../../../../src/app_2/shared/CardDetails';
+import { IconImage } from '@atlaskit/media-ui';
+import CardDetails from '../../../src/CardView/CardDetails';
 import {
   Title,
   Description,
   BottomWrapper,
   Thumbnail,
-} from '../../../../src/app_2/shared/CardDetails/styled';
+} from '../../../src/CardView/CardDetails/styled';
 
 describe('CardDetails', () => {
   const icon = {

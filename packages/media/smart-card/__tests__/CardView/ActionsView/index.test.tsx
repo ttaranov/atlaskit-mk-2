@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { DropdownItem } from '@atlaskit/dropdown-menu';
-import ActionsView from '../../../../src/app_2/shared/ActionsView';
+import ActionsView from '../../../src/CardView/ActionsView';
 
 const likeAction = {
   text: 'Like',

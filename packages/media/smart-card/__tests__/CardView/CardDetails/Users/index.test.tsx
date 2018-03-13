@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { AvatarGroup } from '@atlaskit/avatar';
-import Users from '../../../../../src/app_2/shared/CardDetails/Users';
+import Users from '../../../../src/CardView/CardDetails/Users';
 
 describe('Users', () => {
   it('should render zero users as null', () => {

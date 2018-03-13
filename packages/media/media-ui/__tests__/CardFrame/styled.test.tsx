@@ -6,7 +6,7 @@ import {
   LinkWrapper,
   IconWrapper,
   TextWrapper,
-} from '../../../src/shared/CardFrame/styled';
+} from '../../src/CardFrame/styled';
 
 describe('Wrapper', () => {
   it('should render with minWidth when there is a minWidth', () => {

@@ -13,12 +13,4 @@
     "./example-helpers/*.tsx",
     "./typings/**/*.d.ts"
   ],
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@atlaskit/dropdown-menu": ["typings/@atlaskit/dropdown-menu"],
-      "@atlaskit/item": ["typings/@atlaskit/item"],
-      "@atlaskit/analytics-next": ["./src/analytics-next"]
-    }
-  }
 }

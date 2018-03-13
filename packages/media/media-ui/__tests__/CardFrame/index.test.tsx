@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import CardFrame from '../../../src/shared/CardFrame';
+import { CardFrame } from '../../src/CardFrame';
 import {
   Wrapper,
   LinkWrapper,
   IconWrapper,
   TextWrapper,
-} from '../../../src/shared/CardFrame/styled';
+} from '../../src/CardFrame/styled';
 
 describe('CardFrame', () => {
   it('should render as a link when there is a href', () => {

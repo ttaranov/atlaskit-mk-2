@@ -9,10 +9,13 @@ import {
   akColorN300,
   akFontFamily,
 } from '@atlaskit/util-shared-styles';
-import { borderRadius, size, linkCardShadow, ellipsis } from '../mixins';
+import { borderRadius, size, ellipsis } from '../mixins';
 
 const wrapperPadding = 8;
 export const className = 'media-card-frame';
+
+export const cardShadow = `
+  box-shadow: 0 0 1px 0 rgba(23, 43, 77, 0.24);`;
 
 export interface WrapperProps {
   minWidth?: number;
@@ -159,7 +162,7 @@ export const Content: ComponentClass<
 > = styled.div`
   position: relative;
 
-  ${borderRadius} ${linkCardShadow} background-color: white;
+  ${borderRadius} ${cardShadow} background-color: white;
   transition: box-shadow 0.3s;
 
   ${({ isInteractive }: ContentProps) => {

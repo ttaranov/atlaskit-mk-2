@@ -12,7 +12,7 @@ export default md`
   yarn add @atlaskit/smart-card
   ~~~
 
-  **Note:** A [fetch](https://www.npmjs.com/package/whatwg-fetch) polyfill is required on IE11.
+  **Note:** The [fetch](https://www.npmjs.com/package/whatwg-fetch) polyfill is required on IE11.
 
   ## Usage
   ${(
@@ -23,7 +23,7 @@ export default md`
     />
   )}
 
-  ## API 
+  ## API
 
   ### Client
 

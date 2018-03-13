@@ -6,28 +6,26 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Client } from '../src/SmartCardClient';
-import { SmartCardView } from '../src/SmartCardView';
-import { Card, LoadingView, LoadedView, ErroredView } from '../src/SmartCard';
+import { Client } from '../src/Client';
+import { CardView } from '../src/CardView';
+import { Card, LoadingView, LoadedView, ErroredView } from '../src/Card';
 import LazilyRender from 'react-lazily-render';
 
 function createClientWithNoResponse(): Client {
   const client = new Client();
-  jest.spyOn(client, 'fetch').mockReturnValue(Promise.resolve({ data: {} }));
+  jest.spyOn(client, 'get').mockReturnValue(Promise.resolve({ data: {} }));
   return client;
 }
 
 function createClientWithErrorResponse(): Client {
   const client = new Client();
-  jest
-    .spyOn(client, 'fetch')
-    .mockReturnValue(Promise.reject(new Error('Oops.')));
+  jest.spyOn(client, 'get').mockReturnValue(Promise.reject(new Error('Oops.')));
   return client;
 }
 
 function createClientWithOKResponse(): Client {
   const client = new Client();
-  jest.spyOn(client, 'fetch').mockReturnValue(Promise.resolve({ data: {} }));
+  jest.spyOn(client, 'get').mockReturnValue(Promise.resolve({ data: {} }));
   return client;
 }
 
@@ -74,7 +72,7 @@ describe('SmartCard', () => {
     await client.get('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(SmartCardView)).toHaveLength(1);
+    expect(wrapper.find(CardView)).toHaveLength(1);
   });
 
   it('should reload the data when changed', async () => {

@@ -18,7 +18,7 @@ import {
 import { CardView, CardViewProps } from '@atlaskit/smart-card';
 import { AppCardView } from '../../app/components/AppCardView';
 
-export type SmartCardProps = CardViewPrps;
+export type SmartCardProps = CardViewProps;
 
 function convertUser(oldUser: OldUserViewModel) {
   return {
