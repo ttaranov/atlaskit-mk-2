@@ -247,7 +247,6 @@ export class CardList extends Component<CardListProps, CardListState> {
       actions.map(action => {
         return {
           label: action.label,
-          type: action.type,
           handler: (item: MediaItem, event: Event) => {
             if (collection) {
               action.handler(collectionItem, collection, event);
