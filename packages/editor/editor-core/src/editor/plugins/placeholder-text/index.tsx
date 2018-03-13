@@ -140,12 +140,7 @@ const placeholderTextPlugin = (
     ];
   },
 
-  contentComponent({
-    editorView,
-    eventDispatcher,
-    popupsMountPoint,
-    popupsBoundariesElement,
-  }) {
+  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
     const insertPlaceholderText = (value: string) =>
       insertPlaceholderTextAtSelection(value)(
         editorView.state,
@@ -157,10 +152,9 @@ const placeholderTextPlugin = (
     const getFixedCoordinatesFromPos = (pos: number) =>
       editorView.coordsAtPos(pos);
     const setFocusInEditor = () => editorView.focus();
+
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{ placeholderTextState: pluginKey }}
         render={({ placeholderTextState = {} as PluginState }) => {
           if (placeholderTextState.showInsertPanelAt) {

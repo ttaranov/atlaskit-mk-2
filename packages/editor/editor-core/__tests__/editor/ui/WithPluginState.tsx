@@ -1,14 +1,16 @@
-import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
+import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { name } from '../../../package.json';
 import WithPluginState from '../../../src/editor/ui/WithPluginState';
 import { EditorPlugin } from '../../../src/editor/types/editor-plugin';
 import {
   EventDispatcher,
   createDispatch,
 } from '../../../src/editor/event-dispatcher';
-import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import EditorActions from '../../../src/editor/actions';
+import EditorContext from '../../../src/editor/ui/EditorContext';
 
 describe(name, () => {
   const pluginKey = new PluginKey('plugin');
@@ -196,5 +198,29 @@ describe(name, () => {
     wrapper.unmount();
     editorView.destroy();
     expect(unsubscribeMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should support getting EditorView and EventDispatcher from the context', () => {
+    const pluginState = {};
+    const plugin = createPlugin(pluginState, pluginKey);
+    const editorActions = new EditorActions();
+    const { editorView } = createEditor({
+      doc: doc(p()),
+      editorPlugins: [plugin],
+    });
+    editorActions._privateRegisterEditor(editorView, eventDispatcher);
+    const wrapper = mount(
+      <EditorContext editorActions={editorActions}>
+        <WithPluginState
+          plugins={{ currentPluginState: pluginKey }}
+          render={({ currentPluginState }) => {
+            expect(currentPluginState).toEqual(pluginState);
+            return null;
+          }}
+        />
+      </EditorContext>,
+    );
+    wrapper.unmount();
+    editorView.destroy();
   });
 });

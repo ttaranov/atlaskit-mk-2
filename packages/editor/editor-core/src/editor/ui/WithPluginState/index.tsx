@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import * as PropTypes from 'prop-types';
 import { EventDispatcher } from '../../event-dispatcher';
+import EditorActions from '../../actions';
 
 export interface State {
   [name: string]: any;
 }
 
+export type PluginsConfig = { [name: string]: PluginKey };
+export type Context = {
+  editorActions?: EditorActions;
+};
+
 export interface Props {
   eventDispatcher?: EventDispatcher;
   editorView?: EditorView;
-  plugins: { [name: string]: PluginKey };
-  render: (pluginsState: State) => React.ReactElement<any>;
+  plugins: PluginsConfig;
+  render: (pluginsState: State) => React.ReactElement<any> | null;
 }
 
 /**
@@ -30,15 +37,49 @@ export interface Props {
  *
  * renderComponent: ({ hyperlink }) => React.Component;
  */
-export default class WithPluginState extends React.Component<State, any> {
-  state = {};
+export default class WithPluginState extends React.Component<Props, State> {
   private listeners = {};
   private debounce: number | null = null;
   private notAppliedState = {};
+  private isSubscribed = false;
 
-  constructor(props) {
+  static contextTypes = {
+    editorActions: PropTypes.object,
+  };
+
+  state = {};
+  context: Context;
+
+  constructor(props: Props, context: Context) {
     super(props);
-    this.state = this.getPluginsStates(props.plugins, props.editorView);
+    this.state = this.getPluginsStates(
+      props.plugins,
+      this.getEditorView(props, context),
+    );
+  }
+
+  private getEditorView(
+    maybeProps?: Props,
+    maybeContext?: Context,
+  ): EditorView | undefined {
+    const props = maybeProps || this.props;
+    const context = maybeContext || this.context;
+    return (
+      props.editorView ||
+      (context &&
+        context.editorActions &&
+        context.editorActions._privateGetEditorView())
+    );
+  }
+
+  private getEventDispatcher(maybeProps?: Props): EventDispatcher | undefined {
+    const props = maybeProps || this.props;
+    return (
+      props.eventDispatcher ||
+      (this.context &&
+        this.context.editorActions &&
+        this.context.editorActions._privateGetEventDispathcer())
+    );
   }
 
   private handlePluginStateChange = (
@@ -54,7 +95,7 @@ export default class WithPluginState extends React.Component<State, any> {
   /**
    * Debounces setState calls in order to reduce number of re-renders caused by several plugin state changes.
    */
-  private updateState(stateSubset) {
+  private updateState(stateSubset: State) {
     this.notAppliedState = { ...this.notAppliedState, ...stateSubset };
 
     if (this.debounce) {
@@ -70,7 +111,7 @@ export default class WithPluginState extends React.Component<State, any> {
 
   private getPluginsStates(
     plugins: { [name: string]: PluginKey },
-    editorView: EditorView,
+    editorView?: EditorView,
   ) {
     if (!editorView || !plugins) {
       return {};
@@ -87,10 +128,15 @@ export default class WithPluginState extends React.Component<State, any> {
   }
 
   private subscribe(props: Props): void {
-    const { eventDispatcher, editorView, plugins } = props;
-    if (!eventDispatcher || !editorView) {
+    const plugins = props.plugins;
+    const eventDispatcher = this.getEventDispatcher(props);
+    const editorView = this.getEditorView(props);
+
+    if (!eventDispatcher || !editorView || this.isSubscribed) {
       return;
     }
+
+    this.isSubscribed = true;
 
     const pluginsStates = this.getPluginsStates(plugins, editorView);
     this.setState(pluginsStates);
@@ -118,28 +164,17 @@ export default class WithPluginState extends React.Component<State, any> {
     });
   }
 
-  componentDidMount() {
-    this.subscribe(this.props as Props);
-  }
+  private unsubscribe() {
+    const eventDispatcher = this.getEventDispatcher();
+    const editorView = this.getEditorView();
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      nextProps.eventDispatcher &&
-      (!this.props.eventDispatcher || !this.props.editorView)
-    ) {
-      this.subscribe(nextProps);
-    }
-  }
-
-  componentWillUnmount() {
-    const { eventDispatcher } = this.props;
-    if (!eventDispatcher) {
+    if (!eventDispatcher || !editorView || !this.isSubscribed) {
       return;
     }
 
     Object.keys(this.listeners).forEach(key => {
       const pluginState = this.listeners[key].pluginKey.getState(
-        this.props.editorView.state,
+        editorView.state,
       );
 
       if (pluginState && pluginState.unsubscribe) {
@@ -150,6 +185,38 @@ export default class WithPluginState extends React.Component<State, any> {
     });
 
     this.listeners = [];
+  }
+
+  private onContextUpdate = () => {
+    this.subscribe(this.props);
+  };
+
+  private subscribeToContextUpdates(context?: Context) {
+    if (context && context.editorActions) {
+      context.editorActions._privateSubscribe(this.onContextUpdate);
+    }
+  }
+
+  private unsubscribeFromContextUpdates(context?: Context) {
+    if (context && context.editorActions) {
+      context.editorActions._privateUnsubscribe(this.onContextUpdate);
+    }
+  }
+
+  componentDidMount() {
+    this.subscribe(this.props);
+    this.subscribeToContextUpdates(this.context);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (!this.isSubscribed) {
+      this.subscribe(nextProps);
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromContextUpdates(this.context);
+    this.unsubscribe();
   }
 
   render() {

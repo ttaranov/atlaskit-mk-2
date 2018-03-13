@@ -21,17 +21,10 @@ const datePlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent({
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-  }) {
+  contentComponent({ editorView }) {
     const { dispatch } = editorView;
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{
           dateState: pluginKey,
         }}

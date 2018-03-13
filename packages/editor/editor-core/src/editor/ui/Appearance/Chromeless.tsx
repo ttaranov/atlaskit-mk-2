@@ -121,12 +121,8 @@ export default class Editor extends React.Component<
   };
 
   render() {
-    const { eventDispatcher, editorView } = this.props;
-
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{ maxContentSize: maxContentSizePluginKey }}
         render={this.renderChrome}
       />

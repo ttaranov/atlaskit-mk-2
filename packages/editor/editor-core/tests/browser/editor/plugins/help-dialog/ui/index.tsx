@@ -13,6 +13,7 @@ import helpDialog from '../../../../../../src/editor/plugins/help-dialog';
 import * as keymaps from '../../../../../../src/keymaps';
 import { browser, createSchema, doc } from '@atlaskit/editor-common';
 import EditorActions from '../../../../../../src/editor/actions';
+import { EventDispatcher } from '../../../../../../src/editor/event-dispatcher';
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
@@ -20,7 +21,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   beforeEach(() => {
     const editor = createEditor({ editorPlugins: [helpDialog] });
     editorActions = new EditorActions();
-    editorActions._privateRegisterEditor(editor.editorView);
+    editorActions._privateRegisterEditor(
+      editor.editorView,
+      new EventDispatcher(),
+    );
     editorView = editor.editorView;
   });
 
