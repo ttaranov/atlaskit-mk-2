@@ -1,6 +1,6 @@
 import { deselectItem } from '../../../actions/deselectItem';
 import * as React from 'react';
-import { Component, ReactNode } from 'react';
+import { Component, ComponentClass } from 'react';
 import { connect } from 'react-redux';
 
 import { BinaryUploader } from '../../../../components/binary';
@@ -17,7 +17,7 @@ export interface MainEditorViewStateProps {
 }
 
 export interface MainEditorViewState {
-  EditorViewComponent?: ReactNode;
+  EditorViewComponent?: ComponentClass<any>;
 }
 
 export interface MainEditorViewOwnProps {
@@ -76,13 +76,12 @@ export class MainEditorView extends Component<
   private renderContent = (editorData: EditorData): JSX.Element => {
     const { EditorViewComponent } = this.state;
     const { imageUrl, originalFile, error } = editorData;
-    const EditorViewComponentUnsafe = EditorViewComponent as any;
 
     if (error) {
       return this.renderError(error);
-    } else if (imageUrl && originalFile) {
+    } else if (imageUrl && originalFile && EditorViewComponent) {
       return (
-        <EditorViewComponentUnsafe
+        <EditorViewComponent
           imageUrl={imageUrl}
           onSave={this.onEditorSave(originalFile)}
           onCancel={this.onCancel}
