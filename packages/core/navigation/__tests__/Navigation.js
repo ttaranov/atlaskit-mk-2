@@ -586,8 +586,8 @@ describe('<Navigation />', () => {
             globalPrimaryItemHref="http://a.com"
             isOpen={false}
           />,
-        ).not.toThrow();
-      });
+        );
+      }).not.toThrow();
     });
   });
 });
