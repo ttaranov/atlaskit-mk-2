@@ -8,6 +8,7 @@ describe('Renderer - React/Marks/Action', () => {
   const createAction = (eventHandlers = {}) =>
     mount(
       <Action
+        markKey="test-action-key"
         title="some-title"
         target={{ key: 'test-target' }}
         parameters={{ test: 'some-value' }}
@@ -28,6 +29,7 @@ describe('Renderer - React/Marks/Action', () => {
       action: {
         onClick: actionMark => {
           expect(actionMark).to.deep.equal({
+            key: 'test-action-key',
             target: {
               key: 'test-target',
             },

@@ -32,6 +32,7 @@ import mediaPlugin from '../../../../src/editor/plugins/media';
 import EditorActions from '../../../../src/editor/actions';
 import { toJSON } from '../../../../src/utils';
 import { pickerFacadeLoader } from '../../../../src';
+import { EventDispatcher } from '../../../../src/editor/event-dispatcher';
 
 chai.use(chaiPlugin);
 
@@ -72,7 +73,10 @@ describe(name, () => {
       });
       providerFactory.setProvider('mediaProvider', mediaProvider);
       editorActions = new EditorActions();
-      editorActions._privateRegisterEditor(editor.editorView);
+      editorActions._privateRegisterEditor(
+        editor.editorView,
+        new EventDispatcher(),
+      );
       editorView = editor.editorView;
 
       mediaPluginState = mediaPluginStateKey.getState(editorView.state) as any;
@@ -321,7 +325,10 @@ describe(name, () => {
           });
           providerFactory.setProvider('mediaProvider', mediaProvider);
           editorActions = new EditorActions();
-          editorActions._privateRegisterEditor(editor.editorView);
+          editorActions._privateRegisterEditor(
+            editor.editorView,
+            new EventDispatcher(),
+          );
           editorView = editor.editorView;
           mediaPluginState = mediaPluginStateKey.getState(
             editorView.state,
@@ -364,7 +371,11 @@ describe(name, () => {
       });
 
       it('should update the document using the transformer when a transformer is set', () => {
-        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+        editorActions._privateRegisterEditor(
+          editorView,
+          new EventDispatcher(),
+          dummyTransformer,
+        );
 
         const wasSuccessful = editorActions.replaceDocument('Hello World!');
         expect(wasSuccessful).to.equal(true);
@@ -436,7 +447,7 @@ describe(name, () => {
         });
         const editorView = editor.editorView;
         const editorActions = new EditorActions();
-        editorActions._privateRegisterEditor(editorView);
+        editorActions._privateRegisterEditor(editorView, new EventDispatcher());
         editorActions.replaceSelection('');
         expect(editorView.state.doc).to.deep.equal(doc(p('some new content')));
       });

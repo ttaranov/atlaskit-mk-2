@@ -106,6 +106,9 @@ function setLocalClients() {
     },
     firefox: {
       browserName: 'firefox',
+      'moz:firefoxOptions': {
+        args: ['-headless'],
+      },
     },
   };
 
@@ -122,13 +125,13 @@ function setBrowserStackClients() {
     chrome: {
       os: 'Windows',
       browserName: 'Chrome',
-      browser_version: '63.0',
+      browser_version: '64.0',
       resolution: '1440x900',
     },
     firefox: {
       os: 'Windows',
       browserName: 'firefox',
-      browser_version: '57',
+      browser_version: '58',
       resolution: '1440x900',
     },
     ie: {
@@ -152,6 +155,9 @@ function setBrowserStackClients() {
   };
 
   let clis = [];
+  if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+  }
 
   Object.keys(launchers).forEach(key => {
     const option = {
@@ -160,7 +166,7 @@ function setBrowserStackClients() {
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',
-        build: process.env.BITBUCKET_BRANCH || 'Unknown_Branch',
+        build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,

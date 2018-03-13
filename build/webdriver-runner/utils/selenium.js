@@ -9,9 +9,24 @@ const start = util.promisify(Selenium.start);
 
 let child;
 
+// Add selenium config to override default
+// Update chromedriver to run on Chrome65
+const seleniumConfig = {
+  drivers: {
+    chrome: {
+      version: '2.36',
+      arch: process.arch,
+    },
+    firefox: {
+      version: '0.19.1',
+      arch: process.arch,
+    },
+  },
+};
+
 async function startSelenium() {
-  await install({});
-  child = await start({});
+  await install(seleniumConfig);
+  child = await start(seleniumConfig);
   console.log('Started selenium server');
 }
 

@@ -3,6 +3,7 @@ import {
   MentionAttributes,
   MediaSingleAttributes,
   ApplicationCardAttributes,
+  CellAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -301,21 +302,9 @@ export const table = nodeFactory(sampleSchema.nodes.table, {});
 export const tableWithAttrs = (attrs: { isNumberColumnEnabled?: boolean }) =>
   nodeFactory(sampleSchema.nodes.table, attrs);
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
-export interface CellAttributes {
-  colspan?: number;
-  rowspan?: number;
-  background?: string | null;
-  colwidth?: number | null;
-}
-const defaultCellAttributes = {
-  colspan: 1,
-  rowspan: 1,
-  background: null,
-  colwidth: null,
-};
-export const td = (attrs: CellAttributes = defaultCellAttributes) =>
+export const td = (attrs?: CellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableCell, attrs);
-export const th = (attrs: CellAttributes = defaultCellAttributes) =>
+export const th = (attrs?: CellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableHeader, attrs);
 export const tdEmpty = td()(p(''));
 export const thEmpty = th()(p(''));

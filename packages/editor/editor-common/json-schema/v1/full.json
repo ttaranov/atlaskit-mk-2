@@ -454,6 +454,9 @@
             "title": {
               "type": "string"
             },
+            "key": {
+              "type": "string"
+            },
             "target": {
               "type": "object",
               "properties": {
@@ -794,16 +797,15 @@
               "type": "number"
             },
             "colwidth": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             },
             "background": {
               "type": "string"
             }
           },
-          "required": [
-            "colspan",
-            "rowspan"
-          ],
           "additionalProperties": false
         },
         "content": {
@@ -835,16 +837,15 @@
               "type": "number"
             },
             "colwidth": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             },
             "background": {
               "type": "string"
             }
           },
-          "required": [
-            "colspan",
-            "rowspan"
-          ],
           "additionalProperties": false
         },
         "content": {
@@ -1094,6 +1095,9 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "key": {
+                    "type": "string"
+                  },
                   "title": {
                     "type": "string"
                   },
@@ -1114,11 +1118,11 @@
                   },
                   "parameters": {}
                 },
+                "additionalProperties": false,
                 "required": [
                   "title",
                   "target"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "context": {

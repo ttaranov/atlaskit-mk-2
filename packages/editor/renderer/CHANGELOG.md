@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 11.5.12
+
+## 11.5.11
+- [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
+
 ## 11.5.10
 
 ## 11.5.9

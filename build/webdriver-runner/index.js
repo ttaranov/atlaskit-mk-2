@@ -26,7 +26,7 @@ function runTests() {
 }
 
 async function main() {
-  await webpack.startDevServer();
+  process.env.RUN_ENV === 'CI' ? webpack.startDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -35,7 +35,7 @@ async function main() {
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  webpack.stopDevServer();
+  process.env.RUN_ENV === 'CI' ? webpack.stopDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();

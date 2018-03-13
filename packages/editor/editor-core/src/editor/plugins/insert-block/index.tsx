@@ -60,8 +60,6 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
     const renderNode = providers => {
       return (
         <WithPluginState
-          editorView={editorView}
-          eventDispatcher={eventDispatcher}
           plugins={{
             blockTypeState: blockTypeStateKey,
             mediaState: mediaStateKey,

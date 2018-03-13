@@ -116,9 +116,9 @@ export interface TableHeader {
 }
 
 export interface CellAttributes {
-  colspan: number;
-  rowspan: number;
-  colwidth?: number;
+  colspan?: number;
+  rowspan?: number;
+  colwidth?: number[];
   background?: string;
 }
 
@@ -208,12 +208,4 @@ export const tableHeader: any = {
   },
 };
 
-export const toJSONTableHeader = (node: PmNode) => ({
-  attrs: Object.keys(node.attrs).reduce((obj, key) => {
-    if (cellAttrs[key].default !== node.attrs[key]) {
-      obj[key] = node.attrs[key];
-    }
-
-    return obj;
-  }, {}),
-});
+export const toJSONTableHeader = toJSONTableCell;

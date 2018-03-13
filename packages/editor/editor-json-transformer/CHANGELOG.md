@@ -1,5 +1,7 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.10
+
 ## 2.5.9
 
 ## 2.5.8

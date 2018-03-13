@@ -16,6 +16,9 @@ export default function withAnalyticsContext(
 ) => ComponentType<WithAnalyticsContextProps> {
   return (WrappedComponent: ComponentType<ObjectType>) =>
     class WithAnalyticsContext extends Component<WithAnalyticsContextProps> {
+      static displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
+        WrappedComponent.name})`;
+
       static defaultProps = {
         analyticsContext: {},
       };
