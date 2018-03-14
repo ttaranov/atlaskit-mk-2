@@ -6,13 +6,10 @@ import {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-import { CardDimensions } from '@atlaskit/media-card';
-import { CardEventHandler, ImageResizeMode } from '@atlaskit/media-core';
-import { MediaStateManager } from '../../pm-plugins/main';
 import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
 import { ImageResizeMode } from '@atlaskit/media-core';
 
-import { MediaStateManager } from '../../plugins/media';
+import { MediaStateManager } from '../../pm-plugins/main';
 import MediaComponent, { Appearance } from './MediaComponent';
 
 export interface Props {
