@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 12.1.0
+- [minor] Fixes Media Cards in renderer [064bfb5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/064bfb5)
+
 ## 12.0.1
 
 ## 12.0.0

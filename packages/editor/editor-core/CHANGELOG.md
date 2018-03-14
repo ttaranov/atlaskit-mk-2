@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 64.1.3
+
 ## 64.1.2
 - [patch] Merge old plugins with new plugins [cd02d6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd02d6b)
 
