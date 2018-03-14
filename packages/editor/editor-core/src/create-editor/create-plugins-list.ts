@@ -33,6 +33,7 @@ import {
   placeholderTextPlugin,
   hyperlinkPlugin,
   textFormattingPlugin,
+  widthPlugin,
 } from '../plugins';
 
 /**
@@ -47,6 +48,7 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     clearMarksOnChangeToEmptyDocumentPlugin,
     hyperlinkPlugin,
     textFormattingPlugin,
+    widthPlugin,
   ];
 }
 
