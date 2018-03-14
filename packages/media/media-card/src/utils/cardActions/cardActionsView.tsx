@@ -28,7 +28,7 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     return (
       <PreventClickThrough>
         <Wrapper>
-          {primaryAction && this.renderActionIconButton(primaryAction)}
+          {primaryAction ? this.renderActionIconButton(primaryAction) : null}
           {this.renderOtherActionButtons(otherActions)}
         </Wrapper>
       </PreventClickThrough>
