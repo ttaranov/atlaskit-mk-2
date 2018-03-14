@@ -5,7 +5,7 @@ import { UploadingView } from '../../src/utils/uploadingView';
 import { MediaImage, CardActionsView } from '../../src/utils';
 
 describe('UploadingView', () => {
-  it('should render card actions when some action is provided', () => {
+  it('should render card actions with provided actions', () => {
     const actions = [
       {
         label: 'Delete',
