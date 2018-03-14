@@ -10,16 +10,13 @@ import {
   privateTrelloBoardUrlPreviewId,
   errorLinkId,
 } from '@atlaskit/media-test-helpers';
+import {
+  AnalyticsListener,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next';
 
 import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
-
-import {
-  AnalyticsListener as AnalyticsListenerClass,
-  UIAnalyticsEventInterface,
-} from '../src/analytics-next-types';
-import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
-const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
 
 const context = createStorybookContext();
 const onClick = ({ event, mediaItemDetails }, analyticsEvent) => {

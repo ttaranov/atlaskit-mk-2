@@ -6,16 +6,13 @@ import {
   unknownFileId,
   errorFileId,
 } from '@atlaskit/media-test-helpers';
+import {
+  AnalyticsListener,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next';
 
 import { Card, FileIdentifier } from '../src';
 import { createApiCards } from '../example-helpers';
-
-import {
-  AnalyticsListener as AnalyticsListenerClass,
-  UIAnalyticsEventInterface,
-} from '../src/analytics-next-types';
-import { AnalyticsListener as AnalyticsListenerImpl } from '@atlaskit/analytics-next';
-const AnalyticsListener = AnalyticsListenerImpl as AnalyticsListenerClass;
 
 const action = args => console.log;
 
