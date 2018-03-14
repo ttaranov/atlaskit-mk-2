@@ -35,9 +35,9 @@
     "css-color-names": "0.0.4",
     "date-fns": "^1.29.0",
     "linkify-it": "^2.0.3",
-    "prosemirror-model": "^1.0.0",
+    "prosemirror-model": "^1.1.0",
     "prosemirror-schema-basic": "^1.0.0",
-    "prosemirror-view": "^1.0.0",
+    "prosemirror-view": "^1.1.0",
     "raf-schd": "^2.1.0",
     "styled-components": "1.4.6 - 3"
   },

@@ -21,11 +21,11 @@
     "@atlaskit/editor-core": "^64.1.2",
     "@atlaskit/media-core": "^14.1.1",
     "@atlaskit/media-test-helpers": "^9.0.5",
-    "prosemirror-commands": "^1.0.1",
+    "prosemirror-commands": "^1.0.5",
     "prosemirror-keymap": "^1.0.1",
-    "prosemirror-model": "^1.0.0",
-    "prosemirror-state": "^1.0.1",
-    "prosemirror-view": "^1.0.0"
+    "prosemirror-model": "^1.1.0",
+    "prosemirror-state": "^1.1.0",
+    "prosemirror-view": "^1.1.0"
   },
   "peerDependencies": {},
   "devDependencies": {
