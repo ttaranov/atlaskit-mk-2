@@ -45,9 +45,9 @@ export default md`
     (
       // $FlowFixMe TEMPORARY
       <Example
-        Component={require('../examples/02-checkbox-group').default}
-        title="With CheckboxGroup"
-        source={require('!!raw-loader!../examples/02-checkbox-group')}
+        Component={require('../examples/02-indeterminate').default}
+        title="Indeterminate"
+        source={require('!!raw-loader!../examples/02-indeterminate')}
       />
     )
   }
@@ -56,9 +56,20 @@ export default md`
     (
       // $FlowFixMe TEMPORARY
       <Example
-        Component={require('../examples/03-checkbox-form').default}
+        Component={require('../examples/03-checkbox-group').default}
+        title="With CheckboxGroup"
+        source={require('!!raw-loader!../examples/03-checkbox-group')}
+      />
+    )
+  }
+
+  ${
+    (
+      // $FlowFixMe TEMPORARY
+      <Example
+        Component={require('../examples/04-checkbox-form').default}
         title="With a Form"
-        source={require('!!raw-loader!../examples/03-checkbox-form')}
+        source={require('!!raw-loader!../examples/04-checkbox-form')}
       />
     )
   }
