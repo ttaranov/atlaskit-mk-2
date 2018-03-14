@@ -83,14 +83,12 @@ class TimePicker extends Component<Props, State> {
   };
 
   getOptions(): Array<Option> {
-    return this.state.times.reduce((prev: Array<Option>, curr: string): Array<
-      Option,
-    > => {
-      return prev.concat({
-        label: formatTime(curr),
-        value: curr,
-      });
-    }, []);
+    return this.state.times.map((time: string): Option => {
+      return {
+        label: formatTime(time),
+        value: time,
+      };
+    });
   }
 
   onChange = (v: Object | null): void => {
