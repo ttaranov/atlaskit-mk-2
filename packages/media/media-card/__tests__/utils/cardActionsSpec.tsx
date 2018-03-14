@@ -136,6 +136,15 @@ describe('CardActions', () => {
     expect(onToggle).toHaveBeenCalled();
   });
 
+  it('should call action handler when icon button is pressed', () => {
+    const triggerColor = 'some-color-string';
+    const { iconButtons } = setup([annotateAction], triggerColor);
+
+    iconButtons.simulate('click');
+
+    expect(annotateAction.handler).toHaveBeenCalled();
+  });
+
   it('should call action handler when item is pressed', () => {
     const triggerColor = 'some-color-string';
     const { dropdownItems } = setup([openAction], triggerColor);
