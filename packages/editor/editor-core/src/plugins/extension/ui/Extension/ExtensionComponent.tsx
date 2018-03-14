@@ -6,6 +6,8 @@ import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
+import BodiedExtension from './BodiedExtension';
+import { ExtensionHandlers } from '../../editor/types';
 
 export interface Props {
   editorView: EditorView;
@@ -19,6 +21,8 @@ export interface Props {
     state: EditorState,
     dispatch: (tr: Transaction) => void,
   ) => void;
+  extensionHandlers: ExtensionHandlers;
+  isFocused?: boolean;
 }
 
 export interface State {
@@ -58,19 +62,32 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef } = this.props;
+    const { node, handleContentDOMRef, isFocused } = this.props;
+    const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
       case 'extension':
-      case 'bodiedExtension':
         return (
           <Extension
             node={node}
             macroProvider={macroProvider}
             onClick={this.handleClick}
+          >
+            {extensionHandlerResult}
+          </Extension>
+        );
+      case 'bodiedExtension':
+        return (
+          <BodiedExtension
+            node={node}
+            macroProvider={macroProvider}
+            onClick={this.handleClick}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
-          />
+            isFocused={isFocused}
+          >
+            {extensionHandlerResult}
+          </BodiedExtension>
         );
       case 'inlineExtension':
         return (
@@ -78,7 +95,9 @@ export default class ExtensionComponent extends Component<Props, State> {
             node={node}
             macroProvider={macroProvider}
             onClick={this.handleClick}
-          />
+          >
+            {extensionHandlerResult}
+          </InlineExtension>
         );
       default:
         return null;
@@ -103,5 +122,44 @@ export default class ExtensionComponent extends Component<Props, State> {
   private handleSelectExtension = () => {
     const { state, dispatch } = this.props.editorView;
     this.props.selectExtension(state, dispatch);
+  };
+
+  private tryExtensionHandler() {
+    const { node } = this.props;
+    try {
+      const extensionContent = this.handleExtension(node);
+      if (extensionContent && React.isValidElement(extensionContent)) {
+        return extensionContent;
+      }
+    } catch (e) {
+      /* tslint:disable-next-line:no-console */
+      console.error('Provided extension handler has thrown an error\n', e);
+      /** We don't want this error to block renderer */
+      /** We keep rendering the default content */
+    }
+    return null;
+  }
+
+  private handleExtension = (node: PMNode) => {
+    const { extensionHandlers, editorView } = this.props;
+    const { extensionType, extensionKey, parameters } = node.attrs;
+
+    if (!extensionHandlers || !extensionHandlers[extensionType]) {
+      return;
+    }
+
+    return extensionHandlers[extensionType](
+      {
+        type: node.type.name as
+          | 'extension'
+          | 'inlineExtension'
+          | 'bodiedExtension',
+        extensionType,
+        extensionKey,
+        parameters,
+        content: node.content,
+      },
+      editorView.state.doc,
+    );
   };
 }

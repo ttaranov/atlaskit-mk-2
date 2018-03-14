@@ -17,6 +17,7 @@ export type PMPluginFactory = (
     dispatch: Dispatch;
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
+    eventDispatcher: EventDispatcher;
   },
 ) => Plugin | undefined;
 

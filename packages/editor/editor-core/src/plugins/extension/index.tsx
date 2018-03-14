@@ -24,8 +24,19 @@ const extensionPlugin: EditorPlugin = {
     return [
       {
         rank: 2330,
-        plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+        plugin: ({
+          schema,
+          props,
+          dispatch,
+          providerFactory,
+          eventDispatcher,
+        }) =>
+          createPlugin(
+            dispatch,
+            providerFactory,
+            props.extensionHandlers,
+            eventDispatcher,
+          ),
       },
     ];
   },

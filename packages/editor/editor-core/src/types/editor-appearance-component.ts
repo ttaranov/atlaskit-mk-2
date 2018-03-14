@@ -6,6 +6,7 @@ import {
   UIComponentFactory,
   ReactElement,
   InsertMenuCustomItem,
+  ExtensionHandlers,
 } from '../types';
 
 export interface EditorAppearanceComponentProps {
@@ -36,6 +37,8 @@ export interface EditorAppearanceComponentProps {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+
+  extensionHandlers: ExtensionHandlers;
 
   disabled?: boolean;
 }
