@@ -14,19 +14,19 @@ import {
   hoverColumn,
   hoverRow,
   hoverTable,
-} from '../../../src/editor/plugins/table/actions';
-import { tableStartPos } from '../../../src/editor/plugins/table/utils';
-import { pluginKey as hoverPluginKey } from '../../../src/editor/plugins/table/hover-selection-plugin';
+} from '../../../src/plugins/table/actions';
+import { tableStartPos } from '../../../src/plugins/table/utils';
+import { pluginKey as hoverPluginKey } from '../../../src/plugins/table/pm-plugins/hover-selection-plugin';
 import {
   TableState,
   stateKey as tablePluginKey,
-} from '../../../src/plugins/table';
+} from '../../../src/plugins/table/pm-plugins/main';
 import {
   getColumnPos,
   getRowPos,
   getTablePos,
-} from '../../../src/editor/plugins/table/utils';
-import tablesPlugin from '../../../src/editor/plugins/table';
+} from '../../../src/plugins/table/utils';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('table hover selection plugin', () => {
   const event = createEvent('event');

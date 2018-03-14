@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import { stateKey as hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
-import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
+import { hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
+import HyperlinkEdit from '../../../src/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
   createEditor,

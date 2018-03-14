@@ -10,9 +10,12 @@ import {
 import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
-} from '../../../src/plugins/media/media-single';
-import { MediaState, MediaStateStatus } from '../../../src/plugins/media';
-import mediaPlugin from '../../../src/editor/plugins/media';
+} from '../../../src/plugins/media/pm-plugins/media-single';
+import {
+  MediaState,
+  MediaStateStatus,
+} from '../../../src/plugins/media/pm-plugins/main';
+import mediaPlugin from '../../../src/plugins/media';
 
 const createMediaState = (
   id: string,

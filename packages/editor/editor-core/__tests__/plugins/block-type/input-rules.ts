@@ -14,9 +14,9 @@ import {
   a as link,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import panelPlugin from '../../../src/editor/plugins/panel';
-import listPlugin from '../../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import panelPlugin from '../../../src/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
 
 describe('inputrules', () => {
   const editor = (doc: any) =>

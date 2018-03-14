@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { Component } from 'react';
-import { EditorAppearance, EditorProps } from '../src/editor/types';
+import { EditorAppearance, EditorProps } from '../src/types';
 import Editor from '../src/editor';
-import getPropsPreset from '../src/editor/create-editor/get-props-preset';
+import getPropsPreset from '../src/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { taskDecisionDocFilter } from '../src/utils/filter/';
 import { toJSON, JSONDocNode, JSONNode } from '../src/utils/';

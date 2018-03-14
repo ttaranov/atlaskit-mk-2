@@ -13,8 +13,8 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import mediaPlugin from '../../../src/plugins/media';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 

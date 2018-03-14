@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Editor, { EditorProps } from '../../editor';
-import EditorContext from '../../editor/ui/EditorContext';
-import WithEditorActions from '../../editor/ui/WithEditorActions';
-import EditorActions from '../../editor/actions';
+import EditorContext from '../../ui/EditorContext';
+import WithEditorActions from '../../ui/WithEditorActions';
+import EditorActions from '../../actions';
 
 export interface EditorWithActionsPropsOverride extends EditorProps {
   onSave?: any;

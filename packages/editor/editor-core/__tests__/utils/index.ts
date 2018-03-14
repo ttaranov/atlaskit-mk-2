@@ -26,12 +26,12 @@ import {
   areBlockTypesDisabled,
   isEmptyNode,
 } from '../../src/utils';
-import mediaPlugin from '../../src/editor/plugins/media';
-import codeBlockPlugin from '../../src/editor/plugins/code-block';
-import panelPlugin from '../../src/editor/plugins/panel';
-import listPlugin from '../../src/editor/plugins/lists';
-import mentionsPlugin from '../../src/editor/plugins/mentions';
-import tasksAndDecisionsPlugin from '../../src/editor/plugins/tasks-and-decisions';
+import mediaPlugin from '../../src/plugins/media';
+import codeBlockPlugin from '../../src/plugins/code-block';
+import panelPlugin from '../../src/plugins/panel';
+import listPlugin from '../../src/plugins/lists';
+import mentionsPlugin from '../../src/plugins/mentions';
+import tasksAndDecisionsPlugin from '../../src/plugins/tasks-and-decisions';
 
 describe('@atlaskit/editore-core/utils', () => {
   const editor = (doc: any) =>

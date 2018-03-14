@@ -1,7 +1,7 @@
 import {
   TableState,
   stateKey as tablePluginKey,
-} from '../../../src/plugins/table';
+} from '../../../src/plugins/table/pm-plugins/main';
 import tableCommands from '../../../src/plugins/table/commands';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
@@ -33,17 +33,17 @@ import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
-} from '../../../src/editor/plugins/table/actions';
+} from '../../../src/plugins/table/actions';
 import {
   checkIfColumnSelected,
   checkIfRowSelected,
   checkIfNumberColumnEnabled,
   checkIfHeaderColumnEnabled,
   checkIfHeaderRowEnabled,
-} from '../../../src/editor/plugins/table/utils';
-import tablesPlugin from '../../../src/editor/plugins/table';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import { mediaPlugin } from '../../../src/editor/plugins';
+} from '../../../src/plugins/table/utils';
+import tablesPlugin from '../../../src/plugins/table';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import { mediaPlugin } from '../../../src/plugins';
 
 describe('table plugin', () => {
   const event = createEvent('event');

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
 
 import { EditorWithAnalytics } from './../src/editor';
-import getPropsPreset from './../src/editor/create-editor/get-props-preset';
+import getPropsPreset from './../src/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 
 // tslint:disable-next-line:no-console
