@@ -2,6 +2,7 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import Tooltip from '@atlaskit/tooltip';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 import * as styles from '../../../src/components/common/styles';
 import Emoji from '../../../src/components/common/Emoji';
@@ -92,6 +93,16 @@ describe('<Emoji />', () => {
 
       const tooltip = wrapper.find(Tooltip);
       expect(tooltip).to.have.length(0);
+    });
+
+    it('should show delete button is showDelete is passed in', () => {
+      const wrapper = shallow(<Emoji emoji={imageEmoji} showDelete={true} />);
+      expect(wrapper.find(CrossCircleIcon)).to.have.length(1);
+    });
+
+    it('should not show delete button if showDelete is not passed in', () => {
+      const wrapper = shallow(<Emoji emoji={imageEmoji} />);
+      expect(wrapper.find(CrossCircleIcon)).to.have.length(0);
     });
   });
 });

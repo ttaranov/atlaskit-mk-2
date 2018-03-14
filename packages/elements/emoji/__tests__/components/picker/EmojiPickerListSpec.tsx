@@ -15,6 +15,7 @@ import {
 } from '../../_test-data';
 import { EmojiDescription } from '../../../src/types';
 import { CachingEmoji } from '../../../src/components/common/CachingEmoji';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 const emojis = [imageEmoji];
 const customEmojis: EmojiDescription[] = [siteEmojiFoo, siteEmojiWtf];
@@ -72,11 +73,21 @@ describe('<EmojiPickerList />', () => {
 
       const cachedEmojis = wrapper.find(CachingEmoji);
 
-      // expected 3 emojis: foo in "Your Uploads", foo/wtf in "All uploads", grimacing in People
+      // expected 3 emojis: foo in "Your Uploads", foo/wtf in "All uploads"
       expect(cachedEmojis.length).to.equal(3);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(2).props.emoji.id).to.equal('wtf');
+    });
+
+    it('should render user custom emoji with delete button', () => {
+      const wrapper = mount(
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+      );
+      const yourEmoji = wrapper.find(CachingEmoji).at(0);
+      // expected first to be :foo: under "Your uploads"
+      expect(yourEmoji.props().emoji.id).to.equal('foo');
+      expect(yourEmoji.find(CrossCircleIcon)).to.have.length(1);
     });
 
     it('should not render user custom emojis section if user has none', () => {
@@ -93,6 +104,16 @@ describe('<EmojiPickerList />', () => {
       expect(cachedEmojis.length).to.equal(2);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('wtf');
+    });
+
+    it('should not render delete button if not user custom emoji', () => {
+      const wrapper = mount(
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
+      );
+      const emoji = wrapper.find(CachingEmoji).at(0);
+      // Expect first :foo: under "All uploads"
+      expect(emoji.props().emoji.id).to.equal('foo');
+      expect(emoji.find(CrossCircleIcon)).to.have.length(0);
     });
 
     it('should not render user custom emojis section if currentUser is undefined', () => {

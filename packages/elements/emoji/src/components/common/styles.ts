@@ -1,14 +1,24 @@
 import { borderRadius, colors } from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
-import { style, keyframes } from 'typestyle';
+import { style } from 'typestyle';
 
 export const selected = 'emoji-common-selected';
 export const selectOnHover = 'emoji-common-select-on-hover';
 export const emojiSprite = 'emoji-common-emoji-sprite';
+export const emojiNode = 'emoji-common-node';
 
 const checkerBoard =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
+
+export const deleteButton = style({
+  // hide by default
+  display: 'none',
+  float: 'right',
+  height: '0px',
+  marginRight: '-14px',
+  marginTop: '-14px',
+});
 
 export const emoji = style({
   borderRadius: '5px',
@@ -23,6 +33,10 @@ export const emoji = style({
   $nest: {
     [`&.${selected},&.${selectOnHover}:hover`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
+    },
+    [`&.${selected},&.${selectOnHover}:hover .${deleteButton}`]: {
+      // show delete button on hover
+      display: 'inherit',
     },
     img: {
       display: 'block',
@@ -93,25 +107,6 @@ export const emojiButton = style({
         },
       },
     },
-  },
-});
-
-export const slideUp = keyframes({
-  '0%': {
-    transform: 'translate(-50%, 12px)',
-    opacity: 0,
-    animationTimingFunction:
-      'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)',
-  },
-  '20%': {
-    transform: 'translate(-50%, 2.3999999999999986px)',
-    opacity: 0.8,
-    animationTimingFunction:
-      'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)',
-  },
-  '100%': {
-    transform: 'translate(-50%, 0px)',
-    opacity: 1,
   },
 });
 

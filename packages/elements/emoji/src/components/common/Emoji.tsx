@@ -2,6 +2,8 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
+import { colors } from '@atlaskit/theme';
 
 import * as styles from './styles';
 import {
@@ -48,6 +50,11 @@ export interface Props {
   onMouseMove?: OnEmojiEvent;
 
   /**
+   * Called when an emoji is deleted
+   */
+  onDelete?: OnEmojiEvent;
+
+  /**
    * Callback for if an emoji image fails to load.
    */
   onLoadError?: OnEmojiEvent<HTMLImageElement>;
@@ -61,6 +68,12 @@ export interface Props {
    * Show a tooltip on mouse hover.
    */
   showTooltip?: boolean;
+
+  /**
+   * Show a delete button on mouse hover
+   * Used only for custom emoji
+   */
+  showDelete?: boolean;
 
   /**
    * Fits emoji to height in pixels, keeping aspect ratio
@@ -80,6 +93,13 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
   const { emoji, onMouseMove } = props;
   if (onMouseMove) {
     onMouseMove(toEmojiId(emoji), emoji, event);
+  }
+};
+
+const handleDelete = (props: Props, event) => {
+  const { emoji, onDelete } = props;
+  if (onDelete) {
+    onDelete(toEmojiId(emoji), emoji, event);
   }
 };
 
@@ -114,6 +134,7 @@ const renderAsSprite = (props: Props) => {
   const sprite = representation.sprite;
   const classes = {
     [styles.emojiContainer]: true,
+    [styles.emojiNode]: true,
     [styles.selected]: selected,
     [styles.selectOnHover]: selectOnHover,
   };
@@ -179,10 +200,12 @@ const renderAsImage = (props: Props) => {
     selectOnHover,
     className,
     showTooltip,
+    showDelete,
   } = props;
 
   const classes = {
     [styles.emoji]: true,
+    [styles.emojiNode]: true,
     [styles.selected]: selected,
     [styles.selectOnHover]: selectOnHover,
   };
@@ -206,6 +229,23 @@ const renderAsImage = (props: Props) => {
     src = representation.mediaPath;
     width = representation.width;
     height = representation.height;
+  }
+
+  let deleteButton;
+  if (showDelete) {
+    const classes = {
+      [styles.deleteButton]: true,
+    };
+    deleteButton = (
+      <span className={classNames(classes)}>
+        <CrossCircleIcon
+          label="delete-emoji"
+          primaryColor={colors.N500}
+          size="small"
+          // onClick={(event) => handleDelete(props, event)}
+        />
+      </span>
+    );
   }
 
   let sizing = {};
@@ -247,6 +287,7 @@ const renderAsImage = (props: Props) => {
       }}
       aria-label={emoji.shortName}
     >
+      {deleteButton}
       {showTooltip ? (
         <Tooltip tag="span" content={emoji.shortName}>
           {emojiNode}
