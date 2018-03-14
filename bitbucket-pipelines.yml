@@ -28,17 +28,33 @@ pipelines:
 
   default:
     - step:
+        name: Installing dependencies
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
-          # - yarn build
-          - yarn lint
-          - yarn typecheck
-          - yarn test
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:
           - node
+        artifacts:
+          - node_modules/
+    - parallel:
+        - step:
+            name: Building dists
+            script:
+              - yarn build
+        - step:
+            name: Lint + Typecheck
+            script:
+              - yarn lint
+              - yarn typecheck
+        - step:
+            name: Testing
+            script:
+              - yarn test
+        - step:
+            name: Building website
+            script:
+              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+              - node build/ci-scripts/update.build.status.with.netlify.link.js
 
   custom: # Pipelines that can be scheduled or triggered manually
 
