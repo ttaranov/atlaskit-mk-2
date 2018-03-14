@@ -18,7 +18,8 @@ import {
   atTheEndOfDoc,
   atTheBeginningOfBlock,
 } from '../utils';
-import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
+
+import { hyperlinkPluginKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -304,7 +305,7 @@ export function insertCodeBlock(): Command {
 
 export function showLinkPanel(): Command {
   return function(state, dispatch, view) {
-    const pluginState = hyperlinkPluginStateKey.getState(state);
+    const pluginState = hyperlinkPluginKey.getState(state);
     return pluginState.showLinkPanel(view);
   };
 }

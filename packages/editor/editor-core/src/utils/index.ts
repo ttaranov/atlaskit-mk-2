@@ -24,8 +24,11 @@ import {
   JSONDocNode,
   JSONNode,
 } from '@atlaskit/editor-json-transformer';
-import { FakeTextCursorSelection } from '../editor/plugins/fake-text-cursor/cursor';
-import { stateKey as tableStateKey } from '../plugins/table';
+import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
+import { stateKey as tableStateKey } from '../plugins/table/pm-plugins/main';
+
+export * from './document';
+export * from './action';
 
 export {
   default as ErrorReporter,

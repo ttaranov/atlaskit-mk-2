@@ -6,8 +6,8 @@ import {
   img,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import imageUpload from '../../../src/editor/plugins/image-upload';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import imageUpload from '../../../src/plugins/image-upload';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('inputrules', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>

@@ -13,8 +13,8 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { MockEmojiResource } from '@atlaskit/emoji/dist/es5/support/MockEmojiResource';
-import emojiPlugin from '../../../src/editor/plugins/emoji';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import emojiPlugin from '../../../src/plugins/emoji';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
   MockEmojiResource

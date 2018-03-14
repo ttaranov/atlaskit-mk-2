@@ -10,8 +10,8 @@ import {
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../src/analytics';
-import listPlugin from '../../../src/editor/plugins/lists';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import listPlugin from '../../../src/plugins/lists';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('inputrules', () => {
   let trackEvent;

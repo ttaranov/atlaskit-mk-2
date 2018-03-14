@@ -1,58 +1,40 @@
-export {
-  default as blockTypePlugins,
-  stateKey as blockTypeStateKey,
-} from './block-type';
-export {
-  default as clearFormattingPlugins,
-  stateKey as clearFormattingStateKey,
-} from './clear-formatting';
-export {
-  default as codeBlockPlugins,
-  stateKey as codeBlockStateKey,
-  CodeBlockState,
-} from './code-block';
-export { default as emojisPlugins, stateKey as emojisStateKey } from './emojis';
-export {
-  default as asciiEmojiPlugins,
-  stateKey as asciiEmojiStateKey,
-} from './emojis/ascii-input-rules';
-export {
-  default as hyperlinkPlugins,
-  stateKey as hyperlinkStateKey,
-} from './hyperlink';
-export {
-  default as imageUploadPlugins,
-  stateKey as imageUploadStateKey,
-} from './image-upload';
-export { default as listsPlugins, stateKey as listsStateKey } from './lists';
-export {
-  default as mediaPluginFactory,
-  MediaPluginState,
-  stateKey as mediaStateKey,
-} from './media';
-export {
-  default as mentionsPlugins,
-  stateKey as mentionsStateKey,
-} from './mentions';
-export {
-  default as textFormattingPlugins,
-  stateKey as textFormattingStateKey,
-} from './text-formatting';
-export {
-  default as textColorPlugins,
-  stateKey as textColorStateKey,
-} from './text-color';
-export { default as rulePlugins } from './rule';
-export { default as panelPlugins, stateKey as panelStateKey } from './panel';
-export {
-  default as reactNodeViewPlugins,
-  ReactNodeViewState,
-  stateKey as reactNodeViewStateKey,
-} from './react-nodeview';
-export {
-  default as tablePlugins,
-  TableState,
-  stateKey as tableStateKey,
-} from './table';
+export { default as basePlugin } from './base';
+export { default as placeholderPlugin } from './placeholder';
+export { default as blockTypePlugin } from './block-type';
+export { default as textFormattingPlugin } from './text-formatting';
+export { default as mentionsPlugin } from './mentions';
+export { default as emojiPlugin } from './emoji';
+export { default as saveOnEnterPlugin } from './save-on-enter';
+export { default as submitEditorPlugin } from './submit-editor';
+export { default as imageUploadPlugin } from './image-upload';
+export { default as mediaPlugin } from './media';
 export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';
-export { default as pastePlugins, stateKey as pluginStateKey } from './paste';
+export { default as hyperlinkPlugin } from './hyperlink';
+export { default as rulePlugin } from './rule';
+export { default as codeBlockPlugin } from './code-block';
+export { default as maxContentSizePlugin } from './max-content-size';
+export { default as pastePlugin } from './paste';
+export { default as listsPlugin } from './lists';
+export { default as textColorPlugin } from './text-color';
+export { default as tablesPlugin } from './table';
+export { default as insertBlockPlugin } from './insert-block';
+export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
+export { default as helpDialogPlugin } from './help-dialog';
+export { default as jiraIssuePlugin } from './jira-issue';
+export { default as unsupportedContentPlugin } from './unsupported-content';
+export { default as panelPlugin } from './panel';
+export { default as tablePlugin } from './table';
+export { default as macroPlugin } from './macro';
+export { default as extensionPlugin } from './extension';
+export { default as datePlugin } from './date';
+export { default as placeholderTextPlugin } from './placeholder-text';
+export { default as isMultilineContentPlugin } from './is-multiline-content';
+export { default as widthPlugin } from './width';
+
+export {
+  default as confluenceInlineComment,
+} from './confluence-inline-comment';
+export { default as fakeTextCursorPlugin } from './fake-text-cursor';
+export {
+  default as clearMarksOnChangeToEmptyDocumentPlugin,
+} from './clear-marks-on-change-to-empty-document';

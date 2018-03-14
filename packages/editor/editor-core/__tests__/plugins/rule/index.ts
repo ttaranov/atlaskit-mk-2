@@ -5,7 +5,7 @@ import {
   p,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
-import rulePlugin from '../../../src/editor/plugins/rule';
+import rulePlugin from '../../../src/plugins/rule';
 
 describe('rule', () => {
   const editor = (doc: any, trackEvent = () => {}) =>

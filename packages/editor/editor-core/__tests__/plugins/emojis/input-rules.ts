@@ -1,6 +1,6 @@
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { stateKey as emojiPluginKey } from '../../../src/plugins/emojis';
+import { emojiPluginKey } from '../../../src/plugins/emoji/pm-plugins/main';
 import {
   insertText,
   createEditor,
@@ -12,9 +12,9 @@ import {
   mention,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import emojiPlugin from '../../../src/editor/plugins/emoji';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import emojiPlugin from '../../../src/plugins/emoji';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import mentionsPlugin from '../../../src/plugins/mentions';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 

@@ -13,14 +13,12 @@ import {
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
-// tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
+export const Wrapper: any = styled.div`
   height: 500px;
 `;
 Wrapper.displayName = 'Wrapper';
 
-// tslint:disable-next-line:variable-name
-export const TitleInput = styled.input`
+export const TitleInput: any = styled.input`
   border: none;
   outline: none;
   font-size: 2.07142857em;
@@ -33,8 +31,7 @@ export const TitleInput = styled.input`
 `;
 TitleInput.displayName = 'TitleInput';
 
-// tslint:disable-next-line:variable-name
-export const Content = styled.div`
+export const Content: any = styled.div`
   padding: 0 20px;
   height: 100%;
   background: #fff;

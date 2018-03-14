@@ -5,7 +5,7 @@ import {
   p,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('codeBlock - keymaps', () => {
   const editor = (doc: any) =>

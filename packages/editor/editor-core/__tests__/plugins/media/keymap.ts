@@ -12,8 +12,8 @@ import {
   stateKey as mediaPluginKey,
   MediaPluginState,
   DefaultMediaStateManager,
-} from '../../../src/plugins/media';
-import mediaPlugin from '../../../src/editor/plugins/media';
+} from '../../../src/plugins/media/pm-plugins/main';
+import mediaPlugin from '../../../src/plugins/media';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
