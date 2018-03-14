@@ -35,12 +35,12 @@ type Props = {
 };
 
 type State = {
-  _dateValue: string,
-  _timeValue: string,
-  _zoneValue: string,
   active: 0 | 1 | 2,
+  dateValue: string,
   isFocused: boolean,
+  timeValue: string,
   value: string,
+  zoneValue: string,
 };
 
 const Flex = styled.div`
@@ -89,9 +89,9 @@ function formatDateTimeZoneIntoIso(
 function parseDateIntoStateValues(value) {
   const parsed = parse(value);
   return {
-    _dateValue: format(parsed, 'YYYY-MM-DD'),
-    _timeValue: format(parsed, 'HH:mm'),
-    _zoneValue: format(parsed, 'ZZ'),
+    dateValue: format(parsed, 'YYYY-MM-DD'),
+    timeValue: format(parsed, 'HH:mm'),
+    zoneValue: format(parsed, 'ZZ'),
   };
 }
 
@@ -106,12 +106,12 @@ class DateTimePicker extends Component<Props, State> {
   };
 
   state = {
-    _dateValue: '',
-    _timeValue: '',
-    _zoneValue: '',
     active: 0,
+    dateValue: '',
     isFocused: false,
+    timeValue: '',
     value: '',
+    zoneValue: '',
   };
 
   onBlur = () => {
@@ -119,8 +119,8 @@ class DateTimePicker extends Component<Props, State> {
     this.props.onBlur();
   };
 
-  onDateChange = (_dateValue: string) => {
-    this.setState({ _dateValue }, this.onValueChange);
+  onDateChange = (dateValue: string) => {
+    this.setState({ dateValue }, this.onValueChange);
   };
 
   onFocus = () => {
@@ -128,18 +128,14 @@ class DateTimePicker extends Component<Props, State> {
     this.props.onFocus();
   };
 
-  onTimeChange = (_timeValue: string) => {
-    this.setState({ _timeValue }, this.onValueChange);
+  onTimeChange = (timeValue: string) => {
+    this.setState({ timeValue }, this.onValueChange);
   };
 
   onValueChange() {
-    const { _dateValue, _timeValue, _zoneValue } = this.state;
-    if (_dateValue && _timeValue) {
-      const value = formatDateTimeZoneIntoIso(
-        _dateValue,
-        _timeValue,
-        _zoneValue,
-      );
+    const { dateValue, timeValue, zoneValue } = this.state;
+    if (dateValue && timeValue) {
+      const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
       this.setState({ value });
       this.props.onChange(value);
     }
@@ -147,7 +143,7 @@ class DateTimePicker extends Component<Props, State> {
 
   render() {
     const { autoFocus, id, innerProps, isDisabled, name } = this.props;
-    const { _dateValue, _timeValue, isFocused, value } = this.state;
+    const { dateValue, timeValue, isFocused, value } = this.state;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
@@ -164,7 +160,7 @@ class DateTimePicker extends Component<Props, State> {
             id={id}
             onChange={this.onDateChange}
             selectProps={{ styles }}
-            value={_dateValue}
+            value={dateValue}
           />
         </FlexItem>
         <FlexItem>
@@ -173,7 +169,7 @@ class DateTimePicker extends Component<Props, State> {
             icon={CalendarIcon}
             onChange={this.onTimeChange}
             selectProps={{ styles }}
-            value={_timeValue}
+            value={timeValue}
           />
         </FlexItem>
       </Flex>
@@ -187,9 +183,9 @@ export default withCtrl(DateTimePicker, {
     const overridden = {};
     if (value) {
       const parsed = parseDateIntoStateValues(value);
-      overridden._dateValue = parsed._dateValue;
-      overridden._timeValue = parsed._timeValue;
-      overridden._zoneValue = parsed._zoneValue;
+      overridden.dateValue = parsed.dateValue;
+      overridden.timeValue = parsed.timeValue;
+      overridden.zoneValue = parsed.zoneValue;
     }
     return { ...props, ...overridden };
   },
