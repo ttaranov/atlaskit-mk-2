@@ -75,14 +75,12 @@ export const createApiCards = (
 
 export const openAction = {
   label: 'Open',
-  type: undefined,
   handler: () => {
     console.log('open');
   },
 };
 export const closeAction = {
   label: 'Close',
-  type: undefined,
   handler: () => {
     console.log('close');
   },
@@ -96,7 +94,6 @@ export const deleteAction = {
 };
 
 export const annotateCardAction = {
-  type: -1,
   label: 'Annotate',
   handler: () => {
     console.log('annotate');
@@ -104,10 +101,14 @@ export const annotateCardAction = {
   icon: <AnnotateIcon size="small" label="annotate" />,
 };
 
-export const actions = [openAction, closeAction, deleteAction];
+export const actions = [
+  openAction,
+  closeAction,
+  annotateCardAction,
+  deleteAction,
+];
 
 export const anotherAction = {
-  type: -2,
   label: 'Some other action',
   handler: (
     item: MediaCollectionItem,
@@ -119,7 +120,6 @@ export const anotherAction = {
 };
 
 export const annotateAction = {
-  type: -1,
   label: 'Annotate',
   handler: (
     item: MediaCollectionItem,
