@@ -217,7 +217,7 @@ export class StatelessUploadView extends Component<
         <div className="cardWrapper" key={id}>
           <CardView
             status={status}
-            progress={progress}
+            progress={progress || undefined}
             mediaItemType={'file'}
             metadata={metadata}
             dimensions={cardDimension}
