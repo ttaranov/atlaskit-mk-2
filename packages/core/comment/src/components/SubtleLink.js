@@ -25,7 +25,7 @@ type Props = {
   analyticsContext: { [string]: any },
 };
 
-export const SubtleLink = ({
+const SubtleLink = ({
   onClick,
   onFocus,
   onMouseOver,
@@ -45,6 +45,8 @@ export const SubtleLink = ({
   </span>
   /* eslint-enable jsx-a11y/no-static-element-interactions */
 );
+
+export { SubtleLink as SubtleLinkWithoutAnalytics };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 export default withAnalyticsEvents({

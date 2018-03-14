@@ -42,7 +42,7 @@ type Props = {
   errorIconLabel?: string,
 };
 
-export class Comment extends Component<Props, {}> {
+class Comment extends Component<Props, {}> {
   static defaultProps = {
     actions: [],
     restrictedTo: '',
@@ -109,6 +109,8 @@ export class Comment extends Component<Props, {}> {
     );
   }
 }
+
+export { Comment as CommentWithoutAnalytics };
 
 export default withAnalyticsContext({
   component: 'comment',

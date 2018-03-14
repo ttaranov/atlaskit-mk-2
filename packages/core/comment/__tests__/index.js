@@ -9,13 +9,13 @@ import Button from '@atlaskit/button';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
 import CommentWithAnalytics, {
-  Comment,
   CommentAction,
   CommentAuthor,
   CommentEdited,
   CommentLayout,
   CommentTime,
-} from '../src/';
+} from '../src';
+import { CommentWithoutAnalytics } from '../src/components/Comment';
 import { ActionsContainer } from '../src/styled/FooterStyles';
 import { TopItem } from '../src/styled/HeaderStyles';
 import { Container, Highlight } from '../src/styled/LayoutStyles';
@@ -24,16 +24,9 @@ import HeaderItems from '../src/components/Header';
 
 describe('@atlaskit comments', () => {
   describe('Comment', () => {
-    describe('exports', () => {
-      it('the Comment component', () => {
-        expect(Comment).not.toBe(undefined);
-        expect(new Comment()).toBeInstanceOf(Component);
-      });
-    });
-
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Comment avatar="" />);
+        const wrapper = shallow(<CommentWithoutAnalytics avatar="" />);
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
@@ -47,7 +40,9 @@ describe('@atlaskit comments', () => {
             <CommentAction>action content</CommentAction>,
             <CommentAction onClick={() => {}}>action content</CommentAction>,
           ];
-          const wrapper = mount(<Comment avatar="" actions={actions} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" actions={actions} />,
+          );
           const container = wrapper.find(ActionsContainer);
           expect(container.find(CommentAction).length).toBe(actions.length);
           actions.forEach(action => {
@@ -59,7 +54,9 @@ describe('@atlaskit comments', () => {
       describe('author prop', () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
-          const wrapper = mount(<Comment avatar="" author={author} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" author={author} />,
+          );
           expect(wrapper.find(Container).contains(author)).toBe(true);
         });
       });
@@ -67,7 +64,7 @@ describe('@atlaskit comments', () => {
       describe('avatar prop', () => {
         it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
-          const wrapper = shallow(<Comment avatar={avatar} />);
+          const wrapper = shallow(<CommentWithoutAnalytics avatar={avatar} />);
           expect(wrapper.find(CommentLayout).prop('avatar')).toBe(avatar);
         });
       });
@@ -75,13 +72,17 @@ describe('@atlaskit comments', () => {
       describe('content prop', () => {
         it('should render the provided content in the correct container', () => {
           const content = <p>My sample content</p>;
-          const wrapper = mount(<Comment avatar="" content={content} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" content={content} />,
+          );
           expect(wrapper.find(Content).contains(content)).toBe(true);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
-          const wrapper = mount(<Comment avatar="" content={textContent} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" content={textContent} />,
+          );
           expect(wrapper.find(Content).text()).toBe(textContent);
         });
       });
@@ -89,7 +90,9 @@ describe('@atlaskit comments', () => {
       describe('time prop', () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
-          const wrapper = mount(<Comment avatar="" time={time} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" time={time} />,
+          );
           expect(wrapper.find(Container).contains(time)).toBe(true);
         });
       });
@@ -97,7 +100,9 @@ describe('@atlaskit comments', () => {
       describe('edited prop', () => {
         it('should render edited correctly', () => {
           const edited = <CommentEdited>Edited</CommentEdited>;
-          const wrapper = mount(<Comment avatar="" edited={edited} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" edited={edited} />,
+          );
           expect(wrapper.find(Container).contains(edited)).toBe(true);
         });
       });
@@ -105,7 +110,9 @@ describe('@atlaskit comments', () => {
       describe('type prop', () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
-          const wrapper = mount(<Comment avatar="" type={type} />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" type={type} />,
+          );
           expect(wrapper.find(TopItem).find(Lozenge).length).toBe(1);
         });
       });
@@ -113,7 +120,10 @@ describe('@atlaskit comments', () => {
       describe('restrictedTo prop', () => {
         it('should render a Lock icon and restrictedTo name when supplied', () => {
           const wrapper = mount(
-            <Comment avatar="" restrictedTo="atlassian-staff" />,
+            <CommentWithoutAnalytics
+              avatar=""
+              restrictedTo="atlassian-staff"
+            />,
           );
           expect(wrapper.find(LockFilledIcon).length).toBe(1);
           expect(wrapper.text()).toEqual(
@@ -122,14 +132,16 @@ describe('@atlaskit comments', () => {
         });
 
         it('should not render a Lock icon if restrictedTo prop is not set', () => {
-          const wrapper = mount(<Comment avatar="" />);
+          const wrapper = mount(<CommentWithoutAnalytics avatar="" />);
           expect(wrapper.find(LockFilledIcon).length).toBe(0);
         });
       });
 
       describe('highlighted prop', () => {
         it('should render a highlight underlay inside the container', () => {
-          const wrapper = mount(<Comment avatar="" highlighted />);
+          const wrapper = mount(
+            <CommentWithoutAnalytics avatar="" highlighted />,
+          );
           expect(wrapper.find(Highlight).length).toBe(1);
         });
       });
@@ -137,7 +149,9 @@ describe('@atlaskit comments', () => {
       describe('isSaving and savingText props', () => {
         describe('if isSaving prop is set', () => {
           it('should render the default savingText if no savingText is set', () => {
-            const wrapper = mount(<Comment avatar="" isSaving />);
+            const wrapper = mount(
+              <CommentWithoutAnalytics avatar="" isSaving />,
+            );
             expect(wrapper.text()).toEqual(
               expect.stringContaining('Sending...'),
             );
@@ -145,7 +159,11 @@ describe('@atlaskit comments', () => {
 
           it('should render the savingText text if it is set', () => {
             const wrapper = mount(
-              <Comment avatar="" isSaving savingText="Saving..." />,
+              <CommentWithoutAnalytics
+                avatar=""
+                isSaving
+                savingText="Saving..."
+              />,
             );
             expect(wrapper.text()).toEqual(
               expect.stringContaining('Saving...'),
@@ -159,7 +177,7 @@ describe('@atlaskit comments', () => {
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
             const wrapper = mount(
-              <Comment
+              <CommentWithoutAnalytics
                 avatar=""
                 actions={actions}
                 isSaving
@@ -173,7 +191,11 @@ describe('@atlaskit comments', () => {
 
           it('should apply .optimistic-saving-content styles', () => {
             const wrapper = mount(
-              <Comment avatar="" isSaving savingText="Saving..." />,
+              <CommentWithoutAnalytics
+                avatar=""
+                isSaving
+                savingText="Saving..."
+              />,
             );
             expect(wrapper.find(Content).prop('isDisabled')).toBe(true);
           });
@@ -181,14 +203,18 @@ describe('@atlaskit comments', () => {
 
         describe('if isSaving prop is not set', () => {
           it('should not render savingText', () => {
-            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
+            const wrapper = mount(
+              <CommentWithoutAnalytics avatar="" savingText="Saving..." />,
+            );
             expect(wrapper.text()).not.toEqual(
               expect.stringContaining('Saving...'),
             );
           });
 
           it('should not apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
+            const wrapper = mount(
+              <CommentWithoutAnalytics avatar="" savingText="Saving..." />,
+            );
             expect(wrapper.find(Content).prop('isDisabled')).toBe(false);
           });
         });
@@ -203,7 +229,11 @@ describe('@atlaskit comments', () => {
         describe('if isError prop is set', () => {
           it('should render the default (empty) if no errorIconLabel is set', () => {
             const wrapper = mount(
-              <Comment avatar="" isError errorActions={errorActions} />,
+              <CommentWithoutAnalytics
+                avatar=""
+                isError
+                errorActions={errorActions}
+              />,
             );
             expect(wrapper.find(WarningIcon).length).toBe(1);
             expect(
@@ -217,7 +247,7 @@ describe('@atlaskit comments', () => {
           it('should render the errorIconLabel text if it is set', () => {
             const label = 'Error';
             const wrapper = mount(
-              <Comment
+              <CommentWithoutAnalytics
                 avatar=""
                 isError
                 errorActions={errorActions}
@@ -240,7 +270,7 @@ describe('@atlaskit comments', () => {
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
             const wrapper = mount(
-              <Comment
+              <CommentWithoutAnalytics
                 avatar=""
                 actions={actions}
                 isError
@@ -266,7 +296,9 @@ describe('@atlaskit comments', () => {
           });
 
           it('should apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment avatar="" isError />);
+            const wrapper = mount(
+              <CommentWithoutAnalytics avatar="" isError />,
+            );
             expect(wrapper.find(Content).prop('isDisabled')).toBe(true);
           });
         });
@@ -274,14 +306,14 @@ describe('@atlaskit comments', () => {
         describe('if isError prop is not set', () => {
           it('should not render the icon and errorActions', () => {
             const wrapper = mount(
-              <Comment avatar="" errorActions={errorActions} />,
+              <CommentWithoutAnalytics avatar="" errorActions={errorActions} />,
             );
             expect(wrapper.find(WarningIcon).length).toBe(0);
             expect(wrapper.find(CommentAction).length).toBe(0);
           });
 
           it('should not apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment avatar="" />);
+            const wrapper = mount(<CommentWithoutAnalytics avatar="" />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(false);
           });
         });
@@ -291,7 +323,7 @@ describe('@atlaskit comments', () => {
         it('Should render in the order author, type, time, restrictedTo', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(
-            <Comment
+            <CommentWithoutAnalytics
               author="Mary"
               avatar=""
               type="Type"
@@ -310,7 +342,7 @@ describe('@atlaskit comments', () => {
 
         it('Should render in the order author, type, savingText, restrictedTo', () => {
           const wrapper = mount(
-            <Comment
+            <CommentWithoutAnalytics
               author="Mary"
               avatar=""
               type="Type"
@@ -327,7 +359,7 @@ describe('@atlaskit comments', () => {
         it('should not render time if isSaving is set', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(
-            <Comment
+            <CommentWithoutAnalytics
               avatar=""
               author="Mary"
               type="Type"
@@ -345,11 +377,13 @@ describe('@atlaskit comments', () => {
 
     describe('nesting', () => {
       it('should reflect children to the CommentLayout', () => {
-        const childComment = <Comment avatar="" content="child" />;
+        const childComment = (
+          <CommentWithoutAnalytics avatar="" content="child" />
+        );
         const wrapper = shallow(
-          <Comment avatar="" content="parent'">
+          <CommentWithoutAnalytics avatar="" content="parent'">
             {childComment}
-          </Comment>,
+          </CommentWithoutAnalytics>,
         );
         expect(wrapper.find(CommentLayout).prop('children')).toBe(childComment);
       });
@@ -365,8 +399,8 @@ describe('@atlaskit comments', () => {
         global.console.error.mockRestore();
       });
       it('should mount CommmentWithAnalyitcs without errors', () => {
-        const wrapper = mount(
-          <Comment
+        mount(
+          <CommentWithAnalytics
             avatar={<Avatar src={''} label="Atlaskit avatar" size="medium" />}
             author={<CommentAuthor>John Smith</CommentAuthor>}
             type="author"
@@ -377,7 +411,9 @@ describe('@atlaskit comments', () => {
             actions={[<CommentAction>Like</CommentAction>]}
           />,
         );
+        // eslint-disable-next-line
         expect(console.warn).not.toHaveBeenCalled();
+        // eslint-disable-next-line
         expect(console.error).not.toHaveBeenCalled();
       });
     });

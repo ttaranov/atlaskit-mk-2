@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import { name, version } from '../package.json';
 import {
   withAnalyticsEvents,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { SubtleLink } from '../src/components/SubtleLink';
+import { name, version } from '../package.json';
+import { SubtleLinkWithoutAnalytics } from '../src/components/SubtleLink';
 
 // This is a global mock for this file that will mock all components wrapped with analytics
 // and replace them with an empty SFC that returns null. This includes components imported
@@ -22,9 +22,11 @@ describe('@atlaskit comments', () => {
   describe('SubtleLink', () => {
     it('should override analytics context of button', () => {
       const wrapper = mount(
-        <SubtleLink analyticsContext={{ component: 'comment-action' }}>
+        <SubtleLinkWithoutAnalytics
+          analyticsContext={{ component: 'comment-action' }}
+        >
           Like
-        </SubtleLink>,
+        </SubtleLinkWithoutAnalytics>,
       );
       const { analyticsContext } = wrapper.find(Button).props();
       expect(analyticsContext).toEqual({

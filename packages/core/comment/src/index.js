@@ -1,6 +1,6 @@
 // @flow
 
-export { default, Comment } from './components/Comment';
+export { default } from './components/Comment';
 export { default as CommentAction } from './components/ActionItem';
 export { default as CommentAuthor } from './components/Author';
 export { default as CommentEdited } from './components/Edited';
