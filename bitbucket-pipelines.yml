@@ -32,6 +32,8 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
+        caches:
+          - node
         artifacts:
           - node_modules/**
     - parallel:
