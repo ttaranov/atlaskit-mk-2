@@ -1,5 +1,7 @@
 # @atlaskit/task-decision
 
+## 4.10.5
+
 ## 4.10.4
 
 ## 4.10.3

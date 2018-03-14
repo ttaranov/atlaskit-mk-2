@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.9.7
+
 ## 2.9.6
 
 ## 2.9.5
