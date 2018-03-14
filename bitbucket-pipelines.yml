@@ -34,8 +34,6 @@ pipelines:
           - bolt install --pure-lockfile
           - mkdir foo
           - echo "test" > foo/test.txt
-        caches:
-          - node
         artifacts:
           - foo/**
     - parallel:
