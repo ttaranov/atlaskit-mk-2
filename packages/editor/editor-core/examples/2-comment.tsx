@@ -4,11 +4,11 @@ import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from './../src/editor';
-import EditorContext from './../src/editor/ui/EditorContext';
-import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import ToolbarHelp from './../src/editor/ui/ToolbarHelp';
+import EditorContext from './../src/ui/EditorContext';
+import WithEditorActions from './../src/ui/WithEditorActions';
+import ToolbarHelp from './../src/ui/ToolbarHelp';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
-import CollapsedEditor from '../src/editor/ui/CollapsedEditor';
+import CollapsedEditor from '../src/ui/CollapsedEditor';
 import ToolbarFeedback from '../src/ui/ToolbarFeedback';
 import { name, version } from '../package.json';
 

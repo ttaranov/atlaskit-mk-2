@@ -10,7 +10,7 @@ export interface StoryState {
   offset: number;
 }
 
-const Box = styled.div`
+const Box: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 250px;
   height: 100px;
   background-color: lightgreen;

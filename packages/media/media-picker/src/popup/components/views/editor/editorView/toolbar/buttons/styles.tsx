@@ -1,12 +1,8 @@
 // tslint:disable:variable-name
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akColorB50,
   akColorN0,
@@ -20,7 +16,7 @@ const optionsColorNormal = 'rgba(255, 255, 255, 0.6)';
 const optionsColorActive = 'rgba(66, 82, 110, 0.6)';
 const colorSampleOutlineColor = 'rgba(255, 255, 255, 0.5)';
 
-const ButtonBase = styled.div`
+const ButtonBase: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: pointer;
   position: relative; /* for the child OptionsAreaBase which uses absolute positioning */
   background-color: ${transparent};
@@ -35,19 +31,25 @@ const ButtonBase = styled.div`
   align-items: center;
 `;
 
-export const ButtonNormal = styled(ButtonBase)`
+export const ButtonNormal: ComponentClass<HTMLAttributes<{}>> = styled(
+  ButtonBase,
+)`
   &:hover {
     background-color: ${buttonHoverBackgroundColor};
     color: ${akColorN0};
   }
 `;
 
-export const ButtonClicked = styled(ButtonBase)`
+export const ButtonClicked: ComponentClass<HTMLAttributes<{}>> = styled(
+  ButtonBase,
+)`
   background-color: ${buttonClickedBackgroundColor};
   color: ${akColorB50};
 `;
 
-export const ButtonActive = styled(ButtonBase)`
+export const ButtonActive: ComponentClass<HTMLAttributes<{}>> = styled(
+  ButtonBase,
+)`
   background-color: ${akColorN0};
   color: ${akColorN500};
 `;
@@ -56,7 +58,9 @@ export interface OptionsIconWrapperProps {
   isActive: boolean;
 }
 
-export const OptionsIconWrapper = styled.div`
+export const OptionsIconWrapper: ComponentClass<
+  HTMLAttributes<{}> & OptionsIconWrapperProps
+> = styled.div`
   position: absolute;
   right: -7px;
   bottom: -10px;
@@ -65,7 +69,7 @@ export const OptionsIconWrapper = styled.div`
     isActive ? optionsColorActive : optionsColorNormal};
 `;
 
-export const ColorSample = styled.div`
+export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 18px;
   height: 18px;
   border-radius: 3px;

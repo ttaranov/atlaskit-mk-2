@@ -19,8 +19,8 @@ import {
   thCursor,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
-import tablesPlugin from '../../../src/editor/plugins/table';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('tasks and decisions - input rules', () => {
   beforeEach(() => {

@@ -17,9 +17,9 @@ import {
 import {
   TextFormattingState,
   stateKey as textFormattingPluginKey,
-} from '../../../src/plugins/text-formatting';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+} from '../../../src/plugins/text-formatting/pm-plugins/main';
+import mentionsPlugin from '../../../src/plugins/mentions';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('text-formatting', () => {
   let trackEvent;

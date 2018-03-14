@@ -1,13 +1,12 @@
 import * as assert from 'assert';
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { ReactComponentConstructor } from './';
-import wrapComponentWithClickArea from './wrapper-click-area';
-import { ReactNodeViewComponents } from '../factory';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { stateKey as reactNodeViewStateKey } from '../../plugins/react-nodeview';
+import { stateKey as reactNodeViewStateKey } from '../../plugins/base/pm-plugins/react-nodeview';
+import { ReactComponentConstructor } from '../types';
+import { ReactNodeViewComponents } from '../factory';
+import wrapComponentWithClickArea from './wrapper-click-area';
 
 export interface ReactProsemirrorNodeProps {
   getPos: () => number;
@@ -19,7 +18,7 @@ export interface ReactProsemirrorNodeProps {
   [key: string]: any;
 }
 
-export default class ReactProsemirrorNode extends PureComponent<
+export default class ReactProsemirrorNode extends React.PureComponent<
   ReactProsemirrorNodeProps,
   {}
 > {

@@ -1,4 +1,4 @@
-import { stateKey as codeBlockPluginKey } from '../../../src/plugins/code-block';
+import { stateKey as codeBlockPluginKey } from '../../../src/plugins/code-block/pm-plugins/main';
 import {
   code_block,
   doc,
@@ -10,8 +10,8 @@ import {
   td,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import tablesPlugin from '../../../src/editor/plugins/table';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('code-block', () => {
   const editor = (doc: any) => {

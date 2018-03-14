@@ -1,7 +1,7 @@
 import {
   PanelState,
   stateKey as panelPluginKey,
-} from '../../../src/plugins/panel';
+} from '../../../src/plugins/panel/pm-plugins/main';
 import {
   doc,
   panel,
@@ -16,9 +16,9 @@ import {
   ol,
   li,
 } from '@atlaskit/editor-test-helpers';
-import panelPlugin from '../../../src/editor/plugins/panel';
-import listPlugin from '../../../src/editor/plugins/lists';
-import tablesPlugin from '../../../src/editor/plugins/table';
+import panelPlugin from '../../../src/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
   const event = createEvent('event');

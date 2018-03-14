@@ -14,10 +14,10 @@ import { setNodeSelection } from '../../../src/utils';
 import {
   removeMediaNode,
   splitMediaGroup,
-} from '../../../src/plugins/media/media-common';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
-import rulePlugin from '../../../src/editor/plugins/rule';
+} from '../../../src/plugins/media/utils/media-common';
+import mediaPlugin from '../../../src/plugins/media';
+import mentionsPlugin from '../../../src/plugins/mentions';
+import rulePlugin from '../../../src/plugins/rule';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 

@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, css } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akGridSizeUnitless,
   akFontFamily,
@@ -74,7 +70,7 @@ const cardOverlay = ({ background }: CardProps) => {
   }
 };
 
-export const Card = styled.div`
+export const Card: ComponentClass<HTMLAttributes<{}> & CardProps> = styled.div`
   ${cardColors} ${cardOverlay} display: inline-flex; /* make the card fit to its contents */
   flex-direction: row; /* make the preview and content side-by-side */
 
@@ -87,9 +83,15 @@ export const Card = styled.div`
   ${borderRadius} ${cardShadow};
 `;
 
-export const Preview = styled.div`
+export interface PreviewProps {
+  image: string;
+}
+
+export const Preview: ComponentClass<
+  HTMLAttributes<{}> & PreviewProps
+> = styled.div`
   width: ${previewWidth}px; /* fixed px the design asks for */
-  background-image: url(${({ image }: { image: string }) => image});
+  background-image: url(${({ image }: PreviewProps) => image});
   background-size: cover;
   flex-shrink: 0;
 `;
@@ -98,13 +100,15 @@ export interface CardContentProps {
   hasPreview?: boolean;
 }
 
-export const CardContent = styled.div`
+export const CardContent: ComponentClass<
+  HTMLAttributes<{}> & CardContentProps
+> = styled.div`
   flex-grow: 1;
   max-width: ${({ hasPreview }: CardContentProps) =>
     (hasPreview && `calc(100% - ${previewWidth}px)`) || '100%'};
 `;
 
-export const Footer = styled.div`
+export const Footer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;

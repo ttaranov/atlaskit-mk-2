@@ -12,8 +12,8 @@ import {
   dispatchPasteEvent,
   a as link,
 } from '@atlaskit/editor-test-helpers';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import mediaPlugin from '../../../src/plugins/media';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('paste plugins', () => {
   const editor = (doc: any) =>

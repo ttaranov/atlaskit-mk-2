@@ -2,8 +2,8 @@ import createSandbox from 'jest-sandbox';
 import { mention as mentionNode } from '@atlaskit/editor-common';
 import {
   MentionsState,
-  stateKey as mentionPluginKey,
-} from '../../../src/plugins/mentions';
+  mentionPluginKey,
+} from '../../../src/plugins/mentions/pm-plugins/main';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   createEditor,
@@ -24,8 +24,8 @@ import {
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../src/analytics';
 import * as keymaps from '../../../src/keymaps';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
-import listPlugin from '../../../src/editor/plugins/lists';
+import mentionsPlugin from '../../../src/plugins/mentions';
+import listPlugin from '../../../src/plugins/lists';
 
 const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);

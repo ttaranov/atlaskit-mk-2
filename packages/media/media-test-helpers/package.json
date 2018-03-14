@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "9.0.4",
+  "version": "9.0.5",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -31,6 +31,6 @@
   "devDependencies": {
     "@atlaskit/field-text": "^4.1.8",
     "@atlaskit/media-core": "^14.1.1",
-    "@atlaskit/media-test-helpers": "^9.0.4"
+    "@atlaskit/media-test-helpers": "^9.0.5"
   }
 }

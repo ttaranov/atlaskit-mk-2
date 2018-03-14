@@ -1,7 +1,7 @@
 import {
   TableState,
   stateKey as tablePluginKey,
-} from '../../../src/plugins/table';
+} from '../../../src/plugins/table/pm-plugins/main';
 import tableCommands from '../../../src/plugins/table/commands';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
@@ -33,14 +33,17 @@ import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
-} from '../../../src/editor/plugins/table/actions';
+} from '../../../src/plugins/table/actions';
 import {
   checkIfColumnSelected,
   checkIfRowSelected,
-} from '../../../src/editor/plugins/table/utils';
-import tablesPlugin from '../../../src/editor/plugins/table';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import { mediaPlugin } from '../../../src/editor/plugins';
+  checkIfNumberColumnEnabled,
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
+} from '../../../src/plugins/table/utils';
+import tablesPlugin from '../../../src/plugins/table';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import { mediaPlugin } from '../../../src/plugins';
 
 describe('table plugin', () => {
   const event = createEvent('event');
@@ -1182,6 +1185,39 @@ describe('table plugin', () => {
       sendKeyToPm(editorView, 'ArrowUp');
 
       expect(editorView.state.doc).toEqualDocument(docWithTable);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfNumberColumnEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfNumberColumnEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfHeaderColumnEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfHeaderColumnEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfHeaderRowEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
       editorView.destroy();
     });
   });

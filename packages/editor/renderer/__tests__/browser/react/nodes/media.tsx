@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import Media from '../../../../src/react/nodes/media';
 import { MediaType } from '@atlaskit/editor-common';
-import { MediaItem } from '../../../../src/ui/';
+import { MediaCard } from '../../../../src/ui/MediaCard';
 
 describe('Media', () => {
   const mediaNode = {
@@ -24,7 +24,7 @@ describe('Media', () => {
       />,
     );
 
-    expect(mediaComponent.find(MediaItem).length).to.equal(1);
+    expect(mediaComponent.find(MediaCard).length).to.equal(1);
     mediaComponent.unmount();
   });
 });

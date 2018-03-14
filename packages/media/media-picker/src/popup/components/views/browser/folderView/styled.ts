@@ -1,11 +1,6 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, LiHTMLAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, LiHTMLAttributes } from 'react';
 import {
   akColorB200,
   akColorB400,
@@ -14,14 +9,16 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 
-export const FolderViewerWrapper = styled.div`
+export const FolderViewerWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: flex;
   flex-direction: column;
 
   height: 100%;
 `;
 
-export const SpinnerWrapper = styled.div`
+export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +27,9 @@ export const SpinnerWrapper = styled.div`
   flex: 1;
 `;
 
-export const FolderViewerContent = styled.ul`
+export const FolderViewerContent: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.ul`
   /* Take up all of the available space between header and footer */
   flex: 1;
 
@@ -48,7 +47,9 @@ export interface SelectableProps {
   isSelected?: boolean;
 }
 
-export const FolderViewerRow = styled.li`
+export const FolderViewerRow: ComponentClass<
+  LiHTMLAttributes<{}> & SelectableProps
+> = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,12 +73,12 @@ export const FolderViewerRow = styled.li`
   }
 `;
 
-export const FileMetadataGroup = styled.div`
+export const FileMetadataGroup: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
 `;
 
-export const FileIcon = styled.div`
+export const FileIcon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* vertically center icon */
   display: flex;
   align-items: center;
@@ -86,7 +87,9 @@ export const FileIcon = styled.div`
   height: 32px;
 `;
 
-export const FileName = styled.div`
+export const FileName: ComponentClass<
+  HTMLAttributes<{}> & SelectableProps
+> = styled.div`
   padding-left: 17px;
   vertical-align: middle;
   overflow: hidden;
@@ -96,26 +99,28 @@ export const FileName = styled.div`
     isSelected ? 'color: white;' : `color: ${akColorN900}`};
 `;
 
-export const FileCreateDate = styled.div`
+export const FileCreateDate: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN90};
   text-align: right;
   padding: 0 10px 0 10px;
 `;
 
-export const FileSize = styled.div`
+export const FileSize: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN90};
   min-width: 70px;
   text-align: right;
   padding: 0 0 0 10px;
 `;
 
-export const SelectedFileIconWrapper = styled.div`
+export const SelectedFileIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   color: ${akColorB400} !important;
   right: 23px;
   top: 12px;
 `;
 
-export const MoreBtnWrapper = styled.div`
+export const MoreBtnWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   justify-content: center;
 

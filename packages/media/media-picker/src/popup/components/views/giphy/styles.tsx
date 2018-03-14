@@ -1,37 +1,36 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
 import { akColorN300 } from '@atlaskit/util-shared-styles';
 
-export const Container = styled.div`
+export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 100%;
   overflow-y: scroll;
 
   padding: 0 28px;
 `;
-
-export const GridCell = styled.div`
-  ${({ width }: { width: number }) => `width: ${width}px;`} margin-top: 5px;
+export interface GridCellProps {
+  width: number;
+}
+export const GridCell: ComponentClass<
+  HTMLAttributes<{}> & GridCellProps
+> = styled.div`
+  ${({ width }: GridCellProps) => `width: ${width}px;`} margin-top: 5px;
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: #091e42;
   font-size: 20px;
   margin-top: 15px;
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
 `;
 
-export const WarningContainer = styled.div`
+export const WarningContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,21 +41,23 @@ export const WarningContainer = styled.div`
   user-select: text;
 `;
 
-export const WarningIconWrapper = styled.div`
+export const WarningIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   width: 92px;
 `;
 
-export const WarningImage = styled.img`
+export const WarningImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   width: 200px;
 `;
 
-export const WarningHeading = styled.p`
+export const WarningHeading: ComponentClass<HTMLAttributes<{}>> = styled.p`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;
 `;
 
-export const WarningSuggestion = styled.p`
+export const WarningSuggestion: ComponentClass<HTMLAttributes<{}>> = styled.p`
   color: ${akColorN300};
   font-size: 14px;
   margin-top: 5px;

@@ -9,19 +9,16 @@ import {
   goToNextCell as baseGotoNextCell,
   TableMap,
 } from 'prosemirror-tables';
-import { stateKey } from './';
+import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
-import {
-  resetHoverSelection,
-  emptySelectedCells,
-} from '../../editor/plugins/table/actions';
+import { stateKey } from './pm-plugins/main';
+import { resetHoverSelection, emptySelectedCells } from './actions';
 import {
   tableStartPos,
   createTableNode,
   isIsolating,
   getCellStartPos,
-} from '../../editor/plugins/table/utils';
-import { Command } from '../../editor';
+} from './utils';
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;

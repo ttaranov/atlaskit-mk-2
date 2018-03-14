@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
 import {
   akColorB200,
   akBorderRadius,
@@ -17,7 +13,9 @@ export interface AvatarImageProps {
   isSelected: boolean;
 }
 
-const AvatarImage = styled.img`
+const AvatarImage: ComponentClass<
+  ImgHTMLAttributes<{}> & AvatarImageProps
+> = styled.img`
   border-radius: ${akBorderRadius};
   cursor: pointer;
   ${({ isSelected }: AvatarImageProps) =>
@@ -28,17 +26,23 @@ const AvatarImage = styled.img`
       : ''};
 `;
 
-export const LargeAvatarImage = styled(AvatarImage)`
+export const LargeAvatarImage: ComponentClass<
+  ImgHTMLAttributes<{}> & AvatarImageProps
+> = styled(AvatarImage)`
   width: ${akGridSizeUnitless * 9}px;
   height: ${akGridSizeUnitless * 9}px;
 `;
 
-export const SmallAvatarImage = styled(AvatarImage)`
+export const SmallAvatarImage: ComponentClass<
+  ImgHTMLAttributes<{}> & AvatarImageProps
+> = styled(AvatarImage)`
   width: ${akGridSizeUnitless * 5}px;
   height: ${akGridSizeUnitless * 5}px;
 `;
 
-export const PredefinedAvatarViewWrapper = styled.div`
+export const PredefinedAvatarViewWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   ul {
     display: flex;
     flex-flow: row wrap;

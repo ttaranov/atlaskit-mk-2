@@ -1,20 +1,24 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-export const FixedWidthContainer = styled.div`
+export const FixedWidthContainer: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   width: 380px;
   border: 1px dotted orange;
 `;
 
-const SectionWrapper = styled.div`
+const SectionWrapper: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   padding: 1rem;
 `;
 
-const SectionTitle = styled.h1`
+const SectionTitle: React.ComponentClass<React.HTMLAttributes<{}>> = styled.h1`
   font-size: 1.25rem;
 `;
 
-const SectionCard = styled.div`
+const SectionCard: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   margin: 1rem 0;
 `;
 

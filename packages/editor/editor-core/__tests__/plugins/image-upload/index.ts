@@ -1,4 +1,4 @@
-import { stateKey as imageUploadPluginKey } from '../../../src/plugins/image-upload';
+import { stateKey as imageUploadPluginKey } from '../../../src/plugins/image-upload/pm-plugins/main';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   createEditor,
@@ -10,8 +10,8 @@ import {
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
-import imageUpload from '../../../src/editor/plugins/image-upload';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import imageUpload from '../../../src/plugins/image-upload';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('image-upload', () => {
   const testImgSrc =

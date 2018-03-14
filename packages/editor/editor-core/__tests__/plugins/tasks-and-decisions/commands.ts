@@ -13,8 +13,8 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
-import mediaPlugin from '../../../src/editor/plugins/media';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
+import mediaPlugin from '../../../src/plugins/media';
 
 describe('tasks and decisions - commands', () => {
   beforeEach(() => {
