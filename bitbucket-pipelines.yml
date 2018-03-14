@@ -31,7 +31,8 @@ pipelines:
         name: Installing dependencies
         script:
           - echo "Installing deps"
-          - yarn
+          - yarn global add bolt
+          - bolt
         artifacts:
           - node_modules/**
     - parallel:
