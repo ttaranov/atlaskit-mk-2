@@ -32,6 +32,9 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
+          - du -sh node_modules
+          - zip -r test.zip node_modules
+          - du -sh test.zip
         caches:
           - node
         artifacts:
