@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/select": "^0.2.1",
     "enzyme": "^3.3.0"
   },
   "keywords": [
