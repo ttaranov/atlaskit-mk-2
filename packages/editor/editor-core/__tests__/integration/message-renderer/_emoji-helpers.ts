@@ -10,6 +10,14 @@ export const insertEmoji = async (browser, query: string) => {
   await browser.type(editable, [query, ':']);
 };
 
+export const insertEmojiBySelect = async (browser, select: string) => {
+  await browser.type(editable, ':');
+  await browser.waitForSelector(typeahead);
+  await browser.type(editable, [select]);
+  await browser.isVisible(`span=:${select}:`);
+  await browser.click(`span=:${select}:`);
+};
+
 export let emojiItem = function(emojiShortName: string): string {
   return `span[shortname=":${emojiShortName}:"]`;
 };

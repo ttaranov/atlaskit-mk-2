@@ -134,12 +134,14 @@ function setBrowserStackClients() {
       browser_version: '58',
       resolution: '1440x900',
     },
-    ie: {
-      os: 'Windows',
-      browserName: 'ie',
-      browser_version: '11',
-      resolution: '1440x900',
-    },
+    // TO-DO enable IE after fixed
+    // - https://ecosystem.atlassian.net/browse/AK-4485
+    // ie: {
+    //   os: 'Windows',
+    //   browserName: 'ie',
+    //   browser_version: '11',
+    //   resolution: '1440x900',
+    // },
     safari: {
       os: 'OS X',
       browserName: 'safari',

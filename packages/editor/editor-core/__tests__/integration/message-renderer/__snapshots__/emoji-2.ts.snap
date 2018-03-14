@@ -58,25 +58,41 @@ Object {
 }
 `;
 
-exports[`Emoji:should be able to click on the emoji button and select emoji 1`] = `
+exports[`Emoji:should be able to select emoji by clicking inside decisions 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "localId": "abc-123",
+      },
       "content": Array [
         Object {
           "attrs": Object {
-            "id": "1f605",
-            "shortName": ":sweat_smile:",
-            "text": "😅",
+            "localId": "abc-123",
+            "state": "DECIDED",
           },
-          "type": "emoji",
-        },
-        Object {
-          "text": " ",
-          "type": "text",
+          "content": Array [
+            Object {
+              "text": "this ",
+              "type": "text",
+            },
+            Object {
+              "attrs": Object {
+                "id": "1f604",
+                "shortName": ":smile:",
+                "text": "😄",
+              },
+              "type": "emoji",
+            },
+            Object {
+              "text": " ",
+              "type": "text",
+            },
+          ],
+          "type": "decisionItem",
         },
       ],
-      "type": "paragraph",
+      "type": "decisionList",
     },
   ],
   "type": "doc",
@@ -98,7 +114,7 @@ Object {
           },
           "content": Array [
             Object {
-              "text": " this ",
+              "text": "this ",
               "type": "text",
             },
             Object {
@@ -132,7 +148,7 @@ Object {
         Object {
           "content": Array [
             Object {
-              "text": "this is inside blockquote ",
+              "text": "some text ",
               "type": "text",
             },
             Object {
@@ -168,10 +184,6 @@ Object {
             Object {
               "content": Array [
                 Object {
-                  "text": "this is inside list ",
-                  "type": "text",
-                },
-                Object {
                   "attrs": Object {
                     "id": "1f604",
                     "shortName": ":smile:",
@@ -206,10 +218,6 @@ Object {
           "content": Array [
             Object {
               "content": Array [
-                Object {
-                  "text": "this is inside list ",
-                  "type": "text",
-                },
                 Object {
                   "attrs": Object {
                     "id": "1f170",
