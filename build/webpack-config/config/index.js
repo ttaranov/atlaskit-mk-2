@@ -111,7 +111,7 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.js$/,
-          exclude: /node_modules/,
+          exclude: /node_modules\/(?!strip-indent|trim-newlines)/,
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
