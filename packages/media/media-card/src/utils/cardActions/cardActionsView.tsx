@@ -35,7 +35,7 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     );
   }
 
-  private renderActionIconButton(action: CardAction) {
+  private renderActionIconButton(action: CardAction): JSX.Element {
     const { triggerColor } = this.props;
     const { icon, handler } = action;
     return (
@@ -47,7 +47,7 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     );
   }
 
-  private renderOtherActionButtons(actions: CardAction[]) {
+  private renderOtherActionButtons(actions: CardAction[]): JSX.Element | null {
     if (actions.length === 0) {
       return null;
     } else {
@@ -58,7 +58,7 @@ export class CardActionsView extends Component<CardActionsViewProps> {
       );
 
       if (firstActionWithIcon && otherActions.length === 0) {
-        this.renderActionIconButton(firstActionWithIcon);
+        return this.renderActionIconButton(firstActionWithIcon);
       } else {
         return (
           <CardActionsDropdownMenu
