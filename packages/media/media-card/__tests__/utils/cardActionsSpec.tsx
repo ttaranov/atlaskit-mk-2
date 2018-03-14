@@ -7,9 +7,11 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {
   CardActionsView,
   CardActionIconButton,
+  CardActionsDropdownMenu,
 } from '../../src/utils/cardActions';
 import { CardActionButton } from '../../src/utils/cardActions/styled';
 import { CardAction } from '../../src/actions';
+import PreventClickThrough from '../../src/utils/preventClickThrough';
 
 describe('CardActions', () => {
   const openAction = {
@@ -47,7 +49,7 @@ describe('CardActions', () => {
     openDropdownMenuIfExists(card);
 
     const iconButtons = card.find(CardActionIconButton);
-    const dropdownMenu = card.find(DropdownMenu);
+    const dropdownMenu = card.find(CardActionsDropdownMenu);
     const dropdownItems = dropdownMenu.find(DropdownItem);
 
     return {
@@ -59,11 +61,9 @@ describe('CardActions', () => {
   };
 
   it('should render nothing given no actions', () => {
-    const { iconButtons, dropdownMenu, dropdownItems } = setup([]);
+    const { card } = setup([]);
 
-    expect(iconButtons).toHaveLength(0);
-    expect(dropdownMenu).toHaveLength(0);
-    expect(dropdownItems).toHaveLength(0);
+    expect(card.find(PreventClickThrough)).toHaveLength(0);
   });
 
   it('should render only dropdown menu given one action with no icon', () => {
