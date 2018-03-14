@@ -241,7 +241,7 @@ export class EmojiResource extends AbstractResource<
   SearchOptions
 > implements EmojiProvider {
   protected recordConfig?: ServiceConfig;
-  protected emojiRepository: EmojiRepository;
+  protected emojiRepository?: EmojiRepository;
   protected lastQuery: LastQuery;
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
@@ -264,10 +264,10 @@ export class EmojiResource extends AbstractResource<
       const emojis = loader.loadEmoji();
       emojis
         .then(emojiResponse => {
-          this.activeLoaders--;
           emojiResponses[index] = emojiResponse;
           this.initEmojiRepository(emojiResponses);
           this.initSiteEmojiResource(emojiResponse, provider).then(() => {
+            this.activeLoaders--;
             this.performRetries();
             this.refreshLastFilter();
           });
@@ -366,9 +366,7 @@ export class EmojiResource extends AbstractResource<
     }
   }
 
-  protected isLoaded = () => {
-    return !this.activeLoaders;
-  };
+  protected isLoaded = () => this.activeLoaders === 0 && this.emojiRepository;
 
   protected retryIfLoading<T>(retry: Retry<T>, defaultResponse: T): Promise<T> {
     if (!this.isLoaded()) {
@@ -434,7 +432,7 @@ export class EmojiResource extends AbstractResource<
   ): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (this.isLoaded()) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
-      return this.emojiRepository.findByShortName(shortName);
+      return this.emojiRepository!.findByShortName(shortName);
     }
     return this.retryIfLoading<any>(
       () => this.findByShortName(shortName),
@@ -482,30 +480,30 @@ export class EmojiResource extends AbstractResource<
   findById(
     id: string,
   ): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    if (this.emojiRepository) {
-      return this.emojiRepository.findById(id);
+    if (this.isLoaded()) {
+      return this.emojiRepository!.findById(id);
     }
 
     return this.retryIfLoading(() => this.findById(id), undefined);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
-    if (this.emojiRepository) {
-      return Promise.resolve(this.emojiRepository.findInCategory(categoryId));
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository!.findInCategory(categoryId));
     }
     return this.retryIfLoading(() => this.findInCategory(categoryId), []);
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
     if (this.isLoaded()) {
-      return Promise.resolve(this.emojiRepository.getAsciiMap());
+      return Promise.resolve(this.emojiRepository!.getAsciiMap());
     }
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
   getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
     if (this.isLoaded()) {
-      return Promise.resolve(this.emojiRepository.getFrequentlyUsed(options));
+      return Promise.resolve(this.emojiRepository!.getFrequentlyUsed(options));
     }
 
     return this.retryIfLoading(() => this.getFrequentlyUsed(options), []);
@@ -544,7 +542,7 @@ export class EmojiResource extends AbstractResource<
   deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
     if (this.siteEmojiResource && emoji.id) {
       return this.siteEmojiResource.deleteEmoji(emoji).then(success => {
-        if (success) {
+        if (this.emojiRepository && success) {
           this.emojiRepository.delete(emoji);
         }
         return success;
@@ -574,7 +572,7 @@ export class EmojiResource extends AbstractResource<
 
   calculateDynamicCategories(): Promise<string[]> {
     if (this.isLoaded()) {
-      return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
+      return Promise.resolve(this.emojiRepository!.getDynamicCategoryList());
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
@@ -585,7 +583,9 @@ export class EmojiResource extends AbstractResource<
   }
 
   protected addUnknownEmoji(emoji: EmojiDescription) {
-    this.emojiRepository.addUnknownEmoji(emoji);
+    if (this.emojiRepository) {
+      this.emojiRepository.addUnknownEmoji(emoji);
+    }
   }
 }
 
