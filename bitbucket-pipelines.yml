@@ -35,7 +35,7 @@ pipelines:
         caches:
           - node
         artifacts:
-          - node_modules/**
+          - ./node_modules/**
     - parallel:
         - step:
             name: Building dists
