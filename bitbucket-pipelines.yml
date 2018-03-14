@@ -35,7 +35,7 @@ pipelines:
         caches:
           - node
         artifacts:
-          - $BITBUCKET_CLONE_DIR/node_modules
+          - $BITBUCKET_CLONE_DIR/node_modules/**
     - parallel:
         - step:
             name: Building dists
