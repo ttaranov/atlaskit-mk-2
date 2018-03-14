@@ -23,7 +23,7 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     }
 
     const primaryAction = actions.find(actionWithIcon);
-    const otherActions = actions.filter(action => action !== primaryAction);
+    const otherActions = actions.filter(actionNotEqualTo(primaryAction));
 
     return (
       <PreventClickThrough>
