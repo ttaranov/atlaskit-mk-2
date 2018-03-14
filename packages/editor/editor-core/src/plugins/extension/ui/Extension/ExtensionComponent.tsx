@@ -7,7 +7,7 @@ import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import BodiedExtension from './BodiedExtension';
-import { ExtensionHandlers } from '../../editor/types';
+import { ExtensionHandlers } from '../../../../types';
 
 export interface Props {
   editorView: EditorView;

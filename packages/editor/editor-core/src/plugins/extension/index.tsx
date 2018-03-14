@@ -34,7 +34,7 @@ const extensionPlugin: EditorPlugin = {
           createPlugin(
             dispatch,
             providerFactory,
-            props.extensionHandlers,
+            props.extensionHandlers || {},
             eventDispatcher,
           ),
       },

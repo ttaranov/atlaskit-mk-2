@@ -118,5 +118,5 @@ export interface EditorProps {
   // TODO: Deprecated remove after v63.0.0
   allowTextFormatting?: boolean | TextFormattingOptions;
 
-  extensionHandlers: ExtensionHandlers;
+  extensionHandlers?: ExtensionHandlers;
 }

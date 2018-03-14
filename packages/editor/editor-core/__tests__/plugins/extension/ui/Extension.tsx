@@ -18,6 +18,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
         editorView={{} as any}
         node={node}
         handleContentDOMRef={noop}
+        extensionHandlers={{}}
       />,
     );
     const component = extension.find(ExtensionComponent);
@@ -37,6 +38,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
         node={node}
         providerFactory={providerFactory}
         handleContentDOMRef={noop}
+        extensionHandlers={{}}
       />,
     );
     const component = extension.find(ExtensionComponent);
@@ -86,12 +88,10 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
   });
 
   it('should fail silently if extension handler throws', () => {
-    const GalleryComponent = () => <div>Gallery Extension</div>;
-
     const extensionHandlers = {
       'com.atlassian.confluence.macro.core': (ext, doc) => {
         if (ext.extensionKey === 'gallery') {
-          throw 'invalid extension';
+          throw new Error('invalid extension');
         }
 
         return null;

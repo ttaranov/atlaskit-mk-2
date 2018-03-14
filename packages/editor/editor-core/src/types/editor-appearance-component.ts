@@ -38,7 +38,7 @@ export interface EditorAppearanceComponentProps {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
 
-  extensionHandlers: ExtensionHandlers;
+  extensionHandlers?: ExtensionHandlers;
 
   disabled?: boolean;
 }

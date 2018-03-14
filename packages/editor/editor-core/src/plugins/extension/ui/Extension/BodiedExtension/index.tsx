@@ -4,14 +4,16 @@ import { Node as PmNode } from 'prosemirror-model';
 import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
 import ExtensionLozenge from '../Lozenge';
+import { MacroProvider } from '../../../../macro';
 
 export interface Props {
-  node: PmNode;  
+  node: PmNode;
   onClick: (event: React.SyntheticEvent<any>) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
   children?: React.ReactNode;
   isFocused?: boolean;
+  macroProvider?: MacroProvider;
 }
 
 export default class BodiedExtension extends Component<Props, any> {
