@@ -16,7 +16,7 @@ import {
   Wrapper,
 } from '../styled/Calendar';
 
-import type { EventChange } from '../types';
+import type { ChangeEvent, SelectEvent, DateObj, ArrowKeys } from '../types';
 
 const arrowKeys = {
   ArrowDown: 'down',
@@ -27,7 +27,6 @@ const arrowKeys = {
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-type ArrowKeys = 'down' | 'left' | 'right' | 'up';
 type Handler = (e: any) => void;
 type Props = {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
@@ -41,15 +40,16 @@ type Props = {
   month: number,
   /** Function which is called when the calendar is no longer focused. */
   onBlur: Handler,
-  /** Called when the calendar is navigated. This can be triggered imperatively via navigate(), by the keyboard, or by clicking the navigational buttons. If it is triggered by the keyboard, an extra value called `dir` is passed indicating the direction it was navigated. */
-  onChange: Handler,
+  /** Called when the calendar is navigated. This can be triggered by the keyboard, or by clicking the navigational buttons.
+   The 'type' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD. */
+  onChange: ChangeEvent => void,
   /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
   onFocus: Handler,
   /** Function called when a day is clicked on. Calls with an object that has
   a day, month and week property as numbers, representing the date just clicked.
   It also has an 'iso' property, which is a string of the selected date in the
   format YYYY-MM-DD. */
-  onSelect: Handler,
+  onSelect: SelectEvent => void,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
   previouslySelected: Array<string>,
@@ -157,7 +157,7 @@ class Calendar extends Component<Props, State> {
     }
   };
 
-  handleClickDay = ({ year, month, day }: EventChange) => {
+  handleClickDay = ({ year, month, day }: DateObj) => {
     this.triggerOnSelect({ year, month, day });
   };
 
@@ -264,9 +264,14 @@ class Calendar extends Component<Props, State> {
     this.container = e;
   };
 
-  triggerOnChange = ({ year, month, day, ...onChangeProps }: EventChange) => {
+  triggerOnChange = ({
+    year,
+    month,
+    day,
+    type,
+  }: $Diff<ChangeEvent, { iso: string }>) => {
     const iso = dateToString({ year, month, day });
-    this.props.onChange({ day, month, year, iso, ...onChangeProps });
+    this.props.onChange({ day, month, year, iso, type });
     this.setState({
       day,
       month,
@@ -274,7 +279,11 @@ class Calendar extends Component<Props, State> {
     });
   };
 
-  triggerOnSelect = ({ year, month, day }: EventChange) => {
+  triggerOnSelect = ({
+    year,
+    month,
+    day,
+  }: $Diff<SelectEvent, { iso: string }>) => {
     const iso = dateToString({ year, month, day });
     this.props.onSelect({ day, month, year, iso });
     this.setState({
