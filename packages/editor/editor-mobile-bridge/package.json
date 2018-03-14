@@ -5,9 +5,13 @@
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
   "atlaskit:src": "src/index.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "start": "webpack --watch",
+    "build": "webpack",
+    "build:minimize": "NODE_ENV=production webpack -p"
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "keywords": [
@@ -21,13 +25,18 @@
     "@atlaskit/editor-core": "^64.1.2",
     "@atlaskit/editor-json-transformer": "^2.5.12",
     "@atlaskit/mention": "^9.1.3",
+    "babel-polyfill": "^6.26.0"
+  },
+  "devDependencies": {
+    "@types/prosemirror-view": "^1.0.0",
     "@types/react": "^16.0.5",
-    "ajv": "^4.11.3",
-    "babel-polyfill": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "html-webpack-plugin": "^2.30.1",
     "prosemirror-view": "^1.0.0",
+    "ts-loader": "^2.3.4",
+    "webpack": "^3.10.0",
     "react": "15.6.0 - 16.2.0",
     "react-dom": "15.6.0 - 16.2.0",
-    "rxjs": "^5.1.0",
-    "webpack": "^3.10.0"
+    "rxjs": "^5.1.0"
   }
 }
