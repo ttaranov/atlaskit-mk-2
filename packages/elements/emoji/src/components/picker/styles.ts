@@ -8,7 +8,12 @@ import {
   emojiPickerBoxShadow,
 } from '../../shared-styles';
 
-import { emojiSprite, placeholder } from '../common/styles';
+import {
+  emojiSprite,
+  placeholder,
+  emojiNode,
+  deleteButton,
+} from '../common/styles';
 
 import { emojiPickerHeight, emojiPickerWidth } from '../../constants';
 
@@ -219,7 +224,7 @@ export const emojiItem = style({
   width: '40px',
 
   $nest: {
-    '&>span': {
+    [`&>.${emojiNode}`]: {
       cursor: 'pointer',
       padding: '8px',
       borderRadius: '5px',

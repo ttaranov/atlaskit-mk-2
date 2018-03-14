@@ -4,17 +4,18 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
 import CachingEmoji from '../common/CachingEmoji';
-
 export interface Props {
   emojis: EmojiDescription[];
   title: string;
+  showDelete: boolean;
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
+  // onDelete?: OnEmojiEvent;
 }
 
 export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
   render() {
-    const { emojis, onSelected, onMouseMove, title } = this.props;
+    const { emojis, onSelected, onMouseMove, title, showDelete } = this.props;
 
     return (
       <div className={styles.emojiPickerRow}>
@@ -29,6 +30,7 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
                 selectOnHover={true}
                 onSelected={onSelected}
                 onMouseMove={onMouseMove}
+                showDelete={showDelete}
                 placeholderSize={24}
               />
             </span>
