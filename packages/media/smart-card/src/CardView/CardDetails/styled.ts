@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
@@ -12,21 +12,6 @@ import {
 } from '@atlaskit/media-ui';
 
 const thumbnailWidth = 40;
-
-import { akColorN900, akColorN300 } from '@atlaskit/util-shared-styles';
-
-const title = css`
-  color: ${akColorN900};
-  font-size: 16px;
-  font-weight: 500;
-  line-height: ${20 / 16};
-`;
-
-const description = css`
-  color: ${akColorN300};
-  font-size: 12px;
-  line-height: ${16 / 12};
-`;
 
 export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
