@@ -2,21 +2,22 @@
 import React from 'react';
 import { AkCodeBlock } from '../src';
 
-const exampleCodeBlock = `// Create a map.
-final IntIntOpenHashMap map = new IntIntOpenHashMap();
-map.put(1, 2);
-map.put(2, 5);
-map.put(3, 10);
+const exampleCodeBlock = `
+  class HelloMessage extends React.Component {
+    render() {
+      return (
+        <div>
+          Hello {this.props.name}
+        </div>
+      );
+    }
+  }
 
-int count = map.forEach(new IntIntProcedure()
-{
-   int count;
-   public void apply(int key, int value)
-   {
-       if (value >= 5) count++;
-   }
-}).count;
-System.out.println("There are " + count + " values >= 5");`;
+  ReactDOM.render(
+    <HelloMessage name="Taylor" />,
+    mountNode
+  );
+`;
 
 export default function Component() {
   return <AkCodeBlock language="java" text={exampleCodeBlock} />;

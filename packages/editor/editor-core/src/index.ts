@@ -12,6 +12,7 @@ export {
 export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
 export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
 export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
+export { default as WithPluginState } from './editor/ui/WithPluginState';
 
 export {
   ErrorReporter,
@@ -22,6 +23,11 @@ export {
   filterContentByType,
   setTextSelection,
 } from './utils';
+
+// Plugin Keys for WithPluginState
+
+export { stateKey as mediaPluginKey } from './plugins/media';
+export { stateKey as mentionsPluginKey } from './plugins/mentions';
 
 // Used in editor-test-helpers
 
@@ -73,3 +79,16 @@ export {
 } from '@atlaskit/mention';
 
 export * from './analytics'; // ?
+
+// plugin keys
+
+export { default as mentionPluginKey } from './plugins/mentions/plugin-key';
+export { MentionsState } from './plugins/mentions';
+export {
+  TextFormattingState,
+  stateKey as textFormattingStateKey,
+} from './plugins/text-formatting';
+
+export {
+  default as pickerFacadeLoader,
+} from './plugins/media/picker-facade-loader';

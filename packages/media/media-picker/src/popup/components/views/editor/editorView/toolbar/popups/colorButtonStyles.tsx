@@ -1,21 +1,17 @@
 // tslint:disable:variable-name
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN0, akColorN50 } from '@atlaskit/util-shared-styles';
 
-export const Container = styled.div`
+export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   width: 32px;
   height: 32px;
 `;
 
-export const HoverArea = styled.div`
+export const HoverArea: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   width: 30px;
   height: 30px;
@@ -27,7 +23,7 @@ export const HoverArea = styled.div`
   }
 `;
 
-export const MainArea = styled.div`
+export const MainArea: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   width: 26px;
   height: 26px;
@@ -36,7 +32,7 @@ export const MainArea = styled.div`
   background-color: ${akColorN0};
 `;
 
-export const ColorSample = styled.div`
+export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   width: 24px;
   height: 24px;
@@ -44,7 +40,7 @@ export const ColorSample = styled.div`
   border-radius: 2px;
 `;
 
-export const CheckArea = styled.div`
+export const CheckArea: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;

@@ -1,15 +1,13 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, keyframes } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, SVGProps } from 'react';
+
+import styled, { keyframes } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, SVGAttributes, SVGProps } from 'react';
 import { DropzoneProps } from './dropzone';
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & DropzoneProps
+> = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -30,20 +28,20 @@ const dropzoneAppear = keyframes`
   }
 `;
 
-export const Content = styled.div`
+export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   animation: ${dropzoneAppear} 0.5s;
 `;
 
 // TODO: Use AtlasKit color
 // https://product-fabric.atlassian.net/browse/MSW-156
-export const Label = styled.div`
+export const Label: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: 10px;
   font-size: 16px;
   color: #165ecc;
 `;
 
 /* needed to prevent child dragleave events */
-export const Glass = styled.div`
+export const Glass: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   left: 0;
   top: 0;
@@ -52,9 +50,11 @@ export const Glass = styled.div`
   z-index: 101;
 `;
 
-export const StyledIcon = styled.svg`
+export const StyledIcon: ComponentClass<SVGAttributes<{}>> = styled.svg`
   width: 70px;
   height: 70px;
 `;
 
-export const StyledSvgGroup = styled.g``;
+export const StyledSvgGroup: ComponentClass<
+  HTMLAttributes<{}> & SVGProps<SVGGElement>
+> = styled.g``;

@@ -1,5 +1,8 @@
 # @atlaskit/field-range
 
+## 2.6.3
+- [patch] updated logic to calculate value percent [7e070f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e070f5)
+
 ## 2.6.2
 
 - [patch] updated styles to be aligned with akit [53b9e18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53b9e18)

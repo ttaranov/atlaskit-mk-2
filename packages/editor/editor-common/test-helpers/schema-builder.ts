@@ -9,6 +9,7 @@ import {
 import { Attributes as MediaAttributes } from '../src/schema/nodes/media';
 import matches from './matches';
 import sampleSchema from './schema';
+import { CellAttributes } from '../src/schema/nodes/tableNodes';
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -291,9 +292,9 @@ export const textColor = (attrs: { color: string }) =>
   markFactory(sampleSchema.marks.textColor, attrs);
 export const table = nodeFactory(sampleSchema.nodes.table, {});
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number; rowspan?: number }) =>
+export const td = (attrs: CellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number; rowspan?: number }) =>
+export const th = (attrs: CellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableHeader, attrs);
 export const tdEmpty = td({})(p(''));
 export const thEmpty = th({})(p(''));

@@ -1,6 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import stripIndent from 'strip-indent';
+import trimNewlines from 'trim-newlines';
 import { normalizeLanguage } from './supportedLanguages';
 import { type Theme, applyTheme } from './themes/themeBuilder';
 
@@ -58,7 +60,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
     return (
       <SyntaxHighlighter {...props} onCopy={this.handleCopy}>
-        {codeText}
+        {stripIndent(trimNewlines(codeText))}
       </SyntaxHighlighter>
     );
   }

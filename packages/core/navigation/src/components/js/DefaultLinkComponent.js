@@ -12,6 +12,7 @@ type Props = {
   onMouseLeave?: () => mixed,
   tabIndex?: number,
   appearance?: IconAppearance,
+  isSelected?: boolean,
 };
 
 export default class DefaultLinkComponent extends PureComponent<Props> {
@@ -26,6 +27,7 @@ export default class DefaultLinkComponent extends PureComponent<Props> {
       onMouseLeave,
       tabIndex,
       appearance, // eslint-disable-line no-unused-vars
+      isSelected, // eslint-disable-line no-unused-vars
       ...otherProps
     } = this.props;
 

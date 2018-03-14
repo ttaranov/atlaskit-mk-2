@@ -1,12 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
+import { EditorView } from 'prosemirror-view';
+import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps } from './types';
 import { ReactEditorView } from './create-editor';
-import { EditorView } from 'prosemirror-view';
+import { EventDispatcher } from './event-dispatcher';
+import EditorContext from './ui/EditorContext';
+
 export * from './types';
 
 export default class Editor extends React.Component<EditorProps, {}> {
@@ -24,12 +27,15 @@ export default class Editor extends React.Component<EditorProps, {}> {
   };
 
   private providerFactory: ProviderFactory;
-  private editorActions?: EditorActions;
+  private editorActions: EditorActions;
 
-  constructor(props: EditorProps) {
+  constructor(props: EditorProps, context) {
     super(props);
     this.providerFactory = new ProviderFactory();
     this.deprecationWarnings(props);
+    this.onEditorCreated = this.onEditorCreated.bind(this);
+    this.onEditorDestroyed = this.onEditorDestroyed.bind(this);
+    this.editorActions = (context || {}).editorActions || new EditorActions();
   }
 
   componentDidMount() {
@@ -45,17 +51,22 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.destroy();
   }
 
-  onEditorCreated = (instance: {
+  onEditorCreated(instance: {
     view: EditorView;
+    eventDispatcher: EventDispatcher;
     transformer?: Transformer<string>;
-  }) => {
-    this.registerEditorForActions(instance.view, instance.transformer);
+  }) {
+    this.registerEditorForActions(
+      instance.view,
+      instance.eventDispatcher,
+      instance.transformer,
+    );
     if (this.props.shouldFocus) {
       if (!instance.view.hasFocus()) {
         instance.view.focus();
       }
     }
-  };
+  }
 
   private deprecationWarnings(props) {
     if (props.hasOwnProperty('allowHyperlinks')) {
@@ -72,26 +83,23 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  onEditorDestroyed = (instance: {
+  onEditorDestroyed(instance: {
     view: EditorView;
     transformer?: Transformer<string>;
-  }) => {
+  }) {
     this.unregisterEditorFromActions();
-  };
+  }
 
   private registerEditorForActions(
     editorView: EditorView,
+    eventDispatcher: EventDispatcher,
     contentTransformer?: Transformer<string>,
   ) {
-    if (this.context && this.context.editorActions) {
-      this.editorActions = this.context.editorActions;
-      this.context.editorActions._privateRegisterEditor(
-        editorView,
-        contentTransformer,
-      );
-    } else {
-      this.editorActions = EditorActions.from(editorView, contentTransformer);
-    }
+    this.editorActions._privateRegisterEditor(
+      editorView,
+      eventDispatcher,
+      contentTransformer,
+    );
   }
 
   private unregisterEditorFromActions() {
@@ -142,37 +150,41 @@ export default class Editor extends React.Component<EditorProps, {}> {
     const Component = getUiComponent(this.props.appearance);
 
     return (
-      <ReactEditorView
-        editorProps={this.props}
-        providerFactory={this.providerFactory}
-        onEditorCreated={this.onEditorCreated}
-        onEditorDestroyed={this.onEditorDestroyed}
-        render={({ editor, view, eventDispatcher, config }) => (
-          <Component
-            disabled={this.props.disabled}
-            editorActions={this.editorActions}
-            editorDOMElement={editor}
-            editorView={view}
-            providerFactory={this.providerFactory}
-            eventDispatcher={eventDispatcher}
-            maxHeight={this.props.maxHeight}
-            onSave={this.props.onSave}
-            onCancel={this.props.onCancel}
-            popupsMountPoint={this.props.popupsMountPoint}
-            popupsBoundariesElement={this.props.popupsBoundariesElement}
-            contentComponents={config.contentComponents}
-            primaryToolbarComponents={config.primaryToolbarComponents}
-            secondaryToolbarComponents={config.secondaryToolbarComponents}
-            insertMenuItems={this.props.insertMenuItems}
-            customContentComponents={this.props.contentComponents}
-            customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
-            customSecondaryToolbarComponents={
-              this.props.secondaryToolbarComponents
-            }
-            addonToolbarComponents={this.props.addonToolbarComponents}
-          />
-        )}
-      />
+      <EditorContext editorActions={this.editorActions}>
+        <ReactEditorView
+          editorProps={this.props}
+          providerFactory={this.providerFactory}
+          onEditorCreated={this.onEditorCreated}
+          onEditorDestroyed={this.onEditorDestroyed}
+          render={({ editor, view, eventDispatcher, config }) => (
+            <Component
+              disabled={this.props.disabled}
+              editorActions={this.editorActions}
+              editorDOMElement={editor}
+              editorView={view}
+              providerFactory={this.providerFactory}
+              eventDispatcher={eventDispatcher}
+              maxHeight={this.props.maxHeight}
+              onSave={this.props.onSave}
+              onCancel={this.props.onCancel}
+              popupsMountPoint={this.props.popupsMountPoint}
+              popupsBoundariesElement={this.props.popupsBoundariesElement}
+              contentComponents={config.contentComponents}
+              primaryToolbarComponents={config.primaryToolbarComponents}
+              secondaryToolbarComponents={config.secondaryToolbarComponents}
+              insertMenuItems={this.props.insertMenuItems}
+              customContentComponents={this.props.contentComponents}
+              customPrimaryToolbarComponents={
+                this.props.primaryToolbarComponents
+              }
+              customSecondaryToolbarComponents={
+                this.props.secondaryToolbarComponents
+              }
+              addonToolbarComponents={this.props.addonToolbarComponents}
+            />
+          )}
+        />
+      </EditorContext>
     );
   }
 }

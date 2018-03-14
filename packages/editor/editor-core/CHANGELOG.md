@@ -1,5 +1,26 @@
 # @atlaskit/editor-core
 
+## 64.1.1
+- [patch] ED-3914: fix table errors when table looses focus [711e733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/711e733)
+
+## 64.1.0
+- [minor] editor-mobile-bridge module introduced [4a338f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a338f6)
+
+## 64.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
+## 63.1.1
+
+## 63.1.0
+- [minor] Makes WithPluginState work inside EditorContext [f572201](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f572201)
+
+## 63.0.1
+
+## 63.0.0
+- [major] Re-introduce code-splitting in editor-core [028efda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/028efda)
+
 ## 62.8.1
 
 ## 62.8.0

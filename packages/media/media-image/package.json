@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-image",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Atlassian Editor component for JIRA",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@atlaskit/field-text": "^4.1.8",
-    "@atlaskit/media-core": "^14.0.1",
-    "@atlaskit/media-test-helpers": "^9.0.3"
+    "@atlaskit/media-core": "^14.1.1",
+    "@atlaskit/media-test-helpers": "^9.0.4"
   }
 }

@@ -38,6 +38,11 @@ it('should render the provided component', () => {
   expect(wrapper.html()).toBe('<button>Hello</button>');
 });
 
+it('should have descriptive displayName', () => {
+  const ButtonWithAnalytics = withAnalyticsEvents()(Button);
+  expect(ButtonWithAnalytics.displayName).toBe('WithAnalyticsEvents(Button)');
+});
+
 it('should pass a createAnalyticsEvent function prop to the inner component', () => {
   const ButtonWithAnalytics = withAnalyticsEvents()(Button);
   const wrapper = shallow(<ButtonWithAnalytics>Hello</ButtonWithAnalytics>);

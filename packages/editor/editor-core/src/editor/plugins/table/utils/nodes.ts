@@ -106,6 +106,9 @@ export const getTableNode = (state: EditorState): PmNode | undefined => {
 
 export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
   const tableNode = getTableNode(state);
+  if (!tableNode) {
+    return false;
+  }
   const map = TableMap.get(tableNode!);
   for (let i = 0; i < map.width; i++) {
     const cell = tableNode!.nodeAt(map.map[i]);
@@ -118,6 +121,9 @@ export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
 
 export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
   const tableNode = getTableNode(state);
+  if (!tableNode) {
+    return false;
+  }
   const map = TableMap.get(tableNode!);
   for (let i = 0; i < map.height; i++) {
     // if number column is enabled, second column becomes header (next to the number column)
@@ -132,5 +138,5 @@ export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
 
 export const checkIfNumberColumnEnabled = (state: EditorState): boolean => {
   const tableNode = getTableNode(state);
-  return !!tableNode!.attrs.isNumberColumnEnabled;
+  return !!(tableNode && tableNode.attrs.isNumberColumnEnabled);
 };

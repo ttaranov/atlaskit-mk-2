@@ -7,7 +7,9 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { Card } from '../src';
 
-const GradientBackground = styled.div`
+const GradientBackground: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   background: linear-gradient(
     to bottom,
     rgba(226, 226, 226, 1) 0%,
@@ -15,7 +17,7 @@ const GradientBackground = styled.div`
   );
 `;
 
-const DummyContent = styled.div`
+const DummyContent: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   height: 125vh;
 `;
 

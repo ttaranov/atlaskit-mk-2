@@ -119,7 +119,9 @@ describe('BitbucketTransformer: parser', () => {
       const link = schema.marks.link.create({ href: 'http://example.com' });
       expect(
         textWithMarks(
-          parse('<p><a href="http://example.com">example link</a></p>'),
+          parse(
+            '<p><a href="http://example.com" data-is-external-link="true">example link</a></p>',
+          ),
           'example link',
           [link],
         ),
@@ -464,7 +466,7 @@ describe('BitbucketTransformer: parser', () => {
         parse(
           '<p>' +
             'foo ' +
-            '<a href="http://www.atlassian.com">Atlassian</a>' +
+            '<a href="http://www.atlassian.com" data-is-external-link="true">Atlassian</a>' +
             ' baz' +
             '</p>',
         ),
@@ -483,7 +485,7 @@ describe('BitbucketTransformer: parser', () => {
         parse(
           '<p>' +
             'foo ' +
-            '<a href="http://www.atlassian.com" title="bar">Atlassian</a>' +
+            '<a href="http://www.atlassian.com" title="bar" data-is-external-link="true">Atlassian</a>' +
             ' baz' +
             '</p>',
         ),
@@ -495,7 +497,7 @@ describe('BitbucketTransformer: parser', () => {
         parse(
           '<p>' +
             'foo ' +
-            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            '<a href="http://www.atlassian.com">#1234</a>' +
             ' baz' +
             '</p>',
         ),
@@ -511,7 +513,7 @@ describe('BitbucketTransformer: parser', () => {
         transformer.parse(
           '<p>' +
             'foo ' +
-            '<a href="http://www.atlassian.com" rel="nofollow">#1234</a>' +
+            '<a href="http://www.atlassian.com">#1234</a>' +
             ' baz' +
             '</p>',
         ),

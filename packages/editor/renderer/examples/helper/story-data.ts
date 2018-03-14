@@ -106,6 +106,7 @@ export const document = {
             {
               type: 'action',
               attrs: {
+                key: 'test-action-key',
                 title: 'test action mark',
                 target: {
                   receiver: 'some-receiver',
@@ -125,6 +126,7 @@ export const document = {
             {
               type: 'action',
               attrs: {
+                key: 'test-action-key',
                 title: 'test action mark',
                 target: {
                   receiver: 'some-receiver',

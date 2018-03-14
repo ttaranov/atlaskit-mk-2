@@ -37,6 +37,7 @@ export const mediaPickerAuthProvider = component => context => {
       method: 'POST',
       body,
       headers,
+      credentials: 'include',
     })
       .then(r => r.json())
       .then(data => {

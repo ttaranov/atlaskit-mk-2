@@ -63,7 +63,9 @@ const PageWrapper = ({
   heading?: string,
 }) => (
   <Wrapper>
-    <H2>{heading || 'Props'}</H2>
+    {typeof heading === 'string' && heading.length === 0 ? null : (
+      <H2>{heading || 'Props'}</H2>
+    )}
     {children}
   </Wrapper>
 );

@@ -1,5 +1,6 @@
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
+const WAIT_TIMEOUT = 5000;
 
 const TODO = () => {
   throw new Error('To be implemented!');
@@ -106,6 +107,14 @@ export default class Page {
     return this.browser.close();
   }
 
+  backspace(selector) {
+    this.browser.execute(selector => {
+      return document
+        .querySelector(selector)
+        .trigger({ type: 'keydown', which: 8 });
+    });
+  }
+
   // To be replaced by those puppeeter functions
   //  keyboard.down('KeyA');
   //  keyboard.press('KeyA');
@@ -118,8 +127,22 @@ export default class Page {
     return this.browser.getText(selector);
   }
 
+  getCssProperty(selector, cssProperty) {
+    return this.browser.getCssProperty(selector, cssProperty);
+  }
+
+  getElementSize(selector) {
+    return this.browser.getElementSize(selector);
+  }
+
+  getHTML(selector) {
+    return this.browser.getHTML(selector);
+  }
   isEnabled(selector) {
     return this.browser.isEnabled(selector);
+  }
+  isExisting(selector) {
+    return this.browser.isExisting(selector);
   }
 
   isVisible(selector) {
@@ -138,14 +161,14 @@ export default class Page {
       // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
       keys = ['Shift', 'Insert'];
     } else {
-      keys = ['Shift', 'Insert'];
+      keys = ['Command', 'v'];
     }
     return this.browser.setValue(selector, keys);
   }
 
   // Wait
   waitForSelector(selector) {
-    return this.browser.waitForExist(selector);
+    return this.browser.waitForExist(selector, WAIT_TIMEOUT);
   }
 
   waitFor(selector, ms, reverse) {

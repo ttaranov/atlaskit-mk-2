@@ -51,11 +51,9 @@ const helpDialog: EditorPlugin = {
     ];
   },
 
-  contentComponent({ editorView, eventDispatcher, appearance }) {
+  contentComponent({ editorView, appearance }) {
     return (
       <WithPluginState
-        editorView={editorView}
-        eventDispatcher={eventDispatcher}
         plugins={{
           helpDialog: pluginKey,
         }}

@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, css, keyframes } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled, { css, keyframes } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { size } from '../styles';
 
@@ -41,11 +37,13 @@ export interface CardListItemWrapperProps {
   shouldAnimate?: boolean;
 }
 
-export const Spinner = styled.div`
+export const Spinner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${size(30)};
 `;
 
-export const CardListItemWrapper = styled.div`
+export const CardListItemWrapper: ComponentClass<
+  HTMLAttributes<{}> & CardListItemWrapperProps
+> = styled.div`
   ${({ cardWidth }: CardListItemWrapperProps) => {
     if (cardWidth) {
       return css`

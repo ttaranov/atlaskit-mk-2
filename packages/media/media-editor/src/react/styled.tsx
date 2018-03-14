@@ -1,11 +1,11 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, CanvasHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import styled, { ThemedOuterStyledProps } from 'styled-components';
+
+import {
+  HTMLAttributes,
+  ComponentClass,
+  CanvasHTMLAttributes,
+  TextareaHTMLAttributes,
+} from 'react';
 import {
   akColorN40,
   akColorN50A,
@@ -24,22 +24,28 @@ export interface LineWidthFrontCircleProps {
   width: number;
 }
 
-export const EditorContainer = styled.div`
+export const EditorContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
 `;
 
-export const OutputArea = styled.div`
+export const OutputArea: ComponentClass<
+  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.div`
   position: absolute;
   overflow: hidden;
 `;
 
-export const DrawingCanvas = styled.canvas`
+export const DrawingCanvas: ComponentClass<
+  CanvasHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.canvas`
   position: absolute;
   left: 0;
   top: 0;
 `;
 
-export const SupplementaryCanvas = styled.canvas`
+export const SupplementaryCanvas: ComponentClass<
+  CanvasHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.canvas`
   position: absolute;
   display: none;
   left: 0;
@@ -48,7 +54,9 @@ export const SupplementaryCanvas = styled.canvas`
 
 // TODO Check with transparent canvas, because DefaultKeyboardInput makes the text area visible to get focus.
 // https://jira.atlassian.com/browse/FIL-4059
-export const HiddenTextArea = styled.textarea`
+export const HiddenTextArea: ComponentClass<
+  TextareaHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.textarea`
   position: absolute;
   display: block;
   visibility: hidden; /* display:none won't allow to get the keyboard focus */
@@ -61,7 +69,9 @@ export const HiddenTextArea = styled.textarea`
   opacity: 0;
 `;
 
-export const HiddenTextHelperDiv = styled.div`
+export const HiddenTextHelperDiv: ComponentClass<
+  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.div`
   position: absolute;
   display: block;
   visibility: hidden; /* display:none won't allow us to call getClientBoundingRect() for children */
@@ -73,7 +83,7 @@ export const HiddenTextHelperDiv = styled.div`
   white-space: pre; /* to preserve multiple whitespace characters and not to break lines */
 `;
 
-export const ToolbarContainer = styled.div`
+export const ToolbarContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 32px;
   height: 392px;
   background-color: ${akColorN600A};
@@ -81,7 +91,9 @@ export const ToolbarContainer = styled.div`
   padding: 8px;
 `;
 
-export const ToolbarButton = styled.div`
+export const ToolbarButton: ComponentClass<
+  HTMLAttributes<{}> & ButtonProps
+> = styled.div`
   display: inline-block;
   width: 32px;
   height: 32px;
@@ -94,7 +106,7 @@ export const ToolbarButton = styled.div`
   }
 `;
 
-export const ColorSquare = styled.div`
+export const ColorSquare: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 20px;
   height: 20px;
   margin: 4px;
@@ -105,7 +117,9 @@ export const ColorSquare = styled.div`
   border-style: solid;
 `;
 
-export const LineWidthBackCircle = styled.div`
+export const LineWidthBackCircle: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -114,7 +128,9 @@ export const LineWidthBackCircle = styled.div`
   border-radius: 10px;
 `;
 
-export const LineWidthFrontCircle = styled.div`
+export const LineWidthFrontCircle: ComponentClass<
+  HTMLAttributes<{}> & LineWidthFrontCircleProps
+> = styled.div`
   width: ${(props: LineWidthFrontCircleProps) =>
     props.width ? `${props.width}px` : '0'};
   height: ${(props: LineWidthFrontCircleProps) =>
@@ -125,7 +141,7 @@ export const LineWidthFrontCircle = styled.div`
     props.width ? `${10 - props.width / 2}px` : '0'};
 `;
 
-export const ToolIcon = styled.div`
+export const ToolIcon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 20px;
   height: 20px;
   margin: 4px;

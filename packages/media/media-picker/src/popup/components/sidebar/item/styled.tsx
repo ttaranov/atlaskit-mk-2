@@ -1,19 +1,17 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, LiHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, LiHTMLAttributes } from 'react';
 import { akColorN500, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export interface WrapperProps {
   isActive: boolean;
 }
 
-export const Wrapper = styled.li`
+export const Wrapper: ComponentClass<
+  LiHTMLAttributes<{}> & WrapperProps
+> = styled.li`
   color: ${({ isActive }: WrapperProps) =>
     isActive ? akColorB400 : akColorN500};
   padding: 6px 25px;
@@ -27,12 +25,12 @@ export const Wrapper = styled.li`
   }
 `;
 
-export const ServiceIcon = styled.div`
+export const ServiceIcon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-block;
   vertical-align: middle;
 `;
 
-export const ServiceName = styled.div`
+export const ServiceName: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 14px;
   position: relative;
   margin-left: 10px;

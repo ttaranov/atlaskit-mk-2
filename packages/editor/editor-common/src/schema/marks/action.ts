@@ -14,6 +14,7 @@ export interface Attributes extends Action {
 }
 
 export interface Action {
+  key?: string;
   target: {
     receiver?: string;
     key: string;
@@ -25,6 +26,7 @@ export const action: MarkSpec = {
   excludes: COLOR,
   group: LINK,
   attrs: {
+    key: { default: null },
     title: { default: null },
     target: { default: null },
     parameters: { default: null },
@@ -34,26 +36,31 @@ export const action: MarkSpec = {
     {
       tag: 'span[data-mark-type="action"]',
       getAttrs: (dom: Element) => {
-        const receiver = dom.getAttribute('data-action-mark-target-receiver');
-        const key = dom.getAttribute('data-action-mark-target-key');
+        const key = dom.getAttribute('data-action-mark-key');
+        const targetReceiver = dom.getAttribute(
+          'data-action-mark-target-receiver',
+        );
+        const targetKey = dom.getAttribute('data-action-mark-target-key');
         const title = dom.getAttribute('data-action-mark-title');
 
         return {
+          key,
           title,
           target: {
-            receiver,
-            key,
+            receiver: targetReceiver,
+            key: targetKey,
           },
         };
       },
     },
   ],
   toDOM(node): [string, any] {
-    const { title, target } = node.attrs;
+    const { title, key, target } = node.attrs;
     return [
       'span',
       {
         'data-mark-type': 'action',
+        'data-action-mark-key': key,
         'data-action-mark-title': title,
         'data-action-mark-target-receiver': target && target.receiver,
         'data-action-mark-target-key': target && target.key,

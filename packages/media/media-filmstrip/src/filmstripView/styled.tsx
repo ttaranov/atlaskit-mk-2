@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, LiHTMLAttributes } from 'react';
+
+import styled, { ThemedOuterStyledProps } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, LiHTMLAttributes } from 'react';
 import {
   akColorB400,
   akColorN20,
@@ -14,7 +10,9 @@ import {
   akColorB50,
 } from '@atlaskit/util-shared-styles';
 
-export const FilmStripViewWrapper = styled.div`
+export const FilmStripViewWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   position: relative;
   padding: 3px 0;
   border-radius: 3px;
@@ -28,13 +26,17 @@ export const FilmStripViewWrapper = styled.div`
   }
 `;
 
-export const FilmStripListWrapper = styled.div`
+export const FilmStripListWrapper: ComponentClass<
+  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.div`
   width: inherit;
   overflow: hidden;
   padding: 2px 0;
 `;
 
-export const FilmStripList = styled.ul`
+export const FilmStripList: ComponentClass<
+  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
+> = styled.ul`
   margin: 0;
   padding: 0;
   transition-property: transform;
@@ -43,7 +45,9 @@ export const FilmStripList = styled.ul`
   display: inline-block;
 `;
 
-export const FilmStripListItem = styled.li`
+export const FilmStripListItem: ComponentClass<
+  LiHTMLAttributes<{}>
+> = styled.li`
   list-style-type: none;
   margin: 0;
   padding: 0 4px;
@@ -67,7 +71,7 @@ export const FilmStripListItem = styled.li`
   }
 `;
 
-export const ArrowWrapper = styled.div`
+export const ArrowWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -99,7 +103,9 @@ export const ArrowWrapper = styled.div`
   }
 `;
 
-export const ArrowLeftWrapper = styled(ArrowWrapper)`
+export const ArrowLeftWrapper: ComponentClass<HTMLAttributes<{}>> = styled(
+  ArrowWrapper,
+)`
   left: 8px;
 
   svg {
@@ -107,7 +113,9 @@ export const ArrowLeftWrapper = styled(ArrowWrapper)`
   }
 `;
 
-export const ArrowRightWrapper = styled(ArrowWrapper)`
+export const ArrowRightWrapper: ComponentClass<HTMLAttributes<{}>> = styled(
+  ArrowWrapper,
+)`
   right: 8px;
 
   svg {
@@ -115,7 +123,7 @@ export const ArrowRightWrapper = styled(ArrowWrapper)`
   }
 `;
 
-export const Shadow = styled.div`
+export const Shadow: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   z-index: 10;
   height: 100%;
@@ -124,10 +132,10 @@ export const Shadow = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
-export const ShadowLeft = styled(Shadow)`
+export const ShadowLeft: ComponentClass<HTMLAttributes<{}>> = styled(Shadow)`
   left: 0;
 `;
 
-export const ShadowRight = styled(Shadow)`
+export const ShadowRight: ComponentClass<HTMLAttributes<{}>> = styled(Shadow)`
   right: 0;
 `;

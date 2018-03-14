@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akGridSizeUnitless,
   akColorR400,
@@ -18,35 +14,49 @@ export interface MessageProps {
   tryAgain?: boolean;
 }
 
-export const Actions = styled.div`
+export const Actions: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${center} font-size: 14px;
 `;
 
-export const ActionsMenu = styled.div`
+export const ActionsMenu: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   margin-left: ${akGridSizeUnitless / 2}px;
 `;
 
-const Message = styled.span`
+const Message: ComponentClass<HTMLAttributes<{}> & MessageProps> = styled.span`
   margin-right: ${({ tryAgain }: MessageProps) => (tryAgain ? 0 : 5)}px;
 `;
 
-export const FailureMessageBlock = styled.div``;
+export const FailureMessageBlock: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div``;
 
-export const FailureMessage = styled(Message)`
+export const FailureMessage: ComponentClass<
+  HTMLAttributes<{}> & MessageProps
+> = styled(Message)`
   color: ${akColorR400};
   vertical-align: middle;
   margin-left: 5px;
 ` as any;
 
-export const SuccessMessage = styled(Message)``;
+export const SuccessMessage: ComponentClass<
+  HTMLAttributes<{}> & MessageProps
+> = styled(Message)``;
 
-export const ActionButtonWrapper = styled.div`
+export const ActionButtonWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   margin-left: 5px;
 `;
 
-export const ButtonWrapper = styled.div`
-  ${({ isDark }: { isDark: boolean }) => {
+export interface ButtonWrapperProps {
+  isDark: boolean;
+}
+
+export const ButtonWrapper: ComponentClass<
+  HTMLAttributes<{}> & ButtonWrapperProps
+> = styled.div`
+  ${({ isDark }: ButtonWrapperProps) => {
     if (isDark) {
       return `
 

@@ -5,7 +5,6 @@ import {
   CardActionType,
   MediaCollectionItem,
   MediaCollection,
-  // @ts-ignore: unused variable
   Context,
 } from '@atlaskit/media-core';
 import { createStorybookContext } from '@atlaskit/media-test-helpers';
@@ -122,7 +121,7 @@ export const annotateAction = {
 
 // TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004
 export const cardsActions = [/*deleteAction, */ anotherAction, annotateAction];
-export const wrongContext = createStorybookContext({
+export const wrongContext: Context = createStorybookContext({
   serviceHost: 'http://example.com',
   authType: 'client',
 });

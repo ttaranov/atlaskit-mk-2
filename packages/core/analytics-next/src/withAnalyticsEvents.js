@@ -37,6 +37,9 @@ export default function withAnalyticsEvents<
 ) => ComponentType<PropsWithoutAnalyticsEvent> {
   return WrappedComponent =>
     class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
+      static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
+        WrappedComponent.name})`;
+
       static contextTypes = {
         getAtlaskitAnalyticsEventHandlers: PropTypes.func,
         getAtlaskitAnalyticsContext: PropTypes.func,
