@@ -32,14 +32,18 @@ pipelines:
         script:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
+          - mkdir foo
+          - echo "test" > foo/test.txt
         caches:
           - node
         artifacts:
-          - node_modules/**
+          - foo/**
     - parallel:
         - step:
             name: Building dists
             script:
+              - ls
+              - ls foo
               - yarn build
         - step:
             name: Lint + Typecheck
