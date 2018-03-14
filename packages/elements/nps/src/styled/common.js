@@ -21,3 +21,8 @@ export const Description = styled.div`
   font-size: ${fontSize}px;
   color: ${colors.text};
 `;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;

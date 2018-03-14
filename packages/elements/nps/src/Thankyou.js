@@ -8,26 +8,26 @@ export type Props = {
     title: Node,
     description: Node,
   },
-  isDismissible: boolean,
+  canClose: boolean,
   canOptOut: boolean,
-  onDismiss: () => void,
+  onClose: () => void,
   onOptOut: () => void,
 };
 
 export default function Thankyou({
   messages,
-  isDismissible,
+  canClose,
   canOptOut,
-  onDismiss,
+  onClose,
   onOptOut,
 }: Props): Node {
   return (
     <div>
       <Header
         title={messages.title}
-        isDismissible={isDismissible}
+        canClose={canClose}
         canOptOut={canOptOut}
-        onDismiss={onDismiss}
+        onClose={onClose}
         onOptOut={onOptOut}
       />
       <Description>{messages.description}</Description>

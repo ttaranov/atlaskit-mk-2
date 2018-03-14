@@ -12,14 +12,14 @@ import {
 
 export function HeaderButtons({
   optOutLabel,
-  isDismissible,
-  onDismiss,
+  canClose,
+  onClose,
   canOptOut,
   onOptOut,
 }: {
   optOutLabel?: Node,
-  isDismissible: boolean,
-  onDismiss?: () => void,
+  canClose: boolean,
+  onClose?: () => void,
   canOptOut: boolean,
   onOptOut?: () => void,
 }) {
@@ -31,11 +31,11 @@ export function HeaderButtons({
       </Button>,
     );
   }
-  if (isDismissible) {
+  if (canClose) {
     buttons.push(
       <Button
         appearance="subtle"
-        onClick={onDismiss}
+        onClick={onClose}
         iconBefore={<CloseIcon label="Close" size="small" />}
       />,
     );
@@ -45,15 +45,15 @@ export function HeaderButtons({
 
 export function Header({
   title,
-  isDismissible,
-  onDismiss,
+  canClose,
+  onClose,
   canOptOut,
   onOptOut,
   optOutLabel,
 }: {
   title: Node,
-  isDismissible: boolean,
-  onDismiss?: () => void,
+  canClose: boolean,
+  onClose?: () => void,
   canOptOut: boolean,
   onOptOut?: () => void,
   optOutLabel?: Node,
@@ -62,9 +62,9 @@ export function Header({
     <StyledHeader>
       <Title>{title}</Title>
       <HeaderButtons
-        isDismissible={isDismissible}
+        canClose={canClose}
         canOptOut={canOptOut}
-        onDismiss={onDismiss}
+        onClose={onClose}
         onOptOut={onOptOut}
         optOutLabel={optOutLabel}
       />
