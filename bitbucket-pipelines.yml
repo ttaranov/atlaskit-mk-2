@@ -31,9 +31,7 @@ pipelines:
         name: Installing dependencies
         script:
           - echo "Installing deps"
-          - mkdir node_modules
-          - touch node_modules/foo
-          - touch node_modules/bar
+          - yarn
         artifacts:
           - node_modules/**
     - parallel:
