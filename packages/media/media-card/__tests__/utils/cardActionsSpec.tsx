@@ -72,6 +72,7 @@ describe('CardActions', () => {
     expect(iconButtons).toHaveLength(0);
     expect(dropdownMenu).toHaveLength(1);
     expect(dropdownItems).toHaveLength(1);
+    expect(dropdownItems.prop('children')).toEqual(openAction.label);
 
     expect(openAction.handler).not.toHaveBeenCalled();
   });
@@ -88,11 +89,16 @@ describe('CardActions', () => {
   });
 
   it('should render only icon button given one action with an icon', () => {
-    const { iconButtons, dropdownMenu, dropdownItems } = setup([
-      annotateAction,
-    ]);
+    const triggerColor = 'some-trigger-color';
+    const { iconButtons, dropdownMenu, dropdownItems } = setup(
+      [annotateAction],
+      triggerColor,
+    );
 
     expect(iconButtons).toHaveLength(1);
+    const actionButton = iconButtons.find(CardActionButton);
+    expect(actionButton.find(AnnotateIcon)).toHaveLength(1);
+    expect(actionButton.prop('style')).toEqual({ color: triggerColor });
     expect(dropdownMenu).toHaveLength(0);
     expect(dropdownItems).toHaveLength(0);
   });
