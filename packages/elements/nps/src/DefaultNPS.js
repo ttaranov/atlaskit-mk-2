@@ -9,8 +9,9 @@ import {
   type CanContact,
   type NPSResult,
 } from './NPS';
-import { Feedback } from './Feedback';
-import { Followup } from './Followup';
+import Feedback from './Feedback';
+import Followup from './Followup';
+import Thankyou from './Thankyou';
 
 export function getDefaultStrings(product: string) {
   return {
@@ -33,7 +34,7 @@ export function getDefaultStrings(product: string) {
   };
 }
 
-export const defaultRoles = [
+export const getDefaultRoles = () => [
   'Management',
   'Software Engineering',
   'Design',
@@ -139,12 +140,22 @@ export function DefaultNPS(props: Props) {
           }}
         />
       )}
+      renderThankyou={thankyouProps => (
+        <Thankyou
+          {...thankyouProps}
+          strings={{
+            ...defaultStrings,
+            title: defaultStrings.thankyouTitle,
+            description: defaultStrings.thankyouDescription,
+          }}
+        />
+      )}
     />
   );
 }
 
 DefaultNPS.defaultProps = {
-  roles: defaultRoles,
+  roles: getDefaultRoles(),
   isDismissable: false,
   canOptOut: false,
   onDismiss: () => {},
