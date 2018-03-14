@@ -1,5 +1,4 @@
-import { defaultSchema, Transformer } from '@atlaskit/editor-common';
-
+import { Transformer } from '@atlaskit/editor-common';
 import { Node as PMNode } from 'prosemirror-model';
 
 export class WikiMarkupTransformer implements Transformer<string> {
