@@ -32,7 +32,8 @@ pipelines:
         script:
           - echo "Installing deps"
           - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
-          - yarn
+          - yarn global add bolt
+          - bolt
         artifacts:
           - node_modules/**
     - parallel:
