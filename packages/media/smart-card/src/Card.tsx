@@ -66,7 +66,7 @@ export class Card extends React.Component<CardProps, CardState> {
     if (!client) {
       // tslint:disable-next-line:no-console
       console.error(
-        'No client provided. Provide a client like <SmartCard client={new SmartCardClient()} url=""/> or <SmartCardProvider client={new SmartCardClient()}><SmartCard url=""/></SmartCardProvider>.',
+        '@atlaskit/smart-card: No client provided. Provide a client like <Card client={new Client()} url=""/> or <Provider client={new Client()}><Card url=""/></Provider>.',
       );
       throw new Error();
     }
