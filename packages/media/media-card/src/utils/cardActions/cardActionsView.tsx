@@ -25,22 +25,14 @@ export class CardActionsView extends Component<CardActionsViewProps> {
     const primaryAction = actions.find(actionWithIcon);
     const otherActions = actions.filter(action => action !== primaryAction);
 
-    if (primaryAction) {
-      return (
-        <PreventClickThrough>
-          <Wrapper>
-            {this.renderActionIconButton(primaryAction)}
-            {this.renderOtherActionButtons(otherActions)}
-          </Wrapper>
-        </PreventClickThrough>
-      );
-    } else {
-      return (
-        <PreventClickThrough>
-          <Wrapper>{this.renderOtherActionButtons(otherActions)}</Wrapper>
-        </PreventClickThrough>
-      );
-    }
+    return (
+      <PreventClickThrough>
+        <Wrapper>
+          {primaryAction && this.renderActionIconButton(primaryAction)}
+          {this.renderOtherActionButtons(otherActions)}
+        </Wrapper>
+      </PreventClickThrough>
+    );
   }
 
   private renderActionIconButton(action: CardAction) {
