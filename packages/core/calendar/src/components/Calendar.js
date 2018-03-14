@@ -298,6 +298,9 @@ class Calendar extends Component<Props, State> {
     const shouldDisplaySixthWeek = calendar.length % 6;
     const announceId = getUniqueId('announce');
 
+    // Some months jump between 5 and 6 weeks to display. In some cases 4 (Feb
+    // with the 1st on a Monday etc). This ensures the UI doesn't jump around by
+    // catering to always showing 6 weeks.
     if (shouldDisplaySixthWeek) {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
       const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
