@@ -1,22 +1,22 @@
 //@flow
 
 import React, { type Node } from 'react';
-import { Header } from './common';
+import { Header, Description } from './common';
 
 export type Props = {
-  strings: {
+  messages: {
     title: Node,
     description: Node,
   },
-  isDismissable: boolean,
+  isDismissible: boolean,
   canOptOut: boolean,
   onDismiss: () => void,
   onOptOut: () => void,
 };
 
 export default function Thankyou({
-  strings,
-  isDismissable,
+  messages,
+  isDismissible,
   canOptOut,
   onDismiss,
   onOptOut,
@@ -24,13 +24,13 @@ export default function Thankyou({
   return (
     <div>
       <Header
-        title={strings.title}
-        isDismissable={isDismissable}
+        title={messages.title}
+        isDismissible={isDismissible}
         canOptOut={canOptOut}
         onDismiss={onDismiss}
         onOptOut={onOptOut}
       />
-      <p>{strings.description}</p>
+      <Description>{messages.description}</Description>
     </div>
   );
 }

@@ -3,17 +3,22 @@
 import React, { type Node } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
-import { Header as StyledHeader } from './styled/common';
+import {
+  Wrapper,
+  Header as StyledHeader,
+  Title,
+  Description as StyledDescription,
+} from './styled/common';
 
 export function HeaderButtons({
   optOutLabel,
-  isDismissable,
+  isDismissible,
   onDismiss,
   canOptOut,
   onOptOut,
 }: {
   optOutLabel?: Node,
-  isDismissable: boolean,
+  isDismissible: boolean,
   onDismiss?: () => void,
   canOptOut: boolean,
   onOptOut?: () => void,
@@ -26,7 +31,7 @@ export function HeaderButtons({
       </Button>,
     );
   }
-  if (isDismissable) {
+  if (isDismissible) {
     buttons.push(
       <Button
         appearance="subtle"
@@ -40,14 +45,14 @@ export function HeaderButtons({
 
 export function Header({
   title,
-  isDismissable,
+  isDismissible,
   onDismiss,
   canOptOut,
   onOptOut,
   optOutLabel,
 }: {
   title: Node,
-  isDismissable: boolean,
+  isDismissible: boolean,
   onDismiss?: () => void,
   canOptOut: boolean,
   onOptOut?: () => void,
@@ -55,14 +60,22 @@ export function Header({
 }) {
   return (
     <StyledHeader>
-      <h2>{title}</h2>
+      <Title>{title}</Title>
       <HeaderButtons
-        isDismissable={isDismissable}
+        isDismissible={isDismissible}
         canOptOut={canOptOut}
         onDismiss={onDismiss}
         onOptOut={onOptOut}
         optOutLabel={optOutLabel}
       />
     </StyledHeader>
+  );
+}
+
+export function Description({ children }: { children: Node }): Node {
+  return (
+    <Wrapper>
+      <StyledDescription>{children}</StyledDescription>
+    </Wrapper>
   );
 }

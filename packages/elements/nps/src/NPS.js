@@ -24,7 +24,7 @@ export type NPSResult = {
 /* eslint-disable react/no-unused-prop-types */
 export type Props = {
   /** Can the survey be dismissed */
-  isDismissable: boolean,
+  isDismissible: boolean,
 
   /** Should the user be given the option to opt out of all future surveys */
   canOptOut: boolean,
@@ -58,7 +58,7 @@ export type Props = {
 
   /** Render the feedback page */
   renderFeedback: ({
-    isDismissable: boolean,
+    isDismissible: boolean,
     canOptOut: boolean,
     onDismiss: () => void,
     onOptOut: () => void,
@@ -69,7 +69,7 @@ export type Props = {
 
   /** Render the followup page */
   renderFollowup: ({
-    isDismissable: boolean,
+    isDismissible: boolean,
     canOptOut: boolean,
     onDismiss: () => void,
     onOptOut: () => void,
@@ -80,7 +80,7 @@ export type Props = {
 
   /** Render the thank you page */
   renderThankyou: ({
-    isDismissable: boolean,
+    isDismissible: boolean,
     canOptOut: boolean,
     onDismiss: () => void,
     onOptOut: () => void,
@@ -136,12 +136,12 @@ export class NPS extends React.Component<Props, State> {
 
   getPage(): Node {
     const { page } = this.state;
-    const { isDismissable, canOptOut } = this.props;
+    const { isDismissible, canOptOut } = this.props;
     switch (page) {
       case Pages.FEEDBACK: {
         const { renderFeedback } = this.props;
         return renderFeedback({
-          isDismissable,
+          isDismissible,
           canOptOut,
           onDismiss: this.onDismiss,
           onOptOut: this.onOptOut,
@@ -153,7 +153,7 @@ export class NPS extends React.Component<Props, State> {
       case Pages.FOLLOWUP: {
         const { renderFollowup } = this.props;
         return renderFollowup({
-          isDismissable,
+          isDismissible,
           canOptOut,
           onDismiss: this.onDismiss,
           onOptOut: this.onOptOut,
@@ -165,7 +165,7 @@ export class NPS extends React.Component<Props, State> {
       case Pages.THANKYOU: {
         const { renderThankyou } = this.props;
         return renderThankyou({
-          isDismissable,
+          isDismissible,
           canOptOut,
           onDismiss: this.onDismiss,
           onOptOut: this.onOptOut,

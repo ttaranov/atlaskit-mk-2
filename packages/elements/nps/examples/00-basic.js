@@ -18,7 +18,7 @@ export default class NPSExample extends React.Component<any, any> {
     return (
       <div>
         <DefaultNPS
-          // The "product" prop is required in this example to generate the default strings.
+          // The "product" prop is required in this example to generate the default messages.
           product="Stride"
           onFinish={this.onFinish}
         />

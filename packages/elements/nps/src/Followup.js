@@ -4,9 +4,9 @@ import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import Checkbox from '@atlaskit/checkbox';
 import { type Role, type CanContact } from './NPS';
-import { Header } from './common';
-import { Section } from './styled/common';
-import { Contact } from './styled/followup';
+import { Header, Description } from './common';
+import { Wrapper } from './styled/common';
+import { Contact, RoleQuestion } from './styled/followup';
 
 const RoleDropdown = ({
   roles,
@@ -38,7 +38,7 @@ const RoleDropdown = ({
 };
 
 export type Props = {
-  strings: {
+  messages: {
     title: Node,
     description: Node,
     optOut: Node,
@@ -47,6 +47,10 @@ export type Props = {
     send: Node,
     rolePlaceholder: string,
   },
+  isDismissible: boolean,
+  canOptOut: boolean,
+  onDismiss: () => void,
+  onOptOut: () => void,
   roles: Array<Role>,
   onRoleSelect: Role => void,
   onCanContactChange: CanContact => void,
@@ -90,8 +94,8 @@ export default class Followup extends React.Component<Props, State> {
 
   render() {
     const {
-      strings,
-      isDismissable,
+      messages,
+      isDismissible,
       onDismiss,
       canOptOut,
       onOptOut,
@@ -100,36 +104,36 @@ export default class Followup extends React.Component<Props, State> {
     return (
       <div>
         <Header
-          title={strings.title}
-          isDismissable
+          title={messages.title}
+          isDismissible={isDismissible}
           onDismiss={onDismiss}
-          canOptOut
+          canOptOut={canOptOut}
           onOptOut={onOptOut}
-          optOutLabel={strings.optOut}
+          optOutLabel={messages.optOut}
         />
-        <p>{strings.description}</p>
-        <Section>
-          <p>{this.props.strings.roleQuestion}</p>
+        <Description>{messages.description}</Description>
+        <Wrapper>
+          <RoleQuestion>{this.props.messages.roleQuestion}</RoleQuestion>
           <RoleDropdown
             roles={roles}
             onRoleSelect={this.onRoleSelect}
             selected={this.state.role}
-            placeholder={strings.rolePlaceholder}
+            placeholder={messages.rolePlaceholder}
           />
           <Contact>
             <Checkbox
               name="nps-contact-me"
               value="Can Contact"
-              label={strings.contactQuestion}
+              label={messages.contactQuestion}
               onChange={this.onCanContactChange}
             />
           </Contact>
-        </Section>
-        <Section>
+        </Wrapper>
+        <Wrapper>
           <Button appearance="primary" onClick={this.onSubmit}>
-            {strings.send}
+            {messages.send}
           </Button>
-        </Section>
+        </Wrapper>
       </div>
     );
   }

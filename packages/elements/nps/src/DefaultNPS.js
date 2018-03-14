@@ -13,7 +13,7 @@ import Feedback from './Feedback';
 import Followup from './Followup';
 import Thankyou from './Thankyou';
 
-export function getDefaultStrings(product: string) {
+export function getDefaultMessages(product: string) {
   return {
     feedbackTitle: 'Tell us what you think',
     feedbackDescription: `How likely are you to recommend ${product} to a friend or colleague?`,
@@ -46,11 +46,11 @@ export const getDefaultRoles = () => [
 
 /* eslint-disable react/no-unused-prop-types */
 export type Props = {
-  /** The product the survey is for. This is only used to generate the default strings. */
+  /** The product the survey is for. This is only used to generate the default messages. */
   product: string,
 
   /** Can the survey be dismissed */
-  isDismissable: boolean,
+  isDismissible: boolean,
 
   /** Callback called when the user dismisses a survey */
   onDismiss: () => void,
@@ -89,7 +89,7 @@ export type Props = {
 export function DefaultNPS(props: Props) {
   const {
     product,
-    isDismissable,
+    isDismissible,
     canOptOut,
     roles,
     onDismiss,
@@ -103,11 +103,11 @@ export function DefaultNPS(props: Props) {
     onFinish,
   } = props;
 
-  const defaultStrings = getDefaultStrings(product);
+  const defaultMessages = getDefaultMessages(product);
 
   return (
     <NPS
-      isDismissable={isDismissable}
+      isDismissible={isDismissible}
       canOptOut={canOptOut}
       onDismiss={onDismiss}
       onOptOut={onOptOut}
@@ -121,11 +121,11 @@ export function DefaultNPS(props: Props) {
       renderFeedback={feedbackProps => (
         <Feedback
           {...feedbackProps}
-          strings={{
-            ...defaultStrings,
-            optOutLabel: defaultStrings.optOut,
-            title: defaultStrings.feedbackTitle,
-            description: defaultStrings.feedbackDescription,
+          messages={{
+            ...defaultMessages,
+            optOutLabel: defaultMessages.optOut,
+            title: defaultMessages.feedbackTitle,
+            description: defaultMessages.feedbackDescription,
           }}
         />
       )}
@@ -133,20 +133,20 @@ export function DefaultNPS(props: Props) {
         <Followup
           {...followupProps}
           roles={roles}
-          strings={{
-            ...defaultStrings,
-            title: defaultStrings.followupTitle,
-            description: defaultStrings.followupDescription,
+          messages={{
+            ...defaultMessages,
+            title: defaultMessages.followupTitle,
+            description: defaultMessages.followupDescription,
           }}
         />
       )}
       renderThankyou={thankyouProps => (
         <Thankyou
           {...thankyouProps}
-          strings={{
-            ...defaultStrings,
-            title: defaultStrings.thankyouTitle,
-            description: defaultStrings.thankyouDescription,
+          messages={{
+            ...defaultMessages,
+            title: defaultMessages.thankyouTitle,
+            description: defaultMessages.thankyouDescription,
           }}
         />
       )}
@@ -156,7 +156,7 @@ export function DefaultNPS(props: Props) {
 
 DefaultNPS.defaultProps = {
   roles: getDefaultRoles(),
-  isDismissable: false,
+  isDismissible: false,
   canOptOut: false,
   onDismiss: () => {},
   onOptOut: () => {},
