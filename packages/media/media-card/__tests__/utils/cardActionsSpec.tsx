@@ -58,6 +58,14 @@ describe('CardActions', () => {
     };
   };
 
+  it('should render nothing given no actions', () => {
+    const { iconButtons, dropdownMenu, dropdownItems } = setup([]);
+
+    expect(iconButtons).toHaveLength(0);
+    expect(dropdownMenu).toHaveLength(0);
+    expect(dropdownItems).toHaveLength(0);
+  });
+
   it('should render only dropdown menu given one action with no icon', () => {
     const { iconButtons, dropdownMenu, dropdownItems } = setup([openAction]);
 
