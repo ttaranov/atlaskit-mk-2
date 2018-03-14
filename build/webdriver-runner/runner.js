@@ -1,5 +1,4 @@
 'use strict';
-//increase test timeout
 //@flow
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
@@ -15,30 +14,40 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeAll(async function() {
+    beforeEach(async function() {
       for (let client of clients) {
         if (client) {
+          const browserName = client.driver.desiredCapabilities.browserName;
+          if (skipForBrowser && skipForBrowser[browserName]) {
+            if (client.isReady) {
+              client.isReady = false;
+              await client.driver.end();
+            }
+            continue;
+          }
           if (client.isReady) continue;
-          await client.driver.init();
           client.isReady = true;
+          await client.driver.init();
         }
       }
     });
 
     for (let client of clients) {
-      if (client) testRun(testcase, tester, client.driver, skipForBrowser);
-    }
-
-    afterAll(async function() {
-      for (let client of clients) {
-        if (client) {
-          await client.driver.end();
-          client.isReady = false;
-        }
+      if (client) {
+        testRun(testcase, tester, client.driver, skipForBrowser);
       }
-    });
+    }
   });
 }
+
+afterAll(async function() {
+  for (let client of clients) {
+    if (client) {
+      client.isReady = false;
+      await client.driver.end();
+    }
+  }
+});
 
 /*::
 type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
@@ -69,42 +78,46 @@ function testRun(
     testFn = test.skip;
   } else if (skipForBrowser) {
     testFn = test.skip;
+    client.end();
   } else {
     testFn = test;
   }
-  let callbk;
+
+  let callback;
   if (client && tester && tester.length > 1) {
-    callbk = done => tester(client, done);
+    callback = done => tester(client, done);
   } else {
-    callbk = () => tester(client);
+    callback = () => tester(client);
   }
-  testFn(browserName, callbk);
+  testFn(browserName, callback);
 }
 
 function setLocalClients() {
   const launchers = {
     chrome: {
       browserName: 'chrome',
+      // Disable headless here to run on real browsers
+      chromeOptions: {
+        args: ['--headless', '--disable-gpu'],
+      },
+    },
+    safari: {
+      browserName: 'safari',
     },
     firefox: {
       browserName: 'firefox',
+      'moz:firefoxOptions': {
+        args: ['-headless'],
+      },
     },
   };
-  let clis = [];
-  Object.keys(launchers).forEach(key => {
+
+  return Object.keys(launchers).map(key => {
     const option = {
-      desiredCapabilities: {
-        browserName: launchers[key].browserName,
-        //Disable headless here to run on real browsers
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu'],
-        },
-      },
+      desiredCapabilities: launchers[key],
     };
-    const driver = webdriverio.remote(option);
-    clis.push({ driver: driver, isReady: false });
+    return { driver: webdriverio.remote(option) };
   });
-  return clis;
 }
 
 function setBrowserStackClients() {
@@ -112,13 +125,13 @@ function setBrowserStackClients() {
     chrome: {
       os: 'Windows',
       browserName: 'Chrome',
-      browser_version: '63.0',
+      browser_version: '64.0',
       resolution: '1440x900',
     },
     firefox: {
       os: 'Windows',
       browserName: 'firefox',
-      browser_version: '57',
+      browser_version: '58',
       resolution: '1440x900',
     },
     ie: {
@@ -142,6 +155,9 @@ function setBrowserStackClients() {
   };
 
   let clis = [];
+  if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+  }
 
   Object.keys(launchers).forEach(key => {
     const option = {
@@ -150,9 +166,10 @@ function setBrowserStackClients() {
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',
-        build: process.env.BITBUCKET_BRANCH || 'Unknown_Branch',
+        build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
         'browserstack.debug': true,
+        'browserstack.idleTimeout': 300,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',

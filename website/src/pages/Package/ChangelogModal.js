@@ -141,9 +141,7 @@ export default class ExamplesModal extends Component<Props, State> {
 
     const range = target.value;
     const isInvalid = /[a-z]/gi.test(range);
-    const path = `/mk-2/packages/${groupId}/${pkgId}/changelog/${encodeURI(
-      range,
-    )}`;
+    const path = `/packages/${groupId}/${pkgId}/changelog/${encodeURI(range)}`;
 
     this.props.history.replace(path);
     this.setState({ isInvalid, range });
@@ -153,7 +151,7 @@ export default class ExamplesModal extends Component<Props, State> {
     if (event) event.stopPropagation();
 
     const { groupId, pkgId } = this.props.match.params;
-    const url = `/mk-2/packages/${groupId}/${pkgId}`;
+    const url = `/packages/${groupId}/${pkgId}`;
 
     this.props.history.push(url);
   };

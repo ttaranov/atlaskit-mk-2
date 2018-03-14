@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
   "atlaskit:src": "src/index.less",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/overview",
   "files": [
     "dist"
   ],

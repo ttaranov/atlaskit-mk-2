@@ -1,6 +1,7 @@
 /* eslint-disable */
-
 import 'jest-styled-components';
+import snakeCase from 'snake-case';
+import { toMatchSnapshot } from 'jest-snapshot';
 
 // URL is not available for non Node environment
 if (global.URL) {
@@ -91,6 +92,56 @@ function isNodeOrFragment(thing) {
   return thing && typeof thing.eq === 'function';
 }
 
+function transformDoc(fn) {
+  return doc => {
+    const walk = fn => node => {
+      const { content = [], ...rest } = node;
+      const transformedNode = fn(rest);
+      const walkWithFn = walk(fn);
+      if (content.length) {
+        transformedNode.content = content.map(walkWithFn);
+      }
+      return transformedNode;
+    };
+    return walk(fn)(doc);
+  };
+}
+
+const hasLocalId = type =>
+  type === 'taskItem' ||
+  type === 'taskList' ||
+  type === 'decisionItem' ||
+  type === 'decisionList';
+
+const removeIdsFromDoc = transformDoc(node => {
+  /**
+   * Replace `id` of media nodes with a fixed id
+   * @see https://regex101.com/r/FrYUen/1
+   */
+  if (node.type === 'media') {
+    return {
+      ...node,
+      attrs: {
+        ...node.attrs,
+        id: node.attrs.id.replace(
+          /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
+          '$11234-5678-abcd-efgh$3',
+        ),
+      },
+    };
+  }
+  if (hasLocalId(node.type)) {
+    return {
+      ...node,
+      attrs: {
+        ...node.attrs,
+        localId: node.attrs.localId.replace(/([a-z0-9\-]+)/, () => 'abc-123'),
+      },
+    };
+  }
+  return node;
+});
+
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
@@ -117,6 +168,16 @@ expect.extend({
         name: 'toEqualDocument',
         message:
           'Expected both values to be instance of prosemirror-model Node.',
+      };
+    }
+
+    if (expected.type.schema !== actual.type.schema) {
+      return {
+        pass: false,
+        actual,
+        expected,
+        name: 'toEqualDocument',
+        message: 'Expected both values to be using the same schema.',
       };
     }
 
@@ -149,5 +210,39 @@ expect.extend({
       message,
       name: 'toEqualDocument',
     };
+  },
+
+  toMatchDocSnapshot(actual) {
+    const { currentTestName, snapshotState } = this;
+
+    const removeLastWord = sentence =>
+      sentence
+        .split(' ')
+        .slice(0, -1)
+        .join(' ');
+
+    const newTestName = removeLastWord(currentTestName);
+    const transformedDoc = removeIdsFromDoc(actual);
+
+    // We are only overriding snapshot for doc snapshot. The gotcha is test names have to be unique per file
+    const oldCounters = snapshotState._counters;
+    snapshotState._counters = Object.create(oldCounters, {
+      set: {
+        value: key => oldCounters.set(key, 1),
+      },
+      get: {
+        value: key => oldCounters.get(key),
+      },
+    });
+
+    // In `jest-snapshot@22`, passing the optional testName doesn't override test name anymore.
+    // Instead it appends the passed name with original name.
+    const oldTestName = this.currentTestName;
+    this.currentTestName = newTestName;
+
+    const ret = toMatchSnapshot.call(this, transformedDoc);
+
+    this.currentTestName = oldTestName;
+    return ret;
   },
 });

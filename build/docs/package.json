@@ -1,0 +1,39 @@
+{
+  "name": "@atlaskit/docs",
+  "version": "2.5.4",
+  "description": "Utilities for building documentation",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ben C"
+  ],
+  "atlaskit": {
+    "name": "Atlaskit docs",
+    "team": "elements"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/code": "^3.1.1",
+    "@atlaskit/icon": "^10.12.1",
+    "@atlaskit/theme": "^2.4.1",
+    "babel-runtime": "^6.26.0",
+    "kind2string": "^0.3.0",
+    "react-markings": "^1.1.7",
+    "string-raw": "^1.0.1",
+    "styled-components": "1.4.6 - 3"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "react-dom": "15.6.0 - 16.2.0",
+    "react-test-renderer": "^16.2.0"
+  }
+}

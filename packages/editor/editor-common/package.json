@@ -1,0 +1,56 @@
+{
+  "name": "@atlaskit/editor-common",
+  "version": "7.0.1",
+  "description": "A package that contains common classes and components for editor and renderer",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "scripts": {
+    "build:json-schema": "mkdir -p dist && cp -r json-schema dist",
+    "generate:json-schema": "../../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./json-schema/v1/full.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Oscar W",
+    "Stanislav S"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/emoji": "^31.1.15",
+    "@atlaskit/icon": "^10.9.2",
+    "@atlaskit/media-card": "^24.1.5",
+    "@atlaskit/mention": "^9.2.1",
+    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@types/prosemirror-model": "^1.0.0",
+    "@types/prosemirror-schema-basic": "^1.0.0",
+    "@types/prosemirror-view": "^1.0.0",
+    "ajv": "^4.11.3",
+    "css-color-names": "0.0.4",
+    "date-fns": "^1.29.0",
+    "linkify-it": "^2.0.3",
+    "prosemirror-model": "^1.0.0",
+    "prosemirror-schema-basic": "^1.0.0",
+    "prosemirror-view": "^1.0.0",
+    "raf-schd": "^2.1.0",
+    "styled-components": "1.4.6 - 3"
+  },
+  "peerDependencies": {
+    "@atlaskit/media-core": "^14.1.1"
+  },
+  "devDependencies": {
+    "@atlaskit/editor-test-helpers": "^2.0.4",
+    "@atlaskit/media-core": "^14.1.1",
+    "@atlaskit/webdriver-runner": "^0.0.3",
+    "@types/chai": "^4.0.4",
+    "chai": "^4.1.2",
+    "json-schema-diff-validator": "^0.0.5",
+    "sinon": "^2.2.0"
+  }
+}

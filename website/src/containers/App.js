@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
 
@@ -74,20 +74,35 @@ export default function App() {
                 <Nav />
                 <AppContent>
                   <Switch>
+                    <Route
+                      path="/mk-2"
+                      render={props => (
+                        <Redirect
+                          to={props.location.pathname.replace('/mk-2', '')}
+                        />
+                      )}
+                    />
+                    <Route
+                      path="/components"
+                      render={props => (
+                        <Redirect
+                          to={props.location.pathname.replace(
+                            '/components',
+                            '/packages/core',
+                          )}
+                        />
+                      )}
+                    />
                     <Route exact path="/" component={Home} />
                     <Route path="/docs/:docId*" component={Document} />
                     <Route path="/patterns" component={PatternsInfo} exact />
                     <Route path="/patterns/:patternId*" component={Pattern} />
                     <Route
-                      path="/mk-2/packages/:groupId/:pkgId/docs/:docId"
+                      path="/packages/:groupId/:pkgId/docs/:docId"
                       component={PackageDocument}
                     />
                     <Route
                       path="/packages/:groupId/:pkgId"
-                      component={Package}
-                    />
-                    <Route
-                      path="/mk-2/packages/:groupId/:pkgId"
                       component={Package}
                     />
                     <Route path="/packages" component={PackagesList} />
@@ -99,11 +114,11 @@ export default function App() {
                   </Switch>
 
                   <Route
-                    path="/mk-2/packages/:groupId/:pkgId/changelog/:semver?"
+                    path="/packages/:groupId/:pkgId/changelog/:semver?"
                     component={ChangelogModal}
                   />
                   <Route
-                    path="/mk-2/packages/:groupId/:pkgId/example/:exampleId"
+                    path="/packages/:groupId/:pkgId/example/:exampleId"
                     component={ExamplesModal}
                   />
                 </AppContent>

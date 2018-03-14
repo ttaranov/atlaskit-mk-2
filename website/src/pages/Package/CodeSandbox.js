@@ -3,14 +3,12 @@ import Button from '@atlaskit/button';
 import Loadable from 'react-loadable';
 
 import CodeSandboxLogo from './CodeSandboxLogo';
-import csbLoading from './csbLoading';
-import CodeSandboxDeployer from 'react-codesandboxer';
-
-const codesandboxURL = 'https://codesandbox.io/api/v1/sandboxes/define';
-const { NavButton } = require('../Examples/styled');
+import CodeSandboxer from 'react-codesandboxer';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
   `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/${groupId}/${packageId}/examples/${exampleId}`;
+const getExamplePath = (groupId, packageId, exampleId) =>
+  `packages/${groupId}/${packageId}/examples/${exampleId}`;
 const repoUrl = 'https://bitbucket.org/atlassian/atlaskit-mk-2';
 
 const baseFiles = (groupId, packageId, exampleId) => ({
@@ -55,38 +53,28 @@ export default class CodeSandbox extends Component<{}, {}> {
       pkgJSON,
     } = this.props;
 
-    // move config and baseFiles to csbLoading
-    const config = ({ extraImports, extraFiles }) => ({
-      originLocation: '../src',
-      providedDeps: { '@atlaskit/css-reset': 'latest', ...extraImports },
-      providedFiles: {
-        ...baseFiles(groupId, packageId, example.Id),
-        ...extraFiles,
-      },
-    });
-
-    const ExampleComponent = Loadable({
-      loader: () => csbLoading(example, groupId, packageId, pkgJSON),
-      loading: loadingButton,
-      render({
-        loadedExample,
-        extraFiles,
-        simpleImports,
-        trickyImports,
-        extraImports,
-      }) {
-        return (
-          <CodeSandboxDeployer
-            example={loadedExample}
-            pkgJSON={pkgJSON}
-            config={config({ extraFiles, extraImports })}
-          >
-            {deployButton({ isDisabled: trickyImports })}
-          </CodeSandboxDeployer>
-        );
-      },
-    });
-
-    return <ExampleComponent />;
+    return (
+      <CodeSandboxer
+        examplePath={getExamplePath(groupId, packageId, example.id)}
+        pkgJSON={pkgJSON}
+        gitInfo={{
+          account: 'atlassian',
+          repository: 'atlaskit-mk-2',
+          branch: 'master',
+          host: 'bitbucket',
+        }}
+        importReplacements={[
+          [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
+          ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
+        ]}
+        dependencies={{
+          '@atlaskit/css-reset': 'latest',
+          [pkgJSON.name]: pkgJSON.version,
+        }}
+        providedFiles={baseFiles(groupId, packageId, example.id)}
+      >
+        {({ isLoading }) => (isLoading ? loadingButton() : deployButton({}))}
+      </CodeSandboxer>
+    );
   }
 }
