@@ -170,8 +170,8 @@ export const Wrapper: ComponentClass<any> = styled.div`
   }
 
   & .ApplicationCard,
-  .MediaGroup,
-  .CodeBlock {
+  & .MediaGroup,
+  & .CodeBlock {
     margin-top: 12px;
     &:first-child {
       margin-top: 0;
