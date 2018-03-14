@@ -366,9 +366,7 @@ export class EmojiResource extends AbstractResource<
     }
   }
 
-  protected isLoaded = () => {
-    return !this.activeLoaders;
-  };
+  protected isLoaded = () => this.activeLoaders === 0 && this.emojiRepository;
 
   protected retryIfLoading<T>(retry: Retry<T>, defaultResponse: T): Promise<T> {
     if (!this.isLoaded()) {
@@ -432,9 +430,9 @@ export class EmojiResource extends AbstractResource<
   findByShortName(
     shortName: string,
   ): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    if (this.emojiRepository) {
+    if (this.isLoaded()) {
       // Wait for all emoji to load before looking by shortName (to ensure correct priority)
-      return this.emojiRepository.findByShortName(shortName);
+      return this.emojiRepository!.findByShortName(shortName);
     }
     return this.retryIfLoading<any>(
       () => this.findByShortName(shortName),
@@ -482,30 +480,30 @@ export class EmojiResource extends AbstractResource<
   findById(
     id: string,
   ): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    if (this.emojiRepository) {
-      return this.emojiRepository.findById(id);
+    if (this.isLoaded()) {
+      return this.emojiRepository!.findById(id);
     }
 
     return this.retryIfLoading(() => this.findById(id), undefined);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
-    if (this.emojiRepository) {
-      return Promise.resolve(this.emojiRepository.findInCategory(categoryId));
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository!.findInCategory(categoryId));
     }
     return this.retryIfLoading(() => this.findInCategory(categoryId), []);
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    if (this.emojiRepository) {
-      return Promise.resolve(this.emojiRepository.getAsciiMap());
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository!.getAsciiMap());
     }
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
   getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
-    if (this.emojiRepository) {
-      return Promise.resolve(this.emojiRepository.getFrequentlyUsed(options));
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository!.getFrequentlyUsed(options));
     }
 
     return this.retryIfLoading(() => this.getFrequentlyUsed(options), []);
@@ -573,8 +571,8 @@ export class EmojiResource extends AbstractResource<
   }
 
   calculateDynamicCategories(): Promise<string[]> {
-    if (this.emojiRepository) {
-      return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
+    if (this.isLoaded()) {
+      return Promise.resolve(this.emojiRepository!.getDynamicCategoryList());
     }
 
     return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
