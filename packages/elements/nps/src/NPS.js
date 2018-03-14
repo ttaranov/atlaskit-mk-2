@@ -56,7 +56,7 @@ export type Props = {
   /** Callback called when the user finishes the survey */
   onFinish: NPSResult => void,
 
-  /** Override the default feedback render component */
+  /** Render the feedback page */
   renderFeedback: ({
     isDismissable: boolean,
     canOptOut: boolean,
@@ -67,7 +67,7 @@ export type Props = {
     onSubmit: ({ rating: Rating | null, comment: Comment }) => void,
   }) => Node,
 
-  /** Override the default followup component */
+  /** Render the followup page */
   renderFollowup: ({
     isDismissable: boolean,
     canOptOut: boolean,
@@ -76,6 +76,14 @@ export type Props = {
     onRoleSelect: Role => void,
     onCanContactChange: CanContact => void,
     onSubmit: ({ role: Role | null, canContact: CanContact }) => void,
+  }) => Node,
+
+  /** Render the thank you page */
+  renderThankyou: ({
+    isDismissable: boolean,
+    canOptOut: boolean,
+    onDismiss: () => void,
+    onOptOut: () => void,
   }) => Node,
 };
 
@@ -154,6 +162,15 @@ export class NPS extends React.Component<Props, State> {
           onSubmit: this.onFollowupSubmit,
         });
       }
+      case Pages.THANKYOU: {
+        const { renderThankyou } = this.props;
+        return renderThankyou({
+          isDismissable,
+          canOptOut,
+          onDismiss: this.onDismiss,
+          onOptOut: this.onOptOut,
+        });
+      }
       default: {
         throw new Error(`Page ${page} not found`);
       }
@@ -206,7 +223,7 @@ export class NPS extends React.Component<Props, State> {
     canContact: CanContact,
   }) => {
     try {
-      this.setState({ role, canContact });
+      this.setState({ page: Pages.THANKYOU, role, canContact });
       const result = this._getNPSResult();
       this.props.onFollowupSubmit(result);
       this.onFinish();

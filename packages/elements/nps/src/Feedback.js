@@ -82,7 +82,7 @@ export type Props = {
     // Comment placeholder is a string because it gets passed down
     // as a prop to the FieldTextArea placeholder prop, which only accepts a string
     commentPlaceholder: string,
-    send: Node,
+    done: Node,
   },
   isDismissable: boolean,
   onDismiss: () => void,
@@ -98,7 +98,7 @@ type State = {
   comment: Comment,
 };
 
-export class Feedback extends React.Component<Props, State> {
+export default class Feedback extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -167,12 +167,10 @@ export class Feedback extends React.Component<Props, State> {
               placeholder={strings.commentPlaceholder}
               onCommentChange={this.onCommentChange}
             />
-            <SendButton onClick={this.onSubmit} sendLabel={strings.send} />
+            <SendButton onClick={this.onSubmit} sendLabel={strings.done} />
           </Section>
         ) : null}
       </div>
     );
   }
 }
-
-export default Feedback;

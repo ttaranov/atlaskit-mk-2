@@ -1,6 +1,11 @@
 //@flow
 import React from 'react';
-import NPS, { FeedbackPage, FollowupPage } from '../src';
+import NPS, {
+  FeedbackPage,
+  FollowupPage,
+  ThankyouPage,
+  getDefaultStrings,
+} from '../src';
 
 export default class extends React.Component<any, any> {
   constructor(...args: Array<any>) {
@@ -40,6 +45,7 @@ export default class extends React.Component<any, any> {
   };
 
   render() {
+    const defaultStrings = getDefaultStrings('Stride');
     return (
       <div>
         <NPS
@@ -61,7 +67,7 @@ export default class extends React.Component<any, any> {
                 scaleLow: 'sucks',
                 scaleHigh: 'pretty great',
                 commentPlaceholder: 'Put your comment here',
-                send: 'Submit',
+                done: 'Submit',
               }}
             />
           )}
@@ -69,15 +75,21 @@ export default class extends React.Component<any, any> {
             <FollowupPage
               {...props}
               strings={{
-                title: 'Custom Title',
-                description: 'Custom description',
-                optOut: <b>Custom Opt out</b>,
-                roleQuestion: 'What is your role?',
-                contactQuestion: 'Can we contact you?',
-                done: 'Submit',
-                rolePlaceholder: 'Placeholder',
+                ...defaultStrings,
+                title: defaultStrings.followupTitle,
+                description: defaultStrings.followupDescription,
               }}
               roles={['Some job', 'Some other job', 'Some other other job']}
+            />
+          )}
+          renderThankyou={props => (
+            <ThankyouPage
+              {...props}
+              strings={{
+                ...defaultStrings,
+                title: defaultStrings.thankyouTitle,
+                description: defaultStrings.thankyouDescription,
+              }}
             />
           )}
         />

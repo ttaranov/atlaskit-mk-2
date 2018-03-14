@@ -44,7 +44,7 @@ export type Props = {
     optOut: Node,
     roleQuestion: Node,
     contactQuestion: string,
-    done: Node,
+    send: Node,
     rolePlaceholder: string,
   },
   roles: Array<Role>,
@@ -58,7 +58,7 @@ type State = {
   canContact: CanContact,
 };
 
-export class Followup extends React.Component<Props, State> {
+export default class Followup extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -127,12 +127,10 @@ export class Followup extends React.Component<Props, State> {
         </Section>
         <Section>
           <Button appearance="primary" onClick={this.onSubmit}>
-            {this.props.strings.done}
+            {strings.send}
           </Button>
         </Section>
       </div>
     );
   }
 }
-
-export default Followup;
