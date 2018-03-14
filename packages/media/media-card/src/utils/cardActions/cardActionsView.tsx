@@ -15,54 +15,58 @@ export interface CardActionsViewProps {
 }
 
 export class CardActionsView extends Component<CardActionsViewProps> {
-  render() {
-    const { actions, triggerColor } = this.props;
+  render(): JSX.Element | null {
+    const { actions } = this.props;
 
     if (!actions.length) {
       return null;
     }
 
-    const primaryAction = actions.find(({ icon }) => !!icon);
+    const primaryAction = actions.find(actionWithIcon);
     const otherActions = actions.filter(action => action !== primaryAction);
 
     if (primaryAction) {
-      const { icon, handler } = primaryAction;
       return (
         <PreventClickThrough>
           <Wrapper>
-            <CardActionIconButton
-              icon={icon}
-              triggerColor={triggerColor}
-              onClick={() => handler()}
-            />
+            {this.renderActionIconButton(primaryAction)}
             {this.renderOtherActionButtons(otherActions)}
           </Wrapper>
         </PreventClickThrough>
       );
     } else {
-      return <Wrapper>{this.renderOtherActionButtons(otherActions)}</Wrapper>;
+      return (
+        <PreventClickThrough>
+          <Wrapper>{this.renderOtherActionButtons(otherActions)}</Wrapper>
+        </PreventClickThrough>
+      );
     }
+  }
+
+  private renderActionIconButton(action: CardAction) {
+    const { triggerColor } = this.props;
+    const { icon, handler } = action;
+    return (
+      <CardActionIconButton
+        icon={icon}
+        triggerColor={triggerColor}
+        onClick={() => handler()}
+      />
+    );
   }
 
   private renderOtherActionButtons(actions: CardAction[]) {
     if (actions.length === 0) {
       return null;
     } else {
-      const primaryAction = actions.find(
-        ({ icon }) => icon !== undefined && icon !== null,
-      );
-      const otherActions = actions.filter(action => action !== primaryAction);
       const { triggerColor, onToggle } = this.props;
+      const firstActionWithIcon = actions.find(actionWithIcon);
+      const otherActions = actions.filter(
+        actionNotEqualTo(firstActionWithIcon),
+      );
 
-      if (primaryAction && otherActions.length === 0) {
-        const { icon, handler } = primaryAction;
-        return (
-          <CardActionIconButton
-            icon={icon}
-            triggerColor={triggerColor}
-            onClick={() => handler()}
-          />
-        );
+      if (firstActionWithIcon && otherActions.length === 0) {
+        this.renderActionIconButton(firstActionWithIcon);
       } else {
         return (
           <CardActionsDropdownMenu
@@ -74,4 +78,12 @@ export class CardActionsView extends Component<CardActionsViewProps> {
       }
     }
   }
+}
+
+function actionWithIcon(action: CardAction): boolean {
+  return !!action.icon;
+}
+
+function actionNotEqualTo(otherAction?: CardAction) {
+  return action => action !== otherAction;
 }
