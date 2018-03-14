@@ -21,16 +21,15 @@ export type NPSResult = {
   canContact?: CanContact,
 };
 
-/* eslint-disable react/no-unused-prop-types */
 export type Props = {
   /** Can the survey be dismissed */
-  isDismissible: boolean,
+  canClose: boolean,
 
   /** Should the user be given the option to opt out of all future surveys */
   canOptOut: boolean,
 
   /** Callback called when the user dismisses a survey */
-  onDismiss: () => void,
+  onClose: () => void,
 
   /** Callback called when the user opts out of all future surveys */
   onOptOut: () => void,
@@ -58,9 +57,9 @@ export type Props = {
 
   /** Render the feedback page */
   renderFeedback: ({
-    isDismissible: boolean,
+    canClose: boolean,
     canOptOut: boolean,
-    onDismiss: () => void,
+    onClose: () => void,
     onOptOut: () => void,
     onRatingSelect: Rating => void,
     onCommentChange: Comment => void,
@@ -69,9 +68,9 @@ export type Props = {
 
   /** Render the followup page */
   renderFollowup: ({
-    isDismissible: boolean,
+    canClose: boolean,
     canOptOut: boolean,
-    onDismiss: () => void,
+    onClose: () => void,
     onOptOut: () => void,
     onRoleSelect: Role => void,
     onCanContactChange: CanContact => void,
@@ -80,9 +79,9 @@ export type Props = {
 
   /** Render the thank you page */
   renderThankyou: ({
-    isDismissible: boolean,
+    canClose: boolean,
     canOptOut: boolean,
-    onDismiss: () => void,
+    onClose: () => void,
     onOptOut: () => void,
   }) => Node,
 };
@@ -97,7 +96,7 @@ type State = {
 
 export class NPS extends React.Component<Props, State> {
   static defaultProps = {
-    onDismiss: () => {},
+    onClose: () => {},
     onOptOut: () => {},
     onFinish: () => {},
     onRatingSelect: () => {},
@@ -136,14 +135,14 @@ export class NPS extends React.Component<Props, State> {
 
   getPage(): Node {
     const { page } = this.state;
-    const { isDismissible, canOptOut } = this.props;
+    const { canClose, canOptOut } = this.props;
     switch (page) {
       case Pages.FEEDBACK: {
         const { renderFeedback } = this.props;
         return renderFeedback({
-          isDismissible,
+          canClose,
           canOptOut,
-          onDismiss: this.onDismiss,
+          onClose: this.onClose,
           onOptOut: this.onOptOut,
           onRatingSelect: this.onRatingSelect,
           onCommentChange: this.onCommentChange,
@@ -153,9 +152,9 @@ export class NPS extends React.Component<Props, State> {
       case Pages.FOLLOWUP: {
         const { renderFollowup } = this.props;
         return renderFollowup({
-          isDismissible,
+          canClose,
           canOptOut,
-          onDismiss: this.onDismiss,
+          onClose: this.onClose,
           onOptOut: this.onOptOut,
           onRoleSelect: this.onRoleSelect,
           onCanContactChange: this.onCanContactChange,
@@ -165,9 +164,9 @@ export class NPS extends React.Component<Props, State> {
       case Pages.THANKYOU: {
         const { renderThankyou } = this.props;
         return renderThankyou({
-          isDismissible,
+          canClose,
           canOptOut,
-          onDismiss: this.onDismiss,
+          onClose: this.onClose,
           onOptOut: this.onOptOut,
         });
       }
@@ -177,8 +176,8 @@ export class NPS extends React.Component<Props, State> {
     }
   }
 
-  onDismiss = () => {
-    this.props.onDismiss();
+  onClose = () => {
+    this.props.onClose();
   };
 
   onOptOut = () => {
@@ -219,8 +218,8 @@ export class NPS extends React.Component<Props, State> {
     role,
     canContact,
   }: {
-    role: Role | null,
-    canContact: CanContact,
+    role: Role | null, // eslint-disable-line react/no-unused-prop-types
+    canContact: CanContact, // eslint-disable-line react/no-unused-prop-types
   }) => {
     try {
       this.setState({ page: Pages.THANKYOU, role, canContact });

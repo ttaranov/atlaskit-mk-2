@@ -23,6 +23,7 @@
   "dependencies": {
     "@atlaskit/button": "^6.6.0",
     "@atlaskit/checkbox": "^1.3.0",
+    "@atlaskit/docs": "^2.5.0",
     "@atlaskit/dropdown-menu": "^3.12.0",
     "@atlaskit/field-text-area": "^1.2.0",
     "@atlaskit/icon": "^10.12.0",

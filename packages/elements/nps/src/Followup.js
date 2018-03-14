@@ -5,7 +5,7 @@ import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import Checkbox from '@atlaskit/checkbox';
 import { type Role, type CanContact } from './NPS';
 import { Header, Description } from './common';
-import { Wrapper } from './styled/common';
+import { Wrapper, ButtonWrapper } from './styled/common';
 import { Contact, RoleQuestion } from './styled/followup';
 
 const RoleDropdown = ({
@@ -47,9 +47,9 @@ export type Props = {
     send: Node,
     rolePlaceholder: string,
   },
-  isDismissible: boolean,
+  canClose: boolean,
   canOptOut: boolean,
-  onDismiss: () => void,
+  onClose: () => void,
   onOptOut: () => void,
   roles: Array<Role>,
   onRoleSelect: Role => void,
@@ -95,8 +95,8 @@ export default class Followup extends React.Component<Props, State> {
   render() {
     const {
       messages,
-      isDismissible,
-      onDismiss,
+      canClose,
+      onClose,
       canOptOut,
       onOptOut,
       roles,
@@ -105,8 +105,8 @@ export default class Followup extends React.Component<Props, State> {
       <div>
         <Header
           title={messages.title}
-          isDismissible={isDismissible}
-          onDismiss={onDismiss}
+          canClose={canClose}
+          onClose={onClose}
           canOptOut={canOptOut}
           onOptOut={onOptOut}
           optOutLabel={messages.optOut}
@@ -130,9 +130,11 @@ export default class Followup extends React.Component<Props, State> {
           </Contact>
         </Wrapper>
         <Wrapper>
-          <Button appearance="primary" onClick={this.onSubmit}>
-            {messages.send}
-          </Button>
+          <ButtonWrapper>
+            <Button appearance="primary" onClick={this.onSubmit}>
+              {messages.send}
+            </Button>
+          </ButtonWrapper>
         </Wrapper>
       </div>
     );

@@ -9,7 +9,7 @@ import {
   Scale,
   Comment as CommentStyled,
 } from './styled/feedback';
-import { Wrapper } from './styled/common';
+import { Wrapper, ButtonWrapper } from './styled/common';
 
 const CommentBox = ({
   placeholder,
@@ -40,9 +40,11 @@ const SendButton = ({
   sendLabel: Node,
 }) => {
   return (
-    <Button appearance="primary" onClick={onClick}>
-      {sendLabel}
-    </Button>
+    <ButtonWrapper>
+      <Button appearance="primary" onClick={onClick}>
+        {sendLabel}
+      </Button>
+    </ButtonWrapper>
   );
 };
 
@@ -84,8 +86,8 @@ export type Props = {
     commentPlaceholder: string,
     done: Node,
   },
-  isDismissible: boolean,
-  onDismiss: () => void,
+  canClose: boolean,
+  onClose: () => void,
   canOptOut: boolean,
   onOptOut: () => void,
   onRatingSelect: Rating => void,
@@ -129,19 +131,13 @@ export default class Feedback extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      messages,
-      isDismissible,
-      onDismiss,
-      canOptOut,
-      onOptOut,
-    } = this.props;
+    const { messages, canClose, onClose, canOptOut, onOptOut } = this.props;
     return (
       <div>
         <Header
           title={messages.title}
-          isDismissible={isDismissible}
-          onDismiss={onDismiss}
+          canClose={canClose}
+          onClose={onClose}
           canOptOut={canOptOut}
           onOptOut={onOptOut}
           optOutLabel={messages.optOut}

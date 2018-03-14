@@ -44,16 +44,15 @@ export const getDefaultRoles = () => [
   'Other',
 ];
 
-/* eslint-disable react/no-unused-prop-types */
 export type Props = {
   /** The product the survey is for. This is only used to generate the default messages. */
   product: string,
 
   /** Can the survey be dismissed */
-  isDismissible: boolean,
+  canClose: boolean,
 
   /** Callback called when the user dismisses a survey */
-  onDismiss: () => void,
+  onClose: () => void,
 
   /** Should the user be given the option to opt out of all future surveys */
   canOptOut: boolean,
@@ -86,87 +85,87 @@ export type Props = {
   roles: Array<Role>,
 };
 
-export function DefaultNPS(props: Props) {
-  const {
-    product,
-    isDismissible,
-    canOptOut,
-    roles,
-    onDismiss,
-    onRatingSelect,
-    onCommentChange,
-    onRoleSelect,
-    onCanContactChange,
-    onOptOut,
-    onFeedbackSubmit,
-    onFollowupSubmit,
-    onFinish,
-  } = props;
+// This component is stateless, but the Props documentation util did not work when this was a functional component
+export default class DefaultNPS extends React.Component<Props> {
+  static defaultProps = {
+    roles: getDefaultRoles(),
+    canClose: true,
+    canOptOut: false,
+    onClose: () => {},
+    onOptOut: () => {},
+    onFinish: () => {},
+    onRatingSelect: () => {},
+    onCommentChange: () => {},
+    onRoleSelect: () => {},
+    onCanContactChange: () => {},
+    onFeedbackSubmit: () => {},
+    onFollowupSubmit: () => {},
+  };
+  render() {
+    const {
+      product,
+      canClose,
+      canOptOut,
+      roles,
+      onClose,
+      onRatingSelect,
+      onCommentChange,
+      onRoleSelect,
+      onCanContactChange,
+      onOptOut,
+      onFeedbackSubmit,
+      onFollowupSubmit,
+      onFinish,
+    } = this.props;
 
-  const defaultMessages = getDefaultMessages(product);
+    const defaultMessages = getDefaultMessages(product);
 
-  return (
-    <NPS
-      isDismissible={isDismissible}
-      canOptOut={canOptOut}
-      onDismiss={onDismiss}
-      onOptOut={onOptOut}
-      onRatingSelect={onRatingSelect}
-      onCommentChange={onCommentChange}
-      onRoleSelect={onRoleSelect}
-      onCanContactChange={onCanContactChange}
-      onFeedbackSubmit={onFeedbackSubmit}
-      onFollowupSubmit={onFollowupSubmit}
-      onFinish={onFinish}
-      renderFeedback={feedbackProps => (
-        <Feedback
-          {...feedbackProps}
-          messages={{
-            ...defaultMessages,
-            optOutLabel: defaultMessages.optOut,
-            title: defaultMessages.feedbackTitle,
-            description: defaultMessages.feedbackDescription,
-          }}
-        />
-      )}
-      renderFollowup={followupProps => (
-        <Followup
-          {...followupProps}
-          roles={roles}
-          messages={{
-            ...defaultMessages,
-            title: defaultMessages.followupTitle,
-            description: defaultMessages.followupDescription,
-          }}
-        />
-      )}
-      renderThankyou={thankyouProps => (
-        <Thankyou
-          {...thankyouProps}
-          messages={{
-            ...defaultMessages,
-            title: defaultMessages.thankyouTitle,
-            description: defaultMessages.thankyouDescription,
-          }}
-        />
-      )}
-    />
-  );
+    return (
+      <NPS
+        canClose={canClose}
+        canOptOut={canOptOut}
+        onClose={onClose}
+        onOptOut={onOptOut}
+        onRatingSelect={onRatingSelect}
+        onCommentChange={onCommentChange}
+        onRoleSelect={onRoleSelect}
+        onCanContactChange={onCanContactChange}
+        onFeedbackSubmit={onFeedbackSubmit}
+        onFollowupSubmit={onFollowupSubmit}
+        onFinish={onFinish}
+        renderFeedback={feedbackProps => (
+          <Feedback
+            {...feedbackProps}
+            messages={{
+              ...defaultMessages,
+              optOutLabel: defaultMessages.optOut,
+              title: defaultMessages.feedbackTitle,
+              description: defaultMessages.feedbackDescription,
+            }}
+          />
+        )}
+        renderFollowup={followupProps => (
+          <Followup
+            {...followupProps}
+            roles={roles}
+            messages={{
+              ...defaultMessages,
+              title: defaultMessages.followupTitle,
+              description: defaultMessages.followupDescription,
+            }}
+          />
+        )}
+        renderThankyou={thankyouProps => (
+          <Thankyou
+            {...thankyouProps}
+            messages={{
+              ...defaultMessages,
+              title: defaultMessages.thankyouTitle,
+              description: defaultMessages.thankyouDescription,
+            }}
+          />
+        )}
+      />
+    );
+  }
 }
-
-DefaultNPS.defaultProps = {
-  roles: getDefaultRoles(),
-  isDismissible: false,
-  canOptOut: false,
-  onDismiss: () => {},
-  onOptOut: () => {},
-  onFinish: () => {},
-  onRatingSelect: () => {},
-  onCommentChange: () => {},
-  onRoleSelect: () => {},
-  onCanContactChange: () => {},
-  onFeedbackSubmit: () => {},
-  onFollowupSubmit: () => {},
-};
-
-export default DefaultNPS;
