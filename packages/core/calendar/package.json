@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "main": "dist/cjs",
   "atlaskit:src": "src/index.js",
+  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/date-picker",
   "files": [
     "dist"
   ],
