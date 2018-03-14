@@ -3,13 +3,13 @@ import React, { type Node } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import FieldTextArea from '@atlaskit/field-text-area';
 import { type Rating, type Comment } from './NPS';
-import { Header } from './common';
+import { Header, Description } from './common';
 import {
   ScoreContainer,
   Scale,
   Comment as CommentStyled,
 } from './styled/feedback';
-import { Section } from './styled/common';
+import { Wrapper } from './styled/common';
 
 const CommentBox = ({
   placeholder,
@@ -73,7 +73,7 @@ const RatingsButtons = ({
 };
 
 export type Props = {
-  strings: {
+  messages: {
     title: Node,
     description: Node,
     optOut: Node,
@@ -84,7 +84,7 @@ export type Props = {
     commentPlaceholder: string,
     done: Node,
   },
-  isDismissable: boolean,
+  isDismissible: boolean,
   onDismiss: () => void,
   canOptOut: boolean,
   onOptOut: () => void,
@@ -130,8 +130,8 @@ export default class Feedback extends React.Component<Props, State> {
 
   render() {
     const {
-      strings,
-      isDismissable,
+      messages,
+      isDismissible,
       onDismiss,
       canOptOut,
       onOptOut,
@@ -139,36 +139,34 @@ export default class Feedback extends React.Component<Props, State> {
     return (
       <div>
         <Header
-          title={strings.title}
-          isDismissable={isDismissable}
+          title={messages.title}
+          isDismissible={isDismissible}
           onDismiss={onDismiss}
           canOptOut={canOptOut}
           onOptOut={onOptOut}
-          optOutLabel={strings.optOut}
+          optOutLabel={messages.optOut}
         />
-        <p>{strings.description}</p>
-        <Section>
+        <Wrapper>
+          <Description>{messages.description}</Description>
+        </Wrapper>
+        <Wrapper>
           <ScoreContainer>
-            <Scale>
-              <small>{strings.scaleLow}</small>
-            </Scale>
+            <Scale>{messages.scaleLow}</Scale>
             <RatingsButtons
               selected={this.state.rating}
               onRatingSelect={this.onRatingSelect}
             />
-            <Scale>
-              <small>{strings.scaleHigh}</small>
-            </Scale>
+            <Scale>{messages.scaleHigh}</Scale>
           </ScoreContainer>
-        </Section>
+        </Wrapper>
         {this.state.rating !== null ? (
-          <Section>
+          <Wrapper>
             <CommentBox
-              placeholder={strings.commentPlaceholder}
+              placeholder={messages.commentPlaceholder}
               onCommentChange={this.onCommentChange}
             />
-            <SendButton onClick={this.onSubmit} sendLabel={strings.done} />
-          </Section>
+            <SendButton onClick={this.onSubmit} sendLabel={messages.done} />
+          </Wrapper>
         ) : null}
       </div>
     );
