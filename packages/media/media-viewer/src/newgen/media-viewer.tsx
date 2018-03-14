@@ -11,10 +11,10 @@ const fileDetails: FileDetails = {
 };
 
 export class MediaViewer extends React.Component<Props, {}> {
-  // componentDidMount... // fetches the state - would this be testable?
+  // componentDidMount...
+  // fetches the state - would this be testable?
   // context mocks?
   // we could encapsulate all the provider logic into a different model
-  //
 
   render() {
     const { onClose } = this.props;
