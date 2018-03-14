@@ -2,10 +2,6 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { browser } from '@atlaskit/editor-common';
 import {
-  HyperlinkState,
-  stateKey as hyperlinkStateKey,
-} from '../../../../src/plugins/hyperlink';
-import {
   img,
   strong,
   chaiPlugin,
@@ -19,8 +15,12 @@ import {
   ol,
   li,
 } from '@atlaskit/editor-test-helpers';
-import imageUpload from '../../../../src/editor/plugins/image-upload';
-import listPlugin from '../../../../src/editor/plugins/lists';
+import {
+  HyperlinkState,
+  hyperlinkPluginKey,
+} from '../../../../src/plugins/hyperlink/pm-plugins/main';
+import imageUpload from '../../../../src/plugins/image-upload';
+import listPlugin from '../../../../src/plugins/lists';
 
 chai.use(chaiPlugin);
 
@@ -29,7 +29,7 @@ describe('hyperlink', () => {
     createEditor<HyperlinkState>({
       doc,
       editorPlugins: [imageUpload, listPlugin],
-      pluginKey: hyperlinkStateKey,
+      pluginKey: hyperlinkPluginKey,
     });
 
   if (!browser.ie && !isMobileBrowser()) {

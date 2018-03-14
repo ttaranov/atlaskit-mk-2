@@ -14,13 +14,13 @@ import {
   taskItem,
   taskList,
 } from '@atlaskit/editor-test-helpers';
-import { insertMediaGroupNode } from '../../../src/plugins/media/media-files';
+import { insertMediaGroupNode } from '../../../src/plugins/media/utils/media-files';
 import { setNodeSelection } from '../../../src/utils';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import rulePlugin from '../../../src/editor/plugins/rule';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import mediaPlugin from '../../../src/plugins/media';
+import mentionsPlugin from '../../../src/plugins/mentions';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import rulePlugin from '../../../src/plugins/rule';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 

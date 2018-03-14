@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 29.2.2
+- [patch] stopped isSelected prop from being passed down to input [dd4d9c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd4d9c7)
+
 ## 29.2.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 - [patch] blocked the scrolling of background when nav is full width [ad65c8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad65c8a)

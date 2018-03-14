@@ -14,28 +14,28 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { FilmstripView } from '../src/filmstripView';
 
-const StoryWrapper = styled.div`
+const StoryWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 1em;
 `;
 
-const Separator = styled.hr`
+const Separator: ComponentClass<HTMLAttributes<{}>> = styled.hr`
   margin: 1em 0;
   border: 1px solid #ccc;
 `;
 
-const ControlLabel = styled.label`
+const ControlLabel: ComponentClass<HTMLAttributes<{}>> = styled.label`
   display: block;
   margin-top: 1em;
   font-weight: bold;
 `;
 
-const Flex = styled.div`
+const Flex: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Box = styled.div`
+const Box: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 4px;
   ${({ grow }: { grow?: number }) => (grow && `flex-grow: ${grow};`) || ''};
 `;

@@ -10,12 +10,12 @@ import {
   p,
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../../src/editor/plugins/code-block';
+import codeBlockPlugin from '../../../../src/plugins/code-block';
 import { analyticsService } from '../../../../src/analytics';
-import mentionsPlugin from '../../../../src/editor/plugins/mentions';
-import listPlugin from '../../../../src/editor/plugins/lists';
-import tablesPlugin from '../../../../src/editor/plugins/table';
-import rulePlugin from '../../../../src/editor/plugins/rule';
+import mentionsPlugin from '../../../../src/plugins/mentions';
+import listPlugin from '../../../../src/plugins/lists';
+import tablesPlugin from '../../../../src/plugins/table';
+import rulePlugin from '../../../../src/plugins/rule';
 
 describe('block-type – keymaps', () => {
   if (browser.mac) {

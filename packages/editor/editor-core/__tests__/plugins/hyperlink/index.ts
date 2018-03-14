@@ -1,6 +1,6 @@
 import { browser } from '@atlaskit/editor-common';
 import { TextSelection } from 'prosemirror-state';
-import { stateKey as hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
+import { hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
 import {
   createEvent,
   doc,
@@ -16,8 +16,8 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import { analyticsService } from '../../../src/analytics';
-import { FakeTextCursorSelection } from '../../../src/editor/plugins/fake-text-cursor/cursor';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import { FakeTextCursorSelection } from '../../../src/plugins/fake-text-cursor/cursor';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>

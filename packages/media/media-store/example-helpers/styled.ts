@@ -1,18 +1,26 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   display: flex;
 `;
 
-export const ImagePreview = styled.img`
+export const ImagePreview: React.ComponentClass<
+  React.ImgHTMLAttributes<{}>
+> = styled.img`
   width: 300px;
 `;
 
-export const PreviewWrapper = styled.div`
+export const PreviewWrapper: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   flex: 1;
 `;
 
-export const MetadataWrapper = styled.pre`
+export const MetadataWrapper: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.pre`
   width: 400px;
   overflow: scroll;
   flex: 1;

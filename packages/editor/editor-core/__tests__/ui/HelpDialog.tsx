@@ -1,46 +1,10 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import * as keymaps from '../../src/keymaps';
-import ToolbarHelp from '../../src/ui/ToolbarHelp';
 import { getComponentFromKeymap, formatting } from '../../src/ui/HelpDialog';
-import AkButton from '@atlaskit/button';
-import { analyticsService } from '../../src/analytics';
 import { browser } from '@atlaskit/editor-common';
 
-const noop = () => {};
-
-describe('@atlaskit/editor-core/ui/HelpDialog', () => {
-  it('should call toggleHelp when open help button is clicked', () => {
-    const spy = jest.fn();
-    const toolbarHelp = mount(
-      <ToolbarHelp showHelp={false} toggleHelp={spy} />,
-    );
-    toolbarHelp.find(AkButton).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
-    toolbarHelp.unmount();
-  });
-
-  it('should call analytics event when open help button is clicked', () => {
-    const trackEvent = jest.fn();
-    analyticsService.trackEvent = trackEvent;
-    const toolbarHelp = mount(
-      <ToolbarHelp showHelp={false} toggleHelp={noop} />,
-    );
-    toolbarHelp.find(AkButton).simulate('click');
-    expect(trackEvent).toHaveBeenCalledWith('atlassian.editor.help.button');
-    toolbarHelp.unmount();
-  });
-
-  it('should call toggleHelp when wrapping div is clicked', () => {
-    const spy = jest.fn();
-    const toolbarHelp = mount(
-      <ToolbarHelp showHelp={false} toggleHelp={spy} />,
-    );
-    toolbarHelp.find(AkButton).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
-    toolbarHelp.unmount();
-  });
-
+describe('HelpDialog', () => {
   it('should return correct description of codemap when getComponentFromKeymap is called', () => {
     const key = getComponentFromKeymap(keymaps.toggleBold);
     const shortcut = mount(<div>{key}</div>);

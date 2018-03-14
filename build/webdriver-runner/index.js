@@ -6,7 +6,7 @@ const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
 
-const JEST_WAIT_FOR_INPUT_TIMEOUT = 10000;
+const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ function runTests() {
 }
 
 async function main() {
-  process.env.RUN_ENV === 'CI' ? webpack.startDevServer() : {};
+  process.env.BUILD_SERVER ? await webpack.startDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -35,7 +35,7 @@ async function main() {
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  process.env.RUN_ENV === 'CI' ? webpack.stopDevServer() : {};
+  process.env.BUILD_SERVER ? webpack.stopDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();

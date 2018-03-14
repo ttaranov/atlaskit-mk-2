@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { antialiased, ellipsis } from '../../../styles';
 import {
   akGridSizeUnitless,
@@ -21,7 +17,9 @@ export interface WrapperProps {
   valign?: 'top' | 'bottom';
 }
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & WrapperProps
+> = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -39,21 +37,21 @@ export const Wrapper = styled.div`
   }};
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} ${ellipsis()} font-weight: bold;
   color: ${akColorN900};
   font-size: 12px;
   line-height: 15px;
 `;
 
-export const Body = styled.div`
+export const Body: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   height: 15px; /* constrain icon height */
   margin-top: 2px;
 `;
 
-export const Icon = styled.div`
+export const Icon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-shrink: 0;
   width: ${akGridSizeUnitless * 2.5}px;
@@ -73,7 +71,9 @@ export interface SubtitleProps {
   isLink?: boolean;
 }
 
-export const Subtitle = styled.div`
+export const Subtitle: ComponentClass<
+  HTMLAttributes<{}> & SubtitleProps
+> = styled.div`
   ${ellipsis()} color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;

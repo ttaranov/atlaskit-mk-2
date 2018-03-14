@@ -31,13 +31,13 @@ import {
   MediaPluginState,
   DefaultMediaStateManager,
   MediaState,
-} from '../../../src/plugins/media';
+} from '../../../src/plugins/media/pm-plugins/main';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import rulePlugin from '../../../src/editor/plugins/rule';
-import tablePlugin from '../../../src/editor/plugins/table';
+import mediaPlugin from '../../../src/plugins/media';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import rulePlugin from '../../../src/plugins/rule';
+import tablePlugin from '../../../src/plugins/table';
 import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
 
 const stateManager = new DefaultMediaStateManager();

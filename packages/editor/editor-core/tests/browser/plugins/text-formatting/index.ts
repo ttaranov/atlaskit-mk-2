@@ -12,8 +12,8 @@ import {
 import {
   TextFormattingState,
   stateKey,
-} from '../../../../src/plugins/text-formatting';
-import codeBlockPlugin from '../../../../src/editor/plugins/code-block';
+} from '../../../../src/plugins/text-formatting/pm-plugins/main';
+import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 chai.use(chaiPlugin);
 

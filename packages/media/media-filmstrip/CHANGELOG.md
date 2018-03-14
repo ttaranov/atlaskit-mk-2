@@ -1,5 +1,10 @@
 # @atlaskit/media-filmstrip
 
+## 6.1.3
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 6.1.2
+
 ## 6.1.1
 
 ## 6.1.0

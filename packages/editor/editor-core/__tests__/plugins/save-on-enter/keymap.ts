@@ -8,8 +8,8 @@ import {
   taskList,
   taskItem,
 } from '@atlaskit/editor-test-helpers';
-import saveOnEnterPlugin from '../../../src/editor/plugins/save-on-enter';
-import tasksAndDecisionsPlugin from '../../../src/editor/plugins/tasks-and-decisions';
+import saveOnEnterPlugin from '../../../src/plugins/save-on-enter';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 
 describe('save on enter', () => {
   const onSaveSpy = jest.fn();

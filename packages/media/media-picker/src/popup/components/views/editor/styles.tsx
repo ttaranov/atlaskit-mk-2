@@ -1,16 +1,12 @@
 // tslint:disable:variable-name
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN700A } from '@atlaskit/util-shared-styles';
 
 // z-index is set to 200 for the main container to be above the dropzone which has z-index 100
-export const MainContainer = styled.div`
+export const MainContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: fixed;
   left: 0;
   top: 0;
@@ -21,7 +17,7 @@ export const MainContainer = styled.div`
   overflow: hidden;
 `;
 
-export const CenterView = styled.div`
+export const CenterView: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 100%;
   height: 100%;
   display: flex;

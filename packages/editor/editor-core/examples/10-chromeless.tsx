@@ -3,8 +3,8 @@
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from '../src/editor';
-import EditorContext from '../src/editor/ui/EditorContext';
-import WithEditorActions from '../src/editor/ui/WithEditorActions';
+import EditorContext from '../src/ui/EditorContext';
+import WithEditorActions from '../src/ui/WithEditorActions';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 
 const SAVE_ACTION = () => console.log('Save');

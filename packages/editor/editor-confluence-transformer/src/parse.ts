@@ -403,6 +403,9 @@ function converter(
           );
         } else if (hasClass(node, 'preformatted')) {
           return convertNoFormatFromView(schema, node) || unsupportedInline;
+        } else if (hasClass(node, 'content-wrapper')) {
+          const { content } = parseDomNode(schema, node);
+          return Fragment.from(content);
         }
         return unsupportedInline;
     }
