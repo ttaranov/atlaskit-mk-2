@@ -1,12 +1,8 @@
 /* tslint:disable variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, IframeHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, IframeHTMLAttributes } from 'react';
 
 export const defaultWidth = 480;
 export const defaultHeight = 180;
@@ -19,7 +15,9 @@ export interface WrapperProps {
   height?: number;
 }
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & WrapperProps
+> = styled.div`
   position: relative;
   ${({ aspectRatio, width, height }: WrapperProps) => {
     if (width || height) {
@@ -48,7 +46,7 @@ export const Wrapper = styled.div`
   }};
 `;
 
-export const Iframe = styled.iframe`
+export const Iframe: ComponentClass<IframeHTMLAttributes<{}>> = styled.iframe`
   position: absolute;
   width: 100%;
   height: 100%;

@@ -1,18 +1,24 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
+import {
+  HTMLAttributes,
+  ComponentClass,
+  ImgHTMLAttributes,
+  ProgressHTMLAttributes,
+} from 'react';
+import styled, { ThemedOuterStyledProps } from 'styled-components';
 
 export interface DropzoneContainerProps {
   isActive: boolean;
 }
 
-export const PopupContainer = styled.div`
+export const PopupContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   height: calc(100vh - 100px);
   overflow: hidden;
 `;
 
-export const PopupHeader = styled.div`
+export const PopupHeader: ComponentClass<HTMLAttributes<{}>> = styled.div`
   border-bottom: 1px solid #ccc;
   margin-bottom: 15px;
   display: flex;
@@ -24,15 +30,19 @@ export const PopupHeader = styled.div`
   }
 `;
 
-export const PopupEventsWrapper = styled.div`
+export const PopupEventsWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   overflow: auto;
 `;
 
-export const PreviewImage = styled.img`
+export const PreviewImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   width: 300px;
 `;
 
-export const DropzoneContainer = styled.div`
+export const DropzoneContainer: ComponentClass<
+  HTMLAttributes<{}> & ThemedOuterStyledProps<DropzoneContainerProps, {}>
+> = styled.div`
   width: 600px;
   min-height: 500px;
   border: 1px dashed transparent;
@@ -45,22 +55,28 @@ export const DropzoneContainer = styled.div`
       : ''};
 `;
 
-export const DropzoneConfigOptions = styled.div``;
+export const DropzoneConfigOptions: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div``;
 
-export const DropzoneRoot = styled.div`
+export const DropzoneRoot: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const DropzoneContentWrapper = styled.div`
+export const DropzoneContentWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: flex;
 `;
 
-export const DropzonePreviewsWrapper = styled.div`
+export const DropzonePreviewsWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   overflow: auto;
   width: 300px;
 `;
 
-export const DropzoneItemsInfo = styled.div`
+export const DropzoneItemsInfo: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex: 1;
   min-width: 600px;
   display: flex;
@@ -72,7 +88,9 @@ export interface ClipboardContainerProps {
   isWindowFocused: boolean;
 }
 
-export const ClipboardContainer = styled.div`
+export const ClipboardContainer: ComponentClass<
+  HTMLAttributes<{}> & ClipboardContainerProps
+> = styled.div`
   padding: 10px;
   min-height: 400px;
 
@@ -80,7 +98,9 @@ export const ClipboardContainer = styled.div`
     isWindowFocused ? `1px dashed gray` : `1px dashed transparent`};
 `;
 
-export const UploadingFilesWrapper = styled.div`
+export const UploadingFilesWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   border: 1px solid;
   padding: 10px;
   margin-bottom: 10px;
@@ -89,6 +109,8 @@ export const UploadingFilesWrapper = styled.div`
   overflow: auto;
 `;
 
-export const FileProgress = styled.progress`
+export const FileProgress: ComponentClass<
+  ProgressHTMLAttributes<{}>
+> = styled.progress`
   width: 400px;
 `;

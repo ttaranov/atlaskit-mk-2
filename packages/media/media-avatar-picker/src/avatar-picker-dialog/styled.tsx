@@ -1,14 +1,12 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
 
-export const AvatarPickerViewWrapper = styled.div`
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
+
+export const AvatarPickerViewWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,17 +14,19 @@ export const AvatarPickerViewWrapper = styled.div`
   min-height: 339px;
 `;
 
-export const ModalHeader = styled.div`
+export const ModalHeader: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin: 15px;
   font-weight: 500;
   font-size: 20px;
 `;
 
-export const CroppingWrapper = styled.div`
+export const CroppingWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-block;
 `;
 
-export const ModalFooterButtons = styled.div`
+export const ModalFooterButtons: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   text-align: right;
   width: 100%;
 `;

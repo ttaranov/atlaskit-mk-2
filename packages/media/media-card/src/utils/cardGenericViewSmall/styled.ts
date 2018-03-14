@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   Root,
   cardShadow,
@@ -29,7 +25,9 @@ export interface SmallCardProps {
   hasError: boolean;
 }
 
-export const SmallCard = styled(Root)`
+export const SmallCard: ComponentClass<
+  HTMLAttributes<{}> & SmallCardProps
+> = styled(Root)`
   ${borderRadius} cursor: pointer;
   box-sizing: border-box;
   padding: 5px;
@@ -67,7 +65,7 @@ export const SmallCard = styled(Root)`
   }
 `;
 
-export const Retry = styled.div`
+export const Retry: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} display: inline-block;
   font-weight: bold;
   color: #0065ff;
@@ -86,7 +84,9 @@ export interface ImgWrapperProps {
   shadow: boolean;
 }
 
-export const ImgWrapper = styled.div`
+export const ImgWrapper: ComponentClass<
+  HTMLAttributes<{}> & ImgWrapperProps
+> = styled.div`
   ${center} ${borderRadius} ${size(imgSize)} overflow: hidden;
   position: relative;
   float: left;
@@ -101,16 +101,16 @@ export const ImgWrapper = styled.div`
   }
 `;
 
-export const ErrorWrapper = styled.div``;
+export const ErrorWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
-export const Error = styled.div`
+export const Error: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} ${ellipsis()} font-weight: bold;
   color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;
 `;
 
-export const InfoWrapper = styled.div`
+export const InfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   padding-left: 8px;
   position: relative;
@@ -123,7 +123,7 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-export const ActionsWrapper = styled.div`
+export const ActionsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   ${center};
 `;
