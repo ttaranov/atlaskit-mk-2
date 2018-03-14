@@ -103,11 +103,11 @@ class DatePicker extends Component<Props, State> {
     view: '',
   };
 
-  onCalendarChange = ({ iso }: Object) => {
+  onCalendarChange = ({ iso }) => {
     this.setState({ view: iso });
   };
 
-  onCalendarSelect = ({ iso: value }: Object) => {
+  onCalendarSelect = ({ iso: value }) => {
     this.triggerChange(value);
     this.setState({ isOpen: false });
   };
