@@ -28,21 +28,43 @@ pipelines:
 
   default:
     - step:
+        name: Installing dependencies
         script:
           - source ./build-setup.sh
-          - bolt install --pure-lockfile
-          - yarn build
-          - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
-          - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
-          - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
-          - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
-          - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-          - yarn test:changed
-          - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
+          - yarn install --pure-lockfile
         caches:
           - node
+        artifacts:
+          - node_modules/**
+    - parallel:
+        - step:
+            name: Building dists
+            script:
+              - yarn global add bolt
+              - bolt
+              - yarn build
+        - step:
+            name: Lint + Typecheck
+            script:
+              - yarn global add bolt
+              - bolt
+              - yarn lint
+              - yarn typecheck
+        - step:
+            name: Testing
+            script:
+              - yarn global add bolt
+              - bolt
+              - yarn test
+        - step:
+            name: Building website
+            script:
+              - apt-get -y update
+              - apt-get -y install zip
+              - yarn global add bolt
+              - bolt
+              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+              - node build/ci-scripts/update.build.status.with.netlify.link.js
 
   custom: # Pipelines that can be scheduled or triggered manually
 
@@ -62,7 +84,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test:build:webdriver:browserstack
+            - yarn test:webdriver:browserstack:ci
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
