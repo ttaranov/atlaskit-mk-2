@@ -37,9 +37,6 @@ class Controlled extends Component<Props, State> {
 }
 
 export default () => {
-  let datePickerValue = '2018-01-02';
-  let timePickerValue;
-  let datetimePickerValue;
   return (
     <div>
       <h3>Date picker</h3>
