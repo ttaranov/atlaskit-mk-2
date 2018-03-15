@@ -1,37 +1,42 @@
 import * as React from 'react';
-import { FileViewer, FileDetails } from './file-viewer';
 import { Observable } from 'rxjs';
+import { FileViewer, FileDetails } from './file-viewer';
+import { ErrorMessage } from '../../src/newgen/styled';
 
-export type DataSource = Observable<FileDetails[]>;
+export type DataSource = Observable<FileDetails | null>;
 
 export type RendererProps = {
   dataSource: DataSource;
 };
 
 export type RendererState = {
-  items: FileDetails[];
+  item: FileDetails | null;
 };
 
 export class MediaViewerRenderer extends React.Component<
   RendererProps,
   RendererState
 > {
-  state: RendererState = { items: [] };
+  state: RendererState = { item: null };
 
   componentDidMount() {
     const { dataSource } = this.props;
     dataSource.subscribe({
-      next: (items: FileDetails[]) => {
-        this.setState({ items });
+      next: (item: FileDetails) => {
+        this.setState({ item });
       },
     });
   }
 
   render() {
-    if (this.state.items.length) {
-      return <FileViewer fileDetails={this.state.items[0]} />;
+    if (this.state.item) {
+      return <FileViewer fileDetails={this.state.item} />;
     } else {
-      return null;
+      return (
+        <ErrorMessage>
+          No items provided.
+        </ErrorMessage>
+      );
     }
   }
 }
