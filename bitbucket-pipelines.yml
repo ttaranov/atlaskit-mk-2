@@ -31,7 +31,7 @@ pipelines:
         name: Installing dependencies
         script:
           - source ./build-setup.sh
-          - bolt install --pure-lockfile
+          - yarn install --pure-lockfile
         caches:
           - node
         artifacts:
@@ -40,19 +40,27 @@ pipelines:
         - step:
             name: Building dists
             script:
+              - yarn global add bolt
+              - bolt
               - yarn build
         - step:
             name: Lint + Typecheck
             script:
+              - yarn global add bolt
+              - bolt
               - yarn lint
               - yarn typecheck
         - step:
             name: Testing
             script:
+              - yarn global add bolt
+              - bolt
               - yarn test
         - step:
             name: Building website
             script:
+              - yarn global add bolt
+              - bolt
               - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
               - node build/ci-scripts/update.build.status.with.netlify.link.js
 
