@@ -10,7 +10,7 @@ import {
 } from './_emoji-helpers';
 
 BrowserTestCase(
-  'Emoji:should be able to use emoji inside blockquote',
+  'Emoji: should be able to use emoji inside blockquote',
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -24,7 +24,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji:should be able to use emoji inside bulletList',
+  'Emoji: should be able to use emoji inside bulletList',
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -37,7 +37,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji:should be able to use emoji inside orderedList',
+  'Emoji: should be able to use emoji inside orderedList',
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -50,7 +50,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji:should be able remove emoji on backspace',
+  'Emoji: should be able remove emoji on backspace',
   { skip: ['safari'] },
   async client => {
     const browser = await new Page(client);
@@ -67,7 +67,7 @@ BrowserTestCase(
 
 // Safari does not understand webdriver click
 BrowserTestCase(
-  'Emoji:should be able to select emoji by clicking inside decisions',
+  'Emoji: should be able to select emoji by clicking inside decisions',
   { skip: ['safari'] },
   async client => {
     const decisions = 'span[aria-label="Decision"]';

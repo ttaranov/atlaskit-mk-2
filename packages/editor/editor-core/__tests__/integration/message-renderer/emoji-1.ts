@@ -10,7 +10,7 @@ import {
 } from './_emoji-helpers';
 
 BrowserTestCase(
-  'Emoji:should be able to see emoji if typed the name in full',
+  'Emoji: should be able to see emoji if typed the name in full',
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -32,7 +32,7 @@ BrowserTestCase(
   },
 );
 
-BrowserTestCase('Emoji:should convert :) to emoji', async client => {
+BrowserTestCase('Emoji: should convert :) to emoji', async client => {
   const browser = await new Page(client);
   await browser.goto(messageEditor);
   await browser.waitForSelector(editable);
@@ -45,7 +45,6 @@ BrowserTestCase('Emoji:should convert :) to emoji', async client => {
   expect(doc).toMatchDocSnapshot();
 });
 
-// disable on edge since typing is slow
 BrowserTestCase(
   'user should not be able to see emoji inside inline code',
   async client => {
@@ -61,7 +60,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji:should close emoji picker on Escape',
+  'Emoji: should close emoji picker on Escape',
   { skip: ['safari'] },
   async client => {
     const browser = await new Page(client);
@@ -82,7 +81,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji:should be able to click on the emoji button and select emoji',
+  'Emoji: should be able to click on the emoji button and select emoji',
   async client => {
     const emojiButton = '[aria-label="Insert emoji (:)"]';
     const sweatSmile = '[aria-label=":sweat_smile:"]';
@@ -98,10 +97,10 @@ BrowserTestCase(
   },
 );
 
-// skipping safari since char   that is stored
+// skipping safari since char    is stored in snapshot
 // skipping firefox as it doesn't handle ArrowLeft on webdriver
 BrowserTestCase(
-  'Emoji:should be able to navigate between emojis',
+  'Emoji: should be able to navigate between emojis',
   { skip: ['firefox', 'safari'] },
   async client => {
     const browser = await new Page(client);
