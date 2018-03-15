@@ -36,7 +36,7 @@ export const emoji = style({
     },
     [`&.${selected},&.${selectOnHover}:hover .${deleteButton}`]: {
       // show delete button on hover
-      display: 'inherit',
+      display: 'inline-block',
     },
     img: {
       display: 'block',
@@ -357,4 +357,57 @@ export const uploadAddRow = style({
 export const AddCustomEmoji = style({
   alignSelf: 'center',
   marginLeft: '10px',
+});
+
+// Emoji Delete preview
+
+export const submitDelete = 'emoji-submit-delete';
+
+export const deletePreview = style({
+  height: '100px',
+  padding: '10px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+});
+
+export const deleteText = style({
+  height: '64px',
+});
+
+export const deleteFooter = style({
+  display: 'flex',
+  height: '40px',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  $nest: {
+    img: {
+      maxHeight: '32px',
+      maxWidth: '72px',
+    },
+
+    [`.${submitDelete}`]: {
+      width: '80px',
+    },
+    button: {
+      display: 'flex',
+      justifyContent: 'center',
+
+      $nest: {
+        div: {
+          display: 'flex',
+        },
+      },
+    },
+  },
+});
+
+export const emojiErrorMessage = style({
+  display: 'flex',
+  fontSize: '12px',
+  color: colors.R300,
+  width: '100%',
+  justifyContent: 'flex-end',
+  paddingRight: '5px',
 });
