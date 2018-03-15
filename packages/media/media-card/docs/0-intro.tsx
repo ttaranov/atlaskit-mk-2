@@ -15,6 +15,12 @@ export default md`
   yarn add @atlaskit/media-card
   ~~~
 
+  ### Note:
+
+  Don't forget to add these polyfills to your product if you want to target older browsers:
+
+  * Array.prototype.find() ([polyfill](https://www.npmjs.com/package/array.prototype.find), [browser support](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find))
+
   ## Using the component
 
   **Card**

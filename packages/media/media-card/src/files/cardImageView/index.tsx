@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, MediaType, ImageResizeMode } from '@atlaskit/media-core';
+import { MediaType, ImageResizeMode } from '@atlaskit/media-core';
 
 import { CardDimensions, CardStatus } from '../../index';
 import { CardImageView } from '../../utils/cardImageView';
 import { toHumanReadableMediaSize } from '../../utils';
+import { CardAction } from '../../actions';
 
 export interface FileCardImageViewProps {
   mediaName?: string;

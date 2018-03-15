@@ -727,19 +727,25 @@ export const getValidMark = (mark: ADMark): ADMark | null => {
       }
       case 'link': {
         if (attrs) {
-          const { href, url } = attrs;
+          const { href, url, __confluenceMetadata } = attrs;
           let linkHref = href || url;
 
           if (linkHref && linkHref.indexOf(':') === -1) {
             linkHref = `http://${linkHref}`;
           }
 
+          const linkAttrs: any = {
+            href: linkHref,
+          };
+
+          if (__confluenceMetadata) {
+            linkAttrs.__confluenceMetadata = __confluenceMetadata;
+          }
+
           if (linkHref && isSafeUrl(linkHref)) {
             return {
               type,
-              attrs: {
-                href: linkHref,
-              },
+              attrs: linkAttrs,
             };
           }
         }

@@ -98,6 +98,8 @@ const reduceToObj = type => {
     return reduceToObj(type.value);
   } else if (type.kind === 'object') {
     return type.members;
+  } else if (type.kind === 'intersection') {
+    return type.types.reduce((acc, i) => [...acc, ...reduceToObj(i)], []);
   }
   // eslint-disable-next-line no-console
   console.warn('was expecting to reduce to an object and could not', type);

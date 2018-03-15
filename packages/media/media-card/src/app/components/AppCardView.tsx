@@ -145,7 +145,11 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   render(): JSX.Element {
     const { model: { background, preview }, onClick } = this.props;
     return (
-      <Card background={background && background.url} onClick={onClick}>
+      <Card
+        background={background && background.url}
+        onClick={onClick}
+        isClickable={Boolean(onClick)}
+      >
         {this.renderPreview()}
         <CardContent hasPreview={Boolean(preview)}>
           {this.renderHeader()}

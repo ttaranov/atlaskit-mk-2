@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, ImageResizeMode } from '@atlaskit/media-core';
+import { ImageResizeMode } from '@atlaskit/media-core';
 
 import { CardDimensions, CardAppearance, CardStatus } from '../../index';
 import { CardImageView } from '../../utils/cardImageView';
+import { CardAction } from '../../actions';
 
 export interface LinkCardImageViewProps {
   linkUrl: string;

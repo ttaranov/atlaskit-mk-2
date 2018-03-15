@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction } from '@atlaskit/media-core';
 import { CardDimensions, CardAppearance } from '../../index';
 
 import ErrorCard from '../../shared/ErrorCard';
@@ -8,6 +7,7 @@ import CardFrame from '../../shared/CardFrame';
 import CardPreview from '../../shared/CardPreview';
 import LinkIcon from '../../shared/LinkIcon';
 import { getCardMinWidth, getCardMaxWidth } from '../../utils/cardDimensions';
+import { CardAction } from '../../actions';
 import CardDetails from './CardDetails';
 import { defaultLinkCardAppearance } from '../card';
 
