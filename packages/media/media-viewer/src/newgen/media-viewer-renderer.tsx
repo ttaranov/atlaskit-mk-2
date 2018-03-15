@@ -48,7 +48,7 @@ export class MediaViewerRenderer extends React.Component<
       case 'SUCCESS':
         return <FileViewer fileDetails={this.state.item} />;
       case 'FAILED':
-        return <ErrorMessage>No items provided.</ErrorMessage>;
+        return <ErrorMessage>Error</ErrorMessage>;
     }
   }
 }

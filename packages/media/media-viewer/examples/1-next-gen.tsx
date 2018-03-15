@@ -14,7 +14,7 @@ type State = {
 const context = createStorybookContext();
 const data = {
   type: 'file' as MediaType,
-  id: docFileId,
+  id: docFileId.id,
   occurrenceKey: 'asdasd',
 };
 

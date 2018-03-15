@@ -37,8 +37,8 @@ export class MediaViewer extends React.Component<Props, State> {
     this.setState({
       dataSource: provider
         .observable()
-        .filter(item => item.details.processingState === 'succeeded')
-        .map(item => item),
+        .filter(item => item.details.processingStatus === 'succeeded')
+        .map(item => item)
     });
   }
 
