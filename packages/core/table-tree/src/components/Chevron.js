@@ -27,7 +27,7 @@ export default class Chevron extends PureComponent<Props> {
   };
 
   render() {
-    const { isExpanded, ariaControls } = this.props;
+    const { isExpanded, ariaControls, collapseLabel, expandLabel } = this.props;
     const iconProps = {
       size: 'medium',
       primaryColor: iconColor,
@@ -42,12 +42,9 @@ export default class Chevron extends PureComponent<Props> {
         >
           <ChevronIconContainer>
             {isExpanded ? (
-              <ChevronDownIcon
-                label={this.props.collapseLabel}
-                {...iconProps}
-              />
+              <ChevronDownIcon label={collapseLabel} {...iconProps} />
             ) : (
-              <ChevronRightIcon label={this.props.expandLabel} {...iconProps} />
+              <ChevronRightIcon label={expandLabel} {...iconProps} />
             )}
           </ChevronIconContainer>
         </Button>
