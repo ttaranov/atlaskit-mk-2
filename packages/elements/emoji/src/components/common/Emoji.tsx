@@ -233,16 +233,13 @@ const renderAsImage = (props: Props) => {
 
   let deleteButton;
   if (showDelete) {
-    const classes = {
-      [styles.deleteButton]: true,
-    };
     deleteButton = (
-      <span className={classNames(classes)}>
+      <span className={styles.deleteButton}>
         <CrossCircleIcon
           label="delete-emoji"
           primaryColor={colors.N500}
           size="small"
-          // onClick={(event) => handleDelete(props, event)}
+          onClick={event => handleDelete(props, event)}
         />
       </span>
     );

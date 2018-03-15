@@ -256,7 +256,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
           title: group.title,
           showDelete: group.title === userCustomTitle,
           onSelected: onEmojiSelected,
-          // onDelete: onEmojiDelete,
+          onDelete: onEmojiDelete,
           onMouseMove: this.onEmojiMouseEnter,
         }),
       );

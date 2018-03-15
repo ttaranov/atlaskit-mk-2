@@ -134,7 +134,7 @@ export interface EmojiProvider
    *
    * @return a boolean indicating whether the delete was successful
    */
-  deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean>;
+  deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean>;
 
   /**
    * Load media emoji that may require authentication to download, producing

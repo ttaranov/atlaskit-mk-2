@@ -10,12 +10,19 @@ export interface Props {
   showDelete: boolean;
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
-  // onDelete?: OnEmojiEvent;
+  onDelete?: OnEmojiEvent;
 }
 
 export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
   render() {
-    const { emojis, onSelected, onMouseMove, title, showDelete } = this.props;
+    const {
+      emojis,
+      onSelected,
+      onMouseMove,
+      title,
+      showDelete,
+      onDelete,
+    } = this.props;
 
     return (
       <div className={styles.emojiPickerRow}>
@@ -31,6 +38,7 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
                 onSelected={onSelected}
                 onMouseMove={onMouseMove}
                 showDelete={showDelete}
+                onDelete={onDelete}
                 placeholderSize={24}
               />
             </span>
