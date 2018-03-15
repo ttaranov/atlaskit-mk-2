@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 65.0.0
+
+- [patch] Fix autoformating in editor after hardbreak. [21712d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21712d6)
+- [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
+
 ## 64.1.3
 
 ## 64.1.2

@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 25.0.0
+- [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
+
 ## 24.1.6
 - [patch] added a cursor to application cards when the onClick property is passed [97cb9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97cb9c2)
 

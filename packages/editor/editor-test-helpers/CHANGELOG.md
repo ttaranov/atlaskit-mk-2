@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.6
+
 ## 2.0.5
 - [patch] support __confluenceMetadata property on link mark [b17f847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b17f847)
 
