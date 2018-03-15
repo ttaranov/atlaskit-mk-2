@@ -167,17 +167,6 @@ export default class ToolsDrawer extends React.Component<any, State> {
     } = this.state;
     return (
       <Content>
-        <div style={{ padding: '5px 0' }}>
-          ️️️⚠️ Atlassians, for Media integration to work, make sure you're
-          logged into{' '}
-          <a href="https://id.stg.internal.atlassian.com" target="_blank">
-            staging Identity server
-          </a>{' '}
-          and run your browser{' '}
-          <a href="https://stackoverflow.com/a/43996863/658086" target="_blank">
-            with CORS disabled
-          </a>.
-        </div>
         {reloadEditor
           ? ''
           : this.props.renderEditor({
