@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 12.2.1
+
 ## 12.2.0
 - [minor] E-mail renderer [722657b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722657b)
 
