@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
-import { MediaViewer } from '../../src/newgen/media-viewer';
+import {
+  MediaViewer,
+  MediaViewerRenderer,
+  DataSource,
+} from '../../src/newgen/media-viewer';
+import { FileViewer } from '../../src/newgen/file-viewer';
+import { Observable } from 'rxjs';
+import 'rxjs/add/observable/of';
 
 describe('<MediaViewer />', () => {
   it('should close Media Viewer on click', () => {
@@ -16,26 +23,31 @@ describe('<MediaViewer />', () => {
   it.skip('shows only one item', () => {
     const onClose = jest.fn();
     const item = '';
-    //
     const el = mount(
-      <MediaViewer item={item} context={context} onClose={onClose} />,
-    );
-    const el = mount(
-      <MediaViewer list={[item]} context={context} onClose={onClose} />,
+      <MediaViewer data={item} context={context} onClose={onClose} />,
     );
   });
 
-  it.skip('shows a list of items', () => {
+  it.skip('shows a list of items with a selected file', () => {
     const onClose = jest.fn();
-    const list = ['a', 'b'];
-    const selected = 'a';
+    const list = ['', ''];
+    const selected = '';
     const el = mount(
       <MediaViewer
-        list={list}
+        data={list}
         selected={selected}
         context={context}
         onClose={onClose}
       />,
+    );
+  });
+
+  it.skip('shows a list of items without a selected file', () => {
+    const onClose = jest.fn();
+    const list = ['', ''];
+    const selected = '';
+    const el = mount(
+      <MediaViewer data={list} context={context} onClose={onClose} />,
     );
   });
 
@@ -45,7 +57,7 @@ describe('<MediaViewer />', () => {
     const selected;
     const el = mount(
       <MediaViewer
-        colection={colection}
+        data={collection}
         selected={selected}
         context={context}
         onClose={onClose}
@@ -53,44 +65,40 @@ describe('<MediaViewer />', () => {
     );
   });
 
-  it.skip('shows the most recent file from collection', () => {
+  it.skip('shows a file from a collection without a selection', () => {
     const onClose = jest.fn();
     const collection;
     const el = mount(
-      <MediaViewer colection={colection} context={context} onClose={onClose} />,
+      <MediaViewer data={collection} context={context} onClose={onClose} />,
     );
   });
 
-  // COMPILE TIME CHECK
-  // rule: can not pass list and collection at the same
+  it.skip(
+    'shows an error message if selectedItem is different from provided item',
+  );
+  it.skip('shows an error message if selectedItem can not be found in list');
+  it.skip(
+    'shows an error message if selectedItem can not be found in collection',
+  );
+});
 
-  // RUNTIME WITH ERROR MESSAGE
-  //
-  // rule: if you pass a collection, you could pass "selected" item
-  // rule: if you pass a list, you could pass "selected" item
-  // very well possible at runtime! (if file got deleted)
-  // handle this gracefully? - eg tell the user that the selected file could not be found?
-  // TODO run this through scotty
-  //
-  // rule: zero-item? / rule: zero collection?
-  // a collection could have all links - so we again have nothing to display
-  // tell the user that something is odd - we again have nothing to display
-  // TODO run this through scotty
+describe('<MediaViewerRenderer />', () => {
+  it('renders a viewer for a list with one fileDetails object', () => {
+    // const fileDetails = { mediaType: 'doc' };
+    // const dataSource: DataSource = Observable.of([fileDetails]);
+    // dataSource.subscribe({
+    //   next: (x) => console.log('---- IN  component');
+    // });
+    // const el = mount(
+    //   <MediaViewerRenderer dataSource={dataSource} />
+    // );
+    // expect(el.find(FileViewer)).toHaveLength(1);
+  });
 
-  // don't have at the moment: "follow a collection and all updates" (eg insert / delete / update)
-  // no support for that in the platform at the moment - this is what observables are great for!
-
-  /*
-    data source concept: current media viewer 
-
-    - show a list of files from an array
-      - show a single file
-        - left/right not possible
-    - show one file from an entire collection
-      - assuming that a user would always
-        navigate through an entire collection?
-      - automatically fetch new pages etc -> not the case in the list
-      - is like a "lazy" list (do not even know the size of array)
-    - could you allow someone to just pass a collection, but no item?
-  */
+  it.skip('updates when next is emitted');
+  it.skip('handles errors correctly');
+  it.skip('unsubscribes when completed?');
+  it.skip('resubscribes when componentDidChange');
+  it.skip('renders an error when there are no iems');
+  it.skip('renders one of many items');
 });

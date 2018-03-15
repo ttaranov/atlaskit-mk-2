@@ -1,0 +1,46 @@
+
+DO NOT MERGE ME!!!!!!
+
+
+
+ // MediaViewer <- user + pass the "real" implementation
+    // MediaViewerRenderer <- tests !!!! + pass a way of retrieving the data
+
+  // interface MediaViewerAPITooling {
+  //   getItemFromCollection(): Observable<Item> // .next() -> setState
+  //   // Question: what's different from calling provider directly!
+  //   getNextXYZ(): Observable<Item> // .next()
+  // }
+  // "MediaViewerAPITooling"
+  // - we can map from media-core types to internal ones here
+  // - we can easily upgrade media-core and have all changes in one place
+  // - we can implement complexx provider logic here and make them very specific to our use cases
+  // drawback: "how to change the state" is no longer part of "MediaViewerAPITooling" (with component it would)
+
+  // COMPILE TIME CHECK
+  // rule: can not pass list and collection at the same
+  // list | collection | item => "data"
+
+  // RUNTIME WITH ERROR MESSAGE
+  // very well possible at runtime! (if file got deleted)
+  // handle this gracefully? - eg tell the user that the selected file could not be found?
+  // TODO run this through scotty
+  //
+  // rule: zero-item? / rule: zero collection?
+  // a collection could have all links - so we again have nothing to display
+  // tell the user that something is odd - we again have nothing to display
+  // TODO run this through scotty
+
+  // TODO don't have at the moment: "follow a collection and all updates" (eg insert / delete / update)
+  // no support for that in the platform at the moment - this is what observables are great for!
+
+
+  // rule: if tou pass a single item, you could pass "selected" as well (if they don't match show error)
+  // rule: if you pass a collection, you could pass "selected" item
+  // rule: if you pass a list, you could pass "selected" item
+
+// FileDetailsPlaceholder | FileDetails | FileDetailsPlusFileContent
+
+
+// TODO think about better name for DataSource later on
+// TODO DATASOURCE we might keep this as a struct so that it can contain multiple data sources (e.g. for token fetching)
