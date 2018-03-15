@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react';
 import * as cx from 'classnames';
-import { CardAction, MediaType, MediaItemType } from '@atlaskit/media-core';
-import { Menu, ErrorIcon } from '../../utils';
+import { MediaType, MediaItemType } from '@atlaskit/media-core';
+import { ErrorIcon } from '../../utils';
 import { MediaTypeIcon } from '../../utils/mediaTypeIcon';
+import CardActions from '../../utils/cardActions';
 import { CardDimensions } from '../..';
+import { CardAction } from '../../actions';
 import { InfoView } from './infoView';
 import { ThumbnailView } from './thumbnailView';
 import {
@@ -113,7 +115,7 @@ export class CardGenericViewSmall extends Component<
         <ImgWrapper shadow={!loading && !error}>{left}</ImgWrapper>
         <InfoWrapper>{right}</InfoWrapper>
         <ActionsWrapper>
-          <Menu actions={actions} />
+          {actions ? <CardActions actions={actions} /> : null}
         </ActionsWrapper>
       </SmallCard>
     );

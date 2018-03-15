@@ -9,14 +9,12 @@ import { Root, borderRadius, size, center } from '../../styles';
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   display: flex;
   position: relative;
+  line-height: 0;
 `;
 
-// We need to set a explicit value to the Icon (svg) wrapper since otherwise will grow up too much
-export const MeatBallsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 23px;
-`;
-
-export const DeleteBtn: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const CardActionButton: ComponentClass<
+  HTMLAttributes<HTMLDivElement>
+> = styled.div`
   ${center} ${borderRadius} ${size(26)} color: ${akColorN500};
 
   &:hover {
