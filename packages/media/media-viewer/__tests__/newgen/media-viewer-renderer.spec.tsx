@@ -49,7 +49,6 @@ describe('<MediaViewerRenderer />', () => {
   //   expect(el.find(ErrorMessage)).toHaveLength(1);
   // });
 
-  it.skip('handles errors correctly');
   it.skip('unsubscribes when completed?');
   it.skip('resubscribes when componentDidChange');
 });
