@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.0.1
+- [patch] remove mention mark when @ prefix disappears [d62ca26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d62ca26)
+
 ## 65.0.0
 
 - [patch] Fix autoformating in editor after hardbreak. [21712d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21712d6)

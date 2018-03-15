@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 8.0.1
+
 ## 8.0.0
 - [major] updated media-core peer dependency, this requires dependents to install new media-core version [47b459a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47b459a)
 
