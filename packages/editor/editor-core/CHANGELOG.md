@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.0.2
+- [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
+
 ## 65.0.1
 - [patch] remove mention mark when @ prefix disappears [d62ca26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d62ca26)
 

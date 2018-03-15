@@ -1,5 +1,7 @@
 # @atlaskit/media-editor
 
+## 5.0.1
+
 ## 5.0.0
 
 ## 4.2.3
