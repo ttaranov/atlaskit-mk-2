@@ -984,6 +984,31 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         ),
       );
     });
+
+    describe('link', () => {
+      check(
+        'renamed link to a confluence space, between p',
+        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\": \"text\",\"text\": \"This is a renamed link\",\"marks\": [{\"type\": \"link\",\"attrs\": {\"href\": \"www.atlassian.com\",\"__confluenceMetadata\": {\"linkType\": \"page\",\"versionAtSave\": \"1\",\"fileName\": null,\"spaceKey\": \"TESTSPACE\",\"contentTitle\": \"Actual page title\",\"isRenamedTitle\": true,\"anchorName\": null}}}]}]]></fab:adf><p>world</p>`,
+        doc(
+          p('hello'),
+          p(
+            a({
+              href: 'www.atlassian.com',
+              __confluenceMetadata: {
+                linkType: 'page',
+                versionAtSave: '1',
+                fileName: null,
+                spaceKey: 'TESTSPACE',
+                contentTitle: 'Actual page title',
+                isRenamedTitle: true,
+                anchorName: null,
+              },
+            })('This is a renamed link'),
+          ),
+          p('world'),
+        ),
+      );
+    });
   });
 
   describe('<div class="content-wrapper">...</div>', () => {
