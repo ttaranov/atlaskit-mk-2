@@ -56,8 +56,6 @@ pipelines:
         - step:
             name: Building website
             script:
-              - apt-get -y update
-              - apt-get -y install zip
               - yarn global add bolt
               - bolt
               - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
