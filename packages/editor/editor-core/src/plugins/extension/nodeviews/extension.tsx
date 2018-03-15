@@ -8,10 +8,7 @@ import Extension from '../ui/Extension';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { ExtensionHandlers } from '../../../types';
 import WithPluginState from '../../../ui/WithPluginState';
-import {
-  pluginKey,
-  ExtensionState,
-} from '../../extension/plugin';
+import { pluginKey, ExtensionState } from '../../extension/plugin';
 
 export interface Props {
   node: PmNode;
@@ -92,7 +89,7 @@ class ExtensionNode extends ContentNodeView implements NodeView {
               providerFactory={this.providerFactory}
               handleContentDOMRef={this.handleRef}
               extensionHandlers={this.extensionHandlers}
-              isFocused={this.isFocused(node, focusedNode)}
+              isEditMode={this.isFocused(node, focusedNode)}
             />
           );
         }}
@@ -104,9 +101,10 @@ class ExtensionNode extends ContentNodeView implements NodeView {
   // Focus is used to switch between view and edit mode for bodied extensions handled by extension handlers
   // It basically means that the focus is in the body of an extension
   private isFocused(node, focusedNode) {
-    if (!node || !focusedNode) {
+    if (!node || !focusedNode || node.type.name !== 'bodiedExtension') {
       return false;
     }
+
     // when editing a bodied node, changes in content will create new nodes.
     // To make sure we keep the focus, we check if it's the same node without considering the content.
     return node.sameMarkup(focusedNode);

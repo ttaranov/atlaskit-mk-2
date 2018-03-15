@@ -12,7 +12,7 @@ export interface Props {
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
   children?: React.ReactNode;
-  isFocused?: boolean;
+  isEditMode?: boolean;
   macroProvider?: MacroProvider;
 }
 
@@ -24,20 +24,20 @@ export default class BodiedExtension extends Component<Props, any> {
       handleContentDOMRef,
       onSelectExtension,
       children,
-      isFocused,
+      isEditMode,
     } = this.props;
 
     const hasChildren = !!children;
 
     const wrapperClassNames = (hasChildren && 'with-children') || '';
-    const contentClassName = isFocused
+    const contentClassName = isEditMode
       ? 'extension-content'
       : 'extension-content hidden';
 
     return (
       <Wrapper onClick={onClick} className={wrapperClassNames}>
         <Overlay className="extension-overlay" />
-        {hasChildren && !isFocused ? (
+        {hasChildren && !isEditMode ? (
           children
         ) : (
           <Header contentEditable={false} onClick={onSelectExtension}>

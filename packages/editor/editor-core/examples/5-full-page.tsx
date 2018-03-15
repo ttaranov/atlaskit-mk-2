@@ -7,7 +7,6 @@ import { akColorN80 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
-import { ExtensionHandlers } from './../src/types';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,

@@ -25,10 +25,19 @@ export default (
     state: {
       init: () => ({ element: null, focusedNode: null }),
 
-      apply(tr, state: ExtensionState) {
+      apply(tr, state: ExtensionState, prevState, nextState) {
         const meta = tr.getMeta(pluginKey);
-        if (meta) {
-          const newState = { ...state, ...meta };
+        const node = getExtensionNode(nextState);
+
+        let { focusedNode } = state;
+
+        if (meta || node || focusedNode) {
+          if (node !== focusedNode) {
+            focusedNode = node || null;
+          }
+
+          const newState = { ...state, ...meta, focusedNode };
+
           dispatch(pluginKey, newState);
 
           return newState;
@@ -41,12 +50,7 @@ export default (
       return {
         update: (view: EditorView) => {
           const { state, dispatch } = view;
-          const { element, focusedNode } = pluginKey.getState(state);
-          const node = getExtensionNode(state);
-
-          if (node !== focusedNode) {
-            dispatch(state.tr.setMeta(pluginKey, { focusedNode: node }));
-          }
+          const { element } = pluginKey.getState(state);
 
           if (
             element &&

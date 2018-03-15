@@ -22,7 +22,7 @@ export interface Props {
     dispatch: (tr: Transaction) => void,
   ) => void;
   extensionHandlers: ExtensionHandlers;
-  isFocused?: boolean;
+  isEditMode?: boolean;
 }
 
 export interface State {
@@ -62,7 +62,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef, isFocused } = this.props;
+    const { node, handleContentDOMRef, isEditMode } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
@@ -84,7 +84,7 @@ export default class ExtensionComponent extends Component<Props, State> {
             onClick={this.handleClick}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
-            isFocused={isFocused}
+            isEditMode={isEditMode}
           >
             {extensionHandlerResult}
           </BodiedExtension>

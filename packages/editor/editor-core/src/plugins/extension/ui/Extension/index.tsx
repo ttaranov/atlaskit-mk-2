@@ -13,7 +13,7 @@ export interface Props {
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
   extensionHandlers: ExtensionHandlers;
-  isFocused?: boolean;
+  isEditMode?: boolean;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -38,7 +38,7 @@ export default class Extension extends Component<Props, any> {
       editorView,
       handleContentDOMRef,
       extensionHandlers,
-      isFocused,
+      isEditMode,
     } = this.props;
     const { macroProvider } = providers;
 
@@ -51,7 +51,7 @@ export default class Extension extends Component<Props, any> {
         handleContentDOMRef={handleContentDOMRef}
         selectExtension={selectExtension}
         extensionHandlers={extensionHandlers}
-        isFocused={isFocused}
+        isEditMode={isEditMode}
       />
     );
   };
