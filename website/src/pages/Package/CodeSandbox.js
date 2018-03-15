@@ -1,80 +1,66 @@
-import React, { Component } from 'react';
-import Button from '@atlaskit/button';
-import Loadable from 'react-loadable';
-
-import CodeSandboxLogo from './CodeSandboxLogo';
-import CodeSandboxer from 'react-codesandboxer';
-
-const getExampleUrl = (groupId, packageId, exampleId) =>
-  `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/${groupId}/${packageId}/examples/${exampleId}`;
-const getExamplePath = (groupId, packageId, exampleId) =>
-  `packages/${groupId}/${packageId}/examples/${exampleId}`;
-const repoUrl = 'https://bitbucket.org/atlassian/atlaskit-mk-2';
-
-const baseFiles = (groupId, packageId, exampleId) => ({
-  'index.js': {
-    content: `/**
-  This CodeSandbox has been automatically generated from the contents of ${getExampleUrl(
-    groupId,
-    packageId,
-    exampleId,
-  )}.
-
-  This generator does not follow relative imports beyond those that reference the
-  module root, and as such, other relative imports may fail to load.
-
-  You can look up the relative imports from ${repoUrl}
-
-  If this fails in any other way, contact Ben Conolly (https://bitbucket.org/bconolly)
-*/
 import React from 'react';
+import { getParameters } from 'codesandbox/lib/api/define';
+
+const code = `import React from 'react';
 import ReactDOM from 'react-dom';
-import '@atlaskit/css-reset';
-import Example from './example';
+
+function formatName(user) {
+  return user.firstName + ' ' + user.lastName;
+}
+
+const user = {
+  firstName: 'Harper',
+  lastName: 'Meck',
+};
+
+const element = (
+  <h1>
+    Hello, {formatName(user)}!
+  </h1>
+);
 
 ReactDOM.render(
-<Example />,
-document.getElementById('root')
-);`,
+  element,
+  document.getElementById('root')
+);`;
+const html =
+  '<div id="root"></div><script type="text/javascript" src="index.js"></script>';
+
+const parameters = getParameters({
+  files: {
+    'package.json': {
+      content: {
+        dependencies: {
+          react: 'latest',
+          'react-dom': 'latest',
+        },
+      },
+    },
+    'sandbox.config.json': {
+      content: JSON.stringify({
+        template: 'parcel',
+      }),
+    },
+    'index.js': {
+      content: code,
+    },
+    'index.html': {
+      content: html,
+    },
   },
 });
 
-export default class CodeSandbox extends Component<{}, {}> {
-  state = { parameters: '' };
+const makeFetch = () => {
+  let formData = new FormData();
+  formData.append('parameters', parameters);
+  console.log('click called', formData);
+  fetch('https://codesandbox.io/api/v1/sandboxes/define?json=1', {
+    method: 'post',
+    body: formData,
+  })
+    .then(a => a.json())
+    .then(a => console.log('result returned', a))
+    .catch(e => console.warn('error', e));
+};
 
-  render() {
-    const {
-      deployButton,
-      example,
-      examples,
-      groupId,
-      loadingButton,
-      packageId,
-      pkgJSON,
-    } = this.props;
-
-    return (
-      <CodeSandboxer
-        examplePath={getExamplePath(groupId, packageId, example.id)}
-        pkgJSON={pkgJSON}
-        gitInfo={{
-          account: 'atlassian',
-          repository: 'atlaskit-mk-2',
-          branch: 'master',
-          host: 'bitbucket',
-        }}
-        importReplacements={[
-          [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
-          ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
-        ]}
-        dependencies={{
-          '@atlaskit/css-reset': 'latest',
-          [pkgJSON.name]: pkgJSON.version,
-        }}
-        providedFiles={baseFiles(groupId, packageId, example.id)}
-      >
-        {({ isLoading }) => (isLoading ? loadingButton() : deployButton({}))}
-      </CodeSandboxer>
-    );
-  }
-}
+export default () => <button onClick={makeFetch}>Fetch data</button>;
