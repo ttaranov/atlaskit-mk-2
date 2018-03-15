@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-// import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
+import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
@@ -15,7 +14,7 @@ type Props = {|
   /** Sets whether the checkbox is checked or unchecked. */
   isChecked: boolean,
   /** Sets whether the checkbox is indeterminate. This only affects the
-   the style and does modify the isChecked property. */
+   style and does not modify the isChecked property. */
   isIndeterminate?: boolean,
   /** Sets whether the checkbox is disabled. */
   isDisabled?: boolean,
@@ -151,7 +150,7 @@ class CheckboxStateless extends Component<Props, State> {
     const secondaryColor = this.getSecondaryColor();
 
     return isIndeterminate ? (
-      <EditorHorizontalRuleIcon
+      <CheckboxIndeterminateIcon
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
         label="checkboxIndeterminateIcon"

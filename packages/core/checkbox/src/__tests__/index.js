@@ -4,8 +4,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-// import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
+import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 
 import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
@@ -17,7 +16,7 @@ describe(name, () => {
       mount(
         <CheckboxStateless
           label=""
-          isChecked={true}
+          isChecked
           onChange={() => {}}
           name="stub"
           value="stub value"
@@ -90,7 +89,7 @@ describe(name, () => {
         isIndeterminate: true,
       });
       expect(cb.find(CheckboxIcon)).toHaveLength(0);
-      expect(cb.find(EditorHorizontalRuleIcon)).toHaveLength(1);
+      expect(cb.find(CheckboxIndeterminateIcon)).toHaveLength(1);
     });
     it('should initially set the indeterminate state on the hidden checkbox', () => {
       const cb = mountStatelessCheckbox({

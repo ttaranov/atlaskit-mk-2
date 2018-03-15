@@ -64,22 +64,18 @@ export default class IndeterminateExample extends PureComponent<void, State> {
   render() {
     const { checkedItems } = this.state;
 
-    const isParentIndeterminate = getIsParentIndeterminate(checkedItems);
-
     return (
       <div>
         <p style={{ marginBottom: '8px' }}>
-          An indeterminate checkbox can express that it is "partially" checked.
-          The parent checkbox below will be indeterminate if only some of its'
-          children are checked.
+          An indeterminate checkbox can be used to show partially checked
+          states. The parent checkbox below will be indeterminate until all
+          its&#39; children are checked.
         </p>
         <CheckboxStateless
           isChecked={checkedItems[PARENT_ID]}
-          isIndeterminate={isParentIndeterminate}
+          isIndeterminate={getIsParentIndeterminate(checkedItems)}
           onChange={this.onChange}
-          label={`Parent Checkbox ${
-            isParentIndeterminate ? '(Indeterminate)' : ''
-          }`}
+          label="Parent Checkbox"
           value={PARENT_ID}
           name="parent"
         />
