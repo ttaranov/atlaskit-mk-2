@@ -1,42 +1,54 @@
 import * as React from 'react';
 import { Observable } from 'rxjs';
+import Spinner from '@atlaskit/spinner';
 import { FileViewer, FileDetails } from './file-viewer';
 import { ErrorMessage } from '../../src/newgen/styled';
 
-export type DataSource = Observable<FileDetails | null>;
+export type DataSource = Observable<FileDetails>;
 
 export type RendererProps = {
   dataSource: DataSource;
 };
 
-export type RendererState = {
-  item: FileDetails | null;
-};
+export type RendererState =
+  | {
+      type: 'LOADING';
+    }
+  | {
+      type: 'SUCCESS';
+      item: FileDetails;
+    }
+  | {
+      type: 'FAILED';
+      err: Error;
+    };
 
 export class MediaViewerRenderer extends React.Component<
   RendererProps,
   RendererState
 > {
-  state: RendererState = { item: null };
+  state: RendererState = { type: 'LOADING' };
 
   componentDidMount() {
     const { dataSource } = this.props;
     dataSource.subscribe({
       next: (item: FileDetails) => {
-        this.setState({ item });
+        this.setState({ type: 'SUCCESS', item });
+      },
+      error: (err: Error) => {
+        this.setState({ type: 'FAILED', err });
       },
     });
   }
 
   render() {
-    if (this.state.item) {
-      return <FileViewer fileDetails={this.state.item} />;
-    } else {
-      return (
-        <ErrorMessage>
-          No items provided.
-        </ErrorMessage>
-      );
+    switch (this.state.type) {
+      case 'LOADING':
+        return <Spinner />;
+      case 'SUCCESS':
+        return <FileViewer fileDetails={this.state.item} />;
+      case 'FAILED':
+        return <ErrorMessage>No items provided.</ErrorMessage>;
     }
   }
 }
