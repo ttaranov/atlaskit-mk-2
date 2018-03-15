@@ -1,10 +1,11 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
 import { getValidNode } from '@atlaskit/editor-common';
+import { safeInsert, replaceSelectedNode } from 'prosemirror-utils';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
@@ -17,18 +18,24 @@ export const insertMacroFromMacroBrowser = (
   if (!macroProvider) {
     return false;
   }
-
   // opens MacroBrowser for editing "macroNode" if passed in
   const newMacro: MacroAttributes = await macroProvider.openMacroBrowser(
     macroNode,
   );
   if (newMacro) {
     const node = resolveMacro(newMacro, state);
+    const { selection, schema: { nodes: { bodiedExtension } } } = state;
+    tr = tr || state.tr;
 
     if (node) {
-      dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
+      if (selection instanceof NodeSelection && node.type !== bodiedExtension) {
+        tr = replaceSelectedNode(node)(tr);
+      } else {
+        tr = safeInsert(node)(tr);
+      }
+      dispatch(tr.scrollIntoView());
+      return true;
     }
-    return true;
   }
 
   return false;

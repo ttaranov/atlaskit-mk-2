@@ -4,6 +4,12 @@ import {
   NodeSelection,
   TextSelection,
 } from 'prosemirror-state';
+import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
+import {
+  hasParentNodeOfType,
+  removeSelectedNode,
+  removeParentNodeOfType,
+} from 'prosemirror-utils';
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode, getExtensionRange } from './utils';
@@ -51,20 +57,16 @@ export const removeExtension = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const { tr, selection } = state;
-  let from;
-  let to;
+  const { schema, selection } = state;
+  let tr = state.tr.setMeta(pluginKey, { element: null });
 
   if (selection instanceof NodeSelection) {
-    from = selection.$from.pos;
-    to = selection.$to.pos;
+    tr = removeSelectedNode(tr);
   } else {
-    const range = getExtensionRange(state);
-    from = range.start - 1;
-    to = range.end + 1;
+    tr = removeParentNodeOfType(schema.nodes.bodiedExtension)(tr);
   }
+  dispatch(tr);
 
-  dispatch(tr.delete(from, to).setMeta(pluginKey, { element: null }));
   return true;
 };
 
@@ -86,6 +88,38 @@ export const selectExtension = (
       ),
     );
     return true;
+  }
+
+  return false;
+};
+
+export const removeBodiedExtensionsOnPaste = (slice: Slice) => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const nodes: PmNode[] = [];
+  const { tr, selection, schema: { nodes: { bodiedExtension } } } = state;
+
+  if (hasParentNodeOfType(bodiedExtension)(selection)) {
+    let modified = false;
+
+    slice.content.forEach(child => {
+      if (child.type === bodiedExtension) {
+        modified = true;
+      } else {
+        nodes.push(child);
+      }
+    });
+
+    if (modified) {
+      const content = new Slice(
+        Fragment.from(nodes),
+        slice.openStart,
+        slice.openEnd,
+      );
+      dispatch(tr.replaceSelection(content));
+      return true;
+    }
   }
 
   return false;

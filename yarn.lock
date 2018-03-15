@@ -10683,9 +10683,9 @@ prosemirror-state@*, prosemirror-state@^1.0.0, prosemirror-state@^1.0.1:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.1.tgz#ed40ca57e026aba050927da719f281ff51d2cee0"
+prosemirror-tables@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.3.tgz#250aef1d355993489ec33504392e563be997fc2f"
   dependencies:
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"
@@ -10698,6 +10698,12 @@ prosemirror-transform@^1.0.0:
   resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.0.0.tgz#a4dc4dcdd3596043f95c576b4cd1dec6ea3785da"
   dependencies:
     prosemirror-model "^1.0.0"
+
+prosemirror-utils@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.0.7.tgz#ece0ac294c5773940e1e02a156ea4fdf13fdd359"
+  dependencies:
+    prosemirror-tables "^0.6.3"
 
 prosemirror-view@^1.0.0:
   version "1.0.0"
