@@ -18,7 +18,6 @@ function defaultToPx(length) {
 }
 
 export const iconColor = colors.N800;
-export const iconColorFocus = colors.linkHover;
 
 export const TreeRowContainer = styled.div`
   border-bottom: 1px solid ${colors.N30};
