@@ -4,7 +4,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
 
-describe('WikiMarkup Transformer', () => {
+xdescribe('WikiMarkup Transformer', () => {
   describe('blockquote', () => {
     checkParseEncodeRoundTrips(
       'bq. some texts here',
