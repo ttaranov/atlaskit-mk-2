@@ -35,7 +35,7 @@ urlArray.forEach(url => {
           assert.notEqual(
             val.level,
             'SEVERE',
-            `Console errors :${val.message} when clicked on the show button`,
+            `Console errors :${val.message} when visited ${url}`,
           );
         });
       }

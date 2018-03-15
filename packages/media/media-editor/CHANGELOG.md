@@ -1,5 +1,10 @@
 # @atlaskit/media-editor
 
+## 5.0.0
+
+## 4.2.3
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
 ## 4.2.2
 
 ## 4.2.1

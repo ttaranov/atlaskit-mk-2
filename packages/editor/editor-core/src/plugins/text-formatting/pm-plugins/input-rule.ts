@@ -88,15 +88,21 @@ function addMark(
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     const [, prefix, textWithCombo] = match;
-    if (prefix && prefix.length > 0 && !validRegex(char, prefix)) {
-      return;
-    }
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
     // because we want ** to work for strong text
     // that's why "start" argument is wrong and we need to calculate it ourselves
     const from = textWithCombo ? start + prefix.length : start;
+    const nodeBefore = state.doc.resolve(start + prefix.length).nodeBefore;
 
+    if (
+      prefix &&
+      prefix.length > 0 &&
+      !validRegex(char, prefix) &&
+      !(nodeBefore && nodeBefore.type === state.schema.nodes.hardBreak)
+    ) {
+      return;
+    }
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
     if (
@@ -156,7 +162,10 @@ function addCodeMark(
 ): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     if (match[1] && match[1].length > 0) {
-      return;
+      const nodeBefore = state.doc.resolve(start + match[1].length).nodeBefore;
+      if (!(nodeBefore && nodeBefore.type === state.schema.nodes.hardBreak)) {
+        return;
+      }
     }
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
@@ -175,8 +184,8 @@ function addCodeMark(
 
 export const strongRegex1 = /(\S*)(\_\_(\S.*\S|\S)\_\_)$/;
 export const strongRegex2 = /(\S*)(\*\*(\S.*\S|\S)\*\*)$/;
-export const italicRegex1 = /(\S*)(\_([^\s\_].*[^\s\_]|[^\s\_])\_)$/;
-export const italicRegex2 = /(\S*)(\*([^\s\*].*[^\s\*]|[^\s\*])\*)$/;
+export const italicRegex1 = /(\S*[^\s\_]*)(\_([^\s\_].*[^\s\_]|[^\_])\_)$/;
+export const italicRegex2 = /(\S*[^\s\*]*)(\*([^\s\*].*[^\s\*]|[^\*])\*)$/;
 export const strikeRegex = /(\S*)(\~\~(\S.*\S|\S)\~\~)$/;
 export const codeRegex = /(\S*)(`[^\s][^`]*`)$/;
 

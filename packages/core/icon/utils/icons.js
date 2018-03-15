@@ -55,6 +55,7 @@ import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
+import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
 import CheckboxIcon from '../glyph/checkbox';
 import ChevronDownCircleIcon from '../glyph/chevron-down-circle';
 import ChevronDownIcon from '../glyph/chevron-down';
@@ -691,6 +692,12 @@ export default {
     component: CheckIcon,
     componentName: 'CheckIcon',
     package: '@atlaskit/icon/glyph/check',
+  },
+  'checkbox-indeterminate': {
+    keywords: ['checkbox-indeterminate', 'checkboxindeterminate'],
+    component: CheckboxIndeterminateIcon,
+    componentName: 'CheckboxIndeterminateIcon',
+    package: '@atlaskit/icon/glyph/checkbox-indeterminate',
   },
   checkbox: {
     keywords: ['checkbox', 'tick'],

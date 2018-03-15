@@ -13,24 +13,7 @@ import {
 } from '@atlaskit/analytics-next';
 
 import { Card, FileIdentifier } from '../src';
-import { createApiCards } from '../example-helpers';
-
-const action = args => console.log;
-
-const menuActions = [
-  {
-    label: 'Open',
-    handler: () => {
-      action('open')();
-    },
-  },
-  {
-    label: 'Close',
-    handler: () => {
-      action('close')();
-    },
-  },
-];
+import { createApiCards, actions } from '../example-helpers';
 
 const context = createStorybookContext();
 // standard
@@ -82,7 +65,7 @@ const menuCards = [
         identifier={successIdentifier}
         context={context}
         appearance="small"
-        actions={menuActions}
+        actions={actions}
       />
     ),
   },
@@ -93,7 +76,7 @@ const menuCards = [
         identifier={successIdentifier}
         context={context}
         appearance="image"
-        actions={menuActions}
+        actions={actions}
       />
     ),
   },

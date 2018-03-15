@@ -1,5 +1,10 @@
 # @atlaskit/media-store
 
+## 1.0.0
+
+## 0.1.3
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
 ## 0.1.2
 
 ## 0.1.1

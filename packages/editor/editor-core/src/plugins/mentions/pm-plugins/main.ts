@@ -27,6 +27,35 @@ interface QueryMark {
   query: string;
 }
 
+function findMentionQueryMarks(
+  state: EditorState,
+  active: boolean = true,
+): QueryMark[] {
+  const { doc, schema } = state;
+  const { mentionQuery } = schema.marks;
+
+  const marks: QueryMark[] = [];
+  doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
+    let mark = mentionQuery.isInSet(node.marks);
+    if (mark) {
+      const query = node.textContent.substr(1).trim();
+      if ((active && mark.attrs.active) || (!active && !mark.attrs.active)) {
+        marks.push({
+          start: pos,
+          end: pos + node.textContent.length,
+          query,
+        });
+      }
+
+      return false;
+    }
+
+    return true;
+  });
+
+  return marks;
+}
+
 export class MentionsState {
   // public state
   query?: string;
@@ -198,35 +227,8 @@ export class MentionsState {
     return isMarkTypeAllowedInCurrentSelection(mentionQuery, currentState);
   }
 
-  private findMentionQueryMarks(active: boolean = true) {
-    const { state } = this;
-    const { doc, schema } = state;
-    const { mentionQuery } = schema.marks;
-
-    const marks: { start; end; query }[] = [];
-    doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
-      let mark = mentionQuery.isInSet(node.marks);
-      if (mark) {
-        const query = node.textContent.substr(1).trim();
-        if ((active && mark.attrs.active) || (!active && !mark.attrs.active)) {
-          marks.push({
-            start: pos,
-            end: pos + node.textContent.length,
-            query,
-          });
-        }
-
-        return false;
-      }
-
-      return true;
-    });
-
-    return marks;
-  }
-
   private findActiveMentionQueryMark() {
-    const activeMentionQueryMarks = this.findMentionQueryMarks(true);
+    const activeMentionQueryMarks = findMentionQueryMarks(this.state, true);
     if (activeMentionQueryMarks.length !== 1) {
       return { start: -1, end: -1, query: '' };
     }
@@ -520,6 +522,28 @@ export function createPlugin(providerFactory: ProviderFactory) {
           );
         },
       };
+    },
+    appendTransaction: (transactions, oldState, newState) => {
+      return findMentionQueryMarks(newState, true).reduce(
+        (tr: Transaction, queryMark: QueryMark) => {
+          const { start, end } = queryMark;
+          if (
+            !tr.doc
+              .textBetween(start, end)
+              .trim()
+              .startsWith('@')
+          ) {
+            return tr.removeMark(
+              start,
+              end,
+              newState.schema.marks.mentionQuery,
+            );
+          } else {
+            return tr;
+          }
+        },
+        newState.tr,
+      );
     },
   });
 }

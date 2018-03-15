@@ -1,5 +1,12 @@
 # @atlaskit/emoji
 
+## 31.1.17
+
+## 31.1.16
+- [patch] FS-1834 check for undefined repository in EmojiResource [c97751f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c97751f)
+
+## 31.1.15
+
 ## 31.1.14
 
 ## 31.1.13

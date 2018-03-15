@@ -62,7 +62,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test:webdriver:browserstack:ci
+            - yarn test:build:webdriver:browserstack
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
