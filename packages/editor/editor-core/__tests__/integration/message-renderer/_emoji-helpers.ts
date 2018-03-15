@@ -18,6 +18,6 @@ export const insertEmojiBySelect = async (browser, select: string) => {
   await browser.click(`span=:${select}:`);
 };
 
-export let emojiItem = function(emojiShortName: string): string {
+export const emojiItem = (emojiShortName: string): string => {
   return `span[shortname=":${emojiShortName}:"]`;
 };
