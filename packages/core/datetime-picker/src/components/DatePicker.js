@@ -29,7 +29,7 @@ type Props = {
   /** Props to apply to the container. **/
   innerProps: Object,
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled?: boolean,
   /** Whether or not the dropdown is open. */
   isOpen: boolean,
   /** The name of the field. */
@@ -43,7 +43,7 @@ type Props = {
   /** Props to apply to the select. */
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
-  value: string,
+  value?: string,
 };
 
 type State = {
@@ -112,12 +112,18 @@ class DatePicker extends Component<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  onInputBlur = () => {
-    this.setState({ isOpen: false });
+  onInputClick = () => {
+    this.setState({ isOpen: true });
   };
 
-  onInputFocus = () => {
+  onSelectBlur = (...args) => {
+    this.setState({ isOpen: false });
+    this.props.onBlur(...args);
+  };
+
+  onSelectFocus = (...args) => {
     this.setState({ isOpen: true });
+    this.props.onFocus(...args);
   };
 
   onSelectInput = (e: Event) => {
@@ -214,8 +220,7 @@ class DatePicker extends Component<Props, State> {
       <div
         {...innerProps}
         role="presentation"
-        onBlur={this.onInputBlur}
-        onFocus={this.onInputFocus}
+        onClick={this.onInputClick}
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
       >
@@ -226,8 +231,8 @@ class DatePicker extends Component<Props, State> {
           instanceId={id}
           isDisabled={isDisabled}
           menuIsOpen={isOpen}
-          onBlur={onBlur}
-          onFocus={onFocus}
+          onBlur={this.onSelectBlur}
+          onFocus={this.onSelectFocus}
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,

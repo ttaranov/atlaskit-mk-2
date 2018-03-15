@@ -2,7 +2,7 @@
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
-import { format, parse } from 'date-fns';
+import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
 import withCtrl from 'react-ctrl';
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue?: string,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
@@ -31,7 +31,7 @@ type Props = {
   /** Called when the field is focused. */
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
-  value: string,
+  value?: string,
 };
 
 type State = {
@@ -88,10 +88,11 @@ function formatDateTimeZoneIntoIso(
 
 function parseDateIntoStateValues(value) {
   const parsed = parse(value);
+  const valid = isValid(parsed);
   return {
-    dateValue: format(parsed, 'YYYY-MM-DD'),
-    timeValue: format(parsed, 'HH:mm'),
-    zoneValue: format(parsed, 'ZZ'),
+    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : '',
+    timeValue: valid ? format(parsed, 'HH:mm') : '',
+    zoneValue: valid ? format(parsed, 'ZZ') : '',
   };
 }
 
@@ -114,13 +115,18 @@ class DateTimePicker extends Component<Props, State> {
     zoneValue: '',
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { ...this.state, ...parseDateIntoStateValues(props.value) };
+  }
+
   onBlur = () => {
     this.setState({ isFocused: false });
     this.props.onBlur();
   };
 
   onDateChange = (dateValue: string) => {
-    this.setState({ dateValue }, this.onValueChange);
+    this.onValueChange({ ...this.state, dateValue });
   };
 
   onFocus = () => {
@@ -129,11 +135,11 @@ class DateTimePicker extends Component<Props, State> {
   };
 
   onTimeChange = (timeValue: string) => {
-    this.setState({ timeValue }, this.onValueChange);
+    this.onValueChange({ ...this.state, timeValue });
   };
 
-  onValueChange() {
-    const { dateValue, timeValue, zoneValue } = this.state;
+  onValueChange({ dateValue, timeValue, zoneValue }) {
+    this.setState({ dateValue, timeValue, zoneValue });
     if (dateValue && timeValue) {
       const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
       this.setState({ value });
@@ -177,16 +183,4 @@ class DateTimePicker extends Component<Props, State> {
   }
 }
 
-export default withCtrl(DateTimePicker, {
-  mapPropsToState(props) {
-    const { value } = props;
-    const overridden = {};
-    if (value) {
-      const parsed = parseDateIntoStateValues(value);
-      overridden.dateValue = parsed.dateValue;
-      overridden.timeValue = parsed.timeValue;
-      overridden.zoneValue = parsed.zoneValue;
-    }
-    return { ...props, ...overridden };
-  },
-});
+export default withCtrl(DateTimePicker);

@@ -17,13 +17,13 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `focused`. */
-  defaultFocused: string,
+  defaultFocused?: string,
   /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
+  defaultIsOpen?: boolean,
   /** Default for `times`. */
-  defaultTimes: Array<string>,
+  defaultTimes?: Array<string>,
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue?: string,
   /** The icon to show in the field. */
   icon: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -47,7 +47,7 @@ type Props = {
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** The ISO time that should be used as the input value. */
-  value: string,
+  value?: string,
 };
 
 type State = {
