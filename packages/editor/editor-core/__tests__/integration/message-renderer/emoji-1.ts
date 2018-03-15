@@ -32,18 +32,23 @@ BrowserTestCase(
   },
 );
 
-BrowserTestCase('Emoji: should convert :) to emoji', async client => {
-  const browser = await new Page(client);
-  await browser.goto(messageEditor);
-  await browser.waitForSelector(editable);
-  // type slowly go get edge working
-  await browser.type(editable, '# ');
-  await browser.type(editable, 'heading ');
-  await browser.type(editable, ' :) ');
-  await browser.waitForSelector(emojiItem('slight_smile'));
-  const doc = await browser.$eval(editable, getDocFromElement);
-  expect(doc).toMatchDocSnapshot();
-});
+// ie complains it cannot either type :) or types :0
+BrowserTestCase(
+  'Emoji: should convert :) to emoji',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    // type slowly go get edge working
+    await browser.type(editable, '# ');
+    await browser.type(editable, 'heading ');
+    await browser.type(editable, ':) ');
+    await browser.waitForSelector(emojiItem('slight_smile'));
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
 
 BrowserTestCase(
   'user should not be able to see emoji inside inline code',
@@ -67,7 +72,8 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
-    await browser.type(editable, ':smile');
+    await browser.type(editable, ':');
+    await browser.type(editable, 'smile');
 
     await browser.waitForSelector(typeahead);
     expect(await browser.isExisting(typeahead)).toBe(true);
@@ -99,9 +105,10 @@ BrowserTestCase(
 
 // skipping safari since char    is stored in snapshot
 // skipping firefox as it doesn't handle ArrowLeft on webdriver
+// unable to navigate between emojis on IE - file issue
 BrowserTestCase(
   'Emoji: should be able to navigate between emojis',
-  { skip: ['firefox', 'safari'] },
+  { skip: ['firefox', 'safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -109,9 +116,9 @@ BrowserTestCase(
     await browser.type(editable, 'this ');
     await insertEmoji(browser, 'a');
     await insertEmoji(browser, 'lol');
+    await browser.waitForSelector(emojiItem('a'));
     await browser.type(editable, ['ArrowLeft', 'ArrowLeft']);
     await browser.type(editable, ' that ');
-    await browser.waitForSelector(emojiItem('a'));
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },

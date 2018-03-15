@@ -117,7 +117,7 @@ Object {
       },
       "content": Array [
         Object {
-          "text": "heading  ",
+          "text": "heading ",
           "type": "text",
         },
         Object {

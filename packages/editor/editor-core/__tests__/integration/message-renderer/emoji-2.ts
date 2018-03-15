@@ -66,9 +66,10 @@ BrowserTestCase(
 );
 
 // Safari does not understand webdriver click
+// IE has a bug opening picker inside task/decisions
 BrowserTestCase(
   'Emoji: should be able to select emoji by clicking inside decisions',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const decisions = 'span[aria-label="Decision"]';
     const browser = await new Page(client);
