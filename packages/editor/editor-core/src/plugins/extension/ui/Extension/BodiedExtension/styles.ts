@@ -11,7 +11,9 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
   margin: 12px 0;
 
   &.with-children .hidden {
-    display: none;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
   }
 `;
 
