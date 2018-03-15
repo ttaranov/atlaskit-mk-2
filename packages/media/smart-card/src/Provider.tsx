@@ -8,10 +8,6 @@ export interface ProviderProps {
 }
 
 export class Provider extends React.Component<ProviderProps> {
-  static childContextTypes = {
-    smartCardClient: PropTypes.object,
-  };
-
   client: Client;
 
   constructor(props: ProviderProps) {

@@ -13,8 +13,6 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Hector Z",
-    "Michael J",
     "James N"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -26,14 +24,14 @@
     "@atlaskit/lozenge": "^3.6.1",
     "@atlaskit/dropdown-menu": "^3.12.1",
     "prop-types": "^15.5.10",
-    "react-lazily-render": "^1.0.1"
+    "react-lazily-render": "^1.0.1",
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/docs": "^2.5.0"
 
   }
 }
