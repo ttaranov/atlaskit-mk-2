@@ -39,17 +39,19 @@ export class MediaViewerRenderer extends React.Component<
   state: RendererState = { items: [] };
 
   componentDidMount() {
-    console.log('---- WHY NO US?');
     const { dataSource } = this.props;
     dataSource.subscribe({
       next: (items: FileDetails[]) => {
-        console.log('---- IN component');
         this.setState({ items });
       },
     });
   }
 
   render() {
-    return <FileViewer fileDetails={this.state.items[0]} />;
+    if (this.state.items.length) {
+      return <FileViewer fileDetails={this.state.items[0]} />;
+    } else {
+      return null;
+    }
   }
 }

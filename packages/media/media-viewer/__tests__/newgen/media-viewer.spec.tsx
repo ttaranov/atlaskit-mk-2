@@ -84,15 +84,12 @@ describe('<MediaViewer />', () => {
 
 describe('<MediaViewerRenderer />', () => {
   it('renders a viewer for a list with one fileDetails object', () => {
-    // const fileDetails = { mediaType: 'doc' };
-    // const dataSource: DataSource = Observable.of([fileDetails]);
-    // dataSource.subscribe({
-    //   next: (x) => console.log('---- IN  component');
-    // });
-    // const el = mount(
-    //   <MediaViewerRenderer dataSource={dataSource} />
-    // );
-    // expect(el.find(FileViewer)).toHaveLength(1);
+    const fileDetails = { mediaType: 'doc' };
+    const dataSource: DataSource = Observable.of([fileDetails]);
+    const el = mount(
+      <MediaViewerRenderer dataSource={dataSource} />
+    );
+    expect(el.find(FileViewer)).toHaveLength(1);
   });
 
   it.skip('updates when next is emitted');
