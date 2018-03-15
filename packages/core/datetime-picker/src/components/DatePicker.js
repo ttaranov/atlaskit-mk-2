@@ -178,6 +178,7 @@ class DatePicker extends Component<Props, State> {
       }
     } else if (key === 'Enter' || key === 'Tab') {
       this.triggerChange(view);
+      this.setState({ isOpen: false });
     }
   };
 
