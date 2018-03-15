@@ -18,7 +18,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/media-ui": "^1.1.0",
-    "@atlaskit/media-card": "^24.1.2",
+    "@atlaskit/media-card": "^25.0.0",
     "@atlaskit/badge": "^6.3.1",
     "@atlaskit/button": "^6.6.3",
     "@atlaskit/lozenge": "^3.6.1",
