@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Emoji:should be able to click on the emoji button and select emoji 1`] = `
+exports[`Emoji: should be able to click on the emoji button and select emoji 1`] = `
 Object {
   "content": Array [
     Object {
@@ -25,7 +25,7 @@ Object {
 }
 `;
 
-exports[`Emoji:should be able to navigate between emojis 1`] = `
+exports[`Emoji: should be able to navigate between emojis 1`] = `
 Object {
   "content": Array [
     Object {
@@ -66,7 +66,7 @@ Object {
 }
 `;
 
-exports[`Emoji:should be able to see emoji if typed the name in full 1`] = `
+exports[`Emoji: should be able to see emoji if typed the name in full 1`] = `
 Object {
   "content": Array [
     Object {
@@ -91,7 +91,7 @@ Object {
 }
 `;
 
-exports[`Emoji:should close emoji picker on Escape 1`] = `
+exports[`Emoji: should close emoji picker on Escape 1`] = `
 Object {
   "content": Array [
     Object {
@@ -108,7 +108,7 @@ Object {
 }
 `;
 
-exports[`Emoji:should convert :) to emoji 1`] = `
+exports[`Emoji: should convert :) to emoji 1`] = `
 Object {
   "content": Array [
     Object {

@@ -57,16 +57,21 @@ BrowserTestCase('Emoji: should render emoji inside codeblock', async client => {
   expect(doc).toMatchDocSnapshot();
 });
 
-BrowserTestCase('Emoji: should render emoji inside action', async client => {
-  const browser = await new Page(client);
-  await browser.goto(messageEditor);
-  await browser.waitForSelector(editable);
-  await browser.type(editable, '[] ');
-  await insertEmoji(browser, 'smile');
-  await browser.waitForSelector(emojiItem('smile'));
-  const doc = await browser.$eval(editable, getDocFromElement);
-  expect(doc).toMatchDocSnapshot();
-});
+// BUG on IE
+BrowserTestCase(
+  'Emoji: should render emoji inside action',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, '[] ');
+    await insertEmoji(browser, 'smile');
+    await browser.waitForSelector(emojiItem('smile'));
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
 
 BrowserTestCase(
   'Emoji: should not show typeahead with text: ',
@@ -79,10 +84,14 @@ BrowserTestCase(
   },
 );
 
-BrowserTestCase('Emoji: ":<space>" does not show the picker', async client => {
-  const browser = await new Page(client);
-  await browser.goto(messageEditor);
-  await browser.waitForSelector(editable);
-  await browser.type(editable, ': ');
-  expect(await browser.isExisting(typeahead)).toBe(false);
-});
+BrowserTestCase(
+  'Emoji: ":<space>" does not show the picker',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, ': ');
+    expect(await browser.isExisting(typeahead)).toBe(false);
+  },
+);
