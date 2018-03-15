@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
 import { ErrorCard } from '@atlaskit/media-ui';
 import { AppCardModel, convertAppCardToSmartCard } from '@atlaskit/media-card';
@@ -53,10 +52,6 @@ function errored(): Pick<CardState, 'status'> {
 }
 
 export class Card extends React.Component<CardProps, CardState> {
-  static contextTypes = {
-    smartCardClient: PropTypes.object,
-  };
-
   context: CardContext;
 
   state: CardState = loading();

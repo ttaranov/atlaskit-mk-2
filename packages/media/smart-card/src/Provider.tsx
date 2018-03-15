@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Client } from './Client';
 
 export interface ProviderProps {
