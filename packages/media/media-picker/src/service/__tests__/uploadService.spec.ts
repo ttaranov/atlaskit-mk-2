@@ -521,9 +521,7 @@ describe('UploadService', () => {
           progress: expect.objectContaining({
             absolute: 1000,
             max: 1000,
-            overallTime: 0,
             portion: 1,
-            timeLeft: 0,
           }),
         }),
       );
