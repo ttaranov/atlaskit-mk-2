@@ -17,8 +17,10 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
+
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { extensionHandlers } from '../example-helpers/extension-handlers';
 
 import {
   akEditorCodeBackground,
@@ -119,55 +121,6 @@ const providers = {
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
-
-const FakeExtension = ({ colour, children }) => {
-  return (
-    <div
-      style={{
-        backgroundColor: colour,
-        color: 'white',
-        padding: 10,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
-
-const InlineExtension = () => {
-  return <FakeExtension colour="green">Inline extension demo</FakeExtension>;
-};
-
-const BlockExtension = () => {
-  return <FakeExtension colour="black">Block extension demo</FakeExtension>;
-};
-
-const BodiedExtension = () => {
-  return <FakeExtension colour="blue">Bodied extension demo</FakeExtension>;
-};
-
-const extensionHandlers: ExtensionHandlers = {
-  'com.atlassian.confluence.macro.core': (ext, doc) => {
-    const { extensionKey } = ext;
-
-    // using any here because most props are going to be injected through the extension handler
-    // and typescript won't accept that as valid
-    const macroProps: any = {
-      node: ext,
-    };
-
-    switch (extensionKey) {
-      case 'block-eh':
-        return <BlockExtension {...macroProps} />;
-      case 'bodied-eh':
-        return <BodiedExtension {...macroProps} />;
-      case 'inline-eh':
-        return <InlineExtension {...macroProps} />;
-    }
-
-    return null;
-  },
-};
 
 export default class Example extends React.Component<Props, State> {
   state: State = { disabled: true };
