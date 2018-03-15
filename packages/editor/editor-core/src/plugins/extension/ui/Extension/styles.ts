@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import {
+  akColorN20A,
   akColorN20,
   akColorB200,
   akColorN70,
@@ -22,6 +23,16 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
     top: -2px;
     left: -2px;
     opacity: 1;
+  }
+
+  &.with-overlay {
+    .extension-overlay {
+      background: ${akColorN20A};
+    }
+
+    &:hover .extension-overlay {
+      opacity: 1;
+    }
   }
 `;
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
 import { MacroProvider } from '../../../../macro';
-import { Wrapper } from './styles';
+import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
 import ExtensionLozenge from '../Lozenge';
 
@@ -10,17 +10,37 @@ export interface Props {
   node: PmNode;
   macroProvider?: MacroProvider;
   onClick: (event: React.SyntheticEvent<any>) => void;
+  handleContentDOMRef: (node: HTMLElement | null) => void;
+  onSelectExtension: () => void;
   children?: React.ReactNode;
 }
 
 export default class Extension extends Component<Props, any> {
   render() {
-    const { node, onClick, children } = this.props;
+    const {
+      node,
+      onClick,
+      handleContentDOMRef,
+      onSelectExtension,
+      children,
+    } = this.props;
+
+    const hasBody = node.type.name === 'bodiedExtension';
 
     return (
-      <Wrapper onClick={onClick} className={'with-overlay'}>
+      <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
         <Overlay className="extension-overlay" />
-        {children ? children : <ExtensionLozenge node={node} />}
+        <Header contentEditable={false} onClick={onSelectExtension}>
+          {children ? children : <ExtensionLozenge node={node} />}
+        </Header>
+        {hasBody && (
+          <ContentWrapper>
+            <Content
+              innerRef={handleContentDOMRef}
+              className="extension-content"
+            />
+          </ContentWrapper>
+        )}
       </Wrapper>
     );
   }

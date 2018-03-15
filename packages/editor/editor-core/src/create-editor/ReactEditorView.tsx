@@ -138,7 +138,6 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       dispatch,
       options.props.providerFactory,
       errorReporter,
-      this.eventDispatcher,
     );
 
     this.contentTransformer = contentTransformerProvider

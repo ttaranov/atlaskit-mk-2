@@ -1,9 +1,8 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { Dispatch, EventDispatcher } from '../../event-dispatcher';
+import { Dispatch } from '../../event-dispatcher';
 import ExtensionNodeView from './nodeviews/extension';
-import { Node as PmNode } from 'prosemirror-model';
 import { setExtensionElement } from './actions';
 import { ExtensionHandlers } from '../../index';
 import { getExtensionNode } from './utils';
@@ -12,31 +11,22 @@ export const pluginKey = new PluginKey('extensionPlugin');
 
 export type ExtensionState = {
   element: HTMLElement | null;
-  focusedNode: PmNode | null;
 };
 
 export default (
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
-  eventDispatcher: EventDispatcher,
 ) =>
   new Plugin({
     state: {
-      init: () => ({ element: null, focusedNode: null }),
+      init: () => ({ element: null }),
 
       apply(tr, state: ExtensionState, prevState, nextState) {
         const meta = tr.getMeta(pluginKey);
-        const node = getExtensionNode(nextState);
 
-        let { focusedNode } = state;
-
-        if (meta || node || focusedNode) {
-          if (node !== focusedNode) {
-            focusedNode = node || null;
-          }
-
-          const newState = { ...state, ...meta, focusedNode };
+        if (meta) {
+          const newState = { ...state, ...meta };
 
           dispatch(pluginKey, newState);
 
@@ -64,21 +54,9 @@ export default (
     key: pluginKey,
     props: {
       nodeViews: {
-        extension: ExtensionNodeView(
-          providerFactory,
-          extensionHandlers,
-          eventDispatcher,
-        ),
-        bodiedExtension: ExtensionNodeView(
-          providerFactory,
-          extensionHandlers,
-          eventDispatcher,
-        ),
-        inlineExtension: ExtensionNodeView(
-          providerFactory,
-          extensionHandlers,
-          eventDispatcher,
-        ),
+        extension: ExtensionNodeView(providerFactory, extensionHandlers),
+        bodiedExtension: ExtensionNodeView(providerFactory, extensionHandlers),
+        inlineExtension: ExtensionNodeView(providerFactory, extensionHandlers),
       },
     },
   });

@@ -6,7 +6,6 @@ import { Node as PMNode } from 'prosemirror-model';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
-import BodiedExtension from './BodiedExtension';
 import { ExtensionHandlers } from '../../../../types';
 
 export interface Props {
@@ -22,7 +21,6 @@ export interface Props {
     dispatch: (tr: Transaction) => void,
   ) => void;
   extensionHandlers: ExtensionHandlers;
-  isEditMode?: boolean;
 }
 
 export interface State {
@@ -62,32 +60,22 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef, isEditMode } = this.props;
+    const { node, handleContentDOMRef } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
       case 'extension':
+      case 'bodiedExtension':
         return (
           <Extension
             node={node}
             macroProvider={macroProvider}
             onClick={this.handleClick}
+            handleContentDOMRef={handleContentDOMRef}
+            onSelectExtension={this.handleSelectExtension}
           >
             {extensionHandlerResult}
           </Extension>
-        );
-      case 'bodiedExtension':
-        return (
-          <BodiedExtension
-            node={node}
-            macroProvider={macroProvider}
-            onClick={this.handleClick}
-            handleContentDOMRef={handleContentDOMRef}
-            onSelectExtension={this.handleSelectExtension}
-            isEditMode={isEditMode}
-          >
-            {extensionHandlerResult}
-          </BodiedExtension>
         );
       case 'inlineExtension':
         return (
@@ -143,8 +131,13 @@ export default class ExtensionComponent extends Component<Props, State> {
   private handleExtension = (node: PMNode) => {
     const { extensionHandlers, editorView } = this.props;
     const { extensionType, extensionKey, parameters } = node.attrs;
+    const isBodiedExtension = node.type.name === 'bodiedExtension';
 
-    if (!extensionHandlers || !extensionHandlers[extensionType]) {
+    if (
+      !extensionHandlers ||
+      !extensionHandlers[extensionType] ||
+      isBodiedExtension
+    ) {
       return;
     }
 
