@@ -34,8 +34,8 @@ pipelines:
           - source build-setup.sh
           - bolt install --pure-lockfile
           - du -sh node_modules
-          - zip test.zip -r node_modules
-          - du -sh test.zip
+          - tar -zcvf test.tar.gz node_modules
+          - du -sh test.tar.gz
         artifacts:
           - node_modules/**
     - parallel:
