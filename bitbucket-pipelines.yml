@@ -27,15 +27,6 @@ pipelines:
             - node
 
   default:
-    - step:
-        name: Installing dependencies
-        script:
-          - source ./build-setup.sh
-          - yarn install --pure-lockfile
-        caches:
-          - node
-        artifacts:
-          - node_modules/**
     - parallel:
         - step:
             name: Building dists
@@ -43,6 +34,8 @@ pipelines:
               - yarn global add bolt
               - bolt
               - yarn build
+            caches:
+              - node
         - step:
             name: Lint + Typecheck
             script:
@@ -50,12 +43,16 @@ pipelines:
               - bolt
               - yarn lint
               - yarn typecheck
+            caches:
+              - node
         - step:
             name: Testing
             script:
               - yarn global add bolt
               - bolt
               - yarn test
+            caches:
+              - node
         - step:
             name: Building website
             script:
@@ -65,6 +62,8 @@ pipelines:
               - bolt
               - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
               - node build/ci-scripts/update.build.status.with.netlify.link.js
+            caches:
+              - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
