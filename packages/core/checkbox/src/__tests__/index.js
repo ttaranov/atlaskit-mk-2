@@ -5,7 +5,6 @@ import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 
 import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
