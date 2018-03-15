@@ -7,6 +7,8 @@ import { MediaFileListViewer } from './media-file-list-viewer';
 
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 
+import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
+
 export interface MediaViewerItem {
   id: string;
   occurrenceKey: string;
@@ -31,12 +33,19 @@ export interface MediaViewerProps {
   readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
   readonly onClose?: () => void;
+
+  readonly featureFlags?: { nextGen?: boolean };
 }
 
 export interface MediaViewerState {}
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   render(): JSX.Element {
+    const { featureFlags, onClose } = this.props;
+    if (featureFlags && featureFlags.nextGen) {
+      return <MediaViewerNextGen onClose={onClose} />;
+    }
+
     if (this.props.dataSource.list) {
       return (
         <MediaFileListViewer

@@ -1,13 +1,13 @@
 import {
   TableState,
   stateKey as tablesPluginKey,
-} from '../../../src/plugins/table';
+} from '../../../src/plugins/table/pm-plugins/main';
 import { TableMap, CellSelection } from 'prosemirror-tables';
 import {
   selectRow,
   selectColumn,
   selectTable,
-} from '../../../src/editor/plugins/table/actions';
+} from '../../../src/plugins/table/actions';
 
 import {
   doc,
@@ -22,8 +22,8 @@ import {
   thEmpty,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { tableStartPos } from '../../../src/editor/plugins/table/utils';
-import tablesPlugin from '../../../src/editor/plugins/table';
+import { tableStartPos } from '../../../src/plugins/table/utils';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('table keymap', () => {
   const event = createEvent('event');

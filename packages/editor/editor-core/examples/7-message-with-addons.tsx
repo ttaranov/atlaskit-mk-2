@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import Editor from './../src/editor';
-import EditorContext from './../src/editor/ui/EditorContext';
-import WithHelpTrigger from './../src/editor/ui/WithHelpTrigger';
+import EditorContext from './../src/ui/EditorContext';
+import WithHelpTrigger from './../src/ui/WithHelpTrigger';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
-import { Addon, AddonConfiguration } from '../src/editor/ui/Addon';
+import { Addon, AddonConfiguration } from '../src/ui/Addon';
 import DocumentIcon from '@atlaskit/icon/glyph/document';
 import QuestionIcon from '@atlaskit/icon/glyph/editor/help';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';

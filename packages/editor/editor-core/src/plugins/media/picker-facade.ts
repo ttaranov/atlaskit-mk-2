@@ -22,7 +22,7 @@ import {
 import { ContextConfig } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
-import { appendTimestamp } from './utils';
+import { appendTimestamp } from './utils/media-common';
 import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
 export type PickerType = keyof MediaPickerComponents;

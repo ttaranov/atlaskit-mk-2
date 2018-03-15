@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Editor from './../src/labs/EditorWithActions';
+import { EditorContext } from '../src';
 
 export default function Example() {
   return (
-    <div>
+    <EditorContext>
       <Editor
         appearance="comment"
         onSave={actions =>
@@ -13,6 +14,6 @@ export default function Example() {
         }
         onCancel={actions => actions.clear()}
       />
-    </div>
+    </EditorContext>
   );
 }

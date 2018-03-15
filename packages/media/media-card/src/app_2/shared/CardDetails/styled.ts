@@ -1,19 +1,28 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import styled, { css } from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 import { ellipsis, borderRadius, size } from '../../../styles';
-import { title, description } from '../../../styles/cardDetails';
 import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
 
 const thumbnailWidth = 40;
 
-export const ContentWrapper = styled.div`
+import { akColorN900, akColorN300 } from '@atlaskit/util-shared-styles';
+
+const title = css`
+  color: ${akColorN900};
+  font-size: 16px;
+  font-weight: 500;
+  line-height: ${20 / 16};
+`;
+
+const description = css`
+  color: ${akColorN300};
+  font-size: 12px;
+  line-height: ${16 / 12};
+`;
+
+export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
@@ -21,7 +30,7 @@ export const ContentWrapper = styled.div`
   padding: 8px 12px 8px 12px;
 `;
 
-export const BodyWrapper = styled.div`
+export const BodyWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -29,11 +38,11 @@ export const BodyWrapper = styled.div`
   flex-basis: 0; /* for IE ellipsis */
 `;
 
-export const TopWrapper = styled.div`
+export const TopWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const LeftWrapper = styled.div`
+export const LeftWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,17 +50,17 @@ export const LeftWrapper = styled.div`
   min-width: ${thumbnailWidth}px;
 `;
 
-export const CopyWrapper = styled.div`
+export const CopyWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-grow: 1;
   min-width: 0; /* for Chrome ellipsis */
   flex-basis: 0; /* for IE ellipsis */
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${title} ${ellipsis('100%')};
 `;
 
-export const Description = styled.div`
+export const Description: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: 4px;
   height: 16px;
   ${description} ${ellipsis('100%')};
@@ -61,7 +70,9 @@ export interface BottomWrapperProps {
   padLeft: boolean;
 }
 
-export const BottomWrapper = styled.div`
+export const BottomWrapper: ComponentClass<
+  HTMLAttributes<{}> & BottomWrapperProps
+> = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 4px;
@@ -78,7 +89,9 @@ export interface ThumbnailProps {
   src: string;
 }
 
-export const Thumbnail = styled.div`
+export const Thumbnail: ComponentClass<
+  HTMLAttributes<{}> & ThumbnailProps
+> = styled.div`
   ${borderRadius} ${size(32)} background-color: ${akColorN30};
   background-image: url(${({ src }: ThumbnailProps) => src});
   background-size: cover;

@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akGridSizeUnitless,
   akColorN0,
@@ -21,7 +17,9 @@ export interface WrapperProps {
   hasSiblings: boolean;
 }
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & WrapperProps
+> = styled.div`
   display: flex;
   align-items: center;
   max-width: ${({ contentMaxWidth }: WrapperProps) => contentMaxWidth}px;
@@ -32,7 +30,7 @@ export const Wrapper = styled.div`
     ${largeMarginSize}px;
 `;
 
-export const User = styled.div`
+export const User: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   margin-right: ${largeMarginSize}px;
 `;
@@ -41,7 +39,9 @@ export interface TitleProps {
   isInversed?: boolean;
 }
 
-export const Title = styled.div`
+export const Title: ComponentClass<
+  HTMLAttributes<{}> & TitleProps
+> = styled.div`
   flex: 1;
   color: ${({ isInversed }: TitleProps) =>
     isInversed ? akColorN0 : akColorN900};

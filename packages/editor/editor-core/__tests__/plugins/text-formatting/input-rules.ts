@@ -13,8 +13,8 @@ import {
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
 
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import mentionsPlugin from '../../../src/editor/plugins/mentions';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import mentionsPlugin from '../../../src/plugins/mentions';
 import {
   strongRegex1,
   strongRegex2,
@@ -22,7 +22,7 @@ import {
   italicRegex2,
   strikeRegex,
   codeRegex,
-} from '../../../src/plugins/text-formatting/input-rule';
+} from '../../../src/plugins/text-formatting/pm-plugins/input-rule';
 
 const autoFormatPatterns = [
   {

@@ -7,8 +7,8 @@ import {
   ul,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import listPlugin from '../../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import listPlugin from '../../../src/plugins/lists';
 
 describe('inputrules', () => {
   const editor = (doc: any) =>

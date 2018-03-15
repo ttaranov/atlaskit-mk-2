@@ -17,7 +17,6 @@ const access = {
   'urn:filestore:file:*': ['read'],
 };
 
-/* tslint:disable-next-line:variable-name */
 const FormattedBlock = styled.pre`
   white-space: pre-wrap;
   word-wrap: break-word;

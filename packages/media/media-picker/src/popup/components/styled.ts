@@ -1,14 +1,11 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN30, akFontFamily } from '@atlaskit/util-shared-styles';
 
-export const MediaPickerPopupWrapper = styled.div`
+export const MediaPickerPopupWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   * {
     box-sizing: border-box;
   }
@@ -21,13 +18,13 @@ export const MediaPickerPopupWrapper = styled.div`
   position: relative;
 `;
 
-export const SidebarWrapper = styled.div`
+export const SidebarWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 235px;
   min-width: 235px;
   background-color: ${akColorN30};
 `;
 
-export const ViewWrapper = styled.div`
+export const ViewWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;

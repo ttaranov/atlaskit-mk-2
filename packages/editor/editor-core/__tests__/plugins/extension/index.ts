@@ -13,9 +13,9 @@ import {
   editExtension,
   removeExtension,
   selectExtension,
-} from '../../../src/editor/plugins/extension/actions';
-import { pluginKey } from '../../../src/editor/plugins/extension/plugin';
-import extensionPlugin from '../../../src/editor/plugins/extension';
+} from '../../../src/plugins/extension/actions';
+import { pluginKey } from '../../../src/plugins/extension/plugin';
+import extensionPlugin from '../../../src/plugins/extension';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 

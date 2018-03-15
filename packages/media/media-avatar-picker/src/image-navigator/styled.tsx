@@ -1,12 +1,13 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass, keyframes } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ImgHTMLAttributes } from 'react';
+
+import styled, { keyframes } from 'styled-components';
+
+import {
+  HTMLAttributes,
+  ComponentClass,
+  InputHTMLAttributes,
+  ImgHTMLAttributes,
+} from 'react';
 import { akGridSizeUnitless, akColorN200 } from '@atlaskit/util-shared-styles';
 import { AVATAR_DIALOG_WIDTH } from '../avatar-picker-dialog/layout-const';
 
@@ -15,7 +16,7 @@ const spin = keyframes`
   to { transform: rotate(360deg); }
 `;
 
-export const Container = styled.div`
+export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
   *,
@@ -25,7 +26,7 @@ export const Container = styled.div`
   }
 `;
 
-export const SliderContainer = styled.div`
+export const SliderContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
@@ -38,11 +39,11 @@ export const SliderContainer = styled.div`
   }
 `;
 
-export const FileInput = styled.input`
+export const FileInput: ComponentClass<InputHTMLAttributes<{}>> = styled.input`
   display: none;
 `;
 
-export const ImageUploader = styled.div`
+export const ImageUploader: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,7 +60,9 @@ export interface DragZoneProps {
   showBorder: boolean;
 }
 
-export const DragZone = styled.div`
+export const DragZone: ComponentClass<
+  HTMLAttributes<{}> & DragZoneProps
+> = styled.div`
   width: 200px;
   height: 200px;
   display: flex;
@@ -97,7 +100,7 @@ export const DragZone = styled.div`
 
 DragZone.displayName = 'DragZone';
 
-export const DragZoneImage = styled.img`
+export const DragZoneImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   width: 100px;
 `;
 
@@ -105,7 +108,9 @@ export interface DragZoneTextProps {
   isFullSize: boolean;
 }
 
-export const DragZoneText = styled.div`
+export const DragZoneText: ComponentClass<
+  HTMLAttributes<{}> & DragZoneTextProps
+> = styled.div`
   text-align: center;
   color: ${akColorN200};
   ${(props: DragZoneTextProps) =>
@@ -114,7 +119,7 @@ export const DragZoneText = styled.div`
       : 'width: auto'};
 `;
 
-export const SelectionBlocker = styled.div`
+export const SelectionBlocker: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: fixed;
   left: 0;
   top: 0;
@@ -124,7 +129,7 @@ export const SelectionBlocker = styled.div`
   user-select: none;
 `;
 
-export const PaddedBreak = styled.p`
+export const PaddedBreak: ComponentClass<HTMLAttributes<{}>> = styled.p`
   margin-top: 10px !important;
   margin-bottom: 10px;
 `;
