@@ -48,9 +48,12 @@ pipelines:
         - step:
             name: Testing
             script:
+              - git fetch origin master
+              - git checkout master # (master doesn't exist until we do this checkout)
+              - git checkout - # checks out the previous ref
               - yarn global add bolt
               - bolt
-              - yarn test
+              - yarn test:changed
             caches:
               - node
         - step:
