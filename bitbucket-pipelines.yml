@@ -31,10 +31,15 @@ pipelines:
         name: Installing dependencies
         script:
           - echo "Installing deps"
-          - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.5.1
+          - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
           - export PATH=$HOME/.yarn/bin:$PATH
+          - apt-get -y update
+          - apt-get -y install zip
           - yarn global add bolt
           - bolt
+          - du -sh node_modules
+          - zip test.zip -r node_modules
+          - du -sh node_modules
         artifacts:
           - node_modules/**
     - parallel:
