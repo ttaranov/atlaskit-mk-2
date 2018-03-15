@@ -32,7 +32,7 @@ pipelines:
         script:
           - echo "Installing deps"
           - source build-setup.sh
-          - bolt install --pure-lockfile
+          - bolt yarn install
           - du -sh node_modules
           - tar -zcvf test.tar.gz node_modules
           - du -sh test.tar.gz
