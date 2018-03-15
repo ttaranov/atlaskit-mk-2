@@ -48,6 +48,7 @@ pipelines:
         - step:
             name: Testing
             script:
+              # We do this git dance so that we can run test:changed which compares our branch against master
               - git fetch origin master
               - git checkout master # (master doesn't exist until we do this checkout)
               - git checkout - # checks out the previous ref
@@ -59,6 +60,8 @@ pipelines:
         - step:
             name: Building website
             script:
+              - apt-get -y update
+              - apt-get -y install zip
               - yarn global add bolt
               - bolt
               - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
@@ -124,6 +127,7 @@ pipelines:
       - step:
           name: Clearing old cache
           script:
+            - ([[ "$BITBUCKET_BRANCH" == "master" ]]) || (echo "This build should only be run on master" && return 1)
             - cd build/ci-scripts
             - yarn install --pure-lockfile
             - node clear.pipelines.node.cache.js
@@ -133,5 +137,7 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - yarn test
+            # Run this again, just in case someone else has started and finished before us and re-seeded the cache
+            - node build/ci-scripts/clear.pipelines.node.cache.js
           caches:
             - node

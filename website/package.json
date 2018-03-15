@@ -19,7 +19,7 @@
     "build:no-minimize": "yarn build:webpack --no-minimize && yarn build:copy && yarn build:zip",
     "build:webpack": "rm -rf dist && yarn run webpack:build",
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
-    "build:zip": "rm -rf dist.zip && tar -zcvf dist.zip dist/",
+    "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
     "start": "yarn webpack:dev",
     "deploy": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
     "deploy-staging": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
