@@ -1,0 +1,48 @@
+{
+  "name": "@atlaskit/code",
+  "version": "3.1.1",
+  "config": {
+    "access": "public"
+  },
+  "description": "Renders inline code snippets and code blocks",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@atlaskit/theme": "^2.4.1",
+    "react-syntax-highlighter": "^6.0.2",
+    "strip-indent": "^2.0.0",
+    "styled-components": "1.4.6 - 3",
+    "trim-newlines": "^2.0.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.5.2",
+    "enzyme": "^3.3.0"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    {
+      "name": "Clifton H"
+    }
+  ],
+  "atlaskit": {
+    "name": "Code"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

@@ -33,7 +33,7 @@ const LatestChange = ({
       <Button
         component={Link}
         iconBefore={<Icon label="List icon" />}
-        to={`/mk-2/packages/${groupId}/${pkgId}/changelog`}
+        to={`/packages/${groupId}/${pkgId}/changelog`}
       >
         Changelog
       </Button>

@@ -6,11 +6,13 @@ const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
 
+const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
+
 function runTests() {
   return new Promise((resolve, reject) => {
-    let cmd = `INTEGRATION_TESTS=true jest`;
+    const cmd = `INTEGRATION_TESTS=true jest`;
 
-    let tests = child.spawn(cmd, {
+    const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
       shell: true,
     });
@@ -18,22 +20,22 @@ function runTests() {
     tests.on('error', reject);
 
     tests.on('close', (code, signal) => {
-      resolve({ code, signal });
+      setTimeout(resolve, JEST_WAIT_FOR_INPUT_TIMEOUT, { code, signal });
     });
   });
 }
 
 async function main() {
-  await webpack.startDevServer();
+  process.env.BUILD_SERVER ? await webpack.startDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
 
-  let { code, signal } = await runTests();
+  const { code, signal } = await runTests();
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  webpack.stopDevServer();
+  process.env.BUILD_SERVER ? webpack.stopDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();

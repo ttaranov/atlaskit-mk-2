@@ -3,11 +3,18 @@
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",
-    "syntax-dynamic-import"
+    "syntax-dynamic-import",
+    [
+      "babel-plugin-styled-components",
+      {
+        "minify": false,
+        "uglifyPure": false
+      }
+    ]
   ],
   "env": {
     "production:cjs": {
-      "presets": ["env", "react", "flow"],
+      "presets": [["env", {"modules": "commonjs"}], "react", "flow"],
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",

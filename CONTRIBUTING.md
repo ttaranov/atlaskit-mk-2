@@ -1,3 +1,41 @@
+# Contributing to Atlaskit
+
+## Code of Conduct
+
+This project is bound by a [Code of Conduct][codeofconduct].
+
+## Reporting Issues
+
+This section guides you through submitting a bug report for Atlaskit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
+
+When you are creating an issue, please include as many details as possible. Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks helps us resolve issues faster.
+
+### Before submitting an issue
+
+* **Perform a [cursory search][issuetracker]** to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+
+### How do I submit a (good) issue?
+
+* **Use a clear and descriptive title** for the issue to identify the problem.
+* **Describe the exact steps which reproduce the problem** in as many details as possible. Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point. When listing steps, **don't just say what you did, but explain how you did it**. For example, if you opened a inline dialog, explain if you used the mouse, or a keyboard shortcut.
+* **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
+
+Include details about your configuration and environment:
+
+* **Which version of the component are you using?** You can get this information by running `yarn list --pattern @atlaskit` or `npm list | grep '@atlaskit'` from the command line.
+* **What's the name and version of the browser and OS you're using**?
+
+### Code Contributions
+
+#### Why should I contribute?
+
+1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited resources, issues raised often don't get looked into soon enough.
+2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
+3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
+4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
+
+Please raise a new issue [here][issuetracker]. (Atlassians, please use this [internal link][atlassianbug].)
+
 # Contributing
 
 Welcome to the Atlaskit MK2 repo. This repo works a bit differently than the
@@ -13,7 +51,7 @@ or Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
 contributions can be found at
-[http://ak-mk-2-prod.netlify.com/docs/guides/contributing](http://ak-mk-2-prod.netlify.com/docs/guides/contributing).
+[atlaskit.atlassian.com/docs/guides/contributing](atlaskit.atlassian.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 
@@ -118,7 +156,7 @@ yarn jest --watch
 You can also choose to only run the tests under certain directories by passing a path in as well
 
 ```sh
-yarn jest packages/elements/
+yarn jest packages/core/
 ```
 
 ## Type checking your code
@@ -169,29 +207,19 @@ If you want to run the linter on all files from the command line you can run:
 bolt lint
 ```
 
-## Creating examples and patterns
+## Creating examples
 
 To create a new example for a component, you can create a new file in the
 component package's `examples/` folder.
 
 ```
-/atlaskit-mk2/packages/elements/avatar/examples/
+/atlaskit-mk2/packages/core/avatar/examples/
 ├── 0-overview.js
 └── 1-groups.js (New File)
 ```
 
-Or if you want to create a cross-component pattern example, you can create a new
-file inside of the `patterns/` folder.
-
-```
-/atlaskit-mk2/patterns/
-└── jira
-    ├── 0-navigation.js
-    └── 1-drag-and-drop.js (New File)
-```
-
-Inside of the example or pattern you should import components by their package
-name instead of a relative path.
+Inside of the example you should import components by their package name
+instead of a relative path.
 
 ```js
 import React from 'react';
@@ -216,7 +244,7 @@ ATLASKIT_DEV_PORT=9001 bolt start
 
 ## Browser testing your code
 
-> This is not yet supported
+> This is internally supported, please review this link [Adding webdriver][addingwebdriver]
 
 ## Documenting your code
 
@@ -224,7 +252,7 @@ Inside of every package is a `docs/` folder which includes all of the
 documentation pages (there's generally only one).
 
 ```
-/atlaskit-mk2/packages/elements/avatar/docs/
+/atlaskit-mk2/packages/core/avatar/docs/
 ├── 0-overview.js
 └── 1-groups.js
 ```
@@ -271,3 +299,8 @@ create the changelog entry for each package being released.
 > merged to master, all the unreleased changesets are combined, new versions are
 > calculated, packages and dependencies are updated, changelogs are generated
 > and packages are released
+
+[codeofconduct]: ./CODE_OF_CONDUCT.md
+[issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
+[atlassianbug]: http://go/ak-bug
+[addingwebdriver]: https://extranet.atlassian.com/pages/viewpage.action?pageId=3791427559&moved=true

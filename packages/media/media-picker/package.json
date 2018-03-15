@@ -1,0 +1,73 @@
+{
+  "name": "@atlaskit/media-picker",
+  "version": "1.1.4",
+  "description": "Library for handling file uploads",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Hector Z",
+    "Michael J",
+    "Aleksandr M",
+    "Jimmy L"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^6.6.0",
+    "@atlaskit/dropdown-menu": "^3.12.0",
+    "@atlaskit/field-text": "^4.2.0",
+    "@atlaskit/flag": "^6.5.0",
+    "@atlaskit/icon": "^10.12.0",
+    "@atlaskit/media-card": "^24.1.5",
+    "@atlaskit/media-editor": "^4.2.3",
+    "@atlaskit/modal-dialog": "^3.5.0",
+    "@atlaskit/spinner": "^4.2.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@types/bricks.js": "^1.8.0",
+    "axios": "^0.17.1",
+    "bricks.js": "^1.8.0",
+    "classnames": "^2.2.5",
+    "dateformat": "^1.0.12",
+    "domready": "^1.0.8",
+    "eventemitter2": "^4.1.0",
+    "filesize": "^3.2.1",
+    "postis": "^2.2.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "resumablejs": "1.0.2",
+    "rusha": "^0.8.13",
+    "styled-components": "1.4.6 - 3",
+    "svg-inline-react": "^3.0.0",
+    "url": "^0.11.0",
+    "uuid": "^3.1.0"
+  },
+  "peerDependencies": {
+    "@atlaskit/media-core": "^14.1.1",
+    "react": "15.6.0 - 16.2.0",
+    "rxjs": "^5.1.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.5.0",
+    "@atlaskit/media-core": "^14.1.1",
+    "@atlaskit/media-test-helpers": "^9.0.5",
+    "@atlaskit/toggle": "^2.9.0",
+    "@types/dateformat": "^1.0.1",
+    "@types/enzyme": "^3.1.6",
+    "@types/eventemitter2": "^4.1.0",
+    "@types/filesize": "^3.2.15",
+    "@types/lodash.chunk": "^4.2.3",
+    "@types/react": "^16.0.5",
+    "@types/react-redux": "^4.4.0",
+    "@types/redux": "^3.6.0",
+    "identity-obj-proxy": "^3.0.0",
+    "lodash.chunk": "^4.2.0"
+  }
+}

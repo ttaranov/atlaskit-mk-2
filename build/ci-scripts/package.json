@@ -11,6 +11,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "axios": "^0.17.1"
+    "axios": "^0.17.1",
+    "spawndamnit": "^1.0.0",
+    "@atlaskit/build-utils": "^1.12.1"
   }
 }

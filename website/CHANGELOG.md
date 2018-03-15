@@ -1,5 +1,19 @@
 # @atlaskit/website
 
+## 1.5.4
+
+## 1.5.3
+
+## 1.5.2
+
+## 1.5.1
+
+## 1.5.0
+- [minor] Updated website to use iframe to load examples. Example loader now in a separate react app. Webpack config refactored to compile separate example loader, chunking refactored to be more performant with the new website changes. Updated modal-dialog to use new component structure to optionally specify a Body wrapping component. [e1fdfd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1fdfd8)
+
+## 1.4.0
+- [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
+
 ## 1.3.10
 
 ## 1.3.9

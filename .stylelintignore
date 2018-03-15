@@ -1,0 +1,11 @@
+node_modules
+coverage
+dist
+flow-typed
+packages/core/icon/glyph/**
+packages/core/icon/es5/**
+packages/core/icon/utils/**
+
+
+# tmp
+build

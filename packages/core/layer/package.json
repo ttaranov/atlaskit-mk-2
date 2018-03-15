@@ -1,0 +1,39 @@
+{
+  "name": "@atlaskit/layer",
+  "version": "2.9.1",
+  "description": "A React layer component responsible for the position of an element on a page",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "mkdir -p dist && cp -r popper dist"
+  },
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Ajay N Mathur",
+    "Luke B"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "styled-components": "1.4.6 - 3"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^2.5.2",
+    "enzyme": "^3.3.0"
+  },
+  "atlaskit": {
+    "internal": true
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

@@ -12,7 +12,6 @@ import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import allPackages, { packageNames } from '../../../packages';
-import { OLD_WEBSITE_URL } from '../../../utils/constants';
 import {
   packageUrl,
   packageDocUrl,
@@ -39,11 +38,7 @@ export function buildSubNavGroup(
   );
 }
 
-const getItemDetails = (
-  pkg: Directory,
-  group: Directory,
-  navigateOut?: boolean,
-) => {
+const getItemDetails = (pkg: Directory, group: Directory) => {
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.maybeGetById(
     fs.getDirectories(pkg.children) || [],
@@ -61,21 +56,17 @@ const getItemDetails = (
 
   const items = [];
 
-  if (!navigateOut) {
-    const docsSubnav = buildSubNavGroup(
-      docItems,
-      'Docs',
-      packageDocUrl.bind(null, group.id, pkg.id),
-      PackageIcon,
-    );
+  const docsSubnav = buildSubNavGroup(
+    docItems,
+    'Docs',
+    packageDocUrl.bind(null, group.id, pkg.id),
+    PackageIcon,
+  );
 
-    if (docsSubnav) items.push(docsSubnav);
-  }
+  if (docsSubnav) items.push(docsSubnav);
 
   return {
-    to: navigateOut
-      ? `/packages/${group.id}/${pkg.id}`
-      : packageUrl(group.id, pkg.id),
+    to: packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
     // icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
     // iconSelected: (
@@ -88,11 +79,7 @@ const getItemDetails = (
   };
 };
 
-const getItem = (
-  packages: Array<Directory>,
-  group: Directory,
-  navigateOut: boolean,
-) => {
+const getItem = (packages: Array<Directory>, group: Directory) => {
   const findablePkgs: { [key: string]: Object } = packages.reduce(
     (acc, pkg) => {
       acc[pkg.id] = pkg;
@@ -104,15 +91,10 @@ const getItem = (
   return packageNames.reduce((results, name) => {
     const pkg = findablePkgs[allPackages[name].key];
     if (pkg) {
-      let details = getItemDetails(pkg, group, navigateOut);
-      if (details) return results.concat(details);
-    } else {
-      return results.concat({
-        to: `${OLD_WEBSITE_URL}components/${allPackages[name].key}`,
-        external: true,
-        title: allPackages[name].name,
-        // icon: <PackageIcon label={`${allPackages[name].name} icon`} />,
-      });
+      let details = getItemDetails(pkg, group);
+      if (details) {
+        return results.concat(details);
+      }
     }
     return results;
   }, []);
@@ -126,15 +108,14 @@ const packagesList = {
 export type PackagesNavProps = {
   pathname: string,
   packages: Directory,
-  navigateOut: boolean,
 };
 
-const fakeOldSiteGroups = (dirs: Array<Directory>, navigateOut: boolean) =>
+const fakeOldSiteGroups = (dirs: Array<Directory>) =>
   dirs.filter(group => group.id === 'elements').map(group => {
     const packages = fs.getDirectories(group.children);
     return {
       title: group.id,
-      items: getItem(packages, group, navigateOut),
+      items: getItem(packages, group),
     };
   });
 
@@ -155,14 +136,14 @@ const standardGroups = (dirs: Array<Directory>) =>
   });
 
 export default function PackagesNav(props: PackagesNavProps) {
-  const { packages, pathname, navigateOut } = props;
+  const { packages, pathname } = props;
   const dirs = fs.getDirectories(packages.children);
 
-  const groups = navigateOut
-    ? fakeOldSiteGroups(dirs, navigateOut)
-    : standardGroups(dirs);
-
   return (
-    <div>{renderNav([{ items: [packagesList] }, ...groups], { pathname })}</div>
+    <div>
+      {renderNav([{ items: [packagesList] }, ...standardGroups(dirs)], {
+        pathname,
+      })}
+    </div>
   );
 }
