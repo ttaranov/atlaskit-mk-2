@@ -1,11 +1,18 @@
 import * as React from 'react';
-import { FileViewer, FileDetails } from './file-viewer';
 import { Observable } from 'rxjs';
+import { FileViewer, FileDetails } from './file-viewer';
+import { ErrorMessage } from '../../src/newgen/styled';
 
+export type DataSource = {
+  left: FileDetails[],
+  center: FileDetails,
+  right: FileDetails[]
+}
 export type DataSource = Observable<FileDetails[]>;
 
 export type RendererProps = {
   dataSource: DataSource;
+  selected: FileDetails;
 };
 
 export type RendererState = {
@@ -31,7 +38,11 @@ export class MediaViewerRenderer extends React.Component<
     if (this.state.items.length) {
       return <FileViewer fileDetails={this.state.items[0]} />;
     } else {
-      return null;
+      return (
+        <ErrorMessage>
+          No items provided.
+        </ErrorMessage>
+      );
     }
   }
 }
