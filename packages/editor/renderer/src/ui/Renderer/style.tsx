@@ -168,4 +168,13 @@ export const Wrapper: ComponentClass<any> = styled.div`
   & img {
     max-width: 100%;
   }
+
+  & .ApplicationCard,
+  & .MediaGroup,
+  & .CodeBlock {
+    margin-top: 12px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 `;

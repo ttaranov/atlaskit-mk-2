@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import ApplicationCard from '../../../../src/react/nodes/applicationCard';
 import { AppCardView } from '@atlaskit/media-card';
-import { EventHandlers } from '../../../../src/ui/Renderer';
+import { EventHandlers } from '@atlaskit/editor-common';
 import * as sinon from 'sinon';
 
 describe('Renderer - React/Nodes/ApplicationCard', () => {
@@ -69,7 +69,7 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
   });
 
   it('should call onClick with link.url', () => {
-    applicationCard.simulate('click');
+    applicationCard.find(AppCardView).simulate('click');
     expect(spyOnClick.callCount).to.equal(1);
     expect(spyOnClick.calledWith('link-url')).to.equal(true);
   });
