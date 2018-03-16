@@ -59,9 +59,6 @@ pipelines:
     # This will run with the webdriver tests
     build-webdriver:
     - step:
-          script: 
-          - pkill -f BrowserStackLocal
-    - step:
           script:  
             - source ./build-setup.sh
             - bolt install --pure-lockfile
