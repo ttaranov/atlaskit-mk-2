@@ -2,7 +2,9 @@
 //@flow
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
-const bs = require('./utils/browserstack');
+const commit = process.env.BITBUCKET_COMMIT
+  ? process.env.BITBUCKET_COMMIT
+  : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
 
 process.env.TEST_ENV === 'browserstack'
@@ -160,7 +162,6 @@ function setBrowserStackClients() {
     process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
   }
 
-  console.log('bs.local:' + bs.localIdentifier);
   Object.keys(launchers).forEach(key => {
     const option = {
       desiredCapabilities: {
@@ -172,7 +173,7 @@ function setBrowserStackClients() {
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
-        'browserstack.localIdentifier': bs.localIdentifier,
+        'browserstack.localIdentifier': commit,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',
