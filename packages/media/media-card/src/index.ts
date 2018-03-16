@@ -110,15 +110,20 @@ export interface AnalyticsViewAttributes {
   viewSize?: CardAppearance;
 }
 
-export interface CardViewAnalyticsContext {
+export interface BaseAnalyticsContext {
   // These fields are requested to be in all UI events. See guidelines:
   // https://extranet.atlassian.com/display/PData/UI+Events
   packageVersion: string; // string — in a format like '3.2.1'
   packageName: string;
   componentName: string;
 
-  actionSubject: string; // MediaCard
+  actionSubject: string; // ex. MediaCard
   actionSubjectId: string | null; // file/link id
+}
+
+export interface CardAnalyticsContext extends BaseAnalyticsContext {}
+
+export interface CardViewAnalyticsContext extends BaseAnalyticsContext {
   loadStatus: 'fail' | 'loading_metadata' | 'uploading' | 'complete';
   type: 'file' | 'link' | 'smart';
   viewAttributes: AnalyticsViewAttributes;

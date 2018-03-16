@@ -10,10 +10,12 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardEventProps } from '../..';
+import { SharedCardProps, CardEventProps, CardAnalyticsContext } from '../..';
 import { MediaCard } from '../mediaCard';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
+import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -121,6 +123,14 @@ export class Card extends Component<CardProps, {}> {
     );
   }
 
+  get analyticsContext(): CardAnalyticsContext {
+    const { identifier } = this.props;
+    const id = this.isUrlPreviewIdentifier(identifier)
+      ? identifier.url
+      : identifier.id;
+    return getBaseAnalyticsContext('Card', id);
+  }
+
   render() {
     const {
       isLazy,
@@ -136,21 +146,23 @@ export class Card extends Component<CardProps, {}> {
       onLoadingChange,
     } = this.props;
     const card = (
-      <MediaCard
-        provider={this.provider}
-        mediaItemType={this.mediaItemType}
-        dataURIService={this.dataURIService}
-        appearance={appearance}
-        resizeMode={resizeMode}
-        dimensions={dimensions}
-        actions={actions}
-        selectable={selectable}
-        selected={selected}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onSelectChange={onSelectChange}
-        onLoadingChange={onLoadingChange}
-      />
+      <AnalyticsContext data={this.analyticsContext}>
+        <MediaCard
+          provider={this.provider}
+          mediaItemType={this.mediaItemType}
+          dataURIService={this.dataURIService}
+          appearance={appearance}
+          resizeMode={resizeMode}
+          dimensions={dimensions}
+          actions={actions}
+          selectable={selectable}
+          selected={selected}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onSelectChange={onSelectChange}
+          onLoadingChange={onLoadingChange}
+        />
+      </AnalyticsContext>
     );
 
     return isLazy ? (

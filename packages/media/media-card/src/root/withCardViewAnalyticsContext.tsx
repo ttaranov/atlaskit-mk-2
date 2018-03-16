@@ -3,10 +3,11 @@ import * as React from 'react';
 import { FileDetails, MediaItemType, UrlPreview } from '@atlaskit/media-core';
 
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import { version, name } from '../../package.json';
-import { isLinkDetails } from '../utils/isLinkDetails';
 
 import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnail';
+import { getBaseAnalyticsContext } from '../utils/analyticsUtils';
+import { isLinkDetails } from '../utils/isLinkDetails';
+
 import { CardViewOwnProps } from './cardView';
 import {
   CardViewAnalyticsContext,
@@ -39,11 +40,7 @@ export class WithCardViewAnalyticsContext extends React.Component<
     const hasActionMenuItems = !!(actions && actions.length > 0);
 
     return {
-      packageVersion: version,
-      packageName: name,
-      componentName: 'CardView',
-      actionSubject: 'MediaCard',
-      actionSubjectId: null,
+      ...getBaseAnalyticsContext('CardView', null),
       type: mediaItemType,
       loadStatus,
       viewAttributes: {
