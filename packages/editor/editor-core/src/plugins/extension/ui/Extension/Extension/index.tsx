@@ -26,11 +26,16 @@ export default class Extension extends Component<Props, any> {
     } = this.props;
 
     const hasBody = node.type.name === 'bodiedExtension';
+    const hasChildren = !!children;
 
     return (
       <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
         <Overlay className="extension-overlay" />
-        <Header contentEditable={false} onClick={onSelectExtension}>
+        <Header
+          contentEditable={false}
+          onClick={onSelectExtension}
+          className={hasChildren ? 'with-children' : ''}
+        >
           {children ? children : <ExtensionLozenge node={node} />}
         </Header>
         {hasBody && (

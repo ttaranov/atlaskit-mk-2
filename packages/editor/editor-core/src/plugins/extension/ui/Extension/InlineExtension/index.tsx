@@ -17,8 +17,14 @@ export default class InlineExtension extends Component<Props, any> {
   render() {
     const { node, onClick, children } = this.props;
 
+    const hasChildren = !!children;
+
+    const className = hasChildren
+      ? 'with-overlay with-children'
+      : 'with-overlay';
+
     return (
-      <Wrapper onClick={onClick} className="with-overlay">
+      <Wrapper onClick={onClick} className={className}>
         <Overlay className="extension-overlay" />
         {children ? children : <ExtensionLozenge node={node} />}
       </Wrapper>
