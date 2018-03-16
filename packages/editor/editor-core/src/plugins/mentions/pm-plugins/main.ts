@@ -525,24 +525,29 @@ export function createPlugin(providerFactory: ProviderFactory) {
     },
     appendTransaction: (transactions, oldState, newState) => {
       return findMentionQueryMarks(newState, true).reduce(
-        (tr: Transaction, queryMark: QueryMark) => {
+        (currentTr: Transaction | null, queryMark: QueryMark) => {
+          const doc = currentTr ? currentTr.doc : newState.doc;
           const { start, end } = queryMark;
+
           if (
-            !tr.doc
+            !doc
               .textBetween(start, end)
               .trim()
               .startsWith('@')
           ) {
-            return tr.removeMark(
+            let newTr = currentTr ? currentTr : newState.tr;
+            newTr = newTr.removeMark(
               start,
               end,
               newState.schema.marks.mentionQuery,
             );
+            newTr.setMeta('addToHistory', false);
+            return newTr;
           } else {
-            return tr;
+            return currentTr;
           }
         },
-        newState.tr,
+        null,
       );
     },
   });
