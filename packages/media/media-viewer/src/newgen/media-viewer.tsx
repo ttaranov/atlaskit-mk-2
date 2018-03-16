@@ -3,7 +3,8 @@ import Blanket from '@atlaskit/blanket';
 import { Context, MediaItemType, FileItem, MediaType } from '@atlaskit/media-core';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import { MediaViewerRenderer, DataSource } from './media-viewer-renderer';
+import { MediaViewerRenderer } from './media-viewer-renderer';
+import { RendererModel, initialModel } from './domain';
 
 export type Identifier = {
   type: MediaItemType;
@@ -19,37 +20,51 @@ export type Props = {
 };
 
 export type State = {
-  dataSource?: DataSource;
+  model: RendererModel;
 };
 
 export class MediaViewer extends React.Component<Props, State> {
-  state: State = {};
+
+  state: State = { model: initialModel };
 
   componentDidMount() {
-    const { id, type, occurrenceKey, collectionName } = this.props.data;
+    const { id, type, collectionName } = this.props.data;
     const provider = this.props.context.getMediaItemProvider(
       id,
       type,
       collectionName,
     );
 
-    this.setState({
-      dataSource: provider
-        .observable()
-        .filter(item => item.type === 'file' && item.details.processingStatus === 'succeeded')
-        .map(item => ({
-          mediaType: (item as FileItem).details.mediaType as MediaType
-        }))
-    });
+    provider
+      .observable()
+      .filter(item => item.type === 'file' && item.details.processingStatus === 'succeeded')
+      .map(item => ({
+        mediaType: (item as FileItem).details.mediaType as MediaType
+      })).subscribe({
+        next: (item) => {
+          const model: RendererModel = {
+            type: 'SUCCESS',
+            item
+          };
+          this.setState({ model });
+        },
+        error: (err) => {
+          const model: RendererModel = {
+            type: 'FAILED',
+            err
+          };
+          this.setState({ model });
+        }
+      })
   }
 
   render() {
     const { onClose } = this.props;
-    const { dataSource } = this.state;
+    const { model } = this.state;
     return (
       <div>
         <Blanket onBlanketClicked={onClose} isTinted />
-        {dataSource && <MediaViewerRenderer dataSource={dataSource} />}
+        <MediaViewerRenderer model={model} />
       </div>
     );
   }

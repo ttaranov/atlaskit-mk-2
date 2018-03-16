@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { Positioner, ErrorMessage } from './styled';
 import { DocumentViewer } from './document-viewer';
-import { MediaType } from '@atlaskit/media-core';
-
-export type FileDetails = {
-  mediaType: MediaType;
-};
+import { FileDetails } from './domain';
 
 export type Props = {
   fileDetails: FileDetails;
