@@ -12,6 +12,7 @@ export interface Props {
   onClick: (event: React.SyntheticEvent<any>) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
+  children?: React.ReactNode;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -21,15 +22,21 @@ export default class Extension extends Component<Props, any> {
       onClick,
       handleContentDOMRef,
       onSelectExtension,
+      children,
     } = this.props;
 
     const hasBody = node.type.name === 'bodiedExtension';
+    const hasChildren = !!children;
 
     return (
       <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
         <Overlay className="extension-overlay" />
-        <Header contentEditable={false} onClick={onSelectExtension}>
-          <ExtensionLozenge node={node} />
+        <Header
+          contentEditable={false}
+          onClick={onSelectExtension}
+          className={hasChildren ? 'with-children' : ''}
+        >
+          {children ? children : <ExtensionLozenge node={node} />}
         </Header>
         {hasBody && (
           <ContentWrapper>

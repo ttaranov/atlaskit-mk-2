@@ -13,6 +13,9 @@ import CollapsedEditor from '../src/ui/CollapsedEditor';
 import ToolbarFeedback from '../src/ui/ToolbarFeedback';
 import { name, version } from '../package.json';
 
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { extensionHandlers } from '../example-helpers/extension-handlers';
+
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
 const EXPAND_ACTION = () => console.log('Expand');
@@ -134,8 +137,15 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                       />,
                       <ToolbarHelp key="toolbar-help" />,
                     ]}
+                    allowExtension={true}
+                    insertMenuItems={customInsertMenuItems}
+                    extensionHandlers={extensionHandlers}
                     secondaryToolbarComponents={[
-                      <LockCircleIcon key="permission" size="large" label="Permissions" />,
+                      <LockCircleIcon
+                        key="permission"
+                        size="large"
+                        label="Permissions"
+                      />,
                     ]}
                   />
                 </CollapsedEditor>
