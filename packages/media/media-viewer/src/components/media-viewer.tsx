@@ -8,6 +8,7 @@ import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
+import { StoreImpl } from '../newgen/domain';
 
 export interface MediaViewerItem {
   id: string;
@@ -43,11 +44,6 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   render(): JSX.Element {
     const { featureFlags, onClose, context, selectedItem, collectionName } = this.props;
     if (featureFlags && featureFlags.nextGen) {
-      // type: MediaItemType;
-      // id: string;
-      // occurrenceKey: string;
-      // collectionName?: string;
-
       return <MediaViewerNextGen
               context={context}
               data={{

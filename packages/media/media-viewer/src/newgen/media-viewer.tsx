@@ -1,17 +1,8 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaItemType } from '@atlaskit/media-core';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
+import { Context } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { RendererModel, initialModel, StoreImpl } from './domain';
-
-export type Identifier = {
-  type: MediaItemType;
-  id: string;
-  occurrenceKey: string;
-  collectionName?: string;
-};
+import { RendererModel, initialModel, StoreImpl, Identifier } from './domain';
 
 export type Props = {
   onClose?: () => void;

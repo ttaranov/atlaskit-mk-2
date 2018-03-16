@@ -4,9 +4,17 @@ import {
   Context,
   FileItem,
   MediaType,
+  MediaItemType
 } from '@atlaskit/media-core';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
 
-import { Identifier } from './media-viewer';
+export type Identifier = {
+  type: MediaItemType;
+  id: string;
+  occurrenceKey: string;
+  collectionName?: string;
+};
 
 export type FileDetails = {
   mediaType: MediaType;
