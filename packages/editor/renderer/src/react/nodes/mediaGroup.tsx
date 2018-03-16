@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
-import { MediaProps } from './media';
 import { CardEvent, Identifier } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { CardSurroundings } from '@atlaskit/editor-common';
+import { EventHandlers, CardSurroundings } from '@atlaskit/editor-common';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { MediaProps } from './media';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;
+  eventHandlers?: EventHandlers;
 }
 
 export interface MediaGroupState {
@@ -72,12 +74,15 @@ export default class MediaGroup extends PureComponent<
       eventHandlers: {
         ...child.props.eventHandlers,
         media: {
-          onClick: (event: CardEvent) => {
+          onClick: (
+            event: CardEvent,
+            analyticsEvent: UIAnalyticsEventInterface,
+          ) => {
             if (
-              !child.props ||
-              !child.props.eventHandlers ||
-              !child.props.eventHandlers.media ||
-              !child.props.eventHandlers.media.onClick
+              !this.props ||
+              !this.props.eventHandlers ||
+              !this.props.eventHandlers.media ||
+              !this.props.eventHandlers.media.onClick
             ) {
               return;
             }
@@ -85,7 +90,11 @@ export default class MediaGroup extends PureComponent<
               collectionName: child.props.collection,
               list: surroundingItems,
             };
-            child.props.eventHandlers.media.onClick(event, surroundings);
+            this.props.eventHandlers.media.onClick(
+              event,
+              surroundings,
+              analyticsEvent,
+            );
           },
         },
       },
