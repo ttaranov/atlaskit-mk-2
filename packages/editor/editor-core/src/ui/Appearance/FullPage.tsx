@@ -1,11 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
+import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
-import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
-import Avatars from '../../plugins/collab-edit/ui/avatars';
+import WidthDetector from '../WidthDetector';
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
@@ -29,7 +31,7 @@ ScrollContainer.displayName = 'ScrollContainer';
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
-  max-width: 680px;
+  max-width: ${akEditorFullPageMaxWidth}px;
   padding-top: 50px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -155,6 +157,7 @@ export default class Editor extends React.Component<
             {editorDOMElement}
           </ContentArea>
         </ScrollContainer>
+        <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );
   }

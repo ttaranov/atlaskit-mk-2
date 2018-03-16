@@ -5,7 +5,7 @@ import { analyticsService, AnalyticsHandler } from '../analytics';
 import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ErrorReporter from '../utils/error-reporter';
 import { name, version } from '../version';
-import { Dispatch } from '../event-dispatcher';
+import { Dispatch, EventDispatcher } from '../event-dispatcher';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -96,6 +96,7 @@ export function createPMPlugins(
   schema: Schema,
   props: EditorProps,
   dispatch: Dispatch,
+  eventDispatcher: EventDispatcher,
   providerFactory: ProviderFactory,
   errorReporter: ErrorReporter,
 ): Plugin[] {
@@ -108,6 +109,7 @@ export function createPMPlugins(
         dispatch,
         providerFactory,
         errorReporter,
+        eventDispatcher,
       }),
     )
     .filter(plugin => !!plugin) as Plugin[];

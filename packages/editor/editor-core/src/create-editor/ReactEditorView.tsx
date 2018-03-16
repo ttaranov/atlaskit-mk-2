@@ -136,6 +136,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       schema,
       options.props.editorProps,
       dispatch,
+      this.eventDispatcher,
       options.props.providerFactory,
       errorReporter,
     );
