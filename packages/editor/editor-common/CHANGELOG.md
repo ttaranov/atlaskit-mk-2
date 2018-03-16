@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 8.0.2
+
+## 8.0.1
+
+## 8.0.0
+- [major] updated media-core peer dependency, this requires dependents to install new media-core version [47b459a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47b459a)
+
+## 7.0.3
+
+## 7.0.2
+- [patch] support __confluenceMetadata property on link mark [b17f847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b17f847)
+
 ## 7.0.1
 
 ## 7.0.0

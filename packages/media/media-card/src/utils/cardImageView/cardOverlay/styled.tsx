@@ -248,11 +248,7 @@ export const BottomRow: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 16px;
 `;
 
-export const RightColumn: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  .meat-balls-button {
-    height: 23px;
-  }
-`;
+export const RightColumn: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
 export const ErrorMessage: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} display: inline-block;

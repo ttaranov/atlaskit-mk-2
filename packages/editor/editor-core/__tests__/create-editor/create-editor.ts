@@ -78,7 +78,6 @@ describe(name, () => {
             () => {},
             {} as any,
             {} as any,
-            {} as any,
           ).length,
         ).toEqual(1);
       });

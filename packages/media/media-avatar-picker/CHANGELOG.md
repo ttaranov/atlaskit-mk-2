@@ -1,5 +1,9 @@
 # @atlaskit/media-avatar-picker
 
+## 6.0.1
+
+## 6.0.0
+
 ## 5.4.3
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
 

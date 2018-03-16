@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.13.0
+- [minor] Add indeterminate checkbox icon [27f4e40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27f4e40)
+
 ## 10.12.2
 - [patch] add horizontal rule toolbar item [48c36f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48c36f4)
 

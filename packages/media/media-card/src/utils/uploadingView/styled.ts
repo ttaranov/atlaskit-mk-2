@@ -54,7 +54,7 @@ export const ProgressWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   justify-content: center;
 `;
 
-export const CancelButtonWrapper: ComponentClass<
+export const CardActionsWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   margin-left: 4px;

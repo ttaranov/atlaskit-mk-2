@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.5.5
+- [patch] Docs now handle props of nested intersections, and remove console errors [fd2d099](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd2d099)
+
 ## 2.5.4
 - [patch] Make header not display when passed a string [cff04f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cff04f2)
 

@@ -1,3 +1,5 @@
+import { bodiedExtensionData } from './mock-extension-data';
+
 export const customInsertMenuItems = [
   {
     content: 'Inline macro (EH)',
@@ -177,25 +179,7 @@ export const customInsertMenuItems = [
 
       const openMacroBrowser = new Promise(resolve => {
         setTimeout(() => {
-          resolve({
-            type: 'inlineExtension',
-            attrs: {
-              extensionType: 'com.atlassian.confluence.macro.core',
-              extensionKey: 'cheese',
-              parameters: {
-                macroParams: {},
-                macroMetadata: {
-                  macroId: { value: new Date().valueOf() },
-                  placeholder: [
-                    {
-                      data: { url: '' },
-                      type: 'icon',
-                    },
-                  ],
-                },
-              },
-            },
-          });
+          resolve(bodiedExtensionData[0]);
         }, 1000);
       });
 

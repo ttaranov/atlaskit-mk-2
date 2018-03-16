@@ -7,7 +7,6 @@ import { Redirect, Link } from 'react-router-dom';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { AkCodeBlock } from '@atlaskit/code';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import EditIcon from '@atlaskit/icon/glyph/edit';
 import ErrorIcon from '@atlaskit/icon/glyph/error';

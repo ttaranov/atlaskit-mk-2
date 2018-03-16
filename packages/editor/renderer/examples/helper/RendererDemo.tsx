@@ -21,7 +21,7 @@ import {
 
 import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
-import { renderDocument, TextSerializer } from '../../src';
+import { EmailSerializer, renderDocument, TextSerializer } from '../../src';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 const MockProfileClient = getMockProfileClientUtil(
@@ -153,7 +153,7 @@ interface DemoRendererProps {
   withPortal?: boolean;
   withProviders?: boolean;
   withExtension?: boolean;
-  serializer: 'react' | 'text';
+  serializer: 'react' | 'text' | 'email';
 }
 
 interface DemoRendererState {
@@ -166,6 +166,8 @@ export default class RendererDemo extends PureComponent<
   DemoRendererState
 > {
   textSerializer = new TextSerializer();
+  emailSerializer = new EmailSerializer();
+  emailRef?: HTMLIFrameElement;
 
   state: DemoRendererState = {
     input: JSON.stringify(document, null, 2),
@@ -179,6 +181,26 @@ export default class RendererDemo extends PureComponent<
   private handlePortalRef = (portal?: HTMLElement) => {
     this.setState({ portal });
   };
+
+  private onEmailRef = (ref?: HTMLIFrameElement) => {
+    this.emailRef = ref;
+
+    if (ref) {
+      // reset padding/margin for empty iframe with about:src URL
+      ref.contentDocument.body.style.padding = '0';
+      ref.contentDocument.body.style.margin = '0';
+
+      this.onComponentRendered();
+    }
+  };
+
+  componentDidMount() {
+    this.onComponentRendered();
+  }
+
+  componentDidUpdate() {
+    this.onComponentRendered();
+  }
 
   render() {
     return (
@@ -201,9 +223,25 @@ export default class RendererDemo extends PureComponent<
           />
         </fieldset>
         {this.renderRenderer()}
-        {this.renderTextOutput()}
+        {this.renderText()}
+        {this.renderEmail()}
       </div>
     );
+  }
+
+  private onComponentRendered() {
+    if (this.props.serializer !== 'email' || !this.emailRef) {
+      return;
+    }
+
+    try {
+      const doc = JSON.parse(this.state.input);
+      const html = renderDocument<string>(doc, this.emailSerializer).result;
+
+      this.emailRef.contentDocument.body.innerHTML = html;
+    } catch (ex) {
+      // pass
+    }
   }
 
   private renderRenderer() {
@@ -246,7 +284,7 @@ export default class RendererDemo extends PureComponent<
     }
   }
 
-  private renderTextOutput() {
+  private renderText() {
     if (this.props.serializer !== 'text') {
       return null;
     }
@@ -261,6 +299,31 @@ export default class RendererDemo extends PureComponent<
         </div>
       );
     } catch (ex) {
+      return null;
+    }
+  }
+
+  private renderEmail() {
+    if (this.props.serializer !== 'email') {
+      return null;
+    }
+
+    try {
+      const doc = JSON.parse(this.state.input);
+
+      return (
+        <div>
+          <h1>E-mail HTML</h1>
+          <iframe
+            ref={this.onEmailRef}
+            frameBorder="0"
+            src="about:blank"
+            style={{ width: '100%', height: '400px' }}
+          />
+        </div>
+      );
+    } catch (ex) {
+      console.error(ex.stack);
       return null;
     }
   }

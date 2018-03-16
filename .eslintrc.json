@@ -18,8 +18,8 @@
     }],
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
-    "import/extensions": ["error", {
-      "ignorePackages": true
+    "import/extensions": ["error", "never", {
+      "json": "always"
     }],
 
     "no-labels": "off",

@@ -1,5 +1,10 @@
 # @atlaskit/media-test-helpers
 
+## 10.0.1
+- [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
+
+## 10.0.0
+
 ## 9.0.5
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
 

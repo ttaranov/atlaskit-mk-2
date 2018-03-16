@@ -1,5 +1,12 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.9.10
+
+## 2.9.9
+
+## 2.9.8
+- [patch] ED-4029: ignore divs wrapping table cells content [6e5361f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e5361f)
+
 ## 2.9.7
 
 ## 2.9.6

@@ -14,6 +14,7 @@ import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, isCode, escapeLinks } from '../util';
+import { removeBodiedExtensionsOnPaste } from '../../extension/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -167,6 +168,14 @@ export function createPlugin(
             tableState.addHeaderToTableNodes(slice, selectionStart);
             return true;
           }
+
+          // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
+          // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
+          // this function makes sure we prevent that weirdness
+          return removeBodiedExtensionsOnPaste(slice)(
+            view.state,
+            view.dispatch,
+          );
         }
 
         return false;
