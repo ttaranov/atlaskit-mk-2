@@ -21,7 +21,7 @@ describe('MainEditorView', () => {
     const editorLoaderPromise = Promise.resolve(FakeEditorView);
     editorViewLoaderMock.mockReset();
     editorViewLoaderMock.mockReturnValue(editorLoaderPromise);
-
+    delete MainEditorView.EditorViewComponent;
     const binaryUploader: any = {};
     const onCloseEditor = jest.fn();
     const onShowEditorImage = jest.fn();
