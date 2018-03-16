@@ -27,7 +27,8 @@ A couple of steps are required to set linting integration within vscode.
   "stylelint.additionalDocumentSelectors": [
     "javascript",
     "javascriptreact",
-    "typescript"
+    "typescript",
+    "typescriptreact",
   ],
 }
 ```

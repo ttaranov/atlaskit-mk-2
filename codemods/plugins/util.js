@@ -22,7 +22,7 @@ export default j => {
     let targetName;
     let targetPath;
     const importSource = importNode.source.value;
-    
+
     root
       .find(j.ImportDeclaration)
       .forEach(path => {
@@ -86,24 +86,24 @@ export default j => {
         this.findLast(j.ImportDeclaration).insertAfter(node);
       }
     }
-    
+
     return this;
   }
 
   // Add a call expression statement to a describe block, e.g. beforeEach, afterEach, it
-  const addToTestSuite = function(insertNode) {
+  const addToTestSuite = function(insertNode, useExisting = false) {
     const block = this.findFirst(j.ArrowFunctionExpression)
       .findFirst(j.BlockStatement);
-    
+
     if (block.size() > 0) {
       block.getOrAdd(insertNode, context => {
         return context.find(j.ExpressionStatement, (node) =>
           get(node, 'expression.callee.name') === get(insertNode, 'expression.callee.name') &&
           get(node, 'expression.arguments[0].value') === get(insertNode, 'expression.arguments[0].value')
         );
-      }, (node) => block.get().node.body.push(node));
+      }, (node) => block.get().node.body.push(node), useExisting);
     }
-    
+
     return this;
   }
 
@@ -116,7 +116,7 @@ export default j => {
 
       program.get().node.body.push(node);
     }
-    
+
     return this;
   }
 

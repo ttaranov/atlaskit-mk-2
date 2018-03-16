@@ -43,6 +43,7 @@ describe('SingleLineTextInputWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
+    const value = 'my-value';
     mount(
       <SingleLineTextInputWithAnalytics
         isEditing

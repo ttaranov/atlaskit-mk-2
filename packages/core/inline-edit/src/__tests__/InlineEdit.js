@@ -337,6 +337,7 @@ describe('InlineEditStatelessWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
+    const readView = <span>read</span>;
     mount(
       <InlineEditStatelessWithAnalytics
         {...defaultProps}

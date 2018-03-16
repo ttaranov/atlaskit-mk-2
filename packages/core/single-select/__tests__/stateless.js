@@ -869,6 +869,7 @@ describe(name, () => {
       expect(warnSpy).toHaveBeenCalledWith(
         'SingleSelect: item.label must be set when item.content is JSX',
       );
+      warnSpy.mockRestore();
     });
 
     it('should render item label instead of content', () => {

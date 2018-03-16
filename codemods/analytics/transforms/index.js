@@ -15,7 +15,11 @@ const createImport = (j, specifierNames, source) => {
 
 const createEventMapPropFn = (j, action) => {
   const payload = j.objectExpression([
-    j.property('init', j.identifier('action'), j.literal(action)),
+    j.property(
+      'init',
+      j.identifier('action'),
+      j.literal(action)
+    ),
   ]);
 
   return j.callExpression(
@@ -111,7 +115,7 @@ const exportDefaultExpression = (j, root, eventConfig, original) => {
   const existingComponentNameImport = root
     .find(j.ModuleSpecifier, { local:  { name: componentName }})
     .size() > 0;
-  
+
   if (existingComponentNameVar || existingComponentNameImport) {
     // Already have an identifier with the component name in the current scope
     // Check whether it is exported
@@ -241,7 +245,7 @@ module.exports = (fileInfo: any, api: any) => {
     return null;
   }
   const source = j(fileInfo.source);
-  
+
   const absoluteFilePath = path.resolve(process.cwd(), fileInfo.path);
   const packageJsonPath = getPackageJsonPath(absoluteFilePath);
 
@@ -263,7 +267,7 @@ module.exports = (fileInfo: any, api: any) => {
   } else {
     wrapDefaultExport(j, source, analyticsEventConfig);
   }
-    
+
   // Print source
   return source.toSource({ quote: 'single' });
 };

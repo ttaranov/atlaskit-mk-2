@@ -240,7 +240,7 @@ describe('ModalDialogWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<ModalDialogWithAnalytics onClose={noop} {...props} />);
+    mount(<ModalDialogWithAnalytics onClose={noop} />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

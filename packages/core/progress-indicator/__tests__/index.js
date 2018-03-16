@@ -101,8 +101,7 @@ describe('ProgressDotsWithAnalytics', () => {
     mount(
       <ProgressDotsWithAnalytics
         selectedIndex={0}
-        values={['one', 'two', 'three']}
-        {...props}
+        values={['one', 'two', 'three', 'four', 'five']}
       />,
     );
     expect(console.warn).not.toHaveBeenCalled();

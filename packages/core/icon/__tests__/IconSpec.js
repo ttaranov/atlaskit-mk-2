@@ -210,7 +210,9 @@ describe('IconWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<IconWithAnalytics glyph={secretWrapper} {...props} />);
+    const id = 'customSvg';
+    const customGlyphJsx = () => <svg id={id} />;
+    mount(<IconWithAnalytics glyph={customGlyphJsx} label="" />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

@@ -109,7 +109,7 @@ describe('AkRadioWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<AkRadioWithAnalytics onChange={() => {}} {...props} />);
+    mount(<AkRadioWithAnalytics onChange={() => {}} />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

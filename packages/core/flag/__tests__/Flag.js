@@ -230,9 +230,7 @@ describe('FlagWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(
-      <FlagWithAnalytics id="" icon={<div />} title="Flag" {...extraProps} />,
-    );
+    mount(<FlagWithAnalytics />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

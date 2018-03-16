@@ -253,6 +253,15 @@ describe('Tag component', () => {
   });
 });
 describe('TagWithAnalytics', () => {
+  const atlassianHref = 'https://www.atlassian.com';
+  const atlassianText = 'Atlassian';
+  const bitbucketHref = 'https://bitbucket.org';
+  const testProps = {
+    text: atlassianText,
+    href: atlassianHref,
+    removeButtonText: 'Click to remove this tag!',
+  };
+
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
     jest.spyOn(global.console, 'error');

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import DynamicTableWithAnalytics, {
   DynamicTable,
 } from '../src/components/Stateless';
@@ -95,6 +95,7 @@ describe('DynamicTableWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
+    const props = createProps();
     mount(<DynamicTableWithAnalytics {...props} sortOrder="DESC" />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();

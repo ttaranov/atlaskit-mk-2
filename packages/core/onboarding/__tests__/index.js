@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+import { mount } from 'enzyme';
+import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 import { name } from '../package.json';
@@ -127,13 +128,39 @@ describe('SpotlightWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(
-      <SpotlightWithAnalytics
-        header={() => <span>foo</span>}
-        footer={() => <span>baz</span>}
-        target="qux"
-      />,
-    );
+    class SpotlightStub extends Component<*, *> {
+      state = {
+        isOpen: false,
+      };
+
+      componentDidMount() {
+        this.setState({
+          isOpen: true,
+        });
+      }
+
+      render() {
+        return (
+          <SpotlightManager>
+            <div>
+              <SpotlightTarget name="foo">
+                <span>target</span>
+              </SpotlightTarget>
+              <section>
+                {this.state.isOpen && (
+                  <SpotlightWithAnalytics target="foo">
+                    <span>dialog</span>
+                  </SpotlightWithAnalytics>
+                )}
+              </section>
+            </div>
+          </SpotlightManager>
+        );
+      }
+    }
+
+    mount(<SpotlightStub />);
+
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

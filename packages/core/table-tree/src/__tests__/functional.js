@@ -299,7 +299,29 @@ describe('RowWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<RowWithAnalytics itemId={title} hasChildren={false} />);
+    const getFlatItems = parent => {
+      if (parent) {
+        return [];
+      }
+      return [
+        { title: 'Chapter One', page: 10 },
+        { title: 'Chapter Two', page: 20 },
+        { title: 'Chapter Three', page: 30 },
+      ];
+    };
+    mount(
+      <TableTree>
+        <Rows
+          items={getFlatItems}
+          render={({ title, page }) => (
+            <RowWithAnalytics itemId={title} hasChildren={false}>
+              <Cell>{title}</Cell>
+              <Cell>{page}</Cell>
+            </RowWithAnalytics>
+          )}
+        />
+      </TableTree>,
+    );
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

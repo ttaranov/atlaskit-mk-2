@@ -170,7 +170,8 @@ const analyticsEventMap = [
     props: {
       onChange: 'change'
     },
-    componentTestPath: 'field-radio-group/src/__tests__/Radio.js'
+    componentTestPath: 'field-radio-group/src/__tests__/Radio.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'field-radio-group/src/RadioGroupStateless.js',
@@ -239,7 +240,8 @@ const analyticsEventMap = [
     props: {
       onClick: 'click'
     },
-    componentTestPath: 'icon/__tests__/IconSpec.js'
+    componentTestPath: 'icon/__tests__/IconSpec.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'inline-dialog/src/InlineDialog/index.js',
@@ -334,7 +336,8 @@ const analyticsEventMap = [
     props: {
       targetOnClick: 'click'
     },
-    componentTestPath: 'onboarding/__tests__/index.js'
+    componentTestPath: 'onboarding/__tests__/index.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'pagination/src/components/Stateless.js',
@@ -398,7 +401,8 @@ const analyticsEventMap = [
       onExpand: 'toggle',
       onCollapse: 'toggle'
     },
-    componentTestPath: 'table-tree/src/__tests__/functional.js'
+    componentTestPath: 'table-tree/src/__tests__/functional.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'tabs/src/components/Tabs.js',
@@ -418,7 +422,8 @@ const analyticsEventMap = [
     props: {
       onAfterRemoveAction: 'remove'
     },
-    componentTestPath: 'tag/src/Tag/__tests__/index.js'
+    componentTestPath: 'tag/src/Tag/__tests__/index.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'toggle/src/ToggleStateless.js',

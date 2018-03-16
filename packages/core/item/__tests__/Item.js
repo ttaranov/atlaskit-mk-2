@@ -494,6 +494,7 @@ describe('ItemWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
+    const MyLinkComponent = toClass(() => <span />);
     mount(
       <ItemWithAnalytics
         href="//atlassian.com"

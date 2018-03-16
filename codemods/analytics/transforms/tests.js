@@ -8,6 +8,8 @@ import cloneDeep from 'lodash.clonedeep';
 import UtilPlugin from '../../plugins/util';
 import { getMapEntryFromPath, getPackageJsonPath, getRelativeComponentPath } from '../util';
 
+const toSourceOpts = { quote: 'single', tabWidth: 2, trailingComma: true };
+
 const contextOverwriteTest = (j, analyticsConfig) => {
   return j('').code(`
     it('should override the existing analytics context of ${analyticsConfig.overwrite}', () => {
@@ -51,7 +53,7 @@ const propTest = (j, analyticsConfig) => {
     it('should be wrapped with analytics events', () => {
       expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
       expect(withAnalyticsEvents).toHaveBeenCalledWith({
-        ${props.join('\n')}
+        ${props.join('\n        ')}
       });
     });
   `);
@@ -59,11 +61,30 @@ const propTest = (j, analyticsConfig) => {
 
 const mountTest = (j, root, analyticsConfig) => {
   const existingComponentEls = root
+    .find(j.CallExpression, (node) => get(node, 'callee.name') === 'mount' || get(node, 'callee.name') === 'shallow')
     .find(j.JSXOpeningElement, { name: { name: analyticsConfig.component } });
 
   let attributes = [];
+  let attributeVarDeclarations = [];
   if (existingComponentEls.size() > 0) {
-    attributes = existingComponentEls.get().node.attributes.map(attr => cloneDeep(attr));
+    const existingComponentPath = existingComponentEls.get();
+    attributes = existingComponentPath.node.attributes.map(attr => cloneDeep(attr));
+    existingComponentEls
+      .find(j.JSXAttribute, { value: { expression: { type: 'Identifier' } } })
+      .getVariableDeclarators( p => p.node.value.expression.name )
+      .forEach(path => {
+        if (path.scope === existingComponentPath.scope) {
+          attributeVarDeclarations.push(j.variableDeclaration('const', [path.node]));
+        }
+      });
+    existingComponentEls
+      .find(j.JSXSpreadAttribute, { argument: { type: 'Identifier' } })
+      .getVariableDeclarators( p => p.node.argument.name )
+      .forEach(path => {
+        if (path.scope === existingComponentPath.scope) {
+          attributeVarDeclarations.push(j.variableDeclaration('const', [path.node]));
+        }
+      });
   } else {
     console.log(`Could not find existing example of ${analyticsConfig.component} being used`);
   }
@@ -75,10 +96,15 @@ const mountTest = (j, root, analyticsConfig) => {
     )
   );
 
+  const attributeVarDeclarationStr = attributeVarDeclarations
+    .map( node => j(node).toSource(toSourceOpts))
+    .join('\n      ');
+
   return j('').code(`
 
     it('should mount without errors', () => {
-      mount(${j(componentEl).toSource({ quote: 'single', tabWidth: 2 })});
+      ${attributeVarDeclarationStr}
+      mount(${j(componentEl).toSource(toSourceOpts)});
       expect(console.warn).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();
     });
@@ -182,7 +208,10 @@ const updateAnalyticsTestFile = (j, source, analyticsConfig, filePath) => {
 const updateComponentTestFile = (j, source, analyticsConfig, filePath) => {
   const componentPath = getRelativeComponentPath(analyticsConfig);
   source
-    .addImport(source.code(`import ${analyticsConfig.component}WithAnalytics from '${componentPath}';`));
+    .addImport(source.code(`import ${analyticsConfig.component}WithAnalytics from '${componentPath}';`))
+    .addImport(source.code(`
+        import { mount } from 'enzyme';
+      `));
 
   // Remove an older iteration of the describe block that had a different name
   source
@@ -192,31 +221,30 @@ const updateComponentTestFile = (j, source, analyticsConfig, filePath) => {
     )
     .remove();
 
+  const useExistingTests = !!analyticsConfig.manualComponentTestOverride;
+
   const describeBlockName = `${analyticsConfig.component}WithAnalytics`;
   // Add describe block + tests
   const describeBlock = source.getOrAdd(source.code(`
-    describe('${describeBlockName}', () => {});
+    describe('${describeBlockName}', () => {
+      beforeEach(() => {
+        jest.spyOn(global.console, 'warn');
+        jest.spyOn(global.console, 'error');
+      });
+      afterEach(() => {
+        global.console.warn.mockRestore();
+        global.console.error.mockRestore();
+      });
+    });
   `), context => {
       return context.find(j.ExpressionStatement, (node) =>
         get(node, 'expression.callee.name') === 'describe' &&
         get(node, 'expression.arguments[0].value') === describeBlockName
       );
-    });
+    }, undefined, useExistingTests);
 
   describeBlock
-    .addToTestSuite(source.code(`
-      beforeEach(() => {
-        jest.spyOn(global.console, 'warn');
-        jest.spyOn(global.console, 'error');
-      });
-    `))
-    .addToTestSuite(source.code(`
-      afterEach(() => {
-        global.console.warn.mockRestore();
-        global.console.error.mockRestore();
-      });
-    `))
-    .addToTestSuite(mountTest(j, source, analyticsConfig));
+    .addToTestSuite(mountTest(j, source, analyticsConfig), useExistingTests);
 }
 
 export const parser = 'flow';
@@ -252,6 +280,6 @@ export default (fileInfo: any, api: any) => {
 
   // Add describe block
   // Add context test
-  const parsedSource = source.toSource({ quote: 'single', tabWidth: 2 });
+  const parsedSource = source.toSource(toSourceOpts);
   return parsedSource;
 }
