@@ -52,6 +52,21 @@ type State = {
   view: string,
 };
 
+// TODO see if there's a different way to control the display value.
+//
+// react-select retains the value the user typed in until the field is
+// blurred. Since we're controlling the open state and value, we need a
+// way explicitly ensure the value is respected. By blurring and then
+// immedately refocusing, we ensure the value is formatted and the input
+// retains focus.
+function ensureValueIsDisplayed() {
+  const { activeElement } = document;
+  if (activeElement) {
+    activeElement.blur();
+    activeElement.focus();
+  }
+}
+
 function isoToObj(iso: string) {
   const parsed = parse(iso);
   return isValid(parsed)
@@ -102,21 +117,6 @@ class DatePicker extends Component<Props, State> {
     value: '',
     view: '',
   };
-
-  // TODO see if there's a different way to control the display value.
-  //
-  // react-select retains the value the user typed in until the field is
-  // blurred. Since we're controlling the open state and value, we need a
-  // way explicitly ensure the value is respected. By blurring and then
-  // immedately refocusing, we ensure the value is formatted and the input
-  // retains focus.
-  ensureValueIsDisplayed(e) {
-    const { activeElement } = document;
-    if (activeElement) {
-      activeElement.blur();
-      activeElement.focus();
-    }
-  }
 
   onCalendarChange = ({ iso }) => {
     this.setState({ view: iso });
@@ -189,7 +189,7 @@ class DatePicker extends Component<Props, State> {
   triggerChange = value => {
     this.props.onChange(value);
     this.setState({ value, view: value });
-    this.ensureValueIsDisplayed();
+    ensureValueIsDisplayed();
   };
 
   render() {
@@ -201,8 +201,6 @@ class DatePicker extends Component<Props, State> {
       innerProps,
       isDisabled,
       name,
-      onBlur,
-      onFocus,
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.state;
