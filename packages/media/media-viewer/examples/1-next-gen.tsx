@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { MediaViewer } from '../src/newgen/media-viewer';
+import { MediaViewer } from '../src/index';
 import Button from '@atlaskit/button';
-import { MediaType } from '@atlaskit/media-core';
+import { MediaItemType } from '@atlaskit/media-core';
 import {
   createStorybookContext,
   docFileId,
 } from '@atlaskit/media-test-helpers';
 
-type State = {
-  isOpen: boolean;
-};
-
 const context = createStorybookContext();
-const data = {
-  type: 'file' as MediaType,
+const selectedItem = {
+  type: 'file' as MediaItemType,
   id: docFileId.id,
   occurrenceKey: 'asdasd',
+};
+const dataSource = {list: [selectedItem]};
+
+export type State = {
+  isOpen: boolean;
 };
 
 export default class Example extends React.Component<{}, State> {
@@ -29,8 +30,13 @@ export default class Example extends React.Component<{}, State> {
         </Button>
         {this.state.isOpen && (
           <MediaViewer
+            featureFlags={{nextGen: true}}
+            MediaViewer={null as any}
+            basePath={null as any}
             context={context}
-            data={data}
+            selectedItem={selectedItem}
+            dataSource={dataSource}
+            collectionName={docFileId.collectionName}
             onClose={() => this.setState({ isOpen: false })}
           />
         )}

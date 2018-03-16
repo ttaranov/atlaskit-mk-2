@@ -46,8 +46,11 @@ export class MediaViewerRenderer extends React.Component<
       case 'LOADING':
         return <Spinner />;
       case 'SUCCESS':
+        console.log(this.state.item);
+
         return <FileViewer fileDetails={this.state.item} />;
       case 'FAILED':
+
         return <ErrorMessage>Error</ErrorMessage>;
     }
   }

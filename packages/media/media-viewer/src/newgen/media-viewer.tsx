@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaItemType } from '@atlaskit/media-core';
+import { Context, MediaItemType, FileItem, MediaType } from '@atlaskit/media-core';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import { FileViewer, FileDetails } from './file-viewer';
 import { MediaViewerRenderer, DataSource } from './media-viewer-renderer';
 
 export type Identifier = {
@@ -37,8 +36,10 @@ export class MediaViewer extends React.Component<Props, State> {
     this.setState({
       dataSource: provider
         .observable()
-        .filter(item => item.details.processingStatus === 'succeeded')
-        .map(item => item)
+        .filter(item => item.type === 'file' && item.details.processingStatus === 'succeeded')
+        .map(item => ({
+          mediaType: (item as FileItem).details.mediaType as MediaType
+        }))
     });
   }
 
