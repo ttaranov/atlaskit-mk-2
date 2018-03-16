@@ -4,13 +4,7 @@ jest.mock('../src/utils/shouldDisplayImageThumbnail');
 import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
-import {
-  FileDetails,
-  LinkDetails,
-  CardAction,
-  CardActionType,
-  Resource,
-} from '@atlaskit/media-core';
+import { FileDetails, LinkDetails, Resource } from '@atlaskit/media-core';
 import {
   AnalyticsListenerProps,
   AnalyticsListener,
@@ -31,7 +25,11 @@ import { breakpointSize } from '../src/utils/breakpoint';
 
 import { shouldDisplayImageThumbnail } from '../src/utils/shouldDisplayImageThumbnail';
 
-import { CardViewAnalyticsContext, CardViewState } from '../src/index';
+import {
+  CardViewAnalyticsContext,
+  CardViewState,
+  CardAction,
+} from '../src/index';
 
 // Enzyme doesn't allow to change props for non-root element. This means I can't change "status"
 // for CardView after it has been mounted. This class allows me to do that.
@@ -440,7 +438,6 @@ describe('CardView', () => {
     const clickHandler = jest.fn();
     const analyticsEventHandler = jest.fn();
     const cardAction: CardAction = {
-      type: CardActionType.click,
       handler: () => {},
       label: 'Click me',
     };
