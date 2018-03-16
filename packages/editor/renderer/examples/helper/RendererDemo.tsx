@@ -12,12 +12,14 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import * as Clock from 'react-live-clock';
 
-import { document } from './story-data';
+import { document, linkDocument } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
   ExtensionHandlers,
 } from '../../src/ui/Renderer';
+
+import { default as LinkRenderer } from '../../src/ui/LinkRenderer';
 
 import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
@@ -153,6 +155,7 @@ interface DemoRendererProps {
   withPortal?: boolean;
   withProviders?: boolean;
   withExtension?: boolean;
+  withLinkRenderer?: boolean;
   serializer: 'react' | 'text';
 }
 
@@ -167,14 +170,22 @@ export default class RendererDemo extends PureComponent<
 > {
   textSerializer = new TextSerializer();
 
-  state: DemoRendererState = {
-    input: JSON.stringify(document, null, 2),
-    portal: undefined,
-  };
-
   refs: {
     input: HTMLTextAreaElement;
   };
+
+  constructor(props: DemoRendererProps) {
+    super(props);
+
+    this.state = {
+      input: JSON.stringify(
+        props.withLinkRenderer ? linkDocument : document,
+        null,
+        2,
+      ),
+      portal: undefined,
+    };
+  }
 
   private handlePortalRef = (portal?: HTMLElement) => {
     this.setState({ portal });
@@ -201,6 +212,7 @@ export default class RendererDemo extends PureComponent<
           />
         </fieldset>
         {this.renderRenderer()}
+        {this.renderLinkRenderer()}
         {this.renderTextOutput()}
       </div>
     );
@@ -239,6 +251,34 @@ export default class RendererDemo extends PureComponent<
             &lt;/Renderer&gt;
           </div>
           <div ref={this.handlePortalRef} />
+        </div>
+      );
+    } catch (ex) {
+      return <pre>Invalid document: {ex.stack}</pre>;
+    }
+  }
+
+  private renderLinkRenderer() {
+    if (!this.props.withLinkRenderer) {
+      return;
+    }
+
+    try {
+      const props: RendererProps = {
+        document: JSON.parse(this.state.input),
+      };
+      props.eventHandlers = eventHandlers;
+      props.dataProviders = providerFactory;
+
+      return (
+        <div>
+          <div style={{ color: '#ccc', marginBottom: '8px' }}>
+            &lt;LinkRenderer&gt;
+          </div>
+          <LinkRenderer {...props} />
+          <div style={{ color: '#ccc', marginTop: '8px' }}>
+            &lt;/LinkRenderer&gt;
+          </div>
         </div>
       );
     } catch (ex) {
