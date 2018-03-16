@@ -160,6 +160,7 @@ function setBrowserStackClients() {
     process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
   }
 
+  console.log('bs.local:' + bs.localIdentifier);
   Object.keys(launchers).forEach(key => {
     const option = {
       desiredCapabilities: {
