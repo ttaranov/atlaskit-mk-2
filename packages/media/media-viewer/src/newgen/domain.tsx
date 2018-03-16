@@ -64,14 +64,15 @@ export class StoreImpl implements Store {
             type: 'SUCCESS',
             item,
           };
-          this._subject.next({ model });
+
+          this._subject.next(model);
         },
         error: err => {
           const model: RendererModel = {
             type: 'FAILED',
             err,
           };
-          this._subject.next({ model });
+          this._subject.next(model);
         },
       });
   }
@@ -79,7 +80,7 @@ export class StoreImpl implements Store {
   subscribe(cb: (model: RendererModel) => void): Subscription {
     return this._subject.subscribe({
       next: cb,
-      error: () => {},
+      error: err => {},
       complete: () => {}, // handle error, complete here
     });
   }
