@@ -2,6 +2,7 @@
 //@flow
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
 const webdriverio = require('webdriverio');
+const bs = require('./utils/browserstack');
 let clients /*: Array<?Object>*/ = [];
 
 process.env.TEST_ENV === 'browserstack'
@@ -170,6 +171,7 @@ function setBrowserStackClients() {
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
+        'browserstack.localIdentifier': bs.localIdentifier,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',
