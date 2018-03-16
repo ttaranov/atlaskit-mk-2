@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.0.5
+- [patch] CFE-846: Add support to extension handlers (lite version) [4ea9ffe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ea9ffe)
+
 ## 65.0.4
 - [patch] Update appearance to show the buttons on the outside of the Editor [d59ad61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d59ad61)
 

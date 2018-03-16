@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.9
+- [patch] CFE-846: Add support to extension handlers (lite version) [4ea9ffe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ea9ffe)
+
 ## 2.0.8
 - [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
 
