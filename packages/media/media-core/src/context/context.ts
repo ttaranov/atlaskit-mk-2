@@ -37,6 +37,10 @@ export interface Context {
 
   getDataUriService(collectionName?: string): DataUriService;
 
+  getLocalPreview(id: string): string | undefined;
+
+  setLocalPreview(id: string, preview: string);
+
   addLinkItem(
     url: string,
     collectionName: string,
@@ -59,11 +63,14 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
+  private readonly localPreviewCache: { id: string; value: string };
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache<string, FileItem>(
       config.cacheSize || DEFAULT_CACHE_SIZE,
     );
+
+    this.localPreviewCache = {};
   }
 
   getMediaItemProvider(
@@ -124,6 +131,14 @@ class ContextImpl implements Context {
       this.config.serviceHost,
       collectionName,
     );
+  }
+
+  setLocalPreview(id: string, preview: string) {
+    this.localPreviewCache[id] = preview;
+  }
+
+  getLocalPreview(id: string): string | undefined {
+    return this.localPreviewCache[id];
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
