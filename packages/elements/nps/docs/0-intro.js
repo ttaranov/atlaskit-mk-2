@@ -43,14 +43,14 @@ export default md`
 
     ${(
       <Props
-        props={require('!!extract-react-types-loader!../src/NPS')}
-        heading="NPS Props"
+        props={require('!!extract-react-types-loader!../src/components/DefaultNPS')}
+        heading="DefaultNPS Props"
       />
     )}
 
     ${(
       <Props
-        props={require('!!extract-react-types-loader!../src/NPS')}
+        props={require('!!extract-react-types-loader!../src/components/NPS')}
         heading="NPS Props"
       />
     )}

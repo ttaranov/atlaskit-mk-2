@@ -7,11 +7,11 @@ import { Header, Description } from './common';
 import {
   ScoreContainer,
   Scale,
-  Comment as CommentStyled,
+  Comment as StyledComment,
 } from './styled/feedback';
 import { Wrapper, ButtonWrapper } from './styled/common';
 
-const CommentBox = ({
+export const CommentBox = ({
   placeholder,
   onCommentChange,
 }: {
@@ -19,20 +19,20 @@ const CommentBox = ({
   onCommentChange: Comment => void,
 }) => {
   return (
-    <CommentStyled>
+    <StyledComment>
       <FieldTextArea
         autoFocus
         shouldFitContainer
         placeholder={placeholder}
         isLabelHidden
         minimumRows={3}
-        onChange={onCommentChange}
+        onChange={(e: any) => onCommentChange(e.target.value)}
       />
-    </CommentStyled>
+    </StyledComment>
   );
 };
 
-const SendButton = ({
+export const SendButton = ({
   onClick,
   sendLabel,
 }: {
@@ -48,7 +48,7 @@ const SendButton = ({
   );
 };
 
-const RatingsButtons = ({
+export const RatingsButtons = ({
   selected,
   onRatingSelect,
 }: {
@@ -119,8 +119,7 @@ export default class Feedback extends React.Component<Props, State> {
     this.props.onRatingSelect(rating);
   };
 
-  onCommentChange = (e: any) => {
-    const comment = e.target.value;
+  onCommentChange = (comment: Comment) => {
     this.setState({ comment });
     this.props.onCommentChange(comment);
   };
@@ -142,9 +141,7 @@ export default class Feedback extends React.Component<Props, State> {
           onOptOut={onOptOut}
           optOutLabel={messages.optOut}
         />
-        <Wrapper>
-          <Description>{messages.description}</Description>
-        </Wrapper>
+        <Description>{messages.description}</Description>
         <Wrapper>
           <ScoreContainer>
             <Scale>{messages.scaleLow}</Scale>

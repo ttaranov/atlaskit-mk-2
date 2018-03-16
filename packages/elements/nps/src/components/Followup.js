@@ -8,7 +8,7 @@ import { Header, Description } from './common';
 import { Wrapper, ButtonWrapper } from './styled/common';
 import { Contact, RoleQuestion } from './styled/followup';
 
-const RoleDropdown = ({
+export const RoleDropdown = ({
   roles,
   placeholder,
   selected,

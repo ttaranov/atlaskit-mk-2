@@ -94,7 +94,7 @@ type State = {
   canContact: boolean,
 };
 
-export class NPS extends React.Component<Props, State> {
+export default class NPS extends React.Component<Props, State> {
   static defaultProps = {
     onClose: () => {},
     onOptOut: () => {},
@@ -254,5 +254,3 @@ export class NPS extends React.Component<Props, State> {
     return <NPSWrapper>{this.getPage()}</NPSWrapper>;
   }
 }
-
-export default NPS;

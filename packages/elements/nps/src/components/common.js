@@ -26,7 +26,7 @@ export function HeaderButtons({
   const buttons = [];
   if (canOptOut) {
     buttons.push(
-      <Button onClick={onOptOut} appearance="subtle">
+      <Button key="opt-out" onClick={onOptOut} appearance="subtle">
         {optOutLabel}
       </Button>,
     );
@@ -34,6 +34,7 @@ export function HeaderButtons({
   if (canClose) {
     buttons.push(
       <Button
+        key="close"
         appearance="subtle"
         onClick={onClose}
         iconBefore={<CloseIcon label="Close" size="small" />}

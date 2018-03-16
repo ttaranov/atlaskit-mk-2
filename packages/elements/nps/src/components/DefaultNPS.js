@@ -1,8 +1,7 @@
 //@flow
 
 import React from 'react';
-import {
-  NPS,
+import NPS, {
   type Rating,
   type Comment,
   type Role,
