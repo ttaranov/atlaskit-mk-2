@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.0.4
+- [patch] Update appearance to show the buttons on the outside of the Editor [d59ad61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d59ad61)
+
 ## 65.0.3
 - [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
 
