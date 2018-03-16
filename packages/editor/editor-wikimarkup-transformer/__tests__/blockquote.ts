@@ -1,5 +1,5 @@
 import { doc, p, blockquote } from '@atlaskit/editor-test-helpers';
-import { checkParse, checkParseEncodeRoundTrips } from './_test-helpers';
+import { checkParseEncodeRoundTrips } from './_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes

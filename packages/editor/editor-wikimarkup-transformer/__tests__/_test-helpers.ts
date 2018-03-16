@@ -44,7 +44,7 @@ export function checkParseEncodeRoundTrips(
   markup: string,
   node: (schema: Schema) => Node,
 ) {
-  checkParse(description, schema, markup, node);
+  checkParse(description, schema, [markup], node);
 
   checkEncode(description, schema, markup, node);
 
