@@ -6,10 +6,12 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 describe('WikiMarkup Transformer', () => {
   describe('blockquote', () => {
+    const WIKI_NOTATION = `bq. some texts here`;
+
     checkParseEncodeRoundTrips(
-      'bq. some texts here',
+      WIKI_NOTATION,
       defaultSchema,
-      'bq. some texts here',
+      WIKI_NOTATION,
       doc(blockquote(p('some texts here'))),
     );
     //
