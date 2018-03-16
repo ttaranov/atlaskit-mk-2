@@ -7,9 +7,17 @@ export type Props = {
   fileDetails: FileDetails;
 };
 
+const ViewerSelector: React.StatelessComponent<Props> = ({ fileDetails }) => {
+  switch(fileDetails.mediaType) {
+    case 'doc':
+      return <DocumentViewer />;
+    default:
+      return <ErrorMessage>The current file type is unsupported.</ErrorMessage>;
+  }
+};
+
 export const FileViewer: React.StatelessComponent<Props> = ({ fileDetails }) => (
   <Positioner>
-    {fileDetails.mediaType === 'doc' && <DocumentViewer />}
-    {fileDetails.mediaType === 'unknown' && <ErrorMessage>The current file type is unsupported.</ErrorMessage>}
+    <ViewerSelector fileDetails={fileDetails} />
   </Positioner>
 );
