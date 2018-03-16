@@ -95,6 +95,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           iconBefore={iconBefore}
           onClick={this.collectFeedback}
           selected={false}
+          spacing="compact"
         >
           <ButtonContent>Feedback</ButtonContent>
         </ToolbarButton>

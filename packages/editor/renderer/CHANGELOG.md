@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 13.0.2
+- [patch] Adds margin-top to ApplicationCard, MediaGroup and CodeBlock in renderer content [f2ae5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2ae5ca)
+
 ## 13.0.1
 
 ## 13.0.0

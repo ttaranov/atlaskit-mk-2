@@ -2,7 +2,8 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
-import { Card } from '@atlaskit/media-card';
+import { Card, CardView } from '@atlaskit/media-card';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 
 import { State, CollectionItem } from '../../../../domain';
 import {
@@ -232,5 +233,21 @@ describe('<UploadView />', () => {
 
     expect(root.find(FlagGroup)).toHaveLength(1);
     expect(isWebGLAvailable).toHaveBeenCalled();
+  });
+
+  it('should render annotate card action with annotate icon', () => {
+    const { component } = createConnectedComponent(state, mount);
+    expect(
+      component
+        .find(CardView)
+        .first()
+        .props().actions,
+    ).toContainEqual({
+      label: 'Annotate',
+      icon: expect.objectContaining({
+        type: AnnotateIcon,
+      }),
+      handler: expect.any(Function),
+    });
   });
 });

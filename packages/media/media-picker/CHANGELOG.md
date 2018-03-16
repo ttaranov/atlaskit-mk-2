@@ -1,5 +1,11 @@
 # @atlaskit/media-picker
 
+## 2.1.0
+- [minor] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
+
+## 2.0.2
+- [patch] add icon to annotate card action [e982c4b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e982c4b)
+
 ## 2.0.1
 
 ## 2.0.0
