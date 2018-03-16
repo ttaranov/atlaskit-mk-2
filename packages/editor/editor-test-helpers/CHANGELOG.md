@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.8
+- [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
+
 ## 2.0.7
 
 ## 2.0.6

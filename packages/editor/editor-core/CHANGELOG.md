@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.0.3
+- [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
+
 ## 65.0.2
 - [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
 
