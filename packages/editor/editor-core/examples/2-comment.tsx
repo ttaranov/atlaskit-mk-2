@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
+import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
@@ -132,6 +133,9 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                         key="toolbar-feedback"
                       />,
                       <ToolbarHelp key="toolbar-help" />,
+                    ]}
+                    secondaryToolbarComponents={[
+                      <LockCircleIcon key="permission" size="large" label="Permissions" />,
                     ]}
                   />
                 </CollapsedEditor>
