@@ -10,6 +10,7 @@ import {
   processRawValue,
 } from '../utils';
 import { EventDispatcher } from '../event-dispatcher';
+import { safeInsert } from 'prosemirror-utils';
 
 export type ContextUpdateHandler = (
   editorView: EditorView,
@@ -167,8 +168,8 @@ export default class EditorActions {
       return false;
     }
 
-    const tr = state.tr.replaceSelectionWith(content).scrollIntoView();
-    this.editorView.dispatch(tr);
+    // try to find a place in the document where to insert a node if its not allowed at the cursor position by schema
+    this.editorView.dispatch(safeInsert(content)(state.tr).scrollIntoView());
 
     return true;
   }

@@ -6,7 +6,7 @@ import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import MediaGroup from '../../../../src/react/nodes/mediaGroup';
 import { CardView, Card } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { EventHandlers } from '../../../../src/ui/Renderer';
+import { EventHandlers } from '@atlaskit/editor-common';
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 import * as sinon from 'sinon';

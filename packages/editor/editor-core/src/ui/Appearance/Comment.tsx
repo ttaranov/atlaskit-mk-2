@@ -44,7 +44,9 @@ const CommentEditor: any = styled.div`
   flex-direction: column;
 
   min-width: 272px;
-  min-height: 30px;
+  /* Border + Toolbar + Footer + (Paragraph + ((Parahraph + Margin) * (DefaultLines - 1)) */
+  /* calc(2px + 40px + 24px + ( 20px + (32px * 2))) */
+  min-height: 150px;
   height: auto;
   ${(props: CommentEditorProps) =>
     props.maxHeight
@@ -114,7 +116,7 @@ const SecondaryToolbar = styled.div`
   justify-content: flex-end;
   align-items: center;
   display: flex;
-  padding: 12px 20px;
+  padding: 12px 1px;
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
@@ -166,47 +168,49 @@ export default class Editor extends React.Component<
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <CommentEditor
-        className={this.flashToggle ? '-flash' : ''}
-        isMaxContentSizeReached={maxContentSizeReached}
-        maxHeight={maxHeight}
-      >
-        <MainToolbar>
-          <Toolbar
-            editorView={editorView!}
-            editorActions={editorActions}
-            eventDispatcher={eventDispatcher!}
-            providerFactory={providerFactory!}
-            appearance={this.appearance}
-            items={primaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
-            disabled={!!disabled}
-          />
-          <MainToolbarCustomComponentsSlot>
-            {customPrimaryToolbarComponents}
-          </MainToolbarCustomComponentsSlot>
-        </MainToolbar>
-        <ContentArea>
-          {customContentComponents}
-          <PluginSlot
-            editorView={editorView}
-            editorActions={editorActions}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={contentComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
-            disabled={!!disabled}
-          />
-          {editorDOMElement}
-        </ContentArea>
+      <div>
+        <CommentEditor
+          className={this.flashToggle ? '-flash' : ''}
+          isMaxContentSizeReached={maxContentSizeReached}
+          maxHeight={maxHeight}
+        >
+          <MainToolbar>
+            <Toolbar
+              editorView={editorView!}
+              editorActions={editorActions}
+              eventDispatcher={eventDispatcher!}
+              providerFactory={providerFactory!}
+              appearance={this.appearance}
+              items={primaryToolbarComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
+              disabled={!!disabled}
+            />
+            <MainToolbarCustomComponentsSlot>
+              {customPrimaryToolbarComponents}
+            </MainToolbarCustomComponentsSlot>
+          </MainToolbar>
+          <ContentArea>
+            {customContentComponents}
+            <PluginSlot
+              editorView={editorView}
+              editorActions={editorActions}
+              eventDispatcher={eventDispatcher}
+              providerFactory={providerFactory}
+              appearance={this.appearance}
+              items={contentComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
+              disabled={!!disabled}
+            />
+            {editorDOMElement}
+          </ContentArea>
+        </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>
-            {!onSave ? null : (
+            {!!onSave && (
               <Button
                 appearance="primary"
                 onClick={this.handleSave}
@@ -217,7 +221,7 @@ export default class Editor extends React.Component<
                 Save
               </Button>
             )}
-            {!onCancel ? null : (
+            {!!onCancel && (
               <Button
                 appearance="subtle"
                 onClick={this.handleCancel}
@@ -230,7 +234,7 @@ export default class Editor extends React.Component<
           <span style={{ flexGrow: 1 }} />
           {customSecondaryToolbarComponents}
         </SecondaryToolbar>
-      </CommentEditor>
+      </div>
     );
   };
 

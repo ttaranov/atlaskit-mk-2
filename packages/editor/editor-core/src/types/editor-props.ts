@@ -24,6 +24,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
+import { ExtensionHandlers } from '../index';
 
 export type EditorAppearance =
   | 'message'
@@ -116,4 +117,6 @@ export interface EditorProps {
 
   // TODO: Deprecated remove after v63.0.0
   allowTextFormatting?: boolean | TextFormattingOptions;
+
+  extensionHandlers?: ExtensionHandlers;
 }

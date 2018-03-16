@@ -2,8 +2,13 @@ import * as React from 'react';
 import WrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { MediaSingleLayout } from '@atlaskit/editor-common';
+import {
+  MediaSingleLayout,
+  akEditorFullPageMaxWidth,
+} from '@atlaskit/editor-common';
 import { MediaPluginState } from '../../pm-plugins/main';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
@@ -16,6 +21,7 @@ export interface Props {
 export interface State {
   target?: HTMLElement;
   layout?: MediaSingleLayout;
+  allowBreakout: boolean;
 }
 
 const icons = {
@@ -31,10 +37,18 @@ const icons = {
     icon: WrapRightIcon,
     label: 'wrap right',
   },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
+  },
+  'full-width': {
+    icon: FullWidthIcon,
+    label: 'full width',
+  },
 };
 
 export default class MediaSingleEdit extends React.Component<Props, State> {
-  state: State = { layout: 'center' };
+  state: State = { layout: 'center', allowBreakout: true };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -45,15 +59,19 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const { target, layout: selectedLayout } = this.state;
+    const { target, layout: selectedLayout, allowBreakout } = this.state;
     if (target) {
       return (
         <FloatingToolbar target={target} offset={[0, 3]} fitHeight={24}>
           {Object.keys(icons).map((layout, index) => {
+            // Don't render Wide and Full width button for image smaller than editor content width
+            if (index > 2 && !allowBreakout) {
+              return;
+            }
             const Icon = icons[layout].icon;
             const label = icons[layout].label;
             return (
-              /** Adding extra span tag here to get rid of unneccessary styling */
+              /** Adding extra span tag here to get rid of unnecessary styling */
               <span key={index}>
                 <ToolbarButton
                   selected={layout === selectedLayout}
@@ -64,7 +82,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
             );
           })}
           <Separator />
-          {/** Adding extra span tag here to get rid of unneccessary styling */}
+          {/** Adding extra span tag here to get rid of unnecessary styling */}
           <span>
             <ToolbarButton
               onClick={this.handleRemove}
@@ -89,6 +107,12 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     const { element: target, layout } = pluginState;
-    this.setState({ target, layout });
+    const mediaNode = pluginState.selectedMediaNode();
+    const allowBreakout = !!(
+      mediaNode &&
+      mediaNode.attrs &&
+      mediaNode.attrs.width > akEditorFullPageMaxWidth
+    );
+    this.setState({ target, layout, allowBreakout });
   };
 }

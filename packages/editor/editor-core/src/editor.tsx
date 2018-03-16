@@ -16,6 +16,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'message',
     disabled: false,
+    extensionHandlers: {},
   };
 
   static contextTypes = {

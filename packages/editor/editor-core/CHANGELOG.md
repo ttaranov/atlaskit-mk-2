@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 65.1.3
+
+## 65.1.2
+
+## 65.1.1
+- [patch] fix mention query regression [ed015a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed015a3)
+
+## 65.1.0
+- [minor] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
+
+## 65.0.5
+- [patch] CFE-846: Add support to extension handlers (lite version) [4ea9ffe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ea9ffe)
+
+## 65.0.4
+- [patch] Update appearance to show the buttons on the outside of the Editor [d59ad61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d59ad61)
+
+## 65.0.3
+- [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
+
 ## 65.0.2
 - [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
 

@@ -5,6 +5,7 @@ import { Node as PmNode } from 'prosemirror-model';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { ContentNodeView } from '../../../nodeviews';
 import Extension from '../ui/Extension';
+import { ExtensionHandlers } from '../../../types';
 
 export interface Props {
   node: PmNode;
@@ -17,20 +18,23 @@ class ExtensionNode extends ContentNodeView implements NodeView {
   private node: PmNode;
   private view: EditorView;
   private providerFactory: ProviderFactory;
+  private extensionHandlers: ExtensionHandlers;
 
   constructor(
     node: PmNode,
     view: EditorView,
     providerFactory: ProviderFactory,
+    extensionHandlers: ExtensionHandlers,
   ) {
     super(node, view);
-    const elementType = node.type.name === 'bodiedExtension' ? 'div' : 'span';
+    const elementType = node.type.name === 'inlineExtension' ? 'span' : 'div';
     this.node = node;
     this.view = view;
     this.providerFactory = providerFactory;
     this.domRef = document.createElement(elementType);
     // @see ED-3790
     this.domRef.className = `${node.type.name}View-container`;
+    this.extensionHandlers = extensionHandlers;
     this.renderReactComponent(node);
   }
 
@@ -55,6 +59,12 @@ class ExtensionNode extends ContentNodeView implements NodeView {
     super.destroy();
   }
 
+  ignoreMutation(mutation) {
+    // Extensions can perform async operations that will change the DOM.
+    // To avoid having their tree rebuilt, we need to ignore the mutation.
+    return true;
+  }
+
   private renderReactComponent(node: PmNode) {
     ReactDOM.render(
       <Extension
@@ -62,14 +72,18 @@ class ExtensionNode extends ContentNodeView implements NodeView {
         node={node}
         providerFactory={this.providerFactory}
         handleContentDOMRef={this.handleRef}
+        extensionHandlers={this.extensionHandlers}
       />,
       this.domRef,
     );
   }
 }
 
-export default function ExtensionNodeView(providerFactory: ProviderFactory) {
+export default function ExtensionNodeView(
+  providerFactory: ProviderFactory,
+  extensionHandlers: ExtensionHandlers,
+) {
   return (node: PmNode, view: EditorView, getPos: () => number): NodeView => {
-    return new ExtensionNode(node, view, providerFactory);
+    return new ExtensionNode(node, view, providerFactory, extensionHandlers);
   };
 }

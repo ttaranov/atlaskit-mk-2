@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
+import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
@@ -12,6 +13,9 @@ const transparent = themed({ light: 'transparent', dark: 'transparent' });
 type Props = {|
   /** Sets whether the checkbox is checked or unchecked. */
   isChecked: boolean,
+  /** Sets whether the checkbox is indeterminate. This only affects the
+   style and does not modify the isChecked property. */
+  isIndeterminate?: boolean,
   /** Sets whether the checkbox is disabled. */
   isDisabled?: boolean,
   /** Sets whether the checkbox should take up the full width of the parent. */
@@ -48,8 +52,26 @@ class CheckboxStateless extends Component<Props, State> {
     isHovered: false,
     mouseIsDown: false,
   };
-  checkbox: ?HTMLButtonElement;
+  checkbox: ?HTMLInputElement;
   actionKeys = [' '];
+
+  componentDidMount() {
+    const { isIndeterminate } = this.props;
+
+    // there is no HTML attribute for indeterminate, and thus no prop equivalent.
+    // it must be set via the ref.
+    if (this.checkbox) {
+      this.checkbox.indeterminate = !!isIndeterminate;
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { isIndeterminate } = this.props;
+
+    if (prevProps.isIndeterminate !== isIndeterminate && this.checkbox) {
+      this.checkbox.indeterminate = !!isIndeterminate;
+    }
+  }
 
   // expose blur/focus to consumers via ref
   blur = () => {
@@ -121,6 +143,27 @@ class CheckboxStateless extends Component<Props, State> {
     return color(rest);
   };
 
+  renderCheckboxIcon() {
+    const { isIndeterminate } = this.props;
+
+    const primaryColor = this.getPrimaryColor();
+    const secondaryColor = this.getSecondaryColor();
+
+    return isIndeterminate ? (
+      <CheckboxIndeterminateIcon
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+        label="checkboxIndeterminateIcon"
+      />
+    ) : (
+      <CheckboxIcon
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+        label="checkboxIcon"
+      />
+    );
+  }
+
   render() {
     const {
       isChecked,
@@ -133,6 +176,7 @@ class CheckboxStateless extends Component<Props, State> {
       value,
     } = this.props;
     const { isFocused, isActive, isHovered } = this.state;
+
     return (
       <Label
         isDisabled={isDisabled}
@@ -164,11 +208,7 @@ class CheckboxStateless extends Component<Props, State> {
             isHovered={isHovered}
             isInvalid={isInvalid}
           >
-            <CheckboxIcon
-              primaryColor={this.getPrimaryColor()}
-              secondaryColor={this.getSecondaryColor()}
-              label="checkboxIcon"
-            />
+            {this.renderCheckboxIcon()}
           </IconWrapper>
           <span>{label}</span>
         </Wrapper>
