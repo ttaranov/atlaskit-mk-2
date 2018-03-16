@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.1
+- [patch] fix mention query regression [ed015a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed015a3)
+
 ## 65.1.0
 - [minor] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
 
