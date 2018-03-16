@@ -12,6 +12,7 @@ import {
   taskItem,
   randomId,
   storyMediaProviderFactory,
+  bodiedExtension,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
@@ -26,6 +27,7 @@ import {
   stateKey as mediaPluginStateKey,
   DefaultMediaStateManager,
 } from './../../../src/plugins/media/pm-plugins/main';
+import extensionPlugin from '../../../src/plugins/extension';
 import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
 import { name } from '../../../package.json';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
@@ -412,7 +414,7 @@ describe(name, () => {
     });
 
     describe('#replaceSelection', () => {
-      const newDoc = doc(p('some new {<>} content'));
+      const newDoc = doc(p('some new {<>}content'));
       let editorActions;
       let editorView;
 
@@ -428,7 +430,7 @@ describe(name, () => {
           blockquote(p('text'))(defaultSchema).toJSON(),
         );
         expect(editorView.state.doc).to.deep.equal(
-          doc(p('some new '), blockquote(p('text')), p(' content')),
+          doc(p('some new content'), blockquote(p('text'))),
         );
       });
 
@@ -437,7 +439,7 @@ describe(name, () => {
           JSON.stringify(blockquote(p('text'))(defaultSchema).toJSON()),
         );
         expect(editorView.state.doc).to.deep.equal(
-          doc(p('some new '), blockquote(p('text')), p(' content')),
+          doc(p('some new content'), blockquote(p('text'))),
         );
       });
 
@@ -450,6 +452,29 @@ describe(name, () => {
         editorActions._privateRegisterEditor(editorView, new EventDispatcher());
         editorActions.replaceSelection('');
         expect(editorView.state.doc).to.deep.equal(doc(p('some new content')));
+      });
+
+      it('should find a correct place in the document if inserting node is not allowed at the cursor position', () => {
+        const attrs = {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'expand',
+        };
+        const editor = createEditor({
+          editorPlugins: [extensionPlugin],
+          doc: doc(bodiedExtension(attrs)(p('{<>}'))),
+        });
+        const editorView = editor.editorView;
+        const editorActions = new EditorActions();
+        editorActions._privateRegisterEditor(editorView, new EventDispatcher());
+        editorActions.replaceSelection(
+          bodiedExtension(attrs)(p('hello'))(defaultSchema).toJSON(),
+        );
+        expect(editorView.state.doc).to.deep.equal(
+          doc(
+            bodiedExtension(attrs)(p('')),
+            bodiedExtension(attrs)(p('hello')),
+          ),
+        );
       });
     });
 

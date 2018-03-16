@@ -9,6 +9,7 @@ import {
   createEditor,
   a as link,
   p,
+  h1,
   code_block,
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
@@ -59,9 +60,14 @@ describe('text-formatting input rules', () => {
     trackEvent = jest.fn();
   });
 
-  const autoformats = (string, editorContent, analyticsName) => {
+  const autoformats = (
+    string,
+    editorContent,
+    analyticsName,
+    contentNode = p,
+  ) => {
     it(`should autoformat: ${string}`, () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editor(doc(contentNode('{<>}')));
       insertText(editorView, string, sel);
       expect(editorView.state.doc).toEqualDocument(doc(editorContent));
 
@@ -333,6 +339,12 @@ describe('text-formatting input rules', () => {
       });
     });
 
+    describe('simple single word in heading', () => {
+      autoFormatPatterns.forEach(pattern => {
+        autoformats(pattern.string, h1(pattern.doc), pattern.name, h1);
+      });
+    });
+
     describe('multiple word should autoformat', () => {
       autoformats('__test test__', p(strong('test test')), 'strong');
       autoformats('**test test**', p(strong('test test')), 'strong');
@@ -515,6 +527,48 @@ describe('text-formatting input rules', () => {
         insertText(editorView, '*', sel);
         expect(editorView.state.doc).toEqualDocument(
           doc(p('**start', hardBreak(), 'end**')),
+        );
+      });
+    });
+
+    describe('after hardbreak', () => {
+      it('should autoformat strong:', () => {
+        const { editorView, sel } = editor(
+          doc(p('test', hardBreak(), '**strong{<>}')),
+        );
+        insertText(editorView, '**', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('test', hardBreak(), strong('strong'))),
+        );
+      });
+
+      it('should autoformat italic:', () => {
+        const { editorView, sel } = editor(
+          doc(p('test', hardBreak(), '*italic{<>}')),
+        );
+        insertText(editorView, '*', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('test', hardBreak(), em('italic'))),
+        );
+      });
+
+      it('should autoformat inline code:', () => {
+        const { editorView, sel } = editor(
+          doc(p('test', hardBreak(), '`code{<>}')),
+        );
+        insertText(editorView, '`', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('test', hardBreak(), code('code'))),
+        );
+      });
+
+      it('should autoformat inside heading:', () => {
+        const { editorView, sel } = editor(
+          doc(h1('test', hardBreak(), '*italic{<>}')),
+        );
+        insertText(editorView, '*', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(h1('test', hardBreak(), em('italic'))),
         );
       });
     });

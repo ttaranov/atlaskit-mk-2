@@ -25,6 +25,8 @@ import {
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { extensionHandlers } from '../example-helpers/extension-handlers';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -151,6 +153,9 @@ export default function Example() {
                   )}
                 />
               }
+              allowExtension={true}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
             />
           </EditorContext>
         )}
@@ -194,6 +199,9 @@ export default function Example() {
                   )}
                 />
               }
+              allowExtension={true}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
             />
           </EditorContext>
         )}

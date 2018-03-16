@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, FileDetails, ImageResizeMode } from '@atlaskit/media-core';
+import { FileDetails, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import { CardAction } from '../../actions';
 import { FileCardImageView } from '../cardImageView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { toHumanReadableMediaSize } from '../../utils';
@@ -90,8 +91,7 @@ export class FileCard extends Component<FileCardProps, {}> {
 
     return actions.map((action: CardAction) => {
       return {
-        label: action.label,
-        type: action.type,
+        ...action,
         handler: () => {
           // TODO remove || guarding and update action signature to be correct
           action.handler({ type: 'file', details: details || {} });

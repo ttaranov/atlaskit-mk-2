@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as deepcopy from 'deepcopy';
 import {
   ImageResizeMode,
-  CardActionType,
   MediaItemDetails,
   MediaItemType,
   FileDetails,
@@ -28,7 +27,13 @@ import {
   genericUrlPreview,
 } from '@atlaskit/media-test-helpers';
 import { CardView, CardAppearance, CardDimensions } from '../src';
-import { actions, clickHandler, mouseEnterHandler } from './index';
+import {
+  actions,
+  annotateCardAction,
+  deleteAction,
+  clickHandler,
+  mouseEnterHandler,
+} from './index';
 
 const images = [
   wideTransparentImage,
@@ -188,7 +193,18 @@ export const createMenuActionCards = (
           appearance={appearance}
           status="complete"
           metadata={metadata}
-          actions={actions.filter(a => a.type === CardActionType.delete)}
+          actions={[deleteAction]}
+        />
+      ),
+    },
+    {
+      title: '2 primary actions',
+      content: (
+        <CardView
+          appearance={appearance}
+          status="complete"
+          metadata={metadata}
+          actions={[annotateCardAction, deleteAction]}
         />
       ),
     },
@@ -289,7 +305,7 @@ export const createSelectableCards = (
           appearance={appearance}
           status="uploading"
           progress={0.7}
-          actions={actions.slice(2)}
+          actions={[deleteAction]}
           metadata={metadata}
           dataURI={dataURI}
           selectable={true}
@@ -643,7 +659,7 @@ export const generateStoriesForFilesWithAppearance = (
           appearance={appearance}
           metadata={genericFileDetails}
           progress={0.6}
-          actions={actions.filter(a => a.type === CardActionType.delete)}
+          actions={[deleteAction]}
         />
       ),
     },

@@ -92,8 +92,12 @@ const converters = {
     type.types.reduce(
       (acc, t, i) =>
         i < type.types.length - 1
-          ? [...acc, prettyConvert(t), <div>&</div>]
-          : [...acc, prettyConvert(t)],
+          ? [
+              ...acc,
+              <span key={i}>{prettyConvert(t)}</span>,
+              <div key={`divider-${i}`}>&</div>,
+            ]
+          : [...acc, <span key={i}>{prettyConvert(t)}</span>],
       [],
     ),
   string: type => {

@@ -88,6 +88,7 @@ describe(name, () => {
         'check-circle',
         'check',
         'checkbox',
+        'checkbox-indeterminate',
         'chevron-down-circle',
         'chevron-down',
         'chevron-left-circle',

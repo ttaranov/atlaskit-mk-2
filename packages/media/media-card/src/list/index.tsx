@@ -8,7 +8,6 @@ import {
   MediaCollection,
   MediaCollectionItem,
   Context,
-  CollectionAction,
   DataUriService,
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -20,6 +19,7 @@ import {
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
+import { CollectionAction } from '../actions';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
@@ -247,7 +247,6 @@ export class CardList extends Component<CardListProps, CardListState> {
       actions.map(action => {
         return {
           label: action.label,
-          type: action.type,
           handler: (item: MediaItem, event: Event) => {
             if (collection) {
               action.handler(collectionItem, collection, event);
