@@ -11,13 +11,14 @@ import { MainContainer } from './styles';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
+import { EditorViewProps } from './editorView/editorView';
 import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;
 }
 
 export interface MainEditorViewState {
-  EditorViewComponent?: ComponentClass<any>;
+  EditorViewComponent?: ComponentClass<EditorViewProps>;
 }
 
 export interface MainEditorViewOwnProps {
@@ -42,7 +43,11 @@ export class MainEditorView extends Component<
   MainEditorViewProps,
   MainEditorViewState
 > {
-  state: MainEditorViewState = {};
+  static EditorViewComponent: ComponentClass<EditorViewProps>;
+
+  state: MainEditorViewState = {
+    EditorViewComponent: MainEditorView.EditorViewComponent,
+  };
 
   componentDidMount() {
     this.loadEditorView(this.props);
@@ -59,6 +64,8 @@ export class MainEditorView extends Component<
     }
 
     const EditorViewComponent = await editorViewLoader();
+
+    MainEditorView.EditorViewComponent = EditorViewComponent;
     this.setState({
       EditorViewComponent,
     });
