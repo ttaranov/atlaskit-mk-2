@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
-import { MediaType } from '@atlaskit/media-core';
 import {
   Context,
-  MediaItemType,
   FileItem,
   MediaType,
 } from '@atlaskit/media-core';
