@@ -8,7 +8,7 @@ const branch = process.env.BITBUCKET_BRANCH
   : process.env.USER;
 
 const local = branch ? branch + now() : now();
-const localIdentifier = local.replace(' ', '_');
+const localIdentifier = local.replace(' ', '_').replace('/', '_');
 
 function now() {
   const today = new Date();
