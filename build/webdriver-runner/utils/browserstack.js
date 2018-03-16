@@ -10,7 +10,10 @@ async function startBrowserStack() {
       if (error) {
         return reject(error);
       }
-      resolve();
+      setTimeout(() => {
+        resolve();
+        console.log('Connected to browserstack');
+      }, 3000);
     });
   });
 }

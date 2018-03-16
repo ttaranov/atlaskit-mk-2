@@ -24,15 +24,15 @@ BrowserTestCase(
 
 BrowserTestCase(
   'user should be able to format bold and italics with markdown',
-  { skip: ['edge', 'ie'] },
+  { skip: ['ie'] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(
-      editorSelector,
-      '__bold__ _italics_ **starbold** *italicsstar* ',
-    );
+    await sample.type(editorSelector, '__bold__ ');
+    await sample.type('_italics_ ');
+    await sample.type('**starbold** ');
+    await sample.type('*italicsstar* ');
 
     await sample.waitForSelector('strong');
     const doc = await sample.$eval(editorSelector, getDocFromElement);
@@ -42,12 +42,12 @@ BrowserTestCase(
 
 BrowserTestCase(
   'user should be able to write inline code',
-  { skip: ['edge', 'ie'] },
+  { skip: ['ie'] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(editorSelector, '`this` ');
+    await sample.type(editorSelector, 'inline `this` ');
 
     await sample.waitForSelector('pre');
     const doc = await sample.$eval(editorSelector, getDocFromElement);
