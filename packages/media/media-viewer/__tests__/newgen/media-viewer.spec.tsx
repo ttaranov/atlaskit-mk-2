@@ -5,7 +5,7 @@ import Blanket from '@atlaskit/blanket';
 import { Stubs } from '../_stubs';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
-import { MediaItem, MediaItemType, Context } from '@atlaskit/media-core';
+import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 
 describe('<MediaViewer />', () => {
   const token = 'some-token';
@@ -26,7 +26,9 @@ describe('<MediaViewer />', () => {
   it('should close Media Viewer on click', () => {
     const context = Stubs.context(contextConfig);
     const onClose = jest.fn();
-    const el = mount(<MediaViewer data={item} context={context as any} onClose={onClose} />);
+    const el = mount(
+      <MediaViewer data={item} context={context as any} onClose={onClose} />,
+    );
     el.find(Blanket).simulate('click');
     expect(onClose).toHaveBeenCalled();
   });
@@ -51,37 +53,10 @@ describe('<MediaViewer />', () => {
     expect(el.find(MediaViewerRenderer)).toHaveLength(1);
   });
 
-  // it.skip('shows a list of items with a selected file', () => {
-  //   const context = {};
-  //   const list = ['', ''];
-  //   const selected = '';
-  //   const el = mount(
-  //     <MediaViewer data={list} selected={selected} context={context as any} />,
-  //   );
-  // });
-
-  // it.skip('shows a list of items without a selected file', () => {
-  //   const context = {};
-  //   const list = ['', ''];
-  //   const selected = '';
-  //   const el = mount(<MediaViewer data={list} context={context as any} />);
-  // });
-
-  // it.skip('shows a selected file from a collection', () => {
-  //   const context = {};
-  //   const collection;
-  //   const selected;
-  //   const el = mount(
-  //     <MediaViewer data={collection} selected={selected} context={context as any} />,
-  //   );
-  // });
-
-  // it.skip('shows a file from a collection without a selection', () => {
-  //   const context = {};
-  //   const collection;
-  //   const el = mount(<MediaViewer data={collection} context={context as any} />);
-  // });
-
+  it.skip('shows a list of items with a selected file');
+  it.skip('shows a list of items without a selected file');
+  it.skip('shows a selected file from a collection');
+  it.skip('shows a file from a collection without a selection');
   it.skip(
     'shows an error message if selectedItem is different from provided item',
   );
@@ -89,6 +64,6 @@ describe('<MediaViewer />', () => {
   it.skip(
     'shows an error message if selectedItem can not be found in collection',
   );
-
-  // TODO on remounting we will resubscribe
+  it.skip('unsubscribes from the provider when unmounted');
+  it.skip('resubscribes to the provider when properties changed');
 });
