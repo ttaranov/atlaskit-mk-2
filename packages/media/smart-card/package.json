@@ -23,7 +23,7 @@
     "@atlaskit/button": "^6.6.3",
     "@atlaskit/lozenge": "^3.6.1",
     "@atlaskit/dropdown-menu": "^3.12.1",
-    "prop-types": "^15.6.1",
+    "prop-types": "^15.5.10",
     "react-lazily-render": "^1.0.1",
     "styled-components": "1.4.6 - 3"
   },
