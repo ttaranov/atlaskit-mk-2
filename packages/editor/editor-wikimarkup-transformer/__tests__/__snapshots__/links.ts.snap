@@ -4,6 +4,9 @@ exports[`JIRA wiki markup - Links should convert double baskslash to a hardBreak
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text with a",
@@ -28,6 +31,9 @@ exports[`JIRA wiki markup - Links should divide marks intervals into combination
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -85,6 +91,9 @@ exports[`JIRA wiki markup - Links should find mentions in wiki markup 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with a ",
@@ -133,6 +142,9 @@ exports[`JIRA wiki markup - Links should find monospace text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with ",
@@ -159,6 +171,9 @@ exports[`JIRA wiki markup - Links should not apply marks on separate lines 1`] =
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a line with an *asterisk",
@@ -183,6 +198,9 @@ exports[`JIRA wiki markup - Links should not fail while applying marks to a stri
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text ",
@@ -225,6 +243,9 @@ exports[`JIRA wiki markup - Links should not search for monospace text inside co
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with ",
@@ -255,6 +276,9 @@ exports[`JIRA wiki markup - Links should process string with a wrong order of ef
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -324,6 +348,9 @@ exports[`JIRA wiki markup - Links should use code mark first if it's the inner m
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -368,6 +395,9 @@ exports[`JIRA wiki markup - Links should use code mark first if it's the outer m
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",

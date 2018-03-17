@@ -199,6 +199,30 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     margin: 24px 0;
   }
 
+  .ProseMirror > [data-indent-level='1'] {
+    margin-left: 30px;
+  }
+
+  .ProseMirror > [data-indent-level='2'] {
+    margin-left: 60px;
+  }
+
+  .ProseMirror > [data-indent-level='3'] {
+    margin-left: 90px;
+  }
+
+  .ProseMirror > [data-indent-level='4'] {
+    margin-left: 120px;
+  }
+
+  .ProseMirror > [data-indent-level='5'] {
+    margin-left: 150px;
+  }
+
+  .ProseMirror > [data-indent-level='6'] {
+    margin-left: 180px;
+  }
+
   .ProseMirror-hideselection *::selection {
     background: transparent;
   }

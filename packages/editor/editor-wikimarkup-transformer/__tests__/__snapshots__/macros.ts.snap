@@ -5,6 +5,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
+        "indentLevel": null,
         "level": 1,
       },
       "content": Array [
@@ -21,6 +22,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "This text is inside panel",
@@ -34,6 +38,7 @@ Object {
     },
     Object {
       "attrs": Object {
+        "indentLevel": null,
         "level": 1,
       },
       "content": Array [
@@ -50,6 +55,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "marks": Array [
@@ -72,6 +80,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "only quote",
@@ -93,6 +104,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
+        "indentLevel": null,
         "level": 1,
       },
       "content": Array [
@@ -109,6 +121,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "marks": Array [
@@ -129,6 +144,9 @@ Object {
       "type": "panel",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": ".",
@@ -146,6 +164,9 @@ exports[`JIRA wiki markup - Macros should convert multiple quotes containing str
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -157,6 +178,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "quote1",
@@ -171,6 +195,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "quote2",
@@ -192,6 +219,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
+        "indentLevel": null,
         "level": 1,
       },
       "content": Array [
@@ -208,6 +236,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "Panel with nested quote here",
@@ -230,6 +261,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "simple quote",
@@ -250,6 +284,9 @@ exports[`JIRA wiki markup - Macros should convert string with quote into paragra
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a string with a ",
@@ -261,6 +298,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "quote",
@@ -323,6 +363,9 @@ exports[`JIRA wiki markup - Macros should render rule node if it is on the top l
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text",
@@ -335,6 +378,9 @@ Object {
       "type": "rule",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text as well",
@@ -357,6 +403,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "this is a text",
@@ -366,6 +415,9 @@ Object {
           "type": "paragraph",
         },
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "---",
@@ -375,6 +427,9 @@ Object {
           "type": "paragraph",
         },
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "this is a text as well",
@@ -395,6 +450,9 @@ exports[`JIRA wiki markup - Macros should split nodes if there is more than one 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -406,6 +464,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "quote with a ",
@@ -420,6 +481,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "marks": Array [
@@ -442,6 +506,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": " inside",
@@ -454,6 +521,9 @@ Object {
       "type": "blockquote",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": ".",
@@ -471,6 +541,9 @@ exports[`JIRA wiki markup - Macros should support strings with a wrong order of 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -485,6 +558,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": " panel with a ",
@@ -502,6 +578,9 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "marks": Array [
@@ -524,6 +603,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": " but it is broken",

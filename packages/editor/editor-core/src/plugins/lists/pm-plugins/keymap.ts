@@ -4,7 +4,7 @@ import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
 import * as commands from '../../../commands';
 import { trackAndInvoke } from '../../../analytics';
-import { enterKeyCommand } from '../commands';
+import { enterKeyCommand, indentList, outdentList } from '../commands';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   const list = {};
@@ -29,7 +29,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.indentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.indent.keyboard',
-      commands.indentList(),
+      indentList(),
     ),
     list,
   );
@@ -37,7 +37,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.outdentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.outdent.keyboard',
-      commands.outdentList(),
+      outdentList(),
     ),
     list,
   );

@@ -5,6 +5,7 @@ import { createEditor, chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   doc,
   p,
+  pWithAttrs,
   blockquote,
   decisionList,
   decisionItem,
@@ -146,9 +147,11 @@ describe(name, () => {
         const decisionsAndTasks = doc(
           decisionList({})(decisionItem({})()),
           taskList({})(taskItem({})()),
-          p('text'),
+          pWithAttrs({ indentLevel: 1 })('test'),
         )(defaultSchema);
-        const expected = doc(p('text'))(defaultSchema);
+        const expected = doc(pWithAttrs({ indentLevel: 1 })('test'))(
+          defaultSchema,
+        );
         editorActions.replaceDocument(decisionsAndTasks.toJSON());
 
         const actual = await editorActions.getValue();

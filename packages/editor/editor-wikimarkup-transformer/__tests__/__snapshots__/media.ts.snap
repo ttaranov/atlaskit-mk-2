@@ -4,6 +4,9 @@ exports[`JIRA wiki markup - Images and attachments should find absolute URL imag
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "!http://www.host.com/image.gif!",
@@ -21,6 +24,9 @@ exports[`JIRA wiki markup - Images and attachments should find attachments in mu
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a line of text",
@@ -54,6 +60,9 @@ Object {
       "type": "mediaSingle",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "yep",

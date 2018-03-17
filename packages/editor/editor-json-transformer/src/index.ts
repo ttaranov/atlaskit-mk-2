@@ -32,19 +32,27 @@ const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
 
 const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
-
+  let attrs;
   if (isMediaNode(node)) {
-    obj.attrs = mediaToJSON(node).attrs;
+    attrs = mediaToJSON(node).attrs;
   } else if (isMentionNode(node)) {
-    obj.attrs = mentionToJSON(node).attrs;
+    attrs = mentionToJSON(node).attrs;
   } else if (isCodeBlock(node)) {
-    obj.attrs = codeBlockToJSON(node).attrs;
+    attrs = codeBlockToJSON(node).attrs;
   } else if (isTableCell(node)) {
-    obj.attrs = toJSONTableCell(node).attrs;
+    attrs = toJSONTableCell(node).attrs;
   } else if (isTableHeader(node)) {
-    obj.attrs = toJSONTableHeader(node).attrs;
+    attrs = toJSONTableHeader(node).attrs;
   } else if (Object.keys(node.attrs).length) {
-    obj.attrs = node.attrs;
+    attrs = {};
+    for (let key in node.attrs) {
+      if (node.attrs[key] !== null && node.attrs[key] !== undefined) {
+        attrs[key] = node.attrs[key];
+      }
+    }
+  }
+  if (attrs && Object.keys(attrs).length > 0) {
+    obj.attrs = attrs;
   }
 
   if (node.isText) {

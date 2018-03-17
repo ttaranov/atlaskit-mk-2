@@ -74,6 +74,7 @@ export interface EditorProps {
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
+  allowIndent?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

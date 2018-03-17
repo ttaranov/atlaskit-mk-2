@@ -16,6 +16,17 @@
           "items": {
             "$ref": "#/definitions/inline_node"
           }
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "indentLevel": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 6
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -38,6 +49,17 @@
             "$ref": "#/definitions/listItem_node"
           },
           "minItems": 1
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "indentLevel": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 6
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -220,11 +242,13 @@
             "order": {
               "type": "number",
               "minimum": 1
+            },
+            "indentLevel": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 6
             }
           },
-          "required": [
-            "order"
-          ],
           "additionalProperties": false
         }
       },
@@ -253,6 +277,11 @@
           "type": "object",
           "properties": {
             "level": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "indentLevel": {
               "type": "number",
               "minimum": 1,
               "maximum": 6
