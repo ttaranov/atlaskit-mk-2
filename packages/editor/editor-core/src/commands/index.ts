@@ -190,9 +190,9 @@ export function toggleOrderedList(): Command {
   return toggleList('orderedList');
 }
 
-export function wrapInList(nodeType): Command {
+export function wrapInList(nodeType, attrs?): Command {
   return baseCommand.autoJoin(
-    baseListCommand.wrapInList(nodeType),
+    baseListCommand.wrapInList(nodeType, attrs),
     (before, after) => before.type === after.type && before.type === nodeType,
   );
 }
@@ -344,27 +344,6 @@ export function insertRule(): Command {
   };
 }
 
-export function indentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      return baseListCommand.sinkListItem(listItem)(state, dispatch);
-    }
-    return false;
-  };
-}
-
-export function outdentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      return baseListCommand.liftListItem(listItem)(state, dispatch);
-    }
-    return false;
-  };
-}
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
@@ -504,6 +483,61 @@ export function createParagraphAtEnd(): Command {
     tr.scrollIntoView();
     dispatch(tr);
     return true;
+  };
+}
+
+export function changeIndent(dir = 1): Command {
+  return function(state: EditorState, dispatch, view) {
+    const { selection } = state;
+    const { $from, $to } = selection;
+    const { paragraph, heading, bulletList, orderedList } = state.schema.nodes;
+    const node = $to.node(1);
+
+    if (node) {
+      const indentLevel = node.attrs.indentLevel || 0;
+      const inLimit = dir === 1 ? indentLevel < 6 : indentLevel >= 1;
+
+      if (node.type === paragraph || node.type === heading) {
+        if (inLimit) {
+          const attrs: { [key: string]: any } = {};
+          if (node.type === heading) {
+            attrs.level = node.attrs['level'];
+          }
+          // indentLevel should be set null if its decreased to 0.
+          attrs.indentLevel = indentLevel + dir || null;
+          dispatch(state.tr.setBlockType($to.pos, $to.pos, node.type, attrs));
+        }
+        return true;
+      }
+      if (
+        (node.type === bulletList || node.type === orderedList) &&
+        $to.depth === 3
+      ) {
+        const listStart = $to.start(1);
+        const firstlistPos = state.doc.resolve(listStart + 2);
+        if ($to.pos <= firstlistPos.end(3)) {
+          if (inLimit) {
+            let tr = state.tr;
+            const newNode = node.type.create(
+              { indentLevel: indentLevel + dir },
+              node.content,
+            );
+            tr = tr.replaceRangeWith($to.start(1), $to.end(1), newNode);
+            tr = tr.setSelection(
+              new TextSelection(
+                tr.doc.resolve($from.pos),
+                tr.doc.resolve($to.pos),
+              ),
+            );
+            dispatch(tr);
+            return true;
+          } else if (indentLevel === 6) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   };
 }
 

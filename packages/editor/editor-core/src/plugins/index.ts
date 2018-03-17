@@ -40,3 +40,4 @@ export { default as textFormattingPlugin } from './text-formatting';
 export { default as typeAheadPlugin } from './type-ahead';
 export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as widthPlugin } from './width';
+export { default as indentPlugin } from './indent';

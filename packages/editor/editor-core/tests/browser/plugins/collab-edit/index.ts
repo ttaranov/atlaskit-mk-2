@@ -55,6 +55,7 @@ describe('editor/plugins/collab-edit', () => {
                 text: 'Hello World',
               },
             ],
+            attrs: { indentLevel: null },
           },
         ],
       });
@@ -73,6 +74,7 @@ describe('editor/plugins/collab-edit', () => {
         content: [
           {
             type: 'paragraph',
+            attrs: { indentLevel: null },
           },
         ],
       });
@@ -111,6 +113,7 @@ describe('editor/plugins/collab-edit', () => {
                       text: 'Oscar',
                     },
                   ],
+                  attrs: { indentLevel: null },
                 },
               ],
             },
@@ -129,6 +132,7 @@ describe('editor/plugins/collab-edit', () => {
                 text: 'Oscar',
               },
             ],
+            attrs: { indentLevel: null },
           },
         ],
       });

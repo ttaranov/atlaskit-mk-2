@@ -1,4 +1,4 @@
-import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
+import { NodeSpec, Node } from 'prosemirror-model';
 import { Inline } from './doc';
 
 /**
@@ -7,14 +7,34 @@ import { Inline } from './doc';
 export interface Definition {
   type: 'paragraph';
   content: Array<Inline>;
+  /**
+   * @minProperties 1
+   */
+  attrs?: {
+    /**
+     * @minimum 1
+     * @maximum 6
+     */
+    indentLevel?: number;
+  };
 }
 
-const pDOM: DOMOutputSpec = ['p', 0];
 export const paragraph: NodeSpec = {
+  attrs: { indentLevel: { default: null } },
   content: 'inline*',
   group: 'block',
-  parseDOM: [{ tag: 'p' }],
-  toDOM() {
-    return pDOM;
+  parseDOM: [
+    {
+      tag: 'p',
+      getAttrs: (dom: HTMLElement) => ({
+        indentLevel: dom.getAttribute('data-indent-level'),
+      }),
+    },
+  ],
+  toDOM(node: Node) {
+    const attrs = {
+      'data-indent-level': node.attrs.indentLevel,
+    };
+    return ['p', attrs, 0];
   },
 };

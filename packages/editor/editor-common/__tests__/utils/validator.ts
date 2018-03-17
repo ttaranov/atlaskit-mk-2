@@ -787,6 +787,7 @@ describe('Renderer - Validator', () => {
           getValidNode({
             type: 'paragraph',
             content: [{ type: 'text', text: 'Hello World' }],
+            attrs: { indentLevel: 3 },
           }),
         ).to.deep.equal({
           type: 'paragraph',
@@ -796,7 +797,25 @@ describe('Renderer - Validator', () => {
               text: 'Hello World',
             },
           ],
+          attrs: { indentLevel: 3 },
         });
+      });
+    });
+
+    it('should return "paragraph" with content and added indentLevel', () => {
+      expect(
+        getValidNode({
+          type: 'paragraph',
+          content: [{ type: 'text', text: 'Hello World' }],
+        }),
+      ).to.deep.equal({
+        type: 'paragraph',
+        content: [
+          {
+            type: 'text',
+            text: 'Hello World',
+          },
+        ],
       });
     });
 

@@ -194,6 +194,8 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
   };
 };
 
+const between = (x, a, b) => x >= a && x <= b;
+
 /*
  * This method will validate a Node according to the spec defined here
  * https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Nodes
@@ -483,10 +485,16 @@ export const getValidNode = (
         break;
       }
       case 'paragraph': {
-        return {
+        const node: ADNode = {
           type,
           content: content || [],
         };
+        if (attrs && attrs.indentLevel && between(attrs.indentLevel, 1, 6)) {
+          node.attrs = {
+            indentLevel: attrs.indentLevel,
+          };
+        }
+        return node;
       }
       case 'rule': {
         return {
@@ -516,37 +524,54 @@ export const getValidNode = (
       case 'heading': {
         if (attrs && content) {
           const { level } = attrs;
-          const between = (x, a, b) => x >= a && x <= b;
           if (level && between(level, 1, 6)) {
-            return {
+            const node: ADNode = {
               type,
               content,
               attrs: {
                 level,
               },
             };
+            if (
+              attrs &&
+              attrs.indentLevel &&
+              between(attrs.indentLevel, 1, 6)
+            ) {
+              node.attrs.indentLevel = attrs.indentLevel;
+            }
+            return node;
           }
         }
         break;
       }
       case 'bulletList': {
         if (content) {
-          return {
+          const node: ADNode = {
             type,
             content,
           };
+          if (attrs && attrs.indentLevel && between(attrs.indentLevel, 1, 6)) {
+            node.attrs = {
+              indentLevel: attrs.indentLevel,
+            };
+          }
+          return node;
         }
         break;
       }
       case 'orderedList': {
         if (content) {
-          return {
+          const node: ADNode = {
             type,
             content,
             attrs: {
               order: attrs && attrs.order,
             },
           };
+          if (attrs && attrs.indentLevel && between(attrs.indentLevel, 1, 6)) {
+            node.attrs.indentLevel = attrs.indentLevel;
+          }
+          return node;
         }
         break;
       }

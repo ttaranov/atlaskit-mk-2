@@ -74,6 +74,7 @@ export interface EditorProps {
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
+  allowIndent?: boolean;
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
 

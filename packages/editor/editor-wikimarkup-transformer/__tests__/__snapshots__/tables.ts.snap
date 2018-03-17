@@ -20,6 +20,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "heading 1",
@@ -40,6 +43,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "heading 2",
@@ -60,6 +66,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "heading 3",
@@ -94,6 +103,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "col A1",
@@ -114,6 +126,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "col A2",
@@ -134,6 +149,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "col A3",
@@ -168,6 +186,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "col B1",
@@ -188,6 +209,9 @@ Object {
               },
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "indentLevel": null,
+                  },
                   "content": Array [
                     Object {
                       "text": "col B2",
@@ -209,6 +233,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
+                    "indentLevel": null,
                     "level": "1",
                   },
                   "content": Array [

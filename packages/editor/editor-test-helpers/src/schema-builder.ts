@@ -265,6 +265,8 @@ export const slice = (...content: BuilderContent[]) =>
 //
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
+export const pWithAttrs = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.paragraph, attrs);
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
 export const h1 = nodeFactory(sampleSchema.nodes.heading, { level: 1 });
 export const h2 = nodeFactory(sampleSchema.nodes.heading, { level: 2 });
@@ -272,9 +274,15 @@ export const h3 = nodeFactory(sampleSchema.nodes.heading, { level: 3 });
 export const h4 = nodeFactory(sampleSchema.nodes.heading, { level: 4 });
 export const h5 = nodeFactory(sampleSchema.nodes.heading, { level: 5 });
 export const h6 = nodeFactory(sampleSchema.nodes.heading, { level: 6 });
+export const hWithAttrs = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.heading, attrs);
 export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
+export const ulWithAttrs = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.bulletList, attrs);
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
+export const olWithAttrs = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.orderedList, attrs);
 export const br = nodeFactory(sampleSchema.nodes.hardBreak, {});
 export const hr = nodeFactory(sampleSchema.nodes.rule, {});
 export const panel = (attrs: {} = {}) =>

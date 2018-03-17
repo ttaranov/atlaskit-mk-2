@@ -4,6 +4,9 @@ exports[`JIRA wiki markup - Misc should escape macros 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a \\\\{panel} text, not a macro{panel}",
@@ -21,6 +24,9 @@ exports[`JIRA wiki markup - Misc should escape monospace text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a \\\\{{normal text}}, not a monospaced",
@@ -38,6 +44,9 @@ exports[`JIRA wiki markup - Misc should find emojis and mentions in text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a string with ",
@@ -80,6 +89,9 @@ exports[`JIRA wiki markup - Misc should find emojis in text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a string with ",
@@ -121,6 +133,9 @@ exports[`JIRA wiki markup - Misc should find emojis in text with marks 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a string ",

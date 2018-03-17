@@ -19,7 +19,7 @@ import { analyticsService } from '../../analytics';
 import { stateKey } from './pm-plugins/main';
 import { resetHoverSelection, insertRow } from './actions';
 import { createTableNode, isIsolating } from './utils';
-import { outdentList } from '../../commands';
+import { outdentList } from '../lists/commands';
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;

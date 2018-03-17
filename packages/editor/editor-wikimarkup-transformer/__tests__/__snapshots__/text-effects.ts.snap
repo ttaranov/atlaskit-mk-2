@@ -4,6 +4,9 @@ exports[`JIRA wiki markup - Text effects should convert double baskslash to a ha
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text with a",
@@ -28,6 +31,9 @@ exports[`JIRA wiki markup - Text effects should divide marks intervals into comb
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -85,6 +91,9 @@ exports[`JIRA wiki markup - Text effects should find monospace text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with ",
@@ -111,6 +120,9 @@ exports[`JIRA wiki markup - Text effects should find strong marks in the text 1`
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with a ",
@@ -141,6 +153,9 @@ exports[`JIRA wiki markup - Text effects should not apply marks on separate line
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a line with an *asterisk",
@@ -165,6 +180,9 @@ exports[`JIRA wiki markup - Text effects should not fail while applying marks to
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this is a text ",
@@ -207,6 +225,9 @@ exports[`JIRA wiki markup - Text effects should not search for monospace text in
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a string with ",
@@ -237,6 +258,9 @@ exports[`JIRA wiki markup - Text effects should process string with a wrong orde
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -306,6 +330,9 @@ exports[`JIRA wiki markup - Text effects should use code mark first if it's the 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",
@@ -350,6 +377,9 @@ exports[`JIRA wiki markup - Text effects should use code mark first if it's the 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This is a ",

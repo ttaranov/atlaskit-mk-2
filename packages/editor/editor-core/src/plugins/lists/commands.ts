@@ -4,11 +4,14 @@ import {
   Fragment,
   NodeRange,
   Slice,
+  NodeType,
 } from 'prosemirror-model';
 import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
+import * as baseListCommand from 'prosemirror-schema-list';
 import { EditorView } from 'prosemirror-view';
 import * as commands from '../../commands';
+import { Command } from '../../commands';
 import { isEmptyNode } from '../../utils/document';
 
 /**
@@ -104,7 +107,7 @@ export const enterKeyCommand = (
       /** Check is the wrapper has any content */
       const wrapperHasContent = wrapper.content.size > 2;
       if (isEmptyNode(node) && !wrapperHasContent) {
-        return commands.outdentList()(state, dispatch);
+        return outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);
       }
@@ -282,4 +285,79 @@ function listLiftTarget(schema: Schema, resPos: ResolvedPos): number {
     }
   }
   return target - 1;
+}
+
+export function indentList(): Command {
+  return function(state, dispatch) {
+    const { listItem } = state.schema.nodes;
+    const { $from } = state.selection;
+    if ($from.node(-1).type === listItem) {
+      return sinkListItem(listItem)(state, dispatch);
+    }
+    return false;
+  };
+}
+
+export function outdentList(): Command {
+  return function(state, dispatch) {
+    const { listItem } = state.schema.nodes;
+    const { $from } = state.selection;
+    if ($from.node(-1).type === listItem) {
+      return baseListCommand.liftListItem(listItem)(state, dispatch);
+    }
+    return false;
+  };
+}
+
+export function sinkListItem(itemType: NodeType) {
+  return function(state: EditorState, dispatch) {
+    const { $from, $to } = state.selection;
+    const range = $from.blockRange(
+      $to,
+      node => node.childCount > 0 && node.firstChild!.type === itemType,
+    );
+    if (!range) {
+      return false;
+    }
+    const startIndex = range.startIndex;
+    if (startIndex === 0) {
+      return false;
+    }
+    const parent = range.parent;
+    const nodeBefore = parent.child(startIndex - 1);
+    if (nodeBefore.type !== itemType) {
+      return false;
+    }
+
+    if (dispatch) {
+      const nestedBefore =
+        nodeBefore.lastChild && nodeBefore.lastChild.type === parent.type;
+      const inner = Fragment.from(nestedBefore ? itemType.create() : undefined);
+      const slice = new Slice(
+        Fragment.from(
+          itemType.create(undefined, Fragment.from(parent.type.create(inner))),
+        ),
+        nestedBefore ? 3 : 1,
+        0,
+      );
+      const before = range.start;
+      const after = range.end;
+      dispatch(
+        state.tr
+          .step(
+            new ReplaceAroundStep(
+              before - (nestedBefore ? 3 : 1),
+              after,
+              before,
+              after,
+              slice,
+              1,
+              true,
+            ),
+          )
+          .scrollIntoView(),
+      );
+    }
+    return true;
+  };
 }

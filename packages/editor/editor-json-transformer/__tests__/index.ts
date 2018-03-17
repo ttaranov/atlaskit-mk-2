@@ -76,46 +76,6 @@ describe('JSONTransformer:', () => {
         providerFactory: ProviderFactory.create({ emojiProvider }),
       });
 
-    it('should serialize common nodes/marks as ProseMirror does', () => {
-      const { editorView } = editor(
-        doc(
-          p(
-            strong('>'),
-            ' Atlassian: ',
-            br(),
-            a({ href: 'https://atlassian.com' })('Atlassian'),
-          ),
-          p(
-            em('hello'),
-            underline('world'),
-            code('!'),
-            subsup({ type: 'sub' })('sub'),
-            'plain text',
-            strike('hey'),
-            textColor({ color: 'red' })('Red :D'),
-          ),
-          ul(li(p('ichi')), li(p('ni')), li(p('san'))),
-          ol(li(p('ek')), li(p('dui')), li(p('tin'))),
-          blockquote(p('1')),
-          h1('H1'),
-          h2('H2'),
-          h3('H3'),
-          h4('H4'),
-          h5('H5'),
-          h6('H6'),
-          p(emoji({ shortName: ':joy:' })()),
-          panel()(p('hello from panel')),
-          panelNote(p('hello from note panel')),
-          hr(),
-        ),
-      );
-      const pmDoc = editorView.state.doc;
-      expect(toJSON(pmDoc)).toEqual({
-        version: 1,
-        ...pmDoc.toJSON(),
-      });
-    });
-
     it('should strip optional attrs from media node', () => {
       const { editorView } = editor(
         doc(
@@ -261,7 +221,6 @@ describe('JSONTransformer:', () => {
         content: [
           {
             type: 'codeBlock',
-            attrs: {},
             content: [
               {
                 type: 'text',

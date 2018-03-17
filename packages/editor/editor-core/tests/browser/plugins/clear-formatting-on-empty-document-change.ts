@@ -37,6 +37,7 @@ describe('clear-marks-on-empty-document-change', () => {
               text: 'b',
             },
           ],
+          attrs: { indentLevel: null },
         },
       ],
     });
@@ -63,6 +64,7 @@ describe('clear-marks-on-empty-document-change', () => {
               text: 'ac',
             },
           ],
+          attrs: { indentLevel: null },
         },
       ],
     });
@@ -87,6 +89,7 @@ describe('clear-marks-on-empty-document-change', () => {
               text: 'a',
             },
           ],
+          attrs: { indentLevel: null },
         },
       ],
     });
