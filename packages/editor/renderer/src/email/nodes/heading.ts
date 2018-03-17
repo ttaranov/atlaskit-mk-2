@@ -1,6 +1,6 @@
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import { NodeSerializerOpts } from '../interfaces';
-import { createTag } from '../util';
+import { createTag, serializeStyle } from '../util';
 
 const getTypoMixin = (tagName: string) => {
   switch (tagName) {
@@ -21,9 +21,16 @@ const getTypoMixin = (tagName: string) => {
   }
 };
 
+const getStyle = indentLevel =>
+  serializeStyle({
+    'margin-left': (indentLevel || 0) * 20,
+  });
+
 export default function heading({ attrs, text }: NodeSerializerOpts) {
   const tagName = `h${attrs.level}`;
-  const css = (getTypoMixin(tagName) as any).join().trim();
+  const css = `${(getTypoMixin(tagName) as any).join().trim()}${getStyle(
+    attrs.indentLevel,
+  )}`;
 
   return createTag(tagName, { style: css }, text);
 }

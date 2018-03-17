@@ -787,6 +787,7 @@ describe('Renderer - Validator', () => {
           getValidNode({
             type: 'paragraph',
             content: [{ type: 'text', text: 'Hello World' }],
+            attrs: { indentLevel: 0 },
           }),
         ).to.deep.equal({
           type: 'paragraph',
@@ -796,6 +797,7 @@ describe('Renderer - Validator', () => {
               text: 'Hello World',
             },
           ],
+          attrs: { indentLevel: 0 },
         });
       });
     });
@@ -1916,6 +1918,7 @@ describe('Renderer - Validator', () => {
           {
             type: 'paragraph',
             content: [],
+            attrs: {},
           },
           {
             type: 'paragraph',
@@ -1934,6 +1937,7 @@ describe('Renderer - Validator', () => {
                 text: '[bar]',
               },
             ],
+            attrs: {},
           },
         ],
       };

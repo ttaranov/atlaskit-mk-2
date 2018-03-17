@@ -14,7 +14,9 @@ describe(`${name}/schema blockquote node`, () => {
       schema.nodes.blockquote.create({}, schema.nodes.paragraph.create()),
       schema,
     );
-    expect(html).toEqual('<blockquote><p></p></blockquote>');
+    expect(html).toEqual(
+      '<blockquote><p data-indent-level="0"></p></blockquote>',
+    );
   });
 
   it('should not be possible to have heading inside blockquote', () => {

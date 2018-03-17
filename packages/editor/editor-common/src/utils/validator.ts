@@ -483,9 +483,13 @@ export const getValidNode = (
         break;
       }
       case 'paragraph': {
+        const indentLevel = attrs && attrs.indentLevel;
         return {
           type,
           content: content || [],
+          attrs: {
+            indentLevel,
+          },
         };
       }
       case 'rule': {
@@ -515,7 +519,7 @@ export const getValidNode = (
       }
       case 'heading': {
         if (attrs && content) {
-          const { level } = attrs;
+          const { level, indentLevel } = attrs;
           const between = (x, a, b) => x >= a && x <= b;
           if (level && between(level, 1, 6)) {
             return {
@@ -523,6 +527,7 @@ export const getValidNode = (
               content,
               attrs: {
                 level,
+                indentLevel,
               },
             };
           }
@@ -531,20 +536,26 @@ export const getValidNode = (
       }
       case 'bulletList': {
         if (content) {
+          const indentLevel = attrs && attrs.indentLevel;
           return {
             type,
             content,
+            attrs: {
+              indentLevel,
+            },
           };
         }
         break;
       }
       case 'orderedList': {
         if (content) {
+          const indentLevel = attrs && attrs.indentLevel;
           return {
             type,
             content,
             attrs: {
               order: attrs && attrs.order,
+              indentLevel,
             },
           };
         }

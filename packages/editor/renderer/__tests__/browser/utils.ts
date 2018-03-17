@@ -32,6 +32,9 @@ describe('Renderer - ADFEncoder', () => {
             { type: 'text', text: 'hello ' },
             { type: 'text', text: 'world', marks: [{ type: 'strong' }] },
           ],
+          attrs: {
+            indentLevel: 0,
+          },
         },
       ],
     });

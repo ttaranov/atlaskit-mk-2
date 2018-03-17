@@ -38,8 +38,8 @@ pipelines:
           - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
           - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
           - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-          - yarn test:changed
-          - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+          # - yarn test:changed
+          # - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
           - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
           - node build/ci-scripts/update.build.status.with.netlify.link.js
         caches:

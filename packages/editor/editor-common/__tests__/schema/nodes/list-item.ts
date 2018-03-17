@@ -15,7 +15,7 @@ describe(`${name}/schema listItem node`, () => {
       schema.nodes.listItem.create({}, schema.nodes.paragraph.create()),
       schema,
     );
-    expect(html).toContain('<li><p></p></li>');
+    expect(html).toContain('<li><p data-indent-level="0"></p></li>');
   });
 
   it('should not be possible to have blockquote inside list', () => {

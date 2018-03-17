@@ -1,4 +1,4 @@
-import { NodeSpec } from 'prosemirror-model';
+import { NodeSpec, Node } from 'prosemirror-model';
 import { Definition as ListItemNode } from './list-item';
 
 /**
@@ -15,14 +15,29 @@ export interface Definition {
      * @minimum 1
      */
     order: number;
+    /**
+     * @minimum 0
+     * @maximum 6
+     */
+    indentLevel?: number;
   };
 }
 
 export const orderedList: NodeSpec = {
   group: 'block',
   content: 'listItem+',
-  parseDOM: [{ tag: 'ol' }],
-  toDOM() {
-    return ['ol', 0];
+  parseDOM: [
+    {
+      tag: 'ol',
+      getAttrs: (dom: HTMLElement) => ({
+        indentLevel: parseInt(dom.getAttribute('data-indent-level') || '0'),
+      }),
+    },
+  ],
+  toDOM(node: Node) {
+    const attrs = {
+      'data-indent-level': node.attrs.indentLevel,
+    };
+    return ['ol', attrs, 0];
   },
 };

@@ -181,6 +181,9 @@ describe('JSONTransformer:', () => {
                 },
               },
             ],
+            attrs: {
+              indentLevel: 0,
+            },
           },
         ],
       });
@@ -217,6 +220,9 @@ describe('JSONTransformer:', () => {
                 },
               },
             ],
+            attrs: {
+              indentLevel: 0,
+            },
           },
         ],
       });
@@ -303,6 +309,9 @@ describe('JSONTransformer:', () => {
                       content: [
                         {
                           type: 'paragraph',
+                          attrs: {
+                            indentLevel: 0,
+                          },
                           content: [
                             {
                               type: 'text',

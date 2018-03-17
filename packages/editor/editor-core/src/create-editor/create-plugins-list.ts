@@ -34,6 +34,7 @@ import {
   hyperlinkPlugin,
   textFormattingPlugin,
   widthPlugin,
+  indentPlugin,
 } from '../plugins';
 
 /**
@@ -140,6 +141,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowDate) {
     plugins.push(datePlugin);
+  }
+
+  if (props.allowIndent) {
+    plugins.push(indentPlugin);
   }
 
   if (props.allowTemplatePlaceholders) {

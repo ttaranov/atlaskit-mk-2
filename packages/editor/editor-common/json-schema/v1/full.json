@@ -16,6 +16,17 @@
           "items": {
             "$ref": "#/definitions/inline_node"
           }
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "indentLevel": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 6
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -38,6 +49,17 @@
             "$ref": "#/definitions/listItem_node"
           },
           "minItems": 1
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "indentLevel": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 6
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -104,6 +126,11 @@
             "order": {
               "type": "number",
               "minimum": 1
+            },
+            "indentLevel": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 6
             }
           },
           "required": [
@@ -139,6 +166,11 @@
             "level": {
               "type": "number",
               "minimum": 1,
+              "maximum": 6
+            },
+            "indentLevel": {
+              "type": "number",
+              "minimum": 0,
               "maximum": 6
             }
           },
@@ -1694,9 +1726,6 @@
           },
           {
             "$ref": "#/definitions/extension_node"
-          },
-          {
-            "$ref": "#/definitions/bodiedExtension_node"
           },
           {
             "$ref": "#/definitions/codeBlock_node"

@@ -8,7 +8,7 @@ describe('Renderer - React/Nodes/OrderedList', () => {
     const orderedList = shallow(
       <OrderedList>This is a ordered list</OrderedList>,
     );
-    expect(orderedList.is('ol')).to.equal(true);
+    expect(orderedList.name()).to.equal('styled.ol');
     expect(orderedList.prop('start')).to.equal(undefined);
   });
 
@@ -16,7 +16,7 @@ describe('Renderer - React/Nodes/OrderedList', () => {
     const orderedList = shallow(
       <OrderedList start={3}>This is a ordered list</OrderedList>,
     );
-    expect(orderedList.is('ol')).to.equal(true);
+    expect(orderedList.name()).to.equal('styled.ol');
     expect(orderedList.prop('start')).to.equal(3);
   });
 });

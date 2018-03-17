@@ -14,7 +14,7 @@ const schema = makeSchema();
 describe(`${name}/schema heading node`, () => {
   it('serializes to <h4>', () => {
     const html = toHTML(schema.nodes.heading.create({ level: 4 }), schema);
-    expect(html).toContain('<h4>');
+    expect(html).toContain('<h4 data-indent-level="0"></h4>');
   });
 
   it('matches <h3>', () => {

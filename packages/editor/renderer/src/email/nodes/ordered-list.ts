@@ -1,10 +1,12 @@
 import { createTag, serializeStyle } from '../util';
 import { NodeSerializerOpts } from '../interfaces';
 
-const css = serializeStyle({
-  'list-style-type': 'decimal',
-});
+const getStyle = indentLevel =>
+  serializeStyle({
+    'list-style-type': 'decimal',
+    'margin-left': (indentLevel || 0) * 20,
+  });
 
-export default function orderedList({ text }: NodeSerializerOpts) {
-  return createTag('ol', { style: css }, text);
+export default function orderedList({ attrs, text }: NodeSerializerOpts) {
+  return createTag('ol', { style: getStyle(attrs.indentLevel) }, text);
 }

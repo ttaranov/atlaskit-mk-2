@@ -6,7 +6,7 @@ import Blockquote from './blockquote';
 import BodiedExtension, {
   Props as BodiedExtensionProps,
 } from './bodiedExtension';
-import BulletList from './bulletList';
+import BulletList, { BulletListProps } from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
@@ -14,7 +14,7 @@ import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
-import Heading from './heading';
+import Heading, { HeadingProps } from './heading';
 import Image from './image';
 import InlineExtension, {
   Props as InlineExtensionProps,
@@ -24,9 +24,9 @@ import Media from './media';
 import MediaGroup from './mediaGroup';
 import MediaSingle from './mediaSingle';
 import Mention from './mention';
-import OrderedList from './orderedList';
+import OrderedList, { OrderedListProps } from './orderedList';
 import Panel from './panel';
-import Paragraph from './paragraph';
+import Paragraph, { ParagraphProps } from './paragraph';
 import Rule from './rule';
 import TaskItem from './taskItem';
 import TaskList from './taskList';
@@ -215,6 +215,10 @@ const isEmojiBlock = (pnode: Fragment): boolean => {
 
 export {
   AppCardViewProps,
+  ParagraphProps,
+  HeadingProps,
+  OrderedListProps,
+  BulletListProps,
   ApplicationCard,
   Blockquote,
   BodiedExtension,
