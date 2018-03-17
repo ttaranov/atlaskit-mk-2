@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
-import { setExtensionElement, selectExtension } from '../../actions';
+import { setExtensionElement } from '../../actions';
 import ExtensionComponent from './ExtensionComponent';
 import { ExtensionHandlers } from '../../../../types';
 
@@ -47,7 +47,6 @@ export default class Extension extends Component<Props, any> {
         macroProvider={macroProvider}
         setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}
-        selectExtension={selectExtension}
         extensionHandlers={extensionHandlers}
       />
     );
