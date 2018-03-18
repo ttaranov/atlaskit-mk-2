@@ -25,7 +25,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'user should be able to format bold and italics with markdown',
-  { skip: ['ie'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
@@ -43,7 +43,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'user should be able to write inline code',
-  { skip: ['ie'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
