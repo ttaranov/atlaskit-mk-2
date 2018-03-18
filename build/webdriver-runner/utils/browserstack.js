@@ -14,7 +14,8 @@ async function startBrowserStack() {
         return reject(error);
       }
       resolve();
-      console.log(`Connected to browserstack with identifier: ${commit}`);
+      if (commit)
+        console.log(`Connected to browserstack with identifier: ${commit}`);
     });
   });
 }

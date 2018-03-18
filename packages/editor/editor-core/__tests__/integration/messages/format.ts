@@ -1,7 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, editorUrl } from '../_helpers';
-import edit from '@atlaskit/icon/glyph/editor/edit';
 
 const messageEditor = `${editorUrl}=message`;
 const editorSelector = '.ProseMirror';
