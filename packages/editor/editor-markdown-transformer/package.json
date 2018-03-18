@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-markdown-transformer",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Editor Markdown transformer",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -15,14 +15,14 @@
   "author": "Atlassian Pty. Ltd",
   "license": "MIT",
   "dependencies": {
-    "@atlaskit/editor-common": "^8.0.2",
+    "@atlaskit/editor-common": "^8.0.6",
     "markdown-it-table": "^2.0.2",
     "prosemirror-markdown": "^1.0.1",
     "prosemirror-model": "^1.0.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/editor-core": "^65.0.2",
+    "@atlaskit/editor-core": "^65.1.4",
     "styled-components": "1.4.6 - 3"
   }
 }

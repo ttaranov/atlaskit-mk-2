@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.1
+
 ## 2.10.0
 - [minor] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
 
