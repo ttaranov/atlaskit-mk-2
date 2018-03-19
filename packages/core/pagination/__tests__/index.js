@@ -9,7 +9,7 @@ import { name } from '../package.json';
 
 describe(name, () => {
   it('should not render when total is 0', () => {
-    const wrapper = mount(<Pagination total={0} current={0} />);
+    const wrapper = mount(<Pagination total={0} value={0} />);
     expect(wrapper.find(Button).length).toBe(0);
   });
 
@@ -30,7 +30,7 @@ describe(name, () => {
   });
 
   it('should render Next button disabled when current in 1', () => {
-    const wrapper = mount(<Pagination total={3} current={3} />);
+    const wrapper = mount(<Pagination total={3} value={3} />);
     const nextButton = wrapper.find(Button).at(4);
     expect(nextButton.prop('isDisabled')).toBe(true);
   });
@@ -48,69 +48,69 @@ describe(name, () => {
   });
 
   it('should render one ellipsis with 15 pages and page 14 selected', () => {
-    const wrapper = shallow(<Pagination total={15} current={14} />);
+    const wrapper = shallow(<Pagination total={15} value={14} />);
     const { length } = wrapper.find(Ellipsis);
     expect(length).toBe(1);
   });
 
   it('should render two ellipsis with 15 pages and page 8 selected', () => {
-    const wrapper = shallow(<Pagination total={15} current={8} />);
+    const wrapper = shallow(<Pagination total={15} value={8} />);
     const { length } = wrapper.find(Ellipsis);
     expect(length).toBe(2);
   });
 
-  it('should invoke callback passed to onSetPage', () => {
-    const onSetPage = jest.fn();
+  it('should invoke callback passed to onChange', () => {
+    const onChange = jest.fn();
     const wrapper = mount(
-      <Pagination total={3} current={2} onSetPage={onSetPage} />,
+      <Pagination total={3} value={2} onChange={onChange} />,
     );
     const buttons = wrapper.find(Button);
 
     buttons.at(1).simulate('click');
-    expect(onSetPage).toHaveBeenCalledTimes(1);
-    expect(onSetPage).toHaveBeenCalledWith(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(1);
 
     buttons.at(3).simulate('click');
-    expect(onSetPage).toHaveBeenCalledTimes(2);
-    expect(onSetPage).toHaveBeenCalledWith(3);
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toHaveBeenCalledWith(3);
   });
 
-  describe("shouldn't invoke callback passed to onSetPage", () => {
+  describe("shouldn't invoke callback passed to onChange", () => {
     it('when clicked on active page', () => {
-      const onSetPage = jest.fn();
+      const onChange = jest.fn();
       const wrapper = mount(
-        <Pagination total={3} current={2} onSetPage={onSetPage} />,
+        <Pagination total={3} value={2} onChange={onChange} />,
       );
       const buttons = wrapper.find(Button);
       buttons.at(2).simulate('click');
-      expect(onSetPage).not.toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
     });
 
     it('when clicked on Prev and first page is active', () => {
-      const onSetPage = jest.fn();
+      const onChange = jest.fn();
       const wrapper = mount(
-        <Pagination total={3} current={1} onSetPage={onSetPage} />,
+        <Pagination total={3} value={1} onChange={onChange} />,
       );
       const buttons = wrapper.find(Button);
       buttons.at(1).simulate('click');
-      expect(onSetPage).not.toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
     });
 
     it('when clicked on Next and last page is active', () => {
-      const onSetPage = jest.fn();
+      const onChange = jest.fn();
       const wrapper = mount(
-        <Pagination total={3} current={3} onSetPage={onSetPage} />,
+        <Pagination total={3} value={3} onChange={onChange} />,
       );
       const buttons = wrapper.find(Button);
       buttons.at(4).simulate('click');
-      expect(onSetPage).not.toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 
   describe('should change current page', () => {
     let wrapper;
     beforeEach(() => {
-      wrapper = mount(<Pagination total={10} defaultCurrent={3} />);
+      wrapper = mount(<Pagination total={10} defaultValue={3} />);
     });
 
     it('upon clicking on corresponding button', () => {
@@ -144,7 +144,7 @@ describe(name, () => {
     class Consumer extends React.Component<{}, { page: number }> {
       state = { page: 5 };
       render() {
-        return <Pagination defaultCurrent={this.state.page} total={10} />;
+        return <Pagination defaultValue={this.state.page} total={10} />;
       }
     }
     const wrapper = mount(<Consumer />);

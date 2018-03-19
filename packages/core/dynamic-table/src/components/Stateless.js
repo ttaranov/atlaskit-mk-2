@@ -212,8 +212,8 @@ export default class DynamicTable extends Component<Props, State> {
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
           <Pagination
-            current={page}
-            onSetPage={this.onSetPage}
+            value={page}
+            onChange={this.onSetPage}
             total={totalPages}
           />
         )}

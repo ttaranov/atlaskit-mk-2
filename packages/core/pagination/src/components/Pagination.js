@@ -8,20 +8,20 @@ import pageRange from '../internal/page-range';
 
 const MAX_VISIBLE_PAGES = 7;
 
-type Props = {
-  /** The current page. Current page value will be controlled */
-  current?: number,
-  /** The default current page. Current page value will be uncontrolled. */
-  defaultCurrent: number,
+type Props = {|
+  /** The default current page. This makes the current page value uncontrolled. */
+  defaultValue: number,
   /** Object that sets the labels for the previous and next buttons. It should
   have the properties 'prev' and 'next', which should be strings. Defaults to
   'Prev' and 'Next' */
   i18n: i18nShape,
   /** Called when the page is changed. Will be called with the number of the new page. */
-  onSetPage: number => void,
+  onChange: number => void,
   /** The total number of pages in the pagination. */
   total: number,
-};
+  /** The current page. This makes the current page value controlled */
+  value?: number,
+|};
 
 type State = {
   current: number,
@@ -29,29 +29,29 @@ type State = {
 
 export default class Pagination extends Component<Props, State> {
   static defaultProps = {
-    defaultCurrent: 1,
+    defaultValue: 1,
     i18n: defaultI18n,
-    onSetPage: () => {},
+    onChange: () => {},
     total: 0,
   };
 
   state = {
-    current: this.props.defaultCurrent,
+    current: this.props.defaultValue,
   };
 
   componentWillReceiveProps(nextProps: Props) {
-    if (this.props.defaultCurrent !== nextProps.defaultCurrent) {
-      this.setState({ current: nextProps.defaultCurrent });
+    if (this.props.defaultValue !== nextProps.defaultValue) {
+      this.setState({ current: nextProps.defaultValue });
     }
   }
 
-  getCurrent() {
-    return this.props.current ? this.props.current : this.state.current;
+  getCurrentPage() {
+    return this.props.value ? this.props.value : this.state.current;
   }
 
-  onSetPage = (page: number) => {
-    if (this.props.current) {
-      this.props.onSetPage(page);
+  onPageChange = (page: number) => {
+    if (this.props.value) {
+      this.props.onChange(page);
     } else {
       this.setState({ current: page });
     }
@@ -62,14 +62,14 @@ export default class Pagination extends Component<Props, State> {
     if (!i18n || !i18n.prev || !i18n.next) {
       throw new Error('Pagination component provided unusable i18nShape');
     }
-    const current = this.getCurrent();
+    const current = this.getCurrentPage();
 
     return total === 0 ? null : (
       <Container>
         <Button
           appearance="link"
           isDisabled={current === 1}
-          onClick={() => this.onSetPage(current - 1)}
+          onClick={() => this.onPageChange(current - 1)}
         >
           {i18n.prev}
         </Button>
@@ -87,7 +87,7 @@ export default class Pagination extends Component<Props, State> {
                 key={key}
                 appearance="link"
                 // $FlowFixMe fails to narrow type after ternary
-                onClick={() => this.onSetPage(pageNum)}
+                onClick={() => this.onPageChange(pageNum)}
               >
                 {pageNum}
               </Element>
@@ -98,7 +98,7 @@ export default class Pagination extends Component<Props, State> {
         <Button
           appearance="link"
           isDisabled={current === total}
-          onClick={() => this.onSetPage(current + 1)}
+          onClick={() => this.onPageChange(current + 1)}
         >
           {i18n.next}
         </Button>
