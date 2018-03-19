@@ -1,34 +1,41 @@
 // @flow
 import React from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { injectGlobal, css } from 'styled-components';
 import Page from '../components/Page';
 import { Link } from 'react-router-dom';
+import { Grid, GridColumn } from '@atlaskit/page';
 
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { borderRadius, colors } from '@atlaskit/theme';
 import PackagesIcon from '@atlaskit/icon/glyph/component';
 import DocumentationIcon from '@atlaskit/icon/glyph/overview';
 import PatternsIcon from '@atlaskit/icon/glyph/issues';
+import BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
+import MediaDocIcon from '@atlaskit/icon/glyph/media-services/document';
+import CodeIcon from '@atlaskit/icon/glyph/code';
 
-import atlasKitLogo from '../assets/atlaskit-logo.png';
+import rocket from '../assets/Rocket.png';
+import platform from '../assets/Platform.png';
+import multiTool from '../assets/multiTool.png';
 
-type HomeProps = {};
-const gutter = '12px';
+const gutter = '6px';
 const fonts =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
 const Title = styled.h1`
   color: ${colors.N0};
-  ${'' /* font-family: "LLCircularWeb-Medium", ${fonts}; */} font-size: 52px;
+  font-family: 'LLCircularWeb-Medium', ${fonts};
+  font-size: 52px;
   margin: 80px 0 0 !important;
 `;
 const Intro = styled.div`
   color: ${colors.N0};
   display: inline-block;
   font-size: 24px;
-  ${'' /* font-family: "LLCircularWeb-Book", ${fonts}; */} font-weight: 300;
-  margin-bottom: 60px;
-  margin-top: 20px;
+  font-family: 'LLCircularWeb-Book', ${fonts};
+  font-weight: 300;
+  margin-bottom: 80px;
+  margin-top: 24px;
   max-width: 640px;
 
   a {
@@ -44,7 +51,8 @@ const Intro = styled.div`
 
 const Cards = styled.div`
   display: flex;
-  margin-bottom: 60px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
   margin-left: -${gutter};
   margin-right: -${gutter};
 
@@ -52,23 +60,22 @@ const Cards = styled.div`
     flex-direction: column;
   }
 `;
-const CardLink = styled(Link)`
+
+const cardlinkStyles = css`
   background-color: ${colors.N0};
   border-radius: ${borderRadius}px;
   color: ${colors.text};
   flex: 1 1 0;
-  padding: 20px;
+  padding: 16px 0px;
   text-align: left;
   transition: transform 150ms;
+  margin-bottom: ${gutter};
+  margin-top: ${gutter};
 
   @media (min-width: 800px) {
     margin-left: ${gutter};
     margin-right: ${gutter};
-  }
-
-  @media (max-width: 799px) {
-    margin-bottom: ${gutter};
-    margin-top: ${gutter};
+    min-width: calc(30% - 50px);
   }
 
   &:hover,
@@ -85,10 +92,18 @@ const CardLink = styled(Link)`
     transform: translateY(-1px);
   }
 `;
+const CardLinkInt = styled(Link)`
+  ${cardlinkStyles};
+`;
+
+const CardLinkExt = styled('a')`
+  ${cardlinkStyles};
+`;
 const CardTitle = styled.div`
   align-items: center;
   display: flex;
   font-weight: 500;
+  padding: 16px 24px;
 `;
 const CardTitleText = styled.h3`
   font-size: 14px;
@@ -96,8 +111,7 @@ const CardTitleText = styled.h3`
 `;
 const CardBody = styled.div`
   color: ${colors.subtleText};
-  margin-top: 8px;
-  padding-left: 10px;
+  margin: 8px 24px;
 `;
 const CardIcon = styled.span`
   align-items: center;
@@ -107,22 +121,34 @@ const CardIcon = styled.span`
   display: flex;
   height: 24px;
   justify-content: center;
-  margin-left: -26px;
   margin-right: 8px;
   width: 24px;
 `;
 
-const Card = ({ children, icon: Icon, iconColor, title, ...props }) => (
-  <CardLink {...props}>
-    <CardTitle>
-      <CardIcon color={iconColor}>
-        <Icon label={title} primaryColor={colors.N0} size="small" />
-      </CardIcon>
-      <CardTitleText>{title}</CardTitleText>
-    </CardTitle>
-    <CardBody>{children}</CardBody>
-  </CardLink>
+const Img = ({ src }) => (
+  <img
+    style={{
+      margin: '10px auto',
+      height: '200px',
+      display: 'block',
+    }}
+    src={src}
+  />
 );
+
+const Card = ({ children, icon: Icon, iconColor, title, imgSrc, ...props }) => {
+  const CardLink = props.href ? CardLinkExt : CardLinkInt;
+  return (
+    <CardLink {...props}>
+      <CardTitle>
+        <Icon />
+        <CardTitleText>{title}</CardTitleText>
+      </CardTitle>
+      <CardBody>{children}</CardBody>
+      {imgSrc ? <Img src={imgSrc} /> : null}
+    </CardLink>
+  );
+};
 
 // ========== PAGE ==========
 
@@ -131,27 +157,12 @@ const PageOffset = styled.div`
   text-align: center;
 
   @media (min-width: 800px) {
-    margin-right: -64px;
+    margin-right: 64px;
   }
 `;
 
 // ========== BUTTONS ==========
 
-const Button = styled.a`
-  border-radius: ${borderRadius}px;
-  color: ${colors.B75};
-  display: inline-block;
-  line-height: 2.6;
-  padding-left: 16px;
-  padding-right: 16px;
-  transition: background-color 150ms;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: ${colors.N0};
-    text-decoration: none;
-  }
-`;
 const Style = () => (
   <style>{`
   body {
@@ -160,9 +171,7 @@ const Style = () => (
 `}</style>
 );
 
-export default class Home extends React.Component<HomeProps> {
-  props: HomeProps;
-
+export default class Home extends React.Component<{}> {
   render() {
     return (
       <PageOffset>
@@ -170,32 +179,111 @@ export default class Home extends React.Component<HomeProps> {
         <Page width="large">
           <Title>Atlaskit</Title>
           <Intro>
-            Atlassian&#39;s official UI library, built according to the{' '}
-            <a
-              href="//www.atlassian.design"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Atlassian&nbsp;Design&nbsp;Guidelines
-            </a>{' '}
-            (ADG).
+            Atlassian&#39;s official UI library, according to the
+            Atlassian&nbsp;Design&nbsp;Guidelines.
           </Intro>
           <Cards>
             <Card
-              to="/docs"
-              icon={DocumentationIcon}
-              iconColor={colors.P300}
-              title="Documentation"
+              to="/docs/getting-started"
+              icon={() => (
+                <CardIcon color={colors.R400}>
+                  <MediaDocIcon
+                    label="Get started with Atlaskit!"
+                    primaryColor={colors.N0}
+                    secondaryColor={colors.R400}
+                    size="small"
+                  />
+                </CardIcon>
+              )}
+              imgSrc={rocket}
+              title="Get started with Atlaskit!"
             >
-              A detailed dive into the decisions that shaped this project.
+              Everything you need to get up and running.
             </Card>
             <Card
               to="/packages"
-              icon={PackagesIcon}
-              iconColor={colors.R300}
-              title="Packages"
+              title="Components and APIs"
+              imgSrc={platform}
+              icon={() => (
+                <CardIcon color={colors.Y400}>
+                  <PackagesIcon
+                    label="Components and APIs"
+                    primaryColor={colors.N0}
+                    secondaryColor={colors.Y400}
+                    size="small"
+                  />
+                </CardIcon>
+              )}
             >
-              Documentation and usage guides for the packages in Atlaskit.
+              Check out the documentation and usage guides for the Atlaskit
+              packages.
+            </Card>
+            <Card
+              href="http://atlassian.design"
+              title="Atlassian Design Guidelines"
+              imgSrc={multiTool}
+              icon={() => (
+                <CardIcon color={colors.B400}>
+                  <AtlassianIcon
+                    label="Atlassian Design Guidelines"
+                    primaryColor={colors.N0}
+                    secondaryColor={colors.B400}
+                    size="small"
+                  />
+                </CardIcon>
+              )}
+            >
+              <div>Need some more design guidance? Have a look at the ADG.</div>
+            </Card>
+            <Card
+              to="/docs/guides/contributing"
+              title="Make it better"
+              icon={() => (
+                <CardIcon color={colors.R400}>
+                  <MediaDocIcon
+                    label="Make it better"
+                    primaryColor={colors.N0}
+                    secondaryColor={colors.R400}
+                    size="small"
+                  />
+                </CardIcon>
+              )}
+            >
+              Learn how to contribute code, report issues, and review our code
+              of conduct.
+            </Card>
+            <Card
+              href="https://bitbucket.org/atlassian/atlaskit-mk-2"
+              title="Atlaskit Repository"
+              icon={() => (
+                <CardIcon color={colors.Y400}>
+                  <CodeIcon
+                    label="Atlaskit Repository"
+                    primaryColor={colors.N0}
+                    secondaryColor={colors.Y400}
+                    size="small"
+                  />
+                </CardIcon>
+              )}
+            >
+              Want to dive straight into the code? Check out our repo on
+              Bitbucket.
+            </Card>
+            <Card
+              href="https://developer.atlassian.com/blog/"
+              iconColor={colors.P400}
+              title="Atlassian Developer Blog"
+              icon={() => (
+                <CardIcon color={colors.N0}>
+                  <BlogIcon
+                    label="Atlassian Developer Blog"
+                    primaryColor={colors.P400}
+                    size="medium"
+                  />
+                </CardIcon>
+              )}
+            >
+              Keep up to date on the latest in engineering at Atlassian.
             </Card>
             {/* <Card
               to="/patterns"
@@ -206,20 +294,6 @@ export default class Home extends React.Component<HomeProps> {
               Common ways to combine packages together for your application.
             </Card> */}
           </Cards>
-          <Button
-            href="//bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CONTRIBUTING.md"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Contribution Guide
-          </Button>
-          <Button
-            href="//atlassian.design"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Design Guidelines
-          </Button>
         </Page>
       </PageOffset>
     );
