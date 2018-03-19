@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.6
+- [patch] Making UX nice for user by adding an empty paragraph terminally in the editor. [3cc4930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cc4930)
+
 ## 65.1.5
 - [patch] Add device and browser informatio to jira collector in feedback component. [6f5d172](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f5d172)
 
