@@ -61,4 +61,6 @@ export type FieldTextProps = {
   autoFocus?: boolean,
   /** Set the maximum length that the entered text can be. */
   maxLength?: number,
+  /** A ref function to get a hold of the inner textarea DOM element. */
+  innerRef?: (ref: ?HTMLElement) => void,
 };

@@ -204,7 +204,16 @@ describe('FieldTextStateless', () => {
   describe('FieldText input focus', () => {
     it('should get focus when focus() is called', () => {
       const focusSpy = jest.fn();
-      const wrapper = mount(<FieldText label="" onFocus={focusSpy} />);
+      let innerRef;
+      const wrapper = mount(
+        <FieldText
+          label=""
+          innerRef={r => {
+            innerRef = r;
+          }}
+          onFocus={focusSpy}
+        />,
+      );
 
       // The onFocus prop doesn't actualy get fired by enzyme for some reason, so attaching
       // the spy directly to the input.
@@ -214,7 +223,10 @@ describe('FieldTextStateless', () => {
         .addEventListener('focus', focusSpy);
 
       expect(focusSpy).toHaveBeenCalledTimes(0);
-      wrapper.instance().focus();
+      expect(innerRef).toEqual(expect.anything());
+      if (innerRef) {
+        innerRef.focus();
+      }
       expect(focusSpy).toHaveBeenCalledTimes(1);
     });
   });

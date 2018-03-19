@@ -26,18 +26,6 @@ export class FieldTextStateless extends Component<FieldTextProps, void> {
     type: 'text',
   };
 
-  input: ?HTMLInputElement;
-
-  focus() {
-    if (this.input) {
-      this.input.focus();
-    }
-  }
-
-  handleInputRef = (input: HTMLInputElement) => {
-    this.input = input;
-  };
-
   render() {
     return (
       <div>
@@ -63,7 +51,7 @@ export class FieldTextStateless extends Component<FieldTextProps, void> {
             disabled={this.props.disabled}
             form={this.props.form}
             id={this.props.id}
-            innerRef={this.handleInputRef}
+            innerRef={this.props.innerRef}
             maxLength={this.props.maxLength}
             min={this.props.min}
             max={this.props.max}

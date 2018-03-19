@@ -203,7 +203,16 @@ describe('FieldTextAreaStateless', () => {
   describe('FieldTextArea input focus', () => {
     it('should get focus when focus() is called', () => {
       let hasFocus = 0;
-      const wrapper = mount(<FieldTextArea onChange={() => {}} label="" />);
+      let innerRef;
+      const wrapper = mount(
+        <FieldTextArea
+          innerRef={r => {
+            innerRef = r;
+          }}
+          onChange={() => {}}
+          label=""
+        />,
+      );
       wrapper.getDOMNode().addEventListener(
         'focus',
         () => {
@@ -211,7 +220,10 @@ describe('FieldTextAreaStateless', () => {
         },
         true,
       );
-      wrapper.instance().focus();
+      expect(innerRef).toEqual(expect.anything());
+      if (innerRef) {
+        innerRef.focus();
+      }
 
       expect(hasFocus).toBe(1);
     });

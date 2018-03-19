@@ -47,7 +47,7 @@ type Props = {|
   /** Disables the resizing of the text area. */
   enableResize?: boolean,
   /** A ref function to get a hold of the inner textarea DOM element. */
-  innerRef?: (ref: HTMLElement) => void,
+  innerRef?: (ref: ?HTMLElement) => void,
 |};
 
 type State = {|
@@ -58,7 +58,6 @@ type State = {|
 
 export default class FieldTextArea extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
-  input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     onChange: () => {},
@@ -73,19 +72,12 @@ export default class FieldTextArea extends Component<Props, State> {
     if (this.props.onChange) this.props.onChange(e);
   };
 
-  focus = () => {
-    this.input.focus();
-  };
-
   render() {
     return (
       <FieldTextAreaStateless
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
-        ref={fieldRef => {
-          this.input = fieldRef;
-        }}
       />
     );
   }

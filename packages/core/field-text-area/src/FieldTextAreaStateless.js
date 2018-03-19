@@ -57,7 +57,7 @@ type Props = {
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types,
   /** A ref function to get a hold of the inner textarea DOM element. */
-  innerRef?: (ref: HTMLElement) => void,
+  innerRef?: (ref: ?HTMLElement) => void,
 };
 
 export class FieldTextAreaStateless extends Component<Props, void> {
@@ -73,10 +73,6 @@ export class FieldTextAreaStateless extends Component<Props, void> {
     isSpellCheckEnabled: true,
     minimumRows: 1,
   };
-
-  focus() {
-    this.input.focus();
-  }
 
   render() {
     const {
@@ -99,6 +95,7 @@ export class FieldTextAreaStateless extends Component<Props, void> {
       required,
       shouldFitContainer,
       value,
+      innerRef,
     } = this.props;
 
     return (
@@ -134,9 +131,7 @@ export class FieldTextAreaStateless extends Component<Props, void> {
             autoFocus={autoFocus}
             spellCheck={isSpellCheckEnabled}
             maxLength={maxLength}
-            innerRef={input => {
-              this.input = input;
-            }}
+            innerRef={innerRef}
           />
         </Base>
       </div>

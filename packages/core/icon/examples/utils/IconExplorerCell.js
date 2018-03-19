@@ -46,19 +46,11 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
     isModalOpen: false,
   };
 
-  ref: ?FieldTextStateless;
   input: ?HTMLInputElement;
   importCodeField: ?HTMLElement;
 
-  setInputRef = (ref: ?FieldTextStateless) => {
-    const isSet = Boolean(this.ref);
-
-    console.log(ref);
-    this.input = ref ? ref.input : null;
-
-    if (this.input && !isSet) {
-      this.input.select();
-    }
+  setInputRef = (ref: ?HTMLInputElement) => {
+    this.input = ref;
   };
 
   copyToClipboard = () => {
@@ -124,7 +116,7 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
             onChange={() => {}}
             shouldFitContainer
             value={`import ${props.componentName} from '${props.package}';`}
-            ref={this.setInputRef}
+            innerRef={this.setInputRef}
           />
         </div>
         {/* eslint-enable jsx-a11y/no-static-element-interactions */}
