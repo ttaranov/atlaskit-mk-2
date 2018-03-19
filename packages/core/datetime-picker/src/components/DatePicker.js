@@ -213,7 +213,7 @@ class DatePicker extends Component<Props, State> {
             disabled={disabled}
             onChange={this.onCalendarChange}
             onSelect={this.onCalendarSelect}
-            innerRef={this.refCalendar}
+            ref={this.refCalendar}
             selected={[value]}
           />
         </StyledMenu>

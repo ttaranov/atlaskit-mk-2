@@ -16,7 +16,7 @@ export default md`
     + import { Calendar } from '@atlaskit/calendar';
 
     - <CalendarStateless month={1} />
-    + <Calendar month={1} />
+    - <Calendar month={1} />
   `}
 
   ### \`focused\` -> \`day\`
@@ -31,18 +31,5 @@ export default md`
   ${code`
     - <Calendar onUpdate={() => {}} />
     + <Calendar onChange={() => {}} />
-  `}
-
-  ### \`ref\` -> \`innerRef\`
-
-  You will now need to use the \`innerRef\` prop to focus/navigate the calendar DOM element rather than
-  using ref.
-  This change is required because we will be wrapping Calendar with HOCs in the future and refs don't work with HOCs
-  properly.
-
-  ${code`
-
-    - <Calendar ref={this.getCalendarRef} />
-    + <Calendar innerRef={this.getCalendarRef} />
   `}
 `;

@@ -30,40 +30,18 @@ function createEventData(iso, mix = {}) {
 }
 
 test('getNextMonth() / getPrevMonth()', () => {
-  let calendarRef;
-  shallow(
-    <Calendar
-      month={1}
-      year={2000}
-      innerRef={r => {
-        calendarRef = r;
-      }}
-    />,
-  );
-  expect(calendarRef).toBeTruthy();
-  if (calendarRef) {
-    expect(calendarRef.getNextMonth()).toEqual({ month: 2, year: 2000 });
-    expect(calendarRef.getPrevMonth()).toEqual({ month: 12, year: 1999 });
-  }
+  const wrapper = shallow(<Calendar month={1} year={2000} />);
+  expect(wrapper.instance().getNextMonth()).toEqual({ month: 2, year: 2000 });
+  expect(wrapper.instance().getPrevMonth()).toEqual({ month: 12, year: 1999 });
 });
 
 cases(
   'handleContainerKeyDown() calls navigate()',
   ({ name, key }) => {
-    let calendarRef;
-    shallow(
-      <Calendar
-        innerRef={r => {
-          calendarRef = r;
-        }}
-      />,
-    );
-    expect(calendarRef).toBeTruthy();
-    if (calendarRef) {
-      calendarRef.navigate = jest.fn();
-      calendarRef.handleContainerKeyDown(createEvent({ key }));
-      expect(calendarRef.navigate).toHaveBeenCalledWith(name);
-    }
+    const i = shallow(<Calendar />).instance();
+    i.navigate = jest.fn();
+    i.handleContainerKeyDown(createEvent({ key }));
+    expect(i.navigate).toHaveBeenCalledWith(name);
   },
   [
     { name: 'down', key: 'ArrowDown' },
@@ -176,47 +154,14 @@ test('handleContainerFocus()', () => {
 });
 
 test('refContainer()', () => {
-  let calendarRef;
-  mount(
-    <Calendar
-      innerRef={r => {
-        calendarRef = r;
-      }}
-    />,
-  );
-  expect(calendarRef).toBeTruthy();
-  if (calendarRef) {
-    expect(calendarRef.container).toBeInstanceOf(HTMLDivElement);
-  }
+  const wrapper = mount(<Calendar />);
+  expect(wrapper.instance().container).toBeInstanceOf(HTMLDivElement);
 });
 
 test('focus()', () => {
-  let calendarRef;
-  mount(
-    <Calendar
-      innerRef={r => {
-        calendarRef = r;
-      }}
-    />,
-  );
-  expect(calendarRef).toBeTruthy();
-  if (calendarRef) {
-    calendarRef.container.focus = jest.fn();
-    calendarRef.focus();
-    expect(calendarRef.container.focus).toHaveBeenCalledTimes(1);
-  }
-});
-
-test('innerRef', () => {
-  let calendarRef;
-  const wrapper = mount(
-    <Calendar
-      innerRef={r => {
-        calendarRef = r;
-      }}
-    />,
-  );
-  expect(calendarRef).toBeInstanceOf(Calendar);
-  wrapper.unmount();
-  expect(calendarRef).toBe(null);
+  const wrapper = mount(<Calendar />);
+  const instance = wrapper.instance();
+  instance.container.focus = jest.fn();
+  instance.focus();
+  expect(instance.container.focus).toHaveBeenCalledTimes(1);
 });
