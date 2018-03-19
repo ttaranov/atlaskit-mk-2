@@ -377,7 +377,9 @@ export class FilmstripView extends React.Component<
             style={{ transform, transitionProperty, transitionDuration }}
           >
             {React.Children.map(children, (child, index) => (
-              <FilmStripListItem key={index}>{child}</FilmStripListItem>
+              <FilmStripListItem key={child['key'] || index}>
+                {child}
+              </FilmStripListItem>
             ))}
           </FilmStripList>
         </FilmStripListWrapper>
