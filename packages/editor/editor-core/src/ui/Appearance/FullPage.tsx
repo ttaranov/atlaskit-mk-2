@@ -7,6 +7,7 @@ import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
+import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
 
 const FullPageEditorWrapper = styled.div`
@@ -135,28 +136,35 @@ export default class Editor extends React.Component<
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
-            <Avatars />
+            <Avatars
+              editorView={editorView}
+              eventDispatcher={eventDispatcher}
+            />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer>
-          <ContentArea>
-            {customContentComponents}
-            <PluginSlot
-              editorView={editorView}
-              editorActions={editorActions}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={contentComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              popupsScrollableElement={popupsScrollableElement}
-              disabled={!!disabled}
-            />
-            {editorDOMElement}
-          </ContentArea>
-        </ScrollContainer>
+        <ClickAreaBlock editorView={editorView}>
+          <ScrollContainer>
+            <ContentArea>
+              {customContentComponents}
+              {
+                <PluginSlot
+                  editorView={editorView}
+                  editorActions={editorActions}
+                  eventDispatcher={eventDispatcher}
+                  providerFactory={providerFactory}
+                  appearance={this.appearance}
+                  items={contentComponents}
+                  popupsMountPoint={popupsMountPoint}
+                  popupsBoundariesElement={popupsBoundariesElement}
+                  popupsScrollableElement={popupsScrollableElement}
+                  disabled={!!disabled}
+                />
+              }
+              {editorDOMElement}
+            </ContentArea>
+          </ScrollContainer>
+        </ClickAreaBlock>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );
