@@ -1,0 +1,374 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for multiple quotes containing string 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "quote1",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 23,
+        "outer": 30,
+      },
+      "macro": "quote",
+      "startPos": Object {
+        "inner": 17,
+        "outer": 10,
+      },
+      "type": "macro",
+    },
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "quote2",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 43,
+        "outer": 50,
+      },
+      "macro": "quote",
+      "startPos": Object {
+        "inner": 37,
+        "outer": 30,
+      },
+      "type": "macro",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for noformat example 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "no format thing with ",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "text": "{code}inside{code}",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 59,
+        "outer": 69,
+      },
+      "macro": "noformat",
+      "startPos": Object {
+        "inner": 20,
+        "outer": 10,
+      },
+      "type": "macro",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for panel with attributes and a nested quote 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "borderStyle": "dashed",
+        "title": "My Title",
+      },
+      "content": Array [
+        Object {
+          "attrs": Object {},
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "Panel with nested quote here",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "endPos": Object {
+            "inner": 76,
+            "outer": 83,
+          },
+          "macro": "quote",
+          "startPos": Object {
+            "inner": 48,
+            "outer": 41,
+          },
+          "type": "macro",
+        },
+      ],
+      "endPos": Object {
+        "inner": 83,
+        "outer": 90,
+      },
+      "macro": "panel",
+      "startPos": Object {
+        "inner": 41,
+        "outer": 0,
+      },
+      "type": "macro",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "text": ".",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for quote example with a panel inside 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "quote with a ",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+        Object {
+          "attrs": Object {},
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "panel",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "endPos": Object {
+            "inner": 42,
+            "outer": 49,
+          },
+          "macro": "panel",
+          "startPos": Object {
+            "inner": 37,
+            "outer": 30,
+          },
+          "type": "macro",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "text": " inside",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 56,
+        "outer": 63,
+      },
+      "macro": "quote",
+      "startPos": Object {
+        "inner": 17,
+        "outer": 10,
+      },
+      "type": "macro",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "text": ".",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple code containing string 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {
+        "xml": "",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "<xml_code/>",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 31,
+        "outer": 37,
+      },
+      "macro": "code",
+      "startPos": Object {
+        "inner": 20,
+        "outer": 10,
+      },
+      "type": "macro",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple quote string 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "simple quote",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 29,
+        "outer": 36,
+      },
+      "macro": "quote",
+      "startPos": Object {
+        "inner": 17,
+        "outer": 10,
+      },
+      "type": "macro",
+    },
+  ],
+  "type": "root",
+}
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple quote wrapper string 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "simple quote",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "endPos": Object {
+        "inner": 19,
+        "outer": 26,
+      },
+      "macro": "quote",
+      "startPos": Object {
+        "inner": 7,
+        "outer": 0,
+      },
+      "type": "macro",
+    },
+  ],
+  "type": "root",
+}
+`;
