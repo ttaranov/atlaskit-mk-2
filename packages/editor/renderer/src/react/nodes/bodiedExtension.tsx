@@ -2,7 +2,6 @@ import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
 import { ExtensionHandlers } from '../../ui/Renderer';
-import { ADNode } from '@atlaskit/editor-common';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -13,6 +12,16 @@ export interface Props {
   originalContent?: any;
   parameters?: any;
   content?: any;
+}
+
+function getRenderNodesHandler(serializer: Serializer<any>, rendererContext: RendererContext) {
+  return (extensionContent) => {
+    const nodes = Array.isArray(extensionContent)
+      ? extensionContent
+      : [extensionContent];
+
+    return renderNodes(nodes, serializer, rendererContext.schema, 'div');
+  }
 }
 
 const BodiedExtension: React.StatelessComponent<Props> = ({
@@ -27,9 +36,11 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
+      const renderNodesHandler = getRenderNodesHandler(serializer, rendererContext)
       const extensionContent = extensionHandlers[extensionType](
         { extensionKey, parameters, content },
         rendererContext.adDoc,
+        renderNodesHandler
       );
 
       switch (true) {
@@ -38,15 +49,7 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
           return <div>{extensionContent}</div>;
         case !!extensionContent:
           // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(extensionContent)
-            ? extensionContent
-            : [extensionContent];
-          return renderNodes(
-            nodes as ADNode[],
-            serializer,
-            rendererContext.schema,
-            'div',
-          );
+          return renderNodesHandler(extensionContent);
       }
     }
   } catch (e) {
@@ -59,3 +62,4 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
 };
 
 export default BodiedExtension;
+

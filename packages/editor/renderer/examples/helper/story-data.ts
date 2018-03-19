@@ -1563,5 +1563,23 @@ System.out.println("There are " + count + " values >= 5");`,
         },
       ],
     },
+    {
+      type: 'bodiedExtension',
+      attrs: {
+        extensionType: 'com.atlassian.fabric',
+        extensionKey: 'wrapper',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This paragpaph should be styled with wrapper',
+            },
+          ],
+        },
+      ],
+    },
   ],
 };

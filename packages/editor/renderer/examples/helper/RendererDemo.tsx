@@ -77,7 +77,7 @@ const providerFactory = ProviderFactory.create({
 });
 
 const extensionHandlers: ExtensionHandlers = {
-  'com.atlassian.fabric': (ext, doc) => {
+  'com.atlassian.fabric': (ext, doc, renderNodes) => {
     const { extensionKey, parameters, content } = ext;
 
     switch (extensionKey) {
@@ -119,6 +119,20 @@ const extensionHandlers: ExtensionHandlers = {
             },
           },
         ];
+      case 'wrapper': {
+        return (
+          <div className="wrapper1" style={{
+            padding: '10px',
+            border: '1px solid red'
+          }}>
+            <div className="wrapper2" style={{
+              backgroundColor: 'yellow'
+            }}>
+              {renderNodes(content)}
+            </div>
+          </div>
+        )
+      }
     }
   },
 };

@@ -21,6 +21,7 @@ export interface Extension<T> {
 export type ExtensionHandler<T> = (
   ext: Extension<T>,
   doc: any,
+  renderNodes?: (any) => void
 ) => JSX.Element | ADNode[] | null;
 
 export interface ExtensionHandlers {

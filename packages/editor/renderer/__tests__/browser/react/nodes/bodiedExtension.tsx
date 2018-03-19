@@ -11,8 +11,17 @@ import ReactSerializer from '../../../../src/react';
 import { defaultSchema } from '@atlaskit/editor-common';
 
 describe('Renderer - React/Nodes/BodiedExtension', () => {
+
+  const TestWrapperComponent = (props) => {
+    return (
+      <div className="bodied-extension-wrapper">
+        {props.children}
+      </div>
+    )
+  }
+
   const extensionHandlers: ExtensionHandlers = {
-    'com.atlassian.fabric': (param: any, doc: any) => {
+    'com.atlassian.fabric': (param: any, doc: any, renderNodes) => {
       switch (param.extensionKey) {
         case 'react':
           return <p>This is a react element</p>;
@@ -30,6 +39,12 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
           ];
         case 'originalContent':
           return param.content;
+        case 'wrappedContent':
+          return (
+            <TestWrapperComponent>
+              {renderNodes(param.content)}
+            </TestWrapperComponent>
+          );
         case 'error':
           throw new Error('Tong is cursing you...');
         default:
@@ -162,7 +177,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
     extension.unmount();
   });
 
-  it('should be able to render the oringinlal content', () => {
+  it('should be able to render the original content', () => {
     const originalContent = [
       {
         type: 'paragraph',
@@ -190,6 +205,41 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
     expect(
       extension
         .find('div')
+        .first()
+        .text(),
+    ).to.equal('This is the original content');
+    extension.unmount();
+  });
+
+  it('should be able to render the wrapped content', () => {
+    const originalContent = [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            type: 'text',
+            text: 'This is the original content',
+          },
+        ],
+      },
+    ];
+    const extension = mount(
+      <BodiedExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="wrappedContent"
+        content={originalContent}
+      >
+        <p>This is the default content of the extension</p>
+      </BodiedExtension>,
+    );
+
+    expect(
+      extension
+        .find('div')
+        .find('div.bodied-extension-wrapper')
         .first()
         .text(),
     ).to.equal('This is the original content');
