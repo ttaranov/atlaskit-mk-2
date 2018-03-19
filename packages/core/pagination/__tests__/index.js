@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import Pagination from '../src';
 import pageRange from '../src/internal/page-range';
-import { Ellipsis } from '../src/styled';
+import { Ellipsis, ButtonActive } from '../src/styled';
 
 import { name } from '../package.json';
 
@@ -198,5 +198,16 @@ describe(name, () => {
       expect(buttons.at(4).prop('isDisabled')).toBe(true);
       expect(buttons.at(3).prop('isDisabled')).toBe(false);
     });
+  });
+  it('should change current page when defaultCurrent is changed', () => {
+    class Consumer extends React.Component<{}, { page: number }> {
+      state = { page: 5 };
+      render() {
+        return <Pagination defaultCurrent={this.state.page} total={10} />;
+      }
+    }
+    const wrapper = mount(<Consumer />);
+    wrapper.setState({ page: 6 });
+    expect(wrapper.find(ButtonActive).text()).toBe('6');
   });
 });

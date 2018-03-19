@@ -39,6 +39,12 @@ export default class Pagination extends Component<Props, State> {
     current: this.props.defaultCurrent,
   };
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.defaultCurrent !== nextProps.defaultCurrent) {
+      this.setState({ current: nextProps.defaultCurrent });
+    }
+  }
+
   getCurrent() {
     return this.props.current ? this.props.current : this.state.current;
   }
