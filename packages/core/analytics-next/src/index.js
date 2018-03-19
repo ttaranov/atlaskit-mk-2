@@ -18,5 +18,6 @@ export {
   WithAnalyticsEventsProps,
 } from './withAnalyticsEvents';
 
-// create and fire helper
+// Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';
+export { default as cleanProps } from './cleanProps';
