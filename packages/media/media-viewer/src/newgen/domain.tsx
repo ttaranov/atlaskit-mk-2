@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 import {
   Context,
   FileItem,
@@ -16,9 +16,20 @@ export type Identifier = {
   collectionName?: string;
 };
 
-export type FileDetails = {
+export type Details = {
   mediaType: MediaType;
-};
+}
+
+export type ImageDetails = Details & {
+  thumbnailUrl: string;
+  mediumSizeUrl: string;
+}
+
+export type DocumentDetails = Details & {
+
+}
+
+export type FileDetails = ImageDetails | DocumentDetails;
 
 export type RendererModel =
   | {
@@ -47,6 +58,69 @@ export interface Store {
   subscribe(cb: ((model: RendererModel) => void)): Subscription;
 }
 
+const processDocEvent = async (file: FileItem, context: Context, subject: Subject<RendererModel>, collection?: string) => {
+  subject.next({
+    type: 'SUCCESS',
+    item: {
+      mediaType: 'doc'
+    }
+  });
+};
+
+const processImageEvent = async (file: FileItem, context: Context, subject: Subject<RendererModel>, collection?: string) => {
+  const service = context.getDataUriService(collection);
+
+  const thumbSizePromise = service.fetchImageDataUri(file, {
+    width: 100,
+    height: 75,
+  });
+
+  const mediumSize = service.fetchImageDataUri(file, {
+    width: 100,
+    height: 75,
+  });
+
+  const thumbUrl = await thumbSizePromise;
+
+  subject.next({
+    type: 'SUCCESS',
+    item: {
+      mediaType: 'image',
+      thumbnailUrl: thumbUrl,
+      mediumSizeUrl: thumbUrl,
+    },
+  });
+
+  const mediumSizeUrl = await mediumSize;
+
+  subject.next({
+    type: 'SUCCESS',
+    item: {
+      mediaType: 'image',
+      thumbnailUrl: thumbUrl,
+      mediumSizeUrl: mediumSizeUrl,
+    },
+  });
+};
+
+const onItemProviderDataEvent = (file: FileItem, context: Context, subject: Subject<RendererModel>, collection?: string) : void => {
+  switch(file.details.mediaType) {
+    case 'image':
+      processImageEvent(file, context, subject, collection);
+      return;
+    case 'doc':
+      processDocEvent(file, context, subject, collection);
+      return;
+    default:
+      throw new Error('not implemented');
+  };
+};
+
+const onProviderErrorEvent = (err: Error, subject: Subject<RendererModel>): void => {
+  const model: RendererModel = { type: 'FAILED', err };
+  subject.next(model);
+};
+
 export class StoreImpl implements Store {
   private _subject: Subject<RendererModel>;
   constructor(context: Context, data: Identifier) {
@@ -57,29 +131,10 @@ export class StoreImpl implements Store {
 
     provider
       .observable()
-      .filter(
-        item =>
-          item.type === 'file' && item.details.processingStatus === 'succeeded',
-      )
-      .map(item => ({
-        mediaType: (item as FileItem).details.mediaType as MediaType,
-      }))
+      .filter(item => item.type === 'file')
       .subscribe({
-        next: item => {
-          const model: RendererModel = {
-            type: 'SUCCESS',
-            item,
-          };
-
-          this._subject.next(model);
-        },
-        error: err => {
-          const model: RendererModel = {
-            type: 'FAILED',
-            err,
-          };
-          this._subject.next(model);
-        },
+        next: item => onItemProviderDataEvent(item as FileItem, context, this._subject, collectionName),
+        error: err => onProviderErrorEvent(err, this._subject)
       });
   }
 

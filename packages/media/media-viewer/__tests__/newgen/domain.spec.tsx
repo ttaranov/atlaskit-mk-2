@@ -36,7 +36,7 @@ describe('Store', () => {
     subject.next({
       type: 'file',
       details: {
-        processingStatus: 'succeeded'
+        mediaType: 'image'
       }
     });
   });

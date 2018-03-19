@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Positioner, ErrorMessage } from './styled';
 import { DocumentViewer } from './document-viewer';
-import { FileDetails } from './domain';
+import { ImageViewer } from './image-viewer';
+import { FileDetails, ImageDetails } from './domain';
 
 export type Props = {
   fileDetails: FileDetails;
@@ -9,6 +10,8 @@ export type Props = {
 
 const ViewerSelector: React.StatelessComponent<Props> = ({ fileDetails }) => {
   switch(fileDetails.mediaType) {
+    case 'image':
+      return <ImageViewer image={fileDetails as ImageDetails}/>;
     case 'doc':
       return <DocumentViewer />;
     default:

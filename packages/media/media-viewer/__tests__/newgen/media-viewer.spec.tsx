@@ -46,6 +46,7 @@ describe('<MediaViewer />', () => {
     subject.next({
       type: 'file',
       details: {
+        mediaType: 'image',
         id: 'stub',
       },
     });
