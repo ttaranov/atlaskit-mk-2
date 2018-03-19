@@ -2,7 +2,6 @@ import {
   doc,
   p,
   a as link,
-  text,
   code_block,
   img,
 } from '@atlaskit/editor-test-helpers';
@@ -11,7 +10,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
 
-describe('WikiMarkup Transformer', () => {
+describe.skip('WikiMarkup Transformer', () => {
   describe('link with inline macro', () => {
     const WIKI_NOTATION = `[http://www.my{color:red}host{color}.com]`;
 
@@ -55,7 +54,7 @@ describe('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(text('[http://www.my')), code_block({})('host'), p(text('.com]'))),
+      doc(p('[http://www.my'), code_block({})('host'), p('.com]')),
     );
   });
 
@@ -71,7 +70,7 @@ describe('WikiMarkup Transformer', () => {
           img({
             src:
               'http://example.com/?%3Cfont+color%3D%22%22%3Einsection%3C%2Ffont%3E',
-          }),
+          })(),
         ),
       ),
     );
@@ -84,11 +83,7 @@ describe('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(
-        p(text('!http://example.com/?')),
-        code_block({})('insection'),
-        p(text('!')),
-      ),
+      doc(p('!http://example.com/?'), code_block({})('insection'), p('!')),
     );
   });
 
@@ -99,7 +94,7 @@ describe('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(img({ src: 'http://example.com/' }))),
+      doc(p(img({ src: 'http://example.com/' })())),
     );
   });
 
@@ -111,7 +106,7 @@ describe('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(img({ src: 'http://example.com/?insection' }))),
+      doc(p(img({ src: 'http://example.com/?insection' })())),
     );
   });
 
@@ -126,7 +121,7 @@ describe('WikiMarkup Transformer', () => {
         p(
           link({
             href: 'http://www.myhost.com',
-            title = '!http://example.com/?insection!"',
+            title: '!http://example.com/?insection!"',
           })('Text'),
         ),
       ),
@@ -151,7 +146,7 @@ describe('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(img({ src: 'http://example.com/?insection' }))),
+      doc(p(img({ src: 'http://example.com/?insection' })())),
     );
   });
 
