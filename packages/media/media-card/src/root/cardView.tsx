@@ -10,6 +10,7 @@ import {
 } from '@atlaskit/media-core';
 import {
   withAnalyticsEvents,
+  createAndFireEvent,
   WithCreateAnalyticsEventProps,
 } from '@atlaskit/analytics-next';
 
@@ -251,12 +252,8 @@ export class CardViewBase extends React.Component<
 
   private onClick = (event: MouseEvent<HTMLDivElement>) => {
     const { onClick, metadata: mediaItemDetails } = this.props;
-    const analyticsEvent = this.props.createAnalyticsEvent({
-      action: 'clicked',
-    });
-    analyticsEvent.clone()!.fire('media');
     if (onClick) {
-      onClick({ event, mediaItemDetails }, analyticsEvent);
+      onClick({ event, mediaItemDetails });
     }
   };
 
@@ -268,11 +265,14 @@ export class CardViewBase extends React.Component<
   };
 }
 
+const createAndFireEventOnMedia = createAndFireEvent('media');
 /**
  * With this CardView class constructor version `createAnalyticsEvent` props is supplied for you, so
  * when creating instance of that class you don't need to worry about it.
  */
-export const CardViewWithAnalyticsEvents = withAnalyticsEvents()(CardViewBase);
+export const CardViewWithAnalyticsEvents = withAnalyticsEvents({
+  onClick: createAndFireEventOnMedia({ action: 'clicked' }),
+})(CardViewBase);
 
 /**
  * This if final version of CardView that is exported to the consumer. This version wraps everything

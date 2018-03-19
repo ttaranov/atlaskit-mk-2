@@ -83,7 +83,7 @@ export interface SharedCardProps {
 }
 
 export interface CardOnClickCallback {
-  (result: CardEvent, analyticsEvent: UIAnalyticsEventInterface): void;
+  (result: CardEvent, analyticsEvent?: UIAnalyticsEventInterface): void;
 }
 
 export interface CardEventProps {

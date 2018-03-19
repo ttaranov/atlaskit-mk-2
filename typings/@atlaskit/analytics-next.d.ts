@@ -1,4 +1,4 @@
-// For version "1.0.2"
+// For version "1.1.3"
 import * as React from 'react';
 
 // This is not needed for classes UIAnalyticsEvent and AnalyticsEvent,
@@ -139,3 +139,17 @@ export type WithCreateAnalyticsEventFunction = <TOwnProps>(
 export declare function withAnalyticsEvents<TOwnProps>(
   createEventMap?: EventMap<TOwnProps>,
 ): WithCreateAnalyticsEventFunction;
+
+/*
+  createAndFireEvent.js
+ */
+
+export type CreateAndFireEventFunction = (
+  payload: AnalyticsEventPayload,
+) => (
+  createAnalyticsEvent: CreateUIAnalyticsEventSignature,
+) => UIAnalyticsEventInterface;
+
+export declare function createAndFireEvent(
+  channel?: string,
+): CreateAndFireEventFunction;
