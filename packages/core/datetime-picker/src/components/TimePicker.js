@@ -20,8 +20,6 @@ type Props = {
   defaultFocused?: string,
   /** Default for `isOpen`. */
   defaultIsOpen?: boolean,
-  /** Default for `times`. */
-  defaultTimes?: Array<string>,
   /** Default for `value`. */
   defaultValue?: string,
   /** The icon to show in the field. */
@@ -33,7 +31,7 @@ type Props = {
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen: boolean,
+  isOpen?: boolean,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -45,14 +43,13 @@ type Props = {
   /** Props to apply to the select. */
   selectProps: Object,
   /** The times to show in the dropdown. */
-  times: Array<string>,
+  times?: Array<string>,
   /** The ISO time that should be used as the input value. */
   value?: string,
 };
 
 type State = {
   isOpen: boolean,
-  times: Array<string>,
   value: string,
 };
 
@@ -74,16 +71,16 @@ class TimePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
+    times: defaultTimes,
   };
 
   state = {
     isOpen: false,
-    times: defaultTimes,
     value: '',
   };
 
   getOptions(): Array<Option> {
-    return this.state.times.map((time: string): Option => {
+    return this.props.times.map((time: string): Option => {
       return {
         label: formatTime(time),
         value: time,
@@ -104,6 +101,7 @@ class TimePicker extends Component<Props, State> {
       id,
       innerProps,
       isDisabled,
+      isOpen,
       name,
       onBlur,
       onFocus,
@@ -118,6 +116,7 @@ class TimePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
+          menuIsOpen={isOpen}
           onBlur={onBlur}
           onChange={this.onChange}
           options={this.getOptions()}
