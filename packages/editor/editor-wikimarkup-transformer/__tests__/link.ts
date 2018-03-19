@@ -4,6 +4,8 @@ import {
   a as link,
   code_block,
   img,
+  strong,
+  em,
 } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from './_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
@@ -158,6 +160,326 @@ describe.skip('WikiMarkup Transformer', () => {
       defaultSchema,
       WIKI_NOTATION,
       doc(p(code_block({})('!http://example.com/?insection!'))),
+    );
+  });
+
+  describe('escaped link macro', () => {
+    const WIKI_NOTATION = `\\[http://confluence.atlassian.com]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('[http://confluence.atlassian.com]')),
+    );
+  });
+
+  describe('plain link', () => {
+    const WIKI_NOTATION = `[http://confluence.atlassian.com]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://confluence.atlassian.com' })(
+            'http://confluence.atlassian.com',
+          ),
+        ),
+      ),
+    );
+  });
+
+  describe('link with text', () => {
+    const WIKI_NOTATION = `[confluence|http://confluence-url.atlassian.com:10090]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://confluence-url.atlassian.com:10090' })(
+            'confluence',
+          ),
+        ),
+      ),
+    );
+  });
+
+  describe('link with text and title', () => {
+    const WIKI_NOTATION = `[confluence2|http://confluence_url_no2.atlassian.com:10090|more description here]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({
+            href: 'http://confluence_url_no2.atlassian.com:10090',
+            title: 'more description here',
+          })('confluence2'),
+        ),
+      ),
+    );
+  });
+
+  describe('IRC link', () => {
+    const WIKI_NOTATION = `[an IRC link|irc://atlassian.com/confluence]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p(link({ href: 'irc://atlassian.com/confluence' })('an IRC link'))),
+    );
+  });
+
+  describe('link macros with marks', () => {
+    const WIKI_NOTATION = `[*bold link*|http://www.yahoo.com/search?query=hello]
+[Try _this_ link|http://www.atlassian.com]
+[_italic_|http://confluence.atlassian.com]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          strong(
+            link({ href: 'http://www.yahoo.com/search?query=hello' })(
+              'bold link',
+            ),
+          ),
+        ),
+        p(
+          link({ href: 'http://www.atlassian.com' })('try '),
+          em(link({ href: 'http://www.atlassian.com' })('this')),
+          link({ href: 'http://www.atlassian.com' })(' link'),
+        ),
+        p(em(link({ href: 'http://confluence.atlassian.com' })('italic'))),
+      ),
+    );
+  });
+
+  describe('non links', () => {
+    let WIKI_NOTATION = `[  ]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('[  ]')),
+    );
+
+    WIKI_NOTATION = `[]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('[]')),
+    );
+
+    WIKI_NOTATION = `[ x ]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('[ x ]')),
+    );
+
+    WIKI_NOTATION = `[[http://confluence.atlassian.com]]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          '[',
+          link({ href: 'http://confluence.atlassian.com' })(
+            'http://confluence.atlassian.com',
+          ),
+          ']',
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `This [] is not a link!`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('This [] is not a link!')),
+    );
+
+    // @TODO error span?
+    WIKI_NOTATION = `An invalid URL: [invalid://nowhere.com/hello]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('An invalid URL: &#91;invalid://nowhere.com/hello&#93;')),
+    );
+
+    WIKI_NOTATION = `[Another invalid URL|invalid://nowhere.com/hello]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(p('&#91;Another invalid URL|invalid://nowhere.com/hello&#93;')),
+    );
+  });
+
+  describe('links with marks to be ignored', () => {
+    let WIKI_NOTATION = `[http://cvs.example.com/*checkout*/foo/Bar.java]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://cvs.example.com/*checkout*/foo/Bar.java' })(
+            'http://cvs.example.com/*checkout*/foo/Bar.java',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `http://cvs.example.com/*checkout*/foo/Bar.java`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://cvs.example.com/*checkout*/foo/Bar.java' })(
+            'http://cvs.example.com/*checkout*/foo/Bar.java',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `[http://cvs.example.com/~checkout~/foo/Bar.java]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://cvs.example.com/~checkout~/foo/Bar.java' })(
+            'http://cvs.example.com/~checkout~/foo/Bar.java',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `http://cvs.example.com/~checkout~/foo/Bar.java`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://cvs.example.com/~checkout~/foo/Bar.java' })(
+            'http://cvs.example.com/~checkout~/foo/Bar.java',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `http://foo.com/xx(yy)zz.java)`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://foo.com/xx(yy)zz.java)' })(
+            'http://foo.com/xx(yy)zz.java)',
+          ),
+        ),
+      ),
+    );
+  });
+
+  describe('XSS link', () => {
+    const WIKI_NOTATION = `[<script>alert("Haha!")</script>|invalid://nowhere.com/hello]`;
+
+    // @TODO error span?
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          '&#91;&lt;script&gt;alert(&quot;Haha!&quot;)&lt;/script&gt;|invalid://nowhere.com/hello&#93;',
+        ),
+      ),
+    );
+  });
+
+  describe('XSS macros', () => {
+    let WIKI_NOTATION = `http://[http://onmouseover=alert(0)//]`;
+
+    // @TODO error span?
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://[http://onmouseover=alert(0)//]' })(
+            'http://[http://onmouseover=alert(0)//]',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `http://!http://onmouseover=alert(0)//!`;
+
+    // @TODO error span?
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({ href: 'http://!http://onmouseover=alert(0)//!' })(
+            'http://!http://onmouseover=alert(0)//!',
+          ),
+        ),
+      ),
+    );
+
+    WIKI_NOTATION = `[http://a.b.com/c?url=http://a.b.com/rest?gadget=http://a.b.com/gadgets&container=atlassian]`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        p(
+          link({
+            href:
+              'http://a.b.com/c?url=http://a.b.com/rest?gadget=http://a.b.com/gadgets&container=atlassian',
+          })(
+            'http://a.b.com/c?url=http://a.b.com/rest?gadget=http://a.b.com/gadgets&amp;container=atlassian',
+          ),
+        ),
+      ),
     );
   });
 });
