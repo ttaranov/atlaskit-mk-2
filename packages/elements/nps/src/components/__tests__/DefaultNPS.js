@@ -19,11 +19,9 @@ const getDefaultProps = () => ({
   onFinish: jest.fn(),
 });
 
-const getDefaultNPS = (props: any) => <DefaultNPS {...props} />;
-
 describe('NPS', () => {
   it('should render an NPS', () => {
-    const wrapper = shallow(getDefaultNPS(getDefaultProps()));
+    const wrapper = shallow(<DefaultNPS {...getDefaultProps()} />);
     expect(wrapper.find(NPS).exists()).toBe(true);
   });
 });

@@ -49,73 +49,45 @@ describe('Feedback page', () => {
       ).toEqual(props.messages.description);
     });
 
-    it('should render RatingsButtons', done => {
+    it('should render RatingsButtons', () => {
       const props = getDefaultProps();
       const wrapper = shallow(<Feedback {...props} />);
-      wrapper.instance().setState({ rating: 2 }, () => {
-        wrapper.update();
-        const ratingsButtons = wrapper.find(RatingsButtons);
-        expect(ratingsButtons.exists()).toBe(true);
-        expect(ratingsButtons.prop('selected')).toEqual(2);
-        done();
-      });
+      wrapper.setState({ rating: 2 });
+
+      const ratingsButtons = wrapper.find(RatingsButtons);
+      expect(ratingsButtons.exists()).toBe(true);
+      expect(ratingsButtons.prop('selected')).toEqual(2);
+      ratingsButtons.prop('onRatingSelect')(2);
+      expect(props.onRatingSelect).toHaveBeenCalled();
     });
 
-    it('should render a comment box and send button if state.rating is not null', done => {
+    it('should render a comment box and send button if state.rating is not null', () => {
       const props = getDefaultProps();
       const wrapper = shallow(<Feedback {...props} />);
-      wrapper.instance().setState({ rating: 2 }, () => {
-        wrapper.update();
-        expect(wrapper.find(CommentBox).exists()).toBe(true);
-        expect(wrapper.find(SendButton).exists()).toBe(true);
-        done();
-      });
+      wrapper.setState({ rating: 2 });
+
+      const commentBox = wrapper.find(CommentBox);
+      expect(commentBox.exists()).toBe(true);
+      commentBox.prop('onCommentChange')('a');
+      expect(props.onCommentChange).toHaveBeenCalled();
+
+      const sendButton = wrapper.find(SendButton);
+      expect(sendButton.exists()).toBe(true);
+      sendButton.prop('onClick')();
+      expect(props.onSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          rating: expect.anything(),
+          comment: expect.any(String),
+        }),
+      );
     });
 
-    it('should not render a comment box or send button if state.rating is not null', done => {
+    it('should not render a comment box or send button if state.rating is not null', () => {
       const props = getDefaultProps();
       const wrapper = shallow(<Feedback {...props} />);
-      wrapper.instance().setState({ rating: null }, () => {
-        wrapper.update();
-        expect(wrapper.find(CommentBox).exists()).toBe(false);
-        expect(wrapper.find(SendButton).exists()).toBe(false);
-        done();
-      });
-    });
-
-    describe('onRatingSelect', () => {
-      it('should call the onRatingSelect prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Feedback {...props} />);
-        const instance = wrapper.instance();
-
-        instance.onRatingSelect(2);
-        expect(props.onRatingSelect).toHaveBeenCalledWith(2);
-      });
-    });
-
-    describe('onCommentChange', () => {
-      it('should call the onCommentChange prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Feedback {...props} />);
-        const instance = wrapper.instance();
-
-        instance.onCommentChange('a');
-        expect(props.onCommentChange).toHaveBeenCalledWith('a');
-      });
-    });
-
-    describe('onSubmit', () => {
-      it('should call the onSubmit prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Feedback {...props} />);
-        const instance = wrapper.instance();
-        instance.onSubmit();
-        expect(props.onSubmit).toHaveBeenCalledWith({
-          rating: null,
-          comment: '',
-        });
-      });
+      wrapper.setState({ rating: null });
+      expect(wrapper.find(CommentBox).exists()).toBe(false);
+      expect(wrapper.find(SendButton).exists()).toBe(false);
     });
   });
 

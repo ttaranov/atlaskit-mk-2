@@ -54,54 +54,30 @@ describe('Followup page', () => {
     });
 
     it('should render a RoleDropdown', () => {
-      const wrapper = shallow(<Followup {...getDefaultProps()} />);
-      expect(wrapper.find(RoleDropdown).exists()).toBe(true);
+      const props = getDefaultProps();
+      const wrapper = shallow(<Followup {...props} />);
+      const roleDropdown = wrapper.find(RoleDropdown);
+      expect(roleDropdown.exists()).toBe(true);
+      roleDropdown.prop('onRoleSelect')('a');
+      expect(props.onRoleSelect).toHaveBeenCalled();
     });
 
     it('should render a Checkbox', () => {
-      const wrapper = shallow(<Followup {...getDefaultProps()} />);
-      expect(wrapper.find(Checkbox).exists()).toBe(true);
+      const props = getDefaultProps();
+      const wrapper = shallow(<Followup {...props} />);
+      const checkbox = wrapper.find(Checkbox);
+      expect(checkbox.exists()).toBe(true);
+      checkbox.prop('onChange')({ isChecked: true });
+      expect(props.onCanContactChange).toHaveBeenCalled();
     });
 
     it('should render a Button', () => {
-      const wrapper = shallow(<Followup {...getDefaultProps()} />);
-      expect(wrapper.find(Button).exists()).toBe(true);
-    });
-
-    describe('onRoleSelect', () => {
-      it('should call onRoleSelect prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Followup {...props} />);
-        const instance = wrapper.instance();
-
-        instance.onRoleSelect('a');
-        expect(props.onRoleSelect).toHaveBeenCalledWith('a');
-      });
-    });
-
-    describe('onCanContactChange', () => {
-      it('should call onCanContactChange prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Followup {...props} />);
-        const instance = wrapper.instance();
-
-        instance.onCanContactChange({ isChecked: true });
-        expect(props.onCanContactChange).toHaveBeenCalledWith(true);
-      });
-    });
-
-    describe('onSubmit', () => {
-      it('should call onSubmit prop', () => {
-        const props = getDefaultProps();
-        const wrapper = shallow(<Followup {...props} />);
-        const instance = wrapper.instance();
-
-        instance.onSubmit({ role: 'a', canContact: true });
-        expect(props.onSubmit).toHaveBeenCalledWith({
-          role: null,
-          canContact: false,
-        });
-      });
+      const props = getDefaultProps();
+      const wrapper = shallow(<Followup {...props} />);
+      const button = wrapper.find(Button);
+      expect(button.exists()).toBe(true);
+      button.prop('onClick')();
+      expect(props.onSubmit).toHaveBeenCalled();
     });
   });
 
