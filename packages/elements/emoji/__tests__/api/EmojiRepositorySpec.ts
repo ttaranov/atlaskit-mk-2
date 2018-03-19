@@ -1,6 +1,10 @@
 import { expect } from 'chai';
 
-import { customCategory, customType } from '../../src/constants';
+import {
+  customCategory,
+  customType,
+  frequentCategory,
+} from '../../src/constants';
 import { EmojiDescription, SearchSort } from '../../src/types';
 import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
 import EmojiRepository, {
@@ -382,6 +386,25 @@ describe('EmojiRepository', () => {
     });
   });
 
+  describe('#findInCategory', () => {
+    it('returns emoji with category FREQUENT', done => {
+      const repository = newEmojiRepository();
+      repository.used(smileyEmoji);
+      const frequent = {
+        ...smileyEmoji,
+        category: frequentCategory,
+      };
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        const frequentEmoji = repository.findInCategory(frequentCategory);
+        expect(frequentEmoji).to.have.length(1);
+        expect(frequentEmoji[0]).to.deep.equal(frequent);
+
+        done();
+      });
+    });
+  });
+
   describe('#addUnknownEmoji', () => {
     it('add custom emoji', () => {
       const siteEmojiId = toEmojiId(siteTest);
@@ -621,6 +644,32 @@ describe('EmojiRepository', () => {
 
         emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
         expect(emoji).to.have.lengthOf(2);
+
+        done();
+      });
+    });
+
+    it('should have a category of frequent for returned emoji', done => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        const emoji = emojiRepository.getFrequentlyUsed()[0];
+        expect(emoji.category).to.equal(frequentCategory);
+
+        done();
+      });
+    });
+
+    it('should return frequent emoji on find operations with original category', done => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        const thumbsUp = emojiRepository.findByShortName(':thumbsup:');
+        expect(thumbsUp!.category).to.equal('PEOPLE');
 
         done();
       });
