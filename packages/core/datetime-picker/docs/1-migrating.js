@@ -16,7 +16,7 @@ export default md`
     + import { DatePicker } from '@atlaskit/datetime-picker';
 
     - <DatePickerStateless month={1} />
-    - <DatePicker month={1} />
+    + <DatePicker month={1} />
   `}
 
   This goes for all of the picker components. If you're using the \`TimePicker\` or \`DateTimePicker\`, then you follow the same pattern.
