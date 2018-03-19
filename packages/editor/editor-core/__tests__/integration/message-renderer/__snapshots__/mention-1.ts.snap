@@ -72,6 +72,10 @@ Object {
         Object {
           "content": Array [
             Object {
+              "text": "this is inside blockquote ",
+              "type": "text",
+            },
+            Object {
               "attrs": Object {
                 "accessLevel": "",
                 "id": "0",
