@@ -31,7 +31,7 @@ type Props = {
   /** Whether or not the field is disabled. */
   isDisabled?: boolean,
   /** Whether or not the dropdown is open. */
-  isOpen: boolean,
+  isOpen?: boolean,
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
@@ -182,7 +182,7 @@ class DatePicker extends Component<Props, State> {
     }
   };
 
-  refCalendar = e => {
+  refCalendar = (e: Calendar) => {
     this.calendar = e;
   };
 
