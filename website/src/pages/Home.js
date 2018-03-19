@@ -96,6 +96,7 @@ const CardLinkInt = styled(Link)`
   ${cardlinkStyles};
 `;
 
+// $FlowFixMe - strings are valid arguments of styled
 const CardLinkExt = styled('a')`
   ${cardlinkStyles};
 `;
@@ -136,7 +137,21 @@ const Img = ({ src }) => (
   />
 );
 
-const Card = ({ children, icon: Icon, iconColor, title, imgSrc, ...props }) => {
+type CardProps = {
+  imgSrc?: any,
+  children: any,
+  icon: () => any,
+  title: string,
+};
+
+const Card = ({
+  children,
+  icon: Icon,
+  iconColor,
+  title,
+  imgSrc,
+  ...props
+}: CardProps) => {
   const CardLink = props.href ? CardLinkExt : CardLinkInt;
   return (
     <CardLink {...props}>
