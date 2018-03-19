@@ -16,7 +16,7 @@ export default md`
     + import { Calendar } from '@atlaskit/calendar';
 
     - <CalendarStateless month={1} />
-    - <Calendar month={1} />
+    + <Calendar month={1} />
   `}
 
   ### \`focused\` -> \`day\`
