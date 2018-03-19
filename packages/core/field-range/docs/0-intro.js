@@ -8,7 +8,7 @@ export default md`
   Component which renders a slider and is a substitute of the native input[range] element
 
   ~~~js
-  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+  import FieldRange from '@atlaskit/field-range';
   ~~~
 
   The onChange prop provides a way to subscribe to changes in the value.
