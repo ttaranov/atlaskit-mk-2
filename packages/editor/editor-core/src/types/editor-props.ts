@@ -25,6 +25,7 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { ExtensionHandlers } from '../index';
+import { AnalyticsNextContext } from '../analytics/analytics-next/AnalyticsDelegate';
 
 export type EditorAppearance =
   | 'message'
@@ -51,6 +52,7 @@ export interface EditorProps {
   analyticsHandler?: AnalyticsHandler;
   // For @atlaskit/analytics support
   delegateAnalyticsEvent?: DelegateAnalyticsEvent;
+  analyticsNextContext?: AnalyticsNextContext;
 
   contentComponents?: ReactElement;
   primaryToolbarComponents?: ReactElement;

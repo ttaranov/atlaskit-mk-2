@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
+import { AnalyticsListener } from '@atlaskit/analytics';
+import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 
 import { EditorWithAnalytics } from './../src/editor';
 import getPropsPreset from './../src/create-editor/get-props-preset';
@@ -9,7 +10,11 @@ import ToolsDrawer from '../example-helpers/ToolsDrawer';
 const SAVE_ACTION = () => console.log('Save');
 
 // tslint:disable-next-line:no-console
-const analyticsHandler = (actionName, props) => console.log(actionName, props);
+const analyticsHandler = (actionName, props) =>
+  console.log('@atlaskit/analytics', actionName, props);
+// tslint:disable-next-line:no-console
+const analyticsNextHandler = ({ payload, context }) =>
+  console.log('@atlaskit/analytics-next', payload, context);
 
 export default function Example() {
   return (
@@ -24,8 +29,8 @@ export default function Example() {
         mediaProvider,
         onChange,
       }) => (
-        <AnalyticsListener onEvent={analyticsHandler}>
-          <AnalyticsDecorator data={{ editorType: 'message' }}>
+        <AnalyticsNextListener onEvent={analyticsNextHandler}>
+          <AnalyticsListener onEvent={analyticsHandler}>
             <EditorWithAnalytics
               {...getPropsPreset('message')}
               analyticsHandler={analyticsHandler}
@@ -40,8 +45,8 @@ export default function Example() {
               onChange={onChange}
               onSave={SAVE_ACTION}
             />
-          </AnalyticsDecorator>
-        </AnalyticsListener>
+          </AnalyticsListener>
+        </AnalyticsNextListener>
       )}
     />
   );

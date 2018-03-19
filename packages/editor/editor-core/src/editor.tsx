@@ -9,7 +9,7 @@ import { EditorProps } from './types';
 import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
-
+import withAnalyticsNext from './analytics/analytics-next/withAnalytics';
 export * from './types';
 
 export default class Editor extends React.Component<EditorProps, {}> {
@@ -191,7 +191,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
 }
 
 export const EditorWithAnalytics = withAnalytics<typeof Editor>(
-  Editor,
+  withAnalyticsNext(Editor) as any,
   {},
   {},
   true,

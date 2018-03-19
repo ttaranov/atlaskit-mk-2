@@ -479,7 +479,10 @@ export class MentionsState {
   }
 }
 
-export function createPlugin(providerFactory: ProviderFactory) {
+export function createPlugin(
+  providerFactory: ProviderFactory,
+  analyticsNextContext,
+) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -493,7 +496,12 @@ export function createPlugin(providerFactory: ProviderFactory) {
     },
     props: {
       nodeViews: {
-        mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
+        mention: nodeViewFactory(
+          providerFactory,
+          { mention: mentionNodeView },
+          false,
+          analyticsNextContext,
+        ),
       },
       handleDOMEvents: {
         focus(view: EditorView, event) {

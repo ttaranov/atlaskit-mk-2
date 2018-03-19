@@ -4,6 +4,9 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ReactPMNode from './ui/prosemirror-node';
+import AnalyticsDelegate, {
+  AnalyticsNextContext,
+} from '../analytics/analytics-next/AnalyticsDelegate';
 
 type getPosHandler = () => number;
 
@@ -18,6 +21,7 @@ class NodeViewElem implements NodeView {
   private getPos: getPosHandler;
   private providerFactory: ProviderFactory;
   private reactNodeViewComponents: ReactNodeViewComponents;
+  private analyticsNextContext: AnalyticsNextContext;
 
   constructor(
     node: PMNode,
@@ -26,12 +30,14 @@ class NodeViewElem implements NodeView {
     providerFactory: ProviderFactory,
     reactNodeViewComponents: ReactNodeViewComponents,
     isBlockNodeView: boolean,
+    analyticsNextContext: AnalyticsNextContext,
   ) {
     this.nodeTypeName = node.type.name;
     this.view = view;
     this.getPos = getPos;
     this.providerFactory = providerFactory;
     this.reactNodeViewComponents = reactNodeViewComponents;
+    this.analyticsNextContext = analyticsNextContext;
 
     const elementType = isBlockNodeView ? 'div' : 'span';
     this.domRef = document.createElement(elementType);
@@ -69,13 +75,15 @@ class NodeViewElem implements NodeView {
     });
 
     ReactDOM.render(
-      <ReactPMNode
-        node={node}
-        getPos={getPos}
-        view={view}
-        providerFactory={providerFactory}
-        components={reactNodeViewComponents}
-      />,
+      <AnalyticsDelegate {...this.analyticsNextContext}>
+        <ReactPMNode
+          node={node}
+          getPos={getPos}
+          view={view}
+          providerFactory={providerFactory}
+          components={reactNodeViewComponents}
+        />
+      </AnalyticsDelegate>,
       this.domRef!,
     );
   }
@@ -85,6 +93,7 @@ export default function nodeViewFactory(
   providerFactory: ProviderFactory,
   reactNodeViewComponents: ReactNodeViewComponents,
   isBlockNodeView = false,
+  analyticsNextContext,
 ) {
   return (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
     return new NodeViewElem(
@@ -94,6 +103,7 @@ export default function nodeViewFactory(
       providerFactory,
       reactNodeViewComponents,
       isBlockNodeView,
+      analyticsNextContext,
     );
   };
 }

@@ -20,7 +20,9 @@ const mentionsPlugin: EditorPlugin = {
     return [
       {
         rank: 300,
-        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+        plugin: ({ providerFactory, props }) => {
+          return createPlugin(providerFactory, props.analyticsNextContext);
+        },
       },
       { rank: 310, plugin: ({ schema }) => inputRulePlugin(schema) },
       { rank: 320, plugin: ({ schema }) => keymap(schema) },
