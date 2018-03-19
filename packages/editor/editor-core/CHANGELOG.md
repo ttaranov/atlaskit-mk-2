@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.5
+- [patch] Add device and browser informatio to jira collector in feedback component. [6f5d172](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f5d172)
+
 ## 65.1.4
 - [patch] fix(editor-core): add media mock controls [31e0a7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31e0a7a)
 
