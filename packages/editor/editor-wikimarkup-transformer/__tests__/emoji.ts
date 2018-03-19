@@ -15,11 +15,11 @@ describe.skip('WikiMarkup Transformer', () => {
       doc(
         p(
           'just an smiley face ',
-          emoji({ shortName: ':slight_smile:' }),
+          emoji({ shortName: ':slight_smile:' })(),
           ' and another one ',
-          emoji({ shortName: ':disappointed:' }),
+          emoji({ shortName: ':disappointed:' })(),
           ' and finally ',
-          emoji({ shortName: ':smiley:' }),
+          emoji({ shortName: ':smiley:' })(),
         ),
       ),
     );
@@ -34,12 +34,12 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       doc(
         p('some smiley faces here:'),
-        p(emoji({ shortName: ':slight_smile:' })),
-        p(emoji({ shortName: ':disappointed:' })),
-        p(emoji({ shortName: ':slight_smile:' })),
-        p(emoji({ shortName: ':wink:' })),
-        p(emoji({ shortName: ':stuck_out_tongue:' })),
-        p(emoji({ shortName: ':stuck_out_tongue:' })),
+        p(emoji({ shortName: ':slight_smile:' })()),
+        p(emoji({ shortName: ':disappointed:' })()),
+        p(emoji({ shortName: ':slight_smile:' })()),
+        p(emoji({ shortName: ':wink:' })()),
+        p(emoji({ shortName: ':stuck_out_tongue:' })()),
+        p(emoji({ shortName: ':stuck_out_tongue:' })()),
       ),
     );
   });
@@ -53,9 +53,9 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       doc(
         p(
-          emoji({ shortName: ':warning:' }),
+          emoji({ shortName: ':warning:' })(),
           ' Warning',
-          emoji({ shortName: ':warning:' }),
+          emoji({ shortName: ':warning:' })(),
         ),
       ),
     );
@@ -68,7 +68,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(emoji({ shortName: ':information_source:' }), '&nbsp;')),
+      doc(p(emoji({ shortName: ':information_source:' })(), '&nbsp;')),
     );
   });
 

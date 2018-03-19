@@ -6,10 +6,10 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 describe.skip('WikiMarkup Transformer', () => {
   describe('camelcase code macro', () => {
-    const WIKI_NOTATION = `{code}package com.atlassian.confluence;\\n\\n\\
-public class CamelCaseLikeClassName\\n\\
-{\\n\\
-private String sampleAttr;\\n\\
+    const WIKI_NOTATION = `{code}package com.atlassian.confluence;
+public class CamelCaseLikeClassName
+{
+private String sampleAttr;
 }{code}`;
 
     checkParseEncodeRoundTrips(

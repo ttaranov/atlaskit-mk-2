@@ -82,8 +82,8 @@ describe.skip('WikiMarkup Transformer', () => {
   });
 
   describe('multiple headings', () => {
-    const WIKI_NOTATION = `h4. Interfaces:\\n\\n\\
-h5. Collection Testbed:\\n\\
+    const WIKI_NOTATION = `h4. Interfaces:
+h5. Collection Testbed:
 Status in testing`;
 
     checkParseEncodeRoundTrips(
