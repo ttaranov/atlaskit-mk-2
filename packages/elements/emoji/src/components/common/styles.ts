@@ -1,4 +1,5 @@
 import { borderRadius, colors } from '@atlaskit/theme';
+import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
 import { style } from 'typestyle';
@@ -369,10 +370,18 @@ export const deletePreview = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
+  fontSize: '12px',
 });
 
 export const deleteText = style({
   height: '64px',
+
+  $nest: {
+    ':first-child': {
+      color: `${colors.N300}`,
+      lineHeight: '16px',
+    },
+  },
 });
 
 export const deleteFooter = style({
@@ -393,6 +402,7 @@ export const deleteFooter = style({
     button: {
       display: 'flex',
       justifyContent: 'center',
+      fontSize: '14px',
 
       $nest: {
         div: {
@@ -405,9 +415,8 @@ export const deleteFooter = style({
 
 export const emojiErrorMessage = style({
   display: 'flex',
-  fontSize: '12px',
   color: colors.R300,
   width: '100%',
   justifyContent: 'flex-end',
-  paddingRight: '5px',
+  paddingRight: '10px',
 });

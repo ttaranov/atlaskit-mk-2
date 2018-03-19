@@ -280,7 +280,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
     const { query, searchEmojis } = this.state;
-
     // change the category of each of the featured emoji
     const recategorised = frequentEmoji.map(emoji => {
       const clone = JSON.parse(JSON.stringify(emoji));
@@ -471,8 +470,13 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.setState({ emojiToDelete: undefined });
   };
 
-  private onDeleteEmoji = (emoji: EmojiDescription): Promise<boolean> => {
-    return this.props.emojiProvider.deleteSiteEmoji(emoji);
+  private onDeleteEmoji = async (emoji: EmojiDescription): Promise<boolean> => {
+    const { query, selectedTone } = this.state;
+    const success = await this.props.emojiProvider.deleteSiteEmoji(emoji);
+    if (success) {
+      this.updateEmojis(query, { skinTone: selectedTone });
+    }
+    return success;
   };
 
   private scrollToEndOfList = () => {

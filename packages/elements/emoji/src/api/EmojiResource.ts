@@ -6,7 +6,7 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { selectedToneStorageKey } from '../constants';
+import { selectedToneStorageKey, frequentCategory } from '../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -540,13 +540,14 @@ export class EmojiResource extends AbstractResource<
   }
 
   deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
-    if (this.siteEmojiResource && emoji.id) {
-      return this.siteEmojiResource.deleteEmoji(emoji).then(success => {
-        if (this.emojiRepository && success) {
-          this.emojiRepository.delete(emoji);
-        }
-        return success;
-      });
+    if (this.isLoaded() && this.siteEmojiResource && emoji.id) {
+      return this.siteEmojiResource
+        .deleteEmoji(emoji)
+        .then(() => {
+          this.emojiRepository!.delete(emoji);
+          return true;
+        })
+        .catch(() => false);
     }
     return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), false);
   }
