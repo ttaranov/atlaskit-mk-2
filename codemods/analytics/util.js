@@ -3,7 +3,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { analyticsEventMap } from './analyticsEventMap';
+import { analyticsEventMap } from '../../packages/core/analytics-next/analyticsEventMap';
 
 export const getMapEntryFromPath = (filepath, configKey) => (
   analyticsEventMap.find(eventConfig => (
@@ -36,7 +36,7 @@ export const getPackageJsonPath = (filepath) => {
   return packageJsonPath;
 }
 
-export const getRelativeComponentPath = (analyticsEventConfig) => {  
+export const getRelativeComponentPath = (analyticsEventConfig) => {
   return path.join(
     path.relative(path.dirname(analyticsEventConfig.testPath), path.dirname(analyticsEventConfig.path)),
     path.basename(analyticsEventConfig.path, '.js')

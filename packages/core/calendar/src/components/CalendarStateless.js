@@ -362,7 +362,6 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    // FIXME: This is now out of date
     onUpdate: createAndFireEventOnAtlaskit({
       action: 'update',
     }),

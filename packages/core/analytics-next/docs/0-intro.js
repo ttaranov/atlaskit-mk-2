@@ -3,6 +3,8 @@ import React from 'react';
 import isEqual from 'lodash.isequal';
 import { code, md } from '@atlaskit/docs';
 
+import { instrumentedComponents } from '../analyticsEventMap';
+
 type InstrumentedItem = {
   packageName: string,
   component: string,
@@ -128,18 +130,6 @@ const App = () => (
   This table shows all the component interactions that are instrumented. In addition to what is shown
   in the "Context" column, all components include \`package\` and \`version\` in the context.
 
-  ${(
-    <InstrumentedTable
-      packages={[
-        {
-          packageName: '@atlaskit/button',
-          component: 'Button',
-          context: { component: 'button' },
-          prop: 'onClick',
-          payload: { action: 'click' },
-        },
-      ]}
-    />
-  )}
+  ${<InstrumentedTable packages={instrumentedComponents} />}
 
 `;

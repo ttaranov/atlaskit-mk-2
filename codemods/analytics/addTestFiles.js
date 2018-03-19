@@ -7,7 +7,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 
-const { analyticsEventMap } = require('./analyticsEventMap');
+const { analyticsEventMap } = require('../../packages/core/analytics-next/analyticsEventMap');
 
 analyticsEventMap.forEach( pkg => {
   if (pkg.path.indexOf('testfixtures') >= 0) {
