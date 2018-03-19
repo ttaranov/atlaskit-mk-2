@@ -1,3 +1,5 @@
+/* tslint:disable:no-console */
+
 import mock, { MockRequest, MockResponse, proxy } from 'xhr-mock';
 import {
   MockContext,
@@ -34,6 +36,10 @@ export const mediaMock = {
       } else {
         return undefined;
       }
+    });
+
+    mock.error((ev: { req: MockRequest; err: Error }) => {
+      console.error('xhr-mock', ev.req, ev.err);
     });
   },
 
