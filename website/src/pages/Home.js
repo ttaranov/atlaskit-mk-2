@@ -24,7 +24,7 @@ const fonts =
 
 const Title = styled.h1`
   color: ${colors.N0};
-  font-family: 'LLCircularWeb-Medium', ${fonts};
+  font-family: 'LLCircularWeb-Medium', ${fonts}; /* stylelint-disable-line */
   font-size: 52px;
   margin: 80px 0 0 !important;
 `;
@@ -32,7 +32,7 @@ const Intro = styled.div`
   color: ${colors.N0};
   display: inline-block;
   font-size: 24px;
-  font-family: 'LLCircularWeb-Book', ${fonts};
+  font-family: 'LLCircularWeb-Book', ${fonts}; /* stylelint-disable-line */
   font-weight: 300;
   margin-bottom: 80px;
   margin-top: 24px;
@@ -66,7 +66,7 @@ const cardlinkStyles = css`
   border-radius: ${borderRadius}px;
   color: ${colors.text};
   flex: 1 1 0;
-  padding: 16px 0px;
+  padding: 16px 0;
   text-align: left;
   transition: transform 150ms;
   margin-bottom: ${gutter};
