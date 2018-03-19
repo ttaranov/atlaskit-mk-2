@@ -37,7 +37,7 @@ type Props = {
   /** Props to apply to the container. **/
   innerProps: Object,
   /** A reference to the Calendar instance itself to get access to the focus and navigate instance methods. */
-  innerRef: (ref: ?Component<*>) => void,
+  innerRef: (ref: ?Component<*, *>) => void,
   /** The number of the month (from 1 to 12) which the calendar should be on. */
   month: number,
   /** Function which is called when the calendar is no longer focused. */

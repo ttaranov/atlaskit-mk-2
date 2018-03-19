@@ -43,7 +43,7 @@ type Props = {
   /** Props to apply to the select. */
   selectProps: Object,
   /** The times to show in the dropdown. */
-  times?: Array<string>,
+  times: Array<string>,
   /** The ISO time that should be used as the input value. */
   value?: string,
 };
