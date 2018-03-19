@@ -66,7 +66,8 @@ const cardlinkStyles = css`
   border-radius: ${borderRadius}px;
   color: ${colors.text};
   flex: 1 1 0;
-  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
   text-align: left;
   transition: transform 150ms;
   margin-bottom: ${gutter};
@@ -104,7 +105,6 @@ const CardTitle = styled.div`
   align-items: center;
   display: flex;
   font-weight: 500;
-  padding: 16px 24px;
 `;
 const CardTitleText = styled.h3`
   font-size: 14px;
@@ -112,7 +112,7 @@ const CardTitleText = styled.h3`
 `;
 const CardBody = styled.div`
   color: ${colors.subtleText};
-  margin: 8px 24px;
+  margin-top: 8px;
 `;
 const CardIcon = styled.span`
   align-items: center;
@@ -129,7 +129,7 @@ const CardIcon = styled.span`
 const Img = ({ src }) => (
   <img
     style={{
-      margin: '10px auto',
+      margin: '0 auto 10px auto',
       height: '200px',
       display: 'block',
     }}
@@ -155,11 +155,13 @@ const Card = ({
   const CardLink = props.href ? CardLinkExt : CardLinkInt;
   return (
     <CardLink {...props}>
-      <CardTitle>
-        <Icon />
-        <CardTitleText>{title}</CardTitleText>
-      </CardTitle>
-      <CardBody>{children}</CardBody>
+      <div style={{ padding: '16px 24px', marginBottom: 'auto' }}>
+        <CardTitle>
+          <Icon />
+          <CardTitleText>{title}</CardTitleText>
+        </CardTitle>
+        <CardBody>{children}</CardBody>
+      </div>
       {imgSrc ? <Img src={imgSrc} /> : null}
     </CardLink>
   );
