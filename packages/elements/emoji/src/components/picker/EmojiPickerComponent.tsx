@@ -5,11 +5,7 @@ import * as classNames from 'classnames';
 
 import * as styles from './styles';
 
-import {
-  customCategory,
-  frequentCategory,
-  analyticsEmojiPrefix,
-} from '../../constants';
+import { customCategory, analyticsEmojiPrefix } from '../../constants';
 import {
   EmojiDescription,
   OptionalEmojiDescription,
@@ -279,24 +275,16 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
     const { query, searchEmojis } = this.state;
-
-    // change the category of each of the featured emoji
-    const recategorised = frequentEmoji.map(emoji => {
-      const clone = JSON.parse(JSON.stringify(emoji));
-      clone.category = frequentCategory;
-      return clone;
-    });
-
     const emojiToRender = this.buildQuerySpecificEmojiList(
       query,
       searchEmojis,
-      recategorised,
+      frequentEmoji,
     );
     this.setStateAfterEmojiChange(
       query,
       emojiToRender,
       searchEmojis,
-      recategorised,
+      frequentEmoji,
     );
   };
 
