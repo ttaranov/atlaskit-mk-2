@@ -4,7 +4,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
 
-describe('WikiMarkup Transformer', () => {
+describe.skip('WikiMarkup Transformer', () => {
   describe('standard emojis', () => {
     const WIKI_NOTATION = `just an smiley face :) and another one :-( and finally :D`;
 
