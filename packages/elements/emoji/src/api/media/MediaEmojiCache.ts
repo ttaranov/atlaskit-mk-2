@@ -38,7 +38,7 @@ export interface EmojiCacheStrategy {
  * regardless of originally supplied headers (basically everything but Firefox).
  */
 export class BrowserCacheStrategy implements EmojiCacheStrategy {
-  private cachedImageUrls: Map<string, boolean> = new Map<string, boolean>();
+  private cachedImageUrls: Set<string> = new Set<string>();
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
   private static browser: string = new UAParser()
@@ -75,7 +75,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
       .loadMediaImage(mediaPath)
       .then(() => {
         // Media is loaded, can use original URL now, so just return original emoji
-        this.cachedImageUrls.set(mediaPath, true);
+        this.cachedImageUrls.add(mediaPath);
         return emoji;
       })
       .catch(() => {

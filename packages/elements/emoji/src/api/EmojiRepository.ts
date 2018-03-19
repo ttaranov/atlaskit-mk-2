@@ -274,14 +274,7 @@ export default class EmojiRepository {
       emojiResult = this.applySearchOptions(emojiResult, '', options);
     }
 
-    // change the category of each of the featured emoji
-    const recategorised = emojiResult.map(emoji => {
-      const clone = JSON.parse(JSON.stringify(emoji));
-      clone.category = frequentCategory;
-      return clone;
-    });
-
-    return recategorised;
+    return emojiResult;
   }
 
   getDynamicCategoryList(): string[] {
