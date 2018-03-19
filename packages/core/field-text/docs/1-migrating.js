@@ -7,8 +7,7 @@ export default md`
 
   ### \`ref\` -> \`innerRef\`
 
-  To focus the field text DOM element, you will now need to use the \`innerRef\` prop now rather than
-  using ref.
+  You will now need to use the \`innerRef\` prop to focus the field text DOM element rather than using ref.
   This change is required because we are now wrapping FieldText with HOCs which don't work with refs
   properly.
 
