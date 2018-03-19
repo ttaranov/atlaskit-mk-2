@@ -1,17 +1,8 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaItemType, FileItem, MediaType } from '@atlaskit/media-core';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
+import { Context } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { RendererModel, initialModel } from './domain';
-
-export type Identifier = {
-  type: MediaItemType;
-  id: string;
-  occurrenceKey: string;
-  collectionName?: string;
-};
+import { RendererModel, initialModel, StoreImpl, Identifier } from './domain';
 
 export type Props = {
   onClose?: () => void;
@@ -24,38 +15,13 @@ export type State = {
 };
 
 export class MediaViewer extends React.Component<Props, State> {
-
   state: State = { model: initialModel };
 
   componentDidMount() {
-    const { id, type, collectionName } = this.props.data;
-    const provider = this.props.context.getMediaItemProvider(
-      id,
-      type,
-      collectionName,
-    );
+    const store = new StoreImpl(this.props.context, this.props.data);
 
-    provider
-      .observable()
-      .filter(item => item.type === 'file' && item.details.processingStatus === 'succeeded')
-      .map(item => ({
-        mediaType: (item as FileItem).details.mediaType as MediaType
-      })).subscribe({
-        next: (item) => {
-          const model: RendererModel = {
-            type: 'SUCCESS',
-            item
-          };
-          this.setState({ model });
-        },
-        error: (err) => {
-          const model: RendererModel = {
-            type: 'FAILED',
-            err
-          };
-          this.setState({ model });
-        }
-      })
+    store.subscribe(model => this.setState({ model }));
+    // TODO handle unsubscribe
   }
 
   render() {
