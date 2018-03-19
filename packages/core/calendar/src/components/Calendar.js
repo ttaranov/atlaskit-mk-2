@@ -79,7 +79,6 @@ function getUniqueId(prefix: string) {
 class Calendar extends Component<Props, State> {
   calendar: Object;
   container: HTMLElement | null;
-  props: Props;
 
   static defaultProps = {
     onBlur() {},
