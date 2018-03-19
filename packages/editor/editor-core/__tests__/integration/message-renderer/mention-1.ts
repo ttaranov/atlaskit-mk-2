@@ -23,7 +23,8 @@ BrowserTestCase(
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
-    await browser.type(editable, '> ', 'this is inside blockquote ');
+    await browser.type(editable, '> ');
+    await browser.type(editable, 'this is inside blockquote ');
     await insertMention(browser, 'Carolyn');
     await browser.waitForSelector(lozenge);
     const doc = await browser.$eval(editable, getDocFromElement);

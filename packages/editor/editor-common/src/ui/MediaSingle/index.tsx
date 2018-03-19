@@ -5,19 +5,26 @@ import Wrapper from './styled';
 
 export interface Props {
   children: ReactElement<any>;
-  height: number;
   layout: MediaSingleLayout;
   width: number;
+  height: number;
+  containerWidth?: number;
 }
 
 export default function MediaSingle({
   children,
-  height,
   layout,
   width,
+  height,
+  containerWidth = width,
 }: Props) {
   return (
-    <Wrapper layout={layout} height={height} width={width}>
+    <Wrapper
+      layout={layout}
+      width={width}
+      height={height}
+      containerWidth={containerWidth}
+    >
       {React.Children.only(children)}
     </Wrapper>
   );

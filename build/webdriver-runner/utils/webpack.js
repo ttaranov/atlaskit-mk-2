@@ -32,7 +32,7 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 
 const HOST = 'localhost';
 const PORT = 9000;
-const WEBPACK_BUILD_TIMEOUT = 5000;
+const WEBPACK_BUILD_TIMEOUT = 10000;
 
 let server;
 let config;

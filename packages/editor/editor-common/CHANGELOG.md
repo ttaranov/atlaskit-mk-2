@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 8.0.6
+
+## 8.0.5
+- [patch] Changing table cell schema to not allow nesting of bodied extensions in it. [bac680c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bac680c)
+
+## 8.0.4
+
+## 8.0.3
+- [patch] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
+
+## 8.0.2
+
 ## 8.0.1
 
 ## 8.0.0

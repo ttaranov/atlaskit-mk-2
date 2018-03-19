@@ -14,6 +14,7 @@ import { Context, MediaItem, FileDetails } from '@atlaskit/media-core';
 
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
 import { Browser } from '../../../..';
@@ -42,6 +43,7 @@ const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
     label: menuEdit,
     handler,
+    icon: <AnnotateIcon label={menuEdit} size="small" />,
   };
 };
 

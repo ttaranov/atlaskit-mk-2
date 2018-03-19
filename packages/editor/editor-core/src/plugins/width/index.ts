@@ -3,7 +3,10 @@ import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
 
 export const pluginKey = new PluginKey('widthPlugin');
-export function createPlugin(dispatch: Dispatch): Plugin | undefined {
+
+export function createPlugin(
+  dispatch: Dispatch<{ width?: number }>,
+): Plugin | undefined {
   return new Plugin({
     key: pluginKey,
     state: {

@@ -14,7 +14,7 @@ const OnBoardingMenuTitle = 'span h4';
 
 BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
-  { skip: ['safari'] }, // Safari has an issue at the moment
+  { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment
   async client => {
     const onBoardingTest = await new Page(client);
     await onBoardingTest.goto(urlOnBoarding);

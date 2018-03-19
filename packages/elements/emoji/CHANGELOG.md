@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 31.1.19
+- [patch] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
+
+## 31.1.18
+
 ## 31.1.17
 
 ## 31.1.16

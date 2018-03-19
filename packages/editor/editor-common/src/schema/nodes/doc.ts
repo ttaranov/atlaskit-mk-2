@@ -79,7 +79,6 @@ export type TableCellContent = Array<
   | DecisionList
   | TaskList
   | Extension
-  | BodiedExtension
 >;
 
 // exclude Extension and BodiedExtension

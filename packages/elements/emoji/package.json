@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "31.1.17",
+  "version": "31.1.19",
   "config": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "@atlaskit/button": "^6.4.2",
     "@atlaskit/field-base": "^8.1.13",
     "@atlaskit/icon": "^10.9.2",
-    "@atlaskit/media-picker": "^2.0.0",
+    "@atlaskit/media-picker": "^2.1.0",
     "@atlaskit/spinner": "^4.1.5",
     "@atlaskit/theme": "^2.3.4",
     "@atlaskit/tooltip": "^8.3.2",
