@@ -162,35 +162,35 @@ export const toggleList = (
  */
 function splitListItem(itemType) {
   return function(state, dispatch) {
-    var ref = state.selection;
-    var $from = ref.$from;
-    var $to = ref.$to;
-    var node = ref.node;
+    const ref = state.selection;
+    const $from = ref.$from;
+    const $to = ref.$to;
+    const node = ref.node;
     if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
       return false;
     }
-    var grandParent = $from.node(-1);
-    if (grandParent.type != itemType) {
+    const grandParent = $from.node(-1);
+    if (grandParent.type !== itemType) {
       return false;
     }
-    if ($from.parent.content.size == 0 && !(grandParent.content.size === 0)) {
+    if ($from.parent.content.size === 0 && !(grandParent.content.size === 0)) {
       // In an empty block. If this is a nested list, the wrapping
       // list item should be split. Otherwise, bail out and let next
       // command handle lifting.
       if (
-        $from.depth == 2 ||
-        $from.node(-3).type != itemType ||
-        $from.index(-2) != $from.node(-2).childCount - 1
+        $from.depth === 2 ||
+        $from.node(-3).type !== itemType ||
+        $from.index(-2) !== $from.node(-2).childCount - 1
       ) {
         return false;
       }
       if (dispatch) {
-        var wrap = Fragment.empty,
+        let wrap = Fragment.empty,
           keepItem = $from.index(-1) > 0;
         // Build a fragment containing empty versions of the structure
         // from the outer list item to the parent node of the cursor
         for (
-          var d = $from.depth - (keepItem ? 1 : 2);
+          let d = $from.depth - (keepItem ? 1 : 2);
           d >= $from.depth - 3;
           d--
         ) {
@@ -198,7 +198,7 @@ function splitListItem(itemType) {
         }
         // Add a second list item with an empty default start node
         wrap = wrap.append(Fragment.from(itemType.createAndFill()));
-        var tr$1 = state.tr.replace(
+        const tr$1 = state.tr.replace(
           $from.before(keepItem ? null : -1),
           $from.after(-3),
           new Slice(wrap, keepItem ? 3 : 2, 2),
@@ -212,10 +212,10 @@ function splitListItem(itemType) {
       }
       return true;
     }
-    var nextType =
-      $to.pos == $from.end() ? grandParent.defaultContentType(0) : null;
-    var tr = state.tr.delete($from.pos, $to.pos);
-    var types = nextType && [null, { type: nextType }];
+    const nextType =
+      $to.pos === $from.end() ? grandParent.defaultContentType(0) : null;
+    const tr = state.tr.delete($from.pos, $to.pos);
+    const types = nextType && [null, { type: nextType }];
     // if (!prosemirrorTransform.canSplit(tr.doc, $from.pos, 2, types)) { return false }
     if (dispatch) {
       dispatch(tr.split($from.pos, 2, types).scrollIntoView());
