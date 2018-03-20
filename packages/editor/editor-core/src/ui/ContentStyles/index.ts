@@ -258,9 +258,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
 
     li [layout='center'] {
-      // background-color: grey;
-      // border: 1px solid green;
-
       > div {
         margin: 0;
       }
