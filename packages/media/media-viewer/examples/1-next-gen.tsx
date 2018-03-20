@@ -1,8 +1,21 @@
 import * as React from 'react';
-import { MediaViewer } from '../src/newgen/media-viewer';
 import Button from '@atlaskit/button';
+import { MediaItemType } from '@atlaskit/media-core';
+import {
+  createStorybookContext,
+  docFileId,
+} from '@atlaskit/media-test-helpers';
+import { MediaViewer } from '../src/index';
 
-type State = {
+const context = createStorybookContext();
+const selectedItem = {
+  type: 'file' as MediaItemType,
+  id: docFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+const dataSource = { list: [selectedItem] };
+
+export type State = {
   isOpen: boolean;
 };
 
@@ -16,7 +29,16 @@ export default class Example extends React.Component<{}, State> {
           Preview an unsupported item
         </Button>
         {this.state.isOpen && (
-          <MediaViewer onClose={() => this.setState({ isOpen: false })} />
+          <MediaViewer
+            featureFlags={{ nextGen: true }}
+            MediaViewer={null as any}
+            basePath={null as any}
+            context={context}
+            selectedItem={selectedItem}
+            dataSource={dataSource}
+            collectionName={docFileId.collectionName}
+            onClose={() => this.setState({ isOpen: false })}
+          />
         )}
       </div>
     );
