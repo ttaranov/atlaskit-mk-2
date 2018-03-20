@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type ComponentType } from 'react';
-import { mergeStyles, type SelectComponents } from 'react-select';
+import { mergeStyles } from 'react-select';
 import { colors } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
@@ -155,7 +155,7 @@ function baseStyles(validationState) {
 
 export default function createSelect(WrappedComponent: ComponentType<*>) {
   return class AtlaskitSelect extends Component<*> {
-    components: SelectComponents;
+    components: {};
     constructor(props: Props) {
       super(props);
       this.cacheComponents(props.components);
@@ -166,7 +166,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
         this.cacheComponents(nextProps.components);
       }
     }
-    cacheComponents = (components: SelectComponents) => {
+    cacheComponents = (components?: {}) => {
       this.components = {
         ...defaultComponents,
         ...animatedComponents,

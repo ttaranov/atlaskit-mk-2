@@ -1,7 +1,6 @@
 // @flow
 
-import React, { cloneElement, Component, type Node } from 'react';
-import Select from 'react-select';
+import React, { cloneElement, Component, type Element, type Node } from 'react';
 import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
@@ -9,7 +8,7 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 
 export type ValidationState = 'default' | 'error' | 'success';
 type Props = {
-  children: typeof Select,
+  children: Element<*>,
   label?: string,
   id: string,
   validationMessage?: string,
