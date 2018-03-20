@@ -5,7 +5,6 @@ import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 import { Card, CardEvent } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { ProviderFactory, EventHandlers } from '@atlaskit/editor-common';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
 import Media from '../../../../src/react/nodes/media';
 import MediaGroup from '../../../../src/react/nodes/mediaGroup';
 
@@ -94,7 +93,7 @@ describe('MediaGroup', () => {
       .find(Media)
       .first()
       .find(Card);
-    card.props().onClick!({} as CardEvent, {} as UIAnalyticsEventInterface);
+    card.props().onClick!({} as CardEvent);
 
     expect(onClick.callCount).toBe(1);
     expect(onClick.lastCall.args.length).toBeGreaterThan(1);

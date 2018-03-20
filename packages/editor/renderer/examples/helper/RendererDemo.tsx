@@ -4,7 +4,6 @@ import { PureComponent } from 'react';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
 import { CardEvent } from '@atlaskit/media-card';
 import { CardSurroundings, ProviderFactory } from '@atlaskit/editor-common';
 import {
@@ -136,7 +135,7 @@ const eventHandlers = {
     onClick: (
       result: CardEvent,
       surroundings?: CardSurroundings,
-      analyticsEvent?: UIAnalyticsEventInterface,
+      analyticsEvent?: any,
     ) => {
       // json-safe-stringify does not handle cyclic references in the react mouse click event
       return console.log(

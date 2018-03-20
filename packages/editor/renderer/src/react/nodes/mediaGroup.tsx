@@ -3,7 +3,6 @@ import { ReactElement, PureComponent } from 'react';
 import { CardEvent, Identifier } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { EventHandlers, CardSurroundings } from '@atlaskit/editor-common';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
 import { MediaProps } from './media';
 
 export interface MediaGroupProps {
@@ -76,10 +75,7 @@ export default class MediaGroup extends PureComponent<
       eventHandlers: {
         ...child.props.eventHandlers,
         media: {
-          onClick: (
-            event: CardEvent,
-            analyticsEvent: UIAnalyticsEventInterface,
-          ) => {
+          onClick: (event: CardEvent, analyticsEvent?: any) => {
             if (
               !this.props ||
               !this.props.eventHandlers ||
