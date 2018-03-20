@@ -7,7 +7,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-const whiteListPkgs = ['strip-indent', 'trim-newlines'];
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -112,7 +111,7 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.js$/,
-          exclude: new RegExp(`node_modules\/(?!${whiteListPkgs.join('|')})`),
+          exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
