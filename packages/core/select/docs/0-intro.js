@@ -97,7 +97,7 @@ export default md`
 
   ### Props
 
-  Please refer to react-select for [prop documentation](https://github.com/JedWatson/react-select/blob/v2/src/Select.js#L36).
+  Please refer to the react-select documentation for [prop documentation](https://bit.ly/react-select-v2).
 `;
 
 /*

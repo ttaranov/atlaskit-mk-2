@@ -3808,6 +3808,12 @@ content-disposition@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.2.tgz#0cf68bb9ddf5f2be7961c3a85178cb85dba78cb4"
 
+content-ready@~1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/content-ready/-/content-ready-1.0.1.tgz#2ef81dc4bded23abbe80abd8dfdd58ce7e60c18f"
+  dependencies:
+    q latest
+
 content-type-parser@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/content-type-parser/-/content-type-parser-1.0.1.tgz#c3e56988c53c65127fb46d4032a3a900246fdc94"
@@ -8963,6 +8969,14 @@ mocha@^3.5.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
+modal-dialog@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/modal-dialog/-/modal-dialog-1.6.3.tgz#ac11ad674d6283616be6d1d9e98d1180385dd044"
+  dependencies:
+    content-ready "~1.0.0"
+    overlay "~1.2.4"
+    q "~0.9.7"
+
 module-definition@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/module-definition/-/module-definition-2.2.4.tgz#c0a3771de58cf6bcf12aed2476706c596ad4b2cb"
@@ -9703,6 +9717,12 @@ output-file-sync@^1.1.2:
 "over@>= 0.0.5 < 1":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/over/-/over-0.0.5.tgz#f29852e70fd7e25f360e013a8ec44c82aedb5708"
+
+overlay@~1.2.4:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/overlay/-/overlay-1.2.5.tgz#7c5054eded0aef8891f2f9e8dd598c5d028fa8ef"
+  dependencies:
+    q "0.9.6"
 
 p-finally@^1.0.0:
   version "1.0.0"
@@ -10841,9 +10861,17 @@ pure-color@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/pure-color/-/pure-color-1.3.0.tgz#1fe064fb0ac851f0de61320a8bf796836422f33e"
 
-q@^1.1.2, q@~1.5.0:
+q@0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/q/-/q-0.9.6.tgz#5884b2154bdb3b6d5765e0fafddcb1506e133619"
+
+q@^1.1.2, q@latest, q@~1.5.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+
+q@~0.9.7:
+  version "0.9.7"
+  resolved "https://registry.yarnpkg.com/q/-/q-0.9.7.tgz#4de2e6cb3b29088c9e4cbc03bf9d42fb96ce2f75"
 
 qjobs@^1.1.4:
   version "1.1.5"
@@ -11168,9 +11196,9 @@ react-scrolllock@^2.0.1:
   dependencies:
     exenv "^1.2.2"
 
-react-select@2.0.0-alpha.7:
-  version "2.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.7.tgz#a806863af7e03e98adc79869cd0ae8042ae43d38"
+react-select@2.0.0-alpha.8:
+  version "2.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.8.tgz#c6e4e18abc7871f78cd6d10d5a8ab1931660d4a6"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"

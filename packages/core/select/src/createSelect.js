@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentType, type ElementRef } from 'react';
 import { mergeStyles } from 'react-select';
 import { colors } from '@atlaskit/theme';
 
@@ -156,6 +156,7 @@ function baseStyles(validationState) {
 export default function createSelect(WrappedComponent: ComponentType<*>) {
   return class AtlaskitSelect extends Component<*> {
     components: {};
+    select: ElementRef<*>;
     constructor(props: Props) {
       super(props);
       this.cacheComponents(props.components);
@@ -173,6 +174,12 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
         ...components,
       };
     };
+    focus() {
+      this.select.focus();
+    }
+    blur() {
+      this.select.blur();
+    }
     render() {
       // $FlowFixMe: `validationState` is passed in from a parent validation component
       const { styles, validationState, ...props } = this.props; // eslint-disable-line
@@ -180,6 +187,9 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       // props must be spread first to stop `components` being overridden
       return (
         <WrappedComponent
+          ref={ref => {
+            this.select = ref;
+          }}
           {...props}
           components={this.components}
           styles={mergeStyles(baseStyles(validationState), styles)}
