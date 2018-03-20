@@ -69,24 +69,22 @@ describe('extension', () => {
 
     describe('editExtension', () => {
       it('should return false if macroProvider is not available', () => {
-        const { editorView: { state, dispatch } } = editor(
+        const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        expect(editExtension(null)(state, dispatch)).toBe(false);
+        expect(editExtension(null)(editorView)).toBe(false);
       });
       it('should return false if extension node is not selected or cursor is not inside extension body', async () => {
-        const { editorView: { state, dispatch } } = editor(
-          doc(paragraph('te{<>}xt')),
-        );
+        const { editorView } = editor(doc(paragraph('te{<>}xt')));
         const provider = await macroProviderPromise;
-        expect(editExtension(provider)(state, dispatch)).toBe(false);
+        expect(editExtension(provider)(editorView)).toBe(false);
       });
       it('should return true if macroProvider is available and cursor is inside extension node', async () => {
-        const { editorView: { state, dispatch } } = editor(
+        const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         const provider = await macroProviderPromise;
-        expect(editExtension(provider)(state, dispatch)).toBe(true);
+        expect(editExtension(provider)(editorView)).toBe(true);
       });
     });
 

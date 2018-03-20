@@ -4,6 +4,7 @@ import {
   NodeSelection,
   TextSelection,
 } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
@@ -30,18 +31,17 @@ export const setExtensionElement = (element: HTMLElement | null) => (
 };
 
 export const editExtension = (macroProvider: MacroProvider | null) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  view: EditorView,
 ): boolean => {
+  const { state, dispatch } = view;
   // insert macro if there's macroProvider available
   if (macroProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
       let tr = state.tr.setMeta(pluginKey, { element: null });
-      tr = selectParentNodeOfType(bodiedExtension)(tr);
-
-      insertMacroFromMacroBrowser(macroProvider, node)(state, dispatch, tr);
+      dispatch(selectParentNodeOfType(bodiedExtension)(tr));
+      insertMacroFromMacroBrowser(macroProvider, node)(view);
       return true;
     }
   }
