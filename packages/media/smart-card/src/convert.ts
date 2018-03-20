@@ -1,22 +1,5 @@
 import { CardViewProps } from './CardView';
 
-function formatDate(dateInput: any) {
-  if (!Date.parse(dateInput)) {
-    return;
-  }
-
-  const date = new Date(dateInput);
-  const currentYear = new Date().getFullYear().toString();
-  const dateString = date.toDateString();
-  const match = dateString.match(
-    /([a-z]{2,3}) ([0-9]{1,2}) ([0-9]{4})/i,
-  ) as Array<string>;
-
-  return currentYear === match[3]
-    ? `${match[1]} ${match[2]}`
-    : `${match[1]} ${match[2]}, ${match[3]}`;
-}
-
 function getDateDetails(json: any) {
   if (!json['atl:lastActivity']) {
     return [];
@@ -24,7 +7,7 @@ function getDateDetails(json: any) {
   return [
     {
       icon: 'https://d2f24wggpacxal.cloudfront.net/trello/activity@2x.png',
-      text: formatDate(json['atl:lastActivity']),
+      text: json['atl:lastActivity'],
     },
   ];
 }

@@ -60,7 +60,7 @@ describe('convert()', () => {
     expect(convert(data).details).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          text: 'Jul 29, 2016',
+          text: '2016-07-28T19:02:13.787Z',
         }),
       ]),
     );
