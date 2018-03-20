@@ -374,7 +374,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(code({})('monospaced text'))),
+      doc(p(code('monospaced text'))),
     );
   });
 });
