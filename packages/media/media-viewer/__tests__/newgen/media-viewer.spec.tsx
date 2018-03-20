@@ -7,8 +7,7 @@ import { Stubs } from '../_stubs';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
 
-function createFixture(identifier) {
-  const subject = new Subject<MediaItem>();
+function createContext(subject) {
   const token = 'some-token';
   const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
@@ -17,11 +16,16 @@ function createFixture(identifier) {
     serviceHost,
     authProvider,
   };
-  const context = Stubs.context(
+  return Stubs.context(
     contextConfig,
     undefined,
     subject && Stubs.mediaItemProvider(subject),
   ) as any;
+}
+
+function createFixture(identifier) {
+  const subject = new Subject<MediaItem>();
+  const context = createContext(subject);
   const onClose = jest.fn();
   const el = mount(
     <MediaViewer data={identifier} context={context} onClose={onClose} />,
@@ -115,5 +119,66 @@ describe('<MediaViewer />', () => {
     const { el, onClose } = createFixture(identifier);
     el.find(Blanket).simulate('click');
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('unsubscribes from the provider when unmounted', () => {
+    const { el, subject } = createFixture(identifier);
+    expect(subject.observers).toHaveLength(1);
+    el.unmount();
+    expect(subject.observers).toHaveLength(0);
+  });
+
+  it('resubscribes to the provider when the data property value is changed', () => {
+    const identifierCopy = { ...identifier };
+
+    const { el, context } = createFixture(identifier);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+
+    // if the values stay the same, we will not resubscribe
+    el.setProps({ data: identifierCopy });
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+
+    // ... but if the values change we will resubscribe
+    const identifier2 = {
+      ...identifier,
+      id: 'some-other-id',
+    };
+    el.setProps({ data: identifier2 });
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+  });
+
+  it('resubscribes to the provider when a new context is passed', () => {
+    const { el } = createFixture(identifier);
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    el.setProps({ context });
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+  });
+
+  it('resets to the loading state when the context property value is changed', () => {
+    const { el, subject } = createFixture(identifier);
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+      },
+    };
+
+    subject.next(item);
+    el.update();
+
+    expect(getModel(el)).toMatchObject({
+      type: 'SUCCESS',
+    });
+
+    const context = createContext(new Subject<MediaItem>());
+
+    el.setProps({ context });
+    el.update();
+
+    expect(getModel(el)).toMatchObject({
+      type: 'LOADING',
+    });
   });
 });

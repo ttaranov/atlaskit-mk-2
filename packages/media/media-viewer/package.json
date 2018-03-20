@@ -21,14 +21,16 @@
   "dependencies": {
     "@atlaskit/blanket": "^4.1.1",
     "@atlaskit/spinner": "^4.2.1",
+    "deep-equal": "^1.0.1",
     "query-string": "^4.3.2",
-    "tslib": "^1.8.0",
-    "styled-components": "1.4.6 - 3"
+    "styled-components": "1.4.6 - 3",
+    "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^15.0.0",
     "jquery": "^3.2.1",
-    "react": "15.6.0 - 16.2.0"
+    "react": "15.6.0 - 16.2.0",
+    "rxjs": "^5.1.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.6.3",
@@ -39,7 +41,6 @@
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",
     "jquery": "^3.2.1",
-    "rxjs": "^5.1.0",
     "sinon-chai": "^2.9.0"
   }
 }
