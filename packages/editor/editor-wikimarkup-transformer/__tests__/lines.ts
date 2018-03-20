@@ -1,4 +1,4 @@
-import { doc, hardBreak, hr, p, strong } from '@atlaskit/editor-test-helpers';
+import { doc, hr, p, strong } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from './_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
