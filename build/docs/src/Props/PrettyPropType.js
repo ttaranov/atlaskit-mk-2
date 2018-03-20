@@ -1,8 +1,9 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
 
-import React, { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import { borderRadius, colors, gridSize, themed } from '@atlaskit/theme';
+import Button from '@atlaskit/button';
 import styled from 'styled-components';
 import convert, { resolveFromGeneric } from 'kind2string';
 
@@ -85,6 +86,7 @@ function Indent(props: { children: Node }) {
 
 type PrettyPropTypeProps = {
   type: Object,
+  shouldCollapse?: boolean,
 };
 
 const converters = {
@@ -191,19 +193,46 @@ const prettyConvert = (type, depth = 1) => {
   return converter(type, depth);
 };
 
-export default function PrettyPropType(props: PrettyPropTypeProps) {
-  // any instance of returning null means we are confident the information will
-  // be displayed elsewhere so we do not need to also include it here
-  let type = props.type;
-  if (type.kind === 'generic') {
-    type = resolveFromGeneric(props.type);
+const Toggle = ({ isCollapsed, onClick, type }) => (
+  <div>
+    <Button appearance="subtle" onClick={onClick}>
+      {isCollapsed ? 'Expand Prop Shape' : 'Hide Prop Shape'}
+    </Button>
+    {isCollapsed ? null : <Wrapper>{prettyConvert(type)}</Wrapper>}
+  </div>
+);
+
+export default class PrettyPropType extends Component<PrettyPropTypeProps, *> {
+  state = {
+    isCollapsed: true,
+  };
+
+  toggleCollapsed = () =>
+    this.setState({ isCollapsed: !this.state.isCollapsed });
+
+  render() {
+    let { shouldCollapse, type } = this.props;
+    let { isCollapsed } = this.state;
+    // any instance of returning null means we are confident the information will
+    // be displayed elsewhere so we do not need to also include it here
+    if (type.kind === 'generic') {
+      type = resolveFromGeneric(type);
+    }
+    if (SIMPLE_TYPES.includes(type.kind)) return null;
+    if (
+      type.kind === 'nullable' &&
+      SIMPLE_TYPES.includes(type.arguments.kind)
+    ) {
+      return null;
+    }
+    return shouldCollapse ? (
+      <Toggle
+        isCollapsed={isCollapsed}
+        type={type}
+        onClick={this.toggleCollapsed}
+      />
+    ) : (
+      <Wrapper>{prettyConvert(type)}</Wrapper>
+    );
   }
-  if (SIMPLE_TYPES.includes(type.kind)) return null;
-  if (
-    type.kind === 'nullable' &&
-    SIMPLE_TYPES.includes(props.type.arguments.kind)
-  ) {
-    return null;
-  }
-  return <Wrapper>{prettyConvert(type)}</Wrapper>;
 }
