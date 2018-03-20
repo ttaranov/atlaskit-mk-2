@@ -477,9 +477,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
-    nsNode.appendChild(
-      doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
-    );
+    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node)));
     return nsNode;
   }
 }

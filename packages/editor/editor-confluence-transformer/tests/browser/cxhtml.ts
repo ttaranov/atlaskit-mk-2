@@ -911,7 +911,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'basic',
         doc(p(inlineExtension(attrs)())),
         `<p><fab:adf><![CDATA[${JSON.stringify(
-          JSON.stringify(inlineExtension(attrs)()(schema).toJSON()),
+          inlineExtension(attrs)()(schema).toJSON(),
         )}]]></fab:adf></p>`,
       );
     });
@@ -993,14 +993,14 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   describe('fab:adf', () => {
     check(
       'p encoded in fab:adf tag between two p',
-      String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"storage\"}]}]]></fab:adf><p>world</p>`,
+      String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"paragraph","content":[{"type":"text","text":"storage"}]}]]></fab:adf><p>world</p>`,
       doc(p('hello'), p('storage'), p('world')),
     );
 
     describe('decisionList', () => {
       check(
         'decisionList with single decided item between p',
-        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"decisionList\",\"attrs\":{\"localId\":\"test-list-id\"},\"content\":[{\"type\":\"decisionItem\",\"attrs\":{\"localId\":\"test-id\",\"state\":\"DECIDED\"},\"content\":[{\"type\":\"text\",\"text\":\"Heading\"}]}]}]]></fab:adf><p>world</p>`,
+        String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"decisionList","attrs":{"localId":"test-list-id"},"content":[{"type":"decisionItem","attrs":{"localId":"test-id","state":"DECIDED"},"content":[{"type":"text","text":"Heading"}]}]}]]></fab:adf><p>world</p>`,
         doc(
           p('hello'),
           decisionList({ localId: 'test-list-id' })(
