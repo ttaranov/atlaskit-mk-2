@@ -5,12 +5,15 @@ import {
   em,
   h2,
   hardBreak,
+  li,
+  ol,
   p,
   strong,
   table,
   td,
   th,
   tr,
+  ul,
 } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from './_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
@@ -256,6 +259,169 @@ h2. header`;
       WIKI_NOTATION,
       doc(
         table(tr(td({})(p(link({ href: 'http://www.example.com' })('foo'))))),
+      ),
+    );
+  });
+
+  // @TODO We don't support this so it will split the list, confirm with JIRA
+  describe('table in a list', () => {
+    const WIKI_NOTATION = `# Item 1
+# Item 2
+# Item 3
+||Table||Header||Here
+|and|a|row
+|the|last|row
+# Item 4
+## Item 4.1
+## Item 4.2
+## Item 4.3
+# Item 5`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        ol(li(p('Item 1')), li(p('Item 2')), li(p('Item 3'))),
+        table(
+          tr(th({})(p('Table')), th({})(p('Header')), th({})(p('Here'))),
+          tr(td({})(p('and')), td({})(p('a')), td({})(p('row'))),
+          tr(td({})(p('the')), td({})(p('last')), td({})(p('row'))),
+        ),
+        ol(
+          li(
+            p(
+              'Item 4',
+              ol(li(p('Item 4.1')), li(p('Item 4.2')), li(p('Item 4.3'))),
+            ),
+          ),
+          li(p('Item 5')),
+        ),
+      ),
+    );
+  });
+
+  describe('list in a table', () => {
+    const WIKI_NOTATION = `||Table||Header
+|Here is my list
+* Item A
+* Item B
+* Item C|and the second cell
+|another|row`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        table(
+          tr(th({})(p('Table')), th({})(p('Header'))),
+          tr(
+            td({})(
+              p(
+                'Here is my list',
+                ul(li(p('Item A')), li(p('Item B')), li(p('Item C'))),
+              ),
+            ),
+            td({})(p('and the second cell')),
+          ),
+          tr(td({})(p('another')), td({})(p('row'))),
+        ),
+      ),
+    );
+  });
+
+  describe('list with table notation', () => {
+    const WIKI_NOTATION = `* I like | cheese
+* I like | cheese
+* I like cheese |`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        ul(
+          li(p('I like | cheese')),
+          li(p('I like | cheese')),
+          li(p('I like cheese |')),
+        ),
+      ),
+    );
+  });
+
+  describe('table with multiple lists', () => {
+    const WIKI_NOTATION = `|| Column One || Column Two ||
+| List One | List one consists of:
+* This is a list
+** This is a sublist
+* This is the list again |
+| List Two | List two consists of:
+* This is a list
+** This is a sublist
+* This is the list again|`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        table(
+          tr(th({})(p(' Column One ')), th({})(p(' Column Two '))),
+          tr(
+            td({})(p(' List One ')),
+            td({})(
+              p(
+                'List one consists of:',
+                ul(
+                  li(p('This is a list', ul(li(p('This is a sublist'))))),
+                  li(p('This is the list again')),
+                ),
+              ),
+            ),
+          ),
+          tr(
+            td({})(p(' List Two ')),
+            td({})(
+              p(
+                'List two consists of:',
+                ul(
+                  li(p('This is a list', ul(li(p('This is a sublist'))))),
+                  li(p('This is the list again')),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  });
+
+  // @TODO We don't support this so it will split the list, confirm with JIRA
+  describe('table between lists', () => {
+    const WIKI_NOTATION = `* List Item 1
+|| Column 1 || Column 2 ||
+| Cell 1 | Cell 2 |
+* List Item 2
+* List Item 3
+|| Column 3 || Column 4 ||
+| Cell 3 | Cell 4 |`;
+
+    checkParseEncodeRoundTrips(
+      WIKI_NOTATION,
+      defaultSchema,
+      WIKI_NOTATION,
+      doc(
+        ul(li(p('List Item 1'))),
+        table(
+          tr(th({})(p(' Column 1 ')), th({})(p(' Column 2 '))),
+          tr(td({})(p(' Cell 1 ')), td({})(p(' Cell 2 '))),
+        ),
+        ul(li(p('List Item 2')), li(p('List Item 3'))),
+        table(
+          tr(th({})(p(' Column 2 ')), th({})(p(' Column 4 '))),
+          tr(td({})(p(' Cell 3 ')), td({})(p(' Cell 4 '))),
+        ),
       ),
     );
   });
