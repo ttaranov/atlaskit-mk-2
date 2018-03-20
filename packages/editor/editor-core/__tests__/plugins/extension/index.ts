@@ -1,4 +1,3 @@
-import { NodeSelection } from 'prosemirror-state';
 import {
   doc,
   createEditor,
@@ -12,7 +11,6 @@ import {
   setExtensionElement,
   editExtension,
   removeExtension,
-  selectExtension,
 } from '../../../src/plugins/extension/actions';
 import { pluginKey } from '../../../src/plugins/extension/plugin';
 import extensionPlugin from '../../../src/plugins/extension';
@@ -108,20 +106,6 @@ describe('extension', () => {
         const pluginState = pluginKey.getState(editorView.state);
         expect(pluginState.element).toEqual(null);
         expect(editorView.state.doc).toEqualDocument(doc(paragraph('')));
-      });
-    });
-
-    describe('selectExtension', () => {
-      it('should create a NodeSelection and return true', () => {
-        const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
-        );
-        expect(selectExtension(editorView.state, editorView.dispatch)).toBe(
-          true,
-        );
-        expect(editorView.state.selection instanceof NodeSelection).toEqual(
-          true,
-        );
       });
     });
   });

@@ -24,11 +24,14 @@ export const insertMacroFromMacroBrowser = (
   );
   if (newMacro) {
     const node = resolveMacro(newMacro, state);
-    const { selection, schema: { nodes: { bodiedExtension } } } = state;
+    const { schema: { nodes: { bodiedExtension } } } = state;
     tr = tr || state.tr;
 
     if (node) {
-      if (selection instanceof NodeSelection && node.type !== bodiedExtension) {
+      if (
+        tr.selection instanceof NodeSelection &&
+        node.type !== bodiedExtension
+      ) {
         tr = replaceSelectedNode(node)(tr);
       } else {
         tr = safeInsert(node)(tr);
