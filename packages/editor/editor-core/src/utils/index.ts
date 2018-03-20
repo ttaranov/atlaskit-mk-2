@@ -695,3 +695,8 @@ export const isLastItemMediaGroup = (node: Node): boolean => {
   const { content } = node;
   return !!content.lastChild && content.lastChild.type.name === 'mediaGroup';
 };
+
+export const isInListItem = (state: EditorState): boolean => {
+  const { selection: { $anchor } } = state;
+  return !!($anchor.node(-1) && $anchor.node(-1).type.name === 'listItem');
+};

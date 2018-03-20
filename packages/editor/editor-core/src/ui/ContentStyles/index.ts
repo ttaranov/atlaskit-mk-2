@@ -257,6 +257,20 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    li [layout='center'] {
+      // background-color: grey;
+      // border: 1px solid green;
+
+      > div {
+        margin: 0;
+      }
+    }
+
+    & [layout='full-width'] {
+      background: grey;
+      color: red;
+    }
+
     & [layout='wrap-left'] + [layout='wrap-right'],
     & [layout='wrap-right'] + [layout='wrap-left'] {
       clear: none;

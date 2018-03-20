@@ -8,7 +8,6 @@ import {
 import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
-import * as baseListCommand from 'prosemirror-schema-list';
 import * as commands from '../../commands';
 import { isEmptyNode } from '../../utils/document';
 
@@ -95,17 +94,23 @@ export const enterKeyCommand = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const { selection } = state;
+  const { selection, doc } = state;
   if (selection.empty) {
     const { $from } = selection;
     const { listItem } = state.schema.nodes;
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      if (isEmptyNode(node)) {
+      if (
+        isEmptyNode(node) &&
+        !(
+          doc.nodeAt(selection.anchor - 3) &&
+          doc.nodeAt(selection.anchor - 3).type.name === 'media'
+        )
+      ) {
         return commands.outdentList()(state, dispatch);
       } else {
-        return baseListCommand.splitListItem(listItem)(state, dispatch);
+        return splitListItem(listItem)(state, dispatch);
       }
     }
   }
@@ -155,6 +160,76 @@ export const toggleList = (
     return true;
   }
 };
+
+/**
+ * @param itemType Node
+ * Splits the list items, specific implementation take from PM
+ */
+function splitListItem(itemType) {
+  return function(state, dispatch) {
+    var ref = state.selection;
+    var $from = ref.$from;
+    var $to = ref.$to;
+    var node = ref.node;
+    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
+      return false;
+    }
+    var grandParent = $from.node(-1);
+    if (grandParent.type != itemType) {
+      return false;
+    }
+    if ($from.parent.content.size == 0 && !grandParent.content.size === 0) {
+      // In an empty block. If this is a nested list, the wrapping
+      // list item should be split. Otherwise, bail out and let next
+      // command handle lifting.
+      if (
+        $from.depth == 2 ||
+        $from.node(-3).type != itemType ||
+        $from.index(-2) != $from.node(-2).childCount - 1
+      ) {
+        return false;
+      }
+      if (dispatch) {
+        var wrap = prosemirrorModel.Fragment.empty,
+          keepItem = $from.index(-1) > 0;
+        // Build a fragment containing empty versions of the structure
+        // from the outer list item to the parent node of the cursor
+        for (
+          var d = $from.depth - (keepItem ? 1 : 2);
+          d >= $from.depth - 3;
+          d--
+        ) {
+          wrap = prosemirrorModel.Fragment.from($from.node(d).copy(wrap));
+        }
+        // Add a second list item with an empty default start node
+        wrap = wrap.append(
+          prosemirrorModel.Fragment.from(itemType.createAndFill()),
+        );
+        var tr$1 = state.tr.replace(
+          $from.before(keepItem ? null : -1),
+          $from.after(-3),
+          new prosemirrorModel.Slice(wrap, keepItem ? 3 : 2, 2),
+        );
+        tr$1.setSelection(
+          state.selection.constructor.near(
+            tr$1.doc.resolve($from.pos + (keepItem ? 3 : 2)),
+          ),
+        );
+        dispatch(tr$1.scrollIntoView());
+      }
+      return true;
+    }
+    var nextType =
+      $to.pos == $from.end() ? grandParent.defaultContentType(0) : null;
+    var tr = state.tr.delete($from.pos, $to.pos);
+    var types = nextType && [null, { type: nextType }];
+    // if (!prosemirrorTransform.canSplit(tr.doc, $from.pos, 2, types)) { return false }
+    if (dispatch) {
+      dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+    }
+    return true;
+  };
+}
 
 /**
  * The function will list paragraphs in selection out to level 1 below root list.

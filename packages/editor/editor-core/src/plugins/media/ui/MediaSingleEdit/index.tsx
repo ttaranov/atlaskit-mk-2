@@ -14,6 +14,8 @@ import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
 import FloatingToolbar from '../../../../ui/FloatingToolbar';
 
+import { closestElement } from '../../../../utils';
+
 export interface Props {
   pluginState: MediaPluginState;
 }
@@ -60,7 +62,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
 
   render() {
     const { target, layout: selectedLayout, allowBreakout } = this.state;
-    if (target) {
+    if (target && !closestElement(target, 'li')) {
       return (
         <FloatingToolbar target={target} offset={[0, 3]} fitHeight={24}>
           {Object.keys(icons).map((layout, index) => {
