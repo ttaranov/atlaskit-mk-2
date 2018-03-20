@@ -65,7 +65,7 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
-  private readonly localPreviewCache: LRUCache<string, string>; //TODO: Fix type
+  private readonly localPreviewCache: LRUCache<string, string>;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
