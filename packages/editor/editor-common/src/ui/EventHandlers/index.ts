@@ -1,5 +1,4 @@
 import { CardEvent, Identifier } from '@atlaskit/media-card';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
 import { SyntheticEvent } from 'react';
 import { AppCardAction, ActionMarkAction } from '../../schema';
 
@@ -16,7 +15,7 @@ export type MentionEventHandler = (
 export type CardEventClickHandler = (
   result: CardEvent,
   surroundings?: CardSurroundings,
-  analyticsEvent?: UIAnalyticsEventInterface,
+  analyticsEvent?: any,
 ) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
