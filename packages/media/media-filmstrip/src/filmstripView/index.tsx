@@ -1,6 +1,12 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import { ReactNode, WheelEvent, MouseEvent } from 'react';
+import {
+  ReactNode,
+  ReactChild,
+  WheelEvent,
+  MouseEvent,
+  ReactElement,
+} from 'react';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRight from '@atlaskit/icon/glyph/arrow-right';
 import {
@@ -376,15 +382,20 @@ export class FilmstripView extends React.Component<
             innerRef={this.handleBufferElementChange}
             style={{ transform, transitionProperty, transitionDuration }}
           >
-            {React.Children.map(children, (child, index) => (
-              <FilmStripListItem key={child['key'] || index}>
-                {child}
-              </FilmStripListItem>
-            ))}
+            {React.Children.map(children, mapReactChildToReactNode)}
           </FilmStripList>
         </FilmStripListWrapper>
         {this.renderRightArrow()}
       </FilmStripViewWrapper>
     );
   }
+}
+
+function mapReactChildToReactNode(child: ReactChild, index: number): ReactNode {
+  const key = (isReactElement(child) && child.key) || index;
+  return <FilmStripListItem key={key}>{child}</FilmStripListItem>;
+}
+
+function isReactElement<P>(child: ReactChild): child is ReactElement<P> {
+  return !!(child as ReactElement<P>).type;
 }
