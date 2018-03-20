@@ -147,4 +147,6 @@ export const copyWithToken = (context: () => MockContext) => (
 
     return res;
   }
+
+  return undefined;
 };
