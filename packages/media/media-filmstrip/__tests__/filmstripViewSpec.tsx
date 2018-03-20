@@ -323,5 +323,34 @@ describe('FilmstripView', () => {
         expect(child.children().text()).toEqual(`${children[index]}`);
       });
     });
+
+    it('should use child keys if available', () => {
+      const element = shallow(
+        <FilmstripView>
+          <div key="a" />
+          <div />
+          <div key="c" />
+        </FilmstripView>,
+      );
+
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(0)
+          .key(),
+      ).toContain('a');
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(1)
+          .key(),
+      ).toContain('1');
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(2)
+          .key(),
+      ).toContain('c');
+    });
   });
 });
