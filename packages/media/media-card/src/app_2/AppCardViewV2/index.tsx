@@ -136,7 +136,7 @@ function getActions(
 export function convertAppCardToSmartCard(model: OldViewModel): SmartCardProps {
   return {
     context: getContext(model),
-    href: getHref(model),
+    link: getHref(model),
     title: getTitle(model),
     description: getDescription(model),
     user: getUser(model),

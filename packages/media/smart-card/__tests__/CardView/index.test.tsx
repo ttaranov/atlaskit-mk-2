@@ -32,7 +32,7 @@ describe('CardView', () => {
   const preview = 'https://www.example.com/foo.jpg';
 
   it('should render a href when href is provided', () => {
-    const element = shallow(<CardView href="https://www.google.com/" />);
+    const element = shallow(<CardView link="https://www.google.com/" />);
     expect(element.find(CardFrame).prop('href')).toEqual(
       'https://www.google.com/',
     );

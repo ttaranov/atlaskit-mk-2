@@ -161,7 +161,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
   render() {
     const {
       onClick,
-      href,
+      link,
       context,
       title,
       description,
@@ -175,7 +175,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       <CardFrame
         minWidth={minWidth()}
         maxWidth={maxWidth({ hasPreview: Boolean(preview) })}
-        href={href}
+        href={link}
         icon={<LinkIcon src={context && context.icon} />}
         text={context && context.text}
         onClick={onClick}

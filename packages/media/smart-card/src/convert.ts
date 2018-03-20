@@ -47,7 +47,7 @@ export function convert(json: any): CardViewProps {
   }
 
   if (json.url) {
-    props.href = String(json.url);
+    props.link = String(json.url);
   }
 
   return {

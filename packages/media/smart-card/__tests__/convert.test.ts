@@ -5,12 +5,12 @@ describe('convert()', () => {
     const data = {
       url: 'https://www.trello.com/',
     };
-    expect(convert(data)).toHaveProperty('href', 'https://www.trello.com/');
+    expect(convert(data)).toHaveProperty('link', 'https://www.trello.com/');
   });
 
-  it('should not return a href when json.url does not exist', () => {
+  it('should not return a link when json.url does not exist', () => {
     const data = {};
-    expect(convert(data)).not.toHaveProperty('href');
+    expect(convert(data)).not.toHaveProperty('link');
   });
 
   it('should return a context.text when json.context[x].name does exist', () => {
