@@ -52,7 +52,7 @@ export interface DetailViewModel {
 
 export default interface ViewModel {
   context?: ContextViewModel;
-  link?: string;
+  href?: string;
   icon?: IconWithTooltip;
   user?: UserViewModel;
   preview?: string;

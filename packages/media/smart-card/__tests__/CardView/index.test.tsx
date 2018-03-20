@@ -31,14 +31,14 @@ const failureAction = {
 describe('CardView', () => {
   const preview = 'https://www.example.com/foo.jpg';
 
-  it('should render a link when link is provided', () => {
-    const element = shallow(<CardView link="https://www.google.com/" />);
+  it('should render a href when href is provided', () => {
+    const element = shallow(<CardView href="https://www.google.com/" />);
     expect(element.find(CardFrame).prop('href')).toEqual(
       'https://www.google.com/',
     );
   });
 
-  it('should not render a link when link is not provided', () => {
+  it('should not render a href when href is not provided', () => {
     const element = shallow(<CardView />);
     expect(element.find(CardFrame).prop('href')).toBeUndefined();
   });

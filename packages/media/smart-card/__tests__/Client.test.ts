@@ -9,7 +9,9 @@ declare namespace NodeJS {
 function createFetchWithResponse() {
   return jest.fn().mockReturnValue(
     Promise.resolve({
-      json: jest.fn().mockReturnValue(Promise.resolve({ data: {} })),
+      json: jest
+        .fn()
+        .mockReturnValue(Promise.resolve({ response: { body: { data: {} } } })),
     }),
   );
 }

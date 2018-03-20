@@ -37,7 +37,7 @@ function getContext(oldViewModel: OldViewModel) {
   };
 }
 
-function getLink(oldViewModel: OldViewModel) {
+function getHref(oldViewModel: OldViewModel) {
   if (!oldViewModel.link) {
     return undefined;
   }
@@ -136,7 +136,7 @@ function getActions(
 export function convertAppCardToSmartCard(model: OldViewModel): SmartCardProps {
   return {
     context: getContext(model),
-    link: getLink(model),
+    href: getHref(model),
     title: getTitle(model),
     description: getDescription(model),
     user: getUser(model),
