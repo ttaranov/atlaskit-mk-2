@@ -144,8 +144,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
         const publicId = data.file.publicId;
         publicFile.publicId = publicId;
         if (publicFile.preview) {
-          console.time(`local-preview ${publicId}`);
-          window.publicId = publicId;
           context.setLocalPreview(publicId, publicFile.preview);
         }
 

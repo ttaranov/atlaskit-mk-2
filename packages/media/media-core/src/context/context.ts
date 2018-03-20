@@ -41,6 +41,8 @@ export interface Context {
 
   setLocalPreview(id: string, preview: string);
 
+  removeLocalPreview(id: string);
+
   addLinkItem(
     url: string,
     collectionName: string,
@@ -132,12 +134,15 @@ class ContextImpl implements Context {
   }
 
   setLocalPreview(id: string, preview: string) {
-    console.log('setLocalPreview', id, preview.length);
     this.localPreviewCache.set(id, preview);
   }
 
   getLocalPreview(id: string): string | undefined {
     return this.localPreviewCache.get(id);
+  }
+
+  removeLocalPreview(id: string) {
+    this.localPreviewCache.remove(id);
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
