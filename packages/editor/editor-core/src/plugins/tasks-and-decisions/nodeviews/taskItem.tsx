@@ -52,7 +52,7 @@ class Task extends ContentNodeView implements NodeView {
       nodePos,
       nodePos + node.nodeSize,
       schema.nodes.taskItem.create(
-        { state: isChecked ? 'DONE' : 'TODO' },
+        { state: isChecked ? 'DONE' : 'TODO', taskId },
         node.content,
       ),
     );
