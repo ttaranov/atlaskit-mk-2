@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 1.1.4
+- [patch] fixes problem with withAnalyticsEvents HOC passing old function props to wrapped component [c88b030](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c88b030)
+
 ## 1.1.3
 - [patch] adds displayName to analytics HOCs [f69ccad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f69ccad)
 
