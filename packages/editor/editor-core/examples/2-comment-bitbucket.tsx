@@ -108,7 +108,9 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowMentions={true}
-                    allowTables={true}
+                    allowTables={{
+                      isHeaderRowRequired: true,
+                    }}
                     textFormatting={{
                       disableSuperscriptAndSubscript: true,
                       disableUnderline: true,
