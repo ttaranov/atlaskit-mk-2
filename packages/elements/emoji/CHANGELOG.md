@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.1.20
+- [patch] FS-1843 fix incorrect emoji category [36473a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36473a8)
+
 ## 31.1.19
 - [patch] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
 

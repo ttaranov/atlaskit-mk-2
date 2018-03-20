@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 65.1.7
+
+- [patch] ED-4064,ED-4065, refactor extensions, codeblock, panel [eb09dcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb09dcd)
+
 ## 65.1.6
 - [patch] Making UX nice for user by adding an empty paragraph terminally in the editor. [3cc4930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cc4930)
 
