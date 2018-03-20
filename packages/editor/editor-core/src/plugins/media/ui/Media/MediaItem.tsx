@@ -14,6 +14,7 @@ import MediaComponent, { Appearance } from './MediaComponent';
 
 export interface Props {
   id: string;
+  tempId: string;
   providers?: ProviderFactory;
   type: MediaType;
   collection: string;
@@ -54,11 +55,13 @@ export default class MediaItem extends PureComponent<Props, {}> {
       appearance,
       stateManagerFallback,
       selected,
+      tempId,
     } = this.props;
 
     return (
       <MediaComponent
         id={id}
+        tempId={tempId}
         mediaProvider={providers.mediaProvider}
         type={type}
         collection={collection}

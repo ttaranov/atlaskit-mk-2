@@ -94,7 +94,7 @@ const createMediaFileNodes = (
   const nodes = mediaStates.map(mediaState => {
     const { id } = mediaState;
 
-    const node = media.create({ id, type: 'file', collection });
+    const node = media.create({ id, type: 'file', collection, __key: id });
     copyOptionalAttrsFromMediaState(mediaState, node);
     return node;
   });
