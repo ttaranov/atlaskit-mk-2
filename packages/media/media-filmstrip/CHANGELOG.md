@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 7.0.2
+- [patch] Use child.key if available [d4835bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4835bd)
+
 ## 7.0.1
 
 ## 7.0.0

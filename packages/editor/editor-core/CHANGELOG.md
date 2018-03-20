@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 65.1.8
+
 ## 65.1.7
 
 - [patch] ED-4064,ED-4065, refactor extensions, codeblock, panel [eb09dcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb09dcd)

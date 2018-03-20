@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "13.0.3",
+  "version": "13.0.4",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,7 +22,7 @@
     "@atlaskit/editor-json-transformer": "^2.5.15",
     "@atlaskit/icon": "^10.9.2",
     "@atlaskit/media-card": "^25.0.1",
-    "@atlaskit/media-filmstrip": "^7.0.1",
+    "@atlaskit/media-filmstrip": "^7.0.2",
     "@atlaskit/mention": "^9.1.1",
     "@atlaskit/task-decision": "^4.10.9",
     "@atlaskit/util-shared-styles": "^2.10.3",
