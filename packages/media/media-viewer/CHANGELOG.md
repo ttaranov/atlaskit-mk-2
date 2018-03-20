@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 11.0.1
+- [patch] Wire up MVNG with Media Providers [d80c743](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d80c743)
+
 ## 11.0.0
 
 ## 10.1.0
