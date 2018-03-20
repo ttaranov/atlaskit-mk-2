@@ -185,8 +185,8 @@ function splitListItem(itemType) {
         return false;
       }
       if (dispatch) {
-        let wrap = Fragment.empty,
-          keepItem = $from.index(-1) > 0;
+        let wrap = Fragment.empty;
+        const keepItem = $from.index(-1) > 0;
         // Build a fragment containing empty versions of the structure
         // from the outer list item to the parent node of the cursor
         for (
