@@ -625,5 +625,18 @@ describe('EmojiRepository', () => {
         done();
       });
     });
+
+    it('should return frequent emoji on find operations with original category', done => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        const thumbsUp = emojiRepository.findByShortName(':thumbsup:');
+        expect(thumbsUp!.category).to.equal('PEOPLE');
+
+        done();
+      });
+    });
   });
 });
