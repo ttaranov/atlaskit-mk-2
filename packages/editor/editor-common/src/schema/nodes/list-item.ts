@@ -4,7 +4,6 @@ import { Definition as OrderedList } from './ordered-list';
 import { Definition as BulletList } from './bullet-list';
 import { Definition as MediaGroup } from './media-group';
 import { Definition as MediaSingle } from './media-single';
-import MediaSingleNode from '../../../../editor-core/dist/es5/nodeviews/ui/media-single/index';
 
 export interface ListItemArray
   extends Array<

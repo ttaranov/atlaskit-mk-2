@@ -101,13 +101,8 @@ export const enterKeyCommand = (
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      if (
-        isEmptyNode(node) &&
-        !(
-          doc.nodeAt(selection.anchor - 3) &&
-          doc.nodeAt(selection.anchor - 3).type.name === 'media'
-        )
-      ) {
+      const prevNode = doc.nodeAt(selection.anchor - 3);
+      if (isEmptyNode(node) && !(prevNode && prevNode.type.name === 'media')) {
         return commands.outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);
@@ -178,7 +173,7 @@ function splitListItem(itemType) {
     if (grandParent.type != itemType) {
       return false;
     }
-    if ($from.parent.content.size == 0 && !grandParent.content.size === 0) {
+    if ($from.parent.content.size == 0 && !(grandParent.content.size === 0)) {
       // In an empty block. If this is a nested list, the wrapping
       // list item should be split. Otherwise, bail out and let next
       // command handle lifting.
@@ -190,7 +185,7 @@ function splitListItem(itemType) {
         return false;
       }
       if (dispatch) {
-        var wrap = prosemirrorModel.Fragment.empty,
+        var wrap = Fragment.empty,
           keepItem = $from.index(-1) > 0;
         // Build a fragment containing empty versions of the structure
         // from the outer list item to the parent node of the cursor
@@ -199,16 +194,14 @@ function splitListItem(itemType) {
           d >= $from.depth - 3;
           d--
         ) {
-          wrap = prosemirrorModel.Fragment.from($from.node(d).copy(wrap));
+          wrap = Fragment.from($from.node(d).copy(wrap));
         }
         // Add a second list item with an empty default start node
-        wrap = wrap.append(
-          prosemirrorModel.Fragment.from(itemType.createAndFill()),
-        );
+        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
         var tr$1 = state.tr.replace(
           $from.before(keepItem ? null : -1),
           $from.after(-3),
-          new prosemirrorModel.Slice(wrap, keepItem ? 3 : 2, 2),
+          new Slice(wrap, keepItem ? 3 : 2, 2),
         );
         tr$1.setSelection(
           state.selection.constructor.near(
