@@ -29,6 +29,7 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly mediaItemType?: MediaItemType;
   readonly dataURIService?: DataUriService;
   readonly resizeMode?: ImageResizeMode;
+  readonly preview?: string;
 }
 
 export interface MediaCardState {
@@ -42,14 +43,14 @@ export interface MediaCardState {
 
 export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   state: MediaCardState = {
-    status: 'loading',
+    status: this.props.preview ? 'complete' : 'loading',
   };
 
   componentDidMount(): void {
     this.updateState(this.props);
   }
 
-  componentWillReceiveProps(nextProps: MediaCardProps, nextContext: any): void {
+  componentWillReceiveProps(nextProps: MediaCardProps): void {
     if (this.shouldUpdateState(nextProps)) {
       this.updateState(nextProps);
     }
@@ -95,10 +96,12 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
       onLoadingChange = () => {
         /* do nothing */
       },
+      preview,
     } = this.props;
     this.unsubscribe();
+    const status = preview ? 'complete' : 'loading';
 
-    this.setPartialState({ status: 'loading' }, () =>
+    this.setPartialState({ status }, () =>
       this.setPartialState(
         {
           subscription: this.observable(props).subscribe({
@@ -155,6 +158,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
       dataURIService,
       onLoadingChange,
       resizeMode,
+      preview,
       ...otherProps
     } = this.props;
     const { metadata, status } = this.state;
@@ -165,6 +169,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         resizeMode={resizeMode}
         dataURIService={dataURIService}
         status={status}
+        preview={preview}
         metadata={metadata}
         mediaItemType={mediaItemType}
         onRetry={this.onRetry}

@@ -17,12 +17,12 @@ import {
 import { defaultImageCardDimensions } from '../utils';
 
 export interface WithDataURIProps {
-  dataURIService?: DataUriService;
-  metadata?: MediaItemDetails;
-  appearance?: CardAppearance;
-  dimensions?: CardDimensions;
-  resizeMode?: ImageResizeMode;
-
+  readonly dataURIService?: DataUriService;
+  readonly metadata?: MediaItemDetails;
+  readonly appearance?: CardAppearance;
+  readonly dimensions?: CardDimensions;
+  readonly resizeMode?: ImageResizeMode;
+  readonly preview?: string;
   // allow extra props to be passed down to lower views e.g. status and error to CardView
   [propName: string]: any;
 }
@@ -100,15 +100,16 @@ export const withDataURI = (Component): any => {
       return defaultImageCardDimensions[dimension] * retinaFactor;
     }
 
+    setDataURI = dataURI => this.setState({ dataURI });
+    clearDataURI = () => this.setState({ dataURI: undefined });
+
     updateDataURI(props: WithDataURIProps): void {
       const { dataURIService, metadata, resizeMode, appearance } = props;
-
-      const setDataURI = dataURI => this.setState({ dataURI });
-      const clearDataURI = () => this.setState({ dataURI: undefined });
+      const { setDataURI, clearDataURI } = this;
 
       // clear the dataURI if we're updating to undefined metadata or we're updating to a link
       if (!dataURIService || !metadata || isLinkDetails(metadata)) {
-        clearDataURI();
+        this.clearDataURI();
         return;
       }
 
@@ -131,7 +132,7 @@ export const withDataURI = (Component): any => {
 
     render(): JSX.Element {
       const { dataURIService, ...otherProps } = this.props;
-      const { dataURI } = this.state;
+      const dataURI = this.state.dataURI || this.props.preview;
 
       return <Component {...otherProps} dataURI={dataURI} />;
     }

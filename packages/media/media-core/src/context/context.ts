@@ -63,14 +63,12 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
-  private readonly localPreviewCache: { id: string; value: string };
+  private readonly localPreviewCache: LRUCache<string, string>; //TODO: Fix type
 
   constructor(readonly config: ContextConfig) {
-    this.fileItemCache = new LRUCache<string, FileItem>(
-      config.cacheSize || DEFAULT_CACHE_SIZE,
-    );
+    this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
 
-    this.localPreviewCache = {};
+    this.localPreviewCache = new LRUCache(10);
   }
 
   getMediaItemProvider(
@@ -134,11 +132,12 @@ class ContextImpl implements Context {
   }
 
   setLocalPreview(id: string, preview: string) {
-    this.localPreviewCache[id] = preview;
+    console.log('setLocalPreview', id, preview.length);
+    this.localPreviewCache.set(id, preview);
   }
 
   getLocalPreview(id: string): string | undefined {
-    return this.localPreviewCache[id];
+    return this.localPreviewCache.get(id);
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {

@@ -121,6 +121,12 @@ export class Card extends Component<CardProps, {}> {
     );
   }
 
+  private get preview() {
+    const { context, identifier } = this.props;
+
+    return context.getLocalPreview(identifier['id']);
+  }
+
   render() {
     const {
       context,
@@ -130,19 +136,27 @@ export class Card extends Component<CardProps, {}> {
       identifier,
       ...otherProps
     } = this.props;
+    const {
+      mediaItemType,
+      provider,
+      dataURIService,
+      placeholder,
+      preview,
+    } = this;
     const card = (
       <MediaCard
         {...otherProps}
         resizeMode={resizeMode}
         appearance={appearance}
-        mediaItemType={this.mediaItemType}
-        provider={this.provider}
-        dataURIService={this.dataURIService}
+        mediaItemType={mediaItemType}
+        preview={preview}
+        provider={provider}
+        dataURIService={dataURIService}
       />
     );
 
     return isLazy ? (
-      <LazyContent placeholder={this.placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={placeholder}>{card}</LazyContent>
     ) : (
       card
     );
