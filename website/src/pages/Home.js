@@ -196,7 +196,7 @@ export default class Home extends React.Component<{}> {
         <Page width="large">
           <Title>Atlaskit</Title>
           <Intro>
-            Atlassian&#39;s official UI library, according to the
+            Atlassian&#39;s official UI library, built according to the
             Atlassian&nbsp;Design&nbsp;Guidelines.
           </Intro>
           <Cards>
