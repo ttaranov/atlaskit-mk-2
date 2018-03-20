@@ -81,7 +81,7 @@ export class WithDataDisplay extends React.Component<any, any> {
           </tr>
           <tr>
             <td>Can Contact</td>
-            {this.state.canContact ? (
+            {this.state.canContact !== null ? (
               <td>{String(this.state.canContact)}</td>
             ) : null}
           </tr>
