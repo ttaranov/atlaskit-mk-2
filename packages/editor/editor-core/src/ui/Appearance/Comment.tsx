@@ -153,6 +153,7 @@ export default class Editor extends React.Component<
   private onFocus = () => {
     this.setState({
       hasFocus: true,
+      isMouseDown: false,
     });
   };
 
