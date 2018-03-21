@@ -298,7 +298,6 @@ export class MediaPluginState {
     );
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
-    console.log(grandParentNode);
 
     const allowMediaSingle =
       mediaSingle &&
