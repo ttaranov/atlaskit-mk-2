@@ -4,7 +4,7 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
-import withCtrl from 'react-ctrl';
+import Ctrl from 'react-ctrl';
 import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
@@ -96,7 +96,7 @@ function parseDateIntoStateValues(value) {
   };
 }
 
-class DateTimePicker extends Component<Props, State> {
+export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
@@ -104,6 +104,8 @@ class DateTimePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
+    innerProps: {},
+    id: '',
   };
 
   state = {
@@ -115,7 +117,7 @@ class DateTimePicker extends Component<Props, State> {
     zoneValue: '',
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { ...this.state, ...parseDateIntoStateValues(props.value) };
   }
@@ -138,7 +140,15 @@ class DateTimePicker extends Component<Props, State> {
     this.onValueChange({ ...this.state, timeValue });
   };
 
-  onValueChange({ dateValue, timeValue, zoneValue }) {
+  onValueChange({
+    dateValue,
+    timeValue,
+    zoneValue,
+  }: {
+    dateValue: string,
+    timeValue: string,
+    zoneValue: string,
+  }) {
     this.setState({ dateValue, timeValue, zoneValue });
     if (dateValue && timeValue) {
       const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
@@ -149,38 +159,40 @@ class DateTimePicker extends Component<Props, State> {
 
   render() {
     const { autoFocus, id, innerProps, isDisabled, name } = this.props;
-    const { dateValue, timeValue, isFocused, value } = this.state;
+    const { isFocused, value } = this.state;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
     };
     return (
-      <Flex {...innerProps} isFocused={isFocused}>
-        <input name={name} type="hidden" value={value} />
-        <FlexItem>
-          <DatePicker
-            {...bothProps}
-            autoFocus={autoFocus}
-            icon={null}
-            id={id}
-            onChange={this.onDateChange}
-            selectProps={{ styles }}
-            value={dateValue}
-          />
-        </FlexItem>
-        <FlexItem>
-          <TimePicker
-            {...bothProps}
-            icon={CalendarIcon}
-            onChange={this.onTimeChange}
-            selectProps={{ styles }}
-            value={timeValue}
-          />
-        </FlexItem>
-      </Flex>
+      <Ctrl data={this}>
+        {mapped => (
+          <Flex {...innerProps} isFocused={isFocused}>
+            <input name={name} type="hidden" value={value} />
+            <FlexItem>
+              <DatePicker
+                {...bothProps}
+                autoFocus={autoFocus}
+                icon={null}
+                id={id}
+                onChange={this.onDateChange}
+                selectProps={{ styles }}
+                value={mapped.dateValue}
+              />
+            </FlexItem>
+            <FlexItem>
+              <TimePicker
+                {...bothProps}
+                icon={CalendarIcon}
+                onChange={this.onTimeChange}
+                selectProps={{ styles }}
+                value={mapped.timeValue}
+              />
+            </FlexItem>
+          </Flex>
+        )}
+      </Ctrl>
     );
   }
 }
-
-export default withCtrl(DateTimePicker);

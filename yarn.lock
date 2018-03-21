@@ -11006,9 +11006,9 @@ react-codesandboxer@^0.4.1:
     codesandbox "^1.1.14"
     react-node-resolver "^1.0.1"
 
-react-ctrl@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.3.1.tgz#f40671ec5acebfb0a9abfdb778dfd6cea7f9ffcf"
+react-ctrl@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-ctrl/-/react-ctrl-0.4.1.tgz#6408fcdc992db36fd9439fa5e405238edb07c64f"
   dependencies:
     conartist "^0.15.1"
     nodent "^3.1.5"

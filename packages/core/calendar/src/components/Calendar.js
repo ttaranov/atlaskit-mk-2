@@ -2,7 +2,7 @@
 
 import { Calendar as CalendarBase } from 'calendar-base';
 import React, { Component } from 'react';
-import withCtrl from 'react-ctrl';
+import Ctrl from 'react-ctrl';
 import uuid from 'uuid/v1';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
@@ -30,14 +30,26 @@ const monthsPerYear = 12;
 type Handler = (e: any) => void;
 type Props = {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
-  day: number,
+  day?: number,
+  /** Default for `day`. */
+  defaultDay?: number,
+  /** Default for `disabled`. */
+  defaultDisabled?: Array<string>,
+  /** Default for `month`. */
+  defaultMonth?: number,
+  /** Default for `previouslySelected`. */
+  defaultPreviouslySelected?: Array<string>,
+  /** Default for `selected`. */
+  defaultSelected?: Array<string>,
+  /** Default for `year`. */
+  defaultYear?: number,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
    This does not prevent these dates being selected. */
-  disabled: Array<string>,
+  disabled?: Array<string>,
   /** Props to apply to the container. **/
   innerProps: Object,
   /** The number of the month (from 1 to 12) which the calendar should be on. */
-  month: number,
+  month?: number,
   /** Function which is called when the calendar is no longer focused. */
   onBlur: Handler,
   /** Called when the calendar is navigated. This can be triggered by the keyboard, or by clicking the navigational buttons.
@@ -52,14 +64,14 @@ type Props = {
   onSelect: SelectEvent => void,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
-  previouslySelected: Array<string>,
+  previouslySelected?: Array<string>,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
-  selected: Array<string>,
+  selected?: Array<string>,
   /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
-  today: string,
+  today?: string,
   /** Year to display the calendar for. */
-  year: number,
+  year?: number,
 };
 
 type State = {
@@ -68,7 +80,6 @@ type State = {
   selected: Array<string>,
   month: number,
   previouslySelected: Array<string>,
-  today: string,
   year: number,
 };
 
@@ -76,15 +87,18 @@ function getUniqueId(prefix: string) {
   return `${prefix}-${uuid()}`;
 }
 
-class Calendar extends Component<Props, State> {
+export default class Calendar extends Component<Props, State> {
   calendar: Object;
   container: HTMLElement | null;
+  /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
+  today: string;
 
   static defaultProps = {
     onBlur() {},
     onChange() {},
     onFocus() {},
     onSelect() {},
+    innerProps: {},
   };
 
   constructor(props: Props) {
@@ -99,13 +113,13 @@ class Calendar extends Component<Props, State> {
       selected: [],
       month: thisMonth,
       previouslySelected: [],
-      today: `${thisYear}-${thisMonth}-${thisDay}`,
       year: thisYear,
     };
     this.calendar = new CalendarBase({
       siblingMonths: true,
       weekNumbers: true,
     });
+    this.today = this.props.today || `${thisYear}-${thisMonth}-${thisDay}`;
   }
 
   getNextMonth() {
@@ -290,21 +304,18 @@ class Calendar extends Component<Props, State> {
     });
   };
 
-  render() {
-    const { innerProps } = this.props;
+  getCalendarWeeks = (ctrlState: State) => {
     const {
       day,
-      disabled,
+      year,
       month,
+      disabled,
       previouslySelected,
       selected,
-      today,
-      year,
-    } = this.state;
+    } = ctrlState;
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
-    const announceId = getUniqueId('announce');
 
     // Some months jump between 5 and 6 weeks to display. In some cases 4 (Feb
     // with the 1st on a Monday etc). This ensures the UI doesn't jump around by
@@ -338,7 +349,7 @@ class Calendar extends Component<Props, State> {
         !isDisabled && previouslySelected.indexOf(dateAsString) > -1;
       const isSelected = !isDisabled && selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
-      const isToday = today === dateAsString;
+      const isToday = this.today === dateAsString;
 
       week.components.push(
         <DateComponent
@@ -358,46 +369,66 @@ class Calendar extends Component<Props, State> {
       );
     });
 
+    return weeks;
+  };
+
+  render() {
+    const { innerProps } = this.props;
+
+    const announceId = getUniqueId('announce');
+
     return (
-      <div
-        {...innerProps}
-        onBlur={this.handleContainerBlur}
-        onFocus={this.handleContainerFocus}
-        onKeyDown={this.handleContainerKeyDown}
-        role="presentation"
-      >
-        <Announcer id={announceId} aria-live="assertive" aria-relevant="text">
-          {new Date(year, month, day).toString()}
-        </Announcer>
-        <Wrapper
-          aria-describedby={announceId}
-          aria-label="calendar"
-          innerRef={this.refContainer}
-          role="grid"
-          tabIndex={0}
-        >
-          <Heading
-            month={month}
-            year={year}
-            handleClickNext={this.handleClickNext}
-            handleClickPrev={this.handleClickPrev}
-          />
-          <CalendarTable role="presentation">
-            <CalendarThead>
-              <tr>
-                {makeArrayFromNumber(daysPerWeek).map(i => (
-                  <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
-                ))}
-              </tr>
-            </CalendarThead>
-            <CalendarTbody style={{ border: 0 }}>
-              {weeks.map(week => <tr key={week.key}>{week.components}</tr>)}
-            </CalendarTbody>
-          </CalendarTable>
-        </Wrapper>
-      </div>
+      <Ctrl data={this}>
+        {ctrlState => (
+          <div
+            {...innerProps}
+            onBlur={this.handleContainerBlur}
+            onFocus={this.handleContainerFocus}
+            onKeyDown={this.handleContainerKeyDown}
+            role="presentation"
+          >
+            <Announcer
+              id={announceId}
+              aria-live="assertive"
+              aria-relevant="text"
+            >
+              {new Date(
+                ctrlState.year,
+                ctrlState.month,
+                ctrlState.day,
+              ).toString()}
+            </Announcer>
+            <Wrapper
+              aria-describedby={announceId}
+              aria-label="calendar"
+              innerRef={this.refContainer}
+              role="grid"
+              tabIndex={0}
+            >
+              <Heading
+                month={ctrlState.month}
+                year={ctrlState.year}
+                handleClickNext={this.handleClickNext}
+                handleClickPrev={this.handleClickPrev}
+              />
+              <CalendarTable role="presentation">
+                <CalendarThead>
+                  <tr>
+                    {makeArrayFromNumber(daysPerWeek).map(i => (
+                      <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
+                    ))}
+                  </tr>
+                </CalendarThead>
+                <CalendarTbody>
+                  {this.getCalendarWeeks(ctrlState).map(week => (
+                    <tr key={week.key}>{week.components}</tr>
+                  ))}
+                </CalendarTbody>
+              </CalendarTable>
+            </Wrapper>
+          </div>
+        )}
+      </Ctrl>
     );
   }
 }
-
-export default withCtrl(Calendar);

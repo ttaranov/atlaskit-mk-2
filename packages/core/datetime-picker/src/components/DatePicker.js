@@ -5,8 +5,8 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
-import React, { Component, type Node } from 'react';
-import withCtrl from 'react-ctrl';
+import React, { Component, type Node, type ElementRef } from 'react';
+import Ctrl from 'react-ctrl';
 import styled from 'styled-components';
 
 import { ClearIndicator, DropdownIndicator } from '../internal';
@@ -35,11 +35,11 @@ type Props = {
   /** The name of the field. */
   name: string,
   /** Called when the field is blurred. */
-  onBlur: () => void,
+  onBlur: (e: SyntheticFocusEvent<>) => void,
   /** Called when the value changes. The only argument is an ISO time. */
   onChange: string => void,
   /** Called when the field is focused. */
-  onFocus: () => void,
+  onFocus: (e: SyntheticFocusEvent<>) => void,
   /** Props to apply to the select. */
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
@@ -97,8 +97,9 @@ const StyledMenu = styled.div`
   z-index: ${layers.dialog};
 `;
 
-class DatePicker extends Component<Props, State> {
-  calendar: Calendar;
+export default class DatePicker extends Component<Props, State> {
+  // $FlowFixMe - Calendar isn't being correctly detected as a react component
+  calendar: ElementRef<Calendar>;
   input: Element | null;
 
   static defaultProps = {
@@ -110,6 +111,9 @@ class DatePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
+    innerProps: {},
+    selectProps: {},
+    id: '',
   };
 
   state = {
@@ -118,11 +122,11 @@ class DatePicker extends Component<Props, State> {
     view: '',
   };
 
-  onCalendarChange = ({ iso }) => {
+  onCalendarChange = ({ iso }: { iso: string }) => {
     this.setState({ view: iso });
   };
 
-  onCalendarSelect = ({ iso: value }) => {
+  onCalendarSelect = ({ iso: value }: { iso: string }) => {
     this.triggerChange(value);
     this.setState({ isOpen: false });
   };
@@ -131,14 +135,14 @@ class DatePicker extends Component<Props, State> {
     this.setState({ isOpen: true });
   };
 
-  onSelectBlur = (...args) => {
+  onSelectBlur = (e: SyntheticFocusEvent<>) => {
     this.setState({ isOpen: false });
-    this.props.onBlur(...args);
+    this.props.onBlur(e);
   };
 
-  onSelectFocus = (...args) => {
+  onSelectFocus = (e: SyntheticFocusEvent<>) => {
     this.setState({ isOpen: true });
-    this.props.onFocus(...args);
+    this.props.onFocus(e);
   };
 
   onSelectInput = (e: Event) => {
@@ -182,11 +186,11 @@ class DatePicker extends Component<Props, State> {
     }
   };
 
-  refCalendar = (e: Calendar) => {
-    this.calendar = e;
+  refCalendar = (ref: ElementRef<Calendar>) => {
+    this.calendar = ref;
   };
 
-  triggerChange = value => {
+  triggerChange = (value: string) => {
     this.props.onChange(value);
     this.setState({ value, view: value });
     ensureValueIsDisplayed();
@@ -203,8 +207,8 @@ class DatePicker extends Component<Props, State> {
       name,
       selectProps,
     } = this.props;
-    const { isOpen, value, view } = this.state;
-    const Menu = () =>
+    const { isOpen } = this.state;
+    const Menu = (value, view) => () =>
       isOpen ? (
         <StyledMenu>
           <Calendar
@@ -213,6 +217,7 @@ class DatePicker extends Component<Props, State> {
             disabled={disabled}
             onChange={this.onCalendarChange}
             onSelect={this.onCalendarSelect}
+            // $FlowFixMe
             ref={this.refCalendar}
             selected={[value]}
           />
@@ -220,39 +225,41 @@ class DatePicker extends Component<Props, State> {
       ) : null;
 
     return (
-      <div
-        {...innerProps}
-        role="presentation"
-        onClick={this.onInputClick}
-        onInput={this.onSelectInput}
-        onKeyDown={this.onSelectKeyDown}
-      >
-        <input name={name} type="hidden" value={value} />
-        {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <Select
-          autoFocus={autoFocus}
-          instanceId={id}
-          isDisabled={isDisabled}
-          menuIsOpen={isOpen}
-          onBlur={this.onSelectBlur}
-          onFocus={this.onSelectFocus}
-          components={{
-            ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-            Menu,
-          }}
-          placeholder="e.g. 2018/12/31"
-          value={
-            value && {
-              label: format(parse(value), 'YYYY/MM/DD'),
-              value,
-            }
-          }
-          {...selectProps}
-        />
-      </div>
+      <Ctrl data={this}>
+        {mapped => (
+          <div
+            {...innerProps}
+            role="presentation"
+            onClick={this.onInputClick}
+            onInput={this.onSelectInput}
+            onKeyDown={this.onSelectKeyDown}
+          >
+            <input name={name} type="hidden" value={mapped.value} />
+            {/* $FlowFixMe - complaining about required args that aren't required. */}
+            <Select
+              autoFocus={autoFocus}
+              instanceId={id}
+              isDisabled={isDisabled}
+              menuIsOpen={mapped.isOpen}
+              onBlur={this.onSelectBlur}
+              onFocus={this.onSelectFocus}
+              components={{
+                ClearIndicator,
+                DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+                Menu: Menu(mapped.value, this.state.view),
+              }}
+              placeholder="e.g. 2018/12/31"
+              value={
+                mapped.value && {
+                  label: format(parse(mapped.value), 'YYYY/MM/DD'),
+                  value: mapped.value,
+                }
+              }
+              {...selectProps}
+            />
+          </div>
+        )}
+      </Ctrl>
     );
   }
 }
-
-export default withCtrl(DatePicker);
