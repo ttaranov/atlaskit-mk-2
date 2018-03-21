@@ -1,7 +1,8 @@
 import * as React from 'react';
+import * as deepEqual from 'deep-equal';
 import Blanket from '@atlaskit/blanket';
 import { Context, MediaType } from '@atlaskit/media-core';
-import * as deepEqual from 'deep-equal';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 
@@ -9,17 +10,21 @@ export type Props = {
   onClose?: () => void;
   context: Context;
   data: Identifier;
+  createAnalyticsEvent: any;
 };
 
 export type State = {
   model: Model;
 };
 
-export class MediaViewer extends React.Component<Props, State> {
+class MediaViewerInner extends React.Component<Props, State> {
   state: State = { model: initialModel };
 
   componentDidMount() {
     this.subscribe();
+
+    const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' }); // Fire our analytics event analyticsEvent.fire(); if (this.props.onClick) { this.props.onClick(e); }
+    analyticsEvent.fire();
   }
 
   componentWillUnmount() {
@@ -118,3 +123,5 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 }
+
+export const MediaViewer = withAnalyticsEvents()(MediaViewerInner);
