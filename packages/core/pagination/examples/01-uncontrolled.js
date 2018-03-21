@@ -5,8 +5,8 @@ import Pagination from '../src';
 
 export default () => (
   <Pagination
+    defaultValue={5}
     total={10}
-    defaultCurrent={4}
-    i18n={{ prev: '← Пред', next: 'След →' }}
+    onChange={e => console.log('page changed', e)}
   />
 );
