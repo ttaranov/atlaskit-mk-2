@@ -14443,9 +14443,9 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xhr-mock@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/xhr-mock/-/xhr-mock-2.2.0.tgz#4df2338eccd14914fadb01cfe227a8f85ad7be35"
+xhr-mock@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/xhr-mock/-/xhr-mock-2.3.0.tgz#cdb7247acd6fed55f979eb746772f5cd7160484c"
   dependencies:
     global "^4.3.0"
     url "^0.11.0"
