@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.1
+- [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
+
 ## 8.1.0
 - [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
 

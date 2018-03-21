@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-confluence-transformer",
-  "version": "2.10.2",
+  "version": "2.10.3",
   "description": "Editor Confluence Transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^8.0.7",
+    "@atlaskit/editor-common": "^8.1.1",
     "prosemirror-model": "^1.0.0"
   },
   "peerDependencies": {

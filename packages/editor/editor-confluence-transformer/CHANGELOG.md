@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.3
+- [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
+
 ## 2.10.2
 
 ## 2.10.1
