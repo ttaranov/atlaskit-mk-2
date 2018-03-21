@@ -78,7 +78,7 @@ const providerFactory = ProviderFactory.create({
 
 const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.fabric': (ext, doc) => {
-    const { extensionKey, parameters, content } = ext;
+    const { extensionKey } = ext;
 
     switch (extensionKey) {
       case 'clock':
@@ -119,6 +119,8 @@ const extensionHandlers: ExtensionHandlers = {
             },
           },
         ];
+      default:
+        return null;
     }
   },
 };
@@ -130,13 +132,18 @@ const eventHandlers = {
     onMouseLeave: () => console.log('onMentionMouseLeave'),
   },
   media: {
-    onClick: (result: CardEvent, surroundings?: CardSurroundings) => {
+    onClick: (
+      result: CardEvent,
+      surroundings?: CardSurroundings,
+      analyticsEvent?: any,
+    ) => {
       // json-safe-stringify does not handle cyclic references in the react mouse click event
       return console.log(
         'onMediaClick',
         '[react.MouseEvent]',
         result.mediaItemDetails,
         surroundings,
+        analyticsEvent,
       );
     },
   },
@@ -149,14 +156,14 @@ const eventHandlers = {
   },
 };
 
-interface DemoRendererProps {
+export interface DemoRendererProps {
   withPortal?: boolean;
   withProviders?: boolean;
   withExtension?: boolean;
   serializer: 'react' | 'text' | 'email';
 }
 
-interface DemoRendererState {
+export interface DemoRendererState {
   input: string;
   portal?: HTMLElement;
 }
@@ -171,19 +178,18 @@ export default class RendererDemo extends PureComponent<
 
   state: DemoRendererState = {
     input: JSON.stringify(document, null, 2),
-    portal: undefined,
   };
 
   refs: {
     input: HTMLTextAreaElement;
   };
 
-  private handlePortalRef = (portal?: HTMLElement) => {
-    this.setState({ portal });
+  private handlePortalRef = (portal: HTMLElement | null) => {
+    this.setState({ portal: portal || undefined });
   };
 
-  private onEmailRef = (ref?: HTMLIFrameElement) => {
-    this.emailRef = ref;
+  private onEmailRef = (ref: HTMLIFrameElement | null) => {
+    this.emailRef = ref || undefined;
 
     if (ref) {
       // reset padding/margin for empty iframe with about:src URL
@@ -238,7 +244,9 @@ export default class RendererDemo extends PureComponent<
       const doc = JSON.parse(this.state.input);
       const html = renderDocument<string>(doc, this.emailSerializer).result;
 
-      this.emailRef.contentDocument.body.innerHTML = html;
+      if (this.emailRef && html) {
+        this.emailRef.contentDocument.body.innerHTML = html;
+      }
     } catch (ex) {
       // pass
     }
@@ -309,7 +317,7 @@ export default class RendererDemo extends PureComponent<
     }
 
     try {
-      const doc = JSON.parse(this.state.input);
+      JSON.parse(this.state.input);
 
       return (
         <div>
