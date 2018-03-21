@@ -4,12 +4,11 @@ import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { Card, CardView } from '@atlaskit/media-card';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
-
+import { fakeContext } from '@atlaskit/media-test-helpers';
 import { State, CollectionItem } from '../../../../domain';
 import {
   mockStore,
   mockState,
-  mockContext,
   getComponentClassWithStore,
   mockIsWebGLNotAvailable,
 } from '../../../../mocks';
@@ -33,7 +32,7 @@ const createConnectedComponent = (
   state: State,
   enzymeMethod: Function = shallow,
 ) => {
-  const context = mockContext();
+  const context = fakeContext();
   const store = mockStore(state);
   const dispatch = store.dispatch;
   const root = enzymeMethod(
@@ -53,7 +52,7 @@ describe('<StatelessUploadView />', () => {
     isLoading: boolean,
     recentItems: CollectionItem[] = [],
   ) => {
-    const context = mockContext();
+    const context = fakeContext();
     const { selectedItems, uploads, apiUrl } = mockState;
 
     const recents = {

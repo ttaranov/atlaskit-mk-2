@@ -69,10 +69,10 @@ describe('CardList', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName} />);
 
-    expect(context.getMediaCollectionProvider.mock.calls).toHaveLength(
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
-    expect(context.getMediaItemProvider.mock.calls).toHaveLength(
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
     expect(context.getMediaItemProvider).toBeCalledWith(
