@@ -13,7 +13,7 @@ import { containsTable } from '../../table/utils';
 import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
-import { isSingleLine, isCode, escapeLinks } from '../util';
+import { isSingleLine, escapeLinks } from '../util';
 import { removeBodiedExtensionsOnPaste } from '../../extension/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
@@ -110,10 +110,8 @@ export function createPlugin(
         }
 
         // If the clipboard contents looks like computer code, create a code block
-        if (
-          (text && isCode(text)) ||
-          (text && html && node && node.type === schema.nodes.codeBlock)
-        ) {
+        // Note: Disabling (text && isCode(text)) check (@see ED-4092) until we decide how to improve it (possibly adding the ability to undo)
+        if (text && html && node && node.type === schema.nodes.codeBlock) {
           analyticsService.trackEvent('atlassian.editor.paste.code');
           let tr = view.state.tr;
           if (isSingleLine(text)) {
