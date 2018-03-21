@@ -155,8 +155,6 @@ export const pickerSearch = style({
   $nest: {
     [`.${searchIcon}`]: {
       opacity: 0.5,
-      marginTop: '-2px',
-      height: '17px',
     },
 
     [`.${input}`]: {

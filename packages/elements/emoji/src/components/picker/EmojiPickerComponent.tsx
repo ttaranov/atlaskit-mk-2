@@ -565,11 +565,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         />
         <EmojiPickerList
           emojis={filteredEmojis}
-          currentUser={
-            emojiProvider.getCurrentUser
-              ? emojiProvider.getCurrentUser()
-              : undefined
-          }
+          currentUser={emojiProvider.getCurrentUser()}
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onEmojiDelete={this.onTriggerDelete}

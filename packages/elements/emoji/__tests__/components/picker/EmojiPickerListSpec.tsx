@@ -60,7 +60,9 @@ describe('<EmojiPickerList />', () => {
       expect(categoryHeadings.get(0).props.title).to.equal('FREQUENT');
       expect(categoryHeadings.get(1).props.title).to.equal('PEOPLE');
     });
+  });
 
+  describe('custom upload display', () => {
     it('should render user custom emojis under Your Uploads', () => {
       const wrapper = mount(
         <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
@@ -80,16 +82,6 @@ describe('<EmojiPickerList />', () => {
       expect(cachedEmojis.get(2).props.emoji.id).to.equal('wtf');
     });
 
-    it('should render user custom emoji with delete button', () => {
-      const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
-      );
-      const yourEmoji = wrapper.find(CachingEmoji).at(0);
-      // expected first to be :foo: under "Your uploads"
-      expect(yourEmoji.props().emoji.id).to.equal('foo');
-      expect(yourEmoji.find(CrossCircleIcon)).to.have.length(1);
-    });
-
     it('should not render user custom emojis section if user has none', () => {
       const wrapper = mount(
         <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
@@ -104,16 +96,6 @@ describe('<EmojiPickerList />', () => {
       expect(cachedEmojis.length).to.equal(2);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('wtf');
-    });
-
-    it('should not render delete button if not user custom emoji', () => {
-      const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
-      );
-      const emoji = wrapper.find(CachingEmoji).at(0);
-      // Expect first :foo: under "All uploads"
-      expect(emoji.props().emoji.id).to.equal('foo');
-      expect(emoji.find(CrossCircleIcon)).to.have.length(0);
     });
 
     it('should not render user custom emojis section if currentUser is undefined', () => {
@@ -210,6 +192,62 @@ describe('<EmojiPickerList />', () => {
 
       expect(onCategoryActivated.mock.calls).to.have.length(1);
       expect(onCategoryActivated.mock.calls[0][0]).to.equal('CUSTOM');
+    });
+  });
+
+  describe('delete', () => {
+    it('should render user custom emoji with delete button', () => {
+      const wrapper = mount(
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+      );
+      const yourEmoji = wrapper.find(CachingEmoji).at(0);
+      // expected first to be :foo: under "Your uploads"
+      expect(yourEmoji.props().emoji.id).to.equal('foo');
+      expect(yourEmoji.find(CrossCircleIcon)).to.have.length(1);
+    });
+
+    it('should not render delete button if not user custom emoji', () => {
+      const wrapper = mount(
+        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
+      );
+      const emoji = wrapper.find(CachingEmoji).at(0);
+      // Expect first :foo: under "All uploads"
+      expect(emoji.props().emoji.id).to.equal('foo');
+      expect(emoji.find(CrossCircleIcon)).to.have.length(0);
+    });
+
+    it('should call onEmojiDelete if delete button is clicked', () => {
+      const onDelete = jest.fn();
+      const wrapper = mount(
+        <EmojiList
+          emojis={customEmojis}
+          currentUser={{ id: 'hulk' }}
+          onEmojiDelete={onDelete}
+        />,
+      );
+      const deleteButton = wrapper
+        .find(CachingEmoji)
+        .at(0)
+        .find(CrossCircleIcon);
+      deleteButton.simulate('click');
+      expect(onDelete.mock.calls).to.have.length(1);
+    });
+
+    it('should not call onEmojiSelected if delete button is clicked', () => {
+      const onSelection = jest.fn();
+      const wrapper = mount(
+        <EmojiList
+          emojis={customEmojis}
+          currentUser={{ id: 'hulk' }}
+          onEmojiSelected={onSelection}
+        />,
+      );
+      const deleteButton = wrapper
+        .find(CachingEmoji)
+        .at(0)
+        .find(CrossCircleIcon);
+      deleteButton.simulate('click');
+      expect(onSelection.mock.calls).to.have.length(0);
     });
   });
 });
