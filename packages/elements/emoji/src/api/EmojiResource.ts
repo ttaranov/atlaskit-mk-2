@@ -6,7 +6,7 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { selectedToneStorageKey, frequentCategory } from '../constants';
+import { selectedToneStorageKey } from '../constants';
 import {
   EmojiDescription,
   EmojiId,
