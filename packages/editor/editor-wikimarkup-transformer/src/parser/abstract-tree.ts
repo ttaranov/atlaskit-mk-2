@@ -137,7 +137,10 @@ export default class AbstractTree {
           intervalAtPosition!.left,
           intervalAtPosition!.right,
         );
-        const internalNodes = this.getTextNodes(textContent);
+        const internalNodes = this.getTextNodes(
+          textContent,
+          treatChildrenAsText,
+        );
         output.push(...internalNodes);
 
         position = intervalAtPosition!.right;
@@ -169,8 +172,18 @@ export default class AbstractTree {
   /**
    * Parse text which doesn't contain macros
    */
-  private getTextNodes(str: string): TreeNodeText[] {
+  private getTextNodes(str: string, treatChildrenAsText): TreeNodeText[] {
     const output: TreeNodeText[] = [];
+
+    if (treatChildrenAsText) {
+      output.push({
+        type: 'text',
+        text: str,
+      });
+
+      return output;
+    }
+
     const lines = str.split(NEWLINE);
     let textContainer: string[] = [];
 
