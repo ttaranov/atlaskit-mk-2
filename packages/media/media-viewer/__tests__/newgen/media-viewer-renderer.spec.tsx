@@ -22,7 +22,9 @@ describe('<MediaViewerRenderer />', () => {
       item: fileDetails,
     };
     const el = mount(<MediaViewerRenderer model={model} />);
-    expect(el.find(FileViewer)).toHaveLength(1);
+    const fv = el.find(FileViewer);
+    expect(fv).toHaveLength(1);
+    expect(fv.props().fileDetails).toEqual(fileDetails);
   });
 
   it('shows an error on failure', () => {

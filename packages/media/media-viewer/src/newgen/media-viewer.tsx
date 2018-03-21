@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
 import { Context, MediaType } from '@atlaskit/media-core';
+import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 
@@ -18,20 +19,25 @@ export class MediaViewer extends React.Component<Props, State> {
   state: State = { model: initialModel };
 
   componentDidMount() {
-    this._subscribe();
+    this.subscribe();
   }
 
   componentWillUnmount() {
-    this._unsubscribe();
+    this.unsubscribe();
+  }
+
+  // It's possible that a different identifier or context was passed.
+  // We therefore need to reset Media Viewer.
+  componentWillUpdate(nextProps) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.setState({ model: initialModel });
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      // It's possible that a different identifier or context was passed.
-      // We therefore need to reset Media Viewer.
-      this.setState({ model: initialModel });
-      this._unsubscribe();
-      this._subscribe();
+    if (this.needsReset(this.props, prevProps)) {
+      this.unsubscribe();
+      this.subscribe();
     }
   }
 
@@ -46,9 +52,17 @@ export class MediaViewer extends React.Component<Props, State> {
     );
   }
 
-  private _subscription?: any;
+  // It's possible that a different identifier or context was passed.
+  // We therefore need to reset Media Viewer.
+  private needsReset(propsA, propsB) {
+    return (
+      !deepEqual(propsA.data, propsB.data) || propsA.context !== propsB.context
+    );
+  }
 
-  private _subscribe() {
+  private subscription?: any;
+
+  private subscribe() {
     const { id, type, collectionName } = this.props.data;
     const provider = this.props.context.getMediaItemProvider(
       id,
@@ -56,7 +70,7 @@ export class MediaViewer extends React.Component<Props, State> {
       collectionName,
     );
 
-    this._subscription = provider.observable().subscribe({
+    this.subscription = provider.observable().subscribe({
       next: mediaItem => {
         if (mediaItem.type === 'link') {
           const model: Model = {
@@ -97,10 +111,10 @@ export class MediaViewer extends React.Component<Props, State> {
     });
   }
 
-  private _unsubscribe() {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
-      this._subscription = null;
+  private unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
     }
   }
 }
