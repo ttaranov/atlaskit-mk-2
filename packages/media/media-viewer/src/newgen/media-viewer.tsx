@@ -74,8 +74,10 @@ export class MediaViewer extends React.Component<Props, State> {
       next: mediaItem => {
         if (mediaItem.type === 'link') {
           const model: Model = {
-            type: 'FAILED',
-            err: new Error('links are not supported at the moment'),
+            fileDetails: {
+              status: 'FAILED',
+              err: new Error('links are not supported at the moment'),
+            },
           };
           this.setState({ model });
         } else {
@@ -83,15 +85,19 @@ export class MediaViewer extends React.Component<Props, State> {
 
           if (processingStatus === 'failed') {
             const model: Model = {
-              type: 'FAILED',
-              err: new Error('processing failed'),
+              fileDetails: {
+                status: 'FAILED',
+                err: new Error('processing failed'),
+              },
             };
             this.setState({ model });
           } else if (processingStatus === 'succeeded') {
             const model: Model = {
-              type: 'SUCCESS',
-              item: {
-                mediaType: mediaType as MediaType,
+              fileDetails: {
+                status: 'SUCCESSFUL',
+                data: {
+                  mediaType: mediaType as MediaType,
+                },
               },
             };
             this.setState({ model });
@@ -103,8 +109,10 @@ export class MediaViewer extends React.Component<Props, State> {
       },
       error: err => {
         const model: Model = {
-          type: 'FAILED',
-          err,
+          fileDetails: {
+            status: 'FAILED',
+            err,
+          },
         };
         this.setState({ model });
       },

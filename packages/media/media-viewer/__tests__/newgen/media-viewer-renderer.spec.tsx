@@ -10,7 +10,9 @@ describe('<MediaViewerRenderer />', () => {
   const fileDetails: FileDetails = { mediaType: 'doc' };
   it('shows an indicator while loading', () => {
     const model: Model = {
-      type: 'LOADING',
+      fileDetails: {
+        status: 'PENDING',
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     expect(el.find(Spinner)).toHaveLength(1);
@@ -18,8 +20,10 @@ describe('<MediaViewerRenderer />', () => {
 
   it('shows a viewer when a file was loaded successfully', () => {
     const model: Model = {
-      type: 'SUCCESS',
-      item: fileDetails,
+      fileDetails: {
+        status: 'SUCCESSFUL',
+        data: fileDetails,
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     const fv = el.find(FileViewer);
@@ -29,8 +33,10 @@ describe('<MediaViewerRenderer />', () => {
 
   it('shows an error on failure', () => {
     const model: Model = {
-      type: 'FAILED',
-      err: new Error('something went wrong'),
+      fileDetails: {
+        status: 'FAILED',
+        err: new Error('something went wrong'),
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     expect(el.find(ErrorMessage)).toHaveLength(1);

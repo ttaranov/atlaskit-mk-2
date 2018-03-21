@@ -11,11 +11,12 @@ export type Props = {
 export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
   model,
 }) => {
-  switch (model.type) {
-    case 'LOADING':
+  const { fileDetails } = model;
+  switch (fileDetails.status) {
+    case 'PENDING':
       return <Spinner />;
-    case 'SUCCESS':
-      return <FileViewer fileDetails={model.item} />;
+    case 'SUCCESSFUL':
+      return <FileViewer fileDetails={fileDetails.data} />;
     case 'FAILED':
       return <ErrorMessage>Error</ErrorMessage>;
   }
