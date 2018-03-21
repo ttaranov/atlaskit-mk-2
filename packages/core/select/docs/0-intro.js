@@ -89,9 +89,17 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/06-async-select').default}
-      source={require('!!raw-loader!../examples/06-async-select')}
+      Component={require('../examples/06-async-select-with-callback').default}
+      source={require('!!raw-loader!../examples/06-async-select-with-callback')}
       title="Async Select"
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/09-creatable-select.js').default}
+      source={require('!!raw-loader!../examples/09-creatable-select.js')}
+      title="Creatable Select"
     />
   )}
 
