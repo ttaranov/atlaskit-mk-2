@@ -43,6 +43,9 @@ export default class AbstractTree {
     this.wikiMarkup = wikiMarkup;
   }
 
+  /**
+   * Build raw (not reduced) macros tree from wiki markup
+   */
   getMacrosStructure(): TreeNodeRoot {
     if (!this.macrosStructure) {
       this.macrosStructure = {
@@ -54,10 +57,16 @@ export default class AbstractTree {
     return this.macrosStructure;
   }
 
+  /**
+   * Reduce raw macros tree to remove/change unsupported nodes
+   */
   reduceMacrosStructure(root: TreeNodeRoot): TreeNodeRoot {
     return root;
   }
 
+  /**
+   * Convert reduced macros tree into prosemirror model tree
+   */
   getProseMirrorModel(): PMNode {
     const root = this.getMacrosStructure();
     const flatMacros = this.reduceMacrosStructure(root);
@@ -97,6 +106,10 @@ export default class AbstractTree {
     throw new Error(`Unknown macro type: ${node.macro}`);
   }
 
+  /**
+   * Convert macros tree into prosemirror tree
+   * Main recursive function
+   */
   private getProseMirrorNodes(root: TreeNode): PMNode[] {
     const output: PMNode[] = [];
     assert(root.content!.length, 'Node content property is absent');
@@ -113,6 +126,10 @@ export default class AbstractTree {
     return output;
   }
 
+  /**
+   * Build macro full (not reduced) tree from wiki markup input
+   * Main recursive function
+   */
   private getTreeNodes(
     left: number,
     right: number,
