@@ -11,7 +11,6 @@ import {
   h4,
   h5,
   h6,
-  hardBreak,
   li,
   ol,
   p,
@@ -113,7 +112,7 @@ baz`;
         p(strong('bold')),
         p(em('italic*nonbold*foo')),
         p(strong(strike('strike'))),
-        p(under('under')),
+        p(underline('under')),
         p('foo'),
         p('bar'),
         p('baz'),
@@ -190,7 +189,7 @@ end of the config file!
       doc(
         ul(
           li(p('ConfigTest')),
-          panel(p('A config file here:')),
+          panel()(p('A config file here:')),
           code_block({})(
             `<tests>
     <test>first test</test>
@@ -198,7 +197,7 @@ end of the config file!
     <test>third test</test>
 </tests>`,
           ),
-          panel(p('end of the config file!')),
+          panel()(p('end of the config file!')),
         ),
       ),
     );
