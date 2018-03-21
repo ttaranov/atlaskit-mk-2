@@ -730,6 +730,9 @@
           "properties": {
             "isNumberColumnEnabled": {
               "type": "boolean"
+            },
+            "layout": {
+              "type": "string"
             }
           },
           "additionalProperties": false

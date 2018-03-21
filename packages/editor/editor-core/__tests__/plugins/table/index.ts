@@ -3,7 +3,7 @@ import {
   stateKey as tablePluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import tableCommands from '../../../src/plugins/table/commands';
-import { CellSelection, TableMap } from 'prosemirror-tables';
+import { CellSelection, TableMap, deleteTable } from 'prosemirror-tables';
 import {
   createEvent,
   doc,
@@ -40,6 +40,7 @@ import {
   checkIfNumberColumnEnabled,
   checkIfHeaderColumnEnabled,
   checkIfHeaderRowEnabled,
+  getTableNode,
 } from '../../../src/plugins/table/utils';
 import tablesPlugin from '../../../src/plugins/table';
 import codeBlockPlugin from '../../../src/plugins/code-block';
@@ -57,6 +58,7 @@ describe('table plugin', () => {
           allowNumberColumn: true,
           allowHeaderRow: true,
           allowHeaderColumn: true,
+          permittedLayouts: 'all',
         },
       },
       pluginKey: tablePluginKey,
@@ -1218,6 +1220,135 @@ describe('table plugin', () => {
       );
       plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('checkIfHeaderRowEnabled', () => {
+    it('should return false if table is not in focus', () => {
+      const { plugin, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
+      editorView.destroy();
+    });
+  });
+
+  describe('table layouts', () => {
+    it('should update the table node layout attribute', () => {
+      const { pluginState, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      const nodeInitial = getTableNode(editorView.state);
+      expect(nodeInitial).toBeDefined();
+      expect(nodeInitial!.attrs.layout).toBe('default');
+
+      pluginState.setTableLayout('full-width');
+
+      const node = getTableNode(editorView.state);
+
+      expect(node).toBeDefined();
+      expect(node!.attrs.layout).toBe('full-width');
+
+      editorView.destroy();
+    });
+
+    it('can set the data-layout attribute on the table DOM element', () => {
+      const { pluginState, editorView } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      const tables = editorView.dom.getElementsByTagName('table');
+      expect(tables.length).toBe(1);
+      const tableElement = tables[0];
+
+      expect(tableElement.getAttribute('data-layout')).toBe('default');
+
+      pluginState.setTableLayout('full-width');
+      expect(tableElement.getAttribute('data-layout')).toBe('full-width');
+
+      editorView.destroy();
+    });
+
+    it('applies the initial data-layout attribute on the table DOM element', () => {
+      const { editorView } = editor(
+        doc(
+          tableWithAttrs({ layout: 'full-width' })(
+            tr(tdCursor, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      const tables = editorView.dom.getElementsByTagName('table');
+      expect(tables.length).toBe(1);
+      const tableElement = tables[0];
+
+      expect(tableElement.getAttribute('data-layout')).toBe('full-width');
+
+      editorView.destroy();
+    });
+
+    it('updates the layout state and attributes from document tables', () => {
+      const { editorView, pluginState } = editor(
+        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      const firstTables = editorView.dom.getElementsByTagName('table');
+      expect(firstTables.length).toBe(1);
+      const firstTableElement = firstTables[0];
+
+      expect(firstTableElement.getAttribute('data-layout')).toBe('default');
+      expect(pluginState.tableLayout).toBe('default');
+
+      pluginState.setTableLayout('full-width');
+
+      expect(firstTableElement.getAttribute('data-layout')).toBe('full-width');
+      expect(pluginState.tableLayout).toBe('full-width');
+
+      // delete the original table
+      deleteTable(editorView.state, editorView.dispatch);
+      expect(editorView.state.doc).toEqualDocument(doc(p()));
+
+      // insert a new table
+      const defaultTable = table(
+        tr(thCursor, thEmpty, thEmpty),
+        tr(tdEmpty, tdEmpty, tdEmpty),
+        tr(tdEmpty, tdEmpty, tdEmpty),
+      );
+
+      expect(
+        tableCommands.createTable()(editorView.state, editorView.dispatch),
+      ).toEqual(true);
+      expect(editorView.state.doc).toEqualDocument(doc(defaultTable));
+
+      // ensure the new table attributes and plugin state match
+      const secondTables = editorView.dom.getElementsByTagName('table');
+      expect(secondTables.length).toBe(1);
+      const secondTableElement = secondTables[0];
+
+      expect(secondTableElement.getAttribute('data-layout')).toBe('default');
+      expect(pluginState.tableLayout).toBe('default');
+
+      editorView.destroy();
+    });
+
+    it('applies the initial data-layout attribute on the table DOM element', () => {
+      const { editorView } = editor(
+        doc(
+          tableWithAttrs({ layout: 'full-width' })(
+            tr(tdCursor, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      const tables = editorView.dom.getElementsByTagName('table');
+      expect(tables.length).toBe(1);
+      const tableElement = tables[0];
+
+      expect(tableElement.getAttribute('data-layout')).toBe('full-width');
+
       editorView.destroy();
     });
   });

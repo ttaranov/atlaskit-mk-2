@@ -293,17 +293,33 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .table-container table ${tableStyle} .table-column-controls {
       position: relative;
     }
-    .table-container.with-controls table {
+    .with-controls .table-container table {
       margin-left: 0;
       margin-right: 0;
     }
-    .table-container.with-controls {
+    .with-controls .table-container {
       margin-left: 8px;
     }
+
+    .table-container {
+      box-sizing: border-box;
+
+      /* HACK: add a small amount of padding to force the toolbar
+       * off the hard right of the page in breakout so it's not ugly
+       *
+       * when the table toolbar is in the center, remove this */
+      padding-right: 3px;
+    }
+
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
       width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
+    }
+
+    .table-container[data-layout='full-width'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
   }
 
@@ -312,8 +328,12 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .table-container {
       position: relative;
     }
-    .table-container.with-controls {
+    .with-controls .table-container {
       margin-left: 0;
+    }
+    .with-controls .table-container[data-layout='full-width'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
     .table-shadow {
       pointer-events: none;

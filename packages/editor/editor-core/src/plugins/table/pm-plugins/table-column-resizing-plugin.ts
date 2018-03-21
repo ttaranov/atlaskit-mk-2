@@ -37,8 +37,18 @@ const updateControls = (state: EditorState) => {
     const diff = tableElement.offsetWidth - offsetWidth;
     const scrollDiff = scrollLeft - diff > 0 ? scrollLeft - diff : 0;
     const width = diff > 0 ? Math.min(diff, 10) : 0;
+    const container = tableElement.parentElement.parentElement;
+
+    const paddingLeft = getComputedStyle(container).paddingLeft;
+    const paddingLeftPx = paddingLeft
+      ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
+      : 0;
+
     rightShadow.style.width = `${width}px`;
-    rightShadow.style.left = `${offsetWidth - width - scrollDiff}px`;
+    rightShadow.style.left = `${offsetWidth -
+      width -
+      scrollDiff +
+      paddingLeftPx}px`;
   }
 };
 
