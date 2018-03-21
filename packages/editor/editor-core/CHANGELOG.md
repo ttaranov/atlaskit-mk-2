@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.11
+- [patch] Should save as localId not as taskId [d997fc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d997fc7)
+
 ## 65.1.10
 
 ## 65.1.9
