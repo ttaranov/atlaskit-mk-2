@@ -15,10 +15,11 @@ import {
 
 import { getCodeLanguage } from './code-language';
 
+const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
-const NEWLINE = '\n';
-
+const HORIZONTAL_RULE = '----';
 const KNOWN_MACRO: MacroName[] = ['code', 'noformat', 'panel', 'quote'];
+const NEWLINE = '\n';
 
 function isStartPositionSorted(matches: MacroMatch[]): boolean {
   for (let i = 1; i < matches.length; i++) {
@@ -200,6 +201,9 @@ export default class AbstractTree {
     return output;
   }
 
+  /**
+   * Combine text nodes with hardBreaks between them
+   */
   private buildTextNodes(lines: string[]): TreeNodeText[] {
     const output: TreeNodeText[] = [];
 
@@ -249,35 +253,67 @@ export default class AbstractTree {
     };
 
     for (const line of lines) {
-      // search for headings
-      const headingMatches = line.match(HEADING_REGEXP);
-      if (headingMatches) {
-        processAndEmptyStoredText();
-
-        output.push({
-          type: 'heading',
-          attrs: { level: headingMatches[1] },
-          text: headingMatches[2],
-        });
-
-        continue;
-      }
-
-      if (line === '----') {
+      // convert HORIZONTAL_RULE to rule
+      if (line === HORIZONTAL_RULE) {
         processAndEmptyStoredText();
 
         output.push({ type: 'rule' });
         continue;
       }
 
+      // empty line means the end of the paragraph
       if (!line.length) {
         processAndEmptyStoredText();
         continue;
       }
 
+      let lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
+
+      // search for headings
+      const headingMatches = lineUpdated.match(HEADING_REGEXP);
+      if (headingMatches) {
+        processAndEmptyStoredText();
+
+        output.push({
+          type: 'heading',
+          attrs: { level: headingMatches[1] },
+          content: [
+            {
+              type: 'text',
+              text: headingMatches[2],
+            },
+          ],
+        });
+
+        continue;
+      }
+
+      // search for blockquote line
+      const lineBlockQuoteMatches = lineUpdated.match(BLOCKQUOTE_LINE_REGEXP);
+      if (lineBlockQuoteMatches) {
+        processAndEmptyStoredText();
+
+        output.push({
+          type: 'blockquote',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: lineBlockQuoteMatches[1],
+                },
+              ],
+            },
+          ],
+        });
+
+        continue;
+      }
+
       // TODO all other things
 
-      textContainer.push(line);
+      textContainer.push(lineUpdated);
     }
 
     // there can be some text stored after processing

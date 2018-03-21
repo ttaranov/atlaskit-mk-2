@@ -20,6 +20,7 @@ export interface TreeNodeText {
   // all the things JIRA wiki markup supports
   // @see https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all
   type:
+    | 'blockquote'
     | 'hardBreak'
     | 'heading'
     | 'rule'
