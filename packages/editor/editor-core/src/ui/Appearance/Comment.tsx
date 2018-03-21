@@ -120,12 +120,19 @@ const SecondaryToolbar = styled.div`
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
-export interface EditorAppearanceComponentState {}
+export interface EditorAppearanceComponentState {
+  hasFocus: boolean;
+  isMouseDown: boolean;
+}
 
 export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   EditorAppearanceComponentState
 > {
+  state = {
+    hasFocus: false,
+    isMouseDown: false,
+  };
   static displayName = 'CommentEditorAppearance';
 
   private flashToggle = false;
@@ -141,6 +148,30 @@ export default class Editor extends React.Component<
     if (this.props.editorView && this.props.onCancel) {
       this.props.onCancel(this.props.editorView);
     }
+  };
+
+  private onFocus = () => {
+    this.setState({
+      hasFocus: true,
+    });
+  };
+
+  private onBlur = () => {
+    if (!this.state.isMouseDown) {
+      this.setState({
+        hasFocus: false,
+      });
+    } else {
+      this.setState({
+        isMouseDown: false,
+      });
+    }
+  };
+
+  private onMouseDown = () => {
+    this.setState({
+      isMouseDown: true,
+    });
   };
 
   private renderChrome = ({ maxContentSize, mediaState }) => {
@@ -170,9 +201,13 @@ export default class Editor extends React.Component<
     return (
       <div>
         <CommentEditor
+          style={{ border: this.state.hasFocus ? '5px solid green' : '' }}
           className={this.flashToggle ? '-flash' : ''}
           isMaxContentSizeReached={maxContentSizeReached}
           maxHeight={maxHeight}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          onMouseDown={this.onMouseDown}
         >
           <MainToolbar>
             <Toolbar
