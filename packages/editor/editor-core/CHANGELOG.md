@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 65.1.13
+
+
+- [patch] ED-4084 fixing layout of recent search select. [423da3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/423da3e)
+
 ## 65.1.12
 - [patch] Fix extension edit after introducing createParagraphAtEnd [6a1749a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a1749a)
 

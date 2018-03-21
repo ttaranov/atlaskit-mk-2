@@ -1,5 +1,7 @@
 # @atlaskit/media-picker
 
+## 2.1.3
+
 ## 2.1.2
 - [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
 
