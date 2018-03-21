@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
 import { parse as parseQuery } from 'querystring';
 
 import {
@@ -10,7 +10,10 @@ import {
   TreeNode,
   TreeNodeRoot,
   TreeNodeText,
+  TreeNodeMacro,
 } from '../interfaces';
+
+import { getCodeLanguage } from './code-language';
 
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
 const NEWLINE = '\n';
@@ -65,16 +68,46 @@ export default class AbstractTree {
     );
   }
 
+  /**
+   * Creates prosemirror node from macro
+   */
+  private getProseMirrorMacroNode(node: TreeNodeMacro): PMNode {
+    const { blockquote, codeBlock, panel } = this.schema.nodes;
+    const content = this.getProseMirrorNodes(node);
+
+    if (node.macro === 'code') {
+      return codeBlock.createChecked(
+        { language: getCodeLanguage(node.attrs) },
+        content,
+      );
+    }
+
+    if (node.macro === 'noformat') {
+      return codeBlock.createChecked({}, content);
+    }
+
+    if (node.macro === 'panel') {
+      return panel.createChecked({ panelType: 'info' }, content);
+    }
+
+    if (node.macro === 'quote') {
+      return blockquote.createChecked({}, content);
+    }
+
+    throw new Error(`Unknown macro type: ${node.macro}`);
+  }
+
   private getProseMirrorNodes(root: TreeNode): PMNode[] {
     const output: PMNode[] = [];
+    assert(root.content!.length, 'Node content property is absent');
 
-    for (const node of root.content) {
-      if (node.type === 'macro') {
-        const content = this.getProseMirrorNodes(node);
-        output.push(this.schema.nodes.blockquote.createChecked({}, content));
-      } else {
-        output.push(this.schema.nodes.paragraph.createChecked({}));
-      }
+    for (const node of root.content!) {
+      const pmNode =
+        node.type === 'macro'
+          ? this.getProseMirrorMacroNode(node)
+          : this.schema.nodeFromJSON(node);
+
+      output.push(pmNode);
     }
 
     return output;
