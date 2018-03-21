@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { Component, type Element, type Ref } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
@@ -66,13 +66,24 @@ const getSecondaryColor = ({
 
 type fn = any => any;
 type OptionProops = {
-  children: Node,
+  children: Element<*>,
   getStyles: fn,
   Icon: CheckboxIcon | RadioIcon,
-  innerProps: {},
-  isDisabled?: boolean,
-  isFocused?: boolean,
+  innerProps: {
+    'aria-selected': boolean,
+    id: string,
+    innerRef: Ref<*>,
+    key: string,
+    onClick: MouseEventHandler,
+    onMouseOver: MouseEventHandler,
+    role: 'option',
+    tabIndex: number,
+  },
+  isDisabled: boolean,
+  isFocused: boolean,
   isSelected: boolean,
+  type: 'option',
+  label: string,
 };
 type OptionState = { isActive?: boolean };
 class ControlOption extends Component<OptionProops, OptionState> {
@@ -89,6 +100,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
       isSelected,
       children,
       innerProps,
+      ...rest
     } = this.props;
     const { isActive } = this.state;
 
@@ -115,6 +127,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
 
     return (
       <components.Option
+        {...rest}
         isDisabled={isDisabled}
         isFocused={isFocused}
         isSelected={isSelected}

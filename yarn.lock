@@ -11170,13 +11170,14 @@ react-scrolllock@^2.0.1:
   dependencies:
     exenv "^1.2.2"
 
-react-select@2.0.0-alpha.6:
-  version "2.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.6.tgz#422de89840538a8c09a25e9609f5e79777a79154"
+react-select@2.0.0-alpha.8:
+  version "2.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.8.tgz#c6e4e18abc7871f78cd6d10d5a8ab1931660d4a6"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
+    raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"

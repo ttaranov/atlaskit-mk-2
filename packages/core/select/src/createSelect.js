@@ -1,6 +1,6 @@
 // @flow
-import React, { Component, type ComponentType } from 'react';
-import { mergeStyles, type SelectComponents } from 'react-select';
+import React, { Component, type ComponentType, type ElementRef } from 'react';
+import { mergeStyles } from 'react-select';
 import { colors } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
@@ -155,7 +155,8 @@ function baseStyles(validationState) {
 
 export default function createSelect(WrappedComponent: ComponentType<*>) {
   return class AtlaskitSelect extends Component<*> {
-    components: SelectComponents;
+    components: {};
+    select: ElementRef<*>;
     constructor(props: Props) {
       super(props);
       this.cacheComponents(props.components);
@@ -166,12 +167,21 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
         this.cacheComponents(nextProps.components);
       }
     }
-    cacheComponents = (components: SelectComponents) => {
+    cacheComponents = (components?: {}) => {
       this.components = {
         ...defaultComponents,
         ...animatedComponents,
         ...components,
       };
+    };
+    focus() {
+      this.select.focus();
+    }
+    blur() {
+      this.select.blur();
+    }
+    onSelectRef = (ref: ElementRef<*>) => {
+      this.select = ref;
     };
     render() {
       // $FlowFixMe: `validationState` is passed in from a parent validation component
@@ -180,6 +190,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       // props must be spread first to stop `components` being overridden
       return (
         <WrappedComponent
+          ref={this.onSelectRef}
           {...props}
           components={this.components}
           styles={mergeStyles(baseStyles(validationState), styles)}
