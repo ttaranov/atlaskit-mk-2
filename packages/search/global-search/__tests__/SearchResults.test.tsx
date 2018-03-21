@@ -142,7 +142,7 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Confluence, wrapper);
 
-    expect(group.prop('title')).toEqual('Confluence pages');
+    expect(group.prop('title')).toEqual('Confluence pages and blogs');
     expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
@@ -187,7 +187,7 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Confluence, wrapper);
 
-    expect(group.prop('title')).toEqual('Confluence pages');
+    expect(group.prop('title')).toEqual('Confluence pages and blogs');
     expect(group.find(ResultBase).prop('resultId')).toEqual(
       'search_confluence',
     );
