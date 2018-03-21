@@ -128,17 +128,17 @@ export interface EventMap<TOwnProps> {
       ) => UIAnalyticsEventInterface | void);
 }
 
-export interface WithCreateAnalyticsEventProps {
+export interface WithAnalyticsEventProps {
   createAnalyticsEvent: CreateUIAnalyticsEventSignature;
 }
 
-export type WithCreateAnalyticsEventFunction = <TOwnProps>(
-  component: React.ComponentClass<WithCreateAnalyticsEventProps & TOwnProps>,
+export type WithAnalyticsEventFunction = <TOwnProps>(
+  component: React.ComponentClass<WithAnalyticsEventProps & TOwnProps>,
 ) => React.ComponentClass<TOwnProps>;
 
 export declare function withAnalyticsEvents<TOwnProps>(
   createEventMap?: EventMap<TOwnProps>,
-): WithCreateAnalyticsEventFunction;
+): WithAnalyticsEventFunction;
 
 /*
   createAndFireEvent.js
