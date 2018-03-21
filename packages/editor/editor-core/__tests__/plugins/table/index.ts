@@ -225,7 +225,6 @@ describe('table plugin', () => {
           tableCommands.createTable()(editorView.state, editorView.dispatch),
         ).toEqual(false);
 
-        console.log('table is ');
         expect(editorView.state.doc).toEqualDocument(doc(node));
         editorView.destroy();
       });

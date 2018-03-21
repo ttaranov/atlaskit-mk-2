@@ -272,7 +272,6 @@ describe('media-files', () => {
             testCollectionName,
           );
 
-          debugger;
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('te'),
