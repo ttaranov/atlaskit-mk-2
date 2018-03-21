@@ -28,16 +28,3 @@ export const getExtensionLozengeData = ({
     return placeholderData;
   }
 };
-
-export const getExtensionMetadata = (
-  node: PmNode,
-  key: string,
-): string | undefined => {
-  if (!node.attrs.parameters) {
-    return;
-  }
-  const { macroMetadata } = node.attrs.parameters;
-  if (macroMetadata && macroMetadata[key]) {
-    return macroMetadata[key].value;
-  }
-};
