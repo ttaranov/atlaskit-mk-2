@@ -1,5 +1,7 @@
 # @atlaskit/media-picker
 
+## 2.1.1
+
 ## 2.1.0
 - [minor] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
 

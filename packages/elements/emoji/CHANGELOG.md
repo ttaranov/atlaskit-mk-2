@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 31.1.21
+
 ## 31.1.20
 - [patch] FS-1843 fix incorrect emoji category [36473a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36473a8)
 
