@@ -42,11 +42,8 @@ describe('Card', () => {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getUrlPreviewProvider.calledOnce).toBe(true);
-    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).toBe(
-      true,
-    );
-
+    expect(context.getUrlPreviewProvider).toHaveBeenCalledTimes(1);
+    expect(context.getUrlPreviewProvider).toBeCalledWith(dummyUrl);
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
   });
@@ -65,14 +62,12 @@ describe('Card', () => {
     );
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
@@ -92,14 +87,12 @@ describe('Card', () => {
     );
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
@@ -123,14 +116,12 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = fileIdentifier;
-    expect(secondContext.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      secondContext.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(secondContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(secondContext.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toBe(dummyProvider);
@@ -153,14 +144,12 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
-    expect(context.getMediaItemProvider.calledTwice).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toBe(dummyProvider);
