@@ -180,6 +180,9 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     blur() {
       this.select.blur();
     }
+    onSelectRef = (ref: ElementRef<*>) => {
+      this.select = ref;
+    };
     render() {
       // $FlowFixMe: `validationState` is passed in from a parent validation component
       const { styles, validationState, ...props } = this.props; // eslint-disable-line
@@ -187,9 +190,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       // props must be spread first to stop `components` being overridden
       return (
         <WrappedComponent
-          ref={ref => {
-            this.select = ref;
-          }}
+          ref={this.onSelectRef}
           {...props}
           components={this.components}
           styles={mergeStyles(baseStyles(validationState), styles)}
