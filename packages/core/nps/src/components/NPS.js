@@ -1,11 +1,11 @@
 // @flow
 import React, { type Node } from 'react';
-import { NPSWrapper } from './styled/nps';
+import { NPSWrapper, PageWrapper } from './styled/nps';
 
 export type Rating = number;
 export type Comment = string;
 export type Role = string;
-export type CanContact = boolean;
+export type AllowContact = boolean;
 
 const Pages = {
   FEEDBACK: 'feedback',
@@ -18,7 +18,7 @@ export type NPSResult = {
   rating: Rating,
   comment?: Comment | null,
   role?: Role | null,
-  canContact?: CanContact,
+  allowContact?: AllowContact,
 };
 
 export type Props = {
@@ -43,8 +43,8 @@ export type Props = {
   /** Callback called when user selects a role */
   onRoleSelect: Role => void,
 
-  /** Callback called when the user updates the canContact field */
-  onCanContactChange: CanContact => void,
+  /** Callback called when the user updates the allowContact field */
+  onAllowContactChange: AllowContact => void,
 
   /** Callback called when the user submits the score/comment portion of the survey */
   onFeedbackSubmit: NPSResult => void,
@@ -73,8 +73,8 @@ export type Props = {
     onClose: () => void,
     onOptOut: () => void,
     onRoleSelect: Role => void,
-    onCanContactChange: CanContact => void,
-    onSubmit: ({ role: Role | null, canContact: CanContact }) => void,
+    onAllowContactChange: AllowContact => void,
+    onSubmit: ({ role: Role | null, allowContact: AllowContact }) => void,
   }) => Node,
 
   /** Render the thank you page */
@@ -91,7 +91,7 @@ type State = {
   rating: number | null,
   comment: string | null,
   role: string | null,
-  canContact: boolean,
+  allowContact: boolean,
 };
 
 export default class NPS extends React.Component<Props, State> {
@@ -102,7 +102,7 @@ export default class NPS extends React.Component<Props, State> {
     onRatingSelect: () => {},
     onCommentChange: () => {},
     onRoleSelect: () => {},
-    onCanContactChange: () => {},
+    onAllowContactChange: () => {},
     onFeedbackSubmit: () => {},
     onFollowupSubmit: () => {},
   };
@@ -114,7 +114,7 @@ export default class NPS extends React.Component<Props, State> {
       rating: null,
       comment: '',
       role: null,
-      canContact: false,
+      allowContact: false,
     };
   }
 
@@ -124,11 +124,11 @@ export default class NPS extends React.Component<Props, State> {
         'Could get create NPSResult from form values, rating is missing',
       );
     }
-    const { rating, comment, role, canContact } = this.state;
+    const { rating, comment, role, allowContact } = this.state;
     return {
       comment,
       role,
-      canContact,
+      allowContact,
       rating: ((rating: any): number),
     };
   }
@@ -157,7 +157,7 @@ export default class NPS extends React.Component<Props, State> {
           onClose: this.onClose,
           onOptOut: this.onOptOut,
           onRoleSelect: this.onRoleSelect,
-          onCanContactChange: this.onCanContactChange,
+          onAllowContactChange: this.onAllowContactChange,
           onSubmit: this.onFollowupSubmit,
         });
       }
@@ -216,13 +216,13 @@ export default class NPS extends React.Component<Props, State> {
 
   onFollowupSubmit = ({
     role,
-    canContact,
+    allowContact,
   }: {
     role: Role | null, // eslint-disable-line react/no-unused-prop-types
-    canContact: CanContact, // eslint-disable-line react/no-unused-prop-types
+    allowContact: AllowContact, // eslint-disable-line react/no-unused-prop-types
   }) => {
     try {
-      this.setState({ page: Pages.THANKYOU, role, canContact });
+      this.setState({ page: Pages.THANKYOU, role, allowContact });
       const result = this._getNPSResult();
       this.props.onFollowupSubmit(result);
       this.onFinish();
@@ -236,9 +236,9 @@ export default class NPS extends React.Component<Props, State> {
     this.props.onRoleSelect(role);
   };
 
-  onCanContactChange = (canContact: CanContact) => {
-    this.setState({ canContact });
-    this.props.onCanContactChange(canContact);
+  onAllowContactChange = (allowContact: AllowContact) => {
+    this.setState({ allowContact });
+    this.props.onAllowContactChange(allowContact);
   };
 
   onFinish = () => {
@@ -251,6 +251,10 @@ export default class NPS extends React.Component<Props, State> {
   };
 
   render() {
-    return <NPSWrapper>{this.getPage()}</NPSWrapper>;
+    return (
+      <NPSWrapper>
+        <PageWrapper>{this.getPage()}</PageWrapper>
+      </NPSWrapper>
+    );
   }
 }

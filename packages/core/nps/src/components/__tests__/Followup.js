@@ -26,7 +26,7 @@ describe('Followup page', () => {
       onOptOut: jest.fn(),
       roles: ['h', 'i', 'j'],
       onRoleSelect: jest.fn(),
-      onCanContactChange: jest.fn(),
+      onAllowContactChange: jest.fn(),
       onSubmit: jest.fn(),
     });
 
@@ -68,7 +68,7 @@ describe('Followup page', () => {
       const checkbox = wrapper.find(Checkbox);
       expect(checkbox.exists()).toBe(true);
       checkbox.prop('onChange')({ isChecked: true });
-      expect(props.onCanContactChange).toHaveBeenCalled();
+      expect(props.onAllowContactChange).toHaveBeenCalled();
     });
 
     it('should render a Button', () => {

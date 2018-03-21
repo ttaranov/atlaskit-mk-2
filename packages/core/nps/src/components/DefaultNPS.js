@@ -5,7 +5,7 @@ import NPS, {
   type Rating,
   type Comment,
   type Role,
-  type CanContact,
+  type AllowContact,
   type NPSResult,
 } from './NPS';
 import Feedback from './Feedback';
@@ -68,8 +68,8 @@ export type Props = {
   /** Callback called when user selects a role */
   onRoleSelect: Role => void,
 
-  /** Callback called when the user updates the canContact field */
-  onCanContactChange: CanContact => void,
+  /** Callback called when the user updates the allowContact field */
+  onAllowContactChange: AllowContact => void,
 
   /** Callback called when the user submits the score/comment portion of the survey */
   onFeedbackSubmit: NPSResult => void,
@@ -96,7 +96,7 @@ export default class DefaultNPS extends React.Component<Props> {
     onRatingSelect: () => {},
     onCommentChange: () => {},
     onRoleSelect: () => {},
-    onCanContactChange: () => {},
+    onAllowContactChange: () => {},
     onFeedbackSubmit: () => {},
     onFollowupSubmit: () => {},
   };
@@ -110,7 +110,7 @@ export default class DefaultNPS extends React.Component<Props> {
       onRatingSelect,
       onCommentChange,
       onRoleSelect,
-      onCanContactChange,
+      onAllowContactChange,
       onOptOut,
       onFeedbackSubmit,
       onFollowupSubmit,
@@ -128,7 +128,7 @@ export default class DefaultNPS extends React.Component<Props> {
         onRatingSelect={onRatingSelect}
         onCommentChange={onCommentChange}
         onRoleSelect={onRoleSelect}
-        onCanContactChange={onCanContactChange}
+        onAllowContactChange={onAllowContactChange}
         onFeedbackSubmit={onFeedbackSubmit}
         onFollowupSubmit={onFollowupSubmit}
         onFinish={onFinish}

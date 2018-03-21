@@ -13,7 +13,7 @@ const createButton = (id, fn) => (
 const rating = 2;
 const comment = 'hi';
 const role = 'a';
-const canContact = true;
+const allowContact = true;
 
 const getDefaultProps = () => ({
   canClose: true,
@@ -23,7 +23,7 @@ const getDefaultProps = () => ({
   onRatingSelect: jest.fn(),
   onCommentChange: jest.fn(),
   onRoleSelect: jest.fn(),
-  onCanContactChange: jest.fn(),
+  onAllowContactChange: jest.fn(),
   onFeedbackSubmit: jest.fn(),
   onFollowupSubmit: jest.fn(),
   onFinish: jest.fn(),
@@ -48,10 +48,10 @@ const getDefaultProps = () => ({
       {createButton('opt-out', () => feedbackProps.onOptOut())}
       {createButton('role-select', () => feedbackProps.onRoleSelect(role))}
       {createButton('can-contact-change', () =>
-        feedbackProps.onCanContactChange(canContact),
+        feedbackProps.onAllowContactChange(allowContact),
       )}
       {createButton('submit', () =>
-        feedbackProps.onSubmit({ role, canContact }),
+        feedbackProps.onSubmit({ role, allowContact }),
       )}
     </div>
   ),
@@ -113,7 +113,7 @@ describe('NPS', () => {
       rating,
       comment,
       role: null,
-      canContact: false,
+      allowContact: false,
     });
   });
 
@@ -125,12 +125,12 @@ describe('NPS', () => {
     expect(props.onRoleSelect).toHaveBeenCalledWith(role);
   });
 
-  it('should call onCanContactChange prop when canContact is changed', () => {
+  it('should call onAllowContactChange prop when allowContact is changed', () => {
     const props = getDefaultProps();
     const wrapper = shallow(<NPS {...props} />);
     wrapper.find('#feedback #submit').simulate('click');
     wrapper.find('#followup #can-contact-change').simulate('click');
-    expect(props.onCanContactChange).toHaveBeenCalledWith(canContact);
+    expect(props.onAllowContactChange).toHaveBeenCalledWith(allowContact);
   });
 
   it('should call onFollowupSubmit prop when followup page is submitted', () => {
@@ -142,7 +142,7 @@ describe('NPS', () => {
       rating,
       comment,
       role,
-      canContact,
+      allowContact,
     });
   });
 
@@ -155,7 +155,7 @@ describe('NPS', () => {
       rating,
       comment,
       role,
-      canContact,
+      allowContact,
     });
   });
 });

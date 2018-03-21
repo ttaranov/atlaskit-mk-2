@@ -21,7 +21,7 @@ export default function Advanced() {
           onCommentChange={props.onCommentChange}
           onFeedbackSubmit={props.onFeedbackSubmit}
           onRoleSelect={props.onRoleSelect}
-          onCanContactChange={props.onCanContactChange}
+          onAllowContactChange={props.onAllowContactChange}
           onFollowupSubmit={props.onFollowupSubmit}
           renderFeedback={feedbackProps => (
             <FeedbackPage

@@ -9,7 +9,7 @@ export class WithDataDisplay extends React.Component<any, any> {
       rating: null,
       comment: null,
       role: null,
-      canContact: null,
+      allowContact: null,
       feedbackSubmission: null,
       followupSubmission: null,
       finishSubmission: null,
@@ -32,8 +32,8 @@ export class WithDataDisplay extends React.Component<any, any> {
     this.setState({ role });
   };
 
-  onCanContactChange = (canContact: any) => {
-    this.setState({ canContact });
+  onAllowContactChange = (allowContact: any) => {
+    this.setState({ allowContact });
   };
 
   onFollowupSubmit = (followupSubmission: any) => {
@@ -47,15 +47,25 @@ export class WithDataDisplay extends React.Component<any, any> {
   render() {
     return (
       <div>
-        {this.props.children({
-          onRatingSelect: this.onRatingSelect,
-          onCommentChange: this.onCommentChange,
-          onFeedbackSubmit: this.onFeedbackSubmit,
-          onRoleSelect: this.onRoleSelect,
-          onCanContactChange: this.onCanContactChange,
-          onFollowupSubmit: this.onFollowupSubmit,
-          onFinish: this.onFinish,
-        })}
+        <div
+          style={{
+            display: 'flex',
+            'flex-direction': 'column',
+            padding: '10px',
+            'align-items': 'center',
+            'background-color': '#DDD',
+          }}
+        >
+          {this.props.children({
+            onRatingSelect: this.onRatingSelect,
+            onCommentChange: this.onCommentChange,
+            onFeedbackSubmit: this.onFeedbackSubmit,
+            onRoleSelect: this.onRoleSelect,
+            onAllowContactChange: this.onAllowContactChange,
+            onFollowupSubmit: this.onFollowupSubmit,
+            onFinish: this.onFinish,
+          })}
+        </div>
         <br /> <br /> <br />
         <h5>Received Values</h5>
         <table>
@@ -80,9 +90,9 @@ export class WithDataDisplay extends React.Component<any, any> {
             {this.state.role ? <td>{String(this.state.role)}</td> : null}
           </tr>
           <tr>
-            <td>Can Contact</td>
-            {this.state.canContact !== null ? (
-              <td>{String(this.state.canContact)}</td>
+            <td>Allow Contact</td>
+            {this.state.allowContact !== null ? (
+              <td>{String(this.state.allowContact)}</td>
             ) : null}
           </tr>
           <tr>

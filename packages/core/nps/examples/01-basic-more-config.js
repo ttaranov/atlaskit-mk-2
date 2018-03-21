@@ -14,7 +14,7 @@ export default function BasicMoreConfig() {
             onRatingSelect={props.onRatingSelect}
             onCommentChange={props.onCommentChange}
             onRoleSelect={props.onRoleSelect}
-            onCanContactChange={props.onCanContactChange}
+            onAllowContactChange={props.onAllowContactChange}
             onFeedbackSubmit={props.onFeedbackSubmit}
             onFollowupSubmit={props.onFollowupSubmit}
             onFinish={props.onFinish}

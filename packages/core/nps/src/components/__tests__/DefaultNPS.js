@@ -13,7 +13,7 @@ const getDefaultProps = () => ({
   onRatingSelect: jest.fn(),
   onCommentChange: jest.fn(),
   onRoleSelect: jest.fn(),
-  onCanContactChange: jest.fn(),
+  onAllowContactChange: jest.fn(),
   onFeedbackSubmit: jest.fn(),
   onFollowupSubmit: jest.fn(),
   onFinish: jest.fn(),

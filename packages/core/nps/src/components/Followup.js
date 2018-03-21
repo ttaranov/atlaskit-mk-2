@@ -3,7 +3,7 @@ import React, { type Node } from 'react';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import Checkbox from '@atlaskit/checkbox';
-import { type Role, type CanContact } from './NPS';
+import { type Role, type AllowContact } from './NPS';
 import { Header, Description } from './common';
 import { Wrapper, ButtonWrapper } from './styled/common';
 import { Contact, RoleQuestion } from './styled/followup';
@@ -53,13 +53,13 @@ export type Props = {
   onOptOut: () => void,
   roles: Array<Role>,
   onRoleSelect: Role => void,
-  onCanContactChange: CanContact => void,
-  onSubmit: ({ role: Role | null, canContact: CanContact }) => void,
+  onAllowContactChange: AllowContact => void,
+  onSubmit: ({ role: Role | null, allowContact: AllowContact }) => void,
 };
 
 type State = {
   role: Role | null,
-  canContact: CanContact,
+  allowContact: AllowContact,
 };
 
 export default class Followup extends React.Component<Props, State> {
@@ -67,13 +67,13 @@ export default class Followup extends React.Component<Props, State> {
     super(props);
     this.state = {
       role: null,
-      canContact: false,
+      allowContact: false,
     };
   }
 
   static defaultProps = {
     onRoleSelect: () => {},
-    onCanContactChange: () => {},
+    onAllowContactChange: () => {},
   };
 
   onRoleSelect = (role: Role) => {
@@ -81,15 +81,15 @@ export default class Followup extends React.Component<Props, State> {
     this.props.onRoleSelect(role);
   };
 
-  onCanContactChange = (e: any) => {
-    const canContact = e.isChecked;
-    this.setState({ canContact });
-    this.props.onCanContactChange(canContact);
+  onAllowContactChange = (e: any) => {
+    const allowContact = e.isChecked;
+    this.setState({ allowContact });
+    this.props.onAllowContactChange(allowContact);
   };
 
   onSubmit = () => {
-    const { role, canContact } = this.state;
-    this.props.onSubmit({ role, canContact });
+    const { role, allowContact } = this.state;
+    this.props.onSubmit({ role, allowContact });
   };
 
   render() {
@@ -123,9 +123,9 @@ export default class Followup extends React.Component<Props, State> {
           <Contact>
             <Checkbox
               name="nps-contact-me"
-              value="Can Contact"
+              value="Allow Contact"
               label={messages.contactQuestion}
-              onChange={this.onCanContactChange}
+              onChange={this.onAllowContactChange}
             />
           </Contact>
         </Wrapper>
