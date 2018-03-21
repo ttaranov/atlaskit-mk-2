@@ -8,12 +8,7 @@ import {
   emojiPickerBoxShadow,
 } from '../../shared-styles';
 
-import {
-  emojiSprite,
-  placeholder,
-  emojiNode,
-  deleteButton,
-} from '../common/styles';
+import { emojiSprite, placeholder, emojiNode } from '../common/styles';
 
 import { emojiPickerHeight, emojiPickerWidth } from '../../constants';
 
