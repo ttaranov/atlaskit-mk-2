@@ -223,7 +223,10 @@ export function convert(
         ) {
           return null;
         } else if (node.className === 'emoticon') {
-          return mapImageToEmoji(node as HTMLImageElement);
+          let emojiResult = mapImageToEmoji(node as HTMLImageElement);
+          if (emojiResult) {
+            return schema.text(emojiResult);
+          }
         }
         break;
       case 'H1':

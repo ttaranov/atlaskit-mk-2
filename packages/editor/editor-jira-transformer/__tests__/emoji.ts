@@ -1,4 +1,7 @@
 import { mapImageToEmoji } from '../src/emojiHelper';
+import { doc, p } from '@atlaskit/editor-test-helpers';
+import { checkParse } from './_test-helpers';
+import { createJIRASchema } from '@atlaskit/editor-common';
 
 describe('emojiHelper', () => {
   it(`maps correctly formed image tags`, () => {
@@ -40,5 +43,36 @@ describe('emojiHelper', () => {
     imageElement.src = '/images/icons/emoticons/invalidemoji.png';
     let result = mapImageToEmoji(imageElement);
     expect(result).toBeNull();
+  });
+});
+
+const schema = createJIRASchema({ allowTextColor: true });
+
+describe('JIRATransformer', () => {
+  describe('emoticons', () => {
+    checkParse(
+      'image tag is converted',
+      schema,
+      [
+        `<img class="emoticon" src="/images/icons/emoticons/smile.png" height="16" width="16" align="absmiddle" alt="" border="0">`,
+      ],
+      doc(p('🙂')),
+    );
+
+    checkParse(
+      'empty image tag is converted to empty text',
+      schema,
+      [
+        `<img class="emoticon" src="" height="16" width="16" align="absmiddle" alt="" border="0">`,
+      ],
+      doc(p('')),
+    );
+
+    checkParse(
+      'image tag without emoticon class is not converted to emoticon',
+      schema,
+      [`<img src="/images/icons/emoticons/smile.png">`],
+      doc(p('')),
+    );
   });
 });
