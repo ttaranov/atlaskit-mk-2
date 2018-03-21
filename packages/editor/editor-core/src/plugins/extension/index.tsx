@@ -48,12 +48,7 @@ const extensionPlugin: EditorPlugin = {
         }) => (
           <ExtensionEditPanel
             element={extensionState.element}
-            onEdit={() =>
-              editExtension(macroState.macroProvider)(
-                editorView.state,
-                dispatch,
-              )
-            }
+            onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
           />
         )}

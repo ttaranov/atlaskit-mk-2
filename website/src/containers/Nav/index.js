@@ -16,8 +16,6 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import PackagesIcon from '@atlaskit/icon/glyph/component';
 import DocumentationIcon from '@atlaskit/icon/glyph/overview';
 import PatternsIcon from '@atlaskit/icon/glyph/issues';
-import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
-import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 
 import {
   RouterNavigationItem,
@@ -71,37 +69,7 @@ const headers = {
     label: 'Patterns',
   },
 };
-const secondaryActions = [
-  {
-    href: 'https://bitbucket.org/atlassian/atlaskit-mk-2',
-    icon: BitbucketIcon,
-    label: 'Atlaskit Repository',
-  },
-  {
-    href: 'https://atlassian.design/',
-    icon: DashboardIcon,
-    label: 'Design guidelines',
-  },
-];
-const SecondaryAnchor = styled.a`
-  align-items: center;
-  border-radius: 50%;
-  display: flex;
-  height: 32px;
-  justify-content: center;
-  width: 32px;
 
-  &:hover {
-    background-color: ${colors.N80A};
-  }
-`;
-const SecondaryAction = ({ href, icon: Icon, label }) => (
-  <Tooltip content={label} position="left">
-    <SecondaryAnchor href={href} target="_blank">
-      <Icon label={label} primaryColor={colors.N0} size="small" />
-    </SecondaryAnchor>
-  </Tooltip>
-);
 export const AtlaskitIcon = ({ monochrome }: { monochrome?: boolean }) => (
   <img
     alt="Atlaskit logo"
@@ -142,10 +110,7 @@ export default class Nav extends Component<{}, State> {
           render={({ location }) => {
             const containerNavAvailable = location.pathname !== '/';
             const theme = containerNavAvailable ? null : presetThemes.global;
-            const headerKey = location.pathname
-              .replace('/mk-2', '')
-              .split('/')
-              .filter(p => p)[0];
+            const headerKey = location.pathname.split('/').filter(p => p)[0];
 
             const header = headers[headerKey];
 
@@ -175,9 +140,6 @@ export default class Nav extends Component<{}, State> {
                     <SearchIcon label="search" />
                   </Tooltip>
                 }
-                globalSecondaryActions={secondaryActions.map(a => (
-                  <SecondaryAction {...a} />
-                ))}
                 onSearchDrawerOpen={this.openSearchDrawer}
                 onCreateDrawerOpen={this.openGroupDrawer}
                 containerHeaderComponent={() =>

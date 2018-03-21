@@ -91,53 +91,50 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     };
   }
 
-  private updateState(props: MediaCardProps): void {
+  private onLoadingChange(loadingChange: OnLoadingChangeState) {
     const {
       onLoadingChange = () => {
         /* do nothing */
       },
-      preview,
     } = this.props;
-    this.unsubscribe();
-    const status = preview ? 'complete' : 'loading';
+    onLoadingChange(loadingChange);
+  }
 
-    this.setPartialState({ status }, () =>
-      this.setPartialState(
+  private updateState(props: MediaCardProps): void {
+    this.unsubscribe();
+    const onLoadingChangeCallback = () =>
+      this.onLoadingChange(this.stateToCardProcessingStatus());
+    const { preview } = this.props;
+    const status = preview ? 'complete' : 'loading';
+    this.setState({ status }, () =>
+      this.setState(
         {
           subscription: this.observable(props).subscribe({
             next: metadata => {
-              this.setPartialState(
+              this.setState(
                 { metadata, error: undefined, status: 'processing' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
+                onLoadingChangeCallback,
               );
             },
 
             complete: () => {
-              this.setPartialState(
+              this.setState(
                 { error: undefined, status: 'complete' },
-                () => onLoadingChange(this.stateToCardProcessingStatus()),
+                onLoadingChangeCallback,
               );
             },
 
             error: error => {
-              this.setPartialState({ error, status: 'error' }, () =>
-                onLoadingChange(this.stateToCardProcessingStatus()),
+              this.setState(
+                { error, status: 'error' },
+                onLoadingChangeCallback,
               );
             },
           }),
         },
-        () => onLoadingChange(this.stateToCardProcessingStatus()),
+        onLoadingChangeCallback,
       ),
     );
-  }
-
-  private setPartialState(
-    partialState: Partial<MediaCardState>,
-    callback?: () => any,
-  ) {
-    this.setState((previousState, props) => {
-      return { ...previousState, ...partialState };
-    }, callback);
   }
 
   private unsubscribe(): void {
@@ -154,25 +151,37 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   render() {
     const {
       mediaItemType,
-      provider,
       dataURIService,
-      onLoadingChange,
       resizeMode,
       preview,
-      ...otherProps
+      onClick,
+      onMouseEnter,
+      onSelectChange,
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
     const { metadata, status } = this.state;
 
     return (
       <CardViewWithDataURI
-        {...otherProps}
-        resizeMode={resizeMode}
         dataURIService={dataURIService}
         status={status}
         preview={preview}
-        metadata={metadata}
         mediaItemType={mediaItemType}
+        metadata={metadata}
+        resizeMode={resizeMode}
         onRetry={this.onRetry}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onSelectChange={onSelectChange}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   }

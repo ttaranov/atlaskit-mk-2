@@ -10,10 +10,12 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardEventProps } from '../..';
+import { SharedCardProps, CardEventProps, CardAnalyticsContext } from '../..';
 import { MediaCard } from '../mediaCard';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
+import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -126,15 +128,27 @@ export class Card extends Component<CardProps, {}> {
 
     return context.getLocalPreview(identifier['id']);
   }
+  get analyticsContext(): CardAnalyticsContext {
+    const { identifier } = this.props;
+    const id = this.isUrlPreviewIdentifier(identifier)
+      ? identifier.url
+      : identifier.id;
+    return getBaseAnalyticsContext('Card', id);
+  }
 
   render() {
     const {
-      context,
       isLazy,
       appearance,
       resizeMode,
-      identifier,
-      ...otherProps
+      dimensions,
+      actions,
+      selectable,
+      selected,
+      onClick,
+      onMouseEnter,
+      onSelectChange,
+      onLoadingChange,
     } = this.props;
     const {
       mediaItemType,
@@ -142,17 +156,27 @@ export class Card extends Component<CardProps, {}> {
       dataURIService,
       placeholder,
       preview,
+      analyticsContext,
     } = this;
     const card = (
-      <MediaCard
-        {...otherProps}
-        resizeMode={resizeMode}
-        appearance={appearance}
-        mediaItemType={mediaItemType}
-        preview={preview}
-        provider={provider}
-        dataURIService={dataURIService}
-      />
+      <AnalyticsContext data={analyticsContext}>
+        <MediaCard
+          provider={provider}
+          mediaItemType={mediaItemType}
+          dataURIService={dataURIService}
+          appearance={appearance}
+          resizeMode={resizeMode}
+          dimensions={dimensions}
+          actions={actions}
+          selectable={selectable}
+          selected={selected}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onSelectChange={onSelectChange}
+          onLoadingChange={onLoadingChange}
+          preview={preview}
+        />
+      </AnalyticsContext>
     );
 
     return isLazy ? (

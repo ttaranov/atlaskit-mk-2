@@ -184,4 +184,32 @@ describe('create event map', () => {
       expect(analyticsEvent.payload).toEqual({ efg: 'xyz' });
     }
   });
+  it('should update handlers each render', () => {
+    const ButtonWithAnalytics = withAnalyticsEvents({
+      onClick: createEvent => createEvent({ time: Date.now() }),
+    })(Button);
+    // eslint-disable-next-line react/no-multi-comp
+    class Counter extends React.Component<{}, { count: number }> {
+      state = { count: 0 };
+      render() {
+        const { count } = this.state;
+        return (
+          <ButtonWithAnalytics
+            onClick={() => this.setState({ count: count + 1 })}
+          >
+            {count}
+          </ButtonWithAnalytics>
+        );
+      }
+    }
+    const wrapper = mount(<Counter />);
+    // when button is mounted the handler is
+    // onClick={() => this.setState({ count: 0 + 1 })}
+    wrapper.setState({ count: 5 });
+    // after the state change the handler is
+    // onClick={() => this.setState({ count: 5 + 1 })}
+    wrapper.find(Button).simulate('click');
+    const { count } = wrapper.state();
+    expect(count).toBe(6);
+  });
 });

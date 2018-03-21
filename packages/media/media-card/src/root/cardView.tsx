@@ -8,6 +8,11 @@ import {
   UrlPreview,
   ImageResizeMode,
 } from '@atlaskit/media-core';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+  WithAnalyticsEventProps,
+} from '@atlaskit/analytics-next';
 
 import {
   SharedCardProps,
@@ -15,7 +20,8 @@ import {
   CardEvent,
   OnSelectChangeFuncResult,
   CardDimensionValue,
-} from '..';
+  CardOnClickCallback,
+} from '../index';
 import { LinkCard } from '../links';
 import { FileCard } from '../files';
 import { isLinkDetails } from '../utils/isLinkDetails';
@@ -29,38 +35,72 @@ import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
 
-export interface CardViewProps extends SharedCardProps {
+import { WithCardViewAnalyticsContext } from './withCardViewAnalyticsContext';
+
+export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly mediaItemType?: MediaItemType;
   readonly metadata?: MediaItemDetails;
   readonly resizeMode?: ImageResizeMode;
 
   readonly onRetry?: () => void;
-  readonly onClick?: (result: CardEvent) => void;
+  readonly onClick?: CardOnClickCallback;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
 
-  // allow extra props to be passed down to lower views e.g. dataURI to FileCard
-  [propName: string]: any;
+  // FileCardProps
+  readonly dataURI?: string;
+  readonly progress?: number;
 }
 
 export interface CardViewState {
+  hasBeenShown: boolean;
   elementWidth?: number;
 }
 
-export class CardView extends React.Component<CardViewProps, CardViewState> {
-  // tslint:disable-line:variable-name
-  static defaultProps = {
-    appearance: 'auto',
+export type CardViewBaseProps = CardViewOwnProps &
+  WithAnalyticsEventProps & {
+    readonly mediaItemType: MediaItemType;
   };
 
-  state: CardViewState = {};
+/**
+ * This is classic vanilla CardView class. To create an instance of class one would need to supply
+ * `createAnalyticsEvent` prop to satisfy it's Analytics Events needs.
+ */
+export class CardViewBase extends React.Component<
+  CardViewBaseProps,
+  CardViewState
+> {
+  private componentHasMountedAtTime: number;
 
-  componentDidMount() {
-    this.saveElementWidth();
+  constructor(props) {
+    super(props);
+    this.componentHasMountedAtTime = 0;
+    this.state = {
+      hasBeenShown: false,
+    };
   }
 
-  componentWillReceiveProps(nextProps: CardViewProps) {
+  componentDidMount() {
+    this.componentHasMountedAtTime = Date.now();
+    this.saveElementWidth();
+    this.fireShowedAnalyticsEvent(this.props);
+  }
+
+  private fireShowedAnalyticsEvent({ status }: CardViewBaseProps) {
+    if (
+      !this.state.hasBeenShown &&
+      (status === 'error' || status === 'complete')
+    ) {
+      const loadTime = Date.now() - this.componentHasMountedAtTime;
+      this.props
+        .createAnalyticsEvent({ action: 'shown', loadTime })
+        .fire('media');
+      this.setState({ hasBeenShown: true });
+    }
+  }
+
+  componentWillReceiveProps(nextProps: CardViewBaseProps) {
     const { selected: currSelected } = this.props;
     const { selectable: nextSelectable, selected: nextSelected } = nextProps;
 
@@ -71,6 +111,8 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     if (nextSelectable && cs !== ns) {
       this.fireOnSelectChangeToConsumer(ns);
     }
+
+    this.fireShowedAnalyticsEvent(nextProps);
   }
 
   private fireOnSelectChangeToConsumer = (newSelectedState: boolean): void => {
@@ -118,32 +160,25 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
     }
   }
 
-  private get mediaType(): MediaItemType {
-    const { mediaItemType, metadata } = this.props;
-    if (mediaItemType) {
-      return mediaItemType;
-    }
-
-    return isLinkDetails(metadata) ? 'link' : 'file';
-  }
-
   render() {
-    const { onClick, onMouseEnter, mediaType } = this;
-    const { dimensions, appearance } = this.props;
+    const { onClick, onMouseEnter } = this;
+    const { dimensions, appearance, mediaItemType } = this.props;
     const wrapperDimensions = dimensions
       ? dimensions
-      : mediaType === 'file' ? getDefaultCardDimensions(appearance) : undefined;
+      : mediaItemType === 'file'
+        ? getDefaultCardDimensions(appearance)
+        : undefined;
     let card;
 
-    if (mediaType === 'link') {
+    if (mediaItemType === 'link') {
       card = this.renderLink();
-    } else if (mediaType === 'file') {
+    } else if (mediaItemType === 'file') {
       card = this.renderFile();
     }
 
     return (
       <Wrapper
-        mediaItemType={mediaType}
+        mediaItemType={mediaItemType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
         dimensions={wrapperDimensions}
@@ -157,42 +192,60 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
 
   private renderLink = () => {
     const {
-      mediaItemType,
       status,
       metadata,
-      onClick,
-      onMouseEnter,
-      onSelectChange,
+      resizeMode,
       onRetry,
-      ...otherProps
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
 
     return (
       <LinkCard
-        {...otherProps}
-        onRetry={onRetry}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
+        resizeMode={resizeMode}
+        onRetry={onRetry}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   };
 
   private renderFile = () => {
     const {
-      mediaItemType,
       status,
       metadata,
-      onClick,
-      onMouseEnter,
-      onSelectChange,
-      ...otherProps
+      dataURI,
+      progress,
+      onRetry,
+      resizeMode,
+      appearance,
+      dimensions,
+      actions,
+      selectable,
+      selected,
     } = this.props;
 
     return (
       <FileCard
-        {...otherProps}
         status={status}
         details={metadata as FileDetails}
+        dataURI={dataURI}
+        progress={progress}
+        onRetry={onRetry}
+        resizeMode={resizeMode}
+        appearance={appearance}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
       />
     );
   };
@@ -210,4 +263,49 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       onMouseEnter({ event, mediaItemDetails });
     }
   };
+}
+
+const createAndFireEventOnMedia = createAndFireEvent('media');
+/**
+ * With this CardView class constructor version `createAnalyticsEvent` props is supplied for you, so
+ * when creating instance of that class you don't need to worry about it.
+ */
+export const CardViewWithAnalyticsEvents = withAnalyticsEvents({
+  onClick: createAndFireEventOnMedia({ action: 'clicked' }),
+})(CardViewBase);
+
+/**
+ * This if final version of CardView that is exported to the consumer. This version wraps everything
+ * with Analytics Context information so that all the Analytics Events created anywhere inside CardView
+ * will have it automatically.
+ */
+export class CardView extends React.Component<CardViewOwnProps, CardViewState> {
+  static defaultProps: Partial<CardViewOwnProps> = {
+    appearance: 'auto',
+  };
+
+  private get mediaItemType(): MediaItemType {
+    const { mediaItemType, metadata } = this.props;
+    if (mediaItemType) {
+      return mediaItemType;
+    }
+
+    return isLinkDetails(metadata) ? 'link' : 'file';
+  }
+
+  render() {
+    const mediaItemType = this.mediaItemType;
+
+    return (
+      <WithCardViewAnalyticsContext
+        {...this.props}
+        mediaItemType={mediaItemType}
+      >
+        <CardViewWithAnalyticsEvents
+          {...this.props}
+          mediaItemType={mediaItemType}
+        />
+      </WithCardViewAnalyticsContext>
+    );
+  }
 }

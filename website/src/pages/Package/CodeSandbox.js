@@ -53,10 +53,16 @@ export default class CodeSandbox extends Component<{}, {}> {
       pkgJSON,
     } = this.props;
 
+    const name = example.id
+      .split('.')
+      .slice(0, -1)
+      .join('-');
+
     return (
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
+        name={`${pkgJSON.name}-${name}`}
         gitInfo={{
           account: 'atlassian',
           repository: 'atlaskit-mk-2',

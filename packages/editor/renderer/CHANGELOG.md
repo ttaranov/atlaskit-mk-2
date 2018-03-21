@@ -1,5 +1,16 @@
 # @atlaskit/renderer
 
+## 13.0.7
+
+## 13.0.6
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 13.0.5
+
+## 13.0.4
+
+## 13.0.3
+
 ## 13.0.2
 - [patch] Adds margin-top to ApplicationCard, MediaGroup and CodeBlock in renderer content [f2ae5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2ae5ca)
 

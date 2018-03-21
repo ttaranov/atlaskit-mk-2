@@ -11,6 +11,10 @@ import {
 } from '../src';
 import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
+import {
+  AnalyticsListener,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -174,7 +178,7 @@ describe('Card', () => {
 
     expect(clickHandler).not.toHaveBeenCalled();
 
-    mediaCardOnClick({} as any);
+    mediaCardOnClick({} as any, {} as any);
     expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
@@ -304,5 +308,37 @@ describe('Card', () => {
     expect(mediaCard.prop('resizeMode')).toBe('full-fit');
     expect(card.find('CardView').prop('resizeMode')).toBe('full-fit');
     expect(fetchImageDataUriSpy.mock.calls[0][1].mode).toBe('full-fit');
+  });
+
+  it('should contain analytics context with identifier info', () => {
+    const analyticsEventHandler = jest.fn();
+    const fetchImageDataUriSpy = jest.fn(() => Promise.resolve());
+    const context = fakeContext({
+      getDataUriService: {
+        fetchImageDataUri: fetchImageDataUriSpy,
+      },
+    });
+    mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <Card
+          context={context}
+          identifier={fileIdentifier}
+          isLazy={false}
+          resizeMode="full-fit"
+        />
+      </AnalyticsListener>,
+    );
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: UIAnalyticsEventInterface =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualFiredEvent.context[0]).toEqual(
+      expect.objectContaining({
+        actionSubject: 'MediaCard',
+        actionSubjectId: 'some-random-id',
+        componentName: 'Card',
+        packageName: '@atlaskit/media-card',
+      }),
+    );
   });
 });

@@ -2,11 +2,17 @@ import { setBlockType } from 'prosemirror-commands';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import {
+  findParentDomRefOfType,
+  findParentNodeOfType,
+  removeParentNodeOfType,
+} from 'prosemirror-utils';
 import keymapPlugin from './keymaps';
 
 export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
 export type StateChangeHandler = (state: CodeBlockState) => any;
+export type DomAtPos = (pos: number) => { node: HTMLElement; offset: number };
 
 export class CodeBlockState {
   element?: HTMLElement;
@@ -60,10 +66,8 @@ export class CodeBlockState {
   }
 
   removeCodeBlock(view: EditorView): void {
-    const { state, dispatch } = view;
-    const { $from, $to } = state.selection;
-    const range = $from.blockRange($to);
-    dispatch(state.tr.delete(range!.start, range!.end));
+    const { state: { tr, schema }, dispatch } = view;
+    dispatch(removeParentNodeOfType(schema.nodes.codeBlock)(tr));
     view.focus();
   }
 
@@ -75,17 +79,12 @@ export class CodeBlockState {
     this.supportedLanguages = supportedLanguages;
   }
 
-  // TODO: Fix types (ED-2987)
-  update(
-    state: EditorState,
-    docView: EditorView & { docView?: any },
-    domEvent: boolean = false,
-  ) {
+  update(state: EditorState, domAtPos: DomAtPos, domEvent: boolean = false) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
     if ((domEvent && codeBlockNode) || codeBlockNode !== this.activeCodeBlock) {
       this.domEvent = domEvent;
-      const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
+      const newElement = codeBlockNode && this.activeCodeBlockElement(domAtPos);
 
       this.toolbarVisible =
         this.editorFocused &&
@@ -108,25 +107,18 @@ export class CodeBlockState {
     this.focusHandlers.forEach(cb => cb(this.uniqueId));
   }
 
-  // TODO: Fix types (ED-2987)
-  private activeCodeBlockElement(docView: any): HTMLElement {
-    const offset = this.nodeStartPos();
-    const { node } = docView.domFromPos(offset);
-
-    return node as HTMLElement;
-  }
-
-  private nodeStartPos(): number {
-    const { $from } = this.state.selection;
-    return $from.start($from.depth);
+  private activeCodeBlockElement(domAtPos: DomAtPos): HTMLElement | undefined {
+    const { selection, schema: { nodes: { codeBlock } } } = this.state;
+    return findParentDomRefOfType(codeBlock, domAtPos)(
+      selection,
+    ) as HTMLElement;
   }
 
   private activeCodeBlockNode(): Node | undefined {
-    const { state } = this;
-    const { $from } = state.selection;
-    const node = $from.parent;
-    if (node.type === state.schema.nodes.codeBlock) {
-      return node;
+    const { selection, schema: { nodes: { codeBlock } } } = this.state;
+    const parent = findParentNodeOfType(codeBlock)(selection);
+    if (parent) {
+      return parent.node;
     }
   }
 }
@@ -140,29 +132,26 @@ export const plugin = new Plugin({
     apply(tr, pluginState: CodeBlockState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState, stored.docView, stored.domEvent);
+        pluginState.update(newState, stored.domAtPos, stored.domEvent);
       }
       return pluginState;
     },
   },
   key: stateKey,
-  // TODO: Fix types (ED-2987)
-  view: (editorView: EditorView & { docView?: any }) => {
-    stateKey
-      .getState(editorView.state)
-      .update(editorView.state, editorView.docView);
+  view: (editorView: EditorView) => {
+    const domAtPos = editorView.domAtPos.bind(editorView);
+    stateKey.getState(editorView.state).update(editorView.state, domAtPos);
     return {
-      update: (
-        view: EditorView & { docView?: any },
-        prevState: EditorState,
-      ) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
+      update: (view: EditorView, prevState: EditorState) => {
+        stateKey.getState(view.state).update(view.state, domAtPos);
       },
     };
   },
   props: {
-    handleClick(view: EditorView & { docView?: any }, event) {
-      stateKey.getState(view.state).update(view.state, view.docView, true);
+    handleClick(view: EditorView, event) {
+      stateKey
+        .getState(view.state)
+        .update(view.state, view.domAtPos.bind(view), true);
       return false;
     },
     handleDOMEvents: {
@@ -170,10 +159,10 @@ export const plugin = new Plugin({
         stateKey.getState(view.state).updateEditorFocused(true);
         return false;
       },
-      blur(view: EditorView & { docView?: any }, event) {
+      blur(view: EditorView, event) {
         const pluginState = stateKey.getState(view.state);
         pluginState.updateEditorFocused(false);
-        pluginState.update(view.state, view.docView, true);
+        pluginState.update(view.state, view.domAtPos.bind(view), true);
         return false;
       },
     },

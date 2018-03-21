@@ -1,5 +1,5 @@
 import { Node } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   NORMAL_TEXT,
@@ -168,15 +168,34 @@ export class BlockTypeState {
 
 export const stateKey = new PluginKey('blockTypePlugin');
 
-export const plugin = new Plugin({
-  state: {
-    init(config, state: EditorState) {
-      return new BlockTypeState(state);
+export const createPlugin = (appearance?) => {
+  return new Plugin({
+    appendTransaction(
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ): Transaction | void {
+      if (appearance === 'comment') {
+        const pos = newState.doc.resolve(newState.doc.content.size - 1);
+        const lastNode = pos.node(1);
+        const { paragraph } = newState.schema.nodes;
+        if (lastNode && lastNode.isBlock && lastNode.type !== paragraph) {
+          return newState.tr.insert(
+            newState.doc.content.size,
+            newState.schema.nodes.paragraph.create(),
+          );
+        }
+      }
     },
-    apply(tr, pluginState: BlockTypeState, oldState, newState) {
-      pluginState.update(newState);
-      return pluginState;
+    state: {
+      init(config, state: EditorState) {
+        return new BlockTypeState(state);
+      },
+      apply(tr, pluginState: BlockTypeState, oldState, newState) {
+        pluginState.update(newState);
+        return pluginState;
+      },
     },
-  },
-  key: stateKey,
-});
+    key: stateKey,
+  });
+};

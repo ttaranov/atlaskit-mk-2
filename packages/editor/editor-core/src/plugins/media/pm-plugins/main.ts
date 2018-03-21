@@ -18,16 +18,14 @@ import {
   MediaType,
   MediaSingleLayout,
 } from '@atlaskit/editor-common';
+
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
 import { Dispatch } from '../../../event-dispatcher';
-import { nodeViewFactory, ProsemirrorGetPosHandler } from '../../../nodeviews';
+import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EditorAppearance } from '../../../types/editor-props';
 import DropPlaceholder from '../ui/Media/DropPlaceholder';
 import { MediaPluginOptions } from '../media-plugin-options';
-import ReactMediaGroupNode from '../nodeviews/media-group';
-import ReactMediaNode from '../nodeviews/media';
-import ReactMediaSingleNode from '../nodeviews/media-single';
 import {
   insertLinks,
   URLInfo,
@@ -73,6 +71,7 @@ export class MediaPluginState {
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
+
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
@@ -754,7 +753,7 @@ export class MediaPluginState {
     return false;
   };
 
-  private selectedMediaNode(): PMNode | undefined {
+  selectedMediaNode(): PMNode | undefined {
     const { selection, schema } = this.view.state;
     if (
       selection instanceof NodeSelection &&
@@ -895,24 +894,7 @@ export const createPlugin = (
         ];
         return DecorationSet.create(state.doc, dropPlaceholders);
       },
-      nodeViews: {
-        mediaGroup: nodeViewFactory(
-          options.providerFactory,
-          {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          },
-          true,
-        ),
-        mediaSingle: nodeViewFactory(
-          options.providerFactory,
-          {
-            mediaSingle: ReactMediaSingleNode,
-            media: ReactMediaNode,
-          },
-          true,
-        ),
-      },
+      nodeViews: options.nodeViews,
       handleTextInput(
         view: EditorView,
         from: number,

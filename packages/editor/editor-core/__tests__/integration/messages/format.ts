@@ -29,10 +29,10 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(
-      editorSelector,
-      '__bold__ _italics_ **starbold** *italicsstar* ',
-    );
+    await sample.type(editorSelector, '__bold__ ');
+    await sample.type(editorSelector, '_italics_ ');
+    await sample.type(editorSelector, '**starbold** ');
+    await sample.type(editorSelector, '*italicsstar* ');
 
     await sample.waitForSelector('strong');
     const doc = await sample.$eval(editorSelector, getDocFromElement);
@@ -47,7 +47,9 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(editorSelector, '`this` ');
+    await sample.type(editorSelector, '`');
+    await sample.type(editorSelector, 'this');
+    await sample.type(editorSelector, '`');
 
     await sample.waitForSelector('pre');
     const doc = await sample.$eval(editorSelector, getDocFromElement);

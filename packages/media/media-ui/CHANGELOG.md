@@ -1,5 +1,9 @@
 # @atlaskit/media-ui
 
+## 1.1.3
+
+## 1.1.2
+
 ## 1.1.1
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
 

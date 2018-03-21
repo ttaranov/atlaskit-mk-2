@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 1.3.0
+- [minor] Adds search attribution analytics for confluence search results. [2d73f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d73f50)
+
 ## 1.2.0
 - [minor] Remove environment prop and replace with explicit service url overrides. [b5bd020](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5bd020)
 

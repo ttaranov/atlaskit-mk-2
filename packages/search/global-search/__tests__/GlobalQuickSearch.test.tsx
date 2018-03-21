@@ -11,6 +11,7 @@ function render(partialProps: Partial<Props>) {
     getRecentlyViewedItems: noop,
     isLoading: false,
     query: '',
+    searchSessionId: 'dummy_uuid',
     recentlyViewedItems: [],
     recentResults: [],
     jiraResults: [],

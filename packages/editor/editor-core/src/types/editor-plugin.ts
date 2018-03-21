@@ -15,6 +15,7 @@ export type PMPluginFactory = (
     schema: Schema;
     props: EditorProps;
     dispatch: Dispatch;
+    eventDispatcher: EventDispatcher;
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
   },
