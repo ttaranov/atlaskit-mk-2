@@ -19,7 +19,8 @@ import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerListSearch';
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
-import { customCategory } from '../../../src/constants';
+import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
+import EmojiPickerErrorMessage from '../../../src/components/common/EmojiErrorMessage';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -175,16 +176,6 @@ export const findSearchInput = component =>
 export const searchInputVisible = component =>
   findSearchInput(component).length > 0;
 
-const findCustomSection = component =>
-  component.findWhere(
-    wrapper =>
-      wrapper.type() === EmojiPickerCategoryHeading &&
-      wrapper.prop('title') === customCategory,
-  );
-
-export const customSectionVisible = (component): boolean =>
-  component.update() && component.findWhere(findCustomSection).length > 0;
-
 export const findEmojiNameInput = component =>
   component.update() &&
   component.find(`.${commonStyles.uploadChooseFileEmojiName} input`);
@@ -233,3 +224,9 @@ export const findUploadError = component =>
 
 export const uploadErrorVisible = component =>
   findUploadError(component).length > 0;
+
+export const finishDelete = component =>
+  component.update() && component.find(EmojiDeletePreview).length === 0;
+
+export const deleteErrorVisible = component =>
+  component.update() && component.find(EmojiPickerErrorMessage).length === 1;

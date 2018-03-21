@@ -271,7 +271,7 @@ export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceRespons
 export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(
   atlassianServiceEmojis,
 ).emojis;
-export const siteEmojis: EmojiDescription[] = [mediaEmoji];
+export const siteEmojis: EmojiDescription[] = [mediaEmoji, siteEmojiFoo];
 export const emojis: EmojiDescription[] = [
   ...standardEmojis,
   ...atlassianEmojis,

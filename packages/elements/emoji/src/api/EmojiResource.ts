@@ -185,7 +185,7 @@ export interface EmojiProvider
   /**
    * Returns the logged user passed by the Product
    */
-  getCurrentUser?(): OptionalUser;
+  getCurrentUser(): OptionalUser;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -540,12 +540,15 @@ export class EmojiResource extends AbstractResource<
   }
 
   deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
-    if (this.isLoaded() && this.siteEmojiResource && emoji.id) {
+    if (this.siteEmojiResource && emoji.id) {
       return this.siteEmojiResource
         .deleteEmoji(emoji)
-        .then(() => {
-          this.emojiRepository!.delete(emoji);
-          return true;
+        .then(success => {
+          if (success && this.emojiRepository) {
+            this.emojiRepository.delete(emoji);
+            return true;
+          }
+          return false;
         })
         .catch(() => false);
     }
