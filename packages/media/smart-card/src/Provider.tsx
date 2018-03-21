@@ -11,25 +11,12 @@ export class Provider extends React.Component<ProviderProps> {
     smartCardClient: PropTypes.object,
   };
 
-  client: Client;
-
-  constructor(props: ProviderProps) {
-    super(props);
-    this.client = props.client || new Client();
-  }
+  static defaultClient: Client = new Client();
 
   getChildContext() {
     return {
-      smartCardClient: this.props.client || this.client,
+      smartCardClient: this.props.client || Provider.defaultClient,
     };
-  }
-
-  componentWillReceiveProps(nextProps: ProviderProps) {
-    const { client: prevClient } = this.props;
-    const { client: nextClient } = nextProps;
-    if (nextClient !== prevClient) {
-      this.client = nextProps.client || new Client();
-    }
   }
 
   render() {

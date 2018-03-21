@@ -6,6 +6,8 @@ declare namespace NodeJS {
   }
 }
 
+declare var global: NodeJS.Global;
+
 function createFetchWithResponse() {
   return jest.fn().mockReturnValue(
     Promise.resolve({
@@ -32,7 +34,7 @@ describe('Client', () => {
   it('should use the baseUrl', async () => {
     global.fetch = createFetchWithResponse();
     const client = new Client({ baseUrl: 'https://foo-bar.com/' });
-    const res = await client.get('https://www.atlassian.com/');
+    await client.get('https://www.atlassian.com/');
     expect(global.fetch).toBeCalledWith(
       expect.stringMatching(/^https:\/\/foo-bar.com\//),
       expect.anything(),

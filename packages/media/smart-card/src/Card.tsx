@@ -32,21 +32,23 @@ export interface CardState {
   data?: CardViewProps;
 }
 
-function loading(): Pick<CardState, 'status' | 'data'> {
+function getLoadingState(): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loading',
     data: undefined,
   };
 }
 
-function loaded(data: CardViewProps): Pick<CardState, 'status' | 'data'> {
+function getLoadedState(
+  data: CardViewProps,
+): Pick<CardState, 'status' | 'data'> {
   return {
     status: 'loaded',
     data,
   };
 }
 
-function errored(): Pick<CardState, 'status'> {
+function getErroredState(): Pick<CardState, 'status'> {
   return {
     status: 'errored',
   };
@@ -59,16 +61,14 @@ export class Card extends React.Component<CardProps, CardState> {
 
   context: CardContext;
 
-  state: CardState = loading();
+  state: CardState = getLoadingState();
 
-  get client(): Client {
+  getClient(): Client {
     const client = this.context.smartCardClient || this.props.client;
     if (!client) {
-      // tslint:disable-next-line:no-console
-      console.error(
+      throw new Error(
         '@atlaskit/smart-card: No client provided. Provide a client like <Card client={new Client()} url=""/> or <Provider client={new Client()}><Card url=""/></Provider>.',
       );
-      throw new Error();
     }
     return client;
   }
@@ -77,33 +77,44 @@ export class Card extends React.Component<CardProps, CardState> {
     return prevProps.url !== nextProps.url;
   }
 
-  async load() {
-    const { url } = this.props;
+  async loadData() {
+    let client;
     try {
-      const json = await this.client.get(url);
-      this.setState(loaded(convert(json.data)));
+      client = this.getClient();
     } catch (error) {
-      this.setState(errored());
+      // report the error for consumers to fix
+      console.error(error.message);
+      this.setState(getErroredState());
+      return;
+    }
+
+    try {
+      const { url } = this.props;
+      const json = await client.get(url);
+      this.setState(getLoadedState(convert(json.data)));
+    } catch (error) {
+      // swallow the error and show a generic error message
+      this.setState(getErroredState());
     }
   }
 
   handleRender = () => {
-    this.load();
+    this.loadData();
   };
 
   componentWillReceiveProps(nextProps: CardProps) {
     if (this.shouldFetch(this.props, nextProps)) {
-      this.setState(loading());
+      this.setState(getLoadingState());
     }
   }
 
   componentDidUpdate(prevProps: CardProps) {
     if (this.shouldFetch(prevProps, this.props)) {
-      this.load();
+      this.loadData();
     }
   }
 
-  renderLoaded() {
+  renderLoadedState() {
     const { data } = this.state;
     if (data) {
       return <LoadedView {...data} />;
@@ -121,7 +132,7 @@ export class Card extends React.Component<CardProps, CardState> {
         content = <LoadingView />;
         break;
       case 'loaded':
-        content = this.renderLoaded();
+        content = this.renderLoadedState();
         break;
       case 'errored':
         content = <ErroredView />;

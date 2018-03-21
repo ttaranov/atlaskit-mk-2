@@ -6,10 +6,19 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { mount } from 'enzyme';
+import LazilyRender from 'react-lazily-render';
 import { Client } from '../src/Client';
 import { CardView } from '../src/CardView';
 import { Card, LoadingView, LoadedView, ErroredView } from '../src/Card';
-import LazilyRender from 'react-lazily-render';
+
+function mountAndImmediatelyRender(element: JSX.Element) {
+  const wrapper = mount(element);
+  const onRender = wrapper.find(LazilyRender).prop('onRender');
+  if (onRender) {
+    onRender();
+  }
+  return wrapper;
+}
 
 function createClientWithNoResponse(): Client {
   const client = new Client();
@@ -40,10 +49,10 @@ describe('Card', () => {
 
   it('should render the errored view when errored', async () => {
     const client = createClientWithErrorResponse();
-    const wrapper = mount(
+    const wrapper = mountAndImmediatelyRender(
       <Card client={client} url="https://www.atlassian.com/" />,
     );
-    wrapper.find(LazilyRender).prop('onRender')();
+
     try {
       // wait for the data to be loaded
       await client.get('https://www.atlassian.com/');
@@ -54,8 +63,9 @@ describe('Card', () => {
   });
 
   it('should render an error when there is no client passed', async () => {
-    const wrapper = mount(<Card url="https://www.atlassian.com/" />);
-    wrapper.find(LazilyRender).prop('onRender')();
+    const wrapper = mountAndImmediatelyRender(
+      <Card url="https://www.atlassian.com/" />,
+    );
 
     wrapper.update();
     expect(wrapper.find(ErroredView).exists()).toBeTruthy();
@@ -63,10 +73,9 @@ describe('Card', () => {
 
   it('should render the card when loaded', async () => {
     const client = createClientWithOKResponse();
-    const wrapper = mount(
+    const wrapper = mountAndImmediatelyRender(
       <Card client={client} url="https://www.atlassian.com/" />,
     );
-    wrapper.find(LazilyRender).prop('onRender')();
 
     // wait for the data to be loaded
     await client.get('https://www.atlassian.com/');
@@ -77,10 +86,9 @@ describe('Card', () => {
 
   it('should reload the data when changed', async () => {
     const client = createClientWithOKResponse();
-    const wrapper = mount(
+    const wrapper = mountAndImmediatelyRender(
       <Card client={client} url="https://www.atlassian.com/" />,
     );
-    wrapper.find(LazilyRender).prop('onRender')();
 
     // wait for the data to be loaded
     await client.get('https://www.atlassian.com/');
