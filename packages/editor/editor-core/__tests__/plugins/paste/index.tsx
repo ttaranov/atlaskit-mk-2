@@ -90,12 +90,13 @@ describe('paste plugins', () => {
         });
       });
 
-      describe('when message is not a media image node', () => {
+      describe('when message is not a media image node', async () => {
         it('does nothing', () => {
           const { editorView } = editor(doc(p('{<>}')));
           dispatchPasteEvent(editorView, {
             html: mediaHtml('pdf'),
           });
+
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p(),
@@ -113,6 +114,7 @@ describe('paste plugins', () => {
         });
       });
     });
+
     it('should not create paragraph when plain text is copied in code-block', () => {
       const { editorView } = editor(doc(code_block()('{<>}')));
       dispatchPasteEvent(editorView, { plain: 'plain text' });
