@@ -1,5 +1,7 @@
 # @atlaskit/media-test-helpers
 
+## 10.0.3
+
 ## 10.0.2
 - [patch] fix(media-test-helpers): bump xhr-mock and add error handling [304265f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/304265f)
 
