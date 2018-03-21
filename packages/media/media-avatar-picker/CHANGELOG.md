@@ -1,5 +1,9 @@
 # @atlaskit/media-avatar-picker
 
+## 6.0.3
+
+## 6.0.2
+
 ## 6.0.1
 
 ## 6.0.0

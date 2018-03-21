@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { md, Example, code } from '@atlaskit/docs';
 
+// Otherwise tslint complains about require not being declared
+declare const require: any;
+
 export default md`
 # Renderer
 

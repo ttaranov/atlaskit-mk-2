@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 65.1.10
+
 ## 65.1.9
 - [patch] Don't lose taskId when task is marked completed [fefee23](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefee23)
 

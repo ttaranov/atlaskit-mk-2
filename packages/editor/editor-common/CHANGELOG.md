@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 8.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 8.0.7
+
 ## 8.0.6
 
 ## 8.0.5

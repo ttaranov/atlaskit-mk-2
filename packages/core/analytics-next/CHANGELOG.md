@@ -1,5 +1,9 @@
 # @atlaskit/analytics-next
 
+## 1.1.5
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+- [patch] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
+
 ## 1.1.4
 - [patch] fixes problem with withAnalyticsEvents HOC passing old function props to wrapped component [c88b030](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c88b030)
 
