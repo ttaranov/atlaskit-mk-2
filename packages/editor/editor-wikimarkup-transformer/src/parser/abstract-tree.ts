@@ -311,7 +311,12 @@ export default class AbstractTree {
         continue;
       }
 
-      // TODO all other things
+      // TODO process lists
+      // TODO process tables
+      // TODO process images/attachments
+      // TODO process {color} macro
+      // TODO process \\ hardBreak
+      // TODO process text effects and links
 
       textContainer.push(lineUpdated);
     }
