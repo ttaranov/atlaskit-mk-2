@@ -83,6 +83,7 @@ export class Card extends React.Component<CardProps, CardState> {
       client = this.getClient();
     } catch (error) {
       // report the error for consumers to fix
+      // tslint:disable-next-line:no-console
       console.error(error.message);
       this.setState(getErroredState());
       return;
