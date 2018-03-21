@@ -90,7 +90,7 @@ describe('paste plugins', () => {
         });
       });
 
-      describe('when message is not a media image node', async () => {
+      describe('when message is not a media image node', () => {
         it('does nothing', () => {
           const { editorView } = editor(doc(p('{<>}')));
           dispatchPasteEvent(editorView, {
