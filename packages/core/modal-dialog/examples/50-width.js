@@ -44,7 +44,7 @@ export default class ModalDemo extends Component<{}, { isOpen: any }> {
               actions={actions}
               key={name}
               onClose={this.close}
-              heading={`Modal: ${name}`}
+              heading={`Modal: ${String(name)}`}
               width={name}
               {...this.props}
             >

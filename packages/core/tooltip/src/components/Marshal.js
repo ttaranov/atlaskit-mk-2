@@ -21,8 +21,8 @@ export default class TooltipMarshal {
   queuedForShow: ?TooltipType;
   queuedForHide: ?TooltipType;
   visibleTooltip: ?TooltipType;
-  showTimeout: ?number;
-  hideTimeout: ?number;
+  showTimeout: ?TimeoutID;
+  hideTimeout: ?TimeoutID;
 
   scrollListenerBound: boolean = false;
 
@@ -73,7 +73,9 @@ export default class TooltipMarshal {
     tooltip.show(options);
   }
   clearShowTimeout() {
-    clearTimeout(this.showTimeout);
+    if (this.showTimeout) {
+      clearTimeout(this.showTimeout);
+    }
     this.showTimeout = null;
   }
   addScrollListener(tooltip: TooltipType) {
@@ -156,7 +158,9 @@ export default class TooltipMarshal {
     tooltip.hide(options);
   }
   clearHideTimeout() {
-    clearTimeout(this.hideTimeout);
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout);
+    }
     this.queuedForHide = null;
   }
 }
