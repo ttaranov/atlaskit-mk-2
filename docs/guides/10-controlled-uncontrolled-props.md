@@ -15,16 +15,75 @@ It was sort of the hot thing at the time when we made the decision to follow thi
 
 We've recently been spiking some patterns to be able to give consumers the ability to selectively apply the controlled / uncontrolled pattern to any given piece of state within a component. This means that not only form fields and the `defaultValue` / `value` props get this treatment, all `state` can have corresponding default props (uncontrolled) or props (controlled).
 
-On the component developer's end, the steps are pretty simple:
+On the component developer's end, the steps are as follows:
+1. Expose a default prop for each controlled prop that you wish to also be uncontrolled. The convention for naming is the controlled prop has the
+   same name as a key in state and the default prop name is prefixed with `default`. For `value`, this would mean you have a `value` prop and a `defaultValue` prop.
 
-1. Expose a default prop and normal prop that correspond to a state key that you want to have this behaviour. The default convention for this is that the controlled prop is the same name as the state, and the default prop is prefixed with `default`. For `value`, this would mean you have a `value` prop and a `defaultValue` prop. This is configurable by specifying your own `mapPropsToState` function when wrapping your component with [`react-ctrl`](https://github.com/treshugart/react-ctrl).
-2. Wrap their component with [`react-ctrl`](https://github.com/treshugart/react-ctrl).
+   ```
+   type Props = {
+     value?: string;
+     defaultValue: string;
+   }
+   ```
+   Note that the flow type for the default prop is required since we're going to be adding a `defaultProps` entry for it.
 
-Since your component is already accessing `state` and using it as needed, it's likely you won't need to do much more than those two steps to enable this behaviour as `state` is the source of truth for everything now.
+2. Add the default values for each uncontrolled (default) prop in the static `defaultProps` property of your component.
+
+   ```
+   class myComponent extends React.Component {
+     static defaultProps = {
+       defaultValue: '',
+     };
+     ...
+   }
+   ```
+3. Initialise your state with keys for each controlled prop with values sourced from your uncontrolled prop value
+
+   ```
+   class myComponent extends React.Component {
+     ...
+     state = {
+       value: this.props.defaultValue,
+     }
+     ...
+   }
+   ```
+4. Create a custom `getState` method (or getter) that retrieves your state but with your controlled props merged in as well. This method will then
+   be used as the single source of truth and results in controlled props being used if they exist and the uncontrolled state value if not.
+
+   ```
+   import pick from 'lodash.pick';
+   ...
+   class myComponent extends React.Component {
+     ...
+     getState = () => {
+       return {...this.state, ...pick(this.props, ['value'])};
+     }
+     ...
+   }
+   ```
+5. Use `this.getState()` everywhere you access state instead of `this.state`.
+
+   ```
+     handleClick = () => {
+       const { value } = this.getState();
+       ...
+     }
+
+     render() {
+       const { value } = this.getState();
+       ...
+     }
+   ```
+
+
+[react-ctrl](https://github.com/treshugart/react-ctrl) was created to abstract most of these steps away, however, its API isn't stable yet so we have
+gone with the more manual approach for now.
 
 ## Usage
 
-Initially, we've applied this to the `calendar` and `datetime-picker` components but hope to expand support across all of our components starting in the near future.
+Initially, we've applied this to the `calendar` and `datetime-picker` components but hope to expand support across all of our components in the near future
+once we've investigated if there's a better abstraction for this pattern.
 
 In order to get both controlled and uncontrolled behaviour from the `datetime-picker`, we used to have to do:
 
@@ -61,5 +120,3 @@ Or just have it open by default, and state will take over:
 ```js
 <DatePicker defaultIsOpen />
 ```
-
-The component developer doesn't need to do any more work here; this automatically just happens.
