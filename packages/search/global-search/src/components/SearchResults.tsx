@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentClass } from 'react';
 import {
   AkNavigationItemGroup,
   quickSearchResultTypes,
@@ -7,9 +8,9 @@ import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
-import { ComponentClass } from 'react';
+import ObjectResult from './ObjectResult';
 
-const { PersonResult, ObjectResult, ResultBase } = quickSearchResultTypes;
+const { PersonResult, ResultBase } = quickSearchResultTypes;
 
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
