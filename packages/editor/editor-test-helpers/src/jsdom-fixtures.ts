@@ -1,4 +1,5 @@
 import { EditorView } from 'prosemirror-view';
+import * as isCI from 'is-ci';
 
 export class NullSelectionReader {
   constructor(private warnOnce: () => void) {}
@@ -59,10 +60,12 @@ export default editorView => {
         return;
       }
 
-      // tslint:disable-next-line:no-console
-      console.warn(
-        'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
-      );
+      if (!isCI) {
+        // tslint:disable-next-line:no-console
+        console.warn(
+          'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
+        );
+      }
 
       (window as any).hasWarnedAboutJsdomFixtures = true;
     };
