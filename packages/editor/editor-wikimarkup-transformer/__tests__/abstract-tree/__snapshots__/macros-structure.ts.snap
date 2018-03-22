@@ -1,135 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JIRA wiki markup - Abstract tree should match parsed structure for T 1`] = `
-Array [
-  Object {
-    "content": Array [
-      Object {
-        "content": Array [
-          Object {
-            "text": "h",
-            "type": "text",
-          },
-        ],
-        "type": "paragraph",
-      },
-    ],
-    "macros": Array [],
-    "text": "h",
-  },
-]
-`;
-
 exports[`JIRA wiki markup - Abstract tree should match parsed structure for multiple quotes containing string 1`] = `
 Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": "This is a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "quote1",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "quote1",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "quote2",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "quote2",
-  },
-]
-`;
-
-exports[`JIRA wiki markup - Abstract tree should match parsed structure for noformat example 1`] = `
-Array [
-  Object {
-    "content": Array [
-      Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
-        "type": "paragraph",
-      },
-    ],
-    "macros": Array [],
-    "text": "This is a ",
-  },
-  Object {
-    "content": Array [
-      Object {
-        "text": "no format thing with ",
-        "type": "text",
-      },
-    ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "noformat",
-      },
-    ],
-    "text": "no format thing with ",
-  },
-  Object {
-    "content": Array [
-      Object {
-        "text": "inside",
-        "type": "text",
-      },
-    ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "code",
-      },
-      Object {
-        "attrs": Object {},
-        "macro": "noformat",
-      },
-    ],
-    "text": "inside",
   },
 ]
 `;
@@ -139,43 +43,22 @@ Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "Panel with nested quote here",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {
-          "borderStyle": "dashed",
-          "title": "My Title",
-        },
-        "macro": "panel",
-      },
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "Panel with nested quote here",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": ".",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": ".",
   },
 ]
@@ -186,133 +69,56 @@ Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": "This is a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "quote with a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "quote with a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "panel",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "panel",
-      },
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "panel",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": " inside",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": " inside",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": ".",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": ".",
-  },
-]
-`;
-
-exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple code containing string 1`] = `
-Array [
-  Object {
-    "content": Array [
-      Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
-        "type": "paragraph",
-      },
-    ],
-    "macros": Array [],
-    "text": "This is a ",
-  },
-  Object {
-    "content": Array [
-      Object {
-        "text": "<xml_code/>",
-        "type": "text",
-      },
-    ],
-    "macros": Array [
-      Object {
-        "attrs": Object {
-          "xml": "",
-        },
-        "macro": "code",
-      },
-    ],
-    "text": "<xml_code/>",
   },
 ]
 `;
@@ -322,36 +128,22 @@ Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": "This is a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "simple quote",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "simple quote",
   },
 ]
@@ -362,21 +154,13 @@ Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "simple quote",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "simple quote",
   },
 ]
@@ -387,84 +171,48 @@ Array [
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "This is a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [],
+    "macro": undefined,
     "text": "This is a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": " panel with a ",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {
-          "foo": "bar",
-        },
-        "macro": "panel",
+    "macro": Object {
+      "attrs": Object {
+        "foo": "bar",
       },
-    ],
+      "macro": "panel",
+    },
     "text": " panel with a ",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": "quote inside",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {
-          "foo": "bar",
-        },
-        "macro": "panel",
-      },
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": "quote inside",
   },
   Object {
     "content": Array [
       Object {
-        "content": Array [
-          Object {
-            "text": " but it is broken",
-            "type": "text",
-          },
-        ],
         "type": "paragraph",
       },
     ],
-    "macros": Array [
-      Object {
-        "attrs": Object {},
-        "macro": "quote",
-      },
-    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "quote",
+    },
     "text": " but it is broken",
   },
 ]

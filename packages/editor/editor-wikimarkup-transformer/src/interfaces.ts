@@ -1,4 +1,4 @@
-// import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode } from 'prosemirror-model';
 
 export type MacroName = 'code' | 'noformat' | 'panel' | 'quote';
 
@@ -10,25 +10,6 @@ export interface SimpleInterval {
 export interface MacrosMatchPosition {
   inner: number;
   outer: number;
-}
-
-export interface NodeText {
-  // all the things JIRA wiki markup supports
-  // @see https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all
-  type:
-    | 'blockquote'
-    | 'hardBreak'
-    | 'heading'
-    | 'rule'
-    | 'bulletList'
-    | 'orderedList'
-    | 'image'
-    | 'table'
-    | 'text'
-    | 'paragraph';
-  attrs?: { [key: string]: string };
-  content?: NodeText[];
-  text?: string;
 }
 
 export interface SimpleMacro {
@@ -49,7 +30,7 @@ export interface Interval {
 }
 
 export interface RichInterval {
-  macros: SimpleMacro[];
+  macro?: SimpleMacro;
   text: string;
-  content: NodeText[];
+  content: PMNode[];
 }

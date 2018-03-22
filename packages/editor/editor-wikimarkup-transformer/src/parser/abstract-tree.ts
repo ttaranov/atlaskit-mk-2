@@ -6,7 +6,6 @@ import {
   MacroName,
   MacroMatch,
   MacrosMatchPosition,
-  NodeText,
   RichInterval,
 } from '../interfaces';
 
@@ -29,20 +28,21 @@ export default class AbstractTree {
   }
 
   /**
-   * Build raw (not reduced) macros tree from wiki markup
+   * Build text intervals list from wiki markup
    */
   getTextIntervals(): RichInterval[] {
     const macros = this.findMacros(this.wikiMarkup);
     const textIntervals = getResolvedIntervals(this.wikiMarkup, macros);
 
     return textIntervals.map(({ macros, text }) => {
-      const treatChildrenAsText =
-        macros.length &&
-        this.shouldTreatChildrenAsText(macros[macros.length - 1].macro);
+      const simpleMacro = macros.pop();
+      const treatChildrenAsText = Boolean(
+        simpleMacro && this.shouldTreatChildrenAsText(simpleMacro.macro),
+      );
 
       return {
-        macros,
         text,
+        macro: simpleMacro,
         content: this.getTextNodes(text, treatChildrenAsText),
       };
     });
@@ -63,31 +63,34 @@ export default class AbstractTree {
   /**
    * Creates prosemirror node from macro
    */
-  // private getProseMirrorMacroNode(node: TreeNodeMacro): PMNode {
-  //   const { blockquote, codeBlock, panel } = this.schema.nodes;
-  //   const content = this.getProseMirrorNodes(node);
+  private getProseMirrorMacroNode(
+    macro: MacroName,
+    attrs: { [key: string]: string },
+    content: PMNode[],
+  ): PMNode {
+    const { blockquote, codeBlock, panel } = this.schema.nodes;
 
-  //   if (node.macro === 'code') {
-  //     return codeBlock.createChecked(
-  //       { language: getCodeLanguage(node.attrs) },
-  //       content,
-  //     );
-  //   }
+    if (macro === 'code') {
+      return codeBlock.createChecked(
+        { language: getCodeLanguage(attrs) },
+        content,
+      );
+    }
 
-  //   if (node.macro === 'noformat') {
-  //     return codeBlock.createChecked({}, content);
-  //   }
+    if (macro === 'noformat') {
+      return codeBlock.createChecked({}, content);
+    }
 
-  //   if (node.macro === 'panel') {
-  //     return panel.createChecked({ panelType: 'info' }, content);
-  //   }
+    if (macro === 'panel') {
+      return panel.createChecked({ panelType: 'info' }, content);
+    }
 
-  //   if (node.macro === 'quote') {
-  //     return blockquote.createChecked({}, content);
-  //   }
+    if (macro === 'quote') {
+      return blockquote.createChecked({}, content);
+    }
 
-  //   throw new Error(`Unknown macro type: ${node.macro}`);
-  // }
+    throw new Error(`Unknown macro type: ${macro}`);
+  }
 
   /**
    * Convert macros tree into prosemirror tree
@@ -95,16 +98,23 @@ export default class AbstractTree {
    */
   private getProseMirrorNodes(intervals: RichInterval[]): PMNode[] {
     const output: PMNode[] = [];
-    // assert(root.content!.length, 'Node content property is absent');
 
-    // for (const node of root.content!) {
-    //   const pmNode =
-    //     node.type === 'macro'
-    //       ? this.getProseMirrorMacroNode(node)
-    //       : this.schema.nodeFromJSON(node);
+    for (const interval of intervals) {
+      const { macro, content } = interval;
 
-    //   output.push(pmNode);
-    // }
+      if (macro) {
+        const { attrs, macro: macroName } = macro;
+        const macroPMNode = this.getProseMirrorMacroNode(
+          macroName,
+          attrs,
+          content,
+        );
+
+        output.push(macroPMNode);
+      } else {
+        output.push(...content);
+      }
+    }
 
     return output;
   }
@@ -112,19 +122,18 @@ export default class AbstractTree {
   /**
    * Combine text nodes with hardBreaks between them
    */
-  private buildTextNodes(lines: string[]): NodeText[] {
-    const output: NodeText[] = [];
+  private buildTextNodes(lines: string[]): PMNode[] {
+    const { text } = this.schema;
+    const { hardBreak } = this.schema.nodes;
+    const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
-      output.push({
-        type: 'text',
-        text: line,
-      });
+      // const textNode = text(line);
+      // output.push(textNode);
 
       if (index + 1 < lines.length) {
-        output.push({
-          type: 'hardBreak',
-        });
+        const brNode = hardBreak.createChecked();
+        output.push(brNode);
       }
     });
 
@@ -134,14 +143,14 @@ export default class AbstractTree {
   /**
    * Parse text which doesn't contain macros
    */
-  private getTextNodes(str: string, treatChildrenAsText): NodeText[] {
-    const output: NodeText[] = [];
+  private getTextNodes(str: string, treatChildrenAsText): PMNode[] {
+    const { text } = this.schema;
+    const { blockquote, heading, paragraph, rule } = this.schema.nodes;
+    const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
-      output.push({
-        type: 'text',
-        text: str,
-      });
+      const textNode = text(str);
+      output.push(textNode);
 
       return output;
     }
@@ -151,10 +160,11 @@ export default class AbstractTree {
 
     const processAndEmptyStoredText = () => {
       if (textContainer.length) {
-        output.push({
-          type: 'paragraph',
-          content: this.buildTextNodes(textContainer),
-        });
+        const paragraphNode = paragraph.createChecked(
+          {},
+          this.buildTextNodes(textContainer),
+        );
+        output.push(paragraphNode);
 
         textContainer = [];
       }
@@ -165,7 +175,9 @@ export default class AbstractTree {
       if (line === HORIZONTAL_RULE) {
         processAndEmptyStoredText();
 
-        output.push({ type: 'rule' });
+        const hrNode = rule.createChecked();
+        output.push(hrNode);
+
         continue;
       }
 
@@ -182,17 +194,12 @@ export default class AbstractTree {
       if (headingMatches) {
         processAndEmptyStoredText();
 
-        output.push({
-          type: 'heading',
-          attrs: { level: headingMatches[1] },
-          content: [
-            {
-              type: 'text',
-              text: headingMatches[2],
-            },
-          ],
-        });
+        const headingNode = heading.createChecked(
+          { level: headingMatches[1] },
+          text(headingMatches[2]),
+        );
 
+        output.push(headingNode);
         continue;
       }
 
@@ -201,21 +208,13 @@ export default class AbstractTree {
       if (lineBlockQuoteMatches) {
         processAndEmptyStoredText();
 
-        output.push({
-          type: 'blockquote',
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: lineBlockQuoteMatches[1],
-                },
-              ],
-            },
-          ],
-        });
+        const paragraphNode = paragraph.createChecked(
+          {},
+          text(lineBlockQuoteMatches[1]),
+        );
+        const blockquoteNode = blockquote.createChecked({}, paragraphNode);
 
+        output.push(blockquoteNode);
         continue;
       }
 
