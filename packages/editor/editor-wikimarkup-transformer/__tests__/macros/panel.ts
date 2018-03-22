@@ -2,11 +2,9 @@ import {
   doc,
   h3,
   hardBreak,
-  li,
   p,
   panel,
   strong,
-  ul,
   underline,
 } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from '../_test-helpers';
@@ -22,7 +20,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('Some ', strong('bold'), ' code here'))),
+      doc(panel({})(p('Some ', strong('bold'), ' code here'))),
     );
   });
 
@@ -34,7 +32,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('Just a hello world here'))),
+      doc(panel({})(p('Just a hello world here'))),
     );
   });
 
@@ -46,7 +44,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('some ', underline('block'), ' here'))),
+      doc(panel({})(p('some ', underline('block'), ' here'))),
     );
   });
 
@@ -58,7 +56,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('this panel has only background color'))),
+      doc(panel({})(p('this panel has only background color'))),
     );
   });
 
@@ -70,7 +68,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('a block of text surrounded with a ', strong('panel')))),
+      doc(panel({})(p('a block of text surrounded with a ', strong('panel')))),
     );
   });
 
@@ -91,7 +89,7 @@ h3. Response To Technical Question 1`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        panel(
+        panel({})(
           p('Some explanations here:'),
           p(
             '1a. step one',
@@ -116,7 +114,7 @@ h3. Response To Technical Question 1`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(panel(p('Some ', strong('bold'), ' code here'))),
+      doc(panel({})(p('Some ', strong('bold'), ' code here'))),
     );
   });
 });
