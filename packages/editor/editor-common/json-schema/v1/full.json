@@ -95,28 +95,6 @@
       ],
       "additionalProperties": false
     },
-    "mediaGroup_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "mediaGroup"
-          ]
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/media_node"
-          },
-          "minItems": 1
-        }
-      },
-      "required": [
-        "type",
-        "content"
-      ],
-      "additionalProperties": false
-    },
     "mediaSingle_node": {
       "type": "object",
       "properties": {
@@ -175,9 +153,6 @@
                   "$ref": "#/definitions/paragraph_node"
                 },
                 {
-                  "$ref": "#/definitions/mediaGroup_node"
-                },
-                {
                   "$ref": "#/definitions/mediaSingle_node"
                 }
               ]
@@ -189,9 +164,6 @@
                 },
                 {
                   "$ref": "#/definitions/bulletList_node"
-                },
-                {
-                  "$ref": "#/definitions/mediaGroup_node"
                 },
                 {
                   "$ref": "#/definitions/mediaSingle_node"
@@ -208,9 +180,6 @@
                 },
                 {
                   "$ref": "#/definitions/bulletList_node"
-                },
-                {
-                  "$ref": "#/definitions/mediaGroup_node"
                 },
                 {
                   "$ref": "#/definitions/mediaSingle_node"
@@ -749,6 +718,28 @@
       "required": [
         "type",
         "text"
+      ],
+      "additionalProperties": false
+    },
+    "mediaGroup_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "mediaGroup"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/media_node"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "type",
+        "content"
       ],
       "additionalProperties": false
     },
@@ -1645,9 +1636,6 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
-            "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
             "$ref": "#/definitions/mediaSingle_node"
           },
           {
@@ -1666,6 +1654,9 @@
             "$ref": "#/definitions/rule_node"
           },
           {
+            "$ref": "#/definitions/mediaGroup_node"
+          },
+          {
             "$ref": "#/definitions/table_node"
           },
           {
@@ -1679,9 +1670,6 @@
           },
           {
             "$ref": "#/definitions/extension_node"
-          },
-          {
-            "$ref": "#/definitions/bodiedExtension_node"
           },
           {
             "$ref": "#/definitions/codeBlock_node"
@@ -1701,9 +1689,6 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
-            "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
             "$ref": "#/definitions/orderedList_node"
           },
           {
@@ -1717,6 +1702,9 @@
           },
           {
             "$ref": "#/definitions/rule_node"
+          },
+          {
+            "$ref": "#/definitions/mediaGroup_node"
           },
           {
             "$ref": "#/definitions/applicationCard_node"
@@ -1748,9 +1736,6 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
-            "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
             "$ref": "#/definitions/mediaSingle_node"
           },
           {
@@ -1767,6 +1752,9 @@
           },
           {
             "$ref": "#/definitions/rule_node"
+          },
+          {
+            "$ref": "#/definitions/mediaGroup_node"
           },
           {
             "$ref": "#/definitions/table_node"
