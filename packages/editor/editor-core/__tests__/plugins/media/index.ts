@@ -55,7 +55,6 @@ const getFreshMediaProvider = () =>
 describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
-
   const providerFactory = ProviderFactory.create({ mediaProvider });
 
   const editor = (
@@ -779,7 +778,7 @@ describe('Media plugin', () => {
     });
   });
 
-  it('should trigger analytics events for picking', async () => {
+  it('should trigger analytics events for picking and dropzone', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const spy = jest.fn();
     analyticsService.handler = spy as AnalyticsHandler;
@@ -801,26 +800,109 @@ describe('Media plugin', () => {
           id: 'test',
           name: 'test.png',
           size: 1,
-          type: 'file/test',
+          type: `file/test`,
         },
       ],
     };
 
-    // Warning: calling private methods below
     (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and clipboard', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and popup', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and binary', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {

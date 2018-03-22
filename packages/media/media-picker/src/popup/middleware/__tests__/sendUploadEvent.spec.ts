@@ -183,6 +183,9 @@ describe('sendUploadEvent middleware', () => {
 
   it('should emit upload error event', () => {
     const { eventEmitter, store, next } = setup();
+    // avoid polluting test logs with error message in console
+    let consoleError = console.error;
+    console.error = jest.fn();
     const error: MediaError = {
       name: 'upload_fail',
       description: 'some-description',
@@ -208,5 +211,6 @@ describe('sendUploadEvent middleware', () => {
       },
       error,
     );
+    consoleError = console.error;
   });
 });

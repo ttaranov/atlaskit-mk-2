@@ -366,8 +366,6 @@ describe('Comment', () => {
       );
 
       expect(comment.first().find(ResourcedReactions).length).toEqual(1);
-
-      comment.unmount();
     });
 
     it('should not render reactions-component if reactionsProvider is missing', () => {

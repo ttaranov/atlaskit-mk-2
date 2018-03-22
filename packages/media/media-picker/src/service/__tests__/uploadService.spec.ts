@@ -8,6 +8,8 @@ import { UploadParams } from '../../domain/config';
 const createHasher = hasherCreatorModule.createHasher;
 const createHasherSpy = jest.spyOn(hasherCreatorModule, 'createHasher');
 let hasherHashSpy: jest.SpyInstance<Hasher['hash']>;
+// avoid polluting test logs with error message in console
+let consoleError = console.error;
 
 createHasherSpy.mockImplementation(() => {
   const hasher = createHasher();
@@ -30,6 +32,11 @@ describe('UploadService', () => {
 
   beforeEach(() => {
     hasherHashSpy.mockReset();
+    console.error = jest.fn();
+  });
+  afterEach(() => {
+    hasherHashSpy.mockReset();
+    console.error = consoleError;
   });
 
   describe('setUploadParams', () => {
@@ -554,10 +561,6 @@ describe('UploadService', () => {
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
-      // avoid polluting test logs with error message in console
-      const consoleError = console.error;
-      console.error = jest.fn();
-
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -577,8 +580,6 @@ describe('UploadService', () => {
           },
         }),
       );
-
-      console.error = consoleError;
     });
   });
 
