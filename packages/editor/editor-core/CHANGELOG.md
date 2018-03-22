@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.16
+- [patch] ED-4088 fixing selection of mention in macros bug in IE11. [10a016b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10a016b)
+
 ## 65.1.15
 - [patch] ED-4092: disabling smart code detection on paste [1e8e8da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e8e8da)
 
