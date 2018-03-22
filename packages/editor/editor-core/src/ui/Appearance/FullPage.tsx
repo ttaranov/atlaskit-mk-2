@@ -143,8 +143,8 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ClickAreaBlock editorView={editorView}>
-          <ScrollContainer>
+        <ScrollContainer>
+          <ClickAreaBlock editorView={editorView}>
             <ContentArea>
               {customContentComponents}
               {
@@ -163,8 +163,8 @@ export default class Editor extends React.Component<
               }
               {editorDOMElement}
             </ContentArea>
-          </ScrollContainer>
-        </ClickAreaBlock>
+          </ClickAreaBlock>
+        </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );
