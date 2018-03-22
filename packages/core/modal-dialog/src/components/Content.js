@@ -82,7 +82,7 @@ type Props = {
   heading?: string,
   /**
    * Makes heading multiline.
-   * If false and heading is longer than one line, overflow will be not displayed.
+   * If false and heading is longer than one line overflow will be not displayed.
    */
   isHeadingMultiline?: boolean,
 };
