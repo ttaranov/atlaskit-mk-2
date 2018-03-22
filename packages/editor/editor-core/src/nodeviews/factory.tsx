@@ -1,14 +1,17 @@
 import * as React from 'react';
+import { ComponentClass, StatelessComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ReactPMNode from './ui/prosemirror-node';
+import { EventDispatcher } from '../event-dispatcher';
+import connect from './connect';
 
 type getPosHandler = () => number;
 
 export interface ReactNodeViewComponents {
-  [key: string]: React.ComponentClass<any> | React.StatelessComponent<any>;
+  [key: string]: ComponentClass<any> | StatelessComponent<any>;
 }
 
 class NodeViewElem implements NodeView {
@@ -18,6 +21,7 @@ class NodeViewElem implements NodeView {
   private getPos: getPosHandler;
   private providerFactory: ProviderFactory;
   private reactNodeViewComponents: ReactNodeViewComponents;
+  private eventDispatcher: EventDispatcher;
 
   constructor(
     node: PMNode,
@@ -35,6 +39,7 @@ class NodeViewElem implements NodeView {
 
     const elementType = isBlockNodeView ? 'div' : 'span';
     this.domRef = document.createElement(elementType);
+    this.eventDispatcher = new EventDispatcher();
 
     this.renderReactComponent(node);
   }
@@ -48,7 +53,14 @@ class NodeViewElem implements NodeView {
     const isValidUpdate = this.nodeTypeName === node.type.name;
 
     if (isValidUpdate) {
-      this.renderReactComponent(node);
+      if (this.domRef) {
+        Object.keys(node.attrs || {}).forEach(attr => {
+          this.domRef!.setAttribute(attr, node.attrs[attr]);
+        });
+        this.eventDispatcher.emit('change', { node });
+      } else {
+        this.renderReactComponent(node);
+      }
     }
 
     return isValidUpdate;
@@ -56,20 +68,23 @@ class NodeViewElem implements NodeView {
 
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.eventDispatcher.destroy();
     this.domRef = undefined;
   }
 
   private renderReactComponent(node: PMNode) {
-    const { getPos, providerFactory, reactNodeViewComponents, view } = this;
+    const {
+      getPos,
+      providerFactory,
+      reactNodeViewComponents,
+      view,
+      eventDispatcher,
+    } = this;
 
-    Object.keys(node.attrs || {}).forEach(attr => {
-      if (this.domRef) {
-        this.domRef.setAttribute(attr, node.attrs[attr]);
-      }
-    });
+    const ConnectedReactPMNode = connect(ReactPMNode, eventDispatcher);
 
     ReactDOM.render(
-      <ReactPMNode
+      <ConnectedReactPMNode
         node={node}
         getPos={getPos}
         view={view}
