@@ -182,10 +182,7 @@ export const reducers = createReducer(initialState, {
       return state;
     }
 
-    const conversations: Conversation[] = [
-      ...state.conversations,
-      ...(payload: Conversation[]),
-    ];
+    const conversations: Conversation[] = state.conversations.concat(payload);
 
     return {
       ...state,
