@@ -31,11 +31,6 @@ describe('JIRA wiki markup - Abstract tree', () => {
   for (const [testCaseName, markup] of testCases) {
     it(`should match parsed structure for ${testCaseName}`, () => {
       const tree = new AbstractTree(defaultSchema, markup);
-
-      console.log(markup);
-      console.log(JSON.stringify(tree.getTextIntervals(), null, 2));
-      console.log();
-
       expect(tree.getTextIntervals()).toMatchSnapshot();
     });
   }

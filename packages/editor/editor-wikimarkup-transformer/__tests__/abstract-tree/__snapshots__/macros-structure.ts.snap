@@ -5,6 +5,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -14,6 +20,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "quote1",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -26,6 +38,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "quote2",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -38,11 +56,63 @@ Array [
 ]
 `;
 
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for noformat example 1`] = `
+Array [
+  Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "macro": undefined,
+    "text": "This is a ",
+  },
+  Object {
+    "content": Array [
+      Object {
+        "text": "no format thing with ",
+        "type": "text",
+      },
+    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "noformat",
+    },
+    "text": "no format thing with ",
+  },
+  Object {
+    "content": Array [
+      Object {
+        "text": "inside",
+        "type": "text",
+      },
+    ],
+    "macro": Object {
+      "attrs": Object {},
+      "macro": "noformat",
+    },
+    "text": "inside",
+  },
+]
+`;
+
 exports[`JIRA wiki markup - Abstract tree should match parsed structure for panel with attributes and a nested quote 1`] = `
 Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "Panel with nested quote here",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -55,6 +125,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": ".",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -69,6 +145,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -78,6 +160,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "quote with a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -90,6 +178,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "panel",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -102,6 +196,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": " inside",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -114,6 +214,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": ".",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -123,11 +229,17 @@ Array [
 ]
 `;
 
-exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple quote string 1`] = `
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple code containing string 1`] = `
 Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -137,6 +249,47 @@ Array [
   Object {
     "content": Array [
       Object {
+        "text": "<xml_code/>",
+        "type": "text",
+      },
+    ],
+    "macro": Object {
+      "attrs": Object {
+        "xml": "",
+      },
+      "macro": "code",
+    },
+    "text": "<xml_code/>",
+  },
+]
+`;
+
+exports[`JIRA wiki markup - Abstract tree should match parsed structure for simple quote string 1`] = `
+Array [
+  Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "macro": undefined,
+    "text": "This is a ",
+  },
+  Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "simple quote",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -154,6 +307,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "simple quote",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -171,6 +330,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "This is a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -180,6 +345,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": " panel with a ",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -194,6 +365,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": "quote inside",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],
@@ -206,6 +383,12 @@ Array [
   Object {
     "content": Array [
       Object {
+        "content": Array [
+          Object {
+            "text": " but it is broken",
+            "type": "text",
+          },
+        ],
         "type": "paragraph",
       },
     ],

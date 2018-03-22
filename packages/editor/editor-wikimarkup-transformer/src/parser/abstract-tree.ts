@@ -123,13 +123,12 @@ export default class AbstractTree {
    * Combine text nodes with hardBreaks between them
    */
   private buildTextNodes(lines: string[]): PMNode[] {
-    const { text } = this.schema;
     const { hardBreak } = this.schema.nodes;
     const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
-      // const textNode = text(line);
-      // output.push(textNode);
+      const textNode = this.schema.text(line);
+      output.push(textNode);
 
       if (index + 1 < lines.length) {
         const brNode = hardBreak.createChecked();
@@ -144,12 +143,11 @@ export default class AbstractTree {
    * Parse text which doesn't contain macros
    */
   private getTextNodes(str: string, treatChildrenAsText): PMNode[] {
-    const { text } = this.schema;
     const { blockquote, heading, paragraph, rule } = this.schema.nodes;
     const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
-      const textNode = text(str);
+      const textNode = this.schema.text(str);
       output.push(textNode);
 
       return output;
@@ -196,7 +194,7 @@ export default class AbstractTree {
 
         const headingNode = heading.createChecked(
           { level: headingMatches[1] },
-          text(headingMatches[2]),
+          this.schema.text(headingMatches[2]),
         );
 
         output.push(headingNode);
@@ -210,7 +208,7 @@ export default class AbstractTree {
 
         const paragraphNode = paragraph.createChecked(
           {},
-          text(lineBlockQuoteMatches[1]),
+          this.schema.text(lineBlockQuoteMatches[1]),
         );
         const blockquoteNode = blockquote.createChecked({}, paragraphNode);
 
