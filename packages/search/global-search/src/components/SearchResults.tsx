@@ -42,7 +42,7 @@ const searchConfluenceItem = (query: string) => (
     icon={<ConfluenceIcon size="large" label="Search Confluence" />}
     key="search_confluence"
     resultId="search_confluence"
-    text="Search for more Confluence pages"
+    text="Search for more Confluence pages and blogs"
   />
 );
 
@@ -91,7 +91,7 @@ const renderJira = (results: Result[], query: string) => (
 
 const renderConfluence = (results: Result[], query: string) => (
   <AkNavigationItemGroup
-    title="Confluence pages"
+    title="Confluence pages and blogs"
     key="confluence"
     test-selector="confluence"
   >
