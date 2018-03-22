@@ -23,6 +23,7 @@
     "@atlaskit/icon": "^10.12.1",
     "@atlaskit/theme": "^2.4.1",
     "calendar-base": "^0.3.0",
+    "lodash.pick": "^4.4.0",
     "styled-components": "1.4.6 - 3",
     "uuid": "^3.1.0"
   },

@@ -1,6 +1,7 @@
 // @flow
 
 import { Calendar as CalendarBase } from 'calendar-base';
+import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
@@ -76,9 +77,10 @@ type Props = {
 type State = {
   day: number,
   disabled: Array<string>,
-  selected: Array<string>,
   month: number,
   previouslySelected: Array<string>,
+  selected: Array<string>,
+  today: string,
   year: number,
 };
 
@@ -86,11 +88,13 @@ function getUniqueId(prefix: string) {
   return `${prefix}-${uuid()}`;
 }
 
+function padToTwo(number: number) {
+  return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
+}
+
 export default class Calendar extends Component<Props, State> {
   calendar: Object;
   container: HTMLElement | null;
-  /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
-  today: string;
 
   static defaultProps = {
     onBlur() {},
@@ -117,7 +121,9 @@ export default class Calendar extends Component<Props, State> {
       month: this.props.defaultMonth || thisMonth,
       previouslySelected: this.props.defaultPreviouslySelected,
       year: this.props.defaultYear || thisYear,
-      today: this.props.today || `${thisYear}-${thisMonth}-${thisDay}`,
+      today:
+        this.props.today ||
+        `${thisYear}-${padToTwo(thisMonth)}-${padToTwo(thisDay)}`,
     };
     this.calendar = new CalendarBase({
       siblingMonths: true,
@@ -128,7 +134,18 @@ export default class Calendar extends Component<Props, State> {
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return { ...this.state, ...this.props };
+    return {
+      ...this.state,
+      ...pick(this.props, [
+        'day',
+        'disabled',
+        'selected',
+        'month',
+        'previouslySelected',
+        'year',
+        'today',
+      ]),
+    };
   };
 
   getNextMonth() {
@@ -322,6 +339,7 @@ export default class Calendar extends Component<Props, State> {
       disabled,
       previouslySelected,
       selected,
+      today,
     } = mappedState;
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
@@ -359,7 +377,7 @@ export default class Calendar extends Component<Props, State> {
         !isDisabled && previouslySelected.indexOf(dateAsString) > -1;
       const isSelected = !isDisabled && selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
-      const isToday = this.today === dateAsString;
+      const isToday = today === dateAsString;
 
       week.components.push(
         <DateComponent

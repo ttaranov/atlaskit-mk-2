@@ -3,6 +3,7 @@
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
+import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -129,7 +130,10 @@ export default class DateTimePicker extends Component<Props, State> {
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return { ...this.state, ...this.props };
+    return {
+      ...this.state,
+      ...pick(this.props, ['value']),
+    };
   };
 
   onBlur = () => {

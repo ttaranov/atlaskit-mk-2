@@ -2,6 +2,7 @@
 
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
+import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
@@ -84,7 +85,10 @@ export default class TimePicker extends Component<Props, State> {
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return { ...this.state, ...this.props };
+    return {
+      ...this.state,
+      ...pick(this.props, ['value', 'isOpen']),
+    };
   };
 
   getOptions(): Array<Option> {

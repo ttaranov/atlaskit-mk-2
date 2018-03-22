@@ -302,6 +302,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.flattendeep": "^4.4.0",
+    "lodash.pick": "^4.4.0",
     "lodash.sample": "^4.2.1",
     "lru-fast": "^0.2.2",
     "markdown-it": "^8.4.0",
