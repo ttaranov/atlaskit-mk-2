@@ -1,0 +1,27 @@
+{
+  "name": "@atlaskit/bitbucket-build-artefacts-addon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Addon for displaying build artefacts on a Bitbucket PR",
+  "scripts": {
+    "dev": "webpack-dev-server --content-base dist/",
+    "build": "webpack -p",
+    "deploy": "yarn build && netlify deploy"
+  },
+  "author": "Luke Batchelor",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "copy-webpack-plugin": "^4.2.3",
+    "html-webpack-plugin": "^2.30.1",
+    "ngrok": "^2.2.24",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "dependencies": {
+    "netlify-cli": "^1.2.2",
+    "query-string": "^4.3.2",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

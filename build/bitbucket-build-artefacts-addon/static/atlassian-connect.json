@@ -1,0 +1,37 @@
+{
+  "name": "AK-MK-2 Artefacts Addon",
+  "description": "Addon to display a 'artefacts' panel in PRs show links to various artefacts",
+  "baseUrl": "https://ak-mk-2-releases-addon.netlify.com/",
+  "key": "ak-mk-2-artefacts-addon",
+  "vendor": {
+    "name": "Luke Batchelor"
+  },
+  "scopes": ["pullrequest"],
+  "authentication": {
+    "type": "jwt"
+  },
+  "contexts": [
+    "personal"
+  ],
+  "modules": {
+    "webPanels": [{
+      "weight": 100,
+      "tooltip": {
+        "value": "Artefacts generated from the last build"
+      },
+      "key": "ak-mk-2-artefacts-addon-panel",
+      "name": {
+        "value": "Artefacts"
+      },
+      "url": "/index.html?user={pullrequest.source.repository.owner.username}&repo={pullrequest.source.repository.name}&pullrequestid={pullrequest.id}",
+      "location": "org.bitbucket.pullrequest.overview.informationPanel",
+      "conditions": [{
+        "condition": "equals",
+        "target": "repository.uuid",
+        "params": {
+          "value": "{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}"
+        }
+      }]
+    }]
+  }
+}
