@@ -49,7 +49,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'LOADING',
+      fileDetails: {
+        status: 'PENDING',
+      },
     });
   });
 
@@ -67,7 +69,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'SUCCESS',
+      fileDetails: {
+        status: 'SUCCESSFUL',
+      },
     });
   });
 
@@ -85,7 +89,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'FAILED',
+      fileDetails: {
+        status: 'FAILED',
+      },
     });
   });
 
@@ -100,7 +106,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'FAILED',
+      fileDetails: {
+        status: 'FAILED',
+      },
     });
   });
 
@@ -111,7 +119,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'FAILED',
+      fileDetails: {
+        status: 'FAILED',
+      },
     });
   });
 
@@ -155,7 +165,7 @@ describe('<MediaViewer />', () => {
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
   });
 
-  it('resets to the loading state when the context property value is changed', () => {
+  it('resets the state when the context property value is changed', () => {
     const { el, subject } = createFixture(identifier);
     const item: MediaItem = {
       type: 'file',
@@ -169,7 +179,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'SUCCESS',
+      fileDetails: {
+        status: 'SUCCESSFUL',
+      },
     });
 
     const context = createContext(new Subject<MediaItem>());
@@ -178,7 +190,9 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      type: 'LOADING',
+      fileDetails: {
+        status: 'PENDING',
+      },
     });
   });
 });

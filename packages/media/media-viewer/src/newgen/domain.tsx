@@ -7,23 +7,27 @@ export type Identifier = {
   collectionName?: string;
 };
 
+export type Outcome<Data, Err> =
+  | {
+      status: 'PENDING';
+    }
+  | {
+      status: 'SUCCESSFUL';
+      data: Data;
+    }
+  | {
+      status: 'FAILED';
+      err: Err;
+    };
+
 export type FileDetails = {
   mediaType: MediaType;
 };
 
-export type Model =
-  | {
-      type: 'LOADING';
-    }
-  | {
-      type: 'SUCCESS';
-      item: FileDetails;
-    }
-  | {
-      type: 'FAILED';
-      err: Error;
-    };
+export type Model = {
+  fileDetails: Outcome<FileDetails, Error>;
+};
 
 export const initialModel: Model = {
-  type: 'LOADING',
+  fileDetails: { status: 'PENDING' },
 };
