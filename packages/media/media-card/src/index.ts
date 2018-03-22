@@ -13,7 +13,7 @@ import {
 
 import { CardAction } from './actions';
 
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from './analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';

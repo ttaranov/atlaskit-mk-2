@@ -7,10 +7,9 @@ import {
   unknownFileId,
   errorFileId,
 } from '@atlaskit/media-test-helpers';
-import {
-  AnalyticsListener,
-  UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+
+import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 import { Card, FileIdentifier } from '../src';
 import { createApiCards, actions } from '../example-helpers';
