@@ -44,7 +44,7 @@ export default (
 
           if (
             element &&
-            (!document.contains(element) || !getExtensionNode(state))
+            (!document.body.contains(element) || !getExtensionNode(state))
           ) {
             setExtensionElement(null)(state, dispatch);
           }
