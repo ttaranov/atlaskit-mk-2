@@ -70,6 +70,7 @@ export interface ResourceProvider {
 export class AbstractConversationResource implements ResourceProvider {
   _store: Store<State | typeof undefined>;
 
+  // $FlowFixMe
   get store(): Store<State | typeof undefined> {
     return this._store;
   }
