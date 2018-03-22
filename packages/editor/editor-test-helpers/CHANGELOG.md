@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.12
+- [patch] Remove JSDOM warning in CI [309af83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/309af83)
+
 ## 2.0.11
 
 ## 2.0.10
