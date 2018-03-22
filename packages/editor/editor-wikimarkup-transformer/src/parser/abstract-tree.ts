@@ -1,21 +1,18 @@
-import * as assert from 'assert';
-import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
-import { parse as parseQuery } from 'querystring';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 
 import {
   MacroName,
-  MacroMatch,
-  MacrosMatchPosition,
   RichInterval,
 } from '../interfaces';
 
 import { getCodeLanguage } from './code-language';
 import { getResolvedIntervals } from './intervals';
+import { isSpecialMacro } from './special';
 
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
 const HORIZONTAL_RULE = '----';
-const KNOWN_MACRO: MacroName[] = ['code', 'noformat', 'panel', 'quote'];
+
 const NEWLINE = '\n';
 
 export default class AbstractTree {
@@ -31,13 +28,12 @@ export default class AbstractTree {
    * Build text intervals list from wiki markup
    */
   getTextIntervals(): RichInterval[] {
-    const macros = this.findMacros(this.wikiMarkup);
-    const textIntervals = getResolvedIntervals(this.wikiMarkup, macros);
+    const textIntervals = getResolvedIntervals(this.wikiMarkup);
 
     return textIntervals.map(({ macros, text }) => {
       const simpleMacro = macros.pop();
       const treatChildrenAsText = Boolean(
-        simpleMacro && this.shouldTreatChildrenAsText(simpleMacro.macro),
+        simpleMacro && isSpecialMacro(simpleMacro.macro),
       );
 
       return {
@@ -230,71 +226,5 @@ export default class AbstractTree {
     processAndEmptyStoredText();
 
     return output;
-  }
-
-  /**
-   * Regex search for macro in the string
-   */
-  private findMacros(str: string): MacroMatch[] {
-    const output: MacroMatch[] = [];
-
-    for (const macro of KNOWN_MACRO) {
-      // search for {macro} and {macro:with=attributes|etc}
-      const regex = new RegExp(`{${macro}(:([^{]*?))?}`, 'g');
-      let matches: RegExpExecArray | null;
-      let matchCount = 0;
-      let startPos: MacrosMatchPosition | undefined;
-      let attrs: { [key: string]: string } | undefined;
-
-      while ((matches = regex.exec(str)) !== null) {
-        const position = matches.index;
-        const attrsSerialized = matches[2] || '';
-        const isOpeningMacros = matchCount % 2 === 0;
-
-        if (isOpeningMacros) {
-          startPos = {
-            outer: position,
-            inner: position + matches[0].length,
-          };
-
-          attrs = this.parseAttrs(attrsSerialized);
-        } else {
-          output.push({
-            macro,
-            attrs: attrs!,
-            startPos: startPos!,
-            endPos: {
-              inner: position,
-              outer: position + matches[0].length,
-            },
-          });
-        }
-
-        matchCount++;
-      }
-    }
-
-    return output;
-  }
-
-  /**
-   * Convert wiki markup attrs into key->value pairs
-   * @example "title=Sparta|color=red" -> {title: Sparta, color: red}
-   */
-  private parseAttrs(str: string) {
-    const output = parseQuery(str, '|');
-
-    // take only first value of the same keys
-    Object.keys(output).forEach(key => {
-      if (Array.isArray(output[key])) {
-        output[key] = output[key][0];
-      }
-    });
-
-    return output;
-  }
-
-  private shouldTreatChildrenAsText(macro: MacroName): boolean {
-    return macro === 'code' || macro === 'noformat';
   }
 }

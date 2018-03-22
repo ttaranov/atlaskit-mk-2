@@ -1,4 +1,13 @@
-import { Interval, MacroMatch, SimpleInterval } from '../interfaces';
+import * as assert from 'assert';
+
+import {
+  Interval,
+  MacroMatch,
+  SimpleInterval,
+} from '../interfaces';
+
+import { findMacros } from './macros';
+import { isSpecialMacro } from './special';
 
 function containsInterval(
   macro: MacroMatch,
@@ -8,6 +17,67 @@ function containsInterval(
     macro.startPos.inner <= interval.left &&
     macro.endPos.inner >= interval.right
   );
+}
+
+function hasIntersectionWithInterval(
+  macro: MacroMatch,
+  interval: SimpleInterval,
+): boolean {
+  const isLeftIntervalBorderInsideMacro = (
+    interval.left > macro.startPos.inner &&
+    interval.left < macro.endPos.inner
+  );
+
+  const isRightIntervalBorderInsideMacro = (
+    interval.right > macro.startPos.inner &&
+    interval.right < macro.endPos.inner
+  );
+
+  return isLeftIntervalBorderInsideMacro || isRightIntervalBorderInsideMacro;
+}
+
+function calcIntersectingMacros(macros: MacroMatch[], startIndex: number): number {
+  const macro = macros[startIndex];
+  assert(macro, `Macro position is out of range: ${startIndex}`);
+
+  return macros.reduce((memo, currentMacro, index) => {
+    if (index <= startIndex) {
+      return memo;
+    }
+
+    const currentMacroInterval: SimpleInterval = {
+      left: currentMacro.startPos.outer,
+      right: currentMacro.endPos.outer,
+    };
+
+    return hasIntersectionWithInterval(macro, currentMacroInterval)
+      ? memo + 1
+      : memo;
+  }, 0);
+}
+
+/**
+ * Remove intersecting/containing macros inside "code" and "noformat" macros
+ */
+function filterValidMacros(macros: MacroMatch[]): MacroMatch[] {
+  const output = [...macros].sort((a, b) => a.startPos.outer - b.startPos.outer);
+  let i = 0;
+
+  // Array.prototype.filter() looks much cleaner here
+  // however array can change inside the callback function
+  // which makes the code awkward, so ¯\_(ツ)_/¯
+  while (i < output.length) {
+    const macro = output[i];
+
+    if (isSpecialMacro(macro.macro)) {
+      const intersectingMacrosNum = calcIntersectingMacros(output, i);
+      output.splice(i + 1, intersectingMacrosNum);
+    }
+
+    i++;
+  }
+
+  return output;
 }
 
 /**
@@ -71,12 +141,12 @@ function calcTextIntervals(
  * "This is a {quote}quote with a {panel}foobar{panel} inside{quote}"
  * foobar text chunk will have 2 macros: [quote, panel]
  */
-export function getResolvedIntervals(
-  wikiMarkup: string,
-  macros: MacroMatch[],
-): Interval[] {
+export function getResolvedIntervals(wikiMarkup: string): Interval[] {
+  const macros = findMacros(wikiMarkup);
+  const validMacros = filterValidMacros(macros);
+
   // calculate all intervals taking outer borders of macros
-  const intervals = calcTextIntervals(wikiMarkup, macros);
+  const intervals = calcTextIntervals(wikiMarkup, validMacros);
 
   // create output list with empty macros in its elements
   const output: Interval[] = intervals.map(({ left, right }) => {
@@ -87,7 +157,7 @@ export function getResolvedIntervals(
   });
 
   // iterate existing macros and put them into the output list
-  for (const macro of macros) {
+  for (const macro of validMacros) {
     intervals.map((interval, i) => {
       if (containsInterval(macro, interval)) {
         output[i].macros.push({

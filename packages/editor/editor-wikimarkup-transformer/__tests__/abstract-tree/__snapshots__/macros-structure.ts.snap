@@ -76,7 +76,7 @@ Array [
   Object {
     "content": Array [
       Object {
-        "text": "no format thing with ",
+        "text": "no format thing with {code}inside{code}",
         "type": "text",
       },
     ],
@@ -84,20 +84,7 @@ Array [
       "attrs": Object {},
       "macro": "noformat",
     },
-    "text": "no format thing with ",
-  },
-  Object {
-    "content": Array [
-      Object {
-        "text": "inside",
-        "type": "text",
-      },
-    ],
-    "macro": Object {
-      "attrs": Object {},
-      "macro": "noformat",
-    },
-    "text": "inside",
+    "text": "no format thing with {code}inside{code}",
   },
 ]
 `;
@@ -189,7 +176,7 @@ Array [
     ],
     "macro": Object {
       "attrs": Object {},
-      "macro": "quote",
+      "macro": "panel",
     },
     "text": "panel",
   },
