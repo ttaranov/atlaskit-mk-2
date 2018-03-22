@@ -18,9 +18,15 @@ export const Positioner = styled.div`
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
+  z-index: 500;
 `;
 
 export const ErrorMessage = styled.div`
   width: 100%;
   text-align: center;
+`;
+
+export const Img = styled.img`
+  margin: auto;
+  width: 100%;
 `;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaType } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel } from './domain';
+import { Model, Identifier, initialModel, StoreImpl } from './domain';
 
 export type Props = {
   onClose?: () => void;
@@ -63,52 +63,8 @@ export class MediaViewer extends React.Component<Props, State> {
   private subscription?: any;
 
   private subscribe() {
-    const { id, type, collectionName } = this.props.data;
-    const provider = this.props.context.getMediaItemProvider(
-      id,
-      type,
-      collectionName,
-    );
-
-    this.subscription = provider.observable().subscribe({
-      next: mediaItem => {
-        if (mediaItem.type === 'link') {
-          const model: Model = {
-            type: 'FAILED',
-            err: new Error('links are not supported at the moment'),
-          };
-          this.setState({ model });
-        } else {
-          const { processingStatus, mediaType } = mediaItem.details;
-
-          if (processingStatus === 'failed') {
-            const model: Model = {
-              type: 'FAILED',
-              err: new Error('processing failed'),
-            };
-            this.setState({ model });
-          } else if (processingStatus === 'succeeded') {
-            const model: Model = {
-              type: 'SUCCESS',
-              item: {
-                mediaType: mediaType as MediaType,
-              },
-            };
-            this.setState({ model });
-          }
-        }
-      },
-      complete: () => {
-        /* do nothing */
-      },
-      error: err => {
-        const model: Model = {
-          type: 'FAILED',
-          err,
-        };
-        this.setState({ model });
-      },
-    });
+    const store = new StoreImpl(this.props.context, this.props.data);
+    store.subscribe(model => this.setState({ model }));
   }
 
   private unsubscribe() {
