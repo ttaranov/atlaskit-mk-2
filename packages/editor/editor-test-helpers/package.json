@@ -33,7 +33,6 @@
     "@types/prosemirror-keymap": "^1.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-state": "^1.0.0",
-    "@types/prosemirror-view": "^1.0.0",
-    "is-ci": "^1.1.0"
+    "@types/prosemirror-view": "^1.0.0"
   }
 }
