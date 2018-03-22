@@ -184,9 +184,7 @@ export const reducers = createReducer(initialState, {
 
     const conversations: Conversation[] = [
       ...state.conversations,
-      {
-        ...payload,
-      },
+      ...(payload: Conversation[]),
     ];
 
     return {

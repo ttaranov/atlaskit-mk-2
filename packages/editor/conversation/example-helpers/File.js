@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
+// $FlowFixMe
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { ResourceProvider } from '../src/api/ConversationResource';
 import { Conversation } from '../src';
