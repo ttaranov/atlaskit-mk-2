@@ -6,13 +6,14 @@ export default md`
     ### Usage
 
     NPS provides a component to render an NPS survey.
-    
+
+
     ~~~js
-    import NPS, { NPS } from '@atlaskit/nps';
+    import NPSCollector, { NPS } from '@atlaskit/nps';
     ~~~
 
     For the most basic usage of the package, the default export provides a preconfigured NPS experience. This will give you the NPS survey with built in defaults for almost everything. The only configuration required is the name of the product the survey is for, and a callback for when the survey is completed.
-    
+
     ${(
       <Example
         Component={require('../examples/00-basic').default}
@@ -26,7 +27,7 @@ export default md`
     ${(
       <Example
         Component={require('../examples/01-basic-more-config').default}
-        title="Basic More Config"
+        title="Usage with more props"
         source={require('!!raw-loader!../examples/01-basic-more-config')}
       />
     )}
