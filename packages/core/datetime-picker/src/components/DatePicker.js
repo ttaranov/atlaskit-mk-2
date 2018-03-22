@@ -6,7 +6,6 @@ import Select from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component, type Node, type ElementRef } from 'react';
-import Ctrl from 'react-ctrl';
 import styled from 'styled-components';
 
 import { ClearIndicator, DropdownIndicator } from '../internal';
@@ -17,9 +16,9 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
+  defaultIsOpen: boolean,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
   /** The icon to show in the field. */
@@ -114,12 +113,20 @@ export default class DatePicker extends Component<Props, State> {
     innerProps: {},
     selectProps: {},
     id: '',
+    defaultIsOpen: false,
+    defaultValue: '',
   };
 
   state = {
-    isOpen: false,
-    value: '',
+    isOpen: this.props.defaultIsOpen,
+    value: this.props.defaultValue,
     view: '',
+  };
+
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    return { ...this.state, ...this.props };
   };
 
   onCalendarChange = ({ iso }: { iso: string }) => {
@@ -160,7 +167,7 @@ export default class DatePicker extends Component<Props, State> {
   onSelectKeyDown = (e: Event) => {
     const { key } = e;
     const dir = arrowKeys[key];
-    const { isOpen, view } = this.state;
+    const { isOpen, view } = this.getState();
 
     if (dir) {
       // Calendar will not exist if it's not open and this also doubles as a
@@ -207,8 +214,8 @@ export default class DatePicker extends Component<Props, State> {
       name,
       selectProps,
     } = this.props;
-    const { isOpen } = this.state;
-    const Menu = (value, view) => () =>
+    const { isOpen, value, view } = this.getState();
+    const Menu = () =>
       isOpen ? (
         <StyledMenu>
           <Calendar
@@ -225,41 +232,37 @@ export default class DatePicker extends Component<Props, State> {
       ) : null;
 
     return (
-      <Ctrl data={this}>
-        {mapped => (
-          <div
-            {...innerProps}
-            role="presentation"
-            onClick={this.onInputClick}
-            onInput={this.onSelectInput}
-            onKeyDown={this.onSelectKeyDown}
-          >
-            <input name={name} type="hidden" value={mapped.value} />
-            {/* $FlowFixMe - complaining about required args that aren't required. */}
-            <Select
-              autoFocus={autoFocus}
-              instanceId={id}
-              isDisabled={isDisabled}
-              menuIsOpen={mapped.isOpen}
-              onBlur={this.onSelectBlur}
-              onFocus={this.onSelectFocus}
-              components={{
-                ClearIndicator,
-                DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-                Menu: Menu(mapped.value, this.state.view),
-              }}
-              placeholder="e.g. 2018/12/31"
-              value={
-                mapped.value && {
-                  label: format(parse(mapped.value), 'YYYY/MM/DD'),
-                  value: mapped.value,
-                }
-              }
-              {...selectProps}
-            />
-          </div>
-        )}
-      </Ctrl>
+      <div
+        {...innerProps}
+        role="presentation"
+        onClick={this.onInputClick}
+        onInput={this.onSelectInput}
+        onKeyDown={this.onSelectKeyDown}
+      >
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          instanceId={id}
+          isDisabled={isDisabled}
+          menuIsOpen={isOpen}
+          onBlur={this.onSelectBlur}
+          onFocus={this.onSelectFocus}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            Menu,
+          }}
+          placeholder="e.g. 2018/12/31"
+          value={
+            value && {
+              label: format(parse(value), 'YYYY/MM/DD'),
+              value,
+            }
+          }
+          {...selectProps}
+        />
+      </div>
     );
   }
 }

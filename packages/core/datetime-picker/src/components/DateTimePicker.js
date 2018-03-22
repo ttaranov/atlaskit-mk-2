@@ -4,7 +4,6 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component } from 'react';
-import Ctrl from 'react-ctrl';
 import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
@@ -15,7 +14,7 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
@@ -106,6 +105,7 @@ export default class DateTimePicker extends Component<Props, State> {
     onFocus: () => {},
     innerProps: {},
     id: '',
+    defaultValue: '',
   };
 
   state = {
@@ -113,7 +113,7 @@ export default class DateTimePicker extends Component<Props, State> {
     dateValue: '',
     isFocused: false,
     timeValue: '',
-    value: '',
+    value: this.props.defaultValue,
     zoneValue: '',
   };
 
@@ -122,13 +122,19 @@ export default class DateTimePicker extends Component<Props, State> {
     this.state = { ...this.state, ...parseDateIntoStateValues(props.value) };
   }
 
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    return { ...this.state, ...this.props };
+  };
+
   onBlur = () => {
     this.setState({ isFocused: false });
     this.props.onBlur();
   };
 
   onDateChange = (dateValue: string) => {
-    this.onValueChange({ ...this.state, dateValue });
+    this.onValueChange({ ...this.getState(), dateValue });
   };
 
   onFocus = () => {
@@ -137,7 +143,7 @@ export default class DateTimePicker extends Component<Props, State> {
   };
 
   onTimeChange = (timeValue: string) => {
-    this.onValueChange({ ...this.state, timeValue });
+    this.onValueChange({ ...this.getState(), timeValue });
   };
 
   onValueChange({
@@ -159,40 +165,36 @@ export default class DateTimePicker extends Component<Props, State> {
 
   render() {
     const { autoFocus, id, innerProps, isDisabled, name } = this.props;
-    const { isFocused, value } = this.state;
+    const { isFocused, value, dateValue, timeValue } = this.getState();
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
     };
     return (
-      <Ctrl data={this}>
-        {mapped => (
-          <Flex {...innerProps} isFocused={isFocused}>
-            <input name={name} type="hidden" value={value} />
-            <FlexItem>
-              <DatePicker
-                {...bothProps}
-                autoFocus={autoFocus}
-                icon={null}
-                id={id}
-                onChange={this.onDateChange}
-                selectProps={{ styles }}
-                value={mapped.dateValue}
-              />
-            </FlexItem>
-            <FlexItem>
-              <TimePicker
-                {...bothProps}
-                icon={CalendarIcon}
-                onChange={this.onTimeChange}
-                selectProps={{ styles }}
-                value={mapped.timeValue}
-              />
-            </FlexItem>
-          </Flex>
-        )}
-      </Ctrl>
+      <Flex {...innerProps} isFocused={isFocused}>
+        <input name={name} type="hidden" value={value} />
+        <FlexItem>
+          <DatePicker
+            {...bothProps}
+            autoFocus={autoFocus}
+            icon={null}
+            id={id}
+            onChange={this.onDateChange}
+            selectProps={{ styles }}
+            value={dateValue}
+          />
+        </FlexItem>
+        <FlexItem>
+          <TimePicker
+            {...bothProps}
+            icon={CalendarIcon}
+            onChange={this.onTimeChange}
+            selectProps={{ styles }}
+            value={timeValue}
+          />
+        </FlexItem>
+      </Flex>
     );
   }
 }

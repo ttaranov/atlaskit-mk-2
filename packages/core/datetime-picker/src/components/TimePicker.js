@@ -3,7 +3,6 @@
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import React, { Component, type Node } from 'react';
-import Ctrl from 'react-ctrl';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
 
@@ -17,9 +16,9 @@ type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
+  defaultIsOpen: boolean,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** The icon to show in the field. */
   icon?: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -73,11 +72,19 @@ export default class TimePicker extends Component<Props, State> {
     selectProps: {},
     innerProps: {},
     id: '',
+    defaultIsOpen: false,
+    defaultValue: '',
   };
 
   state = {
-    isOpen: false,
-    value: '',
+    isOpen: this.props.defaultIsOpen,
+    value: this.props.defaultValue,
+  };
+
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    return { ...this.state, ...this.props };
   };
 
   getOptions(): Array<Option> {
@@ -95,6 +102,14 @@ export default class TimePicker extends Component<Props, State> {
     this.props.onChange(value);
   };
 
+  onMenuOpen = () => {
+    this.setState({ isOpen: true });
+  };
+
+  onMenuClose = () => {
+    this.setState({ isOpen: false });
+  };
+
   render() {
     const {
       autoFocus,
@@ -107,37 +122,36 @@ export default class TimePicker extends Component<Props, State> {
       onFocus,
       selectProps,
     } = this.props;
+    const { value, isOpen } = this.getState();
     return (
-      <Ctrl data={this}>
-        {mapped => (
-          <div {...innerProps}>
-            <input name={name} type="hidden" value={mapped.value} />
-            {/* $FlowFixMe - complaining about required args that aren't required. */}
-            <Select
-              autoFocus={autoFocus}
-              instanceId={id}
-              isDisabled={isDisabled}
-              menuIsOpen={mapped.isOpen}
-              onBlur={onBlur}
-              onChange={this.onChange}
-              options={this.getOptions()}
-              onFocus={onFocus}
-              components={{
-                ClearIndicator,
-                DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-              }}
-              placeholder="e.g. 9:00am"
-              value={
-                mapped.value && {
-                  label: formatTime(mapped.value),
-                  value: mapped.value,
-                }
-              }
-              {...selectProps}
-            />
-          </div>
-        )}
-      </Ctrl>
+      <div {...innerProps}>
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          instanceId={id}
+          isDisabled={isDisabled}
+          menuIsOpen={isOpen}
+          onBlur={onBlur}
+          onChange={this.onChange}
+          options={this.getOptions()}
+          onFocus={onFocus}
+          onMenuOpen={this.onMenuOpen}
+          onMenuClose={this.onMenuClose}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+          }}
+          placeholder="e.g. 9:00am"
+          value={
+            value && {
+              label: formatTime(value),
+              value,
+            }
+          }
+          {...selectProps}
+        />
+      </div>
     );
   }
 }

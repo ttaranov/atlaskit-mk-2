@@ -125,8 +125,8 @@ export default class Calendar extends Component<Props, State> {
     });
   }
 
-  // All state needs to be accessed via this function so that the state is mapped from props in
-  // an controlled/uncontrolled way.
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
   getState = () => {
     return { ...this.state, ...this.props };
   };
