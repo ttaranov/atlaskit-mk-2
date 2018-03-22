@@ -16,7 +16,7 @@ const urlArray = [
   'single-select',
   'multi-select',
   'radio-select',
-  'async-select',
+  'async-select-with-callback',
 ];
 
 urlArray.forEach(url => {
