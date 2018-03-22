@@ -8,6 +8,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build:json-schema": "mkdir -p dist && cp -r json-schema dist",
     "generate:json-schema": "../../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./json-schema/v1/full.json"
