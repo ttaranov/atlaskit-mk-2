@@ -27,47 +27,58 @@ pipelines:
             - node
 
   default:
-    - parallel:
-        - step:
-            name: Building dists
-            script:
-              - yarn global add bolt
-              - bolt
-              - yarn build
-            caches:
-              - node
-        - step:
-            name: Lint + Typecheck
-            script:
-              - yarn global add bolt
-              - bolt
-              - yarn lint
-              - yarn typecheck
-            caches:
-              - node
-        - step:
-            name: Testing
-            script:
-              # We do this git dance so that we can run test:changed which compares our branch against master
-              - git fetch origin master
-              - git checkout master # (master doesn't exist until we do this checkout)
-              - git checkout - # checks out the previous ref
-              - yarn global add bolt
-              - bolt
-              - yarn test:changed
-            caches:
-              - node
-        - step:
-            name: Building website
-            script:
-              - apt-get -y update
-              - apt-get -y install zip
-              - yarn global add bolt
-              - bolt
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-              - node build/ci-scripts/update.build.status.with.netlify.link.js
-            caches:
-              - node
+    - step:
+        script:
+            - yarn global add "bolt@^0.19.2"
+            - bolt
+            - echo $BITBUCKET_COMMIT
+            - node build/ci-scripts/upload.build.artefact.for.commit.js bitbucket-pipelines.yml
+            - mkdir testing
+            - echo "test" > testing/foo
+            - echo "test" > testing/bar
+            - node build/ci-scripts/upload.build.artefact.for.commit.js testing
+
+    # - parallel:
+    #     - step:
+    #         name: Building dists
+    #         script:
+    #           - yarn global add bolt
+    #           - bolt
+    #           - yarn build
+    #         caches:
+    #           - node
+    #     - step:
+    #         name: Lint + Typecheck
+    #         script:
+    #           - yarn global add bolt
+    #           - bolt
+    #           - yarn lint
+    #           - yarn typecheck
+    #         caches:
+    #           - node
+    #     - step:
+    #         name: Testing
+    #         script:
+    #           # We do this git dance so that we can run test:changed which compares our branch against master
+    #           - git fetch origin master
+    #           - git checkout master # (master doesn't exist until we do this checkout)
+    #           - git checkout - # checks out the previous ref
+    #           - yarn global add bolt
+    #           - bolt
+    #           - yarn test:changed
+    #         caches:
+    #           - node
+    #     - step:
+    #         name: Building website
+    #         script:
+    #           - apt-get -y update
+    #           - apt-get -y install zip
+    #           - yarn global add bolt
+    #           - bolt
+    #           - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+    #           - node build/ci-scripts/update.build.status.with.netlify.link.js
+    #         caches:
+    #           - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
