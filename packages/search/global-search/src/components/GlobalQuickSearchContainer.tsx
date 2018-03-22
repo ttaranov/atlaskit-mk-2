@@ -9,6 +9,7 @@ import {
 } from '../api/CrossProductSearchClient';
 import { Result } from '../model/Result';
 import { PeopleSearchClient } from '../api/PeopleSearchClient';
+import * as uuid from 'uuid/v4';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
@@ -20,6 +21,7 @@ export interface Props {
 
 export interface State {
   query: string;
+  searchSessionId: string;
   isLoading: boolean;
   recentlyViewedItems: Result[];
   recentResults: Result[];
@@ -42,6 +44,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       query: '',
+      searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedItems: [],
       recentResults: [],
       jiraResults: [],
@@ -80,7 +83,10 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   }
 
   async searchCrossProduct(query: string): Promise<CrossProductResults> {
-    const results = await this.props.crossProductSearchClient.search(query);
+    const results = await this.props.crossProductSearchClient.search(
+      query,
+      this.state.searchSessionId,
+    );
 
     if (this.state.query === query) {
       this.setState({

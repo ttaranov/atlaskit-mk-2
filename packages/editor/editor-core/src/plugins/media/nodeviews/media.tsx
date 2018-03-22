@@ -20,7 +20,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   isMediaSingle?: boolean;
 }
 
-const getId = (props: MediaNodeProps) => props.node.attrs.id;
+const getId = (props: MediaNodeProps) => props.node.attrs.__key;
 
 export default class MediaNode extends Component<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
@@ -57,15 +57,16 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       cardDimensions,
       isMediaSingle,
     } = this.props;
-    const { id, type, collection } = node.attrs;
+    const { id, type, collection, __key } = node.attrs;
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
 
     return (
       <UIMedia
-        key={`medianode-${id}`}
+        key={`media-node-${__key}`}
         editorView={view}
         id={id!}
+        tempId={__key!}
         type={type!}
         collection={collection!}
         providers={providerFactory}

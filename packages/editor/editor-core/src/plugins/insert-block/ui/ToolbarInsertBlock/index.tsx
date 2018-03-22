@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
@@ -83,7 +82,7 @@ export interface Props {
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
     macroProvider: MacroProvider,
-  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  ) => (editorView: EditorView) => void;
 }
 
 export interface State {
@@ -100,7 +99,7 @@ const blockTypeIcons = {
 /**
  * Checks if an element is detached (i.e. not in the current document)
  */
-const isDetachedElement = el => !document.contains(el);
+const isDetachedElement = el => !document.body.contains(el);
 const noop = () => {};
 
 export default class ToolbarInsertBlock extends React.PureComponent<
@@ -540,10 +539,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertMacroFromMacroBrowser!(macroProvider!)(
-          editorView.state,
-          editorView.dispatch,
-        );
+        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView);
         break;
       case 'date':
         this.createDate();

@@ -1,7 +1,10 @@
 'use strict';
 //@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 90e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 120e3;
 const webdriverio = require('webdriverio');
+const commit = process.env.BITBUCKET_COMMIT
+  ? process.env.BITBUCKET_COMMIT
+  : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
 
 process.env.TEST_ENV === 'browserstack'
@@ -170,6 +173,7 @@ function setBrowserStackClients() {
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
+        'browserstack.localIdentifier': commit,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',

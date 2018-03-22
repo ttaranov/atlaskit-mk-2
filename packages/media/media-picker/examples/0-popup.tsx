@@ -4,6 +4,7 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import {
   userAuthProvider,
   mediaPickerAuthProvider,
@@ -232,6 +233,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: {} });
   };
 
+  onEvent = event => {
+    console.log(event);
+  };
+
   renderUploadingFiles = () => {
     const { inflightUploads } = this.state;
     const keys = Object.keys(inflightUploads);
@@ -271,56 +276,60 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (
-      <PopupContainer>
-        <PopupHeader>
-          <Button
-            appearance="primary"
-            onClick={this.onShow}
-            isDisabled={hasTorndown}
-          >
-            Show
-          </Button>
-          <Button
-            appearance="warning"
-            onClick={this.onCancelUpload}
-            isDisabled={isCancelButtonDisabled || hasTorndown}
-          >
-            Cancel uploads
-          </Button>
-          <Button
-            appearance="danger"
-            onClick={this.onTeardown}
-            isDisabled={hasTorndown}
-          >
-            Teardown
-          </Button>
-          <DropdownMenu trigger={collectionName} triggerType="button">
-            <DropdownItem onClick={this.onCollectionChange}>
-              {defaultMediaPickerCollectionName}
-            </DropdownItem>
-            <DropdownItem onClick={this.onCollectionChange}>
-              {defaultCollectionName}
-            </DropdownItem>
-          </DropdownMenu>
-          <DropdownMenu trigger={authEnvironment} triggerType="button">
-            <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
-            <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
-          </DropdownMenu>
-          autoFinalize
-          <Toggle
-            isDefaultChecked={isAutoFinalizeActive}
-            onChange={this.onAutoFinalizeChange}
-          />
-          fetchMetadata
-          <Toggle
-            isDefaultChecked={isFetchMetadataActive}
-            onChange={this.onFetchMetadataChange}
-          />
-          Closed times: {closedTimes}
-        </PopupHeader>
-        {this.renderUploadingFiles()}
-        <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
-      </PopupContainer>
+      <AnalyticsListener onEvent={this.onEvent} channel="media">
+        <PopupContainer>
+          <PopupHeader>
+            <Button
+              appearance="primary"
+              onClick={this.onShow}
+              isDisabled={hasTorndown}
+            >
+              Show
+            </Button>
+            <Button
+              appearance="warning"
+              onClick={this.onCancelUpload}
+              isDisabled={isCancelButtonDisabled || hasTorndown}
+            >
+              Cancel uploads
+            </Button>
+            <Button
+              appearance="danger"
+              onClick={this.onTeardown}
+              isDisabled={hasTorndown}
+            >
+              Teardown
+            </Button>
+            <DropdownMenu trigger={collectionName} triggerType="button">
+              <DropdownItem onClick={this.onCollectionChange}>
+                {defaultMediaPickerCollectionName}
+              </DropdownItem>
+              <DropdownItem onClick={this.onCollectionChange}>
+                {defaultCollectionName}
+              </DropdownItem>
+            </DropdownMenu>
+            <DropdownMenu trigger={authEnvironment} triggerType="button">
+              <DropdownItem onClick={this.onAuthTypeChange}>
+                client
+              </DropdownItem>
+              <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
+            </DropdownMenu>
+            autoFinalize
+            <Toggle
+              isDefaultChecked={isAutoFinalizeActive}
+              onChange={this.onAutoFinalizeChange}
+            />
+            fetchMetadata
+            <Toggle
+              isDefaultChecked={isFetchMetadataActive}
+              onChange={this.onFetchMetadataChange}
+            />
+            Closed times: {closedTimes}
+          </PopupHeader>
+          {this.renderUploadingFiles()}
+          <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
+        </PopupContainer>
+      </AnalyticsListener>
     );
   }
 }

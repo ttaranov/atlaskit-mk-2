@@ -54,6 +54,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -77,6 +78,7 @@ describe('media-files', () => {
       const mediaGroupNodeSize = mediaGroup(
         media({
           id: temporaryFileId,
+          __key: temporaryFileId,
           type: 'file',
           collection: testCollectionName,
         })(),
@@ -94,6 +96,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -113,11 +116,13 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: 'mock2',
+              __key: 'mock2',
               type: 'file',
               collection: testCollectionName,
             })(),
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -135,6 +140,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -154,11 +160,13 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: 'mock2',
+              __key: 'mock2',
               type: 'file',
               collection: testCollectionName,
             })(),
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -187,6 +195,7 @@ describe('media-files', () => {
             mediaGroup(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -204,6 +213,7 @@ describe('media-files', () => {
         const mediaGroupNodeSize = mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -238,6 +248,7 @@ describe('media-files', () => {
             mediaGroup(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -267,6 +278,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -295,6 +307,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -322,6 +335,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -341,6 +355,7 @@ describe('media-files', () => {
                 mediaGroup(
                   media({
                     id: temporaryFileId,
+                    __key: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
                   })(),
@@ -349,6 +364,7 @@ describe('media-files', () => {
                 mediaGroup(
                   media({
                     id: temporaryFileId,
+                    __key: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
                   })(),
@@ -367,6 +383,7 @@ describe('media-files', () => {
                 mediaGroup(
                   media({
                     id: temporaryFileId,
+                    __key: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
                   })(),
@@ -375,11 +392,13 @@ describe('media-files', () => {
                 mediaGroup(
                   media({
                     id: 'new one',
+                    __key: 'new one',
                     type: 'file',
                     collection: testCollectionName,
                   })(),
                   media({
                     id: temporaryFileId,
+                    __key: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
                   })(),
@@ -407,6 +426,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -424,6 +444,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -443,11 +464,13 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: 'new one',
+                  __key: 'new one',
                   type: 'file',
                   collection: testCollectionName,
                 })(),
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -479,6 +502,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -497,6 +521,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -517,11 +542,13 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: 'new one',
+                  __key: 'new one',
                   type: 'file',
                   collection: testCollectionName,
                 })(),
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -538,6 +565,7 @@ describe('media-files', () => {
               mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -555,11 +583,13 @@ describe('media-files', () => {
           const mediaGroupNodeSize = mediaGroup(
             media({
               id: 'new one',
+              __key: 'new one',
               type: 'file',
               collection: testCollectionName,
             })(),
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -587,6 +617,7 @@ describe('media-files', () => {
                 mediaGroup(
                   media({
                     id: temporaryFileId,
+                    __key: temporaryFileId,
                     type: 'file',
                     collection: testCollectionName,
                   })(),
@@ -606,6 +637,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -616,6 +648,7 @@ describe('media-files', () => {
               const mediaGroupNodeSize = mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -633,11 +666,13 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: 'new one',
+                      __key: 'new one',
                       type: 'file',
                       collection: testCollectionName,
                     })(),
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -657,6 +692,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -676,11 +712,13 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: 'new one',
+                      __key: 'new one',
                       type: 'file',
                       collection: testCollectionName,
                     })(),
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -698,6 +736,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -706,6 +745,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -715,6 +755,7 @@ describe('media-files', () => {
               const mediaGroupNodeSize = mediaGroup(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                 })(),
@@ -732,6 +773,7 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -739,11 +781,13 @@ describe('media-files', () => {
                   mediaGroup(
                     media({
                       id: 'new one',
+                      __key: 'new one',
                       type: 'file',
                       collection: testCollectionName,
                     })(),
                     media({
                       id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -772,6 +816,7 @@ describe('media-files', () => {
             mediaGroup(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -788,6 +833,7 @@ describe('media-files', () => {
             mediaGroup(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -807,11 +853,13 @@ describe('media-files', () => {
             mediaGroup(
               media({
                 id: 'new one',
+                __key: 'new one',
                 type: 'file',
                 collection: testCollectionName,
               })(),
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -838,6 +886,7 @@ describe('media-files', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -863,6 +912,7 @@ describe('media-files', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -888,6 +938,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -913,6 +964,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -938,6 +990,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -954,6 +1007,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -973,11 +1027,13 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: 'another one',
+              __key: 'another one',
               type: 'file',
               collection: testCollectionName,
             })(),
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -1002,6 +1058,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -1027,6 +1084,7 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
             })(),
@@ -1051,11 +1109,13 @@ describe('media-files', () => {
           mediaGroup(
             media({
               id: 'mock1',
+              __key: 'mock1',
               type: 'file',
               collection: testCollectionName,
             })(),
             media({
               id: 'mock2',
+              __key: 'mock2',
               type: 'file',
               collection: testCollectionName,
             })(),

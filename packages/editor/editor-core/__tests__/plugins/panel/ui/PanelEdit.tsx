@@ -66,7 +66,11 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     );
     plugin.props.handleDOMEvents!.focus(editorView, event);
     plugin.props.handleClick!(editorView, sel, event);
-    pluginState.update(editorView.state, (editorView as any).docView, true);
+    pluginState.update(
+      editorView.state,
+      editorView.domAtPos.bind(editorView),
+      true,
+    );
     expect(panelEditOptions.state('toolbarVisible')).toBe(true);
     panelEditOptions.unmount();
   });

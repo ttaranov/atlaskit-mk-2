@@ -15,6 +15,8 @@ const Container = styled.span`
   padding-left: 4px;
   display: flex;
   flex-direction: column;
+  height: 284px;
+  overflow: scroll;
 `;
 
 export interface Props {

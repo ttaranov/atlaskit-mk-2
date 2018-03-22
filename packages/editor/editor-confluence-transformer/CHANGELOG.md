@@ -1,5 +1,15 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.3
+- [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
+
+## 2.10.2
+
+## 2.10.1
+
+## 2.10.0
+- [minor] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
+
 ## 2.9.10
 
 ## 2.9.9

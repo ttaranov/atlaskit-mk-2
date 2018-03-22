@@ -485,6 +485,24 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   );
 }
 
+export function createParagraphAtEnd(): Command {
+  return function(state, dispatch) {
+    const { doc, tr, schema: { nodes } } = state;
+    const lastPos = doc.resolve(doc.content.size - 1);
+    const lastNode = lastPos.node(1);
+    if (
+      lastNode &&
+      !(lastNode.type === nodes.paragraph && lastNode.content.size === 0)
+    ) {
+      tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
+    }
+    tr.setSelection(new TextSelection(doc.resolve(doc.content.size)));
+    tr.scrollIntoView();
+    dispatch(tr);
+    return true;
+  };
+}
+
 export interface Command {
   (
     state: EditorState,

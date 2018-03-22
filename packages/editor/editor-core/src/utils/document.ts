@@ -71,11 +71,17 @@ export const preprocessDoc = (
   }
 
   const content: Node[] = [];
-  origDoc.content.forEach(node => {
+  origDoc.content.forEach((node, index) => {
     const { taskList, decisionList } = schema.nodes;
     if (
-      (node.type !== taskList && node.type !== decisionList) ||
-      node.textContent
+      !(
+        node.type.name === 'paragraph' &&
+        node.content.size === 0 &&
+        index === origDoc.childCount - 1 &&
+        origDoc.childCount > 1
+      ) &&
+      ((node.type !== taskList && node.type !== decisionList) ||
+        node.textContent)
     ) {
       content.push(node);
     }

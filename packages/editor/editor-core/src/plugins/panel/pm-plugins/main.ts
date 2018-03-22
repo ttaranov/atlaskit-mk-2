@@ -1,13 +1,16 @@
 import { Node } from 'prosemirror-model';
-import {
-  EditorState,
-  Plugin,
-  PluginKey,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import {
+  setParentNodeMarkup,
+  findParentDomRefOfType,
+  findParentNodeOfType,
+  removeParentNodeOfType,
+} from 'prosemirror-utils';
 import { analyticsService } from '../../../analytics';
 import { panelNodeView } from '../nodeviews/panel';
+
+export type DomAtPos = (pos: number) => { node: HTMLElement; offset: number };
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'success' | 'warning' | 'error';
@@ -41,34 +44,15 @@ export class PanelState {
     this.editorFocused = editorFocused;
   }
 
-  changePanelType(view: EditorView, panelType: PanelType) {
-    analyticsService.trackEvent(
-      `atlassian.editor.format.${panelType.panelType}.button`,
-    );
-    const { state, dispatch } = view;
-    let { tr } = state;
-    const { panel } = state.schema.nodes;
-    const { $from, $to } = state.selection;
-    let newFrom = tr.doc.resolve($from.start($from.depth - 1));
-    let newTo = tr.doc.resolve($to.end($to.depth - 1));
-    let range = newFrom.blockRange(newTo)!;
-    tr.lift(range, $from.depth - 2);
-    newFrom = tr.doc.resolve(tr.mapping.map(newFrom.pos));
-    newTo = tr.doc.resolve(tr.mapping.map(newTo.pos));
-    range = newFrom.blockRange(newTo)!;
-    tr = tr.wrap(range, [{ type: panel, attrs: panelType }]);
-    dispatch(tr);
+  changePanelType(view: EditorView, { panelType }: PanelType) {
+    analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
+    const { state: { tr, schema }, dispatch } = view;
+    dispatch(setParentNodeMarkup(schema.nodes.panel, null, { panelType })(tr));
   }
 
   removePanel(view: EditorView) {
-    const { dispatch, state } = view;
-    let { tr } = state;
-    let { $from, $to } = state.selection;
-    let newFrom = tr.doc.resolve($from.start($from.depth - 1));
-    let newTo = tr.doc.resolve($to.end($to.depth - 1));
-    let range = newFrom.blockRange(newTo)!;
-    tr = tr.delete(range!.start - 1, range!.end + 1);
-    dispatch(tr);
+    const { state: { tr, schema }, dispatch } = view;
+    dispatch(removeParentNodeOfType(schema.nodes.panel)(tr));
   }
 
   subscribe(cb: PanelStateSubscriber) {
@@ -80,12 +64,11 @@ export class PanelState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: any, domEvent: boolean = false) {
+  update(state: EditorState, domAtPos: DomAtPos, domEvent: boolean = false) {
     this.state = state;
-    const newPanel = this.getActivePanel(docView);
+    const newPanel = this.getActivePanel();
     if ((domEvent && newPanel) || this.activeNode !== newPanel) {
-      const newElement = newPanel && this.getDomElement(docView);
+      const newElement = newPanel && this.getDomElement(domAtPos);
       this.activeNode = newPanel;
       this.toolbarVisible =
         this.editorFocused &&
@@ -97,33 +80,25 @@ export class PanelState {
     }
   }
 
-  private getActivePanel(docView: any): Node | undefined {
-    const { state } = this;
-    if (state.selection instanceof TextSelection) {
-      const { $from } = state.selection;
-      for (let i = $from.depth; i >= 1; i--) {
-        const node = $from.node(i);
-        if (node && node.type === state.schema.nodes.panel) {
-          return node;
-        }
-      }
+  private getActivePanel(): Node | undefined {
+    const { state: { selection, schema: { nodes: { panel } } } } = this;
+    const parent = findParentNodeOfType(panel)(selection);
+    if (parent) {
+      return parent.node;
     }
   }
 
-  private getDomElement(docView: any): HTMLElement | undefined {
-    const { state: { selection } } = this;
-    if (selection instanceof TextSelection) {
-      const { node } = docView.domFromPos(selection.$from.pos);
-      let currentNode = node;
-      while (currentNode) {
-        if (
-          currentNode.attributes &&
-          currentNode.attributes['data-panel-type']
-        ) {
-          return currentNode as HTMLElement;
-        }
-        currentNode = currentNode.parentNode!;
+  private getDomElement(domAtPos: DomAtPos): HTMLElement | undefined {
+    const { state: { selection, schema: { nodes: { panel } } } } = this;
+    let node = findParentDomRefOfType(panel, domAtPos)(
+      selection,
+    ) as HTMLElement;
+    if (node) {
+      // getting panel nodeView wrapper
+      while (!node.attributes['data-panel-type']) {
+        node = node.parentNode as HTMLElement;
       }
+      return node;
     }
   }
 }
@@ -150,11 +125,10 @@ export const createPlugin = () =>
     key: stateKey,
     view: (view: EditorView) => {
       return {
-        update: (
-          view: EditorView & { docView?: any },
-          prevState: EditorState,
-        ) => {
-          stateKey.getState(view.state).update(view.state, view.docView);
+        update: (view: EditorView, prevState: EditorState) => {
+          stateKey
+            .getState(view.state)
+            .update(view.state, view.domAtPos.bind(view));
         },
       };
     },
@@ -162,8 +136,10 @@ export const createPlugin = () =>
       nodeViews: {
         panel: panelNodeView,
       },
-      handleClick(view: EditorView & { docView?: any }, event) {
-        stateKey.getState(view.state).update(view.state, view.docView, true);
+      handleClick(view: EditorView, event) {
+        stateKey
+          .getState(view.state)
+          .update(view.state, view.domAtPos.bind(view), true);
         return false;
       },
       handleDOMEvents: {
@@ -171,10 +147,10 @@ export const createPlugin = () =>
           stateKey.getState(view.state).updateEditorFocused(true);
           return false;
         },
-        blur(view: EditorView & { docView?: any }, event) {
+        blur(view: EditorView, event) {
           const pluginState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(false);
-          pluginState.update(view.state, view.docView, true);
+          pluginState.update(view.state, view.domAtPos.bind(view), true);
           return false;
         },
       },

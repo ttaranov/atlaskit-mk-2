@@ -1,5 +1,19 @@
 # @atlaskit/media-image
 
+## 25.1.3
+- [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
+
+## 25.1.2
+- [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
+
+## 25.1.1
+
+## 25.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+- [minor] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
+
+## 25.0.2
+
 ## 25.0.1
 
 ## 25.0.0

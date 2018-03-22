@@ -33,7 +33,13 @@ import {
   docContentWrapper,
 } from './content-wrapper';
 
-const supportedSingleMediaLayouts = ['center', 'wrap-left', 'wrap-right'];
+const supportedSingleMediaLayouts = [
+  'center',
+  'wrap-left',
+  'wrap-right',
+  'wide',
+  'full-width',
+];
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
@@ -644,13 +650,7 @@ function convertTaskItem(schema: Schema, node: Element) {
 }
 
 function convertADF(schema: Schema, node: Element) {
-  const str =
-    (node.textContent || '')[0] === '"'
-      ? node.textContent || ''
-      : `"${node.textContent}"`;
-  let json = JSON.parse(str);
-  if (typeof json === 'string') {
-    json = JSON.parse(json);
-  }
+  const str = node.textContent || '';
+  const json = JSON.parse(str);
   return schema.nodeFromJSON(json);
 }

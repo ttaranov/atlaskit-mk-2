@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/pagination",
-  "version": "3.7.1",
+  "version": "4.0.0",
   "description": "Pagination component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/pagination",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/pagination",
   "files": [
     "dist"
   ],

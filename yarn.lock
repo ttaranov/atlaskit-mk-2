@@ -3355,7 +3355,7 @@ cmd-shim@^2.0.2:
     graceful-fs "^4.1.2"
     mkdirp "~0.5.0"
 
-co@^4.6.0:
+co@4.6.0, co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
 
@@ -3798,6 +3798,16 @@ cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
   dependencies:
     lru-cache "^4.0.1"
+    shebang-command "^1.2.0"
+    which "^1.2.9"
+
+cross-spawn@^6.0.0:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
+  dependencies:
+    nice-try "^1.0.4"
+    path-key "^2.0.1"
+    semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
 
@@ -5115,6 +5125,18 @@ exec-sh@^0.2.0:
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.2.1.tgz#163b98a6e89e6b65b47c2a28d215bc1f63989c38"
   dependencies:
     merge "^1.1.3"
+
+execa@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/execa/-/execa-0.10.0.tgz#ff456a8f53f90f8eccc71a96d11bdfc7f082cb50"
+  dependencies:
+    cross-spawn "^6.0.0"
+    get-stream "^3.0.0"
+    is-stream "^1.1.0"
+    npm-run-path "^2.0.0"
+    p-finally "^1.0.0"
+    signal-exit "^3.0.0"
+    strip-eof "^1.0.0"
 
 execa@^0.7.0:
   version "0.7.0"
@@ -7532,6 +7554,13 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
+js-yaml@3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.1.tgz#08775cebdfdd359209f0d2acd383c8f86a6904a0"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
 js-yaml@^3.4.3, js-yaml@^3.5.1, js-yaml@^3.7.0, js-yaml@^3.8.4, js-yaml@^3.9.0, js-yaml@^3.9.1:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
@@ -7680,6 +7709,10 @@ jsx-ast-utils@^2.0.0:
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
   dependencies:
     array-includes "^3.0.3"
+
+junk@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/junk/-/junk-2.1.0.tgz#f431b4b7f072dc500a5f10ce7f4ec71930e70134"
 
 karma-browserstack-launcher@^1.3.0:
   version "1.3.0"
@@ -9000,6 +9033,10 @@ ngrok@^2.2.24:
     request "^2.55.0"
     uuid "^3.0.0"
 
+nice-try@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
+
 no-case@^2.2.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
@@ -9096,6 +9133,15 @@ node-source-walk@^3.0.0, node-source-walk@^3.2.0, node-source-walk@^3.3.0:
 node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
+
+node-yaml@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/node-yaml/-/node-yaml-3.1.1.tgz#4f93d0aa97475530bc00db03564dfde9c6c5691b"
+  dependencies:
+    co "4.6.0"
+    js-yaml "3.9.1"
+    junk "2.1.0"
+    promise-fs "1.2.3"
 
 nomnom@~1.6.2:
   version "1.6.2"
@@ -9501,9 +9547,9 @@ osenv@~0.1.0:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-outdent@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/outdent/-/outdent-0.3.0.tgz#fad18a9c061a0938f38e8071d16c4024423f4323"
+outdent@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/outdent/-/outdent-0.5.0.tgz#9e10982fdc41492bb473ad13840d22f9655be2ff"
 
 output-file-sync@^1.1.2:
   version "1.1.2"
@@ -9538,6 +9584,10 @@ p-map@^1.1.1:
 p-queue@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-2.3.0.tgz#65d55e71bc1500fc413122da98ae457ff8a7c038"
+
+p-wait-for@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-wait-for/-/p-wait-for-1.0.0.tgz#874dd6418abef2a1990520409a4bb6b0621f8b90"
 
 package-json@^2.0.0:
   version "2.4.0"
@@ -9731,7 +9781,7 @@ path-is-inside@^1.0.1, path-is-inside@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/path-is-inside/-/path-is-inside-1.0.2.tgz#365417dede44430d1c11af61027facf074bdfc53"
 
-path-key@^2.0.0:
+path-key@^2.0.0, path-key@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
 
@@ -9819,7 +9869,7 @@ phantomjs-prebuilt@^2.1.14:
     request-progress "^2.0.1"
     which "^1.2.10"
 
-pify@^2.0.0, pify@^2.3.0:
+pify@2.3.0, pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
 
@@ -9827,7 +9877,7 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pinkie-promise@^2.0.0:
+pinkie-promise@2.0.1, pinkie-promise@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pinkie-promise/-/pinkie-promise-2.0.1.tgz#2135d6dfa7a358c069ac9b178776288228450ffa"
   dependencies:
@@ -10371,6 +10421,13 @@ projector@^3.0.0:
     cross-spawn "^5.1.0"
     is-promise "^2.1.0"
 
+promise-fs@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/promise-fs/-/promise-fs-1.2.3.tgz#402410f92edd8c3978ee5552369f1c5bebccfc22"
+  dependencies:
+    pify "2.3.0"
+    pinkie-promise "2.0.1"
+
 promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
@@ -10529,11 +10586,9 @@ prosemirror-transform@^1.0.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.0.7.tgz#ece0ac294c5773940e1e02a156ea4fdf13fdd359"
-  dependencies:
-    prosemirror-tables "^0.6.3"
+prosemirror-utils@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.0.9.tgz#ee4b8beb55389b59deb52bd55121c91eb5abe749"
 
 prosemirror-view@^1.0.0:
   version "1.0.0"
@@ -10808,9 +10863,9 @@ react-beautiful-dnd@^4.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
-react-codesandboxer@^0.4.1:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-0.4.2.tgz#10b6a770242314e4436898f5fd94eb46c6c74d33"
+react-codesandboxer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-1.0.0.tgz#310153d213832b8403bb82a336ff19f1c11b79cc"
   dependencies:
     codesandbox "^1.1.14"
     react-node-resolver "^1.0.1"
@@ -10970,13 +11025,14 @@ react-scrolllock@^2.0.1:
   dependencies:
     exenv "^1.2.2"
 
-react-select@2.0.0-alpha.6:
-  version "2.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.6.tgz#422de89840538a8c09a25e9609f5e79777a79154"
+react-select@2.0.0-alpha.8:
+  version "2.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.8.tgz#c6e4e18abc7871f78cd6d10d5a8ab1931660d4a6"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
+    raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"
@@ -11891,6 +11947,10 @@ semver-diff@^2.0.0:
 "semver@2 || 3 || 4 || 5", semver@5.4.1, semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
+
+semver@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
 semver@~4.3.3:
   version "4.3.6"
@@ -14210,9 +14270,9 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xhr-mock@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/xhr-mock/-/xhr-mock-2.2.0.tgz#4df2338eccd14914fadb01cfe227a8f85ad7be35"
+xhr-mock@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/xhr-mock/-/xhr-mock-2.3.0.tgz#cdb7247acd6fed55f979eb746772f5cd7160484c"
   dependencies:
     global "^4.3.0"
     url "^0.11.0"

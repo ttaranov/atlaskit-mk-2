@@ -4,9 +4,16 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import { MouseEvent } from 'react';
-import { MediaItemDetails, MediaCollectionItem } from '@atlaskit/media-core';
+import {
+  MediaItemDetails,
+  MediaCollectionItem,
+  MediaType,
+  FileProcessingStatus,
+} from '@atlaskit/media-core';
 
 import { CardAction } from './actions';
+
+import { UIAnalyticsEventInterface } from './analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
@@ -75,9 +82,51 @@ export interface SharedCardProps {
   readonly selected?: boolean;
 }
 
+export interface CardOnClickCallback {
+  (result: CardEvent, analyticsEvent?: UIAnalyticsEventInterface): void;
+}
+
 export interface CardEventProps {
-  readonly onClick?: (result: CardEvent) => void;
+  readonly onClick?: CardOnClickCallback;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: OnSelectChangeFunc;
   readonly onLoadingChange?: OnLoadingChangeFunc;
+}
+
+export interface AnalyticsFileAttributes {
+  fileMediatype?: MediaType;
+  fileMimetype?: string;
+  fileStatus?: FileProcessingStatus;
+  fileSize?: number;
+}
+
+export interface AnalyticsLinkAttributes {
+  linkDomain: string;
+}
+
+export interface AnalyticsViewAttributes {
+  viewPreview: boolean;
+  viewActionmenu: boolean;
+  viewSize?: CardAppearance;
+}
+
+export interface BaseAnalyticsContext {
+  // These fields are requested to be in all UI events. See guidelines:
+  // https://extranet.atlassian.com/display/PData/UI+Events
+  packageVersion: string; // string — in a format like '3.2.1'
+  packageName: string;
+  componentName: string;
+
+  actionSubject: string; // ex. MediaCard
+  actionSubjectId: string | null; // file/link id
+}
+
+export interface CardAnalyticsContext extends BaseAnalyticsContext {}
+
+export interface CardViewAnalyticsContext extends BaseAnalyticsContext {
+  loadStatus: 'fail' | 'loading_metadata' | 'uploading' | 'complete';
+  type: 'file' | 'link' | 'smart';
+  viewAttributes: AnalyticsViewAttributes;
+  fileAttributes?: AnalyticsFileAttributes;
+  linkAttributes?: AnalyticsLinkAttributes;
 }

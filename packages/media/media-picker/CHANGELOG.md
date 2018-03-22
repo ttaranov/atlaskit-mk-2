@@ -1,5 +1,17 @@
 # @atlaskit/media-picker
 
+## 2.1.4
+
+## 2.1.3
+
+## 2.1.2
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 2.1.1
+
+## 2.1.0
+- [minor] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
+
 ## 2.0.2
 - [patch] add icon to annotate card action [e982c4b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e982c4b)
 
