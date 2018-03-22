@@ -2,7 +2,6 @@
 
 import { Calendar as CalendarBase } from 'calendar-base';
 import React, { Component } from 'react';
-import Ctrl from 'react-ctrl';
 import uuid from 'uuid/v1';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
@@ -32,15 +31,15 @@ type Props = {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
   day?: number,
   /** Default for `day`. */
-  defaultDay?: number,
+  defaultDay: number,
   /** Default for `disabled`. */
-  defaultDisabled?: Array<string>,
+  defaultDisabled: Array<string>,
   /** Default for `month`. */
   defaultMonth?: number,
   /** Default for `previouslySelected`. */
-  defaultPreviouslySelected?: Array<string>,
+  defaultPreviouslySelected: Array<string>,
   /** Default for `selected`. */
-  defaultSelected?: Array<string>,
+  defaultSelected: Array<string>,
   /** Default for `year`. */
   defaultYear?: number,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
@@ -99,6 +98,10 @@ export default class Calendar extends Component<Props, State> {
     onFocus() {},
     onSelect() {},
     innerProps: {},
+    defaultDay: 0,
+    defaultDisabled: [],
+    defaultSelected: [],
+    defaultPreviouslySelected: [],
   };
 
   constructor(props: Props) {
@@ -108,22 +111,28 @@ export default class Calendar extends Component<Props, State> {
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
     this.state = {
-      day: 0,
-      disabled: [],
-      selected: [],
-      month: thisMonth,
-      previouslySelected: [],
-      year: thisYear,
+      day: this.props.defaultDay,
+      disabled: this.props.defaultDisabled,
+      selected: this.props.defaultSelected,
+      month: this.props.defaultMonth || thisMonth,
+      previouslySelected: this.props.defaultPreviouslySelected,
+      year: this.props.defaultYear || thisYear,
+      today: this.props.today || `${thisYear}-${thisMonth}-${thisDay}`,
     };
     this.calendar = new CalendarBase({
       siblingMonths: true,
       weekNumbers: true,
     });
-    this.today = this.props.today || `${thisYear}-${thisMonth}-${thisDay}`;
   }
 
+  // All state needs to be accessed via this function so that the state is mapped from props in
+  // an controlled/uncontrolled way.
+  getState = () => {
+    return { ...this.state, ...this.props };
+  };
+
   getNextMonth() {
-    let { month, year } = this.state;
+    let { month, year } = this.getState();
 
     if (month === monthsPerYear) {
       month = 1;
@@ -136,7 +145,7 @@ export default class Calendar extends Component<Props, State> {
   }
 
   getPrevMonth() {
-    let { month, year } = this.state;
+    let { month, year } = this.getState();
 
     if (month === 1) {
       month = monthsPerYear;
@@ -157,7 +166,7 @@ export default class Calendar extends Component<Props, State> {
         day: selectDay,
         month: selectMonth,
         year: selectYear,
-      } = this.state;
+      } = this.getState();
       e.preventDefault();
       this.triggerOnSelect({
         day: selectDay,
@@ -176,7 +185,7 @@ export default class Calendar extends Component<Props, State> {
 
   handleClickNext = () => {
     const { day, month, year } = {
-      ...this.state,
+      ...this.getState(),
       ...this.getNextMonth(),
     };
     this.triggerOnChange({ day, month, year, type: 'next' });
@@ -184,7 +193,7 @@ export default class Calendar extends Component<Props, State> {
 
   handleClickPrev = () => {
     const { day, month, year } = {
-      ...this.state,
+      ...this.getState(),
       ...this.getPrevMonth(),
     };
     this.triggerOnChange({ day, month, year, type: 'prev' });
@@ -196,7 +205,7 @@ export default class Calendar extends Component<Props, State> {
   };
 
   handleContainerFocus = () => {
-    this.setState({ day: this.state.day || 1 });
+    this.setState({ day: this.getState().day || 1 });
     this.props.onFocus();
   };
 
@@ -207,7 +216,7 @@ export default class Calendar extends Component<Props, State> {
   }
 
   navigate(type: ArrowKeys) {
-    const { day, month, year } = this.state;
+    const { day, month, year } = this.getState();
 
     if (type === 'down') {
       const next = day + daysPerWeek;
@@ -300,11 +309,12 @@ export default class Calendar extends Component<Props, State> {
     const iso = dateToString({ year, month, day });
     this.props.onSelect({ day, month, year, iso });
     this.setState({
+      previouslySelected: this.getState().selected,
       selected: [iso],
     });
   };
 
-  getCalendarWeeks = (ctrlState: State) => {
+  getCalendarWeeks = (mappedState: State) => {
     const {
       day,
       year,
@@ -312,7 +322,7 @@ export default class Calendar extends Component<Props, State> {
       disabled,
       previouslySelected,
       selected,
-    } = ctrlState;
+    } = mappedState;
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
@@ -373,62 +383,55 @@ export default class Calendar extends Component<Props, State> {
   };
 
   render() {
+    const mappedState = this.getState();
     const { innerProps } = this.props;
 
     const announceId = getUniqueId('announce');
 
     return (
-      <Ctrl data={this}>
-        {ctrlState => (
-          <div
-            {...innerProps}
-            onBlur={this.handleContainerBlur}
-            onFocus={this.handleContainerFocus}
-            onKeyDown={this.handleContainerKeyDown}
-            role="presentation"
-          >
-            <Announcer
-              id={announceId}
-              aria-live="assertive"
-              aria-relevant="text"
-            >
-              {new Date(
-                ctrlState.year,
-                ctrlState.month,
-                ctrlState.day,
-              ).toString()}
-            </Announcer>
-            <Wrapper
-              aria-describedby={announceId}
-              aria-label="calendar"
-              innerRef={this.refContainer}
-              role="grid"
-              tabIndex={0}
-            >
-              <Heading
-                month={ctrlState.month}
-                year={ctrlState.year}
-                handleClickNext={this.handleClickNext}
-                handleClickPrev={this.handleClickPrev}
-              />
-              <CalendarTable role="presentation">
-                <CalendarThead>
-                  <tr>
-                    {makeArrayFromNumber(daysPerWeek).map(i => (
-                      <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
-                    ))}
-                  </tr>
-                </CalendarThead>
-                <CalendarTbody>
-                  {this.getCalendarWeeks(ctrlState).map(week => (
-                    <tr key={week.key}>{week.components}</tr>
-                  ))}
-                </CalendarTbody>
-              </CalendarTable>
-            </Wrapper>
-          </div>
-        )}
-      </Ctrl>
+      <div
+        {...innerProps}
+        onBlur={this.handleContainerBlur}
+        onFocus={this.handleContainerFocus}
+        onKeyDown={this.handleContainerKeyDown}
+        role="presentation"
+      >
+        <Announcer id={announceId} aria-live="assertive" aria-relevant="text">
+          {new Date(
+            mappedState.year,
+            mappedState.month,
+            mappedState.day,
+          ).toString()}
+        </Announcer>
+        <Wrapper
+          aria-describedby={announceId}
+          aria-label="calendar"
+          innerRef={this.refContainer}
+          role="grid"
+          tabIndex={0}
+        >
+          <Heading
+            month={mappedState.month}
+            year={mappedState.year}
+            handleClickNext={this.handleClickNext}
+            handleClickPrev={this.handleClickPrev}
+          />
+          <CalendarTable role="presentation">
+            <CalendarThead>
+              <tr>
+                {makeArrayFromNumber(daysPerWeek).map(i => (
+                  <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
+                ))}
+              </tr>
+            </CalendarThead>
+            <CalendarTbody>
+              {this.getCalendarWeeks(mappedState).map(week => (
+                <tr key={week.key}>{week.components}</tr>
+              ))}
+            </CalendarTbody>
+          </CalendarTable>
+        </Wrapper>
+      </div>
     );
   }
 }
