@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.5.0
+- [minor] Added support to editor-jira-transformer for transforming Jira emoticons to unicode emoji [7315648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7315648)
+
 ## 2.4.21
 
 ## 2.4.20
