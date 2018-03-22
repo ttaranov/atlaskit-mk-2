@@ -1,7 +1,7 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { omit, getDisplayName } from '../utils';
-import type { ComponentType, ElementType, FunctionType } from '../types';
+import type { ElementType, FunctionType } from '../types';
 
 type Props = {
   href?: string,
@@ -38,11 +38,14 @@ type State = {
   isInteractive: boolean,
 };
 
-export default function withPseudoState(
-  // $FlowFixMe - this is not the correct way of typing this
-  WrappedComponent: ComponentType<Props>,
+export default function withPseudoState<InnerProps: {}>(
+  WrappedComponent: ComponentType<InnerProps>,
 ) {
-  return class ComponentWithPseudoState extends Component<Props, State> {
+  type CombinedProps = { ...$Exact<InnerProps>, ...$Exact<Props> };
+  return class ComponentWithPseudoState extends Component<
+    CombinedProps,
+    State,
+  > {
     static displayName = getDisplayName('withPseudoState', WrappedComponent);
     component: { blur?: FunctionType, focus?: FunctionType };
     actionKeys: Array<string>;
@@ -93,12 +96,12 @@ export default function withPseudoState(
       }
     };
 
-    getProps = () => {
+    getProps = (): CombinedProps => {
       const { isInteractive } = this.state;
 
       // strip the consumer's handlers off props, then merge with our handlers
       // if the element is interactive
-      const props: {} = omit(this.props, ...INTERNAL_HANDLERS);
+      const props: CombinedProps = omit(this.props, ...INTERNAL_HANDLERS);
 
       const self: Object = this;
 
@@ -119,10 +122,12 @@ export default function withPseudoState(
     };
 
     render() {
-      const props: {} = this.getProps();
-
       return (
-        <WrappedComponent ref={this.setComponent} {...this.state} {...props} />
+        <WrappedComponent
+          ref={this.setComponent}
+          {...this.state}
+          {...this.getProps()}
+        />
       );
     }
   };
