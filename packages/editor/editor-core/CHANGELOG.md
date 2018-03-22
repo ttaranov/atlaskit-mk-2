@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.17
+- [patch] table cell/header attributes in the Confluence transformer [9415aaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9415aaa)
+
 ## 65.1.16
 - [patch] ED-4088 fixing selection of mention in macros bug in IE11. [10a016b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10a016b)
 

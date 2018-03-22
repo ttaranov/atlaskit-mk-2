@@ -20,6 +20,8 @@ import {
   NodeType,
 } from 'prosemirror-model';
 
+import { mapImageToEmoji } from './emojiHelper';
+
 /**
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
@@ -220,6 +222,11 @@ export function convert(
           node.parentElement.className.match('jira-issue-macro-key')
         ) {
           return null;
+        } else if (node.className === 'emoticon') {
+          let emojiResult = mapImageToEmoji(node as HTMLImageElement);
+          if (emojiResult) {
+            return schema.text(emojiResult);
+          }
         }
         break;
       case 'H1':

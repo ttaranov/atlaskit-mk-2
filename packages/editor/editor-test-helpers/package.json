@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-test-helpers",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "Test Helpers for Atlassian Editor components",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -33,6 +33,7 @@
     "@types/prosemirror-keymap": "^1.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-state": "^1.0.0",
-    "@types/prosemirror-view": "^1.0.0"
+    "@types/prosemirror-view": "^1.0.0",
+    "is-ci": "^1.1.0"
   }
 }
