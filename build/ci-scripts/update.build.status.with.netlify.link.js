@@ -1,27 +1,27 @@
 const fs = require('fs');
 const path = require('path');
 const updateBuildStatus = require('../utils/updateBuildStatus');
+/**
+ * NOTE
+ * This script should be considered deprecated. We've left it here only as an example for
+ * the future in case we want this functionality back.
+ *
+ * This functionality has moved to a static bitbucket addon as sending netlify links through
+ * build status' during parallel steps can lead to other tools thinking builds are green when they
+ * are not.
+ */
+const URL = process.env.URL;
 
-const pathToNetlifyOutputFile = path.join(__dirname, '..', '..', 'output.txt');
+if (!URL) {
+  console.error('No url passed to script! Exiting');
+  process.exit(1);
+}
 
 try {
-  const logFile = fs.readFileSync(pathToNetlifyOutputFile, 'utf-8');
-  const lines = logFile.split('\n');
-  const indexOfLineBeforeUrl = lines.findIndex(
-    line => line.indexOf('Deploy is live (permalink):') > -1,
-  );
-  const permalinkUrlMatch = lines[indexOfLineBeforeUrl + 1].match(
-    /http:\/\/.+?.netlify.com/,
-  );
-  if (!permalinkUrlMatch) {
-    console.error('Unable to find permalinkUrl in output.txt');
-    process.exit(1);
-  }
-  const permalinkUrl = permalinkUrlMatch[0];
   const buildStatusOpts = {
     buildName: 'Netlify build',
     description: 'A static preview build hosted on netlify',
-    url: permalinkUrl,
+    url: URL,
     state: 'SUCCESSFUL',
   };
   console.log('Updating build status...');

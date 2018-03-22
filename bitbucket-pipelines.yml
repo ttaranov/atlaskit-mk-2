@@ -32,11 +32,11 @@ pipelines:
             - yarn global add "bolt@^0.19.2"
             - bolt
             - echo $BITBUCKET_COMMIT
-            - node build/ci-scripts/upload.build.artefact.for.commit.js bitbucket-pipelines.yml
-            - mkdir testing
-            - echo "test" > testing/foo
-            - echo "test" > testing/bar
-            - node build/ci-scripts/upload.build.artefact.for.commit.js testing
+            - echo "This is a triumph" > luke.txt
+            - node build/ci-scripts/upload.build.artefact.for.commit.js luke.txt
+            - rm luke.txt
+            - node build/ci-scripts/download.build.artefact.for.commit.js luke.txt
+            - echo luke.text
 
     # - parallel:
     #     - step:
@@ -75,7 +75,7 @@ pipelines:
     #           - apt-get -y install zip
     #           - yarn global add bolt
     #           - bolt
-    #           - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+    #           - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
     #           - node build/ci-scripts/update.build.status.with.netlify.link.js
     #         caches:
     #           - node
