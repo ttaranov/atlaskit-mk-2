@@ -27,7 +27,7 @@
     "@atlaskit/icon": "^10.12.1",
     "@atlaskit/input": "^1.7.1",
     "@atlaskit/layer": "^2.9.1",
-    "@atlaskit/select": "^0.2.0",
+    "@atlaskit/select": "^0.3.0",
     "@atlaskit/theme": "^2.4.1",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
