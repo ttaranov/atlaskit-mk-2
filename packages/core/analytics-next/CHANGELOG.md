@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 1.1.7
+- [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
+
 ## 1.1.6
 - [patch] Fix analytics-next TS type definition [9faaa5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9faaa5f)
 - [patch] Fix analytics-next TS type definition [7e26229](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e26229)
