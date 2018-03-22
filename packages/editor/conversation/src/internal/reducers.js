@@ -18,7 +18,7 @@ import {
   CREATE_CONVERSATION_ERROR,
 } from './actions';
 import type { Action, State } from './store';
-import type { User, Conversation, Comment } from '../model';
+import type { Conversation, Comment } from '../model';
 import { createReducer } from './create-reducer';
 
 const updateComment = (
@@ -152,12 +152,12 @@ const getCommentFromConversation = (
       return acc;
     }
 
-    return conversation.comments.reduce((commentsAcc, comment) => {
-      if (comment.commentId !== commentId) {
+    return conversation.comments.reduce((commentsAcc, c) => {
+      if (c.commentId !== commentId) {
         return commentsAcc;
       }
 
-      return [...commentsAcc, comment];
+      return [...commentsAcc, c];
     }, acc);
   }, []);
 
@@ -169,7 +169,7 @@ export const initialState = {
 };
 
 export const reducers = createReducer(initialState, {
-  [FETCH_CONVERSATIONS_REQUEST](state: State, action: Action) {
+  [FETCH_CONVERSATIONS_REQUEST](state: State) {
     return {
       ...state,
     };
@@ -215,14 +215,15 @@ export const reducers = createReducer(initialState, {
   [ADD_COMMENT_SUCCESS](state: State, action: Action) {
     const { payload } = action;
 
-    let conversations: Conversation[];
-
-    conversations = addOrUpdateCommentInConversation(state.conversations, {
-      ...payload,
-      state: undefined,
-      oldDocument: undefined,
-      isPlaceholder: false,
-    });
+    const conversations: Conversation[] = addOrUpdateCommentInConversation(
+      state.conversations,
+      {
+        ...payload,
+        state: undefined,
+        oldDocument: undefined,
+        isPlaceholder: false,
+      },
+    );
 
     return {
       ...state,

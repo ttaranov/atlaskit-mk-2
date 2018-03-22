@@ -66,6 +66,7 @@ export interface ResourceProvider {
   updateUser(user?: User): Promise<User | typeof undefined>;
 }
 
+/* eslint-disable */
 export class AbstractConversationResource implements ResourceProvider {
   _store: Store<State | typeof undefined>;
 
@@ -166,6 +167,7 @@ export class AbstractConversationResource implements ResourceProvider {
     return Promise.reject('Not implemented');
   }
 }
+/* eslint-enable */
 
 export class ConversationResource extends AbstractConversationResource {
   config: ConversationResourceConfig;
@@ -201,7 +203,7 @@ export class ConversationResource extends AbstractConversationResource {
       return {};
     }
 
-    return await response.json();
+    return response.json();
   }
 
   /**
@@ -299,7 +301,7 @@ export class ConversationResource extends AbstractConversationResource {
     const tempComment = localId
       ? { conversationId, localId }
       : this.createComment(conversationId, parentId, doc);
-    let result: Comment;
+    let result: Comment | any;
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: tempComment });
 
@@ -317,7 +319,7 @@ export class ConversationResource extends AbstractConversationResource {
         },
       );
     } catch (error) {
-      const result = { conversationId, parentId, document: doc, error };
+      result = { conversationId, parentId, document: doc, error };
       dispatch({ type: ADD_COMMENT_ERROR, payload: result });
       return result;
     }
@@ -346,7 +348,7 @@ export class ConversationResource extends AbstractConversationResource {
   ): Promise<Comment | any> {
     const { dispatch } = this;
     const tempComment = this.getComment(conversationId, commentId);
-    let result: Comment;
+    let result: Comment | any;
 
     if (tempComment) {
       dispatch({
@@ -374,7 +376,7 @@ export class ConversationResource extends AbstractConversationResource {
         },
       );
     } catch (error) {
-      const result = { conversationId, commentId, document, error };
+      result = { conversationId, commentId, document, error };
       dispatch({ type: UPDATE_COMMENT_ERROR, payload: result });
       return result;
     }

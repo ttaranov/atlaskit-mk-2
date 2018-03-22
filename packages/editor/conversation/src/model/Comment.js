@@ -1,5 +1,6 @@
 // @flow
 import type { User } from './User';
+
 export type Comment = {
   commentId: string,
   conversationId: string,

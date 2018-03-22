@@ -44,7 +44,7 @@ export default class Conversation extends PureComponent<Props> {
     } = this.props;
 
     if (!conversation) {
-      return;
+      return null;
     }
 
     const { conversationId } = conversation;
@@ -96,6 +96,8 @@ export default class Conversation extends PureComponent<Props> {
         />
       );
     }
+
+    return null;
   }
 
   _onRetry = (document: any) => (commentLocalId?: string) => {

@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable */
 export const generateUuid = () =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0;
@@ -16,3 +17,4 @@ export const uuid = {
     return staticValue || generateUuid();
   },
 };
+/* eslint-enable */

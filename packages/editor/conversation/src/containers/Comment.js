@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import { Component } from 'react';
 import type { Node as ReactNode } from 'react';
 import { connect } from 'react-redux';
 import type { SharedProps } from '../components/Comment';

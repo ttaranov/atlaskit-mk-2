@@ -26,6 +26,7 @@
     "@atlaskit/comment": "^2.7.9",
     "@atlaskit/editor-common": "^8.0.7",
     "@atlaskit/editor-core": "^65.1.10",
+    "@atlaskit/single-select": "^3.3.0",
     "@atlaskit/reactions": "^10.8.9",
     "@atlaskit/renderer": "^13.0.5",
     "date-fns": "^1.29.0",
@@ -40,6 +41,6 @@
     "@atlaskit/docs": "^2.5.3",
     "@atlaskit/emoji": "^31.1.21",
     "@atlaskit/mention": "^9.2.1",
-    "@atlaskit/single-select": "^3.3.0"
+    "enzyme": "^3.3.0"
   }
 }

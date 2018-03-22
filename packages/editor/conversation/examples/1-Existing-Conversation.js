@@ -23,9 +23,11 @@ export default class ExistingConversation extends Component<
   async componentDidMount() {
     const [conversation] = await provider.getConversations();
 
+    /* eslint-disable */
     this.setState({
       conversationId: conversation.conversationId,
     });
+    /* eslint-enable */
   }
 
   render() {
@@ -40,9 +42,6 @@ export default class ExistingConversation extends Component<
         containerId="ari:cloud:platform::conversation/demo"
         provider={provider}
         dataProviders={getDataProviderFactory()}
-        renderEditor={(Editor, props) => (
-          <Editor {...props} appearance="message" saveOnEnter={true} />
-        )}
       />
     );
   }

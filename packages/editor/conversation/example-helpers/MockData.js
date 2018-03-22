@@ -171,7 +171,7 @@ export const generateMockConversation = (): Conversation => {
       return {
         commentAri: `abc:cloud:platform::comment/${commentId}`,
         localId: `${commentId}-local`,
-        commentId: commentId,
+        commentId,
         conversationId,
         createdBy:
           MOCK_USERS[Math.floor(Math.random() * 10) % (MOCK_USERS.length - 2)],
@@ -188,7 +188,7 @@ export const generateMockConversation = (): Conversation => {
                     type: 'text',
                     text:
                       MESSAGES[
-                        Math.floor(Math.random() * MESSAGES.length) &
+                        Math.floor(Math.random() * MESSAGES.length) %
                           MESSAGES.length
                       ],
                   },

@@ -1,17 +1,21 @@
 // @flow
 // We're using $FlowFixMe on a few imports here since the packages are written in typescript,
 // which flow doesn't understand
-import type { ConversationResourceConfig } from '../src/api/ConversationResource';
-import { AbstractConversationResource } from '../src/api/ConversationResource';
 // $FlowFixMe
 import { ProviderFactory } from '@atlaskit/editor-common';
 // $FlowFixMe
 import { reactionsProvider } from '@atlaskit/reactions';
+/* eslint-disable */
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+/* eslint-enable */
+
+import type { ConversationResourceConfig } from '../src/api/ConversationResource';
+import { AbstractConversationResource } from '../src/api/ConversationResource';
+
 import type { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { HttpError } from '../src/api/HttpError';
 
 import {
@@ -103,7 +107,7 @@ export class MockProvider extends AbstractConversationResource {
       containerId,
       localId,
       comments: [this.createComment(conversationId, conversationId, value)],
-      meta: meta,
+      meta,
     };
 
     const { dispatch, responseCode } = this;

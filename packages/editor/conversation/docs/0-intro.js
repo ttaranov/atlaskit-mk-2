@@ -271,52 +271,49 @@ const props = {
   ],
 };
 
-// export default md`
-//   The Conversation component is a drop-in component for adding conversations in any context. It is the front-end part of the \`Conversation Service\` and together they make up \`Conversations as a Service\`.
-
-//   ## What is a Conversation?
-
-//   A conversation is a _group of comments_. The \`Conversation Service\` lets you associate any number of comments with a container (eg. pull-request, Confluence page, etc.), but in order for them to be meaningful they need to be grouped by conversations.
-
-//   A conversation can also contain any kind of meta-data, which can be used to render the conversation in the right place on a page (eg. inline comments).
-
-//   ## Usage
-
-//   The conversation component is a mini-app which comes with an internal store. It's completely driven by a provider (\`ConversationResource\`).
-
-//   Using the component is fairly straight forward. Just import \`Conversation\` and \`ConversationResource\` from \`@atlaskit/conversation\`. The component can then be used like below.
-
-//   ${(
-//     <Example
-//       Component={require('../examples/0-New-Conversation').default}
-//       title="New Conversation Example"
-//       source={newConversationSource}
-//     />
-//   )}
-
-//   Omitting the \`id\`-prop means that a new conversation will be created. Of course, in most cases you'll want to render existing conversations on a page as well. The provider let's you fetch all conversations for a container by calling \`.getConversations()\`.
-
-//   ${(
-//     <Example
-//       Component={require('../examples/1-Existing-Conversation').default}
-//       title="Existing Conversation Example"
-//       source={existingConversationSource}
-//     />
-//   )}
-
-//   The rendering of the editor can be customized by using the \`renderEditor\` prop. Here's an example using the "message"-appearance and "saveOnEnter":
-
-//   ${(
-//     <Example
-//       Component={require('../examples/2-Customized-Editor').default}
-//       title="Customized Editor"
-//       source={customEditorSource}
-//     />
-//   )}
-
-//   ${<Props props={props} />}
-
-// `;
 export default md`
-  asdf
+  The Conversation component is a drop-in component for adding conversations in any context. It is the front-end part of the \`Conversation Service\` and together they make up \`Conversations as a Service\`.
+
+  ## What is a Conversation?
+
+  A conversation is a _group of comments_. The \`Conversation Service\` lets you associate any number of comments with a container (eg. pull-request, Confluence page, etc.), but in order for them to be meaningful they need to be grouped by conversations.
+
+  A conversation can also contain any kind of meta-data, which can be used to render the conversation in the right place on a page (eg. inline comments).
+
+  ## Usage
+
+  The conversation component is a mini-app which comes with an internal store. It's completely driven by a provider (\`ConversationResource\`).
+
+  Using the component is fairly straight forward. Just import \`Conversation\` and \`ConversationResource\` from \`@atlaskit/conversation\`. The component can then be used like below.
+
+  ${(
+    <Example
+      Component={require('../examples/0-New-Conversation').default}
+      title="New Conversation Example"
+      source={newConversationSource}
+    />
+  )}
+
+  Omitting the \`id\`-prop means that a new conversation will be created. Of course, in most cases you'll want to render existing conversations on a page as well. The provider let's you fetch all conversations for a container by calling \`.getConversations()\`.
+
+  ${(
+    <Example
+      Component={require('../examples/1-Existing-Conversation').default}
+      title="Existing Conversation Example"
+      source={existingConversationSource}
+    />
+  )}
+
+  The rendering of the editor can be customized by using the \`renderEditor\` prop. Here's an example using the "message"-appearance and "saveOnEnter":
+
+  ${(
+    <Example
+      Component={require('../examples/2-Customized-Editor').default}
+      title="Customized Editor"
+      source={customEditorSource}
+    />
+  )}
+
+  ${<Props props={props} />}
+
 `;

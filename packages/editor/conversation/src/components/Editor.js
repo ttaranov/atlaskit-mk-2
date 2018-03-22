@@ -115,7 +115,7 @@ export default class Editor extends Component<Props, State> {
 
   _renderEditor = (actions: any) => {
     const { dataProviders, renderEditor, defaultValue } = this.props;
-    let providers = {};
+    const providers = {};
 
     // @TODO Remove and just pass the factory through once AkEditor is updated
     if (dataProviders) {

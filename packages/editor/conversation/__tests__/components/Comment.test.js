@@ -15,26 +15,25 @@ import Comment, { DeletedMessage } from '../../src/components/Comment';
 import Editor from '../../src/components/Editor';
 import CommentContainer from '../../src/containers/Comment';
 
-function findEditAction(comment) {}
-
 describe('Comment', () => {
-  let comment;
-
   describe('rendering', () => {
-    beforeEach(() => {
-      comment = shallow(
+    it('should render as AkComment', () => {
+      const comment = shallow(
         <Comment
           conversationId={mockComment.conversationId}
           comment={mockComment}
         />,
       );
-    });
-
-    it('should render as AkComment', () => {
       expect(comment.first().is(AkComment)).toBe(true);
     });
 
     it('should render author', () => {
+      const comment = shallow(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+        />,
+      );
       expect(comment.first().props()).toHaveProperty(
         'author',
         <CommentAuthor>{mockComment.createdBy.name}</CommentAuthor>,
@@ -42,6 +41,12 @@ describe('Comment', () => {
     });
 
     it('should render avatar', () => {
+      const comment = shallow(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+        />,
+      );
       expect(comment.first().props()).toHaveProperty(
         'avatar',
         <AkAvatar src={mockComment.createdBy.avatarUrl} />,
@@ -49,6 +54,12 @@ describe('Comment', () => {
     });
 
     it('should render editor in reply-mode', () => {
+      const comment = shallow(
+        <Comment
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+        />,
+      );
       comment.setState({
         isReplying: true,
       });
@@ -128,6 +139,7 @@ describe('Comment', () => {
   });
 
   describe('edit link', () => {
+    let comment;
     let user;
     let editLink;
     let onUpdateComment;
@@ -254,6 +266,7 @@ describe('Comment', () => {
   });
 
   describe.skip('delete link', () => {
+    let comment;
     let user;
     let deleteLink;
     let onDeleteComment;
@@ -318,6 +331,7 @@ describe('Comment', () => {
   });
 
   describe('username link', () => {
+    let comment;
     let user;
     let usernameLink;
     let onUserClick;

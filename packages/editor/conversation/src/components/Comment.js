@@ -129,9 +129,9 @@ export default class Comment extends Component<Props, State> {
     if (
       newComments.some(newComment => {
         const [oldComment] = oldComments.filter(
-          oldComment =>
-            oldComment.commentId === newComment.commentId ||
-            oldComment.localId === newComment.localId,
+          old =>
+            old.commentId === newComment.commentId ||
+            old.localId === newComment.localId,
         );
         return commentChanged(oldComment, newComment);
       })
@@ -228,10 +228,10 @@ export default class Comment extends Component<Props, State> {
     }
 
     if (!lastDispatch) {
-      return;
+      return undefined;
     }
 
-    this._dispatch(lastDispatch.handler, ...lastDispatch.args);
+    return this._dispatch(lastDispatch.handler, ...lastDispatch.args);
   };
 
   /**
@@ -257,7 +257,7 @@ export default class Comment extends Component<Props, State> {
       return (
         <Editor
           defaultValue={comment.document.adf}
-          isExpanded={true}
+          isExpanded
           isEditing={isEditing}
           onSave={this._onSaveEdit}
           onCancel={this._onCancelEdit}
@@ -328,7 +328,7 @@ export default class Comment extends Component<Props, State> {
 
     return (
       <Editor
-        isExpanded={true}
+        isExpanded
         onCancel={this._onCancelReply}
         onSave={this._onSaveReply}
         dataProviders={dataProviders}
