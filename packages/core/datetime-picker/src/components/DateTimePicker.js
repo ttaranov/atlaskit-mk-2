@@ -119,7 +119,11 @@ export default class DateTimePicker extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { ...this.state, ...parseDateIntoStateValues(props.value) };
+    const mappedState = this.getState();
+    this.state = {
+      ...mappedState,
+      ...parseDateIntoStateValues(mappedState.value),
+    };
   }
 
   // All state needs to be accessed via this function so that the state is mapped from props
