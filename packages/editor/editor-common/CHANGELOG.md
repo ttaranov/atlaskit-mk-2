@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.2
+- [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
+
 ## 8.1.1
 - [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
 

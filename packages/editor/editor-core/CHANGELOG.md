@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.14
+- [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
+
 ## 65.1.13
 
 
