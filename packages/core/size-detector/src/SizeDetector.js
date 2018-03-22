@@ -56,7 +56,7 @@ export default class SizeDetector extends Component<Props, State> {
     containerStyle: {},
   };
 
-  rafFrame: number; // eslint-disable-line react/sort-comp
+  rafFrame: ?AnimationFrameID; // eslint-disable-line react/sort-comp
   container: ?HTMLDivElement;
   resizeObjectDocument: ?window;
   resizeObject: ?HTMLElement;
@@ -87,7 +87,9 @@ export default class SizeDetector extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    cancelAnimationFrame(this.rafFrame);
+    if (this.rafFrame) {
+      cancelAnimationFrame(this.rafFrame);
+    }
     if (this.resizeObjectDocument) {
       this.resizeObjectDocument.removeEventListener(
         'resize',

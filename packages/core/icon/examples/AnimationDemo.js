@@ -14,7 +14,7 @@ type State = {
 
 class AnimationDemo extends Component<{}, State> {
   checkbox: ?HTMLInputElement;
-  timer = 0;
+  timer: ?IntervalID;
 
   state = {
     components: [
@@ -45,7 +45,9 @@ class AnimationDemo extends Component<{}, State> {
   };
 
   stopAnimating = () => {
-    clearInterval(this.timer);
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   };
 
   toggleAnimation = (e: Event) => {
