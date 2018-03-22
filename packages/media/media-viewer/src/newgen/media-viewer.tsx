@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaType } from '@atlaskit/media-core';
+import { Context, MediaType, MediaItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel } from './domain';
+import { Model, Identifier, initialModel, ObjectUrl } from './domain';
 
 export type Props = {
   onClose?: () => void;
@@ -11,12 +11,10 @@ export type Props = {
   data: Identifier;
 };
 
-export type State = {
-  model: Model;
-};
+export type State = Model;
 
 export class MediaViewer extends React.Component<Props, State> {
-  state: State = { model: initialModel };
+  state: State = initialModel;
 
   componentDidMount() {
     this.subscribe();
@@ -30,7 +28,7 @@ export class MediaViewer extends React.Component<Props, State> {
   // We therefore need to reset Media Viewer.
   componentWillUpdate(nextProps) {
     if (this.needsReset(this.props, nextProps)) {
-      this.setState({ model: initialModel });
+      this.setState(initialModel);
     }
   }
 
@@ -43,11 +41,10 @@ export class MediaViewer extends React.Component<Props, State> {
 
   render() {
     const { onClose } = this.props;
-    const { model } = this.state;
     return (
       <div>
         <Blanket onBlanketClicked={onClose} isTinted />
-        <MediaViewerRenderer model={model} />
+        <MediaViewerRenderer model={this.state} />
       </div>
     );
   }
@@ -63,44 +60,58 @@ export class MediaViewer extends React.Component<Props, State> {
   private subscription?: any;
 
   private subscribe() {
+    const { context } = this.props;
     const { id, type, collectionName } = this.props.data;
-    const provider = this.props.context.getMediaItemProvider(
-      id,
-      type,
-      collectionName,
-    );
+    const provider = context.getMediaItemProvider(id, type, collectionName);
 
     this.subscription = provider.observable().subscribe({
-      next: mediaItem => {
+      next: async mediaItem => {
         if (mediaItem.type === 'link') {
-          const model: Model = {
+          this.setState({
             fileDetails: {
               status: 'FAILED',
               err: new Error('links are not supported at the moment'),
-            },
-          };
-          this.setState({ model });
+            }
+          });
         } else {
           const { processingStatus, mediaType } = mediaItem.details;
 
           if (processingStatus === 'failed') {
-            const model: Model = {
+            this.setState({
               fileDetails: {
                 status: 'FAILED',
                 err: new Error('processing failed'),
-              },
-            };
-            this.setState({ model });
+              }
+             });
           } else if (processingStatus === 'succeeded') {
-            const model: Model = {
+            this.setState({
               fileDetails: {
                 status: 'SUCCESSFUL',
                 data: {
                   mediaType: mediaType as MediaType,
                 },
-              },
-            };
-            this.setState({ model });
+              }
+            });
+
+            try {
+              const objectUrl = await getImageObjectUrl(mediaItem, context);
+              this.setState({
+                previewData: {
+                  status: 'SUCCESSFUL',
+                  data: {
+                    viewer: 'IMAGE',
+                    objectUrl,
+                  }
+                }
+              });
+            } catch (err) {
+              this.setState({
+                previewData: {
+                  status: 'FAILED',
+                  err
+                }
+              });
+            }
           }
         }
       },
@@ -108,13 +119,12 @@ export class MediaViewer extends React.Component<Props, State> {
         /* do nothing */
       },
       error: err => {
-        const model: Model = {
+        this.setState({
           fileDetails: {
             status: 'FAILED',
-            err,
-          },
-        };
-        this.setState({ model });
+            err
+          }
+        });
       },
     });
   }
@@ -125,4 +135,18 @@ export class MediaViewer extends React.Component<Props, State> {
       this.subscription = null;
     }
   }
+}
+
+async function getImageObjectUrl(
+  mediaItem: MediaItem,
+  context: Context,
+): Promise<ObjectUrl> {
+  const service = context.getBlobService();
+  const blob = await service.fetchImageBlob(mediaItem, {
+    width: 800,
+    height: 600,
+    mode: 'fit',
+    allowAnimated: true,
+  });
+  return URL.createObjectURL(blob);
 }
