@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.4
+- [patch] table cell/header attributes in the Confluence transformer [9415aaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9415aaa)
+
 ## 8.1.3
 - [patch] add additional confluence link metadata attributes [6ddf3d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ddf3d4)
 
