@@ -24,7 +24,7 @@ const hashingFunction = (blob: Blob): Promise<string> => {
 
     reader.readAsArrayBuffer(blob);
 
-    reader.onload = (e: Event) => {
+    reader.onload = () => {
       resolve(
         Rusha.createHash()
           .update(reader.result)
