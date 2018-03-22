@@ -7,6 +7,7 @@ import type { AppearanceType, ComponentType, FunctionType } from '../types';
 import {
   Header,
   Title,
+  TitleText,
   TitleIconWrapper as IconWrapper,
 } from '../styled/Content';
 
@@ -39,13 +40,29 @@ type Props = {
   onClose: FunctionType,
   /** Whether or not to display a line under the header */
   showKeyline?: boolean,
+  /**
+   * Makes heading multiline.
+   * If false and heading is longer than one line, overflow will be not displayed.
+   */
+  isHeadingMultiline?: boolean,
 };
 
 export default class ModalHeader extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
 
+  static defaultProps = {
+    isHeadingMultiline: true,
+  };
+
   render() {
-    const { appearance, component, heading, onClose, showKeyline } = this.props;
+    const {
+      appearance,
+      component,
+      heading,
+      onClose,
+      showKeyline,
+      isHeadingMultiline,
+    } = this.props;
     const warning = 'You can provide `component` OR `heading`, not both.';
 
     if (!component && !heading) return null;
@@ -55,14 +72,17 @@ export default class ModalHeader extends Component<Props, {}> {
         appearance,
         onClose,
         showKeyline,
+        isHeadingMultiline,
       });
     }
 
     return (
       <Header showKeyline={showKeyline}>
-        <Title>
+        <Title isHeadingMultiline={isHeadingMultiline}>
           <TitleIcon appearance={appearance} />
-          {heading}
+          <TitleText isHeadingMultiline={isHeadingMultiline}>
+            {heading}
+          </TitleText>
         </Title>
       </Header>
     );
