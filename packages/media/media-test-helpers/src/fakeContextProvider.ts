@@ -28,10 +28,20 @@ export const fakeContext = (stubbedContext = {}): Context => {
     .stub()
     .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
 
+  const getBlobService = sinon.stub().returns({
+    fetchOriginalBlob: sinon
+      .stub()
+      .returns(Promise.resolve(new Blob())),
+    fetchImageBlob: sinon
+      .stub()
+      .returns(Promise.resolve(new Blob())),
+  })
+
   const defaultContext: Context = {
     getMediaItemProvider,
     getMediaCollectionProvider,
     getDataUriService,
+    getBlobService,
     addLinkItem,
     getUrlPreviewProvider,
     refreshCollection: sinon.spy(),

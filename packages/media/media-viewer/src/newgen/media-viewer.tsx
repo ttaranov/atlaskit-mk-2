@@ -94,6 +94,9 @@ export class MediaViewer extends React.Component<Props, State> {
             });
 
             try {
+              // TODO:
+              // - 1) MSW-530: revoke object URL
+              // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
               const objectUrl = await getImageObjectUrl(mediaItem, context);
               this.setState({
                 previewData: {
