@@ -15,6 +15,7 @@ import {
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 
+export const UntypedButton = Button as any;
 export const TRY_AGAIN_LINK_TEXT = 'Try again';
 
 export type THEME = 'dark' | 'default';
@@ -185,14 +186,14 @@ export class ActionsView extends React.Component<
       return (
         <ActionButtonWrapper>
           <ButtonWrapper isDark={isInversed}>
-            <Button
+            <UntypedButton
               isDisabled={this.isInProgress}
               onClick={this.handleActionButton(action)}
               theme={this.theme}
               iconAfter={spinner}
             >
               {content}
-            </Button>
+            </UntypedButton>
           </ButtonWrapper>
         </ActionButtonWrapper>
       );
@@ -209,7 +210,7 @@ export class ActionsView extends React.Component<
     );
     return (
       <ButtonWrapper isDark={isInversed}>
-        <Button
+        <UntypedButton
           isDisabled={this.isInProgress}
           appearance="subtle"
           iconBefore={icon}
@@ -260,13 +261,13 @@ export class ActionsView extends React.Component<
         <FailureMessageBlock>
           <FailureMessage tryAgain={tryAgain}>{failureMessage}</FailureMessage>
           {tryAgain ? (
-            <Button
+            <UntypedButton
               appearance="link"
               onClick={this.handleTryAgain}
               theme={this.theme}
             >
               {tryAgainLinkText}
-            </Button>
+            </UntypedButton>
           ) : null}
         </FailureMessageBlock>
       );
