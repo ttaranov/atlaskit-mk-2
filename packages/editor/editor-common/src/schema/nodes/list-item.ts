@@ -26,7 +26,7 @@ export interface Definition {
 
 export const listItem: NodeSpec = {
   content:
-    '(paragraph | mediaGroup | mediaSingle) (paragraph | bulletList | orderedList)*',
+    '(paragraph | mediaGroup | mediaSingle) (paragraph | bulletList | orderedList | mediaGroup | mediaSingle)*',
   defining: true,
   parseDOM: [{ tag: 'li' }],
   toDOM() {

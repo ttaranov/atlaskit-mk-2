@@ -31,7 +31,7 @@ import {
   URLInfo,
   detectLinkRangesInSteps,
 } from '../utils/media-links';
-import { insertMediaGroupNode } from '../utils/media-files';
+import { insertMediaGroupNode, isNonImagesBanned } from '../utils/media-files';
 import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
 import PickerFacade, { PickerFacadeConfig } from '../picker-facade';
 import pickerFacadeLoader from '../picker-facade-loader';
@@ -289,15 +289,19 @@ export class MediaPluginState {
       isImage(media.fileMimeType),
     );
 
-    const nonImageAttachements = mediaStates.filter(
+    let nonImageAttachements = mediaStates.filter(
       media => !isImage(media.fileMimeType),
     );
+
+    const grandParentNode = this.view.state.selection.$from.node(-1);
+
+    if (isNonImagesBanned(grandParentNode)) {
+      nonImageAttachements = [];
+    }
 
     mediaStates.forEach(mediaState =>
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
-    const { state } = this.view;
-    const grandParentNode = state.selection.$from.node(-1) || state.doc;
 
     const allowMediaSingle =
       mediaSingle &&

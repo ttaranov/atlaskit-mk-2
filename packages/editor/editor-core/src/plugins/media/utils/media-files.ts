@@ -24,6 +24,8 @@ import {
   copyOptionalAttrsFromMediaState,
 } from './media-common';
 
+const nonMediaBannedNodes = ['listItem'];
+
 export interface Range {
   start: number;
   end: number;
@@ -166,4 +168,8 @@ const setSelectionAfterMediaInsertion = (
   } else {
     setTextSelection(view, endOfMediaGroup + 1);
   }
+};
+
+export const isNonImagesBanned = (node: PMNode) => {
+  return nonMediaBannedNodes.indexOf(node.type.name) > -1;
 };
