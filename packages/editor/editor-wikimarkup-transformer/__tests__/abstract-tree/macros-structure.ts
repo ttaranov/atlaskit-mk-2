@@ -22,13 +22,16 @@ describe('JIRA wiki markup - Abstract tree', () => {
       'panel with attributes and a nested quote',
       '{panel:title=My Title|borderStyle=dashed}{quote}Panel with nested quote here{quote}{panel}.',
     ],
+    [
+      'string with a wrong order of macros',
+      'This is a {panel:foo=bar} panel with a {quote}quote inside{panel} but it is broken{quote}',
+    ],
   ];
 
   for (const [testCaseName, markup] of testCases) {
     it(`should match parsed structure for ${testCaseName}`, () => {
       const tree = new AbstractTree(defaultSchema, markup);
-      // console.log(JSON.stringify(tree.getMacrosStructure(), null, 2));
-      expect(tree.getMacrosStructure()).toMatchSnapshot();
+      expect(tree.getTextIntervals()).toMatchSnapshot();
     });
   }
 });
