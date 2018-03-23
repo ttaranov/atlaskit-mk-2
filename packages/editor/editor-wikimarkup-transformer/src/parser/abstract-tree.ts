@@ -240,7 +240,7 @@ export default class AbstractTree {
 
         const headingNode = heading.createChecked(
           { level: headingMatches[1] },
-          this.schema.text(headingMatches[2]),
+          this.getTextWithMarks(headingMatches[2]),
         );
 
         output.push(headingNode);
