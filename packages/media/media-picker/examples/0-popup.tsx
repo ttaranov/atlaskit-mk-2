@@ -283,6 +283,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               appearance="primary"
               onClick={this.onShow}
               isDisabled={hasTorndown}
+              className="show-button"
             >
               Show
             </Button>
