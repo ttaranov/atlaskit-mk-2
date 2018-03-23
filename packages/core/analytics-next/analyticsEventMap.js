@@ -1,3 +1,4 @@
+// @flow
 /**
  * This map was originally used to configure the analytics codemod to run over
  * each component.
@@ -6,7 +7,36 @@
  * If analytics has been manually for a component and you do not wish for it to be
  * codemodded, add an `ignore: true` prop to it.
  */
-const analyticsEventMap = [
+
+type AnalyticsEventConfig = {
+  /** Path to component being wrapped with analytics */
+  path: string,
+  /** Path to analytics test file that will be created and/or already exists */
+  testPath: string,
+  /** The 'component' context value that will be exposed via analytics context */
+  context: string,
+  /** The name of the component used in the component test file. This is also used
+   * as the name of the base (unwrapped) component export in the component file path.
+   * This name should be consistent, some names were manually updated so that they aligned.
+   */
+  component: string,
+  /** A map of prop callbacks that will be instrumented with analytics.
+   *  The key represents the prop callback name and the value represents the 'action'
+   *  payload value that will be attached to the analytics event.
+   */
+  props: {
+    [propName: string]: string,
+  },
+  /** Path to the components existing test file so that we can add mount tests to it */
+  componentTestPath?: string,
+  /** Signals to the codemod to not override the analytics tests in the component test
+   *  file as some manual work has been done that cannot be automated.
+   */
+  manualComponentTestOverride?: boolean,
+  /** Signals that this map entry is for test purposes and should not be part of other exports */
+  test?: true,
+};
+const analyticsEventMap: AnalyticsEventConfig[] = [
   {
     path: 'avatar/src/components/Avatar.js',
     testPath: 'avatar/src/components/__tests__/analytics.js',
@@ -145,6 +175,7 @@ const analyticsEventMap = [
       onActivate: 'activate',
     },
     componentTestPath: 'droplist/src/__tests__/index.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'dynamic-table/src/components/Stateless.js',
@@ -243,6 +274,7 @@ const analyticsEventMap = [
       onMouseOver: 'mouseover',
     },
     componentTestPath: 'flag/__tests__/Flag.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'icon/src/components/Icon.js',
@@ -352,10 +384,10 @@ const analyticsEventMap = [
     manualComponentTestOverride: true,
   },
   {
-    path: 'pagination/src/components/Stateless.js',
+    path: 'pagination/src/components/Pagination.js',
     testPath: 'pagination/__tests__/analytics.js',
     context: 'pagination',
-    component: 'PaginationStateless',
+    component: 'Pagination',
     props: {
       onSetPage: 'change',
     },
@@ -484,12 +516,12 @@ const analyticsEventMap = [
 ];
 
 module.exports.analyticsPackages = analyticsEventMap
+  .filter(pkg => pkg.test !== true)
   .map(config => {
     const path = config.path;
 
     return path.substring(0, path.indexOf('/'));
-  })
-  .filter(pkg => pkg.length > 0 && pkg.test !== true);
+  });
 
 module.exports.analyticsEventMap = analyticsEventMap;
 
@@ -498,7 +530,7 @@ module.exports.instrumentedComponents = analyticsEventMap
   .reduce((acc, config) => {
     const path = config.path;
     const packageSuffix = path.substring(0, path.indexOf('/'));
-    let items = [];
+    const items = [];
     Object.keys(config.props).forEach(propName => {
       items.push({
         packageName: `@atlaskit/${packageSuffix}`,
