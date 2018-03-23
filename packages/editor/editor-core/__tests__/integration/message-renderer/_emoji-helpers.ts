@@ -20,5 +20,5 @@ export const insertEmojiBySelect = async (browser, select: string) => {
 };
 
 export const emojiItem = (emojiShortName: string): string => {
-  return `span[shortname=":${emojiShortName}:"]`;
+  return `span[data-emoji-short-name=":${emojiShortName}:"]`;
 };
