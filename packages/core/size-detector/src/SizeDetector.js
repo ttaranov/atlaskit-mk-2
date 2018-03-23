@@ -56,14 +56,9 @@ export default class SizeDetector extends Component<Props, State> {
     containerStyle: {},
   };
 
-  rafFrame: ?AnimationFrameID; // eslint-disable-line react/sort-comp
   container: ?HTMLDivElement;
   resizeObjectDocument: ?window;
   resizeObject: ?HTMLElement;
-
-  queueSizeDetect = () => {
-    this.rafFrame = this.handleResize();
-  };
 
   handleResize = rafSchedule(() => {
     const { container } = this;
@@ -87,13 +82,12 @@ export default class SizeDetector extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (this.rafFrame) {
-      cancelAnimationFrame(this.rafFrame);
-    }
+    this.handleResize.cancel();
+
     if (this.resizeObjectDocument) {
       this.resizeObjectDocument.removeEventListener(
         'resize',
-        this.queueSizeDetect,
+        this.handleResize,
       );
     }
   }
@@ -103,7 +97,7 @@ export default class SizeDetector extends Component<Props, State> {
       return;
     }
     this.container = ref;
-    this.queueSizeDetect();
+    this.handleResize();
   };
 
   handleObjectRef = (ref: ?HTMLElement) => {
@@ -120,7 +114,7 @@ export default class SizeDetector extends Component<Props, State> {
 
     // $FlowFixMe - resizeObject is typed as HTMLElement which has no contentDocument prop
     this.resizeObjectDocument = this.resizeObject.contentDocument.defaultView;
-    this.resizeObjectDocument.addEventListener('resize', this.queueSizeDetect);
+    this.resizeObjectDocument.addEventListener('resize', this.handleResize);
   };
 
   renderChildren = () => {
