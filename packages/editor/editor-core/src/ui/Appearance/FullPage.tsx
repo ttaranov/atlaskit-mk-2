@@ -42,7 +42,6 @@ const ContentArea = styled.div`
   flex-grow: 1;
 
   & .ProseMirror {
-    flex-grow: 1;
     box-sizing: border-box;
   }
 
@@ -103,9 +102,6 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
-  stopPropagation = (event: React.MouseEvent<HTMLDivElement>) =>
-    event.stopPropagation();
-
   render() {
     const {
       editorDOMElement,
@@ -164,7 +160,7 @@ export default class Editor extends React.Component<
                   disabled={!!disabled}
                 />
               }
-              <div onClick={this.stopPropagation}>{editorDOMElement}</div>
+              {editorDOMElement}
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>

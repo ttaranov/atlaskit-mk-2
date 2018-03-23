@@ -18,7 +18,10 @@ export default class ClickAreaBlock extends React.Component<Props> {
   private handleClick = event => {
     const { editorView } = this.props;
     if (editorView) {
-      if (createParagraphAtEnd()(editorView.state, editorView.dispatch)) {
+      if (
+        !editorView.dom.contains(event.target) &&
+        createParagraphAtEnd()(editorView.state, editorView.dispatch)
+      ) {
         editorView.focus();
         event.stopPropagation();
       }

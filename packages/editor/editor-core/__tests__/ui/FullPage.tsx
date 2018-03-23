@@ -56,6 +56,46 @@ describe('full page editor', () => {
     expect(editorView.state.doc).toEqualDocument(doc(p('Hello world')));
   });
 
+  it('should set selection to end of editor content if paragraph is inserted', () => {
+    const { editorView } = editor(doc(p('Hello {<>}world'), p('Hello world')));
+    const fullPage = mount(
+      <FullPage
+        editorView={editorView}
+        providerFactory={{} as any}
+        editorDOMElement={<div />}
+      />,
+    );
+    fullPage
+      .findWhere(elm => elm.name() === 'ClickWrapper')
+      .simulate('click', { clientY: 200 });
+    // expect(editorView.hasFocus()).toEqual(true);
+    const { selection } = editorView.state;
+    expect(
+      selection.empty &&
+        selection.$to.pos === editorView.state.doc.content.size - 2,
+    ).toEqual(true);
+  });
+
+  it('should set selection to end of editor content event if is already present at end', () => {
+    const { editorView } = editor(doc(p('Hello {<>}world'), p('')));
+    const fullPage = mount(
+      <FullPage
+        editorView={editorView}
+        providerFactory={{} as any}
+        editorDOMElement={<div />}
+      />,
+    );
+    fullPage
+      .findWhere(elm => elm.name() === 'ClickWrapper')
+      .simulate('click', { clientY: 200 })
+      .simulate('click', { clientY: 200 });
+    const { selection } = editorView.state;
+    expect(
+      selection.empty &&
+        selection.$to.pos === editorView.state.doc.content.size,
+    ).toEqual(true);
+  });
+
   it('should create paragraph correctly when clicked outside and then inside the editor in sequence', () => {
     const { editorView } = editor(doc(p('Hello world'), p('Hello world')));
     const fullPage = mount(
