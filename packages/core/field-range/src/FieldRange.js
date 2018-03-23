@@ -17,7 +17,7 @@ type Props = {
   /** Maximum value of the range */
   max: number,
   /** Minimum value of the range */
-  min?: number,
+  min: number,
   /** Hook to be invoked on change of the range */
   onChange?: (value: number) => mixed,
   /** Step value for the range */
@@ -61,7 +61,7 @@ export class FieldRange extends Component<Props, State> {
     this.inputElement = null;
     this.state = {
       value: props.value,
-      valuePercent: this.getPercentValue(props.value, props.max),
+      valuePercent: this.getPercentValue(props.value, props.min, props.max),
     };
   }
 
@@ -80,8 +80,12 @@ export class FieldRange extends Component<Props, State> {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  getPercentValue = (value: number, max: number): string => {
-    return (value / max * 100).toFixed(2);
+  getPercentValue = (value: number, min: number, max: number): string => {
+    let percent = '0';
+    if (min < max && value > min) {
+      percent = ((value - min) / (max - min) * 100).toFixed(2);
+    }
+    return percent;
   };
 
   onInputChange = (e: Event) => {
@@ -92,8 +96,8 @@ export class FieldRange extends Component<Props, State> {
     // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
     const target: HTMLInputElement = (e.target: Object);
     const value = parseFloat(target.value);
-    const { max, onChange } = this.props;
-    const valuePercent = this.getPercentValue(value, max);
+    const { max, onChange, min } = this.props;
+    const valuePercent = this.getPercentValue(value, min, max);
 
     this.setState({ value, valuePercent });
 

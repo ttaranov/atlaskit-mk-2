@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { imageFileId, youtubeLinkId } from '@atlaskit/media-test-helpers';
-import Media from '../../../../src/react/nodes/media';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
-import MediaGroup from '../../../../src/react/nodes/mediaGroup';
-import { CardView, Card } from '@atlaskit/media-card';
+import { Card, CardEvent } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { EventHandlers } from '../../../../src/ui/Renderer';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, EventHandlers } from '@atlaskit/editor-common';
+import Media from '../../../../src/react/nodes/media';
+import MediaGroup from '../../../../src/react/nodes/mediaGroup';
 
 import * as sinon from 'sinon';
 
@@ -59,25 +58,23 @@ describe('MediaGroup', () => {
   });
 
   it('should call onClick with all the items in a media group', async () => {
-    const onClick = sinon.spy();
-    const eventHandlers: EventHandlers = {
+    const onClick = sinon.spy() as any;
+    const eventHandlers = {
       media: { onClick },
-    };
+    } as EventHandlers;
     const mediaGroup = mount(
-      <MediaGroup>
+      <MediaGroup eventHandlers={eventHandlers}>
         <Media
           id={imageFileId.id}
           type={imageFileId.mediaItemType}
           occurrenceKey="001"
           collection={imageFileId.collectionName}
-          eventHandlers={eventHandlers}
           providers={providerFactory}
         />
         <Media
           id={youtubeLinkId.id}
           type={youtubeLinkId.mediaItemType}
           collection={youtubeLinkId.collectionName}
-          eventHandlers={eventHandlers}
           providers={providerFactory}
         />
       </MediaGroup>,
@@ -96,7 +93,7 @@ describe('MediaGroup', () => {
       .find(Media)
       .first()
       .find(Card);
-    card.props().onClick();
+    card.props().onClick!({} as CardEvent);
 
     expect(onClick.callCount).toBe(1);
     expect(onClick.lastCall.args.length).toBeGreaterThan(1);

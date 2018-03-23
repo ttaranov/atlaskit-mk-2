@@ -107,6 +107,12 @@ function transformDoc(fn) {
   };
 }
 
+const hasLocalId = type =>
+  type === 'taskItem' ||
+  type === 'taskList' ||
+  type === 'decisionItem' ||
+  type === 'decisionList';
+
 const removeIdsFromDoc = transformDoc(node => {
   /**
    * Replace `id` of media nodes with a fixed id
@@ -121,6 +127,15 @@ const removeIdsFromDoc = transformDoc(node => {
           /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
           '$11234-5678-abcd-efgh$3',
         ),
+      },
+    };
+  }
+  if (hasLocalId(node.type)) {
+    return {
+      ...node,
+      attrs: {
+        ...node.attrs,
+        localId: node.attrs.localId.replace(/([a-z0-9\-]+)/, () => 'abc-123'),
       },
     };
   }

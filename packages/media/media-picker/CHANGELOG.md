@@ -1,5 +1,28 @@
 # @atlaskit/media-picker
 
+## 2.1.3
+
+## 2.1.2
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 2.1.1
+
+## 2.1.0
+- [minor] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
+
+## 2.0.2
+- [patch] add icon to annotate card action [e982c4b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e982c4b)
+
+## 2.0.1
+
+## 2.0.0
+- [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
+
+## 1.1.4
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 1.1.3
+
 ## 1.1.2
 
 ## 1.1.1

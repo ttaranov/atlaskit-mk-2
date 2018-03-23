@@ -10,9 +10,9 @@ import {
   selectElement,
   insertDate,
   openDatePicker,
-} from '../../../src/editor/plugins/date/actions';
-import { pluginKey } from '../../../src/editor/plugins/date/plugin';
-import datePlugin from '../../../src/editor/plugins/date';
+} from '../../../src/plugins/date/actions';
+import { pluginKey } from '../../../src/plugins/date/plugin';
+import datePlugin from '../../../src/plugins/date';
 
 describe('date plugin', () => {
   const editor = (doc: any) => {

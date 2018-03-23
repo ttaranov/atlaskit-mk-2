@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
-
-import { ReactNodeViewComponents } from '../factory';
-import { ReactNodeViewState } from '../../plugins/react-nodeview';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { ReactNodeViewState } from '../../plugins/base/pm-plugins/react-nodeview';
 import { setNodeSelection } from '../../utils';
-import { ProsemirrorGetPosHandler, ReactComponentConstructor } from './';
+import { ProsemirrorGetPosHandler, ReactComponentConstructor } from '../types';
+import { ReactNodeViewComponents } from '../factory';
 
 interface Props {
   components: ReactNodeViewComponents;
@@ -32,7 +30,7 @@ interface State {
 export default function wrapComponentWithClickArea(
   ReactComponent: ReactComponentConstructor,
 ): ReactComponentConstructor {
-  return class WrapperClickArea extends PureComponent<Props, State> {
+  return class WrapperClickArea extends React.PureComponent<Props, State> {
     state: State = { selected: false };
 
     componentDidMount() {

@@ -16,6 +16,17 @@ it('should render the provided component', () => {
   expect(wrapper.html()).toBe('<button>Hello</button>');
 });
 
+it('should have descriptive displayName', () => {
+  const MyGreatButton = ({ children }: WrappedProps) => (
+    <button>{children}</button>
+  );
+  const ButtonWithContext = withAnalyticsContext()(MyGreatButton);
+
+  expect(ButtonWithContext.displayName).toBe(
+    'WithAnalyticsContext(MyGreatButton)',
+  );
+});
+
 it('should wrap inner component with analytics context component', () => {
   const Button = ({ children }: WrappedProps) => <button>{children}</button>;
   const ButtonWithContext = withAnalyticsContext()(Button);

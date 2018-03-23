@@ -1,5 +1,20 @@
 # @atlaskit/media-avatar-picker
 
+## 6.0.4
+
+## 6.0.3
+
+## 6.0.2
+
+## 6.0.1
+
+## 6.0.0
+
+## 5.4.3
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 5.4.2
+
 ## 5.4.1
 - [patch] Clean up avatar picker dependencies, update readme [a98a141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a98a141)
 

@@ -1,5 +1,48 @@
 # @atlaskit/editor-common
 
+## 8.1.1
+- [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
+
+## 8.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 8.0.7
+
+## 8.0.6
+
+## 8.0.5
+- [patch] Changing table cell schema to not allow nesting of bodied extensions in it. [bac680c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bac680c)
+
+## 8.0.4
+
+## 8.0.3
+- [patch] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
+
+## 8.0.2
+
+## 8.0.1
+
+## 8.0.0
+- [major] updated media-core peer dependency, this requires dependents to install new media-core version [47b459a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47b459a)
+
+## 7.0.3
+
+## 7.0.2
+- [patch] support __confluenceMetadata property on link mark [b17f847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b17f847)
+
+## 7.0.1
+
+## 7.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
+## 6.3.17
+- [patch] make colwidth an array of numbers in schema [369b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/369b522)
+
+## 6.3.16
+- [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
+
 ## 6.3.15
 
 ## 6.3.14

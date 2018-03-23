@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { size, fadeIn } from '../../styles';
 
 export interface ImageViewWrapperProps {
@@ -17,7 +13,9 @@ export interface ImageViewWrapperProps {
 export const transparentFallbackBackground =
   'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=")';
 
-export const ImageViewWrapper = styled.div`
+export const ImageViewWrapper: ComponentClass<
+  HTMLAttributes<{}> & ImageViewWrapperProps
+> = styled.div`
   ${size()} border-radius: inherit;
   background-repeat: no-repeat, repeat;
   background-position: center, center;

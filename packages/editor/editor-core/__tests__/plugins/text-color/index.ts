@@ -10,8 +10,8 @@ import {
 import {
   TextColorState,
   stateKey as textColorPluginKey,
-} from '../../../src/plugins/text-color';
-import textColorPlugin from '../../../src/editor/plugins/text-color';
+} from '../../../src/plugins/text-color/pm-plugins/main';
+import textColorPlugin from '../../../src/plugins/text-color';
 
 describe('text-color', () => {
   const editor = (doc: any) =>

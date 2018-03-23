@@ -5,8 +5,8 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
-import EditorContext from './../src/editor/ui/EditorContext';
-import WithEditorActions from './../src/editor/ui/WithEditorActions';
+import EditorContext from './../src/ui/EditorContext';
+import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
@@ -16,8 +16,10 @@ import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/suppor
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { EmojiProvider } from '@atlaskit/emoji';
+
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { extensionHandlers } from '../example-helpers/extension-handlers';
 
 import {
   akEditorCodeBackground,
@@ -27,7 +29,7 @@ import {
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
-export const TitleInput = styled.input`
+export const TitleInput: any = styled.input`
   border: none;
   outline: none;
   font-size: 2.07142857em;
@@ -50,12 +52,12 @@ TitleInput.displayName = 'TitleInput';
  * +-------------------------------+  ----
  *                                    88px
  */
-export const Wrapper = styled.div`
+export const Wrapper: any = styled.div`
   height: calc(100vh - 88px);
 `;
 Wrapper.displayName = 'Wrapper';
 
-export const Content = styled.div`
+export const Content: any = styled.div`
   padding: 0 20px;
   height: 100%;
   background: #fff;
@@ -182,6 +184,7 @@ export default class Example extends React.Component<Props, State> {
               }
               onSave={SAVE_ACTION}
               insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
             />
           </EditorContext>
         </Content>

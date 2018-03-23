@@ -1,29 +1,24 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN0, akColorN900 } from '@atlaskit/util-shared-styles';
 import { absolute, size } from '../../styles';
 import { colorWithAlpha } from '../colorWithAlpha';
 
 const bodyHeight = 26;
 
-export const Wrapper = styled.div`
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   height: inherit;
   border-radius: inherit;
 `;
 
-export const Overlay = styled.div`
+export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${absolute()} ${size()} border-radius: inherit;
   background-color: ${colorWithAlpha(akColorN900, 0.5)};
 `;
 
-export const Title = styled.div`
+export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${absolute()} width: 100%;
   padding: 8px;
   color: ${akColorN0};
@@ -32,7 +27,7 @@ export const Title = styled.div`
   word-wrap: break-word;
 `;
 
-export const Body = styled.div`
+export const Body: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   position: absolute;
   bottom: 0;
@@ -41,7 +36,7 @@ export const Body = styled.div`
   color: ${akColorN0};
 `;
 
-export const ProgressWrapper = styled.div`
+export const ProgressWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-grow: 1;
 
   /*
@@ -59,7 +54,9 @@ export const ProgressWrapper = styled.div`
   justify-content: center;
 `;
 
-export const CancelButtonWrapper = styled.div`
+export const CardActionsWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   margin-left: 4px;
   /*
     button must appear above overlay

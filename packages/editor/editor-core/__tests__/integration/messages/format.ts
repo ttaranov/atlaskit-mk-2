@@ -1,9 +1,8 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement } from '../_helpers';
+import { getDocFromElement, editorUrl } from '../_helpers';
 
-const __baseUrl__ = 'http://localhost:9000';
-const messageEditor = `${__baseUrl__}/examples.html?groupId=fabric&packageId=editor-core&exampleId=message`;
+const messageEditor = `${editorUrl}=message`;
 const editorSelector = '.ProseMirror';
 
 BrowserTestCase(
@@ -30,10 +29,10 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(
-      editorSelector,
-      '__bold__ _italics_ **starbold** *italicsstar* ',
-    );
+    await sample.type(editorSelector, '__bold__ ');
+    await sample.type(editorSelector, '_italics_ ');
+    await sample.type(editorSelector, '**starbold** ');
+    await sample.type(editorSelector, '*italicsstar* ');
 
     await sample.waitForSelector('strong');
     const doc = await sample.$eval(editorSelector, getDocFromElement);
@@ -48,7 +47,9 @@ BrowserTestCase(
     const sample = await new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
-    await sample.type(editorSelector, '`this` ');
+    await sample.type(editorSelector, '`');
+    await sample.type(editorSelector, 'this');
+    await sample.type(editorSelector, '`');
 
     await sample.waitForSelector('pre');
     const doc = await sample.$eval(editorSelector, getDocFromElement);

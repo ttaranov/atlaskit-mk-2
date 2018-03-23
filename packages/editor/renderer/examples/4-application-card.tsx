@@ -42,6 +42,7 @@ const eventHandlers: any = {
 
 const actions = [
   {
+    key: 'test-unique-key1',
     title: 'Success',
     target: {
       receiver: 'test-reciever',
@@ -52,6 +53,7 @@ const actions = [
     },
   },
   {
+    key: 'test-unique-key2',
     title: 'Failure',
     target: {
       receiver: 'test-reciever',

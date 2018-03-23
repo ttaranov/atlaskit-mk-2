@@ -1,5 +1,19 @@
 # @atlaskit/media-viewer
 
+## 11.0.3
+
+## 11.0.2
+
+## 11.0.1
+- [patch] Wire up MVNG with Media Providers [d80c743](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d80c743)
+
+## 11.0.0
+
+## 10.1.0
+- [minor] Add Media Viewer Next Gen Feature Flag [5ecb889](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb889)
+
+## 10.0.5
+
 ## 10.0.4
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

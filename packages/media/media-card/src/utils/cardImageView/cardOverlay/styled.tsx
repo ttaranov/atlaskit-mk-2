@@ -1,12 +1,8 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   rgba,
   centerX,
@@ -29,10 +25,12 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 export interface OverlayProps {
-  hasError: boolean;
+  hasError?: boolean;
 }
 
-export const TickBox = styled.div`
+export const TickBox: ComponentClass<
+  HTMLAttributes<{}> & OverlayProps
+> = styled.div`
   ${size(14)} ${transition()} background-color: ${rgba('#ffffff', 0.5)};
   position: absolute;
   top: 8px;
@@ -54,7 +52,9 @@ export const TickBox = styled.div`
   }
 `;
 
-export const Overlay = styled.div`
+export const Overlay: ComponentClass<
+  HTMLAttributes<{}> & OverlayProps
+> = styled.div`
   ${size()} ${absolute()} ${borderRadius} display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -226,35 +226,31 @@ export const Overlay = styled.div`
   }
 `;
 
-export const ErrorLine = styled.div`
+export const ErrorLine: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 24px;
   display: flex;
   align-items: center;
 `;
 
-export const LeftColumn = styled.div`
+export const LeftColumn: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 100%;
   position: relative;
   box-sizing: border-box;
   vertical-align: middle;
 `;
 
-export const TopRow = styled.div``;
+export const TopRow: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
-export const BottomRow = styled.div`
+export const BottomRow: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
   height: 16px;
 `;
 
-export const RightColumn = styled.div`
-  .meat-balls-button {
-    height: 23px;
-  }
-`;
+export const RightColumn: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
-export const ErrorMessage = styled.div`
+export const ErrorMessage: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} display: inline-block;
   vertical-align: middle;
   font-weight: bold;
@@ -267,7 +263,7 @@ export const ErrorMessage = styled.div`
   white-space: nowrap;
 `;
 
-export const Retry = styled.div`
+export const Retry: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${antialiased} box-sizing: border-box;
   margin-left: 5px;
   font-weight: bold;
@@ -281,11 +277,11 @@ export const Retry = styled.div`
   }
 `;
 
-export const ErrorWrapper = styled.div`
+export const ErrorWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const TitleWrapper = styled.div`
+export const TitleWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
   color: ${akColorN800};
@@ -293,12 +289,12 @@ export const TitleWrapper = styled.div`
   line-height: 18px;
 `;
 
-export const Subtitle = styled.div`
+export const Subtitle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${ellipsis('100px')} font-size: 12px;
   color: #5e6c84;
 `;
 
-export const Metadata = styled.div`
+export const Metadata: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
 `;

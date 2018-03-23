@@ -5,7 +5,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { PaginationStateless } from '@atlaskit/pagination';
+import Pagination from '@atlaskit/pagination';
 
 import {
   name as packageName,
@@ -221,9 +221,9 @@ export class DynamicTable extends Component<Props, State> {
           </Table>
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
-          <PaginationStateless
-            current={page}
-            onSetPage={this.onSetPage}
+          <Pagination
+            value={page}
+            onChange={this.onSetPage}
             total={totalPages}
           />
         )}

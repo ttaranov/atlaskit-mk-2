@@ -3,15 +3,15 @@
 export { name, version } from './version';
 
 export { default as Editor, EditorWithAnalytics } from './editor';
-export { default as EditorContext } from './editor/ui/EditorContext';
-export { default as WithEditorActions } from './editor/ui/WithEditorActions';
-export { default as WithHelpTrigger } from './editor/ui/WithHelpTrigger';
-export {
-  default as getPropsPreset,
-} from './editor/create-editor/get-props-preset';
-export { default as CollapsedEditor } from './editor/ui/CollapsedEditor';
-export { default as ToolbarHelp } from './editor/ui/ToolbarHelp';
+export { default as getPropsPreset } from './create-editor/get-props-preset';
+
+export { default as EditorContext } from './ui/EditorContext';
+export { default as WithEditorActions } from './ui/WithEditorActions';
+export { default as WithHelpTrigger } from './ui/WithHelpTrigger';
+export { default as CollapsedEditor } from './ui/CollapsedEditor';
+export { default as ToolbarHelp } from './ui/ToolbarHelp';
 export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
+export { default as WithPluginState } from './ui/WithPluginState';
 
 export {
   ErrorReporter,
@@ -23,16 +23,28 @@ export {
   setTextSelection,
 } from './utils';
 
+// Plugin Keys for WithPluginState
+
+export { stateKey as mediaPluginKey } from './plugins/media/pm-plugins/main';
+export { mentionPluginKey } from './plugins/mentions/pm-plugins/main';
+export { MentionsState } from './plugins/mentions/pm-plugins/main';
+export {
+  TextFormattingState,
+  stateKey as textFormattingStateKey,
+} from './plugins/text-formatting/pm-plugins/main';
+
 // Used in editor-test-helpers
 
 export { keyCodes } from './keymaps';
-export { reactNodeViewPlugins } from './plugins';
-export { ReactEditorView } from './editor/create-editor';
+export { ReactEditorView } from './create-editor';
+export { getDefaultPluginsList } from './create-editor/create-plugins-list';
 export {
-  getDefaultPluginsList,
-} from './editor/create-editor/create-plugins-list';
-export { EditorPlugin, EditorProps, EditorInstance } from './editor/types';
-export { default as EditorActions } from './editor/actions';
+  EditorPlugin,
+  EditorProps,
+  EditorInstance,
+  ExtensionHandlers,
+} from './types';
+export { default as EditorActions } from './actions';
 
 // Useless exports
 
@@ -41,13 +53,9 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-export {
-  MacroProvider,
-  MacroAttributes,
-  ExtensionType,
-} from './editor/plugins/macro';
+export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
 
-export { CollabEditProvider } from './editor/plugins/collab-edit';
+export { CollabEditProvider } from './plugins/collab-edit';
 
 export {
   EmojiProvider,
@@ -61,7 +69,7 @@ export {
   MediaState,
 } from './plugins/media';
 
-export { MediaOptions } from './editor/plugins/media';
+export { MediaOptions } from './plugins/media';
 
 export {
   AbstractMentionResource,
@@ -73,3 +81,7 @@ export {
 } from '@atlaskit/mention';
 
 export * from './analytics'; // ?
+
+export {
+  default as pickerFacadeLoader,
+} from './plugins/media/picker-facade-loader';

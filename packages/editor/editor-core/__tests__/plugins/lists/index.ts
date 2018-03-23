@@ -1,5 +1,5 @@
 import { browser } from '@atlaskit/editor-common';
-import { stateKey as listPluginKey } from '../../../src/plugins/lists';
+import { stateKey as listPluginKey } from '../../../src/plugins/lists/pm-plugins/main';
 import {
   createEditor,
   sendKeyToPm,
@@ -12,8 +12,8 @@ import {
   panel,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
-import listPlugin from '../../../src/editor/plugins/lists';
-import panelPlugin from '../../../src/editor/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
+import panelPlugin from '../../../src/plugins/panel';
 
 describe('lists', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>

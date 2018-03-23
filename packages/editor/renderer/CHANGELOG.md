@@ -1,5 +1,45 @@
 # @atlaskit/renderer
 
+## 13.0.7
+
+## 13.0.6
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 13.0.5
+
+## 13.0.4
+
+## 13.0.3
+
+## 13.0.2
+- [patch] Adds margin-top to ApplicationCard, MediaGroup and CodeBlock in renderer content [f2ae5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2ae5ca)
+
+## 13.0.1
+
+## 13.0.0
+
+## 12.2.1
+
+## 12.2.0
+- [minor] E-mail renderer [722657b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722657b)
+
+## 12.1.0
+- [minor] Fixes Media Cards in renderer [064bfb5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/064bfb5)
+
+## 12.0.1
+
+## 12.0.0
+
+
+- [major] Use media-core as peerDependency [c644812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c644812)
+
+## 11.5.12
+
+## 11.5.11
+- [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
+
+## 11.5.10
+
 ## 11.5.9
 
 ## 11.5.8

@@ -1,5 +1,23 @@
 # @atlaskit/media-test-helpers
 
+## 10.0.4
+
+## 10.0.3
+
+## 10.0.2
+- [patch] fix(media-test-helpers): bump xhr-mock and add error handling [304265f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/304265f)
+
+## 10.0.1
+- [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
+
+## 10.0.0
+
+## 9.0.5
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 9.0.4
+- [patch] fix(media-test-helpers): configure fetch to send credentials and point calls to correct endpoint [8978f4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8978f4e)
+
 ## 9.0.3
 - [patch] Pointing base urls to media-playground behind Stargate [4979dc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4979dc5)
 

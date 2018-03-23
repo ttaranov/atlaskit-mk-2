@@ -1,5 +1,29 @@
 # @atlaskit/media-image
 
+## 25.1.1
+
+## 25.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+- [minor] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
+
+## 25.0.2
+
+## 25.0.1
+
+## 25.0.0
+- [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
+
+## 24.1.6
+- [patch] added a cursor to application cards when the onClick property is passed [97cb9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97cb9c2)
+
+## 24.1.5
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 24.1.4
+
+## 24.1.3
+- [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
+
 ## 24.1.2
 - [patch] fix issues with ellipsing of new smart-card designs [ec2bed9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec2bed9)
 

@@ -41,16 +41,16 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 import { JSONTransformer } from '../src';
-import textFormatting from '../../editor-core/src/editor/plugins/text-formatting';
-import emojiPlugin from '../../editor-core/src/editor/plugins/emoji';
-import mentionsPlugin from '../../editor-core/src/editor/plugins/mentions';
-import codeBlockPlugin from '../../editor-core/src/editor/plugins/code-block';
-import mediaPlugin from '../../editor-core/src/editor/plugins/media';
-import textColorPlugin from '../../editor-core/src/editor/plugins/text-color';
-import panelPlugin from '../../editor-core/src/editor/plugins/panel';
-import listPlugin from '../../editor-core/src/editor/plugins/lists';
-import rulePlugin from '../../editor-core/src/editor/plugins/rule';
-import tablesPlugin from '../../editor-core/src/editor/plugins/table';
+import textFormatting from '../../editor-core/src/plugins/text-formatting';
+import emojiPlugin from '../../editor-core/src/plugins/emoji';
+import mentionsPlugin from '../../editor-core/src/plugins/mentions';
+import codeBlockPlugin from '../../editor-core/src/plugins/code-block';
+import mediaPlugin from '../../editor-core/src/plugins/media';
+import textColorPlugin from '../../editor-core/src/plugins/text-color';
+import panelPlugin from '../../editor-core/src/plugins/panel';
+import listPlugin from '../../editor-core/src/plugins/lists';
+import rulePlugin from '../../editor-core/src/plugins/rule';
+import tablesPlugin from '../../editor-core/src/plugins/table';
 
 const transformer = new JSONTransformer();
 const toJSON = node => transformer.encode(node);

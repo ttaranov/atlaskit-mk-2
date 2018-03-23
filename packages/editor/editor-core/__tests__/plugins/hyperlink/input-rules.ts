@@ -10,7 +10,7 @@ import {
   sendKeyToPm,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>

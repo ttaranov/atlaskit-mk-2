@@ -1,37 +1,30 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardAction, CardActionType } from '@atlaskit/media-core';
+import { Ellipsify } from '@atlaskit/media-ui';
 
 import { ProgressBar } from '../progressBar';
 import { MediaImage } from '../mediaImage';
-import { Menu } from '../menu';
-import { Ellipsify } from '@atlaskit/media-ui';
+import CardActions from '../cardActions';
+import { CardAction } from '../../actions';
 import {
   Wrapper,
   Overlay,
   Title,
   Body,
   ProgressWrapper,
-  CancelButtonWrapper,
+  CardActionsWrapper,
 } from './styled';
 
 export interface UploadingViewProps {
   title?: string;
   progress: number;
   dataURI?: string;
-  deleteAction?: CardAction;
+  actions?: CardAction[];
 }
 
 export class UploadingView extends Component<UploadingViewProps, {}> {
   render() {
-    const { title, progress, dataURI, deleteAction } = this.props;
-
-    const cancelButton =
-      deleteAction && deleteAction.type === CardActionType.delete ? (
-        <CancelButtonWrapper>
-          <Menu actions={[deleteAction]} triggerColor="white" />
-        </CancelButtonWrapper>
-      ) : null;
+    const { title, progress, dataURI, actions } = this.props;
 
     return (
       <Wrapper>
@@ -43,7 +36,11 @@ export class UploadingView extends Component<UploadingViewProps, {}> {
             <ProgressWrapper>
               <ProgressBar progress={progress} />
             </ProgressWrapper>
-            {cancelButton}
+            <CardActionsWrapper>
+              {actions ? (
+                <CardActions actions={actions} triggerColor="white" />
+              ) : null}
+            </CardActionsWrapper>
           </Body>
         </Overlay>
         {dataURI && <MediaImage dataURI={dataURI} />}

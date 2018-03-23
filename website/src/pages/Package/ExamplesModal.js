@@ -15,7 +15,6 @@ import ScreenIcon from '@atlaskit/icon/glyph/screen';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { AkCodeBlock } from '@atlaskit/code';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import Tooltip from '@atlaskit/tooltip';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';

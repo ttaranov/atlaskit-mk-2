@@ -15,7 +15,7 @@ export function toHumanReadableMediaSize(size: number): string {
 
 export * from './errorIcon';
 export * from './fileIcon';
-export * from './menu';
+export * from './cardActions';
 export * from './isRetina';
 export * from './mediaImage';
 export * from './cardImageView';

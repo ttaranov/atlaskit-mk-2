@@ -93,7 +93,7 @@ export class DropdownMenuStateless extends Component<
     }
   };
 
-  getNextFocusable = (indexItem?: ?number, available?: number) => {
+  getNextFocusable = (indexItem?: ?number, available?: number): ?number => {
     if (!this.domItemsList) {
       return null;
     }
@@ -117,7 +117,7 @@ export class DropdownMenuStateless extends Component<
     return latestAvailable;
   };
 
-  getPrevFocusable = (indexItem?: ?number, available?: number) => {
+  getPrevFocusable = (indexItem?: ?number, available?: number): ?number => {
     if (!this.domItemsList) {
       return null;
     }

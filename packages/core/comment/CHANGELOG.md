@@ -1,5 +1,19 @@
 # @atlaskit/comment
 
+## 2.7.9
+
+## 2.7.8
+
+## 2.7.7
+
+## 2.7.6
+
+## 2.7.5
+
+## 2.7.4
+
+## 2.7.3
+
 ## 2.7.2
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

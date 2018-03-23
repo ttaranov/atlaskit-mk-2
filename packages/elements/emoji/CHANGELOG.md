@@ -1,5 +1,24 @@
 # @atlaskit/emoji
 
+## 31.1.21
+
+## 31.1.20
+- [patch] FS-1843 fix incorrect emoji category [36473a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36473a8)
+
+## 31.1.19
+- [patch] code split MediaEditor in MediaPicker [bdc395a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc395a)
+
+## 31.1.18
+
+## 31.1.17
+
+## 31.1.16
+- [patch] FS-1834 check for undefined repository in EmojiResource [c97751f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c97751f)
+
+## 31.1.15
+
+## 31.1.14
+
 ## 31.1.13
 - [patch] add guard condition for nullable function emojiProvider.getCurrentUser [b8780e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8780e4)
 

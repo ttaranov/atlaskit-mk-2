@@ -7,9 +7,9 @@ const html = `<p>Regular,
 
 <hr>
 
-<p><a href="//atlassian.com">Regular link</a>,
-  <a href="//atlassian.com"><strong>strong link</strong></a>,
-  <a href="//atlassian.com"><em><strong>strong italic link</strong></em></a>
+<p><a href="//atlassian.com" data-is-external-link="true">Regular link</a>,
+  <a href="//atlassian.com" data-is-external-link="true"><strong>strong link</strong></a>,
+  <a href="//atlassian.com" data-is-external-link="true"><em><strong>strong italic link</strong></em></a>
 </p>
 
 <hr>

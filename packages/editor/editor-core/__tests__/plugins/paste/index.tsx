@@ -10,16 +10,22 @@ import {
   mediaSingle,
   createEditor,
   dispatchPasteEvent,
+  bodiedExtension,
   a as link,
 } from '@atlaskit/editor-test-helpers';
-import mediaPlugin from '../../../src/editor/plugins/media';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
+import mediaPlugin from '../../../src/plugins/media';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import extensionPlugin from '../../../src/plugins/extension';
 
 describe('paste plugins', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [mediaPlugin({ allowMediaSingle: true }), codeBlockPlugin],
+      editorPlugins: [
+        mediaPlugin({ allowMediaSingle: true }),
+        codeBlockPlugin,
+        extensionPlugin,
+      ],
     });
 
   const messageEditor = (doc: any) =>
@@ -308,6 +314,22 @@ describe('paste plugins', () => {
             })('commit #4 title'),
           ),
         ),
+      );
+    });
+  });
+
+  describe('paste bodiedExtension inside another bodiedExtension', () => {
+    it('should remove bodiedExtension from the pasted content', () => {
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: 'expand',
+      };
+      const { editorView } = editor(doc(bodiedExtension(attrs)(p('{<>}'))));
+      dispatchPasteEvent(editorView, {
+        html: `<meta charset='utf-8'><p data-pm-context="[]">text</p><div data-node-type="bodied-extension" data-extension-type="com.atlassian.confluence.macro.core" data-extension-key="expand" data-parameters="{&quot;macroMetadata&quot;:{&quot;macroId&quot;:{&quot;value&quot;:1521116439714},&quot;schemaVersion&quot;:{&quot;value&quot;:&quot;2&quot;},&quot;placeholder&quot;:[{&quot;data&quot;:{&quot;url&quot;:&quot;//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2&quot;},&quot;type&quot;:&quot;image&quot;}]}}"><p>text</p></div>`,
+      });
+      expect(editorView.state.doc).toEqualDocument(
+        doc(bodiedExtension(attrs)(p('text'))),
       );
     });
   });

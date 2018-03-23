@@ -1,6 +1,7 @@
 import {
   createEditor,
   blockquote,
+  insertText,
   code_block,
   panel,
   doc,
@@ -15,11 +16,11 @@ import {
 import {
   stateKey as blockTypePluginKey,
   BlockTypeState,
-} from '../../../src/plugins/block-type';
+} from '../../../src/plugins/block-type/pm-plugins/main';
 import { setTextSelection } from '../../../src/utils';
-import codeBlockPlugin from '../../../src/editor/plugins/code-block';
-import panelPlugin from '../../../src/editor/plugins/panel';
-import listPlugin from '../../../src/editor/plugins/lists';
+import codeBlockPlugin from '../../../src/plugins/code-block';
+import panelPlugin from '../../../src/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
 
 describe('block-type', () => {
   const editor = (doc: any) =>
@@ -355,6 +356,28 @@ describe('block-type', () => {
     it('should be true if current selection is wrapped in codeblock', () => {
       const { pluginState } = editor(doc(code_block()('testing{<>}')));
       expect(pluginState.blockTypesDisabled).toBe(true);
+    });
+  });
+
+  describe('block type in comment editor', () => {
+    const editor = (doc: any) =>
+      createEditor({
+        doc,
+        editorProps: { appearance: 'comment', allowCodeBlocks: true },
+      });
+
+    it('should create empty terminal empty paragraph when heading is created', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '# ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(h1(''), p('')));
+    });
+
+    it('should create empty terminal empty paragraph when code block is created', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '```', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()(''), p('')),
+      );
     });
   });
 });

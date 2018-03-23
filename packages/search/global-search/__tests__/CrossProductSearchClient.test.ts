@@ -47,7 +47,7 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query');
+      const result = await searchClient.search('query', 'test_uuid');
       expect(result.confluence).toHaveLength(1);
 
       const item = result.confluence[0];
@@ -57,7 +57,7 @@ describe('CrossProductSearchClient', () => {
         'https://home.useast.atlassian.io/confluence-page-icon.svg',
       );
       expect(item.name).toEqual('page name');
-      expect(item.href).toEqual('baseUrl/url');
+      expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
     });
 
@@ -104,7 +104,7 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query');
+      const result = await searchClient.search('query', 'test_uuid');
       expect(result.jira).toHaveLength(1);
 
       const item = result.jira[0];
@@ -144,7 +144,7 @@ describe('CrossProductSearchClient', () => {
       ],
     });
 
-    const result = await searchClient.search('query');
+    const result = await searchClient.search('query', 'test_uuid');
 
     expect(result.jira).toHaveLength(1);
     expect(result.confluence).toHaveLength(0);
@@ -155,7 +155,7 @@ describe('CrossProductSearchClient', () => {
       scopes: [],
     });
 
-    const result = await searchClient.search('query');
+    const result = await searchClient.search('query', 'test_uuid');
     const call = fetchMock.calls('xpsearch')[0];
     const body = JSON.parse(call[0]._bodyText);
 

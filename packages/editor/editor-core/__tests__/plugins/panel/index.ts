@@ -1,7 +1,7 @@
 import {
   PanelState,
   stateKey as panelPluginKey,
-} from '../../../src/plugins/panel';
+} from '../../../src/plugins/panel/pm-plugins/main';
 import {
   doc,
   panel,
@@ -16,9 +16,9 @@ import {
   ol,
   li,
 } from '@atlaskit/editor-test-helpers';
-import panelPlugin from '../../../src/editor/plugins/panel';
-import listPlugin from '../../../src/editor/plugins/lists';
-import tablesPlugin from '../../../src/editor/plugins/table';
+import panelPlugin from '../../../src/plugins/panel';
+import listPlugin from '../../../src/plugins/lists';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
   const event = createEvent('event');
@@ -200,6 +200,23 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
       expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should be able to remove panel node if cursor is inside nested list node', () => {
+      const { pluginState, editorView } = editor(
+        doc(p('one'), panel()(p('text'), ol(li(p('te{<>}xt')))), p('two')),
+      );
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).toEqualDocument(doc(p('one'), p('two')));
+    });
+
+    it('should change panel type if cursor is inside nested list node', () => {
+      const { pluginState, editorView } = editor(
+        doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
+      );
+      expect(pluginState.activePanelType).toEqual('info');
+      pluginState.changePanelType(editorView, { panelType: 'note' });
+      expect(pluginState.activePanelType).toEqual('note');
     });
   });
 

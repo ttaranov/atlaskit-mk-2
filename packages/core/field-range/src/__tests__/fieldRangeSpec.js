@@ -101,4 +101,27 @@ describe('FieldRange', () => {
       expect(input.props().disabled).toBeFalsy();
     });
   });
+  describe('range value percentage', () => {
+    let fieldRange;
+    it('should calculate the correct value percent for non 0 min and max != 100', () => {
+      fieldRange = mount(<FieldRange value={50} min={30} max={80} />);
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('40.00');
+    });
+    it('should calculate the correct value percent for 0 min and max != 100', () => {
+      fieldRange = mount(<FieldRange value={50} min={0} max={80} />);
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('62.50');
+    });
+    it('should calculate the correct value as 0 if min > max', () => {
+      fieldRange = mount(<FieldRange value={50} min={150} max={100} />);
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('0');
+    });
+    it('should calculate the correct value for negative range', () => {
+      fieldRange = mount(<FieldRange value={0} min={-50} max={50} />);
+      const input = fieldRange.find('InputRange');
+      expect(input.props().valuePercent).toBe('50.00');
+    });
+  });
 });

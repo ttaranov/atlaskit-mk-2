@@ -1,5 +1,19 @@
 # @atlaskit/task-decision
 
+## 4.10.10
+
+## 4.10.9
+
+## 4.10.8
+
+## 4.10.7
+
+## 4.10.6
+
+## 4.10.5
+
+## 4.10.4
+
 ## 4.10.3
 - [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
 

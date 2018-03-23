@@ -68,28 +68,46 @@ const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
 const encode = (node: PMNode) => transformer.encode(node);
 
-const checkBuilder = (
-  fn: any,
+const checkFromCxhtmlToADF = (
   description: string,
   cxhtml: string,
-  doc: PMNode,
-) => {
-  fn(`parses CXHTML: ${description}`, () => {
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`parses CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
     const actual = parse(cxhtml);
-    expect(actual).to.deep.equal(doc);
+    expect(actual).to.deep.equal(docNode);
   });
 
-  fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(doc));
-    expect(roundTripped).to.deep.equal(doc);
+const checkFromADFtoADF = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`round-trips ADF: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = parse(encode(docNode));
+    expect(roundTripped).to.deep.equal(docNode);
   });
-};
+
+const checkFromADFtoCxhtml = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+  cxhtml: string,
+) =>
+  it(`converts ADF to CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = encode(docNode);
+    expect(roundTripped).to.deep.equal(cxhtml);
+  });
 
 const check = (
   description: string,
   cxhtml: string,
   doc: (schema: Schema) => PMNode,
-) => checkBuilder(it, description, cxhtml, doc(schema));
+) => {
+  checkFromCxhtmlToADF(description, cxhtml, doc);
+  checkFromADFtoADF(description, doc);
+};
 
 describe('ConfluenceTransformer: encode - parse:', () => {
   describe('empty', () => {
@@ -877,7 +895,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     describe('inlineExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -888,10 +906,18 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
       );
+
+      checkFromADFtoCxhtml(
+        'basic',
+        doc(p(inlineExtension(attrs)())),
+        `<p><fab:adf><![CDATA[${JSON.stringify(
+          inlineExtension(attrs)()(schema).toJSON(),
+        )}]]></fab:adf></p>`,
+      );
     });
 
     describe('bodyless', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -905,7 +931,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('bodiedExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -967,14 +993,14 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   describe('fab:adf', () => {
     check(
       'p encoded in fab:adf tag between two p',
-      String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"storage\"}]}]]></fab:adf><p>world</p>`,
+      String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"paragraph","content":[{"type":"text","text":"storage"}]}]]></fab:adf><p>world</p>`,
       doc(p('hello'), p('storage'), p('world')),
     );
 
     describe('decisionList', () => {
       check(
         'decisionList with single decided item between p',
-        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"decisionList\",\"attrs\":{\"localId\":\"test-list-id\"},\"content\":[{\"type\":\"decisionItem\",\"attrs\":{\"localId\":\"test-id\",\"state\":\"DECIDED\"},\"content\":[{\"type\":\"text\",\"text\":\"Heading\"}]}]}]]></fab:adf><p>world</p>`,
+        String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"decisionList","attrs":{"localId":"test-list-id"},"content":[{"type":"decisionItem","attrs":{"localId":"test-id","state":"DECIDED"},"content":[{"type":"text","text":"Heading"}]}]}]]></fab:adf><p>world</p>`,
         doc(
           p('hello'),
           decisionList({ localId: 'test-list-id' })(
@@ -983,6 +1009,40 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           p('world'),
         ),
       );
+    });
+
+    describe('link', () => {
+      check(
+        'renamed link to a confluence space, between p',
+        String.raw`<p>hello</p><fab:adf><![CDATA[{"type": "text","text": "This is a renamed link","marks": [{"type": "link","attrs": {"href": "www.atlassian.com","__confluenceMetadata": {"linkType": "page","versionAtSave": "1","fileName": null,"spaceKey": "TESTSPACE","contentTitle": "Actual page title","isRenamedTitle": true,"anchorName": null}}}]}]]></fab:adf><p>world</p>`,
+        doc(
+          p('hello'),
+          p(
+            a({
+              href: 'www.atlassian.com',
+              __confluenceMetadata: {
+                linkType: 'page',
+                versionAtSave: '1',
+                fileName: null,
+                spaceKey: 'TESTSPACE',
+                contentTitle: 'Actual page title',
+                isRenamedTitle: true,
+                anchorName: null,
+              },
+            })('This is a renamed link'),
+          ),
+          p('world'),
+        ),
+      );
+    });
+  });
+
+  describe('<div class="content-wrapper">...</div>', () => {
+    it('should ignore div wrapper and parse only its content', () => {
+      const actual = parse(
+        '<table class="confluenceTable"><tbody><tr><td><div class="content-wrapper"><p>hello</p></div></td></tr></tbody></table>',
+      );
+      expect(actual).to.deep.equal(doc(table(tr(td({})(p('hello'))))));
     });
   });
 

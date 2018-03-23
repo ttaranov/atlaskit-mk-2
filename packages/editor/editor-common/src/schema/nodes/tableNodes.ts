@@ -116,9 +116,9 @@ export interface TableHeader {
 }
 
 export interface CellAttributes {
-  colspan: number;
-  rowspan: number;
-  colwidth?: number;
+  colspan?: number;
+  rowspan?: number;
+  colwidth?: number[];
   background?: string;
 }
 
@@ -166,7 +166,7 @@ const cellAttrs = {
 
 export const tableCell: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -193,7 +193,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,
@@ -208,12 +208,4 @@ export const tableHeader: any = {
   },
 };
 
-export const toJSONTableHeader = (node: PmNode) => ({
-  attrs: Object.keys(node.attrs).reduce((obj, key) => {
-    if (cellAttrs[key].default !== node.attrs[key]) {
-      obj[key] = node.attrs[key];
-    }
-
-    return obj;
-  }, {}),
-});
+export const toJSONTableHeader = toJSONTableCell;

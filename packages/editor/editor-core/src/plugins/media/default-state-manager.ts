@@ -1,5 +1,5 @@
 import { MediaState, MediaStateManager } from './types';
-import { EventDispatcher } from '../../editor/event-dispatcher';
+import { EventDispatcher } from '../../event-dispatcher';
 
 export default class DefaultMediaStateManager extends EventDispatcher
   implements MediaStateManager {

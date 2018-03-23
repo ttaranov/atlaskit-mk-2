@@ -45,7 +45,7 @@ type Props = {
   onClick?: any => mixed,
   onKeyDown?: any => mixed,
   onOpenChange?: any => mixed,
-  /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
+  /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position?: string,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.

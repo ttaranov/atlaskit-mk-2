@@ -37,17 +37,13 @@ export default function withAnalyticsEvents<
 ) => ComponentType<PropsWithoutAnalyticsEvent> {
   return WrappedComponent =>
     class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
+      static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
+        WrappedComponent.name})`;
+
       static contextTypes = {
         getAtlaskitAnalyticsEventHandlers: PropTypes.func,
         getAtlaskitAnalyticsContext: PropTypes.func,
       };
-
-      propsWithEvents: ObjectType;
-
-      constructor(props: PropsWithoutAnalyticsEvent) {
-        super(props);
-        this.propsWithEvents = this.mapCreateEventsToProps();
-      }
 
       createAnalyticsEvent = (payload?: ObjectType = {}): UIAnalyticsEvent => {
         const {
@@ -89,7 +85,7 @@ export default function withAnalyticsEvents<
         }, {});
 
       render() {
-        const props = { ...this.props, ...this.propsWithEvents };
+        const props = { ...this.props, ...this.mapCreateEventsToProps() };
         return (
           <WrappedComponent
             {...props}

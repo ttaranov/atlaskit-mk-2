@@ -1,16 +1,13 @@
 /* tslint:disable:variable-name */
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
+
+import { HTMLAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
 import { akColorN300 } from '@atlaskit/util-shared-styles';
 import { withAppearance } from '../../styles';
 import { size, center, absolute } from '../../styles';
 import newCardDetailsHeight from '../../shared/newCardDetailsHeight';
+import { WithAppearanceProps } from '../../styles/mixins';
 
 // This preserves the 16:9 aspect ratio
 const aspectRatio = `
@@ -18,7 +15,9 @@ const aspectRatio = `
   padding-bottom: 56.25%;
 `;
 
-export const ErrorWrapper = styled.div`
+export const ErrorWrapper: ComponentClass<
+  HTMLAttributes<{}> & WithAppearanceProps
+> = styled.div`
   /* Needed to keep error state consistent */
   padding-top: ${newCardDetailsHeight}px;
   position: relative;
@@ -32,7 +31,9 @@ export const ErrorWrapper = styled.div`
   })};
 `;
 
-export const ErrorContainer = styled.div`
+export const ErrorContainer: ComponentClass<
+  HTMLAttributes<{}> & WithAppearanceProps
+> = styled.div`
   color: ${akColorN300};
   display: flex;
   align-items: center;
@@ -49,7 +50,9 @@ export const ErrorContainer = styled.div`
     })};
 `;
 
-export const ErrorMessage = styled.div`
+export const ErrorMessage: ComponentClass<
+  HTMLAttributes<{}> & WithAppearanceProps
+> = styled.div`
   ${withAppearance({
     square: `
       margin: 16px 0 24px 0;
@@ -57,6 +60,6 @@ export const ErrorMessage = styled.div`
   })};
 `;
 
-export const ErrorImage = styled.img`
+export const ErrorImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   height: 94px;
 `;

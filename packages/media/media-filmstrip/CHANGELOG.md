@@ -1,5 +1,23 @@
 # @atlaskit/media-filmstrip
 
+## 7.0.5
+
+## 7.0.4
+
+## 7.0.3
+
+## 7.0.2
+- [patch] Use child.key if available [d4835bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4835bd)
+
+## 7.0.1
+
+## 7.0.0
+
+## 6.1.3
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
+## 6.1.2
+
 ## 6.1.1
 
 ## 6.1.0

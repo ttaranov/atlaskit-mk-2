@@ -32,7 +32,7 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 
 const HOST = 'localhost';
 const PORT = 9000;
-const WEBPACK_BUILD_TIMEOUT = 5000;
+const WEBPACK_BUILD_TIMEOUT = 10000;
 
 let server;
 let config;
@@ -43,6 +43,12 @@ async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
+    .filter(
+      workspace =>
+        process.argv.slice(2)[1]
+          ? workspace.dir.includes(process.argv.slice(2)[1])
+          : workspace,
+    )
     .filter(workspace => workspace.files.webdriver.length)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }

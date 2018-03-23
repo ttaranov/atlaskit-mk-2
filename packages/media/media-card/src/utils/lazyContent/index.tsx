@@ -15,7 +15,7 @@ export class LazyContent extends React.Component<
   render() {
     const { children, placeholder } = this.props;
     return (
-      <Wrapper offset={100} placeholder={placeholder} content={children} />
+      <Wrapper offset={300} placeholder={placeholder} content={children} />
     );
   }
 }

@@ -16,43 +16,51 @@ import {
 } from '../utils/getElementDimension';
 import { defaultImageCardDimensions } from '../utils';
 
-export interface WithDataURIProps {
+export interface WithDataURIServiceProps {
   dataURIService?: DataUriService;
   metadata?: MediaItemDetails;
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
   resizeMode?: ImageResizeMode;
-
-  // allow extra props to be passed down to lower views e.g. status and error to CardView
-  [propName: string]: any;
 }
 
 export interface WithDataURIState {
   dataURI?: string;
 }
 
-export interface WithDataURI
-  extends React.Component<WithDataURIProps, WithDataURIState> {
-  componentDidMount(): void;
-  componentWillReceiveProps(nextProps: WithDataURIProps): void;
-  updateDataURI(props: WithDataURIProps): void;
+export interface WithDataURIProps {
+  dataURI?: string;
+}
+
+export interface WithDataURI<TOwnProps>
+  extends React.Component<
+      TOwnProps & WithDataURIServiceProps,
+      WithDataURIState
+    > {
+  componentWillReceiveProps(
+    nextProps: Readonly<TOwnProps & WithDataURIServiceProps>,
+    nextContext: any,
+  ): void;
+  updateDataURI(props: WithDataURIServiceProps): void;
 }
 
 // return type is "any" to avoid TS attempting to infer the return type
 // if TS attempts to infer the return type it can NOT publish .d.ts files because WithDataURIImpl isn't exported
-export const withDataURI = (Component): any => {
-  // tslint:disable-line:variable-name
+export function withDataURI<TOwnProps>(
+  Component: React.ComponentClass<TOwnProps & WithDataURIProps>,
+): React.ComponentClass<TOwnProps & WithDataURIServiceProps> {
+  type WithDataURIImplProps = TOwnProps & WithDataURIServiceProps;
   class WithDataURIImpl extends React.Component<
-    WithDataURIProps,
+    WithDataURIImplProps,
     WithDataURIState
-  > implements WithDataURI {
+  > implements WithDataURI<TOwnProps> {
     state: WithDataURIState = {};
 
     componentDidMount(): void {
       this.updateDataURI(this.props);
     }
 
-    componentWillReceiveProps(nextProps: WithDataURIProps): void {
+    componentWillReceiveProps(nextProps: WithDataURIServiceProps): void {
       const {
         dataURIService: currentDataURIService,
         metadata: currentMetadata,
@@ -100,7 +108,7 @@ export const withDataURI = (Component): any => {
       return defaultImageCardDimensions[dimension] * retinaFactor;
     }
 
-    updateDataURI(props: WithDataURIProps): void {
+    updateDataURI(props: WithDataURIServiceProps): void {
       const { dataURIService, metadata, resizeMode, appearance } = props;
 
       const setDataURI = dataURI => this.setState({ dataURI });
@@ -130,12 +138,15 @@ export const withDataURI = (Component): any => {
     }
 
     render(): JSX.Element {
-      const { dataURIService, ...otherProps } = this.props;
+      const props = { ...(this.props as object) } as any;
+      delete props.dataURIService;
       const { dataURI } = this.state;
-
-      return <Component {...otherProps} dataURI={dataURI} />;
+      const otherProps = { dataURI, ...props } as Readonly<
+        TOwnProps & WithDataURIProps
+      >;
+      return <Component {...otherProps} />;
     }
   }
 
   return WithDataURIImpl;
-};
+}

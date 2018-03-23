@@ -4,6 +4,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
+import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 
 import Checkbox, { CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
@@ -14,148 +15,105 @@ import CheckboxStatelessWithAnalytics, {
 } from '../CheckboxStateless';
 
 describe(name, () => {
-  // Helper function to generate <Flag /> with base props
   describe('<CheckboxStateless />', () => {
-    it('should be unchecked by default', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N40A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
-    });
-    it('should have correct checked styles', () => {
-      const cb = mount(
+    const mountStatelessCheckbox = (overridingProps: any) =>
+      mount(
         <CheckboxStateless
           label=""
           isChecked
           onChange={() => {}}
           name="stub"
           value="stub value"
+          {...overridingProps}
         />,
       );
+
+    it('should be unchecked by default', () => {
+      const cb = mountStatelessCheckbox({ isChecked: false });
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N40A);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
+    });
+    it('should have correct checked styles', () => {
+      const cb = mountStatelessCheckbox({ isChecked: true });
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be correctly styled disabled', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-          isDisabled
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: false, isDisabled: true });
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should be correctly styled when hovered', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: false });
       cb.simulate('mouseenter');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N50A);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should be correctly styled when hovered and checked', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: true });
       cb.simulate('mouseenter');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be base state if mouseenter then mouseleave', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: true });
       cb.simulate('mouseenter');
       cb.simulate('mouseleave');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be active if mousedown and checked', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: true });
       cb.simulate('mousedown');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.B400);
     });
     it('should be active if mousedown and unchecked', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: false });
       cb.simulate('mousedown');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should not be active if mousedown and disabled', () => {
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={() => {}}
-          name="stub"
-          value="stub value"
-          isDisabled
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: false, isDisabled: true });
       cb.simulate('mousedown');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should call onchange on change', () => {
       const myMock = jest.fn();
-      const cb = mount(
-        <CheckboxStateless
-          label=""
-          isChecked={false}
-          onChange={myMock}
-          name="stub"
-          value="stub value"
-        />,
-      );
+      const cb = mountStatelessCheckbox({ isChecked: false, onChange: myMock });
       cb.find(HiddenCheckbox).simulate('change', { target: { checked: true } });
       expect(cb.find('CheckboxStateless').prop('isChecked')).toBe(false);
       expect(myMock.mock.calls.length).toBe(1);
+    });
+    it('should show indeterminate icon when indeterminate', () => {
+      const cb = mountStatelessCheckbox({
+        isChecked: false,
+        isIndeterminate: true,
+      });
+      expect(cb.find(CheckboxIcon)).toHaveLength(0);
+      expect(cb.find(CheckboxIndeterminateIcon)).toHaveLength(1);
+    });
+    it('should initially set the indeterminate state on the hidden checkbox', () => {
+      const cb = mountStatelessCheckbox({
+        isChecked: false,
+        isIndeterminate: true,
+      });
+      const element = cb.find('CheckboxStateless').instance().checkbox;
+      expect(element.indeterminate).toBe(true);
+    });
+    it('should set the indeterminate state on the hidden checkbox on update', () => {
+      const cb = mountStatelessCheckbox({
+        isChecked: false,
+        isIndeterminate: false,
+      });
+
+      const element = cb.find('CheckboxStateless').instance().checkbox;
+      expect(element.indeterminate).toBe(false);
+
+      cb.setProps({ isIndeterminate: true });
+      expect(element.indeterminate).toBe(true);
     });
   });
   describe('<Checkbox />', () => {

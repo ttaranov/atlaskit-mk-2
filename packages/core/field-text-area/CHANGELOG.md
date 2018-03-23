@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 1.2.2
+- [patch] Remove unused util-readme dependency [ce75fdc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce75fdc)
+
 ## 1.2.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

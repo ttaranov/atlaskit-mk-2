@@ -18,7 +18,8 @@ import {
   atTheEndOfDoc,
   atTheBeginningOfBlock,
 } from '../utils';
-import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
+
+import { hyperlinkPluginKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -304,7 +305,7 @@ export function insertCodeBlock(): Command {
 
 export function showLinkPanel(): Command {
   return function(state, dispatch, view) {
-    const pluginState = hyperlinkPluginStateKey.getState(state);
+    const pluginState = hyperlinkPluginKey.getState(state);
     return pluginState.showLinkPanel(view);
   };
 }
@@ -482,6 +483,24 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
     topLevelNode.type !== state.schema.nodes.codeBlock &&
     topLevelNode.nodeSize === 2
   );
+}
+
+export function createParagraphAtEnd(): Command {
+  return function(state, dispatch) {
+    const { doc, tr, schema: { nodes } } = state;
+    const lastPos = doc.resolve(doc.content.size - 1);
+    const lastNode = lastPos.node(1);
+    if (
+      lastNode &&
+      !(lastNode.type === nodes.paragraph && lastNode.content.size === 0)
+    ) {
+      tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
+    }
+    tr.setSelection(new TextSelection(doc.resolve(doc.content.size)));
+    tr.scrollIntoView();
+    dispatch(tr);
+    return true;
+  };
 }
 
 export interface Command {
