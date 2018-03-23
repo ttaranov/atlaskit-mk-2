@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 65.1.19
+
 ## 65.1.18
 - [patch] change double hyphen to replace with endash not emdash [2e94bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e94bed)
 
