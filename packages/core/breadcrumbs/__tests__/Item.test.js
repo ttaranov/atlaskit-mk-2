@@ -105,6 +105,7 @@ describe('BreadcrumbsItem', () => {
             iconAfter,
             iconBefore,
             children,
+            createAnalyticsEvent,
             to,
             ...rest
           } = props;

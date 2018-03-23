@@ -63,8 +63,8 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
       await profilecardProvider;
     } catch (err) {
       expect(mention.find('WithProfilecardMention').length).toBe(0);
+      mention.unmount();
     }
-    mention.unmount();
   });
 
   ['HipChat', 'all', 'here'].forEach(genericUserId => {
