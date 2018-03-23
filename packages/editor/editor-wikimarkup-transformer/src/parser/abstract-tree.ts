@@ -254,7 +254,7 @@ export default class AbstractTree {
 
         const paragraphNode = paragraph.createChecked(
           {},
-          this.schema.text(lineBlockQuoteMatches[1]),
+          this.getTextWithMarks(lineBlockQuoteMatches[1]),
         );
         const blockquoteNode = blockquote.createChecked({}, paragraphNode);
 
