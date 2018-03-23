@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { createParagraphAtEnd } from '../../../commands';
 
-const ClickWrapper: any = styled.div`
+const ClickWrapper = styled.div`
   flex-grow: 1;
+  height: 100%;
 `;
 ClickWrapper.displayName = 'ClickWrapper';
 
