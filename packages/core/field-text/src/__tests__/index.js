@@ -140,7 +140,7 @@ describe('FieldTextStateless', () => {
         shallow(<FieldTextStateless label="" {...props} />)
           .find(Input)
           .props(),
-      ).toBe(props);
+      ).toEqual(expect.objectContaining(props));
     });
 
     describe('native input events', () => {
