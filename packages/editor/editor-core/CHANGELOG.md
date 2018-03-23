@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 65.1.20
+- [patch] ED-4170, in full page editor paragraph should not be created when clicked inside editor. [125d1dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/125d1dc)
+- [patch] ED-4126, Fixing scroll of full page editor. [8ef459d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ef459d)
+
 ## 65.1.19
 
 ## 65.1.18
