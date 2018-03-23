@@ -63,8 +63,6 @@ interface EmojiGroup {
   category: string;
 }
 
-const categoryDebounceWait = 100;
-
 /**
  * Tracks which category is visible based on
  * scrollTop, and virtual rows.
@@ -92,31 +90,29 @@ class CategoryTracker {
   }
 
   findNearestCategoryAbove(
-    scrollTop: number,
+    startIndex: number,
     list: VirtualList,
   ): string | undefined {
     const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
     // Return first category if list not yet rendered
-    if (!list) {
-      return this.rowToCategory.get(0);
+    // or the top row is above the first category
+    if (!list || rows[0] > startIndex) {
+      return this.rowToCategory.get(rows[0]);
     }
 
-    const firstOffset = list.getOffsetForRow({ index: rows[0] });
-    if (firstOffset > scrollTop) {
-      return undefined;
-    }
+    let bounds = [0, rows.length - 1];
+    let index = Math.floor(rows.length / 2);
 
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      const offset = list.getOffsetForRow({ index: row });
-      if (offset > scrollTop) {
-        const prevRow = rows[i - 1];
-        return this.rowToCategory.get(prevRow); // gone past, so previous offset
+    while (rows[index] !== startIndex && bounds[1] - bounds[0] > 1) {
+      if (rows[index] > startIndex) {
+        bounds[1] = index;
+      } else {
+        bounds[0] = index;
       }
+      index = Math.floor((bounds[0] + bounds[1]) / 2);
     }
 
-    const lastRow = rows[rows.length - 1];
-    return this.rowToCategory.get(lastRow);
+    return this.rowToCategory.get(rows[index]);
   }
 }
 
@@ -162,14 +158,11 @@ export default class EmojiPickerVirtualList extends PureComponent<
   private activeCategory: string | undefined | null;
   private virtualItems: VirtualItem<any>[] = [];
   private categoryTracker: CategoryTracker = new CategoryTracker();
-  private categoryDebounce: number;
-  private lastScrollTop: number;
 
   context: EmojiContext;
 
   constructor(props) {
     super(props);
-    this.state = {};
 
     this.buildGroups(props.emojis, props.currentUser);
     this.buildVirtualItems(props, this.state);
@@ -375,29 +368,33 @@ export default class EmojiPickerVirtualList extends PureComponent<
     this.allEmojiGroups = list.sort(titleComparator);
   };
 
-  private checkCategoryChange = ({ scrollTop }) => {
-    this.lastScrollTop = scrollTop;
-    // debounce
-    if (this.categoryDebounce) {
-      return;
+  private checkCategoryChange = indexes => {
+    const { startIndex } = indexes;
+
+    // Fix a rendering problem when scrolling to the top
+    if (startIndex === 0 && this.refs.root) {
+      const root = this.refs.root as HTMLDivElement;
+      const display = root.style.display;
+      root.style.display = 'none';
+      // @ts-ignore we need to access offset to force repaint
+      const offsetHeight = root.offsetHeight;
+      root.style.display = display;
     }
+
     if (!this.props.query) {
       // Calculate category in view - only relevant if categories shown, i.e. no query
-      this.categoryDebounce = setTimeout(() => {
-        this.categoryDebounce = 0;
-        const list = this.refs.list as VirtualList;
-        const currentCategory = this.categoryTracker.findNearestCategoryAbove(
-          this.lastScrollTop,
-          list,
-        );
+      const list = this.refs.list as VirtualList;
+      const currentCategory = this.categoryTracker.findNearestCategoryAbove(
+        startIndex,
+        list,
+      );
 
-        if (currentCategory && this.activeCategory !== currentCategory) {
-          this.activeCategory = currentCategory;
-          if (this.props.onCategoryActivated) {
-            this.props.onCategoryActivated(currentCategory);
-          }
+      if (currentCategory && this.activeCategory !== currentCategory) {
+        this.activeCategory = currentCategory;
+        if (this.props.onCategoryActivated) {
+          this.props.onCategoryActivated(currentCategory);
         }
-      }, categoryDebounceWait);
+      }
     }
   };
 
@@ -411,6 +408,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
     return (
       <div
+        ref="root"
         className={classNames(classes)}
         onMouseLeave={onMouseLeave}
         onMouseEnter={onMouseEnter}
@@ -418,7 +416,6 @@ export default class EmojiPickerVirtualList extends PureComponent<
         <VirtualList
           ref="list"
           height={sizes.listHeight}
-          onScroll={this.checkCategoryChange}
           overscanRowCount={5}
           rowCount={this.virtualItems.length}
           rowHeight={this.rowSize}
@@ -426,6 +423,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
           scrollToAlignment="start"
           width={sizes.listWidth}
           className={styles.virtualList}
+          onRowsRendered={this.checkCategoryChange}
         />
       </div>
     );
