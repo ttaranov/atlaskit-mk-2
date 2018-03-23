@@ -21,27 +21,27 @@ export default class AsyncCreatableExample extends Component<*, State> {
     allowCreateWhileLoading: false,
     options: cities,
   };
-  handleCreateOption = inputValue => {
+  handleCreateOption = (inputValue: string) => {
     console.log('handleCreateOption here');
     this.setState({
       options: [createOption(inputValue), ...this.state.options],
     });
   };
   // you control how the options are filtered
-  filterOptions = inputValue => {
+  filterOptions = (inputValue: string) => {
     return this.state.options.filter(option =>
       option.label.toLowerCase().includes(inputValue.toLowerCase()),
     );
   };
 
   // async load function using callback (promises also supported)
-  loadOptions = (inputValue, callback) => {
+  loadOptions = (inputValue: string, callback: (?Array<*>) => void) => {
     setTimeout(() => {
       callback(this.filterOptions(inputValue));
     }, 1000);
   };
-  toggleValue = event => {
-    this.setState(state => ({ ...state, [event.value]: !state[event.value] }));
+  toggleValue = ({ value }: Object) => {
+    this.setState(state => ({ ...state, [value]: !state[value] }));
   };
   render() {
     const { allowCreateWhileLoading } = this.state;
