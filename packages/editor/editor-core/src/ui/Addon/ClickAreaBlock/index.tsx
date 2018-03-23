@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { createParagraphAtEnd } from '../../../commands';
 
-const ClickWrapper: any = styled.div`
+const ClickWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-grow: 1;
+  height: 100%;
 `;
 ClickWrapper.displayName = 'ClickWrapper';
 

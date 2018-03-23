@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
@@ -103,7 +104,8 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
-  stopPropagation = (event: MouseEvent) => event.stopPropagation();
+  stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
+    event.stopPropagation();
 
   render() {
     const {
