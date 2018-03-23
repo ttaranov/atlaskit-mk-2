@@ -10,7 +10,7 @@ import { name } from '../../package.json';
 import { Trigger, Content } from '../../src/styled/Droplist';
 
 import DroplistWithAnalytics, { Droplist } from '../components/Droplist';
-import { DroplistItem } from '../components/Item';
+import DroplistItemWithAnalytics from '../components/Item';
 
 const itemsList = (
   <ItemGroup heading="test1">
@@ -131,6 +131,22 @@ describe('DroplistWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<DroplistWithAnalytics />);
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+  });
+});
+describe('DroplistItemWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DroplistItemWithAnalytics />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

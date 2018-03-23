@@ -16,8 +16,12 @@ describe('Breadcrumbs', () => {
       expect(BreadcrumbsStateless).not.toBe(undefined);
       expect(Item).not.toBe(undefined);
       expect(new Breadcrumbs()).toBeInstanceOf(Component);
-      expect(React.createElement(BreadcrumbsStateless)).toBeInstanceOf(Object);
-      expect(React.createElement(Item)).toBeInstanceOf(Object);
+      expect(
+        React.createElement(BreadcrumbsStateless, { onExpand: () => {} }),
+      ).toBeInstanceOf(Object);
+      expect(React.createElement(Item, { text: 'arbitrary' })).toBeInstanceOf(
+        Object,
+      );
     });
   });
 

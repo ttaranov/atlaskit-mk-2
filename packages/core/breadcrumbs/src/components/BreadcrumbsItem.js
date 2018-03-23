@@ -19,24 +19,24 @@ type Props = {
   /** Whether this item will be followed by a separator. */
   hasSeparator?: boolean,
   /** The url or path which the breadcrumb should act as a link to. */
-  href?: string,
+  href: string,
   /** An icon to display before the breadcrumb. */
   iconBefore?: Node,
   /** An icon to display after the breadcrumb. */
   iconAfter?: Node,
   /** Handler to be called on click. **/
-  onClick?: Event => mixed,
+  onClick: Event => mixed,
   /** The text to appear within the breadcrumb as a link. */
   text: string,
   /** The maximum width in pixels that an item can have before it is truncated.
   If this is not set, truncation will only occur when it cannot fit alone on a
   line. If there is no truncationWidth, tooltips are not provided on truncation. */
-  truncationWidth?: number,
-  target?: '_blank' | '_parent' | '_self' | '_top' | '',
+  truncationWidth: number,
+  target: '_blank' | '_parent' | '_self' | '_top' | '',
   /** Provide a custom component to use instead of the default button.
    *  The custom component should accept a className prop so it can be styled
    *  and possibly all action handlers */
-  component?: string | (() => Node) | Node,
+  component: string | (() => Node) | Node,
 };
 
 type State = {

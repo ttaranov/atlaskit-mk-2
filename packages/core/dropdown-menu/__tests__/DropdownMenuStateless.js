@@ -111,7 +111,7 @@ describe('DropdownMenuStatelessWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<DropdownMenuStatelessWithAnalytics isOpen />);
+    mount(<DropdownMenuStatelessWithAnalytics />);
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
   });

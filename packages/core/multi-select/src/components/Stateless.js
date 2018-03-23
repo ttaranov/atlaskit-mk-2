@@ -153,6 +153,7 @@ export class MultiSelectStateless extends PureComponent<Props, State> {
     shouldFlip: true,
     isLoading: false,
     isOpen: false,
+    // $FlowFixMe - doesn't matter what type of array if the array is empty...
     items: [],
     label: '',
     loadingMessage: 'Receiving information',

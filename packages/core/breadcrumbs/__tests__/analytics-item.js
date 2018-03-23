@@ -24,7 +24,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 
 describe('BreadcrumbsItem', () => {
   it('should override the existing analytics context of Button', () => {
-    const wrapper = mount(<BreadcrumbsItem />);
+    const wrapper = mount(<BreadcrumbsItem text="arbitrary" />);
 
     expect(wrapper.find(Button).prop('analyticsContext')).toEqual({
       component: 'breadcrumbs-item',

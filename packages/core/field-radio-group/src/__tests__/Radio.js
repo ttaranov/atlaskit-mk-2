@@ -2,19 +2,10 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-
 import Radio from '../../src/RadioBase';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+import { name } from '../../package.json';
 import AkRadioWithAnalytics, { AkRadio } from '../Radio';
+import type { RadioBasePropTypes } from '../types';
 
 describe(name, () => {
   describe('Radio', () => {
@@ -50,7 +41,7 @@ describe(name, () => {
     describe('props', () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
-          const props = { [prop]: val };
+          const props: any = { [prop]: val };
           const wrapper = mount(<AkRadio onChange={() => {}} {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
