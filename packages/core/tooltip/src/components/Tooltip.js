@@ -14,6 +14,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  cleanProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -217,7 +218,7 @@ class Tooltip extends Component<Props, State> {
       truncate,
       tag: Tag,
       ...rest
-    } = this.props;
+    } = cleanProps(this.props);
 
     return (
       <Tag
