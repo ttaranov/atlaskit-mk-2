@@ -255,7 +255,7 @@ export default class AbstractTree {
           }
         }
 
-        const contentNode = this.getTextNodes(content, false);
+        const contentNode = this.getTextWithMarks(content);
         listBuilder.add(bullets, contentNode);
         continue;
       }
