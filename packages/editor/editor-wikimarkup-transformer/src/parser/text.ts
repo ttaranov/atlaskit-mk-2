@@ -18,10 +18,35 @@ const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
   { name: 'superscript', grep: '^' },
   { name: 'subscript', grep: '~' },
 
-  // { name: 'color', grep: '*' },
-  // { name: 'monospaced', grep: '*' },
   // { name: 'link', grep: '*' },
 ];
+
+function findMonospaceMatches(text: string): TextMatch[] {
+  const output: TextMatch[] = [];
+
+  // search for {{monospace text}}
+  const regex = /\{\{(.+?)\}\}/g;
+  let matches: RegExpExecArray | null;
+
+  while ((matches = regex.exec(text)) !== null) {
+    const position = matches.index;
+
+    output.push({
+      effect: 'monospaced',
+      attrs: {},
+      startPos: {
+        outer: position,
+        inner: position + 2,
+      },
+      endPos: {
+        inner: position + 2 + matches[1].length,
+        outer: position + 4 + matches[1].length,
+      },
+    });
+  }
+
+  return output;
+}
 
 /**
  * Search for text effects in the string
@@ -74,6 +99,10 @@ export function findTextMatches(text: string): TextMatch[] {
       endPos,
     });
   }
+
+  // monospace is a special regex
+  const monospaceMatches = findMonospaceMatches(text);
+  output.push(...monospaceMatches);
 
   return output;
 }

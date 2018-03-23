@@ -3,16 +3,20 @@ import AbstractTree from '../../src/parser/abstract-tree';
 
 describe('JIRA wiki markup - Abstract tree', () => {
   const testCases: [string, string][] = [
-    ['simple strong wrapper string', '*Strong text*'],
-    ['simple strong string', 'This is a string with a *strong* text'],
+    // ['simple strong wrapper string', '*Strong text*'],
+    // ['simple strong string', 'This is a string with a *strong* text'],
+    // [
+    //   'colourful strong text',
+    //   'This is a *string with a {color:red}bold red* text{color}',
+    // ],
     [
-      'colourful strong text',
-      'This is a *string with a {color:red}bold red* text{color}',
+      'monospace containing strong text',
+      'This is a string with {{monospaced text}}',
     ],
-    [
-      'string with a wrong order of effects',
-      'This is a *strong ^string* with a ~^bla*~~',
-    ],
+    // [
+    //   'string with a wrong order of effects',
+    //   'This is a *strong ^string* with a ~^bla*~~',
+    // ],
   ];
 
   for (const [testCaseName, markup] of testCases) {
