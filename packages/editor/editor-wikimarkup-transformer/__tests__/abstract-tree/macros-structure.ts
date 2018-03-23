@@ -43,4 +43,13 @@ h1. Boom! this is a heading with *bold* text in it
       // expect(tree.getTextIntervals()).toMatchSnapshot();
     });
   }
+
+  it('should process lists correctly', () => {
+    const markup = `* foo
+** bar
+* baz
+foo`;
+    const tree = new AbstractTree(defaultSchema, markup);
+    // console.log(JSON.stringify(tree.getProseMirrorModel(), null, 2));
+  });
 });

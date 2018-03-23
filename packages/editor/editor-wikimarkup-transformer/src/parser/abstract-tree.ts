@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import ListBuilder from './list-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
 import { findTextAndEmoji } from './text';
@@ -12,6 +13,7 @@ import { isSpecialMacro } from './special';
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
 const HORIZONTAL_RULE = '----';
+const LIST_REGEXP = /^([*|-]+)\s+(.+)/;
 const NEWLINE = '\n';
 const DOUBLE_BACKSLASH = '\\\\';
 
@@ -185,6 +187,9 @@ export default class AbstractTree {
       }
     };
 
+    // Flag if currently processing a list
+    let isProcessingList: boolean = false;
+    let listBuilder: ListBuilder | null = null;
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
       if (line === HORIZONTAL_RULE) {
@@ -233,7 +238,28 @@ export default class AbstractTree {
         continue;
       }
 
-      // TODO process lists
+      // @TODO split ol/ul
+      const listMatches = lineUpdated.match(LIST_REGEXP);
+      if (listMatches) {
+        const [, /* discard */ bullets, content] = listMatches;
+        isProcessingList = true;
+
+        if (!listBuilder) {
+          listBuilder = new ListBuilder(this.schema, bullets);
+        }
+
+        const contentNode = this.getTextNodes(content, false);
+        listBuilder.add(bullets, contentNode);
+        continue;
+      }
+
+      // If it's not a match, but the last loop was a list, add the processed list and delete the builder
+      if (isProcessingList) {
+        isProcessingList = false;
+        output.push(listBuilder!.buildPMNode());
+        listBuilder = null;
+      }
+
       // TODO process tables
       // TODO process images/attachments
       // TODO process {color} macro
@@ -241,6 +267,11 @@ export default class AbstractTree {
       // TODO process text effects and links
 
       textContainer.push(lineUpdated);
+    }
+
+    // If the list was the last item, make sure to push it
+    if (isProcessingList) {
+      output.push(listBuilder!.buildPMNode());
     }
 
     // there can be some text stored after processing
