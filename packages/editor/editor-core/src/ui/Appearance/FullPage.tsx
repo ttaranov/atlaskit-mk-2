@@ -103,6 +103,8 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
+  stopPropagation = (event: MouseEvent) => event.stopPropagation();
+
   render() {
     const {
       editorDOMElement,
@@ -161,7 +163,7 @@ export default class Editor extends React.Component<
                   disabled={!!disabled}
                 />
               }
-              {editorDOMElement}
+              <div onClick={this.stopPropagation}>{editorDOMElement}</div>
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
