@@ -15,6 +15,7 @@ const FullPageEditorWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding-bottom: 55px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -43,7 +44,6 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 55px;
   }
 
   && .ProseMirror {
@@ -103,6 +103,9 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
+  stopPropagation = (event: React.MouseEvent<HTMLDivElement>) =>
+    event.stopPropagation();
+
   render() {
     const {
       editorDOMElement,
@@ -161,7 +164,7 @@ export default class Editor extends React.Component<
                   disabled={!!disabled}
                 />
               }
-              {editorDOMElement}
+              <div onClick={this.stopPropagation}>{editorDOMElement}</div>
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
