@@ -800,7 +800,7 @@ describe('Media plugin', () => {
           id: 'test',
           name: 'test.png',
           size: 1,
-          type: `file/test`,
+          type: 'file/test',
         },
       ],
     };

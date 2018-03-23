@@ -31,9 +31,6 @@ describe('UploadService', () => {
   beforeEach(() => {
     hasherHashSpy.mockReset();
   });
-  afterEach(() => {
-    hasherHashSpy.mockReset();
-  });
 
   describe('setUploadParams', () => {
     const setup = () => ({

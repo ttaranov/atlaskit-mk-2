@@ -95,6 +95,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     const taskItem = task.find(TaskItem);
     taskItem.find('input').simulate('change');
     expect(taskItem.prop('isDone')).toBe(true);
+    task.unmount();
   });
 
   it('should not change state of task if no contextIdentifierProvider', () => {
