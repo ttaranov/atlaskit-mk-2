@@ -1,15 +1,31 @@
 import { Node as PMNode } from 'prosemirror-model';
 
 export type MacroName = 'code' | 'noformat' | 'panel' | 'quote';
+export type TextEffect =
+  | 'strong'
+  | 'emphasis'
+  | 'citation'
+  | 'deleted'
+  | 'inserted'
+  | 'superscript'
+  | 'subscript'
+  | 'monospaced'
+  | 'color'
+  | 'link';
 
 export interface SimpleInterval {
   left: number;
   right: number;
 }
 
-export interface MacrosMatchPosition {
+export interface MatchPosition {
   inner: number;
   outer: number;
+}
+
+export interface FatInterval {
+  startPos: MatchPosition;
+  endPos: MatchPosition;
 }
 
 export interface SimpleMacro {
@@ -17,15 +33,28 @@ export interface SimpleMacro {
   attrs: { [key: string]: string };
 }
 
-export interface MacroMatch {
+export interface MacroMatch extends FatInterval {
   macro: MacroName;
   attrs: { [key: string]: string };
-  startPos: MacrosMatchPosition;
-  endPos: MacrosMatchPosition;
 }
 
-export interface Interval {
+export interface TextMatch extends FatInterval {
+  effect: TextEffect;
+  attrs: { [key: string]: string };
+}
+
+export interface MacroInterval {
   macros: SimpleMacro[];
+  text: string;
+}
+
+export interface Effect {
+  name: TextEffect;
+  attrs: { [key: string]: string };
+}
+
+export interface TextInterval {
+  effects: Effect[];
   text: string;
 }
 

@@ -1,21 +1,25 @@
 import * as assert from 'assert';
 
 import {
-  Interval,
+  FatInterval,
+  MacroInterval,
   MacroMatch,
   SimpleInterval,
+  TextInterval,
 } from '../interfaces';
+
+import { findTextMatches } from './text';
 
 import { findMacros } from './macros';
 import { isSpecialMacro } from './special';
 
 function containsInterval(
-  macro: MacroMatch,
+  match: FatInterval,
   interval: SimpleInterval,
 ): boolean {
   return (
-    macro.startPos.inner <= interval.left &&
-    macro.endPos.inner >= interval.right
+    match.startPos.inner <= interval.left &&
+    match.endPos.inner >= interval.right
   );
 }
 
@@ -23,20 +27,20 @@ function hasIntersectionWithInterval(
   macro: MacroMatch,
   interval: SimpleInterval,
 ): boolean {
-  const isLeftIntervalBorderInsideMacro = (
-    interval.left > macro.startPos.inner &&
-    interval.left < macro.endPos.inner
-  );
+  const isLeftIntervalBorderInsideMacro =
+    interval.left > macro.startPos.inner && interval.left < macro.endPos.inner;
 
-  const isRightIntervalBorderInsideMacro = (
+  const isRightIntervalBorderInsideMacro =
     interval.right > macro.startPos.inner &&
-    interval.right < macro.endPos.inner
-  );
+    interval.right < macro.endPos.inner;
 
   return isLeftIntervalBorderInsideMacro || isRightIntervalBorderInsideMacro;
 }
 
-function calcIntersectingMacros(macros: MacroMatch[], startIndex: number): number {
+function calcIntersectingMacros(
+  macros: MacroMatch[],
+  startIndex: number,
+): number {
   const macro = macros[startIndex];
   assert(macro, `Macro position is out of range: ${startIndex}`);
 
@@ -60,7 +64,9 @@ function calcIntersectingMacros(macros: MacroMatch[], startIndex: number): numbe
  * Remove intersecting/containing macros inside "code" and "noformat" macros
  */
 function filterValidMacros(macros: MacroMatch[]): MacroMatch[] {
-  const output = [...macros].sort((a, b) => a.startPos.outer - b.startPos.outer);
+  const output = [...macros].sort(
+    (a, b) => a.startPos.outer - b.startPos.outer,
+  );
   let i = 0;
 
   // Array.prototype.filter() looks much cleaner here
@@ -88,11 +94,11 @@ function filterValidMacros(macros: MacroMatch[]): MacroMatch[] {
  * So the output will be their positions in a string
  */
 function calcTextIntervals(
-  wikiMarkup: string,
-  macros: MacroMatch[],
+  text: string,
+  macros: FatInterval[],
 ): SimpleInterval[] {
   const output: SimpleInterval[] = [];
-  const positions: Set<number> = new Set([0, wikiMarkup.length]);
+  const positions: Set<number> = new Set([0, text.length]);
 
   // meta intervals are intervals of data which are not used in sting formation
   // for instance we can have a string which looks like this:
@@ -141,7 +147,7 @@ function calcTextIntervals(
  * "This is a {quote}quote with a {panel}foobar{panel} inside{quote}"
  * foobar text chunk will have 2 macros: [quote, panel]
  */
-export function getResolvedIntervals(wikiMarkup: string): Interval[] {
+export function getResolvedMacroIntervals(wikiMarkup: string): MacroInterval[] {
   const macros = findMacros(wikiMarkup);
   const validMacros = filterValidMacros(macros);
 
@@ -149,7 +155,7 @@ export function getResolvedIntervals(wikiMarkup: string): Interval[] {
   const intervals = calcTextIntervals(wikiMarkup, validMacros);
 
   // create output list with empty macros in its elements
-  const output: Interval[] = intervals.map(({ left, right }) => {
+  const output: MacroInterval[] = intervals.map(({ left, right }) => {
     return {
       macros: [],
       text: wikiMarkup.substring(left, right),
@@ -163,6 +169,38 @@ export function getResolvedIntervals(wikiMarkup: string): Interval[] {
         output[i].macros.push({
           macro: macro.macro,
           attrs: macro.attrs,
+        });
+      }
+    });
+  }
+
+  return output;
+}
+
+/**
+ * Splits the string into intervals of text with text effects
+ */
+export function getResolvedTextIntervals(text: string): TextInterval[] {
+  const matches = findTextMatches(text);
+
+  // calculate all intervals taking outer borders of macros
+  const intervals = calcTextIntervals(text, matches);
+
+  // create output list with empty macros in its elements
+  const output: TextInterval[] = intervals.map(({ left, right }) => {
+    return {
+      effects: [],
+      text: text.substring(left, right),
+    };
+  });
+
+  // iterate existing macros and put them into the output list
+  for (const match of matches) {
+    intervals.map((interval, i) => {
+      if (containsInterval(match, interval)) {
+        output[i].effects.push({
+          name: match.effect,
+          attrs: match.attrs,
         });
       }
     });

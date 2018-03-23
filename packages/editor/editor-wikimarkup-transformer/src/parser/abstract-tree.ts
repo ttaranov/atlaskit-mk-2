@@ -1,12 +1,12 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
-import {
-  MacroName,
-  RichInterval,
-} from '../interfaces';
+import { MacroName, RichInterval } from '../interfaces';
 
 import { getCodeLanguage } from './code-language';
-import { getResolvedIntervals } from './intervals';
+import {
+  getResolvedMacroIntervals,
+  getResolvedTextIntervals,
+} from './intervals';
 import { isSpecialMacro } from './special';
 
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
@@ -28,7 +28,7 @@ export default class AbstractTree {
    * Build text intervals list from wiki markup
    */
   getTextIntervals(): RichInterval[] {
-    const textIntervals = getResolvedIntervals(this.wikiMarkup);
+    const textIntervals = getResolvedMacroIntervals(this.wikiMarkup);
 
     return textIntervals.map(({ macros, text }) => {
       const simpleMacro = macros.pop();
@@ -41,6 +41,40 @@ export default class AbstractTree {
         macro: simpleMacro,
         content: this.getTextNodes(text, treatChildrenAsText),
       };
+    });
+  }
+
+  getTextWithMarks(text: string): PMNode[] {
+    const { code, em, strike, strong, subsup, underline } = this.schema.marks;
+    const intervals = getResolvedTextIntervals(text);
+
+    return intervals.map(({ effects, text }) => {
+      const marks: Mark[] = effects.map(({ name, attrs }) => {
+        switch (name) {
+          case 'strong':
+            return strong.create();
+
+          case 'emphasis':
+          case 'citation':
+            return em.create();
+
+          case 'deleted':
+            return strike.create();
+          case 'inserted':
+            return underline.create();
+          case 'superscript':
+            return subsup.create({ type: 'sup' });
+          case 'subscript':
+            return subsup.create({ type: 'sub' });
+          case 'monospaced':
+            return code.create();
+
+          default:
+            throw new Error(`Unknown effect: ${name}`);
+        }
+      });
+
+      return this.schema.text(text, marks);
     });
   }
 
@@ -123,8 +157,8 @@ export default class AbstractTree {
     const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
-      const textNode = this.schema.text(line);
-      output.push(textNode);
+      const textNodes = this.getTextWithMarks(line);
+      output.push(...textNodes);
 
       if (index + 1 < lines.length) {
         const brNode = hardBreak.createChecked();

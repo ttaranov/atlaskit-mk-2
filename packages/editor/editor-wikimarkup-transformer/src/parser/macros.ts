@@ -1,10 +1,6 @@
 import { parse as parseQuery } from 'querystring';
 
-import {
-  MacroMatch,
-  MacroName,
-  MacrosMatchPosition,
-} from '../interfaces';
+import { MacroMatch, MacroName, MatchPosition } from '../interfaces';
 
 const KNOWN_MACRO: MacroName[] = ['code', 'noformat', 'panel', 'quote'];
 
@@ -36,7 +32,7 @@ export function findMacros(wikiMarkup: string): MacroMatch[] {
     const regex = new RegExp(`{${macro}(:([^{]*?))?}`, 'g');
     let matches: RegExpExecArray | null;
     let matchCount = 0;
-    let startPos: MacrosMatchPosition | undefined;
+    let startPos: MatchPosition | undefined;
     let attrs: { [key: string]: string } | undefined;
 
     while ((matches = regex.exec(wikiMarkup)) !== null) {
