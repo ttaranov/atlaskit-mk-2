@@ -78,10 +78,14 @@ export default class ListBuilder {
    */
   private buildListItemNode(item: ListItem): PMNode {
     const { listItem } = this.schema.nodes;
-    let content: PMNode[] = [];
+    let content: any[] = [];
 
     if (item.child) {
       content.push(this.buildListNode(item.child));
+    }
+
+    if (!item.content) {
+      return listItem.create({}, content);
     }
 
     return listItem.create({}, [...item.content, ...content]);

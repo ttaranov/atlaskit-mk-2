@@ -46,7 +46,7 @@ h1. Boom! this is a heading with *bold* text in it
 
   it('should process lists correctly', () => {
     const markup = `* foo
-** bar
+*** bar
 * baz
 foo`;
     const tree = new AbstractTree(defaultSchema, markup);
