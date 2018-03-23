@@ -45,14 +45,22 @@ export default class AbstractTree {
   }
 
   getTextWithMarks(text: string): PMNode[] {
-    const { code, em, strike, strong, subsup, underline } = this.schema.marks;
+    const {
+      code,
+      em,
+      strike,
+      strong,
+      subsup,
+      textColor,
+      underline,
+    } = this.schema.marks;
     const intervals = getResolvedTextIntervals(text);
 
     return intervals.map(({ effects, text }) => {
       const marks: Mark[] = effects.map(({ name, attrs }) => {
         switch (name) {
-          case 'strong':
-            return strong.create();
+          case 'color':
+            return textColor.create(attrs);
 
           case 'emphasis':
           case 'citation':
@@ -60,6 +68,10 @@ export default class AbstractTree {
 
           case 'deleted':
             return strike.create();
+
+          case 'strong':
+            return strong.create();
+
           case 'inserted':
             return underline.create();
           case 'superscript':

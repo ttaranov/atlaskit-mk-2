@@ -24,10 +24,13 @@ function parseAttrs(str: string) {
 /**
  * Regex search for macro in the string
  */
-export function findMacros(wikiMarkup: string): MacroMatch[] {
+export function findMacros(
+  wikiMarkup: string,
+  searchMacros = KNOWN_MACRO,
+): MacroMatch[] {
   const output: MacroMatch[] = [];
 
-  for (const macro of KNOWN_MACRO) {
+  for (const macro of searchMacros) {
     // search for {macro} and {macro:with=attributes|etc}
     const regex = new RegExp(`{${macro}(:([^{]*?))?}`, 'g');
     let matches: RegExpExecArray | null;

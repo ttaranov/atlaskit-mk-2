@@ -1,6 +1,8 @@
 import * as assert from 'assert';
 
 import { MatchPosition, TextEffect, TextMatch } from '../interfaces';
+import { getEditorColor } from './color';
+import { findMacros } from './macros';
 
 interface TextMarkElement {
   name: TextEffect;
@@ -57,6 +59,20 @@ export function findTextMatches(text: string): TextMatch[] {
       matchCount++;
       fromIndex = matchIndex + 1;
     }
+  }
+
+  // color is a special "inline" macros
+  const colorMatches = findMacros(text, ['color']);
+
+  for (const { attrs, startPos, endPos } of colorMatches) {
+    output.push({
+      effect: 'color',
+      attrs: {
+        color: getEditorColor(attrs),
+      },
+      startPos,
+      endPos,
+    });
   }
 
   return output;

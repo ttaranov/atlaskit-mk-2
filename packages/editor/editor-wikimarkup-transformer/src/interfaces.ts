@@ -1,6 +1,6 @@
 import { Node as PMNode } from 'prosemirror-model';
 
-export type MacroName = 'code' | 'noformat' | 'panel' | 'quote';
+export type MacroName = 'color' | 'code' | 'noformat' | 'panel' | 'quote';
 export type TextEffect =
   | 'strong'
   | 'emphasis'
@@ -40,7 +40,7 @@ export interface MacroMatch extends FatInterval {
 
 export interface TextMatch extends FatInterval {
   effect: TextEffect;
-  attrs: { [key: string]: string };
+  attrs: { [key: string]: string | null };
 }
 
 export interface MacroInterval {
@@ -50,7 +50,7 @@ export interface MacroInterval {
 
 export interface Effect {
   name: TextEffect;
-  attrs: { [key: string]: string };
+  attrs: { [key: string]: string | null };
 }
 
 export interface TextInterval {

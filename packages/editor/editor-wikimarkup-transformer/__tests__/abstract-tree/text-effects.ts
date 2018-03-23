@@ -6,6 +6,10 @@ describe('JIRA wiki markup - Abstract tree', () => {
     ['simple strong wrapper string', '*Strong text*'],
     ['simple strong string', 'This is a string with a *strong* text'],
     [
+      'colourful strong text',
+      'This is a *string with a {color:red}bold red* text{color}',
+    ],
+    [
       'string with a wrong order of effects',
       'This is a *strong ^string* with a ~^bla*~~',
     ],
