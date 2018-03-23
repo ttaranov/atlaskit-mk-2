@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.6.1
+- [patch] Props with default values are not marked as required [d00499f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d00499f)
+
 ## 2.6.0
 - [minor] Add prop to allow proptype shape to be hidden [3150228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3150228)
 
