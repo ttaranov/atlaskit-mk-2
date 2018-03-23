@@ -238,7 +238,6 @@ export default class AbstractTree {
         continue;
       }
 
-      // @TODO split ol/ul
       const listMatches = lineUpdated.match(LIST_REGEXP);
       if (listMatches) {
         const [, /* discard */ bullets, content] = listMatches;
@@ -246,6 +245,14 @@ export default class AbstractTree {
 
         if (!listBuilder) {
           listBuilder = new ListBuilder(this.schema, bullets);
+        } else {
+          const type = ListBuilder.getType(bullets);
+
+          // If it's top level and doesn't match, create a new list
+          if (type !== listBuilder.type && bullets.length === 1) {
+            output.push(listBuilder.buildPMNode());
+            listBuilder = new ListBuilder(this.schema, bullets);
+          }
         }
 
         const contentNode = this.getTextNodes(content, false);

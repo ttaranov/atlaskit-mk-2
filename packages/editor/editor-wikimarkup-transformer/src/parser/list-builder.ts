@@ -22,9 +22,26 @@ export default class ListBuilder {
 
   constructor(schema: Schema, bullets: string) {
     this.schema = schema;
-    this.root = { children: [], type: this.getType(bullets) };
+    this.root = { children: [], type: ListBuilder.getType(bullets) };
     this.lastDepth = 1;
     this.lastList = this.root;
+  }
+
+  /**
+   * Return the type of a list from the bullets
+   * @param {string} bullets
+   * @returns {ListType}
+   */
+  static getType(bullets: string): ListType {
+    return /#/.test(bullets) ? 'orderedList' : 'bulletList';
+  }
+
+  /**
+   * Return the type of the base list
+   * @returns {ListType}
+   */
+  get type(): ListType {
+    return this.root.type;
   }
 
   /**
@@ -34,7 +51,7 @@ export default class ListBuilder {
    */
   add(bullets: string, content: PMNode[]) {
     const depth = bullets.length;
-    const type = this.getType(bullets);
+    const type = ListBuilder.getType(bullets);
 
     if (depth > this.lastDepth) {
       // Add children starting from last node
@@ -159,14 +176,5 @@ export default class ListBuilder {
       }
     }
     return list;
-  }
-
-  /**
-   * Return the type of a list from the bullets
-   * @param {string} bullets
-   * @returns {ListType}
-   */
-  private getType(bullets: string): ListType {
-    return /#/.test(bullets) ? 'orderedList' : 'bulletList';
   }
 }
