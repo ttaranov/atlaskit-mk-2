@@ -5,10 +5,10 @@ import {
   MentionsResult,
   isSpecialMention,
 } from '../types';
-import * as XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use
-import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
-import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
-import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
+import XRegExp from 'xregexp/src/xregexp'; // Not using 'xregexp' directly to only include what we use
+import XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
+import XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
+import XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
