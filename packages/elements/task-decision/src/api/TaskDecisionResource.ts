@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
 import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
+import { SpecialEventType, PubSubClient } from '@atlassian/pubsub';
 import { defaultLimit } from '../constants';
 
 import {
@@ -7,12 +8,14 @@ import {
   convertServiceItemResponseToItemResponse,
   convertServiceTaskResponseToTaskResponse,
   convertServiceTaskToTask,
+  convertServiceTaskStateToBaseItem,
   findIndex,
   ResponseConverter,
 } from './TaskDecisionUtils';
 
 import {
   BaseItem,
+  ServiceTaskState,
   DecisionResponse,
   DecisionState,
   Handler,
@@ -28,6 +31,7 @@ import {
   TaskResponse,
   TaskState,
   User,
+  ServiceItem,
 } from '../types';
 
 import { objectKeyToString, toggleTaskState } from '../type-helpers';
@@ -37,9 +41,40 @@ interface RecentUpdateByIdValue {
   containerAri: string;
 }
 
+export const ACTION_CREATED_FPS_EVENT =
+  'avi:task-decision-service:created:action';
+export const ACTION_EDITED_FPS_EVENT =
+  'avi:task-decision-service:edited:action';
+export const ACTION_DELETED_FPS_EVENT =
+  'avi:task-decision-service:deleted:action';
+export const ACTION_ARCHIVED_FPS_EVENT =
+  'avi:task-decision-service:archived:action';
+export const ACTION_STATE_CHANGED_FPS_EVENT =
+  'avi:task-decision-service:stateChanged:action';
+
+export const DECISION_CREATED_FPS_EVENT =
+  'avi:task-decision-service:created:decision';
+export const DECISION_EDITED_FPS_EVENT =
+  'avi:task-decision-service:edited:decision';
+export const DECISION_DELETED_FPS_EVENT =
+  'avi:task-decision-service:deleted:decision';
+export const DECISION_ARCHIVED_FPS_EVENT =
+  'avi:task-decision-service:archived:decision';
+export const DECISION_STATE_CHANGED_FPS_EVENT =
+  'avi:task-decision-service:stateChanged:decision';
+
+export const ACTION_DECISION_FPS_EVENTS = 'avi:task-decision-service:*:*';
+
 export class RecentUpdates {
   private idsByContainer: Map<string, string[]> = new Map();
   private listenersById: Map<string, RecentUpdateByIdValue> = new Map();
+
+  private pubSubClient?: PubSubClient;
+
+  constructor(pubSubClient?: PubSubClient) {
+    this.pubSubClient = pubSubClient;
+    this.subscribeToPubSubEvents();
+  }
 
   subscribe(
     containerAri: string,
@@ -88,6 +123,27 @@ export class RecentUpdates {
       });
     }
   }
+
+  onPubSubEvent = (event, payload: ServiceItem) => {
+    const { containerAri } = payload;
+    this.notify({ containerAri });
+  };
+
+  destroy() {
+    this.unsubscribeFromPubSubEvents();
+  }
+
+  private subscribeToPubSubEvents() {
+    if (this.pubSubClient) {
+      this.pubSubClient.on(ACTION_DECISION_FPS_EVENTS, this.onPubSubEvent);
+    }
+  }
+
+  private unsubscribeFromPubSubEvents() {
+    if (this.pubSubClient) {
+      this.pubSubClient.off(ACTION_DECISION_FPS_EVENTS, this.onPubSubEvent);
+    }
+  }
 }
 
 export class ItemStateManager {
@@ -104,6 +160,7 @@ export class ItemStateManager {
 
   constructor(serviceConfig: TaskDecisionResourceConfig) {
     this.serviceConfig = serviceConfig;
+    this.subscribeToPubSubEvents();
   }
 
   destroy() {
@@ -114,6 +171,8 @@ export class ItemStateManager {
     this.debouncedTaskToggle.forEach(timeout => {
       clearTimeout(timeout);
     });
+
+    this.unsubscribeFromPubSubEvents();
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
@@ -224,7 +283,7 @@ export class ItemStateManager {
       },
     };
 
-    return utils.requestService<BaseItem<TaskState>[]>(
+    return utils.requestService<ServiceTaskState[]>(
       this.serviceConfig,
       options,
     );
@@ -240,6 +299,55 @@ export class ItemStateManager {
     handlers.forEach(handler => {
       handler(state);
     });
+  }
+
+  onTaskUpdatedEvent = (event, payload: ServiceTask) => {
+    const { containerAri, objectAri, localId } = payload;
+    const objectKey = { containerAri, objectAri, localId };
+
+    const key = objectKeyToString(objectKey);
+
+    const cached = this.cachedItems.get(key);
+    if (!cached) {
+      // ignore unknown task
+      return;
+    }
+
+    const lastUpdateDate = new Date(payload.lastUpdateDate);
+    if (lastUpdateDate > cached.lastUpdateDate) {
+      this.notifyUpdated(objectKey, payload.state);
+      return;
+    }
+  };
+
+  onReconnect = () => {
+    this.refreshAllTasks();
+  };
+
+  private subscribeToPubSubEvents() {
+    if (this.serviceConfig.pubSubClient) {
+      this.serviceConfig.pubSubClient.on(
+        ACTION_STATE_CHANGED_FPS_EVENT,
+        this.onTaskUpdatedEvent,
+      );
+      this.serviceConfig.pubSubClient.on(
+        SpecialEventType.RECONNECT,
+        this.onReconnect,
+      );
+    }
+  }
+
+  private unsubscribeFromPubSubEvents() {
+    if (this.serviceConfig.pubSubClient) {
+      this.serviceConfig.pubSubClient.off(
+        ACTION_STATE_CHANGED_FPS_EVENT,
+        this.onTaskUpdatedEvent,
+      );
+      this.serviceConfig.pubSubClient.off(
+        SpecialEventType.RECONNECT,
+        this.onReconnect,
+      );
+    }
   }
 
   private queueAllItems() {
@@ -270,7 +378,10 @@ export class ItemStateManager {
         tasks.forEach(task => {
           const { containerAri, objectAri, localId } = task;
           const objectKey = { containerAri, objectAri, localId };
-          this.cachedItems.set(objectKeyToString(objectKey), task);
+          this.cachedItems.set(
+            objectKeyToString(objectKey),
+            convertServiceTaskStateToBaseItem(task),
+          );
 
           this.dequeueItem(objectKey);
           this.notifyUpdated(objectKey, task.state);
@@ -282,11 +393,12 @@ export class ItemStateManager {
 
 export default class TaskDecisionResource implements TaskDecisionProvider {
   private serviceConfig: TaskDecisionResourceConfig;
-  private recentUpdates = new RecentUpdates();
+  private recentUpdates: RecentUpdates;
   private itemStateManager: ItemStateManager;
 
   constructor(serviceConfig: TaskDecisionResourceConfig) {
     this.serviceConfig = serviceConfig;
+    this.recentUpdates = new RecentUpdates(serviceConfig.pubSubClient);
     this.itemStateManager = new ItemStateManager(serviceConfig);
   }
 
@@ -396,6 +508,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
    * are sent to a server (typically mocked).
    */
   destroy() {
+    this.recentUpdates.destroy();
     this.itemStateManager.destroy();
   }
 

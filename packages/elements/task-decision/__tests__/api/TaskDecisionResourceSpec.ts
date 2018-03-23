@@ -593,6 +593,7 @@ describe('TaskDecisionResource', () => {
             ...toObjectKey(t1update),
             state: t1update.state, // match service update
             type: 'TASK',
+            lastUpdateDate: new Date(),
           },
         ];
 
