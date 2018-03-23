@@ -1,19 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Base from '@atlaskit/field-base';
 
 import Radio from '../../src/RadioBase';
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+import { name } from '../../package.json';
 import FieldRadioGroupStatelessWithAnalytics, {
   FieldRadioGroupStateless,
 } from '../RadioGroupStateless';

@@ -156,7 +156,7 @@ describe('CheckboxStatelessWithAnalytics', () => {
     mount(
       <CheckboxStatelessWithAnalytics
         label=""
-        isChecked={false}
+        isChecked
         onChange={() => {}}
         name="stub"
         value="stub value"

@@ -78,6 +78,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onClick: 'click',
     },
     componentTestPath: 'breadcrumbs/__tests__/Item.test.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'button/src/components/Button.js',
@@ -109,6 +110,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onChange: 'change',
     },
     componentTestPath: 'checkbox/src/__tests__/index.js',
+    manualComponentTestOverride: true,
   },
   {
     path: 'datetime-picker/src/components/DatePicker.js',

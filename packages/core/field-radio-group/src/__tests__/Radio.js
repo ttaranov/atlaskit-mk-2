@@ -5,7 +5,6 @@ import { mount, shallow } from 'enzyme';
 import Radio from '../../src/RadioBase';
 import { name } from '../../package.json';
 import AkRadioWithAnalytics, { AkRadio } from '../Radio';
-import type { RadioBasePropTypes } from '../types';
 
 describe(name, () => {
   describe('Radio', () => {

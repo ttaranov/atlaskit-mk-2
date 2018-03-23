@@ -108,6 +108,7 @@ export class Row extends PureComponent<Props> {
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
+// $FlowFixMe - Figure out why this is erroring only for this component...
 export default withAnalyticsContext({
   component: 'table-tree',
   package: packageName,
