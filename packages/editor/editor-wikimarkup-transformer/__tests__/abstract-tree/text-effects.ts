@@ -9,9 +9,10 @@ describe('JIRA wiki markup - Abstract tree', () => {
     //   'colourful strong text',
     //   'This is a *string with a {color:red}bold red* text{color}',
     // ],
+    ['monospace text', 'This is a string with {{monospaced text}}'],
     [
-      'monospace containing strong text',
-      'This is a string with {{monospaced text}}',
+      'monospace containing colourful text',
+      'This is a string with {{monospaced {color:red}red{color} text}}',
     ],
     // [
     //   'string with a wrong order of effects',

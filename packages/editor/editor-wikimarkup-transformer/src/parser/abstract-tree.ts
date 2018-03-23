@@ -86,7 +86,11 @@ export default class AbstractTree {
         }
       });
 
-      return this.schema.text(text, marks);
+      // some marks cannot be used together with others
+      // for instance "code" cannot be used with "bold" or "textColor"
+      // addToSet() takes care of these rules
+      const marksSet = marks.length ? marks[0].addToSet(marks.slice(1)) : [];
+      return this.schema.text(text, marksSet);
     });
   }
 
