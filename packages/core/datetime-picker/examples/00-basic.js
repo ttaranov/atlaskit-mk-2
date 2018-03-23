@@ -11,6 +11,7 @@ type Props = {
     value: string,
     onValueChange: (value: string) => void,
     isOpen: boolean,
+    onBlur: () => void,
   }) => Node,
 };
 
@@ -32,7 +33,6 @@ class Controlled extends Component<Props, State> {
   }
 
   handleClick = () => {
-    console.log('click', this.recentlySelected);
     if (!this.recentlySelected) {
       this.setState({ isOpen: true });
     }
@@ -54,6 +54,12 @@ class Controlled extends Component<Props, State> {
     );
   };
 
+  onBlur = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   render() {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -62,6 +68,7 @@ class Controlled extends Component<Props, State> {
           value: this.state.value,
           onValueChange: this.onValueChange,
           isOpen: this.state.isOpen,
+          onBlur: this.onBlur,
         })}
       </div>
     );
@@ -80,12 +87,13 @@ export default () => {
         label="controlled (value, isOpen)"
       />
       <Controlled initialValue="2018-01-02">
-        {({ value, onValueChange, isOpen }) => (
+        {({ value, onValueChange, isOpen, onBlur }) => (
           <DatePicker
             id="datepicker-2"
             value={value}
             onChange={onValueChange}
             isOpen={isOpen}
+            onBlur={onBlur}
           />
         )}
       </Controlled>
@@ -109,12 +117,13 @@ export default () => {
         label="controlled (value, isOpen)"
       />
       <Controlled initialValue="14:30">
-        {({ value, onValueChange, isOpen }) => (
+        {({ value, onValueChange, isOpen, onBlur }) => (
           <TimePicker
             id="timepicker-2"
             value={value}
             onChange={onValueChange}
             isOpen={isOpen}
+            onBlur={onBlur}
           />
         )}
       </Controlled>
