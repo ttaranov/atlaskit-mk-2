@@ -1,6 +1,10 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import UIAnalyticsEvent from './UIAnalyticsEvent';
@@ -30,11 +34,12 @@ type EventMap<ProvidedProps> = {
 export default function withAnalyticsEvents<
   Props: ObjectType,
   PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
+  C: ComponentType<Props>,
 >(
   createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
 ): (
-  WrappedComponent: ComponentType<Props>,
-) => ComponentType<PropsWithoutAnalyticsEvent> {
+  WrappedComponent: C,
+) => ComponentType<$Diff<ElementConfig<C>, AnalyticsEventsProps>> {
   return WrappedComponent =>
     class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
       static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||

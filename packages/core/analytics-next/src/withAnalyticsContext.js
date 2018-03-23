@@ -1,21 +1,29 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+} from 'react';
 
 import AnalyticsContext from './AnalyticsContext';
 import type { ObjectType } from './types';
 
-type WithAnalyticsContextProps = ObjectType & {
+type WithAnalyticsContextProps = {
   analyticsContext?: ObjectType,
 };
 
-export default function withAnalyticsContext(
+export default function withAnalyticsContext<
+  Props: {},
+  PropsWithAnalyticsContext: Props & WithAnalyticsContextProps,
+  C: ComponentType<Props>,
+>(
   defaultData?: ObjectType = {},
 ): (
-  WrappedComponent: ComponentType<ObjectType>,
-) => ComponentType<WithAnalyticsContextProps> {
-  return (WrappedComponent: ComponentType<ObjectType>) =>
-    class WithAnalyticsContext extends Component<WithAnalyticsContextProps> {
+  WrappedComponent: C,
+) => ComponentType<ElementConfig<C> & PropsWithAnalyticsContext> {
+  return WrappedComponent =>
+    class WithAnalyticsContext extends Component<PropsWithAnalyticsContext> {
       static displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 
