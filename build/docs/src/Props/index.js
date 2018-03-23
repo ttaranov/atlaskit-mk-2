@@ -84,10 +84,10 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
       <code>
         <HeadingName>{props.name}</HeadingName>
         <HeadingType>{props.type}</HeadingType>
-        {props.defaultValue && (
+        {props.defaultValue !== undefined && (
           <HeadingDefault> = {props.defaultValue}</HeadingDefault>
         )}
-        {props.required && !props.defaultValue ? (
+        {props.required && props.defaultValue === undefined ? (
           <HeadingRequired> required</HeadingRequired>
         ) : null}
       </code>
