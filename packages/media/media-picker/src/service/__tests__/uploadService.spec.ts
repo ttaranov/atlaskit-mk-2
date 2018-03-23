@@ -8,8 +8,6 @@ import { UploadParams } from '../../domain/config';
 const createHasher = hasherCreatorModule.createHasher;
 const createHasherSpy = jest.spyOn(hasherCreatorModule, 'createHasher');
 let hasherHashSpy: jest.SpyInstance<Hasher['hash']>;
-// avoid polluting test logs with error message in console
-let consoleError = console.error;
 
 createHasherSpy.mockImplementation(() => {
   const hasher = createHasher();
@@ -32,11 +30,9 @@ describe('UploadService', () => {
 
   beforeEach(() => {
     hasherHashSpy.mockReset();
-    console.error = jest.fn();
   });
   afterEach(() => {
     hasherHashSpy.mockReset();
-    console.error = consoleError;
   });
 
   describe('setUploadParams', () => {

@@ -3,10 +3,7 @@ import sendUploadEventMiddleware from '../sendUploadEvent';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import { MediaError } from '../../../domain/error';
 
-let consoleError;
-
 describe('sendUploadEvent middleware', () => {
-  consoleError = console.error;
   const uploadId = 'some-upload-id';
   const file = {
     id: 'some-file-id',
@@ -186,9 +183,6 @@ describe('sendUploadEvent middleware', () => {
 
   it('should emit upload error event', () => {
     const { eventEmitter, store, next } = setup();
-    // avoid polluting test logs with error message in console
-
-    console.error = jest.fn();
     const error: MediaError = {
       name: 'upload_fail',
       description: 'some-description',
@@ -214,6 +208,5 @@ describe('sendUploadEvent middleware', () => {
       },
       error,
     );
-    console.error = consoleError;
   });
 });

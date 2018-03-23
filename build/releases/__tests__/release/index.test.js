@@ -8,8 +8,6 @@ const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
 const isRunningInPipelines = require('../../../utils/isRunningInPipelines');
 const logger = require('../../../utils/logger');
-// avoid polluting test logs with error message in console
-let consoleError = console.error;
 
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
@@ -89,12 +87,10 @@ describe('running release', () => {
     pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
     pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
     pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
-    console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    console.error = consoleError;
   });
 
   describe('in a simple project', () => {
