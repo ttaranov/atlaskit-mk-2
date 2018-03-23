@@ -1,9 +1,8 @@
 /* tslint:disable:variable-name */
-
 import styled from 'styled-components';
-
 import { HTMLAttributes, ComponentClass } from 'react';
-import { antialiased, ellipsis } from '../../../styles';
+import { antialiased } from '../../../styles';
+import { ellipsis } from '@atlaskit/media-ui';
 import {
   akGridSizeUnitless,
   akColorN70,

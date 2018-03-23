@@ -1,5 +1,5 @@
 import { CardDimensionValue } from '../';
-import { size } from '../styles';
+import { size } from '@atlaskit/media-ui';
 
 export type BreakpointSizeValue = 'small' | 'medium' | 'large' | 'xlarge';
 

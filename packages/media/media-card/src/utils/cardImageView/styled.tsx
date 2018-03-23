@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN20 } from '@atlaskit/util-shared-styles';
-import { Root, cardShadow, centerSelf, borderRadius, size } from '../../styles';
+import { Root, cardShadow, centerSelf } from '../../styles';
+import { borderRadius, size } from '@atlaskit/media-ui';
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   ${cardShadow} ${borderRadius} background: #fff;

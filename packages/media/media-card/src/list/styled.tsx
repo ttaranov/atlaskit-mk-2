@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
-import { size } from '../styles';
+import { size } from '@atlaskit/media-ui';
 
 const cardEntryAnimation = keyframes`
   0% {

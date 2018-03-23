@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN0, akColorN900 } from '@atlaskit/util-shared-styles';
-import { absolute, size } from '../../styles';
+import { absolute, size } from '@atlaskit/media-ui';
 import { colorWithAlpha } from '../colorWithAlpha';
 
 const bodyHeight = 26;
