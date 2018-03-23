@@ -5471,9 +5471,9 @@ extglob@^2.0.2:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-react-types@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.8.0.tgz#7c34bbf4a1d01c79f0d1f8b07a0b137da54b3fae"
+extract-react-types@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.8.1.tgz#0883ab26c41651e07c9c5154f1d09486ce54a891"
   dependencies:
     ast-pretty-print "^2.0.1"
     babel-core "7.0.0-alpha.19"
@@ -5754,9 +5754,9 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.63.0:
-  version "0.63.1"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.63.1.tgz#ab00067c197169a5fb5b4996c8f6927b06694828"
+flow-bin@^0.67.0:
+  version "0.67.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.67.1.tgz#eabb7197cce870ac9442cfd04251c7ddc30377db"
 
 flow-copy-source@^1.3.0:
   version "1.3.0"
