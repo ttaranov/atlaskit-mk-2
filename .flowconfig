@@ -5,6 +5,9 @@
 .*/website/dist/sandbox/.*
 .*/packages/elements/icon/es5/.*
 .*/node_modules/stylelint/.*
+.*/node_modules/babel-flow-types/.*
+.*/node_modules/babel-normalize-comments/.*
+.*/node_modules/extract-react-types/.*
 
 [include]
 
