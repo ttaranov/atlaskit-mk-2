@@ -73,7 +73,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     });
   }
 
-  componentWillUnmont() {
+  componentWillUnmount() {
     this.img.onload = null;
   }
 
