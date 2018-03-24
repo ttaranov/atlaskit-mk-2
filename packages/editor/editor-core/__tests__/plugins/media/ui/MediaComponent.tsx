@@ -91,7 +91,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     await resolvedMediaProvider.viewContext;
     mediaComponent.update();
 
-    expect(mediaComponent.find(CardView).length).toEqual(1);
+    expect(mediaComponent.find(Card).length).toEqual(1);
   });
 
   it('should render a CardView component if the media is a temporary file with provider', async () => {
@@ -169,7 +169,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     ) as Context;
     mediaComponent.setState({ linkCreateContext });
 
-    expect(mediaComponent.find(CardView).length).toEqual(1);
+    expect(mediaComponent.find(Card).length).toEqual(1);
   });
 
   /**
