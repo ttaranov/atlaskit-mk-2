@@ -96,7 +96,7 @@ class CategoryTracker {
     const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
     // Return first category if list not yet rendered
     // or the top row is above the first category
-    if (!list || rows[0] > startIndex) {
+    if (rows.length === 0 || !list || rows[0] > startIndex) {
       return this.rowToCategory.get(rows[0]);
     }
 
@@ -368,17 +368,23 @@ export default class EmojiPickerVirtualList extends PureComponent<
     this.allEmojiGroups = list.sort(titleComparator);
   };
 
-  private checkCategoryChange = indexes => {
-    const { startIndex } = indexes;
-
-    // Fix a rendering problem when scrolling to the top
-    if (startIndex === 0 && this.refs.root) {
+  private repaintList = () => {
+    if (this.refs.root) {
       const root = this.refs.root as HTMLDivElement;
       const display = root.style.display;
       root.style.display = 'none';
       // tslint:disable-next-line:no-unused-expression no-unused-variable we need to access offset to force repaint
       const offsetHeight = root.offsetHeight;
       root.style.display = display;
+    }
+  };
+
+  private checkCategoryChange = indexes => {
+    const { startIndex } = indexes;
+
+    // FS-1844 Fix a rendering problem when scrolling to the top
+    if (startIndex === 0) {
+      this.repaintList();
     }
 
     if (!this.props.query) {
