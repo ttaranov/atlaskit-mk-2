@@ -94,7 +94,9 @@ describe('ToggleStatelessWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<ToggleStatelessWithAnalytics isChecked />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

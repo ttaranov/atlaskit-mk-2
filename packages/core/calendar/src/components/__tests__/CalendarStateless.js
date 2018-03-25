@@ -92,7 +92,9 @@ describe('CalendarStatelessWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<CalendarStatelessWithAnalytics />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

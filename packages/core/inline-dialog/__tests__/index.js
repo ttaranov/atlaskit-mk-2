@@ -215,7 +215,9 @@ describe('InlineDialogWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<InlineDialogWithAnalytics />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

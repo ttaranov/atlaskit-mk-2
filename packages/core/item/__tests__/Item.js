@@ -501,7 +501,9 @@ describe('ItemWithAnalytics', () => {
         linkComponent={MyLinkComponent}
       />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

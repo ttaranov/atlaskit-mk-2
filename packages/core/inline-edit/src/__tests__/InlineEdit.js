@@ -344,7 +344,9 @@ describe('InlineEditStatelessWithAnalytics', () => {
         readView={readView}
       />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

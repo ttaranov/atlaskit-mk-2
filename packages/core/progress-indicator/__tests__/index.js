@@ -104,7 +104,9 @@ describe('ProgressDotsWithAnalytics', () => {
         values={['one', 'two', 'three', 'four', 'five']}
       />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

@@ -139,7 +139,9 @@ describe('AvatarWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<AvatarWithAnalytics />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

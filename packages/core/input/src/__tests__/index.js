@@ -51,7 +51,9 @@ describe('SingleLineTextInputWithAnalytics', () => {
         value={value}
       />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

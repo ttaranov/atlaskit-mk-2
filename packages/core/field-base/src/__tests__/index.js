@@ -313,7 +313,9 @@ describe('FieldBaseStatelessWithAnalytics', () => {
     mount(
       <FieldBaseStatelessWithAnalytics onFocus={onFocus} onBlur={onBlur} />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

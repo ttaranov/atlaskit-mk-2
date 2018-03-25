@@ -165,7 +165,9 @@ describe('PaginationWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<PaginationWithAnalytics total={0} value={0} />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
