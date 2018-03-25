@@ -70,14 +70,29 @@ const Collapse = ({ height, isCollapsed, innerRef, ...props }) => {
   );
 };
 
-class Toggle extends Component {
+type toggleProps = {
+  beforeCollapse: (boolean, () => mixed) => Node,
+  afterCollapse: (boolean, () => mixed) => Node,
+  beginClosed: boolean,
+  children: Node,
+};
+
+type toggleState = {
+  isCollapsed: boolean,
+  contentHeight: number,
+};
+
+class Toggle extends Component<toggleProps, toggleState> {
   static defaultProps = {
     beforeCollapse: () => null,
     afterCollapse: () => null,
     beginClosed: false,
+    children: null,
   };
 
-  constructor(props) {
+  content: ?HTMLElement;
+
+  constructor(props: toggleProps) {
     super(props);
 
     this.state = {
@@ -87,12 +102,12 @@ class Toggle extends Component {
   }
 
   componentDidMount() {
-    const contentHeight = this.content.scrollHeight;
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
     this.setState({ contentHeight });
   }
 
   componentWillReceiveProps(props) {
-    const contentHeight = this.content.scrollHeight;
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
     if (contentHeight !== this.state.contentHeight) {
       this.setState({ contentHeight });
     }
@@ -104,12 +119,12 @@ class Toggle extends Component {
   };
 
   toggleCollapse = () => {
-    const contentHeight = this.content.scrollHeight;
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
     this.setState({ contentHeight, isCollapsed: !this.state.isCollapsed });
   };
 
   render() {
-    let { type, beforeCollapse, children, afterCollapse } = this.props;
+    let { beforeCollapse, children, afterCollapse } = this.props;
     let { isCollapsed, contentHeight } = this.state;
 
     return (
