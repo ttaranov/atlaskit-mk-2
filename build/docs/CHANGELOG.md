@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 2.6.2
+- [patch] Update look and feel of collapsed props [e42d92e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e42d92e)
+
 ## 2.6.1
 - [patch] Props with default values are not marked as required [d00499f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d00499f)
 
