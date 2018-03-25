@@ -105,8 +105,10 @@ const mountTest = (j, root, analyticsConfig) => {
     it('should mount without errors', () => {
       ${attributeVarDeclarationStr}
       mount(${j(componentEl).toSource(toSourceOpts)});
+      /* eslint-disable no-console */
       expect(console.warn).not.toHaveBeenCalled();
       expect(console.error).not.toHaveBeenCalled();
+      /* eslint-enable no-console */
     });
   `);
 };
