@@ -1,6 +1,6 @@
 // Simple component which wraps stories and creates a styled list out of it
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
 const styles = {
   column: {
@@ -51,20 +51,25 @@ const styles = {
   },
 };
 
+export type StoryListItem = {
+  readonly title: string;
+  readonly content: ReactNode;
+};
+
 export interface StoryListProps {
-  display?: 'row' | 'column';
-  children?: any;
+  readonly display?: 'row' | 'column';
+  readonly children?: StoryListItem[];
 }
 
 export class StoryList extends Component<StoryListProps, {}> {
   render() {
-    const display = this.props.display ? this.props.display : 'row';
+    const { display = 'row', children = [] }: StoryListProps = this.props;
     const listStyles = display === 'column' ? styles.column : styles.row;
-    const listContent = this.props.children.map((c, i) => {
+    const listContent = children.map((child, index) => {
       return (
-        <li style={listStyles.stateItem} key={i}>
-          <div style={listStyles.stateTitle}>{c.title}</div>
-          {c.content}
+        <li style={listStyles.stateItem} key={index}>
+          <div style={listStyles.stateTitle}>{child.title}</div>
+          {child.content}
         </li>
       );
     });

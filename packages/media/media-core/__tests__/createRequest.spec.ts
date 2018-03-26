@@ -136,7 +136,7 @@ describe('createRequest()', () => {
   });
 
   describe('with responseType === image', () => {
-    let checkWebpSupportSpy;
+    let checkWebpSupportSpy: jest.SpyInstance<any>;
     const clientId = '1234';
 
     beforeEach(() => {

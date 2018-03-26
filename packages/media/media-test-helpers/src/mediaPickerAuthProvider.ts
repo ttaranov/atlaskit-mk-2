@@ -1,5 +1,10 @@
-const tokenCache = {};
-const accessUrns = {
+import { Component } from 'react';
+import { AuthContext } from '@atlaskit/media-core';
+
+type Access = { [resource: string]: string[] };
+
+const tokenCache: { [cacheKey: string]: any } = {};
+const accessUrns: { [key: string]: Access } = {
   MediaServicesSample: {
     'urn:filestore:collection:MediaServicesSample': ['read', 'insert'],
     'urn:filestore:chunk:*': ['create', 'read'],
@@ -15,8 +20,11 @@ const accessUrns = {
   },
 };
 
-export const mediaPickerAuthProvider = component => context => {
-  const collectionName = context && context.collectionName;
+export const mediaPickerAuthProvider = (component: Component<any, any>) => (
+  context?: AuthContext,
+) => {
+  const collectionName =
+    (context && context.collectionName) || 'MediaServicesSample';
   const authEnvironment =
     component.state.authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;

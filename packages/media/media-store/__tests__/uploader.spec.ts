@@ -68,7 +68,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -99,7 +99,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation((_file, _config, callbacks) => {
       callbacks.onProgress(0.1, [{ hash: 1 }, { hash: 2 }, { hash: 3 }]);
       callbacks.onProgress(0.2, [{ hash: 4 }, { hash: 5 }, { hash: 6 }]);
 
@@ -130,7 +130,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation((_file, _config, callbacks) => {
       callbacks.onProgress(0.1, [1, 2, 3]);
       callbacks.onProgress(0.2, [1, 2, 3]);
     });
@@ -149,7 +149,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -164,7 +164,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation(() => {
       return Promise.reject('some upload error');
     });
 
@@ -197,7 +197,7 @@ describe('Uploader', () => {
       },
     }));
 
-    ChunkinatorMock.mockImplementation((file, config, callbacks) => {
+    ChunkinatorMock.mockImplementation((_file, _config, callbacks) => {
       callbacks.onProgress(0.1, [1, 2, 3]);
       callbacks.onProgress(0.2, [1, 2, 3]);
 

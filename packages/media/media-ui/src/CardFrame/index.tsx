@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import {
   className,
   LinkWrapper,
@@ -26,7 +27,7 @@ export class CardFrame extends React.Component<CardFrameProps> {
     return !isPlaceholder && (Boolean(href) || Boolean(onClick));
   }
 
-  handleClick = event => {
+  handleClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick } = this.props;
     if (onClick) {
       event.preventDefault();
