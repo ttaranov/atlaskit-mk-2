@@ -94,25 +94,32 @@ class CategoryTracker {
     list: VirtualList,
   ): string | undefined {
     const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
+    if (rows.length === 0) {
+      return;
+    }
+
     // Return first category if list not yet rendered
     // or the top row is above the first category
-    if (rows.length === 0 || !list || rows[0] > startIndex) {
+    if (!list || rows[0] > startIndex) {
       return this.rowToCategory.get(rows[0]);
     }
 
     let bounds = [0, rows.length - 1];
     let index = Math.floor(rows.length / 2);
 
-    while (rows[index] !== startIndex && bounds[1] - bounds[0] > 1) {
+    while (rows[index] !== startIndex && bounds[0] < bounds[1]) {
       if (rows[index] > startIndex) {
-        bounds[1] = index;
+        bounds[1] = Math.max(index - 1, 0);
       } else {
-        bounds[0] = index;
+        bounds[0] = index + 1;
       }
       index = Math.floor((bounds[0] + bounds[1]) / 2);
     }
 
-    return this.rowToCategory.get(rows[index]);
+    const headerRow =
+      rows[rows[index] > startIndex ? Math.max(index - 1, 0) : index];
+
+    return this.rowToCategory.get(headerRow);
   }
 }
 
@@ -374,7 +381,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
       const display = root.style.display;
       root.style.display = 'none';
       // tslint:disable-next-line:no-unused-expression no-unused-variable we need to access offset to force repaint
-      const offsetHeight = root.offsetHeight;
+      root.offsetHeight;
       root.style.display = display;
     }
   };
