@@ -1,7 +1,7 @@
 import { MockResponse } from 'xhr-mock';
 import { ResponseData } from '.';
 
-export const dataURItoBlob = dataURI => {
+export const dataURItoBlob = (dataURI: string) => {
   // convert base64 to raw binary data held in a string
   const byteString = atob(dataURI.split(',')[1]);
 
@@ -28,5 +28,5 @@ export const dataURItoBlob = dataURI => {
 };
 
 export const fillInResponse = (res: MockResponse, data: ResponseData) => {
-  Object.keys(data).forEach((key: string) => res[key](data[key]));
+  Object.keys(data).forEach(key => (res as any)[key]((data as any)[key]));
 };

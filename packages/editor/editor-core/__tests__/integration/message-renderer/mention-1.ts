@@ -18,7 +18,7 @@ import {
 
 BrowserTestCase(
   'Mention: user can see mention inside blockquote',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

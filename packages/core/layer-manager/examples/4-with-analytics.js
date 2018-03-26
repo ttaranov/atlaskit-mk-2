@@ -1,27 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
   AnalyticsListener,
-  AnalyticsDecorator,
-  withAnalytics,
-} from '@atlaskit/analytics';
-import AKButton from '@atlaskit/button';
+  AnalyticsContext,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import Button from '@atlaskit/button';
 import Modal from '@atlaskit/modal-dialog';
 import LayerManager from '../src';
-import withContextFromProps from '../src/components/withContextFromProps';
 
 type State = {
   isModalOpen: boolean,
 };
-
-const Button = withAnalytics(AKButton, {
-  onClick: 'click',
-});
-
-const ContextProvider = withContextFromProps({
-  store: PropTypes.object,
-});
 
 export default class extends Component<{}, State> {
   state = {
@@ -40,47 +30,39 @@ export default class extends Component<{}, State> {
     });
   };
 
-  onEvent = (eventName: string, eventData: any) => {
-    console.log(eventName, eventData);
+  onEvent = (event: UIAnalyticsEvent) => {
+    console.log('Event payload', event.payload);
+    console.log('Event context', event.context);
   };
 
   render() {
     return (
       <LayerManager>
-        <ContextProvider store={{ some: 'value' }}>
-          <AnalyticsListener onEvent={this.onEvent}>
-            <div style={{ height: '100vh' }}>
+        <AnalyticsListener channel="atlaskit" onEvent={this.onEvent}>
+          <div style={{ height: '100vh' }}>
+            <p>
+              Since the Analytics-next package relies on the context to fire
+              events correctly, we&apos;re passing the analytics context down
+              through the portal so that it continues to work.
+            </p>
+            <AnalyticsContext data={{ isDecorated: true }}>
               <p>
-                <b>
-                  Open this example up full screen by clicking the monitor icon
-                  top right as nested modals don&apos;t work correctly at the
-                  moment.
-                </b>
+                <button onClick={this.openModal}>Open modal</button>
+                {this.state.isModalOpen && (
+                  <Modal
+                    actions={[{ text: 'OK', onClick: this.closeModal }]}
+                    onClose={this.closeModal}
+                    heading="Modal"
+                  >
+                    <Button analyticsContext={{ name: 'buttonInsidePortal' }}>
+                      Click me to fire an event
+                    </Button>
+                  </Modal>
+                )}
               </p>
-              <p>
-                Since the Analytics package relies on the context to fire events
-                correctly, we&apos;re passing the analytics context down through
-                the portal so that it continues to work.
-              </p>
-              <AnalyticsDecorator data={{ isDecorated: true }}>
-                <p>
-                  <button onClick={this.openModal}>Open modal</button>
-                  {this.state.isModalOpen && (
-                    <Modal
-                      actions={[{ text: 'OK', onClick: this.closeModal }]}
-                      onClose={this.closeModal}
-                      heading="Modal"
-                    >
-                      <Button analyticsId="insidePortal">
-                        Click me to fire an event
-                      </Button>
-                    </Modal>
-                  )}
-                </p>
-              </AnalyticsDecorator>
-            </div>
-          </AnalyticsListener>
-        </ContextProvider>
+            </AnalyticsContext>
+          </div>
+        </AnalyticsListener>
       </LayerManager>
     );
   }
