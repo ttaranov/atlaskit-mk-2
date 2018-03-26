@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 25.1.4
+
 ## 25.1.3
 - [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
 

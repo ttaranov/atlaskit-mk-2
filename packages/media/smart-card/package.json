@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -31,6 +31,5 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0"
-
   }
 }
