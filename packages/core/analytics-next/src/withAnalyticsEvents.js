@@ -28,7 +28,7 @@ type EventMap<ProvidedProps> = {
 };
 
 export default function withAnalyticsEvents<
-  Props: ObjectType,
+  Props: {},
   PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
 >(
   createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
