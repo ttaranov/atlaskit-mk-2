@@ -1,4 +1,7 @@
-const tokenCache = {};
+import { Auth, AuthContext } from '@atlaskit/media-core';
+
+const cachedAuths: { [key: string]: Promise<Auth> } = {};
+
 const accessUrns = {
   MediaServicesSample: {
     'urn:filestore:collection:MediaServicesSample': ['read', 'insert'],
@@ -15,37 +18,42 @@ const accessUrns = {
   },
 };
 
-export const mediaPickerAuthProvider = component => context => {
+const requestAuthProvider = async (
+  authEnvironment,
+  collectionName,
+): Promise<Auth> => {
+  const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
+  const body = JSON.stringify({
+    access: accessUrns[collectionName],
+  });
+  const headers = new Headers();
+
+  headers.append('Content-Type', 'application/json; charset=utf-8');
+  headers.append('Accept', 'text/plain, */*; q=0.01');
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body,
+    headers,
+    credentials: 'include',
+  });
+
+  return response.json();
+};
+
+export const mediaPickerAuthProvider = component => (context: AuthContext) => {
   const collectionName = context && context.collectionName;
   const authEnvironment =
     component.state.authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;
 
-  if (tokenCache[cacheKey]) {
-    return Promise.resolve(tokenCache[cacheKey]);
-  } else {
-    const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
-    const body = JSON.stringify({
-      access: accessUrns[collectionName],
-    });
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json; charset=utf-8');
-    headers.append('Accept', 'text/plain, */*; q=0.01');
-
-    return fetch(url, {
-      method: 'POST',
-      body,
-      headers,
-      credentials: 'include',
-    })
-      .then(r => r.json())
-      .then(data => {
-        tokenCache[cacheKey] = data;
-
-        return tokenCache[cacheKey];
-      });
+  if (!cachedAuths[cacheKey]) {
+    cachedAuths[cacheKey] = requestAuthProvider(
+      authEnvironment,
+      collectionName,
+    );
   }
+  return cachedAuths[cacheKey];
 };
 
 export const defaultMediaPickerAuthProvider = () => {

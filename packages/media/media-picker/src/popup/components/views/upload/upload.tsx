@@ -17,7 +17,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
-import { Browser } from '../../../..';
+import { Browser } from '../../../../components/browser';
 
 import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
@@ -37,7 +37,12 @@ import {
 } from '../../../domain';
 
 import { menuEdit } from '../editor/phrases';
-import { Wrapper, SpinnerWrapper } from './styled';
+import {
+  Wrapper,
+  SpinnerWrapper,
+  CardsWrapper,
+  RecentUploadsTitle,
+} from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -100,48 +105,46 @@ export class StatelessUploadView extends Component<
 
   render() {
     const { isLoading } = this.props;
+    const cards = this.cards();
+    const renderChunks: JSX.Element[] = [];
+    const isEmpty = !isLoading && cards.length === 0;
+
+    renderChunks.push(
+      <Dropzone
+        key="dropzone"
+        isEmpty={isEmpty}
+        mpBrowser={this.props.mpBrowser}
+      />,
+    );
 
     if (isLoading) {
-      return this.loadingView();
+      renderChunks.push(this.loadingView());
+    } else if (!isEmpty) {
+      renderChunks.push(this.recentView(cards));
     }
 
-    const cards = this.cards();
-
-    if (cards.length > 0) {
-      return this.recentView(cards);
-    } else {
-      return this.emptyView();
-    }
+    return <Wrapper>{renderChunks}</Wrapper>;
   }
 
   private loadingView = () => {
     return (
-      <SpinnerWrapper>
+      <SpinnerWrapper key="loadingView">
         <Spinner size="large" />
       </SpinnerWrapper>
     );
   };
 
-  private emptyView() {
-    return (
-      <Wrapper className="empty">
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-      </Wrapper>
-    );
-  }
-
   private recentView(cards: JSX.Element[]) {
     return (
-      <Wrapper>
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-        <div className="cards">
-          <div className="recentUploadsTitle">Recent Uploads</div>
+      <div key="recentView">
+        <CardsWrapper>
+          <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
           {cards}
-        </div>
+        </CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
           : null}
-      </Wrapper>
+      </div>
     );
   }
 
@@ -191,39 +194,48 @@ export class StatelessUploadView extends Component<
       const { dataURI } = file;
 
       const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
-      const metadata = { ...file.metadata, mimeType: mediaType };
-      const { id } = metadata;
+      const fileMetadata: LocalUploadFileMetadata = {
+        ...file.metadata,
+        mimeType: mediaType,
+      };
+
+      // mimeType
+      const { id } = fileMetadata;
 
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
-      const onClick = () => onFileClick(metadata, 'upload');
+      const onClick = () => onFileClick(fileMetadata, 'upload');
 
       const actions: CardAction[] = [];
       if (mediaType === 'image' && dataURI) {
         actions.push(
           createEditCardAction(
             this.onAnnotateActionClick(() =>
-              onEditorShowImage(metadata, dataURI),
+              onEditorShowImage(fileMetadata, dataURI),
             ),
           ),
         );
       }
 
+      const metadata: FileDetails = {
+        ...file.metadata,
+        mediaType,
+      };
+
       return (
-        <div className="cardWrapper" key={id}>
-          <CardView
-            status={status}
-            progress={progress || undefined}
-            mediaItemType={'file'}
-            metadata={metadata}
-            dimensions={cardDimension}
-            selectable={true}
-            selected={selected}
-            dataURI={dataURI}
-            onClick={onClick}
-            actions={actions}
-          />
-        </div>
+        <CardView
+          key={id}
+          status={status}
+          progress={progress || undefined}
+          mediaItemType={'file'}
+          metadata={metadata}
+          dimensions={cardDimension}
+          selectable={true}
+          selected={selected}
+          dataURI={dataURI}
+          onClick={onClick}
+          actions={actions}
+        />
       );
     });
   }
@@ -289,22 +301,22 @@ export class StatelessUploadView extends Component<
       }
 
       return (
-        <div className="cardWrapper" key={`${occurrenceKey}-${id}`}>
-          <Card
-            context={context}
-            identifier={{
-              mediaItemType: 'file',
-              id: id,
-              collectionName: recentsCollection,
-            }}
-            dimensions={cardDimension}
-            selectable={true}
-            selected={selected}
-            onClick={onClick}
-            actions={actions}
-            onLoadingChange={onLoadingChange}
-          />
-        </div>
+        <Card
+          key={`${occurrenceKey}-${id}`}
+          context={context}
+          identifier={{
+            mediaItemType: 'file',
+            id: id,
+            collectionName: recentsCollection,
+          }}
+          isLazy={false}
+          dimensions={cardDimension}
+          selectable={true}
+          selected={selected}
+          onClick={onClick}
+          actions={actions}
+          onLoadingChange={onLoadingChange}
+        />
       );
     });
   }
