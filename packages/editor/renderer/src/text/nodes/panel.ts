@@ -5,6 +5,5 @@ import { ReducedNode } from './';
 export default function panel(node: PMNode, schema: Schema): ReducedNode {
   return {
     content: reduceTree(node.content, schema),
-    text: `[${node.attrs.panelType}] `,
   };
 }

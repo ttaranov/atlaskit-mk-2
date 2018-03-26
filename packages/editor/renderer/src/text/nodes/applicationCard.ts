@@ -6,6 +6,6 @@ export default function applicationCard(
   schema: Schema,
 ): ReducedNode {
   return {
-    text: `| ${node.attrs.text || node.attrs.title.text}`,
+    text: `${node.attrs.text || node.attrs.title.text}`,
   };
 }

@@ -5,6 +5,6 @@ import { ReducedNode } from './';
 export default function listItem(node: PMNode, schema: Schema): ReducedNode {
   return {
     content: reduceTree(node.content, schema),
-    text: '* ',
+    text: '',
   };
 }

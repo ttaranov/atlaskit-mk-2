@@ -324,7 +324,7 @@ describe('Renderer - TextSerializer', () => {
       ],
     };
 
-    expect(render(doc)).to.equal('| applicationCard text');
+    expect(render(doc)).to.equal('applicationCard text');
   });
 
   it('should render blockquote text prefixed with "> "', () => {
@@ -487,7 +487,7 @@ describe('Renderer - TextSerializer', () => {
       ],
     };
 
-    expect(render(doc)).to.equal('* 1\n* 2');
+    expect(render(doc)).to.equal('1. 1\n2. 2');
   });
 
   [1, 2, 3, 4, 5, 6].forEach(level => {
@@ -550,30 +550,22 @@ describe('Renderer - TextSerializer', () => {
       ],
     };
 
-    expect(render(doc)).to.equal('[info] information');
+    expect(render(doc)).to.equal('information');
   });
 
-  it('should ignore tables', () => {
+  it('should render tables', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
         {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'foo' }],
-        },
-        {
           type: 'table',
           content: [],
-        },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'bar' }],
         },
       ],
     };
 
-    expect(render(doc)).to.equal('foo\nbar');
+    expect(render(doc)).to.equal('{table}');
   });
 
   it('should ignore empty paragraphs', () => {

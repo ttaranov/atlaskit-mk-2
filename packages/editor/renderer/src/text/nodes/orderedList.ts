@@ -5,7 +5,10 @@ import { ReducedNode } from './';
 export default function orderedList(node: PMNode, schema: Schema): ReducedNode {
   if (node.childCount) {
     return {
-      content: reduceTree(node.content, schema),
+      content: reduceTree(node.content, schema).map((n, i) => {
+        n.text = `${i + 1}. `;
+        return n;
+      }),
     };
   }
   return {};

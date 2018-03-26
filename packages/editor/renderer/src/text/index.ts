@@ -7,15 +7,15 @@ import { ReducedNode } from './nodes';
 
 const serializeTree = (node: ReducedNode): string => {
   if (node.content) {
-    return (
-      node.content!
-        // Filter out empty nodes
-        .filter(childNode => !!childNode.text || !!childNode.content)
-        .map(childNode => {
-          return (node.text || '') + serializeTree(childNode);
-        })
-        .join('\n')
-    );
+    return node.content!
+      .reduce((arr: string[], childNode) => {
+        if (!childNode.text && !childNode.content) {
+          return arr;
+        }
+        arr.push((node.text || '') + serializeTree(childNode));
+        return arr;
+      }, [])
+      .join('\n');
   }
 
   return node.text!;
