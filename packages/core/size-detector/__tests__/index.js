@@ -5,54 +5,58 @@ import SizeDetector from '../src';
 import { name } from '../package.json';
 
 describe(name, () => {
-  let rafStub;
-  let cafStub;
   const createChildWithSpy = spy => args => spy(args);
-  const noOp = () => <div />;
 
-  beforeEach(() => {
-    rafStub = jest
-      .spyOn(window, 'requestAnimationFrame')
-      .mockImplementation(handler => handler());
-    cafStub = jest.spyOn(window, 'cancelAnimationFrame');
+  beforeAll(() => {
+    requestAnimationFrame.reset();
   });
 
   afterEach(() => {
-    rafStub.mockReset();
-    rafStub.mockRestore();
-    cafStub.mockReset();
-    cafStub.mockRestore();
+    requestAnimationFrame.reset();
   });
 
   it('should pass width and height to child function', () => {
     const spy = jest.fn();
     mount(<SizeDetector>{createChildWithSpy(spy)}</SizeDetector>);
+    requestAnimationFrame.step();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({ height: 0, width: 0 });
   });
 
   it('should use requestAnimationFrame to queue resize measurements', () => {
-    mount(<SizeDetector>{noOp}</SizeDetector>);
-    expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
+    const spy = jest.fn();
+    mount(<SizeDetector>{createChildWithSpy(spy)}</SizeDetector>);
+    expect(spy).not.toHaveBeenCalled();
+    requestAnimationFrame.step();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call cancelAnimationFrame when unmounted', () => {
-    const wrapper = mount(<SizeDetector>{noOp}</SizeDetector>);
-    wrapper.unmount();
-    expect(window.cancelAnimationFrame).toHaveBeenCalledTimes(1);
-  });
-
-  // NOTE: enzyme doesn't fully mock object.contentDocument, so we cannot simulate
-  // a resize event in the normal way. Triggering the called function is the alternative.
-  it('should pass updated size measurements to the child function on resize', () => {
     const spy = jest.fn();
     const wrapper = mount(
       <SizeDetector>{createChildWithSpy(spy)}</SizeDetector>,
     );
+    // initial frame is queued
+    expect(spy).not.toHaveBeenCalled();
+    wrapper.unmount();
+    requestAnimationFrame.flush();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  // NOTE: enzyme doesn't fully mock object.contentDocument, so we cannot simulate
+  // a resize event in the normal way. Triggering the called function is the alternative.
+  it('should pass updated size measurements to the child function on resize after an animationFrame', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <SizeDetector>{createChildWithSpy(spy)}</SizeDetector>,
+    );
+    requestAnimationFrame.step();
     expect(spy).toHaveBeenCalledTimes(1);
     wrapper.instance().handleResize();
+    requestAnimationFrame.step();
     expect(spy).toHaveBeenCalledTimes(2);
     wrapper.instance().handleResize();
+    requestAnimationFrame.step();
     expect(spy).toHaveBeenCalledTimes(3);
   });
 
