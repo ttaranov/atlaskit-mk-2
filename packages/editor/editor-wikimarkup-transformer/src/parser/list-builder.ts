@@ -125,7 +125,7 @@ export default class ListBuilder {
         type,
         parent,
       };
-      parent.children.push(newList);
+      parent!.children.push(newList);
       this.lastList = list = newList;
     }
 
@@ -143,7 +143,7 @@ export default class ListBuilder {
   private createNest(depth: number, type: ListType) {
     while (depth-- > 0) {
       if (this.lastList.children.length === 0) {
-        const listItem = { parent: this.lastList };
+        const listItem = { parent: this.lastList, children: [] };
         this.lastList.children = [listItem];
       }
 

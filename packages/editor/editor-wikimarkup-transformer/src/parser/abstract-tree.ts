@@ -1,5 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import ListBuilder from './list-builder';
+import TableBuilder, { AddCellArgs } from './table-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
 import { findTextAndEmoji } from './text';
@@ -10,10 +11,25 @@ import {
 } from './intervals';
 import { isSpecialMacro } from './special';
 
+// E.g. bq. foo -> [ "foo" ]
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
+
+// E.g. h1. foo -> [ "1", "foo" ]
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
+
+// E.g. * foo -> [ "*", "foo" ]
+const LIST_REGEXP = /^\s*([*\-#]+)\s+(.+)/;
+
+// E.g. | foo -> [ "|" ] (line STARTS WITH table)
+const TABLE_REGEXP = /^\s*[|]+/;
+
+// E.g. || foo || bar -> [ "|| foo", "||", "foo" ] (invoke multiple times with .exec)
+const TABLE_CELL_REGEXP = /([|]+)([^|]*)/g;
+
+// E.g. foo || -> [ "foo ||", "foo " ] - Match content from a multiline row up to the cell line
+const NEWLINE_CELL_REGEXP = /^([^|]*)[|]/;
+
 const HORIZONTAL_RULE = '----';
-const LIST_REGEXP = /^([*|-]+)\s+(.+)/;
 const NEWLINE = '\n';
 const DOUBLE_BACKSLASH = '\\\\';
 
@@ -188,6 +204,10 @@ export default class AbstractTree {
     };
 
     // Flag if currently processing a list
+    // @TODO Handling to "close" a builder (table/list) as multiline is possible and won't match the regex...
+    // @TODO Generic isBuilding instead of a bunch of variables - update list builder to use a base class
+    let isProcessingTable: boolean = false;
+    let tableBuilder: TableBuilder | null = null;
     let isProcessingList: boolean = false;
     let listBuilder: ListBuilder | null = null;
     for (const line of lines) {
@@ -204,6 +224,14 @@ export default class AbstractTree {
       // empty line means the end of the paragraph
       if (!line.length) {
         processAndEmptyStoredText();
+
+        // @TODO Generic and/or move to processAndEmptyStoredText
+        if (isProcessingTable) {
+          output.push(tableBuilder!.buildPMNode());
+          isProcessingTable = false;
+          tableBuilder = null;
+        }
+
         continue;
       }
 
@@ -267,7 +295,32 @@ export default class AbstractTree {
         listBuilder = null;
       }
 
-      // TODO process tables
+      // TODO generic multiline builder
+      const tableMatches = lineUpdated.match(TABLE_REGEXP);
+      if (tableMatches) {
+        isProcessingTable = true;
+
+        if (!tableBuilder) {
+          tableBuilder = new TableBuilder(this.schema);
+        }
+
+        // Iterate over the cells
+        tableBuilder.add(this.getTableCells(lineUpdated));
+        continue;
+      }
+
+      // If it's not a match, but the last loop was a table, add it
+      if (isProcessingTable) {
+        // If it doesn't have a closing cell line, the whole line is part of the content
+        const content = lineUpdated.match(NEWLINE_CELL_REGEXP) || lineUpdated;
+        const contentNode = this.getTextWithMarks(content);
+
+        // Get the other cells if any
+        const cells = this.getTableCells(lineUpdated);
+        tableBuilder.add([{ style: null, content: contentNode }, ...cells]);
+        continue;
+      }
+
       // TODO process images/attachments
       // TODO process {color} macro
       // TODO process \\ hardBreak
@@ -281,9 +334,31 @@ export default class AbstractTree {
       output.push(listBuilder!.buildPMNode());
     }
 
+    // @TODO make generic and combine with list
+    // If the table was the last item, make sure to push it
+    if (isProcessingTable) {
+      output.push(tableBuilder!.buildPMNode());
+    }
+
     // there can be some text stored after processing
     processAndEmptyStoredText();
 
     return output;
+  }
+
+  /**
+   * Parse a line and split it into table cell args
+   * @param {string} line
+   * @returns {AddCellArgs[]}
+   */
+  private getTableCells(line: string): AddCellArgs[] {
+    let match;
+    const cells: AddCellArgs[] = [];
+    while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
+      const [, /* discard */ style, content] = match;
+      const contentNode = this.getTextWithMarks(content);
+      cells.push({ style, content: contentNode });
+    }
+    return cells;
   }
 }
