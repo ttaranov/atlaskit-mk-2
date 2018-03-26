@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaType, MediaItem } from '@atlaskit/media-core';
+import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel, ObjectUrl } from './domain';
+import { addAuthTokenToUrl } from './util';
 
 export type Props = {
   onClose?: () => void;
@@ -93,27 +94,13 @@ export class MediaViewer extends React.Component<Props, State> {
               }
             });
 
-            try {
-              // TODO:
-              // - 1) MSW-530: revoke object URL
-              // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
-              const objectUrl = await getImageObjectUrl(mediaItem, context);
-              this.setState({
-                previewData: {
-                  status: 'SUCCESSFUL',
-                  data: {
-                    viewer: 'IMAGE',
-                    objectUrl,
-                  }
-                }
-              });
-            } catch (err) {
-              this.setState({
-                previewData: {
-                  status: 'FAILED',
-                  err
-                }
-              });
+            switch (mediaItem.details.mediaType) {
+              case 'image':
+                return await handleImageEvent(mediaItem, context, this.setState.bind(this));
+              case 'video':
+                return await handleVideoEvent(mediaItem, context, this.setState.bind(this), collectionName);
+              default:
+                throw new Error('not implemented');
             }
           }
         }
@@ -140,14 +127,72 @@ export class MediaViewer extends React.Component<Props, State> {
   }
 }
 
+async function handleVideoEvent(fileItem: FileItem, context: Context, setState: (args: Object) => void, collectionName?: string) {
+  const videoArtifactUrl = getVideoArtifactUrl(fileItem, true); // HD for now.
+  if (videoArtifactUrl) {
+    const objectUrl = await addAuthTokenToUrl(videoArtifactUrl, context, collectionName);
+    setState({
+      previewData: {
+        status: 'SUCCESSFUL',
+        data: {
+          viewer: 'VIDEO',
+          objectUrl
+        }
+      }
+    });
+  } else {
+    setState({
+      previewData: {
+        status: 'FAILED',
+        err: new Error('no video artifacts found for this file')
+      }
+    });
+  }
+}
+
+function getVideoArtifactUrl(fileItem: FileItem, hd: boolean) {
+  const artifact = hd ? 'video_640.mp4' : 'video_1280.mp4';
+  return fileItem.details
+    && fileItem.details.artifacts
+    && fileItem.details.artifacts[artifact]
+    && fileItem.details.artifacts[artifact].url;
+}
+
+async function handleImageEvent(fileItem: MediaItem, context: Context, setState: (args: Object) => void) {
+  try {
+    // TODO:
+    // - 1) MSW-530: revoke object URL
+    // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
+    const objectUrl = await getImageObjectUrl(fileItem, context, 800, 600);
+    setState({
+      previewData: {
+        status: 'SUCCESSFUL',
+        data: {
+          viewer: 'IMAGE',
+          objectUrl,
+        }
+      }
+    });
+  } catch (err) {
+    setState({
+      previewData: {
+        status: 'FAILED',
+        err
+      }
+    });
+  }
+}
+
 async function getImageObjectUrl(
   mediaItem: MediaItem,
   context: Context,
+  width,
+  height
 ): Promise<ObjectUrl> {
   const service = context.getBlobService();
   const blob = await service.fetchImageBlob(mediaItem, {
-    width: 800,
-    height: 600,
+    width,
+    height,
     mode: 'fit',
     allowAnimated: true,
   });

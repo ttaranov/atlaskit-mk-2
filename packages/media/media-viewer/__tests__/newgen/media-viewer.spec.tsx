@@ -64,6 +64,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image'
       },
     };
     const { subject, el } = createFixture(identifier);
@@ -84,6 +85,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'failed',
+        mediaType: 'image'
       },
     };
     const { subject, el } = createFixture(identifier);
@@ -134,6 +136,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image'
       },
     };
     const { subject, el } = createFixture(identifier);
@@ -154,6 +157,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image'
       },
     };
     const { blobService, subject, el } = createFixture(identifier);
@@ -217,6 +221,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image'
       },
     };
 

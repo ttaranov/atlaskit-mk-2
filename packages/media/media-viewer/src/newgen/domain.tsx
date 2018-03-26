@@ -29,6 +29,9 @@ export type ObjectUrl = string;
 export type FilePreview = {
   viewer: 'IMAGE';
   objectUrl: ObjectUrl;
+} | {
+  viewer: 'VIDEO',
+  objectUrl: ObjectUrl;
 };
 
 export type Model = {

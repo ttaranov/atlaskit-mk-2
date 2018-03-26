@@ -4,40 +4,52 @@ import { MediaItemType } from '@atlaskit/media-core';
 import {
   createStorybookContext,
   imageFileId,
+  videoFileId,
+  defaultCollectionName
 } from '@atlaskit/media-test-helpers';
-import { MediaViewer } from '../src/index';
+import { MediaViewer, MediaViewerItem } from '../src/index';
 
 const context = createStorybookContext();
-const selectedItem = {
+
+const imageItem = {
   type: 'file' as MediaItemType,
   id: imageFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
-const dataSource = { list: [selectedItem] };
+
+const videoItem = {
+  type: 'file' as MediaItemType,
+  id: videoFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
 
 export type State = {
-  isOpen: boolean;
+  selectedItem?: MediaViewerItem;
 };
 
 export default class Example extends React.Component<{}, State> {
-  state: State = { isOpen: false };
+  state: State = { selectedItem: undefined };
 
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ isOpen: true })}>
+        <Button onClick={() => this.setState({ selectedItem: imageItem })}>
           Preview an image item
         </Button>
-        {this.state.isOpen && (
+        <Button onClick={() => this.setState({ selectedItem: videoItem })}>
+          Preview a video item
+        </Button>
+
+        {this.state.selectedItem && (
           <MediaViewer
             featureFlags={{ nextGen: true }}
             MediaViewer={null as any}
             basePath={null as any}
             context={context}
-            selectedItem={selectedItem}
-            dataSource={dataSource}
-            collectionName={imageFileId.collectionName}
-            onClose={() => this.setState({ isOpen: false })}
+            selectedItem={this.state.selectedItem}
+            dataSource={{ list: [this.state.selectedItem] }}
+            collectionName={defaultCollectionName}
+            onClose={() => this.setState({ selectedItem: undefined })}
           />
         )}
       </div>
