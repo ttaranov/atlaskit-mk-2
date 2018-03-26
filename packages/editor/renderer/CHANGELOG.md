@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 13.0.9
+- [patch] Change Media Group resize mode to full-fit from crop [05575db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05575db)
+
 ## 13.0.8
 
 ## 13.0.7

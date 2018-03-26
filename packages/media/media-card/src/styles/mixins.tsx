@@ -3,34 +3,8 @@ import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { CardAppearance } from '../index';
 import { defaultTransitionDuration } from './config';
 
-export const ellipsis = (maxWidth: string | number = '100%') => {
-  const unit = typeof maxWidth === 'number' ? 'px' : '';
-
-  return `
-    max-width: ${maxWidth}${unit};
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  `;
-};
-
-export const size = (value: string | number = '100%') => {
-  const unit = typeof value === 'number' ? 'px' : '';
-
-  return `
-    width: ${value}${unit};
-    height: ${value}${unit};
-  `;
-};
-
 export const centerX = `
   display: flex;
-  justify-content: center;
-`;
-
-export const center = `
-  display: flex;
-  align-items: center;
   justify-content: center;
 `;
 
@@ -58,18 +32,9 @@ export const centerSelf = `
   transform: translate(-50%, -50%);
 `;
 
-export const borderRadius = `
-  border-radius: ${akBorderRadius};
-`;
-
 export const borderRadiusLeft = `
   border-top-left-radius: ${akBorderRadius};
   border-bottom-left-radius: ${akBorderRadius};
-`;
-
-export const borderRadiusBottom = `
-  border-bottom-left-radius: ${akBorderRadius};
-  border-bottom-right-radius: ${akBorderRadius};
 `;
 
 export const spaceAround = `
@@ -100,17 +65,11 @@ export const capitalize = `
   }
 `;
 
-export const absolute = (top = 0, left = 0) => `
-  position: absolute;
-  top: ${top}px;
-  left: ${left}px;
-`;
 export interface WithAppearanceProps {
   appearance?: CardAppearance;
 }
+
 export const withAppearance = (
   styleMap: { [key in CardAppearance]?: string },
 ) => ({ appearance }: WithAppearanceProps) =>
   (appearance && styleMap[appearance]) || '';
-
-export default ellipsis;

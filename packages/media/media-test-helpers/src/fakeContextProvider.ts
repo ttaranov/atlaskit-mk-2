@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Context } from '@atlaskit/media-core';
 
-export const fakeContext = (stubbedContext = {}): Context => {
+export const fakeContext = (stubbedContext: any = {}): Context => {
   const getMediaItemProvider = sinon
     .stub()
     .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
@@ -45,7 +45,7 @@ export const fakeContext = (stubbedContext = {}): Context => {
     },
   };
 
-  const wrappedStubbedContext = {};
+  const wrappedStubbedContext: any = {};
   Object.keys(stubbedContext).forEach(methodName => {
     wrappedStubbedContext[methodName] = sinon
       .stub()

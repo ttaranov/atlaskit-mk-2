@@ -38,17 +38,10 @@ export class CollectionServiceStub {
     const pages = numbers(pageCount).map(n =>
       this.getCollectionItems(n, pageSize, n >= pageCount - 1),
     );
-    const nextInclusiveStartKey = index =>
+    const nextInclusiveStartKey = (index: number) =>
       index === 0 ? undefined : `page-${index + 1}`;
 
-    numbers(pageCount).reduce(
-      (previousValue, currentValue, currentIndex, array) => {
-        return [];
-      },
-      new Array<RemoteCollectionItemsResponse>(),
-    );
-
-    pages.forEach((page, index) =>
+    pages.forEach((_, index) =>
       stub
         .withArgs(
           collectionName,

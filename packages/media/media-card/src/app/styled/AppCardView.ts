@@ -12,7 +12,8 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 import { colorWithAlpha } from '../../utils/colorWithAlpha';
-import { borderRadius, cardShadow } from '../../styles';
+import { cardShadow } from '../../styles';
+import { borderRadius } from '@atlaskit/media-ui';
 
 const previewWidth = 116;
 

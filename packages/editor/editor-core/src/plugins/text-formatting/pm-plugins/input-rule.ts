@@ -237,7 +237,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
     ...createReplacementRules(
       {
-        '—': /()(--)(\s)$/,
+        '–': /()(--)(\s)$/,
         '…': /()(\.\.\.)$/,
       },
       'typography',

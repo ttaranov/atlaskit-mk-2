@@ -42,7 +42,7 @@ export function mapResponseToJson(response: Response): Promise<any> {
   return response.json();
 }
 
-export function mapResponseToVoid(response: Response): Promise<void> {
+export function mapResponseToVoid(_response: Response): Promise<void> {
   return Promise.resolve();
 }
 

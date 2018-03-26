@@ -1,8 +1,10 @@
+import * as React from 'react';
 import { Auth, AuthContext } from '@atlaskit/media-core';
 
 const cachedAuths: { [key: string]: Promise<Auth> } = {};
 
-const accessUrns = {
+type Access = { [resource: string]: string[] };
+const accessUrns: { [key: string]: Access } = {
   MediaServicesSample: {
     'urn:filestore:collection:MediaServicesSample': ['read', 'insert'],
     'urn:filestore:chunk:*': ['create', 'read'],
@@ -19,8 +21,8 @@ const accessUrns = {
 };
 
 const requestAuthProvider = async (
-  authEnvironment,
-  collectionName,
+  authEnvironment: string,
+  collectionName: string,
 ): Promise<Auth> => {
   const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
   const body = JSON.stringify({
@@ -41,8 +43,11 @@ const requestAuthProvider = async (
   return response.json();
 };
 
-export const mediaPickerAuthProvider = component => (context: AuthContext) => {
-  const collectionName = context && context.collectionName;
+export const mediaPickerAuthProvider = (
+  component: React.Component<any, any>,
+) => (context: AuthContext) => {
+  const collectionName =
+    (context && context.collectionName) || 'MediaServicesSample';
   const authEnvironment =
     component.state.authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;

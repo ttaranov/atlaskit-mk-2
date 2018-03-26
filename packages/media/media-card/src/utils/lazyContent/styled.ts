@@ -1,9 +1,7 @@
 import LazilyRender, { LazilyRenderProps } from 'react-lazily-render';
-
 import styled from 'styled-components';
-
 import { HTMLAttributes, ComponentClass } from 'react';
-import { size } from '../../styles';
+import { size } from '@atlaskit/media-ui';
 
 // necessary because `styled(Component)` uses the props 😭
 export type LazilyRenderProps = LazilyRenderProps;

@@ -113,4 +113,6 @@ export const getFile = (context: () => MockContext) => (
 
     return res;
   }
+
+  return undefined;
 };

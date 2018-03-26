@@ -1,6 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement, editors, editable } from '../_helpers';
+import { editors, editable } from '../_helpers';
 
 const changeFormatting = '[aria-label="Change formatting"]';
 const input = 'helloworld';
@@ -28,24 +28,3 @@ const validateFormat = async (browser, heading) => {
   await browser.click(`span=Heading ${heading}`);
   await browser.waitForSelector(`h${heading}`);
 };
-
-editors.forEach(editor => {
-  BrowserTestCase(
-    `Toolbar: should be able to select Italic on toolbar for ${
-      editor.name
-    } editor`,
-    async client => {
-      const italic = '[aria-label="Italic"]';
-      const browser = await new Page(client);
-      await browser.goto(editor.path);
-      await browser.waitForSelector(editor.placeholder);
-      await browser.click(editor.placeholder);
-      await browser.waitForSelector(italic);
-      await browser.click(italic);
-      await browser.type(editable, input);
-      await browser.waitForSelector('em');
-      const doc = await browser.$eval(editable, getDocFromElement);
-      expect(doc).toMatchDocSnapshot();
-    },
-  );
-});

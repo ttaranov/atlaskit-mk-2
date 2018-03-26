@@ -9,7 +9,8 @@ import {
   akColorB50,
 } from '@atlaskit/util-shared-styles';
 import { CardAppearance } from '../index';
-import { Root, borderRadius, withAppearance } from '../styles';
+import { Root, withAppearance } from '../styles';
+import { borderRadius } from '@atlaskit/media-ui';
 import { getCSSBoundaries } from '../utils/cardDimensions';
 
 export interface WrapperProps {
