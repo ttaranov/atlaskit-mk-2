@@ -14,7 +14,7 @@ import {
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-export class FieldTextStateless extends Component<FieldTextProps, void> {
+class FieldTextStateless extends Component<FieldTextProps, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -75,6 +75,8 @@ export class FieldTextStateless extends Component<FieldTextProps, void> {
     );
   }
 }
+
+export { FieldTextStateless as FieldTextStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

@@ -3,7 +3,6 @@ import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
@@ -43,7 +42,7 @@ type State = {
   hasOverflow: boolean,
 };
 
-export class BreadcrumbsItem extends Component<Props, State> {
+class BreadcrumbsItem extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   button: ?HTMLButtonElement;
 
@@ -152,6 +151,8 @@ export class BreadcrumbsItem extends Component<Props, State> {
     );
   }
 }
+
+export { BreadcrumbsItem as BreadcrumbsItemBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

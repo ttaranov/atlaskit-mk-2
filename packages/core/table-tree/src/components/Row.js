@@ -47,7 +47,7 @@ type Props = {
   data?: RowData,
 };
 
-export class Row extends PureComponent<Props> {
+class Row extends PureComponent<Props> {
   componentWillUpdate(nextProps: Props) {
     const isExpandChanged =
       Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);
@@ -105,6 +105,8 @@ export class Row extends PureComponent<Props> {
     );
   }
 }
+
+export { Row as RowBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

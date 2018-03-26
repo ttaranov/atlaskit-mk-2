@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import type { GroupType } from '../src/types';
 
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 
 import { name } from '../package.json';
 
@@ -29,7 +29,7 @@ describe(`${name} - stateless`, () => {
     it('should call onRemoved when an item is removed', () => {
       const spy = jest.fn();
       const select = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           items={selectItems}
           isOpen
           onRemoved={spy}

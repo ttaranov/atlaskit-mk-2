@@ -141,7 +141,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-export class MultiSelectStateless extends PureComponent<Props, State> {
+class MultiSelectStateless extends PureComponent<Props, State> {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -579,6 +579,8 @@ export class MultiSelectStateless extends PureComponent<Props, State> {
     );
   }
 }
+
+export { MultiSelectStateless as MultiSelectStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

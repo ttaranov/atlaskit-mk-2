@@ -1,21 +1,11 @@
 // @flow
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
-
-import {
-  name,
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+import { name } from '../package.json';
 
 import MultiSelectStatelessWithAnalytics, {
-  MultiSelectStateless,
+  MultiSelectStatelessBase,
 } from '../src/components/Stateless';
 
 describe(`${name} - stateless`, () => {
@@ -31,7 +21,7 @@ describe(`${name} - stateless`, () => {
   describe('behavior', () => {
     let select;
     beforeEach(() => {
-      select = mount(<MultiSelectStateless />);
+      select = mount(<MultiSelectStatelessBase />);
     });
 
     describe('focus', () => {

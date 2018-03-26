@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import { Flag } from '../src/components/Flag';
+import { FlagBase } from '../src/components/Flag';
 import Actions from '../src/components/FlagActions';
 import { Action } from '../src/components/FlagActions/styledFlagActions';
 
 describe('actions prop', () => {
   const generateFlag = extraProps => (
-    <Flag id="" icon={<div />} title="Flag" {...extraProps} />
+    <FlagBase id="" icon={<div />} title="Flag" {...extraProps} />
   );
   let flag;
   let actionSpy;

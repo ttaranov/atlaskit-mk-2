@@ -53,7 +53,7 @@ type Props = {
   onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
-export class SingleLineTextInput extends Component<Props, {}> {
+class SingleLineTextInput extends Component<Props, {}> {
   static defaultProps = {
     style: {},
     isInitiallySelected: false,
@@ -126,6 +126,8 @@ export class SingleLineTextInput extends Component<Props, {}> {
     return this.props.isEditing ? this.renderEditView() : this.renderReadView();
   }
 }
+
+export { SingleLineTextInput as SingleLineTextInputBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

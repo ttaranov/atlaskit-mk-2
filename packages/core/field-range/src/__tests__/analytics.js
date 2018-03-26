@@ -1,6 +1,4 @@
 // @flow
-import { mount } from 'enzyme';
-import React from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -10,7 +8,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
-import { FieldRange } from '../FieldRange';
+import '../FieldRange';
 
 // This is a global mock for this file that will mock all components wrapped with analytics
 // and replace them with an empty SFC that returns null. This includes components imported

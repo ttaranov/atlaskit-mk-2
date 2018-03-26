@@ -4,7 +4,6 @@ import React from 'react';
 import Droplist from '@atlaskit/droplist';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {

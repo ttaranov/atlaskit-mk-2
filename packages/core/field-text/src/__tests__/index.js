@@ -7,7 +7,7 @@ import FieldText from '../../src';
 import Input from '../../src/styled/Input';
 
 import FieldTextStatelessWithAnalytics, {
-  FieldTextStateless,
+  FieldTextStatelessBase,
 } from '../FieldTextStateless';
 
 describe('FieldTextStateless', () => {
@@ -22,7 +22,7 @@ describe('FieldTextStateless', () => {
   });
 
   it('defaults', () => {
-    const wrapper = shallow(<FieldTextStateless label="" />);
+    const wrapper = shallow(<FieldTextStatelessBase label="" />);
     expect(wrapper.find(Base).length).toBe(1);
     expect(wrapper.find(Input).length).toBe(1);
   });
@@ -31,7 +31,7 @@ describe('FieldTextStateless', () => {
     describe('compact prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" compact />)
+          shallow(<FieldTextStatelessBase label="" compact />)
             .find(Base)
             .props().isCompact,
         ).toBe(true);
@@ -41,7 +41,7 @@ describe('FieldTextStateless', () => {
     describe('disabled prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" disabled />)
+          shallow(<FieldTextStatelessBase label="" disabled />)
             .find(Base)
             .props().isDisabled,
         ).toBe(true);
@@ -89,7 +89,7 @@ describe('FieldTextStateless', () => {
     describe('required prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" required />)
+          shallow(<FieldTextStatelessBase label="" required />)
             .find(Base)
             .props().isRequired,
         ).toBe(true);
@@ -99,7 +99,7 @@ describe('FieldTextStateless', () => {
     describe('isInvalid prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" isInvalid />)
+          shallow(<FieldTextStatelessBase label="" isInvalid />)
             .find(Base)
             .props().isInvalid,
         ).toBe(true);
@@ -109,7 +109,7 @@ describe('FieldTextStateless', () => {
     describe('spellCheck prop', () => {
       it('should render an input with a spellCheck prop', () => {
         expect(
-          shallow(<FieldTextStateless label="" isSpellCheckEnabled />)
+          shallow(<FieldTextStatelessBase label="" isSpellCheckEnabled />)
             .find(Input)
             .props().spellCheck,
         ).toBe(true);
@@ -119,7 +119,7 @@ describe('FieldTextStateless', () => {
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" invalidMessage="test" />)
+          shallow(<FieldTextStatelessBase label="" invalidMessage="test" />)
             .find(Base)
             .props().invalidMessage,
         ).toBe('test');
@@ -141,7 +141,7 @@ describe('FieldTextStateless', () => {
         pattern: '/.+/',
       };
       expect(
-        shallow(<FieldTextStateless label="" {...props} />)
+        shallow(<FieldTextStatelessBase label="" {...props} />)
           .find(Input)
           .props(),
       ).toEqual(expect.objectContaining(props));
@@ -159,7 +159,7 @@ describe('FieldTextStateless', () => {
         it(inputEvent, () => {
           const eventSpy = jest.fn();
           const wrapper = shallow(
-            <FieldTextStateless label="" {...{ [inputEvent]: eventSpy }} />,
+            <FieldTextStatelessBase label="" {...{ [inputEvent]: eventSpy }} />,
           );
           const input = wrapper.find(Input);
           expect(input.prop(inputEvent)).toBe(eventSpy);
@@ -174,14 +174,14 @@ describe('FieldTextStateless', () => {
 
     it('Input should have value="something"', () =>
       expect(
-        shallow(<FieldTextStateless label="" value="something" />)
+        shallow(<FieldTextStatelessBase label="" value="something" />)
           .find(Input)
           .prop('value'),
       ).toBe('something'));
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextStateless label="" onChange={spy} />);
+      const wrapper = mount(<FieldTextStatelessBase label="" onChange={spy} />);
       wrapper.find(Input).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

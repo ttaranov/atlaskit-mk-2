@@ -145,7 +145,7 @@ type State = {
   droplistWidth?: number,
 };
 
-export class StatelessSelect extends PureComponent<Props, State> {
+class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;
@@ -678,6 +678,8 @@ export class StatelessSelect extends PureComponent<Props, State> {
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
+
+export { StatelessSelect as StatelessSelectBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

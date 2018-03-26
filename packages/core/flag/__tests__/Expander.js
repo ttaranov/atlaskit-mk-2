@@ -7,12 +7,12 @@ import {
   DismissButton,
   Title,
 } from '../src/components/Flag/styledFlag';
-import { Flag } from '../src/components/Flag';
+import { FlagBase } from '../src/components/Flag';
 import ExpanderInternal from '../src/components/Expander/styledExpander';
 
 describe('Flag Expander', () => {
   const generateFlag = extraProps => (
-    <Flag id="" icon={<div />} title="Flag" {...extraProps} />
+    <FlagBase id="" icon={<div />} title="Flag" {...extraProps} />
   );
   let flag;
   beforeEach(() => {

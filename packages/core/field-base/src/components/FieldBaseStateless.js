@@ -14,7 +14,7 @@ import { Content, ContentWrapper, ChildWrapper } from '../styled/Content';
 import ValidationElement from './ValidationElement';
 import type { FieldBaseStatelessProps } from '../types';
 
-export class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
+class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
   static defaultProps = {
     appearance: 'standard',
     invalidMessage: '',
@@ -110,6 +110,8 @@ export class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
     );
   }
 }
+
+export { FieldBaseStateless as FieldBaseStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

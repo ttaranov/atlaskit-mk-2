@@ -2,17 +2,8 @@
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  AnalyticsListener,
-  AnalyticsContext,
-  UIAnalyticsEvent,
-} from '@atlaskit/analytics-next';
 import Droplist from '@atlaskit/droplist';
 
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
 import DropdownMenuStatelessWithAnalytics, {
   DropdownMenuStateless,
 } from '../src/components/DropdownMenuStateless';

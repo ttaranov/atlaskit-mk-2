@@ -30,7 +30,7 @@ type Props = {
   children?: Node,
 };
 
-export class BreadcrumbsStateless extends Component<Props, {}> {
+class BreadcrumbsStateless extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -73,6 +73,8 @@ export class BreadcrumbsStateless extends Component<Props, {}> {
     );
   }
 }
+
+export { BreadcrumbsStateless as BreadcrumbsStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

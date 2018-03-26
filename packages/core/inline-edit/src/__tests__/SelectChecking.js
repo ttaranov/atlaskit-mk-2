@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
-import InlineEditStateless from '../../src/InlineEditStateless';
+import { InlineEditStatelessBase } from '../../src/InlineEditStateless';
 
 const mouseEvent = (eventName, wrapper, clientX, clientY) =>
   wrapper.simulate(eventName, { clientX, clientY });
@@ -28,7 +28,7 @@ describe('@atlaskit/inline-edit', () => {
     const spy = jest.fn();
 
     const wrapper = mount(
-      <InlineEditStateless {...props} onEditRequested={spy} />,
+      <InlineEditStatelessBase {...props} onEditRequested={spy} />,
     );
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 0, 0);
@@ -38,7 +38,7 @@ describe('@atlaskit/inline-edit', () => {
     const spy = jest.fn();
 
     const wrapper = mount(
-      <InlineEditStateless {...props} onEditRequested={spy} />,
+      <InlineEditStatelessBase {...props} onEditRequested={spy} />,
     );
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 0, 4);
@@ -48,7 +48,7 @@ describe('@atlaskit/inline-edit', () => {
     const spy = jest.fn();
 
     const wrapper = mount(
-      <InlineEditStateless {...props} onEditRequested={spy} />,
+      <InlineEditStatelessBase {...props} onEditRequested={spy} />,
     );
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 4, 0);
@@ -58,7 +58,7 @@ describe('@atlaskit/inline-edit', () => {
     const spy = jest.fn();
 
     const wrapper = mount(
-      <InlineEditStateless {...props} onEditRequested={spy} />,
+      <InlineEditStatelessBase {...props} onEditRequested={spy} />,
     );
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 5, 0);
@@ -68,7 +68,7 @@ describe('@atlaskit/inline-edit', () => {
     const spy = jest.fn();
 
     const wrapper = mount(
-      <InlineEditStateless {...props} onEditRequested={spy} />,
+      <InlineEditStatelessBase {...props} onEditRequested={spy} />,
     );
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 0, 5);

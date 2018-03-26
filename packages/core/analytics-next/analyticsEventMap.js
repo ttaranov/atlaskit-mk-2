@@ -236,7 +236,8 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     props: {
       onChange: 'change',
     },
-    componentTestPath: 'field-range/src/__test__/fieldRangeSpec.js',
+    componentTestPath: 'field-range/src/__tests__/fieldRangeSpec.js',
+    needsMountTest: true,
   },
   {
     path: 'field-text-area/src/FieldTextAreaStateless.js',
@@ -415,6 +416,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onKeyDown: 'keydown',
     },
     componentTestPath: 'select/src/__tests__/Select.js',
+    needsMountTest: true,
   },
   {
     path: 'single-select/src/components/StatelessSelect.js',

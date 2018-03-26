@@ -4,14 +4,13 @@ import React from 'react';
 import Button from '@atlaskit/button';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
   version as packageVersion,
 } from '../package.json';
-import { BreadcrumbsItem } from '../src/components/BreadcrumbsItem';
+import { BreadcrumbsItemBase } from '../src/components/BreadcrumbsItem';
 
 // This is a global mock for this file that will mock all components wrapped with analytics
 // and replace them with an empty SFC that returns null. This includes components imported
@@ -24,7 +23,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 
 describe('BreadcrumbsItem', () => {
   it('should override the existing analytics context of Button', () => {
-    const wrapper = mount(<BreadcrumbsItem text="arbitrary" />);
+    const wrapper = mount(<BreadcrumbsItemBase text="arbitrary" />);
 
     expect(wrapper.find(Button).prop('analyticsContext')).toEqual({
       component: 'breadcrumbs-item',

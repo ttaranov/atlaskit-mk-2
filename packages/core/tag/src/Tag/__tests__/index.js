@@ -255,7 +255,6 @@ describe('Tag component', () => {
 describe('TagWithAnalytics', () => {
   const atlassianHref = 'https://www.atlassian.com';
   const atlassianText = 'Atlassian';
-  const bitbucketHref = 'https://bitbucket.org';
   const testProps = {
     text: atlassianText,
     href: atlassianHref,
@@ -273,7 +272,9 @@ describe('TagWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<TagWithAnalytics {...testProps} />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

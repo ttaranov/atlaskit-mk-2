@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 import type { GroupType } from '../src/types';
 import { name } from '../package.json';
 
@@ -32,7 +32,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           isOpen
           id="testId"
           name="testName"

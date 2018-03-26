@@ -217,7 +217,7 @@ class Spotlight extends Component<Props> {
   }
 }
 
-const SpotlightWithoutAnalytics = withScrollMeasurements(
+export const SpotlightBase = withScrollMeasurements(
   withRenderTarget(
     {
       target: 'spotlight',
@@ -227,8 +227,6 @@ const SpotlightWithoutAnalytics = withScrollMeasurements(
     Spotlight,
   ),
 );
-
-export { SpotlightWithoutAnalytics as Spotlight };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
@@ -241,5 +239,5 @@ export default withAnalyticsContext({
     targetOnClick: createAndFireEventOnAtlaskit({
       action: 'click',
     }),
-  })(SpotlightWithoutAnalytics),
+  })(SpotlightBase),
 );

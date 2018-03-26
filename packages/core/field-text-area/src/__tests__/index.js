@@ -5,7 +5,7 @@ import Base from '@atlaskit/field-base';
 
 import FieldTextArea from '../';
 import FieldTextAreaStatelessWithAnalytics, {
-  FieldTextAreaStateless,
+  FieldTextAreaStatelessBase,
 } from '../FieldTextAreaStateless';
 import TextArea from '../styled/TextArea';
 
@@ -22,7 +22,7 @@ describe('FieldTextAreaStateless', () => {
 
   it('defaults', () => {
     const wrapper = shallow(
-      <FieldTextAreaStateless onChange={() => {}} label="" />,
+      <FieldTextAreaStatelessBase onChange={() => {}} label="" />,
     );
     expect(wrapper.find(Base).length).toBe(1);
     expect(wrapper.find(TextArea).length).toBe(1);
@@ -33,7 +33,7 @@ describe('FieldTextAreaStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless onChange={() => {}} compact label="" />,
+            <FieldTextAreaStatelessBase onChange={() => {}} compact label="" />,
           )
             .find(Base)
             .props().isCompact,
@@ -45,7 +45,11 @@ describe('FieldTextAreaStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless onChange={() => {}} disabled label="" />,
+            <FieldTextAreaStatelessBase
+              onChange={() => {}}
+              disabled
+              label=""
+            />,
           )
             .find(Base)
             .props().isDisabled,
@@ -95,7 +99,11 @@ describe('FieldTextAreaStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless onChange={() => {}} required label="" />,
+            <FieldTextAreaStatelessBase
+              onChange={() => {}}
+              required
+              label=""
+            />,
           )
             .find(Base)
             .props().isRequired,
@@ -107,7 +115,11 @@ describe('FieldTextAreaStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless onChange={() => {}} isInvalid label="" />,
+            <FieldTextAreaStatelessBase
+              onChange={() => {}}
+              isInvalid
+              label=""
+            />,
           )
             .find(Base)
             .props().isInvalid,
@@ -119,7 +131,7 @@ describe('FieldTextAreaStateless', () => {
       it('should render an input with a spellCheck prop', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless
+            <FieldTextAreaStatelessBase
               onChange={() => {}}
               isSpellCheckEnabled
               label=""
@@ -135,7 +147,7 @@ describe('FieldTextAreaStateless', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
           shallow(
-            <FieldTextAreaStateless
+            <FieldTextAreaStatelessBase
               onChange={() => {}}
               invalidMessage="test"
               label=""
@@ -161,7 +173,11 @@ describe('FieldTextAreaStateless', () => {
           const value = prop[key];
           expect(
             shallow(
-              <FieldTextAreaStateless onChange={() => {}} label="" {...prop} />,
+              <FieldTextAreaStatelessBase
+                onChange={() => {}}
+                label=""
+                {...prop}
+              />,
             )
               .find(TextArea)
               .prop(key),
@@ -173,7 +189,7 @@ describe('FieldTextAreaStateless', () => {
     it('TextArea should have value="something"', () =>
       expect(
         shallow(
-          <FieldTextAreaStateless
+          <FieldTextAreaStatelessBase
             onChange={() => {}}
             value="something"
             label=""
@@ -185,7 +201,9 @@ describe('FieldTextAreaStateless', () => {
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextAreaStateless onChange={spy} label="" />);
+      const wrapper = mount(
+        <FieldTextAreaStatelessBase onChange={spy} label="" />,
+      );
       wrapper.find(TextArea).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { FieldBaseStateless } from '@atlaskit/field-base';
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 import type { GroupType } from '../src/types';
 
 import { name } from '../package.json';
@@ -33,7 +33,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           appearance="subtle"
           isInvalid
           isOpen

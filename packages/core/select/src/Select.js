@@ -12,8 +12,7 @@ import {
 } from '../package.json';
 import createSelect from './createSelect';
 
-const SelectWithoutAnalytics = createSelect(Select);
-export { SelectWithoutAnalytics as Select };
+export const SelectBase = createSelect(Select);
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
@@ -30,5 +29,5 @@ export default withAnalyticsContext({
     onKeyDown: createAndFireEventOnAtlaskit({
       action: 'keydown',
     }),
-  })(SelectWithoutAnalytics),
+  })(SelectBase),
 );

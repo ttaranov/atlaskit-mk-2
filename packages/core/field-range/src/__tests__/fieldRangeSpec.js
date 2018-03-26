@@ -2,7 +2,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import FieldRange from '../FieldRange';
+import { FieldRangeBase } from '../FieldRange';
 
 // We need to simulate a real event on the DOM element due IE compatibility
 const simulateValueChange = (range, value) => {
@@ -22,7 +22,7 @@ describe('FieldRange', () => {
     let fieldRange;
 
     beforeEach(() => {
-      fieldRange = mount(<FieldRange value={20.12} />);
+      fieldRange = mount(<FieldRangeBase value={20.12} />);
     });
 
     it('should have input with type "range"', () => {
@@ -61,7 +61,7 @@ describe('FieldRange', () => {
     beforeEach(() => {
       onChangeSpy = jest.fn();
       fieldRange = mount(
-        <FieldRange value={25} min={10} max={20} onChange={onChangeSpy} />,
+        <FieldRangeBase value={25} min={10} max={20} onChange={onChangeSpy} />,
       );
     });
 
@@ -104,22 +104,22 @@ describe('FieldRange', () => {
   describe('range value percentage', () => {
     let fieldRange;
     it('should calculate the correct value percent for non 0 min and max != 100', () => {
-      fieldRange = mount(<FieldRange value={50} min={30} max={80} />);
+      fieldRange = mount(<FieldRangeBase value={50} min={30} max={80} />);
       const input = fieldRange.find('InputRange');
       expect(input.props().valuePercent).toBe('40.00');
     });
     it('should calculate the correct value percent for 0 min and max != 100', () => {
-      fieldRange = mount(<FieldRange value={50} min={0} max={80} />);
+      fieldRange = mount(<FieldRangeBase value={50} min={0} max={80} />);
       const input = fieldRange.find('InputRange');
       expect(input.props().valuePercent).toBe('62.50');
     });
     it('should calculate the correct value as 0 if min > max', () => {
-      fieldRange = mount(<FieldRange value={50} min={150} max={100} />);
+      fieldRange = mount(<FieldRangeBase value={50} min={150} max={100} />);
       const input = fieldRange.find('InputRange');
       expect(input.props().valuePercent).toBe('0');
     });
     it('should calculate the correct value for negative range', () => {
-      fieldRange = mount(<FieldRange value={0} min={-50} max={50} />);
+      fieldRange = mount(<FieldRangeBase value={0} min={-50} max={50} />);
       const input = fieldRange.find('InputRange');
       expect(input.props().valuePercent).toBe('50.00');
     });

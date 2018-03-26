@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Tooltip from '@atlaskit/tooltip';
-import AvatarWithAnalytics, { Avatar } from '../Avatar';
+import AvatarWithAnalytics, { AvatarBase } from '../Avatar';
 import AvatarImage from '../AvatarImage';
 import Presence from '../Presence';
 import { getSize } from '../../styled/utils';
@@ -19,7 +19,7 @@ const src =
 
 describe('Avatar', () => {
   it('should be possible to create a component', () => {
-    const wrapper = shallow(<Avatar />);
+    const wrapper = shallow(<AvatarBase />);
     expect(wrapper).not.toBe(undefined);
   });
 
@@ -37,14 +37,14 @@ describe('Avatar', () => {
   describe('name property', () => {
     it('should set the alt of the internal span', () => {
       const name = 'John Smith';
-      const wrapper = mount(<Avatar name={name} src={src} />);
+      const wrapper = mount(<AvatarBase name={name} src={src} />);
       expect(wrapper.find(AvatarImage).props().alt).toBe(name);
     });
   });
 
   describe('presence property', () => {
     it('should NOT be visible when omitted', () => {
-      const wrapper = mount(<Avatar />);
+      const wrapper = mount(<AvatarBase />);
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 
@@ -52,7 +52,7 @@ describe('Avatar', () => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => {
-          wrapper = mount(<Avatar presence={presence} />);
+          wrapper = mount(<AvatarBase presence={presence} />);
         });
 
         it('should be visible', () => {
@@ -66,7 +66,7 @@ describe('Avatar', () => {
     it('should be relfected in the Presence component', () => {
       const borderColor = '#ff0000';
       const wrapper = mount(
-        <Avatar presence="online" borderColor={borderColor} />,
+        <AvatarBase presence="online" borderColor={borderColor} />,
       );
       const presence = wrapper.find(Presence);
       expect(presence.length).toBeGreaterThan(0);
@@ -76,29 +76,29 @@ describe('Avatar', () => {
 
   describe('appearance property', () => {
     it('should default to circle avatar', () => {
-      const wrapper = shallow(<Avatar />);
+      const wrapper = shallow(<AvatarBase />);
       expect(wrapper.prop('appearance')).toBe('circle');
     });
 
     it('should apply rounded corners for square avatar', () => {
-      const wrapper = mount(<Avatar appearance="square" />);
+      const wrapper = mount(<AvatarBase appearance="square" />);
       expect(wrapper.find(AvatarImage).prop('appearance')).toBe('square');
     });
   });
 
   describe('enableTooltip property', () => {
     it('should wrap with a tooltip if enableTooltip is true and name set', () => {
-      const wrapper = mount(<Avatar enableTooltip name="Test" />);
+      const wrapper = mount(<AvatarBase enableTooltip name="Test" />);
       expect(wrapper.find(Tooltip).prop('content')).toBe('Test');
     });
 
     it('should not wrap with a tooltip if enableTooltip is false', () => {
-      const wrapper = mount(<Avatar enableTooltip={false} />);
+      const wrapper = mount(<AvatarBase enableTooltip={false} />);
       expect(wrapper.find(Tooltip).length).toBe(0);
     });
 
     it('should not wrap with a tooltip if enableTooltip is true but no name specified', () => {
-      const wrapper = mount(<Avatar enableTooltip />);
+      const wrapper = mount(<AvatarBase enableTooltip />);
       expect(wrapper.find(Tooltip).length).toBe(0);
     });
   });
@@ -106,12 +106,12 @@ describe('Avatar', () => {
   describe('react element as the presence property', () => {
     it('should render the presence', () => {
       const MyIcon = <div className="my-icon" />;
-      const wrapper = mount(<Avatar presence={MyIcon} />);
+      const wrapper = mount(<AvatarBase presence={MyIcon} />);
       expect(wrapper.find('.my-icon')).toHaveLength(1);
     });
 
     it('should pass presence value to Presence', () => {
-      const wrapper = mount(<Avatar presence={online} />);
+      const wrapper = mount(<AvatarBase presence={online} />);
       const presence = wrapper.find(Presence);
       expect(presence.exists()).toBe(true);
       expect(presence.prop('presence')).toBe(online);
@@ -119,7 +119,7 @@ describe('Avatar', () => {
 
     it('should pass presence element to Presence', () => {
       const MyIcon = <div className="my-icon" />;
-      const wrapper = mount(<Avatar presence={MyIcon} />);
+      const wrapper = mount(<AvatarBase presence={MyIcon} />);
       const presence = wrapper.find(Presence);
 
       expect(presence.exists()).toBe(true);

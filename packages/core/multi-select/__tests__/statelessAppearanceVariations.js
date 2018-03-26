@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { FieldBaseStateless } from '@atlaskit/field-base';
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 
 import { name } from '../package.json';
 
@@ -18,15 +18,15 @@ describe(`${name} - stateless`, () => {
 
   describe('appearance variations', () => {
     it('should have appearance prop by default', () => {
-      const wrapper = mount(<MultiSelectStateless />);
+      const wrapper = mount(<MultiSelectStatelessBase />);
       expect(wrapper.prop('appearance')).toBe('default');
     });
 
     it('should correctly map appearance prop to FieldBase', () => {
-      const defaultMultiSelect = mount(<MultiSelectStateless />);
+      const defaultMultiSelect = mount(<MultiSelectStatelessBase />);
       const standardFieldBase = defaultMultiSelect.find(FieldBaseStateless);
       const subtleMultiSelect = mount(
-        <MultiSelectStateless appearance="subtle" />,
+        <MultiSelectStatelessBase appearance="subtle" />,
       );
       const subtleFieldBase = subtleMultiSelect.find(FieldBaseStateless);
       expect(standardFieldBase.prop('appearance')).toBe('standard');

@@ -6,7 +6,9 @@ import ReactDOMServer from 'react-dom/server';
 import { name } from '../package.json';
 import { SpotlightManager, SpotlightTarget } from '../src';
 
-import SpotlightWithAnalytics, { Spotlight } from '../src/components/Spotlight';
+import SpotlightWithAnalytics, {
+  SpotlightBase,
+} from '../src/components/Spotlight';
 
 function render(jsx) {
   return ReactDOMServer.renderToStaticMarkup(jsx);
@@ -75,13 +77,13 @@ describe(name, () => {
             <SpotlightTarget name="qux">
               <span>qux</span>
             </SpotlightTarget>
-            <Spotlight
+            <SpotlightBase
               header={() => <span>foo</span>}
               footer={() => <span>baz</span>}
               target="qux"
             >
               <span>bar</span>
-            </Spotlight>
+            </SpotlightBase>
           </div>
         </SpotlightManager>,
         // should equal
@@ -97,9 +99,9 @@ describe(name, () => {
         <SpotlightManager>
           <div>
             <section>
-              <Spotlight target="foo">
+              <SpotlightBase target="foo">
                 <span>dialog</span>
-              </Spotlight>
+              </SpotlightBase>
             </section>
             <SpotlightTarget name="foo">
               <span>target</span>
@@ -134,9 +136,11 @@ describe('SpotlightWithAnalytics', () => {
       };
 
       componentDidMount() {
+        /* eslint-disable react/no-did-mount-set-state */
         this.setState({
           isOpen: true,
         });
+        /* eslint-enable react/no-did-mount-set-state */
       }
 
       render() {
@@ -161,7 +165,9 @@ describe('SpotlightWithAnalytics', () => {
 
     mount(<SpotlightStub />);
 
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

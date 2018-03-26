@@ -75,7 +75,7 @@ const nowDay = now.getDate();
 const nowMonth = now.getMonth() + 1;
 const nowYear = now.getFullYear();
 
-export class CalendarStateless extends Component<Props> {
+class CalendarStateless extends Component<Props> {
   calendar: Object;
   props: Props;
   calendarEl: ?HTMLDivElement;
@@ -353,6 +353,8 @@ export class CalendarStateless extends Component<Props> {
     );
   }
 }
+
+export { CalendarStateless as CalendarStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

@@ -1,9 +1,9 @@
+// @flow
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-// @flow
 import '@atlaskit/polyfills/object-assign';
 import React, {
   PureComponent,
@@ -141,7 +141,7 @@ type State = {
   resizeDelta: number,
 };
 
-export class Navigation extends PureComponent<Props, State> {
+class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -442,6 +442,8 @@ export class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+export { Navigation as NavigationBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

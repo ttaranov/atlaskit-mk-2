@@ -40,7 +40,7 @@ const defaultStep = 0.1;
 // We need to pass an event handler to "input" element since we are using the "controlled" mode
 const dummyOnChangeHandler = () => {};
 
-export class FieldRange extends Component<Props, State> {
+class FieldRange extends Component<Props, State> {
   props: Props;
 
   static defaultProps = {
@@ -144,6 +144,8 @@ export class FieldRange extends Component<Props, State> {
     );
   }
 }
+
+export { FieldRange as FieldRangeBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

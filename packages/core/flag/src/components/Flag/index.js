@@ -31,7 +31,7 @@ type State = {
   isExpanded: boolean,
 };
 
-export class Flag extends Component<FlagProps, State> {
+class Flag extends Component<FlagProps, State> {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -157,6 +157,8 @@ export class Flag extends Component<FlagProps, State> {
     );
   }
 }
+
+export { Flag as FlagBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

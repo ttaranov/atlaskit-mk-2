@@ -60,7 +60,7 @@ type Props = {
   size?: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
-export class Icon extends Component<Props, {}> {
+class Icon extends Component<Props, {}> {
   static defaultProps = {
     onClick: () => {},
   };
@@ -125,6 +125,8 @@ export class Icon extends Component<Props, {}> {
     );
   }
 }
+
+export { Icon as IconBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

@@ -36,7 +36,7 @@ type State = {
   startY?: number,
 };
 
-export class InlineEditStateless extends Component<StatelessProps, State> {
+class InlineEditStateless extends Component<StatelessProps, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -260,6 +260,8 @@ export class InlineEditStateless extends Component<StatelessProps, State> {
     );
   }
 }
+
+export { InlineEditStateless as InlineEditStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

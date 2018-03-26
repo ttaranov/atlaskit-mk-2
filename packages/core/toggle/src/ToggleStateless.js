@@ -25,7 +25,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-export class ToggleStateless extends Component<StatelessProps, State> {
+class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,
@@ -93,6 +93,8 @@ export class ToggleStateless extends Component<StatelessProps, State> {
     );
   }
 }
+
+export { ToggleStateless as ToggleStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

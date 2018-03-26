@@ -7,7 +7,7 @@ import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import Spinner from '@atlaskit/spinner';
 
 import StatelessSelectWithAnalytics, {
-  StatelessSelect,
+  StatelessSelectBase,
 } from '../src/components/StatelessSelect';
 import InitialLoadingElement from '../src/styled/InitialLoading';
 import Content from '../src/styled/Content';
@@ -27,36 +27,38 @@ describe(name, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessSelect />).exists()).toBe(true);
+      expect(shallow(<StatelessSelectBase />).exists()).toBe(true);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessSelect />).find(Label).length).toBe(0);
-      expect(mount(<StatelessSelect label="test" />).find(Label).length).toBe(
-        1,
-      );
+      expect(mount(<StatelessSelectBase />).find(Label).length).toBe(0);
+      expect(
+        mount(<StatelessSelectBase label="test" />).find(Label).length,
+      ).toBe(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessSelect />).find(Droplist).length).toBe(1);
+      expect(mount(<StatelessSelectBase />).find(Droplist).length).toBe(1);
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />).find(FieldBase).length).toBe(1);
+      expect(mount(<StatelessSelectBase />).find(FieldBase).length).toBe(1);
       expect(
-        mount(<StatelessSelect />)
+        mount(<StatelessSelectBase />)
           .find(Droplist)
           .find(FieldBase).length,
       ).toBe(1);
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
-      expect(mount(<StatelessSelect placeholder="test" />).text()).toBe('test');
+      expect(mount(<StatelessSelectBase placeholder="test" />).text()).toBe(
+        'test',
+      );
     });
 
     it('should render selected items`s content instead of placeholder', () => {
       const select = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           placeholder="test"
           selectedItem={{ content: 'selected' }}
         />,
@@ -67,7 +69,7 @@ describe(name, () => {
 
     it('should render selectedItems elemBefore', () => {
       const select = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           placeholder="test"
           selectedItem={{ elemBefore: <UpIcon label="up" /> }}
         />,
@@ -82,7 +84,7 @@ describe(name, () => {
           items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
         },
       ];
-      const select = mount(<StatelessSelect items={selectItems} isOpen />);
+      const select = mount(<StatelessSelectBase items={selectItems} isOpen />);
       expect(select.find(Group).length).toBe(1);
       expect(select.find(Item).length).toBe(2);
       expect(select.find(Group).find(Item).length).toBe(2);
@@ -100,7 +102,7 @@ describe(name, () => {
         },
       ];
       const select = mount(
-        <StatelessSelect items={selectItems} isOpen filterValue={'1'} />,
+        <StatelessSelectBase items={selectItems} isOpen filterValue={'1'} />,
       );
       expect(select.find(Group).length).toBe(1);
       expect(select.find(Group).find(Item).length).toBe(1);
@@ -118,7 +120,7 @@ describe(name, () => {
         },
       ];
       const select = mount(
-        <StatelessSelect items={selectItems} isOpen filterValue={'5'} />,
+        <StatelessSelectBase items={selectItems} isOpen filterValue={'5'} />,
       );
       expect(select.find(Group).length).toBe(0);
       expect(select.find(Group).find(Item).length).toBe(0);
@@ -128,7 +130,7 @@ describe(name, () => {
   describe('props managements', () => {
     it('should pass props to Label', () => {
       const select = mount(
-        <StatelessSelect label="test" isRequired id="test2" />,
+        <StatelessSelectBase label="test" isRequired id="test2" />,
       );
       const labelProps = select.find(Label).props();
       expect(labelProps.isRequired).toBe(true);
@@ -138,7 +140,7 @@ describe(name, () => {
 
     describe('shouldFocus prop', () => {
       it('should focus inputNode when set to true', () => {
-        const select = mount(<StatelessSelect />);
+        const select = mount(<StatelessSelectBase />);
         expect(document.activeElement).not.toBe(select.instance().triggerNode);
         select.setProps({ shouldFocus: true });
         expect(document.activeElement).toBe(select.instance().triggerNode);
@@ -148,7 +150,7 @@ describe(name, () => {
     it('should pass props to Droplist', () => {
       const func = () => {};
       const select = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           position="top right"
           isOpen
           onOpenChange={func}
@@ -170,7 +172,12 @@ describe(name, () => {
 
     it('should pass props to fieldBase', () => {
       const select = mount(
-        <StatelessSelect isDisabled isInvalid isOpen invalidMessage="foobar" />,
+        <StatelessSelectBase
+          isDisabled
+          isInvalid
+          isOpen
+          invalidMessage="foobar"
+        />,
       );
       const fieldbaseProps = select.find(FieldBase).props();
       expect(fieldbaseProps.isDisabled).toBe(true);
@@ -198,7 +205,7 @@ describe(name, () => {
         },
       ];
       const select = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           isOpen
           id="testId"
           name="testName"
@@ -230,7 +237,7 @@ describe(name, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           isOpen
           id="testId"
           name="testName"
@@ -342,7 +349,7 @@ describe(name, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           isOpen
           items={selectItems}
           onFilterChange={onFilterChangeSpy}
@@ -738,7 +745,7 @@ describe(name, () => {
     describe('getItemTrueIndex', () => {
       it('should return the index of the item when there is only one group', () => {
         wrapper = mount(
-          <StatelessSelect
+          <StatelessSelectBase
             items={[
               {
                 heading: 'Group 1',
@@ -759,7 +766,7 @@ describe(name, () => {
 
       it('should return the index of the item when there are multiple groups', () => {
         wrapper = mount(
-          <StatelessSelect
+          <StatelessSelectBase
             items={[
               {
                 heading: 'Group 1',
@@ -820,14 +827,16 @@ describe(name, () => {
 
   describe('appearance variations', () => {
     it('should have appearance prop by default', () => {
-      const wrapper = mount(<StatelessSelect />);
+      const wrapper = mount(<StatelessSelectBase />);
       expect(wrapper.prop('appearance')).toBe('default');
     });
 
     it('should correctly map appearance prop to FieldBase', () => {
-      const defaultMultiSelect = mount(<StatelessSelect />);
+      const defaultMultiSelect = mount(<StatelessSelectBase />);
       const standardFieldBase = defaultMultiSelect.find(FieldBase);
-      const subtleMultiSelect = mount(<StatelessSelect appearance="subtle" />);
+      const subtleMultiSelect = mount(
+        <StatelessSelectBase appearance="subtle" />,
+      );
       const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).toBe('standard');
       expect(subtleFieldBase.prop('appearance')).toBe('subtle');
@@ -842,7 +851,7 @@ describe(name, () => {
       const keyEvent = { key: 'a' };
 
       const wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           isOpen
           items={[
             {
@@ -875,7 +884,7 @@ describe(name, () => {
     it('should render item label instead of content', () => {
       const item = { value: 1, content: <span>One</span>, label: 'One!' };
       const wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           items={[
             {
               items: [item],
@@ -895,7 +904,7 @@ describe(name, () => {
     it('should render item label instead of content when hasAutocomplete', () => {
       const item = { value: 1, content: <span>One</span>, label: 'One!' };
       const wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           hasAutocomplete
           items={[
             {
@@ -912,7 +921,7 @@ describe(name, () => {
 
   describe('initial loading state', () => {
     it('should display loading icon and message when conditions are met', () => {
-      const wrapper = mount(<StatelessSelect isLoading isOpen />);
+      const wrapper = mount(<StatelessSelectBase isLoading isOpen />);
 
       expect(wrapper.find(Spinner).length).toBe(1);
       expect(wrapper.find(InitialLoadingElement).length).toBe(1);
@@ -924,7 +933,7 @@ describe(name, () => {
 
     it('should accept a custom loading message', () => {
       const wrapper = mount(
-        <StatelessSelect
+        <StatelessSelectBase
           isLoading
           loadingMessage="Custom loading message here"
           isOpen
@@ -937,7 +946,7 @@ describe(name, () => {
     });
 
     it('should not display loading icon and message when select is not open', () => {
-      const wrapper = mount(<StatelessSelect isLoading isOpen={false} />);
+      const wrapper = mount(<StatelessSelectBase isLoading isOpen={false} />);
 
       expect(wrapper.find(Spinner).length).toBe(0);
       expect(wrapper.find(InitialLoadingElement).length).toBe(0);

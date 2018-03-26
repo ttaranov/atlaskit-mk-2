@@ -60,7 +60,7 @@ type Props = {
   innerRef?: (ref: ?HTMLElement) => void,
 };
 
-export class FieldTextAreaStateless extends Component<Props, void> {
+class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -138,6 +138,8 @@ export class FieldTextAreaStateless extends Component<Props, void> {
     );
   }
 }
+
+export { FieldTextAreaStateless as FieldTextAreaStatelessBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 

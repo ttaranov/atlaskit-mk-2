@@ -5,7 +5,10 @@ import { mount, render } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import { name } from '../package.json';
 import { size } from '../src';
-import IconWithAnalytics, { IconWrapper, Icon } from '../src/components/Icon';
+import IconWithAnalytics, {
+  IconWrapper,
+  IconBase,
+} from '../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -20,12 +23,12 @@ describe(name, () => {
     const secretWrapper = () => <div>{secretContent}</div>;
     const empty = () => <div>Icon</div>;
 
-    const MyIcon = props => <Icon glyph={secretWrapper} {...props} />;
+    const MyIcon = props => <IconBase glyph={secretWrapper} {...props} />;
 
     describe('glyph prop', () => {
       const id = 'customSvg';
       const customGlyphJsx = () => <svg id={id} />;
-      const wrapper = mount(<Icon glyph={customGlyphJsx} label="" />);
+      const wrapper = mount(<IconBase glyph={customGlyphJsx} label="" />);
 
       it('should render an SVG provided via JSX', () => {
         expect(wrapper.html().includes(`<svg id="${id}"`)).toBe(true);
@@ -36,7 +39,7 @@ describe(name, () => {
       const id = 'customSvg';
       const customGlyphString = `<svg id=${id}></svg>`;
       const wrapper = mount(
-        <Icon dangerouslySetGlyph={customGlyphString} label="" />,
+        <IconBase dangerouslySetGlyph={customGlyphString} label="" />,
       );
 
       it('should render an SVG provided as a string', () => {
@@ -47,7 +50,7 @@ describe(name, () => {
         const glyphString = `<svg><defs><linearGradient id="${gradientId}"></linearGradient></defs><g><path fill="url(#${gradientId})"></path></g></svg>`;
         // Using render as mount/shallow as .find does not work with dangerouslySetInnerHTML
         const icon = render(
-          <Icon dangerouslySetGlyph={glyphString} label="My icon" />,
+          <IconBase dangerouslySetGlyph={glyphString} label="My icon" />,
         );
         const uuidLength = 7;
 
@@ -64,7 +67,7 @@ describe(name, () => {
         expect(gradientDomId.length).toBeGreaterThan(uuidLength);
 
         const otherIcon = render(
-          <Icon dangerouslySetGlyph={glyphString} label="My icon" />,
+          <IconBase dangerouslySetGlyph={glyphString} label="My icon" />,
         );
         const otherId = otherIcon.find('lineargradient').prop('id');
         expect(otherId).not.toBe(gradientDomId);
@@ -73,10 +76,10 @@ describe(name, () => {
 
     describe('exports', () => {
       it('exports the React component, and size', () => {
-        expect(Icon).not.toBe(undefined);
+        expect(IconBase).not.toBe(undefined);
         expect(size).not.toBe(undefined);
 
-        expect(new Icon({ label: 'My icon' })).toBeInstanceOf(Component);
+        expect(new IconBase({ label: 'My icon' })).toBeInstanceOf(Component);
         expect(Object.values(size)).toEqual([
           'small',
           'medium',
@@ -100,7 +103,7 @@ describe(name, () => {
         const labelContent = 'label content';
         const wrapper = mount(
           // $FlowFixMe - LabelWriter function signature interpreted incorrectly
-          <Icon glyph={LabelWriter} label={labelContent} />,
+          <IconBase glyph={LabelWriter} label={labelContent} />,
         );
         expect(wrapper.find('span').is(`[aria-label="${labelContent}"]`)).toBe(
           true,
@@ -111,7 +114,9 @@ describe(name, () => {
     describe('size property', () => {
       const sizes = ['small', 'medium', 'large', 'xlarge'];
       sizes.forEach(s => {
-        const wrapper = mount(<Icon glyph={empty} label="My icon" size={s} />);
+        const wrapper = mount(
+          <IconBase glyph={empty} label="My icon" size={s} />,
+        );
         const iconWrapper = wrapper.find(IconWrapper);
 
         it(`with value ${s}`, () => {
@@ -189,7 +194,7 @@ describe(name, () => {
         const handler = jest.fn().mockImplementation(() => {}); // eslint-disable-line no-undef
 
         const wrapper = mount(
-          <Icon glyph={empty} label="My icon" onClick={handler} />,
+          <IconBase glyph={empty} label="My icon" onClick={handler} />,
         );
         expect(wrapper.prop('onClick')).toBe(handler);
 
@@ -213,7 +218,9 @@ describe('IconWithAnalytics', () => {
     const id = 'customSvg';
     const customGlyphJsx = () => <svg id={id} />;
     mount(<IconWithAnalytics glyph={customGlyphJsx} label="" />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

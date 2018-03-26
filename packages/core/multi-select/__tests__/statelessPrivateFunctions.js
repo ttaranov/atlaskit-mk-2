@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 import { name } from '../package.json';
 import type { ItemType, GroupType } from '../src/types';
 
@@ -37,7 +37,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           isOpen
           items={selectItems}
           onFilterChange={onFilterChangeSpy}

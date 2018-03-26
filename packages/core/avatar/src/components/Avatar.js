@@ -174,13 +174,11 @@ class Avatar extends Component<AvatarPropTypes> {
  *     - isFocus
  *     - isHover
  */
-const AvatarWithoutAnalytics = mapProps({
+export const AvatarBase = mapProps({
   appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
   isInteractive: props =>
     props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
 })(withPseudoState(Avatar));
-
-export { AvatarWithoutAnalytics as Avatar };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
@@ -193,5 +191,5 @@ export default withAnalyticsContext({
     onClick: createAndFireEventOnAtlaskit({
       action: 'click',
     }),
-  })(AvatarWithoutAnalytics),
+  })(AvatarBase),
 ); // 3

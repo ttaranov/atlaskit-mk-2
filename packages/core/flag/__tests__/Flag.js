@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import FlagWithAnalytics, { Flag } from '../src/components/Flag/index';
+import FlagWithAnalytics, { FlagBase } from '../src/components/Flag/index';
 import Container, {
   Description,
   DismissButton,
@@ -13,7 +13,7 @@ import Container, {
 
 describe('Flag', () => {
   const generateFlag = extraProps => (
-    <Flag id="" icon={<div />} title="Flag" {...extraProps} />
+    <FlagBase id="" icon={<div />} title="Flag" {...extraProps} />
   );
 
   describe('rendering', () => {
@@ -231,7 +231,9 @@ describe('FlagWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<FlagWithAnalytics id="" title="Flag" icon={<div />} />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

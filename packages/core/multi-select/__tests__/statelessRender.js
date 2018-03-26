@@ -10,7 +10,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 
-import { MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStatelessBase } from '../src/components/Stateless';
 import { SelectWrapper } from '../src/styled/Stateless';
 import InitialLoading from '../src/styled/InitialLoading';
 import NoMatches from '../src/styled/NoMatch';
@@ -33,45 +33,47 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<MultiSelectStateless />).exists()).toBe(true);
+      expect(shallow(<MultiSelectStatelessBase />).exists()).toBe(true);
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<MultiSelectStateless />).find(SelectWrapper).length).toBe(
-        1,
-      );
+      expect(
+        mount(<MultiSelectStatelessBase />).find(SelectWrapper).length,
+      ).toBe(1);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<MultiSelectStateless />).find(Label).length).toBe(0);
+      expect(mount(<MultiSelectStatelessBase />).find(Label).length).toBe(0);
       expect(
-        mount(<MultiSelectStateless label="test" />).find(Label).length,
+        mount(<MultiSelectStatelessBase label="test" />).find(Label).length,
       ).toBe(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<MultiSelectStateless />).find(Droplist).length).toBe(1);
+      expect(mount(<MultiSelectStatelessBase />).find(Droplist).length).toBe(1);
     });
 
     it('should pass shouldFlip to Droplist', () => {
       expect(
-        mount(<MultiSelectStateless shouldFlip />)
+        mount(<MultiSelectStatelessBase shouldFlip />)
           .find(Droplist)
           .props().shouldFlip,
       ).toBe(true);
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<MultiSelectStateless />).find(FieldBase).length).toBe(1);
+      expect(mount(<MultiSelectStatelessBase />).find(FieldBase).length).toBe(
+        1,
+      );
       expect(
-        mount(<MultiSelectStateless />)
+        mount(<MultiSelectStatelessBase />)
           .find(Droplist)
           .find(FieldBase).length,
       ).toBe(1);
     });
 
     it('should render Trigger inside Fieldbase', () => {
-      const wrapper = mount(<MultiSelectStateless />);
+      const wrapper = mount(<MultiSelectStatelessBase />);
       expect(wrapper.find(TriggerDiv).length).toBe(1);
       expect(wrapper.find(FieldBase).find(TriggerDiv).length).toBe(1);
     });
@@ -79,7 +81,7 @@ describe(`${name} - stateless`, () => {
     it('should render Footer if shouldAllowCreateItem is true and the search value is not empty', () => {
       expect(
         mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             filterValue="test"
             isOpen
             shouldAllowCreateItem
@@ -90,7 +92,7 @@ describe(`${name} - stateless`, () => {
 
     it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
       expect(
-        mount(<MultiSelectStateless filterValue="test" isOpen />).find(
+        mount(<MultiSelectStatelessBase filterValue="test" isOpen />).find(
           FooterDiv,
         ).length,
       ).toBe(0);
@@ -98,7 +100,7 @@ describe(`${name} - stateless`, () => {
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
       const wrapper = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           createNewItemLabel="new"
           filterValue="test"
           isOpen
@@ -112,7 +114,9 @@ describe(`${name} - stateless`, () => {
       const footer = {
         content: 'footer',
       };
-      const wrapper = mount(<MultiSelectStateless footer={footer} isOpen />);
+      const wrapper = mount(
+        <MultiSelectStatelessBase footer={footer} isOpen />,
+      );
       expect(wrapper.find(Footer).length).toBe(1);
       expect(wrapper.find(Footer).text()).toBe('footer');
     });
@@ -123,7 +127,7 @@ describe(`${name} - stateless`, () => {
         content: 'footer',
       };
       const wrapper = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           createNewItemLabel="new"
           filterValue="test"
           footer={footer}
@@ -135,12 +139,14 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should render ExpandIcon if no custom icon provided', () => {
-      expect(mount(<MultiSelectStateless />).find(ExpandIcon).length).toBe(1);
+      expect(mount(<MultiSelectStatelessBase />).find(ExpandIcon).length).toBe(
+        1,
+      );
     });
 
     it('should render custom icon if provided', () => {
       const icon = <SearchIcon label="" />;
-      const select = mount(<MultiSelectStateless icon={icon} />);
+      const select = mount(<MultiSelectStatelessBase icon={icon} />);
       expect(select.find(SearchIcon).length).toBe(1);
       expect(select.find(ExpandIcon).length).toBe(0);
     });
@@ -172,7 +178,7 @@ describe(`${name} - stateless`, () => {
       ];
 
       it('should render groups and items inside Droplist (when open)', () => {
-        const select = mount(<MultiSelectStateless items={items} isOpen />);
+        const select = mount(<MultiSelectStatelessBase items={items} isOpen />);
         expect(select.find(Group).length).toBe(1);
         expect(select.find(Item).length).toBe(2);
         expect(select.find(Group).find(Item).length).toBe(2);
@@ -181,7 +187,7 @@ describe(`${name} - stateless`, () => {
       it('should not render a group if all items in that group are selected', () => {
         const selectedItems = [items[0].items[0], items[0].items[1]];
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={items}
             selectedItems={selectedItems}
             isOpen
@@ -196,7 +202,7 @@ describe(`${name} - stateless`, () => {
           itemsIn3Groups[1].items[1],
         ];
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={itemsIn3Groups}
             selectedItems={selectedItems}
             isOpen
@@ -230,7 +236,7 @@ describe(`${name} - stateless`, () => {
           itemsIn3Groups[1].items[1],
         ];
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={itemsIn3Groups}
             selectedItems={selectedItems}
             isOpen
@@ -267,7 +273,7 @@ describe(`${name} - stateless`, () => {
       it('should render loading state for initial fetching when properties are set and no items', () => {
         const emptyArray: Array<any> = [];
         const select = mount(
-          <MultiSelectStateless items={emptyArray} isOpen isLoading />,
+          <MultiSelectStatelessBase items={emptyArray} isOpen isLoading />,
         );
 
         expect(select.find(Spinner).length).toBe(1);
@@ -281,7 +287,11 @@ describe(`${name} - stateless`, () => {
       it('should not render loading state when field is not open', () => {
         const emptyArray: Array<any> = [];
         const select = mount(
-          <MultiSelectStateless items={emptyArray} isOpen={false} isLoading />,
+          <MultiSelectStatelessBase
+            items={emptyArray}
+            isOpen={false}
+            isLoading
+          />,
         );
 
         expect(select.find(Spinner).length).toBe(0);
@@ -291,7 +301,11 @@ describe(`${name} - stateless`, () => {
       it('should render a no matches found if there is no item at all', () => {
         const emptyArray: Array<any> = [];
         const select = mount(
-          <MultiSelectStateless items={emptyArray} selectedItems={[]} isOpen />,
+          <MultiSelectStatelessBase
+            items={emptyArray}
+            selectedItems={[]}
+            isOpen
+          />,
         );
 
         expect(select.find(NoMatches).length).toBe(1);
@@ -303,7 +317,7 @@ describe(`${name} - stateless`, () => {
           .reduceRight((prev, curr) => prev.concat(curr));
 
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={itemsIn3Groups}
             selectedItems={selectedItems}
             isOpen
@@ -323,7 +337,7 @@ describe(`${name} - stateless`, () => {
         ];
 
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={itemsIn3Groups}
             selectedItems={selectedItems}
             isOpen
@@ -335,7 +349,7 @@ describe(`${name} - stateless`, () => {
 
       it('should filter selected items by their values not reference', () => {
         const select = mount(
-          <MultiSelectStateless
+          <MultiSelectStatelessBase
             items={items}
             selectedItems={[{ content: 'new', value: 2 }]}
             isOpen
@@ -363,7 +377,7 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<MultiSelectStateless items={items} isOpen />);
+      const select = mount(<MultiSelectStatelessBase items={items} isOpen />);
 
       expect(select.find(Avatar).length).toBe(2);
     });
@@ -385,7 +399,7 @@ describe(`${name} - stateless`, () => {
         },
       ];
       const select = mount(
-        <MultiSelectStateless
+        <MultiSelectStatelessBase
           isOpen
           id="testId"
           name="testName"
@@ -423,7 +437,10 @@ describe(`${name} - stateless`, () => {
 
     it('should render selectedTags', () => {
       const wrapper = mount(
-        <MultiSelectStateless items={items} selectedItems={selectedItems} />,
+        <MultiSelectStatelessBase
+          items={items}
+          selectedItems={selectedItems}
+        />,
       );
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).toBe(2);
@@ -431,7 +448,10 @@ describe(`${name} - stateless`, () => {
 
     it('should pass on tag.elemBefore prop to selected tags', () => {
       const wrapper = mount(
-        <MultiSelectStateless items={items} selectedItems={selectedItems} />,
+        <MultiSelectStatelessBase
+          items={items}
+          selectedItems={selectedItems}
+        />,
       );
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).toBe(2);
@@ -440,7 +460,10 @@ describe(`${name} - stateless`, () => {
 
     it('should pass on tag.appearance prop to selected tags', () => {
       const wrapper = mount(
-        <MultiSelectStateless items={items} selectedItems={selectedItems} />,
+        <MultiSelectStatelessBase
+          items={items}
+          selectedItems={selectedItems}
+        />,
       );
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).toBe(2);

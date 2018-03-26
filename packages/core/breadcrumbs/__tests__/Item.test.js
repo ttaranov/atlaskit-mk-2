@@ -6,10 +6,10 @@ import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import BreadcrumbsItemWithAnalytics, {
-  BreadcrumbsItem,
+  BreadcrumbsItemBase,
 } from '../src/components/BreadcrumbsItem';
 
-export const setItemWidth = (item: BreadcrumbsItem, width: number) => {
+export const setItemWidth = (item: BreadcrumbsItemBase, width: number) => {
   // eslint-disable-line import/prefer-default-export
   const buttonEl = ReactDOM.findDOMNode(item.button); // eslint-disable-line react/no-find-dom-node
   if (!buttonEl || !(buttonEl instanceof HTMLElement)) {
@@ -21,26 +21,26 @@ export const setItemWidth = (item: BreadcrumbsItem, width: number) => {
 describe('BreadcrumbsItem', () => {
   describe('exports', () => {
     it('the BreadcrumbsItem component', () => {
-      expect(BreadcrumbsItem).not.toBe(undefined);
-      expect(new BreadcrumbsItem()).toBeInstanceOf(Component);
+      expect(BreadcrumbsItemBase).not.toBe(undefined);
+      expect(new BreadcrumbsItemBase()).toBeInstanceOf(Component);
     });
   });
 
   describe('construction', () => {
     it('should be able to create a component', () => {
-      const wrapper = shallow(<BreadcrumbsItem text="arbitrary" />);
+      const wrapper = shallow(<BreadcrumbsItemBase text="arbitrary" />);
       expect(wrapper).not.toBe(undefined);
       expect(wrapper.instance()).toBeInstanceOf(Component);
     });
 
     it('should set the initial state correctly', () => {
-      const wrapper = shallow(<BreadcrumbsItem text="arbitrary" />);
+      const wrapper = shallow(<BreadcrumbsItemBase text="arbitrary" />);
       expect(wrapper.state().hasOverflow).toBe(false);
     });
 
     it('should render a link Button containing the content', () => {
       const text = 'text';
-      const wrapper = mount(<BreadcrumbsItem text={text} />);
+      const wrapper = mount(<BreadcrumbsItemBase text={text} />);
       expect(wrapper.find(Button).text()).toBe(text);
     });
   });
@@ -49,14 +49,16 @@ describe('BreadcrumbsItem', () => {
     describe('item prop', () => {
       it('should be reflected to the Button content', () => {
         const text = 'text';
-        const wrapper = mount(<BreadcrumbsItem text={text} />);
+        const wrapper = mount(<BreadcrumbsItemBase text={text} />);
         expect(wrapper.find(Button).text()).toBe(text);
       });
     });
     describe('href prop', () => {
       it('should be reflected to the Button', () => {
         const href = '/my/href/';
-        const wrapper = mount(<BreadcrumbsItem href={href} text="arbitrary" />);
+        const wrapper = mount(
+          <BreadcrumbsItemBase href={href} text="arbitrary" />,
+        );
         expect(wrapper.find(Button).prop('href')).toBe(href);
       });
     });
@@ -64,7 +66,7 @@ describe('BreadcrumbsItem', () => {
       it('should be reflected to the Button', () => {
         const icon = <AtlassianIcon label="icon" />;
         const wrapper = mount(
-          <BreadcrumbsItem iconAfter={icon} text="arbitrary" />,
+          <BreadcrumbsItemBase iconAfter={icon} text="arbitrary" />,
         );
         expect(wrapper.find(Button).prop('iconAfter')).toBe(icon);
       });
@@ -73,7 +75,7 @@ describe('BreadcrumbsItem', () => {
       it('should be reflected to the Button', () => {
         const icon = <AtlassianIcon label="icon" />;
         const wrapper = mount(
-          <BreadcrumbsItem iconBefore={icon} text="arbitrary" />,
+          <BreadcrumbsItemBase iconBefore={icon} text="arbitrary" />,
         );
         expect(wrapper.find(Button).prop('iconBefore')).toBe(icon);
       });
@@ -82,7 +84,7 @@ describe('BreadcrumbsItem', () => {
       it('should be reflected to the Button', () => {
         const target = '_top';
         const wrapper = mount(
-          <BreadcrumbsItem target={target} text="arbitrary" />,
+          <BreadcrumbsItemBase target={target} text="arbitrary" />,
         );
         expect(wrapper.find(Button).prop('target')).toBe(target);
       });
@@ -91,7 +93,7 @@ describe('BreadcrumbsItem', () => {
       it('should be reflected to the Button', () => {
         const onClick = () => 'onClickFn';
         const wrapper = mount(
-          <BreadcrumbsItem onClick={onClick} text="arbitrary" />,
+          <BreadcrumbsItemBase onClick={onClick} text="arbitrary" />,
         );
         expect(wrapper.find(Button).prop('onClick')).toBe(onClick);
       });
@@ -118,7 +120,7 @@ describe('BreadcrumbsItem', () => {
           );
         };
         const actualComponent = mount(
-          <BreadcrumbsItem
+          <BreadcrumbsItemBase
             text="arbitrary"
             component={props => (
               <Link to={'/custom/component'} {...props}>
@@ -147,7 +149,10 @@ describe('BreadcrumbsItem', () => {
     beforeEach(() => {
       window.cancelAnimationFrame = () => {};
       const wrapper = mount(
-        <BreadcrumbsItem text="content" truncationWidth={truncationWidth} />,
+        <BreadcrumbsItemBase
+          text="content"
+          truncationWidth={truncationWidth}
+        />,
       );
       item = wrapper.instance();
     });
@@ -179,7 +184,9 @@ describe('BreadcrumbsItemWithAnalytics', () => {
 
   it('should mount without errors', () => {
     mount(<BreadcrumbsItemWithAnalytics text="arbitrary" />);
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import RowWithAnalytics, { Row } from '../components/Row';
+import RowWithAnalytics, { RowBase } from '../components/Row';
 import TableTree, { Rows, Cell, Header, Headers } from '../index';
 import { Cell as StyledCell, Header as StyledHeader } from '../styled';
 
@@ -25,10 +25,10 @@ test('flat tree', async () => {
       <Rows
         items={getFlatItems}
         render={({ title, page }) => (
-          <Row itemId={title} hasChildren={false}>
+          <RowBase itemId={title} hasChildren={false}>
             <Cell>{title}</Cell>
             <Cell>{page}</Cell>
-          </Row>
+          </RowBase>
         )}
       />
     </TableTree>,
@@ -68,10 +68,10 @@ test('chevron next to items with children', async () => {
       <Rows
         items={getNestedItems}
         render={({ title, page, children }) => (
-          <Row itemId={title} hasChildren={!!children}>
+          <RowBase itemId={title} hasChildren={!!children}>
             <Cell className={'title'}>{title}</Cell>
             <Cell className={'page'}>{page}</Cell>
-          </Row>
+          </RowBase>
         )}
       />
     </TableTree>,
@@ -100,9 +100,9 @@ test('expanding and collapsing', async () => {
       <Rows
         items={getNestedItems}
         render={({ title, children }) => (
-          <Row itemId={title} hasChildren={children && children.length}>
+          <RowBase itemId={title} hasChildren={children && children.length}>
             <Cell>{title}</Cell>
-          </Row>
+          </RowBase>
         )}
       />
     </TableTree>,
@@ -184,10 +184,10 @@ test('headers and column widths', async () => {
       <Rows
         items={getNestedItems}
         render={({ title, page, children }) => (
-          <Row itemId={title} hasChildren={!!children}>
+          <RowBase itemId={title} hasChildren={!!children}>
             <Cell className={'title'}>{title}</Cell>
             <Cell className={'page'}>{page}</Cell>
-          </Row>
+          </RowBase>
         )}
       />
     </TableTree>,
@@ -322,7 +322,10 @@ describe('RowWithAnalytics', () => {
         />
       </TableTree>,
     );
+
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

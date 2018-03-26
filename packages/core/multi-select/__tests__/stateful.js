@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import MultiSelect from '../src';
-import { MultiSelectStateless } from '../src/components/Stateless';
+import MultiSelectStateless from '../src/components/Stateless';
 import type { GroupType } from '../src/types';
 import { name } from '../package.json';
 

@@ -11,14 +11,14 @@ import { HiddenCheckbox } from '../../src/styled/Checkbox';
 import { name } from '../../package.json';
 
 import CheckboxStatelessWithAnalytics, {
-  CheckboxStateless,
+  CheckboxStatelessBase,
 } from '../CheckboxStateless';
 
 describe(name, () => {
   describe('<CheckboxStateless />', () => {
     const mountStatelessCheckbox = (overridingProps: any) =>
       mount(
-        <CheckboxStateless
+        <CheckboxStatelessBase
           label=""
           isChecked
           onChange={() => {}}
@@ -162,7 +162,9 @@ describe('CheckboxStatelessWithAnalytics', () => {
         value="stub value"
       />,
     );
+    /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

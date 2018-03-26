@@ -8,8 +8,6 @@ import {
 } from '@atlaskit/analytics-next';
 
 import {
-  name,
-  version,
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
