@@ -1,42 +1,44 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import UIAnalyticsEvent from './UIAnalyticsEvent';
-import type { AnalyticsEventPayload, ObjectType } from './types';
+import type { AnalyticsEventPayload } from './types';
 
-export type CreateUIAnalyticsEventSignature = (
-  payload?: AnalyticsEventPayload,
+export type CreateUIAnalyticsEvent = (
+  payload: AnalyticsEventPayload,
 ) => UIAnalyticsEvent;
 
 export type WithAnalyticsEventsProps = {
-  createAnalyticsEvent: CreateUIAnalyticsEventSignature,
+  createAnalyticsEvent: CreateUIAnalyticsEvent,
 };
 
 type AnalyticsEventsProps = {
-  createAnalyticsEvent: CreateUIAnalyticsEventSignature | void,
+  createAnalyticsEvent: CreateUIAnalyticsEvent | void,
 };
 
 type EventMap<ProvidedProps> = {
   [string]:
-    | ObjectType
+    | AnalyticsEventPayload
     | ((
-        create: CreateUIAnalyticsEventSignature,
+        create: CreateUIAnalyticsEvent,
         props: ProvidedProps,
       ) => UIAnalyticsEvent | void),
 };
 
 export default function withAnalyticsEvents<
-  Props: {},
-  PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
+  InnerComponent: ComponentType<*>,
+  ExternalProps: $Diff<ElementConfig<InnerComponent>, AnalyticsEventsProps>,
 >(
-  createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
-): (
-  WrappedComponent: ComponentType<Props>,
-) => ComponentType<PropsWithoutAnalyticsEvent> {
+  createEventMap: EventMap<ExternalProps> = {},
+): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent =>
-    class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
+    class WithAnalyticsEvents extends Component<*> {
       static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 
@@ -45,7 +47,9 @@ export default function withAnalyticsEvents<
         getAtlaskitAnalyticsContext: PropTypes.func,
       };
 
-      createAnalyticsEvent = (payload?: ObjectType = {}): UIAnalyticsEvent => {
+      createAnalyticsEvent = (
+        payload: AnalyticsEventPayload,
+      ): UIAnalyticsEvent => {
         const {
           getAtlaskitAnalyticsEventHandlers,
           getAtlaskitAnalyticsContext,
