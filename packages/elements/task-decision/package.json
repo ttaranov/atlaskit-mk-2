@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "4.10.11",
+  "version": "4.10.12",
   "config": {
     "access": "public"
   },
