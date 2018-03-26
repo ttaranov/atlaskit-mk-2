@@ -17,7 +17,7 @@ export const ErrorWrapper = styled.div`
 export const ErrorTitle = styled.p`
   color: ${errorTitleColor};
   line-height: ${math.multiply(gridSize, 3)}px;
-  margin: ${gridSize}px 0px;
+  margin: ${gridSize}px 0;
 `;
 
 export const ErrorText = styled.span`
