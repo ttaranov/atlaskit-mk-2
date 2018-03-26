@@ -65,7 +65,7 @@ export const tableBackgroundColorNames = new Map<string, string>();
   ['', 'White'],
 ].forEach(([color, label]) => {
   tableBackgroundColorPalette.set(color.toLowerCase(), label);
-  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase())
+  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
 });
 
 /**
@@ -168,7 +168,7 @@ const cellAttrs = {
 
 export const tableCell: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -195,7 +195,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

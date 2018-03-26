@@ -261,6 +261,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       margin: 0;
     }
 
+    table .media-single {
+      margin: 0;
+      width: inherit;
+    }
+
     & [layout='full-width'] {
       background: grey;
       color: red;

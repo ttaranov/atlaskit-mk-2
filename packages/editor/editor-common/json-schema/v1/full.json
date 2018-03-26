@@ -1689,6 +1689,9 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
+            "$ref": "#/definitions/mediaSingle_node"
+          },
+          {
             "$ref": "#/definitions/orderedList_node"
           },
           {
