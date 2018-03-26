@@ -37,7 +37,7 @@ type State = {
   current: number,
 };
 
-export class Pagination extends Component<Props, State> {
+class Pagination extends Component<Props, State> {
   static defaultProps = {
     defaultValue: 1,
     i18n: defaultI18n,
@@ -116,6 +116,8 @@ export class Pagination extends Component<Props, State> {
     );
   }
 }
+
+export { Pagination as PaginationBase };
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
