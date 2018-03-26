@@ -63,6 +63,6 @@ export class MediaBlobService implements BlobService {
       url,
       params,
       responseType: 'image',
-    });
+    }).response;
   }
 }

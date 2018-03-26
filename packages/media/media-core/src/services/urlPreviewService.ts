@@ -15,7 +15,7 @@ export class MediaUrlPreviewService implements UrlPreviewService {
     return request({
       url: '/link/preview',
       params: { url },
-    }).then(json => {
+    }).response.then(json => {
       const { preview, previewError } = json.data;
       if (previewError) {
         throw new Error(`${previewError.code}: ${previewError.name}`);

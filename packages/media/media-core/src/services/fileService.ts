@@ -26,7 +26,7 @@ export class MediaFileService implements FileService {
       });
 
       return request({ url: `/file/${fileId}` })
-        .then(json => json.data)
+        .response.then(json => json.data)
         .then(fileDetails => {
           const fileItem = <FileItem>{
             type: 'file',
