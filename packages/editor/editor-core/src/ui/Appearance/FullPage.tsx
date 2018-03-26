@@ -150,22 +150,24 @@ export default class Editor extends React.Component<
         <ScrollContainer>
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
-              {customContentComponents}
-              {
-                <PluginSlot
-                  editorView={editorView}
-                  editorActions={editorActions}
-                  eventDispatcher={eventDispatcher}
-                  providerFactory={providerFactory}
-                  appearance={this.appearance}
-                  items={contentComponents}
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                  popupsScrollableElement={popupsScrollableElement}
-                  disabled={!!disabled}
-                />
-              }
-              <div onClick={this.stopPropagation}>{editorDOMElement}</div>
+              <div className="content-area">
+                {customContentComponents}
+                {
+                  <PluginSlot
+                    editorView={editorView}
+                    editorActions={editorActions}
+                    eventDispatcher={eventDispatcher}
+                    providerFactory={providerFactory}
+                    appearance={this.appearance}
+                    items={contentComponents}
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                    disabled={!!disabled}
+                  />
+                }
+                {editorDOMElement}
+              </div>
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>

@@ -18,7 +18,10 @@ export interface Props {
 export default class ClickAreaBlock extends React.Component<Props> {
   private handleClick = event => {
     const { editorView } = this.props;
-    if (editorView) {
+    const contentArea = event.currentTarget.getElementsByClassName(
+      'content-area',
+    )[0];
+    if ((!contentArea || !contentArea.contains(event.target)) && editorView) {
       if (createParagraphAtEnd()(editorView.state, editorView.dispatch)) {
         editorView.focus();
         event.stopPropagation();
