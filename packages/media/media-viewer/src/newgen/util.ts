@@ -1,4 +1,4 @@
-import { Context, isClientBasedAuth, Auth } from '@atlaskit/media-core';
+import { Context, isClientBasedAuth } from '@atlaskit/media-core';
 import { stringify } from 'query-string';
 
 export async function constructAuthTokenUrl(url: string, context: Context, collectionName?: string): Promise<string> {
