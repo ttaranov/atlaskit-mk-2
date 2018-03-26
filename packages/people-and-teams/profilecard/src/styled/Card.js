@@ -16,6 +16,7 @@ import {
 const marginNameWithoutJobTitle = `${math.multiply(
   gridSize,
   4.5,
+  // $FlowFixMe
 )()}px 0 ${math.multiply(gridSize, 1.5)()}px 0`;
 // $FlowFixMe
 const marginName = `${math.multiply(gridSize, 1.5)()}px 0 0 0`;

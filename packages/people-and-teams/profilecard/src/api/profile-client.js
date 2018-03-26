@@ -160,21 +160,24 @@ class ProfileClient {
     };
 
     this.config = { ...defaults, ...config };
-    // Set maxCacheAge only if it's a positive number
+    // never set cacheSize or cacheMaxAge to negative numbers
+    this.config.cacheSize = Math.max(parseInt(this.config.cacheSize, 10), 0);
     this.config.cacheMaxAge = Math.max(
       parseInt(this.config.cacheMaxAge, 10),
       0,
     );
     // DIR-474: cap cache at 30 days.
-    if (this.cacheMaxAge) {
+    if (this.config.cacheMaxAge) {
       this.config.cacheMaxAge = Math.min(
         this.config.cacheMaxAge,
         30 * 24 * 60 * 60 * 1000,
       );
     }
-    // Only set cache if maxCacheAge is set
+    // Only set cache if maxCacheAge and cacheSize are set
     this.cache =
-      this.cacheMaxAge === null ? null : new LRUCache(this.config.cacheSize);
+      !this.config.cacheMaxAge || !this.config.cacheSize
+        ? null
+        : new LRUCache(this.config.cacheSize);
   }
 
   makeRequest(cloudId: string, userId: string) {
