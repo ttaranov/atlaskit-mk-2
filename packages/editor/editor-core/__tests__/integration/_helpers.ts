@@ -3,22 +3,25 @@
  * unknown error: Maximum call stack size exceeded
  * And, don't get too fancy with it ;)
  */
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
-export const editorUrl =
-  'http://localhost:9000/examples.html?groupId=editor&packageId=editor-core&exampleId';
 export const editable = '.ProseMirror';
 
 export const editors = [
   {
     name: 'comment',
-    path: `${editorUrl}=comment`,
+    path: getExampleUrl('editor', 'editor-core', 'comment'),
     placeholder: '[placeholder="What do you want to say?"]',
   },
   {
     name: 'fullpage',
-    path: `${editorUrl}=full-page`,
+    path: getExampleUrl('editor', 'editor-core', 'full-page'),
     placeholder: 'p',
   },
 ];
 
-export const clipboardHelper = `http://localhost:9000/examples.html?groupId=editor&packageId=editor-core&exampleId=clipboard-helper`;
+export const clipboardHelper = getExampleUrl(
+  'editor',
+  'editor-core',
+  'clipboard-helper',
+);

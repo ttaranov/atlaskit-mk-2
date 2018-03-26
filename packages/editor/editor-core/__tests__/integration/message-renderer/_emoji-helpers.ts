@@ -1,6 +1,10 @@
-import { editorUrl } from '../_helpers';
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 
-export const messageEditor = `${editorUrl}=message-renderer`;
+export const messageEditor = getExampleUrl(
+  'editor',
+  'editor-core',
+  'message-renderer',
+);
 export const editable = `.ProseMirror`;
 export const typeahead = '.ak-emoji-typeahead';
 
