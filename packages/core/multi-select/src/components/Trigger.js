@@ -7,7 +7,10 @@ import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 
 import { Content, Expand, Input, TriggerDiv } from '../styled/Trigger';
-import { mapAppearanceToFieldBase } from '../internal/appearances';
+import {
+  mapAppearanceToFieldBase,
+  mapAppearanceToTag,
+} from '../internal/appearances';
 
 import type { ItemType } from '../types';
 
@@ -90,14 +93,18 @@ export default class Trigger extends PureComponent<Props, {}> {
               {selectedItems.map(item => (
                 // $FlowFixMe TEMPORARY
                 <Tag
-                  appearance={item.tag ? item.tag.appearance : undefined}
+                  appearance={
+                    item.tag
+                      ? mapAppearanceToTag(item.tag.appearance)
+                      : undefined
+                  }
                   elemBefore={item.tag ? item.tag.elemBefore : undefined}
                   key={item.value}
                   onAfterRemoveAction={() => {
                     handleItemRemove(item);
                   }}
                   removeButtonText={
-                    isDisabled ? null : `${item.content}, remove`
+                    isDisabled ? undefined : `${item.content}, remove`
                   }
                   text={item.content}
                 />

@@ -16,5 +16,13 @@ const appearancesMap = {
   subtle: 'subtle',
 };
 
+const tagAppearances = {
+  default: 'default',
+  rounded: 'rounded',
+};
+
 export const mapAppearanceToFieldBase = (appearance: string) =>
   appearancesMap[appearance];
+
+export const mapAppearanceToTag = (appearance: ?string) =>
+  appearance ? tagAppearances[appearance] : undefined;

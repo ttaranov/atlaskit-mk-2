@@ -32,14 +32,12 @@ type EventMap<ProvidedProps> = {
 };
 
 export default function withAnalyticsEvents<
-  Props: ObjectType,
-  PropsWithoutAnalyticsEvent: $Diff<Props, AnalyticsEventsProps>,
+  Props: {},
   C: ComponentType<Props>,
+  PropsWithoutAnalyticsEvent: $Diff<ElementConfig<C>, AnalyticsEventsProps>,
 >(
   createEventMap: EventMap<PropsWithoutAnalyticsEvent> = {},
-): (
-  WrappedComponent: C,
-) => ComponentType<$Diff<ElementConfig<C>, AnalyticsEventsProps>> {
+): (WrappedComponent: C) => ComponentType<PropsWithoutAnalyticsEvent> {
   return WrappedComponent =>
     class WithAnalyticsEvents extends Component<PropsWithoutAnalyticsEvent> {
       static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||

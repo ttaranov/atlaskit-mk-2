@@ -40,7 +40,7 @@ const colorList = [
 
 type Props = {
   /** Set whether tags should be rounded. */
-  appearance?: AppearanceType,
+  appearance: AppearanceType,
   /** The color theme to apply, setting both background and text color. */
   color?: TagColor,
   /** Component to be rendered before the Tag. */
