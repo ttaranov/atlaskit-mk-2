@@ -13,7 +13,10 @@ export interface FetchImageOptions {
 
 export interface BlobService {
   fetchOriginalBlob(mediaItem: MediaItem): Promise<Blob>;
-  fetchImageBlob(mediaItem: MediaItem, options: FetchImageOptions ): Promise<Blob>
+  fetchImageBlob(
+    mediaItem: MediaItem,
+    options: FetchImageOptions,
+  ): Promise<Blob>;
 }
 
 export class MediaBlobService implements BlobService {
@@ -59,7 +62,7 @@ export class MediaBlobService implements BlobService {
     return this.request({
       url,
       params,
-      responseType: 'image', // TODO: use blob?
+      responseType: 'image',
     });
   }
 }
