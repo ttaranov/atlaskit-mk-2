@@ -19,7 +19,6 @@
   "dependencies": {
     "@atlaskit/dropdown-menu": "^3.12.1",
     "@atlaskit/item": "^5.1.1",
-    "@atlaskit/polyfills": "^1.4.3",
     "@atlaskit/theme": "^2.4.1",
     "@atlaskit/tooltip": "^8.4.1",
     "styled-components": "1.4.6 - 3"
