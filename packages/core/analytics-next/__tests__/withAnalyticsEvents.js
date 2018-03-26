@@ -134,7 +134,7 @@ describe('create event map', () => {
 
     expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
     if (analyticsEvent) {
-      expect(analyticsEvent.payload).toEqual({});
+      expect(analyticsEvent.payload).toEqual({ action: 'clicked' });
     }
   });
 
