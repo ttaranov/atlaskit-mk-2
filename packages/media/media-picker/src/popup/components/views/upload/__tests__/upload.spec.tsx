@@ -89,8 +89,8 @@ describe('<StatelessUploadView />', () => {
     const component = shallow(getUploadViewElement(false));
 
     expect(component.find(Wrapper)).toHaveLength(1);
-    expect(component.find(Wrapper).props().className).toEqual('empty');
     expect(component.find(Dropzone)).toHaveLength(1);
+    expect(component.find(Dropzone).props().isEmpty).toEqual(true);
   });
 
   it('should render cards and dropzone when there are recent items', () => {
@@ -106,8 +106,8 @@ describe('<StatelessUploadView />', () => {
     const component = shallow(getUploadViewElement(false, recentItems));
 
     expect(component.find(Wrapper)).toHaveLength(1);
-    expect(component.find(Wrapper).props().className).toEqual(undefined);
     expect(component.find(Dropzone)).toHaveLength(1);
+    expect(component.find(Dropzone).props().isEmpty).toEqual(false);
 
     expect(component.find(Card)).toHaveLength(3);
   });
