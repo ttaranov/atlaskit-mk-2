@@ -84,7 +84,10 @@ function myHOC<Props, Component: React.ComponentType<Props>>(
 ```
 
 Without using `React.ElementConfig`, the `defaultProps` of the inner component
-will be lost and every optional prop will become required.
+will be lost and every optional prop will become required. A subtlety of
+`React.ElementConfig` is that it returns a type with all the properties marked
+as readonly. Depending on what you are trying to do, the `$ReadOnly` Flow
+utility function might be useful.
 
 ## Refs
 
