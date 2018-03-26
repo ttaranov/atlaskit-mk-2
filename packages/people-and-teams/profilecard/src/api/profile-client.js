@@ -3,6 +3,8 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import { LRUCache } from 'lru-fast';
 
+import { type AkProfileClientConfig } from '../types';
+
 /**
  * Transform presence response to atlaskit/avatar compatible presence value
  * @param presenceResponse
@@ -34,7 +36,7 @@ const calculatePresence = presenceResponse => {
  * @param  {object} response
  * @return {object}
  */
-export const modifyResponse = response => {
+export const modifyResponse = (response: any) => {
   const presence = calculatePresence(response.Presence);
   const data = {
     ...response.User,
@@ -77,7 +79,7 @@ const buildHeaders = () => {
  * @param  {string} cloudId
  * @return {string} GraphQL Query String
  */
-const buildUserQuery = (cloudId, userId) => ({
+const buildUserQuery = (cloudId: string, userId: string) => ({
   query: `query User($userId: String!, $cloudId: String!) {
     User: CloudUser(userId: $userId, cloudId: $cloudId) {
       id,
@@ -91,7 +93,6 @@ const buildUserQuery = (cloudId, userId) => ({
       email,
       meta: title,
       location,
-      companyName,
       avatarUrl(size: 192),
       remoteWeekdayIndex: localTime(format: "d"),
       remoteWeekdayString: localTime(format: "ddd"),
@@ -116,7 +117,7 @@ const buildUserQuery = (cloudId, userId) => ({
  * @param {string} userId
  * @param {string} cloudId
  */
-const requestService = (serviceUrl, cloudId, userId) => {
+const requestService = (serviceUrl, cloudId, userId): Promise<any> => {
   const headers = buildHeaders();
   const userQuery = buildUserQuery(cloudId, userId);
 
@@ -149,32 +150,34 @@ const requestService = (serviceUrl, cloudId, userId) => {
 };
 
 class ProfileClient {
-  /**
-   * @param {object} config
-   * @param {string} config.url
-   * @param {string} [config.cacheSize=10]
-   * @param {string} [config.cacheMaxAge=null]
-   */
-  constructor(config) {
+  config: AkProfileClientConfig;
+  cache: any;
+
+  constructor(config: AkProfileClientConfig) {
     const defaults = {
       cacheSize: 10,
-      cacheMaxAge: null,
+      cacheMaxAge: 0,
     };
 
     this.config = { ...defaults, ...config };
     // Set maxCacheAge only if it's a positive number
-    this.cacheMaxAge =
-      Math.max(parseInt(this.config.cacheMaxAge, 10), 0) || null;
+    this.config.cacheMaxAge = Math.max(
+      parseInt(this.config.cacheMaxAge, 10),
+      0,
+    );
     // DIR-474: cap cache at 30 days.
     if (this.cacheMaxAge) {
-      this.cacheMaxAge = Math.min(this.cacheMaxAge, 30 * 24 * 60 * 60 * 1000);
+      this.config.cacheMaxAge = Math.min(
+        this.config.cacheMaxAge,
+        30 * 24 * 60 * 60 * 1000,
+      );
     }
     // Only set cache if maxCacheAge is set
     this.cache =
       this.cacheMaxAge === null ? null : new LRUCache(this.config.cacheSize);
   }
 
-  makeRequest(cloudId, userId) {
+  makeRequest(cloudId: string, userId: string) {
     if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
@@ -182,12 +185,12 @@ class ProfileClient {
     return requestService(this.config.url, cloudId, userId);
   }
 
-  setCachedProfile(cloudId, userId, cacheItem) {
+  setCachedProfile(cloudId: string, userId: string, cacheItem: any) {
     const cacheIdentifier = `${cloudId}/${userId}`;
     this.cache.put(cacheIdentifier, cacheItem);
   }
 
-  getCachedProfile(cloudId, userId) {
+  getCachedProfile(cloudId: string, userId: string) {
     const cacheIdentifier = `${cloudId}/${userId}`;
 
     const cached = this.cache && this.cache.get(cacheIdentifier);
@@ -202,7 +205,7 @@ class ProfileClient {
     }
 
     this.cache.set(cacheIdentifier, {
-      expire: Date.now() + this.cacheMaxAge,
+      expire: Date.now() + this.config.cacheMaxAge,
       profile: cached.profile,
     });
 
@@ -215,29 +218,31 @@ class ProfileClient {
     }
   }
 
-  getProfile(cloudId, userId) {
+  getProfile(cloudId: string, userId: string): Promise<any> {
     if (!cloudId || !userId) {
+      // $FlowFixMe
       return Promise.reject(new Error('cloudId or userId missing'));
     }
 
     const cache = this.getCachedProfile(cloudId, userId);
 
     if (cache) {
+      // $FlowFixMe
       return Promise.resolve(cache);
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: Function, reject: Function) => {
       this.makeRequest(cloudId, userId)
-        .then(data => {
+        .then((data: any) => {
           if (this.cache) {
             this.setCachedProfile(cloudId, userId, {
-              expire: Date.now() + this.cacheMaxAge,
+              expire: Date.now() + this.config.cacheMaxAge,
               profile: data,
             });
           }
           resolve(data);
         })
-        .catch(error => {
+        .catch((error: any) => {
           reject(error);
         });
     });

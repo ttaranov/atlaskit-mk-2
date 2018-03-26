@@ -33,7 +33,15 @@ const triggerStyles = {
   outline: 'none',
 };
 
-export default class InteractiveTrigger extends Component {
+type Props = {
+  resourceClient: Function,
+};
+
+type State = {
+  positionIdx: number,
+};
+
+export default class InteractiveTrigger extends Component<Props, State> {
   static propTypes = {
     resourceClient: PropTypes.shape({
       getProfile: PropTypes.func,
@@ -41,11 +49,6 @@ export default class InteractiveTrigger extends Component {
       makeRequest: PropTypes.func,
     }),
   };
-
-  constructor() {
-    super();
-    this.changePosition = this.changePosition.bind(this);
-  }
 
   state = {
     positionIdx: 0,
@@ -58,14 +61,14 @@ export default class InteractiveTrigger extends Component {
       .reduce((prev, current) => `${prev}${current.charAt(0)}`, '');
   }
 
-  changePosition() {
+  changePosition = () => {
     this.setState({
       positionIdx:
         this.state.positionIdx === positionsOrder.length - 1
           ? 0
           : this.state.positionIdx + 1,
     });
-  }
+  };
 
   renderTrigger() {
     return (
@@ -90,6 +93,7 @@ export default class InteractiveTrigger extends Component {
           actions={[
             {
               label: 'View profile',
+              id: 'view-profile',
               callback: () => {},
             },
           ]}

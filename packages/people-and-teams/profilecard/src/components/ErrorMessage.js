@@ -4,11 +4,11 @@ import IconError from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
 
 import { ErrorWrapper, ErrorTitle, ErrorText } from '../styled/Error';
-import { ProfileCardErrorType } from '../../types';
+import { type ProfileCardErrorType } from '../types';
 
 type Props = {
-  reload: Function,
-  errorType: ProfileCardErrorType,
+  reload?: Function,
+  errorType?: ProfileCardErrorType,
 };
 
 export default class ErrorMessage extends PureComponent<Props> {
@@ -40,9 +40,9 @@ export default class ErrorMessage extends PureComponent<Props> {
     ) : null;
 
   renderErrorContent() {
-    const { reason } = this.props.errorType;
+    const { errorType = {} } = this.props;
 
-    switch (reason) {
+    switch (errorType.reason) {
       case 'NotFound':
         return this.renderNotFound();
 

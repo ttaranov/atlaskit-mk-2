@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node as ReactNode } from 'react';
 import IconLocation from '@atlaskit/icon/glyph/location';
 import IconRecent from '@atlaskit/icon/glyph/recent';
 import IconMention from '@atlaskit/icon/glyph/mention';
@@ -25,16 +25,20 @@ const icons = {
 
 type Props = {
   icon: string,
-  children: React.ReactElement,
+  children?: ReactNode,
 };
 
 export default class IconLabel extends PureComponent<Props> {
+  static defaultProps = {
+    icon: '',
+  };
+
   render() {
     if (!this.props.children) {
       return null;
     }
 
-    const IconElement = icons[this.props.icon];
+    const IconElement = this.props.icon && icons[this.props.icon];
     const displayIcon = IconElement ? (
       <IconElement label={`icon ${this.props.icon}`} />
     ) : null;

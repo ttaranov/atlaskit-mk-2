@@ -31,7 +31,7 @@ describe('Profilecard', () => {
       expect(client.config.url).toEqual(clientUrl);
       expect(client.cache).not.toEqual(null);
       expect(client.cache.limit).toEqual(clientCacheSize);
-      expect(client.cacheMaxAge).toEqual(clientCacheMaxAge);
+      expect(client.config.cacheMaxAge).toEqual(clientCacheMaxAge);
     });
 
     it('should cap the cache at 30 days, even if you set a longer one', () => {
@@ -42,7 +42,7 @@ describe('Profilecard', () => {
         cacheMaxAge: 40 * 24 * 60 * 60 * 1000,
       });
 
-      expect(client.cacheMaxAge).toEqual(30 * 24 * 60 * 60 * 1000);
+      expect(client.config.cacheMaxAge).toEqual(30 * 24 * 60 * 60 * 1000);
     });
 
     describe('LRU Cache', () => {

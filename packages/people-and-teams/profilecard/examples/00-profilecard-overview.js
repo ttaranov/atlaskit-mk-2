@@ -37,10 +37,22 @@ const fakeProfileData = {
   ],
 };
 
-const fakeData = (data = {}) => ({
-  ...fakeProfileData,
-  ...data,
-});
+const fakeData = (data = {}) => {
+  const newData = {
+    ...fakeProfileData,
+    ...data,
+  };
+
+  // filter out null values from fake data object
+  return Object.keys(newData)
+    .filter(key => Boolean(newData[key]))
+    .reduce((result, item) => {
+      return {
+        ...result,
+        [item]: newData[item],
+      };
+    }, {});
+};
 
 const bestCaseProfile = fakeData();
 
@@ -119,7 +131,7 @@ export default function Example() {
       </Section>
       <Section>
         <h4>Alternate actions</h4>
-        <AkProfilecard {...fakeData({ actions: actions })} />
+        <AkProfilecard {...fakeData({ actions })} />
       </Section>
     </MainStage>
   );

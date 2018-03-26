@@ -34,6 +34,7 @@ export default function Example() {
             actions={[
               {
                 label: 'View profile',
+                id: 'view-profile',
                 callback: () => {},
               },
             ]}
@@ -56,6 +57,7 @@ export default function Example() {
             actions={[
               {
                 label: 'View profile',
+                id: 'view-profile',
                 callback: () => {},
               },
             ]}

@@ -1,9 +1,14 @@
 // @flow
-export type PresenceTypes = '' | 'Available' | 'Busy' | 'Away' | 'Focused';
+export type PresenceTypes =
+  | 'none'
+  | 'available'
+  | 'busy'
+  | 'unavailable'
+  | 'focus';
 
 export type ProfileCardAction = {
-  callback: Function,
-  shouldRender: Function,
+  callback?: Function,
+  shouldRender?: Function,
   id: string,
   label: string,
 };
@@ -28,4 +33,10 @@ export type ProfilecardTriggerPosition =
 
 export type ProfileCardErrorType = {
   reason: 'default' | 'NotFound',
+};
+
+export type AkProfileClientConfig = {
+  url: string,
+  cacheSize?: number,
+  cacheMaxAge?: number,
 };

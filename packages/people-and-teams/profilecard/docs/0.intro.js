@@ -62,7 +62,7 @@ export default md`
   import { AkProfileClient } from '@atlaskit/profilecard';
 
   const getProfileDataFromSomewhereElse = (url, cloudId, userId) => {
-    const fetchUrl = \`${url}?userId=${options.userId}\`;
+    const fetchUrl = 'https://someservice.com/fetchuser?userId=' + userId;
 
     return fetch(fetchUrl, {
       method: 'GET',

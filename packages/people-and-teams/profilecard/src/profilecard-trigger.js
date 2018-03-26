@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Element as ReactElement } from 'react';
 import AkLayer from '@atlaskit/layer';
 
 import PositionWrapper from './components/PositionWrapper';
@@ -8,23 +8,23 @@ import AkProfilecardResourced from './profilecard-resourced';
 
 import { AnimationWrapper } from './styled/Trigger';
 
-import {
+import type {
   ProfileCardAction,
   ProfilecardTriggerPosition,
   ProfileClient,
-} from '../types';
+} from './types';
 
 const AkLayerWithOuterListeners = withOuterListeners(AkLayer);
 
 type Props = {
-  children: React.ReactElement,
+  children: ReactElement<*>,
   position: ProfilecardTriggerPosition,
   userId: string,
   cloudId: string,
   actions: ProfileCardAction[],
   resourceClient: ProfileClient,
   trigger: 'click' | 'hover',
-  analytics: Function,
+  analytics?: Function,
 };
 
 type State = {
@@ -33,8 +33,10 @@ type State = {
 };
 
 export default class ProfilecardTrigger extends PureComponent<Props, State> {
-  showDelay = 500;
-  hideDelay = 500;
+  showDelay: number = 500;
+  hideDelay: number = 500;
+  showTimer: any;
+  hideTimer: any;
 
   static defaultProps = {
     position: 'top left',
@@ -47,6 +49,7 @@ export default class ProfilecardTrigger extends PureComponent<Props, State> {
     isFlipped: false,
   };
 
+  // $FlowFixMe
   handleLayerFlipChange = ({ flipped }) => {
     this.setState({ isFlipped: flipped });
   };

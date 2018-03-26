@@ -52,7 +52,7 @@ const KEYFRAMES_FLIPPED = {
   top: KEYFRAMES.bottom,
 };
 
-export const getKeyframeName = props => {
+export const getKeyframeName = (props: any) => {
   const { position, isFlipped } = props;
   const mainPosition = position.split(' ')[0];
 

@@ -7,7 +7,7 @@ type Props = {
   handleEscapeKeydown: Function,
 };
 
-export default function withOuterListeners(Component) {
+export default function withOuterListeners(Component: any) {
   return class WithOutsideClick extends PureComponent<Props> {
     componentDidMount() {
       if (this.props.handleClickOutside) {
@@ -29,7 +29,7 @@ export default function withOuterListeners(Component) {
       }
     }
 
-    handleClick = evt => {
+    handleClick = (evt: any) => {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
 
       if (
@@ -40,7 +40,7 @@ export default function withOuterListeners(Component) {
       }
     };
 
-    handleKeydown = evt => {
+    handleKeydown = (evt: any) => {
       if (evt.code === 'Escape') {
         this.props.handleEscapeKeydown();
       }

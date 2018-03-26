@@ -3,20 +3,24 @@ import React, { PureComponent } from 'react';
 
 import AkProfilecardStatic from './profilecard';
 
-import { ProfileCardAction, ProfileClient } from '../types';
+import type {
+  ProfileCardAction,
+  ProfileClient,
+  ProfileCardErrorType,
+} from './types';
 
 type Props = {
   userId: string,
   cloudId: string,
-  actions: ProfileCardAction[],
+  actions?: ProfileCardAction[],
   resourceClient: ProfileClient,
-  analytics: Function,
+  analytics?: Function,
 };
 
 type State = {
   isLoading: boolean,
   hasError: boolean,
-  error: any,
+  error: ?ProfileCardErrorType,
   data: any,
 };
 
@@ -27,7 +31,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
 
   _isMounted: boolean;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this._isMounted = false;
   }
@@ -44,7 +48,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
     this.clientFetchProfile();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (
       this.props.userId !== prevProps.userId ||
       this.props.cloudId !== prevProps.cloudId
@@ -75,7 +79,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
       .catch(err => this.handleClientError(err));
   };
 
-  handleClientSuccess(res) {
+  handleClientSuccess(res: any) {
     if (!this._isMounted) {
       return;
     }
@@ -87,7 +91,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
     });
   }
 
-  handleClientError(err) {
+  handleClientError(err: any) {
     if (!this._isMounted) {
       return;
     }
@@ -98,8 +102,9 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
     });
   }
 
-  filterActions() {
-    return this.props.actions.filter(action => {
+  filterActions(): ProfileCardAction[] {
+    const actions = this.props.actions || [];
+    return actions.filter(action => {
       if (!action.shouldRender) {
         return true;
       } else if (typeof action.shouldRender !== 'function') {
@@ -120,6 +125,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
       ...this.state.data,
     };
 
+    // $FlowFixMe
     return <AkProfilecardStatic {...newProps} actions={this.filterActions()} />;
   }
 }

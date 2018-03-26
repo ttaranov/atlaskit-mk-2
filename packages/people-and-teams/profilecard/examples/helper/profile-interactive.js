@@ -6,6 +6,8 @@ import { AtlasKitThemeProvider, colors, themed } from '@atlaskit/theme';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { AkProfilecard } from '../../src';
 
+import type { PresenceTypes } from '../../src/types';
+
 const { profiles } = profilecardUtils;
 
 const StoryWrapper = styled.div`
@@ -35,7 +37,38 @@ const getTimeString = showWeekday => {
   return showWeekday ? 'Thu 9:56am' : '9:56am';
 };
 
-export default class ProfilecardInteractive extends Component {
+type Props = {};
+
+type State = {
+  avatarUrl: string,
+  email: string,
+  presence: PresenceTypes,
+  fullName: string,
+  nickname: string,
+  meta: string,
+  location: string,
+  timeString: string,
+
+  isBot: boolean,
+  isActive: boolean,
+  isCensored: boolean,
+
+  hasDarkTheme: boolean,
+  hasWeekday: boolean,
+  hasAvatar: boolean,
+  hasMeta: boolean,
+  hasLocation: boolean,
+  hasTime: boolean,
+  hasLongName: boolean,
+  hasLongRole: boolean,
+  hasAltActions: boolean,
+  hasNoActions: boolean,
+  hasLoadingState: boolean,
+  hasErrorState: boolean,
+  hasLongPresenceMessage: string,
+};
+
+export default class ProfilecardInteractive extends Component<Props, State> {
   state = {
     avatarUrl: profiles[4].User.avatarUrl,
     email: 'nlindsey@example.com',
@@ -73,7 +106,7 @@ export default class ProfilecardInteractive extends Component {
     },
   ];
 
-  createCheckboxBooleanAttribute(attribute) {
+  createCheckboxBooleanAttribute(attribute: string) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
@@ -90,13 +123,14 @@ export default class ProfilecardInteractive extends Component {
     );
   }
 
-  createRadioPresenceAttribute(attribute) {
+  createRadioPresenceAttribute(attribute: string) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           checked={this.state.presence === attribute}
           id={id}
+          // $FlowFixMe
           onChange={() => this.setState({ presence: attribute })}
           type="radio"
         />
@@ -131,7 +165,6 @@ export default class ProfilecardInteractive extends Component {
               isActive={this.state.isActive}
               isCensored={this.state.isCensored}
               avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
-              companyName={this.state.company}
               email={this.state.email}
               fullName={
                 this.state.hasLongName

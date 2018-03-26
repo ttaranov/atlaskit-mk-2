@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node as ReactNode } from 'react';
 import styled from 'styled-components';
 import {
   fontFamily,
@@ -25,7 +25,7 @@ const CardAnimationWrapper = styled.div`
 `;
 
 type Props = {
-  children: React.ReactElement,
+  children: ReactNode,
 };
 
 type State = {
@@ -36,6 +36,8 @@ export default class HeightTransitionWrapper extends PureComponent<
   Props,
   State,
 > {
+  ref: any;
+
   state = {
     height: 'auto',
   };
@@ -49,7 +51,7 @@ export default class HeightTransitionWrapper extends PureComponent<
   }
 
   // eslint-disable-next-line class-methods-use-this
-  preventDefault(event) {
+  preventDefault(event: SyntheticEvent<>) {
     event.persist();
     event.preventDefault();
   }

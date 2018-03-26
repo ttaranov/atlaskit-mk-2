@@ -10,11 +10,11 @@ import HeightTransitionWrapper from './components/HeightTransitionWrapper';
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
-import {
+import type {
   ProfileCardErrorType,
   PresenceTypes,
   ProfileCardAction,
-} from '../types';
+} from './types';
 
 import {
   CardContainer,
@@ -31,27 +31,27 @@ import {
 } from './styled/Card';
 
 type Props = {
-  isCensored: boolean,
-  isActive: boolean,
-  isBot: boolean,
-  avatarUrl: string,
-  fullName: string,
-  meta: string,
-  nickname: string,
-  email: string,
-  location: string,
-  timestring: string,
-  presence: PresenceTypes,
-  actions: ProfileCardAction[],
-  isLoading: boolean,
-  hasError: boolean,
-  errorType: ProfileCardErrorType,
-  clientFetchProfile: Function,
-  analytics: Function,
-  presenceMessage: string,
+  isCensored?: boolean,
+  isActive?: boolean,
+  isBot?: boolean,
+  avatarUrl?: string,
+  fullName?: string,
+  meta?: string,
+  nickname?: string,
+  email?: string,
+  location?: string,
+  timestring?: string,
+  presence?: PresenceTypes,
+  actions?: ProfileCardAction[],
+  isLoading?: boolean,
+  hasError?: boolean,
+  errorType?: ProfileCardErrorType,
+  clientFetchProfile?: Function,
+  analytics?: Function,
+  presenceMessage?: string,
 };
 
-export default class Profilecard extends PureComponent<Props> {
+export default class Profilecard extends PureComponent<Props, void> {
   static defaultProps = {
     isCurrentUser: false,
     isCensored: false,
@@ -63,53 +63,72 @@ export default class Profilecard extends PureComponent<Props> {
     isLoading: false,
     hasError: false,
     analytics: () => {},
+    clientFetchProfile: () => {},
     presenceMessage: '',
   };
 
-  constructor(options) {
-    super(options);
+  _timeOpen: any;
+  clientFetchProfile: Function;
+
+  constructor(props: Props) {
+    super(props);
 
     this._timeOpen = null;
 
-    this.clientFetchProfile = (...args) => {
-      this.props.analytics('profile-card.reload', {});
-      this.props.clientFetchProfile(...args);
+    this.clientFetchProfile = (...args: any) => {
+      this.callAnalytics('profile-card.reload', {});
+      this.callClientFetchProfile(...args);
     };
   }
 
+  callClientFetchProfile = (...args: any) => {
+    if (this.props.clientFetchProfile) {
+      this.props.clientFetchProfile(...args);
+    }
+  };
+
+  callAnalytics = (id: string, options: any) => {
+    if (this.props.analytics) {
+      this.props.analytics(id, options);
+    }
+  };
+
   componentDidMount() {
     this._timeOpen = Date.now();
-    this.props.analytics('profile-card.view', {});
+    this.callAnalytics('profile-card.view', {});
   }
 
-  _durationSince = from => {
+  _durationSince = (from: number) => {
     const fromParsed = parseInt(from, 10) || 0;
     return fromParsed > 0 ? Date.now() - fromParsed : null;
   };
 
   renderActionsButtons() {
-    if (this.props.actions.length === 0) {
+    if (this.props.actions && this.props.actions.length === 0) {
       return null;
     }
 
     return (
       <ActionButtonGroup>
-        {this.props.actions.map((action, idx) => (
-          <AkButton
-            appearance={idx === 0 ? 'default' : 'subtle'}
-            compact
-            key={action.label}
-            onClick={(...args) => {
-              this.props.analytics('profile-card.click', {
-                id: action.id || null,
-                duration: this._durationSince(this._timeOpen),
-              });
-              action.callback(...args);
-            }}
-          >
-            {action.label}
-          </AkButton>
-        ))}
+        {this.props.actions &&
+          this.props.actions.map((action, idx) => (
+            <AkButton
+              appearance={idx === 0 ? 'default' : 'subtle'}
+              compact
+              key={action.label}
+              onClick={(...args) => {
+                this.callAnalytics('profile-card.click', {
+                  id: action.id || null,
+                  duration: this._durationSince(this._timeOpen),
+                });
+                if (action.callback) {
+                  action.callback(...args);
+                }
+              }}
+            >
+              {action.label}
+            </AkButton>
+          ))}
       </ActionButtonGroup>
     );
   }
@@ -124,7 +143,7 @@ export default class Profilecard extends PureComponent<Props> {
   }
 
   renderCardDetailsDefault() {
-    const validPresence = presences[this.props.presence];
+    const validPresence = presences[this.props.presence || 'none'];
 
     return (
       <DetailsGroup>
@@ -191,7 +210,7 @@ export default class Profilecard extends PureComponent<Props> {
   }
 
   renderProfilecard() {
-    this.props.analytics('profile-card.loaded', {
+    this.callAnalytics('profile-card.loaded', {
       duration: this._durationSince(this._timeOpen),
     });
 
@@ -217,7 +236,7 @@ export default class Profilecard extends PureComponent<Props> {
     let cardContent = null;
 
     if (this.props.hasError) {
-      this.props.analytics('profile-card.error', {});
+      this.callAnalytics('profile-card.error', {});
 
       cardContent = this.renderErrorMessage();
     } else if (this.props.isLoading) {

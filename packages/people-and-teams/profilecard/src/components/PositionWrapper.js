@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Element as ReactElement } from 'react';
 import styled from 'styled-components';
 
 const positionStyles = {
@@ -23,7 +23,7 @@ const ContainerDirection = styled.div`
 `;
 
 type Props = {
-  children: React.ReactElement,
+  children: ReactElement<*>,
   position: string,
 };
 

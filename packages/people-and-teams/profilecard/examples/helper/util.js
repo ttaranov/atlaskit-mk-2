@@ -8,7 +8,7 @@ const MockProfileClient = getMockProfileClientUtil(
   modifyResponse,
 );
 
-export const getMockProfileClient = (cacheSize, cacheMaxAge) =>
+export const getMockProfileClient = (cacheSize: number, cacheMaxAge: number) =>
   new MockProfileClient({
     cacheSize,
     cacheMaxAge,
