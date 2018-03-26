@@ -174,7 +174,12 @@ function splitListItem(itemType) {
     if (grandParent.type !== itemType) {
       return false;
     }
-    if ($from.parent.content.size === 0 && !(grandParent.content.size === 0)) {
+    /** --> The following line changed from the original PM implementation to allow list additions with multiple paragraphs */
+    if (
+      grandParent.content.content.length <= 1 &&
+      $from.parent.content.size === 0 &&
+      !(grandParent.content.size === 0)
+    ) {
       // In an empty block. If this is a nested list, the wrapping
       // list item should be split. Otherwise, bail out and let next
       // command handle lifting.

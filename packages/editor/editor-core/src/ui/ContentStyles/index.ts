@@ -257,10 +257,8 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
-    li [layout='center'] {
-      > div {
-        margin: 0;
-      }
+    li .media-single {
+      margin: 0;
     }
 
     & [layout='full-width'] {
