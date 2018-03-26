@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.22
+- [patch] FEF-730 Update NodeViews DOM attributes on initial render. [0b8a0f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b8a0f8)
+
 ## 65.1.21
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
