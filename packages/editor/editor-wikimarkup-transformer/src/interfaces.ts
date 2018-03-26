@@ -63,3 +63,8 @@ export interface RichInterval {
   text: string;
   content: PMNode[];
 }
+
+export interface TextMarkElement {
+  name: TextEffect;
+  grep: string;
+}

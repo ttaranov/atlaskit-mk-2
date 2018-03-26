@@ -12,8 +12,8 @@ import { isSpecialMacro } from './special';
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
 const HORIZONTAL_RULE = '----';
-
 const NEWLINE = '\n';
+const DOUBLE_BACKSLASH = '\\\\';
 
 export default class AbstractTree {
   private schema: Schema;
@@ -54,10 +54,14 @@ export default class AbstractTree {
       textColor,
       underline,
     } = this.schema.marks;
-    const intervals = getResolvedTextIntervals(text);
 
-    return intervals.map(({ effects, text }) => {
-      const marks: Mark[] = effects.map(({ name, attrs }) => {
+    const intervals = getResolvedTextIntervals(text);
+    const output: PMNode[] = [];
+
+    for (const { effects, text } of intervals) {
+      const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
+
+      const marks = effects.map(({ name, attrs }) => {
         switch (name) {
           case 'color':
             return textColor.create(attrs);
@@ -90,8 +94,19 @@ export default class AbstractTree {
       // for instance "code" cannot be used with "bold" or "textColor"
       // addToSet() takes care of these rules
       const marksSet = marks.length ? marks[0].addToSet(marks.slice(1)) : [];
-      return this.schema.text(text, marksSet);
-    });
+
+      textWithLineBreaks.forEach((chunk, i) => {
+        const textNode = this.schema.text(text, marksSet);
+        output.push(textNode);
+
+        if (i + 1 < textWithLineBreaks.length) {
+          const hardBreakNode = this.schema.nodes.hardBreak.createChecked();
+          output.push(hardBreakNode);
+        }
+      });
+    }
+
+    return output;
   }
 
   /**
@@ -188,7 +203,7 @@ export default class AbstractTree {
   /**
    * Parse text which doesn't contain macros
    */
-  private getTextNodes(str: string, treatChildrenAsText): PMNode[] {
+  private getTextNodes(str: string, treatChildrenAsText: boolean): PMNode[] {
     const { blockquote, heading, paragraph, rule } = this.schema.nodes;
     const output: PMNode[] = [];
 

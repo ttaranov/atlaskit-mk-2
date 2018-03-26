@@ -1,13 +1,8 @@
 import * as assert from 'assert';
 
-import { MatchPosition, TextEffect, TextMatch } from '../interfaces';
+import { MatchPosition, TextMarkElement, TextMatch } from '../interfaces';
 import { getEditorColor } from './color';
 import { findMacros } from './macros';
-
-interface TextMarkElement {
-  name: TextEffect;
-  grep: string;
-}
 
 const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
   { name: 'strong', grep: '*' },
