@@ -4,7 +4,7 @@ import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel, ObjectUrl } from './domain';
-import { addAuthTokenToUrl } from './util';
+import { constructAuthTokenUrl } from './util';
 
 export type Props = {
   onClose?: () => void;
@@ -130,7 +130,7 @@ export class MediaViewer extends React.Component<Props, State> {
 async function handleVideoEvent(fileItem: FileItem, context: Context, setState: (args: Object) => void, collectionName?: string) {
   const videoArtifactUrl = getVideoArtifactUrl(fileItem, true); // HD for now.
   if (videoArtifactUrl) {
-    const objectUrl = await addAuthTokenToUrl(videoArtifactUrl, context, collectionName);
+    const objectUrl = await constructAuthTokenUrl(videoArtifactUrl, context, collectionName);
     setState({
       previewData: {
         status: 'SUCCESSFUL',

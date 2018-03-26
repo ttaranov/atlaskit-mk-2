@@ -5,6 +5,7 @@ import {
   createStorybookContext,
   imageFileId,
   videoFileId,
+  docFileId,
   defaultCollectionName
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
@@ -14,6 +15,12 @@ const context = createStorybookContext();
 const imageItem = {
   type: 'file' as MediaItemType,
   id: imageFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const docItem = {
+  type: 'file' as MediaItemType,
+  id: docFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -38,6 +45,9 @@ export default class Example extends React.Component<{}, State> {
         </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
           Preview a video item
+        </Button>
+        <Button onClick={() => this.setState({ selectedItem: docItem })}>
+          Preview a doc item
         </Button>
 
         {this.state.selectedItem && (
