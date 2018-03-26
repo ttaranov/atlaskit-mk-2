@@ -1,4 +1,4 @@
-import { MediaDataUriService } from '../../src/services/dataUriService';
+import { MediaBlobService } from '../../src/services/blobService';
 import { AuthProvider } from '../../src/auth';
 
 const clientId = 'some-client-id';
@@ -6,37 +6,37 @@ const collectionName = 'some-collection-name';
 const token = 'some-token';
 const serviceHost = 'some-service-host';
 
-describe('MediaDataUriService', () => {
+describe('MediaBlobService', () => {
   const authProvider: AuthProvider = () =>
     Promise.resolve({
       token: token,
       clientId: clientId,
     });
-  const service = new MediaDataUriService(
+  const service = new MediaBlobService(
     authProvider,
     serviceHost,
     collectionName,
   );
 
-  describe('fetchImageDataUri()', () => {
+  describe('fetchImageBlob()', () => {
     it('should allow animation by default', () => {
-      const fetchSomeDataUriSpy = jest.fn();
-      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      service.fetchSomeBlob = fetchSomeBlobSpy;
 
-      service.fetchImageDataUri(
+      service.fetchImageBlob(
         { type: 'file', details: {} },
         { width: 100, height: 100 },
       );
 
-      let params = fetchSomeDataUriSpy.mock.calls[0][1];
+      let params = fetchSomeBlobSpy.mock.calls[0][1];
       expect(params.allowAnimated).toBe(true);
     });
 
     it('should allow consumers to disallow animation', () => {
-      const fetchSomeDataUriSpy = jest.fn();
-      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      service.fetchSomeBlob = fetchSomeBlobSpy;
 
-      service.fetchImageDataUri(
+      service.fetchImageBlob(
         { type: 'file', details: {} },
         {
           width: 100,
@@ -45,27 +45,27 @@ describe('MediaDataUriService', () => {
         },
       );
 
-      let params = fetchSomeDataUriSpy.mock.calls[0][1];
+      let params = fetchSomeBlobSpy.mock.calls[0][1];
       expect(params.allowAnimated).toBe(false);
     });
 
     it('should use "crop" resize mode as default', () => {
-      const fetchSomeDataUriSpy = jest.fn();
-      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      service.fetchSomeBlob = fetchSomeBlobSpy;
 
-      service.fetchImageDataUri(
+      service.fetchImageBlob(
         { type: 'file', details: {} },
         { width: 100, height: 100 },
       );
 
-      expect(fetchSomeDataUriSpy.mock.calls[0][1].mode).toBe('crop');
+      expect(fetchSomeBlobSpy.mock.calls[0][1].mode).toBe('crop');
     });
 
     it('should allow consumers to specify a resize mode', () => {
-      const fetchSomeDataUriSpy = jest.fn();
-      service.fetchSomeDataUri = fetchSomeDataUriSpy;
+      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      service.fetchSomeBlob = fetchSomeBlobSpy;
 
-      service.fetchImageDataUri(
+      service.fetchImageBlob(
         { type: 'file', details: {} },
         {
           width: 100,
@@ -74,7 +74,7 @@ describe('MediaDataUriService', () => {
         },
       );
 
-      expect(fetchSomeDataUriSpy.mock.calls[0][1].mode).toBe('full-fit');
+      expect(fetchSomeBlobSpy.mock.calls[0][1].mode).toBe('full-fit');
     });
   });
 });
