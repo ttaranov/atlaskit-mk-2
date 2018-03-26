@@ -100,7 +100,7 @@ export class MediaViewer extends React.Component<Props, State> {
               case 'video':
                 return await this.populateVideoPreviewData(mediaItem, context, collectionName);
               default:
-                throw new Error('not implemented');
+                return await this.notSupportedPreview(mediaItem);
             }
           }
         }
@@ -124,6 +124,15 @@ export class MediaViewer extends React.Component<Props, State> {
       this.subscription.unsubscribe();
       this.subscription = null;
     }
+  }
+
+  private async notSupportedPreview(fileItem: FileItem) {
+    this.setState({
+      previewData: {
+        status: 'FAILED',
+        err: new Error(`not supported`)
+      }
+    });
   }
 
   private async populateVideoPreviewData(fileItem: FileItem, context: Context, collectionName?: string) {

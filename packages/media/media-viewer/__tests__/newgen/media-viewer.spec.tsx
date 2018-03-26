@@ -130,6 +130,31 @@ describe('<MediaViewer />', () => {
     });
   });
 
+  it('previews an error message when media type is not supported', async () => {
+    const { subject, el } = createFixture(identifier);
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        mediaType: 'doc',
+        processingStatus: 'succeeded'
+      } as any,
+    };
+
+    subject.next(item);
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).fileDetails.status === 'SUCCESSFUL';
+    }, 5);
+
+    expect(getModel(el)).toMatchObject({
+      previewData: {
+        status: 'FAILED',
+        err: new Error('not supported')
+      },
+    });
+  });
+
   it('assigns an object url when successful', async () => {
     const item: MediaItem = {
       type: 'file',
