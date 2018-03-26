@@ -44,7 +44,8 @@ const Consumer = () => <NameTag />;
 Our documentation is smart enough to figure out that a prop is only required
 when it is non-optional and has no default prop. Save yourself the extra work of
 having to null check optional props by making them required and adding them to
-`defaultProps`.
+`defaultProps`. For reference, [here](https://flow.org/en/docs/react/components/#toc-using-default-props)
+is the section in the Flow docs on optional props.
 
 ### Functional components
 
