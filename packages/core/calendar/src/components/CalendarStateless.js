@@ -4,15 +4,15 @@ import { Calendar } from 'calendar-base';
 import keycode from 'keycode';
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+// import {
+//   withAnalyticsEvents,
+//   withAnalyticsContext,
+//   createAndFireEvent,
+// } from '@atlaskit/analytics-next';
+// import {
+//   name as packageName,
+//   version as packageVersion,
+// } from '../../package.json';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
@@ -356,16 +356,18 @@ class CalendarStateless extends Component<Props> {
 
 export { CalendarStateless as CalendarStatelessBase };
 
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+export default CalendarStateless;
 
-export default withAnalyticsContext({
-  component: 'calendar',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onUpdate: createAndFireEventOnAtlaskit({
-      action: 'update',
-    }),
-  })(CalendarStateless),
-);
+// const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+// export default withAnalyticsContext({
+//   component: 'calendar',
+//   package: packageName,
+//   version: packageVersion,
+// })(
+//   withAnalyticsEvents({
+//     onUpdate: createAndFireEventOnAtlaskit({
+//       action: 'update',
+//     }),
+//   })(CalendarStateless),
+// );

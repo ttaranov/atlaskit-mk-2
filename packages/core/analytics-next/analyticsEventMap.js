@@ -99,6 +99,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onUpdate: 'update',
     },
     componentTestPath: 'calendar/src/components/__tests__/CalendarStateless.js',
+    refIssue: true,
   },
   {
     path: 'checkbox/src/CheckboxStateless.js',
@@ -325,6 +326,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onKeyDown: 'keydown',
     },
     componentTestPath: 'input/src/__tests__/index.js',
+    refIssue: true,
   },
   {
     path: 'item/src/components/Item.js',
@@ -417,6 +419,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     },
     componentTestPath: 'select/src/__tests__/Select.js',
     needsMountTest: true,
+    refIssue: true,
   },
   {
     path: 'single-select/src/components/StatelessSelect.js',

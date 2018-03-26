@@ -1,18 +1,18 @@
 // @flow
 import React, { Component } from 'react';
 import keyCode from 'keycode';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
+// import {
+//   withAnalyticsEvents,
+//   withAnalyticsContext,
+//   createAndFireEvent,
+// } from '@atlaskit/analytics-next';
 import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
+// import {
+//   name as packageName,
+//   version as packageVersion,
+// } from '../package.json';
 
 const common = `
   appearance: none;
@@ -129,20 +129,22 @@ class SingleLineTextInput extends Component<Props, {}> {
 
 export { SingleLineTextInput as SingleLineTextInputBase };
 
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+export default SingleLineTextInput;
 
-export default withAnalyticsContext({
-  component: 'input',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onConfirm: createAndFireEventOnAtlaskit({
-      action: 'confirm',
-    }),
+// const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-    onKeyDown: createAndFireEventOnAtlaskit({
-      action: 'keydown',
-    }),
-  })(SingleLineTextInput),
-);
+// export default withAnalyticsContext({
+//   component: 'input',
+//   package: packageName,
+//   version: packageVersion,
+// })(
+//   withAnalyticsEvents({
+//     onConfirm: createAndFireEventOnAtlaskit({
+//       action: 'confirm',
+//     }),
+
+//     onKeyDown: createAndFireEventOnAtlaskit({
+//       action: 'keydown',
+//     }),
+//   })(SingleLineTextInput),
+// );
