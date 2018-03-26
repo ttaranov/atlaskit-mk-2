@@ -104,6 +104,7 @@ describe('BreadcrumbsItem', () => {
           iconAfter?: any,
           iconBefore?: any,
           children: any,
+          createAnalyticsEvent?: Function,
           to: string,
         };
         const Link = (props: LinkProps) => {
