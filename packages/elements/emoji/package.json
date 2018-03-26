@@ -9,6 +9,7 @@
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "atlaskit:src": "src/index.ts",
+  "sideEffects": false,
   "files": [
     "dist/es5/**/*.js",
     "dist/es5/**/*.d.ts",
