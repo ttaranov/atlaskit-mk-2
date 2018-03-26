@@ -96,9 +96,9 @@ export class MediaViewer extends React.Component<Props, State> {
 
             switch (mediaItem.details.mediaType) {
               case 'image':
-                return await handleImageEvent(mediaItem, context, this.setState.bind(this));
+                return await this.populateImagePreviewData(mediaItem, context);
               case 'video':
-                return await handleVideoEvent(mediaItem, context, this.setState.bind(this), collectionName);
+                return await this.populateVideoPreviewData(mediaItem, context, collectionName);
               default:
                 throw new Error('not implemented');
             }
@@ -125,28 +125,53 @@ export class MediaViewer extends React.Component<Props, State> {
       this.subscription = null;
     }
   }
-}
 
-async function handleVideoEvent(fileItem: FileItem, context: Context, setState: (args: Object) => void, collectionName?: string) {
-  const videoArtifactUrl = getVideoArtifactUrl(fileItem, true); // HD for now.
-  if (videoArtifactUrl) {
-    const objectUrl = await constructAuthTokenUrl(videoArtifactUrl, context, collectionName);
-    setState({
-      previewData: {
-        status: 'SUCCESSFUL',
-        data: {
-          viewer: 'VIDEO',
-          objectUrl
+  private async populateVideoPreviewData(fileItem: FileItem, context: Context, collectionName?: string) {
+    const videoArtifactUrl = getVideoArtifactUrl(fileItem, true); // HD for now.
+    if (videoArtifactUrl) {
+      const objectUrl = await constructAuthTokenUrl(videoArtifactUrl, context, collectionName);
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'VIDEO',
+            objectUrl
+          }
         }
-      }
-    });
-  } else {
-    setState({
-      previewData: {
-        status: 'FAILED',
-        err: new Error('no video artifacts found for this file')
-      }
-    });
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file')
+        }
+      });
+    }
+  }
+
+  private async populateImagePreviewData (fileItem: MediaItem, context: Context) {
+    try {
+      // TODO:
+      // - 1) MSW-530: revoke object URL
+      // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
+      const objectUrl = await getImageObjectUrl(fileItem, context, 800, 600);
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'IMAGE',
+            objectUrl,
+          }
+        }
+      });
+    } catch (err) {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err
+        }
+      });
+    }
   }
 }
 
@@ -156,31 +181,6 @@ function getVideoArtifactUrl(fileItem: FileItem, hd: boolean) {
     && fileItem.details.artifacts
     && fileItem.details.artifacts[artifact]
     && fileItem.details.artifacts[artifact].url;
-}
-
-async function handleImageEvent(fileItem: MediaItem, context: Context, setState: (args: Object) => void) {
-  try {
-    // TODO:
-    // - 1) MSW-530: revoke object URL
-    // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
-    const objectUrl = await getImageObjectUrl(fileItem, context, 800, 600);
-    setState({
-      previewData: {
-        status: 'SUCCESSFUL',
-        data: {
-          viewer: 'IMAGE',
-          objectUrl,
-        }
-      }
-    });
-  } catch (err) {
-    setState({
-      previewData: {
-        status: 'FAILED',
-        err
-      }
-    });
-  }
 }
 
 async function getImageObjectUrl(
