@@ -7,23 +7,19 @@ import React, {
 } from 'react';
 
 import AnalyticsContext from './AnalyticsContext';
-import type { ObjectType } from './types';
 
 type WithAnalyticsContextProps = {
-  analyticsContext?: ObjectType,
+  analyticsContext?: {},
 };
 
 export default function withAnalyticsContext<
-  Props: {},
-  PropsWithAnalyticsContext: Props & WithAnalyticsContextProps,
-  C: ComponentType<Props>,
+  InnerComponent: ComponentType<*>,
+  ExternalProps: ElementConfig<InnerComponent> & WithAnalyticsContextProps,
 >(
-  defaultData?: ObjectType = {},
-): (
-  WrappedComponent: C,
-) => ComponentType<ElementConfig<C> & PropsWithAnalyticsContext> {
+  defaultData?: {} = {},
+): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent =>
-    class WithAnalyticsContext extends Component<PropsWithAnalyticsContext> {
+    class WithAnalyticsContext extends Component<*> {
       static displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 

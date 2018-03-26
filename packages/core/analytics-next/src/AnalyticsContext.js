@@ -3,8 +3,6 @@
 import { Children, Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 
-import type { ObjectType } from './types';
-
 const ContextTypes = {
   getAtlaskitAnalyticsContext: PropTypes.func,
 };
@@ -14,7 +12,7 @@ type Props = {
   children: Node,
   /** Arbitrary data. Any events created below this component in the tree will
    * have this added as an item in their context array. */
-  data: ObjectType,
+  data: {},
 };
 
 export default class AnalyticsContext extends Component<Props> {
