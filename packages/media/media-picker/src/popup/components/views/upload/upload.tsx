@@ -309,7 +309,6 @@ export class StatelessUploadView extends Component<
             id: id,
             collectionName: recentsCollection,
           }}
-          isLazy={false}
           dimensions={cardDimension}
           selectable={true}
           selected={selected}
