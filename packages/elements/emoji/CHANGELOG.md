@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.1.22
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 31.1.21
 
 ## 31.1.20

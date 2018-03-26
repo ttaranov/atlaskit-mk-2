@@ -1,5 +1,9 @@
 # @atlaskit/avatar
 
+## 9.2.3
+- [patch] Remove dependency on @atlaskit/polyfill as it is not being used. [f0f9307](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0f9307)
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 9.2.2
 - [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
 

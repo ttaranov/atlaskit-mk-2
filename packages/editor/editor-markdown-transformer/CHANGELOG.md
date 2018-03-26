@@ -1,5 +1,9 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.10
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 0.2.9
 
 ## 0.2.8

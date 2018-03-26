@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 10.0.6
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 10.0.5
 
 ## 10.0.4

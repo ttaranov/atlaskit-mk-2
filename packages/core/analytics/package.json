@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "The AtlasKit Component Analytics Framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
