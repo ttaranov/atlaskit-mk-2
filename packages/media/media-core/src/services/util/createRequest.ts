@@ -6,8 +6,8 @@ import { Auth, isAsapBasedAuth, isClientBasedAuth } from '../../auth';
 export type ResponseType = 'json' | 'image';
 
 export type CreateRequestFunc = (requestOptions: RequestOptions) => Response;
-export type Response = {
-  response: Promise<any>;
+export type Response<R = any> = {
+  response: Promise<R>;
   cancel: (message?: string) => void;
 };
 

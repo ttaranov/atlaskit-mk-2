@@ -1,4 +1,7 @@
-import createRequest, { CreateRequestFunc } from './util/createRequest';
+import createRequest, {
+  CreateRequestFunc,
+  Response,
+} from './util/createRequest';
 import { MediaItem } from '../';
 import { AuthProvider } from '../auth';
 
@@ -13,10 +16,15 @@ export interface FetchImageOptions {
 
 export interface BlobService {
   fetchOriginalBlob(mediaItem: MediaItem): Promise<Blob>;
+  fetchOriginalBlobCancelable(mediaItem: MediaItem): Response<Blob>;
   fetchImageBlob(
     mediaItem: MediaItem,
     options: FetchImageOptions,
   ): Promise<Blob>;
+  fetchImageBlobCancelable(
+    mediaItem: MediaItem,
+    options: FetchImageOptions,
+  ): Response<Blob>;
 }
 
 export class MediaBlobService implements BlobService {
@@ -37,6 +45,10 @@ export class MediaBlobService implements BlobService {
   }
 
   fetchOriginalBlob(mediaItem: MediaItem): Promise<Blob> {
+    return this.fetchOriginalBlobCancelable(mediaItem).response;
+  }
+
+  fetchOriginalBlobCancelable(mediaItem: MediaItem): Response<Blob> {
     return this.fetchSomeBlob(`/file/${mediaItem.details.id}/binary`, {
       'max-age': 3600,
       collection: this.collectionName,
@@ -45,8 +57,15 @@ export class MediaBlobService implements BlobService {
 
   fetchImageBlob(
     mediaItem: MediaItem,
-    { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
+    options: FetchImageOptions,
   ): Promise<Blob> {
+    return this.fetchImageBlobCancelable(mediaItem, options).response;
+  }
+
+  fetchImageBlobCancelable(
+    mediaItem: MediaItem,
+    { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
+  ): Response<Blob> {
     return this.fetchSomeBlob(`/file/${mediaItem.details.id}/image`, {
       width,
       height,
@@ -58,11 +77,11 @@ export class MediaBlobService implements BlobService {
   }
 
   // this is not private just for testing
-  fetchSomeBlob(url: string, params: Object): Promise<Blob> {
+  fetchSomeBlob(url: string, params: Object): Response<Blob> {
     return this.request({
       url,
       params,
       responseType: 'image',
-    }).response;
+    });
   }
 }
