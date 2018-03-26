@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "8.4.1",
+  "version": "8.4.2",
   "description": "A React Component for displaying Tooltips",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/tooltips",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/tooltips",
   "files": [
     "dist"
   ],

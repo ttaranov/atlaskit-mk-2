@@ -1,14 +1,12 @@
 // @flow
 // eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 // eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
-const urlSelect = `${
-  global.__baseUrl__
-}/examples.html?groupId=core&packageId=select&exampleId=`;
-
+const urlSelect = getExampleUrl('core', 'select');
 const selectDefault = '.react-select__control';
 const selectMenu = '.react-select__menu';
 

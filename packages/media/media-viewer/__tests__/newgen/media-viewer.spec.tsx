@@ -3,11 +3,12 @@ import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import Blanket from '@atlaskit/blanket';
 import { MediaItem, MediaItemType, LinkItem } from '@atlaskit/media-core';
+import { waitUntil } from '@atlaskit/media-test-helpers';
 import { Stubs } from '../_stubs';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
 
-function createContext(subject) {
+function createContext(subject, blobService?) {
   const token = 'some-token';
   const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
@@ -20,17 +21,19 @@ function createContext(subject) {
     contextConfig,
     undefined,
     subject && Stubs.mediaItemProvider(subject),
+    blobService,
   ) as any;
 }
 
 function createFixture(identifier) {
   const subject = new Subject<MediaItem>();
-  const context = createContext(subject);
+  const blobService = Stubs.blobService();
+  const context = createContext(subject, blobService);
   const onClose = jest.fn();
   const el = mount(
     <MediaViewer data={identifier} context={context} onClose={onClose} />,
   );
-  return { subject, context, el, onClose };
+  return { blobService, subject, context, el, onClose };
 }
 
 function getModel(el) {
@@ -123,6 +126,50 @@ describe('<MediaViewer />', () => {
         status: 'FAILED',
       },
     });
+  });
+
+  it('assigns an object url when successful', async () => {
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+      },
+    };
+    const { subject, el } = createFixture(identifier);
+
+    subject.next(item);
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).previewData.status === 'SUCCESSFUL';
+    }, 5);
+
+    expect(getModel(el).previewData.data.objectUrl).toBeDefined();
+  });
+
+  it('should handle errors', async () => {
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+      },
+    };
+    const { blobService, subject, el } = createFixture(identifier);
+
+    blobService.fetchImageBlob.mockReturnValue(
+      Promise.reject(new Error('error')),
+    );
+
+    subject.next(item);
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).previewData.status === 'FAILED';
+    }, 5);
+
+    expect(getModel(el).previewData.err).toBeDefined();
   });
 
   it('should close Media Viewer on click', () => {

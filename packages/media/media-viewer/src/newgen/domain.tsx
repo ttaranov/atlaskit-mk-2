@@ -24,10 +24,19 @@ export type FileDetails = {
   mediaType: MediaType;
 };
 
+export type ObjectUrl = string;
+
+export type FilePreview = {
+  viewer: 'IMAGE';
+  objectUrl: ObjectUrl;
+};
+
 export type Model = {
   fileDetails: Outcome<FileDetails, Error>;
+  previewData: Outcome<FilePreview, Error>;
 };
 
 export const initialModel: Model = {
   fileDetails: { status: 'PENDING' },
+  previewData: { status: 'PENDING' },
 };

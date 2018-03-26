@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "8.1.4",
+  "version": "8.1.5",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,6 +8,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build:json-schema": "mkdir -p dist && cp -r json-schema dist",
     "generate:json-schema": "../../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./json-schema/v1/full.json"
@@ -22,10 +23,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/emoji": "^31.1.21",
+    "@atlaskit/emoji": "^31.1.22",
     "@atlaskit/icon": "^10.9.2",
-    "@atlaskit/media-card": "^25.1.2",
-    "@atlaskit/mention": "^9.2.1",
+    "@atlaskit/media-card": "^25.1.5",
+    "@atlaskit/mention": "^9.2.3",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
@@ -42,11 +43,11 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^15.0.0"
+    "@atlaskit/media-core": "^15.0.1"
   },
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^2.0.11",
-    "@atlaskit/media-core": "^15.0.0",
+    "@atlaskit/media-core": "^15.0.1",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
