@@ -1,7 +1,10 @@
 //@flow
 /* eslint-disable no-console */
-const RUN_ONLY = process.env.RUN_ONLY || 'all';
+const RUN_ONLY = process.env.RUN_ONLY;
 const INTEGRATION_TESTS = typeof process.env.INTEGRATION_TESTS !== 'undefined';
+const PARALLELIZE = process.env.PARALLELIZE;
+const STEP_COUNT = process.env.STEP_COUNT;
+const STEP_INDEX = process.env.STEP_INDEX;
 
 function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
@@ -14,7 +17,7 @@ function generateTestMatchGlob(packagePath) {
 let testMatchArr = [generateTestMatchGlob('**')];
 
 // If the RUN_ONLY variable is set, we parse the array and use that to generate the globs
-if (RUN_ONLY !== 'all') {
+if (RUN_ONLY) {
   // Workaround to avoid running integration tests currently
   const packagesToRun = JSON.parse(RUN_ONLY);
   testMatchArr = packagesToRun.map(generateTestMatchGlob);
@@ -29,6 +32,14 @@ if (RUN_ONLY !== 'all') {
     );
   }
 }
+
+/**
+ * Chunking.
+ * In CI we want to be able to split out tests into multiple parallel steps that can be run concurrently.
+ * The code below makes assumptions about **how** these tests are run as you need to pass in the STEP_COUNT
+ * and STEP_INDEX vars. For these to be accurate, all the parallel steps running at that point in time need to be
+ * jest steps (otherwise we will be splitting incorrectly and some tests wont run!)
+ */
 
 const config = {
   testMatch: testMatchArr,

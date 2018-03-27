@@ -30,45 +30,23 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Building dists
+            name: Running Jest 1 of 2 chunks
             script:
+              - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
               - yarn global add "bolt@^0.19.2"
               - bolt
-              - yarn build
-            caches:
-              - node
-        - step:
-            name: Lint + Typecheck
-            script:
-              - yarn global add "bolt@^0.19.2"
-              - bolt
-              - yarn lint
-              - yarn typecheck
-            caches:
-              - node
-        - step:
-            name: Testing
-            script:
-              # We do this git dance so that we can run test:changed which compares our branch against master
-              - git fetch origin master
-              - git checkout master # (master doesn't exist until we do this checkout)
-              - git checkout - # checks out the previous ref
-              - yarn global add "bolt@^0.19.2"
-              - bolt
-              - yarn test:changed
-            caches:
-              - node
-        - step:
-            name: Building website
-            script:
-              - apt-get -y update
-              - apt-get -y install zip
-              - yarn global add "bolt@^0.19.2"
-              - bolt
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
-              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
-            caches:
-              - node
+              - PARALLELIZE="true" yarn test
+        #     caches:
+        #       - node
+        # - step:
+        #     name: Running Jest  2 of 2 chunks
+        #     script:
+        #       - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
+        #       - yarn global add "bolt@^0.19.2"
+        #       - bolt
+        #       - PARALLELIZE="true" yarn test
+        #     caches:
+        #       - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
