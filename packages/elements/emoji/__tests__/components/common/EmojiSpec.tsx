@@ -5,7 +5,7 @@ import Tooltip from '@atlaskit/tooltip';
 
 import * as styles from '../../../src/components/common/styles';
 import Emoji from '../../../src/components/common/Emoji';
-import { spriteEmoji, imageEmoji } from '../../../src/support/test-data';
+import { spriteEmoji, imageEmoji } from '../../_test-data';
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {

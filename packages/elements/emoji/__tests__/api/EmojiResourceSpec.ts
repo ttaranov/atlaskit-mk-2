@@ -43,7 +43,7 @@ import {
   standardEmojis,
   standardServiceEmojis,
   thumbsupEmoji,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 import { alwaysPromise } from '../_test-util';
 import { convertMediaToImageRepresentation } from '../../src/type-helpers';

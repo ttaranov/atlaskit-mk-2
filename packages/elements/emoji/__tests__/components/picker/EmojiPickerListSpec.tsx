@@ -12,7 +12,7 @@ import {
   siteEmojiWtf,
   emojis as allEmojis,
   onRowsRenderedArgs,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 import { EmojiDescription } from '../../../src/types';
 import { CachingEmoji } from '../../../src/components/common/CachingEmoji';
 

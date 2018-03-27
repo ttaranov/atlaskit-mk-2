@@ -2,7 +2,7 @@ import * as React from 'react';
 import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
-import { getUsageClearEmojiResource } from '../src/support/story-data';
+import { getUsageClearEmojiResource } from '../example-helpers';
 import { UsageShowAndClearComponent } from '../example-helpers/demo-emoji-usage-components';
 
 class UsageShowingEmojiPickerTextInput extends UsageShowAndClearComponent {

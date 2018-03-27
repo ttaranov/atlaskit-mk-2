@@ -8,7 +8,7 @@ import {
   EmojiDescription,
   OptionalEmojiDescription,
 } from '../src/types';
-import { UsageClearEmojiResource } from '../src/support/MockEmojiResource';
+import { UsageClearEmojiResource } from '@atlaskit/util-data-test';
 import { localStoragePrefix } from '../src/constants';
 
 export interface EmojiUsageProps {

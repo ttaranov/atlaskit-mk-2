@@ -9,10 +9,7 @@ import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
 } from '../../../src/types';
-import {
-  imageEmoji,
-  generateSkinVariation,
-} from '../../../src/support/test-data';
+import { imageEmoji, generateSkinVariation } from '../../_test-data';
 import { analyticsEmojiPrefix } from '../../../src/constants';
 
 const baseHandEmoji: EmojiDescription = {

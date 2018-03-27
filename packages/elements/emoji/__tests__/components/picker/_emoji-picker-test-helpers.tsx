@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { MockEmojiResourceConfig } from '../../../src/support/support-types';
-import {
-  getEmojiResourcePromise,
-  newEmojiRepository,
-} from '../../../src/support/test-data';
+import { getEmojiResourcePromise, newEmojiRepository } from '../../_test-data';
 import EmojiPicker, { Props } from '../../../src/components/picker/EmojiPicker';
 import EmojiPickerComponent from '../../../src/components/picker/EmojiPickerComponent';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -32,7 +28,7 @@ export function setupPickerWithoutToneSelector(): Promise<
 
 export function setupPicker(
   props?: Props,
-  config?: MockEmojiResourceConfig,
+  config?,
 ): Promise<ReactWrapper<any, any>> {
   const pickerProps: Props = {
     ...props,

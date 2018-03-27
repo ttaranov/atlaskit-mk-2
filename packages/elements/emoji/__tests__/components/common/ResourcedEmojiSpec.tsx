@@ -10,12 +10,11 @@ import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import ResourcedEmoji from '../../../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../../../src/api/EmojiResource';
 
-import { MockEmojiResourceConfig } from '../../../src/support/support-types';
 import {
   evilburnsEmoji,
   grinEmoji,
   getEmojiResourcePromise,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 
 const findEmoji = component => component.update() && component.find(Emoji);
 const emojiVisible = component => findEmoji(component).length === 1;
@@ -145,7 +144,7 @@ describe('<ResourcedEmoji />', () => {
     let resolver;
     // @ts-ignore Unused var never read, should this be deleted?
     let resolverResult;
-    const config: MockEmojiResourceConfig = {
+    const config = {
       promiseBuilder: (result: EmojiDescription) => {
         resolverResult = result;
         return new Promise(resolve => {
@@ -173,7 +172,7 @@ describe('<ResourcedEmoji />', () => {
   it('placeholder while loading emoji', () => {
     let resolver;
     let resolverResult;
-    const config: MockEmojiResourceConfig = {
+    const config = {
       promiseBuilder: (result: EmojiDescription) => {
         resolverResult = result;
         return new Promise(resolve => {
@@ -208,7 +207,7 @@ describe('<ResourcedEmoji />', () => {
     let resolver;
     // @ts-ignore Unused var never read, should this be deleted?
     let resolverResult;
-    const config: MockEmojiResourceConfig = {
+    const config = {
       promiseBuilder: (result: EmojiDescription) => {
         resolverResult = result;
         return new Promise(resolve => {

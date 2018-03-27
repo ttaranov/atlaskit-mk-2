@@ -3,8 +3,8 @@ import * as React from 'react';
 import Layer from '@atlaskit/layer';
 
 import EmojiPicker from '../src/components/picker/EmojiPicker';
-import { UsageClearEmojiResource } from '../src/support/MockEmojiResource';
 import { UsageShowAndClearComponent } from './demo-emoji-usage-components';
+import { UsageClearEmojiResource } from '@atlaskit/util-data-test';
 
 export interface Props {
   emojiResource: UsageClearEmojiResource;
