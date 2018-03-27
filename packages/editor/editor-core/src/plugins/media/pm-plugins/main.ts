@@ -11,7 +11,7 @@ import {
   PluginKey,
   Transaction,
 } from 'prosemirror-state';
-import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
 import {
   copyPrivateMediaAttributes,
@@ -368,18 +368,12 @@ export class MediaPluginState {
       return;
     }
 
-    if (!(linkCreateContextInstance as Context).addLinkItem) {
-      linkCreateContextInstance = ContextFactory.create(
-        linkCreateContextInstance as ContextConfig,
-      );
-    }
-
     return insertLinks(
       this.view,
       this.stateManager,
       this.handleMediaState,
       this.linkRanges,
-      linkCreateContextInstance as Context,
+      linkCreateContextInstance,
       this.collectionFromProvider(),
     );
   };
@@ -585,7 +579,7 @@ export class MediaPluginState {
 
   private initPickers(
     uploadParams: UploadParams,
-    contextConfig: ContextConfig,
+    context: Context,
     Picker: typeof PickerFacade,
   ) {
     if (this.destroyed) {
@@ -598,15 +592,15 @@ export class MediaPluginState {
     if (!pickers.length) {
       const pickerFacadeConfig: PickerFacadeConfig = {
         uploadParams,
-        contextConfig,
+        context,
         stateManager,
         errorReporter,
       };
 
-      if (contextConfig.userAuthProvider) {
+      if (context.config.userAuthProvider) {
         pickers.push(
           (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-            userAuthProvider: contextConfig.userAuthProvider,
+            userAuthProvider: context.config.userAuthProvider,
           })),
         );
       } else {
@@ -670,7 +664,7 @@ export class MediaPluginState {
     );
   }
 
-  private handleMediaState = (state: MediaState) => {
+  private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'error':
         this.removeNodeById(state.id);
@@ -682,6 +676,10 @@ export class MediaPluginState {
         break;
 
       case 'processing':
+        if (state.thumbnail) {
+          // TODO: context.setLocalPreview(state.)
+        }
+        break;
       case 'ready':
         this.stateManager.off(state.id, this.handleMediaState);
         this.replaceTemporaryNode(state);
