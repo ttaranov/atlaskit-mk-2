@@ -16,7 +16,7 @@ export type ButtonAppearances =
 
 export type ButtonProps = {
   /** The base styling to apply to the button. */
-  appearance?: ButtonAppearances,
+  appearance: ButtonAppearances,
   /** Pass aria-controls to underlying html button. */
   ariaControls?: string,
   /** Pass aria-expanded to underlying html button. */
@@ -42,9 +42,9 @@ export type ButtonProps = {
   /** Provide a unique id to the button. */
   id?: string,
   /** Set if the button is disabled. */
-  isDisabled?: boolean,
+  isDisabled: boolean,
   /** Change the style to indicate the button is selected. */
-  isSelected?: boolean,
+  isSelected: boolean,
   /** Handler to be called on blur */
   onBlur?: (e: SyntheticEvent<>) => void,
   /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
@@ -52,15 +52,15 @@ export type ButtonProps = {
   /** Handler to be called on focus */
   onFocus?: (e: SyntheticEvent<>) => void,
   /** Set the amount of padding in the button. */
-  spacing?: 'compact' | 'default' | 'none',
+  spacing: 'compact' | 'default' | 'none',
   /** Assign specific tabIndex order to the underlying html button. */
   tabIndex?: number,
   /** Pass target down to a link within the button component, if a href is provided. */
   target?: string,
   /** Set whether it is a button or a form submission. */
-  type?: 'button' | 'submit',
+  type: 'button' | 'submit',
   /** Option to fit button width to its parent width */
-  shouldFitContainer?: boolean,
+  shouldFitContainer: boolean,
 };
 
 export type DerivedButtonProps = {

@@ -54,4 +54,6 @@ export const userCollectionFetch = (context: () => MockContext) => (
     fillInResponse(res, resdata);
     return res;
   }
+
+  return undefined;
 };

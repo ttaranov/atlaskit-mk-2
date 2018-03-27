@@ -1,4 +1,7 @@
-import RecentSearchClient, { RecentItem } from '../src/api/RecentSearchClient';
+import RecentSearchClient, {
+  RecentItem,
+  splitIssueKeyAndName,
+} from '../src/api/RecentSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 
@@ -26,10 +29,11 @@ describe('RecentSearchClient', () => {
       apiWillReturn([
         {
           objectId: 'objectId',
-          name: 'name',
+          name: 'HOT-83341 name',
           iconUrl: 'iconUrl',
           container: 'container',
           url: 'url',
+          provider: 'jira',
         },
       ]);
 
@@ -43,6 +47,7 @@ describe('RecentSearchClient', () => {
       expect(item.name).toEqual('name');
       expect(item.href).toEqual('url');
       expect(item.containerName).toEqual('container');
+      expect(item.objectKey).toEqual('HOT-83341');
     });
   });
 
@@ -55,6 +60,7 @@ describe('RecentSearchClient', () => {
           iconUrl: 'iconUrl',
           container: 'container',
           url: 'url',
+          provider: 'provider',
         },
       ]);
 
@@ -88,6 +94,7 @@ describe('RecentSearchClient', () => {
           iconUrl: 'iconUrl',
           container: 'container',
           url: 'url',
+          provider: 'provider',
         },
       ]);
 
@@ -103,6 +110,7 @@ describe('RecentSearchClient', () => {
           iconUrl: 'iconUrl',
           container: 'container',
           url: 'url',
+          provider: 'provider',
         },
         {
           objectId: 'objectId2',
@@ -110,6 +118,7 @@ describe('RecentSearchClient', () => {
           iconUrl: 'iconUrl2',
           container: 'container2',
           url: 'url2',
+          provider: 'provider',
         },
       ]);
 
@@ -117,6 +126,52 @@ describe('RecentSearchClient', () => {
       expect(items).toHaveLength(2);
       expect(items[0].name).toEqual('name');
       expect(items[1].name).toEqual('name2');
+    });
+  });
+
+  describe('jira issue name and key split', () => {
+    it('should extract the key at the beginning of the name', () => {
+      const { name, objectKey } = splitIssueKeyAndName(
+        'HOME-123 Fix Confluence',
+      );
+      expect(objectKey).toEqual('HOME-123');
+      expect(name).toEqual('Fix Confluence');
+    });
+
+    it('should leave names without issues key alone', () => {
+      const { name, objectKey } = splitIssueKeyAndName('Fix Jira');
+      expect(objectKey).toEqual(undefined);
+      expect(name).toEqual('Fix Jira');
+    });
+
+    it('should not match issues keys not at the beginning of the name', () => {
+      const { name, objectKey } = splitIssueKeyAndName(
+        'HOME-123 Duplicate of HOME-666',
+      );
+      expect(objectKey).toEqual('HOME-123');
+      expect(name).toEqual('Duplicate of HOME-666');
+    });
+
+    it('should not split the name of confluence titles', async () => {
+      apiWillReturn([
+        {
+          objectId: 'objectId',
+          name: 'HOT-83341 PIR - Lets get to the bottom of this!',
+          iconUrl: 'iconUrl',
+          container: 'container',
+          url: 'url',
+          provider: 'confluence',
+        },
+      ]);
+
+      const items = await searchClient.getRecentItems();
+      expect(items).toHaveLength(1);
+
+      const item = items[0];
+      expect(item.name).toEqual(
+        'HOT-83341 PIR - Lets get to the bottom of this!',
+      );
+      expect(item.objectKey).toEqual(undefined);
     });
   });
 });

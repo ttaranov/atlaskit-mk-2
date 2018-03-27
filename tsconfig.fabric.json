@@ -25,11 +25,7 @@
       "es2015.promise"
     ],
     "types": ["jest", "react", "enzyme", "css-color-names", "jest-styled-components", "styled-components"],
-    "typeRoots": ["./typings", "./node_modules/@types"],
-    "baseUrl": "./",
-    "paths": {
-      "@atlaskit/analytics-next": ["typings/@atlaskit/analytics-next"]
-    }
+    "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "files": [
     "./typings/atlaskit.d.ts",

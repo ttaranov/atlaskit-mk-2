@@ -11,11 +11,21 @@ export type Props = {
 export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
   model,
 }) => {
-  switch (model.type) {
-    case 'LOADING':
+  const { fileDetails, previewData } = model;
+  switch (fileDetails.status) {
+    case 'PENDING':
       return <Spinner />;
-    case 'SUCCESS':
-      return <FileViewer fileDetails={model.item} />;
+    case 'SUCCESSFUL':
+      if (fileDetails.data.mediaType === 'unknown') {
+        return <ErrorMessage>This file is unsupported</ErrorMessage>;
+      }
+      if (previewData.status === 'SUCCESSFUL') {
+        return <FileViewer previewData={previewData.data} />;
+      } else if (previewData.status === 'PENDING') {
+        return <Spinner />;
+      } else {
+        return <ErrorMessage>Error rendering preview</ErrorMessage>;
+      }
     case 'FAILED':
       return <ErrorMessage>Error</ErrorMessage>;
   }

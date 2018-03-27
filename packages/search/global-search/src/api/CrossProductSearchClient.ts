@@ -161,5 +161,6 @@ function jiraItemToResult(item: JiraItem): Result {
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
+    objectKey: item.key,
   };
 }

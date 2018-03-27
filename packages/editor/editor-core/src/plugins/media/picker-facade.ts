@@ -255,12 +255,13 @@ export default class PickerFacade {
     const { file, progress } = event;
     const tempId = this.generateTempId(file.id);
     const currentState = this.stateManager.getState(tempId);
-    const currentStatus =
-      currentState && currentState.status ? currentState.status : 'unknown';
+    const currentStatus = (currentState && currentState.status) || 'unknown';
 
     const state = this.newState(
       file,
-      currentStatus === 'unknown' ? 'uploading' : currentStatus,
+      currentStatus === 'unknown' || currentStatus === 'preview'
+        ? 'uploading'
+        : currentStatus,
     );
     state.progress = progress && progress.portion;
     this.stateManager.updateState(state.id, state);

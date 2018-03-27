@@ -99,7 +99,7 @@ const blockTypeIcons = {
 /**
  * Checks if an element is detached (i.e. not in the current document)
  */
-const isDetachedElement = el => !document.contains(el);
+const isDetachedElement = el => !document.body.contains(el);
 const noop = () => {};
 
 export default class ToolbarInsertBlock extends React.PureComponent<

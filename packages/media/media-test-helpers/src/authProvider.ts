@@ -48,7 +48,7 @@ export class StoryBookAuthProvider {
 
 export class StoryBookUserAuthProvider {
   static create(apiURL: string = authProviderBaseURL) {
-    return async (authContext?: AuthContext): Promise<Auth> => {
+    return async (): Promise<Auth> => {
       const config: AxiosRequestConfig = {
         baseURL: apiURL,
         headers: {},

@@ -1,9 +1,13 @@
-import { editorUrl } from '../_helpers';
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 
-export const messageEditor = `${editorUrl}=message-renderer`;
+export const messageEditor = getExampleUrl(
+  'editor',
+  'editor-core',
+  'message-renderer',
+);
 export const editable = `.ProseMirror`;
 export const picker = '.ak-mention-picker';
-export const lozenge = 'span[id="0"][text="@Carolyn"]';
+export const lozenge = 'span[data-mention-id="0"][text="@Carolyn"]';
 
 export const insertMention = async (browser, query: string) => {
   await browser.type(editable, '@');

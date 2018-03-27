@@ -1,9 +1,7 @@
 /* tslint:disable:variable-name */
-
 import styled from 'styled-components';
-
 import { HTMLAttributes, ComponentClass } from 'react';
-import { size, fadeIn } from '../../styles';
+import { size, fadeIn } from '@atlaskit/media-ui';
 
 export interface ImageViewWrapperProps {
   fadeIn?: boolean;

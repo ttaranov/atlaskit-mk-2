@@ -7,13 +7,10 @@ import {
   rgba,
   centerX,
   easeOutCubic,
-  borderRadius,
-  size,
   transition,
-  ellipsis,
-  absolute,
   antialiased,
 } from '../../../styles';
+import { borderRadius, size, ellipsis, absolute } from '@atlaskit/media-ui';
 import {
   akColorN70,
   akColorB200,

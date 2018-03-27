@@ -1,5 +1,9 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.17
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 2.5.16
 
 ## 2.5.15

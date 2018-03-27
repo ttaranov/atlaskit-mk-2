@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 1.4.0
+- [minor] Improve rendering of Jira issues [7f28452](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f28452)
+
+## 1.3.1
+- [patch] Clean up CSS for examples [1b7ffce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b7ffce)
+
 ## 1.3.0
 - [minor] Adds search attribution analytics for confluence search results. [2d73f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d73f50)
 

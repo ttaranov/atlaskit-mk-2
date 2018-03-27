@@ -11,10 +11,8 @@ import {
 } from '../src';
 import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
-import {
-  AnalyticsListener,
-  UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {

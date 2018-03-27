@@ -23,7 +23,7 @@ export interface RequestOptions {
   data?: Object;
   responseType?: ResponseType;
 }
-const addAcceptHeader = (headers: any, responseType?: ResponseType) =>
+const addAcceptHeader = (headers: any) =>
   checkWebpSupport().then(isWebpSupported => {
     // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
     if (isWebpSupported) {
@@ -41,10 +41,10 @@ const buildHeaders = (
   preventPreflight?: boolean,
   responseType?: ResponseType,
 ): Promise<object> => {
-  const headers = {
+  const headers: any = {
     ...baseHeaders,
     'Content-Type': 'application/json',
-  } as any;
+  };
 
   // We can add custom headers if we don't want to avoid preflight - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method
   if (!preventPreflight) {
@@ -57,7 +57,7 @@ const buildHeaders = (
   }
 
   if (responseType === 'image') {
-    return addAcceptHeader(headers, responseType);
+    return addAcceptHeader(headers);
   }
 
   return Promise.resolve(headers);
@@ -115,7 +115,7 @@ export default (requesterOptions: RequesterOptions) => {
         buildParams(auth, params, preventPreflight, collectionName),
       ]);
 
-    const sendAxiosRequest = ([headers, params]) =>
+    const sendAxiosRequest = ([headers, params]: object[]) =>
       axios({
         method: method || 'get',
         url,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "25.1.1",
+  "version": "25.1.6",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,6 +8,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -25,15 +26,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^1.1.6",
-    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/analytics-next": "^1.1.8",
+    "@atlaskit/avatar": "^9.2.3",
     "@atlaskit/badge": "^6.3.0",
     "@atlaskit/button": "^6.6.0",
     "@atlaskit/dropdown-menu": "^3.12.0",
     "@atlaskit/field-text": "^4.2.0",
     "@atlaskit/icon": "^10.12.0",
     "@atlaskit/lozenge": "^3.6.0",
-    "@atlaskit/media-ui": "^1.1.3",
+    "@atlaskit/media-ui": "^1.1.5",
+    "@atlaskit/smart-card": "^1.0.1",
     "@atlaskit/tooltip": "^8.4.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bytes": "^2.4.33",
@@ -44,15 +46,15 @@
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "polished": "1.5.0",
-    "react-lazily-render": "^0.0.8",
-    "react-render-image": "^1.1.1",
+    "react-lazily-render": "^1.0.1",
+    "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",
     "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^15.0.0",
+    "@atlaskit/media-core": "^15.0.1",
     "react": "15.6.0 - 16.2.0",
     "rxjs": "^5.1.0"
   },
@@ -60,8 +62,8 @@
     "@atlaskit/docs": "^2.5.0",
     "@atlaskit/field-radio-group": "^1.9.0",
     "@atlaskit/field-range": "^2.6.3",
-    "@atlaskit/media-core": "^15.0.0",
-    "@atlaskit/media-test-helpers": "^10.0.4",
+    "@atlaskit/media-core": "^15.0.1",
+    "@atlaskit/media-test-helpers": "^10.0.6",
     "@atlaskit/toggle": "^2.9.0",
     "deepcopy": "0.6.3",
     "scrollparent": "^2.0.1"

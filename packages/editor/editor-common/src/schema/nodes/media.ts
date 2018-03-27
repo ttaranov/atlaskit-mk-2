@@ -41,6 +41,8 @@ export interface Attributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
+  // For Stride @see ED-4030
+  __key?: string | null;
 }
 
 export const defaultAttrs: DefaultAttributes<Attributes> = {
@@ -54,6 +56,7 @@ export const defaultAttrs: DefaultAttributes<Attributes> = {
   __fileSize: { default: null },
   __fileMimeType: { default: null },
   __displayType: { default: null },
+  __key: { default: null },
 };
 
 export const media: NodeSpec = {

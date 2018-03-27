@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { Context } from '@atlaskit/media-core';
 
-export const fakeContext = (stubbedContext = {}): Context => {
-  const returns = value => jest.fn().mockReturnValue(value);
+export const fakeContext = (stubbedContext: any = {}): Context => {
+  const returns = (value: any) => jest.fn().mockReturnValue(value);
   const getMediaItemProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
@@ -44,7 +44,7 @@ export const fakeContext = (stubbedContext = {}): Context => {
     },
   };
 
-  const wrappedStubbedContext = {};
+  const wrappedStubbedContext: any = {};
   Object.keys(stubbedContext).forEach(methodName => {
     wrappedStubbedContext[methodName] = returns(stubbedContext[methodName]);
   });

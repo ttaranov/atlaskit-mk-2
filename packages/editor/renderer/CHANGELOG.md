@@ -1,5 +1,17 @@
 # @atlaskit/renderer
 
+## 13.0.11
+- [patch] Adds styling for unknown blocks [5cdc63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cdc63c)
+
+## 13.0.10
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 13.0.9
+- [patch] Change Media Group resize mode to full-fit from crop [05575db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05575db)
+
+## 13.0.8
+
 ## 13.0.7
 
 ## 13.0.6

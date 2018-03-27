@@ -113,6 +113,7 @@ describe('CrossProductSearchClient', () => {
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
       expect(item.containerName).toEqual('projectName');
+      expect(item.objectKey).toEqual('key-1');
     });
   });
 

@@ -50,9 +50,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
         <MediaViewerNextGen
           context={context}
           data={{
-            type: selectedItem.type,
-            id: selectedItem.id,
-            occurrenceKey: selectedItem.occurrenceKey,
+            ...selectedItem,
             collectionName,
           }}
           onClose={onClose}

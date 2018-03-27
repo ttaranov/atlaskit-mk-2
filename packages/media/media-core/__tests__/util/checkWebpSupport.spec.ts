@@ -2,7 +2,7 @@ declare var global: any;
 declare var require: any;
 
 describe('checkWebpSupport util', () => {
-  let imageObjects;
+  let imageObjects: any[];
 
   beforeEach(() => {
     imageObjects = [];

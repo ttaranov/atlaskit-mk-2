@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentClass } from 'react';
 import {
   AkNavigationItemGroup,
   quickSearchResultTypes,
@@ -7,9 +8,9 @@ import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
-import { ComponentClass } from 'react';
+import ObjectResult from './ObjectResult';
 
-const { PersonResult, ObjectResult, ResultBase } = quickSearchResultTypes;
+const { PersonResult, ResultBase } = quickSearchResultTypes;
 
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
@@ -42,7 +43,7 @@ const searchConfluenceItem = (query: string) => (
     icon={<ConfluenceIcon size="large" label="Search Confluence" />}
     key="search_confluence"
     resultId="search_confluence"
-    text="Search for more Confluence pages"
+    text="Search for more Confluence pages and blogs"
   />
 );
 
@@ -91,7 +92,7 @@ const renderJira = (results: Result[], query: string) => (
 
 const renderConfluence = (results: Result[], query: string) => (
   <AkNavigationItemGroup
-    title="Confluence pages"
+    title="Confluence pages and blogs"
     key="confluence"
     test-selector="confluence"
   >

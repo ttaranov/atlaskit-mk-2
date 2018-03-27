@@ -55,7 +55,6 @@ const getFreshMediaProvider = () =>
 describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
-
   const providerFactory = ProviderFactory.create({ mediaProvider });
 
   const editor = (
@@ -144,12 +143,14 @@ describe('Media plugin', () => {
           mediaGroup(
             media({
               id: 'foo',
+              __key: 'foo',
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/jpeg',
             })(),
             media({
               id: 'bar',
+              __key: 'bar',
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/png',
@@ -203,6 +204,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'foo.jpg',
@@ -217,6 +219,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'bar',
+                __key: 'bar',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'bar.png',
@@ -261,6 +264,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'foo.jpg',
@@ -320,12 +324,14 @@ describe('Media plugin', () => {
                     mediaGroup(
                       media({
                         id: 'foo',
+                        __key: 'foo',
                         type: 'file',
                         collection: testCollectionName,
                         __fileMimeType: 'image/jpeg',
                       })(),
                       media({
                         id: 'bar',
+                        __key: 'bar',
                         type: 'file',
                         collection: testCollectionName,
                         __fileMimeType: 'image/png',
@@ -367,6 +373,7 @@ describe('Media plugin', () => {
             mediaGroup(
               media({
                 id: 'lala',
+                __key: 'lala',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
@@ -375,13 +382,13 @@ describe('Media plugin', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: 'bar',
+                __key: 'bar',
                 __fileName: 'bar.png',
                 __fileSize: 200,
                 height: 200,
                 width: 200,
                 __fileMimeType: 'image/png',
                 type: 'file',
-
                 collection: testCollectionName,
               })(),
             ),
@@ -407,18 +414,21 @@ describe('Media plugin', () => {
             mediaGroup(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
               })(),
               media({
                 id: 'bar',
+                __key: 'bar',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
               })(),
               media({
                 id: 'foobar',
+                __key: 'foobar',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
@@ -488,6 +498,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -538,16 +549,19 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: firstTemporaryFileId,
+            __key: firstTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
           media({
             id: secondTemporaryFileId,
+            __key: secondTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
           media({
             id: thirdTemporaryFileId,
+            __key: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -580,7 +594,7 @@ describe('Media plugin', () => {
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = getNodePos(pluginState, secondFileId);
+    pos = getNodePos(pluginState, secondTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 
@@ -590,6 +604,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: thirdTemporaryFileId,
+            __key: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -633,6 +648,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: tempFileId,
+            __key: tempFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -659,6 +675,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: publicFileId,
+            __key: tempFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -761,7 +778,7 @@ describe('Media plugin', () => {
     });
   });
 
-  it('should trigger analytics events for picking', async () => {
+  it('should trigger analytics events for picking and dropzone', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const spy = jest.fn();
     analyticsService.handler = spy as AnalyticsHandler;
@@ -788,21 +805,104 @@ describe('Media plugin', () => {
       ],
     };
 
-    // Warning: calling private methods below
     (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and clipboard', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and popup', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and binary', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {
@@ -977,8 +1077,18 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).toEqualDocument(
       doc(
         mediaGroup(
-          media({ id: 'bar', type: 'file', collection: testCollectionName })(),
-          media({ id: 'foo', type: 'file', collection: testCollectionName })(),
+          media({
+            id: 'bar',
+            __key: 'bar',
+            type: 'file',
+            collection: testCollectionName,
+          })(),
+          media({
+            id: 'foo',
+            __key: 'foo',
+            type: 'file',
+            collection: testCollectionName,
+          })(),
         ),
         p(),
       ),
@@ -1011,6 +1121,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
             __fileName: 'foo.png',

@@ -1,1 +1,2 @@
-export { DataUriService, DataUri, ImageResizeMode } from './dataUriService';
+export { DataUriService, DataUri } from './dataUriService';
+export { ImageResizeMode, BlobService } from './blobService';

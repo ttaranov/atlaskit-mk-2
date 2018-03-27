@@ -366,7 +366,6 @@ describe('Comment', () => {
       );
 
       expect(comment.first().find(ResourcedReactions).length).toEqual(1);
-
       comment.unmount();
     });
 

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import CardFrame from '../../../src/shared/CardFrame';
-import CardPreview from '../../../src/shared/CardPreview';
-import LinkIcon from '../../../src/shared/LinkIcon';
-import ErrorCard from '../../../src/shared/ErrorCard';
+import {
+  CardFrame,
+  CardPreview,
+  LinkIcon,
+  ErrorCard,
+} from '@atlaskit/media-ui';
 import CardDetails from '../../../src/links/cardGenericView/CardDetails';
 import { LinkCardGenericView } from '../../../src/links/cardGenericView';
 
