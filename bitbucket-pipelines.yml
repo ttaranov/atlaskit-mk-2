@@ -32,10 +32,14 @@ pipelines:
         - step:
             name: Running Jest 1 of 2 chunks
             script:
-              - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
-              - yarn global add "bolt@^0.19.2"
-              - bolt
-              - PARALLELIZE="true" yarn test
+              - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
+        - step:
+            name: Running Jest 2 of 2 chunks
+            script:
+              - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
+              # - yarn global add "bolt@^0.19.2"
+              # - bolt
+              # - PARALLELIZE="true" yarn test
         #     caches:
         #       - node
         # - step:
