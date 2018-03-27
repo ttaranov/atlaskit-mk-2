@@ -137,10 +137,8 @@ export class StatelessUploadView extends Component<
   private recentView(cards: JSX.Element[]) {
     return (
       <div key="recentView">
-        <CardsWrapper>
-          <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
-          {cards}
-        </CardsWrapper>
+        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <CardsWrapper>{cards}</CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
           : null}
@@ -223,19 +221,20 @@ export class StatelessUploadView extends Component<
       };
 
       return (
-        <CardView
-          key={id}
-          status={status}
-          progress={progress || undefined}
-          mediaItemType={'file'}
-          metadata={metadata}
-          dimensions={cardDimension}
-          selectable={true}
-          selected={selected}
-          dataURI={dataURI}
-          onClick={onClick}
-          actions={actions}
-        />
+        <div key={id}>
+          <CardView
+            status={status}
+            progress={progress || undefined}
+            mediaItemType={'file'}
+            metadata={metadata}
+            dimensions={cardDimension}
+            selectable={true}
+            selected={selected}
+            dataURI={dataURI}
+            onClick={onClick}
+            actions={actions}
+          />
+        </div>
       );
     });
   }

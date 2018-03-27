@@ -12,7 +12,7 @@ export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 60px;
-  height: calc(100% - 235px);
+  height: calc(100% - 211px);
 `;
 
 export const DefaultImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
@@ -58,7 +58,7 @@ export const DropzoneContainer: ComponentClass<
   border-image-repeat: round;
   border-radius: 3px;
   ${({ isEmpty }: IsEmptyProps) =>
-    isEmpty ? 'height: calc(100% - 4px);' : 'height: 235px;'}
+    isEmpty ? 'height: calc(100% - 4px);' : 'height: 211px;'}
 `;
 
 export const RecentUploadsTitle: ComponentClass<
@@ -67,15 +67,19 @@ export const RecentUploadsTitle: ComponentClass<
   padding: 25px 10px 5px 0;
   font-size: 20px;
   color: #071d43;
-  grid-column-end: 5;
-  grid-column-start: 1;
 `;
 
 export const CardsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 100%;
-  display: grid;
-  grid-gap: 12px;
-  grid-template-columns: 162px 162px 162px 162px;
+  & > div {
+    width: auto;
+    float: left;
+    padding: 0 12px 12px 0;
+  }
+
+  & > div:nth-child(4n) {
+    padding-right: 0;
+  }
 `;
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
