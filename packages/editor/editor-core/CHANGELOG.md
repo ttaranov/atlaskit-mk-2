@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.25
+- [patch] ED-4119: Add draft async CollapsedEditor support to the Labs for feedback [eb2f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb2f891)
+
 ## 65.1.24
 
 ## 65.1.23
