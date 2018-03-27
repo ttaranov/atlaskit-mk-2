@@ -2,10 +2,16 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
+import { FileDetails } from '@atlaskit/media-core';
 import { Card, CardView } from '@atlaskit/media-card';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 
-import { State, CollectionItem } from '../../../../domain';
+import {
+  State,
+  CollectionItem,
+  SelectedItem,
+  LocalUpload,
+} from '../../../../domain';
 import {
   mockStore,
   mockState,
@@ -52,9 +58,13 @@ describe('<StatelessUploadView />', () => {
   const getUploadViewElement = (
     isLoading: boolean,
     recentItems: CollectionItem[] = [],
+    mockStateOverride: Partial<State> = {},
   ) => {
     const context = mockContext();
-    const { selectedItems, uploads, apiUrl } = mockState;
+    const { selectedItems, uploads, apiUrl } = {
+      ...mockState,
+      ...mockStateOverride,
+    } as State;
 
     const recents = {
       items: recentItems,
@@ -110,6 +120,50 @@ describe('<StatelessUploadView />', () => {
     expect(component.find(Dropzone).props().isEmpty).toEqual(false);
 
     expect(component.find(Card)).toHaveLength(3);
+  });
+
+  it('should render currently uploading items', () => {
+    const mockStateOverride: Partial<State> = {
+      uploads: {
+        uploadId1: {
+          file: {
+            metadata: {
+              id: 'id1',
+              mimeType: 'image/jpeg',
+              name: 'some-file-name',
+              size: 42,
+            },
+          },
+          progress: 10,
+        } as LocalUpload,
+      },
+      selectedItems: [
+        {
+          id: 'id1',
+          serviceName: 'upload',
+        },
+      ] as SelectedItem[],
+    };
+    const expectedMetadata: FileDetails = {
+      id: 'id1',
+      name: 'some-file-name',
+      size: 42,
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+    };
+    const component = shallow(
+      getUploadViewElement(false, [], mockStateOverride),
+    );
+    expect(component.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView).props().metadata).toEqual(expectedMetadata);
+    expect(component.find(CardView).props().status).toEqual('uploading');
+    expect(component.find(CardView).props().progress).toEqual(10);
+    expect(component.find(CardView).props().dimensions).toEqual({
+      width: 162,
+      height: 108,
+    });
+    expect(component.find(CardView).props().selectable).toEqual(true);
+    expect(component.find(CardView).props().selected).toEqual(true);
   });
 });
 
