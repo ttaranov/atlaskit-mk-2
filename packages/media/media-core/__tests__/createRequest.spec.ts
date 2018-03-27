@@ -7,16 +7,37 @@ import * as UtilsModule from '../src/utils';
 describe('createRequest()', () => {
   const token = 'ABC';
   const serviceHost = 'http://example.com';
+  const clientId = '1234';
   let authProvider: AuthProvider;
   let mockServer: sinon.SinonFakeServer;
 
   beforeEach(() => {
     mockServer = sinon.fakeServer.create();
     mockServer.autoRespond = true;
+
+    authProvider = jest.fn(() =>
+      Promise.resolve({
+        token: token,
+        clientId: clientId,
+      }),
+    );
   });
 
   afterEach(() => {
     mockServer.restore();
+  });
+
+  it('should allow to cancel a request', cb => {
+    const request = createRequest({
+      config: { serviceHost, authProvider },
+    });
+
+    mockServer.respondWith('GET', 'http://example.com/', '{}');
+
+    const { response, cancel } = request({ url: '/' });
+    cancel();
+
+    response.then(() => cb.fail('test should have failed'), () => cb());
   });
 
   describe('with clientId/token auth method', () => {
@@ -41,7 +62,7 @@ describe('createRequest()', () => {
 
       mockServer.respondWith('GET', 'http://example.com/some-api/links', '{}');
 
-      return request({ url: '/some-api/links' }).then(() => {
+      return request({ url: '/some-api/links' }).response.then(() => {
         expect(authProvider).toHaveBeenCalled();
         expect(mockServer.requests).toHaveLength(1);
         expect(mockServer.requests[0].requestHeaders['X-Client-Id']).toBe(
@@ -68,7 +89,7 @@ describe('createRequest()', () => {
         '{}',
       );
 
-      return request({ url: '/some-api/links' }).then(() => {
+      return request({ url: '/some-api/links' }).response.then(() => {
         expect(authProvider).toHaveBeenCalled();
         expect(
           mockServer.requests[0].requestHeaders['X-Client-Id'],
@@ -97,7 +118,7 @@ describe('createRequest()', () => {
 
       mockServer.respondWith('GET', `http://example.com/some-api/links`, '{}');
 
-      return request({ url: '/some-api/links' }).then(() => {
+      return request({ url: '/some-api/links' }).response.then(() => {
         expect(authProvider).toHaveBeenCalled();
         expect(mockServer.requests[0].requestHeaders['X-Issuer']).toBe(
           asapIssuer,
@@ -123,7 +144,7 @@ describe('createRequest()', () => {
         '{}',
       );
 
-      return request({ url: '/some-api/links' }).then(() => {
+      return request({ url: '/some-api/links' }).response.then(() => {
         expect(authProvider).toHaveBeenCalled();
         expect(
           mockServer.requests[0].requestHeaders['X-Issuer'],
@@ -137,15 +158,7 @@ describe('createRequest()', () => {
 
   describe('with responseType === image', () => {
     let checkWebpSupportSpy: jest.SpyInstance<any>;
-    const clientId = '1234';
-
     beforeEach(() => {
-      authProvider = jest.fn(() =>
-        Promise.resolve({
-          token: token,
-          clientId: clientId,
-        }),
-      );
       checkWebpSupportSpy = jest.spyOn(UtilsModule, 'checkWebpSupport');
     });
 
@@ -173,13 +186,14 @@ describe('createRequest()', () => {
           '{}',
         );
 
-        return request({ url: '/some-api/links', responseType: 'image' }).then(
-          () => {
-            expect(mockServer.requests[0].requestHeaders['accept']).toBe(
-              'image/webp,image/*,*/*;q=0.8',
-            );
-          },
-        );
+        return request({
+          url: '/some-api/links',
+          responseType: 'image',
+        }).response.then(() => {
+          expect(mockServer.requests[0].requestHeaders['accept']).toBe(
+            'image/webp,image/*,*/*;q=0.8',
+          );
+        });
       });
     });
 
@@ -203,13 +217,14 @@ describe('createRequest()', () => {
           '{}',
         );
 
-        return request({ url: '/some-api/links', responseType: 'image' }).then(
-          () => {
-            expect(mockServer.requests[0].requestHeaders['accept']).toBe(
-              'image/*,*/*;q=0.8',
-            );
-          },
-        );
+        return request({
+          url: '/some-api/links',
+          responseType: 'image',
+        }).response.then(() => {
+          expect(mockServer.requests[0].requestHeaders['accept']).toBe(
+            'image/*,*/*;q=0.8',
+          );
+        });
       });
     });
   });
