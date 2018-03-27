@@ -1696,9 +1696,6 @@
             "$ref": "#/definitions/extension_node"
           },
           {
-            "$ref": "#/definitions/bodiedExtension_node"
-          },
-          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
