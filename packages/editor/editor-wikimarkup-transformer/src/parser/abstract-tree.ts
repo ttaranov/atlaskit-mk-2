@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
 
@@ -203,13 +204,9 @@ export default class AbstractTree {
       }
     };
 
-    // Flag if currently processing a list
-    // @TODO Handling to "close" a builder (table/list) as multiline is possible and won't match the regex...
-    // @TODO Generic isBuilding instead of a bunch of variables - update list builder to use a base class
-    let isProcessingTable: boolean = false;
-    let tableBuilder: TableBuilder | null = null;
-    let isProcessingList: boolean = false;
-    let listBuilder: ListBuilder | null = null;
+    // Flag if currently processing a block of content
+    let isBuilding: boolean = false;
+    let builder: Builder | null;
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
       if (line === HORIZONTAL_RULE) {
@@ -225,17 +222,10 @@ export default class AbstractTree {
       if (!line.length) {
         processAndEmptyStoredText();
 
-        // @TODO Generic and/or move to processAndEmptyStoredText
-        if (isProcessingTable) {
-          output.push(tableBuilder!.buildPMNode());
-          isProcessingTable = false;
-          tableBuilder = null;
-        }
-
-        if (isProcessingList) {
-          output.push(listBuilder!.buildPMNode());
-          isProcessingList = false;
-          listBuilder = null;
+        if (isBuilding) {
+          output.push(builder!.buildPMNode());
+          isBuilding = false;
+          builder = null;
         }
 
         continue;
@@ -272,59 +262,64 @@ export default class AbstractTree {
         continue;
       }
 
+      // search for lists
       const listMatches = lineUpdated.match(LIST_REGEXP);
       if (listMatches) {
         const [, /* discard */ style, content] = listMatches;
-        isProcessingList = true;
+        isBuilding = true;
 
-        if (!listBuilder) {
-          listBuilder = new ListBuilder(this.schema, style);
+        if (!builder) {
+          builder = new ListBuilder(this.schema, style);
         } else {
           const type = ListBuilder.getType(style);
 
           // If it's top level and doesn't match, create a new list
-          if (type !== listBuilder.type && style.length === 1) {
-            output.push(listBuilder.buildPMNode());
-            listBuilder = new ListBuilder(this.schema, style);
+          if (type !== builder.type && style.length === 1) {
+            output.push(builder.buildPMNode());
+            builder = new ListBuilder(this.schema, style);
           }
         }
 
         const contentNode = this.getTextWithMarks(content);
-        listBuilder.add([{ style, content: contentNode }]);
+        builder.add([{ style, content: contentNode }]);
         continue;
       }
 
-      // If it's not a match, but the last loop was a list, add the processed list and delete the builder
-      if (isProcessingList) {
-        const contentNode = this.getTextWithMarks(lineUpdated);
-        listBuilder!.add([{ style: null, content: contentNode }]);
-        continue;
-      }
-
-      // TODO generic multiline builder
+      // search for tables
       const tableMatches = lineUpdated.match(TABLE_REGEXP);
       if (tableMatches) {
-        isProcessingTable = true;
+        isBuilding = true;
 
-        if (!tableBuilder) {
-          tableBuilder = new TableBuilder(this.schema);
+        if (!builder) {
+          builder = new TableBuilder(this.schema);
         }
 
         // Iterate over the cells
-        tableBuilder.add(this.getTableCells(lineUpdated));
+        builder.add(this.getTableCells(lineUpdated));
         continue;
       }
 
-      // If it's not a match, but the last loop was a table, continue adding it
-      if (isProcessingTable) {
-        const matches = lineUpdated.match(NEWLINE_CELL_REGEXP);
-        // If it doesn't have a closing cell line, the whole line is part of the content
-        const content = (matches && matches[1]) || lineUpdated;
-        const contentNode = this.getTextWithMarks(content!);
+      // If it's not a match, but the last loop was part of a block, continue adding to it
+      if (isBuilding) {
+        let content: string;
+        let additionalFields: any[] = [];
 
-        // Get the other cells if any
-        const cells = this.getTableCells(lineUpdated);
-        tableBuilder!.add([{ style: null, content: contentNode }, ...cells]);
+        if (builder instanceof TableBuilder) {
+          const matches = lineUpdated.match(NEWLINE_CELL_REGEXP);
+          // If it doesn't have a closing cell line, the whole line is part of the content
+          content = (matches && matches[1]) || lineUpdated;
+
+          // Get the other cells if any
+          additionalFields = this.getTableCells(lineUpdated);
+        } else {
+          content = lineUpdated;
+        }
+
+        const contentNode = this.getTextWithMarks(content!);
+        builder!.add([
+          { style: null, content: contentNode },
+          ...additionalFields,
+        ]);
         continue;
       }
 
@@ -336,15 +331,9 @@ export default class AbstractTree {
       textContainer.push(lineUpdated);
     }
 
-    // If the list was the last item, make sure to push it
-    if (isProcessingList) {
-      output.push(listBuilder!.buildPMNode());
-    }
-
-    // @TODO make generic and combine with list
-    // If the table was the last item, make sure to push it
-    if (isProcessingTable) {
-      output.push(tableBuilder!.buildPMNode());
+    // If a block of content was the last item, make sure to push it
+    if (isBuilding) {
+      output.push(builder!.buildPMNode());
     }
 
     // there can be some text stored after processing

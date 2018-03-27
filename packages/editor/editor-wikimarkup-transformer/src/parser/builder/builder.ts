@@ -6,6 +6,8 @@ export interface AddArgs {
 }
 
 export interface Builder {
+  type: string;
+
   /**
    * Add a item to the builder
    * @param {AddCellArgs[]} items

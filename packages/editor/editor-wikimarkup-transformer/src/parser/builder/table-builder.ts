@@ -44,6 +44,14 @@ export default class TableBuilder implements Builder {
   }
 
   /**
+   * Return the type of the base element
+   * @returns {string}
+   */
+  get type(): string {
+    return 'table';
+  }
+
+  /**
    * Add new cells to the table
    * @param {AddCellArgs[]} cells
    */
