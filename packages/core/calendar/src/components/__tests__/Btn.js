@@ -2,12 +2,21 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
+import Button from '@atlaskit/button';
 
 import Btn from '../Btn';
 
 test('children', () => {
-  expect(mount(<Btn />)).toMatchSnapshot();
-  expect(mount(<Btn>children</Btn>)).toMatchSnapshot();
+  const wrapper = mount(<Btn>children</Btn>);
+  const props = wrapper.find(Button).props();
+  expect(props).toEqual(
+    expect.objectContaining({
+      appearance: 'subtle',
+      spacing: 'none',
+      tabIndex: -1,
+      children: 'children',
+    }),
+  );
 });
 
 test('onClick', () => {
