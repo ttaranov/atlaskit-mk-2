@@ -6,6 +6,7 @@ import EditorActions from '../actions';
 import {
   Transformer,
   ContextIdentifierProvider,
+  ExtensionHandlers,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
@@ -24,7 +25,6 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
-import { ExtensionHandlers } from '../index';
 
 export type EditorAppearance =
   | 'message'

@@ -1,4 +1,4 @@
-import { ADNode } from '@atlaskit/editor-common';
+import { ADNode } from '../';
 
 export interface ExtensionParams<T> {
   extensionKey: string;
