@@ -65,7 +65,7 @@ export default class TableBuilder {
         }
       }
 
-      const type = TableBuilder.getType(style);
+      const type = TableBuilder.getType(style!);
       const newCell = { type, content };
       this.lastCell = newCell;
       this.lastRow.cells.push(newCell);

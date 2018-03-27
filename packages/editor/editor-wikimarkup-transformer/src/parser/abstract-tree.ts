@@ -309,15 +309,18 @@ export default class AbstractTree {
         continue;
       }
 
-      // If it's not a match, but the last loop was a table, add it
+      // If it's not a match, but the last loop was a table, continue adding it
       if (isProcessingTable) {
         // If it doesn't have a closing cell line, the whole line is part of the content
-        const content = lineUpdated.match(NEWLINE_CELL_REGEXP) || lineUpdated;
-        const contentNode = this.getTextWithMarks(content);
+        const [, content] = lineUpdated.match(NEWLINE_CELL_REGEXP) || [
+          ,
+          lineUpdated,
+        ];
+        const contentNode = this.getTextWithMarks(content!);
 
         // Get the other cells if any
         const cells = this.getTableCells(lineUpdated);
-        tableBuilder.add([{ style: null, content: contentNode }, ...cells]);
+        tableBuilder!.add([{ style: null, content: contentNode }, ...cells]);
         continue;
       }
 
