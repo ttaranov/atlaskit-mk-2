@@ -1,8 +1,7 @@
 import * as React from 'react';
 import ResourcedMentionList from '../src/components/ResourcedMentionList';
 import SearchTextInput from '../example-helpers/demo-search-text-input';
-import { resourceProvider } from '../src/support/story-data';
-import { onSelection } from '../example-helpers';
+import { onSelection, resourceProvider } from '../example-helpers';
 
 export interface State {
   query: string;
