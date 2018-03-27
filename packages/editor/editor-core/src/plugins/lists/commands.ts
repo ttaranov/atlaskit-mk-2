@@ -94,14 +94,15 @@ export const enterKeyCommand = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const { selection, doc } = state;
+  const { selection } = state;
   if (selection.empty) {
     const { $from } = selection;
     const { listItem } = state.schema.nodes;
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      const wrapperHasContent = wrapper.content.content.length;
+      /** Check is the wrapper has any content */
+      const wrapperHasContent = wrapper.content.size >= 2;
       if (isEmptyNode(node) && !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
