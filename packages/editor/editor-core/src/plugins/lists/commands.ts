@@ -101,8 +101,8 @@ export const enterKeyCommand = (
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      const prevNode = doc.nodeAt(selection.anchor - 3);
-      if (isEmptyNode(node) && !(prevNode && prevNode.type.name === 'media')) {
+      const wrapperHasContent = wrapper.content.content.length;
+      if (isEmptyNode(node) && !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);

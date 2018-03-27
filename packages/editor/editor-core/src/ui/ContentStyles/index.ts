@@ -266,11 +266,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       width: inherit;
     }
 
-    & [layout='full-width'] {
-      background: grey;
-      color: red;
-    }
-
     & [layout='wrap-left'] + [layout='wrap-right'],
     & [layout='wrap-right'] + [layout='wrap-left'] {
       clear: none;
