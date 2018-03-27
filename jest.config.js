@@ -3,8 +3,8 @@
 const RUN_ONLY = process.env.RUN_ONLY;
 const INTEGRATION_TESTS = typeof process.env.INTEGRATION_TESTS !== 'undefined';
 const PARALLELIZE = process.env.PARALLELIZE;
-const STEP_COUNT = process.env.STEP_COUNT;
-const STEP_INDEX = process.env.STEP_INDEX;
+const BITBUCKET_PARALLEL_STEP = process.env.BITBUCKET_PARALLEL_STEP;
+const BITBUCKET_PARALLEL_STEP_COUNT = process.env.BITBUCKET_PARALLEL_STEP_COUNT;
 
 function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
@@ -40,6 +40,19 @@ if (RUN_ONLY) {
  * and STEP_INDEX vars. For these to be accurate, all the parallel steps running at that point in time need to be
  * jest steps (otherwise we will be splitting incorrectly and some tests wont run!)
  */
+if (PARALLELIZE) {
+  const filesPerJob = Math.ceil(
+    testMatchArr.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
+  );
+  const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
+  console.log('Parallelising!!!');
+  console.log('BITBUCKET_PARALLEL_STEP_COUNT', BITBUCKET_PARALLEL_STEP_COUNT);
+  console.log('BITBUCKET_PARALLEL_STEP', BITBUCKET_PARALLEL_STEP);
+  console.log('filesPerJob', filesPerJob);
+  console.log('startIdx', startIdx);
+  testMatchArr = testMatchArr.slice(startIdx, startIdx + filesPerJob);
+  console.log('testMatchArr', '\n', testMatchArr.join('\n'));
+}
 
 const config = {
   testMatch: testMatchArr,
