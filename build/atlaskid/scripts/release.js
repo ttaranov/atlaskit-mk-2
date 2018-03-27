@@ -107,10 +107,10 @@ async function run() {
   console.log('Ready!!');
 
   console.log(chalk.blue('Building docker image...'));
-  await buildDockerImage(newTag);
+  await buildDockerImage(data.links.binary.tag);
 
   console.log(chalk.blue('Pushing docker image...'));
-  await pushDockerImage(newTag);
+  await pushDockerImage(data.links.binary.tag);
 
   console.log(chalk.blue('Deploying to micros...'));
   await deployToMicros();
