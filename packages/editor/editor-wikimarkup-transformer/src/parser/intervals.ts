@@ -28,11 +28,12 @@ function hasIntersectionWithInterval(
   interval: SimpleInterval,
 ): boolean {
   const isLeftIntervalBorderInsideMacro =
-    interval.left > macro.startPos.inner && interval.left < macro.endPos.inner;
+    interval.left >= macro.startPos.inner &&
+    interval.left <= macro.endPos.inner;
 
   const isRightIntervalBorderInsideMacro =
-    interval.right > macro.startPos.inner &&
-    interval.right < macro.endPos.inner;
+    interval.right >= macro.startPos.inner &&
+    interval.right <= macro.endPos.inner;
 
   return isLeftIntervalBorderInsideMacro || isRightIntervalBorderInsideMacro;
 }

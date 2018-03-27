@@ -1,45 +1,43 @@
-import { defaultSchema } from '@atlaskit/editor-common';
-import AbstractTree from '../../src/parser/abstract-tree';
 import WikiMarkupTransformer from '../../src';
 
 describe('JIRA wiki markup - Abstract tree', () => {
   const testCases: [string, string][] = [
-    // ['simple strong wrapper string', '*Strong text*'],
-    // ['simple strong string', 'This is a string with a *strong* text'],
-    // [
-    //   'colourful strong text',
-    //   'This is a *string with a {color:red}bold red* text{color}',
-    // ],
-    // ['monospace text', 'This is a string with {{monospaced text}}'],
-    // [
-    //   'monospace containing colourful text',
-    //   'This is a string with {{monospaced {color:red}red{color} text}}',
-    // ],
-    // [
-    //   'string with a wrong order of effects',
-    //   'This is a *strong ^string* with a ~^bla*~~',
-    // ],
+    [
+      'should find strong marks in the text',
+      'This is a string with a *strong* text',
+    ],
+    [
+      'should divide marks intervals into combination of marks',
+      'This is a *string with a {color:red}bold red* text{color}.',
+    ],
+    ['should find monospace text', 'This is a string with {{monospaced text}}'],
+    [
+      'should not search for monospace text inside code macro',
+      'This is a string with {code}mono {{space}} text{code}',
+    ],
+    [
+      'should process string with a wrong order of effects',
+      'This is a *strong ^string* with a ~^bla*~~',
+    ],
+    [
+      'should convert double baskslash to a hardBreak node',
+      'this is a text with a\\\\new line in it',
+    ],
+    [
+      'should not fail while applying marks to a string containing double backslash',
+      'this is a text *with a\\\\new* line in it',
+    ],
+    [
+      'should not apply marks on separate lines',
+      `this is a line with an *asterisk
+another one is here and it should* not be applied`,
+    ],
   ];
 
-  // for (const [testCaseName, markup] of testCases) {
-  //   it(`should match parsed structure for ${testCaseName}`, () => {
-  //     const tree = new AbstractTree(defaultSchema, markup);
-
-  //     console.log(JSON.stringify(tree.getTextIntervals(), null, 2));
-  //   });
-  // }
-
-  it('should convert double baskslash to a hardBreak node', () => {
-    const markup = 'this is a text with a\\\\new line in it';
-    const transformer = new WikiMarkupTransformer();
-
-    expect(transformer.parse(markup)).toMatchSnapshot();
-  });
-
-  it('should not fail while applying marks to a string containing double backslash', () => {
-    const markup = 'this is a text *with a\\\\new* line in it';
-    const transformer = new WikiMarkupTransformer();
-
-    expect(transformer.parse(markup)).toMatchSnapshot();
-  });
+  for (const [testCaseDescription, markup] of testCases) {
+    it(testCaseDescription, () => {
+      const transformer = new WikiMarkupTransformer();
+      expect(transformer.parse(markup)).toMatchSnapshot();
+    });
+  }
 });
