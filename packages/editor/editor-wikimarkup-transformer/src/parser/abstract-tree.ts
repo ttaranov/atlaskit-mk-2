@@ -297,7 +297,7 @@ export default class AbstractTree {
       // If it's not a match, but the last loop was a list, add the processed list and delete the builder
       if (isProcessingList) {
         const contentNode = this.getTextWithMarks(lineUpdated);
-        listBuilder.add([{ style: null, content: contentNode }]);
+        listBuilder!.add([{ style: null, content: contentNode }]);
         continue;
       }
 

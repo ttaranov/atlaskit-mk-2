@@ -1,4 +1,4 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode } from 'prosemirror-model';
 
 export interface AddArgs {
   style: string | null;
