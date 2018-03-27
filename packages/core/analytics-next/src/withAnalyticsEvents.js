@@ -32,7 +32,7 @@ type EventMap<ProvidedProps> = {
 };
 
 export default function withAnalyticsEvents<
-  Props: $Shape<AnalyticsEventPayload>,
+  Props: {},
   InnerComponent: ComponentType<Props>,
   ExternalProps: $Diff<ElementConfig<InnerComponent>, AnalyticsEventsProps>,
 >(

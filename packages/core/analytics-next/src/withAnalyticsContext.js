@@ -13,7 +13,7 @@ type WithAnalyticsContextProps = {
 };
 
 export default function withAnalyticsContext<
-  Props,
+  Props: {},
   InnerComponent: ComponentType<Props>,
   ExternalProps: ElementConfig<InnerComponent> & WithAnalyticsContextProps,
 >(
