@@ -54,8 +54,12 @@ const Flex = styled.div`
     };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
-    background-color: ${({ isFocused }) =>
-      isFocused ? 'inherit' : colors.N20};
+    ${({ isFocused, isDisabled }) =>
+      !isFocused && !isDisabled
+        ? `
+        background-color: ${colors.N20};
+      `
+        : ''};
   }
 `;
 
@@ -180,7 +184,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
     };
     return (
-      <Flex {...innerProps} isFocused={isFocused}>
+      <Flex {...innerProps} isFocused={isFocused} isDisabled={isDisabled}>
         <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker
