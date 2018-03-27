@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JIRA wiki markup - Abstract tree should convert double baskslash to a hardBreak node 1`] = `
+exports[`JIRA wiki markup - Text effects should convert double baskslash to a hardBreak node 1`] = `
 Object {
   "content": Array [
     Object {
@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should divide marks intervals into combination of marks 1`] = `
+exports[`JIRA wiki markup - Text effects should divide marks intervals into combination of marks 1`] = `
 Object {
   "content": Array [
     Object {
@@ -81,7 +81,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should find monospace text 1`] = `
+exports[`JIRA wiki markup - Text effects should find monospace text 1`] = `
 Object {
   "content": Array [
     Object {
@@ -107,7 +107,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should find strong marks in the text 1`] = `
+exports[`JIRA wiki markup - Text effects should find strong marks in the text 1`] = `
 Object {
   "content": Array [
     Object {
@@ -137,7 +137,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should not apply marks on separate lines 1`] = `
+exports[`JIRA wiki markup - Text effects should not apply marks on separate lines 1`] = `
 Object {
   "content": Array [
     Object {
@@ -161,7 +161,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should not fail while applying marks to a string containing double backslash 1`] = `
+exports[`JIRA wiki markup - Text effects should not fail while applying marks to a string containing double backslash 1`] = `
 Object {
   "content": Array [
     Object {
@@ -203,7 +203,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should not search for monospace text inside code macro 1`] = `
+exports[`JIRA wiki markup - Text effects should not search for monospace text inside code macro 1`] = `
 Object {
   "content": Array [
     Object {
@@ -233,7 +233,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Abstract tree should process string with a wrong order of effects 1`] = `
+exports[`JIRA wiki markup - Text effects should process string with a wrong order of effects 1`] = `
 Object {
   "content": Array [
     Object {

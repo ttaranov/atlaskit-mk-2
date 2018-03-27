@@ -1,6 +1,6 @@
 import WikiMarkupTransformer from '../../src';
 
-describe('JIRA wiki markup - Abstract tree', () => {
+describe('JIRA wiki markup - Text effects', () => {
   const testCases: [string, string][] = [
     [
       'should find strong marks in the text',
