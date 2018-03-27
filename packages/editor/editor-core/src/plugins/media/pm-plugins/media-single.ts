@@ -2,7 +2,7 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ImagePreview } from '@atlaskit/media-picker';
 
-import { isImage, setNodeSelection, isTableCell } from '../../../utils';
+import { isImage, setTextSelection, isTableCell } from '../../../utils';
 import { insertNodesEndWithNewParagraph } from '../../../commands';
 import { copyOptionalAttrsFromMediaState } from '../utils/media-common';
 import { MediaState } from '../types';
@@ -45,13 +45,13 @@ export const insertMediaSingleNode = (
     return false;
   }
 
-  const { state, dispatch } = view;
+  const { state, state: { selection }, dispatch } = view;
   const node = createMediaSingleNode(state.schema, collection)(mediaState);
   const paraAdded = insertNodesEndWithNewParagraph([node])(state, dispatch);
 
   if (isTableCell(state)) {
     /** If table cell, the default is to move to the next cell, override to select paragraph */
-    setNodeSelection(view, state.selection.head + 2);
+    setTextSelection(view, state.selection.head + 1, state.selection.head + 1);
   }
   return paraAdded;
 };

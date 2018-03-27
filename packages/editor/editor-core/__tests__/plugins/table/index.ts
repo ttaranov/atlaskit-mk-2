@@ -1233,7 +1233,7 @@ describe('table plugin', () => {
                 ul(
                   li(
                     p('3'),
-                    mediaSingle({ layout: 'center' })(
+                    mediaSingle()(
                       media({
                         id: temporaryFileId,
                         __key: temporaryFileId,
@@ -1242,7 +1242,8 @@ describe('table plugin', () => {
                         __fileMimeType: 'image/png',
                       })(),
                     ),
-                    p(),
+                    p(''),
+                    p(''),
                   ),
                 ),
               ),

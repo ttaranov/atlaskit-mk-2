@@ -62,7 +62,11 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
 
   render() {
     const { target, layout: selectedLayout, allowBreakout } = this.state;
-    if (target && !closestElement(target, 'li')) {
+    if (
+      target &&
+      !closestElement(target, 'li') &&
+      !closestElement(target, 'table')
+    ) {
       return (
         <FloatingToolbar target={target} offset={[0, 3]} fitHeight={24}>
           {Object.keys(icons).map((layout, index) => {

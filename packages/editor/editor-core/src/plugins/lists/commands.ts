@@ -222,7 +222,7 @@ function splitListItem(itemType) {
       $to.pos === $from.end() ? grandParent.defaultContentType(0) : null;
     const tr = state.tr.delete($from.pos, $to.pos);
     const types = nextType && [null, { type: nextType }];
-    // if (!prosemirrorTransform.canSplit(tr.doc, $from.pos, 2, types)) { return false }
+
     if (dispatch) {
       dispatch(tr.split($from.pos, 2, types).scrollIntoView());
     }
