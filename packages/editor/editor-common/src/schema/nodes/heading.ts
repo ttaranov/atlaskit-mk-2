@@ -26,7 +26,7 @@ export interface Definition {
 
 const getHeadingAttributes = (level: number) => (dom: HTMLElement) => ({
   level,
-  indentLevel: parseInt(dom.getAttribute('data-indent-level') || '0'),
+  indentLevel: parseInt(dom.getAttribute('data-indent-level') || '0', 10),
 });
 
 export const heading: NodeSpec = {

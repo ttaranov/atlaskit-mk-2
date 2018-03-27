@@ -25,7 +25,7 @@ export const paragraph: NodeSpec = {
     {
       tag: 'p',
       getAttrs: (dom: HTMLElement) => ({
-        indentLevel: parseInt(dom.getAttribute('data-indent-level') || '0'),
+        indentLevel: parseInt(dom.getAttribute('data-indent-level') || '0', 10),
       }),
     },
   ],
