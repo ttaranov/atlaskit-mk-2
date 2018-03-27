@@ -106,29 +106,26 @@ export class StatelessUploadView extends Component<
   render() {
     const { isLoading } = this.props;
     const cards = this.cards();
-    const renderChunks: JSX.Element[] = [];
     const isEmpty = !isLoading && cards.length === 0;
 
-    renderChunks.push(
-      <Dropzone
-        key="dropzone"
-        isEmpty={isEmpty}
-        mpBrowser={this.props.mpBrowser}
-      />,
-    );
-
+    let contentPart: JSX.Element | null = null;
     if (isLoading) {
-      renderChunks.push(this.loadingView());
+      contentPart = this.loadingView();
     } else if (!isEmpty) {
-      renderChunks.push(this.recentView(cards));
+      contentPart = this.recentView(cards);
     }
 
-    return <Wrapper>{renderChunks}</Wrapper>;
+    return (
+      <Wrapper>
+        <Dropzone isEmpty={isEmpty} mpBrowser={this.props.mpBrowser} />
+        {contentPart}
+      </Wrapper>
+    );
   }
 
   private loadingView = () => {
     return (
-      <SpinnerWrapper key="loadingView">
+      <SpinnerWrapper>
         <Spinner size="large" />
       </SpinnerWrapper>
     );
@@ -136,7 +133,7 @@ export class StatelessUploadView extends Component<
 
   private recentView(cards: JSX.Element[]) {
     return (
-      <div key="recentView">
+      <div>
         <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
         <CardsWrapper>{cards}</CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
