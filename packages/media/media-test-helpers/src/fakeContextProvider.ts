@@ -23,8 +23,10 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
+  const getBlobService = jest.fn();
 
   const defaultContext: Context = {
+    getBlobService,
     getLocalPreview,
     setLocalPreview,
     removeLocalPreview,
