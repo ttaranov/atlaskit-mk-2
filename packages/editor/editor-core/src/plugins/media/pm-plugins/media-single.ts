@@ -45,7 +45,7 @@ export const insertMediaSingleNode = (
     return false;
   }
 
-  const { state, state: { selection }, dispatch } = view;
+  const { state, dispatch } = view;
   const node = createMediaSingleNode(state.schema, collection)(mediaState);
   const paraAdded = insertNodesEndWithNewParagraph([node])(state, dispatch);
 
