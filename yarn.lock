@@ -753,12 +753,6 @@
   dependencies:
     "@types/orderedmap" "*"
 
-"@types/prosemirror-schema-basic@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/prosemirror-schema-basic/-/prosemirror-schema-basic-1.0.0.tgz#0557a8fd80192ffd8c9f582d89678eeb729556fe"
-  dependencies:
-    "@types/prosemirror-model" "*"
-
 "@types/prosemirror-schema-list@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/prosemirror-schema-list/-/prosemirror-schema-list-1.0.0.tgz#c0f5e590a839f56431954e65535e6f33eb9525ae"
@@ -10549,12 +10543,6 @@ prosemirror-model@*, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemi
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.2.2.tgz#008c8bbc28ff83c2bd541bafb49475497c629522"
   dependencies:
     orderedmap "^1.0.0"
-
-prosemirror-schema-basic@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-schema-basic/-/prosemirror-schema-basic-1.0.0.tgz#240516a52637e1a5b9d6d0bde0708906f2f51397"
-  dependencies:
-    prosemirror-model "^1.0.0"
 
 prosemirror-schema-list@^1.0.0:
   version "1.0.0"
