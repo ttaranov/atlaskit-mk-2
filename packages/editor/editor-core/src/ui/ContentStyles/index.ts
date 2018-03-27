@@ -21,7 +21,10 @@ import {
   akColorN40A,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import { tableStyle } from '@atlaskit/editor-common';
+import {
+  tableStyle,
+  akEditorTableNumberColumnWidth,
+} from '@atlaskit/editor-common';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -248,14 +251,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   /* =============== SINGLE IMAGE STYLES ================== */
   && .ProseMirror {
-    [layout='wide'] {
-      max-width: 960px;
-      width: 100%;
-    }
-
-    & [layout='full-width'] {
-      max-width: 100%;
-      width: 100%;
+    & [layout='full-width'] > div,
+    & [layout='wide'] > div {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
 
     & [layout='wrap-left'] + [layout='wrap-right'],
@@ -303,7 +302,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
-      width: 40px;
+      width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
     }
   }

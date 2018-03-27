@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 4.0.0
+- [major] Combines stateless and stateful components into one. Deletes stateless export. Renames pagination props. [a4b6c86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4b6c86)
+
 ## 3.7.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

@@ -62,6 +62,8 @@ const mediaTeam = [
   'jamesnewell',
   'abodera',
   'vvvlasov',
+  'dklinnert',
+  'iloire-atlassian',
 ];
 const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
 const usersAllowedToApprove = [].concat(

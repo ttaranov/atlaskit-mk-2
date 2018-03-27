@@ -7,7 +7,7 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { pluginKey as isMultilineContentPluginKey } from '../../plugins/is-multiline-content';
-import { AddonToolbar } from '../Addon';
+import { AddonToolbar, ClickAreaInline } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
@@ -70,6 +70,11 @@ const ContentArea: any = styled(ContentStyles)`
   width: ${(props: any) => (props.isMultiline ? '100%' : 'auto')};
   max-height: ${(props: MessageEditorProps) =>
     props.maxHeight ? props.maxHeight + 'px' : 'none'};
+`;
+
+const ToolbarArea: any = styled(ContentStyles)`
+  display: flex;
+  width: ${(props: any) => (props.isMultiline ? '100%' : 'auto')};
 `;
 
 const SecondaryToolbarContainer: any = styled.div`
@@ -141,32 +146,39 @@ export default class Editor extends React.Component<
           />
           {editorDOMElement}
         </ContentArea>
-        <SecondaryToolbarContainer>
-          <PluginSlot
-            disabled={disabled || maxContentSizeReached}
-            editorView={editorView}
-            editorActions={editorActions}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={secondaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
-          />
-          {customSecondaryToolbarComponents}
-          <AddonToolbar
-            dropdownItems={addonToolbarComponents}
-            isReducedSpacing={true}
-          />
-        </SecondaryToolbarContainer>
+        <ToolbarArea isMultiline={isMultilineContent}>
+          <ClickAreaInline editorView={editorView} />
+          <SecondaryToolbarContainer>
+            <PluginSlot
+              disabled={disabled || maxContentSizeReached}
+              editorView={editorView}
+              editorActions={editorActions}
+              eventDispatcher={eventDispatcher}
+              providerFactory={providerFactory}
+              appearance={this.appearance}
+              items={secondaryToolbarComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
+            />
+            {customSecondaryToolbarComponents}
+            <AddonToolbar
+              dropdownItems={addonToolbarComponents}
+              isReducedSpacing={true}
+            />
+          </SecondaryToolbarContainer>
+        </ToolbarArea>
       </MessageEditor>
     );
   };
 
   render() {
+    const { eventDispatcher, editorView } = this.props;
+
     return (
       <WithPluginState
+        editorView={editorView}
+        eventDispatcher={eventDispatcher}
         plugins={{
           maxContentSize: maxContentSizePluginKey,
           isMultilineContent: isMultilineContentPluginKey,

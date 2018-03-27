@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import {
-  CardActionType,
   MediaCollectionItem,
   MediaCollection,
   Context,
 } from '@atlaskit/media-core';
 import { createStorybookContext } from '@atlaskit/media-test-helpers';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+
 import { SelectableCard } from './selectableCard';
 import {
   Card,
@@ -73,30 +75,40 @@ export const createApiCards = (
 
 export const openAction = {
   label: 'Open',
-  type: undefined,
   handler: () => {
     console.log('open');
   },
 };
 export const closeAction = {
   label: 'Close',
-  type: undefined,
   handler: () => {
     console.log('close');
   },
 };
 export const deleteAction = {
   label: 'Delete',
-  type: CardActionType.delete,
   handler: () => {
     console.log('delete');
   },
+  icon: <CrossIcon size="small" label="delete" />,
 };
 
-export const actions = [openAction, closeAction, deleteAction];
+export const annotateCardAction = {
+  label: 'Annotate',
+  handler: () => {
+    console.log('annotate');
+  },
+  icon: <AnnotateIcon size="small" label="annotate" />,
+};
+
+export const actions = [
+  openAction,
+  closeAction,
+  annotateCardAction,
+  deleteAction,
+];
 
 export const anotherAction = {
-  type: -2,
   label: 'Some other action',
   handler: (
     item: MediaCollectionItem,
@@ -108,7 +120,6 @@ export const anotherAction = {
 };
 
 export const annotateAction = {
-  type: -1,
   label: 'Annotate',
   handler: (
     item: MediaCollectionItem,
@@ -126,9 +137,3 @@ export const wrongContext: Context = createStorybookContext({
   authType: 'client',
 });
 export const wrongCollection = 'adfasdf';
-// TODO: Add CollectionCardDelete into media-core. see: https://jira.atlassian.com/browse/FIL-4004
-// const deleteAction = CollectionCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
-//   console.log('delete')(item, items);
-// });
-
-// TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004

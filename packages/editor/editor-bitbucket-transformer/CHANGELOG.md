@@ -1,5 +1,17 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.7.6
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 2.7.5
+
+## 2.7.4
+
+## 2.7.3
+
+## 2.7.2
+
 ## 2.7.1
 
 ## 2.7.0

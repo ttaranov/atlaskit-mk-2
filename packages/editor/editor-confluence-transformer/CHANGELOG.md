@@ -1,5 +1,26 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.5
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 2.10.4
+- [patch] table cell/header attributes in the Confluence transformer [9415aaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9415aaa)
+
+## 2.10.3
+- [patch] Use fab:adf to convert Macros and fallback [ece6c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ece6c43)
+
+## 2.10.2
+
+## 2.10.1
+
+## 2.10.0
+- [minor] Add full width and wide layout support for single image [ae72acf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae72acf)
+
+## 2.9.10
+
+## 2.9.9
+
 ## 2.9.8
 - [patch] ED-4029: ignore divs wrapping table cells content [6e5361f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e5361f)
 

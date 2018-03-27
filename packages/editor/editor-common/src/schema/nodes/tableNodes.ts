@@ -52,6 +52,7 @@ const setCellAttrs = (node: PmNode) => {
 };
 
 export const tableBackgroundColorPalette = new Map<string, string>();
+export const tableBackgroundColorNames = new Map<string, string>();
 [
   // [akColorN800, default],
   [akColorB50, 'Blue'],
@@ -62,9 +63,10 @@ export const tableBackgroundColorPalette = new Map<string, string>();
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
   ['', 'White'],
-].forEach(([color, label]) =>
-  tableBackgroundColorPalette.set(color.toLowerCase(), label),
-);
+].forEach(([color, label]) => {
+  tableBackgroundColorPalette.set(color.toLowerCase(), label);
+  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
+});
 
 /**
  * @name table_node
@@ -166,7 +168,7 @@ const cellAttrs = {
 
 export const tableCell: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -193,7 +195,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension | bodiedExtension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

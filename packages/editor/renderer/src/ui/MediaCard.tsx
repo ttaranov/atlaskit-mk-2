@@ -5,6 +5,7 @@ import {
   CardDimensions,
   Card,
   CardView,
+  CardOnClickCallback,
 } from '@atlaskit/media-card';
 import {
   Context,
@@ -12,7 +13,7 @@ import {
   ContextFactory,
   ImageResizeMode,
 } from '@atlaskit/media-core';
-import { EventHandlers, MediaType } from '@atlaskit/editor-common';
+import { MediaType } from '@atlaskit/editor-common';
 
 export interface MediaProvider {
   viewContext?: ContextConfig;
@@ -21,7 +22,11 @@ export interface MediaProvider {
 export interface MediaCardProps {
   id: string;
   mediaProvider?: MediaProvider;
-  eventHandlers?: EventHandlers;
+  eventHandlers?: {
+    media?: {
+      onClick?: CardOnClickCallback;
+    };
+  };
   type: MediaType;
   collection: string;
   cardDimensions?: CardDimensions;

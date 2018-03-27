@@ -12,6 +12,7 @@ import {
   MediaDataUriService,
   DataUriService,
 } from '../services/dataUriService';
+import { BlobService, MediaBlobService } from '../services/blobService';
 import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
@@ -36,6 +37,8 @@ export interface Context {
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
 
   getDataUriService(collectionName?: string): DataUriService;
+
+  getBlobService(collectionName?: string): BlobService;
 
   addLinkItem(
     url: string,
@@ -120,6 +123,14 @@ class ContextImpl implements Context {
 
   getDataUriService(collectionName?: string): DataUriService {
     return new MediaDataUriService(
+      this.config.authProvider,
+      this.config.serviceHost,
+      collectionName,
+    );
+  }
+
+  getBlobService(collectionName?: string): BlobService {
+    return new MediaBlobService(
       this.config.authProvider,
       this.config.serviceHost,
       collectionName,

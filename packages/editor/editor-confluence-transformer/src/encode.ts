@@ -2,10 +2,9 @@ import {
   MediaAttributes,
   getEmojiAcName,
   hexToRgb,
-  getExtensionLozengeData,
-  getExtensionMetadata,
   MediaSingleAttributes,
   timestampToIso,
+  tableBackgroundColorPalette,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -69,16 +68,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeMediaSingle(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
-    } else if (node.type === schema.nodes.decisionList) {
-      return encodeAsADF(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    } else if (
-      node.type === schema.nodes.extension ||
-      node.type === schema.nodes.bodiedExtension ||
-      node.type === schema.nodes.inlineExtension
-    ) {
-      return encodeExtension(node);
     } else if (node.type === schema.nodes.emoji) {
       return encodeEmoji(node);
     } else if (node.type === schema.nodes.taskList) {
@@ -87,11 +78,9 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeDate(node);
     } else if (node.type === schema.nodes.placeholder) {
       return encodePlaceholder(node);
-    } else {
-      throw new Error(
-        `Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`,
-      );
     }
+
+    return encodeAsADF(node);
   }
 
   function encodeBlockquote(node: PMNode) {
@@ -175,28 +164,63 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeTable(node: PMNode): Element {
     const elem = doc.createElement('table');
+    const colgroup = doc.createElement('colgroup');
     const tbody = doc.createElement('tbody');
+    const { isNumberColumnEnabled } = node.attrs;
+    let tableColumnWidths = [];
 
-    node.descendants(rowNode => {
+    node.content.forEach((rowNode, _, i) => {
       const rowElement = doc.createElement('tr');
 
-      rowNode.descendants(colNode => {
+      rowNode.content.forEach((colNode, _, j) => {
+        const { attrs: { colwidth, background, rowspan, colspan } } = colNode;
         const cellElement =
           colNode.type === schema.nodes.tableCell
             ? doc.createElement('td')
             : doc.createElement('th');
+
+        if (isNumberColumnEnabled && j === 0) {
+          cellElement.className = 'numberingColumn';
+        }
+
+        // if we have a colwidth attr for this cell, and it contains new
+        // colwidths we haven't seen for the whole table yet, add those
+        // (colwidths over the table are defined as-we-go)
+        if (colwidth && colwidth.length + j > tableColumnWidths.length) {
+          tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
+        }
+
+        if (background) {
+          cellElement.setAttribute(
+            'data-highlight-colour',
+            (
+              tableBackgroundColorPalette.get(background.toLowerCase()) ||
+              background
+            ).toLowerCase(),
+          );
+        }
+        cellElement.setAttribute('colspan', colspan || 1);
+        cellElement.setAttribute('rowspan', rowspan || 1);
+
         cellElement.appendChild(encodeFragment(colNode.content));
         rowElement.appendChild(cellElement);
-
-        return false;
       });
 
       tbody.appendChild(rowElement);
-      return false;
     });
 
+    // now we have all the column widths, assign them to each <col> in the <colgroup>
+    tableColumnWidths.forEach((colwidth, i) => {
+      const colInfoElement = document.createElement('col');
+      if (!(i === 0 && isNumberColumnEnabled)) {
+        colInfoElement.style.width = colwidth + 'px';
+      }
+      colgroup.appendChild(colInfoElement);
+    });
+
+    elem.appendChild(colgroup);
     elem.appendChild(tbody);
-    elem.setAttribute('class', 'confluenceTable');
+    elem.setAttribute('class', 'fixed-table wrapped');
 
     return elem;
   }
@@ -406,10 +430,6 @@ export default function encode(node: PMNode, schema: Schema) {
   }
 
   function encodeJiraIssue(node: PMNode) {
-    if (!node.attrs.issueKey) {
-      return encodeExtension(node);
-    }
-
     const elem = createMacroElement('jira', node.attrs.schemaVersion);
     elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
 
@@ -420,47 +440,6 @@ export default function encode(node: PMNode, schema: Schema) {
         serverId: { value: node.attrs.serverId },
       }),
     );
-
-    return elem;
-  }
-
-  function encodeExtension(node: PMNode) {
-    const { parameters, extensionKey } = node.attrs;
-
-    const elem = createMacroElement(
-      extensionKey,
-      getExtensionMetadata(node, 'schemaVersion') || '1',
-    );
-
-    const macroId = getExtensionMetadata(node, 'macroId');
-    if (macroId) {
-      elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', macroId);
-    }
-
-    if (parameters) {
-      const { macroParams } = parameters;
-      if (macroParams) {
-        elem.appendChild(encodeMacroParams(doc, macroParams));
-      }
-    }
-
-    const placeholderData = getExtensionLozengeData({ node, type: 'image' });
-    if (placeholderData) {
-      const placeholder = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
-      placeholder.textContent = placeholderData.url;
-      elem.appendChild(placeholder);
-    }
-
-    const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
-    displayType.textContent =
-      node.type.name === 'inlineExtension' ? 'INLINE' : 'BLOCK';
-    elem.appendChild(displayType);
-
-    if (node.type.name === 'bodiedExtension') {
-      const content = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
-      content.appendChild(encodeFragment(node.content));
-      elem.appendChild(content);
-    }
 
     return elem;
   }
@@ -534,9 +513,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
-    nsNode.appendChild(
-      doc.createCDATASection(JSON.stringify(JSON.stringify(node))),
-    );
+    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node)));
     return nsNode;
   }
 }

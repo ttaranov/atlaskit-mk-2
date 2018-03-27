@@ -243,6 +243,8 @@ class Mocks {
         return Promise.resolve(pendingFileItem);
       } else if (callCount === 2) {
         return Promise.resolve(succeededFileItem);
+      } else {
+        return null;
       }
     });
 

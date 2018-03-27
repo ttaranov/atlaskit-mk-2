@@ -1,10 +1,13 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
 
-import React, { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import { borderRadius, colors, gridSize, themed } from '@atlaskit/theme';
-import styled from 'styled-components';
+import Button from '@atlaskit/button';
+import styled, { css } from 'styled-components';
 import convert, { resolveFromGeneric } from 'kind2string';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 
 const Wrapper = styled.code`
   display: inline-block;
@@ -53,6 +56,94 @@ const Outline = styled.span`
   line-height: 1;
 `;
 
+const Collapse = ({ height, isCollapsed, innerRef, ...props }) => {
+  return (
+    <div
+      ref={innerRef}
+      style={{
+        height: isCollapsed ? 0 : height,
+        overflow: isCollapsed ? 'hidden' : null,
+        transition: 'height 260ms cubic-bezier(0.2, 0, 0, 1)',
+      }}
+      {...props}
+    />
+  );
+};
+
+type toggleProps = {
+  beforeCollapse: (boolean, () => mixed) => Node,
+  afterCollapse: (boolean, () => mixed) => Node,
+  beginClosed: boolean,
+  children: Node,
+};
+
+type toggleState = {
+  isCollapsed: boolean,
+  contentHeight: number,
+};
+
+class Toggle extends Component<toggleProps, toggleState> {
+  static defaultProps = {
+    beforeCollapse: () => null,
+    afterCollapse: () => null,
+    beginClosed: false,
+    children: null,
+  };
+
+  content: ?HTMLElement;
+
+  constructor(props: toggleProps) {
+    super(props);
+
+    this.state = {
+      isCollapsed: this.props.beginClosed,
+      contentHeight: 0,
+    };
+  }
+
+  componentDidMount() {
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
+    this.setState({ contentHeight });
+  }
+
+  componentWillReceiveProps(props) {
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
+    if (contentHeight !== this.state.contentHeight) {
+      this.setState({ contentHeight });
+    }
+  }
+
+  getContent = ref => {
+    if (!ref) return;
+    this.content = ref;
+  };
+
+  toggleCollapse = () => {
+    const contentHeight = this.content ? this.content.scrollHeight : 0;
+    this.setState({ contentHeight, isCollapsed: !this.state.isCollapsed });
+  };
+
+  render() {
+    let { beforeCollapse, children, afterCollapse } = this.props;
+    let { isCollapsed, contentHeight } = this.state;
+
+    return (
+      <div>
+        {beforeCollapse(isCollapsed, this.toggleCollapse)}
+        <Collapse
+          isCollapsed={isCollapsed}
+          duration={500}
+          height={contentHeight}
+          innerRef={this.getContent}
+        >
+          {children}
+        </Collapse>
+        {afterCollapse(isCollapsed, this.toggleCollapse)}
+      </div>
+    );
+  }
+}
+
 const SIMPLE_TYPES = [
   'array',
   'boolean',
@@ -79,12 +170,24 @@ function printComplexType(type, depth) {
 /* eslint-enable prefer-rest-params */
 
 function Indent(props: { children: Node }) {
-  return <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>;
+  // Experimenting with toggle here, ran into Issues, however this needs to be
+  // tackled at some point.
+  // Ref measurements were off with nested Toggles, basically
+  return (
+    // <Toggle
+    //   beforeCollapse={(isCollapsed, toggleCollapse) => (
+    //     <Button onClick={toggleCollapse}><ChevronDownIcon label="expandIcon"/></Button>
+    //   )}
+    // >
+    <div style={{ paddingLeft: '1.3em' }}>{props.children}</div>
+    // </Toggle>
+  );
 }
 // const printFunc = type => null;
 
 type PrettyPropTypeProps = {
   type: Object,
+  shouldCollapse?: boolean,
 };
 
 const converters = {
@@ -191,19 +294,45 @@ const prettyConvert = (type, depth = 1) => {
   return converter(type, depth);
 };
 
-export default function PrettyPropType(props: PrettyPropTypeProps) {
-  // any instance of returning null means we are confident the information will
-  // be displayed elsewhere so we do not need to also include it here
-  let type = props.type;
-  if (type.kind === 'generic') {
-    type = resolveFromGeneric(props.type);
+export default class PrettyPropType extends Component<PrettyPropTypeProps, *> {
+  render() {
+    let { shouldCollapse, type } = this.props;
+    // any instance of returning null means we are confident the information will
+    // be displayed elsewhere so we do not need to also include it here
+    if (type.kind === 'generic') {
+      type = resolveFromGeneric(type);
+    }
+    if (SIMPLE_TYPES.includes(type.kind)) return null;
+    if (
+      type.kind === 'nullable' &&
+      SIMPLE_TYPES.includes(type.arguments.kind)
+    ) {
+      return null;
+    }
+    return shouldCollapse ? (
+      <Toggle
+        beginClosed
+        afterCollapse={(isCollapsed, toggleCollapse) => (
+          <div>
+            <Button
+              iconBefore={
+                isCollapsed ? (
+                  <ChevronDownIcon label="expandIcon" />
+                ) : (
+                  <ChevronUpIcon label="collapseIcon" />
+                )
+              }
+              onClick={toggleCollapse}
+            >
+              {isCollapsed ? 'Expand Prop Shape' : 'Hide Prop Shape'}
+            </Button>
+          </div>
+        )}
+      >
+        <Wrapper>{prettyConvert(type)}</Wrapper>
+      </Toggle>
+    ) : (
+      <Wrapper>{prettyConvert(type)}</Wrapper>
+    );
   }
-  if (SIMPLE_TYPES.includes(type.kind)) return null;
-  if (
-    type.kind === 'nullable' &&
-    SIMPLE_TYPES.includes(props.type.arguments.kind)
-  ) {
-    return null;
-  }
-  return <Wrapper>{prettyConvert(type)}</Wrapper>;
 }

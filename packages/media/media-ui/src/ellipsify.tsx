@@ -76,7 +76,7 @@ const setEllipsis = (props: EllipsifyProps) => (element: HTMLElement) => {
   delayRun(() => (element.textContent = textContent));
 };
 
-const timeout = fn => window.setTimeout(fn, 1);
+const timeout = (fn: Function) => window.setTimeout(fn, 1);
 const delayRun = window.requestAnimationFrame || timeout;
 
 export default Ellipsify;

@@ -6,6 +6,9 @@ import {
   acNameToEmoji,
   acShortcutToEmoji,
   parseDate,
+  tableBackgroundColorNames,
+  akEditorFullPageMaxWidth,
+  akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -24,6 +27,7 @@ import {
   getContent,
   getExtensionMacroParams,
   mapPanelTypeToPm,
+  calcPixelsFromCSSValue,
 } from './utils';
 import {
   blockquoteContentWrapper,
@@ -33,7 +37,13 @@ import {
   docContentWrapper,
 } from './content-wrapper';
 
-const supportedSingleMediaLayouts = ['center', 'wrap-left', 'wrap-right'];
+const supportedSingleMediaLayouts = [
+  'center',
+  'wrap-left',
+  'wrap-right',
+  'wide',
+  'full-width',
+];
 
 const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
@@ -368,10 +378,9 @@ function converter(
       case 'TABLE':
         if (hasClass(node, 'wysiwyg-macro')) {
           return convertWYSIWYGMacro(schema, node) || unsupportedInline;
-        } else if (hasClass(node, 'confluenceTable')) {
-          return convertTable(schema, node);
+        } else {
+          return convertTable(schema, node as HTMLTableElement);
         }
-        return unsupportedInline;
       case 'TIME':
         const iso = node.getAttribute('datetime');
         if (iso) {
@@ -582,23 +591,92 @@ function convertNoFormatFromView(
   return createCodeFragment(schema, codeContent);
 }
 
-function convertTable(schema: Schema, node: Element) {
+const RELATIVE_TABLE_WIDTH = akEditorFullPageMaxWidth;
+const NUMBER_COL_WIDTH = akEditorTableNumberColumnWidth;
+
+function convertTable(schema: Schema, node: HTMLTableElement) {
   const { table, tableRow, tableCell, tableHeader } = schema.nodes;
   const rowNodes: PMNode[] = [];
   const rows = node.querySelectorAll('tr');
+  const colgroup = node.querySelector('colgroup');
+  const columnInfos = colgroup ? colgroup.querySelectorAll('col') : [];
 
+  const tableBaseWidth = calcPixelsFromCSSValue(
+    node.style.width || '100%',
+    RELATIVE_TABLE_WIDTH,
+  );
+
+  const columnSizes: number[] = [];
+  for (let i = 0, len = columnInfos.length; i < len; i++) {
+    const columnInfo = columnInfos[i];
+    if (columnInfo.style.width) {
+      columnSizes.push(
+        calcPixelsFromCSSValue(columnInfo.style.width, tableBaseWidth),
+      );
+    } else {
+      columnSizes.push(NUMBER_COL_WIDTH);
+    }
+  }
+
+  let isNumberColumnEnabled;
   for (let i = 0, rowsCount = rows.length; i < rowsCount; i++) {
+    // skip nested tables from query selector
+    if (rows[i].parentNode !== null) {
+      let parent;
+
+      if (rows[i].parentNode!.nodeName === 'tbody') {
+        parent = rows[i].parentNode!.parentNode;
+      } else {
+        parent = rows[i].parentNode;
+      }
+
+      if (parent !== node) {
+        continue;
+      }
+    }
+
     const cellNodes: PMNode[] = [];
     const cols = rows[i].querySelectorAll('td,th');
-
+    if (typeof isNumberColumnEnabled === 'undefined') {
+      isNumberColumnEnabled = cols[0].classList.contains('numberingColumn');
+    }
+    let colwidthIdx = 0;
     for (let j = 0, colsCount = cols.length; j < colsCount; j++) {
+      // skip nested tables from query selector
+      if (cols[j].parentElement && cols[j].parentElement !== rows[i]) {
+        continue;
+      }
+
       const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
       const pmNode = parseDomNode(schema, cols[j]);
-      cellNodes.push(cell.createChecked(undefined, pmNode));
+      const colspan = parseInt(cols[j].getAttribute('colspan') || '1', 10);
+
+      let background = cols[j].getAttribute('data-highlight-colour') || null;
+      if (background) {
+        // convert confluence color name to editor color
+        background =
+          tableBackgroundColorNames.get(background.toLowerCase()) || background;
+      }
+
+      const attrs = {
+        colspan,
+        colwidth: columnSizes.length
+          ? columnSizes.slice(colwidthIdx, colwidthIdx + colspan)
+          : null,
+        background,
+        rowspan: parseInt(cols[j].getAttribute('rowspan') || '1', 10),
+      };
+
+      colwidthIdx += colspan;
+      cellNodes.push(cell.create(attrs, pmNode));
     }
-    rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
+    rowNodes.push(tableRow.createChecked(undefined, Fragment.from(cellNodes)));
   }
-  return table.create(undefined, Fragment.from(rowNodes));
+
+  return table.createChecked(
+    { isNumberColumnEnabled },
+    Fragment.from(rowNodes),
+  );
 }
 
 function convertTaskList(schema: Schema, node: Element) {
@@ -644,13 +722,7 @@ function convertTaskItem(schema: Schema, node: Element) {
 }
 
 function convertADF(schema: Schema, node: Element) {
-  const str =
-    (node.textContent || '')[0] === '"'
-      ? node.textContent || ''
-      : `"${node.textContent}"`;
-  let json = JSON.parse(str);
-  if (typeof json === 'string') {
-    json = JSON.parse(json);
-  }
+  const str = node.textContent || '';
+  const json = JSON.parse(str);
   return schema.nodeFromJSON(json);
 }

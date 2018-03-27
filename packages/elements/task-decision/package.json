@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "4.10.6",
+  "version": "4.10.12",
   "config": {
     "access": "public"
   },
@@ -10,13 +10,14 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^2.4.4",
-    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/analytics": "^2.4.5",
+    "@atlaskit/avatar": "^9.2.3",
     "@atlaskit/button": "^6.6.0",
     "@atlaskit/icon": "^10.12.0",
     "@atlaskit/spinner": "^4.2.0",
@@ -40,8 +41,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/editor-common": "^7.0.1",
-    "@atlaskit/renderer": "^12.1.0",
+    "@atlaskit/editor-common": "^8.1.5",
+    "@atlaskit/renderer": "^13.0.10",
     "@atlaskit/util-common-test": "^2.4.2",
     "fetch-mock": "^5.12.1"
   },

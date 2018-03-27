@@ -51,7 +51,6 @@ const config = {
       tsConfigFile: './tsconfig.fabric.json',
       skipBabel: true,
     },
-    __baseUrl__: 'http://localhost:9000',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleNameMapper: {

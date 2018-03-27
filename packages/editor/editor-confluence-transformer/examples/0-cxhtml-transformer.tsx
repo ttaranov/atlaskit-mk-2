@@ -171,7 +171,12 @@ class Example extends Component<ExampleProps, ExampleState> {
                   allowCodeBlocks={true}
                   allowLists={true}
                   allowTextColor={true}
-                  allowTables={true}
+                  allowTables={{
+                    allowColumnResizing: true,
+                    allowMergeCells: true,
+                    allowBackgroundColor: true,
+                    allowNumberColumn: true,
+                  }}
                   allowJiraIssue={true}
                   allowUnsupportedContent={true}
                   allowPanel={true}

@@ -8,7 +8,12 @@ describe('mediaSingle - styled component', () => {
 
     it('should float none', () => {
       const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
+        <Wrapper
+          layout={layout}
+          height={100}
+          width={100}
+          containerWidth={100}
+        />,
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
@@ -19,7 +24,12 @@ describe('mediaSingle - styled component', () => {
 
     it('should float none', () => {
       const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
+        <Wrapper
+          layout={layout}
+          height={100}
+          width={100}
+          containerWidth={100}
+        />,
       );
       expect(wrapper).toHaveStyleRule('float', 'right');
     });
@@ -30,7 +40,12 @@ describe('mediaSingle - styled component', () => {
 
     it('should float none', () => {
       const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
+        <Wrapper
+          layout={layout}
+          height={100}
+          width={100}
+          containerWidth={100}
+        />,
       );
       expect(wrapper).toHaveStyleRule('float', 'left');
     });
@@ -41,7 +56,12 @@ describe('mediaSingle - styled component', () => {
 
     it('should float none', () => {
       const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
+        <Wrapper
+          layout={layout}
+          height={100}
+          width={100}
+          containerWidth={100}
+        />,
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });
@@ -52,7 +72,12 @@ describe('mediaSingle - styled component', () => {
 
     it('should float none', () => {
       const wrapper = shallow(
-        <Wrapper layout={layout} height={100} width={100} />,
+        <Wrapper
+          layout={layout}
+          height={100}
+          width={100}
+          containerWidth={100}
+        />,
       );
       expect(wrapper).toHaveStyleRule('float', 'none');
     });

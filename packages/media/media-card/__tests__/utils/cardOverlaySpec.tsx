@@ -9,7 +9,7 @@ import {
   Retry,
 } from '../../src/utils/cardImageView/cardOverlay/styled';
 
-import { Menu } from '../../src/utils/';
+import { CardActionsView } from '../../src/utils/';
 
 describe('CardOverlay', () => {
   const errorMessage = 'Loading failed';
@@ -43,12 +43,12 @@ describe('CardOverlay', () => {
 
   it('should pass triggerColor "white" to Menu component when overlay is NOT persistent', () => {
     const card = shallow(<CardOverlay persistent={false} />);
-    expect(card.find(Menu).props().triggerColor).toEqual('white');
+    expect(card.find(CardActionsView).props().triggerColor).toEqual('white');
   });
 
   it('should pass triggerColor as "undefined" to Menu component when overlay is persistent', () => {
     const card = shallow(<CardOverlay persistent={true} />);
-    expect(card.find(Menu).props().triggerColor).toEqual(undefined);
+    expect(card.find(CardActionsView).props().triggerColor).toEqual(undefined);
   });
 
   it('should allow manual retry when "onRetry" is passed', () => {

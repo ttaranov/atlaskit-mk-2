@@ -120,21 +120,22 @@ class CategoryTracker {
   }
 }
 
-const categoryOrder = [
+const titleOrder = [
   frequentCategory,
   ...defaultCategories,
   atlassianCategory,
-  customCategory,
+  userCustomTitle,
+  customTitle,
 ];
 
-const categoryComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
-  let cat1 = categoryOrder.indexOf(eg1.category);
-  let cat2 = categoryOrder.indexOf(eg2.category);
+const titleComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
+  let title1 = titleOrder.indexOf(eg1.title);
+  let title2 = titleOrder.indexOf(eg2.title);
 
-  cat1 = cat1 === -1 ? MAX_ORDINAL : cat1;
-  cat2 = cat2 === -1 ? MAX_ORDINAL : cat2;
+  title1 = title1 === -1 ? MAX_ORDINAL : title1;
+  title2 = title2 === -1 ? MAX_ORDINAL : title2;
 
-  return cat1 - cat2;
+  return title1 - title2;
 };
 
 export default class EmojiPickerVirtualList extends PureComponent<
@@ -250,6 +251,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
       items.push(
         new EmojisRowItem({
           emojis: rowEmojis,
+          title: group.title,
           onSelected: onEmojiSelected,
           onMouseMove: this.onEmojiMouseEnter,
         }),
@@ -367,29 +369,11 @@ export default class EmojiPickerVirtualList extends PureComponent<
         userCustomGroup.emojis.push(emoji);
       }
     }
-    this.allEmojiGroups = list.sort(categoryComparator);
-
-    // append user emojis before the custom emojis
     if (userCustomGroup.emojis.length > 0) {
-      let idx = this.findElementIndex(
-        this.allEmojiGroups,
-        (item, index) => item.category === customCategory,
-      );
-      if (idx !== -1) {
-        this.allEmojiGroups.splice(idx, 0, userCustomGroup);
-      }
+      list.push(userCustomGroup);
     }
+    this.allEmojiGroups = list.sort(titleComparator);
   };
-
-  private findElementIndex(elements, callback) {
-    let idx = -1;
-    elements.filter((item, index) => {
-      if (callback(item, index)) {
-        idx = index;
-      }
-    });
-    return idx;
-  }
 
   private checkCategoryChange = ({ scrollTop }) => {
     this.lastScrollTop = scrollTop;

@@ -10,6 +10,8 @@ export interface ConfluenceLinkMetadata {
   contentTitle?: string | null;
   isRenamedTitle?: boolean;
   anchorName?: string | null;
+  contentId?: string | null;
+  container?: ConfluenceLinkMetadata;
 }
 
 export interface LinkAttributes {

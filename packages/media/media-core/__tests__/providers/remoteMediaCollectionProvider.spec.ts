@@ -5,6 +5,7 @@ import 'rxjs/add/operator/take';
 
 import { CollectionServiceStub } from '../../test-helpers/collection-service-stub';
 import { RemoteMediaCollectionProviderFactory } from '../../src/providers/remoteMediaCollectionProviderFactory';
+import { Subscription } from 'rxjs/Subscription';
 
 const defaultCollectionName = 'MediaServicesSample';
 
@@ -51,10 +52,10 @@ describe('RemoteMediaCollectionProvider', () => {
     );
 
     // Load next page when we have finished loading the first one.
-    const subscription1 = collectionProvider
+    const subscription1: Subscription = collectionProvider
       .observable()
       .take(1)
-      .do(collection => collectionProvider.loadNextPage())
+      .do(() => collectionProvider.loadNextPage())
       .subscribe({
         next: () => subscription1.unsubscribe(),
       });

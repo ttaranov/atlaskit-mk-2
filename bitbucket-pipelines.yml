@@ -16,9 +16,10 @@ pipelines:
             - bolt install --pure-lockfile
             - (cd build/ci-scripts && yarn stop-if-older-build)
             - yarn build
-            - yarn lint
-            - yarn typecheck
-            - yarn test
+            # Disabled until we get rid of the race condition in Landkid
+            # - yarn lint
+            # - yarn typecheck
+            # - yarn test
             # Disabled until we find the source of the flakeyness
             # - yarn test:browser:browserstack
             - yarn release
@@ -36,7 +37,8 @@ pipelines:
             - node build/ci-scripts/upload.build.artefact.for.commit.js luke.txt
             - rm luke.txt
             - node build/ci-scripts/download.build.artefact.for.commit.js luke.txt
-            - echo luke.text
+            - ls
+            - cat luke.txt
 
     # - parallel:
     #     - step:
@@ -94,11 +96,13 @@ pipelines:
 
     # This will run with the webdriver tests
     build-webdriver:
-      - step:
+    - step:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test:webdriver:browserstack:ci
+            - yarn test:build:webdriver:browserstack
+          caches:
+            - node
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds

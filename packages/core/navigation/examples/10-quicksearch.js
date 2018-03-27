@@ -357,7 +357,7 @@ class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
     isLoading: false,
   };
 
-  searchTimeoutId: number;
+  searchTimeoutId: ?TimeoutID;
 
   setQuery(query) {
     store.query = query;
@@ -367,7 +367,9 @@ class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
   }
 
   search = (query: string) => {
-    clearTimeout(this.searchTimeoutId);
+    if (this.searchTimeoutId) {
+      clearTimeout(this.searchTimeoutId);
+    }
     this.setState({
       isLoading: true,
     });

@@ -38,10 +38,7 @@ export interface EmojiCacheStrategy {
  * regardless of originally supplied headers (basically everything but Firefox).
  */
 export class BrowserCacheStrategy implements EmojiCacheStrategy {
-  private cachedImageUrls: Map<string, EmojiDescription> = new Map<
-    string,
-    EmojiDescription
-  >();
+  private cachedImageUrls: Set<string> = new Set<string>();
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
   private static browser: string = new UAParser()
@@ -67,7 +64,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
 
     if (this.cachedImageUrls.has(mediaPath)) {
       // Already cached
-      return this.cachedImageUrls.get(mediaPath);
+      return emoji;
     }
 
     if (this.invalidImageUrls.has(mediaPath)) {
@@ -78,7 +75,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
       .loadMediaImage(mediaPath)
       .then(() => {
         // Media is loaded, can use original URL now, so just return original emoji
-        this.cachedImageUrls.set(mediaPath, emoji);
+        this.cachedImageUrls.add(mediaPath);
         return emoji;
       })
       .catch(() => {
@@ -139,14 +136,14 @@ const maxImageSize = 10000;
  * small delay noticable to the end user.
  */
 export class MemoryCacheStrategy implements EmojiCacheStrategy {
-  private dataURLCache: LRUCache<string, EmojiDescription>;
+  private dataURLCache: LRUCache<string, string>;
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
 
   constructor(mediaImageLoader: MediaImageLoader) {
     debug('MemoryCacheStrategy');
     this.mediaImageLoader = mediaImageLoader;
-    this.dataURLCache = new LRUCache<string, EmojiDescription>(maxImageCached);
+    this.dataURLCache = new LRUCache<string, string>(maxImageCached);
   }
 
   loadEmoji(
@@ -160,10 +157,10 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
     }
 
     const { mediaPath } = representation;
-
-    const cachedEmoji = this.dataURLCache.get(mediaPath);
-    if (cachedEmoji) {
-      return cachedEmoji;
+    const dataURL = this.dataURLCache.get(mediaPath);
+    if (dataURL) {
+      // Already cached
+      return convertMediaToImageEmoji(emoji, dataURL, useAlt);
     }
 
     if (this.invalidImageUrls.has(mediaPath)) {
@@ -178,7 +175,7 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
         const loadedEmoji = convertMediaToImageEmoji(emoji, dataURL, useAlt);
         if (dataURL.length <= maxImageSize) {
           // Only cache if not large than max size
-          this.dataURLCache.put(mediaPath, loadedEmoji);
+          this.dataURLCache.put(mediaPath, dataURL);
         } else {
           debug(
             'No caching as image is too large',

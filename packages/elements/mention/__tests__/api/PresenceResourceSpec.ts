@@ -22,17 +22,6 @@ const testIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 const parser = new DefaultPresenceParser();
 
 describe('PresenceParser', () => {
-  // Suppress console errors in tests
-  let consoleErrorPlaceholder;
-  beforeEach(() => {
-    consoleErrorPlaceholder = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = consoleErrorPlaceholder;
-  });
-
   it('should parse presences into correct states', () => {
     const parsedPresences = parser.parse(validPresenceData);
     expect(parsedPresences['0'].status).toEqual('offline');

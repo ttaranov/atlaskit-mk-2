@@ -89,15 +89,23 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/06-async-select').default}
-      source={require('!!raw-loader!../examples/06-async-select')}
+      Component={require('../examples/06-async-select-with-callback').default}
+      source={require('!!raw-loader!../examples/06-async-select-with-callback')}
       title="Async Select"
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/09-creatable-select.js').default}
+      source={require('!!raw-loader!../examples/09-creatable-select.js')}
+      title="Creatable Select"
     />
   )}
 
   ### Props
 
-  Please refer to react-select for [prop documentation](https://github.com/JedWatson/react-select/blob/v2/src/Select.js#L36).
+  Please refer to the react-select documentation for [prop documentation](https://bit.ly/react-select-v2).
 `;
 
 /*

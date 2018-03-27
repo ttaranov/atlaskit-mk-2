@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
-import { MediaProps } from './media';
 import { CardEvent, Identifier } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { CardSurroundings } from '@atlaskit/editor-common';
+import { EventHandlers, CardSurroundings } from '@atlaskit/editor-common';
+import { MediaProps } from './media';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;
+  eventHandlers?: EventHandlers;
 }
 
 export interface MediaGroupState {
@@ -30,21 +31,23 @@ export default class MediaGroup extends PureComponent<
   render() {
     const numChildren = React.Children.count(this.props.children);
 
+    let content;
     if (numChildren === 1) {
       const card = React.Children.toArray(
         this.props.children,
       )[0] as ReactElement<any>;
       switch (card.props.type) {
         case 'file':
-          return this.renderSingleFile(card);
-
+          content = this.renderSingleFile(card);
+          break;
         case 'link':
         default:
-          return this.renderSingleLink(card);
+          content = this.renderSingleLink(card);
       }
     } else {
-      return this.renderStrip();
+      content = this.renderStrip();
     }
+    return <div className="MediaGroup">{content}</div>;
   }
 
   renderSingleFile(child: ReactElement<MediaProps>) {
@@ -68,16 +71,16 @@ export default class MediaGroup extends PureComponent<
     surroundingItems: Identifier[],
   ) {
     return React.cloneElement(child, {
-      resizeMode: 'crop',
+      resizeMode: 'full-fit',
       eventHandlers: {
         ...child.props.eventHandlers,
         media: {
-          onClick: (event: CardEvent) => {
+          onClick: (event: CardEvent, analyticsEvent?: any) => {
             if (
-              !child.props ||
-              !child.props.eventHandlers ||
-              !child.props.eventHandlers.media ||
-              !child.props.eventHandlers.media.onClick
+              !this.props ||
+              !this.props.eventHandlers ||
+              !this.props.eventHandlers.media ||
+              !this.props.eventHandlers.media.onClick
             ) {
               return;
             }
@@ -85,7 +88,11 @@ export default class MediaGroup extends PureComponent<
               collectionName: child.props.collection,
               list: surroundingItems,
             };
-            child.props.eventHandlers.media.onClick(event, surroundings);
+            this.props.eventHandlers.media.onClick(
+              event,
+              surroundings,
+              analyticsEvent,
+            );
           },
         },
       },

@@ -521,9 +521,7 @@ describe('UploadService', () => {
           progress: expect.objectContaining({
             absolute: 1000,
             max: 1000,
-            overallTime: 0,
             portion: 1,
-            timeLeft: 0,
           }),
         }),
       );
@@ -556,10 +554,6 @@ describe('UploadService', () => {
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
-      // avoid polluting test logs with error message in console
-      const consoleError = console.error;
-      console.error = jest.fn();
-
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -579,8 +573,6 @@ describe('UploadService', () => {
           },
         }),
       );
-
-      console.error = consoleError;
     });
   });
 

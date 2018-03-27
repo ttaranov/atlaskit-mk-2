@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
@@ -30,7 +31,7 @@ interface State {
 export default function wrapComponentWithClickArea(
   ReactComponent: ReactComponentConstructor,
 ): ReactComponentConstructor {
-  return class WrapperClickArea extends React.PureComponent<Props, State> {
+  return class WrapperClickArea extends PureComponent<Props, State> {
     state: State = { selected: false };
 
     componentDidMount() {

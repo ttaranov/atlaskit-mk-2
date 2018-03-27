@@ -1,5 +1,23 @@
 # @atlaskit/media-viewer
 
+## 11.0.6
+- [patch] Release first version of image viewer for Media Viewer Next Generation [dd1893a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd1893a)
+
+## 11.0.5
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 11.0.4
+
+## 11.0.3
+
+## 11.0.2
+
+## 11.0.1
+- [patch] Wire up MVNG with Media Providers [d80c743](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d80c743)
+
+## 11.0.0
+
 ## 10.1.0
 - [minor] Add Media Viewer Next Gen Feature Flag [5ecb889](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb889)
 

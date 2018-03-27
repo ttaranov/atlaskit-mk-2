@@ -25,7 +25,11 @@ const extensionPlugin: EditorPlugin = {
       {
         rank: 2330,
         plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+          createPlugin(
+            dispatch,
+            providerFactory,
+            props.extensionHandlers || {},
+          ),
       },
     ];
   },
@@ -44,12 +48,7 @@ const extensionPlugin: EditorPlugin = {
         }) => (
           <ExtensionEditPanel
             element={extensionState.element}
-            onEdit={() =>
-              editExtension(macroState.macroProvider)(
-                editorView.state,
-                dispatch,
-              )
-            }
+            onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
           />
         )}

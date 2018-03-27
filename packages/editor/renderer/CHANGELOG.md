@@ -1,5 +1,34 @@
 # @atlaskit/renderer
 
+## 13.0.10
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 13.0.9
+- [patch] Change Media Group resize mode to full-fit from crop [05575db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05575db)
+
+## 13.0.8
+
+## 13.0.7
+
+## 13.0.6
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 13.0.5
+
+## 13.0.4
+
+## 13.0.3
+
+## 13.0.2
+- [patch] Adds margin-top to ApplicationCard, MediaGroup and CodeBlock in renderer content [f2ae5ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2ae5ca)
+
+## 13.0.1
+
+## 13.0.0
+
+## 12.2.1
+
 ## 12.2.0
 - [minor] E-mail renderer [722657b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/722657b)
 

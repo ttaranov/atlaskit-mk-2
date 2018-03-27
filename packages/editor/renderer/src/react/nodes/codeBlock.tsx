@@ -19,6 +19,10 @@ export default class CodeBlock extends PureComponent<Props, {}> {
       text: React.Children.map(children, identity).join(''),
     };
 
-    return <AkCodeBlock {...codeProps} />;
+    return (
+      <div className="CodeBlock">
+        <AkCodeBlock {...codeProps} />
+      </div>
+    );
   }
 }

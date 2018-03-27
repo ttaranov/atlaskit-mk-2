@@ -16,8 +16,10 @@ import {
  * The remaining skipped tests for IE11/Edge are bugs that should be fixed for those browsers.
 */
 
+// Follow up with browserstack as to why @ is keyed in as 2 on ie
 BrowserTestCase(
   'Mention: user should see picker if they type "@"',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
