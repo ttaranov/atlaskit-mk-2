@@ -219,9 +219,9 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-    const isReallyOpen = isOpen && !isDisabled;
+    const isOpenAndNotDisabled = isOpen && !isDisabled;
     const Menu = () =>
-      isReallyOpen ? (
+      isOpenAndNotDisabled ? (
         <StyledMenu>
           <Calendar
             {...isoToObj(value)}
@@ -250,7 +250,7 @@ export default class DatePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isReallyOpen}
+          menuIsOpen={isOpenAndNotDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{

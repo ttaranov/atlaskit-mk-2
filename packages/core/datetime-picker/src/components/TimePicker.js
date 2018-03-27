@@ -127,7 +127,7 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { value, isOpen } = this.getState();
-    const isReallyOpen = isOpen && !isDisabled;
+    const isOpenAndNotDisabled = isOpen && !isDisabled;
     return (
       <div {...innerProps}>
         <input name={name} type="hidden" value={value} />
@@ -136,7 +136,7 @@ export default class TimePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isReallyOpen}
+          menuIsOpen={isOpenAndNotDisabled}
           onBlur={onBlur}
           onChange={this.onChange}
           options={this.getOptions()}
