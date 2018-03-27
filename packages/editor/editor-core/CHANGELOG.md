@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 65.1.24
+
 ## 65.1.23
 - [patch] FEF-730 Fix initial media rendering. [4aa9745](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aa9745)
 
