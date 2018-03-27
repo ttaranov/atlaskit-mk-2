@@ -32,6 +32,14 @@ describe('JIRA wiki markup - Text effects', () => {
       `this is a line with an *asterisk
 another one is here and it should* not be applied`,
     ],
+    [
+      "should use code mark first if it's the outer mark",
+      'This is a {{monospace *bold* thingy}}',
+    ],
+    [
+      "should use code mark first if it's the inner mark",
+      'This is a *bold {{monospace}} thingy*',
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
