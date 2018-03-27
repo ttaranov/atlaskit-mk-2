@@ -4,6 +4,9 @@ import { ResourcedTaskItem, TaskItem } from '@atlaskit/task-decision';
 import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import Task from '../../../../src/plugins/tasks-and-decisions/ui/Task';
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 
 const taskDecisionProvider = Promise.resolve(
   taskDecisionStoryData.getMockTaskDecisionResource(),
@@ -18,10 +21,12 @@ describe('@atlaskit/editor-core/ui/Task', () => {
 
   beforeEach(() => {
     providerFactory = new ProviderFactory();
+    console.error = jest.fn();
   });
 
   afterEach(() => {
     providerFactory.destroy();
+    console.error = consoleError;
   });
 
   it('should render resourced task item', () => {

@@ -251,14 +251,19 @@ expect.extend({
   },
 });
 
-beforeEach(() => {
-  console.error = jest.fn();
-  console.warn = jest.fn();
-  console.log = jest.fn();
-});
+if (process.env.CI) {
+  beforeEach(() => {
+    consoleError = console.error;
+    consoleWarn = console.warn;
+    consoleLog = console.log;
+    console.error = jest.fn();
+    console.warn = jest.fn();
+    console.log = jest.fn();
+  });
 
-afterEach(() => {
-  console.error = consoleError;
-  console.warn = consoleWarn;
-  console.log = consoleLog;
-});
+  afterEach(() => {
+    console.error = consoleError;
+    console.warn = consoleWarn;
+    console.log = consoleLog;
+  });
+}
