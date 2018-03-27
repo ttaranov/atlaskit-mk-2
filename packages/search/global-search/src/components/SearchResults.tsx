@@ -9,6 +9,7 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import SearchError from './SearchError';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -114,6 +115,8 @@ function take(array: Array<any>, n: number) {
 
 export interface Props {
   query: string;
+  isError: boolean;
+  retrySearch();
   recentlyViewedItems: Result[];
   recentResults: Result[];
   jiraResults: Result[];
@@ -126,12 +129,18 @@ export interface Props {
 export default function searchResults(props: Props) {
   const {
     query,
+    isError,
+    retrySearch,
     recentlyViewedItems,
     recentResults,
     jiraResults,
     confluenceResults,
     peopleResults,
   } = props;
+
+  if (isError) {
+    return <SearchError onRetry={retrySearch} />;
+  }
 
   if (query.length < 2) {
     return renderRecent(take(recentlyViewedItems, 10));
