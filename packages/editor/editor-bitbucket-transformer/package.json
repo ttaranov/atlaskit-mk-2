@@ -22,7 +22,7 @@
     "prosemirror-markdown": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.2.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.3",

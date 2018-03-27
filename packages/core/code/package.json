@@ -23,7 +23,7 @@
     "enzyme": "^3.3.0"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.2.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
