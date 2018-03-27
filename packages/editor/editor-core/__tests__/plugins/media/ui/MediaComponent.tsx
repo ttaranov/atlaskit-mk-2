@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { MediaType } from '@atlaskit/editor-common';
 import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
