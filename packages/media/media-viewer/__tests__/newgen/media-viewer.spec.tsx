@@ -21,7 +21,7 @@ function createContext(subject, blobService?) {
     contextConfig,
     undefined,
     subject && Stubs.mediaItemProvider(subject),
-    blobService
+    blobService,
   ) as any;
 }
 
@@ -47,7 +47,13 @@ describe('<MediaViewer />', () => {
     type: 'file' as MediaItemType,
   };
 
-  it('previews an indicator while loading', () => {
+  it('should close Media Viewer on click', () => {
+    const { el, onClose } = createFixture(identifier);
+    el.find(Blanket).simulate('click');
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('shows an indicator while loading', () => {
     const { el } = createFixture(identifier);
     el.update();
 
@@ -58,32 +64,67 @@ describe('<MediaViewer />', () => {
     });
   });
 
-  it('previews a single file when processing was successful', () => {
+  it('assigns an object url for images when successful', async () => {
     const item: MediaItem = {
       type: 'file',
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image',
       },
     };
     const { subject, el } = createFixture(identifier);
 
     subject.next(item);
-    el.update();
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).previewData.status === 'SUCCESSFUL';
+    }, 5);
+
+    expect(getModel(el).previewData.data.objectUrl).toBeDefined();
+  });
+
+  it('assigns a src for videos when successful', async () => {
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+        mediaType: 'video',
+        artifacts: {
+          'video_640.mp4': {
+            url: '/video',
+          },
+        },
+      },
+    };
+    const { subject, el } = createFixture(identifier);
+
+    subject.next(item);
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).previewData.status === 'SUCCESSFUL';
+    }, 5);
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
+      previewData: {
         status: 'SUCCESSFUL',
+        data: {
+          src: 'some-service-host/video?client=some-client-id&token=some-token',
+        },
       },
     });
   });
 
-  it('previews an error when processing failed', () => {
+  it('shows an error when processing failed', () => {
     const item: MediaItem = {
       type: 'file',
       details: {
         id: 'some-id',
         processingStatus: 'failed',
+        mediaType: 'image',
       },
     };
     const { subject, el } = createFixture(identifier);
@@ -98,7 +139,7 @@ describe('<MediaViewer />', () => {
     });
   });
 
-  it('previews an error when opening a link', () => {
+  it('shows an error when opening a link', () => {
     const item: LinkItem = {
       type: 'link',
       details: {} as any,
@@ -115,7 +156,7 @@ describe('<MediaViewer />', () => {
     });
   });
 
-  it('previews an error message on error', () => {
+  it('showns an error when the provider failed', () => {
     const { subject, el } = createFixture(identifier);
 
     subject.error(new Error('test'));
@@ -128,37 +169,45 @@ describe('<MediaViewer />', () => {
     });
   });
 
-  it('assigns an object url when successful', async () => {
+  it('shows an error when media type is not supported', async () => {
+    const { subject, el } = createFixture(identifier);
     const item: MediaItem = {
       type: 'file',
       details: {
-        id: 'some-id',
+        mediaType: 'doc',
         processingStatus: 'succeeded',
-      },
+      } as any,
     };
-    const { subject, el } = createFixture(identifier);
 
     subject.next(item);
 
     await waitUntil(() => {
       el.update();
-      return getModel(el).previewData.status === 'SUCCESSFUL';
+      return getModel(el).fileDetails.status === 'SUCCESSFUL';
     }, 5);
 
-    expect(getModel(el).previewData.data.objectUrl).toBeDefined();
+    expect(getModel(el)).toMatchObject({
+      previewData: {
+        status: 'FAILED',
+        err: new Error('not supported'),
+      },
+    });
   });
 
-  it('should handle errors', async () => {
+  it('shows an error when the image could not be fetched', async () => {
     const item: MediaItem = {
       type: 'file',
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image',
       },
     };
     const { blobService, subject, el } = createFixture(identifier);
 
-    blobService.fetchImageBlob.mockReturnValue(Promise.reject(new Error('error')));
+    blobService.fetchImageBlob.mockReturnValue(
+      Promise.reject(new Error('error')),
+    );
 
     subject.next(item);
 
@@ -168,12 +217,6 @@ describe('<MediaViewer />', () => {
     }, 5);
 
     expect(getModel(el).previewData.err).toBeDefined();
-  });
-
-  it('should close Media Viewer on click', () => {
-    const { el, onClose } = createFixture(identifier);
-    el.find(Blanket).simulate('click');
-    expect(onClose).toHaveBeenCalled();
   });
 
   it('unsubscribes from the provider when unmounted', () => {
@@ -217,6 +260,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
+        mediaType: 'image',
       },
     };
 

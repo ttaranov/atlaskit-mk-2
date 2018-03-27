@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 15.2.0
+- [minor] MSW-531: add cancelable methods to blobService [7f84f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f84f67)
+
 ## 15.1.0
 - [minor] Release first version of image viewer for Media Viewer Next Generation [dd1893a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd1893a)
 
