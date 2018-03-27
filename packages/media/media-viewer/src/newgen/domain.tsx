@@ -26,10 +26,15 @@ export type FileDetails = {
 
 export type ObjectUrl = string;
 
-export type FilePreview = {
+export type ImagePreview = {
   viewer: 'IMAGE';
   objectUrl: ObjectUrl;
 };
+export type VideoPreview = {
+  viewer: 'VIDEO';
+  src: string;
+};
+export type FilePreview = ImagePreview | VideoPreview;
 
 export type Model = {
   fileDetails: Outcome<FileDetails, Error>;
