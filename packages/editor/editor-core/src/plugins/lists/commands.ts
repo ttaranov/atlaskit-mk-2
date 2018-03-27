@@ -102,7 +102,7 @@ export const enterKeyCommand = (
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
       /** Check is the wrapper has any content */
-      const wrapperHasContent = wrapper.content.size >= 2;
+      const wrapperHasContent = wrapper.content.size > 2;
       if (isEmptyNode(node) && !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
