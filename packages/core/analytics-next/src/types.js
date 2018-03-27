@@ -3,9 +3,6 @@
 import AnalyticsEvent from './AnalyticsEvent';
 import UIAnalyticsEvent from './UIAnalyticsEvent';
 
-// Utils
-export type ObjectType = { [string]: any };
-
 // Basic events
 export type AnalyticsEventPayload = {
   action: string,
@@ -13,7 +10,7 @@ export type AnalyticsEventPayload = {
 };
 
 export type AnalyticsEventUpdater =
-  | ObjectType
+  | {}
   | ((payload: AnalyticsEventPayload) => AnalyticsEventPayload);
 
 export type AnalyticsEventProps = {
@@ -23,26 +20,26 @@ export type AnalyticsEventProps = {
 export interface AnalyticsEventInterface {
   payload: AnalyticsEventPayload;
 
-  clone: () => AnalyticsEvent;
+  clone(): AnalyticsEvent;
   update(updater: AnalyticsEventUpdater): AnalyticsEvent;
 }
 
 // UI events
 type ChannelIdentifier = string;
 
-export type UIAnalyticsEventHandlerSignature = (
+export type UIAnalyticsEventHandler = (
   event: UIAnalyticsEvent,
   channel?: ChannelIdentifier,
 ) => void;
 
 export type UIAnalyticsEventProps = AnalyticsEventProps & {
-  context?: Array<ObjectType>,
-  handlers?: Array<UIAnalyticsEventHandlerSignature>,
+  context?: Array<{}>,
+  handlers?: Array<UIAnalyticsEventHandler>,
 };
 
 export interface UIAnalyticsEventInterface {
-  context: Array<ObjectType>;
-  handlers?: Array<UIAnalyticsEventHandlerSignature>;
+  context: Array<{}>;
+  handlers?: Array<UIAnalyticsEventHandler>;
   hasFired: boolean;
   payload: AnalyticsEventPayload;
 
