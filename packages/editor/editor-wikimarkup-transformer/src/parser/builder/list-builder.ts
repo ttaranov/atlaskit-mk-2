@@ -150,7 +150,7 @@ export default class ListBuilder implements Builder {
     const { hardBreak } = this.schema.nodes;
     const { children } = this.lastList;
     const lastItem = children[children.length - 1];
-    lastItem.content.push(hardBreak.create(), ...content);
+    lastItem.content!.push(hardBreak.create(), ...content);
   }
 
   /**
