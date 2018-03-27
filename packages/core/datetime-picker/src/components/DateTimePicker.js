@@ -122,21 +122,17 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: '',
   };
 
-  constructor(props: Props) {
-    super(props);
-    const mappedState = this.getState();
-    this.state = {
-      ...mappedState,
-      ...parseDateIntoStateValues(mappedState.value),
-    };
-  }
-
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return {
+    const mappedState = {
       ...this.state,
       ...pick(this.props, ['value']),
+    };
+
+    return {
+      ...mappedState,
+      ...parseDateIntoStateValues(mappedState.value),
     };
   };
 
