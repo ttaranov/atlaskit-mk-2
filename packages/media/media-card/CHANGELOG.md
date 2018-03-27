@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 25.1.7
+
 ## 25.1.6
 - [patch] Fix typo and potential memory leak [6ecc601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ecc601)
 
