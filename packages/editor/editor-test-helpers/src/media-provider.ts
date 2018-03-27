@@ -1,4 +1,4 @@
-import { ContextConfig as MediaContextConfig } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import {
   defaultCollectionName,
   StoryBookAuthProvider,
@@ -39,36 +39,42 @@ export function storyMediaProviderFactory(
   return Promise.resolve<MediaProvider>({
     stateManager,
     uploadParams: { collection },
-    viewContext: Promise.resolve<MediaContextConfig>({
-      serviceHost: serviceHost || defaultParams.serviceHost,
-      authProvider: StoryBookAuthProvider.create(false),
-    }),
+    viewContext: Promise.resolve<Context>(
+      ContextFactory.create({
+        serviceHost: serviceHost || defaultParams.serviceHost,
+        authProvider: StoryBookAuthProvider.create(false),
+      }),
+    ),
     uploadContext:
       includeUploadContext === false
         ? undefined
-        : Promise.resolve<MediaContextConfig>({
-            serviceHost: userAuthProviderBaseURL,
-            authProvider: StoryBookAuthProvider.create(false, {
-              [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
-              'urn:filestore:chunk:*': ['create', 'read'],
-              'urn:filestore:upload': ['create'],
-              'urn:filestore:upload:*': ['read', 'update'],
+        : Promise.resolve<Context>(
+            ContextFactory.create({
+              serviceHost: userAuthProviderBaseURL,
+              authProvider: StoryBookAuthProvider.create(false, {
+                [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
+                'urn:filestore:chunk:*': ['create', 'read'],
+                'urn:filestore:upload': ['create'],
+                'urn:filestore:upload:*': ['read', 'update'],
+              }),
+              userAuthProvider:
+                includeUserAuthProvider === false
+                  ? undefined
+                  : StoryBookUserAuthProvider.create(),
             }),
-            userAuthProvider:
-              includeUserAuthProvider === false
-                ? undefined
-                : StoryBookUserAuthProvider.create(),
-          }),
+          ),
     linkCreateContext: !includeLinkCreateContext
       ? undefined
-      : Promise.resolve<MediaContextConfig>({
-          serviceHost: defaultServiceHost,
-          authProvider: StoryBookAuthProvider.create(false, {
-            [`urn:filestore:collection:${collection}`]: ['read', 'update'],
-            'urn:filestore:file:*': ['read'],
-            'urn:filestore:chunk:*': ['read'],
+      : Promise.resolve<Context>(
+          ContextFactory.create({
+            serviceHost: defaultServiceHost,
+            authProvider: StoryBookAuthProvider.create(false, {
+              [`urn:filestore:collection:${collection}`]: ['read', 'update'],
+              'urn:filestore:file:*': ['read'],
+              'urn:filestore:chunk:*': ['read'],
+            }),
           }),
-        }),
+        ),
   });
 }
 

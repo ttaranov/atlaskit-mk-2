@@ -1,4 +1,4 @@
-import { ContextConfig, Context } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
 
 export type MediaStateStatus =
