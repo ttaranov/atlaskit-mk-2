@@ -19,7 +19,7 @@ export interface DropzoneProps {
   readonly mpBrowser: Browser;
 }
 
-export class Dropzone extends Component<DropzoneProps, any> {
+export class Dropzone extends Component<DropzoneProps> {
   render() {
     const { isEmpty } = this.props;
     return (
