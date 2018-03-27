@@ -39,6 +39,7 @@
     "@atlaskit/editor-test-helpers": "^2.0.14",
     "@atlaskit/media-core": "^15.0.1",
     "@atlaskit/media-test-helpers": "^11.0.0",
+    "@atlaskit/util-data-test": "^8.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "react-live-clock": "^2.0.2"
   }

@@ -30,8 +30,7 @@
     "@atlaskit/editor-core": "^65.1.26",
     "@atlaskit/editor-json-transformer": "^2.5.18",
     "@atlaskit/editor-test-helpers": "^2.0.13",
-    "@atlaskit/emoji": "^31.1.23",
-    "@atlaskit/mention": "^9.2.3",
+    "@atlaskit/util-data-test": "^8.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
   }

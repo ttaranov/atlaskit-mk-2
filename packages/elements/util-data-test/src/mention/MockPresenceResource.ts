@@ -39,7 +39,6 @@ export class MockPresenceResource extends AbstractPresenceResource {
   }
 
   refreshPresence(ids) {
-    debug('_mock_presence_provider.refreshPresence', ids);
     const presences = {};
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];

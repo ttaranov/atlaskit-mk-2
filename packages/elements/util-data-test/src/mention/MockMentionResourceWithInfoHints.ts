@@ -56,9 +56,7 @@ export class MockMentionResourceWithInfoHints extends AbstractMentionResource {
         notifyErrors('mock-error');
         return;
       } else if (query && query.length >= 3) {
-        debug('_doing search', query);
         mentions = search.search(query);
-        debug('_results', mentions.length);
 
         if (!mentions.length) {
           notifyInfo(`Found no matches for ${query}`);

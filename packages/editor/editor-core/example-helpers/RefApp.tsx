@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { ReactRenderer } from '@atlaskit/renderer';
 
 import { Content } from './styles';
@@ -9,12 +7,12 @@ import { toJSON } from '../src/utils';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { storyContextIdentifierProviderFactory } from '@atlaskit/editor-test-helpers';
 
-const emojiProvider = emojiStoryData.getEmojiResource({
+const emojiProvider = emoji.storyData.getEmojiResource({
   uploadSupported: true,
 });
-const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
+const mentionProvider = Promise.resolve(mention.storyData.resourceProvider);
 const taskDecisionProvider = Promise.resolve(
-  taskDecisionStoryData.getMockTaskDecisionResource(),
+  taskDecision.getMockTaskDecisionResource(),
 );
 const contextIdentifierProvider = storyContextIdentifierProviderFactory();
 

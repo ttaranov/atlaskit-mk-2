@@ -3,8 +3,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { mention, emoji } from '@atlaskit/util-data-test';
 import { Editor } from '../src';
 import { Content } from '../example-helpers/styles';
 import imageUploadHandler from '../example-helpers/imageUpload';
@@ -218,9 +217,9 @@ const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 
 const mentionProvider = new Promise<any>(resolve =>
-  resolve(mentionStoryData.resourceProvider),
+  resolve(mention.storyData.resourceProvider),
 );
-const emojiProvider = emojiStoryData.getEmojiResource() as any;
+const emojiProvider = emoji.storyData.getEmojiResource() as any;
 
 export default function Example() {
   return (

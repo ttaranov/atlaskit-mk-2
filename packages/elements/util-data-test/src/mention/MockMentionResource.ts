@@ -60,9 +60,7 @@ export class MockMentionResource extends AbstractMentionResource {
       } else if (query === '401' || query === '403') {
         notifyErrors(new HttpError(parseInt(query, 10), 'get off my lawn'));
       } else if (query) {
-        debug('_doing search', query);
         mentions = search.search(query);
-        debug('_results', mentions.length);
       } else {
         mentions = mentionData.mentions;
       }

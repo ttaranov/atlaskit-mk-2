@@ -15,7 +15,6 @@ import {
   UploadingEmojiProvider,
   EmojiRepository,
 } from '@atlaskit/emoji';
-import debug from '../logger';
 
 import {
   PromiseBuilder,
@@ -93,7 +92,6 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
   }
 
   filter(query?: string, options?: SearchOptions) {
-    debug('MockNonUploadingEmojiResource.filter', query);
     if (query) {
       this.lastQuery = query;
     } else {
@@ -110,7 +108,6 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
 
   findByShortName(shortName: string): Promise<OptionalEmojiDescription> {
     const emoji = this.emojiRepository.findByShortName(shortName);
-    debug('MockEmojiResource.findByShortcut', shortName, emoji);
     return this.promiseBuilder(emoji, 'findByShortName');
   }
 
@@ -120,16 +117,13 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
     const { id, shortName } = emojiId;
     if (id) {
       const emoji = this.emojiRepository.findById(id);
-      debug('MockEmojiResource.findById', emojiId, emoji);
       return this.promiseBuilder(emoji, 'findByEmojiId');
     }
-    debug('MockEmojiResource.findById; not id using shortName', emojiId);
     return this.emojiRepository.findByShortName(shortName);
   }
 
   findById(id: string): Promise<OptionalEmojiDescription> {
     const emoji = this.emojiRepository.findById(id);
-    debug('MockEmojiResource.findById', id, emoji);
     return this.promiseBuilder(emoji, 'findById');
   }
 
