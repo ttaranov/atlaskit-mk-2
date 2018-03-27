@@ -15,6 +15,7 @@ import {
   UploadErrorEventPayload,
   UploadEndEventPayload,
 } from '@atlaskit/media-picker';
+import { ContextFactory } from '@atlaskit/media-core';
 import {
   StoryBookAuthProvider,
   StoryBookUserAuthProvider,
@@ -39,17 +40,17 @@ describe('Media PickerFacade', () => {
 
   const userAuthProvider = StoryBookUserAuthProvider.create();
 
-  const contextConfig = {
+  const context = ContextFactory.create({
     serviceHost: 'http://test',
     authProvider: StoryBookAuthProvider.create(false),
     userAuthProvider,
-  };
+  });
 
   const getPickerFacadeConfig = (
     stateManager: MediaStateManager,
   ): PickerFacadeConfig => ({
     uploadParams: {},
-    contextConfig,
+    context,
     stateManager,
     errorReporter,
   });

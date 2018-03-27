@@ -124,10 +124,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-    const linkCreateContext = ContextFactory.create(
-      resolvedLinkCreateContextConfig,
-    ) as Context;
+    const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
     mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(0);
@@ -163,10 +161,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-    const linkCreateContext = ContextFactory.create(
-      resolvedLinkCreateContextConfig,
-    ) as Context;
+    const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
     mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(1);
@@ -188,10 +184,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-      const linkCreateContext = ContextFactory.create(
-        resolvedLinkCreateContextConfig,
-      ) as Context;
+      const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
       mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
@@ -214,10 +208,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-      const linkCreateContext = ContextFactory.create(
-        resolvedLinkCreateContextConfig,
-      ) as Context;
+      const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
       mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
