@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { FilePreview } from '../domain';
+import { VideoPreview } from '../domain';
 import { Video } from '../styled';
 
 export type Props = {
-  previewData: FilePreview;
+  previewData: VideoPreview;
 };
 
-export const VideoViewer: React.StatelessComponent<Props> = ({ previewData }) => {
-  return (
-    <Video controls src={previewData.objectUrl}/>
-  );
-}
+export const VideoViewer: React.StatelessComponent<Props> = ({
+  previewData,
+}) => {
+  return <Video controls src={previewData.src} />;
+};

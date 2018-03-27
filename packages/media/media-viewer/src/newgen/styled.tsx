@@ -19,6 +19,7 @@ export const Positioner = styled.div`
   align-items: center;
   justify-content: space-between;
   z-index: 500;
+  pointer-events: none;
 `;
 
 export const ErrorMessage = styled.div`
@@ -27,10 +28,13 @@ export const ErrorMessage = styled.div`
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+  max-width: 100%;
   margin: auto;
-  width: 100%;
-`
+  pointer-events: auto;
+`;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
+  max-width: 100%;
   margin: auto;
+  pointer-events: auto;
 `;

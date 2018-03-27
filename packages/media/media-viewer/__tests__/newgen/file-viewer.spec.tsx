@@ -9,8 +9,8 @@ describe('<FileViewer />', () => {
   it('should show the image viewer if media type is image', () => {
     const preview: FilePreview = {
       viewer: 'IMAGE',
-      objectUrl: ''
-    }
+      objectUrl: '',
+    };
     const el = mount(<FileViewer previewData={preview} />);
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
@@ -18,8 +18,8 @@ describe('<FileViewer />', () => {
   it('should show the video viewer if media type is image', () => {
     const preview: FilePreview = {
       viewer: 'VIDEO',
-      objectUrl: ''
-    }
+      src: '',
+    };
     const el = mount(<FileViewer previewData={preview} />);
     expect(el.find(VideoViewer)).toHaveLength(1);
   });

@@ -66,13 +66,13 @@ export class MediaViewer extends React.Component<Props, State> {
     const provider = context.getMediaItemProvider(id, type, collectionName);
 
     this.subscription = provider.observable().subscribe({
-      next: async mediaItem => {
+      next: mediaItem => {
         if (mediaItem.type === 'link') {
           this.setState({
             fileDetails: {
               status: 'FAILED',
               err: new Error('links are not supported at the moment'),
-            }
+            },
           });
         } else {
           const { processingStatus, mediaType } = mediaItem.details;
@@ -82,8 +82,8 @@ export class MediaViewer extends React.Component<Props, State> {
               fileDetails: {
                 status: 'FAILED',
                 err: new Error('processing failed'),
-              }
-             });
+              },
+            });
           } else if (processingStatus === 'succeeded') {
             this.setState({
               fileDetails: {
@@ -91,17 +91,10 @@ export class MediaViewer extends React.Component<Props, State> {
                 data: {
                   mediaType: mediaType as MediaType,
                 },
-              }
+              },
             });
 
-            switch (mediaItem.details.mediaType) {
-              case 'image':
-                return await this.populateImagePreviewData(mediaItem, context);
-              case 'video':
-                return await this.populateVideoPreviewData(mediaItem, context, collectionName);
-              default:
-                return await this.notSupportedPreview(mediaItem);
-            }
+            this.populatePreviewData(mediaItem, context, collectionName);
           }
         }
       },
@@ -112,8 +105,8 @@ export class MediaViewer extends React.Component<Props, State> {
         this.setState({
           fileDetails: {
             status: 'FAILED',
-            err
-          }
+            err,
+          },
         });
       },
     });
@@ -126,39 +119,24 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 
-  private async notSupportedPreview(fileItem: FileItem) {
-    this.setState({
-      previewData: {
-        status: 'FAILED',
-        err: new Error(`not supported`)
-      }
-    });
-  }
-
-  private async populateVideoPreviewData(fileItem: FileItem, context: Context, collectionName?: string) {
-    const videoArtifactUrl = getVideoArtifactUrl(fileItem, true); // HD for now.
-    if (videoArtifactUrl) {
-      const objectUrl = await constructAuthTokenUrl(videoArtifactUrl, context, collectionName);
-      this.setState({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'VIDEO',
-            objectUrl
-          }
-        }
-      });
-    } else {
-      this.setState({
-        previewData: {
-          status: 'FAILED',
-          err: new Error('no video artifacts found for this file')
-        }
-      });
+  private populatePreviewData(mediaItem, context, collectionName) {
+    switch (mediaItem.details.mediaType) {
+      case 'image':
+        this.populateImagePreviewData(mediaItem, context);
+        break;
+      case 'video':
+        this.populateVideoPreviewData(mediaItem, context, collectionName);
+        break;
+      default:
+        this.notSupportedPreview(mediaItem);
+        break;
     }
   }
 
-  private async populateImagePreviewData (fileItem: MediaItem, context: Context) {
+  private async populateImagePreviewData(
+    fileItem: MediaItem,
+    context: Context,
+  ) {
     try {
       // TODO:
       // - 1) MSW-530: revoke object URL
@@ -170,33 +148,65 @@ export class MediaViewer extends React.Component<Props, State> {
           data: {
             viewer: 'IMAGE',
             objectUrl,
-          }
-        }
+          },
+        },
       });
     } catch (err) {
       this.setState({
         previewData: {
           status: 'FAILED',
-          err
-        }
+          err,
+        },
       });
     }
   }
-}
 
-function getVideoArtifactUrl(fileItem: FileItem, hd: boolean) {
-  const artifact = hd ? 'video_640.mp4' : 'video_1280.mp4';
-  return fileItem.details
-    && fileItem.details.artifacts
-    && fileItem.details.artifacts[artifact]
-    && fileItem.details.artifacts[artifact].url;
+  private async populateVideoPreviewData(
+    fileItem: FileItem,
+    context: Context,
+    collectionName?: string,
+  ) {
+    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
+    if (videoArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        videoArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'VIDEO',
+            src,
+          },
+        },
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file'),
+        },
+      });
+    }
+  }
+
+  private notSupportedPreview(fileItem: FileItem) {
+    this.setState({
+      previewData: {
+        status: 'FAILED',
+        err: new Error(`not supported`),
+      },
+    });
+  }
 }
 
 async function getImageObjectUrl(
   mediaItem: MediaItem,
   context: Context,
   width,
-  height
+  height,
 ): Promise<ObjectUrl> {
   const service = context.getBlobService();
   const blob = await service.fetchImageBlob(mediaItem, {
@@ -206,4 +216,14 @@ async function getImageObjectUrl(
     allowAnimated: true,
   });
   return URL.createObjectURL(blob);
+}
+
+function getVideoArtifactUrl(fileItem: FileItem) {
+  const artifact = 'video_640.mp4';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
 }

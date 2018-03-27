@@ -1,31 +1,30 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
-import { MediaItemType } from '@atlaskit/media-core';
 import {
   createStorybookContext,
   imageFileId,
   videoFileId,
   docFileId,
-  defaultCollectionName
+  defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
 const context = createStorybookContext();
 
-const imageItem = {
-  type: 'file' as MediaItemType,
+const imageItem: MediaViewerItem = {
+  type: 'file',
   id: imageFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
-const docItem = {
-  type: 'file' as MediaItemType,
+const docItem: MediaViewerItem = {
+  type: 'file',
   id: docFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
-const videoItem = {
-  type: 'file' as MediaItemType,
+const videoItem: MediaViewerItem = {
+  type: 'file',
   id: videoFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
