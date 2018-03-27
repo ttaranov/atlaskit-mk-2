@@ -1,7 +1,7 @@
-import { Mark, Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 
 import { MacroName, RichInterval } from '../interfaces';
-
+import { findTextAndEmoji } from './text';
 import { getCodeLanguage } from './code-language';
 import {
   getResolvedMacroIntervals,
@@ -45,59 +45,15 @@ export default class AbstractTree {
   }
 
   getTextWithMarks(text: string): PMNode[] {
-    const {
-      code,
-      em,
-      strike,
-      strong,
-      subsup,
-      textColor,
-      underline,
-    } = this.schema.marks;
-
     const intervals = getResolvedTextIntervals(text);
     const output: PMNode[] = [];
 
     for (const { effects, text } of intervals) {
       const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
 
-      const marks = effects.map(({ name, attrs }) => {
-        switch (name) {
-          case 'color':
-            return textColor.create(attrs);
-
-          case 'emphasis':
-          case 'citation':
-            return em.create();
-
-          case 'deleted':
-            return strike.create();
-
-          case 'strong':
-            return strong.create();
-
-          case 'inserted':
-            return underline.create();
-          case 'superscript':
-            return subsup.create({ type: 'sup' });
-          case 'subscript':
-            return subsup.create({ type: 'sub' });
-          case 'monospaced':
-            return code.create();
-
-          default:
-            throw new Error(`Unknown effect: ${name}`);
-        }
-      });
-
-      // some marks cannot be used together with others
-      // for instance "code" cannot be used with "bold" or "textColor"
-      // addToSet() takes care of these rules
-      const marksSet = marks.length ? marks[0].addToSet(marks.slice(1)) : [];
-
       textWithLineBreaks.forEach((chunk, i) => {
-        const textNode = this.schema.text(text, marksSet);
-        output.push(textNode);
+        const inlineNodes = findTextAndEmoji(this.schema, chunk, effects);
+        output.push(...inlineNodes);
 
         if (i + 1 < textWithLineBreaks.length) {
           const hardBreakNode = this.schema.nodes.hardBreak.createChecked();

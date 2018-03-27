@@ -1,8 +1,16 @@
 import * as assert from 'assert';
+import { Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
-import { MatchPosition, TextMarkElement, TextMatch } from '../interfaces';
+import {
+  EmojiClosestMatch,
+  MatchPosition,
+  TextMarkElement,
+  TextMatch,
+  Effect,
+} from '../interfaces';
 import { getEditorColor } from './color';
 import { findMacros } from './macros';
+import { EMOJIS } from './emoji';
 
 const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
   { name: 'strong', grep: '*' },
@@ -41,6 +49,24 @@ function findMonospaceMatches(text: string): TextMatch[] {
   }
 
   return output;
+}
+
+function findFirstEmoji(
+  text: string,
+  position: number,
+): EmojiClosestMatch | null {
+  return EMOJIS.reduce((memo: EmojiClosestMatch | null, emoji, index) => {
+    const { markup } = emoji;
+    const matchPosition = text.indexOf(markup, position);
+
+    if (matchPosition === -1) {
+      return memo;
+    }
+
+    return memo && memo.matchPosition < matchPosition
+      ? memo
+      : { emoji, matchPosition };
+  }, null);
 }
 
 /**
@@ -100,4 +126,94 @@ export function findTextMatches(text: string): TextMatch[] {
   output.push(...monospaceMatches);
 
   return output;
+}
+
+/**
+ * Take piece of text, find emojis in it and return list of emoji/text nodes
+ */
+export function findTextAndEmoji(
+  schema: Schema,
+  text: string,
+  effects: Effect[],
+): PMNode[] {
+  const output: PMNode[] = [];
+  let position = 0;
+
+  while (position < text.length) {
+    const closestEmoji = findFirstEmoji(text, position);
+    const marks = effectsToMarks(schema, effects);
+
+    if (!closestEmoji) {
+      const textChunk = text.substr(position);
+      const textNode = schema.text(textChunk, marks);
+      output.push(textNode);
+
+      break;
+    }
+
+    const { emoji, matchPosition } = closestEmoji;
+    const textChunk = text.substring(position, matchPosition);
+
+    if (textChunk.length) {
+      const textNode = schema.text(textChunk, marks);
+      output.push(textNode);
+    }
+
+    const emojiNode = schema.nodes.emoji.createChecked(emoji.adf);
+    output.push(emojiNode);
+
+    // start next search from current position + found emoji string length
+    position = matchPosition + emoji.markup.length;
+  }
+
+  return output;
+}
+
+/**
+ * Create a new list of marks from effects
+ */
+export function effectsToMarks(schema: Schema, effects: Effect[]): Mark[] {
+  const {
+    code,
+    em,
+    strike,
+    strong,
+    subsup,
+    textColor,
+    underline,
+  } = schema.marks;
+
+  const marks = effects.map(({ name, attrs }) => {
+    switch (name) {
+      case 'color':
+        return textColor.create(attrs);
+
+      case 'emphasis':
+      case 'citation':
+        return em.create();
+
+      case 'deleted':
+        return strike.create();
+
+      case 'strong':
+        return strong.create();
+
+      case 'inserted':
+        return underline.create();
+      case 'superscript':
+        return subsup.create({ type: 'sup' });
+      case 'subscript':
+        return subsup.create({ type: 'sub' });
+      case 'monospaced':
+        return code.create();
+
+      default:
+        throw new Error(`Unknown effect: ${name}`);
+    }
+  });
+
+  // some marks cannot be used together with others
+  // for instance "code" cannot be used with "bold" or "textColor"
+  // addToSet() takes care of these rules
+  return marks.length ? marks[0].addToSet(marks.slice(1)) : [];
 }

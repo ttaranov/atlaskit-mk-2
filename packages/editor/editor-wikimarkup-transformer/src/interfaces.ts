@@ -68,3 +68,17 @@ export interface TextMarkElement {
   name: TextEffect;
   grep: string;
 }
+
+export interface EmojiMapItem {
+  markup: string;
+  adf: {
+    id: string;
+    shortName: string;
+    text: string;
+  };
+}
+
+export interface EmojiClosestMatch {
+  emoji: EmojiMapItem;
+  matchPosition: number;
+}

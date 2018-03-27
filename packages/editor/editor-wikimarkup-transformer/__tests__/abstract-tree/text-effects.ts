@@ -35,4 +35,11 @@ describe('JIRA wiki markup - Abstract tree', () => {
 
     expect(transformer.parse(markup)).toMatchSnapshot();
   });
+
+  it('should not fail while applying marks to a string containing double backslash', () => {
+    const markup = 'this is a text *with a\\\\new* line in it';
+    const transformer = new WikiMarkupTransformer();
+
+    expect(transformer.parse(markup)).toMatchSnapshot();
+  });
 });
