@@ -410,15 +410,6 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('upload', () => {
-    let consoleError;
-    beforeEach(() => {
-      consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-      consoleError.mockRestore();
-    });
-
     it('Non-uploading EmojiResource - no upload UI', async () => {
       const emojiProvider = getNonUploadingEmojiResourcePromise();
       const component = await helper.setupPicker({ emojiProvider });

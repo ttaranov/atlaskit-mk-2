@@ -5,7 +5,7 @@ export const tenantAuth = (context: () => MockContext) => (
   req: MockRequest,
   res: MockResponse,
 ): MockResponse | undefined => {
-  const bodyPerms = {
+  const bodyPerms: { access: { [resource: string]: string[] } } = {
     access: {
       'urn:filestore:chunk:*': ['create', 'read'],
       'urn:filestore:upload': ['create'],
@@ -68,4 +68,6 @@ export const tenantAuth = (context: () => MockContext) => (
     fillInResponse(res, resdata);
     return res;
   }
+
+  return undefined;
 };

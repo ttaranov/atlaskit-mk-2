@@ -59,6 +59,7 @@ export const mockContext = () => ({
   getMediaCollectionProvider: mockProvider,
   getUrlPreviewProvider: mockProvider,
   getDataUriService: jest.fn(),
+  getBlobService: jest.fn(),
   addLinkItem: jest.fn(),
   refreshCollection: jest.fn(),
   config: {

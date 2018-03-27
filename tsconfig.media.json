@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+      "allowJs": false,
+      "declaration": true,
+      "experimentalDecorators": true,
+      "importHelpers": true,
+      "jsx": "react",
+      "moduleResolution": "node",
+      "sourceMap": true,
+      
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+ 
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+        
+      "target": "es5",
+      "lib": [
+        "dom",
+        "es5",
+        "scripthost",
+        "es2015.core",
+        "es2015.collection",
+        "es2015.symbol",
+        "es2015.iterable",
+        "es2015.promise"
+      ],
+      "types": ["jest", "react", "enzyme", "css-color-names", "jest-styled-components", "styled-components"],
+      "typeRoots": ["./typings", "./node_modules/@types"]
+    },
+    "files": [
+      "./typings/atlaskit.d.ts",
+      "./typings/package.json.d.ts",
+      "./typings/json.d.ts",
+      "./typings/webpack.d.ts"
+    ]
+  }
+  

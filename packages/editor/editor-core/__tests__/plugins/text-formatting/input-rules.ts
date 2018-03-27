@@ -207,12 +207,12 @@ describe('text-formatting input rules', () => {
     notautoformats('--');
     notautoformats('    --.');
 
-    autoformats('-- ', p('— '), 'typography');
-    autoformats('--\t', p('—\t'), 'typography');
+    autoformats('-- ', p('– '), 'typography');
+    autoformats('--\t', p('–\t'), 'typography');
 
     autoformatCombinations(
       ['\t -- ', '  \t text'],
-      '\t —   \t text',
+      '\t –   \t text',
       'typography',
     );
   });

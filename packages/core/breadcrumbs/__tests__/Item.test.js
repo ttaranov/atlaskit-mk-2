@@ -98,13 +98,23 @@ describe('BreadcrumbsItem', () => {
     describe('component prop', () => {
       it('should be reflected to the Button', () => {
         let expectedProps;
-        const Link = props => {
+        type LinkProps = {
+          innerRef?: any,
+          truncationWidth?: number,
+          iconAfter?: any,
+          iconBefore?: any,
+          children: any,
+          createAnalyticsEvent?: Function,
+          to: string,
+        };
+        const Link = (props: LinkProps) => {
           const {
             innerRef,
             truncationWidth,
             iconAfter,
             iconBefore,
             children,
+            createAnalyticsEvent,
             to,
             ...rest
           } = props;

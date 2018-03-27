@@ -1,5 +1,11 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.5.2
+
+## 2.5.1
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 2.5.0
 - [minor] Added support to editor-jira-transformer for transforming Jira emoticons to unicode emoji [7315648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7315648)
 

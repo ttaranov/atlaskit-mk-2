@@ -3,7 +3,7 @@ import 'rxjs/add/observable/of';
 import { MediaItem, MediaItemProvider } from '../src';
 import { ContextFactory } from '../src/context/context';
 
-const authProvider = collection =>
+const authProvider = () =>
   Promise.resolve({
     token: 'some-token-that-does-not-really-matter-in-this-tests',
     clientId: 'some-clientId',

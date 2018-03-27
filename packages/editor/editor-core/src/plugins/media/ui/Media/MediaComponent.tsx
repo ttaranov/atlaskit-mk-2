@@ -134,10 +134,6 @@ export default class MediaComponent extends Component<Props, State> {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.status !== 'unknown';
-  }
-
   render() {
     switch (this.props.type) {
       case 'file':

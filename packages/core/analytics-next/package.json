@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/analytics-next",
-  "version": "1.1.7",
+  "version": "1.1.9",
   "description": "The 🆕 Atlaskit component analytics framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "types": "src/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "src/index.d.ts"
@@ -28,7 +29,7 @@
     "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.2",
+    "@atlaskit/button": "^6.6.4",
     "@atlaskit/docs": "^2.5.2",
     "@atlaskit/field-text": "^4.2.1",
     "@atlaskit/theme": "^2.4.1",

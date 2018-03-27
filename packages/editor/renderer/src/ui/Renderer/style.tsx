@@ -54,7 +54,8 @@ export const Wrapper: ComponentClass<any> = styled.div`
     }
   }
 
-  & p {
+  & p,
+  & .UnknownBlock {
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
     font-weight: 400;

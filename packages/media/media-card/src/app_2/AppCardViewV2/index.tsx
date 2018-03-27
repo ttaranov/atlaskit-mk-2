@@ -15,9 +15,10 @@ import {
   AppCardUser as OldUserViewModel,
   OnActionClickCallback,
 } from '../../app/model';
-import ApplicationCard from '../ApplicationCard';
+import { CardView, CardViewProps } from '@atlaskit/smart-card';
 import { AppCardView } from '../../app/components/AppCardView';
-import { ActionHandlerCallbacks } from '../shared/ActionsView';
+
+export type SmartCardProps = CardViewProps;
 
 function convertUser(oldUser: OldUserViewModel) {
   return {
@@ -36,7 +37,7 @@ function getContext(oldViewModel: OldViewModel) {
   };
 }
 
-function getLink(oldViewModel: OldViewModel) {
+function getHref(oldViewModel: OldViewModel) {
   if (!oldViewModel.link) {
     return undefined;
   }
@@ -114,7 +115,7 @@ function getActions(
   return oldViewModel.actions.map(oldAction => {
     return {
       text: oldAction.title,
-      handler: (actionCallbackHandlers: ActionHandlerCallbacks) => {
+      handler: actionCallbackHandlers => {
         if (onActionClick) {
           onActionClick(oldAction, {
             progress: actionCallbackHandlers.progress,
@@ -132,6 +133,19 @@ function getActions(
   });
 }
 
+export function convertAppCardToSmartCard(model: OldViewModel): SmartCardProps {
+  return {
+    context: getContext(model),
+    link: getHref(model),
+    title: getTitle(model),
+    description: getDescription(model),
+    user: getUser(model),
+    users: getUsers(model),
+    preview: getPreview(model),
+    details: getDetails(model),
+  };
+}
+
 export interface AppCardViewV2Props {
   newDesign?: boolean;
   model: OldViewModel;
@@ -144,16 +158,9 @@ class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
     const { newDesign, model, onClick, onActionClick } = this.props;
     if (newDesign) {
       return (
-        <ApplicationCard
+        <CardView
+          {...convertAppCardToSmartCard(model)}
           onClick={onClick}
-          context={getContext(model)}
-          link={getLink(model)}
-          title={getTitle(model)}
-          description={getDescription(model)}
-          user={getUser(model)}
-          users={getUsers(model)}
-          preview={getPreview(model)}
-          details={getDetails(model)}
           actions={getActions(model, onActionClick)}
         />
       );
@@ -171,3 +178,4 @@ class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
 
 // export the new class as the old class
 export { AppCardViewV2 as AppCardView };
+export { OldViewModel as AppCardModel };

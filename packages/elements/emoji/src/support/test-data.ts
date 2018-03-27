@@ -387,3 +387,15 @@ export const pngFileUploadData = {
   filename: 'playasateam.png',
   dataURL: pngDataURL,
 };
+
+export const onRowsRenderedArgs = (
+  overscanStartIndex = 0,
+  startIndex = 0,
+  stopIndex = 0,
+  overscanStopIndex = 0,
+) => ({
+  overscanStartIndex,
+  startIndex,
+  stopIndex,
+  overscanStopIndex,
+});

@@ -25,7 +25,6 @@ export default class MockMentionResource extends AbstractMentionResource {
   }
 
   filter(query: string): void {
-    debug('_mock-ak-mention-resource filter', query);
     const searchTime = Date.now();
     const notify = (mentions: MentionsResult) => {
       if (searchTime >= this.lastReturnedSearch) {

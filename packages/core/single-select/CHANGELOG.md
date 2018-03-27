@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 3.3.4
+- [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
+
 ## 3.3.3
 
 ## 3.3.2

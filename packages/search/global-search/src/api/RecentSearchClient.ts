@@ -15,6 +15,7 @@ export interface RecentItem {
   iconUrl: string;
   container: string;
   url: string;
+  provider: string;
 }
 
 export interface RecentSearchClient {
@@ -75,13 +76,54 @@ export default class RecentSearchClientImpl implements RecentSearchClient {
   }
 }
 
+/**
+ * Splits the title of a recent jira item into issue key and title.
+ *
+ * E.g. "HOME-123 Fix HOT issue" becomes "HOME-123" and "Fix HOT issue".
+ *
+ * We can use a simplified issue key regex here because we know that the issue will be
+ * located at the very beginning of the string (due to the way the /recent API works).
+ *
+ */
+export function splitIssueKeyAndName(name: string) {
+  const issueKeyMatcher = /^[A-Z]{1,10}-\d+/;
+  const matches = name.match(issueKeyMatcher);
+
+  let objectKey: string | undefined;
+  let nameWithoutIssueKey = name;
+
+  if (matches !== null && matches.length > 0) {
+    objectKey = matches[0];
+    nameWithoutIssueKey = name.substring(objectKey.length).trim();
+  }
+
+  return {
+    name: nameWithoutIssueKey,
+    objectKey: objectKey,
+  };
+}
+
+function maybeSplitIssueKeyAndName(recentItem: RecentItem) {
+  if (recentItem.provider === 'jira') {
+    return splitIssueKeyAndName(recentItem.name);
+  } else {
+    return {
+      name: recentItem.name,
+      objectKey: undefined,
+    };
+  }
+}
+
 function recentItemToResult(recentItem: RecentItem): Result {
+  const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
+
   return {
     type: ResultType.Object,
     resultId: 'recent-' + recentItem.objectId,
     avatarUrl: recentItem.iconUrl,
-    name: recentItem.name,
+    name: name,
     href: recentItem.url,
     containerName: recentItem.container,
+    objectKey: objectKey,
   };
 }

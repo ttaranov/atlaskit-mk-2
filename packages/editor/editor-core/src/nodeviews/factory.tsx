@@ -41,6 +41,7 @@ class NodeViewElem implements NodeView {
     this.domRef = document.createElement(elementType);
     this.eventDispatcher = new EventDispatcher();
 
+    this.setDomAttrs(node);
     this.renderReactComponent(node);
   }
 
@@ -54,9 +55,7 @@ class NodeViewElem implements NodeView {
 
     if (isValidUpdate) {
       if (this.domRef) {
-        Object.keys(node.attrs || {}).forEach(attr => {
-          this.domRef!.setAttribute(attr, node.attrs[attr]);
-        });
+        this.setDomAttrs(node);
         this.eventDispatcher.emit('change', { node });
       } else {
         this.renderReactComponent(node);
@@ -70,6 +69,14 @@ class NodeViewElem implements NodeView {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.eventDispatcher.destroy();
     this.domRef = undefined;
+  }
+
+  private setDomAttrs(node: PMNode) {
+    Object.keys(node.attrs || {}).forEach(attr => {
+      if (this.domRef) {
+        this.domRef.setAttribute(attr, node.attrs[attr]);
+      }
+    });
   }
 
   private renderReactComponent(node: PMNode) {

@@ -12,8 +12,8 @@ import { Heading, MonthAndYear } from '../styled/Heading';
 type Props = {|
   month: number,
   year: number,
-  handleClickNext: () => void,
-  handleClickPrev: () => void,
+  handleClickNext?: () => void,
+  handleClickPrev?: () => void,
 |};
 
 export default (props: Props) => (

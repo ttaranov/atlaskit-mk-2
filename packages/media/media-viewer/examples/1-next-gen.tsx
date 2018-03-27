@@ -3,14 +3,14 @@ import Button from '@atlaskit/button';
 import { MediaItemType } from '@atlaskit/media-core';
 import {
   createStorybookContext,
-  docFileId,
+  imageFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer } from '../src/index';
 
 const context = createStorybookContext();
 const selectedItem = {
   type: 'file' as MediaItemType,
-  id: docFileId.id,
+  id: imageFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 const dataSource = { list: [selectedItem] };
@@ -26,7 +26,7 @@ export default class Example extends React.Component<{}, State> {
     return (
       <div>
         <Button onClick={() => this.setState({ isOpen: true })}>
-          Preview an unsupported item
+          Preview an image item
         </Button>
         {this.state.isOpen && (
           <MediaViewer
@@ -36,7 +36,7 @@ export default class Example extends React.Component<{}, State> {
             context={context}
             selectedItem={selectedItem}
             dataSource={dataSource}
-            collectionName={docFileId.collectionName}
+            collectionName={imageFileId.collectionName}
             onClose={() => this.setState({ isOpen: false })}
           />
         )}

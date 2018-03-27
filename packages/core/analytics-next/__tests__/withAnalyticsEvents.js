@@ -118,7 +118,7 @@ describe('create event map', () => {
   it('should patch callback props to create an event when passed a string', () => {
     let analyticsEvent;
     const ButtonWithAnalytics = withAnalyticsEvents({
-      onClick: {},
+      onClick: { action: 'clicked' },
     })(Button);
     const wrapper = mount(
       <ButtonWithAnalytics
@@ -134,14 +134,14 @@ describe('create event map', () => {
 
     expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
     if (analyticsEvent) {
-      expect(analyticsEvent.payload).toEqual({});
+      expect(analyticsEvent.payload).toEqual({ action: 'clicked' });
     }
   });
 
   it('should patch callback props to create an event when passed a function', () => {
     let analyticsEvent;
     const ButtonWithAnalytics = withAnalyticsEvents({
-      onClick: createEvent => createEvent({ a: 'b' }),
+      onClick: createEvent => createEvent({ action: 'clicked' }),
     })(Button);
     const wrapper = mount(
       <ButtonWithAnalytics
@@ -157,14 +157,15 @@ describe('create event map', () => {
 
     expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
     if (analyticsEvent) {
-      expect(analyticsEvent.payload).toEqual({ a: 'b' });
+      expect(analyticsEvent.payload).toEqual({ action: 'clicked' });
     }
   });
 
   it('should pass component props to create event map functions', () => {
     let analyticsEvent;
     const ButtonWithAnalytics = withAnalyticsEvents({
-      onClick: (createEvent, props) => createEvent({ efg: props.abc }),
+      onClick: (createEvent, props) =>
+        createEvent({ action: 'clicked', efg: props.abc }),
     })(Button);
     const wrapper = mount(
       <ButtonWithAnalytics
@@ -181,12 +182,13 @@ describe('create event map', () => {
 
     expect(analyticsEvent).toEqual(expect.any(UIAnalyticsEvent));
     if (analyticsEvent) {
-      expect(analyticsEvent.payload).toEqual({ efg: 'xyz' });
+      expect(analyticsEvent.payload).toEqual({ action: 'clicked', efg: 'xyz' });
     }
   });
   it('should update handlers each render', () => {
     const ButtonWithAnalytics = withAnalyticsEvents({
-      onClick: createEvent => createEvent({ time: Date.now() }),
+      onClick: createEvent =>
+        createEvent({ action: 'clicked', time: Date.now() }),
     })(Button);
     // eslint-disable-next-line react/no-multi-comp
     class Counter extends React.Component<{}, { count: number }> {
