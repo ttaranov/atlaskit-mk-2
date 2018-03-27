@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Builder, AddArgs } from './builder';
 
 export type CellType = 'tableHeader' | 'tableCell';
 
@@ -15,12 +16,12 @@ export interface Table {
   rows: TableRow[];
 }
 
-export interface AddCellArgs {
+export interface AddCellArgs extends AddArgs {
   style: '|' | '||' | null;
   content: PMNode[];
 }
 
-export default class TableBuilder {
+export default class TableBuilder implements Builder {
   private schema: Schema;
   private root: Table;
   private lastCell: TableCell;
@@ -84,34 +85,31 @@ export default class TableBuilder {
    * Build prosemirror table node
    * @returns {PMNode}
    */
-  private buildTableNode(): PMNode {
+  private buildTableNode = (): PMNode => {
     const { root } = this;
     const { table } = this.schema.nodes;
-    return table.create({}, root.rows.map(this.buildTableRowNode.bind(this)));
-  }
+    return table.create({}, root.rows.map(this.buildTableRowNode));
+  };
 
   /**
    * Build prosemirror tr node
    * @returns {PMNode}
    */
-  private buildTableRowNode(row: TableRow): PMNode {
+  private buildTableRowNode = (row: TableRow): PMNode => {
     const { tableRow } = this.schema.nodes;
-    return tableRow.create(
-      {},
-      row.cells.map(this.buildTableCellNode.bind(this)),
-    );
-  }
+    return tableRow.create({}, row.cells.map(this.buildTableCellNode));
+  };
 
   /**
    * Build prosemirror td/th node
    * @param {TableCell} cell
    * @returns {PMNode}
    */
-  private buildTableCellNode(cell: TableCell): PMNode {
+  private buildTableCellNode = (cell: TableCell): PMNode => {
     const { type, content } = cell;
     const cellNode = this.schema.nodes[type];
     return cellNode.create({}, content);
-  }
+  };
 
   /**
    * Add a new row to the table

@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Builder, AddArgs } from './builder';
 
 export interface ListItem {
   content?: any[];
@@ -14,7 +15,7 @@ export interface List {
 
 export type ListType = 'bulletList' | 'orderedList';
 
-export default class ListBuilder {
+export default class ListBuilder implements Builder {
   private schema: Schema;
   private root: List;
   private lastDepth: number;
@@ -46,26 +47,35 @@ export default class ListBuilder {
 
   /**
    * Add a list item to the builder
-   * @param {string} bullets
-   * @param {PMNode} content
+   * @param {AddArgs[]} items
    */
-  add(bullets: string, content: PMNode[]) {
-    const depth = bullets.length;
-    const type = ListBuilder.getType(bullets);
+  add(items: AddArgs[]) {
+    for (const item of items) {
+      const { style, content } = item;
 
-    if (depth > this.lastDepth) {
-      // Add children starting from last node
-      this.createNest(depth - this.lastDepth, type);
-      this.lastDepth = depth;
-      this.lastList = this.addListItem(type, content);
-    } else if (depth === this.lastDepth) {
-      // Add list item to current node
-      this.lastList = this.addListItem(type, content);
-    } else {
-      // Find node at depth and add list item
-      this.lastList = this.findAncestor(this.lastDepth - depth);
-      this.lastDepth = depth;
-      this.lastList = this.addListItem(type, content);
+      // If there's no style, add to previous list item as multiline
+      if (style === null) {
+        this.appendToLastItem(content);
+        continue;
+      }
+
+      const depth = style.length;
+      const type = ListBuilder.getType(style);
+
+      if (depth > this.lastDepth) {
+        // Add children starting from last node
+        this.createNest(depth - this.lastDepth, type);
+        this.lastDepth = depth;
+        this.lastList = this.addListItem(type, content);
+      } else if (depth === this.lastDepth) {
+        // Add list item to current node
+        this.lastList = this.addListItem(type, content);
+      } else {
+        // Find node at depth and add list item
+        this.lastList = this.findAncestor(this.lastDepth - depth);
+        this.lastDepth = depth;
+        this.lastList = this.addListItem(type, content);
+      }
     }
   }
 
@@ -82,31 +92,28 @@ export default class ListBuilder {
    * @param {List} list
    * @returns {PMNode}
    */
-  private buildListNode(list: List): PMNode {
+  private buildListNode = (list: List): PMNode => {
     const listNode = this.schema.nodes[list.type];
 
-    return listNode.create(
-      {},
-      list.children.map(this.buildListItemNode.bind(this)),
-    );
-  }
+    return listNode.create({}, list.children.map(this.buildListItemNode));
+  };
 
   /**
    * Build prosemirror listItem node
    * @param {ListItem} item
    */
-  private buildListItemNode(item: ListItem): PMNode {
+  private buildListItemNode = (item: ListItem): PMNode => {
     const { listItem } = this.schema.nodes;
     let content: any[] = [];
 
-    content.push(...item.children.map(this.buildListNode.bind(this)));
+    content.push(...item.children.map(this.buildListNode));
 
     if (!item.content) {
       return listItem.create({}, content);
     }
 
     return listItem.create({}, [...item.content, ...content]);
-  }
+  };
 
   /**
    * Add an item at the same level as the current list item
@@ -133,6 +140,17 @@ export default class ListBuilder {
     list.children = [...list.children, listItem];
 
     return list;
+  }
+
+  /**
+   * Append the past content to the last accessed list node (multiline entries)
+   * @param {PMNode[]} content
+   */
+  private appendToLastItem(content: PMNode[]) {
+    const { hardBreak } = this.schema.nodes;
+    const { children } = this.lastList;
+    const lastItem = children[children.length - 1];
+    lastItem.content.push(hardBreak.create(), ...content);
   }
 
   /**
