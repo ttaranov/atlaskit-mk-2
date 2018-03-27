@@ -3,7 +3,7 @@
 import { Children, Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import UIAnalyticsEvent from './UIAnalyticsEvent';
-import type { UIAnalyticsEventHandlerSignature } from './types';
+import type { UIAnalyticsEventHandler } from './types';
 
 type Props = {
   /** Children! */
@@ -34,7 +34,7 @@ export default class AnalyticsListener extends Component<Props> {
       (typeof getAtlaskitAnalyticsEventHandlers === 'function' &&
         getAtlaskitAnalyticsEventHandlers()) ||
       [];
-    const handler: UIAnalyticsEventHandlerSignature = (event, eventChannel) => {
+    const handler: UIAnalyticsEventHandler = (event, eventChannel) => {
       if (channel === '*' || channel === eventChannel) {
         onEvent(event, eventChannel);
       }
