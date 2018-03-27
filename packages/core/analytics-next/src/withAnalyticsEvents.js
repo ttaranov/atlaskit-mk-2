@@ -32,13 +32,14 @@ type EventMap<ProvidedProps> = {
 };
 
 export default function withAnalyticsEvents<
-  InnerComponent: ComponentType<*>,
+  Props: $Shape<AnalyticsEventPayload>,
+  InnerComponent: ComponentType<Props>,
   ExternalProps: $Diff<ElementConfig<InnerComponent>, AnalyticsEventsProps>,
 >(
   createEventMap: EventMap<ExternalProps> = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent =>
-    class WithAnalyticsEvents extends Component<*> {
+    class WithAnalyticsEvents extends Component<ExternalProps> {
       static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 
