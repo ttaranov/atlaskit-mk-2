@@ -9,7 +9,9 @@ import {
   validPresenceData,
   invalidPresenceData,
 } from '../../src/support/presence-data';
-
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 const baseUrl = 'https://bogus/presence';
 const dummyId = 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5';
 
@@ -22,6 +24,12 @@ const testIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 const parser = new DefaultPresenceParser();
 
 describe('PresenceParser', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+  afterEach(() => {
+    console.error = consoleError;
+  });
   it('should parse presences into correct states', () => {
     const parsedPresences = parser.parse(validPresenceData);
     expect(parsedPresences['0'].status).toEqual('offline');
@@ -54,6 +62,12 @@ describe('PresenceCache', () => {
     };
     // Setup presence resource and cache
     cache = new DefaultPresenceCache();
+    console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = consoleError;
+    fetchMock.restore();
   });
 
   it('should know whether it contains a user by ID', () => {
@@ -156,9 +170,11 @@ describe('PresenceResource', () => {
         body: validPresenceData,
       },
     });
+    console.error = jest.fn();
   });
 
   afterEach(() => {
+    console.error = consoleError;
     fetchMock.restore();
   });
 

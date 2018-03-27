@@ -6,6 +6,13 @@ const collectionName = 'some-collection-name';
 const token = 'some-token';
 const serviceHost = 'some-service-host';
 
+function createFetchSomeBlobSpy() {
+  return jest.fn(() => ({
+    response: Promise.resolve(new Blob()),
+    cancel: jest.fn(),
+  }));
+}
+
 describe('MediaBlobService', () => {
   const authProvider: AuthProvider = () =>
     Promise.resolve({
@@ -20,7 +27,7 @@ describe('MediaBlobService', () => {
 
   describe('fetchImageBlob()', () => {
     it('should allow animation by default', () => {
-      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      const fetchSomeBlobSpy = createFetchSomeBlobSpy();
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
@@ -33,7 +40,7 @@ describe('MediaBlobService', () => {
     });
 
     it('should allow consumers to disallow animation', () => {
-      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      const fetchSomeBlobSpy = createFetchSomeBlobSpy();
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
@@ -50,7 +57,7 @@ describe('MediaBlobService', () => {
     });
 
     it('should use "crop" resize mode as default', () => {
-      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      const fetchSomeBlobSpy = createFetchSomeBlobSpy();
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
@@ -62,7 +69,7 @@ describe('MediaBlobService', () => {
     });
 
     it('should allow consumers to specify a resize mode', () => {
-      const fetchSomeBlobSpy = jest.fn(() => Promise.resolve(new Blob()));
+      const fetchSomeBlobSpy = createFetchSomeBlobSpy();
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(

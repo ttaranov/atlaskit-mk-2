@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Blanket from '@atlaskit/blanket';
-import { Context, MediaType, MediaItem } from '@atlaskit/media-core';
+import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel, ObjectUrl } from './domain';
+import { constructAuthTokenUrl } from './util';
 
 export type Props = {
   onClose?: () => void;
@@ -65,7 +66,7 @@ export class MediaViewer extends React.Component<Props, State> {
     const provider = context.getMediaItemProvider(id, type, collectionName);
 
     this.subscription = provider.observable().subscribe({
-      next: async mediaItem => {
+      next: mediaItem => {
         if (mediaItem.type === 'link') {
           this.setState({
             fileDetails: {
@@ -93,28 +94,7 @@ export class MediaViewer extends React.Component<Props, State> {
               },
             });
 
-            try {
-              // TODO:
-              // - 1) MSW-530: revoke object URL
-              // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
-              const objectUrl = await getImageObjectUrl(mediaItem, context);
-              this.setState({
-                previewData: {
-                  status: 'SUCCESSFUL',
-                  data: {
-                    viewer: 'IMAGE',
-                    objectUrl,
-                  },
-                },
-              });
-            } catch (err) {
-              this.setState({
-                previewData: {
-                  status: 'FAILED',
-                  err,
-                },
-              });
-            }
+            this.populatePreviewData(mediaItem, context, collectionName);
           }
         }
       },
@@ -138,18 +118,112 @@ export class MediaViewer extends React.Component<Props, State> {
       this.subscription = null;
     }
   }
+
+  private populatePreviewData(mediaItem, context, collectionName) {
+    switch (mediaItem.details.mediaType) {
+      case 'image':
+        this.populateImagePreviewData(mediaItem, context);
+        break;
+      case 'video':
+        this.populateVideoPreviewData(mediaItem, context, collectionName);
+        break;
+      default:
+        this.notSupportedPreview(mediaItem);
+        break;
+    }
+  }
+
+  private async populateImagePreviewData(
+    fileItem: MediaItem,
+    context: Context,
+  ) {
+    try {
+      // TODO:
+      // - 1) MSW-530: revoke object URL
+      // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
+      const objectUrl = await getImageObjectUrl(fileItem, context, 800, 600);
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'IMAGE',
+            objectUrl,
+          },
+        },
+      });
+    } catch (err) {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err,
+        },
+      });
+    }
+  }
+
+  private async populateVideoPreviewData(
+    fileItem: FileItem,
+    context: Context,
+    collectionName?: string,
+  ) {
+    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
+    if (videoArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        videoArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'VIDEO',
+            src,
+          },
+        },
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file'),
+        },
+      });
+    }
+  }
+
+  private notSupportedPreview(fileItem: FileItem) {
+    this.setState({
+      previewData: {
+        status: 'FAILED',
+        err: new Error(`not supported`),
+      },
+    });
+  }
 }
 
 async function getImageObjectUrl(
   mediaItem: MediaItem,
   context: Context,
+  width,
+  height,
 ): Promise<ObjectUrl> {
   const service = context.getBlobService();
   const blob = await service.fetchImageBlob(mediaItem, {
-    width: 800,
-    height: 600,
+    width,
+    height,
     mode: 'fit',
     allowAnimated: true,
   });
   return URL.createObjectURL(blob);
+}
+
+function getVideoArtifactUrl(fileItem: FileItem) {
+  const artifact = 'video_640.mp4';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
 }

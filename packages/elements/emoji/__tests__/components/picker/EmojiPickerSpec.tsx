@@ -747,6 +747,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload error interaction', async () => {
+      console.error = jest.fn();
       const emojiProvider = getMockEmojiResourcePromise({
         uploadSupported: true,
         uploadError: 'bad times',
@@ -811,6 +812,7 @@ describe('<EmojiPicker />', () => {
 
       // wait for error
       await waitUntil(() => helper.uploadErrorVisible(component));
+      expect(console.error).toBeCalled();
 
       // Check error displayed
       const uploadError = helper.findUploadError(component);

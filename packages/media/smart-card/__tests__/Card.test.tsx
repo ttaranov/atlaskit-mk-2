@@ -39,6 +39,7 @@ function createClientWithOKResponse(): Client {
 }
 
 describe('Card', () => {
+  console.error = jest.fn();
   it('should render the loading view when loading', () => {
     const client = createClientWithNoResponse();
     const wrapper = mount(
@@ -69,6 +70,7 @@ describe('Card', () => {
 
     wrapper.update();
     expect(wrapper.find(ErroredView).exists()).toBeTruthy();
+    expect(console.error).toBeCalled();
   });
 
   it('should render the card when loaded', async () => {

@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 13.0.12
+
 ## 13.0.11
 - [patch] Adds styling for unknown blocks [5cdc63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cdc63c)
 
