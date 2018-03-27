@@ -2,7 +2,7 @@ import {
   getDecisionsResponse,
   getItemsResponse,
   getTasksResponse,
-} from '../../src/support/test-data';
+} from './_test-data';
 
 describe('test-data', () => {
   it('getDecisionsResponse', () => {

@@ -1,4 +1,4 @@
-import { serviceDecision, serviceTask } from '../../src/support/test-data';
+import { serviceDecision, serviceTask } from '../_test-data';
 import {
   convertServiceDecisionToDecision,
   convertServiceTaskToTask,

@@ -4,11 +4,11 @@ import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import TaskList from '../src/components/TaskList';
 import TaskItem from '../src/components/TaskItem';
-import { document } from '../src/support/story-data';
 import {
   MessageContainer,
   dumpRef,
   action,
+  document,
 } from '../example-helpers/story-utils';
 
 interface Props {

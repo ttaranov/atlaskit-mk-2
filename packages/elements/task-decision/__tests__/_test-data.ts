@@ -10,7 +10,7 @@ import {
   ServiceItemResponse,
   Task,
   TaskResponse,
-} from '../types';
+} from '../src/types';
 
 import {
   convertServiceDecisionResponseToDecisionResponse,
@@ -18,25 +18,21 @@ import {
   convertServiceItemResponseToItemResponse,
   convertServiceTaskResponseToTaskResponse,
   convertServiceTaskToTask,
-} from '../api/TaskDecisionUtils';
+} from '../src/api/TaskDecisionUtils';
 
-import {
-  getServiceDecisionsResponse,
-  getServiceTasksResponse,
-  getServiceItemsResponse as getServiceItemsResponseWithParticipants,
-  getParticipants,
-} from './story-data';
-
+import { taskDecision } from '@atlaskit/util-data-test';
 import * as addMinutes from 'date-fns/add_minutes';
 import * as subDays from 'date-fns/sub_days';
 import * as subMonths from 'date-fns/sub_months';
 
-// Just a re-export, but we may change datasets between stories and test at some point.
-export {
+export const {
   getServiceDecisionsResponse,
   getServiceTasksResponse,
   getParticipants,
-};
+} = taskDecision;
+
+export const getServiceItemsResponseWithParticipants =
+  taskDecision.getServiceItemsResponse;
 
 export const getServiceItemsResponse = (): ServiceItemResponse => {
   const decisions = getServiceDecisionsResponse();

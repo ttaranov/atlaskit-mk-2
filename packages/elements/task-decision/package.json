@@ -44,6 +44,7 @@
     "@atlaskit/editor-common": "^8.1.5",
     "@atlaskit/renderer": "^13.0.10",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^8.0.0",
     "fetch-mock": "^5.12.1"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
