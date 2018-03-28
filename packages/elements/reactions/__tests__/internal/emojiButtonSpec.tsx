@@ -14,9 +14,9 @@ import { mount, shallow } from 'enzyme';
 
 import { hasSelector } from '../_test-utils';
 import EmojiButton from '../../src/internal/emoji-button';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 
-const { getEmojiResourcePromise, newEmojiRepository } = testData;
+const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
 
 const { expect } = chai;

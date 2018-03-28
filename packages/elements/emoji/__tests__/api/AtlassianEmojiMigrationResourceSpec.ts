@@ -18,7 +18,7 @@ import {
   atlassianServiceEmojis,
   standardServiceEmojis,
   atlassianBoomEmoji,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 const p1Url = 'https://p1/';
 const p2Url = 'https://p2/';

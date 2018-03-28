@@ -9,10 +9,10 @@ import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { smileyId } from './_test-data';
 import { ObjectReactionKey } from '../src/reactions-resource';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
-const { getEmojiResourcePromise } = testData;
+const { getEmojiResourcePromise } = emoji.testData;
 
 const { expect } = chai;
 

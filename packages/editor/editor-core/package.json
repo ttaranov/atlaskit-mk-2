@@ -96,7 +96,7 @@
     "@atlaskit/media-core": "^15.0.1",
     "@atlaskit/media-test-helpers": "^11.0.0",
     "@atlaskit/renderer": "^13.0.16",
-    "@atlaskit/util-data-test": "^7.2.1",
+    "@atlaskit/util-data-test": "^8.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "chai-as-promised": "^6.0.0",

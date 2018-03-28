@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { ResourcedTaskItem, TaskItem } from '@atlaskit/task-decision';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { taskDecision } from '@atlaskit/util-data-test';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import Task from '../../../../src/plugins/tasks-and-decisions/ui/Task';
 // avoid polluting test logs with error message in console
@@ -9,7 +9,7 @@ import Task from '../../../../src/plugins/tasks-and-decisions/ui/Task';
 let consoleError = console.error;
 
 const taskDecisionProvider = Promise.resolve(
-  taskDecisionStoryData.getMockTaskDecisionResource(),
+  taskDecision.getMockTaskDecisionResource(),
 );
 const contextIdentifierProvider = Promise.resolve({
   objectId: 'abc',

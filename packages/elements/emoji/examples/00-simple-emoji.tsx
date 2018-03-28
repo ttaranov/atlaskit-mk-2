@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Emoji from '../src/components/common/Emoji';
-import { getEmojiRepository } from '../src/support/story-data';
+import { getEmojiRepository } from '../example-helpers';
 
 const emojiService = getEmojiRepository();
 

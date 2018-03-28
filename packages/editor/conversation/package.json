@@ -39,8 +39,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.3",
-    "@atlaskit/emoji": "^31.1.23",
-    "@atlaskit/mention": "^9.2.1",
-    "@atlaskit/single-select": "^3.3.0"
+    "@atlaskit/single-select": "^3.3.0",
+    "@atlaskit/util-data-test": "^8.0.0"
   }
 }

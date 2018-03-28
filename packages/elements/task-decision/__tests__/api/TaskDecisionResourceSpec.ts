@@ -11,7 +11,8 @@ import {
   getServiceDecisionsResponse,
   getServiceItemsResponse,
   getServiceTasksResponse,
-} from '../../src/support/test-data';
+  getParticipants,
+} from '../_test-data';
 
 import TaskDecisionResource, {
   ItemStateManager,
@@ -26,7 +27,6 @@ import {
 } from '../../src/types';
 
 import { objectKeyToString, toObjectKey } from '../../src/type-helpers';
-import { getParticipants } from '../../src/support/story-data';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;

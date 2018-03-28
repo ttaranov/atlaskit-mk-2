@@ -7,10 +7,10 @@ import { mount, shallow } from 'enzyme';
 
 import { hasSelector } from '../_test-utils';
 import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
-const { getEmojiResourcePromise, newEmojiRepository } = testData;
+const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
 
 const { expect } = chai;

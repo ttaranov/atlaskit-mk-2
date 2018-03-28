@@ -5,7 +5,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import ResourcedTaskItem from '../../src/components/ResourcedTaskItem';
 import TaskItem from '../../src/components/TaskItem';
 import Participants from '../../src/components/Participants';
-import { getParticipants } from '../../src/support/test-data';
+import { getParticipants } from '../_test-data';
 import { Placeholder } from '../../src/styled/Placeholder';
 import Item from '../../src/components/Item';
 

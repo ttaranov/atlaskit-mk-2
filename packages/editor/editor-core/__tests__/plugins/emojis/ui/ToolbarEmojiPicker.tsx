@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 import { Popup, ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
@@ -19,10 +19,10 @@ import emojiPlugin from '../../../../src/plugins/emoji';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 import mentionsPlugin from '../../../../src/plugins/mentions';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise() as Promise<
-  EmojiProvider
->;
-const grinEmoji = emojiTestData.grinEmoji;
+const { testData } = emojiTestData;
+
+const emojiProvider = testData.getEmojiResourcePromise();
+const grinEmoji = testData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,

@@ -27,6 +27,7 @@
     "@atlaskit/docs": "^2.4.3",
     "@atlaskit/editor-core": "^65.1.26",
     "@atlaskit/editor-test-helpers": "^2.0.13",
+    "@atlaskit/util-data-test": "^8.0.0",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0",
     "prosemirror-model": "^1.2.0"
