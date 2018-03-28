@@ -103,6 +103,14 @@ export default md`
     />
   )}
 
+  ${(
+    <Example
+      Component={require('../examples/08-async-creatable-select.js').default}
+      source={require('!!raw-loader!../examples/08-async-creatable-select.js')}
+      title="AsyncCreatable Select"
+    />
+  )}
+
   ### Props
 
   Please refer to the react-select documentation for [prop documentation](https://bit.ly/react-select-v2).
