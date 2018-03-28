@@ -109,7 +109,7 @@ describe('GlobalQuickSearchContainer', () => {
       /**
        * 0. Recent search errors out immediately, xpsearch takes 5ms
        * 1. Make sure immediately that loading state is set
-       * 2. Wait 5ms until xpsearch has finished
+       * 2. Wait 6ms until xpsearch has finished
        * 3. Make sure loading state is unset
        */
       const wrapper = render({
@@ -129,7 +129,7 @@ describe('GlobalQuickSearchContainer', () => {
       await waitForRender(wrapper);
       expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
 
-      await waitForRender(wrapper, 5);
+      await waitForRender(wrapper, 6);
       expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
     });
   });
