@@ -226,6 +226,30 @@ describe('<MediaViewer />', () => {
     expect(subject.observers).toHaveLength(0);
   });
 
+  it('cancels an image fetch request when unmounted', async () => {
+    const item: MediaItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+        mediaType: 'image',
+      },
+    };
+    const { blobService, subject, el } = createFixture(identifier);
+
+    const cancel = jest.fn();
+    blobService.fetchImageBlobCancelable.mockReturnValue({
+      response: new Promise(() => {}),
+      cancel,
+    });
+
+    subject.next(item);
+    el.unmount();
+    el.update();
+
+    expect(cancel).toHaveBeenCalled();
+  });
+
   it('resubscribes to the provider when the data property value is changed', () => {
     const identifierCopy = { ...identifier };
 

@@ -113,6 +113,9 @@ export class MediaViewer extends React.Component<Props, State> {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.cancelImageFetch) {
+      this.cancelImageFetch('cancel_request');
+    }
   }
 
   private populatePreviewData(mediaItem, context, collectionName) {
@@ -129,6 +132,8 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 
+  private cancelImageFetch?: (msg?: string) => void;
+
   private async populateImagePreviewData(
     fileItem: MediaItem,
     context: Context,
@@ -136,14 +141,14 @@ export class MediaViewer extends React.Component<Props, State> {
     try {
       // TODO:
       // - 1) MSW-530: revoke object URL
-      // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
       const service = context.getBlobService();
-      const { response } = service.fetchImageBlobCancelable(fileItem, {
+      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
         width: 800,
         height: 600,
         mode: 'fit',
         allowAnimated: true,
       });
+      this.cancelImageFetch = cancel;
       const objectUrl = URL.createObjectURL(await response);
       this.setState({
         previewData: {
@@ -155,12 +160,16 @@ export class MediaViewer extends React.Component<Props, State> {
         },
       });
     } catch (err) {
-      this.setState({
-        previewData: {
-          status: 'FAILED',
-          err,
-        },
-      });
+      // if the request was cancelled by us that means that the component
+      // changed state and that we can no longer call setState
+      if (err.message !== 'cancel_request') {
+        this.setState({
+          previewData: {
+            status: 'FAILED',
+            err,
+          },
+        });
+      }
     }
   }
 
