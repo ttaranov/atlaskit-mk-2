@@ -2,7 +2,6 @@
 
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import Layer from '@atlaskit/layer';
 import Select from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
@@ -101,7 +100,7 @@ const StyledMenu = styled.div`
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
-  containerRef: ?ElementRef<Element>;
+  containerRef: ?HTMLElement;
   input: Element | null;
 
   static defaultProps = {
@@ -209,7 +208,7 @@ export default class DatePicker extends Component<Props, State> {
     ensureValueIsDisplayed();
   };
 
-  getContainerRef = (ref: ElementRef<Element>) => {
+  getContainerRef = (ref: ?HTMLElement) => {
     const oldRef = this.containerRef;
     this.containerRef = ref;
     // Cause a re-render if we're getting the container ref for the first time

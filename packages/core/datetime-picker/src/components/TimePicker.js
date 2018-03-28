@@ -1,10 +1,9 @@
 // @flow
 
 import Select, { components, mergeStyles } from '@atlaskit/select';
-import { layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
-import React, { Component, type Node, type ElementRef } from 'react';
+import React, { Component, type Node } from 'react';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
@@ -68,7 +67,7 @@ const menuStyles = {
 };
 
 export default class TimePicker extends Component<Props, State> {
-  containerRef: ?ElementRef<Element>;
+  containerRef: ?HTMLElement;
 
   static defaultProps = {
     autoFocus: false,
@@ -122,7 +121,7 @@ export default class TimePicker extends Component<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  getContainerRef = (ref: ElementRef<Element>) => {
+  getContainerRef = (ref: ?HTMLElement) => {
     const oldRef = this.containerRef;
     this.containerRef = ref;
     // Cause a re-render if we're getting the container ref for the first time

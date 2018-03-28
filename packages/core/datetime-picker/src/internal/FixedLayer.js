@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type ElementRef, type Node } from 'react';
+import React, { type Node } from 'react';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
@@ -8,7 +8,7 @@ type Props = {
   /** A ref to the container that the content should be layered around for height calculation
    * purposes. This must be an ancestor element as component does not attach the layered content around
    * the ref itself. */
-  containerRef: ElementRef<Element>,
+  containerRef: ?HTMLElement,
   /**
    * The content to render in the layer.
    */

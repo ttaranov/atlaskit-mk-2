@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
 
-import Popper from '../../popper/index';
+import Popper from '../../popper/index-min';
 import ScrollLock from './internal/ScrollLock';
 import {
   getFlipBehavior,
@@ -37,7 +37,7 @@ export type Props = {
   /** z-index for the layer component */
   zIndex?: number,
   /** Lock scrolling behind the layer */
-  lockScroll: boolean,
+  lockScroll?: boolean,
 };
 
 type State = {
