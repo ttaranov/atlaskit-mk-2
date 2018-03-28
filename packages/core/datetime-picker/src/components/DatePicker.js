@@ -11,6 +11,7 @@ import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
 
 import { ClearIndicator, DropdownIndicator } from '../internal';
+import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -100,7 +101,7 @@ const StyledMenu = styled.div`
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
-  containerRef: ElementRef<*>;
+  containerRef: ?ElementRef<Element>;
   input: Element | null;
 
   static defaultProps = {
@@ -208,13 +209,12 @@ export default class DatePicker extends Component<Props, State> {
     ensureValueIsDisplayed();
   };
 
-  getContainerRef = (ref: ElementRef<*>) => {
+  getContainerRef = (ref: ElementRef<Element>) => {
     const oldRef = this.containerRef;
     this.containerRef = ref;
     // Cause a re-render if we're getting the container ref for the first time
     // as the layered menu requires it for dimension calculation
     if (oldRef == null && ref != null) {
-      console.log('Forcing update');
       this.forceUpdate();
     }
   };
@@ -232,7 +232,7 @@ export default class DatePicker extends Component<Props, State> {
     } = this.props;
     const { isOpen, value, view } = this.getState();
 
-    const Menu = (
+    const Menu = ({ innerProps: menuInnerProps }) => (
       <StyledMenu>
         <Calendar
           {...isoToObj(value)}
@@ -243,33 +243,17 @@ export default class DatePicker extends Component<Props, State> {
           // $FlowFixMe
           ref={this.refCalendar}
           selected={[value]}
+          innerProps={menuInnerProps}
         />
       </StyledMenu>
     );
 
-    const LayeredMenu = () => {
-      if (!this.containerRef) {
-        // Wait for containerRef callback to cause a re-render
-        return <div />;
-      }
-      const containerRect = this.containerRef.getBoundingClientRect();
-      return (
-        /* Need to wrap layer in a fixed position div so that it will render its content as fixed
-         * We need to set the intial top value to where the container is and zIndex so that it still
-         * applies since we're creating a new stacking context. */
-        <div
-          style={{
-            position: 'fixed',
-            top: containerRect.top,
-            zIndex: layers.dialog(),
-          }}
-        >
-          <Layer shouldFlip position="bottom left" content={Menu}>
-            <div data-layer-child style={{ height: containerRect.height }} />
-          </Layer>
-        </div>
-      );
-    };
+    const FixedLayeredMenu = props => (
+      <FixedLayer
+        containerRef={this.containerRef}
+        content={<Menu {...props} />}
+      />
+    );
 
     return (
       <div
@@ -292,7 +276,7 @@ export default class DatePicker extends Component<Props, State> {
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-            Menu: LayeredMenu,
+            Menu: FixedLayeredMenu,
           }}
           placeholder="e.g. 2018/12/31"
           value={

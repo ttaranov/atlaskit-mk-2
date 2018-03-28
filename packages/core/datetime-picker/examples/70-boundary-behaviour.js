@@ -23,8 +23,8 @@ export default class MyComponent extends Component<{}, State> {
     timePickerValue: '14:30',
     dateTimePickerValue: '2018-01-02T14:30+11:00',
     isModalOpen: false,
-    textAbove: 3,
-    textBelow: 3,
+    textAbove: 1,
+    textBelow: 1,
   };
 
   onDatePickerChange = (e: any) => {
@@ -89,9 +89,9 @@ export default class MyComponent extends Component<{}, State> {
 
         {isModalOpen && (
           <Modal onClose={this.closeModal}>
-            <Label label="Amount of text above" />
+            <Label label={`Paragraphs above: ${textAbove}`} />
             <FieldRange
-              value={this.state.textAbove}
+              value={textAbove}
               min={0}
               max={10}
               step={1}
@@ -100,9 +100,9 @@ export default class MyComponent extends Component<{}, State> {
             {textAbove > 0 ? <Lorem count={textAbove} /> : null}
             <Label label="Date" />
             <DateTimePicker defaultValue={dateTimePickerValue} />
-            <Label label="Amount of text below" />
+            <Label label={`Paragraphs below: ${textBelow}`} />
             <FieldRange
-              value={this.state.textBelow}
+              value={textBelow}
               min={0}
               max={10}
               step={1}
