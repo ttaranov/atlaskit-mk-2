@@ -2,6 +2,7 @@
 
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import Layer from '@atlaskit/layer';
 import Select from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
@@ -89,10 +90,9 @@ const StyledMenu = styled.div`
   background-color: ${colors.N0};
   border: 1px solid ${colors.N40};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px ${colors.N30};
-  margin-top: 7px;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+  margin: 7px 0;
   overflow: hidden;
-  position: absolute;
   text-align: center;
   z-index: ${layers.dialog};
 `;
@@ -100,6 +100,7 @@ const StyledMenu = styled.div`
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
+  containerRef: ElementRef<*>;
   input: Element | null;
 
   static defaultProps = {
@@ -207,6 +208,17 @@ export default class DatePicker extends Component<Props, State> {
     ensureValueIsDisplayed();
   };
 
+  getContainerRef = (ref: ElementRef<*>) => {
+    const oldRef = this.containerRef;
+    this.containerRef = ref;
+    // Cause a re-render if we're getting the container ref for the first time
+    // as the layered menu requires it for dimension calculation
+    if (oldRef == null && ref != null) {
+      console.log('Forcing update');
+      this.forceUpdate();
+    }
+  };
+
   render() {
     const {
       autoFocus,
@@ -219,7 +231,8 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-    const Menu = () => (
+
+    const Menu = (
       <StyledMenu>
         <Calendar
           {...isoToObj(value)}
@@ -234,6 +247,30 @@ export default class DatePicker extends Component<Props, State> {
       </StyledMenu>
     );
 
+    const LayeredMenu = () => {
+      if (!this.containerRef) {
+        // Wait for containerRef callback to cause a re-render
+        return <div />;
+      }
+      const containerRect = this.containerRef.getBoundingClientRect();
+      return (
+        /* Need to wrap layer in a fixed position div so that it will render its content as fixed
+         * We need to set the intial top value to where the container is and zIndex so that it still
+         * applies since we're creating a new stacking context. */
+        <div
+          style={{
+            position: 'fixed',
+            top: containerRect.top,
+            zIndex: layers.dialog(),
+          }}
+        >
+          <Layer shouldFlip position="bottom left" content={Menu}>
+            <div data-layer-child style={{ height: containerRect.height }} />
+          </Layer>
+        </div>
+      );
+    };
+
     return (
       <div
         {...innerProps}
@@ -241,6 +278,7 @@ export default class DatePicker extends Component<Props, State> {
         onClick={this.onInputClick}
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
+        ref={this.getContainerRef}
       >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
@@ -254,7 +292,7 @@ export default class DatePicker extends Component<Props, State> {
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-            Menu,
+            Menu: LayeredMenu,
           }}
           placeholder="e.g. 2018/12/31"
           value={
