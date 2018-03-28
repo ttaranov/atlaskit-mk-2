@@ -3,7 +3,7 @@ import * as React from 'react';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
-import { getEmojiResource } from '../src/support/story-data';
+import { getEmojiResource } from '../example-helpers';
 
 export default function Example() {
   return (

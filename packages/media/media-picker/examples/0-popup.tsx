@@ -27,6 +27,7 @@ import {
   CardItemWrapper,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
+import { ModuleConfig } from '../src/domain/config';
 
 const context = createStorybookContext();
 
@@ -63,7 +64,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   componentDidMount() {
-    const config = {
+    const config: ModuleConfig = {
       authProvider: mediaPickerAuthProvider(this),
       apiUrl: userAuthProviderBaseURL,
       uploadParams: {
@@ -172,6 +173,9 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       fetchMetadata: isFetchMetadataActive,
     });
 
+    // Populate cache in userAuthProvider.
+    userAuthProvider();
+    // Synchronously with next command tenantAuthProvider will be requested.
     this.popup.show().catch(console.error);
   };
 

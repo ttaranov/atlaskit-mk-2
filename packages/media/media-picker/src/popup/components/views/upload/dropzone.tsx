@@ -4,31 +4,42 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 
 import { filesIcon } from '../../../../icons';
+import { Browser } from '../../../../components/browser';
+import {
+  ButtonWrapper,
+  DefaultImage,
+  DropzoneText,
+  DropzoneContainer,
+  DropzoneContentWrapper,
+  TextWrapper,
+} from './styled';
 
-export class Dropzone extends Component<any, any> {
-  render(): JSX.Element {
+export interface DropzoneProps {
+  readonly isEmpty?: boolean;
+  readonly mpBrowser: Browser;
+}
+
+export class Dropzone extends Component<DropzoneProps> {
+  render() {
+    const { isEmpty } = this.props;
     return (
-      <div className="dropzoneWrapper">
-        <div className="dropzone">
-          <div className="wrapper">
-            <img className="defaultImage" src={filesIcon} />
-            <div className="textWrapper">
-              <div className="dropzoneText">
-                Drag and drop your files anywhere or
-              </div>
-              <div className="btnWrapper">
-                <Button
-                  appearance="default"
-                  onClick={this.clickUpload}
-                  isDisabled={!this.props.mpBrowser}
-                >
-                  Upload a file
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <DropzoneContainer isEmpty={isEmpty}>
+        <DropzoneContentWrapper>
+          <DefaultImage src={filesIcon} />
+          <TextWrapper>
+            <DropzoneText>Drag and drop your files anywhere or</DropzoneText>
+            <ButtonWrapper>
+              <Button
+                appearance="default"
+                onClick={this.clickUpload}
+                isDisabled={!this.props.mpBrowser}
+              >
+                Upload a file
+              </Button>
+            </ButtonWrapper>
+          </TextWrapper>
+        </DropzoneContentWrapper>
+      </DropzoneContainer>
     );
   }
 

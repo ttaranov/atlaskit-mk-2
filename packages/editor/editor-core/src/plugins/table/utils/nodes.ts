@@ -39,7 +39,7 @@ export const getCurrentCell = (state: EditorState): PmNode | undefined => {
 
 export const canInsertTable = (state: EditorState): boolean => {
   const {
-    selection: { $from, to },
+    selection: { $from },
     schema: { marks: { code }, nodes: { codeBlock } },
   } = state;
 
@@ -48,7 +48,7 @@ export const canInsertTable = (state: EditorState): boolean => {
     // inline code and codeBlock are excluded
     if (
       node.type === codeBlock ||
-      (code && state.doc.rangeHasMark($from.pos, to, code))
+      (code && $from.marks().some(mark => mark.type === code))
     ) {
       return false;
     }

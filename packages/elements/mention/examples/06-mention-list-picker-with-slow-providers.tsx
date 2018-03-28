@@ -2,10 +2,10 @@ import * as React from 'react';
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 import MentionTextInput from '../example-helpers/demo-mention-text-input';
 import {
-  MockPresenceProvider,
+  onSelection,
   slowResourceProvider,
-} from '../src/support/story-data';
-import { onSelection } from '../example-helpers';
+  MockPresenceResource,
+} from '../example-helpers';
 
 const tallPageStyle: React.CSSProperties = {
   height: '2000px',
@@ -24,7 +24,7 @@ export default function Example() {
           label="User search"
           onSelection={onSelection}
           resourceProvider={slowResourceProvider}
-          presenceProvider={new MockPresenceProvider(200, 500)}
+          presenceProvider={new MockPresenceResource(200, 500)}
           relativePosition="above"
           zIndex={akZIndexLayer}
         />

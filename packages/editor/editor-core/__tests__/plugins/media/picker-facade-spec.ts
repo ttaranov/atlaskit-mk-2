@@ -18,7 +18,7 @@ import {
 import { ContextFactory } from '@atlaskit/media-core';
 import {
   StoryBookAuthProvider,
-  StoryBookUserAuthProvider,
+  userAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { randomId } from '@atlaskit/editor-test-helpers';
 
@@ -37,8 +37,6 @@ describe('Media PickerFacade', () => {
     captureException: (err: any) => {},
     captureMessage: (msg: any) => {},
   };
-
-  const userAuthProvider = StoryBookUserAuthProvider.create();
 
   const context = ContextFactory.create({
     serviceHost: 'http://test',

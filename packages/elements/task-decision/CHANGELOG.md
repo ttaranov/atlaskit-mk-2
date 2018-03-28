@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 5.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
 ## 4.10.12
 - [patch] FS-1697 export util functions for use in util-data-test [7f68256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f68256)
 

@@ -6,8 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { mention, emoji } from '@atlaskit/util-data-test';
 import { reactionsProvider } from '@atlaskit/reactions';
 import { HttpError } from '../src/api/HttpError';
 
@@ -31,9 +30,9 @@ import {
 } from '../src/internal/actions';
 
 const MockDataProviders = {
-  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   emojiProvider: Promise.resolve(
-    emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    emoji.storyData.getEmojiResource({ uploadSupported: true }),
   ),
   reactionsProvider: Promise.resolve(reactionsProvider),
 };

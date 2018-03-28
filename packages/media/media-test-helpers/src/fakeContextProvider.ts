@@ -6,6 +6,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
   const getMediaItemProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
+
   const getMediaCollectionProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
@@ -24,7 +25,6 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
-
   const defaultContext: Context = {
     getBlobService,
     getLocalPreview,
