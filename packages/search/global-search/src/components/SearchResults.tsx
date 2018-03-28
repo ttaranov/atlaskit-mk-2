@@ -10,6 +10,7 @@ import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 import ObjectResult from './ObjectResult';
 import SearchError from './SearchError';
+import EmptyState from './EmptyState';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -109,6 +110,15 @@ const renderPeople = (results: Result[], query: string) => (
   </AkNavigationItemGroup>
 );
 
+const renderEmptyState = (query: string) => (
+  <div>
+    <EmptyState />
+    {searchJiraItem(query)}
+    {searchConfluenceItem(query)}
+    {searchPeopleItem()}
+  </div>
+);
+
 function take(array: Array<any>, n: number) {
   return array.slice(0, n);
 }
@@ -144,6 +154,16 @@ export default function searchResults(props: Props) {
 
   if (query.length < 2) {
     return renderRecent(take(recentlyViewedItems, 10));
+  }
+
+  const noResults = [
+    recentResults,
+    jiraResults,
+    confluenceResults,
+    peopleResults,
+  ].every(results => results.length === 0);
+  if (noResults) {
+    return renderEmptyState(query);
   }
 
   return [

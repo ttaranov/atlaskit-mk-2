@@ -8,6 +8,7 @@ import {
 import { ResultType } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
+import EmptyState from '../src/components/EmptyState';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -227,5 +228,20 @@ describe('SearchResults', () => {
 
     const wrapper = render(props);
     expect(wrapper.find(SearchError).exists()).toBe(true);
+  });
+
+  it('should render empty state when there are no results and a query is entered', () => {
+    const props = {
+      query: 'foo',
+      recentResults: [],
+      jiraResults: [],
+      confluenceResults: [],
+      peopleResults: [],
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(EmptyState).exists()).toBe(true);
+
+    // TODO assert adv links
   });
 });
