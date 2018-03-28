@@ -268,8 +268,13 @@ export const emojiUpload = style({
 
 export const uploadChooseFileMessage = style({
   color: colors.N300,
-  marginBottom: '20px',
-  fontSize: '0.9em',
+  marginBottom: '10px',
+  fontSize: '12px',
+});
+
+export const emojiUploadBottom = style({
+  marginTop: '15px',
+  fontSize: '11px',
 });
 
 export const uploadChooseFileRow = style({
@@ -285,7 +290,7 @@ export const uploadChooseFileEmojiName = style({
     input: {
       background: 'transparent',
       border: 0,
-      fontSize: '14px',
+      fontSize: '12px',
       outline: 'none',
       width: '100%',
 
@@ -416,6 +421,14 @@ export const emojiErrorMessage = style({
   display: 'flex',
   color: colors.R300,
   width: '100%',
-  justifyContent: 'flex-end',
   paddingRight: '10px',
+  justifyContent: 'flex-end',
+});
+
+export const emojiChooseFileErrorMessage = style({
+  display: 'flex',
+  color: colors.R300,
+  width: '100%',
+  paddingRight: '10px',
+  justifyContent: 'flex-start',
 });
