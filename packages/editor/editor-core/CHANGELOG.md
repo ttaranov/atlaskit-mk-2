@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.27
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
 ## 65.1.26
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

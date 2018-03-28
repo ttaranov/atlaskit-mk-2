@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 13.0.15
+
 ## 13.0.14
 - [patch] Prevent CodeBlocks from overflowing their container [50cc975](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50cc975)
 
