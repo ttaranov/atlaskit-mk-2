@@ -130,7 +130,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   };
 
   private getSuccessCardContents = (): JSX.Element => {
-    const { mediaType, mediaItemType, dataURI } = this.props;
+    const { mediaType, mediaItemType, dataURI, dimensions } = this.props;
     const overlay = this.isDownloadingOrProcessing()
       ? null
       : this.createSuccessCardOverlay();
@@ -139,6 +139,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       <div className="wrapper">
         <div className="img-wrapper">
           <CardContent
+            dimensions={dimensions}
             loading={this.isDownloadingOrProcessing()}
             mediaItemType={mediaItemType}
             mediaType={mediaType}

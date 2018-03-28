@@ -302,7 +302,7 @@ export class StatelessUploadView extends Component<
           context={context}
           identifier={{
             mediaItemType: 'file',
-            id: id,
+            id,
             collectionName: recentsCollection,
           }}
           dimensions={cardDimension}

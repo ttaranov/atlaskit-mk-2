@@ -178,7 +178,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     );
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.updateState(this.props);
   }
 

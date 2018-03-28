@@ -12,12 +12,7 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import {
-  SharedCardProps,
-  CardEventProps,
-  OnLoadingChangeState,
-  CardStatus,
-} from '..';
+import { SharedCardProps, CardEventProps, CardStatus } from '..';
 import { Provider } from './card';
 import { CardView } from './cardView';
 import { withDataURI } from './withDataURI';
@@ -32,7 +27,6 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
 }
 
 export interface MediaCardState {
-  readonly subscription?: Subscription;
   readonly status: CardStatus;
 
   // can NOT use MediaItemDetails because get the following error: https://github.com/Microsoft/TypeScript/issues/9944
@@ -41,11 +35,13 @@ export interface MediaCardState {
 }
 
 export class MediaCard extends Component<MediaCardProps, MediaCardState> {
+  subscription?: Subscription;
+
   state: MediaCardState = {
     status: 'loading',
   };
 
-  componentDidMount(): void {
+  componentWillMount(): void {
     this.updateState(this.props);
   }
 
@@ -82,62 +78,27 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     });
   };
 
-  private stateToCardProcessingStatus(): OnLoadingChangeState {
-    const { status, error, metadata } = this.state;
-    return {
-      type: status,
-      payload: error || metadata,
-    };
-  }
-
-  private onLoadingChange(loadingChange: OnLoadingChangeState) {
-    const {
-      onLoadingChange = () => {
-        /* do nothing */
-      },
-    } = this.props;
-    onLoadingChange(loadingChange);
-  }
-
   private updateState(props: MediaCardProps): void {
     this.unsubscribe();
-    const onLoadingChangeCallback = () =>
-      this.onLoadingChange(this.stateToCardProcessingStatus());
 
-    this.setState({ status: 'loading' }, () =>
-      this.setState(
-        {
-          subscription: this.observable(props).subscribe({
-            next: metadata => {
-              this.setState(
-                { metadata, error: undefined, status: 'processing' },
-                onLoadingChangeCallback,
-              );
-            },
-
-            complete: () => {
-              this.setState(
-                { error: undefined, status: 'complete' },
-                onLoadingChangeCallback,
-              );
-            },
-
-            error: error => {
-              this.setState(
-                { error, status: 'error' },
-                onLoadingChangeCallback,
-              );
-            },
-          }),
+    this.setState({ status: 'loading' }, () => {
+      this.subscription = this.observable(props).subscribe({
+        next: metadata => {
+          this.setState({ metadata, error: undefined, status: 'processing' });
         },
-        onLoadingChangeCallback,
-      ),
-    );
+        complete: () => {
+          this.setState({ error: undefined, status: 'complete' });
+        },
+        error: error => {
+          this.setState({ error, status: 'error' });
+        },
+      });
+    });
   }
 
   private unsubscribe(): void {
-    if (this.state && this.state.subscription) {
-      this.state.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 

@@ -6,12 +6,14 @@ import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
 
 import { ImageViewWrapper, transparentFallbackBackground } from './styled';
+import { CardDimensions } from '../../index';
 
 export interface MediaImageProps {
   dataURI: string;
   fadeIn?: boolean;
   crop?: boolean;
   transparentFallback?: boolean;
+  dimensions?: CardDimensions;
   width?: string;
   height?: string;
   className?: string;
@@ -58,6 +60,18 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     if (this.props.onError) {
       this.img.onerror = this.props.onError;
     }
+
+    const { dimensions } = this.props;
+    if (
+      dimensions &&
+      typeof dimensions.height === 'number' &&
+      typeof dimensions.width === 'number'
+    ) {
+      this.setState({
+        parentWidth: dimensions.width,
+        parentHeight: dimensions.height,
+      });
+    }
   }
 
   componentDidMount() {
@@ -65,12 +79,18 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     if (!parent) {
       return;
     }
-    const { width, height } = parent.getBoundingClientRect();
 
-    this.setState({
-      parentWidth: width,
-      parentHeight: height,
-    });
+    if (
+      this.state.parentHeight === Infinity ||
+      this.state.parentWidth === Infinity
+    ) {
+      const { width, height } = parent.getBoundingClientRect();
+
+      this.setState({
+        parentWidth: width,
+        parentHeight: height,
+      });
+    }
   }
 
   componentWillUnmount() {

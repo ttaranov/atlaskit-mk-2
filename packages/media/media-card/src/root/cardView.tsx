@@ -54,7 +54,6 @@ export interface CardViewOwnProps extends SharedCardProps {
 }
 
 export interface CardViewState {
-  hasBeenShown: boolean;
   elementWidth?: number;
 }
 
@@ -72,13 +71,12 @@ export class CardViewBase extends React.Component<
   CardViewState
 > {
   private componentHasMountedAtTime: number;
+  private hasBeenShown: boolean;
 
   constructor(props) {
     super(props);
+    this.state = {};
     this.componentHasMountedAtTime = 0;
-    this.state = {
-      hasBeenShown: false,
-    };
   }
 
   componentDidMount() {
@@ -88,15 +86,12 @@ export class CardViewBase extends React.Component<
   }
 
   private fireShowedAnalyticsEvent({ status }: CardViewBaseProps) {
-    if (
-      !this.state.hasBeenShown &&
-      (status === 'error' || status === 'complete')
-    ) {
+    if (!this.hasBeenShown && (status === 'error' || status === 'complete')) {
       const loadTime = Date.now() - this.componentHasMountedAtTime;
       this.props
         .createAnalyticsEvent({ action: 'shown', loadTime })
         .fire('media');
-      this.setState({ hasBeenShown: true });
+      this.hasBeenShown = true;
     }
   }
 
