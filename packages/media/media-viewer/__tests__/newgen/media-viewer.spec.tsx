@@ -205,9 +205,9 @@ describe('<MediaViewer />', () => {
     };
     const { blobService, subject, el } = createFixture(identifier);
 
-    blobService.fetchImageBlob.mockReturnValue(
-      Promise.reject(new Error('error')),
-    );
+    blobService.fetchImageBlobCancelable.mockReturnValue({
+      response: Promise.reject(new Error('error')),
+    });
 
     subject.next(item);
 

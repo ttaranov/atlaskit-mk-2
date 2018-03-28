@@ -141,7 +141,14 @@ export class MediaViewer extends React.Component<Props, State> {
       // TODO:
       // - 1) MSW-530: revoke object URL
       // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
-      const objectUrl = await getImageObjectUrl(fileItem, context, 800, 600);
+      const service = context.getBlobService();
+      const { response } = service.fetchImageBlobCancelable(fileItem, {
+        width: 800,
+        height: 600,
+        mode: 'fit',
+        allowAnimated: true,
+      });
+      const objectUrl = URL.createObjectURL(await response);
       this.setState({
         previewData: {
           status: 'SUCCESSFUL',
@@ -166,7 +173,12 @@ export class MediaViewer extends React.Component<Props, State> {
     context: Context,
     collectionName?: string,
   ) {
-    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
+    const artifact = 'video_640.mp4';
+    const videoArtifactUrl =
+      fileItem.details &&
+      fileItem.details.artifacts &&
+      fileItem.details.artifacts[artifact] &&
+      fileItem.details.artifacts[artifact].url;
     if (videoArtifactUrl) {
       const src = await constructAuthTokenUrl(
         videoArtifactUrl,
@@ -200,30 +212,4 @@ export class MediaViewer extends React.Component<Props, State> {
       },
     });
   }
-}
-
-async function getImageObjectUrl(
-  mediaItem: MediaItem,
-  context: Context,
-  width,
-  height,
-): Promise<ObjectUrl> {
-  const service = context.getBlobService();
-  const blob = await service.fetchImageBlob(mediaItem, {
-    width,
-    height,
-    mode: 'fit',
-    allowAnimated: true,
-  });
-  return URL.createObjectURL(blob);
-}
-
-function getVideoArtifactUrl(fileItem: FileItem) {
-  const artifact = 'video_640.mp4';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
 }
