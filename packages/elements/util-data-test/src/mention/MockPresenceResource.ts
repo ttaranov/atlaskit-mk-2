@@ -1,5 +1,4 @@
 import { AbstractPresenceResource } from '@atlaskit/mention';
-import debug from '../logger';
 
 export class MockPresenceResource extends AbstractPresenceResource {
   private minTimeout: number;

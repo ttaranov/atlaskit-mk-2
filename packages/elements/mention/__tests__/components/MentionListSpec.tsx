@@ -7,12 +7,12 @@ import MentionList, { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_test-helpers';
 
-const { mentionData, mentionDataSize } = mention.mentionData;
+const { mentionDataSize } = mention.mentionData;
+const mentions = mention.mentionData.mentionResult;
 
 describe('MentionList', () => {
   let component;
   let defaultMentionItemsShow;
-  const mentions = mentionData.mentions;
   const setupList = (props?: Props) =>
     mount(<MentionList mentions={mentions} {...props} />) as ReactWrapper<
       Props,

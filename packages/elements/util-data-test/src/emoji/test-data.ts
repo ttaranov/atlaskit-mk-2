@@ -1,9 +1,4 @@
 import {
-  EmojiDescription,
-  EmojiDescriptionWithVariations,
-  EmojiId,
-  EmojiServiceDescription,
-  MediaApiToken,
   EmojiRepository,
   denormaliseEmojiServiceResponse,
 } from '@atlaskit/emoji';
@@ -13,7 +8,7 @@ import {
   mockEmojiResourceFactory,
 } from './MockEmojiResource';
 
-export const spriteEmoji: EmojiDescription = {
+export const spriteEmoji = {
   id: 'grimacing',
   shortName: ':grimacing:',
   name: 'Grimacing',
@@ -38,7 +33,7 @@ export const spriteEmoji: EmojiDescription = {
   searchable: true,
 };
 
-export const imageEmoji: EmojiDescription = {
+export const imageEmoji = {
   id: 'grimacing',
   shortName: ':grimacing:',
   name: 'Grimacing',
@@ -62,7 +57,7 @@ export const mediaBaseUrl = 'https://media.example.com/';
 export const mediaEmojiImagePath = `${mediaBaseUrl}path-to-image.png`;
 export const mediaEmojiAlternateImagePath = `${mediaBaseUrl}alt-path-to-image.png`;
 
-export const mediaServiceEmoji: EmojiServiceDescription = {
+export const mediaServiceEmoji = {
   id: 'media',
   shortName: ':media:',
   name: 'Media example',
@@ -85,13 +80,13 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
   searchable: true,
 };
 
-export const mediaEmojiId: EmojiId = {
+export const mediaEmojiId = {
   id: 'media',
   shortName: ':media:',
   fallback: ':media:',
 };
 
-export const mediaEmoji: EmojiDescriptionWithVariations = {
+export const mediaEmoji = {
   ...mediaEmojiId,
   name: 'Media example',
   type: customType,
@@ -111,7 +106,7 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   searchable: true,
 };
 
-export const siteEmojiFoo: EmojiDescriptionWithVariations = {
+export const siteEmojiFoo = {
   id: 'foo',
   name: 'foo',
   fallback: ':foo:',
@@ -129,7 +124,7 @@ export const siteEmojiFoo: EmojiDescriptionWithVariations = {
   skinVariations: [],
 };
 
-export const siteEmojiWtf: EmojiDescriptionWithVariations = {
+export const siteEmojiWtf = {
   id: 'wtf',
   name: 'wtf',
   fallback: ':wtf:',
@@ -151,7 +146,8 @@ export const siteEmojiWtf: EmojiDescriptionWithVariations = {
 export const expiresAt = (offsetSeconds: number = 0): number =>
   Math.floor(Date.now() / 1000) + offsetSeconds;
 
-export const defaultMediaApiToken = (): MediaApiToken => ({
+// () => MediaApiToken
+export const defaultMediaApiToken = () => ({
   url: mediaBaseUrl,
   clientId: '1234',
   jwt: 'abcd',
@@ -159,10 +155,14 @@ export const defaultMediaApiToken = (): MediaApiToken => ({
   expiresAt: expiresAt(60), // seconds since Epoch UTC
 });
 
+declare var require: {
+  <T>(path: string): T;
+};
+
 // tslint:disable-next-line:no-var-requires
-export const standardServiceEmojis = require('../json-data/test-emoji-standard.json');
+export const standardServiceEmojis = require('../json-data/test-emoji-standard.json') as any; // EmojiServiceResponse
 // tslint:disable-next-line:no-var-requires
-export const atlassianServiceEmojis = require('../json-data/test-emoji-atlassian.json');
+export const atlassianServiceEmojis = require('../json-data/test-emoji-atlassian.json') as any; // EmojiServiceResponse
 export const siteServiceEmojis = () => ({
   emojis: [mediaServiceEmoji],
   meta: {
@@ -170,61 +170,52 @@ export const siteServiceEmojis = () => ({
   },
 });
 
-export const filterToSearchable = (
-  emojis: EmojiDescription[],
-): EmojiDescription[] => {
+export const filterToSearchable = emojis => {
   return emojis.filter(emoji => emoji.searchable);
 };
 
-export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(
+// EmojiDescription[]
+export const standardEmojis: any[] = denormaliseEmojiServiceResponse(
   standardServiceEmojis,
 ).emojis;
-export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(
+export const atlassianEmojis: any[] = denormaliseEmojiServiceResponse(
   atlassianServiceEmojis,
 ).emojis;
-export const siteEmojis: EmojiDescription[] = [mediaEmoji];
-export const emojis: EmojiDescription[] = [
-  ...standardEmojis,
-  ...atlassianEmojis,
-  ...siteEmojis,
-];
-export const searchableEmojis: EmojiDescription[] = filterToSearchable(emojis);
+export const siteEmojis = [mediaEmoji];
+export const emojis = [...standardEmojis, ...atlassianEmojis, ...siteEmojis];
+export const searchableEmojis = filterToSearchable(emojis);
 
-export const newEmojiRepository = () => new EmojiRepository(emojis);
-export const newSiteEmojiRepository = () => new EmojiRepository(siteEmojis);
+export const newEmojiRepository: () => any = () => new EmojiRepository(emojis);
+export const newSiteEmojiRepository: () => any = () =>
+  new EmojiRepository(siteEmojis);
 
 const defaultEmojiRepository = newEmojiRepository();
 
-export const smileyEmoji = defaultEmojiRepository.findByShortName(
-  ':smiley:',
-) as EmojiDescriptionWithVariations;
+// EmojiDescriptionWithVariations
+export const smileyEmoji = defaultEmojiRepository.findByShortName(':smiley:');
 export const openMouthEmoji = defaultEmojiRepository.findByShortName(
   ':open_mouth:',
-) as EmojiDescriptionWithVariations;
-export const grinEmoji = defaultEmojiRepository.findByShortName(
-  ':grin:',
-) as EmojiDescriptionWithVariations;
+) as any;
+export const grinEmoji = defaultEmojiRepository.findByShortName(':grin:');
 export const evilburnsEmoji = defaultEmojiRepository.findByShortName(
   ':evilburns:',
-) as EmojiDescriptionWithVariations;
+);
 export const thumbsupEmoji = defaultEmojiRepository.findByShortName(
   ':thumbsup:',
-) as EmojiDescriptionWithVariations;
+);
 export const thumbsdownEmoji = defaultEmojiRepository.findByShortName(
   ':thumbsdown:',
-) as EmojiDescriptionWithVariations;
-export const standardBoomEmoji = defaultEmojiRepository.findById(
-  '1f4a5',
-) as EmojiDescriptionWithVariations;
+);
+export const standardBoomEmoji = defaultEmojiRepository.findById('1f4a5');
 export const atlassianBoomEmoji = defaultEmojiRepository.findById(
   'atlassian-boom',
-) as EmojiDescriptionWithVariations;
+);
 export const blackFlagEmoji = defaultEmojiRepository.findByShortName(
   ':flag_black:',
-) as EmojiDescriptionWithVariations;
+);
 export const congoFlagEmoji = defaultEmojiRepository.findByShortName(
   ':flag_cg:',
-) as EmojiDescriptionWithVariations;
+);
 
 export const getNonUploadingEmojiResourcePromise = (config?) =>
   mockNonUploadingEmojiResourceFactory(newEmojiRepository(), config);

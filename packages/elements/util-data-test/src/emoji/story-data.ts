@@ -12,6 +12,10 @@ import { siteEmojiWtf } from './test-data';
 
 let emojisSets: Map<string, any[]>;
 
+declare var require: {
+  <T>(path: string): T;
+};
+
 export const getStandardEmojiData = (): EmojiServiceResponse =>
   require('../json-data/service-data-standard.json') as EmojiServiceResponse;
 export const getAtlassianEmojiData = (): EmojiServiceResponse =>
@@ -89,8 +93,7 @@ export const lorem = `
   a semper massa dignissim nec.
 `;
 
-export const getEmojiRepository = (): EmojiRepository =>
-  new EmojiRepository(getEmojis());
+export const getEmojiRepository = (): any => new EmojiRepository(getEmojis());
 
 export const getEmojiResource = (config?) =>
   mockEmojiResourceFactory(getEmojiRepository(), config);

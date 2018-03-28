@@ -192,12 +192,12 @@ export abstract class UsageShowAndClearComponent extends PureComponent<
           <button onClick={this.clearUsageData}>Clear All Usage</button>
         </div>
         <EmojiUsageList
-          emojiProvider={emojiResource}
+          emojiProvider={emojiResource as EmojiProvider}
           emojiList={emojiList}
           emojiQueue={emojiQueue}
         />
         <LocalStorageView
-          emojiProvider={emojiResource}
+          emojiProvider={emojiResource as EmojiProvider}
           emojiQueue={emojiQueue}
         />
       </div>

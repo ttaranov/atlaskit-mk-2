@@ -6,7 +6,7 @@ import {
   AbstractMentionResource,
 } from '@atlaskit/mention';
 import debug from '../logger';
-import { mentionData } from './mention-data';
+import { mentionResult } from './mention-data';
 import { MockMentionConfig } from './MockMentionResource';
 
 const search = new Search('id');
@@ -14,7 +14,7 @@ search.addIndex('name');
 search.addIndex('mentionName');
 search.addIndex('nickname');
 
-search.addDocuments(mentionData.mentions);
+search.addDocuments(mentionResult);
 
 export class MockMentionResourceWithInfoHints extends AbstractMentionResource {
   private config: MockMentionConfig;

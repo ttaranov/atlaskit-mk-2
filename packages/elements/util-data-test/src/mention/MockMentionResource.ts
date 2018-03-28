@@ -6,7 +6,7 @@ import {
   AbstractMentionResource,
 } from '@atlaskit/mention';
 import debug from '../logger';
-import { mentionData } from './mention-data';
+import { mentionResult } from './mention-data';
 import { HttpError } from './utils';
 
 const search = new Search('id');
@@ -14,7 +14,7 @@ search.addIndex('name');
 search.addIndex('mentionName');
 search.addIndex('nickname');
 
-search.addDocuments(mentionData.mentions);
+search.addDocuments(mentionResult);
 
 export interface MockMentionConfig {
   minWait?: number;
@@ -62,7 +62,7 @@ export class MockMentionResource extends AbstractMentionResource {
       } else if (query) {
         mentions = search.search(query);
       } else {
-        mentions = mentionData.mentions;
+        mentions = mentionResult;
       }
       notify({
         mentions,

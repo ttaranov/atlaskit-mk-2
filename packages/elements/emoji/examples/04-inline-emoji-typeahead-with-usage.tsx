@@ -14,6 +14,7 @@ import { UsageShowAndClearComponent } from '../example-helpers/demo-emoji-usage-
 import { lorem, getUsageClearEmojiResource } from '../example-helpers';
 
 import { akZIndexModal } from '@atlaskit/util-shared-styles';
+import { EmojiProvider } from '../src/api/EmojiResource';
 
 const tallPageStyle = {
   height: '1000px',
@@ -150,7 +151,7 @@ class UsageShowingEmojiTypeAheadTextInput extends UsageShowAndClearComponent {
       <EmojiTextInput
         label="Emoji search"
         onSelection={this.onSelection}
-        emojiProvider={Promise.resolve(emojiResource)}
+        emojiProvider={Promise.resolve(emojiResource as EmojiProvider)}
         position="above"
       />
     );

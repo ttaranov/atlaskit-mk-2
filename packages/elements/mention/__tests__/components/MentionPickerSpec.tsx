@@ -16,7 +16,7 @@ import MentionListError from '../../src/components/MentionListError';
 import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected, getMentionItemById } from '../_test-helpers';
 
-const mentions = mention.mentionData.mentionData.mentions;
+const mentions = mention.mentionData.mentionResult;
 const MAX_NOTIFIED_ITEMS = 20;
 
 function setupPicker(props?: Props): ReactWrapper<Props, State> {
