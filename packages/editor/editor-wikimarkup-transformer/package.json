@@ -27,6 +27,6 @@
     "@atlaskit/docs": "^2.5.2",
     "@atlaskit/editor-test-helpers": "^2.0.11",
     "@types/prosemirror-model": "^1.0.0",
-    "prosemirror-model": "^1.0.0"
+    "prosemirror-model": "^1.2.0"
   }
 }

@@ -358,6 +358,8 @@ describe('JSONTransformer:', () => {
       type: 'doc',
       content: [{ type: 'fakeNode', content: 'hello' }],
     };
-    expect(() => parseJSON(badADF)).toThrowError(/Unknown node type: fakeNode/);
+    expect(() => parseJSON(badADF)).toThrowError(
+      /Invalid input for Fragment.fromJSON/,
+    );
   });
 });
