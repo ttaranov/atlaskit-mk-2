@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 8.1.9
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 8.1.8
+- [patch] ED-3990: No longer allow bodiedExtensions in table cells in ADF [c02a81a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02a81a)
+
 ## 8.1.7
 
 ## 8.1.6

@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 2.0.13
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
 ## 2.0.12
 - [patch] Remove JSDOM warning in CI [309af83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/309af83)
 
