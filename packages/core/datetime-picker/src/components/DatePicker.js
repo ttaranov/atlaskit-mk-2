@@ -219,22 +219,20 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-    const isOpenAndNotDisabled = isOpen && !isDisabled;
-    const Menu = () =>
-      isOpenAndNotDisabled ? (
-        <StyledMenu>
-          <Calendar
-            {...isoToObj(value)}
-            {...isoToObj(view)}
-            disabled={disabled}
-            onChange={this.onCalendarChange}
-            onSelect={this.onCalendarSelect}
-            // $FlowFixMe
-            ref={this.refCalendar}
-            selected={[value]}
-          />
-        </StyledMenu>
-      ) : null;
+    const Menu = () => (
+      <StyledMenu>
+        <Calendar
+          {...isoToObj(value)}
+          {...isoToObj(view)}
+          disabled={disabled}
+          onChange={this.onCalendarChange}
+          onSelect={this.onCalendarSelect}
+          // $FlowFixMe
+          ref={this.refCalendar}
+          selected={[value]}
+        />
+      </StyledMenu>
+    );
 
     return (
       <div
@@ -250,7 +248,7 @@ export default class DatePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpenAndNotDisabled}
+          menuIsOpen={isOpen && !isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{

@@ -22,6 +22,9 @@ export default () => {
 
       <Label label="Disabled dates" />
       <DatePicker disabled={[now(10), now(11), now(12)]} />
+
+      <Label label="Always open" />
+      <DatePicker isOpen />
     </div>
   );
 };
