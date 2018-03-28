@@ -29,13 +29,9 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
     .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
 
   const getBlobService = sinon.stub().returns({
-    fetchOriginalBlob: sinon
-      .stub()
-      .returns(Promise.resolve(new Blob())),
-    fetchImageBlob: sinon
-      .stub()
-      .returns(Promise.resolve(new Blob())),
-  })
+    fetchOriginalBlob: sinon.stub().returns(Promise.resolve(new Blob())),
+    fetchImageBlob: sinon.stub().returns(Promise.resolve(new Blob())),
+  });
 
   const defaultContext: Context = {
     getMediaItemProvider,

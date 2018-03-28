@@ -17,7 +17,7 @@ import {
 } from '@atlaskit/media-picker';
 import {
   StoryBookAuthProvider,
-  StoryBookUserAuthProvider,
+  userAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { randomId } from '@atlaskit/editor-test-helpers';
 
@@ -36,8 +36,6 @@ describe('Media PickerFacade', () => {
     captureException: (err: any) => {},
     captureMessage: (msg: any) => {},
   };
-
-  const userAuthProvider = StoryBookUserAuthProvider.create();
 
   const contextConfig = {
     serviceHost: 'http://test',

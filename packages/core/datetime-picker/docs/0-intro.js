@@ -24,17 +24,11 @@ export default (
     <Props
       props={require('!!extract-react-types-loader!../src/components/DatePicker')}
     />
-    {md`
-      ## Timepicker
-
-    `}
+    {md`## Timepicker`}
     <Props
       props={require('!!extract-react-types-loader!../src/components/TimePicker')}
     />
-    {md`
-      ## DateTimePicker
-
-    `}
+    {md`## DateTimePicker`}
     <Props
       props={require('!!extract-react-types-loader!../src/components/DateTimePicker')}
     />

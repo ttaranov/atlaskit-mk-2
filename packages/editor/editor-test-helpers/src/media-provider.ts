@@ -2,7 +2,7 @@ import { ContextConfig as MediaContextConfig } from '@atlaskit/media-core';
 import {
   defaultCollectionName,
   StoryBookAuthProvider,
-  StoryBookUserAuthProvider,
+  userAuthProvider,
   defaultParams,
   defaultServiceHost,
   userAuthProviderBaseURL,
@@ -55,9 +55,7 @@ export function storyMediaProviderFactory(
               'urn:filestore:upload:*': ['read', 'update'],
             }),
             userAuthProvider:
-              includeUserAuthProvider === false
-                ? undefined
-                : StoryBookUserAuthProvider.create(),
+              includeUserAuthProvider === false ? undefined : userAuthProvider,
           }),
     linkCreateContext: !includeLinkCreateContext
       ? undefined
