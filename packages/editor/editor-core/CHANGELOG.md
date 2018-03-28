@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.28
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
 ## 65.1.27
 - [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
 

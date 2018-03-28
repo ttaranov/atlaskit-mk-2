@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.10
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
 ## 8.1.9
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 
