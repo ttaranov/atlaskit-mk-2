@@ -18,11 +18,11 @@ export class MediaViewer extends React.Component<Props, State> {
   state: State = initialModel;
 
   componentDidMount() {
-    this.subscribe();
+    this.init();
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.release();
   }
 
   // It's possible that a different identifier or context was passed.
@@ -35,8 +35,8 @@ export class MediaViewer extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps) {
     if (this.needsReset(this.props, prevProps)) {
-      this.unsubscribe();
-      this.subscribe();
+      this.release();
+      this.init();
     }
   }
 
@@ -58,14 +58,14 @@ export class MediaViewer extends React.Component<Props, State> {
     );
   }
 
-  private subscription?: any;
+  private itemDetails?: any;
 
-  private subscribe() {
+  private init() {
     const { context } = this.props;
     const { id, type, collectionName } = this.props.data;
     const provider = context.getMediaItemProvider(id, type, collectionName);
 
-    this.subscription = provider.observable().subscribe({
+    this.itemDetails = provider.observable().subscribe({
       next: mediaItem => {
         if (mediaItem.type === 'link') {
           this.setState({
@@ -109,9 +109,9 @@ export class MediaViewer extends React.Component<Props, State> {
     });
   }
 
-  private unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+  private release() {
+    if (this.itemDetails) {
+      this.itemDetails.unsubscribe();
     }
     if (this.cancelImageFetch) {
       this.cancelImageFetch('cancel_request');
