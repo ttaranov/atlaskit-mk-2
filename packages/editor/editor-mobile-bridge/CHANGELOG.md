@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.8
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
 ## 0.0.7
 
 ## 0.0.6
