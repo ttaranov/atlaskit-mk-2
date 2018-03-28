@@ -116,6 +116,13 @@ export class MediaViewer extends React.Component<Props, State> {
     if (this.cancelImageFetch) {
       this.cancelImageFetch('cancel_request');
     }
+    const { previewData } = this.state;
+    if (previewData.status === 'SUCCESSFUL') {
+      const { data } = previewData;
+      if (data.viewer === 'IMAGE') {
+        URL.revokeObjectURL(data.objectUrl);
+      }
+    }
   }
 
   private populatePreviewData(mediaItem, context, collectionName) {
@@ -139,8 +146,6 @@ export class MediaViewer extends React.Component<Props, State> {
     context: Context,
   ) {
     try {
-      // TODO:
-      // - 1) MSW-530: revoke object URL
       const service = context.getBlobService();
       const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
         width: 800,
@@ -160,8 +165,8 @@ export class MediaViewer extends React.Component<Props, State> {
         },
       });
     } catch (err) {
-      // if the request was cancelled by us that means that the component
-      // changed state and that we can no longer call setState
+      // If the request was cancelled, then it changed state and calling setState
+      // will introduce a race condition/
       if (err.message !== 'cancel_request') {
         this.setState({
           previewData: {
