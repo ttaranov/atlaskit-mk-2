@@ -14,7 +14,7 @@ import {
   defaultMediaApiToken,
   mediaBaseUrl,
   mediaEmojiImagePath,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 
 const testConcurrentDownloadLimit = 2;
 

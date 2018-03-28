@@ -2,14 +2,17 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
+import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 import * as styles from '../../../src/components/picker/styles';
-import EmojiList from '../../../src/components/picker/EmojiPickerList';
+import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
 import EmojiPickerCategoryHeading from '../../../src/components/picker/EmojiPickerCategoryHeading';
 import {
   imageEmoji,
   siteEmojiFoo,
   siteEmojiWtf,
-} from '../../../src/support/test-data';
+  emojis as allEmojis,
+  onRowsRenderedArgs,
+} from '../../_test-data';
 import { EmojiDescription } from '../../../src/types';
 import { CachingEmoji } from '../../../src/components/common/CachingEmoji';
 
@@ -19,13 +22,13 @@ const customEmojis: EmojiDescription[] = [siteEmojiFoo, siteEmojiWtf];
 describe('<EmojiPickerList />', () => {
   describe('list', () => {
     it('should contain search ', () => {
-      const wrapper = mount(<EmojiList emojis={emojis} />);
+      const wrapper = mount(<EmojiPickerList emojis={emojis} />);
 
       expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);
     });
 
     it('should show people category first if no frequently used', () => {
-      const wrapper = mount(<EmojiList emojis={emojis} />);
+      const wrapper = mount(<EmojiPickerList emojis={emojis} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.get(0).props.title).to.equal('PEOPLE');
@@ -50,7 +53,7 @@ describe('<EmojiPickerList />', () => {
 
       const emojisWithFrequent = [...emojis, frequentEmoji];
 
-      const wrapper = mount(<EmojiList emojis={emojisWithFrequent} />);
+      const wrapper = mount(<EmojiPickerList emojis={emojisWithFrequent} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.get(0).props.title).to.equal('FREQUENT');
@@ -59,7 +62,7 @@ describe('<EmojiPickerList />', () => {
 
     it('should render user custom emojis under Your Uploads', () => {
       const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
       );
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
@@ -78,7 +81,7 @@ describe('<EmojiPickerList />', () => {
 
     it('should not render user custom emojis section if user has none', () => {
       const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
       );
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
@@ -93,7 +96,7 @@ describe('<EmojiPickerList />', () => {
     });
 
     it('should not render user custom emojis section if currentUser is undefined', () => {
-      const wrapper = mount(<EmojiList emojis={customEmojis} />);
+      const wrapper = mount(<EmojiPickerList emojis={customEmojis} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.length).to.equal(1);
@@ -104,6 +107,88 @@ describe('<EmojiPickerList />', () => {
       expect(cachedEmojis.length).to.equal(2);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('wtf');
+    });
+
+    it('should trigger onCategoryActivated', () => {
+      const onCategoryActivated = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={allEmojis}
+          onCategoryActivated={onCategoryActivated}
+        />,
+      );
+
+      onCategoryActivated.mockReset();
+
+      const virtualList = wrapper.find(VirtualList);
+
+      const onRowsRendered = virtualList.prop('onRowsRendered') as Function;
+
+      onRowsRendered(onRowsRenderedArgs(9, 10, 15, 20));
+
+      expect(onCategoryActivated.mock.calls).to.have.length(1);
+      expect(onCategoryActivated.mock.calls[0][0]).to.equal('ACTIVITY');
+    });
+
+    it('should not break while finding category in an empty list', () => {
+      const onCategoryActivated = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={[]}
+          onCategoryActivated={onCategoryActivated}
+        />,
+      );
+
+      onCategoryActivated.mockReset();
+
+      const virtualList = wrapper.find(VirtualList);
+
+      const onRowsRendered = virtualList.prop('onRowsRendered') as Function;
+
+      onRowsRendered(onRowsRenderedArgs());
+
+      expect(onCategoryActivated.mock.calls).to.have.length(0);
+    });
+
+    it('should trigger onCategoryActivated for first category', () => {
+      const onCategoryActivated = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={allEmojis}
+          onCategoryActivated={onCategoryActivated}
+        />,
+      );
+
+      const virtualList = wrapper.find(VirtualList);
+
+      const onRowsRendered = virtualList.prop('onRowsRendered') as Function;
+
+      onRowsRendered(onRowsRenderedArgs(5, 10, 20, 25));
+      onCategoryActivated.mockReset();
+      onRowsRendered(onRowsRenderedArgs(0, 0, 10, 15));
+
+      expect(onCategoryActivated.mock.calls).to.have.length(1);
+      expect(onCategoryActivated.mock.calls[0][0]).to.equal('PEOPLE');
+    });
+
+    it('should trigger onCategoryActivated for bottom category', () => {
+      const onCategoryActivated = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={allEmojis}
+          onCategoryActivated={onCategoryActivated}
+        />,
+      );
+
+      const virtualList = wrapper.find(VirtualList);
+
+      const onRowsRendered = virtualList.prop('onRowsRendered') as Function;
+
+      onCategoryActivated.mockReset();
+      onRowsRendered(onRowsRenderedArgs(27, 29, 29, 29));
+
+      expect(onCategoryActivated.mock.calls).to.have.length(1);
+      expect(onCategoryActivated.mock.calls[0][0]).to.equal('CUSTOM');
     });
   });
 });

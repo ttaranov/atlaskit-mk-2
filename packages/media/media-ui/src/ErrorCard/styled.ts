@@ -14,7 +14,7 @@ const aspectRatio = `
 `;
 
 export interface WithPreviewProps {
-  hasPreview: boolean
+  hasPreview: boolean;
 }
 
 const withPreview = (
@@ -25,7 +25,7 @@ const withPreview = (
 };
 
 export const ErrorWrapper: ComponentClass<
-HTMLAttributes<{}> & WithPreviewProps
+  HTMLAttributes<{}> & WithPreviewProps
 > = styled.div`
   /* Needed to keep error state consistent */
   padding-top: ${newCardDetailsHeight}px;

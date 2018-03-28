@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "31.1.22",
+  "version": "32.0.0",
   "config": {
     "access": "public"
   },
@@ -61,6 +61,7 @@
     "@atlaskit/docs": "^2.5.3",
     "@atlaskit/layer": "^2.7.2",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^8.0.1",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "es6-promise": "^4.0.5",

@@ -9,11 +9,9 @@ import {
   pngDataURL,
   pngFileUploadData,
   standardEmojis,
-  getMockEmojiResourcePromise,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 import { Props } from '../../../src/components/picker/EmojiPicker';
-import { MockEmojiResourceConfig } from '../../../src/support/support-types';
-import { mockNonUploadingEmojiResourceFactory } from '../../../src/support/MockEmojiResource';
+import { mockNonUploadingEmojiResourceFactory } from '@atlaskit/util-data-test';
 
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import CategorySelector, {
@@ -89,7 +87,7 @@ describe('<EmojiPicker />', () => {
     it('should display all categories', async () => {
       const component = await helper.setupPicker();
       let expectedCategories = defaultCategories;
-      const provider = await getMockEmojiResourcePromise();
+      const provider = await getEmojiResourcePromise();
 
       // the provider is expected to implement calculateDynamicCategories for this test
       expect(provider.calculateDynamicCategories).toBeDefined();
@@ -122,7 +120,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('media emoji should render placeholder while loading', async () => {
-      const mockConfig: MockEmojiResourceConfig = {
+      const mockConfig = {
         promiseBuilder: (result, context) => {
           if (context === 'loadMediaEmoji') {
             // unresolved promise
@@ -318,7 +316,7 @@ describe('<EmojiPicker />', () => {
 
     it('selecting emoji should call recordSelection on EmojiProvider', async () => {
       let selection: OptionalEmojiDescription;
-      const emojiResourcePromise = getMockEmojiResourcePromise();
+      const emojiResourcePromise = getEmojiResourcePromise();
       const clickOffset = 10;
       const component = await helper.setupPicker({
         onSelection: (emojiId, emoji) => {
@@ -446,7 +444,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload main flow interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -559,7 +557,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload after searching', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -659,7 +657,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload cancel interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -747,7 +745,8 @@ describe('<EmojiPicker />', () => {
     });
 
     it('Upload error interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      console.error = jest.fn();
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
         uploadError: 'bad times',
       });
@@ -811,6 +810,7 @@ describe('<EmojiPicker />', () => {
 
       // wait for error
       await waitUntil(() => helper.uploadErrorVisible(component));
+      expect(console.error).toBeCalled();
 
       // Check error displayed
       const uploadError = helper.findUploadError(component);

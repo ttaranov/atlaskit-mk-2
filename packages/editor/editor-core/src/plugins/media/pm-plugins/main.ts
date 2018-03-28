@@ -296,8 +296,8 @@ export class MediaPluginState {
     mediaStates.forEach(mediaState =>
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
-
-    const grandParentNode = this.view.state.selection.$from.node(-1);
+    const { state } = this.view;
+    const grandParentNode = state.selection.$from.node(-1) || state.doc;
 
     const allowMediaSingle =
       mediaSingle &&

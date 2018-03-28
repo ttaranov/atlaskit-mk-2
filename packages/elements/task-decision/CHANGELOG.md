@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 5.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
+## 4.10.12
+- [patch] FS-1697 export util functions for use in util-data-test [7f68256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f68256)
+
 ## 4.10.11
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)

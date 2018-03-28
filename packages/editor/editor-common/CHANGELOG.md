@@ -1,5 +1,20 @@
 # @atlaskit/editor-common
 
+## 8.1.11
+
+## 8.1.10
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 8.1.9
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 8.1.8
+- [patch] ED-3990: No longer allow bodiedExtensions in table cells in ADF [c02a81a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02a81a)
+
+## 8.1.7
+
+## 8.1.6
+
 ## 8.1.5
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)

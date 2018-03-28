@@ -5,9 +5,11 @@ import { Auth, isAsapBasedAuth, isClientBasedAuth } from '../../auth';
 
 export type ResponseType = 'json' | 'image';
 
-export interface CreateRequestFunc {
-  (requestOptions: RequestOptions): Promise<any>;
-}
+export type CreateRequestFunc = (requestOptions: RequestOptions) => Response;
+export type Response<R = any> = {
+  response: Promise<R>;
+  cancel: (message?: string) => void;
+};
 
 export interface RequesterOptions {
   collectionName?: string;
@@ -98,14 +100,14 @@ const responseTypeToAxios = (responseType?: ResponseType): string => {
   return responseTypeMap[responseType];
 };
 
-export default (requesterOptions: RequesterOptions) => {
+export default (requesterOptions: RequesterOptions): CreateRequestFunc => {
   const {
     preventPreflight,
     collectionName,
     config: { authProvider, serviceHost },
   } = requesterOptions;
 
-  return (requestOptions: RequestOptions) => {
+  return requestOptions => {
     const { url, headers, params, responseType, method, data } = requestOptions;
     const acquireAuth: Promise<Auth> = authProvider({ collectionName });
 
@@ -115,6 +117,7 @@ export default (requesterOptions: RequesterOptions) => {
         buildParams(auth, params, preventPreflight, collectionName),
       ]);
 
+    const source = axios.CancelToken.source();
     const sendAxiosRequest = ([headers, params]: object[]) =>
       axios({
         method: method || 'get',
@@ -124,11 +127,16 @@ export default (requesterOptions: RequesterOptions) => {
         params,
         data,
         responseType: responseTypeToAxios(responseType),
+        cancelToken: source.token,
       });
 
-    return acquireAuth
+    const response = acquireAuth
       .then(createHeadersAndParams)
       .then(sendAxiosRequest)
       .then(response => response.data);
+
+    const cancel = (message?: string) => source.cancel(message);
+
+    return { response, cancel };
   };
 };

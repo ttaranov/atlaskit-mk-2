@@ -5,13 +5,16 @@ import { mount } from 'enzyme';
 
 import Btn from '../Btn';
 import Heading from '../Heading';
+import { MonthAndYear } from '../../styled/Heading';
 
 const PredefinedHeading = (props: Object) => (
   <Heading month={1} year={2000} {...props} />
 );
 
 test('render', () => {
-  expect(mount(<PredefinedHeading />)).toMatchSnapshot();
+  const wrapper = mount(<PredefinedHeading />);
+  expect(wrapper.find(Btn).length).toEqual(2);
+  expect(wrapper.find(MonthAndYear).text()).toEqual('January 2000');
 });
 
 test('handleClickNext / handleClickPrev', () => {

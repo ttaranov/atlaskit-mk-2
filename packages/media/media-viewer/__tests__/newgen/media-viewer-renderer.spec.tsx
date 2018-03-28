@@ -15,8 +15,8 @@ describe('<MediaViewerRenderer />', () => {
         status: 'PENDING',
       },
       previewData: {
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     expect(el.find(Spinner)).toHaveLength(1);
@@ -32,9 +32,9 @@ describe('<MediaViewerRenderer />', () => {
         status: 'SUCCESSFUL',
         data: {
           viewer: 'IMAGE',
-          objectUrl: ''
-        }
-      }
+          objectUrl: '',
+        },
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     const fv = el.find(FileViewer);
@@ -49,8 +49,8 @@ describe('<MediaViewerRenderer />', () => {
       },
       previewData: {
         status: 'FAILED',
-        err: new Error('')
-      }
+        err: new Error(''),
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     const err = el.find(ErrorMessage);
@@ -64,8 +64,8 @@ describe('<MediaViewerRenderer />', () => {
         data: fileDetails,
       },
       previewData: {
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     const spinner = el.find(Spinner);
@@ -79,8 +79,8 @@ describe('<MediaViewerRenderer />', () => {
         err: new Error('something went wrong'),
       },
       previewData: {
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -91,12 +91,12 @@ describe('<MediaViewerRenderer />', () => {
       fileDetails: {
         status: 'SUCCESSFUL',
         data: {
-          mediaType: 'unknown'
-        }
+          mediaType: 'unknown',
+        },
       },
       previewData: {
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     };
     const el = mount(<MediaViewerRenderer model={model} />);
     expect(el.find(ErrorMessage).text()).toContain('unsupported');

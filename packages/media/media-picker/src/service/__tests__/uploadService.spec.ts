@@ -554,6 +554,7 @@ describe('UploadService', () => {
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
+      console.error = jest.fn();
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -573,6 +574,7 @@ describe('UploadService', () => {
           },
         }),
       );
+      expect(console.error).toBeCalled();
     });
   });
 

@@ -496,7 +496,7 @@ export function createParagraphAtEnd(): Command {
     ) {
       tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
     }
-    tr.setSelection(new TextSelection(doc.resolve(doc.content.size)));
+    tr.setSelection(TextSelection.create(tr.doc, tr.doc.content.size - 1));
     tr.scrollIntoView();
     dispatch(tr);
     return true;

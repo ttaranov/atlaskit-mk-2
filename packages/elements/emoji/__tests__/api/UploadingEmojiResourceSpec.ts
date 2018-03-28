@@ -23,7 +23,7 @@ import {
   siteServiceEmojis,
   siteUrl,
   standardServiceEmojis,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 import { alwaysPromise } from '../_test-util';
 
