@@ -35,14 +35,14 @@ pipelines:
               - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
               - yarn global add "bolt@^0.19.2"
               - bolt
-              - PARALLELIZE="true" yarn test
-        - step:
-            name: Running Jest  2 of 2 chunks %n
-            script:
-              - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
-              - yarn global add "bolt@^0.19.2"
-              - bolt
-              - PARALLELIZE="true" yarn test
+              - PARALLELIZE="true" yarn jest --runInBand
+        # - step:
+        #     name: Running Jest  2 of 2 chunks %n
+        #     script:
+        #       - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
+        #       - yarn global add "bolt@^0.19.2"
+        #       - bolt
+        #       - PARALLELIZE="true" yarn test
 
   custom: # Pipelines that can be scheduled or triggered manually
 

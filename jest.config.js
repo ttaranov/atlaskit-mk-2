@@ -1,5 +1,7 @@
 //@flow
 /* eslint-disable no-console */
+const glob = require('glob');
+
 const RUN_ONLY = process.env.RUN_ONLY;
 const INTEGRATION_TESTS = typeof process.env.INTEGRATION_TESTS !== 'undefined';
 const PARALLELIZE = process.env.PARALLELIZE;
@@ -10,7 +12,14 @@ function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
     return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
-  return `${__dirname}/${packagePath}/**/__tests__/(!(integration)/**/|)*.(js|tsx|ts)`;
+  console.log(
+    `${__dirname}/packages/${packagePath}/**/__tests__/(!(integration)/**/|)*.(js|tsx|ts)`,
+  );
+  const list = glob.sync(
+    `${__dirname}/packages/${packagePath}/**/__tests__/*.(js|tsx|ts)`,
+  );
+  console.log('list', list);
+  return list;
 }
 
 // by default we'll run tests in all directories (local and master builds)
@@ -40,19 +49,19 @@ if (RUN_ONLY) {
  * and STEP_INDEX vars. For these to be accurate, all the parallel steps running at that point in time need to be
  * jest steps (otherwise we will be splitting incorrectly and some tests wont run!)
  */
-if (PARALLELIZE) {
-  const filesPerJob = Math.ceil(
-    testMatchArr.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
-  );
-  const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
-  console.log('Parallelising!!!');
-  console.log('BITBUCKET_PARALLEL_STEP_COUNT', BITBUCKET_PARALLEL_STEP_COUNT);
-  console.log('BITBUCKET_PARALLEL_STEP', BITBUCKET_PARALLEL_STEP);
-  console.log('filesPerJob', filesPerJob);
-  console.log('startIdx', startIdx);
-  testMatchArr = testMatchArr.slice(startIdx, startIdx + filesPerJob);
-  console.log('testMatchArr', '\n', testMatchArr.join('\n'));
-}
+// if (PARALLELIZE) {
+//   const filesPerJob = Math.ceil(
+//     testMatchArr.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
+//   );
+//   const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
+//   console.log('Parallelising!!!');
+//   console.log('BITBUCKET_PARALLEL_STEP_COUNT', BITBUCKET_PARALLEL_STEP_COUNT);
+//   console.log('BITBUCKET_PARALLEL_STEP', BITBUCKET_PARALLEL_STEP);
+//   console.log('filesPerJob', filesPerJob);
+//   console.log('startIdx', startIdx);
+//   testMatchArr = testMatchArr.slice(startIdx, startIdx + filesPerJob);
+//   console.log('testMatchArr', '\n', testMatchArr.join('\n'));
+// }
 
 const config = {
   testMatch: testMatchArr,
