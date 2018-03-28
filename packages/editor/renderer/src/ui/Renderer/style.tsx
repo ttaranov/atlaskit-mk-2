@@ -169,6 +169,30 @@ export const Wrapper: ComponentClass<any> = styled.div`
     max-width: 100%;
   }
 
+  /*
+   * We wrap CodeBlock in a grid to prevent it from overflowing the container of the renderer.
+   * See ED-4159.
+   */
+  & .CodeBlock {
+    max-width: 100%;
+    /* -ms- properties are necessary until MS supports the latest version of the grid spec */
+    /* stylelint-disable value-no-vendor-prefix, declaration-block-no-duplicate-properties */
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: auto 1fr;
+    /* stylelint-enable */
+
+    grid-template-columns: minmax(0, 1fr);
+
+    & > span {
+      /* stylelint-disable value-no-vendor-prefix */
+      -ms-grid-row: 1;
+      -ms-grid-column: 2;
+      /* stylelint-enable */
+      grid-column: 1;
+    }
+  }
+
   & .ApplicationCard,
   & .MediaGroup,
   & .CodeBlock {
