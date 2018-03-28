@@ -54,8 +54,12 @@ const Flex = styled.div`
     };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
-    background-color: ${({ isFocused }) =>
-      isFocused ? 'inherit' : colors.N20};
+    ${({ isFocused, isDisabled }) =>
+      !isFocused && !isDisabled
+        ? `
+        background-color: ${colors.N20};
+      `
+        : ''};
   }
 `;
 
@@ -118,21 +122,17 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: '',
   };
 
-  constructor(props: Props) {
-    super(props);
-    const mappedState = this.getState();
-    this.state = {
-      ...mappedState,
-      ...parseDateIntoStateValues(mappedState.value),
-    };
-  }
-
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return {
+    const mappedState = {
       ...this.state,
       ...pick(this.props, ['value']),
+    };
+
+    return {
+      ...mappedState,
+      ...parseDateIntoStateValues(mappedState.value),
     };
   };
 
@@ -180,7 +180,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
     };
     return (
-      <Flex {...innerProps} isFocused={isFocused}>
+      <Flex {...innerProps} isFocused={isFocused} isDisabled={isDisabled}>
         <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker
