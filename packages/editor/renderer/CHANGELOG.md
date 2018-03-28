@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 13.0.17
+
 ## 13.0.16
 - [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
 

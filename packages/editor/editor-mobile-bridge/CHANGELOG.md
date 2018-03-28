@@ -1,5 +1,7 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.10
+
 ## 0.0.9
 - [patch] Small changes in build process for editor-mobile-bridge [78d543a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/78d543a)
 
