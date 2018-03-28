@@ -218,7 +218,7 @@ describe('<UploadingEmojiPicker />', () => {
       );
     });
 
-    it('Upload failure with corrupted file', async () => {
+    it('Upload failure with invalid file', async () => {
       jest
         .spyOn(ImageUtil, 'parseImage')
         .mockImplementation(() => Promise.reject(new Error('file error')));
@@ -247,11 +247,10 @@ describe('<UploadingEmojiPicker />', () => {
       chooseFile(component, createPngFile());
       expect(component.find('FileChooser')).toHaveLength(1);
 
-      await waitUntil(
-        () => component.update() && component.find('EmojiError').length > 0,
-      );
-      expect(component.find('EmojiError').prop('message')).toEqual(
-        'Selected image is corrupted',
+      await waitUntil(() => helper.deleteErrorVisible(component));
+
+      expect(component.find('EmojiPickerErrorMessage').prop('message')).toEqual(
+        'Selected image is invalid',
       );
     });
 
@@ -285,11 +284,10 @@ describe('<UploadingEmojiPicker />', () => {
       chooseFile(component, createPngFile());
       expect(component.find('FileChooser')).toHaveLength(1);
 
-      await waitUntil(
-        () => component.update() && component.find('EmojiError').length > 0,
-      );
-      expect(component.find('EmojiError').prop('message')).toEqual(
-        'Selected image is more than 1MB',
+      await waitUntil(() => helper.deleteErrorVisible(component));
+
+      expect(component.find('EmojiPickerErrorMessage').prop('message')).toEqual(
+        'Selected image is more than 1 MB',
       );
     });
 

@@ -87,7 +87,12 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         </div>
         <div className={styles.deleteFooter}>
           <CachingEmoji emoji={emoji} />
-          {error ? <ErrorMessage message="Remove failed" /> : null}
+          {error ? (
+            <ErrorMessage
+              className={styles.emojiErrorMessage}
+              message="Remove failed"
+            />
+          ) : null}
           <ButtonGroup>
             {submitButton}
             <AkButton appearance="subtle" onClick={this.onCancel}>

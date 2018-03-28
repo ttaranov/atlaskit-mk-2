@@ -13,7 +13,7 @@ import debug from '../../util/logger';
 import * as styles from './styles';
 import Emoji from './Emoji';
 import FileChooser from './FileChooser';
-import EmojiError from './EmojiError';
+import EmojiErrorMessage from './EmojiErrorMessage';
 
 export interface OnUploadEmoji {
   (upload: EmojiUpload): void;
@@ -126,7 +126,7 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
         <div className={styles.emojiUploadBottom}>
           {!errorMessage ? <p>JPG, PNG or GIF. Max size 1 MB.</p> : null}
           {errorMessage ? (
-            <EmojiError
+            <EmojiErrorMessage
               className={styles.emojiChooseFileErrorMessage}
               message={errorMessage}
             />
