@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 65.1.29
+- [patch] ED-4139, fix selection when empty paragraph is inserted terminally in the node. [8c93c6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c93c6e)
+
 ## 65.1.28
 - [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
 
