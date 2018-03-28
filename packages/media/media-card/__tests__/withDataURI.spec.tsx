@@ -439,5 +439,13 @@ describe('WithDataURI', () => {
         undefined,
       );
     });
+
+    it('should use preview as dataURI while we are still fetching the remote one', () => {
+      const element = shallow<WithDataURIProps, WithDataURIState>(
+        <DemoComponentWithDataURI preview="some-preview" />,
+      );
+
+      expect(element.find(DemoComponent).prop('dataURI')).toBe('some-preview');
+    });
   });
 });

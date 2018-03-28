@@ -339,4 +339,16 @@ describe('Card', () => {
       }),
     );
   });
+
+  it('should use local preview if available', () => {
+    const context = fakeContext({
+      getLocalPreview: 'local-preview-src',
+    });
+    const card = shallow(
+      <Card context={context} identifier={fileIdentifier} />,
+    );
+
+    expect(context.getLocalPreview).toHaveBeenCalledWith('some-random-id');
+    expect(card.find(MediaCard).prop('preview')).toEqual('local-preview-src');
+  });
 });
