@@ -98,9 +98,6 @@ export class MediaViewer extends React.Component<Props, State> {
           }
         }
       },
-      complete: () => {
-        /* do nothing */
-      },
       error: err => {
         this.setState({
           fileDetails: {
@@ -115,7 +112,6 @@ export class MediaViewer extends React.Component<Props, State> {
   private unsubscribe() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-      this.subscription = null;
     }
   }
 
