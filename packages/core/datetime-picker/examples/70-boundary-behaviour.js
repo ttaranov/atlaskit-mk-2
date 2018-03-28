@@ -3,8 +3,9 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import { Label } from '@atlaskit/field-base';
-import Lorem from 'react-lorem-component';
+import FieldRange from '@atlaskit/field-range';
 import Modal from '@atlaskit/modal-dialog';
+import Lorem from 'react-lorem-component';
 import { DateTimePicker } from '../src';
 
 type State = {
@@ -12,6 +13,8 @@ type State = {
   timePickerValue: string,
   dateTimePickerValue: string,
   isModalOpen: boolean,
+  textAbove: number,
+  textBelow: number,
 };
 
 export default class MyComponent extends Component<{}, State> {
@@ -20,6 +23,8 @@ export default class MyComponent extends Component<{}, State> {
     timePickerValue: '14:30',
     dateTimePickerValue: '2018-01-02T14:30+11:00',
     isModalOpen: false,
+    textAbove: 3,
+    textBelow: 3,
   };
 
   onDatePickerChange = (e: any) => {
@@ -52,24 +57,60 @@ export default class MyComponent extends Component<{}, State> {
     });
   };
 
+  onTextAboveChange = (value: number) => {
+    this.setState({
+      textAbove: value,
+    });
+  };
+
+  onTextBelowChange = (value: number) => {
+    this.setState({
+      textBelow: value,
+    });
+  };
+
   render() {
-    const { dateTimePickerValue, isModalOpen } = this.state;
+    const {
+      dateTimePickerValue,
+      isModalOpen,
+      textAbove,
+      textBelow,
+    } = this.state;
     return (
       <div>
-        <p>This demonstrates displaying a date time picker within a modal</p>
+        <p style={{ paddingBottom: 10 }}>
+          This demonstrates displaying the date time picker display behaviour
+          within a modal. In particular, what happens when it overflows the
+          modal body and what happens when it renders near the bottom of the
+          viewport.
+        </p>
 
         <Button onClick={this.openModal}>Open modal</Button>
 
         {isModalOpen && (
           <Modal onClose={this.closeModal}>
-            <Lorem count="5" />
+            <Label label="Amount of text above" />
+            <FieldRange
+              value={this.state.textAbove}
+              min={0}
+              max={10}
+              step={1}
+              onChange={this.onTextAboveChange}
+            />
+            {textAbove > 0 ? <Lorem count={textAbove} /> : null}
             <Label label="Date" />
             <DateTimePicker defaultValue={dateTimePickerValue} />
-            <Lorem count="5" />
+            <Label label="Amount of text below" />
+            <FieldRange
+              value={this.state.textBelow}
+              min={0}
+              max={10}
+              step={1}
+              onChange={this.onTextBelowChange}
+            />
+            {textBelow > 0 ? <Lorem count={textBelow} /> : null}
           </Modal>
         )}
-        <div style={{ height: 500 }} />
-        <DateTimePicker defaultValue={dateTimePickerValue} />
       </div>
     );
   }
