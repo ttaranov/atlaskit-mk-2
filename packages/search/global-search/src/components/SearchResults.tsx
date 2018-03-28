@@ -111,16 +111,20 @@ const renderPeople = (results: Result[], query: string) => (
 );
 
 const renderEmptyState = (query: string) => (
-  <div>
+  <>
     <EmptyState />
     {searchJiraItem(query)}
     {searchConfluenceItem(query)}
     {searchPeopleItem()}
-  </div>
+  </>
 );
 
-function take(array: Array<any>, n: number) {
+function take<T>(array: Array<T>, n: number) {
   return array.slice(0, n);
+}
+
+function isEmpty<T>(array: Array<T>) {
+  return array.length === 0;
 }
 
 export interface Props {
@@ -156,13 +160,11 @@ export default function searchResults(props: Props) {
     return renderRecent(take(recentlyViewedItems, 10));
   }
 
-  const noResults = [
-    recentResults,
-    jiraResults,
-    confluenceResults,
-    peopleResults,
-  ].every(results => results.length === 0);
-  if (noResults) {
+  if (
+    [recentResults, jiraResults, confluenceResults, peopleResults].every(
+      isEmpty,
+    )
+  ) {
     return renderEmptyState(query);
   }
 
