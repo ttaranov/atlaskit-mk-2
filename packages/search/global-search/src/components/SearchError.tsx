@@ -10,12 +10,12 @@ const ErrorWrapper = styled.div`
 `;
 
 export interface Props {
-  onRetry();
+  onRetryClick();
 }
 
 export default class SearchError extends React.Component<Props> {
   render() {
-    const { onRetry } = this.props;
+    const { onRetryClick } = this.props;
 
     return (
       <ErrorWrapper>
@@ -23,7 +23,7 @@ export default class SearchError extends React.Component<Props> {
         <h3>We're having trouble searching.</h3>
         <p>
           <span>It might just be hiccup. Best thing is to </span>
-          <Button appearance="link" spacing="none" onClick={onRetry}>
+          <Button appearance="link" spacing="none" onClick={onRetryClick}>
             try again
           </Button>.
         </p>

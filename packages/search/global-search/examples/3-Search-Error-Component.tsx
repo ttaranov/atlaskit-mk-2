@@ -5,6 +5,6 @@ export default class extends React.Component {
   render() {
     const handleRetry = () => alert('haha error. Try again.');
 
-    return <SearchError onRetry={handleRetry} />;
+    return <SearchError onRetryClick={handleRetry} />;
   }
 }

@@ -139,7 +139,7 @@ export default function searchResults(props: Props) {
   } = props;
 
   if (isError) {
-    return <SearchError onRetry={retrySearch} />;
+    return <SearchError onRetryClick={retrySearch} />;
   }
 
   if (query.length < 2) {

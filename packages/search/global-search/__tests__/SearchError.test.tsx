@@ -6,7 +6,7 @@ import SearchError from '../src/components/SearchError';
 describe('SearchError', () => {
   it('should retry when clicking the try again button', () => {
     const retryMock = jest.fn();
-    const wrapper = shallow(<SearchError onRetry={retryMock} />);
+    const wrapper = shallow(<SearchError onRetryClick={retryMock} />);
 
     wrapper.find(Button).prop('onClick')();
     expect(retryMock).toHaveBeenCalled();
