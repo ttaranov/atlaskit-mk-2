@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 1.5.0
+- [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)
+
 ## 1.4.0
 - [minor] Improve rendering of Jira issues [7f28452](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f28452)
 
