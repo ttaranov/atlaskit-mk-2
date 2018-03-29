@@ -27,7 +27,7 @@ function findGroup(group: Group, wrapper: ShallowWrapper) {
 
 function makeResult(partial?: Partial<Result>): Result {
   return {
-    resultId: '' + Math.random,
+    resultId: '' + Math.random(),
     name: 'name',
     type: ResultType.Object,
     avatarUrl: 'avatarUrl',
