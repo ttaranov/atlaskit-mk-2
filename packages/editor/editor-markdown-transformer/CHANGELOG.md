@@ -1,5 +1,7 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.12
+
 ## 0.2.11
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

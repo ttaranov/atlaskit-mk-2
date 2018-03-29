@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 13.2.0
+- [minor] stop creating mediaContext in MediaCard component [ad8c3c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad8c3c0)
+
 ## 13.1.0
 
 ## 13.0.17

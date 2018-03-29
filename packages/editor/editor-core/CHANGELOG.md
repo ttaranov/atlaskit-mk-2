@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 66.0.0
+
+- [major] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
 ## 65.2.0
 
 ## 65.1.31

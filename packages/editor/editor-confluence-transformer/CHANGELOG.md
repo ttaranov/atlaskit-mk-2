@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.7
+
 ## 2.10.6
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

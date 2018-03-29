@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 32.0.1
+
 ## 32.0.0
 - [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
 

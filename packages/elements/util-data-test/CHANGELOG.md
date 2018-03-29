@@ -1,5 +1,7 @@
 # @atlaskit/util-data-test
 
+## 8.0.2
+
 ## 8.0.1
 - [patch] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
 

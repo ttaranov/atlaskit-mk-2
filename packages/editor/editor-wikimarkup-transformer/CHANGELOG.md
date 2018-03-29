@@ -1,5 +1,7 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 0.0.7
+
 ## 0.0.6
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

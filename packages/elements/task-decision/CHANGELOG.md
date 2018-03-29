@@ -1,5 +1,7 @@
 # @atlaskit/task-decision
 
+## 5.1.1
+
 ## 5.1.0
 - [minor] FS-1855 A&D web component should listen to pubsub event [d7fd82d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7fd82d)
 

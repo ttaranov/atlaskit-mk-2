@@ -1,5 +1,7 @@
 # @atlaskit/editor-json-transformer
 
+## 2.5.19
+
 ## 2.5.18
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 
