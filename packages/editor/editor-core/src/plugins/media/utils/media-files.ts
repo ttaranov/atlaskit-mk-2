@@ -25,7 +25,7 @@ import {
 } from './media-common';
 
 /** These nodes don't allow non images to exist inside them */
-const nonMediaBannedNodes = ['listItem'];
+const nonImagesBannedNodes = ['listItem'];
 
 export interface Range {
   start: number;
@@ -172,5 +172,5 @@ const setSelectionAfterMediaInsertion = (
 };
 
 export const isNonImagesBanned = (node: PMNode) => {
-  return nonMediaBannedNodes.indexOf(node.type.name) > -1;
+  return nonImagesBannedNodes.indexOf(node.type.name) > -1;
 };
