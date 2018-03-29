@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { Subscription } from 'rxjs';
+import * as deepEqual from 'deep-equal';
 import Blanket from '@atlaskit/blanket';
 import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
-import * as deepEqual from 'deep-equal';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel, ObjectUrl } from './domain';
+import { Model, Identifier, initialModel } from './domain';
 import { constructAuthTokenUrl } from './util';
 
 export type Props = {
@@ -13,6 +14,8 @@ export type Props = {
 };
 
 export type State = Model;
+
+export const REQUEST_CANCELLED = 'request_cancelled';
 
 export class MediaViewer extends React.Component<Props, State> {
   state: State = initialModel;
@@ -58,7 +61,7 @@ export class MediaViewer extends React.Component<Props, State> {
     );
   }
 
-  private itemDetails?: any;
+  private itemDetails?: Subscription;
 
   private init() {
     const { context } = this.props;
@@ -114,13 +117,13 @@ export class MediaViewer extends React.Component<Props, State> {
       this.itemDetails.unsubscribe();
     }
     if (this.cancelImageFetch) {
-      this.cancelImageFetch('cancel_request');
+      this.cancelImageFetch();
     }
     const { previewData } = this.state;
     if (previewData.status === 'SUCCESSFUL') {
       const { data } = previewData;
       if (data.viewer === 'IMAGE') {
-        URL.revokeObjectURL(data.objectUrl);
+        this.revokeObjectUrl(data.objectUrl);
       }
     }
   }
@@ -139,7 +142,12 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 
-  private cancelImageFetch?: (msg?: string) => void;
+  private cancelImageFetch?: () => void;
+
+  // This method is spied on by some test cases, so don't rename or remove it.
+  public revokeObjectUrl(objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+  }
 
   private async populateImagePreviewData(
     fileItem: MediaItem,
@@ -153,7 +161,7 @@ export class MediaViewer extends React.Component<Props, State> {
         mode: 'fit',
         allowAnimated: true,
       });
-      this.cancelImageFetch = cancel;
+      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
       const objectUrl = URL.createObjectURL(await response);
       this.setState({
         previewData: {
@@ -165,9 +173,9 @@ export class MediaViewer extends React.Component<Props, State> {
         },
       });
     } catch (err) {
-      // If the request was cancelled, then it changed state and calling setState
-      // will introduce a race condition/
-      if (err.message !== 'cancel_request') {
+      if (err.message === REQUEST_CANCELLED) {
+        this.preventRaceCondition();
+      } else {
         this.setState({
           previewData: {
             status: 'FAILED',
@@ -178,17 +186,19 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 
+  // This method is spied on by some test cases, so don't rename or remove it.
+  public preventRaceCondition() {
+    // Calling setState might introduce a race condition, because the app has
+    // already transitioned to a different state. To avoid this we're not doing
+    // anything.
+  }
+
   private async populateVideoPreviewData(
     fileItem: FileItem,
     context: Context,
     collectionName?: string,
   ) {
-    const artifact = 'video_640.mp4';
-    const videoArtifactUrl =
-      fileItem.details &&
-      fileItem.details.artifacts &&
-      fileItem.details.artifacts[artifact] &&
-      fileItem.details.artifacts[artifact].url;
+    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
     if (videoArtifactUrl) {
       const src = await constructAuthTokenUrl(
         videoArtifactUrl,
@@ -222,4 +232,14 @@ export class MediaViewer extends React.Component<Props, State> {
       },
     });
   }
+}
+
+function getVideoArtifactUrl(fileItem: FileItem) {
+  const artifact = 'video_640.mp4';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
 }

@@ -5,7 +5,7 @@ import Blanket from '@atlaskit/blanket';
 import { MediaItem, MediaItemType, LinkItem } from '@atlaskit/media-core';
 import { waitUntil } from '@atlaskit/media-test-helpers';
 import { Stubs } from '../_stubs';
-import { MediaViewer } from '../../src/newgen/media-viewer';
+import { MediaViewer, REQUEST_CANCELLED } from '../../src/newgen/media-viewer';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
 
 function createContext(subject, blobService?) {
@@ -47,6 +47,15 @@ describe('<MediaViewer />', () => {
     type: 'file' as MediaItemType,
   };
 
+  const item: MediaItem = {
+    type: 'file',
+    details: {
+      id: 'some-id',
+      processingStatus: 'succeeded',
+      mediaType: 'image',
+    },
+  };
+
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture(identifier);
     el.find(Blanket).simulate('click');
@@ -65,14 +74,6 @@ describe('<MediaViewer />', () => {
   });
 
   it('assigns an object url for images when successful', async () => {
-    const item: MediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'image',
-      },
-    };
     const { subject, el } = createFixture(identifier);
 
     subject.next(item);
@@ -195,14 +196,6 @@ describe('<MediaViewer />', () => {
   });
 
   it('shows an error when the image could not be fetched', async () => {
-    const item: MediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'image',
-      },
-    };
     const { blobService, subject, el } = createFixture(identifier);
 
     blobService.fetchImageBlobCancelable.mockReturnValue({
@@ -226,15 +219,7 @@ describe('<MediaViewer />', () => {
     expect(subject.observers).toHaveLength(0);
   });
 
-  it('cancels an image fetch request when unmounted', async () => {
-    const item: MediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'image',
-      },
-    };
+  it('cancels an image fetch request when unmounted', () => {
     const { blobService, subject, el } = createFixture(identifier);
 
     const cancel = jest.fn();
@@ -248,6 +233,39 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(cancel).toHaveBeenCalled();
+  });
+
+  it('revokes an existing object url when unmounted', async () => {
+    const { subject, el } = createFixture(identifier);
+
+    const revokeObjectUrl = jest.fn();
+    el.instance()['revokeObjectUrl'] = revokeObjectUrl;
+
+    subject.next(item);
+
+    await waitUntil(() => {
+      el.update();
+      return getModel(el).fileDetails.status === 'SUCCESSFUL';
+    }, 5);
+    el.unmount();
+
+    expect(revokeObjectUrl).toHaveBeenCalled();
+  });
+
+  it('does not update state when image fetch request is cancelled', async () => {
+    const { blobService, subject, el } = createFixture(identifier);
+
+    el.instance()['preventRaceCondition'] = jest.fn();
+
+    blobService.fetchImageBlobCancelable.mockReturnValue({
+      response: Promise.reject(new Error(REQUEST_CANCELLED)),
+      cancel: jest.fn(),
+    });
+    subject.next(item);
+
+    await waitUntil(() => {
+      return el.instance()['preventRaceCondition'].mock.calls.length === 1;
+    }, 5);
   });
 
   it('resubscribes to the provider when the data property value is changed', () => {
@@ -279,14 +297,6 @@ describe('<MediaViewer />', () => {
 
   it('resets the state when the context property value is changed', () => {
     const { el, subject } = createFixture(identifier);
-    const item: MediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'image',
-      },
-    };
 
     subject.next(item);
     el.update();
