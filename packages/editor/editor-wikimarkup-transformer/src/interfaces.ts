@@ -1,4 +1,4 @@
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, NodeType } from 'prosemirror-model';
 
 export type MacroName = 'color' | 'code' | 'noformat' | 'panel' | 'quote';
 export type TextEffect =
@@ -78,7 +78,15 @@ export interface EmojiMapItem {
   };
 }
 
-export interface EmojiClosestMatch {
-  emoji: EmojiMapItem;
+export interface InlineNodeClosestMatch {
+  nodeType: NodeType;
+  attrs: { [key: string]: any };
   matchPosition: number;
+  textLength: number;
+}
+
+export interface InlineNodeWithPosition {
+  node: PMNode;
+  matchPosition: number;
+  textLength: number;
 }

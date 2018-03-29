@@ -2,7 +2,8 @@ import * as assert from 'assert';
 import { Mark, Node as PMNode, Schema } from 'prosemirror-model';
 
 import {
-  EmojiClosestMatch,
+  InlineNodeClosestMatch,
+  InlineNodeWithPosition,
   MatchPosition,
   TextMarkElement,
   TextMatch,
@@ -23,6 +24,9 @@ const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
 
   // { name: 'link', grep: '*' },
 ];
+
+// [~username] and other mentions
+const MENTION_REGEXP = /\[~([\w]+?)\]/;
 
 function findMonospaceMatches(text: string): TextMatch[] {
   const output: TextMatch[] = [];
@@ -52,21 +56,86 @@ function findMonospaceMatches(text: string): TextMatch[] {
 }
 
 function findFirstEmoji(
+  schema: Schema,
   text: string,
   position: number,
-): EmojiClosestMatch | null {
-  return EMOJIS.reduce((memo: EmojiClosestMatch | null, emoji, index) => {
+): InlineNodeClosestMatch | null {
+  let output: InlineNodeClosestMatch | null = null;
+
+  for (const emoji of EMOJIS) {
     const { markup } = emoji;
     const matchPosition = text.indexOf(markup, position);
 
+    // this emoji doesn't exist in a string
     if (matchPosition === -1) {
-      return memo;
+      continue;
     }
 
-    return memo && memo.matchPosition < matchPosition
-      ? memo
-      : { emoji, matchPosition };
-  }, null);
+    if (!output || matchPosition < output.matchPosition) {
+      output = {
+        matchPosition,
+        nodeType: schema.nodes.emoji,
+        attrs: emoji.adf,
+        textLength: markup.length,
+      };
+    }
+  }
+
+  return output;
+}
+
+function findFirstMention(
+  schema: Schema,
+  text: string,
+  position: number,
+): InlineNodeClosestMatch | null {
+  const matches = text.substr(position).match(MENTION_REGEXP);
+
+  if (matches) {
+    const { index } = matches;
+    const username = matches[1];
+
+    return {
+      nodeType: schema.nodes.mention,
+      attrs: { id: username, text: username },
+      matchPosition: (index || 0) + position,
+      textLength: matches[0].length,
+    };
+  }
+
+  return null;
+}
+
+function findFirstInlineNode(
+  schema: Schema,
+  text: string,
+  position: number,
+): InlineNodeWithPosition | null {
+  // get all possible closest inline nodes
+  // and sort them by matching position (where they begin)
+  const closestInlineNodes = [
+    findFirstEmoji(schema, text, position),
+    findFirstMention(schema, text, position),
+  ]
+    .filter(Boolean)
+    .sort((a, b) => a!.matchPosition - b!.matchPosition);
+
+  if (closestInlineNodes.length) {
+    const {
+      nodeType,
+      attrs,
+      matchPosition,
+      textLength,
+    } = closestInlineNodes.shift() as InlineNodeClosestMatch;
+
+    return {
+      matchPosition,
+      textLength,
+      node: nodeType.createChecked(attrs),
+    };
+  }
+
+  return null;
 }
 
 /**
@@ -131,7 +200,7 @@ export function findTextMatches(text: string): TextMatch[] {
 /**
  * Take piece of text, find emojis in it and return list of emoji/text nodes
  */
-export function findTextAndEmoji(
+export function findTextAndInlineNodes(
   schema: Schema,
   text: string,
   effects: Effect[],
@@ -140,10 +209,10 @@ export function findTextAndEmoji(
   let position = 0;
 
   while (position < text.length) {
-    const closestEmoji = findFirstEmoji(text, position);
+    const closestInlineNode = findFirstInlineNode(schema, text, position);
     const marks = effectsToMarks(schema, effects);
 
-    if (!closestEmoji) {
+    if (!closestInlineNode) {
       const textChunk = text.substr(position);
       const textNode = schema.text(textChunk, marks);
       output.push(textNode);
@@ -151,7 +220,7 @@ export function findTextAndEmoji(
       break;
     }
 
-    const { emoji, matchPosition } = closestEmoji;
+    const { node, matchPosition, textLength } = closestInlineNode;
     const textChunk = text.substring(position, matchPosition);
 
     if (textChunk.length) {
@@ -159,11 +228,11 @@ export function findTextAndEmoji(
       output.push(textNode);
     }
 
-    const emojiNode = schema.nodes.emoji.createChecked(emoji.adf);
-    output.push(emojiNode);
+    // this is the inline node (mention, emoji, etc)
+    output.push(node);
 
     // start next search from current position + found emoji string length
-    position = matchPosition + emoji.markup.length;
+    position = matchPosition + textLength;
   }
 
   return output;

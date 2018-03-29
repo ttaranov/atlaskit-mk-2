@@ -4,7 +4,7 @@ import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
-import { findTextAndEmoji } from './text';
+import { findTextAndInlineNodes } from './text';
 import { getCodeLanguage } from './code-language';
 import {
   getResolvedMacroIntervals,
@@ -71,7 +71,7 @@ export default class AbstractTree {
       const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
 
       textWithLineBreaks.forEach((chunk, i) => {
-        const inlineNodes = findTextAndEmoji(this.schema, chunk, effects);
+        const inlineNodes = findTextAndInlineNodes(this.schema, chunk, effects);
         output.push(...inlineNodes);
 
         if (i + 1 < textWithLineBreaks.length) {
@@ -206,7 +206,7 @@ export default class AbstractTree {
 
     // Flag if currently processing a block of content
     let isBuilding: boolean = false;
-    let builder: Builder | null;
+    let builder: Builder | null | undefined;
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
       if (line === HORIZONTAL_RULE) {

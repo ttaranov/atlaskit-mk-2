@@ -1,4 +1,4 @@
-import WikiMarkupTransformer from '../../src';
+import WikiMarkupTransformer from '../src';
 
 describe('JIRA wiki markup - Text effects', () => {
   const testCases: [string, string][] = [

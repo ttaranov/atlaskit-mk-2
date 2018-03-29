@@ -1,4 +1,4 @@
-import WikiMarkupTransformer from '../../src';
+import WikiMarkupTransformer from '../src';
 
 describe('JIRA wiki markup - Macros', () => {
   const testCases: [string, string][] = [
