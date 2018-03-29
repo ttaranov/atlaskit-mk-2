@@ -123,6 +123,11 @@ export class Card extends Component<CardProps, {}> {
     );
   }
 
+  private get preview() {
+    const { context, identifier } = this.props;
+
+    return context.getLocalPreview(identifier['id']);
+  }
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
     const id = this.isUrlPreviewIdentifier(identifier)
@@ -145,12 +150,20 @@ export class Card extends Component<CardProps, {}> {
       onSelectChange,
       onLoadingChange,
     } = this.props;
+    const {
+      mediaItemType,
+      provider,
+      dataURIService,
+      placeholder,
+      preview,
+      analyticsContext,
+    } = this;
     const card = (
-      <AnalyticsContext data={this.analyticsContext}>
+      <AnalyticsContext data={analyticsContext}>
         <MediaCard
-          provider={this.provider}
-          mediaItemType={this.mediaItemType}
-          dataURIService={this.dataURIService}
+          provider={provider}
+          mediaItemType={mediaItemType}
+          dataURIService={dataURIService}
           appearance={appearance}
           resizeMode={resizeMode}
           dimensions={dimensions}
@@ -161,12 +174,13 @@ export class Card extends Component<CardProps, {}> {
           onMouseEnter={onMouseEnter}
           onSelectChange={onSelectChange}
           onLoadingChange={onLoadingChange}
+          preview={preview}
         />
       </AnalyticsContext>
     );
 
     return isLazy ? (
-      <LazyContent placeholder={this.placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={placeholder}>{card}</LazyContent>
     ) : (
       card
     );

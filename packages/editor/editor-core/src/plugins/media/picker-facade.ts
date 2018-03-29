@@ -19,7 +19,7 @@ import {
   MediaFile,
   UploadParams,
 } from '@atlaskit/media-picker';
-import { ContextConfig } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
@@ -28,7 +28,7 @@ import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 export type PickerType = keyof MediaPickerComponents;
 export type PickerFacadeConfig = {
   uploadParams: UploadParams;
-  contextConfig: ContextConfig;
+  context: Context;
   stateManager: MediaStateManager;
   errorReporter: ErrorReportingHandler;
 };
@@ -54,7 +54,7 @@ export default class PickerFacade {
 
     const picker = (this.picker = MediaPicker(
       pickerType,
-      this.buildPickerConfigFromContext(config.contextConfig),
+      this.buildPickerConfigFromContext(config.context),
       pickerConfig,
     ));
 
@@ -225,11 +225,11 @@ export default class PickerFacade {
     };
   };
 
-  private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
+  private buildPickerConfigFromContext(context: Context): ModuleConfig {
     return {
       uploadParams: this.uploadParams,
-      apiUrl: context.serviceHost,
-      authProvider: context.authProvider,
+      apiUrl: context.config.serviceHost,
+      authProvider: context.config.authProvider,
     };
   }
 
