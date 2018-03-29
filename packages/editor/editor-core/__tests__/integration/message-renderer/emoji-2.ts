@@ -49,9 +49,10 @@ BrowserTestCase(
   },
 );
 
+// ie keying in ; instead of : - browserstack issue
 BrowserTestCase(
   'Emoji: should be able remove emoji on backspace',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

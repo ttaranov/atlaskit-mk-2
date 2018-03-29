@@ -7,6 +7,7 @@ import {
 } from '@atlaskit/navigation';
 import { ResultType } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
+import SearchError from '../src/components/SearchError';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -27,6 +28,8 @@ describe('SearchResults', () => {
   function render(partialProps: Partial<Props>) {
     const props = {
       query: '',
+      isError: false,
+      retrySearch: () => {},
       recentlyViewedItems: [],
       recentResults: [],
       jiraResults: [],
@@ -215,5 +218,14 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Recent, wrapper);
     expect(group.exists()).toBe(false);
+  });
+
+  it('should render search error when there is an error', () => {
+    const props = {
+      isError: true,
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(SearchError).exists()).toBe(true);
   });
 });
