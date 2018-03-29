@@ -12,8 +12,6 @@ import {
 } from '@atlaskit/media-card';
 import {
   MediaItemType,
-  ContextConfig,
-  ContextFactory,
   Context,
   FileDetails,
   ImageResizeMode,
@@ -353,17 +351,13 @@ export default class MediaComponent extends Component<Props, State> {
     contextName: string,
     mediaProvider: MediaProvider,
   ) => {
-    let context = await mediaProvider[contextName];
+    const context = await mediaProvider[contextName];
 
     if (this.destroyed || !context) {
       return;
     }
 
-    if ('serviceHost' in (context as ContextConfig)) {
-      context = ContextFactory.create(context as ContextConfig);
-    }
-
-    this.setState({ [contextName as any]: context as Context });
+    this.setState({ [contextName as any]: context });
   };
 
   private get resizeMode(): ImageResizeMode {
