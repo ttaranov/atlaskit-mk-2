@@ -3,7 +3,7 @@ import {
   RecentUpdates,
   ACTION_DECISION_FPS_EVENTS,
 } from '../../src/api/TaskDecisionResource';
-import { ObjectKey, ServiceTask, TaskState } from '../../src';
+import { ObjectKey, ServiceTask, TaskState } from '../../src/types';
 
 const serviceTask = (
   key: ObjectKey,

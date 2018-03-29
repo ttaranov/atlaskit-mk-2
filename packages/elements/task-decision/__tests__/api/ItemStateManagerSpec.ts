@@ -5,7 +5,7 @@ import {
   ItemStateManager,
   ACTION_STATE_CHANGED_FPS_EVENT,
 } from '../../src/api/TaskDecisionResource';
-import { ObjectKey, ServiceTask, TaskState } from '../../src';
+import { ObjectKey, ServiceTask, TaskState } from '../../src/types';
 
 jest.useFakeTimers();
 
