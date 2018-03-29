@@ -109,10 +109,21 @@ export default class Reactions extends Component<Props, State> {
     this.timeouts.forEach(clearTimeout);
   }
 
-  private updateState = state => {
-    this.setState({
-      reactions: state,
-    });
+  private stableSort = (previousReactions: ReactionSummary[]) => {
+    const indexes: { [emojiId: string]: number } = previousReactions.reduce(
+      (map, reaction, index) => ({ ...map, [reaction.emojiId]: index }),
+      {},
+    );
+
+    return (a, b) => (indexes[a.emojiId] || -1) - (indexes[b.emojiId] || -1);
+  };
+
+  private updateState = (newState: ReactionSummary[]) => {
+    this.setState(({ reactions }) => ({
+      reactions: newState.sort(
+        reactions.length ? this.stableSort(reactions) : sortReactions,
+      ),
+    }));
   };
 
   private handleReactionPickerSelection = emojiId => {
@@ -154,7 +165,7 @@ export default class Reactions extends Component<Props, State> {
       <div className={reactionsStyle}>
         {this.renderPicker()}
         <div className={reactionsGroupStyle}>
-          {reactions.sort(sortReactions).map((reaction, index) => {
+          {reactions.map((reaction, index) => {
             const { emojiId } = reaction;
             const key = emojiId || `unknown-${index}`;
 

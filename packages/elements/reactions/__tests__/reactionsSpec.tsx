@@ -7,7 +7,7 @@ import { Reactions, OnEmoji } from '../src';
 import { sortReactions } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../src/mock-reactions-provider';
-import { smileyId } from './_test-data';
+import { smileyId, flagBlackId } from './_test-data';
 import { ObjectReactionKey } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -94,6 +94,23 @@ describe('@atlaskit/reactions/reactions', () => {
         expect(reactions.find(Reaction).length).to.equal(
           sortedReactions.length + 1,
         );
+      });
+  });
+
+  it('should update reactions without afecting original order', () => {
+    const reactions = mount(renderReactions());
+
+    return reactionsProvider
+      .addReaction(containerAri, demoAri, flagBlackId.id!)
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state);
+        reactions.update();
+        expect(
+          reactions
+            .find(Reaction)
+            .last()
+            .prop('reaction').emojiId,
+        ).to.equal(flagBlackId.id);
       });
   });
 });
