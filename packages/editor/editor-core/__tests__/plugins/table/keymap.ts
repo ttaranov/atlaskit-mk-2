@@ -3,11 +3,7 @@ import {
   stateKey as tablesPluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import { TableMap, CellSelection } from 'prosemirror-tables';
-import {
-  selectRow,
-  selectColumn,
-  selectTable,
-} from '../../../src/plugins/table/actions';
+import { selectRow, selectColumn, selectTable } from 'prosemirror-utils';
 
 import {
   doc,
@@ -22,7 +18,7 @@ import {
   thEmpty,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { tableStartPos } from '../../../src/plugins/table/utils';
+import { findTable } from 'prosemirror-utils';
 import tablesPlugin from '../../../src/plugins/table';
 
 describe('table keymap', () => {
@@ -52,7 +48,7 @@ describe('table keymap', () => {
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        selectRow(0)(editorView.state, editorView.dispatch);
+        editorView.dispatch(selectRow(0)(editorView.state.tr));
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         expect(editorView.state.selection.empty).toEqual(true);
@@ -73,7 +69,7 @@ describe('table keymap', () => {
         );
         const { nextPos } = refs;
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        selectColumn(0)(editorView.state, editorView.dispatch);
+        editorView.dispatch(selectColumn(0)(editorView.state.tr));
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         expect(editorView.state.selection.empty).toEqual(true);
@@ -250,7 +246,7 @@ describe('table keymap', () => {
           trackEvent,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        selectTable(editorView.state, editorView.dispatch);
+        editorView.dispatch(selectTable(editorView.state.tr));
         expect(editorView.state.selection instanceof CellSelection).toEqual(
           true,
         );
@@ -279,14 +275,14 @@ describe('table keymap', () => {
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(index)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(index)(editorView.state.tr));
           expect(editorView.state.selection instanceof CellSelection).toEqual(
             true,
           );
           const { selection } = editorView.state;
-          const offset = tableStartPos(editorView.state);
+          const { pos } = findTable(selection)!;
           const cursorPos =
-            selection.$head.pos - selection.$head.parentOffset + offset!;
+            selection.$head.pos - selection.$head.parentOffset + pos!;
           sendKeyToPm(editorView, 'Backspace');
           const rows: any = [];
           for (let i = 0; i < 3; i++) {
@@ -314,14 +310,14 @@ describe('table keymap', () => {
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectColumn(index)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectColumn(index)(editorView.state.tr));
           expect(editorView.state.selection instanceof CellSelection).toEqual(
             true,
           );
           const { selection } = editorView.state;
-          const offset = tableStartPos(editorView.state);
+          const { pos } = findTable(selection)!;
           const cursorPos =
-            selection.$head.pos - selection.$head.parentOffset + offset!;
+            selection.$head.pos - selection.$head.parentOffset + pos;
           sendKeyToPm(editorView, 'Backspace');
           const columns: any = [];
           for (let i = 0; i < 3; i++) {
