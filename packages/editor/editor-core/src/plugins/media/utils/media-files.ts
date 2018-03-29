@@ -24,6 +24,7 @@ import {
   copyOptionalAttrsFromMediaState,
 } from './media-common';
 
+/** These nodes don't allow non images to exist inside them */
 const nonMediaBannedNodes = ['listItem'];
 
 export interface Range {
