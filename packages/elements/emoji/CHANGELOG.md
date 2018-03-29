@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 33.0.0
+
+- [major] FS-1658 deleteSiteEmoji and getCurrentUser are required for EmojiProvider implementation [ecec57f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecec57f)
+
 ## 32.0.1
 
 ## 32.0.0

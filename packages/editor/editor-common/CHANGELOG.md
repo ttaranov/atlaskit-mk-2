@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 8.1.13
+
 ## 8.1.12
 
 ## 8.1.11
