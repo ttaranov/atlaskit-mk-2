@@ -134,7 +134,7 @@ export interface EmojiProvider
    *
    * @return a boolean indicating whether the delete was successful
    */
-  deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean>;
+  deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean>;
 
   /**
    * Load media emoji that may require authentication to download, producing
@@ -185,7 +185,7 @@ export interface EmojiProvider
   /**
    * Returns the logged user passed by the Product
    */
-  getCurrentUser?(): OptionalUser;
+  getCurrentUser(): OptionalUser;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -541,12 +541,20 @@ export class EmojiResource extends AbstractResource<
 
   deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
     if (this.siteEmojiResource && emoji.id) {
-      return this.siteEmojiResource.deleteEmoji(emoji).then(success => {
-        if (this.emojiRepository && success) {
-          this.emojiRepository.delete(emoji);
-        }
-        return success;
-      });
+      return this.siteEmojiResource
+        .deleteEmoji(emoji)
+        .then(success => {
+          if (success && this.emojiRepository) {
+            this.emojiRepository.delete(emoji);
+            return true;
+          }
+          return false;
+        })
+        .catch(err => {
+          // tslint:disable-next-line:no-console
+          console.error('failed to delete site emoji', err);
+          return false;
+        });
     }
     return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), false);
   }

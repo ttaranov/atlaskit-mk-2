@@ -29,6 +29,7 @@ export const {
   atlassianServiceEmojis,
   standardServiceEmojis,
   siteServiceEmojis,
+  siteEmojis,
   emojis,
   openMouthEmoji,
   searchableEmojis,

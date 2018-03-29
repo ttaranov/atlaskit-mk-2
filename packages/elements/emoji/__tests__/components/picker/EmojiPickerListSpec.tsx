@@ -15,6 +15,7 @@ import {
 } from '../../_test-data';
 import { EmojiDescription } from '../../../src/types';
 import { CachingEmoji } from '../../../src/components/common/CachingEmoji';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 const emojis = [imageEmoji];
 const customEmojis: EmojiDescription[] = [siteEmojiFoo, siteEmojiWtf];
@@ -59,7 +60,9 @@ describe('<EmojiPickerList />', () => {
       expect(categoryHeadings.get(0).props.title).to.equal('FREQUENT');
       expect(categoryHeadings.get(1).props.title).to.equal('PEOPLE');
     });
+  });
 
+  describe('custom upload display', () => {
     it('should render user custom emojis under Your Uploads', () => {
       const wrapper = mount(
         <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
@@ -72,7 +75,7 @@ describe('<EmojiPickerList />', () => {
 
       const cachedEmojis = wrapper.find(CachingEmoji);
 
-      // expected 3 emojis: foo in "Your Uploads", foo/wtf in "All uploads", grimacing in People
+      // expected 3 emojis: foo in "Your Uploads", foo/wtf in "All uploads"
       expect(cachedEmojis.length).to.equal(3);
       expect(cachedEmojis.get(0).props.emoji.id).to.equal('foo');
       expect(cachedEmojis.get(1).props.emoji.id).to.equal('foo');
@@ -189,6 +192,62 @@ describe('<EmojiPickerList />', () => {
 
       expect(onCategoryActivated.mock.calls).to.have.length(1);
       expect(onCategoryActivated.mock.calls[0][0]).to.equal('CUSTOM');
+    });
+  });
+
+  describe('delete', () => {
+    it('should render user custom emoji with delete button', () => {
+      const wrapper = mount(
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+      );
+      const yourEmoji = wrapper.find(CachingEmoji).at(0);
+      // expected first to be :foo: under "Your uploads"
+      expect(yourEmoji.props().emoji.id).to.equal('foo');
+      expect(yourEmoji.find(CrossCircleIcon)).to.have.length(1);
+    });
+
+    it('should not render delete button if not user custom emoji', () => {
+      const wrapper = mount(
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
+      );
+      const emoji = wrapper.find(CachingEmoji).at(0);
+      // Expect first :foo: under "All uploads"
+      expect(emoji.props().emoji.id).to.equal('foo');
+      expect(emoji.find(CrossCircleIcon)).to.have.length(0);
+    });
+
+    it('should call onEmojiDelete if delete button is clicked', () => {
+      const onDelete = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={customEmojis}
+          currentUser={{ id: 'hulk' }}
+          onEmojiDelete={onDelete}
+        />,
+      );
+      const deleteButton = wrapper
+        .find(CachingEmoji)
+        .at(0)
+        .find(CrossCircleIcon);
+      deleteButton.simulate('click');
+      expect(onDelete.mock.calls).to.have.length(1);
+    });
+
+    it('should not call onEmojiSelected if delete button is clicked', () => {
+      const onSelection = jest.fn();
+      const wrapper = mount(
+        <EmojiPickerList
+          emojis={customEmojis}
+          currentUser={{ id: 'hulk' }}
+          onEmojiSelected={onSelection}
+        />,
+      );
+      const deleteButton = wrapper
+        .find(CachingEmoji)
+        .at(0)
+        .find(CrossCircleIcon);
+      deleteButton.simulate('click');
+      expect(onSelection.mock.calls).to.have.length(0);
     });
   });
 });
