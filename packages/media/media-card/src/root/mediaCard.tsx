@@ -10,12 +10,14 @@ import {
   UrlPreview,
   DataUriService,
   ImageResizeMode,
+  MediaItemDetails,
 } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardEventProps, CardStatus } from '..';
 import { Provider } from './card';
 import { CardView } from './cardView';
 import { withDataURI } from './withDataURI';
+import { isLinkDetails } from '../utils/isLinkDetails';
 
 const CardViewWithDataURI = withDataURI(CardView); // tslint:disable-line:variable-name
 
@@ -65,9 +67,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     return mediaItem && (mediaItem as MediaItem).details !== undefined;
   }
 
-  observable = (
-    props: MediaCardProps,
-  ): Observable<FileDetails | LinkDetails | UrlPreview> => {
+  observable = (props: MediaCardProps): Observable<MediaItemDetails> => {
     const { provider } = props;
     return provider.observable().map((result: MediaItem | UrlPreview) => {
       if (this.isMediaItem(result)) {
@@ -83,11 +83,17 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
 
     this.setState({ status: 'loading' }, () => {
       this.subscription = this.observable(props).subscribe({
-        next: metadata => {
-          this.setState({ metadata, error: undefined, status: 'processing' });
-        },
-        complete: () => {
-          this.setState({ error: undefined, status: 'complete' });
+        next: (metadata: MediaItemDetails) => {
+          if (
+            !isLinkDetails(metadata) &&
+            metadata.processingStatus === 'pending'
+          ) {
+            // If it's a file with pending status
+            this.setState({ error: undefined, metadata, status: 'processing' });
+          } else {
+            // In all other cases (link or completed file) we call complete immidietly
+            this.setState({ error: undefined, metadata, status: 'complete' });
+          }
         },
         error: error => {
           this.setState({ error, status: 'error' });

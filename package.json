@@ -283,6 +283,7 @@
     "es6-object-assign": "^1.1.0",
     "eventemitter2": "^4.1.0",
     "execa": "^0.10.0",
+    "fast-deep-equal": "^1.1.0",
     "filesize": "^3.2.1",
     "flow": "^0.2.3",
     "focusin": "^2.0.0",

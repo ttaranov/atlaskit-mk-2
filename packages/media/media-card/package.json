@@ -44,6 +44,7 @@
     "bytes": "^2.4.0",
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
+    "fast-deep-equal": "^1.1.0",
     "lodash.debounce": "^4.0.8",
     "polished": "1.5.0",
     "react-lazily-render": "^1.0.1",

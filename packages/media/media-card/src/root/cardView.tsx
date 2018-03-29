@@ -13,6 +13,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '../analytics-next';
+import * as deepEqual from 'fast-deep-equal';
 
 import {
   SharedCardProps,
@@ -155,7 +156,30 @@ export class CardViewBase extends React.Component<
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const sameProps = deepEqual(this.props, nextProps);
+    if (!sameProps) {
+      // console.group(`id=${this.tmpIdHack} shouldComponentUpdate`);
+      // console.log('should render props changed');
+      // console.log(this.props, '->', nextProps);
+      // console.groupEnd();
+      return true;
+    }
+    const sameState = deepEqual(this.state, nextState);
+    if (!sameState) {
+      // console.group(`id=${this.tmpIdHack} shouldComponentUpdate`);
+      // console.log('should render state changed');
+      // console.log(this.state, '->', nextState);
+      // console.groupEnd();
+      return true;
+    }
+
+    // console.log('should not render');
+    return false;
+  }
+
   render() {
+    // console.count(`id=${this.tmpIdHack} render cardView`);
     const { onClick, onMouseEnter } = this;
     const { dimensions, appearance, mediaItemType } = this.props;
     const wrapperDimensions = dimensions
