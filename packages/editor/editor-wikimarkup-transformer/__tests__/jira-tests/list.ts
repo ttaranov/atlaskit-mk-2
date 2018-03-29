@@ -12,7 +12,7 @@ import {
   strong,
   textColor,
 } from '@atlaskit/editor-test-helpers';
-import { checkParseEncodeRoundTrips } from './_test-helpers';
+import { checkParseEncodeRoundTrips } from '../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes

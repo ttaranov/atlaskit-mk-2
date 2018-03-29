@@ -1,8 +1,6 @@
 import { defaultSchema, Transformer } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
-
-import { calcIntervals, scanMacro } from './parser/macro';
-import { combineAll, intervalsToPM } from './parser/text';
+import AbstractTree from './parser/abstract-tree';
 
 export class WikiMarkupTransformer implements Transformer<string> {
   private schema: Schema;
@@ -17,10 +15,9 @@ export class WikiMarkupTransformer implements Transformer<string> {
   }
 
   parse(wikiMarkup: string): PMNode {
-    const macro = scanMacro(wikiMarkup);
-    const intervals = calcIntervals(wikiMarkup, macro);
-    const intervalsWithPMNodes = intervalsToPM(wikiMarkup, intervals);
-
-    return combineAll(this.schema, macro, intervalsWithPMNodes);
+    const tree = new AbstractTree(this.schema, wikiMarkup);
+    return tree.getProseMirrorModel();
   }
 }
+
+export default WikiMarkupTransformer;

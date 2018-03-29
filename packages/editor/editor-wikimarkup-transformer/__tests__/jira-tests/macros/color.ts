@@ -1,5 +1,5 @@
 import { code, doc, p, textColor } from '@atlaskit/editor-test-helpers';
-import { checkParseEncodeRoundTrips } from '../_test-helpers';
+import { checkParseEncodeRoundTrips } from '../../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
@@ -43,7 +43,7 @@ describe.skip('WikiMarkup Transformer', () => {
 
   describe('color between invalid macros', () => {
     const WIKI_NOTATION = `{invalidmacro}
-    
+
 {color:red}Note{color}
 
 {invalidmacro}`;
