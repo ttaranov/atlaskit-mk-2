@@ -363,6 +363,8 @@ export const AddCustomEmoji = style({
 
 export const submitDelete = 'emoji-submit-delete';
 
+export const previewButtonGroup = 'emoji-preview-button-group';
+
 export const deletePreview = style({
   height: '100px',
   padding: '10px',
@@ -395,9 +397,14 @@ export const deleteFooter = style({
       maxWidth: '72px',
     },
 
+    [`.${previewButtonGroup}`]: {
+      display: 'flex',
+    },
+
     [`.${submitDelete}`]: {
       width: '80px',
       fontWeight: 'bold',
+      marginRight: '6px',
     },
     button: {
       display: 'flex',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import EmojiErrorMessage from './EmojiErrorMessage';
-import AkButton, { ButtonGroup } from '@atlaskit/button';
+import AkButton from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
 import { EmojiDescription } from '../../types';
@@ -96,12 +96,12 @@ export default class EmojiDeletePreview extends Component<Props, State> {
               className={styles.emojiDeleteErrorMessage}
             />
           ) : null}
-          <ButtonGroup>
+          <div className={styles.previewButtonGroup}>
             {submitButton}
             <AkButton appearance="subtle" onClick={this.onCancel}>
               Cancel
             </AkButton>
-          </ButtonGroup>
+          </div>
         </div>
       </div>
     );
