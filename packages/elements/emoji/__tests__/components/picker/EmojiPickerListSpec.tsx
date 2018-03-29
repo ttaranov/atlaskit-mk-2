@@ -198,7 +198,7 @@ describe('<EmojiPickerList />', () => {
   describe('delete', () => {
     it('should render user custom emoji with delete button', () => {
       const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
       );
       const yourEmoji = wrapper.find(CachingEmoji).at(0);
       // expected first to be :foo: under "Your uploads"
@@ -208,7 +208,7 @@ describe('<EmojiPickerList />', () => {
 
     it('should not render delete button if not user custom emoji', () => {
       const wrapper = mount(
-        <EmojiList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'alex' }} />,
       );
       const emoji = wrapper.find(CachingEmoji).at(0);
       // Expect first :foo: under "All uploads"
@@ -219,7 +219,7 @@ describe('<EmojiPickerList />', () => {
     it('should call onEmojiDelete if delete button is clicked', () => {
       const onDelete = jest.fn();
       const wrapper = mount(
-        <EmojiList
+        <EmojiPickerList
           emojis={customEmojis}
           currentUser={{ id: 'hulk' }}
           onEmojiDelete={onDelete}
@@ -236,7 +236,7 @@ describe('<EmojiPickerList />', () => {
     it('should not call onEmojiSelected if delete button is clicked', () => {
       const onSelection = jest.fn();
       const wrapper = mount(
-        <EmojiList
+        <EmojiPickerList
           emojis={customEmojis}
           currentUser={{ id: 'hulk' }}
           onEmojiSelected={onSelection}

@@ -550,7 +550,11 @@ export class EmojiResource extends AbstractResource<
           }
           return false;
         })
-        .catch(() => false);
+        .catch(err => {
+          // tslint:disable-next-line:no-console
+          console.error('failed to delete site emoji', err);
+          return false;
+        });
     }
     return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), false);
   }

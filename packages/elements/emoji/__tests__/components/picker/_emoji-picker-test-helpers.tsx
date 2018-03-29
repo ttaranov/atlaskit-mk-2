@@ -16,7 +16,7 @@ import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerLis
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
-import EmojiPickerErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -224,5 +224,5 @@ export const uploadErrorVisible = component =>
 export const finishDelete = component =>
   component.update() && component.find(EmojiDeletePreview).length === 0;
 
-export const deleteErrorVisible = component =>
-  component.update() && component.find(EmojiPickerErrorMessage).length === 1;
+export const errorMessageVisible = component =>
+  component.update() && component.find(EmojiErrorMessage).length === 1;

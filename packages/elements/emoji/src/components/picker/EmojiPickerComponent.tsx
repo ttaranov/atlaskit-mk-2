@@ -470,13 +470,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.setState({ emojiToDelete: undefined });
   };
 
-  private onDeleteEmoji = async (emoji: EmojiDescription): Promise<boolean> => {
+  private onDeleteEmoji = (emoji: EmojiDescription): Promise<boolean> => {
     const { query, selectedTone } = this.state;
-    const success = await this.props.emojiProvider.deleteSiteEmoji(emoji);
-    if (success) {
-      this.updateEmojis(query, { skinTone: selectedTone });
-    }
-    return success;
+    return this.props.emojiProvider.deleteSiteEmoji(emoji).then(success => {
+      if (success) {
+        this.updateEmojis(query, { skinTone: selectedTone });
+      }
+      return success;
+    });
   };
 
   private scrollToEndOfList = () => {

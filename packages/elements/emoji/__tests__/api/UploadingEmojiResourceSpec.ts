@@ -369,6 +369,7 @@ describe('helpers', () => {
     getSelectedTone = () => -1;
     setSelectedTone = tone => {};
     deleteSiteEmoji = emoji => Promise.resolve(false);
+    getCurrentUser = () => undefined;
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};

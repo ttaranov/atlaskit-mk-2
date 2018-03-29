@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import ErrorMessage from './EmojiErrorMessage';
+import EmojiErrorMessage from './EmojiErrorMessage';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
@@ -39,17 +39,20 @@ export default class EmojiDeletePreview extends Component<Props, State> {
     }
   }
 
-  private onSubmit = async () => {
+  private onSubmit = () => {
     const { emoji, onDeleteEmoji, onCloseDelete } = this.props;
-    this.setState({ loading: true });
-    const success = await onDeleteEmoji(emoji);
-    if (success) {
-      return onCloseDelete();
+    if (!this.state.loading) {
+      this.setState({ loading: true });
+      return onDeleteEmoji(emoji).then(success => {
+        if (success) {
+          return onCloseDelete();
+        }
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      });
     }
-    this.setState({
-      loading: false,
-      error: true,
-    });
   };
 
   private onCancel = () => {
@@ -66,7 +69,7 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         appearance="warning"
         onClick={this.onSubmit}
       >
-        {loading ? <Spinner /> : <b>Retry</b>}
+        {loading ? <Spinner /> : 'Retry'}
       </AkButton>
     ) : (
       <AkButton
@@ -74,7 +77,7 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         appearance="danger"
         onClick={this.onSubmit}
       >
-        {loading ? <Spinner invertColor={true} /> : <b>Remove</b>}
+        {loading ? <Spinner invertColor={true} /> : 'Remove'}
       </AkButton>
     );
 
@@ -87,7 +90,12 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         </div>
         <div className={styles.deleteFooter}>
           <CachingEmoji emoji={emoji} />
-          {error ? <ErrorMessage message="Remove failed" /> : null}
+          {error ? (
+            <EmojiErrorMessage
+              message="Remove failed"
+              className={styles.emojiDeleteErrorMessage}
+            />
+          ) : null}
           <ButtonGroup>
             {submitButton}
             <AkButton appearance="subtle" onClick={this.onCancel}>

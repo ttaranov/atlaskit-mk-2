@@ -7,11 +7,10 @@ import {
   getNonUploadingEmojiResourcePromise,
   pngDataURL,
   pngFileUploadData,
-  getMockEmojiResourcePromise,
   getEmojiResourcePromiseFromRepository,
-  siteEmojis,
   siteEmojiFoo,
-} from '../../../src/support/test-data';
+  mediaEmoji,
+} from '../../_test-data';
 
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
@@ -28,7 +27,7 @@ import * as commonHelper from '../common/_common-test-helpers';
 import EmojiPickerCategoryHeading from '../../../src/components/picker/EmojiPickerCategoryHeading';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
-import { MockEmojiResource } from '../../../src/support/MockEmojiResource';
+import { MockEmojiResource } from '@atlaskit/util-data-test';
 import EmojiRepository from '../../../src/api/EmojiRepository';
 
 describe('<UploadingEmojiPicker />', () => {
@@ -87,7 +86,7 @@ describe('<UploadingEmojiPicker />', () => {
     });
 
     it('Upload main flow interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -200,7 +199,7 @@ describe('<UploadingEmojiPicker />', () => {
     });
 
     it('Upload after searching', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -300,7 +299,7 @@ describe('<UploadingEmojiPicker />', () => {
     });
 
     it('Upload cancel interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
       const component = await helper.setupPicker({
@@ -388,7 +387,7 @@ describe('<UploadingEmojiPicker />', () => {
     });
 
     it('Upload error interaction', async () => {
-      const emojiProvider = getMockEmojiResourcePromise({
+      const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
         uploadError: 'bad times',
       });
@@ -504,7 +503,7 @@ describe('<UploadingEmojiPicker />', () => {
     beforeEach(() => {
       // Initialise repository with clone of siteEmojis
       const repository = new EmojiRepository(
-        JSON.parse(JSON.stringify(siteEmojis)),
+        JSON.parse(JSON.stringify([mediaEmoji, siteEmojiFoo])),
       );
       getUserProvider = () =>
         getEmojiResourcePromiseFromRepository(repository, {
@@ -615,7 +614,7 @@ describe('<UploadingEmojiPicker />', () => {
       expect(component.find(Emoji)).toHaveLength(4);
       clickRemove(component);
       // Expect error to occur
-      await waitUntil(() => helper.deleteErrorVisible(component));
+      await waitUntil(() => helper.errorMessageVisible(component));
       // Same number of emoji
       expect(component.find(Emoji)).toHaveLength(4);
       spy.mockReset();
@@ -631,7 +630,7 @@ describe('<UploadingEmojiPicker />', () => {
       openDeletePrompt(component);
       clickRemove(component);
       // Expect error to occur
-      await waitUntil(() => helper.deleteErrorVisible(component));
+      await waitUntil(() => helper.errorMessageVisible(component));
       const retryButton = component
         .find(EmojiDeletePreview)
         .find('button')
@@ -651,7 +650,7 @@ describe('<UploadingEmojiPicker />', () => {
       clickRemove(component);
       const deleteCalls = spy.mock.calls.length;
       // Expect error to occur
-      await waitUntil(() => helper.deleteErrorVisible(component));
+      await waitUntil(() => helper.errorMessageVisible(component));
       const retryButton = component
         .find(EmojiDeletePreview)
         .find('button')

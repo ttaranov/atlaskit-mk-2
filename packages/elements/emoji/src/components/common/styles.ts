@@ -377,7 +377,7 @@ export const deleteText = style({
 
   $nest: {
     ':first-child': {
-      color: `${colors.N300}`,
+      color: colors.N300,
       lineHeight: '16px',
     },
   },
@@ -397,6 +397,7 @@ export const deleteFooter = style({
 
     [`.${submitDelete}`]: {
       width: '80px',
+      fontWeight: 'bold',
     },
     button: {
       display: 'flex',
@@ -412,7 +413,7 @@ export const deleteFooter = style({
   },
 });
 
-export const emojiErrorMessage = style({
+export const emojiDeleteErrorMessage = style({
   display: 'flex',
   color: colors.R300,
   width: '100%',
