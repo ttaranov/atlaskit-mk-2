@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 65.2.0
+
 ## 65.1.31
 - [patch] ED-4184. fixing date picker in full page editor. [efa907c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efa907c)
 

@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 5.1.0
+- [minor] FS-1855 A&D web component should listen to pubsub event [d7fd82d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7fd82d)
+
 ## 5.0.0
 - [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
 
