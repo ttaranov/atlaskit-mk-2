@@ -6,6 +6,7 @@ import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 import { constructAuthTokenUrl } from './util';
+import { fetch } from './viewers/pdf';
 
 export type Props = {
   onClose?: () => void;
@@ -136,6 +137,9 @@ export class MediaViewer extends React.Component<Props, State> {
       case 'video':
         this.populateVideoPreviewData(mediaItem, context, collectionName);
         break;
+      case 'doc':
+        this.populatePDFPreviewData(mediaItem, context, collectionName);
+        break;
       default:
         this.notSupportedPreview(mediaItem);
         break;
@@ -218,7 +222,7 @@ export class MediaViewer extends React.Component<Props, State> {
       this.setState({
         previewData: {
           status: 'FAILED',
-          err: new Error('no video artifacts found for this file'),
+          err: new Error('no pdf artifacts found for this file'),
         },
       });
     }
@@ -232,6 +236,37 @@ export class MediaViewer extends React.Component<Props, State> {
       },
     });
   }
+
+  private async populatePDFPreviewData(
+    fileItem: FileItem,
+    context: Context,
+    collectionName?: string,
+  ) {
+    const pdfArtifactUrl = getPDFUrl(fileItem);
+    if (pdfArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        pdfArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'PDF',
+            doc: await fetch(src),
+          },
+        },
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file'),
+        },
+      });
+    }
+  }
 }
 
 function getVideoArtifactUrl(fileItem: FileItem) {
@@ -242,4 +277,12 @@ function getVideoArtifactUrl(fileItem: FileItem) {
     fileItem.details.artifacts[artifact] &&
     fileItem.details.artifacts[artifact].url
   );
+}
+
+function getPDFUrl(fileItem: FileItem) {
+  const artifact = 'document.pdf';
+  return fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url;
 }

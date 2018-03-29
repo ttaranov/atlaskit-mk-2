@@ -312,6 +312,7 @@
     "outdent": "^0.5.0",
     "p-queue": "^2.3.0",
     "p-wait-for": "^1.0.0",
+    "pdfjs-dist": "^2.0.466",
     "polished": "1.5.0",
     "postis": "^2.2.0",
     "prismjs": "^1.6.0",

@@ -38,3 +38,7 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   margin: auto;
   pointer-events: auto;
 `;
+
+export const PDFWrapper = styled.div`
+  margin: auto;
+`;
