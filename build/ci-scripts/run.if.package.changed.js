@@ -1,5 +1,9 @@
 // @flow
-const { getChangedPackagesSinceMaster } = require('../utils/packages');
+const {
+  getChangedPackagesSinceMaster,
+  getChangedPackagesSincePublishCommit,
+} = require('../utils/packages');
+const git = require('../utils/git');
 const spawndamnit = require('spawndamnit');
 
 /**
@@ -24,8 +28,25 @@ const spawndamnit = require('spawndamnit');
     process.exit(1);
   }
 
-  let changedPackages = await getChangedPackagesSinceMaster();
-  let matched = !!changedPackages.find(pkg => packageNames.includes(pkg.name));
+  // Take packages that are going to be released,
+  // because using only files is not enough in cases where pacakges is only dependent of other package
+  let unpublishedChangesets = await git.getUnpublishedChangesetCommits();
+  let packagesToRelease = unpublishedChangesets.reduce(
+    (acc, changeset) =>
+      acc.concat(changeset.releases).concat(changeset.dependents),
+    [],
+  );
+
+  // Take changed files since a commit or master branch
+  let branch = await git.getBranchName();
+  let changedPackages =
+    branch === 'master'
+      ? await getChangedPackagesSincePublishCommit()
+      : await getChangedPackagesSinceMaster();
+
+  let matched = !!changedPackages
+    .concat(packagesToRelease)
+    .find(pkg => packageNames.includes(pkg.name));
 
   if (!matched) {
     process.exit(0);
