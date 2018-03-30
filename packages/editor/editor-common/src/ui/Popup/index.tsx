@@ -11,7 +11,7 @@ import {
 } from './utils';
 
 export interface Props {
-  alignX?: 'left' | 'right';
+  alignX?: 'left' | 'right' | 'center';
   alignY?: 'top' | 'bottom';
   target?: HTMLElement;
   fitHeight?: number;

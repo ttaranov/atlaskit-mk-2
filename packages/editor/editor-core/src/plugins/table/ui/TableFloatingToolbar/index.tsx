@@ -122,13 +122,13 @@ export default class TableFloatingToolbar extends Component<Props, State> {
 
     return (
       <Popup
-        target={tableElement.parentElement || tableElement}
-        offset={[0, -10]}
+        offset={[0, 20]}
+        target={tableElement}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         alignY="bottom"
-        alignX="right"
+        alignX="center"
       >
         <Toolbar>
           {allowBackgroundColor && (
