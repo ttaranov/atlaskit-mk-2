@@ -23,6 +23,7 @@
     "@atlaskit/spinner": "^4.2.0",
     "@atlaskit/theme": "^2.4.0",
     "@atlaskit/util-service-support": "^2.0.4",
+    "@atlassian/pubsub": "^1.1.10",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "styled-components": "1.4.6 - 3",
