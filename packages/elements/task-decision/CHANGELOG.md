@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 5.2.0
+- [minor] FS-1855 Add missing dependency to @atlassian/pubsub [31ae3d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31ae3d4)
+
 ## 5.1.1
 
 ## 5.1.0

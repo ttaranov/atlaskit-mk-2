@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "13.2.0",
+  "version": "13.3.0",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -25,7 +25,7 @@
     "@atlaskit/media-card": "^25.2.0",
     "@atlaskit/media-filmstrip": "^7.0.8",
     "@atlaskit/mention": "^10.0.1",
-    "@atlaskit/task-decision": "^5.1.1",
+    "@atlaskit/task-decision": "^5.2.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^1.2.0",
     "styled-components": "1.4.6 - 3"
