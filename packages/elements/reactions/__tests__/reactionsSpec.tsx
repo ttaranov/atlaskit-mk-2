@@ -97,7 +97,7 @@ describe('@atlaskit/reactions/reactions', () => {
       });
   });
 
-  it('should update reactions without afecting original order', () => {
+  it('should update reactions without affecting original order', () => {
     const reactions = mount(renderReactions());
 
     return reactionsProvider
