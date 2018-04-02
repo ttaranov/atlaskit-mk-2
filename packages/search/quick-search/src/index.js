@@ -1,6 +1,24 @@
 // @flow
 import * as resultTypes from './components/Results';
 
+/*
+ This component is exported in two different ways.
+
+ v0: A legacy, backwards compatible API from when quick-search was living inside @atlaskit/navigation. This API
+ is deprecated and will be removed in the next major version.
+
+ v1: An API tailored to a stand-alone quick-search component.
+*/
+
+// API v0 Exports:
+export {
+  default as NavigationItemGroup,
+} from './components/ResultItem/ResultItemGroup';
+export { default as NavigationItem } from './components/ResultItem/ResultItem';
+export { default as AkQuickSearch } from './components/QuickSearch';
+export { resultTypes as quickSearchResultTypes };
+
+// API v1 Exports:
 export { default as QuickSearch } from './components/QuickSearch';
 export {
   default as ResultItemGroup,
@@ -11,11 +29,3 @@ export {
   default as ContainerResult,
 } from './components/Results/ContainerResult';
 export { default as ResultBase } from './components/Results/ResultBase';
-
-// Legacy backward compatible exports from quick-search inside @atlaskit/navigation:
-export {
-  default as NavigationItemGroup,
-} from './components/ResultItem/ResultItemGroup';
-export { default as NavigationItem } from './components/ResultItem/ResultItem';
-export { default as AkQuickSearch } from './components/QuickSearch';
-export { resultTypes as quickSearchResultTypes };
