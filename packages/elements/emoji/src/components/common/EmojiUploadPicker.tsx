@@ -89,6 +89,7 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
     const { name = '', onChooseFile, onNameChange, errorMessage } = this.props;
     const disableChooser = !name;
 
+    // Note: FileChooser.accept does not work in Electron due to a bug: https://product-fabric.atlassian.net/browse/FS-1626
     return (
       <div className={styles.emojiUpload}>
         <div className={styles.uploadChooseFileMessage}>
@@ -124,13 +125,14 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
           </span>
         </div>
         <div className={styles.emojiUploadBottom}>
-          {!errorMessage ? <p>JPG, PNG or GIF. Max size 1 MB.</p> : null}
-          {errorMessage ? (
+          {!errorMessage ? (
+            <p>JPG, PNG or GIF. Max size 1 MB.</p>
+          ) : (
             <EmojiErrorMessage
               className={styles.emojiChooseFileErrorMessage}
               message={errorMessage}
             />
-          ) : null}
+          )}
         </div>
       </div>
     );

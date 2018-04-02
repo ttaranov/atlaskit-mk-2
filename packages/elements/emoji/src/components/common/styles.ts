@@ -269,6 +269,7 @@ export const emojiUpload = style({
 export const uploadChooseFileMessage = style({
   color: colors.N300,
   fontSize: '12px',
+  paddingBottom: '7px',
 });
 
 export const emojiUploadBottom = style({
