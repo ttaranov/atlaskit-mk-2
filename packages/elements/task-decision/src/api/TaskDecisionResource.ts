@@ -315,6 +315,7 @@ export class ItemStateManager {
 
     const lastUpdateDate = new Date(payload.lastUpdateDate);
     if (lastUpdateDate > cached.lastUpdateDate) {
+      this.cachedItems.set(key, convertServiceTaskStateToBaseItem(payload));
       this.notifyUpdated(objectKey, payload.state);
       return;
     }
