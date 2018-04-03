@@ -25,8 +25,8 @@
     "ajv": "^4.11.3",
     "babel-polyfill": "^6.26.0",
     "prosemirror-view": "^1.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "rxjs": "^5.1.0",
     "webpack": "^3.10.0"
   }

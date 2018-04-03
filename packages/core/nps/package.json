@@ -21,7 +21,7 @@
     "ui"
   ],
   "peerDependencies": {
-    "react": "^16.2.0"
+    "react": "^16.3.0"
   },
   "dependencies": {
     "@atlaskit/button": "^6.6.0",

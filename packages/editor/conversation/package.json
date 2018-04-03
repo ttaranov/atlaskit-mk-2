@@ -19,8 +19,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "dependencies": {
     "@atlaskit/avatar": "^9.2.0",
