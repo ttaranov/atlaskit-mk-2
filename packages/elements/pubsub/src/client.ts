@@ -13,8 +13,8 @@ import NoopProtocol from './protocols/noop';
 import { logDebug, logError, logInfo } from './util/logger';
 import { utils as serviceUtils } from '@atlaskit/util-service-support';
 import { FeatureFlags } from './featureFlags';
+import { version } from '../package.json';
 
-const VERSION = '1.0'; // TODO: inject packages.json version
 const PLATFORM = 'WEB';
 
 const MAX_RETRY = 3;
@@ -40,7 +40,7 @@ export class Client implements ActionablePubSubClient {
 
   private subscribeBaseRequest = {
     clientInfo: {
-      version: VERSION,
+      version: version,
       platform: PLATFORM,
       capabilities: this.capabilities,
     },
