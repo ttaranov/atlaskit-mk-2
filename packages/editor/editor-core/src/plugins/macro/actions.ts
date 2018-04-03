@@ -1,7 +1,7 @@
 import { EditorState, NodeSelection } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { ExtensionProvider, MacroAttributes } from './types';
+import { ExtensionProvider, ExtensionAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
 import { getValidNode } from '@atlaskit/editor-common';
@@ -15,7 +15,7 @@ export const insertMacroFromMacroBrowser = (
     return false;
   }
   // opens MacroBrowser for editing "macroNode" if passed in
-  const newMacro: MacroAttributes = await extensionProvider.openMacroBrowser(
+  const newMacro: ExtensionAttributes = await extensionProvider.openMacroBrowser(
     macroNode,
   );
   if (newMacro) {
@@ -40,7 +40,7 @@ export const insertMacroFromMacroBrowser = (
 };
 
 export const resolveMacro = (
-  macro?: MacroAttributes,
+  macro?: ExtensionAttributes,
   state?: EditorState,
 ): PmNode | null => {
   if (!macro || !state) {

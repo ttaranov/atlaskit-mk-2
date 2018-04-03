@@ -50,7 +50,7 @@ export {
 } from '@atlaskit/editor-common';
 export {
   ExtensionProvider,
-  MacroAttributes,
+  ExtensionAttributes,
   ExtensionType,
 } from './plugins/macro';
 
