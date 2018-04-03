@@ -242,7 +242,7 @@ export default class AbstractTree {
 
         // Close out any active builders
         if (isBuilding) {
-          let builder: Builder;
+          let builder: Builder | undefined;
 
           while ((builder = builders.pop())) {
             output.push(builder.buildPMNode());
@@ -293,9 +293,9 @@ export default class AbstractTree {
         isBuilding = true;
 
         // If the current builder is a table, push it back on and start a new builder to nest in it
-        if (builder.type === 'table') {
+        if (builder && builder.type === 'table') {
           builders.push(builder);
-          builder = null;
+          builder = undefined;
         }
 
         if (!builder) {
@@ -327,9 +327,9 @@ export default class AbstractTree {
         } else {
           // If the current builder isn't a table, close it and add it to the last cell
           if (builder.type !== 'table') {
-            const content = builder.buildPMNode();
+            const contentNode = builder.buildPMNode();
             builder = builders.pop() || new TableBuilder(this.schema);
-            builder.add([{ style: null, content }]);
+            builder.add([{ style: null, content: [contentNode] }]);
           }
         }
 
@@ -361,7 +361,7 @@ export default class AbstractTree {
           { style: null, content: contentNode },
           ...additionalFields,
         ]);
-        builders.push(builder);
+        builders.push(builder!);
         continue;
       }
 
@@ -375,7 +375,7 @@ export default class AbstractTree {
 
     // If a block of content was the last item, make sure to push it
     if (isBuilding) {
-      let builder: Builder;
+      let builder: Builder | undefined;
 
       while ((builder = builders.pop())) {
         output.push(builder.buildPMNode());
