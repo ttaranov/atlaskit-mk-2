@@ -21,7 +21,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^8.1.12"
+    "@atlaskit/editor-common": "^8.1.12",
+    "@atlaskit/theme": "^2.4.1"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.2",

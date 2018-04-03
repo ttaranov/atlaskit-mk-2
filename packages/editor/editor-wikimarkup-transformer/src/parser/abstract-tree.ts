@@ -1,3 +1,4 @@
+import { colors } from '@atlaskit/theme';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
@@ -50,7 +51,9 @@ export default class AbstractTree {
     const textIntervals = getResolvedMacroIntervals(this.wikiMarkup);
 
     return textIntervals.map(({ macros, text }) => {
-      const simpleMacro = macros.pop();
+      const hasMultipleMacros = macros.length > 1;
+      const simpleMacro = macros.shift();
+
       const treatChildrenAsText = Boolean(
         simpleMacro && isSpecialMacro(simpleMacro.macro),
       );
@@ -58,20 +61,31 @@ export default class AbstractTree {
       return {
         text,
         macro: simpleMacro,
-        content: this.getTextNodes(text, treatChildrenAsText),
+        content: this.getTextNodes(
+          text,
+          treatChildrenAsText,
+          hasMultipleMacros,
+        ),
       };
     });
   }
 
-  getTextWithMarks(text: string): PMNode[] {
+  getTextWithMarks(text: string, useGreyText: boolean): PMNode[] {
     const intervals = getResolvedTextIntervals(text);
     const output: PMNode[] = [];
 
     for (const { effects, text } of intervals) {
       const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
+      const textEffects = useGreyText
+        ? effects.concat({ name: 'color', attrs: { color: colors.N80 } })
+        : effects;
 
       textWithLineBreaks.forEach((chunk, i) => {
-        const inlineNodes = findTextAndInlineNodes(this.schema, chunk, effects);
+        const inlineNodes = findTextAndInlineNodes(
+          this.schema,
+          chunk,
+          textEffects,
+        );
         output.push(...inlineNodes);
 
         if (i + 1 < textWithLineBreaks.length) {
@@ -158,12 +172,12 @@ export default class AbstractTree {
   /**
    * Combine text nodes with hardBreaks between them
    */
-  private buildTextNodes(lines: string[]): PMNode[] {
+  private buildTextNodes(lines: string[], useGreyText: boolean): PMNode[] {
     const { hardBreak } = this.schema.nodes;
     const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
-      const textNodes = this.getTextWithMarks(line);
+      const textNodes = this.getTextWithMarks(line, useGreyText);
       output.push(...textNodes);
 
       if (index + 1 < lines.length) {
@@ -178,7 +192,11 @@ export default class AbstractTree {
   /**
    * Parse text which doesn't contain macros
    */
-  private getTextNodes(str: string, treatChildrenAsText: boolean): PMNode[] {
+  private getTextNodes(
+    str: string,
+    treatChildrenAsText: boolean,
+    useGreyText: boolean,
+  ): PMNode[] {
     const { blockquote, heading, paragraph, rule } = this.schema.nodes;
     const output: PMNode[] = [];
 
@@ -196,7 +214,7 @@ export default class AbstractTree {
       if (textContainer.length) {
         const paragraphNode = paragraph.createChecked(
           {},
-          this.buildTextNodes(textContainer),
+          this.buildTextNodes(textContainer, useGreyText),
         );
         output.push(paragraphNode);
 
@@ -240,7 +258,7 @@ export default class AbstractTree {
 
         const headingNode = heading.createChecked(
           { level: headingMatches[1] },
-          this.getTextWithMarks(headingMatches[2]),
+          this.getTextWithMarks(headingMatches[2], useGreyText),
         );
 
         output.push(headingNode);
@@ -254,7 +272,7 @@ export default class AbstractTree {
 
         const paragraphNode = paragraph.createChecked(
           {},
-          this.getTextWithMarks(lineBlockQuoteMatches[1]),
+          this.getTextWithMarks(lineBlockQuoteMatches[1], useGreyText),
         );
         const blockquoteNode = blockquote.createChecked({}, paragraphNode);
 
@@ -280,7 +298,7 @@ export default class AbstractTree {
           }
         }
 
-        const contentNode = this.getTextWithMarks(content);
+        const contentNode = this.getTextWithMarks(content, useGreyText);
         builder.add([{ style, content: contentNode }]);
         continue;
       }
@@ -295,7 +313,7 @@ export default class AbstractTree {
         }
 
         // Iterate over the cells
-        builder.add(this.getTableCells(lineUpdated));
+        builder.add(this.getTableCells(lineUpdated, useGreyText));
         continue;
       }
 
@@ -310,12 +328,12 @@ export default class AbstractTree {
           content = (matches && matches[1]) || lineUpdated;
 
           // Get the other cells if any
-          additionalFields = this.getTableCells(lineUpdated);
+          additionalFields = this.getTableCells(lineUpdated, useGreyText);
         } else {
           content = lineUpdated;
         }
 
-        const contentNode = this.getTextWithMarks(content!);
+        const contentNode = this.getTextWithMarks(content!, useGreyText);
         builder!.add([
           { style: null, content: contentNode },
           ...additionalFields,
@@ -347,12 +365,12 @@ export default class AbstractTree {
    * @param {string} line
    * @returns {AddCellArgs[]}
    */
-  private getTableCells(line: string): AddCellArgs[] {
+  private getTableCells(line: string, useGreyText: boolean): AddCellArgs[] {
     let match;
     const cells: AddCellArgs[] = [];
     while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
       const [, /* discard */ style, content] = match;
-      const contentNode = this.getTextWithMarks(content);
+      const contentNode = this.getTextWithMarks(content, useGreyText);
       cells.push({ style, content: contentNode });
     }
     return cells;
