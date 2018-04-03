@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
-import { SpecialEventType, PubSubClient } from '@atlassian/pubsub';
+import { PubSubSpecialEventType, PubSubClient } from '../types';
 import { defaultLimit } from '../constants';
 
 import {
@@ -315,6 +315,7 @@ export class ItemStateManager {
 
     const lastUpdateDate = new Date(payload.lastUpdateDate);
     if (lastUpdateDate > cached.lastUpdateDate) {
+      this.cachedItems.set(key, convertServiceTaskStateToBaseItem(payload));
       this.notifyUpdated(objectKey, payload.state);
       return;
     }
@@ -331,7 +332,7 @@ export class ItemStateManager {
         this.onTaskUpdatedEvent,
       );
       this.serviceConfig.pubSubClient.on(
-        SpecialEventType.RECONNECT,
+        PubSubSpecialEventType.RECONNECT,
         this.onReconnect,
       );
     }
@@ -344,7 +345,7 @@ export class ItemStateManager {
         this.onTaskUpdatedEvent,
       );
       this.serviceConfig.pubSubClient.off(
-        SpecialEventType.RECONNECT,
+        PubSubSpecialEventType.RECONNECT,
         this.onReconnect,
       );
     }

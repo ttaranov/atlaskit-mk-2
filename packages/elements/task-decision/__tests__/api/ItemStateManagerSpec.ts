@@ -1,11 +1,15 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
-import { SpecialEventType } from '@atlassian/pubsub';
 import {
   ItemStateManager,
   ACTION_STATE_CHANGED_FPS_EVENT,
 } from '../../src/api/TaskDecisionResource';
-import { ObjectKey, ServiceTask, TaskState } from '../../src/types';
+import {
+  ObjectKey,
+  ServiceTask,
+  TaskState,
+  PubSubSpecialEventType,
+} from '../../src/types';
 
 jest.useFakeTimers();
 
@@ -67,7 +71,7 @@ describe('ItemStateManager', () => {
     // tslint:disable-next-line:no-unused-expression
     new ItemStateManager({ url: '', pubSubClient: mockPubSubClient });
     expect(mockPubSubClient.on).toHaveBeenCalledWith(
-      SpecialEventType.RECONNECT,
+      PubSubSpecialEventType.RECONNECT,
       expect.any(Function),
     );
   });
@@ -92,7 +96,7 @@ describe('ItemStateManager', () => {
       });
       itemStateManager.destroy();
       expect(mockPubSubClient.off).toHaveBeenCalledWith(
-        SpecialEventType.RECONNECT,
+        PubSubSpecialEventType.RECONNECT,
         expect.any(Function),
       );
     });
@@ -132,6 +136,45 @@ describe('ItemStateManager', () => {
         );
 
         expect(mockHandler).toHaveBeenCalled();
+        done();
+      });
+
+      jest.runAllTimers();
+    });
+
+    it('should update cached value if cached and event is more recent than cached version', done => {
+      const mockHandler = jest.fn();
+
+      const creationDate = new Date();
+      fetchMock
+        .mock({
+          matcher: 'end:tasks',
+          method: 'PUT',
+          name: 'set-task',
+          response: serviceTask(objectKey, 'TODO'),
+        })
+        .mock({
+          matcher: 'end:tasks/state',
+          response: [serviceTask(objectKey)],
+        });
+
+      const itemStateManager = new ItemStateManager({
+        url: '',
+        pubSubClient: mockPubSubClient,
+      });
+
+      const updateDate = new Date();
+      updateDate.setFullYear(creationDate.getFullYear() + 1);
+      itemStateManager.toggleTask(objectKey, 'TODO').then(() => {
+        itemStateManager.onTaskUpdatedEvent(
+          'event',
+          serviceTask(objectKey, 'DONE', updateDate),
+        );
+
+        mockHandler.mockClear();
+        itemStateManager.subscribe(objectKey, mockHandler);
+
+        expect(mockHandler).toHaveBeenCalledWith('DONE');
         done();
       });
 
