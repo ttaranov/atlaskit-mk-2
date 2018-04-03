@@ -109,7 +109,7 @@ export default class AbstractTree {
     if (isPanelWithTitle) {
       const headingNode = this.schema.nodes.heading.createChecked(
         { level: 1 },
-        getTextWithMarks(this.schema, attrs.title),
+        this.getTextWithMarks(attrs.title, false),
       );
 
       output.push(headingNode);
