@@ -328,6 +328,7 @@
     "prosemirror-transform": "^1.0.0",
     "prosemirror-utils": "^0.0.9",
     "prosemirror-view": "^1.2.0",
+    "pubnub": "^4.20.0",
     "puppeteer": "^0.10.2",
     "query-string": "^4.3.2",
     "raf-schd": "^2.1.0",
