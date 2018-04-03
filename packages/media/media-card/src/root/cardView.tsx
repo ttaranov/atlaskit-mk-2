@@ -159,22 +159,13 @@ export class CardViewBase extends React.Component<
   shouldComponentUpdate(nextProps, nextState) {
     const sameProps = deepEqual(this.props, nextProps);
     if (!sameProps) {
-      // console.group(`id=${this.tmpIdHack} shouldComponentUpdate`);
-      // console.log('should render props changed');
-      // console.log(this.props, '->', nextProps);
-      // console.groupEnd();
       return true;
     }
     const sameState = deepEqual(this.state, nextState);
     if (!sameState) {
-      // console.group(`id=${this.tmpIdHack} shouldComponentUpdate`);
-      // console.log('should render state changed');
-      // console.log(this.state, '->', nextState);
-      // console.groupEnd();
       return true;
     }
 
-    // console.log('should not render');
     return false;
   }
 
