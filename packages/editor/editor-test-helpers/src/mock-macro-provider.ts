@@ -33,7 +33,7 @@ const getMacroADFNode = (macroName, macroParams): ExtensionAttributes => {
 export class MockExtensionProvider implements ExtensionProvider {
   public config = {};
 
-  openMacroBrowser(macroNode?: PmNode): Promise<ExtensionAttributes> {
+  editExtension(macroNode?: PmNode): Promise<ExtensionAttributes> {
     const index = Math.floor(Math.random() * allExtensionData.length);
     return Promise.resolve(allExtensionData[index]);
   }

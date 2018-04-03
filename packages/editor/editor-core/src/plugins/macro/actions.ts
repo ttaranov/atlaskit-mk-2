@@ -15,7 +15,7 @@ export const insertMacroFromMacroBrowser = (
     return false;
   }
   // opens MacroBrowser for editing "macroNode" if passed in
-  const newMacro: ExtensionAttributes = await extensionProvider.openMacroBrowser(
+  const newMacro: ExtensionAttributes = await extensionProvider.editExtension(
     macroNode,
   );
   if (newMacro) {
@@ -94,7 +94,7 @@ export const setExtensionProvider = (
   try {
     resolvedProvider = await provider;
     assert(
-      resolvedProvider && resolvedProvider.openMacroBrowser,
+      resolvedProvider && resolvedProvider.editExtension,
       `ExtensionProvider promise did not resolve to a valid instance of ExtensionProvider - ${resolvedProvider}`,
     );
   } catch (err) {

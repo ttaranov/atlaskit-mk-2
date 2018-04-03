@@ -20,7 +20,7 @@ export interface ExtensionProvider {
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
-  openMacroBrowser(macroNode?: PmNode): Promise<ExtensionAttributes>;
+  editExtension(extensionNode?: PmNode): Promise<ExtensionAttributes>;
 
   autoConvert(link: String): ExtensionAttributes | null;
 }
