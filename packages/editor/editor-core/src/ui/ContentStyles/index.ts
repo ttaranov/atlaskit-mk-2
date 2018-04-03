@@ -257,6 +257,15 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    li .media-single {
+      margin: 0;
+    }
+
+    table .media-single {
+      margin: 0;
+      width: inherit;
+    }
+
     & [layout='wrap-left'] + [layout='wrap-right'],
     & [layout='wrap-right'] + [layout='wrap-left'] {
       clear: none;

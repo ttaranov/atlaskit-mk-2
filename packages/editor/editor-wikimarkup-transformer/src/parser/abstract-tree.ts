@@ -1,10 +1,11 @@
 import { colors } from '@atlaskit/theme';
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
 import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
+import { getProseMirrorNodeTypeForMacro } from './macros';
 import { findTextAndInlineNodes } from './text';
 import { getCodeLanguage } from './code-language';
 import {
@@ -12,6 +13,8 @@ import {
   getResolvedTextIntervals,
 } from './intervals';
 import { isSpecialMacro } from './special';
+
+import getRuleNodeView from './nodes/rule';
 
 // E.g. bq. foo -> [ "foo" ]
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
@@ -58,12 +61,17 @@ export default class AbstractTree {
         simpleMacro && isSpecialMacro(simpleMacro.macro),
       );
 
+      const containerNodeType = simpleMacro
+        ? getProseMirrorNodeTypeForMacro(this.schema, simpleMacro.macro)
+        : null;
+
       return {
         text,
         macro: simpleMacro,
         content: this.getTextNodes(
           text,
           treatChildrenAsText,
+          containerNodeType,
           hasMultipleMacros,
         ),
       };
@@ -118,28 +126,16 @@ export default class AbstractTree {
     attrs: { [key: string]: string },
     content: PMNode[],
   ): PMNode {
-    const { blockquote, codeBlock, panel } = this.schema.nodes;
+    const nodeType = getProseMirrorNodeTypeForMacro(this.schema, macro);
+    const nodeAttrs: { [key: string]: any } = {};
 
     if (macro === 'code') {
-      return codeBlock.createChecked(
-        { language: getCodeLanguage(attrs) },
-        content,
-      );
+      nodeAttrs.language = getCodeLanguage(attrs);
+    } else if (macro === 'panel') {
+      nodeAttrs.panelType = 'info';
     }
 
-    if (macro === 'noformat') {
-      return codeBlock.createChecked({}, content);
-    }
-
-    if (macro === 'panel') {
-      return panel.createChecked({ panelType: 'info' }, content);
-    }
-
-    if (macro === 'quote') {
-      return blockquote.createChecked({}, content);
-    }
-
-    throw new Error(`Unknown macro type: ${macro}`);
+    return nodeType.createChecked(nodeAttrs, content);
   }
 
   /**
@@ -195,9 +191,10 @@ export default class AbstractTree {
   private getTextNodes(
     str: string,
     treatChildrenAsText: boolean,
+    containerNodeType: NodeType | null,
     useGreyText: boolean,
   ): PMNode[] {
-    const { blockquote, heading, paragraph, rule } = this.schema.nodes;
+    const { blockquote, heading, paragraph } = this.schema.nodes;
     const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
@@ -230,7 +227,7 @@ export default class AbstractTree {
       if (line === HORIZONTAL_RULE) {
         processAndEmptyStoredText();
 
-        const hrNode = rule.createChecked();
+        const hrNode = getRuleNodeView(this.schema, containerNodeType);
         output.push(hrNode);
 
         continue;

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 66.1.5
+- [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
+
 ## 66.1.4
 
 ## 66.1.3

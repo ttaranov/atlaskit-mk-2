@@ -24,6 +24,7 @@ export default function MediaSingle({
       width={width}
       height={height}
       containerWidth={containerWidth}
+      className="media-single"
     >
       {React.Children.only(children)}
     </Wrapper>

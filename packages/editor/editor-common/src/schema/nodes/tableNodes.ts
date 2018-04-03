@@ -174,7 +174,7 @@ const cellAttrs = {
 
 export const tableCell: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -201,7 +201,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,
