@@ -51,7 +51,12 @@ import {
   canInsertTable,
 } from '../utils';
 
+import { TableLayout } from '@atlaskit/editor-common';
+import { EventDispatcher } from '../../../event-dispatcher';
+
 export type TableStateSubscriber = (state: TableState) => any;
+
+export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
 
 export interface PluginConfig {
   isHeaderRowRequired?: boolean;
@@ -61,6 +66,7 @@ export interface PluginConfig {
   allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
+  permittedLayouts?: PermittedLayoutsDescriptor;
 }
 
 export class TableState {
@@ -72,8 +78,10 @@ export class TableState {
   tableHidden: boolean = false;
   tableDisabled: boolean = false;
   tableActive: boolean = false;
+  tableLayout?: TableLayout;
   domEvent: boolean = false;
   view: EditorView;
+  eventDispatcher: EventDispatcher | undefined;
   set: DecorationSet = DecorationSet.empty;
   allowColumnResizing: boolean = false;
   allowMergeCells: boolean = false;
@@ -81,11 +89,12 @@ export class TableState {
   allowBackgroundColor: boolean = false;
   allowHeaderRow: boolean = false;
   allowHeaderColumn: boolean = false;
+  permittedLayouts: PermittedLayoutsDescriptor;
 
   private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
 
-  constructor(state: EditorState, pluginConfig: PluginConfig = {}) {
+  constructor(state: EditorState, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) {
     this.changeHandlers = [];
 
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
@@ -97,6 +106,8 @@ export class TableState {
     this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
     this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
     this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
+    this.eventDispatcher = eventDispatcher;
+    this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
 
   insertColumn = (column: number): void => {
@@ -274,6 +285,15 @@ export class TableState {
       dirty = true;
     }
 
+    if (tableNode) {
+      const tableLayout = tableNode.attrs.layout;
+      if (tableLayout !== this.tableLayout) {
+        this.tableLayout = tableLayout;
+        dirty = true;
+        controlsDirty = true;
+      }
+    }
+
     if (dirty) {
       this.triggerOnChange();
     }
@@ -310,6 +330,26 @@ export class TableState {
         this.convertFirstRowToHeader();
       }
     });
+  };
+
+  setTableLayout = (layout: TableLayout): boolean => {
+    if (!this.tableNode) {
+      return false;
+    }
+
+    const { schema, tr } = this.view.state;
+    const start = tableStartPos(this.view.state);
+
+    this.view.dispatch(
+      tr.setNodeMarkup(start - 1, schema.nodes.table, {
+        ...this.tableNode.attrs,
+        layout,
+      }),
+    );
+
+    this.tableLayout = layout;
+
+    return true;
   };
 
   private triggerOnChange(): void {
@@ -364,11 +404,11 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const plugin = (pluginConfig?: PluginConfig) =>
+export const plugin = (eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {
-        return new TableState(state, pluginConfig);
+        return new TableState(state, eventDispatcher, pluginConfig);
       },
       apply(tr, state) {
         const meta = tr.getMeta(stateKey);
@@ -398,7 +438,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       nodeViews: {
         table: (node: PmNode, view: EditorView) => {
           const { allowColumnResizing } = stateKey.getState(view.state);
-          return new TableNode({ node, view, allowColumnResizing });
+          return new TableNode({
+            node,
+            view,
+            allowColumnResizing,
+            eventDispatcher,
+          });
         },
       },
       handleClick(view: EditorView, pos: number, event) {
