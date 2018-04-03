@@ -69,7 +69,7 @@ AkRadio component to render. Both stateful and stateless
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/RadioBase')}
-      heading="RadioBase Props"
+      heading="AkRadio Props"
     />
   )}
 

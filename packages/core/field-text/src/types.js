@@ -1,5 +1,6 @@
 // @flow
 import type { Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type FieldTextProps = {
   /** Standard HTML input autocomplete attribute. */
@@ -33,18 +34,30 @@ export type FieldTextProps = {
   placeholder?: string,
   /** The value of the input. */
   value?: string | number,
-  /** Handler to be called when the input loses focus. */
-  onBlur?: (e: SyntheticEvent<>) => mixed,
-  /** Handler to be called when the input changes. */
-  onChange?: (e: SyntheticEvent<HTMLInputElement>) => mixed,
-  /** Handler to be called when the input receives focus. */
-  onFocus?: (e: SyntheticEvent<>) => mixed,
-  /** Standard input onkeydown event. */
-  onKeyDown?: (e: SyntheticKeyboardEvent<>) => mixed,
-  /** Standard input onkeypress event. */
-  onKeyPress?: (e: SyntheticKeyboardEvent<>) => mixed,
-  /** Standard input onkeyup event. */
-  onKeyUp?: (e: SyntheticKeyboardEvent<>) => mixed,
+  /** Handler to be called when the input loses focus. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onBlur?: (e: SyntheticEvent<>, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Handler to be called when the input changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange?: (
+    e: SyntheticEvent<HTMLInputElement>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
+  /** Handler to be called when the input receives focus. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFocus?: (e: SyntheticEvent<>, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Standard input onkeydown event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyDown?: (
+    e: SyntheticKeyboardEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
+  /** Standard input onkeypress event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyPress?: (
+    e: SyntheticKeyboardEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
+  /** Standard input onkeyup event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyUp?: (
+    e: SyntheticKeyboardEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */

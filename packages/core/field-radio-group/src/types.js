@@ -1,5 +1,6 @@
 // @flow
 import type { Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 // Used by RadioGroupStateless
 export type ItemPropType = {
@@ -30,8 +31,8 @@ export type RadioBasePropTypes = {
   isSelected?: boolean,
   /** Field name */
   name?: string,
-  /** onChange event handler */
-  onChange: any => mixed,
+  /** onChange event handler. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** Feild value */
   value?: string,
 };
@@ -41,8 +42,8 @@ export type RadioGroupBasePropTypes = {|
   isRequired?: boolean,
   /** Label to display above the radio button options. */
   label?: string,
-  /** Called when the value changes; passed the event */
-  onRadioChange: any => mixed,
+  /** Called when the value changes; passed the event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onRadioChange: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
 |};
 
 export type RadioGroupStatelessPropTypes = {

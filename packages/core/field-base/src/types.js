@@ -1,5 +1,6 @@
 // @flow
 import type { Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type FieldBaseStatelessProps = {
   /**
@@ -32,16 +33,16 @@ export type FieldBaseStatelessProps = {
   isReadOnly?: boolean,
   /** mark the field as required */
   isRequired?: boolean,
-  /** handler for the onBlur event on the field element */
-  onBlur: (event: any) => mixed,
-  /** handler for the onBlur event on the dialog element */
-  onDialogBlur?: (event: any) => mixed,
-  /** handler for the click event on the dialog element */
-  onDialogClick?: (event: any) => mixed,
-  /** handler for the focus event on the dialog element */
-  onDialogFocus?: (event: any) => mixed,
-  /** handler for the focus event on the field element */
-  onFocus: (event: any) => mixed,
+  /** Handler for the onBlur event on the field element.The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onBlur: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Handler for the onBlur event on the dialog element. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onDialogBlur?: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Handler for the click event on the dialog element. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onDialogClick?: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Handler for the focus event on the dialog element. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onDialogFocus?: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** Handler for the focus event on the field element. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFocus: (event: any, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** whether to call the onBlur handler inside componentDidUpdate */
   shouldReset?: boolean,
   /** the maximum width of the field-base in pixels. Don't include the "px". */

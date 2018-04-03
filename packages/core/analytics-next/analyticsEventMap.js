@@ -255,17 +255,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     needsMountTest: true,
   },
   {
-    path: 'field-text-area/src/FieldTextAreaStateless.js',
-    testPath: 'field-text-area/src/__tests__/analytics.js',
-    context: 'field-text-area',
-    component: 'FieldTextAreaStateless',
-    derivatives: ['FieldTextArea'],
-    props: {
-      onChange: 'change',
-    },
-    componentTestPath: 'field-text-area/src/__tests__/index.js',
-  },
-  {
     path: 'field-text/src/FieldTextStateless.js',
     testPath: 'field-text/src/__tests__/analytics.js',
     context: 'field-text',
@@ -280,6 +269,17 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onKeyUp: 'keyup',
     },
     componentTestPath: 'field-text/src/__tests__/index.js',
+  },
+  {
+    path: 'field-text-area/src/FieldTextAreaStateless.js',
+    testPath: 'field-text-area/src/__tests__/analytics.js',
+    context: 'field-text-area',
+    component: 'FieldTextAreaStateless',
+    derivatives: ['FieldTextArea'],
+    props: {
+      onChange: 'change',
+    },
+    componentTestPath: 'field-text-area/src/__tests__/index.js',
   },
   {
     path: 'flag/src/components/Flag/index.js',

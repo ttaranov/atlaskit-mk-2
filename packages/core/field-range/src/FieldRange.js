@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -18,8 +19,8 @@ type Props = {
   max: number,
   /** Minimum value of the range */
   min: number,
-  /** Hook to be invoked on change of the range */
-  onChange?: (value: number) => mixed,
+  /** Hook to be invoked on change of the range.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange?: (value: number, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** Step value for the range */
   step?: number,
   /** Value of the range */

@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
 import {
@@ -31,8 +32,11 @@ type Props = {
   placeholder?: string,
   /** The value of the input. */
   value?: string | number,
-  /** Handler to be called when the input changes. */
-  onChange?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
+  /** Handler to be called when the input changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange?: (
+    event: SyntheticInputEvent<HTMLTextAreaElement>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
