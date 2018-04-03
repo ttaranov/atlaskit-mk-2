@@ -1,17 +1,20 @@
 import * as assert from 'assert';
-import { Mark, Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 
 import {
+  Effect,
   InlineNodeClosestMatch,
   InlineNodeWithPosition,
   MatchPosition,
+  TextInterval,
   TextMarkElement,
   TextMatch,
-  Effect,
 } from '../interfaces';
 import { getEditorColor } from './color';
 import { findMacros } from './macros';
 import { EMOJIS } from './emoji';
+import { effectsToMarks } from './marks';
+import { calcTextIntervals, containsInterval } from './intervals';
 
 const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
   { name: 'strong', grep: '*' },
@@ -27,6 +30,8 @@ const SIMPLE_TEXT_MARKS: TextMarkElement[] = [
 
 // [~username] and other mentions
 const MENTION_REGEXP = /\[~([\w]+?)\]/;
+
+const DOUBLE_BACKSLASH = '\\\\';
 
 function findMonospaceMatches(text: string): TextMatch[] {
   const output: TextMatch[] = [];
@@ -239,50 +244,59 @@ export function findTextAndInlineNodes(
 }
 
 /**
- * Create a new list of marks from effects
+ * Splits the string into intervals of text with text effects
  */
-export function effectsToMarks(schema: Schema, effects: Effect[]): Mark[] {
-  const {
-    code,
-    em,
-    strike,
-    strong,
-    subsup,
-    textColor,
-    underline,
-  } = schema.marks;
+export function getResolvedTextIntervals(text: string): TextInterval[] {
+  const matches = findTextMatches(text);
 
-  const marks = effects.map(({ name, attrs }) => {
-    switch (name) {
-      case 'color':
-        return textColor.create(attrs);
+  // calculate all intervals taking outer borders of macros
+  const intervals = calcTextIntervals(text, matches);
 
-      case 'emphasis':
-      case 'citation':
-        return em.create();
-
-      case 'deleted':
-        return strike.create();
-
-      case 'strong':
-        return strong.create();
-
-      case 'inserted':
-        return underline.create();
-      case 'superscript':
-        return subsup.create({ type: 'sup' });
-      case 'subscript':
-        return subsup.create({ type: 'sub' });
-      case 'monospaced':
-        return code.create();
-
-      default:
-        throw new Error(`Unknown effect: ${name}`);
-    }
+  // create output list with empty macros in its elements
+  const output: TextInterval[] = intervals.map(({ left, right }) => {
+    return {
+      effects: [],
+      text: text.substring(left, right),
+    };
   });
 
-  // some marks cannot be used together with others
-  // for instance "code" cannot be used with "bold" or "textColor"
-  // addToSet() takes care of these rules
-  return marks.length ? marks[0].addToSet(marks.slice(1)) : [];
+  // iterate existing macros and put them into the output list
+  for (const match of matches) {
+    intervals.map((interval, i) => {
+      if (containsInterval(match, interval)) {
+        output[i].effects.push({
+          name: match.effect,
+          attrs: match.attrs,
+        });
+      }
+    });
+  }
+
+  return output;
+}
+
+export function getTextWithMarks(
+  schema: Schema,
+  text: string,
+  extraEffects: Effect[] = [],
+): PMNode[] {
+  const intervals = getResolvedTextIntervals(text);
+  const output: PMNode[] = [];
+
+  for (const { effects, text } of intervals) {
+    const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
+    const textEffects = effects.concat(extraEffects);
+
+    textWithLineBreaks.forEach((chunk, i) => {
+      const inlineNodes = findTextAndInlineNodes(schema, chunk, textEffects);
+      output.push(...inlineNodes);
+
+      if (i + 1 < textWithLineBreaks.length) {
+        const hardBreakNode = schema.nodes.hardBreak.createChecked();
+        output.push(hardBreakNode);
+      }
+    });
+  }
+
+  return output;
 }
