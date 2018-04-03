@@ -91,15 +91,16 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'button/src/__tests__/testDefaultBehaviour.js',
   },
   {
-    path: 'calendar/src/components/CalendarStateless.js',
+    path: 'calendar/src/components/Calendar.js',
     testPath: 'calendar/src/components/__tests__/analytics.js',
     context: 'calendar',
-    component: 'CalendarStateless',
+    component: 'Calendar',
     props: {
       onUpdate: 'update',
     },
-    componentTestPath: 'calendar/src/components/__tests__/CalendarStateless.js',
+    componentTestPath: 'calendar/src/components/__tests__/Calendar.js',
     refIssue: true,
+    rerun: true,
   },
   {
     path: 'checkbox/src/CheckboxStateless.js',
@@ -454,6 +455,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     },
     componentTestPath: 'table-tree/src/__tests__/functional.js',
     manualComponentTestOverride: true,
+    hasExtractReactTypesIssue: true,
   },
   {
     path: 'tabs/src/components/Tabs.js',

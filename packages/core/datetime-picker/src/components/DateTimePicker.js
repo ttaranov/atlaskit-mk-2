@@ -1,11 +1,21 @@
 // @flow
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
@@ -100,7 +110,7 @@ function parseDateIntoStateValues(value) {
   };
 }
 
-export default class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
@@ -206,3 +216,19 @@ export default class DateTimePicker extends Component<Props, State> {
     );
   }
 }
+
+export { DateTimePicker as DateTimePickerBase };
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  component: 'date-picker',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
+  })(DateTimePicker),
+);

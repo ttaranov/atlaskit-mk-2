@@ -4,6 +4,15 @@ import { Calendar as CalendarBase } from 'calendar-base';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
@@ -92,7 +101,7 @@ function padToTwo(number: number) {
   return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
 }
 
-export default class Calendar extends Component<Props, State> {
+class Calendar extends Component<Props, State> {
   calendar: Object;
   container: HTMLElement | null;
 
@@ -453,3 +462,19 @@ export default class Calendar extends Component<Props, State> {
     );
   }
 }
+
+export { Calendar as CalendarBase };
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  component: 'calendar',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onUpdate: createAndFireEventOnAtlaskit({
+      action: 'update',
+    }),
+  })(Calendar),
+);

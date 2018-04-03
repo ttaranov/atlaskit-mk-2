@@ -6,7 +6,7 @@ import { parse } from 'date-fns';
 import cases from 'jest-in-case';
 
 import Btn from '../Btn';
-import Calendar from '../Calendar';
+import CalendarWithAnalytics, { CalendarBase } from '../Calendar';
 import Date from '../Date';
 import { DateTd } from '../../styled/Date';
 
@@ -30,7 +30,7 @@ function createEventData(iso, mix = {}) {
 }
 
 test('getNextMonth() / getPrevMonth()', () => {
-  const wrapper = shallow(<Calendar month={1} year={2000} />);
+  const wrapper = shallow(<CalendarBase month={1} year={2000} />);
   expect(wrapper.instance().getNextMonth()).toEqual({ month: 2, year: 2000 });
   expect(wrapper.instance().getPrevMonth()).toEqual({ month: 12, year: 1999 });
 });
@@ -38,7 +38,7 @@ test('getNextMonth() / getPrevMonth()', () => {
 cases(
   'handleContainerKeyDown() calls navigate()',
   ({ name, key }) => {
-    const i = shallow(<Calendar />).instance();
+    const i = shallow(<CalendarBase />).instance();
     i.navigate = jest.fn();
     i.handleContainerKeyDown(createEvent({ key }));
     expect(i.navigate).toHaveBeenCalledWith(name);
@@ -56,7 +56,7 @@ cases(
   ({ iso, name, type }) => {
     const mockOnChange = jest.fn();
     const wrapper = shallow(
-      <Calendar onChange={mockOnChange} month={1} year={2000} />,
+      <CalendarBase onChange={mockOnChange} month={1} year={2000} />,
     );
     const container = wrapper.first();
 
@@ -78,7 +78,7 @@ cases(
   ({ key }) => {
     const mock = jest.fn();
     const wrapper = shallow(
-      <Calendar onSelect={mock} day={1} month={1} year={2000} />,
+      <CalendarBase onSelect={mock} day={1} month={1} year={2000} />,
     );
     const container = wrapper.first();
 
@@ -93,7 +93,7 @@ cases(
 test('handleClickDay()', () => {
   const mockOnSelect = jest.fn();
   const wrapper = mount(
-    <Calendar onSelect={mockOnSelect} month={1} year={2000} />,
+    <CalendarBase onSelect={mockOnSelect} month={1} year={2000} />,
   );
   wrapper
     .find(Date)
@@ -106,7 +106,7 @@ test('handleClickDay()', () => {
 test('handleClickNext()', () => {
   const mockOnChange = jest.fn();
   const wrapper = mount(
-    <Calendar onChange={mockOnChange} day={1} month={1} year={2000} />,
+    <CalendarBase onChange={mockOnChange} day={1} month={1} year={2000} />,
   );
   wrapper
     .find(Btn)
@@ -121,7 +121,7 @@ test('handleClickNext()', () => {
 test('handleClickPrev()', () => {
   const mockOnChange = jest.fn();
   const wrapper = mount(
-    <Calendar onChange={mockOnChange} day={1} month={1} year={2000} />,
+    <CalendarBase onChange={mockOnChange} day={1} month={1} year={2000} />,
   );
   wrapper
     .find(Btn)
@@ -135,7 +135,7 @@ test('handleClickPrev()', () => {
 
 test('handleContainerBlur()', () => {
   const mockOnBlur = jest.fn();
-  const wrapper = mount(<Calendar onBlur={mockOnBlur} />);
+  const wrapper = mount(<CalendarBase onBlur={mockOnBlur} />);
   wrapper
     .find('div')
     .first()
@@ -145,7 +145,7 @@ test('handleContainerBlur()', () => {
 
 test('handleContainerFocus()', () => {
   const mockOnFocus = jest.fn();
-  const wrapper = mount(<Calendar onFocus={mockOnFocus} />);
+  const wrapper = mount(<CalendarBase onFocus={mockOnFocus} />);
   wrapper
     .find('div')
     .first()
@@ -154,14 +154,32 @@ test('handleContainerFocus()', () => {
 });
 
 test('refContainer()', () => {
-  const wrapper = mount(<Calendar />);
+  const wrapper = mount(<CalendarBase />);
   expect(wrapper.instance().container).toBeInstanceOf(HTMLDivElement);
 });
 
 test('focus()', () => {
-  const wrapper = mount(<Calendar />);
+  const wrapper = mount(<CalendarBase />);
   const instance = wrapper.instance();
   instance.container.focus = jest.fn();
   instance.focus();
   expect(instance.container.focus).toHaveBeenCalledTimes(1);
+});
+describe('CalendarWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<CalendarWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
+  });
 });

@@ -1,9 +1,19 @@
 // @flow
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
 
@@ -61,7 +71,7 @@ function formatTime(time: string): string {
   return isValid(date) ? format(date, 'h:mma') : time;
 }
 
-export default class TimePicker extends Component<Props, State> {
+class TimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
@@ -160,3 +170,19 @@ export default class TimePicker extends Component<Props, State> {
     );
   }
 }
+
+export { TimePicker as TimePickerBase };
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  component: 'time-picker',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
+  })(TimePicker),
+);
