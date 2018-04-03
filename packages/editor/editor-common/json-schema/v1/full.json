@@ -1858,14 +1858,7 @@
             "marks": {
               "type": "array",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/code_mark"
-                  },
-                  {
-                    "$ref": "#/definitions/link_mark"
-                  }
-                ]
+                "$ref": "#/definitions/code_mark"
               }
             }
           },
