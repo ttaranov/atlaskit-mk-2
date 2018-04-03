@@ -101,7 +101,15 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactions = mount(renderReactions());
 
     return reactionsProvider
-      .addReaction(containerAri, demoAri, flagBlackId.id!)
+      .getReactions([{ containerAri, ari: demoAri }])
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state[demoAri]);
+        return reactionsProvider.addReaction(
+          containerAri,
+          demoAri,
+          flagBlackId.id!,
+        );
+      })
       .then(state => {
         reactionsProvider.notifyUpdated(containerAri, demoAri, state);
         reactions.update();

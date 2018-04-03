@@ -111,16 +111,24 @@ export default class Reactions extends Component<Props, State> {
 
   private stableSort = (previousReactions: ReactionSummary[]) => {
     const indexes: { [emojiId: string]: number } = previousReactions.reduce(
-      (map, reaction, index) => ({ ...map, [reaction.emojiId]: index }),
+      (map, reaction, index) => {
+        map[reaction.emojiId] = index;
+        return map;
+      },
       {},
     );
 
-    return (a, b) => (indexes[a.emojiId] || -1) - (indexes[b.emojiId] || -1);
+    const getPosition = ({ emojiId }: ReactionSummary) =>
+      indexes[emojiId] === undefined
+        ? previousReactions.length
+        : indexes[emojiId];
+
+    return (a, b) => getPosition(a) - getPosition(b);
   };
 
   private updateState = (newState: ReactionSummary[]) => {
     this.setState(({ reactions }) => ({
-      reactions: newState.sort(
+      reactions: [...newState].sort(
         reactions.length ? this.stableSort(reactions) : sortReactions,
       ),
     }));
