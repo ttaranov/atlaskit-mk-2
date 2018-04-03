@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 66.1.3
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
 ## 66.1.2
 
 ## 66.1.1

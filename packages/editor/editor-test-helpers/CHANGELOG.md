@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 2.1.1
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
 ## 2.1.0
 
 ## 2.0.14

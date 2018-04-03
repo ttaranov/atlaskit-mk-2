@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.16
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
 ## 8.1.15
 
 ## 8.1.14
