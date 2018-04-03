@@ -21,10 +21,21 @@ Object {
       "type": "panel",
     },
     Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "color": "#97A0AF",
+                  },
+                  "type": "textColor",
+                },
+              ],
               "text": "quote",
               "type": "text",
             },
@@ -32,7 +43,7 @@ Object {
           "type": "paragraph",
         },
       ],
-      "type": "blockquote",
+      "type": "panel",
     },
     Object {
       "content": Array [
@@ -57,10 +68,21 @@ exports[`JIRA wiki markup - Macros should collapse outer macros 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "color": "#97A0AF",
+                  },
+                  "type": "textColor",
+                },
+              ],
               "text": "Panel with nested quote here",
               "type": "text",
             },
@@ -68,7 +90,7 @@ Object {
           "type": "paragraph",
         },
       ],
-      "type": "blockquote",
+      "type": "panel",
     },
     Object {
       "content": Array [
@@ -327,13 +349,18 @@ Object {
       "type": "blockquote",
     },
     Object {
-      "attrs": Object {
-        "panelType": "info",
-      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "color": "#97A0AF",
+                  },
+                  "type": "textColor",
+                },
+              ],
               "text": "panel",
               "type": "text",
             },
@@ -341,7 +368,7 @@ Object {
           "type": "paragraph",
         },
       ],
-      "type": "panel",
+      "type": "blockquote",
     },
     Object {
       "content": Array [
@@ -401,10 +428,21 @@ Object {
       "type": "panel",
     },
     Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "color": "#97A0AF",
+                  },
+                  "type": "textColor",
+                },
+              ],
               "text": "quote inside",
               "type": "text",
             },
@@ -412,7 +450,7 @@ Object {
           "type": "paragraph",
         },
       ],
-      "type": "blockquote",
+      "type": "panel",
     },
     Object {
       "content": Array [
