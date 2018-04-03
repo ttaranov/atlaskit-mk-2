@@ -40,6 +40,11 @@ export function findMacros(
 
     while ((matches = regex.exec(wikiMarkup)) !== null) {
       const position = matches.index;
+
+      if (position > 0 && wikiMarkup[position - 1] === '\\') {
+        continue;
+      }
+
       const attrsSerialized = matches[2] || '';
       const isOpeningMacros = matchCount % 2 === 0;
 
