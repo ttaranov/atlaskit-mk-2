@@ -15,6 +15,10 @@ type AnalyticsEventConfig = {
   testPath: string,
   /** The 'component' context value that will be exposed via analytics context */
   context: string,
+  /** Any components that derive from the base component that will therefore have analytics
+   * as well. E.g. any stateful version of a stateless component.
+   */
+  derivatives?: string[],
   /** The name of the component used in the component test file. This is also used
    * as the name of the base (unwrapped) component export in the component file path.
    * This name should be consistent, some names were manually updated so that they aligned.
@@ -62,6 +66,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'breadcrumbs/__tests__/analytics.js',
     context: 'breadcrumbs',
     component: 'BreadcrumbsStateless',
+    derivatives: ['Breadcrumbs'],
     props: {
       onExpand: 'expand',
     },
@@ -107,6 +112,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'checkbox/src/__tests__/analytics.js',
     context: 'checkbox',
     component: 'CheckboxStateless',
+    derivatives: ['Checkbox'],
     wrapTarget: 'CheckboxWithTheme',
     props: {
       onChange: 'change',
@@ -153,6 +159,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'dropdown-menu/__tests__/analytics.js',
     context: 'dropdown-menu',
     component: 'DropdownMenuStateless',
+    derivatives: ['DropdownMenu'],
     overwrite: 'Droplist',
     overwritePackage: '@atlaskit/droplist',
     props: {
@@ -199,6 +206,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'field-base/src/__tests__/analytics.js',
     context: 'field-base',
     component: 'FieldBaseStateless',
+    derivatives: ['FieldBase'],
     props: {
       onBlur: 'blur',
       onDialogBlur: 'blur',
@@ -224,7 +232,8 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     path: 'field-radio-group/src/RadioGroupStateless.js',
     testPath: 'field-radio-group/src/__tests__/analytics-radio-group.js',
     context: 'field-radio-group',
-    component: 'FieldRadioGroupStateless',
+    component: 'AkFieldRadioGroup',
+    derivatives: ['RadioGroup'],
     props: {
       onRadioChange: 'change',
     },
@@ -246,6 +255,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'field-text-area/src/__tests__/analytics.js',
     context: 'field-text-area',
     component: 'FieldTextAreaStateless',
+    derivatives: ['FieldTextArea'],
     props: {
       onChange: 'change',
     },
@@ -256,6 +266,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'field-text/src/__tests__/analytics.js',
     context: 'field-text',
     component: 'FieldTextStateless',
+    derivatives: ['FieldText'],
     props: {
       onBlur: 'blur',
       onChange: 'change',
@@ -310,6 +321,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'inline-edit/src/__tests__/analytics.js',
     context: 'inline-edit',
     component: 'InlineEditStateless',
+    derivatives: ['InlineEdit'],
     props: {
       onCancel: 'cancel',
       onConfirm: 'confirm',
@@ -357,6 +369,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'multi-select/__tests__/analytics.js',
     context: 'multi-select',
     component: 'MultiSelectStateless',
+    derivatives: ['MultiSelect'],
     props: {
       onFilterChange: 'filter',
       onNewItemCreated: 'createItem',
@@ -427,6 +440,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'single-select/__tests__/analytics.js',
     context: 'single-select',
     component: 'StatelessSelect',
+    derivatives: ['SingleSelect'],
     props: {
       onFilterChange: 'filter',
       onSelected: 'change',
@@ -483,6 +497,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'toggle/src/__tests__/analytics.js',
     context: 'toggle',
     component: 'ToggleStateless',
+    derivatives: ['Toggle'],
     props: {
       onBlur: 'blur',
       onChange: 'change',
@@ -541,9 +556,12 @@ module.exports.instrumentedComponents = analyticsEventMap
     const packageSuffix = path.substring(0, path.indexOf('/'));
     const items = [];
     Object.keys(config.props).forEach(propName => {
+      const components = config.derivatives
+        ? [config.component].concat(config.derivatives).join(', ')
+        : config.component;
       items.push({
         packageName: `@atlaskit/${packageSuffix}`,
-        component: config.component,
+        component: components,
         context: { component: config.context },
         prop: propName,
         payload: { action: config.props[propName] },

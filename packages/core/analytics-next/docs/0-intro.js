@@ -24,6 +24,7 @@ const scrubRepeatedInfo = (
     packageName: item.packageName !== prev.packageName ? item.packageName : '',
     component: item.component !== prev.component ? item.component : '',
     context: !isEqual(item.context, prev.context) ? item.context : undefined,
+    key: `${item.packageName}-${item.component}-${item.prop}`,
   };
 };
 
@@ -41,8 +42,8 @@ const InstrumentedTable = ({ packages }: { packages: InstrumentedItem[] }) => (
     <tbody>
       {packages
         .map(scrubRepeatedInfo)
-        .map(({ packageName, context, component, prop, payload }) => (
-          <tr key={packageName}>
+        .map(({ packageName, context, component, prop, payload, key }) => (
+          <tr key={key}>
             <td>{packageName}</td>
             <td>{component}</td>
             <td>{context ? JSON.stringify(context) : ''}</td>
