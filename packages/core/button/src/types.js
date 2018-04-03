@@ -47,7 +47,7 @@ export type ButtonProps = {
   isSelected: boolean,
   /** Handler to be called on blur */
   onBlur?: (e: SyntheticEvent<>) => void,
-  /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
+  /** Handler to be called on click. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
   onClick?: (e: SyntheticEvent<>, analyticsEvent: UIAnalyticsEvent) => void,
   /** Handler to be called on focus */
   onFocus?: (e: SyntheticEvent<>) => void,

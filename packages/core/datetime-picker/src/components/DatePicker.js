@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
@@ -46,8 +47,8 @@ type Props = {
   name: string,
   /** Called when the field is blurred. */
   onBlur: (e: SyntheticFocusEvent<>) => void,
-  /** Called when the value changes. The only argument is an ISO time. */
-  onChange: string => void,
+  /** Called when the value changes. The first argument is an ISO time. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (string, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
   /** Props to apply to the select. */

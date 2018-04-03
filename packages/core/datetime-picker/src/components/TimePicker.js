@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Select from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
@@ -44,8 +45,8 @@ type Props = {
   name: string,
   /** Called when the field is blurred. */
   onBlur: () => void,
-  /** Called when the value changes. The only argument is an ISO time. */
-  onChange: string => void,
+  /** Called when the value changes. The first argument is an ISO time. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (string, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Called when the field is focused. */
   onFocus: () => void,
   /** Props to apply to the select. */

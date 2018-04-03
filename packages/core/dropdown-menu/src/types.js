@@ -1,6 +1,7 @@
 // @flow
 
 import { type Element, type Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type ItemId = string;
 export type GroupId = string;
@@ -87,17 +88,17 @@ type DropdownMenuBaseProps = {
 
 export type OnOpenChangeArgs = {
   isOpen: boolean,
-  event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
+  event?: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
 };
 
 export type DropdownMenuStatelessProps = DropdownMenuBaseProps & {
-  /** Called when the menu should be open/closed. Received an object with isOpen state. */
-  onOpenChange: OnOpenChangeArgs => void,
+  /** Called when the menu should be open/closed. Received an object with isOpen state.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange: (OnOpenChangeArgs, analyticsEvent?: UIAnalyticsEvent) => void,
 };
 
 export type DropdownMenuStatefulProps = DropdownMenuBaseProps & {
   /** Controls the initial open state of the dropdown. */
   defaultOpen: boolean,
-  /** Called when the menu is open or closed. Received an object with isOpen state. */
-  onOpenChange: Function,
+  /** Called when the menu is open or closed. Received an object with isOpen state.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange: (OnOpenChangeArgs, analyticsEvent?: UIAnalyticsEvent) => void,
 };

@@ -104,7 +104,8 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     context: 'calendar',
     component: 'Calendar',
     props: {
-      onUpdate: 'update',
+      onChange: 'change',
+      onSelect: 'select',
     },
     componentTestPath: 'calendar/src/components/__tests__/Calendar.js',
     refIssue: true,
@@ -411,7 +412,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     context: 'pagination',
     component: 'Pagination',
     props: {
-      onSetPage: 'change',
+      onChange: 'change',
     },
     componentTestPath: 'pagination/__tests__/index.js',
   },

@@ -107,7 +107,7 @@ export class DynamicTable extends Component<Props, State> {
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
-  onSetPage = (page?: number) => this.props.onSetPage(page);
+  onSetPage = (page: number) => this.props.onSetPage(page);
 
   onRankStart = (params: RankStart) => {
     this.setState({

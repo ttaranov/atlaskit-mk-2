@@ -7,6 +7,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
@@ -26,6 +27,11 @@ import itemTheme from '../theme/item-theme';
 const halfFocusRing = 1;
 const dropOffset = `0 ${gridSize()}px`;
 
+type OnOpenChangeArgs = {
+  isOpen: boolean,
+  event?: Event,
+};
+
 type Props = {
   /**
    * Controls the appearance of the menu.
@@ -44,7 +50,8 @@ type Props = {
   isOpen?: boolean,
   onClick?: any => mixed,
   onKeyDown?: any => mixed,
-  onOpenChange?: any => mixed,
+  /** Called when the droplist should open or close. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange?: (OnOpenChangeArgs, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position?: string,
   /** Deprecated. Option to display multiline items when content is too long.

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import CheckboxStateless from './CheckboxStateless';
 
 type Props = {|
@@ -19,8 +20,11 @@ type Props = {|
   isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
-  new state of the checkbox. */
-  onChange?: ({ event: SyntheticEvent<any>, isChecked: boolean }) => mixed,
+  new state of the checkbox.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange?: (
+    { event: SyntheticEvent<any>, isChecked: boolean },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,

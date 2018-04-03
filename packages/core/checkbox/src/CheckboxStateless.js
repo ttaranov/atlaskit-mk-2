@@ -5,6 +5,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
@@ -37,10 +38,12 @@ type Props = {|
   /** Marks the field as invalid. Changes style of unchecked component. */
   isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
-  be called with an object containing the react synthetic event as well as the
-  state the checkbox will naturally be set to. The stateless version does not
-  automatically update whether the checkbox is checked. */
-  onChange: (event: Event & { currentTarget: HTMLInputElement }) => mixed,
+  be called with an object containing the react synthetic event. The stateless version does not
+  automatically update whether the checkbox is checked.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (
+    event: Event & { currentTarget: HTMLInputElement },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,

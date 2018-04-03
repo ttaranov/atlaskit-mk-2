@@ -8,6 +8,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -62,15 +63,15 @@ type Props = {
   /** Function which is called when the calendar is no longer focused. */
   onBlur: Handler,
   /** Called when the calendar is navigated. This can be triggered by the keyboard, or by clicking the navigational buttons.
-   The 'type' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD. */
-  onChange: ChangeEvent => void,
+   The 'type' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (ChangeEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
   onFocus: Handler,
   /** Function called when a day is clicked on. Calls with an object that has
   a day, month and week property as numbers, representing the date just clicked.
   It also has an 'iso' property, which is a string of the selected date in the
-  format YYYY-MM-DD. */
-  onSelect: SelectEvent => void,
+  format YYYY-MM-DD.  The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onSelect: (SelectEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
   previouslySelected?: Array<string>,
@@ -473,8 +474,12 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onUpdate: createAndFireEventOnAtlaskit({
-      action: 'update',
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'change',
+    }),
+
+    onSelect: createAndFireEventOnAtlaskit({
+      action: 'select',
     }),
   })(Calendar),
 );

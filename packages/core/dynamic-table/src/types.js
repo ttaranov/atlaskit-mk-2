@@ -1,9 +1,16 @@
 // @flow
 import { type Node, type Element } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type RowCellType = {
   key?: string | number,
   content: Node,
+};
+
+type SortObj = {
+  key: string | number | null,
+  sortOrder?: SortOrderType | null,
+  item: RowCellType,
 };
 
 export type StatelessProps = {
@@ -15,15 +22,19 @@ export type StatelessProps = {
   isLoading?: boolean,
   isFixedSize?: boolean,
   rowsPerPage?: number,
-  onSetPage: Function,
-  onSort: Function,
+  /** Handler called when table page changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onSetPage: (page: number, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Handler called when table sort changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onSort: (SortObj, analyticsEvent?: UIAnalyticsEvent) => void,
   page?: number,
   sortKey?: string,
   sortOrder?: SortOrderType,
   isRankable?: boolean,
   isRankingDisabled?: boolean,
-  onRankStart?: RankStart => void,
-  onRankEnd?: RankEnd => void,
+  /** Handler called when table row reordering begins. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onRankStart?: (RankStart, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Handler called when table row reordering ends. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onRankEnd?: (RankEnd, analyticsEvent?: UIAnalyticsEvent) => void,
 };
 
 export type RowType = {

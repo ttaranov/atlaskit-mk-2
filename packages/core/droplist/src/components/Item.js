@@ -5,6 +5,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
@@ -42,7 +43,11 @@ type Props = {
   isFocused?: boolean,
   isHidden?: boolean,
   isSelected?: boolean,
-  onActivate?: any => mixed,
+  /** The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onActivate?: (
+    { item: {}, event: SyntheticEvent<*> },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
   target?: ?string,
   title?: ?string,
   tooltipDescription?: ?string,
