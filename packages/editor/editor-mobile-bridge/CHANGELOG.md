@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.13
+- [patch] Implemented setContent for editor mobile native-to-web bridge [b5c150b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5c150b)
+
 ## 0.0.12
 
 ## 0.0.11
