@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 8.1.15
+
 ## 8.1.14
 - [patch] Remove dependency on prosemirror-schema-basic from editor-common [a1ed03a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1ed03a)
 

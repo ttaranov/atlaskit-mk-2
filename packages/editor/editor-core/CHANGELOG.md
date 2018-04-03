@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 66.1.2
+
 ## 66.1.1
 - [patch] Update TaskItem NodeView to fix issue in Collab Editing where task-check would not replicate across sessions [9e331a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e331a6)
 
