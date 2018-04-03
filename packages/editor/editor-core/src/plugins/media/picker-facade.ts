@@ -20,12 +20,17 @@ import {
   UploadParams,
 } from '@atlaskit/media-picker';
 import { ContextConfig } from '@atlaskit/media-core';
+import MobilePicker from './mobile-picker';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
 import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
-export type PickerType = keyof MediaPickerComponents;
+export type PickerType = keyof MediaPickerComponents | 'mobile';
+export type ExtendedComponentConfigs = ComponentConfigs & {
+  mobile: MobilePicker;
+};
+
 export type PickerFacadeConfig = {
   uploadParams: UploadParams;
   contextConfig: ContextConfig;
@@ -34,7 +39,7 @@ export type PickerFacadeConfig = {
 };
 
 export default class PickerFacade {
-  private picker: MediaPickerComponent;
+  private picker: MediaPickerComponent | MobilePicker;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
@@ -45,18 +50,23 @@ export default class PickerFacade {
   constructor(
     pickerType: PickerType,
     config: PickerFacadeConfig,
-    pickerConfig?: ComponentConfigs[PickerType],
+    pickerConfig?: ExtendedComponentConfigs[PickerType],
   ) {
     this.pickerType = pickerType;
     this.errorReporter = config.errorReporter;
     this.uploadParams = config.uploadParams;
     this.stateManager = config.stateManager;
 
-    const picker = (this.picker = MediaPicker(
-      pickerType,
-      this.buildPickerConfigFromContext(config.contextConfig),
-      pickerConfig,
-    ));
+    let picker;
+    if (pickerType === 'mobile') {
+      picker = this.picker = pickerConfig as MobilePicker;
+    } else {
+      picker = this.picker = MediaPicker(
+        pickerType,
+        this.buildPickerConfigFromContext(config.contextConfig),
+        pickerConfig as any,
+      );
+    }
 
     picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
@@ -87,13 +97,13 @@ export default class PickerFacade {
       return;
     }
 
-    picker.removeAllListeners('uploads-start');
-    picker.removeAllListeners('upload-preview-update');
-    picker.removeAllListeners('upload-status-update');
-    picker.removeAllListeners('upload-processing');
-    picker.removeAllListeners('upload-finalize-ready');
-    picker.removeAllListeners('upload-error');
-    picker.removeAllListeners('upload-end');
+    (picker as any).removeAllListeners('uploads-start');
+    (picker as any).removeAllListeners('upload-preview-update');
+    (picker as any).removeAllListeners('upload-status-update');
+    (picker as any).removeAllListeners('upload-processing');
+    (picker as any).removeAllListeners('upload-finalize-ready');
+    (picker as any).removeAllListeners('upload-error');
+    (picker as any).removeAllListeners('upload-end');
 
     if (picker instanceof Dropzone) {
       picker.removeAllListeners('drag-enter');

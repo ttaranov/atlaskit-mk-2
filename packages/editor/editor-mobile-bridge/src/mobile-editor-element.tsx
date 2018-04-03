@@ -4,11 +4,15 @@ import {
   Editor,
   mentionPluginKey,
   textFormattingStateKey,
+  MobilePicker,
+  MediaProvider,
 } from '@atlaskit/editor-core';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf } from './web-to-native/markState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
+import { ContextConfig } from '../../../media/media-core/src/auth';
+import { Auth } from '../../../media/media-core/src';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -43,6 +47,7 @@ class EditorWithState extends Editor {
   }) {
     super.onEditorCreated(instance);
     bridge.editorView = instance.view;
+    bridge.mediaPicker = mediaProvider.mobilePicker;
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
   }
@@ -78,12 +83,36 @@ function subscribeForTextFormatChanges(view: EditorView) {
     );
   }
 }
+const mediaProvider: MediaProvider = {
+  mobilePicker: new MobilePicker(),
+  viewContext: getUploadContext(),
+  uploadContext: getUploadContext(),
+  uploadParams: {
+    collection: toNativeBridge.getCollection(),
+  },
+};
+
+async function getUploadContext(): Promise<ContextConfig> {
+  const { serviceHost, clientId, token } = JSON.parse(toNativeBridge.getAuth());
+  return {
+    serviceHost: serviceHost,
+    // authProvider: (context?: any) => return {clientId: clientId, token: token}
+  };
+}
+
+async function authProviderFunction(context?: any): Promise<Auth> {
+  return {
+    clientId: await toNativeBridge.getClientId(),
+    token: await toNativeBridge.getToken(context.collectionName),
+  };
+}
 
 export default function mobileEditor() {
   return (
     <EditorWithState
       appearance="mobile"
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
+      mediaProvider={Promise.resolve(mediaProvider)}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}

@@ -65,8 +65,6 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public allUploadsFinished: boolean = true;
@@ -82,9 +80,14 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
+
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   private popupPicker?: PickerFacade;
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
+  private mobilePicker?: PickerFacade;
+
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
@@ -582,6 +585,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
     this.clipboardPicker = undefined;
     this.dropzonePicker = undefined;
+    this.mobilePicker = undefined;
   };
 
   private initPickers(
@@ -604,42 +608,52 @@ export class MediaPluginState {
         errorReporter,
       };
 
-      if (contextConfig.userAuthProvider) {
+      if (this.editorAppearance === 'mobile') {
         pickers.push(
-          (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-            userAuthProvider: contextConfig.userAuthProvider,
-          })),
+          (this.mobilePicker = new Picker(
+            'mobile',
+            pickerFacadeConfig,
+            this.mediaProvider.mobilePicker,
+          )),
         );
       } else {
+        if (contextConfig.userAuthProvider) {
+          pickers.push(
+            (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
+              userAuthProvider: contextConfig.userAuthProvider,
+            })),
+          );
+        } else {
+          pickers.push(
+            (this.popupPicker = new Picker('browser', pickerFacadeConfig)),
+          );
+        }
+
         pickers.push(
-          (this.popupPicker = new Picker('browser', pickerFacadeConfig)),
+          (this.binaryPicker = new Picker('binary', pickerFacadeConfig)),
+        );
+
+        pickers.push(
+          (this.clipboardPicker = new Picker('clipboard', pickerFacadeConfig)),
+        );
+
+        pickers.push(
+          (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
+            container: this.options.customDropzoneContainer,
+            headless: true,
+          })),
+        );
+
+        this.dropzonePicker.onDrag(this.handleDrag);
+        this.removeOnCloseListener = this.popupPicker.onClose(
+          this.onPopupPickerClose,
         );
       }
-
-      pickers.push(
-        (this.binaryPicker = new Picker('binary', pickerFacadeConfig)),
-      );
-
-      pickers.push(
-        (this.clipboardPicker = new Picker('clipboard', pickerFacadeConfig)),
-      );
-
-      pickers.push(
-        (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
-          container: this.options.customDropzoneContainer,
-          headless: true,
-        })),
-      );
 
       pickers.forEach(picker => {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
-
-      this.dropzonePicker.onDrag(this.handleDrag);
-      this.removeOnCloseListener = this.popupPicker.onClose(
-        this.onPopupPickerClose,
-      );
     }
 
     if (this.popupPicker) {

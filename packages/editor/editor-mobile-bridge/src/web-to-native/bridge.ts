@@ -8,6 +8,19 @@ export interface TextFormattingBridge {
   updateText(content: string);
 }
 
+export interface MediaBridge {
+  getServiceHost(): string;
+  getAuth(): string;
+  getCollection(): string;
+}
+
+export type Auth = {
+  serviceHost: string;
+  clientId: string;
+  token: string;
+};
+
 export default interface NativeBridge
   extends MentionBridge,
-    TextFormattingBridge {};
+    TextFormattingBridge,
+    MediaBridge {};

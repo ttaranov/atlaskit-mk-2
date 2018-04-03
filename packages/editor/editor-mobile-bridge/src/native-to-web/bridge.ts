@@ -10,4 +10,5 @@ export default interface NativeToWebBridge {
   onMentionPickerResult(result: string);
   setContent(content: string);
   getContent(): string;
+  onMediaPicked(eventName: string, payload: string);
 };

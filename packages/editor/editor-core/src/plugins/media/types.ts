@@ -1,5 +1,6 @@
 import { ContextConfig, Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
+import MobilePicker from './mobile-picker';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -43,6 +44,8 @@ export interface MediaStateManager {
 }
 
 export interface MediaProvider {
+  mobilePicker?: MobilePicker;
+
   uploadParams?: UploadParams;
 
   /**

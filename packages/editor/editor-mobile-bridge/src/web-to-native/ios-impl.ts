@@ -33,4 +33,18 @@ export default class IosBridge implements NativeBridge {
       });
     }
   }
+  getServiceHost(): string {
+    if (window.mediaBridge) {
+      return window.mediaBridge.getServiceHost();
+    } else {
+      return '';
+    }
+  }
+  getAuth(): string {
+    return '';
+  }
+
+  getCollection(): string {
+    return '';
+  }
 }

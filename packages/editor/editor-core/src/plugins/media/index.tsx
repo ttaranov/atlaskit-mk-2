@@ -13,12 +13,14 @@ import keymapPlugin from './pm-plugins/keymap';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
+import MobilePicker from './mobile-picker';
 
 export {
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
   MediaProvider,
+  MobilePicker,
 };
 
 export interface MediaOptions {

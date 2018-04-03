@@ -1,4 +1,4 @@
-import { MentionBridge, TextFormattingBridge } from './bridge';
+import { MediaBridge, MentionBridge, TextFormattingBridge } from './bridge';
 import AndroidBridge from './android-impl';
 import IosBridge from './ios-impl';
 import DummyBridge from './dummy-impl';
@@ -8,6 +8,7 @@ declare global {
   interface Window {
     mentionsBridge?: MentionBridge;
     textFormatBridge?: TextFormattingBridge;
+    mediaBridge?: MediaBridge;
     webkit?: any;
   }
 }

@@ -2,7 +2,11 @@ import NativeToWebBridge from './bridge';
 
 import { EditorView } from 'prosemirror-view';
 
-import { MentionsState, TextFormattingState } from '@atlaskit/editor-core';
+import {
+  MentionsState,
+  TextFormattingState,
+  MobilePicker,
+} from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
 
@@ -11,6 +15,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   mentionsPluginState: MentionsState | null = null;
   editorView: EditorView | null = null;
   transformer: JSONTransformer = new JSONTransformer();
+  mediaPicker: MobilePicker | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -84,5 +89,10 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   setTextFormattingStateAndSubscribe(state: TextFormattingState) {
     this.textFormattingPluginState = state;
+  }
+  onMediaPicked(eventName: string, payload: string) {
+    if (this.mediaPicker) {
+      this.mediaPicker.emit(eventName, JSON.parse(payload));
+    }
   }
 }

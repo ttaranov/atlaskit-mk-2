@@ -62,6 +62,7 @@ export {
   MediaStateManager,
   MediaProvider,
   MediaState,
+  MobilePicker,
 } from './plugins/media';
 
 export { MediaOptions } from './plugins/media';
