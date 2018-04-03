@@ -223,8 +223,8 @@ export default class AbstractTree {
     };
 
     // Flag if currently processing a block of content
-    let isBuilding: boolean = false;
-    let builder: Builder | null | undefined;
+    let isBuilding = false;
+    let builders: Array<Builder> = [];
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
       if (line === HORIZONTAL_RULE) {
@@ -240,10 +240,15 @@ export default class AbstractTree {
       if (!line.length) {
         processAndEmptyStoredText();
 
+        // Close out any active builders
         if (isBuilding) {
-          output.push(builder!.buildPMNode());
+          let builder: Builder | undefined;
+
+          while ((builder = builders.pop())) {
+            output.push(builder.buildPMNode());
+          }
+
           isBuilding = false;
-          builder = null;
         }
 
         continue;
@@ -284,7 +289,14 @@ export default class AbstractTree {
       const listMatches = lineUpdated.match(LIST_REGEXP);
       if (listMatches) {
         const [, /* discard */ style, content] = listMatches;
+        let builder = builders.pop();
         isBuilding = true;
+
+        // If the current builder is a table, push it back on and start a new builder to nest in it
+        if (builder && builder.type === 'table') {
+          builders.push(builder);
+          builder = undefined;
+        }
 
         if (!builder) {
           builder = new ListBuilder(this.schema, style);
@@ -300,25 +312,36 @@ export default class AbstractTree {
 
         const contentNode = this.getTextWithMarks(content, useGreyText);
         builder.add([{ style, content: contentNode }]);
+        builders.push(builder);
         continue;
       }
 
       // search for tables
       const tableMatches = lineUpdated.match(TABLE_REGEXP);
       if (tableMatches) {
+        let builder = builders.pop();
         isBuilding = true;
 
         if (!builder) {
           builder = new TableBuilder(this.schema);
+        } else {
+          // If the current builder isn't a table, close it and add it to the last cell
+          if (builder.type !== 'table') {
+            const contentNode = builder.buildPMNode();
+            builder = builders.pop() || new TableBuilder(this.schema);
+            builder.add([{ style: null, content: [contentNode] }]);
+          }
         }
 
         // Iterate over the cells
         builder.add(this.getTableCells(lineUpdated, useGreyText));
+        builders.push(builder);
         continue;
       }
 
       // If it's not a match, but the last loop was part of a block, continue adding to it
       if (isBuilding) {
+        const builder = builders.pop();
         let content: string;
         let additionalFields: any[] = [];
 
@@ -338,6 +361,7 @@ export default class AbstractTree {
           { style: null, content: contentNode },
           ...additionalFields,
         ]);
+        builders.push(builder!);
         continue;
       }
 
@@ -351,7 +375,11 @@ export default class AbstractTree {
 
     // If a block of content was the last item, make sure to push it
     if (isBuilding) {
-      output.push(builder!.buildPMNode());
+      let builder: Builder | undefined;
+
+      while ((builder = builders.pop())) {
+        output.push(builder.buildPMNode());
+      }
     }
 
     // there can be some text stored after processing
