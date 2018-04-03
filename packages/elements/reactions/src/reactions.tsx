@@ -6,7 +6,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
-import { sortReactions } from './internal/helpers';
+import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
 
 export interface OnEmoji {
   (emojiId: string): any;
@@ -109,27 +109,13 @@ export default class Reactions extends Component<Props, State> {
     this.timeouts.forEach(clearTimeout);
   }
 
-  private stableSort = (previousReactions: ReactionSummary[]) => {
-    const indexes: { [emojiId: string]: number } = previousReactions.reduce(
-      (map, reaction, index) => {
-        map[reaction.emojiId] = index;
-        return map;
-      },
-      {},
-    );
+  private getReactionsSortFunction = (reactions: ReactionSummary[]) =>
+    reactions.length ? sortByPreviousPosition(reactions) : sortByRelevance;
 
-    const getPosition = ({ emojiId }: ReactionSummary) =>
-      indexes[emojiId] === undefined
-        ? previousReactions.length
-        : indexes[emojiId];
-
-    return (a, b) => getPosition(a) - getPosition(b);
-  };
-
-  private updateState = (newState: ReactionSummary[]) => {
+  private updateState = (newReactions: ReactionSummary[]) => {
     this.setState(({ reactions }) => ({
-      reactions: [...newState].sort(
-        reactions.length ? this.stableSort(reactions) : sortReactions,
+      reactions: [...newReactions].sort(
+        this.getReactionsSortFunction(reactions),
       ),
     }));
   };

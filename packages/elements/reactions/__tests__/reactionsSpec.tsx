@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
-import { sortReactions } from '../src/internal/helpers';
+import { sortByRelevance } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { smileyId, flagBlackId } from './_test-data';
@@ -50,7 +50,7 @@ const getSortedReactions = () => {
   const reactionSummaries = (reactionsProvider as any).cachedReactions[
     reactionsProvider.objectReactionKey(containerAri, demoAri)
   ];
-  return [...reactionSummaries].sort(sortReactions);
+  return [...reactionSummaries].sort(sortByRelevance);
 };
 
 describe('@atlaskit/reactions/reactions', () => {
