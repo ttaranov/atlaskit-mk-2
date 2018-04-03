@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { getEmojiResourcePromise, newEmojiRepository } from '../../_test-data';
+import {
+  getEmojiResourcePromise,
+  newEmojiRepository,
+  pngDataURL,
+} from '../../_test-data';
 import EmojiPicker, { Props } from '../../../src/components/picker/EmojiPicker';
 import EmojiPickerComponent from '../../../src/components/picker/EmojiPickerComponent';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -17,6 +21,7 @@ import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
 import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -203,7 +208,7 @@ export const findCancelLink = component =>
     .at(1);
 
 export const findUploadPreview = component =>
-  component.update() && component.find(`.${commonStyles.uploadPreview}`);
+  component.update() && component.find(EmojiUploadPreview);
 
 export const findEmojiWithId = (component, id) =>
   component.update() &&
@@ -226,3 +231,14 @@ export const finishDelete = component =>
 
 export const errorMessageVisible = component =>
   component.update() && component.find(EmojiErrorMessage).length === 1;
+
+export const uploadPreviewShown = component => {
+  const uploadPreview = findUploadPreview(component);
+  expect(uploadPreview).toHaveLength(1);
+  const uploadPreviewEmoji = uploadPreview.find(Emoji);
+  // Should show two emoji in EmojiUploadPrevew
+  expect(uploadPreviewEmoji).toHaveLength(2);
+  let emoji = uploadPreviewEmoji.at(0).prop('emoji');
+  expect(emoji.shortName).toEqual(':cheese_burger:');
+  expect(emoji.representation.imagePath).toEqual(pngDataURL);
+};

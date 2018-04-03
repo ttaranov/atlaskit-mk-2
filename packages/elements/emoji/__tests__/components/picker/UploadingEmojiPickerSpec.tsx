@@ -7,7 +7,6 @@ import {
   createPngFile,
   getEmojiResourcePromise,
   getNonUploadingEmojiResourcePromise,
-  pngDataURL,
   pngFileUploadData,
   getEmojiResourcePromiseFromRepository,
   siteEmojiFoo,
@@ -149,13 +148,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      const uploadPreview = helper.findUploadPreview(component);
-      expect(uploadPreview).toHaveLength(1);
-      const uploadPreviewEmoji = uploadPreview.find(Emoji);
-      expect(uploadPreviewEmoji).toHaveLength(1);
-      let emoji = uploadPreviewEmoji.prop('emoji');
-      expect(emoji.shortName).toEqual(':cheese_burger:');
-      expect(emoji.representation.imagePath).toEqual(pngDataURL);
+      helper.uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
@@ -181,7 +174,7 @@ describe('<UploadingEmojiPicker />', () => {
 
       // new emoji in view
       const newEmojiDescription = provider.getUploads()[0].emoji;
-      emoji = helper.findEmojiWithId(component, newEmojiDescription.id);
+      const emoji = helper.findEmojiWithId(component, newEmojiDescription.id);
       expect(emoji).toHaveLength(1);
 
       let { name, shortName, fallback } = emoji.prop('emoji');
@@ -330,13 +323,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      const uploadPreview = helper.findUploadPreview(component);
-      expect(uploadPreview).toHaveLength(1);
-      const uploadPreviewEmoji = uploadPreview.find(Emoji);
-      expect(uploadPreviewEmoji).toHaveLength(1);
-      let emoji = uploadPreviewEmoji.prop('emoji');
-      expect(emoji.shortName).toEqual(':cheese_burger:');
-      expect(emoji.representation.imagePath).toEqual(pngDataURL);
+      helper.uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
@@ -362,7 +349,7 @@ describe('<UploadingEmojiPicker />', () => {
 
       // new emoji in view
       const newEmojiDescription = provider.getUploads()[0].emoji;
-      emoji = helper.findEmojiWithId(component, newEmojiDescription.id);
+      const emoji = helper.findEmojiWithId(component, newEmojiDescription.id);
       expect(emoji).toHaveLength(1);
 
       const { name, shortName, fallback } = emoji.prop('emoji');
@@ -414,13 +401,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      const uploadPreview = helper.findUploadPreview(component);
-      expect(uploadPreview).toHaveLength(1);
-      const uploadPreviewEmoji = uploadPreview.find(Emoji);
-      expect(uploadPreviewEmoji).toHaveLength(1);
-      let emoji = uploadPreviewEmoji.prop('emoji');
-      expect(emoji.shortName).toEqual(':cheese_burger:');
-      expect(emoji.representation.imagePath).toEqual(pngDataURL);
+      helper.uploadPreviewShown(component);
 
       // cancel
       const cancelLink = helper.findCancelLink(component);
@@ -487,13 +468,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      const uploadPreview = helper.findUploadPreview(component);
-      expect(uploadPreview).toHaveLength(1);
-      const uploadPreviewEmoji = uploadPreview.find(Emoji);
-      expect(uploadPreviewEmoji).toHaveLength(1);
-      let emoji = uploadPreviewEmoji.prop('emoji');
-      expect(emoji.shortName).toEqual(':cheese_burger:');
-      expect(emoji.representation.imagePath).toEqual(pngDataURL);
+      helper.uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
