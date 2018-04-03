@@ -1,11 +1,15 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
-import { SpecialEventType } from '@atlassian/pubsub';
 import {
   ItemStateManager,
   ACTION_STATE_CHANGED_FPS_EVENT,
 } from '../../src/api/TaskDecisionResource';
-import { ObjectKey, ServiceTask, TaskState } from '../../src/types';
+import {
+  ObjectKey,
+  ServiceTask,
+  TaskState,
+  PubSubSpecialEventType,
+} from '../../src/types';
 
 jest.useFakeTimers();
 
@@ -67,7 +71,7 @@ describe('ItemStateManager', () => {
     // tslint:disable-next-line:no-unused-expression
     new ItemStateManager({ url: '', pubSubClient: mockPubSubClient });
     expect(mockPubSubClient.on).toHaveBeenCalledWith(
-      SpecialEventType.RECONNECT,
+      PubSubSpecialEventType.RECONNECT,
       expect.any(Function),
     );
   });
@@ -92,7 +96,7 @@ describe('ItemStateManager', () => {
       });
       itemStateManager.destroy();
       expect(mockPubSubClient.off).toHaveBeenCalledWith(
-        SpecialEventType.RECONNECT,
+        PubSubSpecialEventType.RECONNECT,
         expect.any(Function),
       );
     });
