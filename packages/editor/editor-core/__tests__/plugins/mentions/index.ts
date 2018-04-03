@@ -21,14 +21,14 @@ import {
   createEvent,
   spyOnReturnValue,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { mention as mentionData } from '@atlaskit/util-data-test';
 import { analyticsService } from '../../../src/analytics';
 import * as keymaps from '../../../src/keymaps';
 import mentionsPlugin from '../../../src/plugins/mentions';
 import listPlugin from '../../../src/plugins/lists';
 
 const mentionProvider = new Promise<any>(resolve => {
-  resolve(mentionStoryData.resourceProvider);
+  resolve(mentionData.storyData.resourceProvider);
 });
 
 describe('mentions', () => {

@@ -38,7 +38,7 @@ import {
   underline,
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
 
 import { JSONTransformer } from '../src';
 import textFormatting from '../../editor-core/src/plugins/text-formatting';
@@ -55,7 +55,7 @@ import tablesPlugin from '../../editor-core/src/plugins/table';
 const transformer = new JSONTransformer();
 const toJSON = node => transformer.encode(node);
 const parseJSON = node => transformer.parse(node);
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
 describe('JSONTransformer:', () => {
   describe('encode', () => {

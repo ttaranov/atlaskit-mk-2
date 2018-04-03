@@ -89,29 +89,49 @@ function render(partialProps?: Partial<Props>) {
 }
 
 describe('GlobalQuickSearchContainer', () => {
-  it('should set loading state when searching', () => {
-    const wrapper = render();
+  describe('loading state', () => {
+    it('should set loading state when searching', () => {
+      const wrapper = render();
 
-    searchFor('dav', wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
-  });
-
-  it('should unset loading state when search has finished', async () => {
-    const wrapper = render();
-
-    searchFor('dav', wrapper);
-    await waitForRender(wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
-  });
-
-  it('should should reset loading state when an error happened', async () => {
-    const wrapper = render({
-      recentSearchClient: errorRecentSearchClient,
+      searchFor('dav', wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
     });
 
-    searchFor('dav', wrapper);
-    await waitForRender(wrapper);
-    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
+    it('should unset loading state when search has finished', async () => {
+      const wrapper = render();
+
+      searchFor('dav', wrapper);
+      await waitForRender(wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
+    });
+
+    it('should unset loading state only when all promises have settled', async () => {
+      /**
+       * 0. Recent search errors out immediately, xpsearch takes 5ms
+       * 1. Make sure immediately that loading state is set
+       * 2. Wait 6ms until xpsearch has finished
+       * 3. Make sure loading state is unset
+       */
+      const wrapper = render({
+        recentSearchClient: errorRecentSearchClient,
+        crossProductSearchClient: {
+          search(query: string) {
+            return delay(5, {
+              jira: [],
+              confluence: [],
+            });
+          },
+        },
+      });
+
+      searchFor('disco', wrapper);
+
+      await waitForRender(wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
+
+      await waitForRender(wrapper, 6);
+      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
+    });
   });
 
   it('should start searching when more than one character is typed', async () => {
@@ -338,7 +358,56 @@ describe('GlobalQuickSearchContainer', () => {
       searchFor('err', wrapper);
       await delay();
 
-      expect(firePrivateAnalyticsEventMock).toHaveBeenCalled();
+      expect(firePrivateAnalyticsEventMock).toHaveBeenCalledWith(
+        'atlassian.fabric.global-search.search-error',
+        {
+          name: 'TypeError',
+          message: 'failed',
+          source: 'people',
+        },
+      );
+    });
+  });
+
+  describe('Error handling', () => {
+    const errorCrossProductSearchClient: CrossProductSearchClient = {
+      search(query: string) {
+        return Promise.reject('error');
+      },
+    };
+
+    it('should show error state when both recent search and xpsearch fails', async () => {
+      const wrapper = render({
+        recentSearchClient: errorRecentSearchClient,
+        crossProductSearchClient: errorCrossProductSearchClient,
+      });
+
+      searchFor('dav', wrapper);
+      await waitForRender(wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isError')).toBe(true);
+    });
+
+    it('should not show the error state when getting the initial recently viewed items fails', async () => {
+      const wrapper = render({
+        recentSearchClient: errorRecentSearchClient,
+      });
+
+      await waitForRender(wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isError')).toBe(false);
+    });
+
+    it('should not show the error state when only people search fails', async () => {
+      const wrapper = render({
+        peopleSearchClient: {
+          search(query: string) {
+            return Promise.reject(new TypeError('failed'));
+          },
+        },
+      });
+
+      searchFor('dav', wrapper);
+      await waitForRender(wrapper);
+      expect(wrapper.find(GlobalQuickSearch).prop('isError')).toBe(false);
     });
   });
 });

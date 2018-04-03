@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^6.6.3",
+    "@atlaskit/checkbox": "^1.4.0",
     "@atlaskit/docs": "^2.5.2",
     "@atlaskit/modal-dialog": "^3.5.1",
     "@atlaskit/webdriver-runner": "^0.0.3",

@@ -1,5 +1,10 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.8
+- [patch] ED-4214 fix Confluence table styling and number column handling  [22c4af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22c4af6)
+
+## 2.10.7
+
 ## 2.10.6
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 66.1.1
+- [patch] Update TaskItem NodeView to fix issue in Collab Editing where task-check would not replicate across sessions [9e331a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e331a6)
+
+## 66.1.0
+
+## 66.0.1
+
+## 66.0.0
+
+- [major] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 65.2.0
+
+## 65.1.31
+- [patch] ED-4184. fixing date picker in full page editor. [efa907c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efa907c)
+
+## 65.1.30
+
+## 65.1.29
+- [patch] ED-4139, fix selection when empty paragraph is inserted terminally in the node. [8c93c6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c93c6e)
+
+## 65.1.28
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 65.1.27
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
 ## 65.1.26
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

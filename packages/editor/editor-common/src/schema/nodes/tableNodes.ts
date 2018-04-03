@@ -65,7 +65,7 @@ export const tableBackgroundColorNames = new Map<string, string>();
   ['', 'White'],
 ].forEach(([color, label]) => {
   tableBackgroundColorPalette.set(color.toLowerCase(), label);
-  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase())
+  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
 });
 
 /**

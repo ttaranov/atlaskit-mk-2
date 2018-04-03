@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 8.1.14
+- [patch] Remove dependency on prosemirror-schema-basic from editor-common [a1ed03a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1ed03a)
+
+## 8.1.13
+
+## 8.1.12
+
+## 8.1.11
+
+## 8.1.10
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
 ## 8.1.9
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
 

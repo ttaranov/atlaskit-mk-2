@@ -10,7 +10,7 @@ import {
   expiresAt,
   siteServiceConfig,
   siteUrl,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 
 const tokenReadUrl = `${siteUrl}/token/read`;
 const tokenUploadUrl = `${siteUrl}/token/upload`;

@@ -1,46 +1,41 @@
-import * as sinon from 'sinon';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Context } from '@atlaskit/media-core';
 
 export const fakeContext = (stubbedContext: any = {}): Context => {
-  const getMediaItemProvider = sinon
-    .stub()
-    .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
-
-  const getMediaCollectionProvider = sinon
-    .stub()
-    .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
-
-  const getDataUriService = sinon.stub().returns({
-    fetchOriginalDataUri: sinon
-      .stub()
-      .returns(Promise.resolve('fake-original-data-uri')),
-    fetchImageDataUri: sinon
-      .stub()
-      .returns(Promise.resolve('fake-image-data-uri')),
+  const returns = (value: any) => jest.fn().mockReturnValue(value);
+  const getMediaItemProvider = returns({
+    observable: returns(Observable.of('nothing')),
   });
 
-  const addLinkItem = sinon
-    .stub()
-    .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
-
-  const getUrlPreviewProvider = sinon
-    .stub()
-    .returns({ observable: sinon.stub().returns(Observable.of('nothing')) });
-
-  const getBlobService = sinon.stub().returns({
-    fetchOriginalBlob: sinon.stub().returns(Promise.resolve(new Blob())),
-    fetchImageBlob: sinon.stub().returns(Promise.resolve(new Blob())),
+  const getMediaCollectionProvider = returns({
+    observable: returns(Observable.of('nothing')),
   });
-
+  const getDataUriService = returns({
+    fetchOriginalDataUri: returns(Promise.resolve('fake-original-data-uri')),
+    fetchImageDataUri: returns(Promise.resolve('fake-image-data-uri')),
+  });
+  const addLinkItem = returns({
+    observable: returns(Observable.of('nothing')),
+  });
+  const getUrlPreviewProvider = returns({
+    observable: returns(Observable.of('nothing')),
+  });
+  const getLocalPreview = jest.fn();
+  const setLocalPreview = jest.fn();
+  const removeLocalPreview = jest.fn();
+  const refreshCollection = jest.fn();
+  const getBlobService = jest.fn();
   const defaultContext: Context = {
+    getBlobService,
+    getLocalPreview,
+    setLocalPreview,
+    removeLocalPreview,
     getMediaItemProvider,
     getMediaCollectionProvider,
     getDataUriService,
-    getBlobService,
     addLinkItem,
     getUrlPreviewProvider,
-    refreshCollection: sinon.spy(),
+    refreshCollection,
     config: {
       serviceHost: 'some-service-host',
       authProvider: () =>
@@ -53,9 +48,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
 
   const wrappedStubbedContext: any = {};
   Object.keys(stubbedContext).forEach(methodName => {
-    wrappedStubbedContext[methodName] = sinon
-      .stub()
-      .returns(stubbedContext[methodName]);
+    wrappedStubbedContext[methodName] = returns(stubbedContext[methodName]);
   });
 
   return {

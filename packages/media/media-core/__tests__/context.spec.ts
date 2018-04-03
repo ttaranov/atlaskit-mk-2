@@ -186,4 +186,16 @@ describe('Context', () => {
       });
     });
   });
+
+  describe('local preview', () => {
+    it('should get the local preview after being asigned', () => {
+      const context = createFakeContext();
+
+      expect(context.getLocalPreview('123')).toBeUndefined();
+      context.setLocalPreview('123', 'some-preview');
+      expect(context.getLocalPreview('123')).toEqual('some-preview');
+      context.removeLocalPreview('123');
+      expect(context.getLocalPreview('123')).toBeUndefined();
+    });
+  });
 });

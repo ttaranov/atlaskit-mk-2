@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.5.3
+- [patch] Export the AppearanceTypes type [d38fc10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d38fc10)
+
 ## 6.5.2
 - [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
 

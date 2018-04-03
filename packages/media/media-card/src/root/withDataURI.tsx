@@ -15,13 +15,13 @@ import {
   ElementDimension,
 } from '../utils/getElementDimension';
 import { defaultImageCardDimensions } from '../utils';
-
 export interface WithDataURIServiceProps {
-  dataURIService?: DataUriService;
-  metadata?: MediaItemDetails;
-  appearance?: CardAppearance;
-  dimensions?: CardDimensions;
-  resizeMode?: ImageResizeMode;
+  readonly dataURIService?: DataUriService;
+  readonly metadata?: MediaItemDetails;
+  readonly appearance?: CardAppearance;
+  readonly dimensions?: CardDimensions;
+  readonly resizeMode?: ImageResizeMode;
+  readonly preview?: string;
 }
 
 export interface WithDataURIState {
@@ -108,15 +108,16 @@ export function withDataURI<TOwnProps>(
       return defaultImageCardDimensions[dimension] * retinaFactor;
     }
 
+    setDataURI = dataURI => this.setState({ dataURI });
+    clearDataURI = () => this.setState({ dataURI: undefined });
+
     updateDataURI(props: WithDataURIServiceProps): void {
       const { dataURIService, metadata, resizeMode, appearance } = props;
-
-      const setDataURI = dataURI => this.setState({ dataURI });
-      const clearDataURI = () => this.setState({ dataURI: undefined });
+      const { setDataURI, clearDataURI } = this;
 
       // clear the dataURI if we're updating to undefined metadata or we're updating to a link
       if (!dataURIService || !metadata || isLinkDetails(metadata)) {
-        clearDataURI();
+        this.clearDataURI();
         return;
       }
 
@@ -138,12 +139,13 @@ export function withDataURI<TOwnProps>(
     }
 
     render(): JSX.Element {
+      const dataURI = this.state.dataURI || this.props.preview;
       const props = { ...(this.props as object) } as any;
       delete props.dataURIService;
-      const { dataURI } = this.state;
       const otherProps = { dataURI, ...props } as Readonly<
         TOwnProps & WithDataURIProps
       >;
+
       return <Component {...otherProps} />;
     }
   }

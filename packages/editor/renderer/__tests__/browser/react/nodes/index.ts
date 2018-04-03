@@ -7,7 +7,9 @@ import {
   isText,
   isTextWrapper,
 } from '../../../../src/react/nodes';
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+const { testData } = emojiData;
 
 const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;
@@ -23,8 +25,8 @@ const toEmojiId = emoji => {
   return { shortName, id, fallback };
 };
 
-export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
-export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+export const grinEmojiAttrs = toEmojiAttrs(testData.grinEmoji);
+export const grinEmojiId = toEmojiId(testData.grinEmoji);
 
 const createMockFragment = fragment => {
   const mock = sinon.createStubInstance(Fragment);

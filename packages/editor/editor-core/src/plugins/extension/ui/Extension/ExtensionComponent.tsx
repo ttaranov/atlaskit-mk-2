@@ -7,7 +7,7 @@ import { selectParentNodeOfType } from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
-import { ExtensionHandlers } from '../../../../types';
+import { ExtensionHandlers } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;

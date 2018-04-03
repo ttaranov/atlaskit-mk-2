@@ -10,9 +10,9 @@ import { ReactionPicker } from '../src';
 import EmojiButton from '../src/internal/emoji-button';
 import Selector from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 
-const { getEmojiResourcePromise } = testData;
+const { getEmojiResourcePromise } = emoji.testData;
 
 const { expect } = chai;
 

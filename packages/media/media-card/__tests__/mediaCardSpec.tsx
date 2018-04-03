@@ -304,4 +304,24 @@ describe('MediaCard', () => {
       );
     });
   });
+
+  describe('Local preview', () => {
+    it('should use complete status if local preview is available', () => {
+      const element = shallow(
+        <MediaCard preview="image-preview" provider={createNoopProvider()} />,
+      );
+
+      expect(element.state('status')).toEqual('complete');
+    });
+
+    it('should pass preview down to child component', () => {
+      const element = shallow(
+        <MediaCard preview="image-preview" provider={createNoopProvider()} />,
+      );
+
+      expect(element.find('WithDataURIImpl').prop('preview')).toEqual(
+        'image-preview',
+      );
+    });
+  });
 });

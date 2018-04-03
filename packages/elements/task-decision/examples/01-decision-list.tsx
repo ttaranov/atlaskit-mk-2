@@ -3,8 +3,11 @@ import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import DecisionList from '../src/components/DecisionList';
 import DecisionItem from '../src/components/DecisionItem';
-import { document } from '../src/support/story-data';
-import { MessageContainer, dumpRef } from '../example-helpers/story-utils';
+import {
+  MessageContainer,
+  dumpRef,
+  document,
+} from '../example-helpers/story-utils';
 
 export default () => (
   <div>

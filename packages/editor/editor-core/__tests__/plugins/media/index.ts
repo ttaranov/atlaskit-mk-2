@@ -126,6 +126,38 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
+  it('should set local preview on context when file is uploaded', async () => {
+    const provider = await mediaProvider;
+    const { pluginState } = editor(doc(p('')));
+    const temporaryId = 'temp-id';
+    const publicId = 'public-id';
+    const src = 'file-preview';
+
+    await waitForMediaPickerReady(pluginState);
+    await provider.viewContext;
+
+    const context = await pluginState['mediaProvider'].viewContext;
+    const spy = jest.spyOn(context, 'setLocalPreview');
+    pluginState.insertFiles([
+      {
+        id: temporaryId,
+        fileMimeType: 'image/jpeg',
+      },
+    ]);
+    stateManager.updateState(temporaryId, {
+      id: temporaryId,
+      status: 'processing',
+      thumbnail: {
+        src,
+      },
+      publicId,
+    });
+
+    await sleep(0);
+
+    expect(spy).toBeCalledWith(publicId, src);
+  });
+
   describe('when message editor', () => {
     it('inserts media group', async () => {
       const { editorView, pluginState } = editor(doc(p('')), {

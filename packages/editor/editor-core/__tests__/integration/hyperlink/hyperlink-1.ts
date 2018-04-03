@@ -12,7 +12,7 @@ editors.forEach(editor => {
   BrowserTestCase(
     `Link:create link using toolbar,unlinkify ${editor.name} editor`,
     {
-      skip: ['ie', 'edge', 'safari'],
+      skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
       let browser = await new Page(client);

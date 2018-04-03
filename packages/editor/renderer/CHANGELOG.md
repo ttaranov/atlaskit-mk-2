@@ -1,5 +1,19 @@
 # @atlaskit/renderer
 
+## 13.3.0
+
+## 13.2.0
+- [minor] stop creating mediaContext in MediaCard component [ad8c3c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad8c3c0)
+
+## 13.1.0
+
+## 13.0.17
+
+## 13.0.16
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 13.0.15
+
 ## 13.0.14
 - [patch] Prevent CodeBlocks from overflowing their container [50cc975](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50cc975)
 

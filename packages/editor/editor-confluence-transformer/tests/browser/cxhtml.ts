@@ -663,6 +663,25 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       );
 
       let col1 = 340;
+      check(
+        'with fixed table and rowspan but missing col2',
+        `<table class="wrapped"><colgroup><col style="width: ${col1}px;" /><col /></colgroup><tbody><tr><th>1</th><th>2</th></tr><tr><td>a</td><td>fdfdfddfdffdfdfdfdfdf</td></tr><tr><td>c</td><td rowspan="2">dkjlkjlklkjlkj</td></tr><tr><td colspan="1"></td></tr></tbody></table>`,
+        doc(
+          table(
+            tr(th({ colwidth: [col1] })(p('1')), th()(p('2'))),
+            tr(
+              td({ colwidth: [col1] })(p('a')),
+              td()(p('fdfdfddfdffdfdfdfdfdf')),
+            ),
+            tr(
+              td({ colwidth: [col1] })(p('c')),
+              td({ rowspan: 2 })(p('dkjlkjlklkjlkj')),
+            ),
+            tr(td({ colwidth: [col1] })(p(''))),
+          ),
+        ),
+      );
+
       let col2 = 977;
       check(
         'with fixed table and rowspan',

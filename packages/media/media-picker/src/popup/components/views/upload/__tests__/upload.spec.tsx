@@ -5,7 +5,7 @@ import { FlagGroup } from '@atlaskit/flag';
 import { FileDetails } from '@atlaskit/media-core';
 import { Card, CardView } from '@atlaskit/media-card';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
-
+import { fakeContext } from '@atlaskit/media-test-helpers';
 import {
   State,
   CollectionItem,
@@ -15,7 +15,6 @@ import {
 import {
   mockStore,
   mockState,
-  mockContext,
   getComponentClassWithStore,
   mockIsWebGLNotAvailable,
 } from '../../../../mocks';
@@ -39,7 +38,7 @@ const createConnectedComponent = (
   state: State,
   enzymeMethod: Function = shallow,
 ) => {
-  const context = mockContext();
+  const context = fakeContext();
   const store = mockStore(state);
   const dispatch = store.dispatch;
   const root = enzymeMethod(
@@ -60,7 +59,8 @@ describe('<StatelessUploadView />', () => {
     recentItems: CollectionItem[] = [],
     mockStateOverride: Partial<State> = {},
   ) => {
-    const context = mockContext();
+    const context = fakeContext();
+
     const { selectedItems, uploads, apiUrl } = {
       ...mockState,
       ...mockStateOverride,

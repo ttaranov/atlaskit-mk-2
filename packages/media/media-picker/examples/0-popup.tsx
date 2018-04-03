@@ -11,7 +11,9 @@ import {
   defaultCollectionName,
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
+  createStorybookContext,
 } from '@atlaskit/media-test-helpers';
+import { Card } from '@atlaskit/media-card';
 import { MediaPicker, Popup, MediaProgress } from '../src';
 import {
   PopupContainer,
@@ -20,11 +22,20 @@ import {
   PreviewImage,
   UploadingFilesWrapper,
   FileProgress,
+  FilesInfoWrapper,
+  CardsWrapper,
+  CardItemWrapper,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
 import { ModuleConfig } from '../src/domain/config';
 
+const context = createStorybookContext();
+
 export type InflightUpload = { [key: string]: {} };
+export type PublicFile = {
+  publicId: string;
+  preview?: string;
+};
 export interface PopupWrapperState {
   isAutoFinalizeActive: boolean;
   isFetchMetadataActive: boolean;
@@ -34,6 +45,7 @@ export interface PopupWrapperState {
   authEnvironment: AuthEnvironment;
   inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
+  publicFiles: { [key: string]: PublicFile };
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -48,6 +60,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     authEnvironment: 'client',
     inflightUploads: {},
     hasTorndown: false,
+    publicFiles: {},
   };
 
   componentDidMount() {
@@ -110,6 +123,36 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       const id = data.file.id;
       inflightUploads[id] = data.progress;
       this.setState({ inflightUploads });
+    }
+
+    if (eventName === 'upload-preview-update') {
+      const id = data.file.id;
+      const preview = data.preview && data.preview.src;
+
+      if (preview) {
+        const newPublicFile = { [id]: { preview } };
+
+        this.setState({
+          publicFiles: { ...this.state.publicFiles, ...newPublicFile },
+        });
+      }
+    }
+
+    if (eventName === 'upload-processing') {
+      const { publicFiles } = this.state;
+      const publicFile = publicFiles[data.file.id];
+
+      if (publicFile) {
+        const publicId = data.file.publicId;
+        publicFile.publicId = publicId;
+        if (publicFile.preview) {
+          context.setLocalPreview(publicId, publicFile.preview);
+        }
+
+        this.setState({
+          publicFiles,
+        });
+      }
     }
 
     this.setState({
@@ -266,6 +309,38 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   };
 
+  renderCards = () => {
+    const { publicFiles } = this.state;
+    const publicIds = Object.keys(publicFiles)
+      .map(id => publicFiles[id].publicId)
+      .filter(id => !!id);
+
+    if (!publicIds.length) {
+      return;
+    }
+
+    const cards = publicIds.map((id, key) => (
+      <CardItemWrapper>
+        <Card
+          key={key}
+          context={context}
+          isLazy={false}
+          identifier={{
+            mediaItemType: 'file',
+            id,
+          }}
+        />
+      </CardItemWrapper>
+    ));
+
+    return (
+      <CardsWrapper>
+        <h1>{'<Cards />'}</h1>
+        {cards}
+      </CardsWrapper>
+    );
+  };
+
   render() {
     const {
       isAutoFinalizeActive,
@@ -330,7 +405,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             />
             Closed times: {closedTimes}
           </PopupHeader>
-          {this.renderUploadingFiles()}
+          <FilesInfoWrapper>
+            {this.renderUploadingFiles()}
+            {this.renderCards()}
+          </FilesInfoWrapper>
           <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
         </PopupContainer>
       </AnalyticsListener>

@@ -1,11 +1,17 @@
 // tslint:disable:no-console
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import {
+  profilecard as profilecardUtils,
+  emoji,
+  taskDecision,
+} from '@atlaskit/util-data-test';
 import { CardEvent } from '@atlaskit/media-card';
-import { CardSurroundings, ProviderFactory } from '@atlaskit/editor-common';
+import {
+  CardSurroundings,
+  ProviderFactory,
+  ExtensionHandlers,
+} from '@atlaskit/editor-common';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
@@ -16,7 +22,6 @@ import { document } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
-  ExtensionHandlers,
 } from '../../src/ui/Renderer';
 
 import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
@@ -37,7 +42,7 @@ const mentionProvider = Promise.resolve({
 
 const mediaProvider = storyMediaProviderFactory();
 
-const emojiProvider = emojiStoryData.getEmojiResource();
+const emojiProvider = emoji.storyData.getEmojiResource();
 
 const profilecardProvider = Promise.resolve({
   cloudId: 'DUMMY-CLOUDID',
@@ -62,7 +67,7 @@ const profilecardProvider = Promise.resolve({
 });
 
 const taskDecisionProvider = Promise.resolve(
-  taskDecisionStoryData.getMockTaskDecisionResource(),
+  taskDecision.getMockTaskDecisionResource(),
 );
 
 const contextIdentifierProvider = storyContextIdentifierProviderFactory();

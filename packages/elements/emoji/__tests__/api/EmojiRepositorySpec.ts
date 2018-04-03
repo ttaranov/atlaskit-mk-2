@@ -16,7 +16,7 @@ import {
   smileyEmoji,
   thumbsupEmoji,
   thumbsdownEmoji,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);

@@ -12,9 +12,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 
 import {
   akEditorCodeBackground,
@@ -128,13 +126,13 @@ export default function Example() {
                 customDropzoneContainer: parentContainer,
               }}
               emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+                emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
               }
               mentionProvider={Promise.resolve(
-                mentionStoryData.resourceProvider,
+                mention.storyData.resourceProvider,
               )}
               taskDecisionProvider={Promise.resolve(
-                taskDecisionStoryData.getMockTaskDecisionResource(),
+                taskDecision.getMockTaskDecisionResource(),
               )}
               contextIdentifierProvider={storyContextIdentifierProviderFactory()}
               collabEditProvider={collabEditProvider('rick')}
@@ -178,10 +176,10 @@ export default function Example() {
                 customDropzoneContainer: parentContainer,
               }}
               emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+                emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
               }
               mentionProvider={Promise.resolve(
-                mentionStoryData.resourceProvider,
+                mention.storyData.resourceProvider,
               )}
               collabEditProvider={collabEditProvider('morty')}
               placeholder="Write something..."
