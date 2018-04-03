@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -16,8 +17,8 @@ type Props = {
   canClickThrough: boolean,
   /** Whether the blanket has a tinted background color. */
   isTinted: boolean,
-  /** Handler function to be called when the blanket is clicked */
-  onBlanketClicked: (event: Event) => void,
+  /** Handler function to be called when the blanket is clicked. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onBlanketClicked: (event: Event, analyticsEvent?: UIAnalyticsEvent) => void,
 };
 
 export class Blanket extends PureComponent<Props, void> {

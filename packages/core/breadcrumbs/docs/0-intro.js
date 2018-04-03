@@ -34,18 +34,21 @@ export default md`
 
   ${(
     <Props
+      heading="Breadcrumbs Props"
       props={require('!!extract-react-types-loader!../src/components/Breadcrumbs')}
     />
   )}
 
   ${(
     <Props
+      heading="BreadcrumbsStateless Props"
       props={require('!!extract-react-types-loader!../src/components/BreadcrumbsStateless')}
     />
   )}
 
   ${(
     <Props
+      heading="BreadcrumbsItem Props"
       props={require('!!extract-react-types-loader!../src/components/BreadcrumbsItem')}
     />
   )}

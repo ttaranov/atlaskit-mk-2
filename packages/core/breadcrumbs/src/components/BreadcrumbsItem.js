@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
 import {
@@ -23,8 +24,8 @@ type Props = {
   iconBefore?: Node,
   /** An icon to display after the breadcrumb. */
   iconAfter?: Node,
-  /** Handler to be called on click. **/
-  onClick: Event => mixed,
+  /** Handler to be called on click. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onClick: (Event, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** The text to appear within the breadcrumb as a link. */
   text: string,
   /** The maximum width in pixels that an item can have before it is truncated.

@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -24,8 +25,8 @@ type Props = {
   ellipsis in between. */
   maxItems?: number,
   /** A function to be called when you are in the collapsed view and click
-   the ellpisis. */
-  onExpand: Event => mixed,
+   the ellpisis. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onExpand: (e: Event, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
   children?: Node,
 };

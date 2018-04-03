@@ -1,4 +1,7 @@
 // @flow
+
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+
 export type ChildrenType = any;
 export type ComponentType = any;
 export type ElementType = any;
@@ -23,6 +26,7 @@ export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
 export type AvatarClickType = (
   ?{ event?: KeyboardEvent | MouseEvent, item: Object },
+  analyticsEvent?: UIAnalyticsEvent,
 ) => void;
 
 export type AvatarPropTypesBase = {
@@ -74,6 +78,6 @@ export type AvatarPropTypesBase = {
 };
 
 export type AvatarPropTypes = AvatarPropTypesBase & {
-  /** Handler to be called on click. */
+  /** Handler to be called on click. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
   onClick?: AvatarClickType,
 };
