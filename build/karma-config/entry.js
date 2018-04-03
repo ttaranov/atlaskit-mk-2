@@ -31,6 +31,11 @@ const contexts = {
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
+  'editor-mobile-bridge': require.context(
+    '../../packages/editor/editor-mobile-bridge/tests/browser/',
+    true,
+    /^[^_]*.(js|jsx|ts|tsx)$/,
+  ),
 };
 
 Object.keys(contexts).forEach(key => {
