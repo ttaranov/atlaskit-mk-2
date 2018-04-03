@@ -16,7 +16,7 @@ export interface MacroAttributes {
   content?: any; // only bodiedExtension has content
 }
 
-export interface MacroProvider {
+export interface ExtensionProvider {
   config: {};
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro

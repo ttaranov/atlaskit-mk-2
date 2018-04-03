@@ -1,6 +1,6 @@
 import { Node as PmNode } from 'prosemirror-model';
 import {
-  MacroProvider,
+  ExtensionProvider,
   MacroAttributes,
   ExtensionType,
 } from '@atlaskit/editor-core';
@@ -30,7 +30,7 @@ const getMacroADFNode = (macroName, macroParams): MacroAttributes => {
   };
 };
 
-export class MockMacroProvider implements MacroProvider {
+export class MockExtensionProvider implements ExtensionProvider {
   public config = {};
 
   openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes> {
@@ -54,4 +54,4 @@ export class MockMacroProvider implements MacroProvider {
   }
 }
 
-export const macroProvider = new MockMacroProvider();
+export const extensionProvider = new MockExtensionProvider();
