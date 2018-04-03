@@ -43,6 +43,9 @@
     "@atlaskit/lozenge": "^3.6.1",
     "enzyme": "^3.3.0"
   },
+  "atlaskit": {
+    "internal": true
+  },
   "keywords": [
     "atlaskit",
     "react",
