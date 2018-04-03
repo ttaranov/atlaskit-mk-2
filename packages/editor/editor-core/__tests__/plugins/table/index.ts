@@ -15,6 +15,8 @@ import {
   tr,
   td,
   th,
+  ul,
+  li,
   tdEmpty,
   tdCursor,
   code_block,
@@ -22,8 +24,10 @@ import {
   thCursor,
   strong,
   mediaGroup,
+  mediaSingle,
   media,
   sendKeyToPm,
+  randomId,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection, setNodeSelection } from '../../../src/utils';
 import {
@@ -45,13 +49,20 @@ import {
 import tablesPlugin from '../../../src/plugins/table';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
+import listPlugin from '../../../src/plugins/lists';
 
 describe('table plugin', () => {
   const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TableState>({
       doc,
-      editorPlugins: [tablesPlugin, codeBlockPlugin, mediaPlugin()],
+      editorPlugins: [
+        listPlugin,
+        tablesPlugin,
+        codeBlockPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: {
@@ -1188,6 +1199,62 @@ describe('table plugin', () => {
 
       expect(editorView.state.doc).toEqualDocument(docWithTable);
       editorView.destroy();
+    });
+  });
+
+  describe('when images is inside lists in table', () => {
+    const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+    const temporaryFileId = `temporary:${randomId()}`;
+
+    it('inserts image as single', () => {
+      const { editorView } = editor(
+        doc(
+          p('1'),
+          table(tr(td()(p('2'), ul(li(p('3{<>}'))))), tr(tdEmpty), tr(tdEmpty)),
+        ),
+      );
+
+      insertMediaAsMediaSingle(
+        editorView,
+        media({
+          id: temporaryFileId,
+          __key: temporaryFileId,
+          type: 'file',
+          collection: testCollectionName,
+          __fileMimeType: 'image/png',
+        })()(editorView.state.schema),
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('1'),
+          table(
+            tr(
+              td()(
+                p('2'),
+                ul(
+                  li(
+                    p('3'),
+                    mediaSingle()(
+                      media({
+                        id: temporaryFileId,
+                        __key: temporaryFileId,
+                        type: 'file',
+                        collection: testCollectionName,
+                        __fileMimeType: 'image/png',
+                      })(),
+                    ),
+                    p(''),
+                    p(''),
+                  ),
+                ),
+              ),
+            ),
+            tr(tdEmpty),
+            tr(tdEmpty),
+          ),
+        ),
+      );
     });
   });
 
