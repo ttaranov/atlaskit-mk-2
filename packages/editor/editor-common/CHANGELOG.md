@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.17
+- [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
+
 ## 8.1.16
 - [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
 
