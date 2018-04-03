@@ -5,7 +5,7 @@ import {
   MediaSingleAttributes,
   timestampToIso,
   tableBackgroundColorPalette,
-  akEditorTableNumberColumnWidth,
+  calcTableColumnWidths,
 } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
@@ -168,14 +168,13 @@ export default function encode(node: PMNode, schema: Schema) {
     const colgroup = doc.createElement('colgroup');
     const tbody = doc.createElement('tbody');
     const { isNumberColumnEnabled } = node.attrs;
-    let tableColumnWidths = [];
+    const tableColumnWidths = calcTableColumnWidths(node);
 
     node.content.forEach((rowNode, _, i) => {
       const rowElement = doc.createElement('tr');
 
       rowNode.content.forEach((colNode, _, j) => {
         const { attrs: { background, rowspan, colspan } } = colNode;
-        let colwidth = colNode.attrs.colwidth;
 
         const cellElement =
           colNode.type === schema.nodes.tableCell
@@ -184,16 +183,6 @@ export default function encode(node: PMNode, schema: Schema) {
 
         if (isNumberColumnEnabled && j === 0) {
           cellElement.className = 'numberingColumn';
-          if (!colwidth) {
-            colwidth = [akEditorTableNumberColumnWidth];
-          }
-        }
-
-        // if we have a colwidth attr for this cell, and it contains new
-        // colwidths we haven't seen for the whole table yet, add those
-        // (colwidths over the table are defined as-we-go)
-        if (colwidth && colwidth.length + j > tableColumnWidths.length) {
-          tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
         }
 
         if (background) {
@@ -228,7 +217,10 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.appendChild(tbody);
 
     const tableClasses = ['wrapped'];
-    if (tableColumnWidths.length && tableColumnWidths.every(width => width > 0)) {
+    if (
+      tableColumnWidths.length &&
+      tableColumnWidths.every(width => width > 0)
+    ) {
       tableClasses.push('fixed-table');
     }
     elem.setAttribute('class', tableClasses.join(' '));

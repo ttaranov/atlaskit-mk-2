@@ -47,6 +47,7 @@ export {
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,
+  calcTableColumnWidths,
 } from './tableNodes';
 export {
   applicationCard,

@@ -1407,8 +1407,9 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'tableHeader',
               attrs: {
-                colspan: 1,
+                colspan: 2,
                 rowspan: 1,
+                colwidth: [233, 100],
                 background: null,
               },
               content: [
@@ -1423,21 +1424,7 @@ System.out.println("There are " + count + " values >= 5");`,
               attrs: {
                 colspan: 1,
                 rowspan: 1,
-                background: null,
-              },
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [],
-                },
-              ],
-            },
-            {
-              type: 'tableHeader',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
+                background: '#DEEBFF',
               },
               content: [
                 {
