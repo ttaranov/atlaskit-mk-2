@@ -15,6 +15,8 @@ type CommonResultProps = {
   elemAfter?: Node,
   /** Location to link out to on click. */
   href?: string,
+  /** Target to open the link in. */
+  target?: string,
   /** Reduces padding and font size. */
   isCompact: boolean,
   /** Set whether the item should be highlighted as selected. Selected items have

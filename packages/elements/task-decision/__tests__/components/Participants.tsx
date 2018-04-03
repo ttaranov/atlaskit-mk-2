@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 
 import Participants from '../../src/components/Participants';
-import { getParticipants } from '../../src/support/test-data';
+import { getParticipants } from '../_test-data';
 
 describe('<Participants/>', () => {
   it('AvatarGroup created with participants', () => {

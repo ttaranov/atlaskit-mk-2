@@ -1,5 +1,12 @@
 # @atlaskit/editor-jira-transformer
 
+## 2.5.5
+
+## 2.5.4
+
+## 2.5.3
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
 ## 2.5.2
 
 ## 2.5.1

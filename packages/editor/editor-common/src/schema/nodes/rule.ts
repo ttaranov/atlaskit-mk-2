@@ -1,5 +1,4 @@
-import { NodeSpec } from 'prosemirror-model';
-import { nodes } from 'prosemirror-schema-basic';
+import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 /**
  * @name rule_node
@@ -8,4 +7,11 @@ export interface Definition {
   type: 'rule';
 }
 
-export const rule: NodeSpec = nodes.horizontal_rule;
+const hrDOM: DOMOutputSpec = ['hr'];
+export const rule: NodeSpec = {
+  group: 'block',
+  parseDOM: [{ tag: 'hr' }],
+  toDOM() {
+    return hrDOM;
+  },
+};

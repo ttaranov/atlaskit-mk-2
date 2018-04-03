@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { mention, emoji } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { BitbucketTransformer } from '../src';
 
@@ -15,7 +14,7 @@ const pendingPromise = new Promise<any>(() => {});
 
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(mentionStoryData.resourceProvider),
+    resolved: Promise.resolve(mention.storyData.resourceProvider),
     'resolved 2': Promise.resolve(
       new MentionResource({
         url:
@@ -29,7 +28,7 @@ const providers = {
     undefined: undefined,
   },
   emojiProvider: {
-    resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    resolved: emoji.storyData.getEmojiResource({ uploadSupported: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,

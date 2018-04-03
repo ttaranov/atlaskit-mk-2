@@ -13,7 +13,6 @@ export interface DataUriService {
 }
 
 export class MediaDataUriService implements DataUriService {
-
   private blobService: MediaBlobService;
 
   constructor(
@@ -21,7 +20,11 @@ export class MediaDataUriService implements DataUriService {
     readonly serviceHost: string,
     readonly collectionName?: string,
   ) {
-    this.blobService = new MediaBlobService(authProvider, serviceHost, collectionName);
+    this.blobService = new MediaBlobService(
+      authProvider,
+      serviceHost,
+      collectionName,
+    );
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
@@ -32,7 +35,9 @@ export class MediaDataUriService implements DataUriService {
     mediaItem: MediaItem,
     options: FetchImageOptions,
   ): Promise<DataUri> {
-    return this.blobService.fetchImageBlob(mediaItem, options).then(this.readBlob);
+    return this.blobService
+      .fetchImageBlob(mediaItem, options)
+      .then(this.readBlob);
   }
 
   private readBlob(blob: Blob): Promise<DataUri> {

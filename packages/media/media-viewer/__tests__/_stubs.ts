@@ -57,8 +57,16 @@ export class Stubs {
 
   static blobService() {
     return {
-      fetchImageBlob: jest.fn(() => new Blob()),
-      fetchOriginalBlob: jest.fn(() => new Blob()),
+      fetchImageBlob: jest.fn(() => Promise.resolve(new Blob())),
+      fetchOriginalBlob: jest.fn(() => Promise.resolve(new Blob())),
+      fetchImageBlobCancelable: jest.fn(() => ({
+        response: Promise.resolve(new Blob()),
+        cancel: jest.fn(),
+      })),
+      fetchOriginalBlobCancelable: jest.fn(() => ({
+        response: Promise.resolve(new Blob()),
+        cancel: jest.fn(),
+      })),
     };
   }
 

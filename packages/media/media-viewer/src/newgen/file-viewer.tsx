@@ -9,15 +9,11 @@ export type Props = {
 };
 
 const ViewerSelector: React.StatelessComponent<Props> = ({ previewData }) => {
-  switch(previewData.viewer) {
+  switch (previewData.viewer) {
     case 'IMAGE':
-      return (
-        <ImageViewer previewData={previewData} />
-      );
+      return <ImageViewer previewData={previewData} />;
     case 'VIDEO':
-      return (
-        <VideoViewer previewData={previewData} />
-      );
+      return <VideoViewer previewData={previewData} />;
   }
 };
 

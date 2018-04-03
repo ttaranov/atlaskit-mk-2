@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 15.3.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
 ## 15.2.0
 - [minor] MSW-531: add cancelable methods to blobService [7f84f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f84f67)
 

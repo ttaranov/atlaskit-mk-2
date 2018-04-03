@@ -1,5 +1,10 @@
 # @atlaskit/media-image
 
+## 25.2.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 25.1.8
+
 ## 25.1.7
 
 ## 25.1.6

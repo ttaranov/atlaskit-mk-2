@@ -69,28 +69,24 @@ describe('CardList', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName} />);
 
-    expect(context.getMediaCollectionProvider.callCount).toBe(
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
-    expect(context.getMediaItemProvider.callCount).toBe(
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        expectedMediaItems[0].details.id,
-        expectedMediaItems[0].type,
-        collectionName,
-        expectedMediaItems[0],
-      ),
-    ).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        expectedMediaItems[1].details.id,
-        expectedMediaItems[1].type,
-        collectionName,
-        expectedMediaItems[1],
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      expectedMediaItems[0].details.id,
+      expectedMediaItems[0].type,
+      collectionName,
+      expectedMediaItems[0],
+    );
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      expectedMediaItems[1].details.id,
+      expectedMediaItems[1].type,
+      collectionName,
+      expectedMediaItems[1],
+    );
   });
 
   it('should pass a provider to MediaCard', () => {

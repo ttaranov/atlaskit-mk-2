@@ -1,5 +1,4 @@
 import { NodeSpec } from 'prosemirror-model';
-import { nodes } from 'prosemirror-schema-basic';
 
 // Nodes
 import { Definition as Panel } from './panel';
@@ -163,4 +162,6 @@ export interface Doc {
   content: TopLevel;
 }
 
-export const doc: NodeSpec = nodes.doc;
+export const doc: NodeSpec = {
+  content: 'block+',
+};

@@ -46,6 +46,7 @@ export interface Props {
   currentUser?: User;
   onEmojiSelected?: OnEmojiEvent;
   onEmojiActive?: OnEmojiEvent;
+  onEmojiDelete?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
   onMouseLeave?: () => void;
   onMouseEnter?: () => void;
@@ -156,6 +157,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   static defaultProps = {
     onEmojiSelected: () => {},
     onEmojiActive: () => {},
+    onEmojiDelete: () => {},
     onCategoryActivated: () => {},
     onSearch: () => {},
   };
@@ -232,7 +234,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
   private buildCategory = (group: EmojiGroup): VirtualItem<any>[] => {
-    const { onEmojiSelected } = this.props;
+    const { onEmojiSelected, onEmojiDelete } = this.props;
     const items: VirtualItem<any>[] = [];
 
     items.push(
@@ -252,7 +254,9 @@ export default class EmojiPickerVirtualList extends PureComponent<
         new EmojisRowItem({
           emojis: rowEmojis,
           title: group.title,
+          showDelete: group.title === userCustomTitle,
           onSelected: onEmojiSelected,
+          onDelete: onEmojiDelete,
           onMouseMove: this.onEmojiMouseEnter,
         }),
       );

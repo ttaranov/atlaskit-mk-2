@@ -1,6 +1,10 @@
 {
   "extends": "../../../tsconfig.fabric.json",
 
+  "compilerOptions": {
+    "declaration": false,
+  },
+
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"

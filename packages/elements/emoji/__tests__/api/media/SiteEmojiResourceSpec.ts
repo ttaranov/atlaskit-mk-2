@@ -17,6 +17,7 @@ import {
   EmojiDescription,
   EmojiServiceResponse,
   EmojiUpload,
+  ImageRepresentation,
 } from '../../../src/types';
 import { toEmojiId } from '../../../src/type-helpers';
 import {
@@ -33,7 +34,8 @@ import {
   missingMediaEmojiId,
   missingMediaServiceEmoji,
   siteServiceConfig,
-} from '../../../src/support/test-data';
+  loadedMediaEmoji
+} from '../../_test-data';
 
 interface MediaCallback {
   (result: any): void;
@@ -395,14 +397,86 @@ describe('SiteEmojiResource', () => {
         name: 'delete-site-emoji',
       });
 
-      return siteEmojiResource.deleteEmoji(missingMediaEmoji).then(response => {
-        expect(response, 'Response OK').to.equal(true);
+      return siteEmojiResource.deleteEmoji(missingMediaEmoji).then(() => {
         const deleteEmojiCalls = fetchMock.calls('delete-site-emoji');
         expect(
           deleteEmojiCalls.length,
           'Delete site emoji from emoji service called',
         ).to.equal(1);
       });
+    });
+
+    it('Delete works for emoji with mediaRepresentation', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
+
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${missingMediaEmoji.id}`,
+        response: '204',
+        name: 'delete-site-emoji',
+      });
+
+      return siteEmojiResource.deleteEmoji(missingMediaEmoji).then(response => {
+        expect(response, 'Response OK').to.equal(true);
+      });
+    });
+
+    it('Deleting an emoji works for CUSTOM emoji with dataURL imgPath', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
+
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${loadedMediaEmoji.id}`,
+        response: '204',
+        name: 'delete-site-emoji',
+      });
+
+      return siteEmojiResource.deleteEmoji(loadedMediaEmoji).then(response => {
+        expect(response, 'Response OK').to.equal(true);
+      });
+    });
+
+    it('Deleting a custom emoji fails for non-CUSTOM category', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
+      const emoji = {
+        ...loadedMediaEmoji,
+        category: 'PEOPLE',
+      };
+
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${emoji.id}`,
+        response: '204',
+        name: 'delete-site-emoji',
+      });
+
+      return siteEmojiResource
+        .deleteEmoji(emoji)
+        .catch(status => expect(status).to.equal(false));
+    });
+
+    it('Deleting a loaded emoji fails for non-dataURL imgPath', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
+      const rep = loadedMediaEmoji.representation as ImageRepresentation;
+      const emoji = {
+        ...loadedMediaEmoji,
+        representation: {
+          imagePath: 'https://path-to-image.png',
+          height: rep.height,
+          width: rep.width,
+        },
+      };
+
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${emoji.id}`,
+        response: '204',
+        name: 'delete-site-emoji',
+      });
+
+      return siteEmojiResource
+        .deleteEmoji(emoji)
+        .catch(status => expect(status).to.equal(false));
     });
   });
 

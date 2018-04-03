@@ -10,10 +10,7 @@ import Emoji from '../../../src/components/common/Emoji';
 import EmojiButton from '../../../src/components/common/EmojiButton';
 import CachingEmoji from '../../../src/components/common/CachingEmoji';
 import { EmojiDescriptionWithVariations } from '../../../src/types';
-import {
-  imageEmoji,
-  generateSkinVariation,
-} from '../../../src/support/test-data';
+import { imageEmoji, generateSkinVariation } from '../../_test-data';
 import * as helper from './_common-test-helpers';
 
 const baseEmoji = imageEmoji;

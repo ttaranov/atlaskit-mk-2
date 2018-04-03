@@ -1,5 +1,19 @@
 # @atlaskit/task-decision
 
+## 5.2.1
+- [patch] FS-1855 Cache new state received via pubsub [f77a424](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f77a424)
+
+## 5.2.0
+- [minor] FS-1855 Add missing dependency to @atlassian/pubsub [31ae3d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31ae3d4)
+
+## 5.1.1
+
+## 5.1.0
+- [minor] FS-1855 A&D web component should listen to pubsub event [d7fd82d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7fd82d)
+
+## 5.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
 ## 4.10.12
 - [patch] FS-1697 export util functions for use in util-data-test [7f68256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f68256)
 

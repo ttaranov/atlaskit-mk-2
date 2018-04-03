@@ -18,7 +18,7 @@ import {
   mediaEmoji,
   mediaEmojiId,
   newSiteEmojiRepository,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 import { hasSelector } from '../../_emoji-selectors';
 import {
   setupPicker,

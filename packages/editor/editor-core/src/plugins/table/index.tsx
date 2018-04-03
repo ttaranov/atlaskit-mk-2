@@ -32,8 +32,8 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({ props: { allowTables } }) => {
-          return plugin(pluginConfig(allowTables));
+        plugin: ({ props: { allowTables }, eventDispatcher }) => {
+          return plugin(eventDispatcher, pluginConfig(allowTables));
         },
       },
       {
@@ -78,11 +78,14 @@ const tablesPlugin: EditorPlugin = {
             tableActive={tablesState.tableActive}
             cellSelection={tablesState.cellSelection}
             remove={tablesState.remove}
+            tableLayout={tablesState.tableLayout}
+            updateLayout={tablesState.setTableLayout}
             allowMergeCells={tablesState.allowMergeCells}
             allowNumberColumn={tablesState.allowNumberColumn}
             allowBackgroundColor={tablesState.allowBackgroundColor}
             allowHeaderRow={tablesState.allowHeaderRow}
             allowHeaderColumn={tablesState.allowHeaderColumn}
+            permittedLayouts={tablesState.permittedLayouts}
           />
         )}
       />

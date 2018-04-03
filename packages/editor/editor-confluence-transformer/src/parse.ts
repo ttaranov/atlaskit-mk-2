@@ -614,7 +614,7 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
         calcPixelsFromCSSValue(columnInfo.style.width, tableBaseWidth),
       );
     } else {
-      columnSizes.push(NUMBER_COL_WIDTH);
+      columnSizes.push(0);
     }
   }
 
@@ -640,6 +640,11 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
     if (typeof isNumberColumnEnabled === 'undefined') {
       isNumberColumnEnabled = cols[0].classList.contains('numberingColumn');
     }
+
+    if (isNumberColumnEnabled && columnSizes.length) {
+      columnSizes[0] = NUMBER_COL_WIDTH;
+    }
+
     let colwidthIdx = 0;
     for (let j = 0, colsCount = cols.length; j < colsCount; j++) {
       // skip nested tables from query selector
@@ -658,11 +663,13 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
           tableBackgroundColorNames.get(background.toLowerCase()) || background;
       }
 
+      const colwidth = columnSizes.length
+        ? columnSizes.slice(colwidthIdx, colwidthIdx + colspan)
+        : null;
+
       const attrs = {
         colspan,
-        colwidth: columnSizes.length
-          ? columnSizes.slice(colwidthIdx, colwidthIdx + colspan)
-          : null,
+        colwidth: colwidth && colwidth.length && colwidth.every(width => width > 0) ? colwidth : null,
         background,
         rowspan: parseInt(cols[j].getAttribute('rowspan') || '1', 10),
       };

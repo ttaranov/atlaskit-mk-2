@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "4.10.12",
+  "version": "5.2.1",
   "config": {
     "access": "public"
   },
@@ -41,9 +41,10 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/editor-common": "^8.1.5",
-    "@atlaskit/renderer": "^13.0.10",
+    "@atlaskit/editor-common": "^8.1.12",
+    "@atlaskit/renderer": "^13.3.2",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^8.0.2",
     "fetch-mock": "^5.12.1"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"

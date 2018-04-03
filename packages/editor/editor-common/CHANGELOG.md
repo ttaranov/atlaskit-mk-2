@@ -1,5 +1,28 @@
 # @atlaskit/editor-common
 
+## 8.1.16
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
+## 8.1.15
+
+## 8.1.14
+- [patch] Remove dependency on prosemirror-schema-basic from editor-common [a1ed03a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1ed03a)
+
+## 8.1.13
+
+## 8.1.12
+
+## 8.1.11
+
+## 8.1.10
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 8.1.9
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 8.1.8
+- [patch] ED-3990: No longer allow bodiedExtensions in table cells in ADF [c02a81a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02a81a)
+
 ## 8.1.7
 
 ## 8.1.6

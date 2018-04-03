@@ -19,7 +19,7 @@ import {
   defaultMediaApiToken,
   mediaEmoji,
   mediaServiceEmoji,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 describe('EmojiUtils', () => {
   describe('#denormaliseEmojiServiceResponse', () => {
