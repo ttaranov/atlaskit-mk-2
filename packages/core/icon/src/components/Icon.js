@@ -6,6 +6,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import {
@@ -50,8 +51,8 @@ type Props = {
   dangerouslySetGlyph?: string,
   /** String to apply as the SVG title element */
   label: string,
-  /** onClick handler for the icon element */
-  onClick?: () => mixed,
+  /** onClick handler for the icon element. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onClick?: (SyntheticEvent<>, analyticsEvent?: UIAnalyticsEvent) => mixed,
   /** For primary colour for icons */
   primaryColor?: string,
   /** For secondary colour for 2-color icons. Set to inherit to control this via "fill" in CSS */

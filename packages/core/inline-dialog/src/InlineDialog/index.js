@@ -6,6 +6,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
@@ -31,16 +32,28 @@ type Props = {
   content?: NodeType,
   /** Sets whether to show or hide the dialog. */
   isOpen?: boolean,
-  /** Function called when you lose focus on the object. */
-  onContentBlur?: Function,
-  /** Function called when you click on the open dialog. */
-  onContentClick?: Function,
-  /** Function called when you focus on the open dialog. */
-  onContentFocus?: Function,
+  /** Function called when you lose focus on the object. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onContentBlur?: (
+    SyntheticFocusEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
+  /** Function called when you click on the open dialog. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onContentClick?: (
+    SyntheticMouseEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
+  /** Function called when you focus on the open dialog. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onContentFocus?: (
+    SyntheticFocusEvent<>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Function called when the dialog is open and a click occurs anywhere outside
   the dialog. Calls with an object { isOpen: false } and the type of event that
-  triggered the close. */
-  onClose?: Function,
+  triggered the close. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onClose?: (
+    { isOpen: false, event: Event },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Where the dialog should appear, relative to the contents of the children. */
   position?: PositionType,
   /** Whether the dialog's position should be altered when there is no space

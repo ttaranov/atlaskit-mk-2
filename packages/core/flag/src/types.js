@@ -3,12 +3,11 @@
 /* eslint-disable import/prefer-default-export */
 
 import type { Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type ChildrenType = any;
 export type ElementType = any;
 export type FunctionType = (...args: Array<any>) => mixed;
-export type MouseEventFunctionType = (event: MouseEvent) => any;
-export type GenericEventFunctionType = (event: Event) => any;
 
 export type AppearanceTypes =
   | 'error'
@@ -52,18 +51,21 @@ export type AutoDismissFlagProps = {
   /** Private, do not use. */
   isDismissAllowed?: boolean,
   /** Private, do not use. Use the FlagGroup onDismissed handler. */
-  onDismissed?: FunctionType,
+  onDismissed?: (
+    id: number | string,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** The bold text shown at the top of the flag. */
   title: string,
 };
 
 export type FlagProps = AutoDismissFlagProps & {
-  /** Standard onBlur event, applied to Flag by AutoDismissFlag */
-  onBlur?: GenericEventFunctionType,
-  /** Standard onFocus event, applied to Flag by AutoDismissFlag */
-  onFocus?: GenericEventFunctionType,
-  /** Standard onMouseOut event, applied to Flag by AutoDismissFlag */
-  onMouseOut?: MouseEventFunctionType,
-  /** Standard onMouseOver event, applied to Flag by AutoDismissFlag */
-  onMouseOver?: MouseEventFunctionType,
+  /** Standard onBlur event, applied to Flag by AutoDismissFlag. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onBlur?: (event: Event, analyticsEvent?: UIAnalyticsEvent) => any,
+  /** Standard onFocus event, applied to Flag by AutoDismissFlag. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFocus?: (event: Event, analyticsEvent?: UIAnalyticsEvent) => any,
+  /** Standard onMouseOut event, applied to Flag by AutoDismissFlag. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onMouseOut?: (event: MouseEvent, analyticsEvent?: UIAnalyticsEvent) => any,
+  /** Standard onMouseOver event, applied to Flag by AutoDismissFlag. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onMouseOver?: (event: MouseEvent, analyticsEvent?: UIAnalyticsEvent) => any,
 };
