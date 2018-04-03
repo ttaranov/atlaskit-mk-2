@@ -1,5 +1,21 @@
 # @atlaskit/emoji
 
+## 33.0.0
+
+- [major] FS-1658 deleteSiteEmoji and getCurrentUser are required for EmojiProvider implementation [ecec57f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecec57f)
+
+## 32.0.1
+
+## 32.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
+## 31.1.23
+- [patch] Fix painting issue after scrolling to top of emoji list [debbe10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/debbe10)
+
+## 31.1.22
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 31.1.21
 
 ## 31.1.20

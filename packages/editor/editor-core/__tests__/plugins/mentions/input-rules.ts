@@ -1,4 +1,7 @@
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import {
+  emoji as emojiData,
+  mention as mentionData,
+} from '@atlaskit/util-data-test';
 import {
   MentionsState,
   mentionPluginKey,
@@ -15,14 +18,13 @@ import {
   mention,
   code,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import mentionsPlugin from '../../../src/plugins/mentions';
 import emojiPlugin from '../../../src/plugins/emoji';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import { EditorView } from 'prosemirror-view';
 import { setTextSelection } from '../../../src';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
 describe('mentions - input rules', () => {
   let trackEvent;
@@ -54,7 +56,9 @@ describe('mentions - input rules', () => {
     );
 
     return pluginState
-      .setMentionProvider(Promise.resolve(mentionStoryData.resourceProvider))
+      .setMentionProvider(
+        Promise.resolve(mentionData.storyData.resourceProvider),
+      )
       .then(() => {
         insertText(editorView, what, sel || refs['<']);
 

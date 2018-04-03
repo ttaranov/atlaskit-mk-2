@@ -35,7 +35,7 @@ export const getFileImage = (context: () => MockContext) => (
     requestDataTemplate(context().tenantContext.collectionName),
   );
   const data: Array<RequestData> = [...userData, ...tenantData];
-  const matchingDataItem = data.reduce(
+  const matchingDataItem = data.reduce<RequestData | undefined>(
     (ret, dataItem) => (exactMatch(req, dataItem) ? dataItem : ret),
     undefined,
   );
@@ -77,4 +77,6 @@ export const getFileImage = (context: () => MockContext) => (
 
     return res;
   }
+
+  return undefined;
 };

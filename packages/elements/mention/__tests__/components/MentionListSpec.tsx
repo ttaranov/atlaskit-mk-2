@@ -2,15 +2,17 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import mentionData, { mentionDataSize } from '../../src/support/mention-data';
+import { mention } from '@atlaskit/util-data-test';
 import MentionList, { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_test-helpers';
 
+const { mentionDataSize } = mention.mentionData;
+const mentions = mention.mentionData.mentionResult;
+
 describe('MentionList', () => {
   let component;
   let defaultMentionItemsShow;
-  const mentions = mentionData.mentions;
   const setupList = (props?: Props) =>
     mount(<MentionList mentions={mentions} {...props} />) as ReactWrapper<
       Props,

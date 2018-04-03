@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as React from 'react';
+import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
@@ -18,7 +19,7 @@ export interface ReactProsemirrorNodeProps {
   [key: string]: any;
 }
 
-export default class ReactProsemirrorNode extends React.PureComponent<
+export default class ReactProsemirrorNode extends PureComponent<
   ReactProsemirrorNodeProps,
   {}
 > {
@@ -50,27 +51,33 @@ export default class ReactProsemirrorNode extends React.PureComponent<
     const attrs = { ...this.props, node };
     const children: React.ReactNode[] = [];
 
-    // tslint:disable-next-line:variable-name
     const RichNodeWithClickArea = this.wrapped;
 
     node.forEach((childNode: PMNode, offset: number, index: number) => {
       children.push(
         <RichNodeWithClickArea
           key={
-            childNode.attrs.id
-              ? `richnode-${childNode.attrs.id}`
-              : `richnode-${offset}-${index}`
+            childNode.attrs.__key
+              ? `richnode-${childNode.attrs.__key}`
+              : childNode.attrs.id
+                ? `richnode-${childNode.attrs.id}`
+                : `richnode-${offset}-${index}`
           }
           components={components}
           node={childNode}
-          getPos={this.handleGetPos(childNode.attrs.id || offset)}
+          getPos={this.handleGetPos(
+            childNode.attrs.__key || childNode.attrs.id || offset,
+          )}
           view={view}
           pluginState={pluginState}
           providerFactory={providerFactory}
         />,
       );
-      if (childNode.attrs.id) {
-        this.childIdToOffset.set(childNode.attrs.id, offset);
+      if (childNode.attrs.__key || childNode.attrs.id) {
+        this.childIdToOffset.set(
+          childNode.attrs.__key || childNode.attrs.id,
+          offset,
+        );
       }
     });
 

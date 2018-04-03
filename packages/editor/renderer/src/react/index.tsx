@@ -21,8 +21,8 @@ import {
   getMarksByOrder,
   isSameMark,
   EventHandlers,
+  ExtensionHandlers,
 } from '@atlaskit/editor-common';
-import { ExtensionHandlers } from '../ui/Renderer';
 import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {

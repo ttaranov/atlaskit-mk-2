@@ -17,7 +17,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
-import { Browser } from '../../../..';
+import { Browser } from '../../../../components/browser';
 
 import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
@@ -37,7 +37,12 @@ import {
 } from '../../../domain';
 
 import { menuEdit } from '../editor/phrases';
-import { Wrapper, SpinnerWrapper } from './styled';
+import {
+  Wrapper,
+  SpinnerWrapper,
+  CardsWrapper,
+  RecentUploadsTitle,
+} from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -100,18 +105,22 @@ export class StatelessUploadView extends Component<
 
   render() {
     const { isLoading } = this.props;
-
-    if (isLoading) {
-      return this.loadingView();
-    }
-
     const cards = this.cards();
+    const isEmpty = !isLoading && cards.length === 0;
 
-    if (cards.length > 0) {
-      return this.recentView(cards);
-    } else {
-      return this.emptyView();
+    let contentPart: JSX.Element | null = null;
+    if (isLoading) {
+      contentPart = this.loadingView();
+    } else if (!isEmpty) {
+      contentPart = this.recentView(cards);
     }
+
+    return (
+      <Wrapper>
+        <Dropzone isEmpty={isEmpty} mpBrowser={this.props.mpBrowser} />
+        {contentPart}
+      </Wrapper>
+    );
   }
 
   private loadingView = () => {
@@ -122,26 +131,15 @@ export class StatelessUploadView extends Component<
     );
   };
 
-  private emptyView() {
-    return (
-      <Wrapper className="empty">
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-      </Wrapper>
-    );
-  }
-
   private recentView(cards: JSX.Element[]) {
     return (
-      <Wrapper>
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-        <div className="cards">
-          <div className="recentUploadsTitle">Recent Uploads</div>
-          {cards}
-        </div>
+      <div>
+        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <CardsWrapper>{cards}</CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
           : null}
-      </Wrapper>
+      </div>
     );
   }
 
@@ -191,26 +189,36 @@ export class StatelessUploadView extends Component<
       const { dataURI } = file;
 
       const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
-      const metadata = { ...file.metadata, mimeType: mediaType };
-      const { id } = metadata;
+      const fileMetadata: LocalUploadFileMetadata = {
+        ...file.metadata,
+        mimeType: mediaType,
+      };
+
+      // mimeType
+      const { id } = fileMetadata;
 
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
-      const onClick = () => onFileClick(metadata, 'upload');
+      const onClick = () => onFileClick(fileMetadata, 'upload');
 
       const actions: CardAction[] = [];
       if (mediaType === 'image' && dataURI) {
         actions.push(
           createEditCardAction(
             this.onAnnotateActionClick(() =>
-              onEditorShowImage(metadata, dataURI),
+              onEditorShowImage(fileMetadata, dataURI),
             ),
           ),
         );
       }
 
+      const metadata: FileDetails = {
+        ...file.metadata,
+        mediaType,
+      };
+
       return (
-        <div className="cardWrapper" key={id}>
+        <div key={id}>
           <CardView
             status={status}
             progress={progress || undefined}
@@ -289,22 +297,21 @@ export class StatelessUploadView extends Component<
       }
 
       return (
-        <div className="cardWrapper" key={`${occurrenceKey}-${id}`}>
-          <Card
-            context={context}
-            identifier={{
-              mediaItemType: 'file',
-              id: id,
-              collectionName: recentsCollection,
-            }}
-            dimensions={cardDimension}
-            selectable={true}
-            selected={selected}
-            onClick={onClick}
-            actions={actions}
-            onLoadingChange={onLoadingChange}
-          />
-        </div>
+        <Card
+          key={`${occurrenceKey}-${id}`}
+          context={context}
+          identifier={{
+            mediaItemType: 'file',
+            id: id,
+            collectionName: recentsCollection,
+          }}
+          dimensions={cardDimension}
+          selectable={true}
+          selected={selected}
+          onClick={onClick}
+          actions={actions}
+          onLoadingChange={onLoadingChange}
+        />
       );
     });
   }

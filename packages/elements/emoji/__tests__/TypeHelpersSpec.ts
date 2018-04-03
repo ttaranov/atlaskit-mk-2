@@ -9,7 +9,7 @@ import {
   EmojiDescriptionWithVariations,
   MediaApiRepresentation,
 } from '../src/types';
-import { evilburnsEmoji, mediaEmoji } from '../src/support/test-data';
+import { evilburnsEmoji, mediaEmoji } from './_test-data';
 
 const newPath = 'http://new-path/';
 

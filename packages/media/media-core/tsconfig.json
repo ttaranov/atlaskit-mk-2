@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.fabric.json",
+  "extends": "../../../tsconfig.media.json",
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",

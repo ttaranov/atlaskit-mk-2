@@ -5,7 +5,7 @@
 import styled, { StyledComponentClass } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 
 export const Positioner = styled.div`
   position: fixed;
@@ -18,9 +18,23 @@ export const Positioner = styled.div`
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
+  z-index: 500;
+  pointer-events: none;
 `;
 
 export const ErrorMessage = styled.div`
   width: 100%;
   text-align: center;
+`;
+
+export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+  max-width: 100%;
+  margin: auto;
+  pointer-events: auto;
+`;
+
+export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
+  max-width: 100%;
+  margin: auto;
+  pointer-events: auto;
 `;

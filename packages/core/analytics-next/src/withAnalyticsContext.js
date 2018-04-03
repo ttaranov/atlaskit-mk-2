@@ -13,13 +13,14 @@ type WithAnalyticsContextProps = {
 };
 
 export default function withAnalyticsContext<
-  InnerComponent: ComponentType<*>,
+  Props: {},
+  InnerComponent: ComponentType<Props>,
   ExternalProps: ElementConfig<InnerComponent> & WithAnalyticsContextProps,
 >(
-  defaultData?: {} = {},
+  defaultData: {} = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent =>
-    class WithAnalyticsContext extends Component<*> {
+    class WithAnalyticsContext extends Component<ExternalProps> {
       static displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 

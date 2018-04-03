@@ -1,4 +1,4 @@
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { emoji as emojiNode, ProviderFactory } from '@atlaskit/editor-common';
 import {
   createEditor,
@@ -19,16 +19,18 @@ import { emojiPluginKey } from '../../../src/plugins/emoji/pm-plugins/main';
 import emojiPlugin from '../../../src/plugins/emoji';
 import listPlugin from '../../../src/plugins/lists';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const { testData } = emojiData;
 
-const grinEmoji = emojiTestData.grinEmoji;
+const emojiProvider = testData.getEmojiResourcePromise();
+
+const grinEmoji = testData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,
   fallback: grinEmoji.fallback,
 };
 
-const evilburnsEmoji = emojiTestData.evilburnsEmoji;
+const evilburnsEmoji = testData.evilburnsEmoji;
 const evilburnsEmojiId = {
   shortName: evilburnsEmoji.shortName,
   id: evilburnsEmoji.id,

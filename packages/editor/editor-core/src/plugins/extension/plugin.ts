@@ -1,10 +1,9 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import ExtensionNodeView from './nodeviews/extension';
 import { setExtensionElement } from './actions';
-import { ExtensionHandlers } from '../../index';
 import { getExtensionNode } from './utils';
 
 export const pluginKey = new PluginKey('extensionPlugin');
@@ -44,7 +43,7 @@ export default (
 
           if (
             element &&
-            (!document.contains(element) || !getExtensionNode(state))
+            (!document.body.contains(element) || !getExtensionNode(state))
           ) {
             setExtensionElement(null)(state, dispatch);
           }

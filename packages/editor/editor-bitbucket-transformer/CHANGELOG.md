@@ -1,5 +1,18 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.7.10
+
+## 2.7.9
+
+## 2.7.8
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 2.7.7
+
+## 2.7.6
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 2.7.5
 
 ## 2.7.4

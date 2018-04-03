@@ -8,7 +8,7 @@ import {
   EmojiDescription,
   OptionalEmojiDescription,
 } from '../src/types';
-import { UsageClearEmojiResource } from '../src/support/MockEmojiResource';
+import { UsageClearEmojiResource } from '@atlaskit/util-data-test';
 import { localStoragePrefix } from '../src/constants';
 
 export interface EmojiUsageProps {
@@ -192,12 +192,12 @@ export abstract class UsageShowAndClearComponent extends PureComponent<
           <button onClick={this.clearUsageData}>Clear All Usage</button>
         </div>
         <EmojiUsageList
-          emojiProvider={emojiResource}
+          emojiProvider={emojiResource as EmojiProvider}
           emojiList={emojiList}
           emojiQueue={emojiQueue}
         />
         <LocalStorageView
-          emojiProvider={emojiResource}
+          emojiProvider={emojiResource as EmojiProvider}
           emojiQueue={emojiQueue}
         />
       </div>

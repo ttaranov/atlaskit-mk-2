@@ -1,227 +1,162 @@
 // @flow
 
-import { isValid } from 'date-fns';
-import React, { Component, type ElementRef } from 'react';
-import withCtrl from 'react-ctrl';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
-import TimePickerStateless from './TimePickerStateless';
-import type { Event, Handler } from '../types';
-import { dateFromTime, formatTime } from '../util';
+import Select from '@atlaskit/select';
+import { format, isValid, parse } from 'date-fns';
+import pick from 'lodash.pick';
+import React, { Component, type Node } from 'react';
 
-const defaultTimes = [
-  '09:00',
-  '09:30',
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-  '18:00',
-];
+import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
+
+type Option = {
+  label: string,
+  value: string,
+};
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
-  /** Default for `focused`. */
-  defaultFocused?: string,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
-  /** Default for `times`. */
-  defaultTimes?: Array<string>,
+  defaultIsOpen: boolean,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
+  /** The icon to show in the field. */
+  icon?: Node,
+  /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
+  id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
-  /** The time in the dropdown that should be focused. */
-  focused?: string,
+  /** The name of the field. */
+  name: string,
+  /** Called when the field is blurred. */
+  onBlur: () => void,
   /** Called when the value changes. The only argument is an ISO time. */
-  onChange: Handler,
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: () => void,
+  /** Props to apply to the select. */
+  selectProps: Object,
   /** The times to show in the dropdown. */
-  times?: Array<string>,
+  times: Array<string>,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  width: number,
 };
 
 type State = {
-  focused: string,
   isOpen: boolean,
-  times: Array<string>,
   value: string,
 };
 
-class TimePicker extends Component<Props, State> {
-  timepicker: ?ElementRef<typeof TimePickerStateless>;
+function dateFromTime(time: string): Date {
+  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
+  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
+}
 
+function formatTime(time: string): string {
+  const date = dateFromTime(time);
+  return isValid(date) ? format(date, 'h:mma') : time;
+}
+
+export default class TimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
+    name: '',
+    onBlur: () => {},
     onChange: () => {},
-    width: null,
+    onFocus: () => {},
+    times: defaultTimes,
+    selectProps: {},
+    innerProps: {},
+    id: '',
+    defaultIsOpen: false,
+    defaultValue: '',
   };
 
   state = {
-    focused: '',
-    isOpen: false,
-    times: defaultTimes,
-    value: '',
+    isOpen: this.props.defaultIsOpen,
+    value: this.props.defaultValue,
   };
 
-  handleInputBlur = () => {
-    this.validate(this.state.value);
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    return {
+      ...this.state,
+      ...pick(this.props, ['value', 'isOpen']),
+    };
   };
 
-  handleInputChange = (e: Event) => {
-    const value = e.target.value;
-    this.setState({ value });
-    this.updateTimes(value, this.state.times);
-  };
-
-  handleInputKeyDown = (e: KeyboardEvent) => {
-    // Handle opening the dialog, keyboard nav, closing the dialog, enter
-    if (!this.state.isOpen) {
-      if (e.key === 'ArrowDown') {
-        this.openDialog();
-      } else if (e.key === 'Enter') {
-        this.validate(this.state.value);
-      }
-    } else if (e.key === 'Escape') {
-      this.setState({ isOpen: false });
-    } else if (e.key === 'ArrowDown') {
-      this.selectNextItem();
-    } else if (e.key === 'ArrowUp') {
-      this.selectPreviousItem();
-    } else if (e.key === 'Enter') {
-      if (this.state.focused) {
-        this.validate(this.state.focused);
-      }
-    }
-  };
-
-  handleUpdate = (time: string) => {
-    this.validate(time);
-  };
-
-  onChange = (value: ?string) => {
-    if (value !== this.state.value) {
-      this.props.onChange(value);
-    }
-  };
-
-  openDialog() {
-    const times = this.state.times;
-    this.setState({
-      focused: times.length ? times[0] : '',
-      isOpen: true,
+  getOptions(): Array<Option> {
+    return this.props.times.map((time: string): Option => {
+      return {
+        label: formatTime(time),
+        value: time,
+      };
     });
   }
 
-  selectNextItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let next = current + 1;
-    next = next > times.length - 1 ? 0 : next;
-    this.setState({ focused: times[next] });
-  }
-
-  selectPreviousItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let previous = current - 1;
-    previous = previous < 0 ? times.length - 1 : previous;
-    this.setState({ focused: times[previous] });
-  }
-
-  updateTimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) =>
-      value ? time.startsWith(value) : true;
-    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ times: filteredTimes });
-
-    if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
-      this.setState({
-        focused: filteredTimes.length > 0 ? filteredTimes[0] : '',
-      });
-    }
+  onChange = (v: Object | null): void => {
+    const value = v ? v.value : '';
+    this.setState({ value });
+    this.props.onChange(value);
   };
 
-  // TODO: Display an error message.
-  validate(value: string) {
-    if (isValid(dateFromTime(value))) {
-      this.props.onChange(value);
-      this.setState({
-        value,
-        isOpen: false,
-      });
-    } else {
-      this.setState({
-        value: '',
-        isOpen: false,
-      });
-      this.updateTimes('', this.state.times);
-    }
-  }
+  onMenuOpen = () => {
+    this.setState({ isOpen: true });
+  };
+
+  onMenuClose = () => {
+    this.setState({ isOpen: false });
+  };
 
   render() {
-    const { value } = this.state;
+    const {
+      autoFocus,
+      icon,
+      id,
+      innerProps,
+      isDisabled,
+      name,
+      onBlur,
+      onFocus,
+      selectProps,
+    } = this.props;
+    const { value, isOpen } = this.getState();
+    const isOpenAndNotDisabled = isOpen && !isDisabled;
     return (
-      <TimePickerStateless
-        autoFocus={this.props.autoFocus}
-        isDisabled={this.props.isDisabled}
-        isOpen={this.state.isOpen}
-        displayValue={formatTime(value)}
-        value={value}
-        times={this.state.times}
-        focused={this.state.focused}
-        width={this.props.width}
-        onFieldBlur={this.handleInputBlur}
-        onFieldChange={this.handleInputChange}
-        onFieldKeyDown={this.handleInputKeyDown}
-        onPickerUpdate={this.handleUpdate}
-        ref={ref => {
-          this.timepicker = ref;
-        }}
-      />
+      <div {...innerProps}>
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          instanceId={id}
+          isDisabled={isDisabled}
+          menuIsOpen={isOpenAndNotDisabled}
+          onBlur={onBlur}
+          onChange={this.onChange}
+          options={this.getOptions()}
+          onFocus={onFocus}
+          onMenuOpen={this.onMenuOpen}
+          onMenuClose={this.onMenuClose}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+          }}
+          placeholder="e.g. 9:00am"
+          value={
+            value && {
+              label: formatTime(value),
+              value,
+            }
+          }
+          {...selectProps}
+        />
+      </div>
     );
   }
 }
-
-const TimePickerWithoutAnalytics = withCtrl(TimePicker);
-export { TimePickerWithoutAnalytics as TimePicker };
-
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  component: 'time-picker',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'change',
-    }),
-  })(TimePickerWithoutAnalytics),
-);

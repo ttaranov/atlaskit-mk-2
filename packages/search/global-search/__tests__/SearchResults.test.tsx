@@ -6,8 +6,10 @@ import {
   quickSearchResultTypes,
 } from '@atlaskit/navigation';
 import { ResultType } from '../src/model/Result';
+import ObjectResult from '../src/components/ObjectResult';
+import SearchError from '../src/components/SearchError';
 
-const { ObjectResult, PersonResult, ResultBase } = quickSearchResultTypes;
+const { PersonResult, ResultBase } = quickSearchResultTypes;
 
 enum Group {
   Recent = 'recent',
@@ -26,6 +28,8 @@ describe('SearchResults', () => {
   function render(partialProps: Partial<Props>) {
     const props = {
       query: '',
+      isError: false,
+      retrySearch: () => {},
       recentlyViewedItems: [],
       recentResults: [],
       jiraResults: [],
@@ -142,7 +146,7 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Confluence, wrapper);
 
-    expect(group.prop('title')).toEqual('Confluence pages');
+    expect(group.prop('title')).toEqual('Confluence pages and blogs');
     expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
@@ -187,7 +191,7 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Confluence, wrapper);
 
-    expect(group.prop('title')).toEqual('Confluence pages');
+    expect(group.prop('title')).toEqual('Confluence pages and blogs');
     expect(group.find(ResultBase).prop('resultId')).toEqual(
       'search_confluence',
     );
@@ -214,5 +218,14 @@ describe('SearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Recent, wrapper);
     expect(group.exists()).toBe(false);
+  });
+
+  it('should render search error when there is an error', () => {
+    const props = {
+      isError: true,
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(SearchError).exists()).toBe(true);
   });
 });

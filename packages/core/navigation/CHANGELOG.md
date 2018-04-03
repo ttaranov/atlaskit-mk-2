@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 29.3.0
+- [minor] Add `target` prop to ResultBase component [d4a3bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3bed)
+
 ## 29.2.2
 - [patch] stopped isSelected prop from being passed down to input [dd4d9c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd4d9c7)
 

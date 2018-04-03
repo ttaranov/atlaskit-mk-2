@@ -5,28 +5,6 @@ import { getDocFromElement, editors, editable } from '../_helpers';
 const more = '[aria-label="Open or close advance text formatting dropdown"]';
 const underline = 'span=Underline';
 const clear = 'span=Clear Formatting';
-const input = 'helloworld';
-
-editors.forEach(editor => {
-  BrowserTestCase(
-    `Toolbar: should be able to select Underline on toolbar for ${
-      editor.name
-    } editor`,
-    async client => {
-      const browser = await new Page(client);
-      await browser.goto(editor.path);
-      await browser.waitForSelector(editor.placeholder);
-      await browser.click(editor.placeholder);
-      await browser.waitForSelector(more);
-      await browser.click(more);
-      await browser.waitForSelector(underline);
-      await browser.click(underline);
-      await browser.type(editable, input);
-      const doc = await browser.$eval(editable, getDocFromElement);
-      expect(doc).toMatchDocSnapshot();
-    },
-  );
-});
 
 editors.forEach(editor => {
   BrowserTestCase(

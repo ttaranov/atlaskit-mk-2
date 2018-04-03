@@ -88,10 +88,13 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
   });
 
   it('should fail silently if extension handler throws', () => {
+    const invalidExtensions = () => {
+      throw new Error('invalid extension');
+    };
     const extensionHandlers = {
       'com.atlassian.confluence.macro.core': (ext, doc) => {
         if (ext.extensionKey === 'gallery') {
-          throw new Error('invalid extension');
+          expect(invalidExtensions).toThrow('invalid extension');
         }
 
         return null;

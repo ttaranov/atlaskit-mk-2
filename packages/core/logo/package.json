@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/logo",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/logos-in-product",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/logos-in-product",
+  "sideEffects": false,
   "files": [
     "dist"
   ],

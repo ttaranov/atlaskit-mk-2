@@ -1,7 +1,7 @@
-import {
-  storyData as emojiStoryData,
-  testData as emojiTestData,
-} from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
+
+const emojiTestData = emoji.testData;
+const emojiStoryData = emoji.storyData;
 
 const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;

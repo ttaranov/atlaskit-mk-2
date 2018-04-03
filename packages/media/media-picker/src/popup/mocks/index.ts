@@ -54,20 +54,6 @@ export const mockStore = (state?: Partial<State>) => ({
   replaceReducer: jest.fn(),
 });
 
-export const mockContext = () => ({
-  getMediaItemProvider: mockProvider,
-  getMediaCollectionProvider: mockProvider,
-  getUrlPreviewProvider: mockProvider,
-  getDataUriService: jest.fn(),
-  addLinkItem: jest.fn(),
-  refreshCollection: jest.fn(),
-  config: {
-    serviceHost: 'some-service-host',
-    authProvider: () =>
-      Promise.resolve({ token: 'some-token', clientId: 'some-client-id' }),
-  },
-});
-
 export const mockChannel = () => {
   const channel = {
     listen: jest.fn(),

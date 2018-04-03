@@ -56,6 +56,40 @@ describe('full page editor', () => {
     expect(editorView.state.doc).toEqualDocument(doc(p('Hello world')));
   });
 
+  it('should set selection to end of editor content if paragraph is inserted', () => {
+    const { editorView, sel } = editor(doc(p('Hello {<>}')));
+    const fullPage = mount(
+      <FullPage
+        editorView={editorView}
+        providerFactory={{} as any}
+        editorDOMElement={<div />}
+      />,
+    );
+    fullPage
+      .findWhere(elm => elm.name() === 'ClickWrapper')
+      .simulate('click', { clientY: 300 });
+    const { selection } = editorView.state;
+    expect(selection.empty).toEqual(true);
+    expect(selection.$to.pos).toEqual(sel + 2);
+  });
+
+  it('should set selection to end of editor content event if is already present at end', () => {
+    const { editorView, sel } = editor(doc(p('Hello {<>}'), p('')));
+    const fullPage = mount(
+      <FullPage
+        editorView={editorView}
+        providerFactory={{} as any}
+        editorDOMElement={<div />}
+      />,
+    );
+    fullPage
+      .findWhere(elm => elm.name() === 'ClickWrapper')
+      .simulate('click', { clientY: 300 });
+    const { selection } = editorView.state;
+    expect(selection.empty).toEqual(true);
+    expect(selection.$to.pos).toEqual(sel + 2);
+  });
+
   it('should create paragraph correctly when clicked outside and then inside the editor in sequence', () => {
     const { editorView } = editor(doc(p('Hello world'), p('Hello world')));
     const fullPage = mount(

@@ -30,8 +30,7 @@ export default class MentionListError extends React.PureComponent<Props, {}> {
       headline: defaultHeadline,
       advisedAction: defaultSecondary,
     };
-
-    if (error instanceof HttpError) {
+    if (error && error.hasOwnProperty('statusCode')) {
       const httpError = error as HttpError;
 
       if (httpError.statusCode === 401) {

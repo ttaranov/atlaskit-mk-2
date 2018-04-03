@@ -38,12 +38,7 @@ export {
 export { keyCodes } from './keymaps';
 export { ReactEditorView } from './create-editor';
 export { getDefaultPluginsList } from './create-editor/create-plugins-list';
-export {
-  EditorPlugin,
-  EditorProps,
-  EditorInstance,
-  ExtensionHandlers,
-} from './types';
+export { EditorPlugin, EditorProps, EditorInstance } from './types';
 export { default as EditorActions } from './actions';
 
 // Useless exports

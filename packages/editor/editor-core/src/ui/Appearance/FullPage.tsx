@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
@@ -15,6 +16,7 @@ const FullPageEditorWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding-bottom: 55px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -43,7 +45,6 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 55px;
   }
 
   && .ProseMirror {
@@ -103,6 +104,9 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
+  stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
+    event.stopPropagation();
+
   render() {
     const {
       editorDOMElement,
@@ -143,28 +147,30 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ClickAreaBlock editorView={editorView}>
-          <ScrollContainer>
+        <ScrollContainer>
+          <ClickAreaBlock editorView={editorView}>
             <ContentArea>
-              {customContentComponents}
-              {
-                <PluginSlot
-                  editorView={editorView}
-                  editorActions={editorActions}
-                  eventDispatcher={eventDispatcher}
-                  providerFactory={providerFactory}
-                  appearance={this.appearance}
-                  items={contentComponents}
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                  popupsScrollableElement={popupsScrollableElement}
-                  disabled={!!disabled}
-                />
-              }
-              {editorDOMElement}
+              <div className="content-area">
+                {customContentComponents}
+                {
+                  <PluginSlot
+                    editorView={editorView}
+                    editorActions={editorActions}
+                    eventDispatcher={eventDispatcher}
+                    providerFactory={providerFactory}
+                    appearance={this.appearance}
+                    items={contentComponents}
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                    disabled={!!disabled}
+                  />
+                }
+                {editorDOMElement}
+              </div>
             </ContentArea>
-          </ScrollContainer>
-        </ClickAreaBlock>
+          </ClickAreaBlock>
+        </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );

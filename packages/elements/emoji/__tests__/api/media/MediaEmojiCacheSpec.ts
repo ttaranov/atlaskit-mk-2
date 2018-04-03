@@ -18,7 +18,7 @@ import {
   mediaEmoji,
   mediaEmojiImagePath,
   loadedAltMediaEmoji,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 import { frequentCategory } from '../../../src/constants';
 
 const restoreStub = (stub: any) => {

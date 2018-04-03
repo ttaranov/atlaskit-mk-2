@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {
   Card,
@@ -11,8 +12,6 @@ import {
 } from '@atlaskit/media-card';
 import {
   MediaItemType,
-  ContextConfig,
-  ContextFactory,
   Context,
   FileDetails,
   ImageResizeMode,
@@ -44,6 +43,7 @@ export interface Props extends MediaAttributes {
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
   selected?: boolean;
+  tempId?: string;
 }
 
 export interface State extends MediaState {
@@ -56,15 +56,21 @@ export interface State extends MediaState {
  * Map media state status into CardView processing status
  * Media state status is more broad than CardView API so we need to reduce it
  */
-function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
+function mapMediaStatusIntoCardStatus(
+  state: MediaState,
+  progress?: number,
+): CardStatus {
   switch (state.status) {
+    case 'preview':
+      return progress === 1 ? 'complete' : 'uploading';
     case 'ready':
     case 'unknown':
     case 'unfinalized':
+    case 'processing':
+    // Happens after swap, @see `handleMediaStateChange` method below for more context
+    case 'cancelled':
       return 'complete';
 
-    case 'processing':
-    case 'preview':
     case 'uploading':
       return 'uploading';
 
@@ -75,7 +81,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
   }
 }
 
-export default class MediaComponent extends React.PureComponent<Props, State> {
+export default class MediaComponent extends Component<Props, State> {
   private destroyed = false;
 
   static defaultProps = {
@@ -195,14 +201,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderFile() {
-    const { mediaProvider, viewContext } = this.state;
+    const { mediaProvider, viewContext, thumbnail } = this.state;
     const { id } = this.props;
 
     if (!mediaProvider || !viewContext) {
       return this.renderLoadingCard('file');
     }
 
-    if (id.substr(0, 10) === 'temporary:') {
+    if (id.substr(0, 10) === 'temporary:' || (thumbnail && thumbnail.src)) {
       return this.renderTemporaryFile();
     } else {
       return this.renderPublicFile();
@@ -248,7 +254,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { thumbnail, fileName, fileSize, fileMimeType, status } = this.state;
-    const { onDelete, cardDimensions, appearance, selected } = this.props;
+    const {
+      onDelete,
+      cardDimensions,
+      appearance,
+      selected,
+      resizeMode,
+    } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -280,7 +292,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return (
       <CardView
         // CardViewProps
-        status={mapMediaStatusIntoCardStatus(this.state)}
+        status={mapMediaStatusIntoCardStatus(this.state, progress)}
         mediaItemType="file"
         metadata={fileDetails}
         // FileCardProps
@@ -291,13 +303,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         appearance={appearance}
         selectable={true}
         selected={selected}
+        resizeMode={resizeMode}
         {...otherProps}
       />
     );
   }
 
   private handleMediaStateChange = (mediaState: MediaState) => {
-    if (this.destroyed) {
+    /**
+     * `cancelled` gets triggered when we do the node swap, so we can ignore it here.
+     * Because on real `canceled` event it will get removed anyways.
+     */
+    if (this.destroyed || mediaState.status === 'cancelled') {
       return;
     }
 
@@ -305,7 +322,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { id } = this.props;
+    const { id, tempId } = this.props;
 
     if (this.destroyed) {
       return;
@@ -320,7 +337,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState({ mediaProvider });
 
     if (stateManager) {
-      const mediaState = stateManager.getState(id);
+      const mediaState = stateManager.getState(tempId || id);
 
       stateManager.on(id, this.handleMediaStateChange);
       this.setState({ id, ...mediaState });
@@ -334,17 +351,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     contextName: string,
     mediaProvider: MediaProvider,
   ) => {
-    let context = await mediaProvider[contextName];
+    const context = await mediaProvider[contextName];
 
     if (this.destroyed || !context) {
       return;
     }
 
-    if ('serviceHost' in (context as ContextConfig)) {
-      context = ContextFactory.create(context as ContextConfig);
-    }
-
-    this.setState({ [contextName as any]: context as Context });
+    this.setState({ [contextName as any]: context });
   };
 
   private get resizeMode(): ImageResizeMode {

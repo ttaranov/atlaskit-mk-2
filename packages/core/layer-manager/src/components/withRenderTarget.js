@@ -18,8 +18,12 @@ export default function withRenderTarget(
   // Access the analytics context types so we can provide them across portal boundaries
   // until we can support React 16 where it can be provided natively
   const analyticsContextTypes = {
+    // Old analytics keys
     onAnalyticsEvent: PropTypes.func,
     getParentAnalyticsData: PropTypes.func,
+    // New analytics-next keys,
+    getAtlaskitAnalyticsContext: PropTypes.func,
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
   };
 
   // These context types have been copied from jira-frontend to temporarily fix context issues for jira-frontend with other

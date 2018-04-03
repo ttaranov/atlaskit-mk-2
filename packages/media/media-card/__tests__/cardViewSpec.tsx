@@ -5,11 +5,12 @@ import * as React from 'react';
 
 import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails, Resource } from '@atlaskit/media-core';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+
 import {
   AnalyticsListenerProps,
-  AnalyticsListener,
   UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next';
+} from '../src/analytics-next';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import {

@@ -8,6 +8,7 @@ import {
   SortDirection,
 } from '../services/collectionService';
 import { MediaCollectionProvider } from './mediaCollectionProvider';
+import { Subscription } from 'rxjs/Subscription';
 
 export type MediaCollectionItemPredicate = (
   item: MediaCollectionItem,
@@ -37,7 +38,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
 
   loadNextPageUntil(predicate: MediaCollectionItemPredicate): void {
     if (!this.items.some(predicate)) {
-      const subscription = this.connectableObservable.subscribe({
+      const subscription: Subscription = this.connectableObservable.subscribe({
         next: collection => {
           // an `undefined` `nextInclusiveStartKey` is how we know we've reached the end of a collection
           // (since the `Observable`'s `complete` callback is NEVER called so we can notify the
@@ -49,7 +50,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
           }
         },
         complete: () => subscription.unsubscribe(),
-        error: error => subscription.unsubscribe(),
+        error: () => subscription.unsubscribe(),
       });
     }
   }
@@ -101,7 +102,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
     const oldFirstItemOccurrenceKey =
       oldFirstItemDetails && oldFirstItemDetails.occurrenceKey;
     const newItems: Array<MediaCollectionItem> = [];
-    let nextInclusiveStartKey;
+    let nextInclusiveStartKey: string;
 
     const fetchNewItems = () => {
       this.collectionService

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
@@ -26,7 +24,7 @@ const pendingPromise = new Promise<any>(() => {});
 const testCloudId = 'f7ebe2c0-0309-4687-b913-41d422f2110b';
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(mentionStoryData.resourceProvider),
+    resolved: Promise.resolve(mention.storyData.resourceProvider),
     external: Promise.resolve(
       new MentionResource({
         url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
@@ -39,7 +37,7 @@ const providers = {
     undefined: undefined,
   },
   emojiProvider: {
-    resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    resolved: emoji.storyData.getEmojiResource({ uploadSupported: true }),
     external: Promise.resolve(
       new EmojiResource({
         providers: [
@@ -58,9 +56,7 @@ const providers = {
     undefined: undefined,
   },
   taskDecisionProvider: {
-    resolved: Promise.resolve(
-      taskDecisionStoryData.getMockTaskDecisionResource(),
-    ),
+    resolved: Promise.resolve(taskDecision.getMockTaskDecisionResource()),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,

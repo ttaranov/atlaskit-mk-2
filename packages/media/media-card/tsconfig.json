@@ -17,8 +17,7 @@
     "baseUrl": "./",
     "paths": {
       "@atlaskit/dropdown-menu": ["typings/@atlaskit/dropdown-menu"],
-      "@atlaskit/item": ["typings/@atlaskit/item"],
-      "@atlaskit/analytics-next": ["../../../typings/@atlaskit/analytics-next"]
+      "@atlaskit/item": ["typings/@atlaskit/item"]
     }
   }
 }

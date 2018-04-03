@@ -6,10 +6,7 @@ import {
   UsageFrequencyTracker,
 } from '../../../src/api/internal/UsageFrequencyTracker';
 import DuplicateLimitedQueue from '../../../src/DuplicateLimitedQueue';
-import {
-  generateSkinVariation,
-  grinEmoji,
-} from '../../../src/support/test-data';
+import { grinEmoji, generateSkinVariation } from '../../_test-data';
 
 /**
  * Extend the UsageFrequencyTracker to provide access to its queue for mocking in tests.

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "4.10.10",
+  "version": "5.2.0",
   "config": {
     "access": "public"
   },
@@ -10,18 +10,20 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^2.4.4",
-    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/analytics": "^2.4.5",
+    "@atlaskit/avatar": "^9.2.3",
     "@atlaskit/button": "^6.6.0",
     "@atlaskit/icon": "^10.12.0",
     "@atlaskit/spinner": "^4.2.0",
     "@atlaskit/theme": "^2.4.0",
     "@atlaskit/util-service-support": "^2.0.4",
+    "@atlassian/pubsub": "^1.1.10",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "styled-components": "1.4.6 - 3",
@@ -40,9 +42,10 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/editor-common": "^8.0.7",
-    "@atlaskit/renderer": "^13.0.5",
+    "@atlaskit/editor-common": "^8.1.12",
+    "@atlaskit/renderer": "^13.3.0",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^8.0.2",
     "fetch-mock": "^5.12.1"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"

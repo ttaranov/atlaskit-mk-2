@@ -86,12 +86,12 @@ export default function withPseudoState<InnerProps: {}>(
     onMouseDown = () => this.setState({ isActive: true });
 
     onKeyDown = (event: KeyboardEvent) => {
-      if (this.actionKeys.includes(event.key)) {
+      if (this.actionKeys.indexOf(event.key) > -1) {
         this.setState({ isActive: true });
       }
     };
     onKeyUp = (event: KeyboardEvent) => {
-      if (this.actionKeys.includes(event.key)) {
+      if (this.actionKeys.indexOf(event.key) > -1) {
         this.setState({ isActive: false });
       }
     };

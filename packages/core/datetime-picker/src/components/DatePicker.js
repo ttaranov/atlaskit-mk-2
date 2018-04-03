@@ -1,171 +1,273 @@
 // @flow
 
-import React, { Component, type ElementRef } from 'react';
-import withCtrl from 'react-ctrl';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
-import DatePickerStateless from './DatePickerStateless';
-import type { Event, Handler } from '../types';
-import { formatDate, parseDate } from '../util';
+import Calendar from '@atlaskit/calendar';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import Select from '@atlaskit/select';
+import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { format, isValid, parse } from 'date-fns';
+import pick from 'lodash.pick';
+import React, { Component, type Node, type ElementRef } from 'react';
+import styled from 'styled-components';
+
+import { ClearIndicator, DropdownIndicator } from '../internal';
+import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
+  defaultIsOpen: boolean,
   /** Default for `value`. */
-  defaultValue?: string,
+  defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
+  /** The icon to show in the field. */
+  icon: Node,
+  /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
+  id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled?: boolean,
   /** Whether or not the dropdown is open. */
   isOpen?: boolean,
+  /** The name of the field. */
+  name: string,
+  /** Called when the field is blurred. */
+  onBlur: (e: SyntheticFocusEvent<>) => void,
   /** Called when the value changes. The only argument is an ISO time. */
-  onChange: Handler,
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: (e: SyntheticFocusEvent<>) => void,
+  /** Props to apply to the select. */
+  selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  width: number,
 };
 
 type State = {
   isOpen: boolean,
   value: string,
+  view: string,
 };
 
-function parse(date: string): string {
-  const parsed = parseDate(date);
-  return parsed ? parsed.value : '';
+// TODO see if there's a different way to control the display value.
+//
+// react-select retains the value the user typed in until the field is
+// blurred. Since we're controlling the open state and value, we need a
+// way explicitly ensure the value is respected. By blurring and then
+// immedately refocusing, we ensure the value is formatted and the input
+// retains focus.
+function ensureValueIsDisplayed() {
+  const { activeElement } = document;
+  if (activeElement) {
+    activeElement.blur();
+    activeElement.focus();
+  }
 }
 
-class DatePicker extends Component<Props, State> {
-  datepicker: ?ElementRef<typeof DatePickerStateless>;
+function isoToObj(iso: string) {
+  const parsed = parse(iso);
+  return isValid(parsed)
+    ? {
+        day: parsed.getDate(),
+        month: parsed.getMonth() + 1,
+        year: parsed.getFullYear(),
+      }
+    : {};
+}
+
+const arrowKeys = {
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
+  ArrowUp: 'up',
+};
+
+const StyledMenu = styled.div`
+  background-color: ${colors.N0};
+  border: 1px solid ${colors.N40};
+  border-radius: ${borderRadius()}px;
+  box-shadow: 1px 5px 10px ${colors.N30};
+  margin-top: 7px;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  z-index: ${layers.dialog};
+`;
+
+export default class DatePicker extends Component<Props, State> {
+  // $FlowFixMe - Calendar isn't being correctly detected as a react component
+  calendar: ElementRef<Calendar>;
+  input: Element | null;
 
   static defaultProps = {
     autoFocus: false,
     disabled: [],
+    icon: CalendarIcon,
+    name: '',
     isDisabled: false,
+    onBlur: () => {},
     onChange: () => {},
-    width: null,
+    onFocus: () => {},
+    innerProps: {},
+    selectProps: {},
+    id: '',
+    defaultIsOpen: false,
+    defaultValue: '',
   };
 
   state = {
-    isOpen: false,
-    value: '',
+    isOpen: this.props.defaultIsOpen,
+    value: this.props.defaultValue,
+    view: '',
   };
 
-  handleFieldBlur = (e: Event) => {
-    const parsed = parse(e.target.value);
-    if (parsed) {
-      this.props.onChange(parsed);
-    }
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    return {
+      ...this.state,
+      ...pick(this.props, ['value', 'isOpen']),
+    };
   };
 
-  handleFieldChange = (e: Event) => {
-    const { value } = e.target;
-    this.props.onChange(value);
-    this.setState({ value });
+  onCalendarChange = ({ iso }: { iso: string }) => {
+    this.setState({ view: iso });
   };
 
-  handleFieldTriggerOpen = () => {
+  onCalendarSelect = ({ iso: value }: { iso: string }) => {
+    this.triggerChange(value);
+    this.setState({ isOpen: false });
+  };
+
+  onInputClick = () => {
     this.setState({ isOpen: true });
   };
 
-  handleFieldTriggerValidate = () => {
-    this.validate(this.state.value);
+  onSelectBlur = (e: SyntheticFocusEvent<>) => {
+    this.setState({ isOpen: false });
+    this.props.onBlur(e);
   };
 
-  handleIconClick = () => {
-    if (this.state.isOpen) {
+  onSelectFocus = (e: SyntheticFocusEvent<>) => {
+    this.setState({ isOpen: true });
+    this.props.onFocus(e);
+  };
+
+  onSelectInput = (e: Event) => {
+    let value = e.target.value;
+    if (value) {
+      const parsed = parse(value);
+      if (isValid(parsed)) {
+        value = format(parsed, 'YYYY-MM-DD');
+        this.triggerChange(value);
+      }
+    }
+    this.setState({ isOpen: true });
+  };
+
+  onSelectKeyDown = (e: Event) => {
+    const { key } = e;
+    const dir = arrowKeys[key];
+    const { isOpen, view } = this.getState();
+
+    if (dir) {
+      // Calendar will not exist if it's not open and this also doubles as a
+      // ref check since it may not exist.
+      if (this.calendar) {
+        // We don't want to move the caret if the calendar is open.
+        if (dir === 'left' || dir === 'right') {
+          e.preventDefault();
+        }
+        this.calendar.navigate(dir);
+      } else if (dir === 'down' || dir === 'up') {
+        this.setState({ isOpen: true });
+      }
+    } else if (key === 'Escape') {
+      if (isOpen) {
+        this.setState({ isOpen: false });
+      } else {
+        this.triggerChange('');
+      }
+    } else if (key === 'Enter' || key === 'Tab') {
+      this.triggerChange(view);
       this.setState({ isOpen: false });
-      this.selectField();
-    } else {
-      this.setState({ isOpen: true });
     }
   };
 
-  handlePickerBlur = () => {
-    this.setState({ isOpen: false });
+  refCalendar = (ref: ElementRef<Calendar>) => {
+    this.calendar = ref;
   };
 
-  handlePickerTriggerClose = () => {
-    this.setState({ isOpen: false });
-    this.selectField();
+  triggerChange = (value: string) => {
+    this.props.onChange(value);
+    this.setState({ value, view: value });
+    ensureValueIsDisplayed();
   };
-
-  handlePickerUpdate = (value: string) => {
-    const parsed = parse(value);
-    if (parsed) {
-      this.setState({ isOpen: false, value: parsed });
-      this.props.onChange(parsed);
-      this.selectField();
-    }
-  };
-
-  selectField() {
-    if (this.datepicker) {
-      this.datepicker.selectField();
-    }
-  }
-
-  // TODO: Check that the date is not disabled.
-  // TODO: Display error message for invalid date.
-  validate(value: string) {
-    const parsed = parse(value);
-    this.setState({ value: parsed });
-    this.props.onChange(parsed);
-  }
 
   render() {
-    const { value } = this.state;
+    const {
+      autoFocus,
+      disabled,
+      icon,
+      id,
+      innerProps,
+      isDisabled,
+      name,
+      selectProps,
+    } = this.props;
+    const { isOpen, value, view } = this.getState();
+    const isOpenAndNotDisabled = isOpen && !isDisabled;
+    const Menu = () =>
+      isOpenAndNotDisabled ? (
+        <StyledMenu>
+          <Calendar
+            {...isoToObj(value)}
+            {...isoToObj(view)}
+            disabled={disabled}
+            onChange={this.onCalendarChange}
+            onSelect={this.onCalendarSelect}
+            // $FlowFixMe
+            ref={this.refCalendar}
+            selected={[value]}
+          />
+        </StyledMenu>
+      ) : null;
+
     return (
-      <DatePickerStateless
-        autoFocus={this.props.autoFocus}
-        isDisabled={this.props.isDisabled}
-        isOpen={this.state.isOpen}
-        shouldShowIcon
-        displayValue={formatDate(value)}
-        value={value}
-        disabled={this.props.disabled}
-        width={this.props.width}
-        onFieldBlur={this.handleFieldBlur}
-        onFieldChange={this.handleFieldChange}
-        onFieldTriggerOpen={this.handleFieldTriggerOpen}
-        onFieldTriggerValidate={this.handleFieldTriggerValidate}
-        onIconClick={this.handleIconClick}
-        onPickerBlur={this.handlePickerBlur}
-        onPickerTriggerClose={this.handlePickerTriggerClose}
-        onPickerUpdate={this.handlePickerUpdate}
-        ref={ref => {
-          this.datepicker = ref;
-        }}
-      />
+      <div
+        {...innerProps}
+        role="presentation"
+        onClick={this.onInputClick}
+        onInput={this.onSelectInput}
+        onKeyDown={this.onSelectKeyDown}
+      >
+        <input name={name} type="hidden" value={value} />
+        {/* $FlowFixMe - complaining about required args that aren't required. */}
+        <Select
+          autoFocus={autoFocus}
+          instanceId={id}
+          isDisabled={isDisabled}
+          menuIsOpen={isOpenAndNotDisabled}
+          onBlur={this.onSelectBlur}
+          onFocus={this.onSelectFocus}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            Menu,
+          }}
+          placeholder="e.g. 2018/12/31"
+          value={
+            value && {
+              label: format(parse(value), 'YYYY/MM/DD'),
+              value,
+            }
+          }
+          {...selectProps}
+        />
+      </div>
     );
   }
 }
-
-const DatePickerWithoutAnalytics = withCtrl(DatePicker);
-export { DatePickerWithoutAnalytics as DatePicker };
-
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  component: 'date-picker',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'change',
-    }),
-  })(DatePickerWithoutAnalytics),
-);

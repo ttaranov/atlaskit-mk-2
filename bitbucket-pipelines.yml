@@ -16,9 +16,11 @@ pipelines:
             - bolt install --pure-lockfile
             - (cd build/ci-scripts && yarn stop-if-older-build)
             - yarn build
-            - yarn lint
-            - yarn typecheck
-            - yarn test
+            - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+            # Disabled until we get rid of the race condition in Landkid
+            # - yarn lint
+            # - yarn typecheck
+            # - yarn test
             # Disabled until we find the source of the flakeyness
             # - yarn test:browser:browserstack
             - yarn release
@@ -32,6 +34,7 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - yarn build
+          - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
           - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
           - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
           - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
@@ -59,12 +62,12 @@ pipelines:
     # This will run with the webdriver tests
     build-webdriver:
     - step:
-          script:  
+          script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - yarn test:build:webdriver:browserstack
           caches:
-            - node  
+            - node
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds

@@ -1,22 +1,26 @@
 import * as React from 'react';
-import { Positioner, ErrorMessage } from './styled';
-import { FileDetails } from './domain';
+import { Positioner } from './styled';
+import { FilePreview } from './domain';
+import { ImageViewer } from './viewers/image';
+import { VideoViewer } from './viewers/video';
 
 export type Props = {
-  fileDetails: FileDetails;
+  previewData: FilePreview;
 };
 
-const ViewerSelector: React.StatelessComponent<Props> = ({ fileDetails }) => {
-  switch (fileDetails.mediaType) {
-    default:
-      return <ErrorMessage>The current file type is unsupported.</ErrorMessage>;
+const ViewerSelector: React.StatelessComponent<Props> = ({ previewData }) => {
+  switch (previewData.viewer) {
+    case 'IMAGE':
+      return <ImageViewer previewData={previewData} />;
+    case 'VIDEO':
+      return <VideoViewer previewData={previewData} />;
   }
 };
 
 export const FileViewer: React.StatelessComponent<Props> = ({
-  fileDetails,
+  previewData,
 }) => (
   <Positioner>
-    <ViewerSelector fileDetails={fileDetails} />
+    <ViewerSelector previewData={previewData} />
   </Positioner>
 );

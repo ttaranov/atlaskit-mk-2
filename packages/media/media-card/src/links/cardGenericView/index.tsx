@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { CardDimensions, CardAppearance } from '../../index';
 
-import ErrorCard from '../../shared/ErrorCard';
-import CardFrame from '../../shared/CardFrame';
-import CardPreview from '../../shared/CardPreview';
-import LinkIcon from '../../shared/LinkIcon';
+import {
+  ErrorCard,
+  CardFrame,
+  CardPreview,
+  LinkIcon,
+} from '@atlaskit/media-ui';
 import { getCardMinWidth, getCardMaxWidth } from '../../utils/cardDimensions';
 import { CardAction } from '../../actions';
 import CardDetails from './CardDetails';

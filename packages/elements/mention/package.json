@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "9.2.2",
+  "version": "10.0.1",
   "config": {
     "access": "public"
   },
@@ -9,6 +9,7 @@
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "atlaskit:src": "src/index.ts",
+  "sideEffects": false,
   "files": [
     "dist/es5/**/*.js",
     "dist/es5/**/*.d.ts",
@@ -19,8 +20,8 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^2.3.5",
-    "@atlaskit/avatar": "^9.2.0",
+    "@atlaskit/analytics": "^2.4.5",
+    "@atlaskit/avatar": "^9.2.3",
     "@atlaskit/icon": "^10.12.0",
     "@atlaskit/lozenge": "^3.6.0",
     "@atlaskit/tooltip": "^8.4.0",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^2.5.0",
     "@atlaskit/util-common-test": "^2.4.2",
+    "@atlaskit/util-data-test": "^8.0.2",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
     "whatwg-fetch": "^2.0.3"

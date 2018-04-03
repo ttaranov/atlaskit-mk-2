@@ -12,9 +12,7 @@ import {
   storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -106,12 +104,12 @@ export type Props = {};
 export type State = { disabled: boolean };
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({
+  emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
   }) as Promise<EmojiProvider>,
-  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
-    taskDecisionStoryData.getMockTaskDecisionResource(),
+    taskDecision.getMockTaskDecisionResource(),
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
