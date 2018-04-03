@@ -18,7 +18,7 @@ export default function table({ attrs, text }: NodeSerializerOpts) {
       return createTag('col', { style });
     });
 
-    colgroup = createTag('colgroup', undefined, colTags);
+    colgroup = createTag('colgroup', undefined, colTags.join(''));
   }
 
   return createTag('table', { style: css }, colgroup + text);
