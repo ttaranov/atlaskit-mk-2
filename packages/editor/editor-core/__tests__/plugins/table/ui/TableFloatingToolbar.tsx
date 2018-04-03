@@ -57,7 +57,7 @@ describe('TableFloatingToolbar', () => {
   describe('when tableElement is undefined', () => {
     it('should not render toolbar', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = shallow(
         <TableFloatingToolbar editorView={editorView} tableActive={true} />,
@@ -69,7 +69,7 @@ describe('TableFloatingToolbar', () => {
   describe('TrashIcon', () => {
     it('should be rendered in the toolbar', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = mount(
         <TableFloatingToolbar
@@ -84,7 +84,7 @@ describe('TableFloatingToolbar', () => {
 
     it('should call remove() on click', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       const remove = jest.fn();
       const floatingToolbar = shallow(
@@ -116,7 +116,7 @@ describe('TableFloatingToolbar', () => {
     layoutOptions.forEach(({ desc, icons }) => {
       it(`should display correct buttons when ${desc} are permitted layouts`, () => {
         const { editorView } = editorFullPage(
-          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
         );
 
         const floatingToolbar = mount(
@@ -146,7 +146,7 @@ describe('TableFloatingToolbar', () => {
 
     it('should not display buttons with no layouts', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const floatingToolbar = mount(
@@ -166,7 +166,7 @@ describe('TableFloatingToolbar', () => {
 
     it('selects the correct layout button based on the tableLayout prop', () => {
       const { editorView, pluginState } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const floatingToolbar = mount(

@@ -51,7 +51,6 @@ export {
   mediaSingle,
   textColor,
   table,
-  tableWithAttrs,
   tr,
   td,
   th,

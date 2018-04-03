@@ -42,7 +42,7 @@ describe('table keymap', () => {
       it('it should select the first cell of the next row', () => {
         const { editorView, plugin, refs } = editor(
           doc(
-            table(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)),
+            table()(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)),
           ),
           trackEvent,
         );
@@ -63,7 +63,7 @@ describe('table keymap', () => {
       it('it should select the last cell of the next column', () => {
         const { editorView, plugin, refs } = editor(
           doc(
-            table(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))),
+            table()(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))),
           ),
           trackEvent,
         );
@@ -83,7 +83,7 @@ describe('table keymap', () => {
     describe('when the cursor is at the first cell of the first row', () => {
       it('it should select next cell of the current row', () => {
         const { editorView, refs } = editor(
-          doc(table(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty))),
+          doc(table()(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty))),
           trackEvent,
         );
         const { nextPos } = refs;
@@ -101,7 +101,7 @@ describe('table keymap', () => {
       it('it should select first cell of the next row', () => {
         const { editorView, refs } = editor(
           doc(
-            table(
+            table()(
               tr(tdEmpty, tdEmpty, tdCursor),
               tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty),
             ),
@@ -123,7 +123,7 @@ describe('table keymap', () => {
       it('it should create a new row and select the first cell of the new row', () => {
         const { editorView, pluginState } = editor(
           doc(
-            table(
+            table()(
               tr(tdEmpty, tdEmpty, tdEmpty),
               tr(tdEmpty, tdEmpty, tdCursor),
             ),
@@ -147,7 +147,7 @@ describe('table keymap', () => {
     describe('when the cursor is at the last cell of the first row', () => {
       it('it should select previous cell of the current row', () => {
         const { editorView, refs } = editor(
-          doc(table(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor))),
+          doc(table()(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor))),
           trackEvent,
         );
         const { nextPos } = refs;
@@ -165,7 +165,7 @@ describe('table keymap', () => {
       it('it should select the last cell of the first row', () => {
         const { editorView, refs } = editor(
           doc(
-            table(
+            table()(
               tr(tdEmpty, tdEmpty, td({})(p('{nextPos}'))),
               tr(tdCursor, tdEmpty, tdEmpty),
             ),
@@ -187,7 +187,7 @@ describe('table keymap', () => {
       it('it should create a new row and select the first cell of the new row', () => {
         const { editorView, pluginState } = editor(
           doc(
-            table(
+            table()(
               tr(tdCursor, tdEmpty, tdEmpty),
               tr(tdEmpty, tdEmpty, tdEmpty),
             ),
@@ -208,7 +208,7 @@ describe('table keymap', () => {
 
     describe('Shift-Alt-T keypress', () => {
       it('it should insert 3x3 table', () => {
-        const tableNode = table(
+        const tableNode = table()(
           tr(thEmpty, thEmpty, thEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
@@ -227,7 +227,7 @@ describe('table keymap', () => {
         const { editorView, plugin, refs } = editor(
           doc(
             p('text'),
-            table(tr(tdEmpty, td({})(p('hello{nextPos}')))),
+            table()(tr(tdEmpty, td({})(p('hello{nextPos}')))),
             p('{<>}text'),
           ),
         );
@@ -242,7 +242,7 @@ describe('table keymap', () => {
     describe('when table is selected', () => {
       it('it should empty table cells', () => {
         const { editorView, plugin } = editor(
-          doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
+          doc(table()(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
           trackEvent,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -252,7 +252,7 @@ describe('table keymap', () => {
         );
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).toEqualDocument(
-          doc(table(tr(tdEmpty, tdEmpty, tdEmpty))),
+          doc(table()(tr(tdEmpty, tdEmpty, tdEmpty))),
         );
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.format.table.delete_content.keyboard',
@@ -266,7 +266,7 @@ describe('table keymap', () => {
         it(`it should empty cells in the row ${index + 1}`, () => {
           const { editorView, plugin } = editor(
             doc(
-              table(
+              table()(
                 tr(tdEmpty, td({})(p('{<>}1'))),
                 tr(tdEmpty, td({})(p('2'))),
                 tr(tdEmpty, td({})(p('3'))),
@@ -288,7 +288,7 @@ describe('table keymap', () => {
           for (let i = 0; i < 3; i++) {
             rows.push(tr(tdEmpty, td({})(p(i === index ? '' : `${i + 1}`))));
           }
-          expect(editorView.state.doc).toEqualDocument(doc(table(...rows)));
+          expect(editorView.state.doc).toEqualDocument(doc(table()(...rows)));
           expect(cursorPos).toEqual(editorView.state.selection.$from.pos);
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_content.keyboard',
@@ -302,7 +302,7 @@ describe('table keymap', () => {
           const emptyRow = tr(tdEmpty, tdEmpty, tdEmpty);
           const { editorView, plugin } = editor(
             doc(
-              table(
+              table()(
                 emptyRow,
                 tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3'))),
               ),
@@ -324,7 +324,7 @@ describe('table keymap', () => {
             columns.push(td({})(p(i === index ? '' : `${i + 1}`)));
           }
           expect(editorView.state.doc).toEqualDocument(
-            doc(table(emptyRow, tr(...columns))),
+            doc(table()(emptyRow, tr(...columns))),
           );
           expect(cursorPos).toEqual(editorView.state.selection.$from.pos);
           expect(trackEvent).toHaveBeenCalledWith(

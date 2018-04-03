@@ -47,7 +47,7 @@ describe('TableFloatingControls', () => {
   describe('when tableElement is undefined', () => {
     it('should not render table header', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingControls = mount(
         <TableFloatingControls editorView={editorView} />,
@@ -60,7 +60,7 @@ describe('TableFloatingControls', () => {
   describe('when tableElement is defined', () => {
     it('should render CornerControls and RowControls', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingControls = shallow(
         <TableFloatingControls editorView={editorView} />,
@@ -77,7 +77,7 @@ describe('TableFloatingControls', () => {
   describe('when editor is focused', () => {
     it('should add a node decoration to table nodeView with class="with-controls"', () => {
       const { plugin, pluginState, editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
       const decoration = pluginState.set.find()[0] as any;
@@ -98,7 +98,7 @@ describe('TableFloatingControls', () => {
             nodes.push(tdEmpty);
           }
           const { editorView, plugin, pluginState } = editor(
-            doc(p('text'), table(tr(...nodes))),
+            doc(p('text'), table()(tr(...nodes))),
           );
           const floatingControls = mount(
             <ColumnControls
@@ -124,7 +124,7 @@ describe('TableFloatingControls', () => {
         it('should not move the cursor when hovering controls', () => {
           const { plugin, editorView, pluginState, refs } = editor(
             doc(
-              table(
+              table()(
                 tr(thEmpty, td({})(p('{nextPos}')), thEmpty),
                 tr(tdCursor, tdEmpty, tdEmpty),
                 tr(tdEmpty, tdEmpty, tdEmpty),
@@ -186,7 +186,7 @@ describe('TableFloatingControls', () => {
             rows.push(tr(tdEmpty));
           }
           const { editorView, plugin, pluginState: { tableElement } } = editor(
-            doc(p('text'), table(...rows)),
+            doc(p('text'), table()(...rows)),
           );
           const floatingControls = mount(
             <TableFloatingControls
