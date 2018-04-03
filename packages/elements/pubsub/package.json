@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "Tasks and decisions react components",
+  "description": "Interacts with Atlassian Frontend PubSub service to receive pubsub events.",
   "main": "dist/es5/index.js",
   "atlaskit:src": "src/index.ts",
   "jsnext:main": "dist/es2015/index.js",
@@ -26,6 +26,9 @@
     "eventemitter2": "^4.1.0",
     "pubnub": "^4.20.0",
     "tslib": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^6.6.4",
