@@ -19,7 +19,7 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { AuthService } from '../../domain/auth';
+import { Context } from '@atlaskit/media-core';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
@@ -66,12 +66,12 @@ const mapSelectedItemToSelectedUploadFile = ({
 
 export function importFilesMiddleware(
   eventEmitter: PopupUploadEventEmitter,
-  authService: AuthService,
+  context: Context,
   wsProvider: WsProvider,
 ): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isStartImportAction(action)) {
-      importFiles(eventEmitter, store as any, authService, wsProvider);
+      importFiles(eventEmitter, store as any, context, wsProvider);
     }
     return next(action);
   };
@@ -80,14 +80,14 @@ export function importFilesMiddleware(
 export function importFiles(
   eventEmitter: PopupUploadEventEmitter,
   store: Store<State>,
-  authService: AuthService,
+  context: Context,
   wsProvider: WsProvider,
 ): Promise<void> {
   const { apiUrl, uploads, tenant, selectedItems } = store.getState();
 
   store.dispatch(hidePopup());
 
-  return authService.getUserAuth().then(auth => {
+  return context.config.userAuthProvider().then(auth => {
     const selectedUploadFiles = selectedItems.map(
       mapSelectedItemToSelectedUploadFile,
     );

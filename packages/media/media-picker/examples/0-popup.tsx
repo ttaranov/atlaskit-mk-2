@@ -1,6 +1,7 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
 import { Component } from 'react';
+import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
@@ -27,7 +28,6 @@ import {
   CardItemWrapper,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
-import { ModuleConfig } from '../src/domain/config';
 
 const context = createStorybookContext();
 
@@ -64,17 +64,17 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   componentDidMount() {
-    const config: ModuleConfig = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this),
-      apiUrl: userAuthProviderBaseURL,
+    });
+
+    this.popup = MediaPicker('popup', context, {
+      container: document.body,
+      userAuthProvider,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-    };
-
-    this.popup = MediaPicker('popup', config, {
-      container: document.body,
-      userAuthProvider,
     });
 
     this.popup.onAny(this.onPopupEvent);

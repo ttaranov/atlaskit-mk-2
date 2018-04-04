@@ -1,4 +1,4 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { applyMiddleware, createStore, Store, Middleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
@@ -29,15 +29,12 @@ import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
 import { PopupUploadEventEmitter } from '../components/popup';
-import { AuthService } from '../domain/auth';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
-  apiUrl: string,
   redirectUrl: string,
-  userAuthProvider: AuthProvider,
+  context: Context,
   fetcher: Fetcher,
-  authService: AuthService,
   cloudService: CloudService,
   wsProvider: WsProvider,
 ): Store<State> => {
@@ -45,30 +42,29 @@ export default (
     reducers,
     {
       ...defaultState,
-      apiUrl,
       redirectUrl,
-      userAuthProvider,
+      context,
     },
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
-        getFilesInRecents(fetcher, userAuthProvider) as Middleware,
+        getFilesInRecents(fetcher, context) as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,
-        changeCloudAccountFolderMiddleware(fetcher, authService) as Middleware,
-        fetchNextCloudFilesPageMiddleware(fetcher, authService) as Middleware,
+        changeCloudAccountFolderMiddleware(fetcher, context) as Middleware,
+        fetchNextCloudFilesPageMiddleware(fetcher, context) as Middleware,
         startCloudAccountOAuthFlow(
           fetcher,
-          authService,
+          context,
           cloudService,
         ) as Middleware,
-        unlinkCloudAccount(fetcher, authService) as Middleware,
-        getConnectedRemoteAccounts(fetcher, authService) as Middleware,
+        unlinkCloudAccount(fetcher, context) as Middleware,
+        getConnectedRemoteAccounts(fetcher, context) as Middleware,
         cancelUpload as Middleware,
-        importFilesMiddleware(eventEmitter, authService, wsProvider),
-        editRemoteImageMiddleware(fetcher, authService) as Middleware,
-        getPreviewMiddleware(fetcher, authService),
-        finalizeUploadMiddleware(fetcher, authService),
+        importFilesMiddleware(eventEmitter, context, wsProvider),
+        editRemoteImageMiddleware(fetcher, context) as Middleware,
+        getPreviewMiddleware(fetcher, context),
+        finalizeUploadMiddleware(fetcher, context),
         proxyUploadEvents as Middleware,
         handleCloudFetchingEvent as Middleware,
         searchGiphy(fetcher) as Middleware,

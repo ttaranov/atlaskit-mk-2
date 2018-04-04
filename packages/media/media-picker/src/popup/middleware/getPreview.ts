@@ -7,15 +7,12 @@ import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { AuthService } from '../../domain/auth';
+import { Context } from '@atlaskit/media-core';
 
-export default function(
-  fetcher: Fetcher,
-  authService: AuthService,
-): Middleware {
+export default function(fetcher: Fetcher, context: Context): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isGetPreviewAction(action)) {
-      getPreview(fetcher, authService, store as any, action);
+      getPreview(fetcher, context, store as any, action);
     }
     return next(action);
   };
@@ -23,14 +20,14 @@ export default function(
 
 export function getPreview(
   fetcher: Fetcher,
-  authService: AuthService,
+  context: Context,
   store: Store<State>,
   { uploadId, file, collection }: GetPreviewAction,
 ): Promise<SendUploadEventAction> {
   const { apiUrl } = store.getState();
 
-  return authService
-    .getUserAuth()
+  return context.config
+    .userAuthProvider()
     .then(auth => fetcher.getPreview(apiUrl, auth, file.id, collection))
     .then(preview =>
       store.dispatch(

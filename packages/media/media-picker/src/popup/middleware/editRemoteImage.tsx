@@ -11,7 +11,7 @@ import {
   EditRemoteImageAction,
 } from '../actions/editRemoteImage';
 import { State } from '../domain';
-import { AuthService } from '../../domain/auth';
+import { Context } from '@atlaskit/media-core';
 
 // When we complete upload, we need to check if we can open the editor.
 // What can be changed:
@@ -37,12 +37,12 @@ const continueRenderingEditor = (id: string, store: Store<State>): boolean => {
 
 export const editRemoteImageMiddleware = (
   fetcher: Fetcher,
-  authService: AuthService,
+  context: Context,
 ) => (store: Store<State>) => (next: Dispatch<State>) => (
   action: EditRemoteImageAction,
 ) => {
   if (action.type === EDIT_REMOTE_IMAGE) {
-    editRemoteImage(fetcher, authService, store, action);
+    editRemoteImage(fetcher, context, store, action);
   }
 
   return next(action);
@@ -50,7 +50,7 @@ export const editRemoteImageMiddleware = (
 
 export function editRemoteImage(
   fetcher: Fetcher,
-  authService: AuthService,
+  context: Context,
   store: Store<State>,
   action: EditRemoteImageAction,
 ): Promise<void> {
@@ -59,8 +59,8 @@ export function editRemoteImage(
 
   store.dispatch(editorShowLoading(item));
 
-  return authService
-    .getUserAuth()
+  return context.config
+    .userAuthProvider()
     .then(auth => fetcher.getImage(apiUrl, auth, item.id, collectionName))
     .then(fileToBase64)
     .then(base64image => {

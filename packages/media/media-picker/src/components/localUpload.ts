@@ -1,4 +1,4 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import {
   FilePreviewUpdateEventPayload,
   FileConvertedEventPayload,
@@ -11,7 +11,7 @@ import {
 } from '../service/uploadService';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig, UploadParams } from '../domain/config';
+import { UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export class LocalUploadComponent<
@@ -20,14 +20,14 @@ export class LocalUploadComponent<
   protected readonly uploadService: UploadService;
 
   constructor(
-    context: MediaPickerContext,
-    { apiUrl, authProvider, uploadParams }: ModuleConfig,
-    userAuthProvider?: AuthProvider,
+    analyticsContext: MediaPickerContext,
+    { config }: Context,
+    { uploadParams }: { uploadParams: UploadParams },
   ) {
-    super(context);
-
+    super(analyticsContext);
+    const { userAuthProvider, authProvider, serviceHost } = config;
     this.uploadService = new UploadService(
-      apiUrl,
+      serviceHost,
       authProvider,
       uploadParams || { collection: '' },
       userAuthProvider,

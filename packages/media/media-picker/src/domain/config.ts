@@ -1,4 +1,4 @@
-import { AuthProvider } from '@atlaskit/media-core';
+// import { Context } from '@atlaskit/media-core';
 
 export interface UploadParams {
   collection?: string;
@@ -6,8 +6,10 @@ export interface UploadParams {
   autoFinalize?: boolean;
 }
 
-export interface ModuleConfig {
-  apiUrl: string;
-  authProvider: AuthProvider;
-  uploadParams?: UploadParams;
-}
+// TODO: Does this interface makes sense now? should we remove it pass uploadParams as a different argument when needed?
+// export interface ModuleConfig {
+//   // apiUrl: string;
+//   // authProvider: AuthProvider;
+//   context: Context;
+//   uploadParams?: UploadParams;
+// }

@@ -7,7 +7,7 @@ import {
   GET_CONNECTED_REMOTE_ACCOUNTS,
   GetConnectedRemoteAccountsAction,
 } from '../actions/getConnectedRemoteAccounts';
-import { AuthService } from '../../domain/auth';
+import { Context } from '@atlaskit/media-core';
 
 const isGetConnectedRemoteAccountsAction = (
   action: Action,
@@ -17,13 +17,13 @@ const isGetConnectedRemoteAccountsAction = (
 
 export const getConnectedRemoteAccounts = (
   fetcher: Fetcher,
-  authService: AuthService,
+  context: Context,
 ) => (store: Store<State>) => (next: Dispatch<Action>) => (action: Action) => {
   if (isGetConnectedRemoteAccountsAction(action)) {
     const { apiUrl } = store.getState();
 
-    authService
-      .getUserAuth()
+    context.config
+      .userAuthProvider()
       .then(auth => fetcher.getServiceList(apiUrl, auth))
       .then(accounts => store.dispatch(updateServiceList(accounts)));
   }

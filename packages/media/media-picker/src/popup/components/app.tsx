@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -48,10 +48,9 @@ import {
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {
-  readonly apiUrl: string;
   readonly selectedServiceName: ServiceName;
-  readonly userAuthProvider: AuthProvider;
   readonly isVisible: boolean;
+  readonly context: Context;
 }
 
 export interface AppDispatchProps {
@@ -88,8 +87,6 @@ export class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     const {
-      apiUrl,
-      userAuthProvider,
       onStartApp,
       onUploadsStart,
       onUploadPreviewUpdate,
@@ -97,21 +94,23 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
+      context,
     } = props;
 
     this.state = {
       isDropzoneActive: false,
     };
 
-    const mpConfig = {
-      apiUrl,
-      authProvider: userAuthProvider,
+    const defaultConfig = {
       uploadParams: {
         collection: RECENTS_COLLECTION,
       },
     };
 
-    this.mpBrowser = MediaPicker('browser', mpConfig, { multiple: true });
+    this.mpBrowser = MediaPicker('browser', context, {
+      ...defaultConfig,
+      multiple: true,
+    });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBrowser.on('upload-status-update', onUploadStatusUpdate);
@@ -119,7 +118,10 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', mpConfig, { headless: true });
+    this.mpDropzone = MediaPicker('dropzone', context, {
+      ...defaultConfig,
+      headless: true,
+    });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
     this.mpDropzone.on('uploads-start', onUploadsStart);
@@ -129,7 +131,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', mpConfig);
+    this.mpBinary = MediaPicker('binary', context);
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
@@ -137,10 +139,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
 
-    this.mpContext = ContextFactory.create({
-      serviceHost: apiUrl,
-      authProvider: userAuthProvider,
-    });
+    this.mpContext = context;
 
     onStartApp(uploadId => {
       this.mpBrowser.cancel(uploadId);
@@ -214,15 +213,10 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({
-  apiUrl,
-  userAuthProvider,
-  view,
-}: State): AppStateProps => ({
-  apiUrl,
-  userAuthProvider,
+const mapStateToProps = ({ view, context }: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
+  context,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({

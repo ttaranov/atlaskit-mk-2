@@ -1,4 +1,4 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 import { Action, Dispatch, Store } from 'redux';
 
 import { Fetcher } from '../tools/fetcher/fetcher';
@@ -9,12 +9,11 @@ import {
 import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
 
-export const getFilesInRecents = (
-  fetcher: Fetcher,
-  userAuthProvider: AuthProvider,
-) => (store: Store<State>) => (next: Dispatch<Action>) => (action: Action) => {
+export const getFilesInRecents = (fetcher: Fetcher, context: Context) => (
+  store: Store<State>,
+) => (next: Dispatch<Action>) => (action: Action) => {
   if (isGetFilesInRecentsAction(action)) {
-    requestRecentFiles(fetcher, userAuthProvider, store);
+    requestRecentFiles(fetcher, context.config.userAuthProvider, store);
   }
 
   return next(action);

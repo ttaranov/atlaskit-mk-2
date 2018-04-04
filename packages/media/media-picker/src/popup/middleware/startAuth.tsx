@@ -5,11 +5,11 @@ import { changeAccount } from '../actions/changeAccount';
 import { State } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import { CloudService } from '../services/cloud-service';
-import { AuthService } from '../../domain/auth';
+import { Context } from '@atlaskit/media-core';
 
 export const startCloudAccountOAuthFlow = (
   fetcher: Fetcher,
-  authService: AuthService,
+  context: Context,
   cloudService: CloudService,
 ) => (store: Store<State>) => (next: Dispatch<State>) => (
   action: StartAuthAction,
@@ -20,7 +20,7 @@ export const startCloudAccountOAuthFlow = (
 
     cloudService
       .startAuth(apiUrl, redirectUrl, serviceName)
-      .then(() => authService.getUserAuth())
+      .then(() => context.config.userAuthProvider())
       .then(auth => fetcher.getServiceList(apiUrl, auth))
       .then(accounts => {
         store.dispatch(updateServiceList(accounts));
