@@ -1,6 +1,6 @@
 import { MockRequest } from 'xhr-mock';
 import { RequestData } from '.';
-import * as matches from 'lodash.matches';
+import matches = require('lodash.matches');
 
 export const matchMethod = (req: MockRequest, data: RequestData) => {
   return data.method ? data.method === req.method() : true;
@@ -17,7 +17,7 @@ export const exactMatchHeaders = (req: MockRequest, data: RequestData) => {
 export const exactMatchBody = (req: MockRequest, data: RequestData) => {
   try {
     return data.body
-      ? _.matches(JSON.parse(data.body))(JSON.parse(req.body() || '{}'))
+      ? matches(JSON.parse(data.body))(JSON.parse(req.body() || '{}'))
       : true;
   } catch (e) {
     return false;
