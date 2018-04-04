@@ -18,6 +18,7 @@ export interface Props {
   fitWidth?: number;
   fitHeight?: number;
   onPositionCalculated?: (position: Coordinates) => any;
+  className?: string;
 }
 
 export {
@@ -37,6 +38,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       onPositionCalculated,
       popupsMountPoint,
       popupsBoundariesElement,
+      className,
     } = this.props;
 
     if (!target) {
@@ -53,7 +55,9 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
         fitHeight={fitHeight}
         onPositionCalculated={onPositionCalculated}
       >
-        <Container height={fitHeight}>{children}</Container>
+        <Container className={className} height={fitHeight}>
+          {children}
+        </Container>
       </Popup>
     );
   }

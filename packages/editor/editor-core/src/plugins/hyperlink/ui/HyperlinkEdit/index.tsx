@@ -171,6 +171,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           offset={[0, 3]}
           fitHeight={renderRecentSearch ? 284 : 40}
           onPositionCalculated={this.adjustPosition}
+          className="link-edit"
           popupsBoundariesElement={popupsBoundariesElement}
           popupsMountPoint={popupsMountPoint}
         >
