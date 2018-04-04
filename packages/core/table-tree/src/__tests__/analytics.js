@@ -20,7 +20,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 }));
 
 /* eslint-disable */
-describe('Row', () => {
+xdescribe('Row', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
       component: 'table-tree',

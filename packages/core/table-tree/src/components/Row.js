@@ -1,15 +1,15 @@
 // @flow
 import React, { PureComponent, type Element, type ChildrenArray } from 'react';
 import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
+  // withAnalyticsEvents,
+  // withAnalyticsContext,
+  // createAndFireEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
+// import {
+//   name as packageName,
+//   version as packageVersion,
+// } from '../../package.json';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
@@ -106,21 +106,25 @@ class Row extends PureComponent<Props> {
 
 export { Row as RowBase };
 
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+// Importing json files breaks extract-react types, removing analytics until this
+// is fixed
+export default Row;
 
-// $FlowFixMe - Figure out why this is erroring only for this component...
-export default withAnalyticsContext({
-  component: 'table-tree',
-  package: packageName,
-  version: packageVersion,
-})(
-  withAnalyticsEvents({
-    onExpand: createAndFireEventOnAtlaskit({
-      action: 'toggle',
-    }),
+// const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-    onCollapse: createAndFireEventOnAtlaskit({
-      action: 'toggle',
-    }),
-  })(Row),
-);
+// // $FlowFixMe - Figure out why this is erroring only for this component...
+// export default withAnalyticsContext({
+//   component: 'table-tree',
+//   package: packageName,
+//   version: packageVersion,
+// })(
+//   withAnalyticsEvents({
+//     onExpand: createAndFireEventOnAtlaskit({
+//       action: 'toggle',
+//     }),
+
+//     onCollapse: createAndFireEventOnAtlaskit({
+//       action: 'toggle',
+//     }),
+//   })(Row),
+// );
