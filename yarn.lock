@@ -9,6 +9,12 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
+"@atlaskit/analytics-next@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-1.1.9.tgz#59e69e0c5057d3bdc047b3f1e86e002cfed157a0"
+  dependencies:
+    prop-types "^15.5.10"
+
 "@atlaskit/app-switcher@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/app-switcher/-/app-switcher-3.3.0.tgz#1ecf68890dea7739a7f7e9d44f1a365e1efdf75b"
@@ -82,6 +88,27 @@
     "@atlaskit/theme" "^2.3.1"
     babel-runtime "^6.26.0"
     styled-components "^1.4.6"
+
+"@atlaskit/button@^6.6.2":
+  version "6.6.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-6.6.4.tgz#03be2d78592f5a57d5fc6db9886ca962709fdeb6"
+  dependencies:
+    "@atlaskit/analytics-next" "^1.1.9"
+    "@atlaskit/theme" "^2.4.1"
+    babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+
+"@atlaskit/calendar@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/calendar/-/calendar-4.0.0.tgz#f4757102bd8c9ea96b9a88fda2f0d98a3db83ab7"
+  dependencies:
+    "@atlaskit/button" "^6.6.2"
+    "@atlaskit/icon" "^10.12.1"
+    "@atlaskit/theme" "^2.4.1"
+    calendar-base "^0.3.0"
+    lodash.pick "^4.4.0"
+    styled-components "1.4.6 - 3"
+    uuid "^3.1.0"
 
 "@atlaskit/dropdown-menu@^3.0.0":
   version "3.11.4"
@@ -174,6 +201,15 @@
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.4.6"
+
+"@atlaskit/icon@^10.12.1":
+  version "10.13.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.13.0.tgz#d662c212ced45aea03644e5375bebf8c52dc4efa"
+  dependencies:
+    "@atlaskit/theme" "^2.4.1"
+    babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+    uuid "^3.1.0"
 
 "@atlaskit/icon@^10.7.0":
   version "10.8.0"
@@ -346,6 +382,13 @@
   dependencies:
     prop-types "^15.5.10"
     styled-components "^1.4.6"
+
+"@atlaskit/theme@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.4.1.tgz#a554075068ff4d85542292998f3544160b4a5a73"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "1.4.6 - 3"
 
 "@atlaskit/tooltip@^8.0.1":
   version "8.0.4"
@@ -13800,6 +13843,10 @@ validate-npm-package-name@^3.0.0:
   resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-3.0.0.tgz#5fa912d81eb7d0c74afc140de7317f0ca7df437e"
   dependencies:
     builtins "^1.0.3"
+
+validator@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-9.4.1.tgz#abf466d398b561cd243050112c6ff1de6cc12663"
 
 validator@~9.1.1:
   version "9.1.2"
