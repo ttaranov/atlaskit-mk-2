@@ -1,10 +1,9 @@
-/* @flow */
+// @flow
 
 import React, { type Node } from 'react';
 import PropTypes from 'prop-types';
 import { Route, matchPath } from 'react-router-dom';
 
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import { AkContainerNavigationNested as NestedNav } from '@atlaskit/navigation';
 
 import DefaultNav from './navigations/Default';
@@ -12,10 +11,6 @@ import PackagesNav from './navigations/Packages';
 import DocsNav from './navigations/Docs';
 import PatternsNav from './navigations/Patterns';
 
-import {
-  RouterNavigationItem,
-  ExternalNavigationItem,
-} from './utils/linkComponents';
 import type { Directory } from '../../types';
 
 export type GroupsProps = {
