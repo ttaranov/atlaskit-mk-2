@@ -80,7 +80,7 @@ export default () => {
     <div>
       <h3>Date picker</h3>
       <Label htmlFor="react-select-datepicker-1--input" label="default" />
-      <DatePicker id="datepicker-1" />
+      <DatePicker id="datepicker-1" onChange={console.log} />
 
       <Label
         htmlFor="react-select-datepicker-2--input"
@@ -110,7 +110,7 @@ export default () => {
 
       <h3>Time picker</h3>
       <Label htmlFor="react-select-timepicker-1--input" label="default" />
-      <TimePicker id="timepicker-1" />
+      <TimePicker id="timepicker-1" onChange={console.log} />
 
       <Label
         htmlFor="react-select-timepicker-2--input"
@@ -140,7 +140,7 @@ export default () => {
 
       <h3>Date / time picker</h3>
       <Label htmlFor="react-select-datetimepicker-1--input" label="default" />
-      <DateTimePicker id="datetimepicker-1" />
+      <DateTimePicker id="datetimepicker-1" onChange={console.log} />
 
       <Label
         htmlFor="react-select-datetimepicker-2--input"
