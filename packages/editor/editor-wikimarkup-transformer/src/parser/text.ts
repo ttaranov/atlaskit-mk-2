@@ -76,7 +76,7 @@ function findFirstEmoji(
     const [match, matchPosition] = findFirstPosition(text, markup, position);
 
     // this emoji doesn't exist in a string
-    if (matchPosition === -1) {
+    if (!match || matchPosition === -1) {
       continue;
     }
 
@@ -158,7 +158,7 @@ function findFirstPosition(
   text: string,
   searches: string[],
   start = 0,
-): Array<string | null, number> {
+): [string | null, number] {
   for (const search of searches) {
     const match = text.indexOf(search, start);
 
