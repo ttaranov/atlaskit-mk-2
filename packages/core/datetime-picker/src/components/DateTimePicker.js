@@ -90,13 +90,13 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-function parseDateIntoStateValues(value) {
+function parseDateIntoStateValues(value, dateValue, timeValue, zoneValue) {
   const parsed = parse(value);
   const valid = isValid(parsed);
   return {
-    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : '',
-    timeValue: valid ? format(parsed, 'HH:mm') : '',
-    zoneValue: valid ? format(parsed, 'ZZ') : '',
+    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : dateValue,
+    timeValue: valid ? format(parsed, 'HH:mm') : timeValue,
+    zoneValue: valid ? format(parsed, 'ZZ') : zoneValue,
   };
 }
 
@@ -132,7 +132,12 @@ export default class DateTimePicker extends Component<Props, State> {
 
     return {
       ...mappedState,
-      ...parseDateIntoStateValues(mappedState.value),
+      ...parseDateIntoStateValues(
+        mappedState.value,
+        mappedState.dateValue,
+        mappedState.timeValue,
+        mappedState.zoneValue,
+      ),
     };
   };
 
