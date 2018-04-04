@@ -18,7 +18,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: [':P', ':-P', ':p', ':-P'],
+    markup: [':P', ':-P', ':p', ':-p'],
     adf: {
       id: '1f61b',
       shortName: ':stuck_out_tongue:',
