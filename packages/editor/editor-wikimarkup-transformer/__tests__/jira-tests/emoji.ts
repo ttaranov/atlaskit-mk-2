@@ -1,10 +1,24 @@
 import { doc, p, emoji } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from '../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
+import { EMOJIS } from '../../src/parser/emoji';
+import { EmojiMapItem } from '../../src/interfaces';
 
 // Nodes
 
-describe.skip('WikiMarkup Transformer', () => {
+// @TODO markup as array
+const findEmojiConfig = (markup: string) => {
+  const [emoji] = EMOJIS.reduce((acc: any[], emoji: EmojiMapItem) => {
+    if (emoji.markup.indexOf(markup) !== -1) {
+      return [...acc, emoji.adf];
+    }
+    return acc;
+  }, []);
+
+  return emoji;
+};
+
+describe('WikiMarkup Transformer', () => {
   describe('standard emojis', () => {
     const WIKI_NOTATION = `just an smiley face :) and another one :-( and finally :D`;
 
@@ -15,18 +29,18 @@ describe.skip('WikiMarkup Transformer', () => {
       doc(
         p(
           'just an smiley face ',
-          emoji({ shortName: ':slight_smile:' })(),
+          emoji(findEmojiConfig(':)'))(),
           ' and another one ',
-          emoji({ shortName: ':disappointed:' })(),
+          emoji(findEmojiConfig(':-('))(),
           ' and finally ',
-          emoji({ shortName: ':smiley:' })(),
+          emoji(findEmojiConfig(':D'))(),
         ),
       ),
     );
   });
 
   describe('standard emojis multiline', () => {
-    const WIKI_NOTATION = `some smiley faces here:\\n\\n:-)\\n\\n:-(\\n\\n:)\\n\\n;-)\\n\\n:D\\n\\n:P\\n\\n:p`;
+    const WIKI_NOTATION = `some smiley faces here:\n\n:-)\n\n:-(\n\n:)\n\n;-)\n\n:D\n\n:P\n\n:p`;
 
     checkParseEncodeRoundTrips(
       WIKI_NOTATION,
@@ -34,12 +48,13 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       doc(
         p('some smiley faces here:'),
-        p(emoji({ shortName: ':slight_smile:' })()),
-        p(emoji({ shortName: ':disappointed:' })()),
-        p(emoji({ shortName: ':slight_smile:' })()),
-        p(emoji({ shortName: ':wink:' })()),
-        p(emoji({ shortName: ':stuck_out_tongue:' })()),
-        p(emoji({ shortName: ':stuck_out_tongue:' })()),
+        p(emoji(findEmojiConfig(':-)'))()),
+        p(emoji(findEmojiConfig(':-('))()),
+        p(emoji(findEmojiConfig(':)'))()),
+        p(emoji(findEmojiConfig(';-)'))()),
+        p(emoji(findEmojiConfig(':D'))()),
+        p(emoji(findEmojiConfig(':P'))()),
+        p(emoji(findEmojiConfig(':p'))()),
       ),
     );
   });
@@ -53,9 +68,9 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       doc(
         p(
-          emoji({ shortName: ':warning:' })(),
+          emoji(findEmojiConfig('(!)'))(),
           ' Warning',
-          emoji({ shortName: ':warning:' })(),
+          emoji(findEmojiConfig('(!)'))(),
         ),
       ),
     );
@@ -68,7 +83,7 @@ describe.skip('WikiMarkup Transformer', () => {
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p(emoji({ shortName: ':information_source:' })(), '&nbsp;')),
+      doc(p(emoji(findEmojiConfig('(i)'))(), '&nbsp;')),
     );
   });
 
