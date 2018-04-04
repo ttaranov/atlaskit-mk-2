@@ -16,6 +16,7 @@ import {
 import {
   akGridSizeUnitless,
   akColorN20,
+  akColorN40,
   akBorderRadius,
   akColorN40A,
   akColorN300,
@@ -389,6 +390,26 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     table td,
     table th {
       position: relative;
+    }
+  }
+  /* =============== Layouts ================== */
+  .ProseMirror {
+    & [data-layout-type] {
+      display: flex;
+      flex-direction: row;
+      /* Handles overflow of page layout */
+      position: relative;
+      width: calc(100% + 52px);
+      left: -26px;
+
+      & > * {
+        border: 2px solid ${akColorN40};
+        border-radius: 5px;
+        margin: 8px;
+        padding: 16px;
+        flex: 1;
+        min-width: 0;
+      }
     }
   }
 `;

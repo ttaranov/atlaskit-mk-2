@@ -12,6 +12,7 @@ import {
   submitEditorPlugin,
   insertBlockPlugin,
   placeholderTextPlugin,
+  layoutPlugin,
 } from '../../src/plugins';
 
 import createPluginsList from '../../src/create-editor/create-plugins-list';
@@ -70,6 +71,11 @@ describe('createPluginsList', () => {
     expect(placeholderTextPlugin).toHaveBeenCalledWith({
       allowInserting: true,
     });
+  });
+
+  it('should add layoutPlugin if allowLayout prop is provided', () => {
+    const plugins = createPluginsList({ allowLayouts: true });
+    expect(plugins).toContain(layoutPlugin);
   });
 
   it('should always add insertBlockPlugin to the editor with insertMenuItems', () => {

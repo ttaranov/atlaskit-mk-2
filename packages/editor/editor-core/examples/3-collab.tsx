@@ -116,6 +116,7 @@ export default function Example() {
               analyticsHandler={analyticsHandler}
               allowTasksAndDecisions={true}
               allowCodeBlocks={true}
+              allowLayouts={true}
               allowLists={true}
               allowTextColor={true}
               allowTables={true}
