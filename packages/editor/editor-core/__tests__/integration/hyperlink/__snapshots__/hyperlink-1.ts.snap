@@ -4,6 +4,9 @@ exports[`Link:create link using toolbar,unlinkify comment editor 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -21,6 +24,9 @@ Object {
       "type": "paragraph",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "http://hello.com ",
@@ -38,6 +44,9 @@ exports[`Link:create link using toolbar,unlinkify fullpage editor 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -55,6 +64,9 @@ Object {
       "type": "paragraph",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "http://hello.com ",

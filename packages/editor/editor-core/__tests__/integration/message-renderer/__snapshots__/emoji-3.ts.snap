@@ -62,6 +62,9 @@ exports[`Emoji: should select emoji on return 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -87,6 +90,9 @@ exports[`Emoji: user can navigate typeahead using keyboard 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {

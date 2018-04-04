@@ -4,6 +4,9 @@ exports[`Toolbar: should be able to select normal text, bold, italics, underline
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "helloworld ",
@@ -48,6 +51,9 @@ exports[`Toolbar: should be able to select normal text, bold, italics, underline
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "helloworld ",

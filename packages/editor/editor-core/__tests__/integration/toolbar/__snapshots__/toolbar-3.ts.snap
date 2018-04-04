@@ -4,6 +4,9 @@ exports[`Toolbar: should be able to select Clear Formatting on toolbar for comme
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -30,6 +33,9 @@ exports[`Toolbar: should be able to select Clear Formatting on toolbar for fullp
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [

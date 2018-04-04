@@ -4,10 +4,16 @@ exports[`paste tests on message editor: bullet list 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "list ele 1",
@@ -22,6 +28,9 @@ Object {
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "list ele 2",
@@ -31,10 +40,16 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "content": Array [
                     Object {
+                      "attrs": Object {
+                        "indentLevel": null,
+                      },
                       "content": Array [
                         Object {
                           "text": "more ele 1",
@@ -49,6 +64,9 @@ Object {
                 Object {
                   "content": Array [
                     Object {
+                      "attrs": Object {
+                        "indentLevel": null,
+                      },
                       "content": Array [
                         Object {
                           "text": "more ele 2",
@@ -69,6 +87,9 @@ Object {
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "this is the last ele",
@@ -92,10 +113,16 @@ exports[`paste tests on message editor: ordered list 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "this is ele1",
@@ -110,6 +137,9 @@ Object {
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "this is a link ",
@@ -131,10 +161,16 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "content": Array [
                     Object {
+                      "attrs": Object {
+                        "indentLevel": null,
+                      },
                       "content": Array [
                         Object {
                           "text": "more elements with some ",
@@ -158,6 +194,9 @@ Object {
                 Object {
                   "content": Array [
                     Object {
+                      "attrs": Object {
+                        "indentLevel": null,
+                      },
                       "content": Array [
                         Object {
                           "text": "some addition",
@@ -187,6 +226,9 @@ Object {
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "last element",
@@ -210,6 +252,9 @@ exports[`paste tests on message editor: plain text 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "This text is plain.",
@@ -227,6 +272,9 @@ exports[`paste tests on message editor: text formatting 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -311,10 +359,6 @@ Object {
             },
           ],
           "text": "www.google.com",
-          "type": "text",
-        },
-        Object {
-          "text": "  ",
           "type": "text",
         },
       ],

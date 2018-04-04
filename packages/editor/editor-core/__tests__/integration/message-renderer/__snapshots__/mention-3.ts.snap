@@ -4,6 +4,9 @@ exports[`Mention: inserted if space on single match 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -30,6 +33,9 @@ exports[`Mention: user can click ToolbarMentionPicker and see mention 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -78,6 +84,9 @@ exports[`Mention: user should not see mention inside inline code 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -100,6 +109,9 @@ exports[`Mention: users with same first name should not be selected if space 1`]
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "@alica some text",
