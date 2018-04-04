@@ -44,7 +44,7 @@ export default class BasicExample extends PureComponent<void, State> {
             label="Required, Spell check disabled & max length (25)"
             isSpellCheckEnabled={false}
             required
-            maxLength={10}
+            maxLength={25}
           />
           <FieldTextArea
             label="Hidden label"
