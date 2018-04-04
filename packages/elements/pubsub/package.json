@@ -1,0 +1,44 @@
+{
+  "name": "@atlaskit/pubsub",
+  "version": "1.0.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "Interacts with Atlassian Frontend PubSub service to receive pubsub events.",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    "Julien H",
+    "Oscar W"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@atlaskit/util-service-support": "^2.0.4",
+    "eventemitter2": "^4.1.0",
+    "pubnub": "^4.20.0",
+    "tslib": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "15.6.0 - 16.2.0"
+  },
+  "devDependencies": {
+    "@atlaskit/button": "^6.6.4",
+    "@atlaskit/docs": "^2.6.2",
+    "@atlaskit/field-text": "^4.3.0",
+    "@atlaskit/theme": "^2.4.0",
+    "@types/fetch-mock": "^5.12.1",
+    "es6-promise": "^4.0.5",
+    "fetch-mock": "^5.12.1",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+}
