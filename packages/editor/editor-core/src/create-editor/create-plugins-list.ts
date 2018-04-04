@@ -34,6 +34,8 @@ import {
   hyperlinkPlugin,
   textFormattingPlugin,
   widthPlugin,
+  typeAheadPlugin,
+  quickInsertPlugin,
 } from '../plugins';
 
 /**
@@ -49,6 +51,7 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     hyperlinkPlugin,
     textFormattingPlugin,
     widthPlugin,
+    typeAheadPlugin,
   ];
 }
 
@@ -57,6 +60,10 @@ export function getDefaultPluginsList(): EditorPlugin[] {
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
+
+  if (props.UNSAFE_allowQuickInsert) {
+    plugins.push(quickInsertPlugin);
+  }
 
   if (props.allowTextColor) {
     plugins.push(textColorPlugin);

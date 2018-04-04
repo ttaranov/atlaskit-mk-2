@@ -10372,9 +10372,9 @@ prosemirror-transform@1.0.9, prosemirror-transform@^1.0.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.1.0.tgz#5dbc5746c05cf837cffe6a5960c61a2435324ef4"
+prosemirror-utils@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.2.4.tgz#b47f9dbaa720af4b860f556567f96c5ddd32cdd2"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.2.0:
   version "1.2.0"
