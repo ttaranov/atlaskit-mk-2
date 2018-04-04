@@ -8,8 +8,10 @@ describe('getPreviewFromVideo util', () => {
     const snapshotSrc = 'snapshot-src';
     const snapshotPromise = Promise.resolve(snapshotSrc);
     const takeSnapshotMock = jest.fn().mockReturnValue(snapshotPromise);
+    const endMock = jest.fn();
     (VideoSnapshot as any).mockImplementation(() => ({
       takeSnapshot: takeSnapshotMock,
+      end: endMock,
     }));
     const img = {
       width: 5,
@@ -28,17 +30,19 @@ describe('getPreviewFromVideo util', () => {
       snapshotPromise,
       img,
       file,
+      endMock,
     };
   };
 
   it('should return an image preview out of a video file', async () => {
-    const { file, snapshotPromise, img } = setup();
+    const { file, snapshotPromise, endMock, img } = setup();
     const previewPromise = getPreviewFromVideo(file);
     await snapshotPromise;
 
     img.onload();
 
     return previewPromise.then(preview => {
+      expect(endMock).toHaveBeenCalledTimes(1);
       expect(preview.src).toEqual('snapshot-src');
       expect(preview.dimensions).toEqual({ width: 5, height: 5 });
     });
