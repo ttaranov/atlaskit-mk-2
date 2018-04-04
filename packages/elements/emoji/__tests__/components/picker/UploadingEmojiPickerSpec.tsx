@@ -11,6 +11,7 @@ import {
   getEmojiResourcePromiseFromRepository,
   siteEmojiFoo,
   mediaEmoji,
+  pngDataURL,
 } from '../../_test-data';
 
 import Emoji from '../../../src/components/common/Emoji';
@@ -38,6 +39,17 @@ describe('<UploadingEmojiPicker />', () => {
   const safeFindCustomEmojiButton = async component => {
     await waitUntil(() => commonHelper.customEmojiButtonVisible(component));
     return commonHelper.findCustomEmojiButton(component);
+  };
+
+  const uploadPreviewShown = component => {
+    const uploadPreview = helper.findUploadPreview(component);
+    expect(uploadPreview).toHaveLength(1);
+    const uploadPreviewEmoji = uploadPreview.find(Emoji);
+    // Should show two emoji in EmojiUploadPrevew
+    expect(uploadPreviewEmoji).toHaveLength(2);
+    let emoji = uploadPreviewEmoji.at(0).prop('emoji');
+    expect(emoji.shortName).toEqual(':cheese_burger:');
+    expect(emoji.representation.imagePath).toEqual(pngDataURL);
   };
 
   const chooseFile = (component, file) => {
@@ -148,7 +160,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      helper.uploadPreviewShown(component);
+      uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
@@ -323,7 +335,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      helper.uploadPreviewShown(component);
+      uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
@@ -401,7 +413,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      helper.uploadPreviewShown(component);
+      uploadPreviewShown(component);
 
       // cancel
       const cancelLink = helper.findCancelLink(component);
@@ -468,7 +480,7 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
-      helper.uploadPreviewShown(component);
+      uploadPreviewShown(component);
 
       // add emoji
       const addEmojiButton = helper.findAddEmojiButton(component);
