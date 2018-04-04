@@ -1,5 +1,7 @@
 # @atlaskit/util-data-test
 
+## 8.0.4
+
 ## 8.0.3
 - [patch] Patch release util-data-test to bump emoji [49ff12f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49ff12f)
 

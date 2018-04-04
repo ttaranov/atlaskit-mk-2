@@ -9,17 +9,11 @@ import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatin
 import CornerControls from '../../../../src/plugins/table/ui/TableFloatingControls/CornerControls';
 import ColumnControls from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
-import InsertColumnButton from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
-import InsertRowButton from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/InsertRowButton';
-import AkButton from '@atlaskit/button';
 import {
   ColumnControlsButtonWrap,
   HeaderButton as ColumnControlsButton,
 } from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls/styles';
-import {
-  RowControlsButtonWrap,
-  HeaderButton as RowControlsButton,
-} from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/styles';
+import { RowControlsButtonWrap } from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/styles';
 
 import {
   createEvent,
@@ -34,16 +28,10 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 import {
-  selectTable,
-  selectColumn,
   hoverColumn,
+  insertColumn,
   resetHoverSelection,
 } from '../../../../src/plugins/table/actions';
-import {
-  checkIfRowSelected,
-  checkIfColumnSelected,
-  checkIfTableSelected,
-} from '../../../../src/plugins/table/utils';
 import tablesPlugin from '../../../../src/plugins/table';
 import { setTextSelection } from '../../../../src';
 
@@ -101,33 +89,6 @@ describe('TableFloatingControls', () => {
     });
   });
 
-  describe('CornerControls', () => {
-    describe('when checkIfTableSelected is true', () => {
-      it('should render selected header', () => {
-        const { editorView, plugin, pluginState: { tableElement } } = editor(
-          doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const floatingControls = mount(
-          <TableFloatingControls
-            tableElement={tableElement}
-            checkIfTableSelected={checkIfTableSelected}
-            checkIfRowSelected={checkIfRowSelected}
-            checkIfColumnSelected={checkIfColumnSelected}
-            editorView={editorView}
-          />,
-        );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
-        selectTable(editorView.state, editorView.dispatch);
-        expect(
-          floatingControls.find(CornerControls).prop('checkIfSelected')(
-            editorView.state,
-          ),
-        ).toBe(true);
-        floatingControls.unmount();
-      });
-    });
-  });
-
   describe('ColumnControls', () => {
     [1, 2, 3].forEach(column => {
       describe(`when table has ${column} columns`, () => {
@@ -142,9 +103,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <ColumnControls
               isTableHovered={false}
-              checkIfSelected={checkIfColumnSelected}
-              selectColumn={selectColumn}
-              insertColumn={pluginState.insertColumn}
+              insertColumn={insertColumn}
               hoverColumn={hoverColumn}
               resetHoverSelection={resetHoverSelection}
               tableElement={pluginState.tableElement!}
@@ -162,39 +121,6 @@ describe('TableFloatingControls', () => {
 
     [0, 1, 2].forEach(column => {
       describe(`when HeaderButton in column ${column + 1} is clicked`, () => {
-        it(`should call selectColumn(${column})`, () => {
-          const { editorView, plugin, pluginState } = editor(
-            doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-          );
-          const spy = jest.fn();
-          let calledWithArgs: Array<any>;
-          spy.mockImplementation((...args) => {
-            calledWithArgs = args;
-          });
-          const floatingControls = mount(
-            <ColumnControls
-              isTableHovered={false}
-              checkIfSelected={checkIfColumnSelected}
-              selectColumn={col => () => spy(col)}
-              insertColumn={pluginState.insertColumn}
-              hoverColumn={hoverColumn}
-              resetHoverSelection={resetHoverSelection}
-              tableElement={pluginState.tableElement!}
-              editorView={editorView}
-            />,
-          );
-          plugin.props.handleDOMEvents!.focus(editorView, event);
-          floatingControls
-            .find(ColumnControlsButton)
-            .at(column)
-            .find('button')
-            .first()
-            .simulate('mousedown');
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(calledWithArgs![0]).toEqual(column);
-          floatingControls.unmount();
-        });
-
         it('should not move the cursor when hovering controls', () => {
           const { plugin, editorView, pluginState, refs } = editor(
             doc(
@@ -209,9 +135,7 @@ describe('TableFloatingControls', () => {
           const floatingControls = mount(
             <ColumnControls
               isTableHovered={false}
-              checkIfSelected={checkIfColumnSelected}
-              selectColumn={selectColumn}
-              insertColumn={pluginState.insertColumn}
+              insertColumn={insertColumn}
               hoverColumn={hoverColumn}
               resetHoverSelection={resetHoverSelection}
               tableElement={pluginState.tableElement!}
@@ -266,9 +190,6 @@ describe('TableFloatingControls', () => {
           );
           const floatingControls = mount(
             <TableFloatingControls
-              checkIfTableSelected={checkIfTableSelected}
-              checkIfRowSelected={checkIfRowSelected}
-              checkIfColumnSelected={checkIfColumnSelected}
               tableElement={tableElement}
               editorView={editorView}
             />,
@@ -278,91 +199,6 @@ describe('TableFloatingControls', () => {
             row,
           );
           floatingControls.unmount();
-        });
-      });
-    });
-
-    [0, 1, 2].forEach(row => {
-      describe(`when HeaderButton in row ${row + 1} is clicked`, () => {
-        it(`should call selectRow(${row})`, () => {
-          const { editorView, plugin, pluginState: { tableElement } } = editor(
-            doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
-          );
-          const spy = jest.fn();
-          let calledWithArgs: Array<any>;
-          spy.mockImplementation((...args) => {
-            calledWithArgs = args;
-          });
-          const floatingControls = mount(
-            <TableFloatingControls
-              selectRow={row => () => spy(row)}
-              checkIfTableSelected={checkIfTableSelected}
-              checkIfRowSelected={checkIfRowSelected}
-              checkIfColumnSelected={checkIfColumnSelected}
-              tableElement={tableElement}
-              editorView={editorView}
-            />,
-          );
-          plugin.props.handleDOMEvents!.focus(editorView, event);
-          floatingControls
-            .find(RowControlsButton)
-            .at(row)
-            .find('button')
-            .first()
-            .simulate('click');
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(calledWithArgs![0]).toEqual(row);
-          floatingControls.unmount();
-        });
-      });
-    });
-  });
-
-  describe('InsertColumnButton', () => {
-    [0, 1, 2].forEach(index => {
-      describe(`when InsertColumnButton with index ${index} is clicked`, () => {
-        it(`should call pluginState.insertColumn(${index})`, () => {
-          const { pluginState } = editor(doc(p('text')));
-          const insertColumnSpy = jest.spyOn(
-            pluginState,
-            'insertColumn',
-          ) as any;
-          let calledWithArgs: Array<any>;
-          insertColumnSpy.mockImplementation((...args) => {
-            calledWithArgs = args;
-          });
-
-          const wrapper = mount(
-            <InsertColumnButton index={index} insertColumn={insertColumnSpy} />,
-          );
-          wrapper.setState({ hovered: true });
-          wrapper.find(AkButton).simulate('click');
-          expect(insertColumnSpy).toHaveBeenCalledTimes(1);
-          expect(calledWithArgs![0]).toEqual(index);
-          wrapper.unmount();
-        });
-      });
-    });
-  });
-
-  describe('InsertRowButton', () => {
-    [0, 1, 2].forEach(index => {
-      describe(`when InsertRowButton with index ${index} is clicked`, () => {
-        it(`should call pluginState.insertRow(${index})`, () => {
-          const { pluginState } = editor(doc(p('text')));
-          const insertRowSpy = jest.spyOn(pluginState, 'insertRow') as any;
-          let calledWithArgs: Array<any>;
-          insertRowSpy.mockImplementation((...args) => {
-            calledWithArgs = args;
-          });
-          const wrapper = mount(
-            <InsertRowButton index={index} insertRow={insertRowSpy} />,
-          );
-          wrapper.setState({ hovered: true });
-          wrapper.find(AkButton).simulate('click');
-          expect(insertRowSpy).toHaveBeenCalledTimes(1);
-          expect(calledWithArgs![0]).toEqual(index);
-          wrapper.unmount();
         });
       });
     });

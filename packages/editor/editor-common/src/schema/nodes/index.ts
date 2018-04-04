@@ -46,6 +46,7 @@ export {
   tableBackgroundColorPalette,
   tableBackgroundColorNames,
   CellAttributes,
+  Layout as TableLayout,
 } from './tableNodes';
 export {
   applicationCard,

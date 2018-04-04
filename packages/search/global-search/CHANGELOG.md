@@ -1,5 +1,7 @@
 # @atlaskit/global-search
 
+## 1.6.0
+
 ## 1.5.0
 - [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)
 

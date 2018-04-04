@@ -7,10 +7,6 @@ import {
   TextSelection,
 } from 'prosemirror-state';
 import {
-  addColumnAfter,
-  addColumnBefore,
-  addRowAfter,
-  addRowBefore,
   CellSelection,
   deleteTable,
   deleteColumn,
@@ -18,6 +14,13 @@ import {
   TableMap,
   toggleHeaderRow,
 } from 'prosemirror-tables';
+import {
+  findTable,
+  findParentDomRefOfType,
+  findParentNodeOfType,
+  selectRow,
+  emptySelectedCells,
+} from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
   isElementInTableCell,
@@ -25,33 +28,28 @@ import {
   isLastItemMediaGroup,
   closestElement,
 } from '../../../utils/';
+import { Dispatch } from '../../../event-dispatcher';
 
 import { analyticsService } from '../../../analytics';
 
 import TableNode from '../nodeviews/table';
 
-import {
-  resetHoverSelection,
-  selectRow,
-  emptySelectedCells,
-  clearSelection,
-} from '../actions';
+import { resetHoverSelection, clearSelection } from '../actions';
 
 import {
-  tableStartPos,
   isHeaderRowSelected,
   getCellSelection,
   createControlsDecorationSet,
   getSelectedColumn,
   getSelectedRow,
   containsTableHeader,
-  getCurrentCell,
-  getTableElement,
-  getTableNode,
   canInsertTable,
 } from '../utils';
 
-export type TableStateSubscriber = (state: TableState) => any;
+import { TableLayout } from '@atlaskit/editor-common';
+import { EventDispatcher } from '../../../event-dispatcher';
+
+export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
 
 export interface PluginConfig {
   isHeaderRowRequired?: boolean;
@@ -61,6 +59,7 @@ export interface PluginConfig {
   allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
+  permittedLayouts?: PermittedLayoutsDescriptor;
 }
 
 export class TableState {
@@ -72,8 +71,9 @@ export class TableState {
   tableHidden: boolean = false;
   tableDisabled: boolean = false;
   tableActive: boolean = false;
-  domEvent: boolean = false;
+  tableLayout?: TableLayout;
   view: EditorView;
+  eventDispatcher: EventDispatcher | undefined;
   set: DecorationSet = DecorationSet.empty;
   allowColumnResizing: boolean = false;
   allowMergeCells: boolean = false;
@@ -81,13 +81,11 @@ export class TableState {
   allowBackgroundColor: boolean = false;
   allowHeaderRow: boolean = false;
   allowHeaderColumn: boolean = false;
+  permittedLayouts: PermittedLayoutsDescriptor;
 
   private isHeaderRowRequired: boolean = false;
-  private changeHandlers: TableStateSubscriber[] = [];
 
-  constructor(state: EditorState, pluginConfig: PluginConfig = {}) {
-    this.changeHandlers = [];
-
+  constructor(state: EditorState, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) {
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
     this.isHeaderRowRequired = !!pluginConfig.isHeaderRowRequired;
@@ -97,65 +95,9 @@ export class TableState {
     this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
     this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
     this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
+    this.eventDispatcher = eventDispatcher;
+    this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
-
-  insertColumn = (column: number): void => {
-    if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const { dispatch } = this.view;
-
-      // last column
-      if (column === map.width) {
-        // to add a column we need to move the cursor to an appropriate cell first
-        const prevColPos = map.positionAt(0, column - 1, this.tableNode);
-        this.moveCursorTo(prevColPos);
-        addColumnAfter(this.view.state, dispatch);
-        // then we move the cursor to the newly created cell
-        const nextPos = TableMap.get(this.tableNode).positionAt(
-          0,
-          column,
-          this.tableNode,
-        );
-        this.moveCursorTo(nextPos);
-      } else {
-        const pos = map.positionAt(0, column, this.tableNode);
-        this.moveCursorTo(pos);
-        addColumnBefore(this.view.state, dispatch);
-        this.moveCursorTo(pos);
-      }
-
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.column.button',
-      );
-    }
-  };
-
-  insertRow = (row: number): void => {
-    if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const { dispatch } = this.view;
-
-      // last row
-      if (row === map.height) {
-        const prevRowPos = map.positionAt(row - 1, 0, this.tableNode);
-        this.moveCursorTo(prevRowPos);
-        addRowAfter(this.view.state, dispatch);
-        const nextPos = TableMap.get(this.tableNode).positionAt(
-          row,
-          0,
-          this.tableNode,
-        );
-        this.moveCursorTo(nextPos);
-      } else {
-        const pos = map.positionAt(row, 0, this.tableNode);
-        this.moveCursorTo(pos);
-        addRowBefore(this.view.state, dispatch);
-        this.moveCursorTo(pos);
-      }
-
-      analyticsService.trackEvent('atlassian.editor.format.table.row.button');
-    }
-  };
 
   remove = (): void => {
     const { state, dispatch } = this.view;
@@ -187,10 +129,14 @@ export class TableState {
       deleteColumn(state, dispatch);
       this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
-      const { tableHeader } = this.view.state.schema.nodes;
-      const cell = getCurrentCell(this.view.state);
+      const { tableHeader, tableCell } = this.view.state.schema.nodes;
+      const parent = findParentNodeOfType([tableHeader, tableCell])(
+        this.view.state.selection,
+      );
       const event =
-        cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
+        parent && parent.node.type === tableHeader
+          ? 'delete_header_row'
+          : 'delete_row';
       analyticsService.trackEvent(
         `atlassian.editor.format.table.${event}.button`,
       );
@@ -213,8 +159,8 @@ export class TableState {
       this.moveCursorTo(nextPos);
     } else {
       // replace selected cells with empty cells
-      emptySelectedCells(state, dispatch);
-      this.moveCursorInsideTableTo(state.selection.from);
+      dispatch(emptySelectedCells(state.schema)(state.tr));
+      this.moveCursorInsideTableTo(this.view.state.selection.from);
       analyticsService.trackEvent(
         'atlassian.editor.format.table.delete_content.button',
       );
@@ -223,59 +169,49 @@ export class TableState {
 
   convertFirstRowToHeader = () => {
     const { state, dispatch } = this.view;
-    selectRow(0)(state, dispatch);
+    dispatch(selectRow(0)(state.tr));
     toggleHeaderRow(state, dispatch);
   };
-
-  subscribe(cb: TableStateSubscriber): void {
-    if (this.changeHandlers.indexOf(cb) < 0) {
-      this.changeHandlers.push(cb);
-      cb(this);
-    }
-  }
-
-  unsubscribe(cb: TableStateSubscriber): void {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
 
   updateEditorFocused(editorFocused: boolean): void {
     this.editorFocused = editorFocused;
   }
 
-  update(domEvent: boolean = false) {
-    let dirty = this.updateSelection();
-    let controlsDirty = dirty;
+  update(): boolean {
+    let controlsDirty = this.updateSelection();
     const { state } = this.view;
+    const { schema: { nodes: { table } }, selection } = state;
+    const domAtPos = this.view.domAtPos.bind(this.view);
 
-    const tableElement = getTableElement(state, this.view);
-    if ((domEvent && tableElement) || tableElement !== this.tableElement) {
-      this.tableElement = tableElement;
-      this.domEvent = domEvent;
-      dirty = true;
+    const parent = findParentDomRefOfType(table, domAtPos)(selection);
+    const tableElement = parent ? parent.parentNode : undefined;
+    if (tableElement !== this.tableElement) {
+      this.tableElement = tableElement as HTMLElement;
     }
 
-    const tableNode = getTableNode(state);
-    if (tableNode !== this.tableNode) {
-      this.tableNode = tableNode;
-      dirty = true;
+    const tableNode = findTable(state.selection);
+    if (tableNode && tableNode.node !== this.tableNode) {
+      this.tableNode = tableNode.node;
       controlsDirty = true;
     }
 
     const tableActive = this.editorFocused && !!tableElement;
     if (tableActive !== this.tableActive) {
       this.tableActive = tableActive;
-      dirty = true;
       controlsDirty = true;
     }
 
     const tableDisabled = !canInsertTable(state);
     if (tableDisabled !== this.tableDisabled) {
       this.tableDisabled = tableDisabled;
-      dirty = true;
     }
 
-    if (dirty) {
-      this.triggerOnChange();
+    if (tableNode) {
+      const tableLayout = tableNode.node.attrs.layout;
+      if (tableLayout !== this.tableLayout) {
+        this.tableLayout = tableLayout;
+        controlsDirty = true;
+      }
     }
 
     if (controlsDirty) {
@@ -285,16 +221,11 @@ export class TableState {
         }),
       );
     }
+    return controlsDirty;
   }
 
   setView(view: EditorView): void {
     this.view = view;
-  }
-
-  closeFloatingToolbar(): void {
-    const { state, dispatch } = this.view;
-    clearSelection(state, dispatch);
-    this.triggerOnChange();
   }
 
   isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
@@ -312,9 +243,26 @@ export class TableState {
     });
   };
 
-  private triggerOnChange(): void {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
+  setTableLayout = (layout: TableLayout): boolean => {
+    const tableNode = findTable(this.view.state.selection);
+    if (!tableNode) {
+      return false;
+    }
+
+    const { schema, tr } = this.view.state;
+
+
+    this.view.dispatch(
+      tr.setNodeMarkup(tableNode.pos - 1, schema.nodes.table, {
+        ...tableNode.node.attrs,
+        layout,
+      }),
+    );
+
+    this.tableLayout = layout;
+
+    return true;
+  };
 
   // we keep track of selection changes because
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
@@ -355,20 +303,20 @@ export class TableState {
   }
 
   private moveCursorTo(pos: number): void {
-    const offset = tableStartPos(this.view.state);
-    if (offset) {
-      this.moveCursorInsideTableTo(pos + offset);
+    const table = findTable(this.view.state.selection);
+    if (table) {
+      this.moveCursorInsideTableTo(pos + table.pos);
     }
   }
 }
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const plugin = (pluginConfig?: PluginConfig) =>
+export const createPlugin = (dispatch: Dispatch, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {
-        return new TableState(state, pluginConfig);
+        return new TableState(state, eventDispatcher, pluginConfig);
       },
       apply(tr, state) {
         const meta = tr.getMeta(stateKey);
@@ -388,7 +336,10 @@ export const plugin = (pluginConfig?: PluginConfig) =>
 
       return {
         update: (view: EditorView, prevState: EditorState) => {
-          pluginState.update();
+          const dirty = pluginState.update();
+          if (dirty) {
+            dispatch(stateKey, { ...pluginState });
+          }
         },
       };
     },
@@ -398,7 +349,12 @@ export const plugin = (pluginConfig?: PluginConfig) =>
       nodeViews: {
         table: (node: PmNode, view: EditorView) => {
           const { allowColumnResizing } = stateKey.getState(view.state);
-          return new TableNode({ node, view, allowColumnResizing });
+          return new TableNode({
+            node,
+            view,
+            allowColumnResizing,
+            eventDispatcher,
+          });
         },
       },
       handleClick(view: EditorView, pos: number, event) {
@@ -409,12 +365,15 @@ export const plugin = (pluginConfig?: PluginConfig) =>
         focus(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(true);
-          pluginState.update(true);
+          const dirty = pluginState.update();
+          if (dirty) {
+            dispatch(stateKey, { ...pluginState });
+          }
           return false;
         },
         click(view: EditorView, event) {
           const element = event.target as HTMLElement;
-          const { tableNode }: TableState = stateKey.getState(view.state);
+          const table = findTable(view.state.selection)!;
 
           /**
            * Check if the table cell with an image is clicked
@@ -422,14 +381,13 @@ export const plugin = (pluginConfig?: PluginConfig) =>
            */
           const matches = element.matches ? 'matches' : 'msMatchesSelector';
           if (
-            !tableNode ||
+            !table ||
             !isElementInTableCell(element) ||
             element[matches]('table .image, table p, table .image div')
           ) {
             return false;
           }
-          const offset = tableStartPos(view.state);
-          const map = TableMap.get(tableNode);
+          const map = TableMap.get(table.node);
 
           /** Getting the offset of current item clicked */
           const colElement = (closestElement(element, 'td') ||
@@ -447,20 +405,23 @@ export const plugin = (pluginConfig?: PluginConfig) =>
             dispatch,
             state: { tr, schema: { nodes: { paragraph } } },
           } = view;
-          const editorElement = tableNode.nodeAt(map.map[cellIndex]) as PmNode;
+          const editorElement = table.node.nodeAt(map.map[cellIndex]) as PmNode;
 
           /** Only if the last item is media group, insert a paragraph */
           if (isLastItemMediaGroup(editorElement)) {
-            tr.insert(posInTable + offset, paragraph.create());
+            tr.insert(posInTable + table.pos, paragraph.create());
             dispatch(tr);
-            setNodeSelection(view, posInTable + offset);
+            setNodeSelection(view, posInTable + table.pos);
           }
           return true;
         },
         blur(view: EditorView, event) {
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(false);
-          pluginState.update(true);
+          const dirty = pluginState.update();
+          if (dirty) {
+            dispatch(stateKey, { ...pluginState });
+          }
           resetHoverSelection(view.state, view.dispatch);
           return false;
         },

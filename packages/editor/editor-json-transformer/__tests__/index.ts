@@ -290,6 +290,7 @@ describe('JSONTransformer:', () => {
               type: 'table',
               attrs: {
                 isNumberColumnEnabled: false,
+                layout: 'default'
               },
               content: [
                 {
