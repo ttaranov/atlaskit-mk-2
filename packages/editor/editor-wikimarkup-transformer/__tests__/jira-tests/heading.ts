@@ -14,7 +14,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
 
-describe.skip('WikiMarkup Transformer', () => {
+describe('WikiMarkup Transformer', () => {
   describe('h1', () => {
     const WIKI_NOTATION = `h1. one`;
 
@@ -95,20 +95,18 @@ Status in testing`;
   });
 
   describe('inline line breaks', () => {
-    const WIKI_NOTATION = `h3. foo\\nBreak 1\\n\\nBreak 2\\n\\nBreak 3`;
+    const WIKI_NOTATION = `h3. foo
+Break 1
+
+Break 2
+
+Break 3`;
 
     checkParseEncodeRoundTrips(
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(
-        h3('foo'),
-        p('Break 1'),
-        hardBreak(),
-        p('Break 2'),
-        hardBreak(),
-        p('Break 3'),
-      ),
+      doc(h3('foo'), p('Break 1'), p('Break 2'), p('Break 3')),
     );
   });
 });

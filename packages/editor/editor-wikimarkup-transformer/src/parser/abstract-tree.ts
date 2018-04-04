@@ -242,7 +242,7 @@ export default class AbstractTree {
         const headingNode = getHeadingNodeView(
           this.schema,
           containerNodeType,
-          { level: headingMatches[1] },
+          { level: Number(headingMatches[1]) },
           headingMatches[2],
           useGreyText,
         );
