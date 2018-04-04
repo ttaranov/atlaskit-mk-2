@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type Element, type Ref } from 'react';
+import styled from 'styled-components';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
@@ -138,11 +139,18 @@ class ControlOption extends Component<OptionProops, OptionState> {
           primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
           secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
         />
-        {children}
+        <ChildContainer>{children}</ChildContainer>
       </components.Option>
     );
   }
 }
+
+const ChildContainer = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 80%;
+  white-space: nowrap;
+`;
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />
 );
