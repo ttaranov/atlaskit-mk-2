@@ -77,7 +77,7 @@ describe(name, () => {
         expect(size).not.toBe(undefined);
 
         expect(new Icon({ label: 'My icon' })).toBeInstanceOf(Component);
-        expect(Object.values(size)).toEqual([
+        expect(Object.keys(size).map(index => size[index])).toEqual([
           'small',
           'medium',
           'large',

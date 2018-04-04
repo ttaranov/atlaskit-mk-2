@@ -34,12 +34,13 @@ type iconType = {
 
 const filterIcons = (icons, query) => {
   const regex = new RegExp(query);
-  return Object.values(icons).filter(icon =>
-    // $FlowFixMe - Object.values cannot follow types of object properties
-    icon.keywords
-      .map(keyword => (regex.test(keyword) ? 1 : 0))
-      .reduce((allMatches, match) => allMatches + match, 0),
-  );
+  return Object.keys(icons)
+    .map(index => icons[index])
+    .filter(icon =>
+      icon.keywords
+        .map(keyword => (regex.test(keyword) ? 1 : 0))
+        .reduce((allMatches, match) => allMatches + match, 0),
+    );
 };
 
 type State = {
@@ -58,7 +59,6 @@ class IconAllExample extends Component<{}, State> {
   toggleShowIcons = () => this.setState({ showIcons: !this.state.showIcons });
 
   renderIcons = () => {
-    // $FlowFixMe - Object.values cannot follow types of object properties
     const icons: iconType[] = filterIcons(allIcons, this.state.query);
 
     return icons.length ? (
