@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.19
+- [patch] make tableCell/tableHeader attrs object optional [a6e1882](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e1882)
+
 ## 8.1.18
 - [patch] ED-4094: fix ADF generation for inline code [ee9c394](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee9c394)
 
