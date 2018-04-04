@@ -6,6 +6,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
@@ -74,8 +75,11 @@ type Props = {|
   target: string,
   /** The background color of the element being highlighted */
   targetBgColor?: string,
-  /** Function to fire when a user clicks on the cloned target */
-  targetOnClick?: ({ event: MouseEvent, target: string }) => void,
+  /** Function to fire when a user clicks on the cloned target. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  targetOnClick?: (
+    { event: MouseEvent, target: string },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** The border-radius of the element being highlighted */
   targetRadius?: number,
   /** Alternative element to render than the wrapped target */

@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import ToggleStateless from './ToggleStateless';
 import defaultBaseProps from './defaultBaseProps';
 import type { StatefulProps, DefaultBaseProps } from './types';
@@ -24,9 +25,9 @@ export default class Toggle extends Component<StatefulProps, State> {
     isChecked: this.props.isDefaultChecked,
   };
 
-  onChange = (event: Event) => {
+  onChange = (event: Event, analyticsEvent: UIAnalyticsEvent) => {
     this.setState({ isChecked: !this.state.isChecked });
-    this.props.onChange(event);
+    this.props.onChange(event, analyticsEvent);
   };
 
   render() {

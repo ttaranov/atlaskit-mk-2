@@ -15,6 +15,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
   cleanProps,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -38,10 +39,10 @@ type Props = {
   component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
-  /** Function to be called when a mouse leaves the target */
-  onMouseOut?: MouseEvent => void,
-  /** Function to be called when a mouse enters the target */
-  onMouseOver?: MouseEvent => void,
+  /** Function to be called when a mouse leaves the target. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onMouseOut?: (MouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Function to be called when a mouse enters the target. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onMouseOver?: (MouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Where the tooltip should appear relative to its target */
   position: PositionType,
   /** Replace the wrapping element */

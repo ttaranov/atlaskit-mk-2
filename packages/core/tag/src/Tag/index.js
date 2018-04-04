@@ -5,6 +5,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -56,8 +57,11 @@ type Props = {
    truthy value, the tag will not be removed. */
   onBeforeRemoveAction?: () => boolean,
   /** Handler to be called after tag is removed. Called with the string 'Post
-   Removal Hook'. */
-  onAfterRemoveAction?: (text: string) => mixed,
+   Removal Hook'. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onAfterRemoveAction?: (
+    text: string,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => mixed,
 };
 
 type State = {

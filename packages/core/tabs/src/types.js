@@ -1,5 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type TabData = { [string]: any };
 
@@ -46,7 +47,11 @@ export type IsSelectedTestFunction = (
   tab: TabData,
   tabIndex: number,
 ) => boolean;
-type OnSelectCallback = (selected: TabData, selectedIndex: number) => void;
+type OnSelectCallback = (
+  selected: TabData,
+  selectedIndex: number,
+  analyticsEvent?: UIAnalyticsEvent,
+) => void;
 
 export type TabsProps = {
   /** Custom components to render instead of the default tab item or content.
@@ -64,7 +69,7 @@ export type TabsProps = {
    * order. It must return a boolean. */
   isSelectedTest?: IsSelectedTestFunction,
   /** A callback function which will be fired when a new tab is selected. It
-   * will be passed the data and the index of the selected tab as parameters. */
+   * will be passed the data and the index of the selected tab as parameters. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
   onSelect?: OnSelectCallback,
   /** The selected tab. By default this prop accepts either the tab object or
    * the the tab's index. If used in conjunction with the isSelectedTest prop it

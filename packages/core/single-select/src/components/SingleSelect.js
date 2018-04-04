@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import StatelessSelect, { getTextContent } from './StatelessSelect';
 import type { ItemType, GroupType } from '../types';
 
@@ -51,14 +52,17 @@ type Props = {
   /** Message to display in any group in items if there are no items in it,
    including if there is one item that has been selected. */
   noMatchesFound?: string,
-  /** Handler to be called when the filtered items changes. */
-  onFilterChange?: Function,
+  /** Handler to be called when the filtered items changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFilterChange?: (string, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Handler to be called when an item is selected. Called with an object that
-   has the item selected as a property on the object. */
-  onSelected?: Function,
+   has the item selected as a property on the object. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onSelected?: ({ item: ItemType }, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Handler called when the select is opened or closed. Called with an object
-   that has both the event, and the new isOpen state. */
-  onOpenChange?: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
+   that has both the event, and the new isOpen state. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange?: (
+    { event: SyntheticEvent<any>, isOpen: boolean },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
   /** Where the select dropdown should be displayed relative to the field position. */
@@ -103,17 +107,20 @@ export default class AkSingleSelect extends PureComponent<Props, State> {
       : '',
   };
 
-  selectItem = (item: ItemType) => {
+  selectItem = (item: ItemType, analyticsEvent: UIAnalyticsEvent) => {
     this.setState({ isOpen: false, selectedItem: item });
     if (this.props.onSelected) {
-      this.props.onSelected({ item });
+      this.props.onSelected({ item }, analyticsEvent);
     }
   };
 
-  handleOpenChange = (attrs: {
-    event: SyntheticEvent<any>,
-    isOpen: boolean,
-  }) => {
+  handleOpenChange = (
+    attrs: {
+      event: SyntheticEvent<any>,
+      isOpen: boolean,
+    },
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     // allows consuming components to look for `defaultPrevented` on the event
     // where they can handle internal state e.g. prevent InlineDialog from closing when
     // the target DOM node no-longer exists
@@ -121,13 +128,13 @@ export default class AkSingleSelect extends PureComponent<Props, State> {
 
     this.setState({ isOpen: attrs.isOpen });
     if (this.props.onOpenChange) {
-      this.props.onOpenChange(attrs);
+      this.props.onOpenChange(attrs, analyticsEvent);
     }
   };
 
-  handleFilterChange = (value: string) => {
+  handleFilterChange = (value: string, analyticsEvent: UIAnalyticsEvent) => {
     if (this.props.onFilterChange) {
-      this.props.onFilterChange(value);
+      this.props.onFilterChange(value, analyticsEvent);
     }
     this.setState({ filterValue: value });
   };

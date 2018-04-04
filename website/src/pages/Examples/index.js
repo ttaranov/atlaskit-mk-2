@@ -222,11 +222,13 @@ export default class Examples extends React.Component<Props, State> {
     router: PropTypes.object.isRequired,
   };
 
+  // $FlowFixMe - parameter mismatch with onSelected type due to the way flow handles subtyping
   onPackageSelected = (selected: { item: { value: string } }) => {
     let [groupId, packageId] = selected.item.value.split('/');
     this.updateSelected(groupId, packageId);
   };
 
+  // $FlowFixMe - parameter mismatch with onSelected type due to the way flow handles subtyping
   onExampleSelected = (selected: { item: { value: string } }) => {
     this.updateSelected(
       this.props.match.params.groupId,

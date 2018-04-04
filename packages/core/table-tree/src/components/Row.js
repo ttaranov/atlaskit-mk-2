@@ -1,14 +1,15 @@
 // @flow
 import React, { PureComponent, type Element, type ChildrenArray } from 'react';
-// import {
-//   withAnalyticsEvents,
-//   withAnalyticsContext,
-//   createAndFireEvent,
-// } from '@atlaskit/analytics-next';
-// import {
-//   name as packageName,
-//   version as packageVersion,
-// } from '../../package.json';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
@@ -25,14 +26,11 @@ type Props = {
   /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
   itemId: string,
 
-  /** Called whenever this row's node is expanded to show its child rows. */
-  onExpand?: RowData => void,
+  /** Called whenever this row's node is expanded to show its child rows. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onExpand?: (RowData, analyticsEvent?: UIAnalyticsEvent) => void,
 
-  /** Called whenever this row's node is expanded to show its child rows. */
-  onExpand?: Function,
-
-  /** Called whenever this row's node is collapsed to hide its child rows. */
-  onCollapse?: RowData => void,
+  /** Called whenever this row's node is collapsed to hide its child rows. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onCollapse?: (RowData, analyticsEvent?: UIAnalyticsEvent) => void,
 
   /** Passed implicitly. Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
@@ -108,23 +106,21 @@ class Row extends PureComponent<Props> {
 
 export { Row as RowBase };
 
-export default Row;
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-// const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-//
 // $FlowFixMe - Figure out why this is erroring only for this component...
-// export default withAnalyticsContext({
-//   component: 'table-tree',
-//   package: packageName,
-//   version: packageVersion,
-// })(
-//   withAnalyticsEvents({
-//     onExpand: createAndFireEventOnAtlaskit({
-//       action: 'toggle',
-//     }),
+export default withAnalyticsContext({
+  component: 'table-tree',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onExpand: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
 
-//     onCollapse: createAndFireEventOnAtlaskit({
-//       action: 'toggle',
-//     }),
-//   })(Row),
-// );
+    onCollapse: createAndFireEventOnAtlaskit({
+      action: 'toggle',
+    }),
+  })(Row),
+);

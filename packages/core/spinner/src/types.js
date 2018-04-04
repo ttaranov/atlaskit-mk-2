@@ -1,6 +1,6 @@
 // @flow
 
-export type Func = () => void;
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 type SpinnerSizes = 'small' | 'medium' | 'large' | 'xlarge' | number;
 
@@ -9,8 +9,8 @@ export type SpinnerProps = {
   delay: number,
   /** Set the spinner color to white, for use in dark-themed UIs. */
   invertColor: boolean,
-  /** Handler for once the spinner has completed its outro animation */
-  onComplete: Func,
+  /** Handler for once the spinner has completed its outro animation. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onComplete: (analyticsEvent?: UIAnalyticsEvent) => void,
   /** Size of the spinner. */
   size: SpinnerSizes,
   /** Whether the process is complete and the spinner should leave */

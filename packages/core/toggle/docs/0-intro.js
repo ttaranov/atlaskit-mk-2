@@ -28,14 +28,16 @@ export default md`
     />
   )}
 
-  ## Default Export Props
-
-  ${<Props props={require('!!extract-react-types-loader!../src/Toggle')} />}
-
-  ## Stateless Props
+  ${(
+    <Props
+      heading="Toggle Props"
+      props={require('!!extract-react-types-loader!../src/Toggle')}
+    />
+  )}
 
   ${(
     <Props
+      heading="ToggleStateless Props"
       props={require('!!extract-react-types-loader!../src/ToggleStateless')}
     />
   )}

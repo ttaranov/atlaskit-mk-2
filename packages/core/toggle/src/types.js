@@ -1,5 +1,7 @@
 // @flow
 
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+
 type BaseProps = {
   /** Whether the toggle is disabled or not. This will prevent any interaction with the user */
   isDisabled: boolean,
@@ -9,12 +11,12 @@ type BaseProps = {
   name: string,
   /** The value to be submitted in a form. */
   value: string,
-  /** Handler to be called when toggle is unfocused */
-  onBlur: (event: Event) => void,
-  /** Handler to be called when native 'change' event happens internally. */
-  onChange: (event: Event) => void,
-  /** Handler to be called when toggle is focused. */
-  onFocus: (event: Event) => void,
+  /** Handler to be called when toggle is unfocused. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onBlur: (event: Event, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Handler to be called when native 'change' event happens internally. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (event: Event, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Handler to be called when toggle is focused. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFocus: (event: Event, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Defines the size of the toggle. */
   size: 'regular' | 'large',
 };

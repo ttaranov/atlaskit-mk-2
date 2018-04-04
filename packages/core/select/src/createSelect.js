@@ -1,6 +1,7 @@
 // @flow
 import React, { Component, type ComponentType, type ElementRef } from 'react';
 import { mergeStyles } from 'react-select';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
@@ -71,14 +72,17 @@ type ReactSelectProps = {
   noOptionsMessage?: ({ inputValue: string }) => string,
   /* Handle blur events on the control */
   onBlur?: (SyntheticFocusEvent<HTMLElement>) => void,
-  /* Handle change events on the select */
-  onChange?: (ValueType, {}) => void,
+  /* Handle change events on the select. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange?: (ValueType, {}, analyticsEvent?: UIAnalyticsEvent) => void,
   /* Handle focus events on the control */
   onFocus?: (SyntheticFocusEvent<HTMLElement>) => void,
   /* Handle change events on the input; return a string to modify the value */
   onInputChange?: string => string | void,
-  /* Handle key down events on the select */
-  onKeyDown?: (SyntheticKeyboardEvent<HTMLElement>) => void,
+  /* Handle key down events on the select. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyDown?: (
+    SyntheticKeyboardEvent<HTMLElement>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /* Array of options that populate the select menu */
   options: OptionsType,
   /* Placeholder text for the select value */

@@ -20,7 +20,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 }));
 
 /* eslint-disable */
-xdescribe('Select', () => {
+describe('Select', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
       component: 'select',

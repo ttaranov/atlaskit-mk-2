@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 
@@ -25,8 +26,8 @@ type Props = {|
   have the properties 'prev' and 'next', which should be strings. Defaults to
   'Prev' and 'Next' */
   i18n: i18nShape,
-  /** Called when the page is changed. Will be called with the number of the new page. */
-  onChange: number => void,
+  /** Called when the page is changed. Will be called with the number of the new page. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onChange: (number, analyticsEvent?: UIAnalyticsEvent) => void,
   /** The total number of pages in the pagination. */
   total: number,
   /** The current page. This makes the current page value controlled */
@@ -127,7 +128,7 @@ export default withAnalyticsContext({
   version: packageVersion,
 })(
   withAnalyticsEvents({
-    onSetPage: createAndFireEventOnAtlaskit({
+    onChange: createAndFireEventOnAtlaskit({
       action: 'change',
     }),
   })(Pagination),

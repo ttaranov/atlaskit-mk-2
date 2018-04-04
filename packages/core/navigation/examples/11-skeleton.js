@@ -57,6 +57,7 @@ export default class SkeletonInteractiveStory extends Component<void, State> {
     theme: 'container',
   };
 
+  // $FlowFixMe - parameter mismatch with onSelected type due to the way flow handles subtyping
   handleThemeChange = (e: { item: { value: AppearanceOptions } }) => {
     this.setState({
       theme: e.item.value,

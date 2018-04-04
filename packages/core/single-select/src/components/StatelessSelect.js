@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
@@ -117,13 +118,18 @@ type Props = {
   /** Message to display in any group in items if there are no items in it,
    including if there is one item that has been selected. */
   noMatchesFound: string,
-  /** Handler called when a selection is made, with the item chosen. */
-  onSelected: Function,
-  /** Handler to be called when the filtered items changes. */
-  onFilterChange: Function,
+  /** Handler called when a selection is made, with the item chosen. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.
+   */
+  onSelected: (ItemType, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Handler to be called when the filtered items changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFilterChange: (string, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Handler called when the select is opened or closed. Called with an object
-   that has both the event, and the new isOpen state. */
-  onOpenChange: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
+   that has both the event, and the new isOpen state. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.
+*/
+  onOpenChange: (
+    { event: SyntheticEvent<any>, isOpen: boolean },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
   /** Where the select dropdown should be displayed relative to the field position. */
