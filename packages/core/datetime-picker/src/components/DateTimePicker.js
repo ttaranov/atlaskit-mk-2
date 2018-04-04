@@ -2,13 +2,13 @@
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
-import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
+import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -88,16 +88,6 @@ function formatDateTimeZoneIntoIso(
   zone: string,
 ): string {
   return `${date}T${time}${zone}`;
-}
-
-function parseDateIntoStateValues(value, dateValue, timeValue, zoneValue) {
-  const parsed = parse(value);
-  const valid = isValid(parsed);
-  return {
-    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : dateValue,
-    timeValue: valid ? format(parsed, 'HH:mm') : timeValue,
-    zoneValue: valid ? format(parsed, 'ZZ') : zoneValue,
-  };
 }
 
 export default class DateTimePicker extends Component<Props, State> {

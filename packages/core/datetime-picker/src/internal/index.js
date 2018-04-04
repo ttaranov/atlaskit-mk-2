@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { format, isValid, parse } from 'date-fns';
 
 export const ClearIndicator = null;
 
@@ -32,3 +33,18 @@ export const DropdownIndicator = ({ icon: Icon }: { icon?: any } = {}) =>
       <Icon />
     </span>
   ) : null;
+
+export function parseDateIntoStateValues(
+  value: string,
+  dateValue: string,
+  timeValue: string,
+  zoneValue: string,
+) {
+  const parsed = parse(value);
+  const valid = isValid(parsed);
+  return {
+    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : dateValue,
+    timeValue: valid ? format(parsed, 'HH:mm') : timeValue,
+    zoneValue: valid ? format(parsed, 'ZZ') : zoneValue,
+  };
+}
