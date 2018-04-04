@@ -1,6 +1,6 @@
 import { MockRequest } from 'xhr-mock';
 import { RequestData } from '.';
-import matches = require('lodash.matches');
+import { matches } from 'lodash';
 
 export const matchMethod = (req: MockRequest, data: RequestData) => {
   return data.method ? data.method === req.method() : true;

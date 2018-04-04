@@ -24,8 +24,8 @@
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3",
     "axios": "^0.17.1",
-    "lodash.matches": "^4.4.0",
-    "@types/lodash.matches": "^4.4.0",
+    "lodash": "^4.17.5",
+    "@types/lodash": "^4.14.106",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0",
     "@atlaskit/media-core": "^15.3.0",
