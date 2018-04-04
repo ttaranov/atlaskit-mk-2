@@ -10,7 +10,10 @@ import {
   akColorY50,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
-import { akEditorTableCellBackgroundOpacity } from '../../styles';
+import {
+  akEditorTableCellBackgroundOpacity,
+  akEditorTableNumberColumnWidth,
+} from '../../styles';
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -67,6 +70,32 @@ export const tableBackgroundColorNames = new Map<string, string>();
   tableBackgroundColorPalette.set(color.toLowerCase(), label);
   tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
 });
+
+export function calcTableColumnWidths(node: PmNode): number[] {
+  let tableColumnWidths = [];
+  const { isNumberColumnEnabled } = node.attrs;
+
+  node.forEach((rowNode, _, i) => {
+    rowNode.forEach((colNode, _, j) => {
+      let colwidth = colNode.attrs.colwidth;
+
+      if (isNumberColumnEnabled && j === 0) {
+        if (!colwidth) {
+          colwidth = [akEditorTableNumberColumnWidth];
+        }
+      }
+
+      // if we have a colwidth attr for this cell, and it contains new
+      // colwidths we haven't seen for the whole table yet, add those
+      // (colwidths over the table are defined as-we-go)
+      if (colwidth && colwidth.length + j > tableColumnWidths.length) {
+        tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
+      }
+    });
+  });
+
+  return tableColumnWidths;
+}
 
 export type Layout = 'default' | 'full-width';
 
