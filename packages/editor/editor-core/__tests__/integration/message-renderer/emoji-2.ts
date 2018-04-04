@@ -11,6 +11,7 @@ import {
 
 BrowserTestCase(
   'Emoji: should be able to use emoji inside blockquote',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
