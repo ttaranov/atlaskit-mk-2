@@ -1,6 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 export const layoutSection: NodeSpec = {
   content: 'layoutColumn{2,3}',
+  isolating: true,
   attrs: {
     layoutType: { default: 'two_equal' },
   },
