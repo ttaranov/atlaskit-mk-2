@@ -1,5 +1,7 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.15
+
 ## 0.0.14
 - [patch] enabled minimization @ mobile bridge [95703e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95703e3)
 

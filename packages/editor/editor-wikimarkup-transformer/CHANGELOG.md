@@ -1,5 +1,7 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 0.0.9
+
 ## 0.0.8
 - [patch] ED-3939: support macros, most of text effects, emoji, mentions, tables and lists [d173a70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d173a70)
 

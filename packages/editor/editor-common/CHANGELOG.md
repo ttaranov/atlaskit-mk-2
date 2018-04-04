@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 8.1.21
+
 ## 8.1.20
 - [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
 
