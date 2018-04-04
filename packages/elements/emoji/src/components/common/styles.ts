@@ -263,13 +263,17 @@ export const emojiUpload = style({
   padding: '10px',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-around',
 });
 
 export const uploadChooseFileMessage = style({
   color: colors.N300,
-  marginBottom: '20px',
-  fontSize: '0.9em',
+  fontSize: '12px',
+  paddingBottom: '7px',
+});
+
+export const emojiUploadBottom = style({
+  fontSize: '11px',
 });
 
 export const uploadChooseFileRow = style({
@@ -285,9 +289,10 @@ export const uploadChooseFileEmojiName = style({
     input: {
       background: 'transparent',
       border: 0,
-      fontSize: '14px',
+      fontSize: '12px',
       outline: 'none',
       width: '100%',
+      height: '22px', // fixed height is required to work in IE11 and other browsers in Windows
 
       $nest: {
         ['&:invalid']: {
@@ -426,4 +431,12 @@ export const emojiDeleteErrorMessage = style({
   width: '100%',
   justifyContent: 'flex-end',
   paddingRight: '10px',
+});
+
+export const emojiChooseFileErrorMessage = style({
+  display: 'flex',
+  color: colors.R300,
+  width: '100%',
+  paddingRight: '10px',
+  justifyContent: 'flex-start',
 });

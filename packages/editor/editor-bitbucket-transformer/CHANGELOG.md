@@ -1,5 +1,10 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 2.7.12
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 2.7.11
+
 ## 2.7.10
 
 ## 2.7.9

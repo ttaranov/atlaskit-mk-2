@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 3.1.2
+- [patch] Plain text should not be rendered as markdown [fe307dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe307dc)
+
 ## 3.1.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

@@ -9,16 +9,16 @@ import {
   goToNextCell as baseGotoNextCell,
   TableMap,
 } from 'prosemirror-tables';
+import {
+  findTable,
+  findParentNodeOfType,
+  emptySelectedCells,
+} from 'prosemirror-utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { stateKey } from './pm-plugins/main';
-import { resetHoverSelection, emptySelectedCells } from './actions';
-import {
-  tableStartPos,
-  createTableNode,
-  isIsolating,
-  getCellStartPos,
-} from './utils';
+import { resetHoverSelection, insertRow } from './actions';
+import { createTableNode, isIsolating } from './utils';
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
@@ -57,22 +57,19 @@ const createTable = (): Command => {
 
 const goToNextCell = (direction: number): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const table = findTable(state.selection);
+    if (!table) {
+      return false;
+    }
     const pluginState = stateKey.getState(state);
-    if (!pluginState.tableNode) {
-      return false;
-    }
-    const offset = tableStartPos(state);
-    if (!offset) {
-      return false;
-    }
-    const map = TableMap.get(pluginState.tableNode);
-    const start = getCellStartPos(state);
-    const firstCellPos =
-      map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
+    const map = TableMap.get(table.node);
+    const { tableCell, tableHeader } = state.schema.nodes;
+    const cell = findParentNodeOfType([tableCell, tableHeader])(
+      state.selection,
+    )!;
+    const firstCellPos = map.positionAt(0, 0, table.node) + table.pos + 1;
     const lastCellPos =
-      map.positionAt(map.height - 1, map.width - 1, pluginState.tableNode) +
-      offset +
-      1;
+      map.positionAt(map.height - 1, map.width - 1, table.node) + table.pos + 1;
 
     const event =
       direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
@@ -80,13 +77,13 @@ const goToNextCell = (direction: number): Command => {
       `atlassian.editor.format.table.${event}.keyboard`,
     );
 
-    if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
-      pluginState.insertRow(0);
+    if (firstCellPos === cell.pos && direction === TAB_BACKWARD_DIRECTION) {
+      insertRow(0)(state, dispatch);
       return true;
     }
 
-    if (lastCellPos === start && direction === TAB_FORWARD_DIRECTION) {
-      pluginState.insertRow(map.height);
+    if (lastCellPos === cell.pos && direction === TAB_FORWARD_DIRECTION) {
+      insertRow(map.height)(state, dispatch);
       return true;
     }
     if (!pluginState.view.hasFocus()) {
@@ -106,30 +103,6 @@ const goToNextCell = (direction: number): Command => {
   };
 };
 
-const cut = (): Command => {
-  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
-    const pluginState = stateKey.getState(state);
-    pluginState.closeFloatingToolbar();
-    return true;
-  };
-};
-
-const copy = (): Command => {
-  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
-    const pluginState = stateKey.getState(state);
-    pluginState.closeFloatingToolbar();
-    return true;
-  };
-};
-
-const paste = (): Command => {
-  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
-    const pluginState = stateKey.getState(state);
-    pluginState.closeFloatingToolbar();
-    return true;
-  };
-};
-
 const emptyCells = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
@@ -137,7 +110,7 @@ const emptyCells = (): Command => {
       return false;
     }
     resetHoverSelection(state, dispatch);
-    emptySelectedCells(state, dispatch);
+    dispatch(emptySelectedCells(state.schema)(state.tr));
     const {
       $head: { pos, parentOffset },
     } = (state.selection as any) as CellSelection;
@@ -204,9 +177,6 @@ const moveCursorBackward = (): Command => {
 export default {
   createTable,
   goToNextCell,
-  cut,
-  copy,
-  paste,
   moveCursorBackward,
   emptyCells,
 };

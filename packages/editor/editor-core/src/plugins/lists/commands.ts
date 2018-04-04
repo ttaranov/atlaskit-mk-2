@@ -8,7 +8,6 @@ import {
 import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
-import * as baseListCommand from 'prosemirror-schema-list';
 import * as commands from '../../commands';
 import { isEmptyNode } from '../../utils/document';
 
@@ -102,10 +101,12 @@ export const enterKeyCommand = (
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      if (isEmptyNode(node)) {
+      /** Check is the wrapper has any content */
+      const wrapperHasContent = wrapper.content.size > 2;
+      if (isEmptyNode(node) && !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
-        return baseListCommand.splitListItem(listItem)(state, dispatch);
+        return splitListItem(listItem)(state, dispatch);
       }
     }
   }
@@ -155,6 +156,80 @@ export const toggleList = (
     return true;
   }
 };
+
+/**
+ * Implemetation taken and modified for our needs from PM
+ * @param itemType Node
+ * Splits the list items, specific implementation take from PM
+ */
+function splitListItem(itemType) {
+  return function(state, dispatch) {
+    const ref = state.selection;
+    const $from = ref.$from;
+    const $to = ref.$to;
+    const node = ref.node;
+    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
+      return false;
+    }
+    const grandParent = $from.node(-1);
+    if (grandParent.type !== itemType) {
+      return false;
+    }
+    /** --> The following line changed from the original PM implementation to allow list additions with multiple paragraphs */
+    if (
+      grandParent.content.content.length <= 1 &&
+      $from.parent.content.size === 0 &&
+      !(grandParent.content.size === 0)
+    ) {
+      // In an empty block. If this is a nested list, the wrapping
+      // list item should be split. Otherwise, bail out and let next
+      // command handle lifting.
+      if (
+        $from.depth === 2 ||
+        $from.node(-3).type !== itemType ||
+        $from.index(-2) !== $from.node(-2).childCount - 1
+      ) {
+        return false;
+      }
+      if (dispatch) {
+        let wrap = Fragment.empty;
+        const keepItem = $from.index(-1) > 0;
+        // Build a fragment containing empty versions of the structure
+        // from the outer list item to the parent node of the cursor
+        for (
+          let d = $from.depth - (keepItem ? 1 : 2);
+          d >= $from.depth - 3;
+          d--
+        ) {
+          wrap = Fragment.from($from.node(d).copy(wrap));
+        }
+        // Add a second list item with an empty default start node
+        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
+        const tr$1 = state.tr.replace(
+          $from.before(keepItem ? null : -1),
+          $from.after(-3),
+          new Slice(wrap, keepItem ? 3 : 2, 2),
+        );
+        tr$1.setSelection(
+          state.selection.constructor.near(
+            tr$1.doc.resolve($from.pos + (keepItem ? 3 : 2)),
+          ),
+        );
+        dispatch(tr$1.scrollIntoView());
+      }
+      return true;
+    }
+    const nextType =
+      $to.pos === $from.end() ? grandParent.defaultContentType(0) : null;
+    const tr = state.tr.delete($from.pos, $to.pos);
+    const types = nextType && [null, { type: nextType }];
+
+    if (dispatch) {
+      dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+    }
+    return true;
+  };
+}
 
 /**
  * The function will list paragraphs in selection out to level 1 below root list.

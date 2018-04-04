@@ -5,6 +5,7 @@ import {
   ApplicationCardAttributes,
   CellAttributes,
   LinkAttributes,
+  TableAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -299,8 +300,7 @@ export const emoji = (attrs: {
 };
 export const mention = (attrs: MentionAttributes) =>
   nodeFactory(sampleSchema.nodes.mention, attrs);
-export const table = nodeFactory(sampleSchema.nodes.table, {});
-export const tableWithAttrs = (attrs: { isNumberColumnEnabled?: boolean }) =>
+export const table = (attrs?: TableAttributes) =>
   nodeFactory(sampleSchema.nodes.table, attrs);
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
 export const td = (attrs?: CellAttributes) =>

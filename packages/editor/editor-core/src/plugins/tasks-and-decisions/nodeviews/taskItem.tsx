@@ -42,25 +42,15 @@ class Task extends ContentNodeView implements NodeView {
   }
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
-    const { view } = this;
-    const { state } = view;
-    const { doc, schema, tr } = state;
+    const { tr } = this.view.state;
     const nodePos = this.getPos();
-    const node = doc.nodeAt(nodePos)!;
 
-    tr.replaceWith(
-      nodePos,
-      nodePos + node.nodeSize,
-      schema.nodes.taskItem.create(
-        {
-          state: isChecked ? 'DONE' : 'TODO',
-          localId: taskId,
-        },
-        node.content,
-      ),
-    );
+    tr.setNodeMarkup(nodePos, undefined, {
+      state: isChecked ? 'DONE' : 'TODO',
+      localId: taskId,
+    });
 
-    view.dispatch(tr);
+    this.view.dispatch(tr);
   };
 
   private renderReactComponent() {
@@ -94,10 +84,13 @@ class Task extends ContentNodeView implements NodeView {
 
   update(node: PMNode) {
     /**
-     * Returning false here when the previous content was empty – fixes an error where the editor fails to set selection
-     * inside the contentDOM after a transaction. See ED-2374.
+     * Return false here because allowing node updates breaks 'checking the box'
+     * when using collab editing.
+     *
+     * This is likely because the taskDecisionProvider is updating itself &
+     * Prosemirror is interfering.
      */
-    return !this.isContentEmpty || node.type !== this.node.type;
+    return false;
   }
 
   destroy() {

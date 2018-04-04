@@ -10,7 +10,10 @@ import {
   akColorY50,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
-import { akEditorTableCellBackgroundOpacity } from '../../styles';
+import {
+  akEditorTableCellBackgroundOpacity,
+  akEditorTableNumberColumnWidth,
+} from '../../styles';
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -68,14 +71,45 @@ export const tableBackgroundColorNames = new Map<string, string>();
   tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
 });
 
+export function calcTableColumnWidths(node: PmNode): number[] {
+  let tableColumnWidths = [];
+  const { isNumberColumnEnabled } = node.attrs;
+
+  node.forEach((rowNode, _, i) => {
+    rowNode.forEach((colNode, _, j) => {
+      let colwidth = colNode.attrs.colwidth;
+
+      if (isNumberColumnEnabled && j === 0) {
+        if (!colwidth) {
+          colwidth = [akEditorTableNumberColumnWidth];
+        }
+      }
+
+      // if we have a colwidth attr for this cell, and it contains new
+      // colwidths we haven't seen for the whole table yet, add those
+      // (colwidths over the table are defined as-we-go)
+      if (colwidth && colwidth.length + j > tableColumnWidths.length) {
+        tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
+      }
+    });
+  });
+
+  return tableColumnWidths;
+}
+
+export type Layout = 'default' | 'full-width';
+
+export interface TableAttributes {
+  isNumberColumnEnabled?: boolean;
+  layout?: Layout;
+}
+
 /**
  * @name table_node
  */
 export interface Table {
   type: 'table';
-  attrs?: {
-    isNumberColumnEnabled?: boolean;
-  };
+  attrs?: TableAttributes;
   /**
    * @minItems 1
    */
@@ -98,7 +132,7 @@ export interface TableRow {
  */
 export interface TableCell {
   type: 'tableCell';
-  attrs: CellAttributes;
+  attrs?: CellAttributes;
   /**
    * @minItems 1
    */
@@ -110,7 +144,7 @@ export interface TableCell {
  */
 export interface TableHeader {
   type: 'tableHeader';
-  attrs: CellAttributes;
+  attrs?: CellAttributes;
   /**
    * @minItems 1
    */
@@ -129,6 +163,7 @@ export const table: any = {
   content: 'tableRow+',
   attrs: {
     isNumberColumnEnabled: { default: false },
+    layout: { default: 'default' },
   },
   tableRole: 'table',
   isolating: true,
@@ -139,12 +174,14 @@ export const table: any = {
       getAttrs: (dom: Element) => ({
         isNumberColumnEnabled:
           dom.getAttribute('data-number-column') === 'true' ? true : false,
+        layout: dom.getAttribute('data-layout') || 'default',
       }),
     },
   ],
   toDOM(node) {
     const attrs = {
       'data-number-column': node.attrs.isNumberColumnEnabled,
+      'data-layout': node.attrs.layout,
     };
     return ['table', attrs, ['tbody', 0]];
   },
@@ -168,7 +205,7 @@ const cellAttrs = {
 
 export const tableCell: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
@@ -195,7 +232,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader: any = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

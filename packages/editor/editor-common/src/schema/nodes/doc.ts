@@ -74,6 +74,7 @@ export type TableCellContent = Array<
   | Heading
   | CodeBlock
   | MediaGroup
+  | MediaSingle
   | ApplicationCard
   | DecisionList
   | TaskList
@@ -135,7 +136,7 @@ export type InlineLinkText = Text & MarksObject<Link>;
 /**
  * @name code_inline_node
  */
-export type InlineCode = Text & MarksObject<Code | Link>;
+export type InlineCode = Text & MarksObject<Code>;
 
 /**
  * @name atomic_inline_node

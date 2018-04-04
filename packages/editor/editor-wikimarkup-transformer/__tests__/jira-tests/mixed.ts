@@ -65,7 +65,7 @@ and *bold*, -strike- and _emphasised_ text.
         h4('and smaller still heading'),
         h5('almost smallest heading'),
         h6('smallest heading'),
-        table(tr(td({})(p('simple')), td({})(p('table')))),
+        table()(tr(td({})(p('simple')), td({})(p('table')))),
         ol(li(p('numbered')), li(p('bullets'))),
         ul(li(p('normal')), li(p('bullets'))),
         blockquote(p('with some block quoted text')),
@@ -78,7 +78,7 @@ and *bold*, -strike- and _emphasised_ text.
           em('emphasised'),
           ' text.',
         ),
-        table(
+        table()(
           tr(th({})(p('column')), th({})(p('headings'))),
           tr(
             td({})(p('table')),
@@ -211,7 +211,7 @@ end of the config file!
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(
             td({})(p(' ', emoji({ shortName: ':warning:' })(), ' ')),
             td({})(p(' Hello ')),

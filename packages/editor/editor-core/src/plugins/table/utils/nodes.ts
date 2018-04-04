@@ -1,8 +1,7 @@
 import { Fragment, Node as PmNode, Schema, Slice } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
-import { tableStartPos } from './position';
+import { findTable } from 'prosemirror-utils';
 
 export const createTableNode = (
   rows: number,
@@ -24,17 +23,6 @@ export const createTableNode = (
 
 export const isIsolating = (node: PmNode): boolean => {
   return !!node.type.spec.isolating;
-};
-
-export const getCurrentCell = (state: EditorState): PmNode | undefined => {
-  const { $from } = state.selection;
-  const { tableCell, tableHeader } = state.schema.nodes;
-  for (let i = $from.depth; i > 0; i--) {
-    const node = $from.node(i);
-    if (node.type === tableCell || node.type === tableHeader) {
-      return node;
-    }
-  }
 };
 
 export const canInsertTable = (state: EditorState): boolean => {
@@ -81,37 +69,14 @@ export const containsTableHeader = (
   return contains;
 };
 
-export const getTableElement = (
-  state: EditorState,
-  view: EditorView,
-): HTMLElement | undefined => {
-  const pos = tableStartPos(state);
-  if (pos) {
-    const { node } = view.domAtPos(pos);
-    if (node) {
-      return node.parentNode as HTMLElement;
-    }
-  }
-};
-
-export const getTableNode = (state: EditorState): PmNode | undefined => {
-  const { $from } = state.selection;
-  for (let i = $from.depth; i > 0; i--) {
-    const node = $from.node(i);
-    if (node.type === state.schema.nodes.table) {
-      return node;
-    }
-  }
-};
-
 export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
-  const tableNode = getTableNode(state);
-  if (!tableNode) {
+  const table = findTable(state.selection);
+  if (!table) {
     return false;
   }
-  const map = TableMap.get(tableNode!);
+  const map = TableMap.get(table.node);
   for (let i = 0; i < map.width; i++) {
-    const cell = tableNode!.nodeAt(map.map[i]);
+    const cell = table.node.nodeAt(map.map[i]);
     if (cell && cell.type !== state.schema.nodes.tableHeader) {
       return false;
     }
@@ -120,15 +85,15 @@ export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
 };
 
 export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
-  const tableNode = getTableNode(state);
-  if (!tableNode) {
+  const table = findTable(state.selection);
+  if (!table) {
     return false;
   }
-  const map = TableMap.get(tableNode!);
+  const map = TableMap.get(table.node);
   for (let i = 0; i < map.height; i++) {
     // if number column is enabled, second column becomes header (next to the number column)
-    const column = tableNode!.attrs.isNumberColumnEnabled ? 1 : 0;
-    const cell = tableNode!.nodeAt(map.map[column + i * map.width]);
+    const column = table.node.attrs.isNumberColumnEnabled ? 1 : 0;
+    const cell = table.node.nodeAt(map.map[column + i * map.width]);
     if (cell && cell.type !== state.schema.nodes.tableHeader) {
       return false;
     }
@@ -137,6 +102,6 @@ export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
 };
 
 export const checkIfNumberColumnEnabled = (state: EditorState): boolean => {
-  const tableNode = getTableNode(state);
-  return !!(tableNode && tableNode.attrs.isNumberColumnEnabled);
+  const table = findTable(state.selection);
+  return !!(table && table.node.attrs.isNumberColumnEnabled);
 };

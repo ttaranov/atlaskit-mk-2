@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { waitUntil } from '@atlaskit/util-common-test';
 
+import * as ImageUtil from '../../../src/util/image';
+
 import {
   createPngFile,
   getEmojiResourcePromise,
@@ -29,6 +31,7 @@ import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
 import { MockEmojiResource } from '@atlaskit/util-data-test';
 import EmojiRepository from '../../../src/api/EmojiRepository';
+import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
 
 describe('<UploadingEmojiPicker />', () => {
   let firePrivateAnalyticsEvent;
@@ -36,6 +39,31 @@ describe('<UploadingEmojiPicker />', () => {
   const safeFindCustomEmojiButton = async component => {
     await waitUntil(() => commonHelper.customEmojiButtonVisible(component));
     return commonHelper.findCustomEmojiButton(component);
+  };
+
+  const chooseFile = (component, file) => {
+    const fileChooser = component.find(FileChooser);
+    const fileOnChange = fileChooser.prop('onChange');
+    expect(fileOnChange).toBeDefined();
+    fileOnChange!({
+      target: {
+        files: [file],
+      },
+    } as React.ChangeEvent<any>);
+    return fileChooser;
+  };
+
+  const typeEmojiName = component => {
+    const nameInput = helper.findEmojiNameInput(component);
+    nameInput.simulate('focus');
+    nameInput.simulate('change', {
+      target: {
+        value: ':cheese burger:',
+      },
+    });
+    expect(helper.findEmojiNameInput(component).prop('value')).toEqual(
+      'cheese_burger',
+    );
   };
 
   beforeEach(async () => {
@@ -46,6 +74,14 @@ describe('<UploadingEmojiPicker />', () => {
     let consoleError;
     beforeEach(() => {
       consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      jest
+        .spyOn(ImageUtil, 'parseImage')
+        .mockImplementation(() => Promise.resolve(new Image()));
+
+      jest
+        .spyOn(ImageUtil, 'hasFileExceededSize')
+        .mockImplementation(() => false);
     });
 
     afterEach(() => {
@@ -106,26 +142,10 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.emojiNameInputVisible(component));
 
       // type name
-      const nameInput = helper.findEmojiNameInput(component);
-      nameInput.simulate('focus');
-      nameInput.simulate('change', {
-        target: {
-          value: ':cheese burger:',
-        },
-      });
-      expect(helper.findEmojiNameInput(component).prop('value')).toEqual(
-        'cheese_burger',
-      );
+      typeEmojiName(component);
 
       // choose file
-      const fileChooser = component.find(FileChooser);
-      const fileOnChange = fileChooser.prop('onChange');
-      expect(fileOnChange).toBeDefined();
-      fileOnChange!({
-        target: {
-          files: [createPngFile()],
-        },
-      } as React.ChangeEvent<any>);
+      chooseFile(component, createPngFile());
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
@@ -198,6 +218,75 @@ describe('<UploadingEmojiPicker />', () => {
       );
     });
 
+    it('Upload failure with invalid file', async () => {
+      jest
+        .spyOn(ImageUtil, 'parseImage')
+        .mockImplementation(() => Promise.reject(new Error('file error')));
+
+      const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
+      const component = await helper.setupPicker({
+        emojiProvider,
+        hideToneSelector: true,
+        firePrivateAnalyticsEvent,
+      });
+      await emojiProvider;
+      await helper.showCategory(customCategory, component, customTitle);
+
+      // click add
+      await waitUntil(() =>
+        commonHelper.findEmojiPreviewSection(component).exists(),
+      );
+      const addEmoji = await safeFindCustomEmojiButton(component);
+      addEmoji.simulate('click');
+      await waitUntil(() => helper.emojiNameInputVisible(component));
+
+      typeEmojiName(component);
+
+      chooseFile(component, createPngFile());
+      expect(component.find('FileChooser')).toHaveLength(1);
+
+      await waitUntil(() => helper.errorMessageVisible(component));
+
+      expect(component.find(EmojiErrorMessage).prop('message')).toEqual(
+        'Selected image is invalid',
+      );
+    });
+
+    it('Upload failure with file too big', async () => {
+      jest
+        .spyOn(ImageUtil, 'hasFileExceededSize')
+        .mockImplementation(() => true);
+
+      const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
+      const component = await helper.setupPicker({
+        emojiProvider,
+        hideToneSelector: true,
+        firePrivateAnalyticsEvent,
+      });
+      await emojiProvider;
+      await helper.showCategory(customCategory, component, customTitle);
+
+      // click add
+      await waitUntil(() =>
+        commonHelper.findEmojiPreviewSection(component).exists(),
+      );
+      const addEmoji = await safeFindCustomEmojiButton(component);
+      addEmoji.simulate('click');
+      await waitUntil(() => helper.emojiNameInputVisible(component));
+
+      // type name
+      typeEmojiName(component);
+
+      chooseFile(component, createPngFile());
+      expect(component.find('FileChooser')).toHaveLength(1);
+
+      await waitUntil(() => helper.errorMessageVisible(component));
+
+      expect(component.find(EmojiErrorMessage).prop('message')).toEqual(
+        'Selected image is more than 1 MB',
+      );
+    });
+
     it('Upload after searching', async () => {
       const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
@@ -237,14 +326,7 @@ describe('<UploadingEmojiPicker />', () => {
       expect(nameInput.prop('value')).toEqual('cheese_burger');
 
       // choose file
-      const fileChooser = component.find(FileChooser);
-      const fileOnChange = fileChooser.prop('onChange');
-      expect(fileOnChange).toBeDefined();
-      fileOnChange!({
-        target: {
-          files: [createPngFile()],
-        },
-      } as React.ChangeEvent<any>);
+      chooseFile(component, createPngFile());
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
@@ -325,26 +407,10 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.emojiNameInputVisible(component));
 
       // type name
-      const nameInput = helper.findEmojiNameInput(component);
-      nameInput.simulate('focus');
-      nameInput.simulate('change', {
-        target: {
-          value: ':cheese burger:',
-        },
-      });
-      expect(helper.findEmojiNameInput(component).prop('value')).toEqual(
-        'cheese_burger',
-      );
+      typeEmojiName(component);
 
       // choose file
-      const fileChooser = component.find(FileChooser);
-      const fileOnChange = fileChooser.prop('onChange');
-      expect(fileOnChange).toBeDefined();
-      fileOnChange!({
-        target: {
-          files: [createPngFile()],
-        },
-      } as React.ChangeEvent<any>);
+      chooseFile(component, createPngFile());
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown
@@ -414,26 +480,10 @@ describe('<UploadingEmojiPicker />', () => {
       await waitUntil(() => helper.emojiNameInputVisible(component));
 
       // type name
-      const nameInput = helper.findEmojiNameInput(component);
-      nameInput.simulate('focus');
-      nameInput.simulate('change', {
-        target: {
-          value: ':cheese burger:',
-        },
-      });
-      expect(helper.findEmojiNameInput(component).prop('value')).toEqual(
-        'cheese_burger',
-      );
+      typeEmojiName(component);
 
       // choose file
-      const fileChooser = component.find(FileChooser);
-      const fileOnChange = fileChooser.prop('onChange');
-      expect(fileOnChange).toBeDefined();
-      fileOnChange!({
-        target: {
-          files: [createPngFile()],
-        },
-      } as React.ChangeEvent<any>);
+      chooseFile(component, createPngFile());
       await waitUntil(() => helper.addEmojiButtonVisible(component));
 
       // upload preview shown

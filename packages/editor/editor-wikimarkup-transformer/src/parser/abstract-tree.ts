@@ -1,16 +1,18 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
 import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
-import { findTextAndInlineNodes } from './text';
+import { getProseMirrorNodeTypeForMacro } from './macros';
 import { getCodeLanguage } from './code-language';
-import {
-  getResolvedMacroIntervals,
-  getResolvedTextIntervals,
-} from './intervals';
+import { getResolvedMacroIntervals } from './intervals';
 import { isSpecialMacro } from './special';
+import { getTextWithMarks } from './text';
+import { TEXT_COLOR_GREY } from './effects';
+
+import getHeadingNodeView from './nodes/heading';
+import getRuleNodeView from './nodes/rule';
 
 // E.g. bq. foo -> [ "foo" ]
 const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
@@ -32,7 +34,6 @@ const NEWLINE_CELL_REGEXP = /^([^|]*)[|]/;
 
 const HORIZONTAL_RULE = '----';
 const NEWLINE = '\n';
-const DOUBLE_BACKSLASH = '\\\\';
 
 export default class AbstractTree {
   private schema: Schema;
@@ -50,38 +51,28 @@ export default class AbstractTree {
     const textIntervals = getResolvedMacroIntervals(this.wikiMarkup);
 
     return textIntervals.map(({ macros, text }) => {
-      const simpleMacro = macros.pop();
+      const hasMultipleMacros = macros.length > 1;
+      const simpleMacro = macros.shift();
+
       const treatChildrenAsText = Boolean(
         simpleMacro && isSpecialMacro(simpleMacro.macro),
       );
 
+      const containerNodeType = simpleMacro
+        ? getProseMirrorNodeTypeForMacro(this.schema, simpleMacro.macro)
+        : null;
+
       return {
         text,
         macro: simpleMacro,
-        content: this.getTextNodes(text, treatChildrenAsText),
+        content: this.getTextNodes(
+          text,
+          treatChildrenAsText,
+          containerNodeType,
+          hasMultipleMacros,
+        ),
       };
     });
-  }
-
-  getTextWithMarks(text: string): PMNode[] {
-    const intervals = getResolvedTextIntervals(text);
-    const output: PMNode[] = [];
-
-    for (const { effects, text } of intervals) {
-      const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
-
-      textWithLineBreaks.forEach((chunk, i) => {
-        const inlineNodes = findTextAndInlineNodes(this.schema, chunk, effects);
-        output.push(...inlineNodes);
-
-        if (i + 1 < textWithLineBreaks.length) {
-          const hardBreakNode = this.schema.nodes.hardBreak.createChecked();
-          output.push(hardBreakNode);
-        }
-      });
-    }
-
-    return output;
   }
 
   /**
@@ -99,33 +90,33 @@ export default class AbstractTree {
   /**
    * Creates prosemirror node from macro
    */
-  private getProseMirrorMacroNode(
+  private getProseMirrorMacroNodes(
     macro: MacroName,
     attrs: { [key: string]: string },
     content: PMNode[],
-  ): PMNode {
-    const { blockquote, codeBlock, panel } = this.schema.nodes;
+  ): PMNode[] {
+    const output: PMNode[] = [];
+    const nodeType = getProseMirrorNodeTypeForMacro(this.schema, macro);
+    const nodeAttrs: { [key: string]: any } = {};
+    const isPanelWithTitle = macro === 'panel' && attrs.title;
 
     if (macro === 'code') {
-      return codeBlock.createChecked(
-        { language: getCodeLanguage(attrs) },
-        content,
+      nodeAttrs.language = getCodeLanguage(attrs);
+    } else if (macro === 'panel') {
+      nodeAttrs.panelType = 'info';
+    }
+
+    if (isPanelWithTitle) {
+      const headingNode = this.schema.nodes.heading.createChecked(
+        { level: 1 },
+        getTextWithMarks(this.schema, attrs.title),
       );
+
+      output.push(headingNode);
     }
 
-    if (macro === 'noformat') {
-      return codeBlock.createChecked({}, content);
-    }
-
-    if (macro === 'panel') {
-      return panel.createChecked({ panelType: 'info' }, content);
-    }
-
-    if (macro === 'quote') {
-      return blockquote.createChecked({}, content);
-    }
-
-    throw new Error(`Unknown macro type: ${macro}`);
+    output.push(nodeType.createChecked(nodeAttrs, content));
+    return output;
   }
 
   /**
@@ -140,13 +131,13 @@ export default class AbstractTree {
 
       if (macro) {
         const { attrs, macro: macroName } = macro;
-        const macroPMNode = this.getProseMirrorMacroNode(
+        const macroPMNodes = this.getProseMirrorMacroNodes(
           macroName,
           attrs,
           content,
         );
 
-        output.push(macroPMNode);
+        output.push(...macroPMNodes);
       } else {
         output.push(...content);
       }
@@ -158,12 +149,12 @@ export default class AbstractTree {
   /**
    * Combine text nodes with hardBreaks between them
    */
-  private buildTextNodes(lines: string[]): PMNode[] {
+  private buildTextNodes(lines: string[], useGreyText: boolean): PMNode[] {
     const { hardBreak } = this.schema.nodes;
     const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
-      const textNodes = this.getTextWithMarks(line);
+      const textNodes = this.getTextWithMarks(line, useGreyText);
       output.push(...textNodes);
 
       if (index + 1 < lines.length) {
@@ -178,8 +169,13 @@ export default class AbstractTree {
   /**
    * Parse text which doesn't contain macros
    */
-  private getTextNodes(str: string, treatChildrenAsText: boolean): PMNode[] {
-    const { blockquote, heading, paragraph, rule } = this.schema.nodes;
+  private getTextNodes(
+    str: string,
+    treatChildrenAsText: boolean,
+    containerNodeType: NodeType | null,
+    useGreyText: boolean,
+  ): PMNode[] {
+    const { blockquote, paragraph } = this.schema.nodes;
     const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
@@ -196,7 +192,7 @@ export default class AbstractTree {
       if (textContainer.length) {
         const paragraphNode = paragraph.createChecked(
           {},
-          this.buildTextNodes(textContainer),
+          this.buildTextNodes(textContainer, useGreyText),
         );
         output.push(paragraphNode);
 
@@ -205,14 +201,14 @@ export default class AbstractTree {
     };
 
     // Flag if currently processing a block of content
-    let isBuilding: boolean = false;
-    let builder: Builder | null | undefined;
+    let isBuilding = false;
+    let builders: Array<Builder> = [];
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
       if (line === HORIZONTAL_RULE) {
         processAndEmptyStoredText();
 
-        const hrNode = rule.createChecked();
+        const hrNode = getRuleNodeView(this.schema, containerNodeType);
         output.push(hrNode);
 
         continue;
@@ -222,10 +218,15 @@ export default class AbstractTree {
       if (!line.length) {
         processAndEmptyStoredText();
 
+        // Close out any active builders
         if (isBuilding) {
-          output.push(builder!.buildPMNode());
+          let builder: Builder | undefined;
+
+          while ((builder = builders.pop())) {
+            output.push(builder.buildPMNode());
+          }
+
           isBuilding = false;
-          builder = null;
         }
 
         continue;
@@ -238,9 +239,12 @@ export default class AbstractTree {
       if (headingMatches) {
         processAndEmptyStoredText();
 
-        const headingNode = heading.createChecked(
+        const headingNode = getHeadingNodeView(
+          this.schema,
+          containerNodeType,
           { level: headingMatches[1] },
-          this.getTextWithMarks(headingMatches[2]),
+          headingMatches[2],
+          useGreyText,
         );
 
         output.push(headingNode);
@@ -254,7 +258,7 @@ export default class AbstractTree {
 
         const paragraphNode = paragraph.createChecked(
           {},
-          this.getTextWithMarks(lineBlockQuoteMatches[1]),
+          this.getTextWithMarks(lineBlockQuoteMatches[1], useGreyText),
         );
         const blockquoteNode = blockquote.createChecked({}, paragraphNode);
 
@@ -266,7 +270,14 @@ export default class AbstractTree {
       const listMatches = lineUpdated.match(LIST_REGEXP);
       if (listMatches) {
         const [, /* discard */ style, content] = listMatches;
+        let builder = builders.pop();
         isBuilding = true;
+
+        // If the current builder is a table, push it back on and start a new builder to nest in it
+        if (builder && builder.type === 'table') {
+          builders.push(builder);
+          builder = undefined;
+        }
 
         if (!builder) {
           builder = new ListBuilder(this.schema, style);
@@ -280,27 +291,38 @@ export default class AbstractTree {
           }
         }
 
-        const contentNode = this.getTextWithMarks(content);
+        const contentNode = this.getTextWithMarks(content, useGreyText);
         builder.add([{ style, content: contentNode }]);
+        builders.push(builder);
         continue;
       }
 
       // search for tables
       const tableMatches = lineUpdated.match(TABLE_REGEXP);
       if (tableMatches) {
+        let builder = builders.pop();
         isBuilding = true;
 
         if (!builder) {
           builder = new TableBuilder(this.schema);
+        } else {
+          // If the current builder isn't a table, close it and add it to the last cell
+          if (builder.type !== 'table') {
+            const contentNode = builder.buildPMNode();
+            builder = builders.pop() || new TableBuilder(this.schema);
+            builder.add([{ style: null, content: [contentNode] }]);
+          }
         }
 
         // Iterate over the cells
-        builder.add(this.getTableCells(lineUpdated));
+        builder.add(this.getTableCells(lineUpdated, useGreyText));
+        builders.push(builder);
         continue;
       }
 
       // If it's not a match, but the last loop was part of a block, continue adding to it
       if (isBuilding) {
+        const builder = builders.pop();
         let content: string;
         let additionalFields: any[] = [];
 
@@ -310,16 +332,17 @@ export default class AbstractTree {
           content = (matches && matches[1]) || lineUpdated;
 
           // Get the other cells if any
-          additionalFields = this.getTableCells(lineUpdated);
+          additionalFields = this.getTableCells(lineUpdated, useGreyText);
         } else {
           content = lineUpdated;
         }
 
-        const contentNode = this.getTextWithMarks(content!);
+        const contentNode = this.getTextWithMarks(content!, useGreyText);
         builder!.add([
           { style: null, content: contentNode },
           ...additionalFields,
         ]);
+        builders.push(builder!);
         continue;
       }
 
@@ -333,7 +356,11 @@ export default class AbstractTree {
 
     // If a block of content was the last item, make sure to push it
     if (isBuilding) {
-      output.push(builder!.buildPMNode());
+      let builder: Builder | undefined;
+
+      while ((builder = builders.pop())) {
+        output.push(builder.buildPMNode());
+      }
     }
 
     // there can be some text stored after processing
@@ -347,14 +374,19 @@ export default class AbstractTree {
    * @param {string} line
    * @returns {AddCellArgs[]}
    */
-  private getTableCells(line: string): AddCellArgs[] {
+  private getTableCells(line: string, useGreyText: boolean): AddCellArgs[] {
     let match;
     const cells: AddCellArgs[] = [];
     while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
       const [, /* discard */ style, content] = match;
-      const contentNode = this.getTextWithMarks(content);
+      const contentNode = this.getTextWithMarks(content, useGreyText);
       cells.push({ style, content: contentNode });
     }
     return cells;
+  }
+
+  private getTextWithMarks(text: string, useGreyText: boolean) {
+    const extraEffects = useGreyText ? [TEXT_COLOR_GREY] : [];
+    return getTextWithMarks(this.schema, text, extraEffects);
   }
 }
