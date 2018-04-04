@@ -1,8 +1,12 @@
-import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider } from '@atlaskit/media-core';
+import {
+  AuthProvider,
+  ContextFactory,
+  Context,
+  FileDetails,
+} from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
@@ -23,6 +27,7 @@ import {
   SourceFile,
   mapAuthToSourceFileOwner,
 } from '../popup/domain/source-file';
+import { UploadableFile } from '../../../media-store/src';
 
 type UploadId = string;
 type ChunkId = string;
@@ -75,8 +80,7 @@ export interface FileConvertingEventPayload {
 }
 
 export interface FileConvertedEventPayload {
-  readonly file: PublicMediaFile;
-  readonly metadata: MediaFileData;
+  readonly fileDetails: FileDetails;
 }
 
 export interface FileUploadErrorEventPayload {
@@ -107,17 +111,16 @@ interface Upload {
 export class UploadService {
   private static hasher = createHasher();
 
-  private readonly resumable: Resumable;
-
+  private readonly context: Context;
   private readonly emitter: EventEmitter2;
   private readonly mediaClientPool: MediaClientPool;
   private readonly authProvider: AuthProvider;
   private readonly userCollectionMediaClient: MediaClient;
   private readonly api: MediaApi;
-  private readonly uploadChunkUrl: string;
   private readonly uploads: { [uniqueIdentifier: string]: Upload } = {};
 
   private dropzoneElement?: HTMLElement;
+  private browserElement?: HTMLInputElement;
   private uploadParams: UploadParams;
   private retry: number = 0;
 
@@ -127,9 +130,15 @@ export class UploadService {
     uploadParams?: UploadParams,
     userAuthProvider?: AuthProvider,
   ) {
+    // TODO Move me from here
+    this.context = ContextFactory.create({
+      serviceHost: url,
+      authProvider,
+      userAuthProvider,
+      // cacheSize: 42
+    });
     this.emitter = new EventEmitter2();
 
-    this.uploadChunkUrl = `${url}/chunk`;
     this.authProvider = authProvider;
     this.mediaClientPool = new MediaClientPool(url, authProvider);
     if (userAuthProvider) {
@@ -144,28 +153,28 @@ export class UploadService {
 
     this.setUploadParams(uploadParams);
 
-    this.resumable = new Resumable({
-      target: this.generateTarget,
-      uploadMethod: 'PUT',
-      testMethod: 'HEAD',
-      chunkSize: 4 * 1024 * 1024,
-      chunkRetryInterval: 2500,
-      maxChunkRetries: 5,
-      simultaneousUploads: 3,
-      forceChunkSize: true,
-      permanentErrors: [400, 403, 404, 415, 500, 501],
-      method: 'octet',
-      minFileSize: 0,
-      query: this.getQueryParameters,
-      preprocess: chunk => UploadService.hasher.hash(chunk),
-      generateUniqueIdentifier: () => uuid.v4(),
-    });
-
-    this.resumable.on('filesAdded', this.onFilesAdded);
-    this.resumable.on('chunkingComplete', this.onChunkingComplete);
-    this.resumable.on('fileProgress', this.onFileProgress);
-    this.resumable.on('fileSuccess', this.onFileSuccess);
-    this.resumable.on('fileError', this.onFileError);
+    // this.resumable = new Resumable({
+    //   target: this.generateTarget,
+    //   uploadMethod: 'PUT',
+    //   testMethod: 'HEAD',
+    //   chunkSize: 4 * 1024 * 1024,
+    //   chunkRetryInterval: 2500,
+    //   maxChunkRetries: 5,
+    //   simultaneousUploads: 3,
+    //   forceChunkSize: true,
+    //   permanentErrors: [400, 403, 404, 415, 500, 501],
+    //   method: 'octet',
+    //   minFileSize: 0,
+    //   query: this.getQueryParameters,
+    //   preprocess: chunk => UploadService.hasher.hash(chunk),
+    //   generateUniqueIdentifier: () => uuid.v4(),
+    // });
+    //
+    // this.resumable.on('filesAdded', this.onFilesAdded);
+    // this.resumable.on('chunkingComplete', this.onChunkingComplete);
+    // this.resumable.on('fileProgress', this.onFileProgress);
+    // this.resumable.on('fileSuccess', this.onFileSuccess);
+    // this.resumable.on('fileError', this.onFileError);
   }
 
   setUploadParams(uploadParams?: UploadParams): void {
@@ -180,8 +189,17 @@ export class UploadService {
     return this.uploadParams;
   }
 
-  addBrowse(element: HTMLElement): void {
-    this.resumable.assignBrowse(element);
+  addBrowse(element: HTMLInputElement): void {
+    this.browserElement = element;
+    this.browserElement.addEventListener('change', this.onFilePicked);
+  }
+
+  removeBrowse(): void {
+    if (!this.browserElement) {
+      return;
+    }
+    this.browserElement.removeEventListener('change', this.onFilePicked);
+    delete this.browserElement;
   }
 
   addDropzone(element: HTMLElement): void {
@@ -192,7 +210,7 @@ export class UploadService {
 
     this.dropzoneElement = element;
     this.dropzoneElement.addEventListener('drop', this.onDrop);
-    this.resumable.assignDrop(this.dropzoneElement);
+    // this.resumable.assignDrop(this.dropzoneElement);
   }
 
   removeDropzone(): void {
@@ -202,12 +220,20 @@ export class UploadService {
     }
 
     this.dropzoneElement.removeEventListener('drop', this.onDrop);
-    this.resumable.unAssignDrop(this.dropzoneElement);
-    this.dropzoneElement = undefined;
+    // this.resumable.unAssignDrop(this.dropzoneElement);
+    delete this.dropzoneElement;
   }
 
   addFile(file: File): void {
-    this.resumable.addFile(file);
+    const uploadableFile: UploadableFile = {
+      collection: this.uploadParams.collection,
+      content: file,
+    };
+    this.context
+      .uploadFile(uploadableFile, {
+        onProgress: this.onFileProgress2.bind(this, file),
+      })
+      .then(this.onFileSuccess, this.onUploadError2.bind(this, file));
   }
 
   cancel(uniqueIdentifier?: string): void {
@@ -373,6 +399,20 @@ export class UploadService {
 
         oldCallback(event, message);
       };
+    });
+  };
+
+  private onFileProgress2 = (file, portion) => {
+    const progress = new SmartMediaProgress(
+      totalSize,
+      totalSize * portion,
+      file.creationDate,
+      Date.now(),
+    );
+
+    this.emit('file-uploading', {
+      file,
+      progress,
     });
   };
 
@@ -584,6 +624,10 @@ export class UploadService {
     return Promise.resolve({ id: publicId });
   }
 
+  private onUploadError2(file, error) {
+    console.log(file, error);
+  }
+
   // Error handling
 
   private onUploadError(
@@ -658,6 +702,11 @@ export class UploadService {
     });
     handleError(errorName, errorDetails);
   }
+
+  // Browse listener
+  private readonly onFilePicked = () => {
+    console.log(this.browserElement!.files);
+  };
 
   // Dropzone drop listener
   private readonly onDrop = (dragEvent: DragEvent) => {

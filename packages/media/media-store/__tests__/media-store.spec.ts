@@ -12,7 +12,7 @@ import {
 } from '../src/models/media';
 
 describe('MediaStore', () => {
-  const apiUrl = 'http://some-host';
+  const serviceHost = 'http://some-host';
 
   afterEach(() => fetchMock.restore());
 
@@ -22,7 +22,7 @@ describe('MediaStore', () => {
     const auth = { clientId, token };
     const authProvider = () => Promise.resolve(auth);
     const mediaStore = new MediaStore({
-      apiUrl,
+      serviceHost,
       authProvider,
     });
 
@@ -33,7 +33,7 @@ describe('MediaStore', () => {
           { id: 'some-upload-id', created: 123, expires: 456 },
         ];
 
-        fetchMock.mock(`begin:${apiUrl}/upload`, {
+        fetchMock.mock(`begin:${serviceHost}/upload`, {
           body: {
             data,
           },
@@ -43,7 +43,7 @@ describe('MediaStore', () => {
         return mediaStore.createUpload(createUpTo).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${apiUrl}/upload?createUpTo=${createUpTo}`,
+            `${serviceHost}/upload?createUpTo=${createUpTo}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
@@ -63,12 +63,12 @@ describe('MediaStore', () => {
         const etag = 'some-etag';
         const blob = new Blob(['some-blob']);
 
-        fetchMock.mock(`begin:${apiUrl}/chunk`, {
+        fetchMock.mock(`begin:${serviceHost}/chunk`, {
           status: 201,
         });
 
         return mediaStore.uploadChunk(etag, blob).then(() => {
-          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/chunk/${etag}`);
+          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/chunk/${etag}`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'PUT',
             headers: {
@@ -93,7 +93,7 @@ describe('MediaStore', () => {
           },
         };
 
-        fetchMock.mock(`begin:${apiUrl}/chunk/probe`, {
+        fetchMock.mock(`begin:${serviceHost}/chunk/probe`, {
           body: {
             data,
           },
@@ -102,7 +102,7 @@ describe('MediaStore', () => {
 
         return mediaStore.probeChunks(chunks).then(response => {
           expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/chunk/probe`);
+          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/chunk/probe`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
             headers: {
@@ -145,7 +145,7 @@ describe('MediaStore', () => {
           artifacts: {},
         };
 
-        fetchMock.mock(`begin:${apiUrl}/file/upload`, {
+        fetchMock.mock(`begin:${serviceHost}/file/upload`, {
           body: {
             data,
           },
@@ -155,7 +155,7 @@ describe('MediaStore', () => {
         return mediaStore.createFileFromUpload(body, params).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${apiUrl}/file/upload?${stringify(params)}`,
+            `${serviceHost}/file/upload?${stringify(params)}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
@@ -183,13 +183,13 @@ describe('MediaStore', () => {
           offset: 0,
         };
 
-        fetchMock.mock(`begin:${apiUrl}/upload`, {
+        fetchMock.mock(`begin:${serviceHost}/upload`, {
           status: 200,
         });
 
         return mediaStore.appendChunksToUpload(uploadId, body).then(() => {
           expect(fetchMock.lastUrl()).toEqual(
-            `${apiUrl}/upload/${uploadId}/chunks`,
+            `${serviceHost}/upload/${uploadId}/chunks`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'PUT',
@@ -213,7 +213,7 @@ describe('MediaStore', () => {
           createdAt: Date.now(),
         };
 
-        fetchMock.mock(`begin:${apiUrl}/collection`, {
+        fetchMock.mock(`begin:${serviceHost}/collection`, {
           body: {
             data,
           },
@@ -222,7 +222,7 @@ describe('MediaStore', () => {
 
         return mediaStore.createCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${apiUrl}/collection`);
+          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/collection`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
             headers: {
@@ -245,7 +245,7 @@ describe('MediaStore', () => {
           createdAt: Date.now(),
         };
 
-        fetchMock.mock(`begin:${apiUrl}/collection/${collectionName}`, {
+        fetchMock.mock(`begin:${serviceHost}/collection/${collectionName}`, {
           body: {
             data,
           },
@@ -255,7 +255,7 @@ describe('MediaStore', () => {
         return mediaStore.getCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${apiUrl}/collection/${collectionName}?client=${clientId}&token=${token}`,
+            `${serviceHost}/collection/${collectionName}?client=${clientId}&token=${token}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'GET',
@@ -275,7 +275,7 @@ describe('MediaStore', () => {
           contents: [],
         };
 
-        fetchMock.mock(`begin:${apiUrl}/collection/${collectionName}`, {
+        fetchMock.mock(`begin:${serviceHost}/collection/${collectionName}`, {
           body: {
             data,
           },
@@ -292,7 +292,7 @@ describe('MediaStore', () => {
           .then(response => {
             expect(response).toEqual({ data });
             expect(fetchMock.lastUrl()).toEqual(
-              `${apiUrl}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
+              `${serviceHost}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
             );
             expect(fetchMock.lastOptions()).toEqual({
               method: 'GET',
@@ -312,7 +312,7 @@ describe('MediaStore', () => {
     describe('request', () => {
       it('should reject with some error', () => {
         const mediaStore = new MediaStore({
-          apiUrl,
+          serviceHost,
           authProvider,
         });
 
