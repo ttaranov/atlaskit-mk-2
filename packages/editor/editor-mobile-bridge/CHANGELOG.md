@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.14
+- [patch] enabled minimization @ mobile bridge [95703e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95703e3)
+
 ## 0.0.13
 - [patch] Implemented setContent for editor mobile native-to-web bridge [b5c150b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5c150b)
 
