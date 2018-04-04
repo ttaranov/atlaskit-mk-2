@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import Blanket from '@atlaskit/blanket';
-import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel } from './domain';
-import { constructAuthTokenUrl } from './util';
+import { Model, initialModel, Action, DataSource } from './domain';
+import { StoreImpl } from './store';
+import { KeyboardShortcuts } from './keyboard';
 
 export type Props = {
   onClose?: () => void;
   context: Context;
-  data: Identifier;
+  dataSource: DataSource;
 };
 
 export type State = Model;
@@ -18,14 +17,13 @@ export type State = Model;
 export const REQUEST_CANCELLED = 'request_cancelled';
 
 export class MediaViewer extends React.Component<Props, State> {
+
+  private dispatcher: (action: Action) => void;
+
   state: State = initialModel;
 
   componentDidMount() {
     this.init();
-  }
-
-  componentWillUnmount() {
-    this.release();
   }
 
   // It's possible that a different identifier or context was passed.
@@ -38,17 +36,15 @@ export class MediaViewer extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps) {
     if (this.needsReset(this.props, prevProps)) {
-      this.release();
       this.init();
     }
   }
 
   render() {
-    const { onClose } = this.props;
     return (
       <div>
-        <Blanket onBlanketClicked={onClose} isTinted />
-        <MediaViewerRenderer model={this.state} />
+        <KeyboardShortcuts dispatcher={this.dispatcher} />
+        <MediaViewerRenderer dispatcher={this.dispatcher} model={this.state} />
       </div>
     );
   }
@@ -61,185 +57,22 @@ export class MediaViewer extends React.Component<Props, State> {
     );
   }
 
-  private itemDetails?: Subscription;
-
   private init() {
-    const { context } = this.props;
-    const { id, type, collectionName } = this.props.data;
-    const provider = context.getMediaItemProvider(id, type, collectionName);
-
-    this.itemDetails = provider.observable().subscribe({
-      next: mediaItem => {
-        if (mediaItem.type === 'link') {
-          this.setState({
-            fileDetails: {
-              status: 'FAILED',
-              err: new Error('links are not supported at the moment'),
-            },
-          });
-        } else {
-          const { processingStatus, mediaType } = mediaItem.details;
-
-          if (processingStatus === 'failed') {
-            this.setState({
-              fileDetails: {
-                status: 'FAILED',
-                err: new Error('processing failed'),
-              },
-            });
-          } else if (processingStatus === 'succeeded') {
-            this.setState({
-              fileDetails: {
-                status: 'SUCCESSFUL',
-                data: {
-                  mediaType: mediaType as MediaType,
-                },
-              },
-            });
-
-            this.populatePreviewData(mediaItem, context, collectionName);
-          }
-        }
-      },
-      error: err => {
-        this.setState({
-          fileDetails: {
-            status: 'FAILED',
-            err,
-          },
-        });
-      },
+    const { context, dataSource, onClose } = this.props;
+    const options = {
+      preloadNextNumber: 3,
+      preloadPrevNumber: 2
+    }
+    const store = new StoreImpl(context, dataSource, options);
+    store.subscribe((model) => {
+      this.setState(model);
     });
-  }
 
-  private release() {
-    if (this.itemDetails) {
-      this.itemDetails.unsubscribe();
-    }
-    if (this.cancelImageFetch) {
-      this.cancelImageFetch();
-    }
-    const { previewData } = this.state;
-    if (previewData.status === 'SUCCESSFUL') {
-      const { data } = previewData;
-      if (data.viewer === 'IMAGE') {
-        this.revokeObjectUrl(data.objectUrl);
+    this.dispatcher = (action) => {
+      if (action.type === 'CLOSE') {
+        onClose && onClose();
       }
-    }
+      store.dispatch(action);
+    };
   }
-
-  private populatePreviewData(mediaItem, context, collectionName) {
-    switch (mediaItem.details.mediaType) {
-      case 'image':
-        this.populateImagePreviewData(mediaItem, context);
-        break;
-      case 'video':
-        this.populateVideoPreviewData(mediaItem, context, collectionName);
-        break;
-      default:
-        this.notSupportedPreview(mediaItem);
-        break;
-    }
-  }
-
-  private cancelImageFetch?: () => void;
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public revokeObjectUrl(objectUrl) {
-    URL.revokeObjectURL(objectUrl);
-  }
-
-  private async populateImagePreviewData(
-    fileItem: MediaItem,
-    context: Context,
-  ) {
-    try {
-      const service = context.getBlobService();
-      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
-        width: 800,
-        height: 600,
-        mode: 'fit',
-        allowAnimated: true,
-      });
-      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-      const objectUrl = URL.createObjectURL(await response);
-      this.setState({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'IMAGE',
-            objectUrl,
-          },
-        },
-      });
-    } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
-        this.setState({
-          previewData: {
-            status: 'FAILED',
-            err,
-          },
-        });
-      }
-    }
-  }
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public preventRaceCondition() {
-    // Calling setState might introduce a race condition, because the app has
-    // already transitioned to a different state. To avoid this we're not doing
-    // anything.
-  }
-
-  private async populateVideoPreviewData(
-    fileItem: FileItem,
-    context: Context,
-    collectionName?: string,
-  ) {
-    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
-    if (videoArtifactUrl) {
-      const src = await constructAuthTokenUrl(
-        videoArtifactUrl,
-        context,
-        collectionName,
-      );
-      this.setState({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'VIDEO',
-            src,
-          },
-        },
-      });
-    } else {
-      this.setState({
-        previewData: {
-          status: 'FAILED',
-          err: new Error('no video artifacts found for this file'),
-        },
-      });
-    }
-  }
-
-  private notSupportedPreview(fileItem: FileItem) {
-    this.setState({
-      previewData: {
-        status: 'FAILED',
-        err: new Error(`not supported`),
-      },
-    });
-  }
-}
-
-function getVideoArtifactUrl(fileItem: FileItem) {
-  const artifact = 'video_640.mp4';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
 }

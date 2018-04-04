@@ -40,13 +40,13 @@ export default class Example extends React.Component<{}, State> {
     return (
       <div>
         <Button onClick={() => this.setState({ selectedItem: imageItem })}>
-          Preview an image item
+          Image
         </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
-          Preview a video item
+          Video
         </Button>
         <Button onClick={() => this.setState({ selectedItem: docItem })}>
-          Preview a doc item
+          Document/PDF (unsupported)
         </Button>
 
         {this.state.selectedItem && (

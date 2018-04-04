@@ -5,6 +5,7 @@ import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
+import { DataSource }  from '../newgen/domain';
 
 export interface MediaViewerItem {
   id: string;
@@ -45,17 +46,51 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       selectedItem,
       collectionName,
     } = this.props;
+
     if (featureFlags && featureFlags.nextGen) {
-      return (
-        <MediaViewerNextGen
-          context={context}
-          data={{
-            ...selectedItem,
-            collectionName,
-          }}
-          onClose={onClose}
-        />
-      );
+      if (this.props.dataSource.list) {
+        const items = this.props.dataSource.list.map(i => ({
+          id: i.id,
+          occurrenceKey: i.occurrenceKey,
+          type: i.type,
+          collectionName
+        }));
+        const dataSource: DataSource = {
+          type: 'LIST',
+          items,
+          selected: {
+            id: selectedItem.id,
+            occurrenceKey: selectedItem.occurrenceKey,
+            type: selectedItem.type,
+            collectionName
+          }
+        };
+        return (
+          <MediaViewerNextGen
+            context={context}
+            dataSource={dataSource}
+            onClose={onClose}
+          />
+        );
+      } else {
+        const dataSource: DataSource = {
+          type: 'COLLECTION',
+          collectionName: collectionName,
+          selected: {
+            id: selectedItem.id,
+            occurrenceKey: selectedItem.occurrenceKey,
+            type: selectedItem.type,
+            collectionName
+          }
+        };
+        return (
+          <MediaViewerNextGen
+            context={context}
+            dataSource={dataSource}
+            onClose={onClose}
+          />
+       );
+      }
     }
 
     if (this.props.dataSource.list) {

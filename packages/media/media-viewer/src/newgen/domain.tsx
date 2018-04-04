@@ -36,12 +36,54 @@ export type VideoPreview = {
 };
 export type FilePreview = ImagePreview | VideoPreview;
 
-export type Model = {
+export interface Navigation {
+  left: File[],
+  selected: File,
+  right: File[]
+}
+
+export type File = {
+  identifier: Identifier;
   fileDetails: Outcome<FileDetails, Error>;
-  previewData: Outcome<FilePreview, Error>;
-};
+  filePreview: Outcome<FilePreview, Error>;
+}
+
+export type Model = Outcome<Navigation, Error>;
 
 export const initialModel: Model = {
-  fileDetails: { status: 'PENDING' },
-  previewData: { status: 'PENDING' },
-};
+  status: 'PENDING'
+}
+
+export type NavigationEvent = 'next' | 'prev';
+
+export type Action = {
+  type: 'CLOSE'
+} | {
+  type: 'LIST_UPDATE',
+  data: Navigation;
+} | {
+  type: 'ITEM_DETAILS_UPDATE',
+  data: {
+    identifier: Identifier,
+    details: Outcome<FileDetails, Error>
+  };
+} | {
+  type: 'ITEM_PREVIEW_UPDATE',
+  data: {
+    identifier: Identifier,
+    preview: Outcome<FilePreview, Error>
+  };
+}| {
+  type: 'NAVIGATION_EVENT',
+  data: NavigationEvent
+}
+
+export type DataSource = {
+  type: 'COLLECTION',
+  collectionName: string,
+  selected: Identifier
+} | {
+  type: 'LIST',
+  items: Identifier[]
+  selected: Identifier
+}
