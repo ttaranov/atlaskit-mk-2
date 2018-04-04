@@ -612,6 +612,10 @@ export default withAnalyticsContext({
       action: 'selected',
     }),
 
+    onRemoved: createAndFireEventOnAtlaskit({
+      action: 'removed',
+    }),
+
     onOpenChange: createAndFireEventOnAtlaskit({
       action: 'toggle',
     }),

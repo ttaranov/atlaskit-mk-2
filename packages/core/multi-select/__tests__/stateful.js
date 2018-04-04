@@ -114,7 +114,7 @@ describe(`${name} - smart`, () => {
       it('should call onOpenChange when triggered', () => {
         instance.handleOpenChange(attrs);
         expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
-        expect(onOpenChangeSpy).toHaveBeenCalledWith(attrs);
+        expect(onOpenChangeSpy.mock.calls[0][0]).toEqual(attrs);
       });
 
       it('should set isOpen state', () => {
@@ -143,7 +143,7 @@ describe(`${name} - smart`, () => {
       it('should call onFilterChange when triggered', () => {
         instance.handleFilterChange(value);
         expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
-        expect(onFilterChangeSpy).toHaveBeenCalledWith(value);
+        expect(onFilterChangeSpy.mock.calls[0][0]).toBe(value);
       });
 
       it('should set filterValue state', () => {
@@ -183,7 +183,7 @@ describe(`${name} - smart`, () => {
       it('onSelectedChange should be called with the correct params', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(onSelectedChange).toHaveBeenCalledWith({
+        expect(onSelectedChange.mock.calls[0][0]).toEqual({
           items: [],
           action: 'remove',
           changed: item,
@@ -210,7 +210,7 @@ describe(`${name} - smart`, () => {
       it('onSelectedChange should be called with the correct params', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(onSelectedChange).toHaveBeenCalledWith({
+        expect(onSelectedChange.mock.calls[0][0]).toEqual({
           items: [items[0].items[0], item],
           action: 'select',
           changed: item,
