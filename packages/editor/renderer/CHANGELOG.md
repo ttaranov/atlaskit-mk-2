@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 14.0.0
+- [major] Generic Text Serializer [1549347](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1549347)
+
 ## 13.3.4
 
 ## 13.3.3

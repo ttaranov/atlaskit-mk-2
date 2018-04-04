@@ -1,5 +1,7 @@
 # @atlaskit/task-decision
 
+## 5.2.2
+
 ## 5.2.1
 - [patch] FS-1855 Cache new state received via pubsub [f77a424](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f77a424)
 

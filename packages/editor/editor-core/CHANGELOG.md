@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 67.0.3
+
 ## 67.0.2
 - [patch] enable rule toolbar button if rule is enabled [c3be6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3be6b2)
 
