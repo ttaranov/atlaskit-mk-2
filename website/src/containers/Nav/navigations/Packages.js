@@ -1,22 +1,12 @@
-/* @flow */
+// @flow
 
 import React, { type ComponentType } from 'react';
-import sentenceCase from 'sentence-case';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
-import PackageSelectedIcon from '@atlaskit/icon/glyph/chevron-right-circle';
-import PageIcon from '@atlaskit/icon/glyph/page';
-import ComponentIcon from '@atlaskit/icon/glyph/component';
-import { colors } from '@atlaskit/theme';
 
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
-import allPackages, { packageNames } from '../../../packages';
-import {
-  packageUrl,
-  packageDocUrl,
-  packageExampleUrl,
-} from '../../../utils/url';
+import { packageUrl, packageDocUrl } from '../../../utils/url';
 
 export function buildSubNavGroup(
   children: Array<File>,
@@ -52,7 +42,6 @@ const getItemDetails = (pkg: Directory, group: Directory) => {
       docs && docs.children && docs.children.length ? docs.children : [],
     )
     .slice(1);
-  const exampleItems = fs.getFiles(examples.children || []);
 
   const items = [];
 
@@ -79,27 +68,6 @@ const getItemDetails = (pkg: Directory, group: Directory) => {
   };
 };
 
-const getItem = (packages: Array<Directory>, group: Directory) => {
-  const findablePkgs: { [key: string]: Object } = packages.reduce(
-    (acc, pkg) => {
-      acc[pkg.id] = pkg;
-      return acc;
-    },
-    {},
-  );
-
-  return packageNames.reduce((results, name) => {
-    const pkg = findablePkgs[allPackages[name].key];
-    if (pkg) {
-      let details = getItemDetails(pkg, group);
-      if (details) {
-        return results.concat(details);
-      }
-    }
-    return results;
-  }, []);
-};
-
 const packagesList = {
   to: '/packages',
   title: 'Overview',
@@ -110,27 +78,17 @@ export type PackagesNavProps = {
   packages: Directory,
 };
 
-const fakeOldSiteGroups = (dirs: Array<Directory>) =>
-  dirs.filter(group => group.id === 'elements').map(group => {
-    const packages = fs.getDirectories(group.children);
-    return {
-      title: group.id,
-      items: getItem(packages, group),
-    };
-  });
-
 const standardGroups = (dirs: Array<Directory>) =>
   dirs.map(group => {
     const packages = fs.getDirectories(group.children);
     return {
       title: group.id,
       items: packages.reduce((items, pkg) => {
-        let details = getItemDetails(pkg, group);
+        const details = getItemDetails(pkg, group);
         if (details) {
           return items.concat(details);
-        } else {
-          return items;
         }
+        return items;
       }, []),
     };
   });

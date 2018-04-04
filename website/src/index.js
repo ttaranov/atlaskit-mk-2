@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import '@atlaskit/css-reset';
 import 'regenerator-runtime/runtime';
 import App from './containers/App';
-import repo from './site';
 
 // $FlowFixMe
 render(<App />, document.getElementById('app'));
