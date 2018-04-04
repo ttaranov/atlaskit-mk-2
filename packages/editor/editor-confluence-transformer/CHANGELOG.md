@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 2.10.9
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
 ## 2.10.8
 - [patch] ED-4214 fix Confluence table styling and number column handling  [22c4af6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22c4af6)
 
