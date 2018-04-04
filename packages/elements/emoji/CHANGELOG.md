@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 33.0.3
+
 ## 33.0.2
 - [patch] FS-1853 custom category button scrolls to Your Uploads if present [f42e14e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f42e14e)
 
