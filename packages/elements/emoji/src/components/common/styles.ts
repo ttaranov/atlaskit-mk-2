@@ -322,7 +322,6 @@ export const uploadPreview = style({
   borderRadius: `${borderRadius()}px`,
   marginBottom: '12px',
   padding: '10px',
-  fontSize: '12px',
 });
 
 export const uploadPreviewText = style({
@@ -330,6 +329,7 @@ export const uploadPreviewText = style({
     h5: {
       color: colors.N300,
       paddingBottom: '4px',
+      fontSize: '12px',
     },
     img: {
       maxHeight: '20px',
