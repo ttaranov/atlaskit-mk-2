@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import FieldTextStateless from './FieldTextStateless';
 import type { FieldTextProps } from './types';
 
@@ -16,10 +17,10 @@ export default class FieldText extends Component<FieldTextProps, State> {
     value: this.props.value,
   };
 
-  handleOnChange = (e: any) => {
+  handleOnChange = (e: any, analyticsEvent: UIAnalyticsEvent) => {
     this.setState({ value: e.target.value });
     if (this.props.onChange) {
-      this.props.onChange(e);
+      this.props.onChange(e, analyticsEvent);
     }
   };
 

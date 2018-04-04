@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import StatelessMenu from './DropdownMenuStateless';
 import type {
   DropdownMenuStatefulProps,
@@ -83,9 +84,12 @@ export default class DropdownMenu extends Component<
     }
   };
 
-  handleOpenChange = (attrs: OnOpenChangeArgs) => {
+  handleOpenChange = (
+    attrs: OnOpenChangeArgs,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => {
     this.setState({ isOpen: attrs.isOpen });
-    this.props.onOpenChange(attrs);
+    this.props.onOpenChange(attrs, analyticsEvent);
   };
 
   close = () => {

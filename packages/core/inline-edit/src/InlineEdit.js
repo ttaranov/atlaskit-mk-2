@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import InlineEditStateless from './InlineEditStateless';
 import type { StatefulProps } from './types';
 
@@ -22,15 +23,15 @@ export default class InlineEditor extends Component<StatefulProps, State> {
     readView: '',
   };
 
-  onConfirm = () => {
+  onConfirm = (analyticsEvent: UIAnalyticsEvent) => {
     this.exitEditingMode();
     const cancelConfirmation = this.enterEditingMode;
-    this.props.onConfirm(cancelConfirmation);
+    this.props.onConfirm(cancelConfirmation, analyticsEvent);
   };
 
-  onCancel = () => {
+  onCancel = (analyticsEvent: UIAnalyticsEvent) => {
     this.exitEditingMode();
-    this.props.onCancel();
+    this.props.onCancel(analyticsEvent);
   };
 
   enterEditingMode = () => {

@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import AkFieldRadioGroup from './RadioGroupStateless';
 import type { RadioGroupPropTypes, ItemsPropTypeSmart } from './types';
 
@@ -57,8 +58,8 @@ export default class FieldRadioGroup extends Component<
     return this.props.items;
   };
 
-  changeHandler = (event: any) => {
-    this.props.onRadioChange(event);
+  changeHandler = (event: any, analyticsEvent: UIAnalyticsEvent) => {
+    this.props.onRadioChange(event, analyticsEvent);
     this.setState({ selectedValue: event.target.value });
   };
 

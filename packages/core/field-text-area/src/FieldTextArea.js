@@ -68,9 +68,9 @@ export default class FieldTextArea extends Component<Props, State> {
     value: this.props.value,
   };
 
-  handleOnChange = (e: any) => {
+  handleOnChange = (e: any, analyticsEvent: UIAnalyticsEvent) => {
     this.setState({ value: e.target.value });
-    if (this.props.onChange) this.props.onChange(e);
+    if (this.props.onChange) this.props.onChange(e, analyticsEvent);
   };
 
   render() {

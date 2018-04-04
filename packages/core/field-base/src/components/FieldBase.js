@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import FieldBaseStateless from './FieldBaseStateless';
 import type { FieldBaseProps, FieldBaseDefaultProps } from '../types';
 
@@ -36,20 +37,20 @@ export default class FieldBase extends Component<FieldBaseProps, State> {
 
   timers: any;
 
-  onFocus = (e: SyntheticEvent<*>) => {
+  onFocus = (e: SyntheticEvent<*>, analyticsEvent: UIAnalyticsEvent) => {
     this.setState({ isFocused: true });
-    this.props.onFocus(e);
+    this.props.onFocus(e, analyticsEvent);
     // Escape from a possible race-condition when blur and focus happen one by one
     // (otherwise the dialog might be left closed)
     this.cancelSchedule(ON_BLUR_KEY);
   };
 
-  onBlur = (e: SyntheticEvent<*>) => {
+  onBlur = (e: SyntheticEvent<*>, analyticsEvent: UIAnalyticsEvent) => {
     // Because the blur event fires before the focus event, we want to make sure that we don't
     // render and close the dialog before we can check if the dialog is focused.
     this.reschedule(ON_BLUR_KEY, () => {
       this.setState({ isFocused: false });
-      this.props.onBlur(e);
+      this.props.onBlur(e, analyticsEvent);
     });
   };
 

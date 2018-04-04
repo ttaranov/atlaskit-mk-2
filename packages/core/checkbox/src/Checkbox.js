@@ -46,12 +46,13 @@ export default class Checkbox extends Component<Props, State> {
 
   onChange = (
     event: SyntheticEvent<any> & { currentTarget: HTMLInputElement },
+    analyticsEvent: UIAnalyticsEvent,
   ) => {
     const { isDisabled, onChange, name, value } = this.props;
     if (isDisabled) return null;
     const isChecked = event.currentTarget.checked;
     return this.setState({ isChecked }, () => {
-      if (onChange) onChange({ event, isChecked, name, value });
+      if (onChange) onChange({ event, isChecked, name, value }, analyticsEvent);
     });
   };
 
