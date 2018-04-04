@@ -12,9 +12,6 @@ export default () => {
 
       <Label label="Disabled input" />
       <TimePicker isDisabled />
-
-      <Label label="Always open" />
-      <TimePicker isOpen />
     </div>
   );
 };

@@ -12,9 +12,6 @@ export default () => {
 
       <Label label="Disabled input" />
       <DateTimePicker isDisabled />
-
-      <Label label="Always open" />
-      <DateTimePicker isOpen />
     </div>
   );
 };
