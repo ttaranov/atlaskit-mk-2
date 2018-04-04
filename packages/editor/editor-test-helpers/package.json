@@ -25,9 +25,12 @@
     "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.2.0",
     "prosemirror-state": "^1.1.0",
-    "prosemirror-view": "^1.2.0"
+    "prosemirror-view": "^1.2.0",
+    "enzyme": "^3.3.0"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react": "^16.3.0"
+  },
   "devDependencies": {
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-keymap": "^1.0.0",

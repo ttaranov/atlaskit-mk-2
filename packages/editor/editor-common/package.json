@@ -38,10 +38,13 @@
     "prosemirror-model": "^1.2.0",
     "prosemirror-view": "^1.2.0",
     "raf-schd": "^2.1.0",
-    "styled-components": "1.4.6 - 3"
+    "styled-components": "1.4.6 - 3",
+    "typescript": "~2.6.2"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^16.0.0"
+    "@atlaskit/media-core": "^16.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^3.0.2",

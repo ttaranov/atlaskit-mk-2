@@ -1,17 +1,17 @@
 import { MockRequest } from 'xhr-mock';
 import { RequestData } from '.';
-import * as _ from 'lodash';
+import * as matches from 'lodash.matches';
 
 export const matchMethod = (req: MockRequest, data: RequestData) => {
   return data.method ? data.method === req.method() : true;
 };
 
 export const exactMatchUrl = (req: MockRequest, data: RequestData) => {
-  return data.url ? _.matches(data.url)(req.url()) : true;
+  return data.url ? matches(data.url)(req.url()) : true;
 };
 
 export const exactMatchHeaders = (req: MockRequest, data: RequestData) => {
-  return data.headers ? _.matches(data.headers)(req.headers()) : true;
+  return data.headers ? matches(data.headers)(req.headers()) : true;
 };
 
 export const exactMatchBody = (req: MockRequest, data: RequestData) => {

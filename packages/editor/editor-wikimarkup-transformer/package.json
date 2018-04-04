@@ -22,12 +22,12 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-common": "^8.1.23",
-    "@atlaskit/theme": "^3.0.0"
+    "@atlaskit/theme": "^3.0.0",
+    "@types/prosemirror-model": "^1.0.0",
+    "prosemirror-model": "^1.2.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/editor-test-helpers": "^3.0.2",
-    "@types/prosemirror-model": "^1.0.0",
-    "prosemirror-model": "^1.2.0"
+    "@atlaskit/editor-test-helpers": "^3.0.2"
   }
 }
