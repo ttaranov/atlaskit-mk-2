@@ -4,6 +4,9 @@ exports[`Emoji: should be able to click on the emoji button and select emoji 1`]
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -29,6 +32,9 @@ exports[`Emoji: should be able to navigate between emojis 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this ",
@@ -70,6 +76,9 @@ exports[`Emoji: should be able to see emoji if typed the name in full 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -95,6 +104,9 @@ exports[`Emoji: should close emoji picker on Escape 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this :smile",
@@ -113,6 +125,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
+        "indentLevel": null,
         "level": 1,
       },
       "content": Array [
@@ -144,6 +157,9 @@ exports[`user should not be able to see emoji inside inline code 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "type ",

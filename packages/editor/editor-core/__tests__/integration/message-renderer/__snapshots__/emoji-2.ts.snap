@@ -4,6 +4,9 @@ exports[`Emoji: should be able remove emoji on backspace 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "text": "this ",
@@ -105,6 +108,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "some text ",
@@ -137,10 +143,16 @@ exports[`Emoji: should be able to use emoji inside bulletList 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -172,10 +184,16 @@ exports[`Emoji: should be able to use emoji inside orderedList 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {

@@ -4,6 +4,9 @@ exports[`Link: paste link and add text, paste link into list for comment editor 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -18,17 +21,23 @@ Object {
           "type": "text",
         },
         Object {
-          "text": "  .",
+          "text": ".",
           "type": "text",
         },
       ],
       "type": "paragraph",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "marks": Array [
@@ -40,10 +49,6 @@ Object {
                     },
                   ],
                   "text": "https://www.atlassian.com",
-                  "type": "text",
-                },
-                Object {
-                  "text": "  ",
                   "type": "text",
                 },
               ],
@@ -56,6 +61,9 @@ Object {
       "type": "bulletList",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "type": "paragraph",
     },
   ],
@@ -67,6 +75,9 @@ exports[`Link: paste link and add text, paste link into list for fullpage editor
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "marks": Array [
@@ -81,17 +92,23 @@ Object {
           "type": "text",
         },
         Object {
-          "text": "  .",
+          "text": ".",
           "type": "text",
         },
       ],
       "type": "paragraph",
     },
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "marks": Array [
@@ -103,10 +120,6 @@ Object {
                     },
                   ],
                   "text": "https://www.atlassian.com",
-                  "type": "text",
-                },
-                Object {
-                  "text": "  ",
                   "type": "text",
                 },
               ],

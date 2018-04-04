@@ -4,6 +4,9 @@ exports[`Mention: user can navigate picker using keyboard 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -70,6 +73,9 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "indentLevel": null,
+          },
           "content": Array [
             Object {
               "text": "this is inside blockquote ",
@@ -103,10 +109,16 @@ exports[`Mention: user can see mention inside bulletList 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "this is inside list ",
@@ -181,10 +193,16 @@ exports[`Mention: user can see mention inside orderedList 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "indentLevel": null,
+      },
       "content": Array [
         Object {
           "content": Array [
             Object {
+              "attrs": Object {
+                "indentLevel": null,
+              },
               "content": Array [
                 Object {
                   "text": "this is inside list ",
