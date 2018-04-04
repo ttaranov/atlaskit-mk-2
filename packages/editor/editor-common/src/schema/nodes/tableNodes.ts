@@ -101,7 +101,7 @@ export interface TableRow {
  */
 export interface TableCell {
   type: 'tableCell';
-  attrs: CellAttributes;
+  attrs?: CellAttributes;
   /**
    * @minItems 1
    */
@@ -113,7 +113,7 @@ export interface TableCell {
  */
 export interface TableHeader {
   type: 'tableHeader';
-  attrs: CellAttributes;
+  attrs?: CellAttributes;
   /**
    * @minItems 1
    */

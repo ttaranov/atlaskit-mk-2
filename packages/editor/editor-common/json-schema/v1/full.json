@@ -758,7 +758,10 @@
               "type": "boolean"
             },
             "layout": {
-              "type": "string"
+              "enum": [
+                "full-width",
+                "default"
+              ]
             }
           },
           "additionalProperties": false
@@ -843,7 +846,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
@@ -883,7 +885,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
