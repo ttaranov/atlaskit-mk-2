@@ -43,9 +43,6 @@ const BackIcon = (
     <ArrowLeftIcon label="Back icon" size="medium" />
   </Tooltip>
 );
-const GlobalPrimaryIcon = (
-  <ConfluenceIcon label="Confluence icon" size="large" />
-);
 
 const ContainerHeaderComponent = ({
   stackLength,
@@ -174,7 +171,7 @@ export default class ConfluenceHome extends Component<*, *> {
       isOpen={this.state.openDrawer === 'create'}
       key="create"
       onBackButton={this.closeDrawer}
-      primaryIcon={GlobalPrimaryIcon}
+      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
     >
       <AkNavigationItem text="Item outside a group" />
       <AkNavigationItemGroup title="Create item group">
@@ -196,7 +193,7 @@ export default class ConfluenceHome extends Component<*, *> {
       isOpen={this.state.openDrawer === 'search'}
       key="seach"
       onBackButton={this.closeDrawer}
-      primaryIcon={GlobalPrimaryIcon}
+      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
     >
       <AkSearch placeholder="Search..." onKeyDown={() => {}}>
         <AkNavigationItemGroup title="RECENTLY VIEWED">
@@ -286,7 +283,9 @@ export default class ConfluenceHome extends Component<*, *> {
               />
             )}
             globalCreateIcon={<GlobalCreateIcon openDrawer={this.openDrawer} />}
-            GlobalPrimaryIcon={GlobalPrimaryIcon}
+            globalPrimaryIcon={
+              <ConfluenceIcon label="Confluence icon" size="large" />
+            }
             globalPrimaryItemHref="//www.atlassian.com/software/confluence"
             globalSearchIcon={<GlobalSearchIcon openDrawer={this.openDrawer} />}
             globalSecondaryActions={
