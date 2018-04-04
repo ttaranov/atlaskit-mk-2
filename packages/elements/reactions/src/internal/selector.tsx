@@ -164,6 +164,23 @@ export default class Selector extends PureComponent<Props, State> {
     });
   };
 
+  private renderShowMore(): React.ReactNode {
+    const className = cx(moreButtonStyle, {
+      [reveal]: this.state.animationIndex >= defaultReactions.length,
+    });
+
+    return (
+      <div className={moreEmojiContainerStyle} key="more">
+        <div className={separatorStyle} />
+        <Tooltip content="More emoji">
+          <button className={className} onMouseDown={this.props.onMoreClick}>
+            <EditorMoreIcon label="More" />
+          </button>
+        </Tooltip>
+      </div>
+    );
+  }
+
   render() {
     const { emojiProvider, showMore } = this.props;
 
@@ -190,22 +207,7 @@ export default class Selector extends PureComponent<Props, State> {
           );
         })}
 
-        {showMore && (
-          <div className={moreEmojiContainerStyle} key="more">
-            <div className={separatorStyle} />
-            <Tooltip content="More emoji">
-              <button
-                className={cx(moreButtonStyle, {
-                  [reveal]:
-                    this.state.animationIndex >= defaultReactions.length,
-                })}
-                onMouseDown={this.props.onMoreClick}
-              >
-                <EditorMoreIcon label="More" />
-              </button>
-            </Tooltip>
-          </div>
-        )}
+        {showMore ? this.renderShowMore() : null}
       </div>
     );
   }
