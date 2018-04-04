@@ -1,6 +1,7 @@
 /* tslint:disable: no-console */
 
 import * as React from 'react';
+import { HTMLAttributes, ComponentClass, LabelHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { AkFieldRadioGroup as RadioGroup } from '@atlaskit/field-radio-group';
 import Slider from '@atlaskit/field-range';
@@ -23,7 +24,9 @@ const Separator: ComponentClass<HTMLAttributes<{}>> = styled.hr`
   border: 1px solid #ccc;
 `;
 
-const ControlLabel: ComponentClass<HTMLAttributes<{}>> = styled.label`
+const ControlLabel: ComponentClass<
+  HTMLAttributes<{}> & LabelHTMLAttributes<{}>
+> = styled.label`
   display: block;
   margin-top: 1em;
   font-weight: bold;
@@ -35,14 +38,18 @@ const Flex: ComponentClass<HTMLAttributes<{}>> = styled.div`
   justify-content: center;
 `;
 
-const Box: ComponentClass<HTMLAttributes<{}>> = styled.div`
+interface BoxProps {
+  grow?: number;
+}
+
+const Box: ComponentClass<HTMLAttributes<{}> & BoxProps> = styled.div`
   padding: 4px;
   ${({ grow }: { grow?: number }) => (grow && `flex-grow: ${grow};`) || ''};
 `;
 
 const context = createStorybookContext() as any;
 
-const exampleActions = [{ label: 'View', handler: console.log('View') }];
+const exampleActions = [{ label: 'View', handler: () => console.log('View') }];
 
 const cards = [
   <Card
