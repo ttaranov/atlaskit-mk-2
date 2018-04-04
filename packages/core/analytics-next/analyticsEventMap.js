@@ -29,7 +29,7 @@ type AnalyticsEventConfig = {
    *  payload value that will be attached to the analytics event.
    */
   props: {
-    [propName: string]: string,
+    [propName: string]: string | string[],
   },
   /** Path to the components existing test file so that we can add mount tests to it */
   componentTestPath?: string,
@@ -373,14 +373,29 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     testPath: 'multi-select/__tests__/analytics.js',
     context: 'multi-select',
     component: 'MultiSelectStateless',
-    derivatives: ['MultiSelect'],
     props: {
       onFilterChange: 'filter',
       onNewItemCreated: 'createItem',
-      onSelectedChange: 'change',
+      onSelected: 'selected',
+      onRemoved: 'removed',
       onOpenChange: 'toggle',
     },
     componentTestPath: 'multi-select/__tests__/statelessBehaviour.js',
+  },
+
+  {
+    path: 'multi-select/src/components/Stateful.js',
+    testPath: 'multi-select/__tests__/analytics.js',
+    context: 'multi-select',
+    component: 'MultiSelect',
+    props: {
+      onFilterChange: 'filter',
+      onNewItemCreated: 'createItem',
+      onSelectedChange: ['selected', 'removed'],
+      onOpenChange: 'toggle',
+    },
+    componentTestPath: 'multi-select/__tests__/stateful.js',
+    wrapComponent: false,
   },
   {
     path: 'navigation/src/components/js/Navigation.js',

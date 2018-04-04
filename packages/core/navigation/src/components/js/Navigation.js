@@ -3,6 +3,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import '@atlaskit/polyfills/object-assign';
 import React, {
@@ -107,18 +108,18 @@ type Props = {
    is passed to it, and otherwise is a button. */
   linkComponent?: ComponentType<*>,
   /** Function called at the end of a resize event. It is called with an object
-   containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize: (resizeState: resizeObj) => void,
-  /** Function to be called when a resize event starts. */
-  onResizeStart: () => void,
+   containing a width and an isOpen. These can be used to update the props of Navigation. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onResize: (resizeState: resizeObj, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Function to be called when a resize event starts. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onResizeStart: (analyticsEvent?: UIAnalyticsEvent) => void,
   /** Function called when the globalCreateIcon is clicked. */
   onCreateDrawerOpen: () => void,
   /** Function called when the globalSearchIcon is clicked. */
   onSearchDrawerOpen: () => void,
-  /** Function called when a collapse/expand starts */
-  onToggleStart: () => void,
-  /** Function called when a collapse/expand finishes */
-  onToggleEnd: () => void,
+  /** Function called when a collapse/expand starts. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onToggleStart: (analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Function called when a collapse/expand finishes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onToggleEnd: (analyticsEvent?: UIAnalyticsEvent) => void,
   /** The offset at the top of the page before the navigation begins. This allows
   absolute items such as a banner to be placed above nav, without lower nav items
   being pushed off the screen. **DO NOT** use this outside of this use-case. Changes

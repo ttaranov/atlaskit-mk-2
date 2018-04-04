@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 import uuid from 'uuid';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import MultiSelectStateless from './Stateless';
@@ -56,16 +57,28 @@ type Props = {
   /** Mesage to display in any group in items if there are no items in it,
    including if there is one item that has been selected. */
   noMatchesFound?: string,
-  /** Handler to be called when the filtered items changes.*/
-  onFilterChange: Function,
+  /** Handler to be called when the filtered items changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFilterChange: (
+    filteredValue: string,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Handler to be called when a new item is created.
-   * Only applicable when the shouldAllowCreateItem is set to true.*/
-  onNewItemCreated: Function,
-  /** Handler to be called on select change. */
-  onSelectedChange: Function,
+   * Only applicable when the shouldAllowCreateItem is set to true. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onNewItemCreated: (
+    item: { value: string, item: ItemType },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
+  /** Handler to be called on select change. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onSelectedChange: (
+    { items: Array<ItemType>, action: 'select' | 'remove', changed: ItemType },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Handler called when the select is opened or closed. Called with an object
-   that has both the event, and the new isOpen state. */
-  onOpenChange: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
+   that has both the event, and the new isOpen state. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange: (
+    { event: SyntheticEvent<any>, isOpen: boolean },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
   /** Where the select dropdown should be displayed relative to the field position. */
@@ -123,52 +136,64 @@ export default class MultiSelect extends PureComponent<Props, State> {
     }
   }
 
-  selectItem = (item: ItemType) => {
+  selectItem = (item: ItemType, analyticsEvent?: UIAnalyticsEvent) => {
     const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });
-    this.props.onSelectedChange({
-      items: selectedItems,
-      action: 'select',
-      changed: item,
-    });
+    this.props.onSelectedChange(
+      {
+        items: selectedItems,
+        action: 'select',
+        changed: item,
+      },
+      analyticsEvent,
+    );
   };
 
-  removeItem = (item: ItemType) => {
+  removeItem = (item: ItemType, analyticsEvent?: UIAnalyticsEvent) => {
     const selectedItems = this.state.selectedItems.filter(
       i => i.value !== item.value,
     );
     this.setState({ selectedItems });
-    this.props.onSelectedChange({
-      items: selectedItems,
-      action: 'remove',
-      changed: item,
-    });
+    this.props.onSelectedChange(
+      {
+        items: selectedItems,
+        action: 'remove',
+        changed: item,
+      },
+      analyticsEvent,
+    );
   };
 
-  selectedChange = (item: ItemType) => {
+  selectedChange = (item: ItemType, analyticsEvent?: UIAnalyticsEvent) => {
     if (this.state.selectedItems.some(i => i.value === item.value)) {
-      this.removeItem(item);
+      this.removeItem(item, analyticsEvent);
     } else {
-      this.selectItem(item);
+      this.selectItem(item, analyticsEvent);
     }
   };
 
-  handleFilterChange = (value: string) => {
-    this.props.onFilterChange(value);
+  handleFilterChange = (value: string, analyticsEvent: UIAnalyticsEvent) => {
+    this.props.onFilterChange(value, analyticsEvent);
     this.setState({ filterValue: value });
   };
 
-  handleOpenChange = (attrs: {
-    event: SyntheticEvent<any>,
-    isOpen: boolean,
-  }) => {
+  handleOpenChange = (
+    attrs: {
+      event: SyntheticEvent<any>,
+      isOpen: boolean,
+    },
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     if (this.state.isOpen !== attrs.isOpen) {
-      this.props.onOpenChange(attrs);
+      this.props.onOpenChange(attrs, analyticsEvent);
     }
     this.setState({ isOpen: attrs.isOpen });
   };
 
-  handleNewItemCreate = ({ value: textValue }: Object) => {
+  handleNewItemCreate = (
+    { value: textValue }: Object,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     // eslint-disable-line react/no-unused-prop-types
     const { items, selectedItems } = this.state;
     const id = uuid();
@@ -181,7 +206,10 @@ export default class MultiSelect extends PureComponent<Props, State> {
       selectedItems: [...selectedItems, newItem],
       filterValue: '',
     });
-    this.props.onNewItemCreated({ value: textValue, item: newItem });
+    this.props.onNewItemCreated(
+      { value: textValue, item: newItem },
+      analyticsEvent,
+    );
   };
 
   render() {

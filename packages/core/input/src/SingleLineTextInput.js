@@ -1,18 +1,19 @@
 // @flow
 import React, { Component } from 'react';
 import keyCode from 'keycode';
-// import {
-//   withAnalyticsEvents,
-//   withAnalyticsContext,
-//   createAndFireEvent,
-// } from '@atlaskit/analytics-next';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 
-// import {
-//   name as packageName,
-//   version as packageVersion,
-// } from '../package.json';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 const common = `
   appearance: none;
@@ -49,8 +50,10 @@ type Props = {
   style?: Object,
   isInitiallySelected?: boolean,
   isEditing: boolean,
-  onConfirm?: (e: KeyboardEvent) => mixed,
-  onKeyDown?: (e: KeyboardEvent) => mixed,
+  /** The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onConfirm?: (e: KeyboardEvent, analyticsEvent?: UIAnalyticsEvent) => mixed,
+  /** The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyDown?: (e: KeyboardEvent, analyticsEvent?: UIAnalyticsEvent) => mixed,
 };
 
 class SingleLineTextInput extends Component<Props, {}> {
@@ -129,22 +132,20 @@ class SingleLineTextInput extends Component<Props, {}> {
 
 export { SingleLineTextInput as SingleLineTextInputBase };
 
-export default SingleLineTextInput;
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-// const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+export default withAnalyticsContext({
+  component: 'input',
+  package: packageName,
+  version: packageVersion,
+})(
+  withAnalyticsEvents({
+    onConfirm: createAndFireEventOnAtlaskit({
+      action: 'confirm',
+    }),
 
-// export default withAnalyticsContext({
-//   component: 'input',
-//   package: packageName,
-//   version: packageVersion,
-// })(
-//   withAnalyticsEvents({
-//     onConfirm: createAndFireEventOnAtlaskit({
-//       action: 'confirm',
-//     }),
-
-//     onKeyDown: createAndFireEventOnAtlaskit({
-//       action: 'keydown',
-//     }),
-//   })(SingleLineTextInput),
-// );
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keydown',
+    }),
+  })(SingleLineTextInput),
+);

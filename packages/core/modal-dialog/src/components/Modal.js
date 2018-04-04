@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
@@ -109,9 +110,9 @@ type Props = {
   */
   height?: number | string,
   /**
-    Function that will be called to initiate the exit transition.
+    Function that will be called to initiate the exit transition. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.
   */
-  onClose: KeyboardOrMouseEvent => void,
+  onClose: (KeyboardOrMouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /**
     Function that will be called when the exit transition is complete.
   */

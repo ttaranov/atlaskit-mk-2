@@ -20,7 +20,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 }));
 
 /* eslint-disable */
-xdescribe('SingleLineTextInput', () => {
+describe('SingleLineTextInput', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
       component: 'input',

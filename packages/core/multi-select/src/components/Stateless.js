@@ -6,6 +6,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 
 import Droplist from '@atlaskit/droplist';
@@ -101,16 +102,25 @@ type Props = {
   noMatchesFound: string,
   /** name property to be passed to the html select element. */
   name?: string,
-  /** Handler to be called when the filtered items changes.*/
-  onFilterChange: Function,
+  /** Handler to be called when the filtered items changes. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onFilterChange: (
+    filteredValue: string,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Handler to be called when a new item is created.
-   * Only applicable when the shouldAllowCreateItem is set to true.*/
-  onNewItemCreated?: Function,
+   * Only applicable when the shouldAllowCreateItem is set to true. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onNewItemCreated?: (
+    item: { value: string },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   /** Handler called when the select is opened or closed. Called with an object
-   that has both the event, and the new isOpen state. */
-  onOpenChange: Function,
-  /** Handler called when a selection is made, with the item chosen. */
-  onSelected: Function,
+   that has both the event, and the new isOpen state. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onOpenChange: (
+    { isOpen: boolean, event: SyntheticEvent<any> },
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
+  /** Handler called when a selection is made, with the item chosen. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onSelected: (item: ItemType, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Function to be called by the tags representing a selected item. Passed to
    the `onAfterRemoveAction` on the Tag. */
   onRemoved: Function,
@@ -221,7 +231,7 @@ class MultiSelectStateless extends PureComponent<Props, State> {
     }
   };
 
-  onOpenChange = (attrs: { event: SyntheticEvent<any> }) => {
+  onOpenChange = (attrs: { event: SyntheticEvent<any>, isOpen: boolean }) => {
     const target = attrs.event.currentTarget;
     // eslint-disable-next-line react/no-find-dom-node
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
@@ -598,8 +608,8 @@ export default withAnalyticsContext({
       action: 'createItem',
     }),
 
-    onSelectedChange: createAndFireEventOnAtlaskit({
-      action: 'change',
+    onSelected: createAndFireEventOnAtlaskit({
+      action: 'selected',
     }),
 
     onOpenChange: createAndFireEventOnAtlaskit({

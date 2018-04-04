@@ -10,6 +10,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -67,15 +68,15 @@ type Props = {
   /** Optional function to be used for rendering links. Receives `href` and possibly `target`
    * as props. */
   linkComponent?: Function,
-  /** Function to be called when the item is clicked, Receives the MouseEvent. */
-  onClick?: Function,
+  /** Function to be called when the item is clicked, Receives the MouseEvent. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onClick?: (e: MouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Function to be called when the item is pressed with a keyboard,
-   * Receives the KeyboardEvent. */
-  onKeyDown?: Function,
-  /** Standard onmouseenter event */
-  onMouseEnter?: Function,
-  /** Standard onmouseleave event */
-  onMouseLeave?: Function,
+   * Receives the KeyboardEvent. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details. */
+  onKeyDown?: (e: KeyboardEvent, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Standard onmouseenter event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onMouseEnter?: (e: MouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
+  /** Standard onmouseleave event. The last argument can be used to track analytics, see [analytics-next](/packages/core/analytics-next) for details.  */
+  onMouseLeave?: (e: MouseEvent, analyticsEvent?: UIAnalyticsEvent) => void,
   /** Allows the role attribute of the item to be altered from it's default of
    *  `role="button"` */
   role: string,
