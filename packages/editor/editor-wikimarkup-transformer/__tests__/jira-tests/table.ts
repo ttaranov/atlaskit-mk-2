@@ -34,7 +34,7 @@ after table`;
       WIKI_NOTATION,
       doc(
         p('before table'),
-        table(
+        table()(
           tr(
             th({})(p('colA')),
             th({})(p('colB')),
@@ -64,7 +64,7 @@ after table`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p('column')), th({})(p('headings'))),
           tr(td({})(p('table')), td({})(p('with'))),
           tr(td({})(p('more')), td({})(p('cells'))),
@@ -83,7 +83,7 @@ after table`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p('column')), th({})(p('headings'))),
           tr(td({})(p('table')), td({})(p('with'))),
           tr(td({})(p('more')), td({})(p('cells'))),
@@ -99,7 +99,7 @@ after table`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(table(tr(td({})(p('simple')), td({})(p('table'))))),
+      doc(table()(tr(td({})(p('simple')), td({})(p('table'))))),
     );
   });
 
@@ -113,7 +113,7 @@ after table`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(td({})(p('simple')), td({})(p('table'))),
           tr(
             td({})(p(link({ href: 'http://www.domain.com' })('a link'))),
@@ -135,7 +135,7 @@ after table`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(table(tr(th({})(p('header'))))),
+      doc(table()(tr(th({})(p('header'))))),
     );
   });
 
@@ -151,7 +151,7 @@ after table`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(td({})(p(' ')), th({})(p('col1')), th({})(p('col2'))),
           tr(th({})(p('row1')), td({})(p('a ')), td({})(p('b'))),
           tr(th({})(p('row2')), td({})(p('a ')), td({})(p(' '))),
@@ -172,7 +172,7 @@ after table`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p('table')), th({})(p('header')), th({})(p('here'))),
           tr(td({})(p('and')), td({})(p('a row')), td({})(p('here'))),
           tr(td({})(p('and')), td({})(p('the')), td({})(p('end'))),
@@ -193,7 +193,7 @@ data`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p('table header')), th({})(p('here'))),
           tr(
             td({})(p('and')),
@@ -218,7 +218,7 @@ data`;
       WIKI_NOTATION,
       doc(
         p('The following example:'),
-        table(tr(th({})(p(' test ')), td({})(p(' ', code('foo'), ' ')))),
+        table()(tr(th({})(p(' test ')), td({})(p(' ', code('foo'), ' ')))),
       ),
     );
   });
@@ -237,7 +237,7 @@ h2. header`;
       WIKI_NOTATION,
       doc(
         p('The following example:'),
-        table(
+        table()(
           tr(th({})(p('aaa')), th({})(p('bbb')), th({})(p('ccc'))),
           tr(
             td({})(p('ddd')),
@@ -258,7 +258,7 @@ h2. header`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(tr(td({})(p(link({ href: 'http://www.example.com' })('foo'))))),
+        table()(tr(td({})(p(link({ href: 'http://www.example.com' })('foo'))))),
       ),
     );
   });
@@ -283,7 +283,7 @@ h2. header`;
       WIKI_NOTATION,
       doc(
         ol(li(p('Item 1')), li(p('Item 2')), li(p('Item 3'))),
-        table(
+        table()(
           tr(th({})(p('Table')), th({})(p('Header')), th({})(p('Here'))),
           tr(td({})(p('and')), td({})(p('a')), td({})(p('row'))),
           tr(td({})(p('the')), td({})(p('last')), td({})(p('row'))),
@@ -314,7 +314,7 @@ h2. header`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p('Table')), th({})(p('Header'))),
           tr(
             td({})(
@@ -366,7 +366,7 @@ h2. header`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        table(
+        table()(
           tr(th({})(p(' Column One ')), th({})(p(' Column Two '))),
           tr(
             td({})(p(' List One ')),
@@ -413,12 +413,12 @@ h2. header`;
       WIKI_NOTATION,
       doc(
         ul(li(p('List Item 1'))),
-        table(
+        table()(
           tr(th({})(p(' Column 1 ')), th({})(p(' Column 2 '))),
           tr(td({})(p(' Cell 1 ')), td({})(p(' Cell 2 '))),
         ),
         ul(li(p('List Item 2')), li(p('List Item 3'))),
-        table(
+        table()(
           tr(th({})(p(' Column 2 ')), th({})(p(' Column 4 '))),
           tr(td({})(p(' Cell 3 ')), td({})(p(' Cell 4 '))),
         ),

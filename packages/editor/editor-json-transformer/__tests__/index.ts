@@ -279,7 +279,7 @@ describe('JSONTransformer:', () => {
     ].forEach(({ nodeName, schemaBuilder }) => {
       it(`should strip unused optional attrs from ${nodeName} node`, () => {
         const { editorView } = editor(
-          doc(table(tr(schemaBuilder({ colspan: 2 })(p('foo'))))),
+          doc(table()(tr(schemaBuilder({ colspan: 2 })(p('foo'))))),
         );
 
         expect(toJSON(editorView.state.doc)).toEqual({
@@ -290,7 +290,7 @@ describe('JSONTransformer:', () => {
               type: 'table',
               attrs: {
                 isNumberColumnEnabled: false,
-                layout: 'default'
+                layout: 'default',
               },
               content: [
                 {

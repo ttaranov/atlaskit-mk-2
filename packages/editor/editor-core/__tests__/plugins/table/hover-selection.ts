@@ -45,7 +45,7 @@ describe('table hover selection plugin', () => {
             const { plugin, editorView } = editor(
               doc(
                 p('text'),
-                table(
+                table()(
                   tr(tdCursor, tdEmpty, tdEmpty),
                   tr(tdEmpty, tdEmpty, tdEmpty),
                 ),
@@ -75,7 +75,7 @@ describe('table hover selection plugin', () => {
             const { plugin, editorView } = editor(
               doc(
                 p('text'),
-                table(
+                table()(
                   tr(tdCursor, tdEmpty),
                   tr(tdEmpty, tdEmpty),
                   tr(tdEmpty, tdEmpty),
@@ -98,13 +98,13 @@ describe('table hover selection plugin', () => {
     });
   });
 
-  describe('hoverTable()', () => {
+  describe('hovertable()()', () => {
     describe('when table has 3 rows', () => {
       it('it should create a hover selection of the whole table', () => {
         const { plugin, editorView } = editor(
           doc(
             p('text'),
-            table(
+            table()(
               tr(tdCursor, tdEmpty),
               tr(tdEmpty, tdEmpty),
               tr(tdEmpty, tdEmpty),
