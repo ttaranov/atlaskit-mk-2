@@ -13832,9 +13832,9 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-video-snapshot@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/video-snapshot/-/video-snapshot-0.0.3.tgz#608e018841453600c9904c7dcbc4721c16d83f70"
+video-snapshot@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/video-snapshot/-/video-snapshot-1.0.1.tgz#691f2fc62018ca85df7b9f4fa429b6694c2d60c2"
 
 vinyl@^2.0.2:
   version "2.1.0"

@@ -49,7 +49,7 @@
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
     "uuid": "^3.1.0",
-    "video-snapshot": "^0.0.3"
+    "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^15.0.1",
