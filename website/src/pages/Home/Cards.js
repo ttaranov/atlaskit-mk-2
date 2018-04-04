@@ -81,7 +81,6 @@ const BaseCardStyles = css`
   box-sizing: border-box;
   text-align: left;
 
-  // z100
   z-index: 100;
   box-shadow: 0 1px 1px rgba(23, 43, 77, 0.2),
     0 0 0.5px 0 rgba(23, 43, 77, 0.25);
