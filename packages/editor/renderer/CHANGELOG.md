@@ -1,5 +1,17 @@
 # @atlaskit/renderer
 
+## 14.0.0
+- [major] Generic Text Serializer [1549347](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1549347)
+
+## 13.3.4
+
+## 13.3.3
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
+## 13.3.2
+
+## 13.3.1
+
 ## 13.3.0
 
 ## 13.2.0

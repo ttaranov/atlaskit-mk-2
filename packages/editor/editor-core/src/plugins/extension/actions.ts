@@ -13,7 +13,7 @@ import {
   selectParentNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
-import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
+import { ExtensionProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
 
 export const setExtensionElement = (element: HTMLElement | null) => (
@@ -30,18 +30,18 @@ export const setExtensionElement = (element: HTMLElement | null) => (
   return true;
 };
 
-export const editExtension = (macroProvider: MacroProvider | null) => (
+export const editExtension = (extensionProvider: ExtensionProvider | null) => (
   view: EditorView,
 ): boolean => {
   const { state, dispatch } = view;
-  // insert macro if there's macroProvider available
-  if (macroProvider) {
+  // insert macro if there's extensionProvider available
+  if (extensionProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
       let tr = state.tr.setMeta(pluginKey, { element: null });
       dispatch(selectParentNodeOfType(bodiedExtension)(tr));
-      insertMacroFromMacroBrowser(macroProvider, node)(view);
+      insertMacroFromMacroBrowser(extensionProvider, node)(view);
       return true;
     }
   }

@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 7.1.0
+- [minor] add MutationObserver to FilmstripView to catch dom mutations [625ee2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/625ee2b)
+
 ## 7.0.8
 
 ## 7.0.7

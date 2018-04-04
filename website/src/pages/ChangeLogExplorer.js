@@ -8,7 +8,7 @@ import TextField from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import Loadable from 'react-loadable';
 
-import Changelog, { NoMatch, type Logs } from '../components/ChangeLog';
+import Changelog, { NoMatch } from '../components/ChangeLog';
 import Page from '../components/Page';
 import { packages } from '../site';
 import * as fs from '../utils/fs';

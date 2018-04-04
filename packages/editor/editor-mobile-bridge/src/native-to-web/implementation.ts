@@ -2,7 +2,11 @@ import NativeToWebBridge from './bridge';
 
 import { EditorView } from 'prosemirror-view';
 
-import { MentionsState, TextFormattingState } from '@atlaskit/editor-core';
+import {
+  MentionsState,
+  TextFormattingState,
+  EditorActions,
+} from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
 
@@ -11,6 +15,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   mentionsPluginState: MentionsState | null = null;
   editorView: EditorView | null = null;
   transformer: JSONTransformer = new JSONTransformer();
+  editorActions: EditorActions = new EditorActions();
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -70,15 +75,16 @@ export default class WebBridgeImpl implements NativeToWebBridge {
       this.mentionsPluginState.dismiss();
     }
   }
-  setContent(content: string) {}
+
+  setContent(content: string) {
+    if (this.editorActions) {
+      this.editorActions.replaceDocument(content);
+    }
+  }
 
   getContent(): string {
     return this.editorView
-      ? JSON.stringify(
-          this.transformer.encode(this.editorView.state.doc),
-          null,
-          2,
-        )
+      ? JSON.stringify(this.transformer.encode(this.editorView.state.doc))
       : '';
   }
 

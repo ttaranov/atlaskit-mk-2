@@ -1,5 +1,10 @@
 # @atlaskit/reactions
 
+## 10.8.15
+- [patch] Remove import from es6 promise at src level [e27f2ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e27f2ac)
+
+## 10.8.14
+
 ## 10.8.13
 
 ## 10.8.12

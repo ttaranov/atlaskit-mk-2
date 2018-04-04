@@ -43,12 +43,18 @@ class EditorWithState extends Editor {
   }) {
     super.onEditorCreated(instance);
     bridge.editorView = instance.view;
+    bridge.editorActions._privateRegisterEditor(
+      instance.view,
+      instance.eventDispatcher,
+    );
+
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
     super.onEditorDestroyed(instance);
+    bridge.editorActions._privateUnregisterEditor();
     bridge.editorView = null;
     bridge.mentionsPluginState = null;
     bridge.textFormattingPluginState = null;

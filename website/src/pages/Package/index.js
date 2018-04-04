@@ -5,12 +5,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
-import DiscoverIcon from '@atlaskit/icon/glyph/discover';
-import WatchIcon from '@atlaskit/icon/glyph/watch';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-import LinkButton from '../../components/LinkButton';
 import Loading from '../../components/Loading';
 import Page from '../../components/Page';
 import FourOhFour from '../FourOhFour';
@@ -20,9 +17,8 @@ import LatestChangelog from './LatestChangelog';
 
 import { divvyChangelog } from '../../utils/changelog';
 import { isModuleNotFoundError } from '../../utils/errors';
-import { packageExampleUrl } from '../../utils/url';
 import * as fs from '../../utils/fs';
-import type { Directory, RouterMatch } from '../../types';
+import type { RouterMatch } from '../../types';
 
 import { packages } from '../../site';
 import type { Logs } from '../../components/ChangeLog';
@@ -84,10 +80,10 @@ type PackageState = {
 };
 
 function getPkg(packages, groupId, pkgId) {
-  let groups = fs.getDirectories(packages.children);
-  let group = fs.getById(groups, groupId);
-  let pkgs = fs.getDirectories(group.children);
-  let pkg = fs.getById(pkgs, pkgId);
+  const groups = fs.getDirectories(packages.children);
+  const group = fs.getById(groups, groupId);
+  const pkgs = fs.getDirectories(group.children);
+  const pkg = fs.getById(pkgs, pkgId);
   return pkg;
 }
 
@@ -122,16 +118,16 @@ export default class Package extends Component<PackageProps, PackageState> {
 
   loadDoc() {
     this.setState(initialState, () => {
-      let { groupId, pkgId } = this.props.match.params;
+      const { groupId, pkgId } = this.props.match.params;
       try {
-        let pkg = getPkg(packages, groupId, pkgId);
-        let dirs = fs.getDirectories(pkg.children);
-        let files = fs.getFiles(pkg.children);
+        const pkg = getPkg(packages, groupId, pkgId);
+        const dirs = fs.getDirectories(pkg.children);
+        const files = fs.getFiles(pkg.children);
 
-        let json = fs.getById(files, 'package.json');
-        let changelog = fs.maybeGetById(files, 'CHANGELOG.md');
-        let docs = fs.maybeGetById(dirs, 'docs');
-        let examples = fs.maybeGetById(dirs, 'examples');
+        const json = fs.getById(files, 'package.json');
+        const changelog = fs.maybeGetById(files, 'CHANGELOG.md');
+        const docs = fs.maybeGetById(dirs, 'docs');
+        const examples = fs.maybeGetById(dirs, 'examples');
 
         let doc;
         if (docs) {
@@ -190,7 +186,7 @@ export default class Package extends Component<PackageProps, PackageState> {
 
   render() {
     const { groupId, pkgId } = this.props.match.params;
-    const { pkg, examples, doc, changelog, missing } = this.state;
+    const { pkg, doc, changelog, missing } = this.state;
 
     if (missing) {
       return <FourOhFour />;

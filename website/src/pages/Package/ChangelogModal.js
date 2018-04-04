@@ -1,26 +1,20 @@
 // @flow
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Loadable from 'react-loadable';
-import { Link, Redirect, Route, withRouter } from 'react-router-dom';
 
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 
 import Button from '@atlaskit/button';
-import { colors, gridSize, math } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 import { FieldTextStateless as Input } from '@atlaskit/field-text';
-import Modal, {
-  ModalHeader as OgModalHeader,
-  ModalTitle,
-} from '@atlaskit/modal-dialog';
+import Modal, { ModalHeader as OgModalHeader } from '@atlaskit/modal-dialog';
 
 import * as fs from '../../utils/fs';
 import type { RouterMatch } from '../../types';
 import Loading from '../../components/Loading';
-import Changelog, { NoMatch, type Logs } from '../../components/ChangeLog';
-import Page from '../../components/Page';
+import Changelog, { NoMatch } from '../../components/ChangeLog';
 import { packages } from '../../site';
 import { divvyChangelog } from '../../utils/changelog';
 
@@ -30,11 +24,6 @@ import { divvyChangelog } from '../../utils/changelog';
 
 const ModalBody = styled.div`
   padding-bottom: ${math.multiply(gridSize, 2)}px;
-`;
-const ModalContent = styled.div`
-  flex: 1 1 auto;
-  min-height: 240px;
-  padding-bottom: 20px;
 `;
 
 // This seems to be an issue with styledComponent flow type compatibility

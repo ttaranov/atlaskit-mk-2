@@ -1,5 +1,5 @@
+import { NodeType, Schema } from 'prosemirror-model';
 import { parse as parseQuery } from 'querystring';
-
 import { MacroMatch, MacroName, MatchPosition } from '../interfaces';
 
 const KNOWN_MACRO: MacroName[] = ['code', 'noformat', 'panel', 'quote'];
@@ -40,6 +40,11 @@ export function findMacros(
 
     while ((matches = regex.exec(wikiMarkup)) !== null) {
       const position = matches.index;
+
+      if (position > 0 && wikiMarkup[position - 1] === '\\') {
+        continue;
+      }
+
       const attrsSerialized = matches[2] || '';
       const isOpeningMacros = matchCount % 2 === 0;
 
@@ -67,4 +72,26 @@ export function findMacros(
   }
 
   return output;
+}
+
+export function getProseMirrorNodeTypeForMacro(
+  schema: Schema,
+  macro: MacroName,
+): NodeType {
+  const { blockquote, codeBlock, panel } = schema.nodes;
+
+  switch (macro) {
+    case 'code':
+    case 'noformat':
+      return codeBlock;
+
+    case 'panel':
+      return panel;
+
+    case 'quote':
+      return blockquote;
+
+    default:
+      throw new Error(`Unknown macro type: ${macro}`);
+  }
 }

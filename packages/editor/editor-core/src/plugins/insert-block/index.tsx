@@ -125,7 +125,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               horizontalRuleEnabled={options.horizontalRuleEnabled}
               onInsertBlockType={blockTypeState.insertBlockType}
               onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
-              macroProvider={macroState.macroProvider}
+              extensionProvider={macroState.extensionProvider}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}

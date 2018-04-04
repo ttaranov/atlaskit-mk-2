@@ -6,7 +6,7 @@ import GlobalSecondaryActions from './GlobalSecondaryActions';
 import GlobalNavigationInner from '../styled/GlobalNavigationInner';
 import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
-import * as presets from '../../theme/presets';
+import { global } from '../../theme/presets';
 import type { IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
 
@@ -45,7 +45,7 @@ export default class GlobalNavigation extends PureComponent<Props> {
   static defaultProps = {
     primaryIconAppearance: 'round',
     secondaryActions: [],
-    theme: presets.global,
+    theme: global,
   };
 
   render() {

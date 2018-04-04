@@ -38,6 +38,7 @@ export {
 } from './media-single';
 export {
   table,
+  TableAttributes,
   tableCell,
   toJSONTableCell,
   tableHeader,
@@ -46,6 +47,8 @@ export {
   tableBackgroundColorPalette,
   tableBackgroundColorNames,
   CellAttributes,
+  Layout as TableLayout,
+  calcTableColumnWidths,
 } from './tableNodes';
 export {
   applicationCard,

@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,6 @@ import {
   AkNavigationItemGroup,
 } from '@atlaskit/navigation';
 
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import * as fs from '../../utils/fs';
@@ -36,7 +35,6 @@ const SearchDrawer = ({
   closeDrawer,
   searchDrawerValue,
   updateSearchValue,
-  SearchItems,
   packages,
 }: {
   isOpen: boolean,
@@ -72,9 +70,9 @@ const SearchDrawer = ({
             </AkNavigationItemGroup>,
           );
         }
-        const Items = initialItems.reduce((acc, { id }) => {
+        const Items = initialItems.reduce((innerAccumulator, { id }) => {
           if (id.includes(sanitizedValue)) {
-            return acc.concat(
+            return innerAccumulator.concat(
               <NavItem
                 dirId={dir.id}
                 id={id}
@@ -83,7 +81,7 @@ const SearchDrawer = ({
               />,
             );
           }
-          return acc;
+          return innerAccumulator;
         }, []);
         if (Items.length > 0) {
           return acc.concat(

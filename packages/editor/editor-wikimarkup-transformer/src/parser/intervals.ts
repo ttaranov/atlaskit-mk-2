@@ -5,15 +5,12 @@ import {
   MacroInterval,
   MacroMatch,
   SimpleInterval,
-  TextInterval,
 } from '../interfaces';
-
-import { findTextMatches } from './text';
 
 import { findMacros } from './macros';
 import { isSpecialMacro } from './special';
 
-function containsInterval(
+export function containsInterval(
   match: FatInterval,
   interval: SimpleInterval,
 ): boolean {
@@ -94,7 +91,7 @@ function filterValidMacros(macros: MacroMatch[]): MacroMatch[] {
  * intervals will be "This is a ", "quote with a ", "panel" and " inside"
  * So the output will be their positions in a string
  */
-function calcTextIntervals(
+export function calcTextIntervals(
   text: string,
   macros: FatInterval[],
 ): SimpleInterval[] {
@@ -170,38 +167,6 @@ export function getResolvedMacroIntervals(wikiMarkup: string): MacroInterval[] {
         output[i].macros.push({
           macro: macro.macro,
           attrs: macro.attrs,
-        });
-      }
-    });
-  }
-
-  return output;
-}
-
-/**
- * Splits the string into intervals of text with text effects
- */
-export function getResolvedTextIntervals(text: string): TextInterval[] {
-  const matches = findTextMatches(text);
-
-  // calculate all intervals taking outer borders of macros
-  const intervals = calcTextIntervals(text, matches);
-
-  // create output list with empty macros in its elements
-  const output: TextInterval[] = intervals.map(({ left, right }) => {
-    return {
-      effects: [],
-      text: text.substring(left, right),
-    };
-  });
-
-  // iterate existing macros and put them into the output list
-  for (const match of matches) {
-    intervals.map((interval, i) => {
-      if (containsInterval(match, interval)) {
-        output[i].effects.push({
-          name: match.effect,
-          attrs: match.attrs,
         });
       }
     });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -48,7 +48,8 @@
     "styled-components": "1.4.6 - 3",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^15.0.1",
