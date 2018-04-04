@@ -6,7 +6,6 @@ import { EmojiMapItem } from '../../src/interfaces';
 
 // Nodes
 
-// @TODO markup as array
 const findEmojiConfig = (markup: string) => {
   const [emoji] = EMOJIS.reduce((acc: any[], emoji: EmojiMapItem) => {
     if (emoji.markup.indexOf(markup) !== -1) {
