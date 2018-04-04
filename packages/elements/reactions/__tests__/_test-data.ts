@@ -22,3 +22,6 @@ export const smileyId = toEmojiId(emojiRepository.findByShortName(
 export const flagBlackId = toEmojiId(emojiRepository.findByShortName(
   ':flag_black:',
 ) as EmojiDescription);
+export const thumbsdownId = toEmojiId(emojiRepository.findByShortName(
+  ':thumbsdown:',
+) as EmojiDescription);
