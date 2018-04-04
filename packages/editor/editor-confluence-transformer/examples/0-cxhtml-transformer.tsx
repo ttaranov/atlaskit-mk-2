@@ -12,7 +12,7 @@ import {
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  macroProvider,
+  extensionProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -87,7 +87,7 @@ const providers = {
   }),
   mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  macroProvider: Promise.resolve(macroProvider),
+  extensionProvider: Promise.resolve(extensionProvider),
   taskDecisionProvider: Promise.resolve(
     taskDecision.getMockTaskDecisionResource(),
   ),
