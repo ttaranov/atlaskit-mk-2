@@ -4,32 +4,26 @@ import {
   ContextFactory,
   Context,
   UploadableFile,
-  // MediaItem
+  MediaType,
+  FileItem,
+  FileDetails,
 } from '@atlaskit/media-core';
 import { EventEmitter2 } from 'eventemitter2';
 import { UploadParams } from '../domain/config';
+import { Preview } from '../domain/preview';
+import { MediaError } from '../domain/error';
+import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
 import { defaultUploadParams } from '../domain/uploadParams';
-import {
-  FileConvertedEventPayload,
-  FileConvertingEventPayload,
-  FileFinalizeReadyEventPayload,
-  FilePreviewUpdateEventPayload,
-  FilesAddedEventPayload,
-  FileUploadErrorEventPayload,
-  FileUploadingEventPayload,
-} from './uploadService';
+import { SmartMediaProgress } from '../domain/progress';
+
 import { MediaApi } from './mediaApi';
 import { MediaClient } from './mediaClient';
-// import {MediaClientPool} from './mediaClientPool';
 import {
   mapAuthToSourceFileOwner,
   SourceFile,
 } from '../popup/domain/source-file';
-import { FileItem } from '../../../media-core/src/item';
-import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
-import { SmartMediaProgress } from '../domain/progress';
-// import {handleError} from '../util/handleError';
+import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 
 export interface ExpFile {
   id: string;
@@ -37,11 +31,37 @@ export interface ExpFile {
   file: File;
 }
 
+export interface FilesAddedEventPayload {
+  readonly files: MediaFile[];
+}
+
+export interface FilePreviewUpdateEventPayload {
+  readonly file: MediaFile;
+  readonly preview: Preview;
+}
+
+export interface FileUploadingEventPayload {
+  readonly file: MediaFile;
+  readonly progress: SmartMediaProgress;
+}
+
+export interface FileConvertingEventPayload {
+  readonly file: PublicMediaFile;
+}
+
+export interface FileConvertedEventPayload {
+  readonly fileDetails: FileDetails;
+}
+
+export interface FileUploadErrorEventPayload {
+  readonly file: MediaFile;
+  readonly error: MediaError;
+}
+
 export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': FilesAddedEventPayload;
   readonly 'file-preview-update': FilePreviewUpdateEventPayload;
   readonly 'file-uploading': FileUploadingEventPayload;
-  // readonly 'file-finalize-ready': FileFinalizeReadyEventPayload;
   readonly 'file-converting': FileConvertingEventPayload;
   readonly 'file-converted': FileConvertedEventPayload;
   readonly 'file-upload-error': FileUploadErrorEventPayload;
@@ -159,8 +179,8 @@ export class UploadService {
     expFiles.forEach(expFile => {
       const mediaFile = this.mapExpFileToMediaFile(expFile);
       const file = expFile.file;
-      const { type, size } = file;
-      const mediaType = type.match(/^image\//) ? 'image' : 'unknown';
+      const { size } = file;
+      const mediaType = this.getMediaTypeFromFile(file);
       if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
         getPreviewFromBlob(file, mediaType).then(preview => {
           this.emit('file-preview-update', {
@@ -168,8 +188,26 @@ export class UploadService {
             preview,
           });
         });
+      } else if (mediaType === 'video') {
+        getPreviewFromVideo(file).then(preview => {
+          this.emit('file-preview-update', {
+            file: mediaFile,
+            preview,
+          });
+        });
       }
     });
+  }
+
+  private getMediaTypeFromFile(file: File): MediaType {
+    const { type } = file;
+    if (type.match(/^image\//)) {
+      return 'image';
+    } else if (type.match(/^video\//)) {
+      return 'video';
+    }
+
+    return 'unknown';
   }
 
   private readonly onFileSuccess = (expFile: ExpFile, fileId: string) => {
@@ -221,7 +259,9 @@ export class UploadService {
   };
 
   private readonly onFileError = (file: ExpFile, reason: Error) => {
-    this.emit('file-upload-error', {});
+    // this.emit('file-upload-error', {
+    // TODO we dont have proper errors comming from chunkinator atm
+    // });
   };
 
   private copyFileToUsersCollection(
