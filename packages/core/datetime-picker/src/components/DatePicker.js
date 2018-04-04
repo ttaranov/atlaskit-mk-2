@@ -110,7 +110,7 @@ const StyledMenu = styled.div`
 
 class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
-  calendar: ElementRef<Calendar>;
+  calendar: ElementRef<typeof Calendar>;
   input: Element | null;
 
   static defaultProps = {
@@ -208,7 +208,7 @@ class DatePicker extends Component<Props, State> {
     }
   };
 
-  refCalendar = (ref: ElementRef<Calendar>) => {
+  refCalendar = (ref: ElementRef<typeof Calendar>) => {
     this.calendar = ref;
   };
 
