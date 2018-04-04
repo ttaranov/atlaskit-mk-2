@@ -19,7 +19,10 @@ import {
   akColorN40,
   akBorderRadius,
   akColorN40A,
+<<<<<<< HEAD
   akColorN300,
+=======
+>>>>>>> ED-4195: Fix issue where backspacing a paragraph will non-visibly select the node
   akColorB200,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
