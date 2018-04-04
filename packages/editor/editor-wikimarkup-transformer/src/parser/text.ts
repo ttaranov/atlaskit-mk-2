@@ -38,6 +38,10 @@ function findMonospaceMatches(text: string): TextMatch[] {
   while ((matches = regex.exec(text)) !== null) {
     const position = matches.index;
 
+    if (position > 0 && text[position - 1] === '\\') {
+      continue;
+    }
+
     output.push({
       effect: 'monospaced',
       attrs: {},
