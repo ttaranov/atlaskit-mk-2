@@ -7,7 +7,7 @@ import { analyticsEventMap } from '../../packages/core/analytics-next/analyticsE
 
 export const getMapEntryFromPath = (filepath, configKey) => (
   analyticsEventMap.find(eventConfig => (
-    filepath.indexOf(eventConfig[configKey]) > -1
+    filepath.indexOf(eventConfig[configKey]) > -1 && eventConfig.ignore !== true
   ))
 );
 

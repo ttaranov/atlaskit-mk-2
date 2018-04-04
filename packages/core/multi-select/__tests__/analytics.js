@@ -29,9 +29,8 @@ describe('MultiSelectStateless', () => {
   });
 
   it('should be wrapped with analytics events', () => {
-    const mockCalls = (withAnalyticsEvents: any).mock.calls;
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
-    expect(mockCalls[mockCalls.length - 1][0]).toEqual({
+    expect(withAnalyticsEvents).toHaveBeenCalledWith({
       onFilterChange: { action: 'filter' },
       onNewItemCreated: { action: 'createItem' },
       onSelected: { action: 'selected' },

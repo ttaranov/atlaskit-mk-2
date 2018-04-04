@@ -19,22 +19,6 @@ jest.mock('@atlaskit/analytics-next', () => ({
   createAndFireEvent: jest.fn(() => jest.fn(args => args)),
 }));
 
-describe('PaginationStateless', () => {
-  it('should be wrapped with analytics context', () => {
-    expect(withAnalyticsContext).toHaveBeenCalledWith({
-      component: 'pagination',
-      package: packageName,
-      version: packageVersion,
-    });
-  });
-
-  it('should be wrapped with analytics events', () => {
-    expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
-    expect(withAnalyticsEvents).toHaveBeenCalledWith({
-      onSetPage: { action: 'change' },
-    });
-  });
-});
 describe('Pagination', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
@@ -47,7 +31,7 @@ describe('Pagination', () => {
   it('should be wrapped with analytics events', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenCalledWith({
-      onSetPage: { action: 'change' },
+      onChange: { action: 'change' },
     });
   });
 });

@@ -31,7 +31,8 @@ describe('Calendar', () => {
   it('should be wrapped with analytics events', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenCalledWith({
-      onUpdate: { action: 'update' },
+      onChange: { action: 'change' },
+      onSelect: { action: 'select' },
     });
   });
 });

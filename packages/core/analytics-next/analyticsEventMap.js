@@ -39,8 +39,7 @@ type AnalyticsEventConfig = {
   manualComponentTestOverride?: boolean,
   /** Signals that this map entry is for test purposes and should not be part of other exports */
   test?: true,
-  /** Whether the component exposes imperative methods via ref */
-  hasRefMethods?: boolean,
+  ignore?: boolean,
 };
 const analyticsEventMap: AnalyticsEventConfig[] = [
   {
@@ -52,7 +51,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onClick: 'click',
     },
     componentTestPath: 'avatar/src/components/__tests__/Avatar.js',
-    hasRefMethods: true,
   },
   {
     path: 'blanket/src/Blanket.js',
@@ -395,7 +393,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onOpenChange: 'toggle',
     },
     componentTestPath: 'multi-select/__tests__/stateful.js',
-    wrapComponent: false,
+    ignore: true,
   },
   {
     path: 'navigation/src/components/js/Navigation.js',
