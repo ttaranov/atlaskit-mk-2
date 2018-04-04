@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
+import { isTableSelected } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
-import { checkIfNumberColumnSelected, checkIfTableSelected } from '../../utils';
+import { checkIfNumberColumnSelected } from '../../utils';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
@@ -174,7 +175,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     const { cellSelection, editorView: { state } } = this.props;
     if (
       !cellSelection ||
-      (checkIfNumberColumnSelected(state) && !checkIfTableSelected(state))
+      (checkIfNumberColumnSelected(state) && !isTableSelected(state.selection))
     ) {
       return false;
     }
