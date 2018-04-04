@@ -11,6 +11,7 @@ import {
   CardSurroundings,
   ProviderFactory,
   ExtensionHandlers,
+  defaultSchema,
 } from '@atlaskit/editor-common';
 import {
   storyMediaProviderFactory,
@@ -177,7 +178,7 @@ export default class RendererDemo extends PureComponent<
   DemoRendererProps,
   DemoRendererState
 > {
-  textSerializer = new TextSerializer();
+  textSerializer = new TextSerializer(defaultSchema);
   emailSerializer = new EmailSerializer();
   emailRef?: HTMLIFrameElement;
 
