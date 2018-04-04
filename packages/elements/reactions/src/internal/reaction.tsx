@@ -12,10 +12,10 @@ import { isPromise } from './helpers';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
+const akColorN90 = colors.N90;
 const akColorN400 = colors.N400;
-const akColorB50 = colors.B50;
 const akColorB75 = colors.B75;
-const akColorN500 = colors.N500;
+const akColorB400 = colors.B400;
 
 export const bouncingAnimation = keyframes({
   $debugName: 'bouncing',
@@ -31,25 +31,6 @@ export const bouncingAnimation = keyframes({
   },
 });
 
-const shakeAnimation = keyframes({
-  $debugName: 'shake',
-  '0%': {
-    transform: 'rotateZ(0)',
-  },
-  '25%': {
-    transform: 'rotateZ(5deg)',
-  },
-  '50%': {
-    transform: 'rotateZ(0)',
-  },
-  '75%': {
-    transform: 'rotateZ(-5deg)',
-  },
-  '100%': {
-    transform: 'rotateZ(0)',
-  },
-});
-
 const emojiStyle = style({
   transformOrigin: 'center center 0',
   margin: '0 4px',
@@ -57,12 +38,11 @@ const emojiStyle = style({
 
 const countStyle = style({
   flex: 'auto',
-  fontSize: '12px',
+  fontSize: '13pt',
   lineHeight: '24px',
   padding: '0 4px 0 0',
   minWidth: '12px',
-  color: akColorN500,
-  fontWeight: 600,
+  color: akColorN90,
 });
 
 const reactionStyle = style({
@@ -88,19 +68,24 @@ const reactionStyle = style({
         },
       },
     },
-    '&.reacted': {
-      background: akColorB50,
+    '&.bounce': {
+      animation: `${bouncingAnimation} 200ms ease-in-out`,
+    },
+  },
+});
+
+export const reactedStyle = style({
+  $nest: {
+    [`&.${reactionStyle}`]: {
       $nest: {
         '&:hover': {
           background: akColorB75,
         },
       },
     },
-    '&.bounce': {
-      animation: `${bouncingAnimation} 200ms ease-in-out`,
-    },
-    '&.shake': {
-      animation: `${shakeAnimation} 200ms infinite ease-in-out`,
+    [`& .${countStyle}`]: {
+      color: akColorB400,
+      fontWeight: 600,
     },
   },
 });
@@ -237,7 +222,7 @@ export default class Reaction extends PureComponent<Props, State> {
     const { emojiName, showTooltip } = this.state;
 
     const classNames = cx(reactionStyle, {
-      reacted: reaction.reacted,
+      [reactedStyle]: reaction.reacted,
       bounce: this.state.startBouncing,
     });
 
