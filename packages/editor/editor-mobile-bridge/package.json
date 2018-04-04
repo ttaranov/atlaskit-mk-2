@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-mobile-bridge",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Mobile destribution of the Editor",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
@@ -11,7 +11,7 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
-    "build:minimize": "NODE_ENV=production webpack"
+    "build:minimize": "webpack -p"
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "keywords": [

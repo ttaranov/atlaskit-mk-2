@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 66.1.7
+- [patch] refactor tables plugin [47b4e3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47b4e3a)
+
+## 66.1.6
+- [patch] tidy up padding and font-size around collapsed editor [260e744](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/260e744)
+
 ## 66.1.5
 - [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
 

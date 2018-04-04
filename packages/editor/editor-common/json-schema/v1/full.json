@@ -758,7 +758,10 @@
               "type": "boolean"
             },
             "layout": {
-              "type": "string"
+              "enum": [
+                "full-width",
+                "default"
+              ]
             }
           },
           "additionalProperties": false
@@ -843,7 +846,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
@@ -883,7 +885,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
@@ -1858,14 +1859,7 @@
             "marks": {
               "type": "array",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/code_mark"
-                  },
-                  {
-                    "$ref": "#/definitions/link_mark"
-                  }
-                ]
+                "$ref": "#/definitions/code_mark"
               }
             }
           },

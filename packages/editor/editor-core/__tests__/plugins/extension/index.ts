@@ -3,7 +3,7 @@ import {
   createEditor,
   p as paragraph,
   bodiedExtension,
-  macroProvider,
+  extensionProvider,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 
@@ -15,7 +15,7 @@ import {
 import { pluginKey } from '../../../src/plugins/extension/plugin';
 import extensionPlugin from '../../../src/plugins/extension';
 
-const macroProviderPromise = Promise.resolve(macroProvider);
+const extensionProviderPromise = Promise.resolve(extensionProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
@@ -68,7 +68,7 @@ describe('extension', () => {
     });
 
     describe('editExtension', () => {
-      it('should return false if macroProvider is not available', () => {
+      it('should return false if extensionProvider is not available', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
@@ -76,14 +76,14 @@ describe('extension', () => {
       });
       it('should return false if extension node is not selected or cursor is not inside extension body', async () => {
         const { editorView } = editor(doc(paragraph('te{<>}xt')));
-        const provider = await macroProviderPromise;
+        const provider = await extensionProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(false);
       });
-      it('should return true if macroProvider is available and cursor is inside extension node', async () => {
+      it('should return true if extensionProvider is available and cursor is inside extension node', async () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        const provider = await macroProviderPromise;
+        const provider = await extensionProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(true);
       });
     });

@@ -14,6 +14,11 @@ describe('JIRA wiki markup - Misc', () => {
       'should find emojis and mentions in text',
       'this is a string with :) emojis and [~username] mentions',
     ],
+    ['should escape macros', 'this is a \\{panel} text, not a macro{panel}'],
+    [
+      'should escape monospace text',
+      'this is a \\{{normal text}}, not a monospaced',
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

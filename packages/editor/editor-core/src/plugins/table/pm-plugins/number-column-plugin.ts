@@ -1,11 +1,8 @@
 import { Plugin, PluginKey, EditorState, Transaction } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { DecorationSet } from 'prosemirror-view';
-import {
-  tableStartPos,
-  getTableNode,
-  createNumberColumnDecorationSet,
-} from '../utils';
+import { findTable } from 'prosemirror-utils';
+import { createNumberColumnDecorationSet } from '../utils';
 export const pluginKey = new PluginKey('tableNumberColumnPlugin');
 
 export type State = {
@@ -30,24 +27,24 @@ const plugin = new Plugin({
     oldState: EditorState,
     newState: EditorState,
   ) => {
-    const tableNode = getTableNode(newState);
+    const table = findTable(newState.selection);
     if (
-      tableNode &&
-      tableNode.attrs.isNumberColumnEnabled &&
+      table &&
+      table.node.attrs.isNumberColumnEnabled &&
       transactions.some(transaction => transaction.docChanged) &&
       // ignore the transaction that enables number column (otherwise it goes into infinite loop)
       !transactions.some(transaction => transaction.getMeta(pluginKey))
     ) {
-      const map = TableMap.get(tableNode);
-      const start = tableStartPos(newState);
+      const map = TableMap.get(table.node);
+      const { pos: start } = findTable(newState.selection)!;
       const { tr } = newState;
       const { tableHeader, paragraph } = newState.schema.nodes;
       const increment =
-        tableNode.child(0).child(0).type === tableHeader ? 0 : 1;
+        table.node.child(0).child(0).type === tableHeader ? 0 : 1;
       let updated = false;
 
-      for (let i = 0; i < tableNode.childCount; i++) {
-        const cell = tableNode.child(i).child(0);
+      for (let i = 0; i < table.node.childCount; i++) {
+        const cell = table.node.child(i).child(0);
         const textContent = `${i + increment}`;
         if (cell.type === tableHeader) {
           continue;

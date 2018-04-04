@@ -35,13 +35,6 @@ describe('JIRA wiki markup - Macros', () => {
       'This is a {panel:foo=bar} panel with a {quote}quote inside{panel} but it is broken{quote}',
     ],
     [
-      'should convert string with heading in it',
-      `
-This is a string.
-h1. Boom! this is a heading with *bold* text in it
-      `,
-    ],
-    [
       'should collapse outer macros',
       '{panel:title=My Title|borderStyle=dashed}{quote}Panel with nested quote here{quote}{panel}.',
     ],
