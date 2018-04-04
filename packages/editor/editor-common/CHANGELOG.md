@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 8.1.22
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 8.1.21
+
 ## 8.1.20
 - [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
 

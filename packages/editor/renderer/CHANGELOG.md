@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 13.3.4
+
 ## 13.3.3
 - [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
 

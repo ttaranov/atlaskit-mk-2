@@ -99,15 +99,17 @@ export function calcTableColumnWidths(node: PmNode): number[] {
 
 export type Layout = 'default' | 'full-width';
 
+export interface TableAttributes {
+  isNumberColumnEnabled?: boolean;
+  layout?: Layout;
+}
+
 /**
  * @name table_node
  */
 export interface Table {
   type: 'table';
-  attrs?: {
-    isNumberColumnEnabled?: boolean;
-    layout?: Layout;
-  };
+  attrs?: TableAttributes;
   /**
    * @minItems 1
    */

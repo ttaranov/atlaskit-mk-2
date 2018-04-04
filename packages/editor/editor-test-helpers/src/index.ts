@@ -51,7 +51,6 @@ export {
   mediaSingle,
   textColor,
   table,
-  tableWithAttrs,
   tr,
   td,
   th,
@@ -89,7 +88,10 @@ export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';
 export { isMobileBrowser } from './device';
 export { default as spyOnReturnValue } from './spy-on-return-value';
-export { macroProvider, MockMacroProvider } from './mock-macro-provider';
+export {
+  extensionProvider,
+  MockExtensionProvider,
+} from './mock-macro-provider';
 export { customInsertMenuItems } from './mock-insert-menu';
 export {
   inlineExtensionData,

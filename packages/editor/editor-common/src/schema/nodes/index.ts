@@ -38,6 +38,7 @@ export {
 } from './media-single';
 export {
   table,
+  TableAttributes,
   tableCell,
   toJSONTableCell,
   tableHeader,
