@@ -8,10 +8,10 @@ export default () => {
   return (
     <div>
       <Label label="Stock" />
-      <DateTimePicker />
+      <DateTimePicker onChange={console.log} />
 
       <Label label="Disabled input" />
-      <DateTimePicker isDisabled />
+      <DateTimePicker isDisabled onChange={console.log} />
     </div>
   );
 };
