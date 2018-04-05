@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, CSSProperties } from 'react';
 import { Popup } from '@atlaskit/editor-common';
 import { Container } from './styles';
 
@@ -18,7 +18,7 @@ export interface Props {
   fitWidth?: number;
   fitHeight?: number;
   onPositionCalculated?: (position: Coordinates) => any;
-  stylesOverride?: object;
+  stylesOverride?: CSSProperties;
 }
 
 export {
