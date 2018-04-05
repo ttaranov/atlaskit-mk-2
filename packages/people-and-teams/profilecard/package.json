@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.12.3",
+  "version": "3.13.0",
   "config": {
     "access": "public"
   },
@@ -19,12 +19,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "9.2.1",
-    "@atlaskit/button": "^6.6.3",
-    "@atlaskit/icon": "^10.13.0",
-    "@atlaskit/layer": "^2.5.4",
-    "@atlaskit/spinner": "^4.2.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/layer": "^3.0.0",
+    "@atlaskit/spinner": "^5.0.0",
+    "@atlaskit/theme": "^3.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
@@ -35,10 +35,10 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/dynamic-table": "^7.2.1",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/dynamic-table": "^8.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^7.2.1",
+    "@atlaskit/util-data-test": "^9.0.0",
     "enzyme": "^3.3.0",
     "fetch-mock": "^5.12.1",
     "loader-utils": "^1.1.0",
@@ -51,8 +51,8 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "repository": {
     "type": "git",
