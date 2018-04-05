@@ -56,7 +56,7 @@ export default class MyComponent extends Component<{}, State> {
         />
 
         <Label label="Date" />
-        <DatePicker value={datePickerValue} isDisabled />
+        <DatePicker value={datePickerValue} isDisabled onChange={console.log} />
 
         <h3>Time picker</h3>
         <FieldText
@@ -67,7 +67,7 @@ export default class MyComponent extends Component<{}, State> {
         />
 
         <Label label="Date" />
-        <TimePicker value={timePickerValue} isDisabled />
+        <TimePicker value={timePickerValue} isDisabled onChange={console.log} />
 
         <h3>Date / time picker</h3>
         <FieldText
@@ -78,7 +78,11 @@ export default class MyComponent extends Component<{}, State> {
         />
 
         <Label label="Date" />
-        <DateTimePicker value={dateTimePickerValue} isDisabled />
+        <DateTimePicker
+          value={dateTimePickerValue}
+          isDisabled
+          onChange={console.log}
+        />
       </div>
     );
   }

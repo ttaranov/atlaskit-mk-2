@@ -8,10 +8,10 @@ export default () => {
   return (
     <div>
       <Label label="Stock" />
-      <TimePicker />
+      <TimePicker onChange={console.log} />
 
       <Label label="Disabled input" />
-      <TimePicker isDisabled />
+      <TimePicker isDisabled onChange={console.log} />
     </div>
   );
 };
