@@ -1,6 +1,10 @@
 import * as React from 'react';
-import HomeQuickSearchContainer from './home/HomeQuickSearchContainer';
-import ConfluenceQuickSearchContainer from './confluence/ConfluenceQuickSearchContainer';
+import HomeQuickSearchContainer, {
+  Props as HomeContainerProps,
+} from './home/HomeQuickSearchContainer';
+import ConfluenceQuickSearchContainer, {
+  Props as ConfContainerProps,
+} from './confluence/ConfluenceQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
 import memoizeOne from 'memoize-one';
 
@@ -13,9 +17,9 @@ export interface Props {
   cloudId: string;
 
   /**
-   * "confluence" | "home"
+   * The context for quick-search determines the UX and what kind of entities the component is searching.
    */
-  context: string;
+  context: 'confluence' | 'home';
 
   /**
    * For development purposes only: Overrides the URL to the activity service.
@@ -64,17 +68,25 @@ export default class GlobalQuickSearchConfiguration extends React.Component<
     return config;
   }
 
+  private getContainerComponent(): React.ComponentClass<
+    HomeContainerProps | ConfContainerProps
+  > {
+    if (this.props.context === 'confluence') {
+      return ConfluenceQuickSearchContainer;
+    } else if (this.props.context === 'home') {
+      return HomeQuickSearchContainer;
+    } else {
+      // fallback to home if nothing specified
+      return HomeQuickSearchContainer;
+    }
+  }
+
   render() {
+    const ContainerComponent = this.getContainerComponent();
     const searchClients = this.memoizedConfigureSearchClients(
       this.props.cloudId,
       this.makeConfig(),
     );
-
-    // TODO can we make this type safe?
-    let ContainerComponent: React.ComponentClass = HomeQuickSearchContainer;
-    if (this.props.context === 'confluence') {
-      ContainerComponent = ConfluenceQuickSearchContainer;
-    }
 
     return <ContainerComponent {...searchClients} />;
   }

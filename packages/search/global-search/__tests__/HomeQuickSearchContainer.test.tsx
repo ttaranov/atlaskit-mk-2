@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
 import {
-  GlobalQuickSearchContainer,
+  HomeQuickSearchContainer,
   Props,
-} from '../src/components/GlobalQuickSearchContainer';
+} from '../src/components/home/HomeQuickSearchContainer';
 import GlobalQuickSearch, {
   Props as GlobalQuickSearchProps,
 } from '../src/components/GlobalQuickSearch';
@@ -85,7 +85,7 @@ function render(partialProps?: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow<Props>(<GlobalQuickSearchContainer {...props} />);
+  return shallow<Props>(<HomeQuickSearchContainer {...props} />);
 }
 
 describe('GlobalQuickSearchContainer', () => {
@@ -177,7 +177,7 @@ describe('GlobalQuickSearchContainer', () => {
       recentSearchClient: mockRecentClient,
     });
 
-    const getRecentlyViewedItems = wrapper
+    const getRecentlyViewedItems: Function = wrapper
       .find(GlobalQuickSearch)
       .prop('getRecentlyViewedItems');
     getRecentlyViewedItems();

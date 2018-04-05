@@ -6,20 +6,28 @@ import EmptyState from '../EmptyState';
 import {
   resultsToComponents,
   searchConfluenceItem,
-  searchJiraItem,
   searchPeopleItem,
   take,
   isEmpty,
 } from '../SearchResults';
 
-const renderConfluence = (results: Result[], query: string) => (
+const renderObjects = (results: Result[], query: string) => (
   <AkNavigationItemGroup
     title="Pages, blogs, attachments"
-    key="confluence"
-    test-selector="confluence"
+    key="confluence-objects"
+    test-selector="confluence-objects"
   >
     {resultsToComponents(results)}
-    {searchConfluenceItem(query)}
+  </AkNavigationItemGroup>
+);
+
+const renderSpaces = (results: Result[], query: string) => (
+  <AkNavigationItemGroup
+    title="Spaces"
+    key="confluence-spaces"
+    test-selector="confluence-spaces"
+  >
+    {resultsToComponents(results)}
   </AkNavigationItemGroup>
 );
 
@@ -33,7 +41,6 @@ const renderPeople = (results: Result[], query: string) => (
 const renderEmptyState = (query: string) => (
   <>
     <EmptyState />
-    {searchJiraItem(query)}
     {searchConfluenceItem(query)}
     {searchPeopleItem()}
   </>
@@ -45,7 +52,8 @@ export interface Props {
   retrySearch();
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
-  confluenceResults: Result[];
+  objectResults: Result[];
+  spaceResults: Result[];
   peopleResults: Result[];
 }
 
@@ -56,7 +64,8 @@ export default function searchResults(props: Props) {
     retrySearch,
     recentlyViewedPages,
     recentlyViewedSpaces,
-    confluenceResults,
+    objectResults,
+    spaceResults,
     peopleResults,
   } = props;
 
@@ -66,15 +75,17 @@ export default function searchResults(props: Props) {
 
   if (query.length < 2) {
     // TODO render recent pages, recent spaces, recent people
-    return [];
+    return ['pre-query state'];
   }
 
-  if ([confluenceResults, peopleResults].every(isEmpty)) {
+  // TODO need to pass isLoading down to avoid showing no results screen when still searching
+  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
     return renderEmptyState(query);
   }
 
   return [
-    renderConfluence(take(confluenceResults, 5), query),
+    renderObjects(take(objectResults, 5), query),
+    renderSpaces(take(spaceResults, 5), query),
     renderPeople(take(peopleResults, 3), query),
   ];
 }

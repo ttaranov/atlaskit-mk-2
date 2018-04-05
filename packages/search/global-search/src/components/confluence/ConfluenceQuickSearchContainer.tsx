@@ -3,7 +3,7 @@ import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
-import { ConfluenceSearchClient } from '../../api/ConfluenceSearchClient';
+import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
   CrossProductSearchClient,
   CrossProductResults,
@@ -15,7 +15,7 @@ import renderSearchResults from './ConfluenceSearchResults';
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
-  confluenceSearchClient: ConfluenceSearchClient;
+  confluenceClient: ConfluenceClient;
   debounceMillis?: number; // for testing only
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
@@ -27,7 +27,8 @@ export interface State {
   isError: boolean;
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
-  confluenceResults: Result[];
+  objectResults: Result[];
+  spaceResults: Result[];
   peopleResults: Result[];
 }
 
@@ -52,7 +53,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedPages: [],
       recentlyViewedSpaces: [],
-      confluenceResults: [],
+      objectResults: [],
+      spaceResults: [],
       peopleResults: [],
     };
   }
@@ -66,7 +68,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       // reset search results so that internal state between query and results stays consistent
       this.setState({
         isError: false,
-        confluenceResults: [],
+        objectResults: [],
+        spaceResults: [],
         peopleResults: [],
       });
     } else {
@@ -74,7 +77,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     }
   };
 
-  async searchCrossProduct(query: string): Promise<CrossProductResults> {
+  async searchConfluence(query: string): Promise<CrossProductResults> {
+    // TODO search for pages,blogs,attachments & search for spaces
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
@@ -82,7 +86,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     if (this.state.query === query) {
       this.setState({
-        confluenceResults: results.confluence,
+        objectResults: results.confluence,
+        spaceResults: results.confluence,
       });
     }
 
@@ -120,13 +125,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
-    const searchCrossProductPromise = this.searchCrossProduct(query);
+    const confluencePromise = this.searchConfluence(query);
     const searchPeoplePromise = this.searchPeople(query);
 
     // trigger error analytics when a search fails
-    searchCrossProductPromise.catch(
-      this.handleSearchErrorAnalytics('xpsearch'),
-    );
+    confluencePromise.catch(this.handleSearchErrorAnalytics('confluence'));
     searchPeoplePromise.catch(this.handleSearchErrorAnalytics('people'));
 
     /*
@@ -134,7 +137,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     */
     (async () => {
       try {
-        await searchCrossProductPromise;
+        await confluencePromise;
         this.setState({
           isError: false,
         });
@@ -153,9 +156,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         });
 
         await Promise.all(
-          [searchCrossProductPromise, searchPeoplePromise].map(p =>
-            p.catch(Error),
-          ),
+          [confluencePromise, searchPeoplePromise].map(p => p.catch(Error)),
         );
       } finally {
         this.setState({
@@ -171,9 +172,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   });
 
   handleMount = async () => {
+    // TODO are both call made at the same time?
     this.setState({
-      recentlyViewedPages: await this.props.confluenceSearchClient.getRecentPages(),
-      recentlyViewedSpaces: await this.props.confluenceSearchClient.getRecentSpaces(),
+      recentlyViewedPages: await this.props.confluenceClient.getRecentPages(),
+      recentlyViewedSpaces: await this.props.confluenceClient.getRecentSpaces(),
     });
   };
 
@@ -188,7 +190,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       isError,
       recentlyViewedPages,
       recentlyViewedSpaces,
-      confluenceResults,
+      objectResults,
+      spaceResults,
       peopleResults,
     } = this.state;
 
@@ -205,7 +208,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           retrySearch: this.retrySearch,
           recentlyViewedPages,
           recentlyViewedSpaces,
-          confluenceResults,
+          objectResults,
+          spaceResults,
           peopleResults,
         })}
       </GlobalQuickSearch>
