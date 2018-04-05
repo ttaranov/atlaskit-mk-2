@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 30.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 29.3.1
+- [patch] Update typing and examples [efdbf46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efdbf46)
+
 ## 29.3.0
 - [minor] Add `target` prop to ResultBase component [d4a3bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3bed)
 

@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 3.0.2
+
 ## 3.0.1
 - [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
 

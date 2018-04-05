@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 export const packageUrl = (groupId: string, pkgId: string) =>
   `/packages/${groupId}/${pkgId}`;
 
@@ -9,4 +9,4 @@ export const packageExampleUrl = (
   groupId: string,
   pkgId: string,
   exampleId?: string,
-) => `/examples/${groupId}/${pkgId}${exampleId ? '/' + exampleId : ''}`;
+) => `/examples/${groupId}/${pkgId}${exampleId ? `/${exampleId}` : ''}`;

@@ -1,8 +1,5 @@
+// @flow
 import React, { Component } from 'react';
-import Button from '@atlaskit/button';
-import Loadable from 'react-loadable';
-
-import CodeSandboxLogo from './CodeSandboxLogo';
 import CodeSandboxer from 'react-codesandboxer';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>

@@ -1,5 +1,8 @@
 # @atlaskit/page-header
 
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 2.4.2
 
 ## 2.4.1

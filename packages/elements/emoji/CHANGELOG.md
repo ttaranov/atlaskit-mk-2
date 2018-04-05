@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 34.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 33.0.3
+
 ## 33.0.2
 - [patch] FS-1853 custom category button scrolls to Your Uploads if present [f42e14e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f42e14e)
 

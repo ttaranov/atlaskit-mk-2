@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,27 +21,27 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/calendar": "^4.0.0",
-    "@atlaskit/droplist": "^4.12.2",
-    "@atlaskit/field-base": "^8.2.1",
-    "@atlaskit/icon": "^10.12.1",
-    "@atlaskit/input": "^1.7.1",
-    "@atlaskit/layer": "^2.9.1",
-    "@atlaskit/select": "^0.3.0",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/calendar": "^5.0.0",
+    "@atlaskit/droplist": "^5.0.0",
+    "@atlaskit/field-base": "^9.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/input": "^2.0.0",
+    "@atlaskit/layer": "^3.0.0",
+    "@atlaskit/select": "^1.1.0",
+    "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
     "lodash.pick": "^4.4.0",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/field-text": "^4.2.1",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/field-text": "^5.0.0",
     "enzyme": "^3.3.0",
-    "react-dom": "15.6.0 - 16.2.0",
-    "react-test-renderer": "^16.2.0"
+    "react-dom": "^16.3.0",
+    "react-test-renderer": "^16.3.0"
   }
 }

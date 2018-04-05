@@ -1,13 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import packageResolver from '../../utils/packageResolver';
-import * as fs from '../../utils/fs';
-import styled, { css } from 'styled-components';
-import type { File } from '../../types';
+import styled from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
-import Loading from '../../components/Loading';
 import qs from 'query-string';
+import packageResolver from '../../utils/packageResolver';
+import * as fs from '../../utils/fs';
+import type { File } from '../../types';
+import Loading from '../../components/Loading';
 
 const Content = styled.div`
   flex: 1 1 auto;
@@ -58,7 +58,7 @@ export default class ExamplesIFrame extends Component<{}, State> {
   }
 
   render() {
-    let { examples, packageId, exampleId } = packageResolver(
+    const { examples, packageId, exampleId } = packageResolver(
       this.state.groupId,
       this.state.packageId,
       this.state.exampleId,
