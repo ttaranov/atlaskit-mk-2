@@ -209,8 +209,13 @@ export default class AbstractTree {
     }
 
     // Replace any forced newline escapes in the text with actual newlines
-    // Regex will look for any instances if \n but NOT \\n (hardbreak)
-    const replaced = str.replace(/([^\\]*)\\n/g, '$1\n');
+    // Regex will look for any instances of \n but NOT \\n (hardbreak followed by 'n')
+    //
+    // Simulate a negative lookbehind since JS doesn't currently support it
+    // https://stackoverflow.com/a/641432
+    //
+    // const replaced = str.replace(/(?<!\\)\\n/g, '$1\n');
+    const replaced = str.replace(/([\\])?\\n/g, ($0, $1) => ($1 ? $0 : '\n'));
 
     const lines = replaced.split(NEWLINE);
     let textContainer: Array<string | PMNode> = [];
