@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState } from 'prosemirror-state';
+import { isColumnSelected, selectColumn } from 'prosemirror-utils';
 import { Command } from '../../../../../types';
 import {
   checkIfHeaderColumnEnabled,
@@ -20,21 +20,14 @@ export interface Props {
   editorView: EditorView;
   tableElement?: HTMLElement;
   isTableHovered: boolean;
-  checkIfSelected: (column: number, state: EditorState) => boolean;
-  selectColumn: (column: number) => Command;
-  insertColumn: (column: number) => void;
+  insertColumn: (column: number) => Command;
   hoverColumn: (column: number) => Command;
   resetHoverSelection: Command;
 }
 
 export default class ColumnControls extends Component<Props, any> {
   render() {
-    const {
-      editorView: { state },
-      tableElement,
-      checkIfSelected,
-      isTableHovered,
-    } = this.props;
+    const { editorView: { state }, tableElement, isTableHovered } = this.props;
     if (!tableElement) {
       return null;
     }
@@ -44,7 +37,7 @@ export default class ColumnControls extends Component<Props, any> {
 
     for (let i = 0, len = cols.length; i < len; i++) {
       const className =
-        checkIfSelected(i, state) || isTableHovered ? 'active' : '';
+        isColumnSelected(i)(state.selection) || isTableHovered ? 'active' : '';
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
@@ -64,8 +57,7 @@ export default class ColumnControls extends Component<Props, any> {
             i === 0
           ) && (
             <InsertColumnButton
-              insertColumn={this.props.insertColumn}
-              index={i + 1}
+              onClick={() => this.insertColumn(i + 1)}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           )}
@@ -86,7 +78,7 @@ export default class ColumnControls extends Component<Props, any> {
 
   private selectColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;
-    this.props.selectColumn(column)(state, dispatch);
+    dispatch(selectColumn(column)(state.tr));
   };
 
   private hoverColumn = (column: number) => {
@@ -97,5 +89,10 @@ export default class ColumnControls extends Component<Props, any> {
   private resetHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
     this.props.resetHoverSelection(state, dispatch);
+  };
+
+  private insertColumn = (column: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.insertColumn(column)(state, dispatch);
   };
 }

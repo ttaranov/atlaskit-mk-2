@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState } from 'prosemirror-state';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
@@ -16,17 +15,11 @@ export interface Props {
   tableElement?: HTMLElement;
   isTableHovered?: boolean;
   resetHoverSelection?: Command;
-  selectTable?: Command;
   hoverTable?: Command;
-  selectRow?: (row: number) => Command;
   hoverRow?: (row: number) => Command;
-  selectColumn?: (column: number) => Command;
   hoverColumn?: (column: number) => Command;
-  checkIfTableSelected?: (state: EditorState) => boolean;
-  checkIfColumnSelected?: (column: number, state: EditorState) => boolean;
-  checkIfRowSelected?: (row: number, state: EditorState) => boolean;
-  insertColumn?: (column: number) => void;
-  insertRow?: (row: number) => void;
+  insertColumn?: (column: number) => Command;
+  insertRow?: (row: number) => Command;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -37,12 +30,8 @@ export default class TableFloatingControls extends Component<Props, State> {
   render() {
     const {
       editorView,
-      selectTable,
-      selectRow,
       hoverRow,
       resetHoverSelection,
-      checkIfTableSelected,
-      checkIfRowSelected,
       tableElement,
       insertColumn,
       insertRow,
@@ -59,8 +48,6 @@ export default class TableFloatingControls extends Component<Props, State> {
         <CornerControls
           editorView={editorView}
           tableElement={tableElement}
-          checkIfSelected={checkIfTableSelected!}
-          selectTable={selectTable!}
           insertColumn={insertColumn!}
           insertRow={insertRow!}
           hoverTable={hoverTable!}
@@ -71,9 +58,7 @@ export default class TableFloatingControls extends Component<Props, State> {
         <RowControls
           editorView={editorView}
           tableElement={tableElement}
-          checkIfSelected={checkIfRowSelected!}
           isTableHovered={isTableHovered!}
-          selectRow={selectRow!}
           insertRow={insertRow!}
           hoverRow={hoverRow!}
           resetHoverSelection={resetHoverSelection!}

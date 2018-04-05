@@ -16,6 +16,7 @@ pipelines:
             - bolt install --pure-lockfile
             - (cd build/ci-scripts && yarn stop-if-older-build)
             - yarn build
+            - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
             # Disabled until we get rid of the race condition in Landkid
             # - yarn lint
             # - yarn typecheck
@@ -33,6 +34,7 @@ pipelines:
           - source ./build-setup.sh
           - bolt install --pure-lockfile
           - yarn build
+          - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
           - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
           - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
           - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint

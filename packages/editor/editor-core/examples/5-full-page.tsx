@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+import { akColorN300 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -10,11 +10,9 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  macroProvider,
+  extensionProvider,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -37,7 +35,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN80};
+    color: ${akColorN300};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -106,16 +104,16 @@ export type Props = {};
 export type State = { disabled: boolean };
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({
+  emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
   }) as Promise<EmojiProvider>,
-  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
-    taskDecisionStoryData.getMockTaskDecisionResource(),
+    taskDecision.getMockTaskDecisionResource(),
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  macroProvider: Promise.resolve(macroProvider),
+  extensionProvider: Promise.resolve(extensionProvider),
 };
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
@@ -152,6 +150,7 @@ export default class Example extends React.Component<Props, State> {
                 allowBackgroundColor: true,
                 allowHeaderRow: true,
                 allowHeaderColumn: true,
+                permittedLayouts: 'all',
               }}
               allowJiraIssue={true}
               allowUnsupportedContent={true}

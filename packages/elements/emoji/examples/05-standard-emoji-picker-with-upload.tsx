@@ -7,7 +7,7 @@ import {
   getEmojiResourceWithStandardAndAtlassianEmojis,
   loggedUser,
   lorem,
-} from '../src/support/story-data';
+} from '../example-helpers';
 import { onSelection } from '../example-helpers/index';
 import { EmojiProvider } from '../src/api/EmojiResource';
 

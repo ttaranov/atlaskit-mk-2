@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 11.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 10.13.0
 - [minor] Add indeterminate checkbox icon [27f4e40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27f4e40)
 

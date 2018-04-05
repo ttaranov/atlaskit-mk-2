@@ -1,8 +1,7 @@
 // @flow
 
 import React, { type Node } from 'react';
-import PropTypes from 'prop-types';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';

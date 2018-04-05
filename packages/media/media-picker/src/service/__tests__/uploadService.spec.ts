@@ -16,6 +16,7 @@ createHasherSpy.mockImplementation(() => {
 });
 
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
+import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { UploadService } from '../uploadService';
 import { AuthProvider } from '@atlaskit/media-core';
 
@@ -331,6 +332,9 @@ describe('UploadService', () => {
       (getPreviewModule.getPreviewFromBlob as any) = jest
         .fn()
         .mockReturnValue(Promise.resolve());
+      (getPreviewFromVideo.getPreviewFromVideo as any) = jest
+        .fn()
+        .mockReturnValue(Promise.resolve());
 
       const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
         collection: '',
@@ -395,6 +399,17 @@ describe('UploadService', () => {
       return filesAddedPromise.then(() => {
         expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
       });
+    });
+
+    it('should emit file-preview-update for video files', async () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
+
+      uploadService.addFile(file as File);
+      await filesAddedPromise;
+
+      expect(getPreviewFromVideo.getPreviewFromVideo).toHaveBeenCalledTimes(1);
+      expect(getPreviewFromVideo.getPreviewFromVideo).toBeCalledWith(file);
     });
   });
 
@@ -554,6 +569,7 @@ describe('UploadService', () => {
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
+      console.error = jest.fn();
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -573,6 +589,7 @@ describe('UploadService', () => {
           },
         }),
       );
+      expect(console.error).toBeCalled();
     });
   });
 

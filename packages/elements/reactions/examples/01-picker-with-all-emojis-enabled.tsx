@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ReactionPicker } from '../src';
-import { storyData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 import debug, { enableLogger } from '../src/util/logger';
 import { EmojiProvider } from '@atlaskit/emoji';
 
-const { getEmojiResource } = storyData;
+const { getEmojiResource } = emoji.storyData;
 
 export default function Example() {
   enableLogger(true);

@@ -12,6 +12,9 @@ import {
   ServiceTaskResponse,
   Task,
   TaskResponse,
+  ServiceTaskState,
+  BaseItem,
+  TaskState,
 } from '../types';
 import { isServiceDecision, isServiceTask } from '../type-helpers';
 
@@ -76,6 +79,18 @@ export const convertServiceTaskToTask = (serviceTask: ServiceTask): Task => {
     creationDate: new Date(creationDate),
     lastUpdateDate: new Date(lastUpdateDate),
     content: JSON.parse(contentAsFabricDocument),
+    ...other,
+  };
+};
+
+export const convertServiceTaskStateToBaseItem = (
+  serviceTaskInfo: ServiceTaskState,
+): BaseItem<TaskState> => {
+  const { lastUpdateDate, ...other } = serviceTaskInfo;
+
+  return {
+    type: 'TASK',
+    lastUpdateDate: new Date(lastUpdateDate),
     ...other,
   };
 };

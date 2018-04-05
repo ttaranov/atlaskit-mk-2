@@ -1,4 +1,3 @@
-import { Promise } from 'es6-promise';
 import { EmojiId } from '@atlaskit/emoji';
 
 import { equalEmojiId, findIndex } from './internal/helpers';

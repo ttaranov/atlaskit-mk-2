@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 12.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 11.0.7
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
 ## 11.0.6
 - [patch] Release first version of image viewer for Media Viewer Next Generation [dd1893a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd1893a)
 

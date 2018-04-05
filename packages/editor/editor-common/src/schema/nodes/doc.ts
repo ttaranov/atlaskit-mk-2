@@ -1,5 +1,4 @@
 import { NodeSpec } from 'prosemirror-model';
-import { nodes } from 'prosemirror-schema-basic';
 
 // Nodes
 import { Definition as Panel } from './panel';
@@ -75,6 +74,7 @@ export type TableCellContent = Array<
   | Heading
   | CodeBlock
   | MediaGroup
+  | MediaSingle
   | ApplicationCard
   | DecisionList
   | TaskList
@@ -136,7 +136,7 @@ export type InlineLinkText = Text & MarksObject<Link>;
 /**
  * @name code_inline_node
  */
-export type InlineCode = Text & MarksObject<Code | Link>;
+export type InlineCode = Text & MarksObject<Code>;
 
 /**
  * @name atomic_inline_node
@@ -163,4 +163,6 @@ export interface Doc {
   content: TopLevel;
 }
 
-export const doc: NodeSpec = nodes.doc;
+export const doc: NodeSpec = {
+  content: 'block+',
+};

@@ -160,13 +160,13 @@ describe('codeBlock - keymaps', () => {
               describe('when cursor is in the first cell of the table', () => {
                 it('creates a new paragraph above the table', () => {
                   const { editorView } = editor(
-                    doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+                    doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
                   );
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).toEqualDocument(
-                    doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+                    doc(p(''), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
                   );
                   editorView.destroy();
                 });
@@ -369,13 +369,13 @@ describe('codeBlock - keymaps', () => {
             describe('when cursor is in the last cell of the table', () => {
               it('creates a new paragraph below the table', () => {
                 const { editorView } = editor(
-                  doc(table(tr(tdEmpty, tdEmpty, tdCursor))),
+                  doc(table()(tr(tdEmpty, tdEmpty, tdCursor))),
                 );
 
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).toEqualDocument(
-                  doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')),
+                  doc(table()(tr(tdEmpty, tdEmpty, tdEmpty)), p('')),
                 );
                 editorView.destroy();
               });

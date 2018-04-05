@@ -1,5 +1,15 @@
 # @atlaskit/media-image
 
+## 26.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 25.2.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 25.1.8
+
+## 25.1.7
+
 ## 25.1.6
 - [patch] Fix typo and potential memory leak [6ecc601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ecc601)
 

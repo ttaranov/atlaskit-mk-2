@@ -4,14 +4,14 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
 import { selectParentNodeOfType } from 'prosemirror-utils';
-import { MacroProvider } from '../../../macro';
+import { ExtensionProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
-import { ExtensionHandlers } from '../../../../types';
+import { ExtensionHandlers } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;
-  macroProvider?: Promise<MacroProvider>;
+  extensionProvider?: Promise<ExtensionProvider>;
   node: PMNode;
   setExtensionElement: (
     element: HTMLElement | null,
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 export interface State {
-  macroProvider?: MacroProvider;
+  extensionProvider?: ExtensionProvider;
 }
 
 export default class ExtensionComponent extends Component<Props, State> {
@@ -33,9 +33,9 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { macroProvider } = this.props;
-    if (macroProvider) {
-      macroProvider.then(this.handleMacroProvider);
+    const { extensionProvider } = this.props;
+    if (extensionProvider) {
+      extensionProvider.then(this.handleExtensionProvider);
     }
   }
 
@@ -44,19 +44,19 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { macroProvider } = nextProps;
+    const { extensionProvider } = nextProps;
 
-    if (this.props.macroProvider !== macroProvider) {
-      if (macroProvider) {
-        macroProvider.then(this.handleMacroProvider);
+    if (this.props.extensionProvider !== extensionProvider) {
+      if (extensionProvider) {
+        extensionProvider.then(this.handleExtensionProvider);
       } else {
-        this.setState({ macroProvider });
+        this.setState({ extensionProvider });
       }
     }
   }
 
   render() {
-    const { macroProvider } = this.state;
+    const { extensionProvider } = this.state;
     const { node, handleContentDOMRef } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
@@ -66,7 +66,7 @@ export default class ExtensionComponent extends Component<Props, State> {
         return (
           <Extension
             node={node}
-            macroProvider={macroProvider}
+            extensionProvider={extensionProvider}
             onClick={this.handleClick}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
@@ -78,7 +78,7 @@ export default class ExtensionComponent extends Component<Props, State> {
         return (
           <InlineExtension
             node={node}
-            macroProvider={macroProvider}
+            extensionProvider={extensionProvider}
             onClick={this.handleClick}
           >
             {extensionHandlerResult}
@@ -89,9 +89,9 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   }
 
-  private handleMacroProvider = (macroProvider: MacroProvider) => {
+  private handleExtensionProvider = (extensionProvider: ExtensionProvider) => {
     if (this.mounted) {
-      this.setState({ macroProvider });
+      this.setState({ extensionProvider });
     }
   };
 

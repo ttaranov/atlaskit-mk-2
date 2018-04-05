@@ -38,7 +38,7 @@ export {
 export { keyCodes } from './keymaps';
 export { ReactEditorView } from './create-editor';
 export { getDefaultPluginsList } from './create-editor/create-plugins-list';
-export { EditorPlugin, EditorProps, EditorInstance, ExtensionHandlers } from './types';
+export { EditorPlugin, EditorProps, EditorInstance } from './types';
 export { default as EditorActions } from './actions';
 
 // Useless exports
@@ -48,7 +48,11 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
+export {
+  ExtensionProvider,
+  ExtensionAttributes,
+  ExtensionType,
+} from './plugins/macro';
 
 export { CollabEditProvider } from './plugins/collab-edit';
 

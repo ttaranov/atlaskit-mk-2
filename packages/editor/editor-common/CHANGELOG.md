@@ -1,5 +1,51 @@
 # @atlaskit/editor-common
 
+## 8.1.23
+
+## 8.1.22
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 8.1.21
+
+## 8.1.20
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
+## 8.1.19
+- [patch] make tableCell/tableHeader attrs object optional [a6e1882](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e1882)
+
+## 8.1.18
+- [patch] ED-4094: fix ADF generation for inline code [ee9c394](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee9c394)
+
+## 8.1.17
+- [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
+
+## 8.1.16
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
+## 8.1.15
+
+## 8.1.14
+- [patch] Remove dependency on prosemirror-schema-basic from editor-common [a1ed03a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1ed03a)
+
+## 8.1.13
+
+## 8.1.12
+
+## 8.1.11
+
+## 8.1.10
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 8.1.9
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 8.1.8
+- [patch] ED-3990: No longer allow bodiedExtensions in table cells in ADF [c02a81a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02a81a)
+
+## 8.1.7
+
+## 8.1.6
+
 ## 8.1.5
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)

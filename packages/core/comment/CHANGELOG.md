@@ -1,5 +1,14 @@
 # @atlaskit/comment
 
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 2.8.2
+
+## 2.8.1
+
+## 2.8.0
+
 ## 2.7.9
 
 ## 2.7.8

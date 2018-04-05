@@ -4,9 +4,17 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import { TaskDecisionProvider } from '../src/types';
-import { getMockTaskDecisionResource } from '../src/support/story-data';
-import { MockTaskDecisionResourceConfig } from '../src/support/support-types';
-import MockTaskDecisionResource from '../src/support/MockTaskDecisionResource';
+import {
+  MockTaskDecisionResource,
+  MockTaskDecisionResourceConfig,
+  taskDecision,
+} from '@atlaskit/util-data-test';
+
+export const {
+  getMockTaskDecisionResource,
+  document,
+  getParticipants,
+} = taskDecision;
 
 export const createProviders = (
   options?: MockTaskDecisionResourceConfig,

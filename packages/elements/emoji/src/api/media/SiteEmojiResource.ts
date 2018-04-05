@@ -19,6 +19,7 @@ import {
   isMediaRepresentation,
   isMediaEmoji,
   convertImageToMediaRepresentation,
+  isLoadedMediaEmoji,
 } from '../../type-helpers';
 import {
   MediaApiData,
@@ -192,8 +193,13 @@ export default class SiteEmojiResource {
       });
   }
 
+  /**
+   * Calls to site-scoped EmojiResource to delete emoji
+   * @param emoji media emoji to delete
+   * @returns Promise.resolve() if success and Promise.reject() for failure
+   */
   deleteEmoji(emoji: EmojiDescription): Promise<boolean> {
-    if (!isMediaEmoji(emoji)) {
+    if (!isMediaEmoji(emoji) && !isLoadedMediaEmoji(emoji)) {
       return Promise.reject(false);
     }
     const path = `${emoji.id}`;

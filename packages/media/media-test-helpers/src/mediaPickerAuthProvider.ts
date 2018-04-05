@@ -1,9 +1,9 @@
-import { Component } from 'react';
-import { AuthContext } from '@atlaskit/media-core';
+import * as React from 'react';
+import { Auth, AuthContext } from '@atlaskit/media-core';
+
+const cachedAuths: { [key: string]: Promise<Auth> } = {};
 
 type Access = { [resource: string]: string[] };
-
-const tokenCache: { [cacheKey: string]: any } = {};
 const accessUrns: { [key: string]: Access } = {
   MediaServicesSample: {
     'urn:filestore:collection:MediaServicesSample': ['read', 'insert'],
@@ -20,40 +20,45 @@ const accessUrns: { [key: string]: Access } = {
   },
 };
 
-export const mediaPickerAuthProvider = (component: Component<any, any>) => (
-  context?: AuthContext,
-) => {
+const requestAuthProvider = async (
+  authEnvironment: string,
+  collectionName: string,
+): Promise<Auth> => {
+  const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
+  const body = JSON.stringify({
+    access: accessUrns[collectionName],
+  });
+  const headers = new Headers();
+
+  headers.append('Content-Type', 'application/json; charset=utf-8');
+  headers.append('Accept', 'text/plain, */*; q=0.01');
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body,
+    headers,
+    credentials: 'include',
+  });
+
+  return response.json();
+};
+
+export const mediaPickerAuthProvider = (
+  component: React.Component<any, any>,
+) => (context: AuthContext) => {
   const collectionName =
     (context && context.collectionName) || 'MediaServicesSample';
   const authEnvironment =
     component.state.authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;
 
-  if (tokenCache[cacheKey]) {
-    return Promise.resolve(tokenCache[cacheKey]);
-  } else {
-    const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
-    const body = JSON.stringify({
-      access: accessUrns[collectionName],
-    });
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json; charset=utf-8');
-    headers.append('Accept', 'text/plain, */*; q=0.01');
-
-    return fetch(url, {
-      method: 'POST',
-      body,
-      headers,
-      credentials: 'include',
-    })
-      .then(r => r.json())
-      .then(data => {
-        tokenCache[cacheKey] = data;
-
-        return tokenCache[cacheKey];
-      });
+  if (!cachedAuths[cacheKey]) {
+    cachedAuths[cacheKey] = requestAuthProvider(
+      authEnvironment,
+      collectionName,
+    );
   }
+  return cachedAuths[cacheKey];
 };
 
 export const defaultMediaPickerAuthProvider = () => {

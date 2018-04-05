@@ -1,5 +1,16 @@
 # @atlaskit/global-search
 
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 1.7.0
+- [minor] Show empty state when no results were found at all [398901a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/398901a)
+
+## 1.6.0
+
+## 1.5.0
+- [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)
+
 ## 1.4.0
 - [minor] Improve rendering of Jira issues [7f28452](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f28452)
 

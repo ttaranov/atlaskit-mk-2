@@ -71,6 +71,7 @@ export interface State {
   uploadErrorMessage?: string;
   uploadSupported: boolean;
   uploading: boolean;
+  emojiToDelete?: EmojiDescription;
   // the picker is considered loaded when at least 1 set of emojis have loaded
   loading: boolean;
   showUploadButton: boolean;
@@ -279,7 +280,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
     const { query, searchEmojis } = this.state;
-
     // change the category of each of the featured emoji
     const recategorised = frequentEmoji.map(emoji => {
       const clone = JSON.parse(JSON.stringify(emoji));
@@ -462,6 +462,24 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
+  private onTriggerDelete = (emojiId: EmojiId, emoji: EmojiDescription) => {
+    this.setState({ emojiToDelete: emoji });
+  };
+
+  private onCloseDelete = () => {
+    this.setState({ emojiToDelete: undefined });
+  };
+
+  private onDeleteEmoji = (emoji: EmojiDescription): Promise<boolean> => {
+    const { query, selectedTone } = this.state;
+    return this.props.emojiProvider.deleteSiteEmoji(emoji).then(success => {
+      if (success) {
+        this.updateEmojis(query, { skinTone: selectedTone });
+      }
+      return success;
+    });
+  };
+
   private scrollToEndOfList = () => {
     const emojiPickerList = this.refs.emojiPickerList as EmojiPickerList;
     if (emojiPickerList) {
@@ -524,6 +542,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       selectedEmoji,
       selectedTone,
       toneEmoji,
+      emojiToDelete,
       uploading,
       uploadErrorMessage,
       uploadSupported,
@@ -547,13 +566,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         />
         <EmojiPickerList
           emojis={filteredEmojis}
-          currentUser={
-            emojiProvider.getCurrentUser
-              ? emojiProvider.getCurrentUser()
-              : undefined
-          }
+          currentUser={emojiProvider.getCurrentUser()}
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
+          onEmojiDelete={this.onTriggerDelete}
           onCategoryActivated={this.onCategoryActivated}
           onMouseLeave={this.onEmojiPickerMouseLeave}
           onMouseEnter={this.onEmojiPickerMouseEnter}
@@ -570,10 +586,13 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           onToneSelected={this.onToneSelected}
           toneEmoji={toneEmoji}
           uploading={uploading}
+          emojiToDelete={emojiToDelete}
           uploadErrorMessage={uploadErrorMessage}
           uploadEnabled={uploadSupported && showUploadButton && !uploading}
           onUploadEmoji={this.onUploadEmoji}
           onUploadCancelled={this.onUploadCancelled}
+          onDeleteEmoji={this.onDeleteEmoji}
+          onCloseDelete={this.onCloseDelete}
           onFileChosen={this.onFileChosen}
           onOpenUpload={this.onOpenUpload}
         />

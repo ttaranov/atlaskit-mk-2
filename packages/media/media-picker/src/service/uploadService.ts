@@ -2,7 +2,7 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, MediaType } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
@@ -11,6 +11,7 @@ import { MediaFile, validateMediaFile, PublicMediaFile } from '../domain/file';
 import { SmartMediaProgress } from '../domain/progress';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
+import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 
 import { createHasher } from './hashing/hasherCreator';
 
@@ -320,12 +321,18 @@ export class UploadService {
 
         const files = resumableFiles.map(resumableFile => {
           const file = this.mapResumableFileToMediaFile(resumableFile);
-          const mediaType = file.type.match(/^image\//) ? 'image' : 'unknown';
-
+          const mediaType = this.getMediaTypeFromFile(resumableFile.file);
           // TODO MSW-396 Replace this check after RFC from ticket has been decided
           // https://product-fabric.atlassian.net/browse/MSW-396
           if (file.size < maxFileSizeForPreview && mediaType === 'image') {
             getPreviewFromBlob(resumableFile.file, mediaType).then(preview => {
+              this.emit('file-preview-update', {
+                file,
+                preview,
+              });
+            });
+          } else if (mediaType === 'video') {
+            getPreviewFromVideo(resumableFile.file).then(preview => {
               this.emit('file-preview-update', {
                 file,
                 preview,
@@ -349,6 +356,17 @@ export class UploadService {
       },
     );
   };
+
+  private getMediaTypeFromFile(file: File): MediaType {
+    const { type } = file;
+    if (type.match(/^image\//)) {
+      return 'image';
+    } else if (type.match(/^video\//)) {
+      return 'video';
+    }
+
+    return 'unknown';
+  }
 
   private onChunkingComplete = (resumableFile: ResumableFile): void => {
     // By default the callback of a chunk aborts all uploads and clears the chunk array in case of error.

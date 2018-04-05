@@ -6,6 +6,7 @@ import EditorActions from '../actions';
 import {
   Transformer,
   ContextIdentifierProvider,
+  ExtensionHandlers,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
@@ -21,10 +22,9 @@ import { AnalyticsHandler } from '../analytics';
 import { ImageUploadHandler } from '../plugins/image-upload';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
-import { MacroProvider } from '../plugins/macro/types';
+import { ExtensionProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
-import { ExtensionHandlers } from '../index';
 
 export type EditorAppearance =
   | 'message'
@@ -92,7 +92,7 @@ export interface EditorProps {
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
-  macroProvider?: Promise<MacroProvider>;
+  extensionProvider?: Promise<ExtensionProvider>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 

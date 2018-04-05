@@ -2,11 +2,12 @@ import * as React from 'react';
 import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import DecisionItem from '../src/components/DecisionItem';
-import { document, getParticipants } from '../src/support/story-data';
 import {
   MessageContainer,
   SidebarContainer,
   dumpRef,
+  document,
+  getParticipants,
 } from '../example-helpers/story-utils';
 
 export default () => (

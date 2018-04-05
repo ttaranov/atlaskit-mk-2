@@ -12,11 +12,9 @@ import {
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  macroProvider,
+  extensionProvider,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Spinner from '@atlaskit/spinner';
 
@@ -32,7 +30,6 @@ import {
   DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
-import { EmojiProvider } from '@atlaskit/emoji';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -85,14 +82,14 @@ const SaveAndCancelButtons = props => (
 );
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({
+  emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
-  }) as Promise<EmojiProvider>,
-  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  }),
+  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  macroProvider: Promise.resolve(macroProvider),
+  extensionProvider: Promise.resolve(extensionProvider),
   taskDecisionProvider: Promise.resolve(
-    taskDecisionStoryData.getMockTaskDecisionResource(),
+    taskDecision.getMockTaskDecisionResource(),
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
 };
@@ -175,7 +172,7 @@ class Example extends Component<ExampleProps, ExampleState> {
                     allowColumnResizing: true,
                     allowMergeCells: true,
                     allowBackgroundColor: true,
-                    allowNumberColumn: true
+                    allowNumberColumn: true,
                   }}
                   allowJiraIssue={true}
                   allowUnsupportedContent={true}

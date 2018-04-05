@@ -1,5 +1,45 @@
 # @atlaskit/renderer
 
+## 15.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 14.0.0
+- [major] Generic Text Serializer [1549347](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1549347)
+
+## 13.3.4
+
+## 13.3.3
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
+## 13.3.2
+
+## 13.3.1
+
+## 13.3.0
+
+## 13.2.0
+- [minor] stop creating mediaContext in MediaCard component [ad8c3c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad8c3c0)
+
+## 13.1.0
+
+## 13.0.17
+
+## 13.0.16
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 13.0.15
+
+## 13.0.14
+- [patch] Prevent CodeBlocks from overflowing their container [50cc975](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50cc975)
+
+## 13.0.13
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 13.0.12
+
+## 13.0.11
+- [patch] Adds styling for unknown blocks [5cdc63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cdc63c)
+
 ## 13.0.10
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)

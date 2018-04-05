@@ -20,7 +20,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should serialized', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
             tr(td({})(p('c11')), td({})(p('c12')), td({})(p('c13'))),
             tr(td({})(p('c21')), td({})(p('c22')), td({})(p('c23'))),
@@ -32,7 +32,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should serialized table correctly', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
             tr(td({})(p('c11')), td({})(p('c12')), td({})(p('c13'))),
             tr(td({})(p('c21')), td({})(p('c22')), td({})(p('c23'))),
@@ -48,7 +48,7 @@ describe('BitbucketTransformer: serializer', () => {
         markdownSerializer.serialize(
           doc(
             p('before'),
-            table(
+            table()(
               tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
               tr(td({})(p('c11')), td({})(p('c12')), td({})(p('c13'))),
               tr(td({})(p('c21')), td({})(p('c22')), td({})(p('c23'))),
@@ -64,7 +64,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should serialized even if there is only header row', () => {
       expect(
         markdownSerializer.serialize(
-          table(tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))))(
+          table()(tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))))(
             defaultSchema,
           ),
         ),
@@ -74,7 +74,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should serialized even header and cells are empty', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p()), th({})(p()), th({})(p())),
             tr(td({})(p()), td({})(p()), td({})(p())),
           )(defaultSchema),
@@ -85,7 +85,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should escape pipe character in the cells', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1 | H1')), th({})(p('h2')), th({})(p('h3'))),
             tr(td({})(p('c11 | C11')), td({})(p('c12')), td({})(p('c13'))),
             tr(td({})(p('c21')), td({})(p('c22')), td({})(p('c23'))),
@@ -99,7 +99,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should preserve inline marks', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1', strong('HH'))), th({})(p('h2')), th({})(p('h3'))),
             tr(
               td({})(p('c11', strong('CC'))),
@@ -116,7 +116,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should preserve mentions correctly', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
             tr(
               td({})(
@@ -135,7 +135,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should separate content of multiple blocks with space', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
             tr(
               td({})(p('c111'), p('c112')),
@@ -152,7 +152,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('should separate content of list with space', () => {
       expect(
         markdownSerializer.serialize(
-          table(
+          table()(
             tr(th({})(p('h1')), th({})(p('h2')), th({})(p('h3'))),
             tr(
               td({})(ol(li(p('l1')), li(p('l2')))),
@@ -170,7 +170,7 @@ describe('BitbucketTransformer: serializer', () => {
       expect(
         markdownSerializer.serialize(
           doc(
-            table(
+            table()(
               tr(td({})(p('c11')), td({})(p('c12')), td({})(p('c13'))),
               tr(td({})(p('c21')), td({})(p('c22')), td({})(p('c23'))),
             ),

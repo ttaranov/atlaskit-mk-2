@@ -9,6 +9,8 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import SearchError from './SearchError';
+import EmptyState from './EmptyState';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -108,12 +110,27 @@ const renderPeople = (results: Result[], query: string) => (
   </AkNavigationItemGroup>
 );
 
-function take(array: Array<any>, n: number) {
+const renderEmptyState = (query: string) => (
+  <>
+    <EmptyState />
+    {searchJiraItem(query)}
+    {searchConfluenceItem(query)}
+    {searchPeopleItem()}
+  </>
+);
+
+function take<T>(array: Array<T>, n: number) {
   return array.slice(0, n);
+}
+
+function isEmpty<T>(array: Array<T>) {
+  return array.length === 0;
 }
 
 export interface Props {
   query: string;
+  isError: boolean;
+  retrySearch();
   recentlyViewedItems: Result[];
   recentResults: Result[];
   jiraResults: Result[];
@@ -126,6 +143,8 @@ export interface Props {
 export default function searchResults(props: Props) {
   const {
     query,
+    isError,
+    retrySearch,
     recentlyViewedItems,
     recentResults,
     jiraResults,
@@ -133,8 +152,20 @@ export default function searchResults(props: Props) {
     peopleResults,
   } = props;
 
+  if (isError) {
+    return <SearchError onRetryClick={retrySearch} />;
+  }
+
   if (query.length < 2) {
     return renderRecent(take(recentlyViewedItems, 10));
+  }
+
+  if (
+    [recentResults, jiraResults, confluenceResults, peopleResults].every(
+      isEmpty,
+    )
+  ) {
+    return renderEmptyState(query);
   }
 
   return [
