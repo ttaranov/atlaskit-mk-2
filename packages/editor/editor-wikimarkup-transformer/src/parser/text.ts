@@ -192,15 +192,18 @@ export function findTextMatches(text: string): TextMatch[] {
           inner: matchIndex + grep.length,
         };
       } else {
-        output.push({
-          effect: name,
-          attrs: {},
-          startPos: startPos!,
-          endPos: {
-            inner: matchIndex,
-            outer: matchIndex + grep.length,
-          },
-        });
+        // The mark should have content to apply to - e.g. skip over '--' but not '-f-'
+        if (matchIndex !== startPos!.inner) {
+          output.push({
+            effect: name,
+            attrs: {},
+            startPos: startPos!,
+            endPos: {
+              inner: matchIndex,
+              outer: matchIndex + grep.length,
+            },
+          });
+        }
       }
 
       matchCount++;

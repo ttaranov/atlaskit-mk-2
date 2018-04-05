@@ -37,15 +37,6 @@ Object {
       ],
       "type": "heading",
     },
-    Object {
-      "content": Array [
-        Object {
-          "text": "      ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
   ],
   "type": "doc",
 }

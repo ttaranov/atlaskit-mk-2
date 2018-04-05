@@ -37,7 +37,18 @@ const TABLE_CELL_REGEXP = /([|]+)([^|]*)/g;
 // E.g. foo || -> [ "foo ||", "foo " ] - Match content from a multiline row up to the cell line
 const NEWLINE_CELL_REGEXP = /^([^|]*)[|]/;
 
-const HORIZONTAL_RULE = '----';
+// E.g. \\
+const HARDBREAK_REGEXP = /^\s*\\\\/;
+
+// E.g. "      "
+const EMPTY_LINE_REGEXP = /^\s*$/;
+
+// E.g. '-----' or '----'
+const HORIZONTAL_RULE_REGEXP = /^-----?$/;
+
+// E.g. '---' or '--'
+const NON_HORIZONTAL_RULE_REGEXP = /^---?$/;
+
 const NEWLINE = '\n';
 
 export default class AbstractTree {
@@ -154,11 +165,18 @@ export default class AbstractTree {
   /**
    * Combine text nodes with hardBreaks between them
    */
-  private buildTextNodes(lines: string[], useGreyText: boolean): PMNode[] {
+  private buildTextNodes(
+    lines: Array<string | PMNode>,
+    useGreyText: boolean,
+  ): PMNode[] {
     const { hardBreak } = this.schema.nodes;
     const output: PMNode[] = [];
 
     lines.forEach((line, index) => {
+      if (typeof line === 'object') {
+        return output.push(line);
+      }
+
       const textNodes = this.getTextWithMarks(line, useGreyText);
       output.push(...textNodes);
 
@@ -180,7 +198,7 @@ export default class AbstractTree {
     containerNodeType: NodeType | null,
     useGreyText: boolean,
   ): PMNode[] {
-    const { blockquote, paragraph } = this.schema.nodes;
+    const { blockquote, paragraph, hardBreak } = this.schema.nodes;
     const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
@@ -190,8 +208,11 @@ export default class AbstractTree {
       return output;
     }
 
-    const lines = str.split(NEWLINE);
-    let textContainer: string[] = [];
+    // Replace any forced newline escapes in the text with actual newlines
+    const replaced = str.replace(/\\n/g, '\n');
+
+    const lines = replaced.split(NEWLINE);
+    let textContainer: Array<string | PMNode> = [];
 
     const processAndEmptyStoredText = () => {
       if (textContainer.length) {
@@ -210,7 +231,8 @@ export default class AbstractTree {
     let builders: Array<Builder> = [];
     for (const line of lines) {
       // convert HORIZONTAL_RULE to rule
-      if (line === HORIZONTAL_RULE) {
+      const hr = line.match(HORIZONTAL_RULE_REGEXP);
+      if (hr) {
         processAndEmptyStoredText();
 
         const hrNode = getRuleNodeView(this.schema, containerNodeType);
@@ -220,7 +242,8 @@ export default class AbstractTree {
       }
 
       // empty line means the end of the paragraph
-      if (!line.length) {
+      const emptyLine = line.match(EMPTY_LINE_REGEXP);
+      if (!line.length || emptyLine) {
         processAndEmptyStoredText();
 
         // Close out any active builders
@@ -237,10 +260,15 @@ export default class AbstractTree {
         continue;
       }
 
-      const lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
+      // Lines with double/triple dash should just be converted to a single dash
+      const nonHr = line.match(NON_HORIZONTAL_RULE_REGEXP);
+      if (nonHr) {
+        textContainer.push('-');
+        continue;
+      }
 
       // search for headings
-      const headingMatches = lineUpdated.match(HEADING_REGEXP);
+      const headingMatches = line.match(HEADING_REGEXP);
       if (headingMatches) {
         processAndEmptyStoredText();
 
@@ -275,7 +303,7 @@ export default class AbstractTree {
       }
 
       // search for blockquote line
-      const lineBlockQuoteMatches = lineUpdated.match(BLOCKQUOTE_LINE_REGEXP);
+      const lineBlockQuoteMatches = line.match(BLOCKQUOTE_LINE_REGEXP);
       if (lineBlockQuoteMatches) {
         processAndEmptyStoredText();
 
@@ -290,7 +318,7 @@ export default class AbstractTree {
       }
 
       // search for lists
-      const listMatches = lineUpdated.match(LIST_REGEXP);
+      const listMatches = line.match(LIST_REGEXP);
       if (listMatches) {
         const [, /* discard */ style, content] = listMatches;
         let builder = builders.pop();
@@ -321,7 +349,7 @@ export default class AbstractTree {
       }
 
       // search for tables
-      const tableMatches = lineUpdated.match(TABLE_REGEXP);
+      const tableMatches = line.match(TABLE_REGEXP);
       if (tableMatches) {
         let builder = builders.pop();
         isBuilding = true;
@@ -338,8 +366,15 @@ export default class AbstractTree {
         }
 
         // Iterate over the cells
-        builder.add(this.getTableCells(lineUpdated, useGreyText));
+        builder.add(this.getTableCells(line, useGreyText));
         builders.push(builder);
+        continue;
+      }
+
+      // search for hard break
+      const hardBreakMatches = line.match(HARDBREAK_REGEXP);
+      if (hardBreakMatches) {
+        textContainer.push(hardBreak.create());
         continue;
       }
 
@@ -350,14 +385,14 @@ export default class AbstractTree {
         let additionalFields: any[] = [];
 
         if (builder instanceof TableBuilder) {
-          const matches = lineUpdated.match(NEWLINE_CELL_REGEXP);
+          const matches = line.match(NEWLINE_CELL_REGEXP);
           // If it doesn't have a closing cell line, the whole line is part of the content
-          content = (matches && matches[1]) || lineUpdated;
+          content = (matches && matches[1]) || line;
 
           // Get the other cells if any
-          additionalFields = this.getTableCells(lineUpdated, useGreyText);
+          additionalFields = this.getTableCells(line, useGreyText);
         } else {
-          content = lineUpdated;
+          content = line;
         }
 
         const contentNode = this.getTextWithMarks(content!, useGreyText);
@@ -369,7 +404,12 @@ export default class AbstractTree {
         continue;
       }
 
-      textContainer.push(lineUpdated);
+      // TODO process images/attachments
+      // TODO process {color} macro
+      // TODO process \\ hardBreak
+      // TODO process text effects and links
+
+      textContainer.push(line);
     }
 
     // If a block of content was the last item, make sure to push it

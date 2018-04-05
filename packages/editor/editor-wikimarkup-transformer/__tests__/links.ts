@@ -1,6 +1,7 @@
 import WikiMarkupTransformer from '../src';
 
-describe('JIRA wiki markup - Links', () => {
+// @TODO These aren't link tests..?
+describe.skip('JIRA wiki markup - Links', () => {
   const testCases: [string, string][] = [
     [
       'should find mentions in wiki markup',

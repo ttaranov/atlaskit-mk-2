@@ -1,10 +1,10 @@
-import { doc, hr, p, strong } from '@atlaskit/editor-test-helpers';
+import { doc, hardBreak, hr, p, strong } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from '../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
 // Nodes
 
-describe.skip('WikiMarkup Transformer', () => {
+describe('WikiMarkup Transformer', () => {
   describe('multiline', () => {
     const WIKI_NOTATION = `the first line
 and the second one
@@ -15,9 +15,13 @@ finally the third!`;
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        p('the first line'),
-        p('and the second one'),
-        p('finally the third!'),
+        p(
+          'the first line',
+          hardBreak(),
+          'and the second one',
+          hardBreak(),
+          'finally the third!',
+        ),
       ),
     );
   });
@@ -29,7 +33,7 @@ finally the third!`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p('the first line'), p('and the second one')),
+      doc(p('the first line', hardBreak(), '   and the second one')),
     );
   });
 
@@ -40,7 +44,7 @@ finally the third!`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p('the first line'), p('   second'), p(''), p('and the third')),
+      doc(p('the first line', hardBreak(), '   second'), p('and the third')),
     );
   });
 
@@ -51,7 +55,7 @@ finally the third!`;
       WIKI_NOTATION,
       defaultSchema,
       WIKI_NOTATION,
-      doc(p('the first line'), p(strong('bold line'), 'here')),
+      doc(p('the first line', hardBreak(), strong('bold line'), ' here')),
     );
   });
 
@@ -121,16 +125,16 @@ finally the third!`;
   });
 
   describe('line breaks', () => {
-    const WIKI_NOTATION = `the first line\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
-and the second one\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
-\\\\\\\\\\n\\
+    const WIKI_NOTATION = `the first line
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+and the second one
+\\\\
+\\\\
+\\\\
 finally the third!`;
 
     checkParseEncodeRoundTrips(
@@ -140,15 +144,17 @@ finally the third!`;
       doc(
         p(
           'the first line',
-          hr(),
-          hr(),
-          hr(),
-          hr(),
-          hr(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
           'and the second one',
-          hr(),
-          hr(),
-          hr(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
+          hardBreak(),
           'finally the third!',
         ),
       ),
