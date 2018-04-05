@@ -10509,9 +10509,9 @@ prosemirror-tables@^0.6.3:
     prosemirror-transform "^1.0.0"
     prosemirror-view "^1.0.0"
 
-prosemirror-transform@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.0.0.tgz#a4dc4dcdd3596043f95c576b4cd1dec6ea3785da"
+prosemirror-transform@1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.0.9.tgz#e6a7f8168588cff251cb6798bcb7f10e8402b5a7"
   dependencies:
     prosemirror-model "^1.0.0"
 
