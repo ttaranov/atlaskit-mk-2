@@ -63,23 +63,23 @@ describe('finalizeUploadMiddleware', () => {
   };
 
   it('should do nothing given unknown action', () => {
-    const { fetcher, authService, store, next } = setup();
+    const { fetcher, store, next } = setup();
     const action = {
       type: 'UNKNOWN',
     };
 
-    finalizeUploadMiddleware(fetcher, authService)(store)(next)(action);
+    finalizeUploadMiddleware(fetcher)(store)(next)(action);
 
     expect(store.dispatch).not.toBeCalled();
     expect(next).toBeCalledWith(action);
   });
 
   it('should send upload end event without metadata given fetch metadata param false', () => {
-    const { fetcher, authService, store, action } = setup({
+    const { fetcher, store, action } = setup({
       fetchMetadata: false,
     });
 
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(action => {
       expect(action).toEqual(
         sendUploadEvent({
           event: {
@@ -101,11 +101,11 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload end event with metadata given fetch metadata param true', () => {
-    const { fetcher, authService, store, action } = setup({
+    const { fetcher, store, action } = setup({
       fetchMetadata: true,
     });
 
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(action => {
       expect(action).toEqual(
         sendUploadEvent({
           event: {
@@ -125,11 +125,11 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload processing event with metadata given fetch metadata param true', () => {
-    const { fetcher, authService, store, action } = setup({
+    const { fetcher, store, action } = setup({
       fetchMetadata: true,
     });
 
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -148,11 +148,11 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload finalize ready event given auto finalize param false', () => {
-    const { fetcher, authService, store, action } = setup({
+    const { fetcher, store, action } = setup({
       autoFinalize: false,
     });
 
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -169,14 +169,14 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload error event given some error happens', () => {
-    const { fetcher, authService, store, action } = setup();
+    const { fetcher, store, action } = setup();
     const error = {
       message: 'some-error-message',
     };
 
     fetcher.copyFile.mockImplementation(() => Promise.reject(error));
 
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {

@@ -1,4 +1,4 @@
-import { AuthProvider, Context } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';

@@ -19,7 +19,6 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { Context } from '@atlaskit/media-core';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;

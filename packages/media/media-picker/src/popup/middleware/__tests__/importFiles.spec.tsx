@@ -227,34 +227,22 @@ describe('importFiles middleware', () => {
   });
 
   it('should call next dispatch if action is START_IMPORT', () => {
-    const {
-      eventEmitter,
-      mockWsProvider,
-      authService,
-      store,
-      nextDispatch,
-    } = setup();
+    const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
 
     const action = startImport();
-    importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
-      nextDispatch,
-    )(action);
+    importFilesMiddleware(eventEmitter, mockWsProvider)(store)(nextDispatch)(
+      action,
+    );
     expect(nextDispatch).toBeCalledWith(action);
   });
 
   it('should call next dispatch even if action is not START_IMPORT', () => {
-    const {
-      eventEmitter,
-      mockWsProvider,
-      store,
-      nextDispatch,
-      authService,
-    } = setup();
+    const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
 
     const action = resetView();
-    importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
-      nextDispatch,
-    )(action);
+    importFilesMiddleware(eventEmitter, mockWsProvider)(store)(nextDispatch)(
+      action,
+    );
     expect(nextDispatch).toBeCalledWith(action);
   });
 
@@ -262,69 +250,56 @@ describe('importFiles middleware', () => {
     const action = startImport();
 
     it('should emit uploads-start event back to container for all selected items', () => {
-      const { eventEmitter, mockWsProvider, authService, store } = setup();
+      const { eventEmitter, mockWsProvider, store } = setup();
 
-      return importFiles(eventEmitter, store, authService, mockWsProvider).then(
-        () => {
-          expect(eventEmitter.emitUploadsStart).toBeCalledWith([
-            {
-              id: 'uuid1',
-              name: 'picture1.jpg',
-              type: 'image/jpg',
-              size: 43,
-              creationDate: todayDate,
-            },
-            {
-              id: 'uuid2',
-              name: 'picture3.jpg',
-              type: 'image/jpg',
-              size: 45,
-              creationDate: todayDate,
-            },
-            {
-              id: 'uuid3',
-              name: 'picture4.jpg',
-              type: 'image/jpg',
-              size: 46,
-              creationDate: todayDate,
-            },
-            {
-              id: 'uuid4',
-              name: 'picture5.jpg',
-              type: 'image/jpg',
-              size: 47,
-              creationDate: expect.any(Number),
-            },
-          ]);
-        },
-      );
+      return importFiles(eventEmitter, store, mockWsProvider).then(() => {
+        expect(eventEmitter.emitUploadsStart).toBeCalledWith([
+          {
+            id: 'uuid1',
+            name: 'picture1.jpg',
+            type: 'image/jpg',
+            size: 43,
+            creationDate: todayDate,
+          },
+          {
+            id: 'uuid2',
+            name: 'picture3.jpg',
+            type: 'image/jpg',
+            size: 45,
+            creationDate: todayDate,
+          },
+          {
+            id: 'uuid3',
+            name: 'picture4.jpg',
+            type: 'image/jpg',
+            size: 46,
+            creationDate: todayDate,
+          },
+          {
+            id: 'uuid4',
+            name: 'picture5.jpg',
+            type: 'image/jpg',
+            size: 47,
+            creationDate: expect.any(Number),
+          },
+        ]);
+      });
     });
 
     it('should close popup', () => {
-      const {
-        eventEmitter,
-        mockWsProvider,
-        authService,
-        store,
-        nextDispatch,
-      } = setup();
-      importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
-        nextDispatch,
-      )(action);
+      const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
+      importFilesMiddleware(eventEmitter, mockWsProvider)(store)(nextDispatch)(
+        action,
+      );
 
       expect(store.dispatch).toHaveBeenCalledWith(hidePopup());
     });
 
     describe('each selected and recent file', () => {
       it('should dispatch GET_PREVIEW action', () => {
-        const { eventEmitter, mockWsProvider, authService, store } = setup();
+        const { eventEmitter, mockWsProvider, store } = setup();
 
-        return importFiles(
-          eventEmitter,
-          store,
-          authService,
-          mockWsProvider,
-        ).then(() => {
+        return importFiles(eventEmitter, store, mockWsProvider).then(() => {
           expect(store.dispatch).toBeCalledWith(
             getPreview(
               'uuid3',
@@ -344,20 +319,9 @@ describe('importFiles middleware', () => {
 
     describe('each selected and locally uploaded file', () => {
       it('should dispatch FINALIZE_UPLOAD action', () => {
-        const {
-          eventEmitter,
-          mockWsProvider,
-          authService,
-          store,
-          tenant,
-        } = setup();
+        const { eventEmitter, mockWsProvider, store, tenant } = setup();
 
-        return importFiles(
-          eventEmitter,
-          store,
-          authService,
-          mockWsProvider,
-        ).then(() => {
+        return importFiles(eventEmitter, store, mockWsProvider).then(() => {
           const localUploadsFinalizedNum = 2;
           const recentFinalizedNum = 1;
           const isFinalizeUploadCall = (call: [Action]) =>
@@ -404,14 +368,8 @@ describe('importFiles middleware', () => {
       });
 
       it('should bobble up some events', done => {
-        const {
-          eventEmitter,
-          mockWsProvider,
-          authService,
-          store,
-          nextDispatch,
-        } = setup();
-        importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
+        const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
+        importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
@@ -433,14 +391,8 @@ describe('importFiles middleware', () => {
       });
 
       it('should not bobble up other events', done => {
-        const {
-          eventEmitter,
-          mockWsProvider,
-          authService,
-          store,
-          nextDispatch,
-        } = setup();
-        importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
+        const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
+        importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
@@ -457,14 +409,8 @@ describe('importFiles middleware', () => {
       });
 
       it('should dispatch SET_EVENT_PROXY action', done => {
-        const {
-          eventEmitter,
-          mockWsProvider,
-          authService,
-          store,
-          nextDispatch,
-        } = setup();
-        importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
+        const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
+        importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
@@ -491,12 +437,11 @@ describe('importFiles middleware', () => {
           eventEmitter,
           mockWsProvider,
           wsConnectionHolder,
-          authService,
           store,
           nextDispatch,
         } = setup();
 
-        importFilesMiddleware(eventEmitter, authService, mockWsProvider)(store)(
+        importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 

@@ -605,6 +605,7 @@ export class MediaPluginState {
         pickers.push(
           (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
             userAuthProvider: context.config.userAuthProvider,
+            uploadParams,
           })),
         );
       } else {
@@ -625,6 +626,7 @@ export class MediaPluginState {
         (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
           container: this.options.customDropzoneContainer,
           headless: true,
+          uploadParams,
         })),
       );
 

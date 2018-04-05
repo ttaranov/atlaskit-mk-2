@@ -6,6 +6,7 @@ import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
 import { fileUploadsStart } from '../../actions/fileUploadsStart';
+import { ContextFactory } from '@atlaskit/media-core';
 
 describe('App', () => {
   const apiUrl = 'some-api-url';
@@ -13,29 +14,36 @@ describe('App', () => {
   const token = 'some-token';
   const userAuthProvider = () => Promise.resolve({ clientId, token });
 
-  const setup = () => ({
-    handlers: {
-      onStartApp: jest.fn(),
-      onClose: jest.fn(),
-      onUploadsStart: jest.fn(),
-      onUploadPreviewUpdate: jest.fn(),
-      onUploadStatusUpdate: jest.fn(),
-      onUploadProcessing: jest.fn(),
-      onUploadEnd: jest.fn(),
-      onUploadError: jest.fn(),
-    },
-    store: mockStore(),
-  });
+  const setup = () => {
+    const context = ContextFactory.create({
+      serviceHost: apiUrl,
+      authProvider: userAuthProvider,
+      userAuthProvider,
+    });
+    return {
+      handlers: {
+        onStartApp: jest.fn(),
+        onClose: jest.fn(),
+        onUploadsStart: jest.fn(),
+        onUploadPreviewUpdate: jest.fn(),
+        onUploadStatusUpdate: jest.fn(),
+        onUploadProcessing: jest.fn(),
+        onUploadEnd: jest.fn(),
+        onUploadError: jest.fn(),
+      },
+      context,
+      store: mockStore(),
+    };
+  };
 
   it('should render UploadView given selectedServiceName is "upload"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
         isVisible={true}
+        context={context}
         {...handlers}
       />,
     );
@@ -44,13 +52,12 @@ describe('App', () => {
   });
 
   it('should render Browser given selectedServiceName is "google"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -60,13 +67,12 @@ describe('App', () => {
   });
 
   it('should call onStartApp', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -76,13 +82,12 @@ describe('App', () => {
   });
 
   it('should activate dropzone when visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={false}
         {...handlers}
       />
@@ -96,13 +101,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when not visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />
@@ -116,13 +120,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when unmounted', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />

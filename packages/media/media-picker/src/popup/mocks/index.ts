@@ -1,9 +1,12 @@
 import { State } from '../domain';
 import { Store } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
+import { ContextFactory } from '@atlaskit/media-core';
+
+const apiUrl = 'some-api-url';
 
 export const mockState: State = {
-  apiUrl: 'some-api-url',
+  apiUrl,
   redirectUrl: 'some-redirect-url',
   view: {
     isVisible: true,
@@ -42,6 +45,10 @@ export const mockState: State = {
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
+  context: ContextFactory.create({
+    serviceHost: apiUrl,
+    authProvider: jest.fn(),
+  }),
 };
 
 export const mockStore = (state?: Partial<State>) => ({
