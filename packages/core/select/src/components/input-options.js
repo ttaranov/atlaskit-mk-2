@@ -135,13 +135,11 @@ class ControlOption extends Component<OptionProops, OptionState> {
         getStyles={getStyles}
         innerProps={props}
       >
-        <FlexParent>
-          <Icon
-            primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
-            secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
-          />
-          <Truncate>{children}</Truncate>
-        </FlexParent>
+        <Icon
+          primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
+          secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
+        />
+        <Truncate>{children}</Truncate>
       </components.Option>
     );
   }
@@ -155,11 +153,6 @@ class ControlOption extends Component<OptionProops, OptionState> {
   and so this behaviour is not customisable / disableable
   by users who buy into radio / checkbox select.
 */
-
-const FlexParent = styled.div`
-  display: flex;
-  overflow-x: hidden;
-`;
 
 const Truncate = styled.div`
   text-overflow: ellipsis;
