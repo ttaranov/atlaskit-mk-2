@@ -25,7 +25,8 @@ import {
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import { Fade } from './Animation';
 import Actions from './SpotlightActions';
-import withScrollMeasurements from '../hoc/withScrollMeasurements';
+import { withSpotlightState } from './SpotlightManager';
+import { compose, withScrollMeasurements } from '../hoc';
 
 type Props = {|
   /** Buttons to render in the footer */
@@ -211,13 +212,8 @@ class Spotlight extends Component<Props> {
   }
 }
 
-export default withScrollMeasurements(
-  withRenderTarget(
-    {
-      target: 'spotlight',
-      withTransitionGroup: true,
-    },
-    // $FlowFixMe TEMPORARY
-    Spotlight,
-  ),
-);
+const portalConfig = { target: 'spotlight', withTransitionGroup: true };
+const portal = comp => withRenderTarget(portalConfig, comp);
+const enhance = compose(withSpotlightState, withScrollMeasurements, portal);
+
+export default enhance(Spotlight);

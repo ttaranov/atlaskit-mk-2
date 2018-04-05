@@ -1,14 +1,17 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { type ComponentType } from '../types';
 
-import SpotlightRegistry from '../components/SpotlightRegistry';
+import { type RegistryType } from '../components/SpotlightRegistry';
 
 const SCROLLABLE = /auto|scroll/;
 
-type Props = { target?: string, targetNode?: HTMLElement };
+type Props = {
+  spotlightRegistry: RegistryType,
+  target?: string,
+  targetNode?: HTMLElement,
+};
 type State = {
   clone?: string, // string representation of HTMLElement
   scrollY: number,
@@ -65,46 +68,46 @@ function getScrollY(node = window) {
 export default function withScrollMeasurements(
   WrappedComponent: ComponentType,
 ) {
-  return class SpotlightWrapper extends Component<Props, State> {
+  return class SpotlightMeasurer extends Component<Props, State> {
     state: State = { scrollY: 0 };
-    static contextTypes = {
-      spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
-    };
     componentWillMount() {
-      const { target, targetNode } = this.props;
-      const { spotlightRegistry } = this.context;
-
-      if (!spotlightRegistry) {
-        throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
-      }
-
-      let node;
-      if (targetNode) {
-        node = targetNode;
-      } else {
-        node = spotlightRegistry.get(target);
-      }
+      const { spotlightRegistry } = this.props;
+      const node = this.getNode();
 
       // let the registry know that there's a spotlight mounted so it can
-      // render a blanket
+      // render a blanket, lock scroll etc.
       spotlightRegistry.mount(node);
 
+      // this feels hacky, might need to refactor
       this.setState({ scrollY: getScrollY(node) }, () => {
         this.measureAndScroll(node);
       });
     }
     componentWillUnmount() {
-      const { target } = this.props;
-      const { spotlightRegistry } = this.context;
-      spotlightRegistry.unmount(target);
+      const { spotlightRegistry } = this.props;
+      const node = this.getNode();
+      spotlightRegistry.unmount(node);
     }
-    measureAndScroll = (node: HTMLElement) => {
-      if (!node) {
-        throw new Error(`
-          It looks like you're trying to render a spotlight dialog without a
-          target, or before the target has rendered.
-        `);
+    getNode = () => {
+      const { spotlightRegistry, target, targetNode } = this.props;
+
+      let node;
+      if (targetNode) {
+        node = targetNode;
+      } else if (target) {
+        node = spotlightRegistry.get(target);
       }
+
+      console.log('getNode', target, node, spotlightRegistry);
+
+      // can't do anything without the node, bail
+      if (!node) {
+        throw new Error('You must provide a `target`, or `targetNode`.');
+      }
+
+      return node;
+    };
+    measureAndScroll = (node: HTMLElement) => {
       const {
         height,
         left,
@@ -154,11 +157,6 @@ export default function withScrollMeasurements(
       });
     };
     render() {
-      const { spotlightRegistry } = this.context;
-      console.log(
-        'withScrollMeasurements hasMounted',
-        spotlightRegistry.hasMounted(),
-      );
       return <WrappedComponent {...this.props} {...this.state} />;
     }
   };

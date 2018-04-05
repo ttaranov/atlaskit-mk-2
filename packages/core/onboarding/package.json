@@ -24,8 +24,10 @@
     "@atlaskit/theme": "^2.4.1",
     "prop-types": "^15.5.10",
     "react-lorem-component": "^0.12.2",
+    "react-node-resolver": "^1.0.1",
     "react-transition-group": "^2.2.1",
-    "styled-components": "1.4.6 - 3"
+    "styled-components": "1.4.6 - 3",
+    "unstated": "^1.2.0"
   },
   "peerDependencies": {
     "react": "15.6.0 - 16.2.0",
