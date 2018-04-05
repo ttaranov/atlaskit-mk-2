@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 68.0.2
+- [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
+
 ## 68.0.1
 - [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
 
