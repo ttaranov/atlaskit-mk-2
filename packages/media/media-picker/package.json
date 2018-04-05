@@ -39,6 +39,7 @@
     "domready": "^1.0.8",
     "eventemitter2": "^4.1.0",
     "filesize": "^3.2.1",
+    "lodash.debounce": "^4.0.8",
     "postis": "^2.2.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
@@ -54,6 +55,7 @@
   "peerDependencies": {
     "@atlaskit/media-core": "^16.0.0",
     "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
@@ -63,6 +65,7 @@
     "@atlaskit/toggle": "^3.0.0",
     "@types/dateformat": "^1.0.1",
     "@types/enzyme": "^3.1.6",
+    "enzyme": "^3.3.0",
     "@types/eventemitter2": "^4.1.0",
     "@types/filesize": "^3.2.15",
     "@types/lodash.chunk": "^4.2.3",
@@ -70,6 +73,9 @@
     "@types/react-redux": "^4.4.0",
     "@types/redux": "^3.6.0",
     "identity-obj-proxy": "^3.0.0",
-    "lodash.chunk": "^4.2.0"
+    "lodash.chunk": "^4.2.0",
+    "chai": "^4.1.2",
+    "react": "^16.3.0",
+    "sinon": "^2.2.0"
   }
 }

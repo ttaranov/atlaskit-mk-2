@@ -48,13 +48,13 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "es6-promise": "^4.0.5",
+    "whatwg-fetch": "^2.0.3",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^9.0.0",
-    "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
-    "sinon": "^2.2.0",
-    "whatwg-fetch": "^2.0.3"
+    "sinon": "^2.2.0"
   },
   "repository": {
     "type": "git",

@@ -27,6 +27,7 @@
     "@atlaskit/mention": "^11.0.0",
     "@atlaskit/task-decision": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/theme": "^3.0.0",
     "prosemirror-model": "^1.2.0",
     "styled-components": "1.4.6 - 3"
   },
