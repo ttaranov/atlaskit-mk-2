@@ -39,7 +39,7 @@ export const mockState: State = {
   remoteUploads: {},
   isCancelling: false,
   isUploading: false,
-  userAuthProvider: jest.fn(),
+  userAuthProvider: jest.fn().mockReturnValue(Promise.resolve({})),
   giphy: {
     imageCardModels: [],
     totalResultCount: 100,
@@ -73,11 +73,6 @@ export const mockChannel = () => {
 
   return channel;
 };
-
-export const mockAuthService = () => ({
-  getUserAuth: jest.fn(),
-  getTenantAuth: jest.fn(),
-});
 
 export const mockProvider = jest.fn(() => ({
   observable: () => {

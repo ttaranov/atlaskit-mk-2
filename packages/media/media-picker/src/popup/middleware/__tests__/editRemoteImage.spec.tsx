@@ -1,5 +1,5 @@
 import { couldNotLoadImage } from '../../components/views/editor/phrases';
-import { mockAuthService, mockFetcher, mockStore } from '../../mocks';
+import { mockFetcher, mockStore } from '../../mocks';
 
 import { editRemoteImage } from '../editRemoteImage';
 import { editorShowImage } from '../../actions/editorShowImage';
@@ -20,17 +20,16 @@ describe('editRemoteImage', () => {
   const auth = { clientId: 'some-client-id', token: 'some-token' };
 
   const setup = () => {
-    const authService = mockAuthService();
     const fetcher = mockFetcher();
     const store = mockStore({
       editorData: {
         originalFile: file,
       },
     });
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockReturnValue(Promise.resolve(auth));
 
-    authService.getUserAuth.mockReturnValue(Promise.resolve(auth));
-
-    return { authService, fetcher, store };
+    return { fetcher, store };
   };
 
   it('should handle fetching failure', async () => {

@@ -1,4 +1,4 @@
-import { mockStore, mockFetcher, mockAuthService } from '../../mocks';
+import { mockStore, mockFetcher } from '../../mocks';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import finalizeUploadMiddleware, { finalizeUpload } from '../finalizeUpload';
 import { UploadParams } from '../../../domain/config';
@@ -37,8 +37,9 @@ describe('finalizeUploadMiddleware', () => {
     uploadParams: {},
   };
   const setup = (uploadParams: UploadParams = {}) => {
-    const authService = mockAuthService();
-    authService.getUserAuth.mockImplementation(() => Promise.resolve(auth));
+    const store = mockStore();
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
 
     const fetcher = mockFetcher();
     fetcher.copyFile.mockImplementation(() => Promise.resolve(copiedFile));
@@ -46,8 +47,7 @@ describe('finalizeUploadMiddleware', () => {
 
     return {
       fetcher,
-      store: mockStore(),
-      authService,
+      store,
       next: jest.fn(),
       action: {
         type: FINALIZE_UPLOAD,

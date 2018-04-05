@@ -4,7 +4,6 @@ import 'jest';
 import {
   mockStore,
   mockWsConnectionHolder,
-  mockAuthService,
   mockPopupUploadEventEmitter,
 } from '../../mocks';
 
@@ -193,8 +192,6 @@ describe('importFiles middleware', () => {
     );
 
     const wsConnectionHolder = mockWsConnectionHolder();
-    const authService = mockAuthService();
-    authService.getUserAuth.mockReturnValue(Promise.resolve({}));
     const mockWsProvider = {
       getWsConnectionHolder: jest.fn(
         (apiUrl: string, auth: Auth) => wsConnectionHolder,
@@ -205,7 +202,6 @@ describe('importFiles middleware', () => {
     return {
       mockWsProvider,
       wsConnectionHolder,
-      authService,
       store,
       nextDispatch,
       tenant,

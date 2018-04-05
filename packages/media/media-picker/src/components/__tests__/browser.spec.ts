@@ -16,7 +16,7 @@ describe('Browser', () => {
   let browser: Browser | undefined;
   let context;
 
-  afterEach(() => {
+  beforeEach(() => {
     context = ContextFactory.create({
       serviceHost: '',
       authProvider: {} as any,

@@ -1,4 +1,4 @@
-import { mockStore, mockFetcher, mockAuthService } from '../../mocks';
+import { mockStore, mockFetcher } from '../../mocks';
 import getPreviewMiddleware, { getPreview } from '../getPreview';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import { GetPreviewAction } from '../../actions/getPreview';
@@ -21,16 +21,16 @@ describe('getPreviewMiddleware', () => {
     src: 'some-preview-src',
   };
   const setup = () => {
-    const authService = mockAuthService();
-    authService.getUserAuth.mockImplementation(() => Promise.resolve(auth));
+    const store = mockStore();
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
 
     const fetcher = mockFetcher();
     fetcher.getPreview.mockImplementation(() => Promise.resolve(preview));
 
     return {
       fetcher,
-      store: mockStore(),
-      authService,
+      store,
       next: jest.fn(),
       action: {
         type: 'GET_PREVIEW',

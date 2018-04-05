@@ -29,6 +29,7 @@ export class LocalUploadComponent<
     config: LocalUploadConfig,
   ) {
     super(analyticsContext);
+
     const { userAuthProvider, authProvider, serviceHost } = context.config;
     this.uploadService = new UploadService(
       serviceHost,

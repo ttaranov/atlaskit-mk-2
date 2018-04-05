@@ -75,7 +75,7 @@ export function importFilesMiddleware(
   };
 }
 
-export function importFiles(
+export async function importFiles(
   eventEmitter: PopupUploadEventEmitter,
   store: Store<State>,
   wsProvider: WsProvider,
@@ -90,44 +90,40 @@ export function importFiles(
 
   store.dispatch(hidePopup());
 
-  return userAuthProvider().then(auth => {
-    const selectedUploadFiles = selectedItems.map(
-      mapSelectedItemToSelectedUploadFile,
-    );
+  const auth = await userAuthProvider();
+  const selectedUploadFiles = selectedItems.map(
+    mapSelectedItemToSelectedUploadFile,
+  );
 
-    eventEmitter.emitUploadsStart(
-      selectedUploadFiles.map(({ file, uploadId }) =>
-        copyMediaFileForUpload(file, uploadId),
-      ),
-    );
+  eventEmitter.emitUploadsStart(
+    selectedUploadFiles.map(({ file, uploadId }) =>
+      copyMediaFileForUpload(file, uploadId),
+    ),
+  );
 
-    selectedUploadFiles.forEach(selectedUploadFile => {
-      const { file, serviceName, uploadId } = selectedUploadFile;
-      const selectedItemId = file.id;
-      if (serviceName === 'upload') {
-        const localUpload: LocalUpload = uploads[selectedItemId];
-        importFilesFromLocalUpload(
-          selectedItemId,
-          tenant,
-          uploadId,
-          store,
-          localUpload,
-        );
-      } else if (serviceName === 'recent_files') {
-        importFilesFromRecentFiles(selectedUploadFile, tenant, store);
-      } else if (isRemoteService(serviceName)) {
-        const wsConnectionHolder = wsProvider.getWsConnectionHolder(
-          apiUrl,
-          auth,
-        );
-        importFilesFromRemoteService(
-          selectedUploadFile,
-          tenant,
-          store,
-          wsConnectionHolder,
-        );
-      }
-    });
+  selectedUploadFiles.forEach(selectedUploadFile => {
+    const { file, serviceName, uploadId } = selectedUploadFile;
+    const selectedItemId = file.id;
+    if (serviceName === 'upload') {
+      const localUpload: LocalUpload = uploads[selectedItemId];
+      importFilesFromLocalUpload(
+        selectedItemId,
+        tenant,
+        uploadId,
+        store,
+        localUpload,
+      );
+    } else if (serviceName === 'recent_files') {
+      importFilesFromRecentFiles(selectedUploadFile, tenant, store);
+    } else if (isRemoteService(serviceName)) {
+      const wsConnectionHolder = wsProvider.getWsConnectionHolder(apiUrl, auth);
+      importFilesFromRemoteService(
+        selectedUploadFile,
+        tenant,
+        store,
+        wsConnectionHolder,
+      );
+    }
   });
 }
 

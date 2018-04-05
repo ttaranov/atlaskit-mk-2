@@ -1,6 +1,6 @@
 import { RequestUnlinkCloudAccountAction } from '../../actions/unlinkCloudAccount';
 import { FileListUpdateAction } from '../../actions/fileListUpdate';
-import { mockAuthService, mockFetcher, mockStore } from '../../mocks';
+import { mockFetcher, mockStore } from '../../mocks';
 import { changeCloudAccountFolderMiddleware } from '../changeCloudAccountFolder';
 import {
   changeCloudAccountFolder,
@@ -17,14 +17,14 @@ describe('changePath', () => {
   const auth = { clientId, token };
 
   const setup = () => {
-    const authService = mockAuthService();
     const fetcher = mockFetcher();
     const store = mockStore();
     const next = jest.fn();
 
-    authService.getUserAuth.mockReturnValue(Promise.resolve(auth));
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockReturnValue(Promise.resolve(auth));
 
-    return { authService, fetcher, store, next };
+    return { fetcher, store, next };
   };
 
   it('should skip fetching for different action type', () => {

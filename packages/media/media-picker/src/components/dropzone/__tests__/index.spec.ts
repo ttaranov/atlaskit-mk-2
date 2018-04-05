@@ -21,19 +21,12 @@ interface FakeUploadService extends EventEmitter2 {
 }
 
 describe('Dropzone', () => {
-  const setup = () => {
-    const container = document.createElement('DIV');
-    const config = {
-      uploadParams: {
-        collection: '',
-      },
-      container,
-    };
-
-    return {
-      container,
-      config,
-    };
+  const container = document.createElement('DIV');
+  const config = {
+    uploadParams: {
+      collection: '',
+    },
+    container,
   };
   // Helper functions
   const createDragOverOrDropEvent = (
@@ -77,7 +70,6 @@ describe('Dropzone', () => {
 
   describe('MediaPicker', () => {
     it('returns the Dropzone object when "dropzone" is specified', () => {
-      const { config } = setup();
       const pickerObj = MediaPicker('dropzone', context, config);
       expect(pickerObj).toBeInstanceOf(Dropzone);
     });
@@ -85,7 +77,6 @@ describe('Dropzone', () => {
 
   describe('activate', () => {
     it('injects drop zone into supplied container', () => {
-      const { config, container } = setup();
       const dropzone = MediaPicker('dropzone', context, config);
 
       return dropzone.activate().then(() => {
@@ -108,7 +99,6 @@ describe('Dropzone', () => {
     describe('displays dropzone UI', () => {
       it('should append "active" class to .mediaPickerDropzone on "dragover"', () => {
         const dragOver = createDragOverEvent();
-        const { config, container } = setup();
         const dropzone = MediaPicker('dropzone', context, config);
 
         dropzone.activate().then(() => {
@@ -131,7 +121,6 @@ describe('Dropzone', () => {
         const dragOver = createDragOverEvent();
         const dragLeave = createDragLeaveEvent();
 
-        const { config, container } = setup();
         const dropzone = MediaPicker('dropzone', context, config);
 
         dropzone.activate().then(() => {
@@ -158,7 +147,6 @@ describe('Dropzone', () => {
     let dropzone: Dropzone;
 
     beforeEach(() => {
-      const { config, container } = setup();
       removeEventListenerSpy = jest.spyOn(container, 'removeEventListener');
       dropzone = MediaPicker('dropzone', context, {
         ...config,
@@ -178,7 +166,6 @@ describe('Dropzone', () => {
   });
 
   describe('MediaPickerDropzone emitted events', () => {
-    let container: HTMLDivElement;
     let dropzone: Dropzone;
     let uploadServiceStub: sinon.SinonStub | undefined;
     let someFakeUploadService: FakeUploadService;
@@ -190,8 +177,6 @@ describe('Dropzone', () => {
     };
 
     beforeEach(() => {
-      const { config } = setup();
-
       someFakeUploadService = new EventEmitter2();
       someFakeUploadService.addDropzone = () => {};
       someFakeUploadService.removeDropzone = () => {};
@@ -210,7 +195,6 @@ describe('Dropzone', () => {
     });
 
     it('should emit drag-enter for drag over with type "Files" and contain files length', done => {
-      const { config, container } = setup();
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
@@ -227,7 +211,6 @@ describe('Dropzone', () => {
     });
 
     it('should not emit drag-enter for drag over with type "Not Files"', done => {
-      const { config, container } = setup();
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
@@ -248,7 +231,6 @@ describe('Dropzone', () => {
         dropzone.on('drag-leave', () => {
           done();
         });
-
         container.dispatchEvent(createDragOverEvent());
         container.dispatchEvent(createDragLeaveEvent());
       });
@@ -266,7 +248,6 @@ describe('Dropzone', () => {
     });
 
     it('should fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array contains the string "Files"', done => {
-      const { config } = setup();
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
@@ -282,7 +263,6 @@ describe('Dropzone', () => {
     });
 
     it('should not fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array does not contain the string "Files"', done => {
-      const { config } = setup();
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,

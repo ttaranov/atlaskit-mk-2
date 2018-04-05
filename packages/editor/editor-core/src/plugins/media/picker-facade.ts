@@ -26,7 +26,6 @@ import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
 export type PickerType = keyof MediaPickerComponents;
 export type PickerFacadeConfig = {
-  uploadParams: UploadParams;
   context: Context;
   stateManager: MediaStateManager;
   errorReporter: ErrorReportingHandler;
@@ -48,7 +47,6 @@ export default class PickerFacade {
     this.pickerType = pickerType;
     this.errorReporter = config.errorReporter;
     this.stateManager = config.stateManager;
-
     const picker = (this.picker = MediaPicker(
       pickerType,
       config.context,
