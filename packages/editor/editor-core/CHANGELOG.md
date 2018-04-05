@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 68.0.3
+- [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
+
 ## 68.0.2
 - [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
 
