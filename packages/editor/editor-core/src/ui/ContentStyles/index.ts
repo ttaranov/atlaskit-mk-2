@@ -402,12 +402,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       position: relative;
     }
   }
-
-  .link-edit {
-    max-height: 284px;
-    min-height: 40px;
-    height: initial;
-  }
 `;
 
 export default ContentStyles;

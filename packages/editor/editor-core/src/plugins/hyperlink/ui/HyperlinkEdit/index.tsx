@@ -49,6 +49,12 @@ export interface State {
   showToolbarPanel?: boolean;
 }
 
+const floatingStyleOverride = {
+  'max-height': '284px',
+  'min-height': '40px',
+  height: 'initial',
+};
+
 export default class HyperlinkEdit extends PureComponent<Props, State> {
   state: State = {
     unlinkable: true,
@@ -171,9 +177,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           offset={[0, 3]}
           fitHeight={renderRecentSearch ? 284 : 40}
           onPositionCalculated={this.adjustPosition}
-          className="link-edit"
           popupsBoundariesElement={popupsBoundariesElement}
           popupsMountPoint={popupsMountPoint}
+          stylesOverride={floatingStyleOverride}
         >
           {showOpenButton && (
             <ToolbarButton
