@@ -30,14 +30,28 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Running Jest 1 of 2 chunks %n
+            name: Running Jest 1 of 4 chunks
             script:
               - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
               - yarn global add "bolt@^0.19.2"
               - bolt
               - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest
         - step:
-            name: Running Jest  2 of 2 chunks %n
+            name: Running Jest 2 of 4 chunks
+            script:
+              - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest
+        - step:
+            name: Running Jest 3 of 4 chunks
+            script:
+              - echo "$BITBUCKET_PARALLEL_STEP of $BITBUCKET_PARALLEL_STEP_COUNT"
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest
+        - step:
+            name: Running Jest 4 of 4 chunks
             script:
               - echo "$BITBUCKET_STEP_INDEX of $BITBUCKET_STEP_COUNT"
               - yarn global add "bolt@^0.19.2"
