@@ -18,7 +18,7 @@ export interface NavigationProps {
   dispatcher: (action: Action) => void;
 }
 
-const spinner = <div style={{ margin: 'auto' }}><Spinner size='large'/></div>;
+const spinner = <div style={{ margin: 'auto' }}><Spinner invertColor size='large'/></div>;
 
 const NavigationBar: React.StatelessComponent<NavigationProps> = ({navigation, dispatcher}) => {
   const createArrow = (icon:any, action: Action, alignment: string) =>
