@@ -1,8 +1,12 @@
 // @flow
-import React, { Children, Component, type ElementRef } from 'react';
+import React, {
+  Children,
+  Component,
+  type ElementRef,
+  type ElementType,
+} from 'react';
 import NodeResolver from 'react-node-resolver';
 
-import type { ElementType } from '../types';
 import { withSpotlightState } from './SpotlightManager';
 import { type RegistryType } from './SpotlightRegistry';
 

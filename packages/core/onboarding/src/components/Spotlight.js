@@ -1,18 +1,19 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementType,
+  type Element,
+  type Node,
+} from 'react';
 import { ThemeProvider } from 'styled-components';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
 import { getSpotlightTheme } from './theme';
-import type {
-  ActionsType,
-  ComponentType,
-  ChildrenType,
-  ElementType,
-} from '../types';
+import type { ActionsType } from '../types';
 
 import {
   Dialog,
@@ -32,9 +33,9 @@ type Props = {|
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered beside the footer actions */
-  actionsBeforeElement?: ElementType,
+  actionsBeforeElement?: Element<*>,
   /** The elements rendered in the modal */
-  children: ChildrenType,
+  children: Node,
   /** Where the dialog should appear, relative to the contents of the children. */
   dialogPlacement?:
     | 'top left'
@@ -72,13 +73,13 @@ type Props = {|
   /** The border-radius of the element being highlighted */
   targetRadius?: number,
   /** Alternative element to render than the wrapped target */
-  targetReplacement?: ComponentType,
+  targetReplacement?: ComponentType<*>,
 |};
 
 type FillProps = {
   in: boolean,
   scrollDistance: number,
-  children: ChildrenType,
+  children: Node,
 };
 
 const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;

@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component } from 'react';
-import { type ComponentType } from '../types';
+import React, { Component, type ComponentType } from 'react';
 
 import { type RegistryType } from '../components/SpotlightRegistry';
 
@@ -66,7 +65,7 @@ function getScrollY(node = window) {
 }
 
 export default function withScrollMeasurements(
-  WrappedComponent: ComponentType,
+  WrappedComponent: ComponentType<*>,
 ) {
   return class SpotlightMeasurer extends Component<Props, State> {
     state: State = { scrollY: 0 };
