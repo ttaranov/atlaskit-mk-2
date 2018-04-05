@@ -1,14 +1,4 @@
-import {
-  doc,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  hardBreak,
-  p,
-} from '@atlaskit/editor-test-helpers';
+import { doc, h1, h2, h3, h4, h5, h6, p } from '@atlaskit/editor-test-helpers';
 import { checkParseEncodeRoundTrips } from '../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 
