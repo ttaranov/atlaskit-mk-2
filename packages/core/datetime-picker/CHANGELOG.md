@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 2.0.2
+- [patch] Fix datetime picker without a value and defaultValue not working [a88aee0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88aee0)
+
 ## 2.0.1
 
 ## 2.0.0
