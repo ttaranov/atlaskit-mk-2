@@ -405,10 +405,6 @@ export default class AbstractTree {
         continue;
       }
 
-      // TODO process images/attachments
-      // TODO process {color} macro
-      // TODO process text effects and links
-
       textContainer.push(line);
     }
 
