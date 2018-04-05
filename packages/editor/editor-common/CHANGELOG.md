@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.24
+- [patch] Fixing the nested link issue on paste [5d20a1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d20a1f)
+
 ## 8.1.23
 
 ## 8.1.22
