@@ -35,13 +35,13 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^2.5.2",
     "@atlaskit/field-text": "^4.2.1",
     "enzyme": "^3.3.0",
-    "react-dom": "15.6.0 - 16.2.0",
-    "react-test-renderer": "^16.2.0"
+    "react-dom": "^16.3.0",
+    "react-test-renderer": "^16.3.0"
   }
 }

@@ -22,8 +22,8 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^9.2.1",
