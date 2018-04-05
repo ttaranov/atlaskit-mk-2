@@ -2,7 +2,7 @@
 import React, { Component, type Node, type ElementRef } from 'react';
 
 import Popper from '../../popper/index-min';
-import ScrollLock from './internal/ScrollLock';
+import ScrollBlock from './internal/ScrollBlock';
 import {
   getFlipBehavior,
   positionPropToPopperPosition,
@@ -290,7 +290,7 @@ export default class Layer extends Component<Props, State> {
         >
           {this.props.children}
         </div>
-        {lockScroll && <ScrollLock />}
+        {lockScroll && <ScrollBlock />}
         <ContentContainer maxHeight={maxHeight}>
           <div
             ref={ref => {
