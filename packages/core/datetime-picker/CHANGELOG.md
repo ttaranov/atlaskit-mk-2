@@ -1,5 +1,11 @@
 # @atlaskit/datetime-picker
 
+## 2.0.3
+
+
+
+- [patch] Change pickers to use fixed positioning and scroll lock to allow them to break out of modals. [d4981fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4981fe)
+
 ## 2.0.2
 - [patch] Fix datetime picker without a value and defaultValue not working [a88aee0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88aee0)
 
