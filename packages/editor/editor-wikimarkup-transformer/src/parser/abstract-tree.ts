@@ -209,7 +209,8 @@ export default class AbstractTree {
     }
 
     // Replace any forced newline escapes in the text with actual newlines
-    const replaced = str.replace(/\\n/g, '\n');
+    // Regex will look for any instances if \n but NOT \\n (hardbreak)
+    const replaced = str.replace(/([^\\])\\n/g, '$1\n');
 
     const lines = replaced.split(NEWLINE);
     let textContainer: Array<string | PMNode> = [];
@@ -406,7 +407,6 @@ export default class AbstractTree {
 
       // TODO process images/attachments
       // TODO process {color} macro
-      // TODO process \\ hardBreak
       // TODO process text effects and links
 
       textContainer.push(line);
