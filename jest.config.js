@@ -1,75 +1,34 @@
 //@flow
 /* eslint-disable no-console */
-const glob = require('glob');
-
-const RUN_ONLY = process.env.RUN_ONLY;
-const INTEGRATION_TESTS = typeof process.env.INTEGRATION_TESTS !== 'undefined';
-const PARALLELIZE = process.env.PARALLELIZE;
+const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
+const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
+const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+// These are set by Pipelines if you are running in a parallel steps
 const BITBUCKET_PARALLEL_STEP = process.env.BITBUCKET_PARALLEL_STEP;
 const BITBUCKET_PARALLEL_STEP_COUNT = process.env.BITBUCKET_PARALLEL_STEP_COUNT;
+
+/**
+ * BITBUCKET_PARALLEL_STEP=0 BITBUCKET_PARALLEL_STEP_COUNT=2 PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --listTests
+ * BITBUCKET_PARALLEL_STEP=0 BITBUCKET_PARALLEL_STEP_COUNT=2 PARALLELIZE_TESTS="$(CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn --silent jest --listTests)" yarn jest --listTests
+ *
+ */
 
 function generateTestMatchGlob(packagePath) {
   if (INTEGRATION_TESTS) {
     return `${__dirname}/${packagePath}/**/__tests__/integration/**/*.(js|tsx|ts)`;
   }
-  console.log(
-    `${__dirname}/packages/${packagePath}/**/__tests__/(!(integration)/**/|)*.(js|tsx|ts)`,
-  );
-  const list = glob.sync(
-    `${__dirname}/packages/${packagePath}/**/__tests__/*.(js|tsx|ts)`,
-  );
-  console.log('list', list);
-  return list;
+  return `${__dirname}/${packagePath}/**/__tests__/**/*.(js|tsx|ts)`;
 }
-
-// by default we'll run tests in all directories (local and master builds)
-let testMatchArr = [generateTestMatchGlob('**')];
-
-// If the RUN_ONLY variable is set, we parse the array and use that to generate the globs
-if (RUN_ONLY) {
-  // Workaround to avoid running integration tests currently
-  const packagesToRun = JSON.parse(RUN_ONLY);
-  testMatchArr = packagesToRun.map(generateTestMatchGlob);
-  if (testMatchArr.length === 0) {
-    // annoyingly, if the array is empty, jest will fallback to its defaults and run everything
-    testMatchArr = ['DONT-RUN-ANYTHING'];
-    console.log('No packages were changed, so no tests should be run.');
-  } else {
-    console.log(
-      'Changes detected in the following packages',
-      packagesToRun.join(', '),
-    );
-  }
-}
-
-/**
- * Chunking.
- * In CI we want to be able to split out tests into multiple parallel steps that can be run concurrently.
- * The code below makes assumptions about **how** these tests are run as you need to pass in the STEP_COUNT
- * and STEP_INDEX vars. For these to be accurate, all the parallel steps running at that point in time need to be
- * jest steps (otherwise we will be splitting incorrectly and some tests wont run!)
- */
-// if (PARALLELIZE) {
-//   const filesPerJob = Math.ceil(
-//     testMatchArr.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
-//   );
-//   const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
-//   console.log('Parallelising!!!');
-//   console.log('BITBUCKET_PARALLEL_STEP_COUNT', BITBUCKET_PARALLEL_STEP_COUNT);
-//   console.log('BITBUCKET_PARALLEL_STEP', BITBUCKET_PARALLEL_STEP);
-//   console.log('filesPerJob', filesPerJob);
-//   console.log('startIdx', startIdx);
-//   testMatchArr = testMatchArr.slice(startIdx, startIdx + filesPerJob);
-//   console.log('testMatchArr', '\n', testMatchArr.join('\n'));
-// }
 
 const config = {
-  testMatch: testMatchArr,
+  testMatch: [`${__dirname}/**/__tests__/**/*.(js|tsx|ts)`],
   testPathIgnorePatterns: [
     // ignore files that are under a directory starting with "_" at the root of __tests__
     '/__tests__\\/_.*?',
     // ignore files under __tests__ that start with an underscore
     '/__tests__\\/.*?\\/_.*?',
+    // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
+    '/__tests__\\/integration/',
   ],
   cacheDirectory: 'node_modules/.jest-cache',
   modulePathIgnorePatterns: ['./node_modules'],
@@ -94,5 +53,47 @@ const config = {
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
   testResultsProcessor: 'jest-junit',
 };
+
+// If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only
+// run the tests for those packages
+if (CHANGED_PACKAGES) {
+  const changedPackages = JSON.parse(CHANGED_PACKAGES);
+  const changedPackagesTestGlobs = changedPackages.map(generateTestMatchGlob);
+  if (changedPackagesTestGlobs.length !== 0) {
+    config.testMatch = changedPackagesTestGlobs;
+  } else {
+    // annoyingly, if the array is empty, jest will fallback to its defaults and run everything
+    config.testMatch = ['DONT-RUN-ANYTHING'];
+    console.log('No packages were changed, so no tests should be run.');
+  }
+}
+
+/**
+ * Chunking.
+ * In CI we want to be able to split out tests into multiple parallel steps that can be run concurrently.
+ * We do this by passing in a list of test files (PARALLELIZE_TESTS), the number of a parallel steps (BITBUCKET_PARALLEL_STEP_COUNT)
+ * and the (0 indexed) index of the current step (BITBUCKET_PARALLEL_STEP). Using these we can split the test up evenly
+ */
+if (PARALLELIZE_TESTS) {
+  const allTests = JSON.parse(PARALLELIZE_TESTS);
+  const filesPerJob = Math.ceil(
+    allTests.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
+  );
+  const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
+  console.log('Parallelising!!!');
+  console.log('BITBUCKET_PARALLEL_STEP_COUNT', BITBUCKET_PARALLEL_STEP_COUNT);
+  console.log('BITBUCKET_PARALLEL_STEP', BITBUCKET_PARALLEL_STEP);
+  console.log('Total tests', allTests.length);
+  console.log('filesPerJob', filesPerJob);
+  console.log('startIdx', startIdx);
+  config.testMatch = allTests.slice(startIdx, startIdx + filesPerJob);
+  console.log('testMatchArr', config.testMatch.length);
+}
+
+if (INTEGRATION_TESTS) {
+  config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+    pattern => pattern !== '/__tests__\\/integration/',
+  );
+}
 
 module.exports = config;
