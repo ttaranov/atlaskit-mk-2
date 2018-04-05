@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,11 +17,11 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/badge": "^6.3.1",
-    "@atlaskit/button": "^6.6.3",
-    "@atlaskit/dropdown-menu": "^3.12.1",
-    "@atlaskit/lozenge": "^3.6.1",
-    "@atlaskit/media-ui": "^1.1.6",
+    "@atlaskit/badge": "^7.0.0",
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/dropdown-menu": "^4.0.0",
+    "@atlaskit/lozenge": "^4.0.0",
+    "@atlaskit/media-ui": "^2.0.0",
     "prop-types": "^15.5.10",
     "react-lazily-render": "^1.0.1",
     "styled-components": "1.4.6 - 3"
@@ -30,6 +30,6 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0"
+    "@atlaskit/docs": "^3.0.0"
   }
 }

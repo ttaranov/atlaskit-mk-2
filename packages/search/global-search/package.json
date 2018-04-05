@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -21,10 +21,10 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics": "^2.4.5",
-    "@atlaskit/icon": "^10.12.0",
-    "@atlaskit/navigation": "^29.3.0",
-    "@atlaskit/theme": "^2.4.0",
+    "@atlaskit/analytics": "^3.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/navigation": "^30.0.0",
+    "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
@@ -37,9 +37,9 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.2.0",
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/page": "^5.1.0",
+    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/page": "^6.0.0",
     "@types/faker": "^4.1.2",
     "enzyme": "^3.3.0",
     "faker": "^4.1.0",

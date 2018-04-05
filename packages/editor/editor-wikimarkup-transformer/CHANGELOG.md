@@ -1,5 +1,7 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 0.0.11
+
 ## 0.0.10
 - [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
 

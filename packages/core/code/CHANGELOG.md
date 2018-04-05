@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 4.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 3.1.2
 - [patch] Plain text should not be rendered as markdown [fe307dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe307dc)
 

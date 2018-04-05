@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/progress-indicator",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "A set of UI elements for indicating progress through a user journey",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/progress-indicators",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/progress-indicators",
   "files": [
     "dist"
   ],
@@ -16,7 +16,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",
     "styled-components": "1.4.6 - 3"
@@ -25,8 +25,8 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.2",
-    "@atlaskit/docs": "^2.5.2",
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/docs": "^3.0.0",
     "enzyme": "^3.3.0",
     "react-lorem-component": "^0.12.2"
   }
