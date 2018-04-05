@@ -4,10 +4,10 @@ import { UploadStatus } from './internal-types';
 import { EmojiDescription } from '../../types';
 import { customCategory } from '../../constants';
 import Emoji from './Emoji';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 import AkButton from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 import * as styles from './styles';
+import RetryableButton from './RetryableButton';
+import EmojiErrorMessage from './EmojiErrorMessage';
 
 export interface EmojiUploadPreviewProps {
   name: string;
@@ -51,15 +51,6 @@ export default class EmojiUploadPreview extends PureComponent<
     }
 
     const uploading = uploadStatus === UploadStatus.Uploading;
-    const spinner = uploading ? <Spinner size="medium" /> : undefined;
-
-    const error = !errorMessage ? (
-      undefined
-    ) : (
-      <span className={styles.uploadError}>
-        <ErrorIcon label="Error" /> {errorMessage}
-      </span>
-    );
 
     return (
       <div className={styles.uploadPreviewFooter}>
@@ -71,22 +62,28 @@ export default class EmojiUploadPreview extends PureComponent<
           <div className={styles.bigEmojiPreview}>{emojiComponent}</div>
         </div>
         <div className={styles.uploadAddRow}>
-          <AkButton
-            onClick={onAddEmoji}
+          {errorMessage ? (
+            <EmojiErrorMessage
+              className={styles.emojiPreviewErrorMessage}
+              message={errorMessage}
+            />
+          ) : null}
+          <RetryableButton
+            className={styles.uploadEmojiButton}
+            retryClassName={styles.uploadRetryButton}
+            label="Add emoji"
+            onSubmit={onAddEmoji}
             appearance="primary"
-            isDisabled={uploading}
-          >
-            Add emoji
-          </AkButton>
+            loading={uploading}
+            error={!!errorMessage}
+          />
           <AkButton
             onClick={onUploadCancelled}
-            appearance="link"
+            appearance="subtle"
             isDisabled={uploading}
           >
             Cancel
           </AkButton>
-          {spinner}
-          {error}
         </div>
       </div>
     );
