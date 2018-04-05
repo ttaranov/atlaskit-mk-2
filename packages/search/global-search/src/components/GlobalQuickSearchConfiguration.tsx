@@ -1,5 +1,6 @@
 import * as React from 'react';
-import GlobalQuickSearchContainer from './GlobalQuickSearchContainer';
+import HomeQuickSearchContainer from './home/HomeQuickSearchContainer';
+import ConfluenceQuickSearchContainer from './confluence/ConfluenceQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
 import memoizeOne from 'memoize-one';
 
@@ -10,6 +11,11 @@ export interface Props {
    * The cloudId of the site the component is embedded in.
    */
   cloudId: string;
+
+  /**
+   * "confluence" | "home"
+   */
+  context: string;
 
   /**
    * For development purposes only: Overrides the URL to the activity service.
@@ -64,6 +70,12 @@ export default class GlobalQuickSearchConfiguration extends React.Component<
       this.makeConfig(),
     );
 
-    return <GlobalQuickSearchContainer {...searchClients} />;
+    // TODO can we make this type safe?
+    let ContainerComponent: React.ComponentClass = HomeQuickSearchContainer;
+    if (this.props.context === 'confluence') {
+      ContainerComponent = ConfluenceQuickSearchContainer;
+    }
+
+    return <ContainerComponent {...searchClients} />;
   }
 }

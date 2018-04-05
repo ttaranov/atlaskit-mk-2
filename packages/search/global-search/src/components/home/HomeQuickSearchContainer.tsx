@@ -1,15 +1,16 @@
 import * as React from 'react';
 import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
-import GlobalQuickSearch from './GlobalQuickSearch';
-import { RecentSearchClient } from '../api/RecentSearchClient';
+import * as uuid from 'uuid/v4';
+import GlobalQuickSearch from '../GlobalQuickSearch';
+import { RecentSearchClient } from '../../api/RecentSearchClient';
 import {
   CrossProductSearchClient,
   CrossProductResults,
-} from '../api/CrossProductSearchClient';
-import { Result } from '../model/Result';
-import { PeopleSearchClient } from '../api/PeopleSearchClient';
-import * as uuid from 'uuid/v4';
+} from '../../api/CrossProductSearchClient';
+import { Result } from '../../model/Result';
+import { PeopleSearchClient } from '../../api/PeopleSearchClient';
+import renderSearchResults from './HomeSearchResults';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
@@ -194,13 +195,40 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     });
   };
 
+  retrySearch = () => {
+    this.handleSearch(this.state.query);
+  };
+
   render() {
+    const {
+      query,
+      isLoading,
+      isError,
+      recentlyViewedItems,
+      recentResults,
+      jiraResults,
+      confluenceResults,
+      peopleResults,
+    } = this.state;
+
     return (
       <GlobalQuickSearch
-        getRecentlyViewedItems={this.handleGetRecentItems}
+        onMount={this.handleGetRecentItems}
         onSearch={this.handleSearch}
-        {...this.state}
-      />
+        isLoading={isLoading}
+        query={query}
+      >
+        {renderSearchResults({
+          query,
+          isError,
+          retrySearch: this.retrySearch,
+          recentlyViewedItems,
+          recentResults,
+          jiraResults,
+          confluenceResults,
+          peopleResults,
+        })}
+      </GlobalQuickSearch>
     );
   }
 }
