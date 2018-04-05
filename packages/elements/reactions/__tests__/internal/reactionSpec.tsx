@@ -3,13 +3,10 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { hasSelector } from '../_test-utils';
-import Reaction, {
-  ReactionOnClick,
-  reactedStyle,
-} from '../../src/internal/reaction';
+import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -53,11 +50,6 @@ describe('@atlaskit/reactions/reaction', () => {
       const emojiDesc = emoji.prop('emoji');
       expect(emojiDesc.id).to.equal(grinning.id);
     });
-  });
-
-  it('should render with "reacted" css-class if user have reacted', () => {
-    const reaction = shallow(renderReaction(true, 1, emojiId => {}));
-    expect(reaction.hasClass(reactedStyle)).to.equal(true);
   });
 
   it('should call onClick on click', () => {
