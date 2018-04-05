@@ -19,6 +19,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "react-scrolllock": "^2.0.2",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {

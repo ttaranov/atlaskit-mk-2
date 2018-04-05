@@ -108,10 +108,7 @@ class TableComponent extends React.Component<ComponentProps> {
         }}
         eventDispatcher={eventDispatcher}
         editorView={view}
-        render={({
-          containerWidth,
-          pluginState,
-        }) => {
+        render={({ containerWidth, pluginState }) => {
           return (
             <div
               style={{

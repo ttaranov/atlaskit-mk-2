@@ -33,7 +33,11 @@ const tablesPlugin: EditorPlugin = {
       {
         rank: 900,
         plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
-          return createPlugin(dispatch, eventDispatcher, pluginConfig(allowTables));
+          return createPlugin(
+            dispatch,
+            eventDispatcher,
+            pluginConfig(allowTables),
+          );
         },
       },
       {

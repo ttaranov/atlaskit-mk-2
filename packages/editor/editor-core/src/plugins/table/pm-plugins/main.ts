@@ -85,7 +85,11 @@ export class TableState {
 
   private isHeaderRowRequired: boolean = false;
 
-  constructor(state: EditorState, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) {
+  constructor(
+    state: EditorState,
+    eventDispatcher: EventDispatcher,
+    pluginConfig: PluginConfig,
+  ) {
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
     this.isHeaderRowRequired = !!pluginConfig.isHeaderRowRequired;
@@ -251,7 +255,6 @@ export class TableState {
 
     const { schema, tr } = this.view.state;
 
-
     this.view.dispatch(
       tr.setNodeMarkup(tableNode.pos - 1, schema.nodes.table, {
         ...tableNode.node.attrs,
@@ -312,7 +315,11 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const createPlugin = (dispatch: Dispatch, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) =>
+export const createPlugin = (
+  dispatch: Dispatch,
+  eventDispatcher: EventDispatcher,
+  pluginConfig: PluginConfig,
+) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {

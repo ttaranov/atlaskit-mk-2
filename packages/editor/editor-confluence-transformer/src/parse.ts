@@ -669,7 +669,10 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
 
       const attrs = {
         colspan,
-        colwidth: colwidth && colwidth.length && colwidth.every(width => width > 0) ? colwidth : null,
+        colwidth:
+          colwidth && colwidth.length && colwidth.every(width => width > 0)
+            ? colwidth
+            : null,
         background,
         rowspan: parseInt(cols[j].getAttribute('rowspan') || '1', 10),
       };
