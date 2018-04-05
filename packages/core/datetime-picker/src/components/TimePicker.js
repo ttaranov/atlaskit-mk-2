@@ -63,7 +63,10 @@ function formatTime(time: string): string {
 }
 
 const menuStyles = {
+  /* Need to remove default absolute positioning as that causes issues with position fixed */
   position: 'static',
+  /* Need to add overflow to the element with max-height, otherwise causes overflow issues in IE11 */
+  overflowY: 'auto',
 };
 
 export default class TimePicker extends Component<Props, State> {
