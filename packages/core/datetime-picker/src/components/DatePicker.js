@@ -90,7 +90,7 @@ const StyledMenu = styled.div`
   background-color: ${colors.N0};
   border: 1px solid ${colors.N40};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
   margin: 7px 0;
   overflow: hidden;
   text-align: center;
