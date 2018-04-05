@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 68.0.1
+- [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
+
 ## 68.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
