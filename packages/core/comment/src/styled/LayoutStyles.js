@@ -71,6 +71,7 @@ export const Highlight = styled.div`
   [dir='rtl'] & {
     transform: translate(${gridSize()}px, -${gridSize()}px);
   }
+  pointer-events: none;
 `;
 
 export const NestedCommentsDiv = styled.div`

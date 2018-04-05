@@ -11,6 +11,7 @@ import {
   revertComment,
   updateUser,
   createConversation,
+  HIGHLIGHT_COMMENT,
 } from '../internal/actions';
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
@@ -67,6 +68,10 @@ const mapDispatchToProps = (
 
   onRevertComment(conversationId: string, commentId: string) {
     dispatch(revertComment(conversationId, commentId, provider));
+  },
+
+  onHighlightComment(commentId: string) {
+    dispatch({ type: HIGHLIGHT_COMMENT, payload: { commentId } });
   },
 
   onUpdateUser(user: User) {

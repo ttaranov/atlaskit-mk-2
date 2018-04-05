@@ -59,6 +59,21 @@ export interface ResourceProvider {
   updateUser(user: User): Promise<User>;
 }
 
+const getHighlightedComment = () => {
+  if (!location || !location.hash) {
+    return undefined;
+  }
+
+  const commentPrefix = 'comment-';
+  const commentId = location.hash.indexOf(commentPrefix);
+
+  if (commentId !== -1) {
+    return location.hash.substr(commentId + commentPrefix.length);
+  }
+
+  return undefined;
+};
+
 export class AbstractConversationResource implements ResourceProvider {
   private _store: Store<State | undefined>;
 
@@ -71,7 +86,12 @@ export class AbstractConversationResource implements ResourceProvider {
   };
 
   constructor() {
-    this._store = createStore();
+    const initialState: State = {
+      conversations: [] as Conversation[],
+      highlighted: getHighlightedComment(),
+    };
+
+    this._store = createStore(initialState);
   }
 
   /**
