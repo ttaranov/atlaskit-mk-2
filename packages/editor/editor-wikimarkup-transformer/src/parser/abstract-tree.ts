@@ -210,7 +210,7 @@ export default class AbstractTree {
 
     // Replace any forced newline escapes in the text with actual newlines
     // Regex will look for any instances if \n but NOT \\n (hardbreak)
-    const replaced = str.replace(/([^\\])\\n/g, '$1\n');
+    const replaced = str.replace(/([^\\]*)\\n/g, '$1\n');
 
     const lines = replaced.split(NEWLINE);
     let textContainer: Array<string | PMNode> = [];
@@ -286,7 +286,7 @@ export default class AbstractTree {
       }
 
       // search for images/attachments
-      const mediaMatches = lineUpdated.match(ATTACHMENTS_REGEXP);
+      const mediaMatches = line.match(ATTACHMENTS_REGEXP);
       if (mediaMatches && mediaMatches[1].includes('.')) {
         processAndEmptyStoredText();
 
