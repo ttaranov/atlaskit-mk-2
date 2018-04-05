@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 0.0.12
+- [patch] Lots of new nodes support in wiki markup parser [08071ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08071ea)
+
 ## 0.0.11
 
 ## 0.0.10
