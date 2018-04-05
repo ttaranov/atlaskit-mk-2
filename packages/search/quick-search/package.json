@@ -20,22 +20,24 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics": "^2.4.4",
-    "@atlaskit/avatar": "^9.2.1",
-    "@atlaskit/field-base": "^8.2.1",
-    "@atlaskit/icon": "^10.12.1",
-    "@atlaskit/item": "^5.1.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/analytics": "^3.0.0",
+    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/field-base": "^9.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/item": "^6.0.0",
+    "@atlaskit/navigation": "^30.0.1",
+    "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/navigation": "^29.3.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/navigation": "^30.0.1",
     "enzyme": "^3.3.0",
     "faker": "^4.1.0",
     "sinon": "^2.2.0"
