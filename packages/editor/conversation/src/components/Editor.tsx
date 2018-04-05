@@ -102,7 +102,10 @@ export default class Editor extends React.Component<Props, State> {
   private onSave = async (actions: any) => {
     if (this.props.onSave) {
       const value = await actions.getValue();
-      this.props.onSave(value);
+
+      if (value && value.content.some(n => n.content && n.content.length)) {
+        this.props.onSave(value);
+      }
     } else {
       this.setState({
         isExpanded: false,
