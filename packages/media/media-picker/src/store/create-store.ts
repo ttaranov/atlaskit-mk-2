@@ -3,12 +3,12 @@ import { applyMiddleware, createStore, Store, Middleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 
 import { CloudService } from '../popup/services/cloud-service';
-import { Fetcher } from '../popup/tools/fetcher/fetcher';
+import { MediaApiFetcher } from '../popup/tools/fetcher/fetcher';
 import { WsProvider } from '../popup/tools/websocket/wsProvider';
 import reducers from '../popup/reducers/reducers';
 import { State } from '../popup/domain';
 import defaultState from '../popup/default_state';
-
+import appConfig from '../config';
 import changeAccount from '../popup/middleware/changeAccount';
 import { changeService } from '../popup/middleware/changeService';
 import { fetchNextCloudFilesPageMiddleware } from '../popup/middleware/fetchNextCloudFilesPage';
@@ -32,39 +32,44 @@ import { PopupUploadEventEmitter } from '../components/popup';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
-  redirectUrl: string,
   context: Context,
-  fetcher: Fetcher,
-  cloudService: CloudService,
-  wsProvider: WsProvider,
 ): Store<State> => {
+  const { userAuthProvider, serviceHost, authProvider } = context.config;
+  if (!userAuthProvider) {
+    throw new Error('userAuthProvider must be provided in the context');
+  }
+
+  const redirectUrl = appConfig.html.redirectUrl;
+  const fetcher = new MediaApiFetcher();
+  const wsProvider = new WsProvider();
+  const cloudService = new CloudService(userAuthProvider);
+
   return createStore(
     reducers,
     {
       ...defaultState,
+      apiUrl: serviceHost,
       redirectUrl,
+      tenantAuthProvider: authProvider,
+      userAuthProvider,
       context,
     },
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
-        getFilesInRecents(fetcher, context) as Middleware,
+        getFilesInRecents(fetcher) as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,
-        changeCloudAccountFolderMiddleware(fetcher, context) as Middleware,
-        fetchNextCloudFilesPageMiddleware(fetcher, context) as Middleware,
-        startCloudAccountOAuthFlow(
-          fetcher,
-          context,
-          cloudService,
-        ) as Middleware,
-        unlinkCloudAccount(fetcher, context) as Middleware,
-        getConnectedRemoteAccounts(fetcher, context) as Middleware,
+        changeCloudAccountFolderMiddleware(fetcher) as Middleware,
+        fetchNextCloudFilesPageMiddleware(fetcher) as Middleware,
+        startCloudAccountOAuthFlow(fetcher, cloudService) as Middleware,
+        unlinkCloudAccount(fetcher) as Middleware,
+        getConnectedRemoteAccounts(fetcher) as Middleware,
         cancelUpload as Middleware,
-        importFilesMiddleware(eventEmitter, context, wsProvider),
-        editRemoteImageMiddleware(fetcher, context) as Middleware,
-        getPreviewMiddleware(fetcher, context),
-        finalizeUploadMiddleware(fetcher, context),
+        importFilesMiddleware(eventEmitter, wsProvider),
+        editRemoteImageMiddleware(fetcher) as Middleware,
+        getPreviewMiddleware(fetcher),
+        finalizeUploadMiddleware(fetcher),
         proxyUploadEvents as Middleware,
         handleCloudFetchingEvent as Middleware,
         searchGiphy(fetcher) as Middleware,

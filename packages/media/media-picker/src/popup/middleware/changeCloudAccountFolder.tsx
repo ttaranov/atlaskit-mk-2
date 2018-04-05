@@ -7,20 +7,18 @@ import {
 import { fileListUpdate } from '../actions/fileListUpdate';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import { State } from '../domain';
-import { Context } from '@atlaskit/media-core';
 
-export const changeCloudAccountFolderMiddleware = (
-  fetcher: Fetcher,
-  context: Context,
-) => (store: Store<State>) => (next: Dispatch<State>) => (action: Action) => {
+export const changeCloudAccountFolderMiddleware = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<State>) => (action: Action) => {
   if (isChangeCloudAccountFolderAction(action)) {
+    const { userAuthProvider } = store.getState();
     const { apiUrl } = store.getState();
     const { serviceName, accountId, path } = action;
     const lastPath =
       path.length === 0 ? { id: '', name: '' } : path[path.length - 1];
 
-    context.config
-      .authProvider()
+    userAuthProvider()
       .then(auth =>
         fetcher.fetchCloudAccountFolder(
           apiUrl,

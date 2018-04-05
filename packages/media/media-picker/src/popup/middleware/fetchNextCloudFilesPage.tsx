@@ -7,13 +7,12 @@ import {
 } from '../actions';
 import { State } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
-import { Context } from '@atlaskit/media-core';
 
-export const fetchNextCloudFilesPageMiddleware = (
-  fetcher: Fetcher,
-  context: Context,
-) => (store: Store<State>) => (next: Dispatch<State>) => (action: Action) => {
+export const fetchNextCloudFilesPageMiddleware = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<State>) => (action: Action) => {
   if (isFetchNextCloudFilesPageAction(action)) {
+    const { userAuthProvider } = store.getState();
     const { serviceName, accountId, path } = action;
     const { id: folderId } = path[path.length - 1] || { id: '' };
     const { apiUrl, view } = store.getState();
@@ -21,8 +20,7 @@ export const fetchNextCloudFilesPageMiddleware = (
     const cursor = view && view.nextCursor;
     const items = (view && view.items) || [];
 
-    context.config
-      .userAuthProvider()
+    userAuthProvider()
       .then(auth =>
         fetcher.fetchCloudAccountFolder(
           apiUrl,

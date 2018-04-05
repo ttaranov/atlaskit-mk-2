@@ -69,12 +69,15 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     const context = ContextFactory.create({
       serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
-    });
-    const dropzone = MediaPicker('dropzone', context, {
-      container: this.dropzoneContainer,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
         : undefined,
+    });
+    const dropzone = MediaPicker('dropzone', context, {
+      container: this.dropzoneContainer,
+      uploadParams: {
+        collection: '',
+      },
     });
 
     this.dropzone = dropzone;

@@ -8,7 +8,11 @@ export interface BinaryConfig {
 }
 
 export interface BinaryUploaderConstructor {
-  new (analyticsContext: MediaPickerContext, context: Context): BinaryUploader;
+  new (
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: BinaryConfig,
+  ): BinaryUploader;
 }
 
 export class BinaryUploader extends LocalUploadComponent {

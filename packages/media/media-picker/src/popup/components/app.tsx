@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { Context } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -97,6 +97,11 @@ export class App extends Component<AppProps, AppState> {
       context,
     } = props;
 
+    const { userAuthProvider } = context.config;
+
+    if (!userAuthProvider) {
+      throw new Error('userAuthProvider must be provided in the context');
+    }
     this.state = {
       isDropzoneActive: false,
     };
@@ -131,7 +136,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', context);
+    this.mpBinary = MediaPicker('binary', context, defaultConfig);
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
@@ -139,7 +144,11 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
 
-    this.mpContext = context;
+    // We can't just use the given context since the Cards in the recents view needs a different authProvider
+    this.mpContext = ContextFactory.create({
+      serviceHost: context.config.serviceHost,
+      authProvider: userAuthProvider,
+    });
 
     onStartApp(uploadId => {
       this.mpBrowser.cancel(uploadId);

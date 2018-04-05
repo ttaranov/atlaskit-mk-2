@@ -14,6 +14,10 @@ import { MediaPickerContext } from '../domain/context';
 import { UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
+export interface LocalUploadConfig {
+  uploadParams: UploadParams;
+}
+
 export class LocalUploadComponent<
   M extends UploadEventPayloadMap = UploadEventPayloadMap
 > extends UploadComponent<M> {
@@ -21,15 +25,15 @@ export class LocalUploadComponent<
 
   constructor(
     analyticsContext: MediaPickerContext,
-    { config }: Context,
-    { uploadParams }: { uploadParams: UploadParams },
+    context: Context,
+    config: LocalUploadConfig,
   ) {
     super(analyticsContext);
-    const { userAuthProvider, authProvider, serviceHost } = config;
+    const { userAuthProvider, authProvider, serviceHost } = context.config;
     this.uploadService = new UploadService(
       serviceHost,
       authProvider,
-      uploadParams || { collection: '' },
+      config.uploadParams || { collection: '' },
       userAuthProvider,
     );
     this.uploadService.on('files-added', this.onFilesAdded);

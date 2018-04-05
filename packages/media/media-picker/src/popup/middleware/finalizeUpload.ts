@@ -12,12 +12,11 @@ import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { Context } from '@atlaskit/media-core';
 
-export default function(fetcher: Fetcher, context: Context): Middleware {
+export default function(fetcher: Fetcher): Middleware {
   return <State>(store) => (next: Dispatch<State>) => action => {
     if (isFinalizeUploadAction(action)) {
-      finalizeUpload(fetcher, context, store, action);
+      finalizeUpload(fetcher, store, action);
     }
     return next(action);
   };
@@ -25,12 +24,11 @@ export default function(fetcher: Fetcher, context: Context): Middleware {
 
 export function finalizeUpload(
   fetcher: Fetcher,
-  context: Context,
   store: Store<State>,
   { file, uploadId, source, tenant }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
-  return context.config
-    .userAuthProvider()
+  const { userAuthProvider } = store.getState();
+  return userAuthProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
       const sourceFile = {

@@ -10,14 +10,8 @@ import { resetView } from '../popup/actions/resetView';
 import { setTenant } from '../popup/actions/setTenant';
 import { getFilesInRecents } from '../popup/actions/getFilesInRecents';
 import { getConnectedRemoteAccounts } from '../popup/actions/getConnectedRemoteAccounts';
-import { WsProvider } from '../popup/tools/websocket/wsProvider';
 import { State } from '../popup/domain';
-
-import { MediaApiFetcher } from '../popup/tools/fetcher/fetcher';
-import { CloudService } from '../popup/services/cloud-service';
 import { hidePopup } from '../popup/actions/hidePopup';
-
-import appConfig from '../config';
 import { createStore } from '../store';
 import { UploadComponent, UploadEventEmitter } from './component';
 
@@ -32,7 +26,6 @@ import { UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface PopupConfig {
-  readonly userAuthProvider: AuthProvider;
   readonly container?: HTMLElement;
   readonly uploadParams: UploadParams;
 }
@@ -40,7 +33,11 @@ export interface PopupConfig {
 export const USER_RECENTS_COLLECTION = 'recents';
 
 export interface PopupConstructor {
-  new (context: MediaPickerContext, popupConfig: PopupConfig): Popup;
+  new (
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: PopupConfig,
+  ): Popup;
 }
 
 export type PopupUploadEventPayloadMap = UploadEventPayloadMap & {
@@ -64,28 +61,8 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   ) {
     super(anlyticsContext);
 
-    const { userAuthProvider, serviceHost, authProvider } = context.config;
-    const redirectUrl = appConfig.html.redirectUrl;
-    const fetcher = new MediaApiFetcher();
-    const authService = {
-      getUserAuth: userAuthProvider,
-      getTenantAuth: authProvider,
-    };
-    // TODO: We should enforce "userAuthProvider" to be present
-    const cloudService = new CloudService(() => authService.getUserAuth());
-    const wsProvider = new WsProvider();
-
     this.analyticsContext.trackEvent(new MPPopupLoaded());
-    this.store = createStore(
-      this,
-      serviceHost,
-      redirectUrl,
-      context,
-      fetcher,
-      authService,
-      cloudService,
-      wsProvider,
-    );
+    this.store = createStore(this, context);
 
     this.uploadParams = {
       ...defaultUploadParams,

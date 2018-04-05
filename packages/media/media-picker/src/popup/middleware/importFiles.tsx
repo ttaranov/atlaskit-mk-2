@@ -66,12 +66,11 @@ const mapSelectedItemToSelectedUploadFile = ({
 
 export function importFilesMiddleware(
   eventEmitter: PopupUploadEventEmitter,
-  context: Context,
   wsProvider: WsProvider,
 ): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isStartImportAction(action)) {
-      importFiles(eventEmitter, store as any, context, wsProvider);
+      importFiles(eventEmitter, store as any, wsProvider);
     }
     return next(action);
   };
@@ -80,14 +79,19 @@ export function importFilesMiddleware(
 export function importFiles(
   eventEmitter: PopupUploadEventEmitter,
   store: Store<State>,
-  context: Context,
   wsProvider: WsProvider,
 ): Promise<void> {
-  const { apiUrl, uploads, tenant, selectedItems } = store.getState();
+  const {
+    apiUrl,
+    uploads,
+    tenant,
+    selectedItems,
+    userAuthProvider,
+  } = store.getState();
 
   store.dispatch(hidePopup());
 
-  return context.config.userAuthProvider().then(auth => {
+  return userAuthProvider().then(auth => {
     const selectedUploadFiles = selectedItems.map(
       mapSelectedItemToSelectedUploadFile,
     );

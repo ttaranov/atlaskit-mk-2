@@ -7,12 +7,11 @@ import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { Context } from '@atlaskit/media-core';
 
-export default function(fetcher: Fetcher, context: Context): Middleware {
+export default function(fetcher: Fetcher): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isGetPreviewAction(action)) {
-      getPreview(fetcher, context, store as any, action);
+      getPreview(fetcher, store as any, action);
     }
     return next(action);
   };
@@ -20,14 +19,12 @@ export default function(fetcher: Fetcher, context: Context): Middleware {
 
 export function getPreview(
   fetcher: Fetcher,
-  context: Context,
   store: Store<State>,
   { uploadId, file, collection }: GetPreviewAction,
 ): Promise<SendUploadEventAction> {
-  const { apiUrl } = store.getState();
+  const { apiUrl, userAuthProvider } = store.getState();
 
-  return context.config
-    .userAuthProvider()
+  return userAuthProvider()
     .then(auth => fetcher.getPreview(apiUrl, auth, file.id, collection))
     .then(preview =>
       store.dispatch(

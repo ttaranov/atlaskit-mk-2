@@ -67,11 +67,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     const context = ContextFactory.create({
       serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this),
+      userAuthProvider,
     });
 
     this.popup = MediaPicker('popup', context, {
       container: document.body,
-      userAuthProvider,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
