@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ScrollLock } from '@atlaskit/layer-manager';
 
 import SpotlightRegistry from './SpotlightRegistry';
+import { Fade } from './Animation';
 import Blanket from '../styled/Blanket';
 
 import type { ChildrenType, ComponentType } from '../types';
@@ -60,7 +61,11 @@ export default class SpotlightManager extends PureComponent<Props, State> {
     return (
       <Tag>
         {children}
-        {dialogIsVisible && <Blanket isTinted={this.props.blanketIsTinted} />}
+        <Fade
+          in={dialogIsVisible}
+          component={Blanket}
+          isTinted={this.props.blanketIsTinted}
+        />
         {dialogIsVisible && <ScrollLock />}
       </Tag>
     );

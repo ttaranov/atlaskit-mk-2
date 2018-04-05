@@ -1,10 +1,17 @@
 // @flow
 import { type Node } from 'react';
 
+// TODO replace this with "unstated" when react >= 16.3 for a simpler API,
+// will be able to use `state` rather than internal change listeners
+
 export default class SpotlightRegistry {
   store = {};
   mounted = [];
   eventListeners = {};
+
+  // ==============================
+  // CHANGE LISTENERS
+  // ==============================
 
   notifyChange(name: string, ...args: any) {
     if (this.eventListeners[name]) {
@@ -28,6 +35,10 @@ export default class SpotlightRegistry {
     }
   }
 
+  // ==============================
+  // ADD & REMOVE
+  // ==============================
+
   add(name: string, node: Node) {
     if (this.store[name]) {
       // eslint-disable-next-line no-console
@@ -50,12 +61,22 @@ export default class SpotlightRegistry {
     }
   }
 
-  mount(name: string) {
-    this.mounted.push(name);
-    this.notifyChange('mount', name);
+  // ==============================
+  // MOUNT & UNMOUNT
+  // ==============================
+
+  mount(node: HTMLElement) {
+    this.mounted.push(node);
+    this.notifyChange('mount', node);
   }
-  unmount(name: string) {
-    this.mounted = this.mounted.filter(i => name !== i);
-    this.notifyChange('unmount', name);
+  unmount(node: HTMLElement) {
+    this.mounted = this.mounted.filter(i => node !== i);
+    this.notifyChange('unmount', node);
+  }
+  hasMounted() {
+    return Boolean(this.mounted.length);
+  }
+  countMounted() {
+    return this.mounted.length;
   }
 }

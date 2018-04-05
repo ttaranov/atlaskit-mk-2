@@ -61,11 +61,13 @@ type Props = {|
   /** Whether or not to display a pulse animation around the spotlighted element */
   pulse?: boolean,
   /** The name of the SpotlightTarget */
-  target: string,
+  target?: string,
+  /** The spotlight target node */
+  targetNode?: HTMLElement,
   /** The background color of the element being highlighted */
   targetBgColor?: string,
   /** Function to fire when a user clicks on the cloned target */
-  targetOnClick?: ({ event: MouseEvent, target: string }) => void,
+  targetOnClick?: ({ event: MouseEvent, target?: string }) => void,
   /** The border-radius of the element being highlighted */
   targetRadius?: number,
   /** Alternative element to render than the wrapped target */
@@ -112,12 +114,14 @@ class Spotlight extends Component<Props> {
       target,
       targetBgColor,
       targetOnClick,
+      targetNode,
       targetRadius,
       targetReplacement: Replacement,
     } = this.props;
 
-    if (!target) {
-      throw Error(`Spotlight couldn't find a target matching "${target}".`);
+    if (!target && !targetNode) {
+      const targetText = target ? ` matching "${target}".` : '.';
+      throw Error(`Spotlight couldn't find a target${targetText}.`);
     }
 
     return Replacement ? (

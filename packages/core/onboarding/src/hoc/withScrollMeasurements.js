@@ -8,7 +8,7 @@ import SpotlightRegistry from '../components/SpotlightRegistry';
 
 const SCROLLABLE = /auto|scroll/;
 
-type Props = { target: string };
+type Props = { target?: string, targetNode?: HTMLElement };
 type State = {
   clone?: string, // string representation of HTMLElement
   scrollY: number,
@@ -71,14 +71,24 @@ export default function withScrollMeasurements(
       spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
     };
     componentWillMount() {
-      const { target } = this.props;
+      const { target, targetNode } = this.props;
       const { spotlightRegistry } = this.context;
 
       if (!spotlightRegistry) {
         throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
       }
-      spotlightRegistry.mount(target);
-      const node = spotlightRegistry.get(target);
+
+      let node;
+      if (targetNode) {
+        node = targetNode;
+      } else {
+        node = spotlightRegistry.get(target);
+      }
+
+      // let the registry know that there's a spotlight mounted so it can
+      // render a blanket
+      spotlightRegistry.mount(node);
+
       this.setState({ scrollY: getScrollY(node) }, () => {
         this.measureAndScroll(node);
       });
@@ -144,6 +154,11 @@ export default function withScrollMeasurements(
       });
     };
     render() {
+      const { spotlightRegistry } = this.context;
+      console.log(
+        'withScrollMeasurements hasMounted',
+        spotlightRegistry.hasMounted(),
+      );
       return <WrappedComponent {...this.props} {...this.state} />;
     }
   };
