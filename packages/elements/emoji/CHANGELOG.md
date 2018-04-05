@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 34.1.0
+- [minor] FS-1660 emoji upload preview uses new design [52a8dd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52a8dd9)
+
 ## 34.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
