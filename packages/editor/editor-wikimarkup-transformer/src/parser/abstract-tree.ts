@@ -393,13 +393,22 @@ export default class AbstractTree {
    * @returns {AddCellArgs[]}
    */
   private getTableCells(line: string, useGreyText: boolean): AddCellArgs[] {
-    let match;
     const cells: AddCellArgs[] = [];
+    const { tableCell } = this.schema.nodes;
+    let match;
+
     while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
       const [, /* discard */ style, content] = match;
-      const contentNode = this.getTextWithMarks(content, useGreyText);
+      const contentNode = this.getTextNodes(
+        content,
+        false,
+        tableCell,
+        useGreyText,
+      );
+
       cells.push({ style, content: contentNode });
     }
+
     return cells;
   }
 
