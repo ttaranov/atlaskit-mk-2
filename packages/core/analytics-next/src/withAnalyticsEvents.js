@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  type Node,
   type ComponentType,
   type ElementConfig,
 } from 'react';
@@ -22,7 +23,7 @@ type AnalyticsEventsProps = {
   createAnalyticsEvent: CreateUIAnalyticsEvent | void,
 };
 
-type EventMap<ProvidedProps> = {
+type EventMap<ProvidedProps: {}> = {
   [string]:
     | AnalyticsEventPayload
     | ((
@@ -38,11 +39,8 @@ export default function withAnalyticsEvents<
 >(
   createEventMap: EventMap<ExternalProps> = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
-  return WrappedComponent =>
+  return WrappedComponent => {
     class WithAnalyticsEvents extends Component<ExternalProps> {
-      static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
-        WrappedComponent.name})`;
-
       static contextTypes = {
         getAtlaskitAnalyticsEventHandlers: PropTypes.func,
         getAtlaskitAnalyticsContext: PropTypes.func,
@@ -130,8 +128,21 @@ export default function withAnalyticsEvents<
           <WrappedComponent
             {...props}
             createAnalyticsEvent={this.createAnalyticsEvent}
+            ref={this.props.innerRef}
           />
         );
       }
-    };
+    }
+
+    // $FlowFixMe - flow 0.67 doesn't know about forwardRef
+    const ForwardedWithAnalyticsEvents = React.forwardRef(
+      (props: ExternalProps, ref) => (
+        <WithAnalyticsEvents {...props} innerRef={ref} />
+      ),
+    );
+    ForwardedWithAnalyticsEvents.displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
+      WrappedComponent.name})`;
+
+    return ForwardedWithAnalyticsEvents;
+  };
 }
