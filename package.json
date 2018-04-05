@@ -324,7 +324,7 @@
     "prosemirror-schema-list": "^1.0.0",
     "prosemirror-state": "^1.1.0",
     "prosemirror-tables": "^0.6.3",
-    "prosemirror-transform": "^1.0.0",
+    "prosemirror-transform": "1.0.0",
     "prosemirror-utils": "^0.1.0",
     "prosemirror-view": "^1.2.0",
     "pubnub": "^4.20.0",

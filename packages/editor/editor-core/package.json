@@ -72,7 +72,7 @@
     "prosemirror-schema-list": "^1.0.0",
     "prosemirror-state": "^1.1.0",
     "prosemirror-tables": "^0.6.3",
-    "prosemirror-transform": "^1.0.0",
+    "prosemirror-transform": "1.0.0",
     "prosemirror-utils": "^0.1.0",
     "prosemirror-view": "^1.2.0",
     "raf-schd": "^2.1.0",
