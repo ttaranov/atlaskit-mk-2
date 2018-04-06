@@ -2,13 +2,13 @@
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { borderRadius, colors } from '@atlaskit/theme';
-import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
+import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -54,8 +54,12 @@ const Flex = styled.div`
     };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
-    background-color: ${({ isFocused }) =>
-      isFocused ? 'inherit' : colors.N20};
+    ${({ isFocused, isDisabled }) =>
+      !isFocused && !isDisabled
+        ? `
+        background-color: ${colors.N20};
+      `
+        : ''};
   }
 `;
 
@@ -86,16 +90,6 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-function parseDateIntoStateValues(value) {
-  const parsed = parse(value);
-  const valid = isValid(parsed);
-  return {
-    dateValue: valid ? format(parsed, 'YYYY-MM-DD') : '',
-    timeValue: valid ? format(parsed, 'HH:mm') : '',
-    zoneValue: valid ? format(parsed, 'ZZ') : '',
-  };
-}
-
 export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
@@ -118,21 +112,22 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: '',
   };
 
-  constructor(props: Props) {
-    super(props);
-    const mappedState = this.getState();
-    this.state = {
-      ...mappedState,
-      ...parseDateIntoStateValues(mappedState.value),
-    };
-  }
-
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
   getState = () => {
-    return {
+    const mappedState = {
       ...this.state,
       ...pick(this.props, ['value']),
+    };
+
+    return {
+      ...mappedState,
+      ...parseDateIntoStateValues(
+        mappedState.value,
+        mappedState.dateValue,
+        mappedState.timeValue,
+        mappedState.zoneValue,
+      ),
     };
   };
 
@@ -180,7 +175,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
     };
     return (
-      <Flex {...innerProps} isFocused={isFocused}>
+      <Flex {...innerProps} isFocused={isFocused} isDisabled={isDisabled}>
         <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker

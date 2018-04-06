@@ -39,6 +39,7 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import rulePlugin from '../../../src/plugins/rule';
 import tablePlugin from '../../../src/plugins/table';
 import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -124,6 +125,38 @@ describe('Media plugin', () => {
     expect(pluginState.binaryPicker!.upload as any).toHaveBeenCalledTimes(1);
     collectionFromProvider.mockRestore();
     pluginState.destroy();
+  });
+
+  it('should set local preview on context when file is uploaded', async () => {
+    const provider = await mediaProvider;
+    const { pluginState } = editor(doc(p('')));
+    const temporaryId = 'temp-id';
+    const publicId = 'public-id';
+    const src = 'file-preview';
+
+    await waitForMediaPickerReady(pluginState);
+    await provider.viewContext;
+
+    const context = await pluginState['mediaProvider'].viewContext;
+    const spy = jest.spyOn(context, 'setLocalPreview');
+    pluginState.insertFiles([
+      {
+        id: temporaryId,
+        fileMimeType: 'image/jpeg',
+      },
+    ]);
+    stateManager.updateState(temporaryId, {
+      id: temporaryId,
+      status: 'processing',
+      thumbnail: {
+        src,
+      },
+      publicId,
+    });
+
+    await sleep(0);
+
+    expect(spy).toBeCalledWith(publicId, src);
   });
 
   describe('when message editor', () => {
@@ -280,58 +313,32 @@ describe('Media plugin', () => {
       });
 
       describe('when inserting inside table cell', () => {
-        it('inserts media group', async () => {
-          const { editorView, pluginState } = editor(
-            doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        it('inserts media single', async () => {
+          const { editorView } = editor(
+            doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
           );
-          await waitForMediaPickerReady(pluginState);
 
-          pluginState.insertFiles([
-            {
-              id: 'foo',
-              fileMimeType: 'image/jpeg',
-            },
-            {
-              id: 'bar',
-              fileMimeType: 'image/png',
-            },
-          ]);
-
-          stateManager.updateState('foo', {
-            id: 'foo',
-            status: 'uploading',
-            fileName: 'foo.jpg',
-            fileSize: 100,
-            fileMimeType: 'image/jpeg',
-            thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
-          });
-
-          stateManager.updateState('bar', {
-            id: 'bar',
-            status: 'uploading',
-            fileName: 'bar.png',
-            fileSize: 200,
-            fileMimeType: 'image/png',
-            thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
-          });
+          insertMediaAsMediaSingle(
+            editorView,
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            })()(editorView.state.schema),
+          );
 
           // Different from media single that those optional properties are copied over only when the thumbnail is ready in media group.
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              table(
+              table()(
                 tr(
                   td({})(
-                    mediaGroup(
+                    mediaSingle({ layout: 'center' })(
                       media({
-                        id: 'foo',
-                        __key: 'foo',
-                        type: 'file',
-                        collection: testCollectionName,
-                        __fileMimeType: 'image/jpeg',
-                      })(),
-                      media({
-                        id: 'bar',
-                        __key: 'bar',
+                        id: temporaryFileId,
+                        __key: temporaryFileId,
                         type: 'file',
                         collection: testCollectionName,
                         __fileMimeType: 'image/png',

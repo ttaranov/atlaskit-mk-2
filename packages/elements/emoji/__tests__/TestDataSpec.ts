@@ -6,7 +6,7 @@ import {
   grinEmoji,
   evilburnsEmoji,
   standardEmojis,
-} from '../src/support/test-data';
+} from './_test-data';
 
 describe('#test data', () => {
   const emojiRepository = newEmojiRepository();

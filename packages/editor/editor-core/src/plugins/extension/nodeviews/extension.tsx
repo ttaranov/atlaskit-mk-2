@@ -2,10 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { Node as PmNode } from 'prosemirror-model';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { ContentNodeView } from '../../../nodeviews';
 import Extension from '../ui/Extension';
-import { ExtensionHandlers } from '../../../types';
 
 export interface Props {
   node: PmNode;

@@ -4,8 +4,17 @@ import { expect } from 'chai';
 import { ResourcedMention } from '@atlaskit/mention';
 import ProviderFactory from '../../src/providerFactory';
 import Mention from '../../src/ui/Mention';
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 
 describe('@atlaskit/editor-core/ui/Mention', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+  afterEach(() => {
+    console.error = consoleError;
+  });
   it('should render resourced mention', () => {
     const mention = mount(
       <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" />,

@@ -75,7 +75,7 @@ type DropdownMenuBaseProps = {
   shouldFlip: boolean,
   /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
    * to easily get a button trigger. */
-  trigger?: Element<any> | string,
+  trigger?: Node | string,
   /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
   triggerButtonProps: {},
   /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows

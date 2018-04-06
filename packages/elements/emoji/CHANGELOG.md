@@ -1,5 +1,36 @@
 # @atlaskit/emoji
 
+## 34.1.1
+- [patch] Fixed flex issue in IE11 [137d8bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/137d8bd)
+- [patch] Improve custom emoji upload failure and waiting experience [1ab5945](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ab5945)
+
+## 34.1.0
+- [minor] FS-1660 emoji upload preview uses new design [52a8dd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52a8dd9)
+
+## 34.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 33.0.3
+
+## 33.0.2
+- [patch] FS-1853 custom category button scrolls to Your Uploads if present [f42e14e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f42e14e)
+
+## 33.0.1
+- [patch] code clean up [6c1c0a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c1c0a0)
+- [patch] custom emoji pre-upload file validation for invalid image and files over 1Mb [86244f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86244f5)
+
+## 33.0.0
+
+- [major] FS-1658 deleteSiteEmoji and getCurrentUser are required for EmojiProvider implementation [ecec57f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecec57f)
+
+## 32.0.1
+
+## 32.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
+## 31.1.23
+- [patch] Fix painting issue after scrolling to top of emoji list [debbe10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/debbe10)
+
 ## 31.1.22
 
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)

@@ -2,12 +2,13 @@ import * as React from 'react';
 import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import TaskItem from '../src/components/TaskItem';
-import { document, getParticipants } from '../src/support/story-data';
 import {
   MessageContainer,
   SidebarContainer,
   dumpRef,
   action,
+  document,
+  getParticipants,
 } from '../example-helpers/story-utils';
 
 export default () => (

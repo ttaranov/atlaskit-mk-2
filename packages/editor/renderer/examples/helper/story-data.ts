@@ -1,7 +1,7 @@
-import {
-  storyData as emojiStoryData,
-  testData as emojiTestData,
-} from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
+
+const emojiTestData = emoji.testData;
+const emojiStoryData = emoji.storyData;
 
 const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;
@@ -1407,9 +1407,8 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'tableHeader',
               attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
+                colspan: 2,
+                colwidth: [233, 100],
               },
               content: [
                 {
@@ -1421,23 +1420,7 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'tableHeader',
               attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [],
-                },
-              ],
-            },
-            {
-              type: 'tableHeader',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
+                background: '#DEEBFF',
               },
               content: [
                 {
@@ -1467,11 +1450,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1481,11 +1459,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1500,11 +1473,6 @@ System.out.println("There are " + count + " values >= 5");`,
           content: [
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1514,11 +1482,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1528,11 +1491,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',

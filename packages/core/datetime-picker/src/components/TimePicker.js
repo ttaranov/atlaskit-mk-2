@@ -1,11 +1,12 @@
 // @flow
 
-import Select from '@atlaskit/select';
+import Select, { components, mergeStyles } from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
+import FixedLayer from '../internal/FixedLayer';
 
 type Option = {
   label: string,
@@ -61,7 +62,16 @@ function formatTime(time: string): string {
   return isValid(date) ? format(date, 'h:mma') : time;
 }
 
+const menuStyles = {
+  /* Need to remove default absolute positioning as that causes issues with position fixed */
+  position: 'static',
+  /* Need to add overflow to the element with max-height, otherwise causes overflow issues in IE11 */
+  overflowY: 'auto',
+};
+
 export default class TimePicker extends Component<Props, State> {
+  containerRef: ?HTMLElement;
+
   static defaultProps = {
     autoFocus: false,
     isDisabled: false,
@@ -114,6 +124,16 @@ export default class TimePicker extends Component<Props, State> {
     this.setState({ isOpen: false });
   };
 
+  getContainerRef = (ref: ?HTMLElement) => {
+    const oldRef = this.containerRef;
+    this.containerRef = ref;
+    // Cause a re-render if we're getting the container ref for the first time
+    // as the layered menu requires it for dimension calculation
+    if (oldRef == null && ref != null) {
+      this.forceUpdate();
+    }
+  };
+
   render() {
     const {
       autoFocus,
@@ -127,33 +147,60 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { value, isOpen } = this.getState();
+
+    const FixedLayerMenu = props => {
+      return (
+        <FixedLayer
+          containerRef={this.containerRef}
+          content={<components.Menu {...props} scrollMenuIntoView={false} />}
+        />
+      );
+    };
+
+    const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
+
     return (
-      <div {...innerProps}>
+      <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           autoFocus={autoFocus}
+          components={{
+            ClearIndicator,
+            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            Menu: FixedLayerMenu,
+          }}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpen}
+          menuIsOpen={isOpen && !isDisabled}
+          menuPlacement="auto"
           onBlur={onBlur}
           onChange={this.onChange}
           options={this.getOptions()}
           onFocus={onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
-          components={{
-            ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-          }}
           placeholder="e.g. 9:00am"
+          styles={mergeStyles(selectStyles, {
+            menu: base => ({
+              ...base,
+              ...menuStyles,
+              ...{
+                // Fixed positioned elements no longer inherit width from their parent, so we must explicitly set the
+                // menu width to the width of our container
+                width: this.containerRef
+                  ? this.containerRef.getBoundingClientRect().width
+                  : 'auto',
+              },
+            }),
+          })}
           value={
             value && {
               label: formatTime(value),
               value,
             }
           }
-          {...selectProps}
+          {...otherSelectProps}
         />
       </div>
     );

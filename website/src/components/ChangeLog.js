@@ -18,7 +18,6 @@ function getVersion(str: string) {
 }
 const Heading = ({
   children,
-  level,
   packageName,
 }: {
   children: Node,
@@ -37,11 +36,9 @@ const Heading = ({
   const versionNumber = version[1];
   const versionDate = version[2];
 
-  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${
-    packageName
-  }%40${versionNumber}`;
+  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
   const anchorProps = {
-    href: href,
+    href,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
@@ -111,7 +108,9 @@ export default class ChangeLog extends Component<Props> {
             currentMajor = major;
 
             return (
-              <LogItem key={i} major={majorHasChanged}>
+              // Version is not unique enough due to untidy changelogs.
+              /* eslint-disable react/no-array-index-key */
+              <LogItem key={`${v.version}-${i}`} major={majorHasChanged}>
                 <ReactMarkdown
                   escapeHtml
                   source={v.md}

@@ -4,10 +4,17 @@ import {
   timestampToDate,
   timestampToIso,
 } from '@atlaskit/editor-common';
-import { CalendarStateless } from '@atlaskit/calendar';
+import Calendar from '@atlaskit/calendar';
+import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
 
 const PopupWithListeners = withOuterListeners(Popup);
+
+const calendarStyle = {
+  padding: akBorderRadius,
+  borderRadius: akBorderRadius,
+  boxShadow: `0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A}`,
+};
 
 export interface Props {
   element: HTMLElement | null;
@@ -16,7 +23,7 @@ export interface Props {
 }
 
 export interface State {
-  focused: number;
+  day: number;
   month: number;
   year: number;
   selected: Array<string>;
@@ -31,7 +38,7 @@ export default class DatePicker extends React.Component<Props, State> {
       const { day, month, year } = timestampToDate(timestamp);
       this.state = {
         selected: [timestampToIso(timestamp)],
-        focused: day,
+        day,
         month,
         year,
       };
@@ -52,11 +59,12 @@ export default class DatePicker extends React.Component<Props, State> {
         handleClickOutside={onClickOutside}
         handleEscapeKeydown={onClickOutside}
       >
-        <CalendarStateless
+        <Calendar
           onChange={this.handleChange}
           onSelect={onSelect}
           {...this.state}
           ref={this.handleRef}
+          innerProps={{ style: calendarStyle }}
         />
       </PopupWithListeners>
     );
@@ -64,7 +72,7 @@ export default class DatePicker extends React.Component<Props, State> {
 
   private handleChange = ({ day, month, year }) => {
     this.setState({
-      focused: day,
+      day,
       month,
       year,
     });

@@ -27,6 +27,7 @@ export interface Props {
 
   // Editor
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+  placeholder?: string;
 }
 
 export interface State {
@@ -44,7 +45,7 @@ const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   grid-template:
     'avatar-area editor-area'
     / auto 1fr;
-  padding-top: 10px;
+  padding-top: 16px;
   position: relative;
 
   &:first-child,
@@ -102,7 +103,10 @@ export default class Editor extends React.Component<Props, State> {
   private onSave = async (actions: any) => {
     if (this.props.onSave) {
       const value = await actions.getValue();
-      this.props.onSave(value);
+
+      if (value && value.content.some(n => n.content && n.content.length)) {
+        this.props.onSave(value);
+      }
     } else {
       this.setState({
         isExpanded: false,
@@ -114,7 +118,12 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   private renderEditor = (actions: EditorActions) => {
-    const { dataProviders, renderEditor, defaultValue } = this.props;
+    const {
+      dataProviders,
+      renderEditor,
+      defaultValue,
+      placeholder,
+    } = this.props;
     let providers = {};
 
     // @TODO Remove and just pass the factory through once AkEditor is updated
@@ -137,7 +146,7 @@ export default class Editor extends React.Component<Props, State> {
 
     return (
       <CollapsedEditor
-        placeholder="What do you want to say?"
+        placeholder={placeholder}
         isExpanded={this.state.isExpanded}
         onFocus={this.onFocus}
       >

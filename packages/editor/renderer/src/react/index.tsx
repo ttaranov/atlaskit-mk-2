@@ -21,8 +21,9 @@ import {
   getMarksByOrder,
   isSameMark,
   EventHandlers,
+  ExtensionHandlers,
+  calcTableColumnWidths,
 } from '@atlaskit/editor-common';
-import { ExtensionHandlers } from '../ui/Renderer';
 import { bigEmojiHeight } from '../utils';
 
 export interface RendererContext {
@@ -77,9 +78,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         if (isTextWrapper(node.type.name)) {
           return this.serializeTextWrapper((node as TextWrapper).content);
         }
-        const props = emojiBlock
-          ? this.getEmojiBlockProps(node as Node)
-          : this.getProps(node as Node);
+        let props;
+        if (emojiBlock) {
+          props = this.getEmojiBlockProps(node as Node);
+        } else if (node.type.name === 'table') {
+          props = this.getTableProps(node as Node);
+        } else {
+          props = this.getProps(node as Node);
+        }
 
         return this.serializeFragment(
           (node as Node).content,
@@ -147,6 +153,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return {
       ...this.getProps(node),
       fitToHeight: bigEmojiHeight,
+    };
+  }
+
+  private getTableProps(node: Node) {
+    return {
+      ...this.getProps(node),
+      columnWidths: calcTableColumnWidths(node),
     };
   }
 

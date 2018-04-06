@@ -38,6 +38,12 @@ export interface Context {
 
   getDataUriService(collectionName?: string): DataUriService;
 
+  getLocalPreview(id: string): string | undefined;
+
+  setLocalPreview(id: string, preview: string): void;
+
+  removeLocalPreview(id: string): void;
+
   getBlobService(collectionName?: string): BlobService;
 
   addLinkItem(
@@ -62,11 +68,12 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
+  private readonly localPreviewCache: LRUCache<string, string>;
 
   constructor(readonly config: ContextConfig) {
-    this.fileItemCache = new LRUCache<string, FileItem>(
-      config.cacheSize || DEFAULT_CACHE_SIZE,
-    );
+    this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
+
+    this.localPreviewCache = new LRUCache(10);
   }
 
   getMediaItemProvider(
@@ -127,6 +134,18 @@ class ContextImpl implements Context {
       this.config.serviceHost,
       collectionName,
     );
+  }
+
+  setLocalPreview(id: string, preview: string) {
+    this.localPreviewCache.set(id, preview);
+  }
+
+  getLocalPreview(id: string): string | undefined {
+    return this.localPreviewCache.get(id);
+  }
+
+  removeLocalPreview(id: string) {
+    this.localPreviewCache.remove(id);
   }
 
   getBlobService(collectionName?: string): BlobService {

@@ -107,7 +107,7 @@ export class MediaCollectionService implements CollectionService {
         sortDirection,
         details,
       },
-    }).then(response => {
+    }).response.then(response => {
       return {
         items: response.data.contents.map(this.mapToMediaCollectionItem),
         nextInclusiveStartKey: response.data.nextInclusiveStartKey,

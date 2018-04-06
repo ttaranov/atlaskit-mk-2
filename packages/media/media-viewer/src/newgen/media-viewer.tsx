@@ -1,9 +1,11 @@
 import * as React from 'react';
-import Blanket from '@atlaskit/blanket';
-import { Context, MediaType, MediaItem } from '@atlaskit/media-core';
+import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import Blanket from '@atlaskit/blanket';
+import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel, ObjectUrl } from './domain';
+import { Model, Identifier, initialModel } from './domain';
+import { constructAuthTokenUrl } from './util';
 
 export type Props = {
   onClose?: () => void;
@@ -13,15 +15,17 @@ export type Props = {
 
 export type State = Model;
 
+export const REQUEST_CANCELLED = 'request_cancelled';
+
 export class MediaViewer extends React.Component<Props, State> {
   state: State = initialModel;
 
   componentDidMount() {
-    this.subscribe();
+    this.init();
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.release();
   }
 
   // It's possible that a different identifier or context was passed.
@@ -34,8 +38,8 @@ export class MediaViewer extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps) {
     if (this.needsReset(this.props, prevProps)) {
-      this.unsubscribe();
-      this.subscribe();
+      this.release();
+      this.init();
     }
   }
 
@@ -57,15 +61,15 @@ export class MediaViewer extends React.Component<Props, State> {
     );
   }
 
-  private subscription?: any;
+  private itemDetails?: Subscription;
 
-  private subscribe() {
+  private init() {
     const { context } = this.props;
     const { id, type, collectionName } = this.props.data;
     const provider = context.getMediaItemProvider(id, type, collectionName);
 
-    this.subscription = provider.observable().subscribe({
-      next: async mediaItem => {
+    this.itemDetails = provider.observable().subscribe({
+      next: mediaItem => {
         if (mediaItem.type === 'link') {
           this.setState({
             fileDetails: {
@@ -93,33 +97,9 @@ export class MediaViewer extends React.Component<Props, State> {
               },
             });
 
-            try {
-              // TODO:
-              // - 1) MSW-530: revoke object URL
-              // - 2) MSW-531: make sure we don't set a new state if the component is unmounted.
-              const objectUrl = await getImageObjectUrl(mediaItem, context);
-              this.setState({
-                previewData: {
-                  status: 'SUCCESSFUL',
-                  data: {
-                    viewer: 'IMAGE',
-                    objectUrl,
-                  },
-                },
-              });
-            } catch (err) {
-              this.setState({
-                previewData: {
-                  status: 'FAILED',
-                  err,
-                },
-              });
-            }
+            this.populatePreviewData(mediaItem, context, collectionName);
           }
         }
-      },
-      complete: () => {
-        /* do nothing */
       },
       error: err => {
         this.setState({
@@ -132,24 +112,134 @@ export class MediaViewer extends React.Component<Props, State> {
     });
   }
 
-  private unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
+  private release() {
+    if (this.itemDetails) {
+      this.itemDetails.unsubscribe();
     }
+    if (this.cancelImageFetch) {
+      this.cancelImageFetch();
+    }
+    const { previewData } = this.state;
+    if (previewData.status === 'SUCCESSFUL') {
+      const { data } = previewData;
+      if (data.viewer === 'IMAGE') {
+        this.revokeObjectUrl(data.objectUrl);
+      }
+    }
+  }
+
+  private populatePreviewData(mediaItem, context, collectionName) {
+    switch (mediaItem.details.mediaType) {
+      case 'image':
+        this.populateImagePreviewData(mediaItem, context);
+        break;
+      case 'video':
+        this.populateVideoPreviewData(mediaItem, context, collectionName);
+        break;
+      default:
+        this.notSupportedPreview(mediaItem);
+        break;
+    }
+  }
+
+  private cancelImageFetch?: () => void;
+
+  // This method is spied on by some test cases, so don't rename or remove it.
+  public revokeObjectUrl(objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  private async populateImagePreviewData(
+    fileItem: MediaItem,
+    context: Context,
+  ) {
+    try {
+      const service = context.getBlobService();
+      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
+        width: 800,
+        height: 600,
+        mode: 'fit',
+        allowAnimated: true,
+      });
+      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
+      const objectUrl = URL.createObjectURL(await response);
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'IMAGE',
+            objectUrl,
+          },
+        },
+      });
+    } catch (err) {
+      if (err.message === REQUEST_CANCELLED) {
+        this.preventRaceCondition();
+      } else {
+        this.setState({
+          previewData: {
+            status: 'FAILED',
+            err,
+          },
+        });
+      }
+    }
+  }
+
+  // This method is spied on by some test cases, so don't rename or remove it.
+  public preventRaceCondition() {
+    // Calling setState might introduce a race condition, because the app has
+    // already transitioned to a different state. To avoid this we're not doing
+    // anything.
+  }
+
+  private async populateVideoPreviewData(
+    fileItem: FileItem,
+    context: Context,
+    collectionName?: string,
+  ) {
+    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
+    if (videoArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        videoArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'VIDEO',
+            src,
+          },
+        },
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file'),
+        },
+      });
+    }
+  }
+
+  private notSupportedPreview(fileItem: FileItem) {
+    this.setState({
+      previewData: {
+        status: 'FAILED',
+        err: new Error(`not supported`),
+      },
+    });
   }
 }
 
-async function getImageObjectUrl(
-  mediaItem: MediaItem,
-  context: Context,
-): Promise<ObjectUrl> {
-  const service = context.getBlobService();
-  const blob = await service.fetchImageBlob(mediaItem, {
-    width: 800,
-    height: 600,
-    mode: 'fit',
-    allowAnimated: true,
-  });
-  return URL.createObjectURL(blob);
+function getVideoArtifactUrl(fileItem: FileItem) {
+  const artifact = 'video_640.mp4';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
 }

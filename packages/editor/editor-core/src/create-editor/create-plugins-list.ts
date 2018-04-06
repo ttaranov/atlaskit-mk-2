@@ -130,7 +130,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(extensionPlugin);
   }
 
-  if (props.macroProvider) {
+  if (props.extensionProvider) {
     plugins.push(macroPlugin);
   }
 
@@ -154,6 +154,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   plugins.push(
     insertBlockPlugin({
       insertMenuItems: props.insertMenuItems,
+      horizontalRuleEnabled: props.allowRule,
     }),
   );
 

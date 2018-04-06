@@ -11,7 +11,7 @@ import {
   PluginKey,
   Transaction,
 } from 'prosemirror-state';
-import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
 import {
   copyPrivateMediaAttributes,
@@ -31,7 +31,7 @@ import {
   URLInfo,
   detectLinkRangesInSteps,
 } from '../utils/media-links';
-import { insertMediaGroupNode } from '../utils/media-files';
+import { insertMediaGroupNode, isNonImagesBanned } from '../utils/media-files';
 import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
 import PickerFacade, { PickerFacadeConfig } from '../picker-facade';
 import pickerFacadeLoader from '../picker-facade-loader';
@@ -289,15 +289,19 @@ export class MediaPluginState {
       isImage(media.fileMimeType),
     );
 
-    const nonImageAttachements = mediaStates.filter(
+    let nonImageAttachements = mediaStates.filter(
       media => !isImage(media.fileMimeType),
     );
+
+    const grandParentNode = this.view.state.selection.$from.node(-1);
+
+    if (isNonImagesBanned(grandParentNode)) {
+      nonImageAttachements = [];
+    }
 
     mediaStates.forEach(mediaState =>
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
-
-    const grandParentNode = this.view.state.selection.$from.node(-1);
 
     const allowMediaSingle =
       mediaSingle &&
@@ -368,18 +372,12 @@ export class MediaPluginState {
       return;
     }
 
-    if (!(linkCreateContextInstance as Context).addLinkItem) {
-      linkCreateContextInstance = ContextFactory.create(
-        linkCreateContextInstance as ContextConfig,
-      );
-    }
-
     return insertLinks(
       this.view,
       this.stateManager,
       this.handleMediaState,
       this.linkRanges,
-      linkCreateContextInstance as Context,
+      linkCreateContextInstance,
       this.collectionFromProvider(),
     );
   };
@@ -585,7 +583,7 @@ export class MediaPluginState {
 
   private initPickers(
     uploadParams: UploadParams,
-    contextConfig: ContextConfig,
+    context: Context,
     Picker: typeof PickerFacade,
   ) {
     if (this.destroyed) {
@@ -598,15 +596,15 @@ export class MediaPluginState {
     if (!pickers.length) {
       const pickerFacadeConfig: PickerFacadeConfig = {
         uploadParams,
-        contextConfig,
+        context,
         stateManager,
         errorReporter,
       };
 
-      if (contextConfig.userAuthProvider) {
+      if (context.config.userAuthProvider) {
         pickers.push(
           (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-            userAuthProvider: contextConfig.userAuthProvider,
+            userAuthProvider: context.config.userAuthProvider,
           })),
         );
       } else {
@@ -670,7 +668,7 @@ export class MediaPluginState {
     );
   }
 
-  private handleMediaState = (state: MediaState) => {
+  private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'error':
         this.removeNodeById(state.id);
@@ -683,6 +681,12 @@ export class MediaPluginState {
 
       case 'processing':
       case 'ready':
+        if (state.thumbnail && state.publicId) {
+          const viewContext = await this.mediaProvider.viewContext;
+          // This allows Cards to use local preview while they fetch the remote one
+          viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
+        }
+
         this.stateManager.off(state.id, this.handleMediaState);
         this.replaceTemporaryNode(state);
         break;

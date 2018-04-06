@@ -28,4 +28,7 @@ export const getComments = (
   return [];
 };
 
+export const getHighlighted = (state: State): string | undefined =>
+  state.highlighted;
+
 export const getUser = (state: State): User | undefined => state.user;

@@ -9,6 +9,7 @@ export interface Props {
   onSearch(query: string);
 
   isLoading: boolean;
+  isError: boolean;
   query: string;
   recentlyViewedItems: Result[];
   recentResults: Result[];
@@ -30,10 +31,16 @@ export default class GlobalQuickSearch extends React.Component<Props> {
     this.props.onSearch(query);
   };
 
+  retrySearch = () => {
+    const { query, onSearch } = this.props;
+    onSearch(query);
+  };
+
   render() {
     const {
       query,
       isLoading,
+      isError,
       recentlyViewedItems,
       recentResults,
       jiraResults,
@@ -49,6 +56,8 @@ export default class GlobalQuickSearch extends React.Component<Props> {
       >
         {renderSearchResults({
           query,
+          isError,
+          retrySearch: this.retrySearch,
           recentlyViewedItems,
           recentResults,
           jiraResults,

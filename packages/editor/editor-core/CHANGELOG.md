@@ -1,5 +1,86 @@
 # @atlaskit/editor-core
 
+## 68.1.1
+
+## 68.1.0
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 68.0.3
+- [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
+
+## 68.0.2
+- [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
+
+## 68.0.1
+- [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
+
+## 68.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 67.0.4
+
+## 67.0.3
+
+## 67.0.2
+- [patch] enable rule toolbar button if rule is enabled [c3be6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3be6b2)
+
+## 67.0.1
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 67.0.0
+- [major] CFE-1004: Rename anything "macro" to "extension" (i.e: MacroProvider to ExtensionProvider) [453aa52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/453aa52)
+
+## 66.1.7
+- [patch] refactor tables plugin [47b4e3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47b4e3a)
+
+## 66.1.6
+- [patch] tidy up padding and font-size around collapsed editor [260e744](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/260e744)
+
+## 66.1.5
+- [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
+
+## 66.1.4
+
+## 66.1.3
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
+## 66.1.2
+
+## 66.1.1
+- [patch] Update TaskItem NodeView to fix issue in Collab Editing where task-check would not replicate across sessions [9e331a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e331a6)
+
+## 66.1.0
+
+## 66.0.1
+
+## 66.0.0
+
+- [major] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 65.2.0
+
+## 65.1.31
+- [patch] ED-4184. fixing date picker in full page editor. [efa907c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efa907c)
+
+## 65.1.30
+
+## 65.1.29
+- [patch] ED-4139, fix selection when empty paragraph is inserted terminally in the node. [8c93c6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c93c6e)
+
+## 65.1.28
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 65.1.27
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
+## 65.1.26
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 65.1.25
+- [patch] ED-4119: Add draft async CollapsedEditor support to the Labs for feedback [eb2f891](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb2f891)
+
+## 65.1.24
+
 ## 65.1.23
 - [patch] FEF-730 Fix initial media rendering. [4aa9745](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aa9745)
 

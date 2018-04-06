@@ -11,6 +11,9 @@ import {
   OnToneSelected,
   ToneSelection,
 } from '../../types';
+import EmojiDeletePreview, {
+  OnDeleteEmoji,
+} from '../common/EmojiDeletePreview';
 
 export interface Props {
   selectedEmoji?: EmojiDescription;
@@ -19,10 +22,13 @@ export interface Props {
   toneEmoji?: EmojiDescriptionWithVariations;
   uploading: boolean;
   uploadEnabled: boolean;
+  emojiToDelete?: EmojiDescription;
   initialUploadName?: string;
   uploadErrorMessage?: string;
   onUploadCancelled: () => void;
   onUploadEmoji: OnUploadEmoji;
+  onCloseDelete: () => void;
+  onDeleteEmoji: OnDeleteEmoji;
   onFileChosen?: (name: string) => void;
   onOpenUpload: () => void;
 }
@@ -34,6 +40,8 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
       onToneSelected,
       onUploadCancelled,
       onUploadEmoji,
+      onCloseDelete,
+      onDeleteEmoji,
       selectedEmoji,
       selectedTone,
       toneEmoji,
@@ -42,6 +50,7 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
       onFileChosen,
       onOpenUpload,
       uploadEnabled,
+      emojiToDelete,
     } = this.props;
 
     const previewFooterClassnames = classNames([
@@ -58,6 +67,18 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
             onFileChosen={onFileChosen}
             errorMessage={uploadErrorMessage}
             initialUploadName={initialUploadName}
+          />
+        </div>
+      );
+    }
+
+    if (emojiToDelete) {
+      return (
+        <div className={previewFooterClassnames}>
+          <EmojiDeletePreview
+            emoji={emojiToDelete}
+            onDeleteEmoji={onDeleteEmoji}
+            onCloseDelete={onCloseDelete}
           />
         </div>
       );

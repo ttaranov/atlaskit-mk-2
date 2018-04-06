@@ -1,5 +1,10 @@
 # @atlaskit/website
 
+## 1.5.10
+- [patch] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 1.5.9
+
 ## 1.5.8
 
 ## 1.5.7

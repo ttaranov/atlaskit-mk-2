@@ -1,10 +1,10 @@
-/* @flow */
+// @flow
 
 import React, { type Node } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
-import { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';
+import { AkNavigationItem } from '@atlaskit/navigation';
 import renderNav from './renderNav';
 
 type RouterLinkProps = {
