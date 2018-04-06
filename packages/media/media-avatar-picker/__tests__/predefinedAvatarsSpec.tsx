@@ -7,15 +7,19 @@ import {
 
 describe('PredefinedAvatarView', () => {
   const setup = (props?: Partial<PredefinedAvatarViewProps>) => {
+    const avatars = [];
+    const onAvatarSelected = jest.fn();
     const component = shallow(
       <PredefinedAvatarView
-        avatars={[]}
-        onAvatarSelected={null as any}
+        avatars={avatars}
+        onAvatarSelected={onAvatarSelected}
         {...props}
       />,
     );
 
     return {
+      avatars,
+      onAvatarSelected,
       component,
     };
   };
