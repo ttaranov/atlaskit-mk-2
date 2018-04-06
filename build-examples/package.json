@@ -1,0 +1,26 @@
+{
+  "name": "build-examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build:docs": "./node_modules/.bin/webpack"
+  },
+  "devDependencies": {
+    "react-markings": "^1.1.7",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "bolt": "^0.19.2",
+    "extract-react-types-loader": "^0.1.1",
+    "raw-loader": "^0.5.1",
+    "webpack-cli": "^2.0.14"
+  }
+}

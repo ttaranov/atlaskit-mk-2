@@ -13,6 +13,7 @@
     "build:babel": "                         run-p build:babel:cjs build:babel:esm",
     "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/cjs",
     "build:babel:esm": "                     NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/esm",
+    "build:docs": "                          cd build-examples && yarn build:docs",
     "build:typescript": "                    run-p build:typescript:es5 build:typescript:es2015",
     "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --project ./build/es5",
     "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --project ./build/es2015",
@@ -75,6 +76,7 @@
     "version": "^0.18.3 || ^0.19.2",
     "workspaces": [
       "build/*",
+      "build-examples",
       "packages/*/*",
       "patterns",
       "website"
@@ -199,6 +201,7 @@
     "webdriverio": "^4.10.1",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^2.11.1",
     "whatwg-fetch": "^2.0.3",
     "xhr-mock": "^2.3.0"

@@ -10,14 +10,6 @@ export default md`
   multiple buttons together.
 
   ${(
-    <Example
-      Component={require('../examples/ButtonAppearances').default}
-      title="Your Appearance Options"
-      source={require('!!raw-loader!../examples/ButtonAppearances')}
-    />
-  )}
-
-  ${(
     <Props
       heading="Button Props"
       props={require('!!extract-react-types-loader!../src/components/Button')}
@@ -25,14 +17,6 @@ export default md`
   )}
 
 ### You can also use button groups
-
-  ${(
-    <Example
-      Component={require('../examples/ButtonGroupExample').default}
-      title="Simple Button Group"
-      source={require('!!raw-loader!../examples/ButtonGroupExample')}
-    />
-  )}
 
   ${(
     <Props
