@@ -103,6 +103,7 @@ export interface ContainerProps {
   isExpanded?: boolean;
   onCancel?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+  placeholder?: string;
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {

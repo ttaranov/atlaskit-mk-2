@@ -54,6 +54,7 @@ export interface SharedProps {
   containerId?: string;
 
   isHighlighted?: boolean;
+  placeholder?: string;
 }
 
 export interface Props extends SharedProps {

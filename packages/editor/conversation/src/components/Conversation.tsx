@@ -26,6 +26,10 @@ export interface Props extends SharedProps {
 }
 
 export default class Conversation extends React.PureComponent<Props> {
+  static defaultProps = {
+    placeholder: 'What do you want to say?',
+  };
+
   private renderComments() {
     const {
       comments,
@@ -41,6 +45,7 @@ export default class Conversation extends React.PureComponent<Props> {
       dataProviders,
       renderEditor,
       containerId,
+      placeholder,
     } = this.props;
 
     if (!conversation) {
@@ -67,6 +72,7 @@ export default class Conversation extends React.PureComponent<Props> {
         renderComment={props => <Comment {...props} />}
         renderEditor={renderEditor}
         containerId={containerId}
+        placeholder={placeholder}
       />
     ));
   }
@@ -80,6 +86,7 @@ export default class Conversation extends React.PureComponent<Props> {
       user,
       conversation,
       renderEditor,
+      placeholder,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -94,6 +101,7 @@ export default class Conversation extends React.PureComponent<Props> {
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
+          placeholder={placeholder}
         />
       );
     }
