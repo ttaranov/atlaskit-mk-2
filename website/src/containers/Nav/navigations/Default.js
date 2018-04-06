@@ -1,15 +1,11 @@
-/* @flow */
+// @flow
 
 import React from 'react';
 import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
-import PageIcon from '@atlaskit/icon/glyph/page';
 import OverviewIcon from '@atlaskit/icon/glyph/overview';
-import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
-import type { Directory } from '../../../types';
-import * as fs from '../../../utils/fs';
 import renderNav from '../utils/renderNav';
 
 const defaultNavGroups = [

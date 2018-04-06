@@ -1,4 +1,5 @@
 // @flow
+export { components, createFilter, mergeStyles } from 'react-select';
 
 export { default } from './Select';
 export { default as AsyncSelect } from './AsyncSelect';

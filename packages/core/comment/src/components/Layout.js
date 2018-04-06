@@ -18,6 +18,8 @@ type Props = {
   content?: Node,
   /** Whether this comment should appear highlighted */
   highlighted?: boolean,
+  /** Optional ID for the comment */
+  id?: string,
 };
 
 export default class Layout extends Component<Props> {
@@ -32,10 +34,10 @@ export default class Layout extends Component<Props> {
   }
 
   render() {
-    const { content, highlighted } = this.props;
+    const { content, highlighted, id } = this.props;
 
     return (
-      <Container>
+      <Container id={id}>
         {this.renderAvatar()}
         <ContentSectionDiv>{content}</ContentSectionDiv>
         {this.renderNestedComments()}

@@ -80,6 +80,11 @@ type Props = {
     The modal title; rendered in the header.
   */
   heading?: string,
+  /**
+   * Makes heading multiline.
+   * If false and heading is longer than one line overflow will be not displayed.
+   */
+  isHeadingMultiline?: boolean,
 };
 
 type State = {
@@ -94,6 +99,7 @@ export default class Content extends Component<Props, State> {
     isChromeless: false,
     stackIndex: 0,
     body: Body,
+    isHeadingMultiline: true,
   };
   static contextTypes = {
     /** available when invoked within @atlaskit/layer-manager */
@@ -205,6 +211,7 @@ export default class Content extends Component<Props, State> {
       heading,
       onClose,
       isChromeless,
+      isHeadingMultiline,
       shouldScroll,
     } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
@@ -225,6 +232,7 @@ export default class Content extends Component<Props, State> {
           component={header}
           heading={heading}
           onClose={onClose}
+          isHeadingMultiline={isHeadingMultiline}
           showKeyline={showHeaderKeyline}
         />
         <ModalBody

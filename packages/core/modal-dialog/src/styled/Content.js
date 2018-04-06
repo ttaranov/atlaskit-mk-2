@@ -1,5 +1,5 @@
 // @flow
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { flexMaxHeightIEFix } from '../utils/flex-max-height-ie-fix';
@@ -38,6 +38,12 @@ export const Header = styled(HeaderOrFooter)`
 `;
 
 // Title
+const oneLineTitleText = css`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const Title = styled.h4`
   align-items: center;
   display: flex;
@@ -47,6 +53,15 @@ export const Title = styled.h4`
   letter-spacing: -0.008em;
   line-height: 1;
   margin: 0;
+  min-width: 0;
+`;
+
+export const TitleText = styled.span`
+  flex: 1 1 auto;
+  min-width: 0;
+  word-wrap: break-word;
+  width: 100%;
+  ${({ isHeadingMultiline }) => !isHeadingMultiline && oneLineTitleText};
 `;
 const iconColor = {
   danger: colors.R400,
@@ -55,6 +70,7 @@ const iconColor = {
 export const TitleIconWrapper = styled.span`
   color: ${p => iconColor[p.appearance]};
   margin-right: ${gridSize}px;
+  flex: 0 0 auto;
 `;
 
 // Body

@@ -1,5 +1,12 @@
 # @atlaskit/dropdown-menu
 
+## 4.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 3.12.3
+
+- [patch] Update flow typing [bef13c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bef13c9)
+
 ## 3.12.2
 - [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
 

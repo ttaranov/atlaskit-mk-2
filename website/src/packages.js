@@ -1,7 +1,4 @@
-/* @flow */
-
-import siteData from './site';
-import type { Directory, File } from './types';
+// @flow
 
 const allPackages = {
   analytics: { key: 'analytics', name: 'Analytics' },

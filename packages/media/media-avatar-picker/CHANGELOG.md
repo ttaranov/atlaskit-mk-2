@@ -1,5 +1,11 @@
 # @atlaskit/media-avatar-picker
 
+## 7.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 7.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 6.0.7
 
 ## 6.0.6

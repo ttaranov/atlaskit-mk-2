@@ -38,6 +38,8 @@ type Props = {
   errorActions?: Array<Node>,
   /** Text to show in the error icon label */
   errorIconLabel?: string,
+  /** Optional ID for the comment */
+  id?: string,
 };
 
 export default class Comment extends Component<Props, {}> {
@@ -69,6 +71,7 @@ export default class Comment extends Component<Props, {}> {
       savingText,
       time,
       type,
+      id,
     } = this.props;
 
     const headerProps = {
@@ -98,6 +101,7 @@ export default class Comment extends Component<Props, {}> {
 
     return (
       <CommentLayout
+        id={id}
         avatar={avatar}
         content={layoutContent}
         highlighted={highlighted}

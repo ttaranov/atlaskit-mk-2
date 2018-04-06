@@ -1,5 +1,19 @@
 # @atlaskit/conversation
 
+## 7.1.1
+- [patch] Adding placholder prop for optionally setting the editor placholder text [9f1696a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f1696a)
+
+## 7.1.0
+- [minor] Adding permalink support [c79d549](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c79d549)
+
+## 7.0.1
+- [patch] Don't allow empty comments [cd9069c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd9069c)
+
+## 7.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 6.3.21
+
 ## 6.3.20
 
 ## 6.3.19

@@ -264,6 +264,27 @@ const props = {
               },
             ],
           },
+          {
+            key: {
+              kind: 'id',
+              name: 'placeholder',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'string',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally set the placeholder text for the editor. Defaults to "What do you want to say?"',
+              },
+            ],
+          },
         ],
       },
     },

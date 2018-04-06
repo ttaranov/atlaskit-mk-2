@@ -41,7 +41,12 @@ import {
   checkIfHeaderColumnEnabled,
   checkIfHeaderRowEnabled,
 } from '../../../src/plugins/table/utils';
-import { selectRow, selectColumn, selectTable, findTable } from 'prosemirror-utils';
+import {
+  selectRow,
+  selectColumn,
+  selectTable,
+  findTable,
+} from 'prosemirror-utils';
 import tablesPlugin from '../../../src/plugins/table';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';

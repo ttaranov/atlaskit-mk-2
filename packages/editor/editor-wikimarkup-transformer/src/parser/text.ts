@@ -73,10 +73,10 @@ function findFirstEmoji(
 
   for (const emoji of EMOJIS) {
     const { markup } = emoji;
-    const matchPosition = text.indexOf(markup, position);
+    const [match, matchPosition] = findFirstPosition(text, markup, position);
 
     // this emoji doesn't exist in a string
-    if (matchPosition === -1) {
+    if (!match || matchPosition === -1) {
       continue;
     }
 
@@ -85,7 +85,7 @@ function findFirstEmoji(
         matchPosition,
         nodeType: schema.nodes.emoji,
         attrs: emoji.adf,
-        textLength: markup.length,
+        textLength: match.length,
       };
     }
   }
@@ -145,6 +145,29 @@ function findFirstInlineNode(
   }
 
   return null;
+}
+
+/**
+ * Find the first position in the passed text matching anything from the passed array
+ * @param {string} text
+ * @param {string[]} searches
+ * @param {number?} start - start index
+ * @returns {Array} [ match, matchPosition ]
+ */
+function findFirstPosition(
+  text: string,
+  searches: string[],
+  start = 0,
+): [string | null, number] {
+  for (const search of searches) {
+    const match = text.indexOf(search, start);
+
+    if (match !== -1) {
+      return [search, match];
+    }
+  }
+
+  return [null, -1];
 }
 
 /**

@@ -1,5 +1,30 @@
 # @atlaskit/editor-core
 
+## 68.1.0
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 68.0.3
+- [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
+
+## 68.0.2
+- [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
+
+## 68.0.1
+- [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
+
+## 68.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 67.0.4
+
+## 67.0.3
+
+## 67.0.2
+- [patch] enable rule toolbar button if rule is enabled [c3be6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3be6b2)
+
+## 67.0.1
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
 ## 67.0.0
 - [major] CFE-1004: Rename anything "macro" to "extension" (i.e: MacroProvider to ExtensionProvider) [453aa52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/453aa52)
 
