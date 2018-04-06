@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 68.1.0
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
 ## 68.0.3
 - [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
 

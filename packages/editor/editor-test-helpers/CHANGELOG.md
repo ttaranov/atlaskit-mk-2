@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.0.3
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
 ## 3.0.2
 
 ## 3.0.1

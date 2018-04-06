@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 8.1.25
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
 ## 8.1.24
 - [patch] Fixing the nested link issue on paste [5d20a1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d20a1f)
 

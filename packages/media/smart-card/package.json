@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -23,7 +23,7 @@
     "@atlaskit/dropdown-menu": "^4.0.0",
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/lozenge": "^4.0.0",
-    "@atlaskit/media-ui": "^2.0.0",
+    "@atlaskit/media-ui": "^2.0.1",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/tooltip": "^9.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
