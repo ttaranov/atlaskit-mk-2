@@ -39,6 +39,7 @@ export interface SharedProps {
   onRevertComment?: (conversationId: string, commentId: string) => void;
   onCancelComment?: (conversationId: string, commentId: string) => void;
   onCancel?: () => void;
+  onHighlightComment?: (commentId: string) => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -51,6 +52,8 @@ export interface SharedProps {
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
 
   containerId?: string;
+
+  isHighlighted?: boolean;
 }
 
 export interface Props extends SharedProps {
@@ -99,10 +102,12 @@ export default class Comment extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     const { isEditing, isReplying } = this.state;
+    const { isHighlighted } = this.props;
 
     if (
       nextState.isEditing !== isEditing ||
-      nextState.isReplying !== isReplying
+      nextState.isReplying !== isReplying ||
+      nextProps.isHighlighted !== isHighlighted
     ) {
       return true;
     }
@@ -275,6 +280,7 @@ export default class Comment extends React.Component<Props, State> {
       onUpdateComment,
       onDeleteComment,
       onRevertComment,
+      onHighlightComment,
       onRetry,
       onCancel,
       renderEditor,
@@ -295,6 +301,7 @@ export default class Comment extends React.Component<Props, State> {
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
+        onHighlightComment={onHighlightComment}
         onRetry={onRetry}
         onCancel={onCancel}
         onUserClick={onUserClick}
@@ -384,8 +391,16 @@ export default class Comment extends React.Component<Props, State> {
     return actions;
   }
 
+  private handleTimeClick = () => {
+    const { comment, onHighlightComment } = this.props;
+
+    if (comment && onHighlightComment) {
+      onHighlightComment(comment.commentId);
+    }
+  };
+
   render() {
-    const { comment, onUserClick } = this.props;
+    const { comment, onUserClick, isHighlighted } = this.props;
     const { createdBy, state: commentState, error } = comment;
     const errorProps: {
       actions?: any[];
@@ -415,9 +430,11 @@ export default class Comment extends React.Component<Props, State> {
 
     const comments = this.renderComments();
     const editor = this.renderEditor();
+    const commentId = `comment-${comment.commentId}`;
 
     return (
       <AkComment
+        id={commentId}
         author={
           // Render with onClick/href if they're supplied
           onUserClick || createdBy.profileUrl ? (
@@ -434,7 +451,7 @@ export default class Comment extends React.Component<Props, State> {
         }
         avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
         time={
-          <CommentTime>
+          <CommentTime onClick={this.handleTimeClick} href={`#${commentId}`}>
             {distanceInWordsToNow(new Date(comment.createdAt), {
               addSuffix: true,
             })}
@@ -446,6 +463,7 @@ export default class Comment extends React.Component<Props, State> {
         isError={commentState === 'ERROR'}
         errorActions={errorProps.actions}
         errorIconLabel={errorProps.message}
+        highlighted={isHighlighted}
       >
         {editor || comments ? (
           <div>
