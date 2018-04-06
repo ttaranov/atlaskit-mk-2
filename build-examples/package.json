@@ -19,8 +19,11 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "bolt": "^0.19.2",
+    "css-loader": "^0.28.0",
     "extract-react-types-loader": "^0.1.1",
     "raw-loader": "^0.5.1",
+    "style-loader": "^0.16.1",
+    "url-loader": "^0.5.9",
     "webpack-cli": "^2.0.14"
   }
 }
