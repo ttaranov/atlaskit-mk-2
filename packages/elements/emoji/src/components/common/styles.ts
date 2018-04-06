@@ -422,7 +422,7 @@ export const deleteFooter = style({
 export const emojiDeleteErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
+  alignItems: 'center',
   justifyContent: 'flex-end',
   paddingRight: '10px',
 });
@@ -430,7 +430,6 @@ export const emojiDeleteErrorMessage = style({
 export const emojiChooseFileErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
   paddingRight: '10px',
   justifyContent: 'flex-start',
 });

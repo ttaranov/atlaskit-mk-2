@@ -72,13 +72,13 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         </div>
         <div className={styles.deleteFooter}>
           <CachingEmoji emoji={emoji} />
-          {error ? (
-            <EmojiErrorMessage
-              message="Remove failed"
-              className={styles.emojiDeleteErrorMessage}
-            />
-          ) : null}
           <div className={styles.previewButtonGroup}>
+            {error ? (
+              <EmojiErrorMessage
+                message="Remove failed"
+                className={styles.emojiDeleteErrorMessage}
+              />
+            ) : null}
             <RetryableButton
               className={styles.submitDelete}
               retryClassName={styles.submitDelete}
