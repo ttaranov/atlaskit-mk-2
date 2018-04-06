@@ -90,6 +90,7 @@ export default class StatefulAvatarPickerDialog extends React.Component<
         }}
         onCancel={this.closePicker}
         isLoading={isLoading}
+        predefinedAvatarsText="Default icons"
         {...this.props}
       />
     );
