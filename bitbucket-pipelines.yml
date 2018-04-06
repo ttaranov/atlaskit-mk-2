@@ -37,6 +37,8 @@ pipelines:
               - yarn global add "bolt@^0.19.2"
               - bolt
               - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+            caches:
+              - node
         - step:
             name: Running Jest 2 of 4 chunks
             script:
@@ -44,6 +46,8 @@ pipelines:
               - yarn global add "bolt@^0.19.2"
               - bolt
               - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+            caches:
+              - node
         - step:
             name: Running Jest 3 of 4 chunks
             script:
@@ -51,6 +55,8 @@ pipelines:
               - yarn global add "bolt@^0.19.2"
               - bolt
               - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+            caches:
+              - node
         - step:
             name: Running Jest 4 of 4 chunks
             script:
@@ -58,6 +64,8 @@ pipelines:
               - yarn global add "bolt@^0.19.2"
               - bolt
               - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+            caches:
+              - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
