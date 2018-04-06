@@ -112,7 +112,13 @@ export class App extends Component<AppProps, AppState> {
       },
     };
 
-    this.mpBrowser = MediaPicker('browser', context, {
+    // We can't just use the given context since the Cards in the recents view needs a different authProvider
+    this.mpContext = ContextFactory.create({
+      serviceHost: context.config.serviceHost,
+      authProvider: userAuthProvider,
+    });
+
+    this.mpBrowser = MediaPicker('browser', this.mpContext, {
       ...defaultConfig,
       multiple: true,
     });
@@ -123,7 +129,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', context, {
+    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
       ...defaultConfig,
       headless: true,
     });
@@ -136,19 +142,13 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', context, defaultConfig);
+    this.mpBinary = MediaPicker('binary', this.mpContext, defaultConfig);
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
     this.mpBinary.on('upload-processing', onUploadProcessing);
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
-
-    // We can't just use the given context since the Cards in the recents view needs a different authProvider
-    this.mpContext = ContextFactory.create({
-      serviceHost: context.config.serviceHost,
-      authProvider: userAuthProvider,
-    });
 
     onStartApp(uploadId => {
       this.mpBrowser.cancel(uploadId);

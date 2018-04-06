@@ -33,6 +33,7 @@ describe('App', () => {
       },
       context,
       store: mockStore(),
+      userAuthProvider,
     };
   };
 
@@ -136,6 +137,26 @@ describe('App', () => {
     wrapper.unmount();
 
     expect(spy).toBeCalled();
+  });
+
+  it('should pass new context to the local MediaPicker components', () => {
+    const { handlers, store, context, userAuthProvider } = setup();
+    const component = shallow(
+      <App
+        store={store}
+        selectedServiceName="upload"
+        context={context}
+        isVisible={true}
+        {...handlers}
+      />,
+    );
+    const instance = component.instance();
+    const mpContext = instance['mpContext'];
+
+    expect(mpContext.config.authProvider).toEqual(userAuthProvider);
+    expect(instance['mpBrowser'].context).toEqual(mpContext);
+    expect(instance['mpDropzone'].context).toEqual(mpContext);
+    expect(instance['mpBinary'].context).toEqual(mpContext);
   });
 });
 

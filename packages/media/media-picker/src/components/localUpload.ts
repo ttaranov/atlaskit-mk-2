@@ -22,6 +22,7 @@ export class LocalUploadComponent<
   M extends UploadEventPayloadMap = UploadEventPayloadMap
 > extends UploadComponent<M> {
   protected readonly uploadService: UploadService;
+  readonly context: Context;
 
   constructor(
     analyticsContext: MediaPickerContext,
@@ -31,6 +32,7 @@ export class LocalUploadComponent<
     super(analyticsContext);
 
     const { userAuthProvider, authProvider, serviceHost } = context.config;
+    this.context = context;
     this.uploadService = new UploadService(
       serviceHost,
       authProvider,
