@@ -16,6 +16,9 @@ type Props = {
   component: ElementType,
 };
 
+// must ensure that the registry instances are the same when react < 16.3
+const registry = new SpotlightRegistry();
+
 export default class SpotlightManager extends PureComponent<Props> {
   static defaultProps = {
     blanketIsTinted: true,
@@ -27,7 +30,7 @@ export default class SpotlightManager extends PureComponent<Props> {
 
     return (
       <Provider>
-        <Subscribe to={[SpotlightRegistry]}>
+        <Subscribe to={[registry]}>
           {spotlightRegistry => {
             const dialogIsVisible = spotlightRegistry.hasMounted();
             return (
@@ -48,14 +51,10 @@ export default class SpotlightManager extends PureComponent<Props> {
   }
 }
 
-export function withSpotlightState(WrappedComponent: any) {
-  return function ComponentWithSpotlightState(props: any) {
-    return (
-      <Subscribe to={[SpotlightRegistry]}>
-        {spotlightRegistry => (
-          <WrappedComponent {...props} spotlightRegistry={spotlightRegistry} />
-        )}
-      </Subscribe>
-    );
-  };
-}
+export const withSpotlightState = (WrappedComponent: any) => (props: any) => (
+  <Subscribe to={[registry]}>
+    {spotlightRegistry => (
+      <WrappedComponent {...props} spotlightRegistry={spotlightRegistry} />
+    )}
+  </Subscribe>
+);

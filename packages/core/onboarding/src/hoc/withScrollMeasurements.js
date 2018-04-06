@@ -97,8 +97,6 @@ export default function withScrollMeasurements(
         node = spotlightRegistry.get(target);
       }
 
-      console.log('getNode', target, node, spotlightRegistry);
-
       // can't do anything without the node, bail
       if (!node) {
         throw new Error('You must provide a `target`, or `targetNode`.');

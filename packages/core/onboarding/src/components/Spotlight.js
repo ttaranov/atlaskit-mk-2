@@ -29,7 +29,7 @@ import Actions from './SpotlightActions';
 import { withSpotlightState } from './SpotlightManager';
 import { compose, withScrollMeasurements } from '../hoc';
 
-type Props = {|
+type Props = {
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered beside the footer actions */
@@ -74,7 +74,7 @@ type Props = {|
   targetRadius?: number,
   /** Alternative element to render than the wrapped target */
   targetReplacement?: ComponentType<*>,
-|};
+};
 
 type FillProps = {
   in: boolean,
@@ -203,8 +203,7 @@ class Spotlight extends Component<Props> {
           content={dialog}
           offset="0 8"
           position={dialogPlacement}
-          // $FlowFixMe TEMPORARY
-          zIndex={layers.spotlight(this.props)}
+          zIndex={layers.spotlight()}
         >
           {this.renderTargetClone()}
         </Layer>

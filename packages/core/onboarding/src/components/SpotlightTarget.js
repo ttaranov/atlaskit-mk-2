@@ -1,10 +1,5 @@
 // @flow
-import React, {
-  Children,
-  Component,
-  type ElementRef,
-  type ElementType,
-} from 'react';
+import React, { Component, type ElementRef, type ElementType } from 'react';
 import NodeResolver from 'react-node-resolver';
 
 import { withSpotlightState } from './SpotlightManager';
@@ -47,9 +42,7 @@ class SpotlightTarget extends Component<Props> {
   };
   render() {
     return (
-      <NodeResolver innerRef={this.getNode}>
-        {Children.only(this.props.children)}
-      </NodeResolver>
+      <NodeResolver innerRef={this.getNode}>{this.props.children}</NodeResolver>
     );
   }
 }
