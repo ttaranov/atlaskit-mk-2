@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import EmojiErrorMessage from './EmojiErrorMessage';
 import AkButton from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 
 import { EmojiDescription } from '../../types';
 import * as styles from './styles';
 import CachingEmoji from './CachingEmoji';
+import RetryableButton from './RetryableButton';
 
 export interface OnDeleteEmoji {
   (emoji: EmojiDescription): Promise<boolean>;
@@ -63,24 +63,6 @@ export default class EmojiDeletePreview extends Component<Props, State> {
     const { emoji } = this.props;
     const { loading, error } = this.state;
 
-    const submitButton = error ? (
-      <AkButton
-        className={styles.submitDelete}
-        appearance="warning"
-        onClick={this.onSubmit}
-      >
-        {loading ? <Spinner /> : 'Retry'}
-      </AkButton>
-    ) : (
-      <AkButton
-        className={styles.submitDelete}
-        appearance="danger"
-        onClick={this.onSubmit}
-      >
-        {loading ? <Spinner invertColor={true} /> : 'Remove'}
-      </AkButton>
-    );
-
     return (
       <div className={styles.deletePreview}>
         <div className={styles.deleteText}>
@@ -90,14 +72,22 @@ export default class EmojiDeletePreview extends Component<Props, State> {
         </div>
         <div className={styles.deleteFooter}>
           <CachingEmoji emoji={emoji} />
-          {error ? (
-            <EmojiErrorMessage
-              message="Remove failed"
-              className={styles.emojiDeleteErrorMessage}
-            />
-          ) : null}
           <div className={styles.previewButtonGroup}>
-            {submitButton}
+            {error ? (
+              <EmojiErrorMessage
+                message="Remove failed"
+                className={styles.emojiDeleteErrorMessage}
+              />
+            ) : null}
+            <RetryableButton
+              className={styles.submitDelete}
+              retryClassName={styles.submitDelete}
+              label="Remove"
+              onSubmit={this.onSubmit}
+              appearance="danger"
+              loading={loading}
+              error={error}
+            />
             <AkButton appearance="subtle" onClick={this.onCancel}>
               Cancel
             </AkButton>
