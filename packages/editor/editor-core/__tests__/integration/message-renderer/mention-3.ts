@@ -86,7 +86,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Mention: user should not see mention inside a code block',
   // TODO: Fix unknown character on BS
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
