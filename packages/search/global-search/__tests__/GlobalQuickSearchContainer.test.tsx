@@ -67,7 +67,7 @@ const noResultsPeopleSearchClient: PeopleSearchClient = {
 
 function makeResult(partial?: Partial<Result>): Result {
   return {
-    resultId: '' + Math.random,
+    resultId: '' + Math.random(),
     name: '',
     type: ResultType.Object,
     avatarUrl: '',

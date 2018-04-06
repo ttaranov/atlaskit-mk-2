@@ -102,6 +102,11 @@ type Props = {
   */
   heading?: string,
   /**
+   * Makes heading multiline.
+   * If false and heading is longer than one line overflow will be not displayed.
+   */
+  isHeadingMultiline?: boolean,
+  /**
     Height of the modal. If not set, the modal grows to fit the content until it
     runs out of vertical space, at which point scrollbars appear. If a number is
     provided, the height is set to that number in pixels. A string including pixels,
@@ -172,6 +177,7 @@ class Modal extends Component<Props, State> {
     isChromeless: false,
     stackIndex: 0,
     width: 'medium',
+    isHeadingMultiline: true,
   };
 
   state: State = getInitialState();
@@ -231,6 +237,7 @@ class Modal extends Component<Props, State> {
       // $FlowFixMe
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
+      isHeadingMultiline,
       onClose,
       onCloseComplete,
       onStackChange,
@@ -292,6 +299,7 @@ class Modal extends Component<Props, State> {
                 appearance={appearance}
                 footer={footer}
                 heading={heading}
+                isHeadingMultiline={isHeadingMultiline}
                 header={header}
                 onClose={onClose}
                 shouldScroll={scrollBehavior === 'inside'}

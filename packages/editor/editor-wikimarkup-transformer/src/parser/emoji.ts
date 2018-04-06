@@ -2,7 +2,7 @@ import { EmojiMapItem } from '../interfaces';
 
 export const EMOJIS: EmojiMapItem[] = [
   {
-    markup: ':)',
+    markup: [':)', ':-)'],
     adf: {
       id: '1f642',
       shortName: ':slight_smile:',
@@ -10,7 +10,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: ':(',
+    markup: [':(', ':-('],
     adf: {
       id: '1f61e',
       shortName: ':disappointed:',
@@ -18,7 +18,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: ':P',
+    markup: [':P', ':-P', ':p', ':-p'],
     adf: {
       id: '1f61b',
       shortName: ':stuck_out_tongue:',
@@ -26,7 +26,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: ':D',
+    markup: [':D', ':-D'],
     adf: {
       id: '1f603',
       shortName: ':smiley:',
@@ -34,7 +34,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: ';)',
+    markup: [';)', ';-)'],
     adf: {
       id: '1f609',
       shortName: ':wink:',
@@ -42,7 +42,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(y)',
+    markup: ['(y)'],
     adf: {
       id: '1f44d',
       shortName: ':thumbsup:',
@@ -50,7 +50,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(n)',
+    markup: ['(n)'],
     adf: {
       id: '1f44e',
       shortName: ':thumbsdown:',
@@ -58,7 +58,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(i)',
+    markup: ['(i)'],
     adf: {
       id: '2139',
       shortName: ':information_source:',
@@ -66,7 +66,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(/)',
+    markup: ['(/)'],
     adf: {
       id: '2705',
       shortName: ':white_check_mark:',
@@ -74,7 +74,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(x)',
+    markup: ['(x)'],
     adf: {
       id: '274e',
       shortName: ':negative_squared_cross_mark:',
@@ -82,7 +82,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(!)',
+    markup: ['(!)'],
     adf: {
       id: '26a0',
       shortName: ':warning:',
@@ -90,7 +90,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(+)',
+    markup: ['(+)'],
     adf: {
       id: '2795',
       shortName: ':heavy_plus_sign:',
@@ -98,7 +98,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(-)',
+    markup: ['(-)'],
     adf: {
       id: '2796',
       shortName: ':heavy_minus_sign:',
@@ -106,7 +106,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(?)',
+    markup: ['(?)'],
     adf: {
       id: '2753',
       shortName: ':question:',
@@ -114,7 +114,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(on)',
+    markup: ['(on)'],
     adf: {
       id: '1f4a1',
       shortName: ':bulb:',
@@ -122,7 +122,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(off)',
+    markup: ['(off)'],
     adf: {
       id: '26d4',
       shortName: ':no_entry:',
@@ -130,7 +130,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(*)',
+    markup: ['(*)'],
     adf: {
       id: '1f49b',
       shortName: ':yellow_heart:',
@@ -138,7 +138,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(*r)',
+    markup: ['(*r)'],
     adf: {
       id: '2764',
       shortName: ':heart:',
@@ -146,7 +146,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(*g)',
+    markup: ['(*g)'],
     adf: {
       id: '1f49a',
       shortName: ':green_heart:',
@@ -154,7 +154,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(*b)',
+    markup: ['(*b)'],
     adf: {
       id: '1f499',
       shortName: ':blue_heart:',
@@ -162,7 +162,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(*y)',
+    markup: ['(*y)'],
     adf: {
       id: '1f49b',
       shortName: ':yellow_heart:',
@@ -170,7 +170,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(flag)',
+    markup: ['(flag)'],
     adf: {
       id: '1f6a9',
       shortName: ':triangular_flag_on_post:',
@@ -178,7 +178,7 @@ export const EMOJIS: EmojiMapItem[] = [
     },
   },
   {
-    markup: '(flagoff)',
+    markup: ['(flagoff)'],
     adf: {
       id: '1f3f3',
       shortName: ':flag_white:',

@@ -43,8 +43,10 @@ export const link: MarkSpec = {
     {
       tag: 'a[href]',
       getAttrs: (dom: Element) => {
-        const href = dom.getAttribute('href') || '';
-
+        let href = dom.getAttribute('href') || '';
+        if (href.slice(-1) === '/') {
+          href = href.slice(0, -1);
+        }
         return isSafeUrl(href) ? { href: normalizeUrl(href) } : false;
       },
     },

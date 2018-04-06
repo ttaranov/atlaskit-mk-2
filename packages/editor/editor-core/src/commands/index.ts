@@ -17,6 +17,7 @@ import {
   canMoveUp,
   atTheEndOfDoc,
   atTheBeginningOfBlock,
+  isTableCell,
 } from '../utils';
 
 import { hyperlinkPluginKey } from '../plugins/hyperlink';
@@ -369,7 +370,10 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) {
+    if (
+      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
+      isTableCell(state)
+    ) {
       nodes.push(paragraph.create());
     }
 

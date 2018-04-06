@@ -1,7 +1,6 @@
 // @flow
-import React, { type Node } from 'react';
 import styled from 'styled-components';
-import { gridSize, colors, math } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 const containerWidth = {
   small: '480px',

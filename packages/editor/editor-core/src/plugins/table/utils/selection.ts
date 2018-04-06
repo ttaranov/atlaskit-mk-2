@@ -1,6 +1,7 @@
 import { CellSelection } from 'prosemirror-tables';
 import { EditorState } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
+import { isColumnSelected } from 'prosemirror-utils';
 
 export const getCellSelection = (
   state: EditorState,
@@ -9,43 +10,6 @@ export const getCellSelection = (
   if (selection instanceof CellSelection) {
     return selection;
   }
-};
-
-export const checkIfColumnSelected = (
-  column: number,
-  state: EditorState,
-): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    const tableNode = cellSelection.$anchorCell.node(-1);
-    const map = TableMap.get(tableNode);
-    const start = cellSelection.$anchorCell.start(-1);
-    const anchor = map.colCount(cellSelection.$anchorCell.pos - start);
-    const head = map.colCount(cellSelection.$headCell.pos - start);
-    return (
-      cellSelection.isColSelection() &&
-      (column <= Math.max(anchor, head) && column >= Math.min(anchor, head))
-    );
-  }
-
-  return false;
-};
-
-export const checkIfRowSelected = (
-  row: number,
-  state: EditorState,
-): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    const anchor = cellSelection.$anchorCell.index(-1);
-    const head = cellSelection.$headCell.index(-1);
-    return (
-      cellSelection.isRowSelection() &&
-      (row <= Math.max(anchor, head) && row >= Math.min(anchor, head))
-    );
-  }
-
-  return false;
 };
 
 export const isHeaderRowSelected = (state: EditorState): boolean => {
@@ -58,15 +22,6 @@ export const isHeaderRowSelected = (state: EditorState): boolean => {
         return true;
       }
     }
-  }
-
-  return false;
-};
-
-export const checkIfTableSelected = (state: EditorState): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    return cellSelection.isColSelection() && cellSelection.isRowSelection();
   }
 
   return false;
@@ -103,7 +58,7 @@ export const checkIfNumberColumnSelected = (state: EditorState): boolean => {
     const tableNode = cellSelection.$anchorCell.node(-1);
     if (
       tableNode!.attrs.isNumberColumnEnabled &&
-      checkIfColumnSelected(0, state)
+      isColumnSelected(0)(state.selection)
     ) {
       return true;
     }

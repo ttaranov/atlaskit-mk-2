@@ -1,5 +1,5 @@
 // @flow
-import type { Directory, File } from './types';
+import type { Directory } from './types';
 
 // SITE_DATA is dynamically generated at runtime by bolt-fs-loader.
 // Configuration for bolt-fs-loader is in webpack.config.js since it needs to be dynamically created
@@ -25,21 +25,21 @@ function isInternal(groupId, pkgId) {
   );
 }
 
-let publicPackages = {
+const publicPackages = {
   type: 'dir',
   id: 'packages',
   children: [],
 };
 
-let a: Directory = fs.getById(dirs, 'packages');
+const packageDirs: Directory = fs.getById(dirs, 'packages');
 
-for (let child of fs.getDirectories(a.children)) {
-  let children = child.children.filter(pkg => !isInternal(child.id, pkg.id));
+for (const child of fs.getDirectories(packageDirs.children)) {
+  const children = child.children.filter(pkg => !isInternal(child.id, pkg.id));
   publicPackages.children.push(Object.assign({}, child, { children }));
 }
 
 export const getConfig = (groupId: string, pkgId: string) => {
-  return NAV_DATA[groupId] && NAV_DATA[groupId].find(a => a.name === pkgId);
+  return NAV_DATA[groupId] && NAV_DATA[groupId].find(pkg => pkg.name === pkgId);
 };
 
 export const docs: Directory = fs.getById(dirs, 'docs');

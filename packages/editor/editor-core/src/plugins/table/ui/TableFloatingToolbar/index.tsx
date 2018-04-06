@@ -4,16 +4,21 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
+import { isTableSelected } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
-import { checkIfNumberColumnSelected, checkIfTableSelected } from '../../utils';
+import { checkIfNumberColumnSelected } from '../../utils';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
+import { TableLayout } from '@atlaskit/editor-common';
 
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: white;
@@ -33,6 +38,7 @@ export interface Props {
   popupsScrollableElement?: HTMLElement;
   tableElement?: HTMLElement;
   tableActive?: boolean;
+  tableLayout?: TableLayout;
   cellSelection?: CellSelection;
   allowMergeCells?: boolean;
   allowNumberColumn?: boolean;
@@ -40,11 +46,26 @@ export interface Props {
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
   remove?: () => void;
+  permittedLayouts?: PermittedLayoutsDescriptor;
+  updateLayout?: (layoutName: TableLayout) => void;
 }
 
 export interface State {
   isOpen?: boolean;
 }
+
+type TableLayoutInfo = { [K in TableLayout]: any };
+
+const tableLayouts: TableLayoutInfo = {
+  default: {
+    icon: CenterIcon,
+    label: 'inline',
+  },
+  'full-width': {
+    icon: FullWidthIcon,
+    label: 'full width',
+  },
+};
 
 export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {
@@ -60,6 +81,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       editorView,
       allowMergeCells,
       tableActive,
+      tableLayout,
       allowNumberColumn,
       allowBackgroundColor,
       allowHeaderRow,
@@ -70,15 +92,44 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       return null;
     }
 
+    let availableLayouts: TableLayout[] = [];
+    if (this.props.permittedLayouts) {
+      if (this.props.permittedLayouts === 'all') {
+        availableLayouts = Object.keys(tableLayouts) as TableLayout[];
+      } else {
+        availableLayouts = this.props.permittedLayouts;
+      }
+    }
+
+    const layoutButtons = Array.from(new Set(availableLayouts)).map(
+      layoutName => {
+        const label = `Change layout to ${tableLayouts[layoutName].label}`;
+        const Icon = tableLayouts[layoutName].icon;
+        const onClick = () => {
+          this.props.updateLayout!(layoutName);
+        };
+
+        return (
+          <ToolbarButton
+            selected={tableLayout === layoutName}
+            onClick={this.props.updateLayout ? onClick : undefined}
+            title={label}
+            key={layoutName}
+            iconBefore={<Icon label={label} />}
+          />
+        );
+      },
+    );
+
     return (
       <Popup
-        target={tableElement.parentElement || tableElement}
-        offset={[0, -10]}
+        offset={[0, 20]}
+        target={tableElement}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         alignY="bottom"
-        alignX="right"
+        alignX="center"
       >
         <Toolbar>
           {allowBackgroundColor && (
@@ -105,6 +156,10 @@ export default class TableFloatingToolbar extends Component<Props, State> {
             />
           )}
           <Separator style={{ height: 'auto' }} />
+          {layoutButtons}
+          {layoutButtons.length ? (
+            <Separator style={{ height: 'auto' }} />
+          ) : null}
           <ToolbarButton
             disabled={!this.canRemove()}
             onClick={this.props.remove}
@@ -120,7 +175,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     const { cellSelection, editorView: { state } } = this.props;
     if (
       !cellSelection ||
-      (checkIfNumberColumnSelected(state) && !checkIfTableSelected(state))
+      (checkIfNumberColumnSelected(state) && !isTableSelected(state.selection))
     ) {
       return false;
     }

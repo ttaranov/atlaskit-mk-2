@@ -5,6 +5,7 @@ import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import { Serializer } from '../serializer';
 import { nodeSerializers } from './serializers';
 import { serializeStyle } from './util';
+import { calcTableColumnWidths } from '@atlaskit/editor-common';
 
 const serializeNode = (node: PMNode, serializedHTML?: string): string => {
   // ignore nodes with unknown type
@@ -12,12 +13,21 @@ const serializeNode = (node: PMNode, serializedHTML?: string): string => {
     return `[UNKNOWN_NODE_TYPE: ${node.type.name}]`;
   }
 
+  const attrs = node.type.name === 'table' ? getTableAttrs(node) : node.attrs;
+
   return nodeSerializers[node.type.name]({
-    attrs: node.attrs,
+    attrs,
     marks: node.marks,
     text:
       serializedHTML || node.attrs.text || node.attrs.shortName || node.text,
   });
+};
+
+const getTableAttrs = (node: PMNode): any => {
+  return {
+    ...node.attrs,
+    columnWidths: calcTableColumnWidths(node),
+  };
 };
 
 const traverseTree = (fragment: Fragment): string => {

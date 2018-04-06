@@ -8,9 +8,6 @@ export const selectOnHover = 'emoji-common-select-on-hover';
 export const emojiSprite = 'emoji-common-emoji-sprite';
 export const emojiNode = 'emoji-common-node';
 
-const checkerBoard =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
-
 export const deleteButton = style({
   // hide by default
   display: 'none',
@@ -263,13 +260,17 @@ export const emojiUpload = style({
   padding: '10px',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-around',
 });
 
 export const uploadChooseFileMessage = style({
   color: colors.N300,
-  marginBottom: '20px',
-  fontSize: '0.9em',
+  fontSize: '12px',
+  paddingBottom: '7px',
+});
+
+export const emojiUploadBottom = style({
+  fontSize: '11px',
 });
 
 export const uploadChooseFileRow = style({
@@ -285,9 +286,10 @@ export const uploadChooseFileEmojiName = style({
     input: {
       background: 'transparent',
       border: 0,
-      fontSize: '14px',
+      fontSize: '12px',
       outline: 'none',
       width: '100%',
+      height: '22px', // fixed height is required to work in IE11 and other browsers in Windows
 
       $nest: {
         ['&:invalid']: {
@@ -305,16 +307,41 @@ export const uploadChooseFileBrowse = style({
   flex: '0 0 auto',
 });
 
-export const uploadPreview = style({
-  background: `url(${checkerBoard})`,
-  borderRadius: `${borderRadius()}px`,
-  marginBottom: '10px',
-  padding: '7px',
-  width: '286px',
+export const uploadPreviewFooter = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100px',
+  padding: '10px',
+});
 
+export const uploadPreview = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: colors.N20,
+  borderRadius: `${borderRadius()}px`,
+  marginBottom: '12px',
+  padding: '10px',
+});
+
+export const uploadPreviewText = style({
   $nest: {
+    h5: {
+      color: colors.N300,
+      paddingBottom: '4px',
+      fontSize: '12px',
+    },
     img: {
       maxHeight: '20px',
+      maxWidth: '50px',
+    },
+  },
+});
+
+export const bigEmojiPreview = style({
+  $nest: {
+    img: {
+      maxHeight: '40px',
       maxWidth: '100px',
     },
   },
@@ -426,4 +453,12 @@ export const emojiDeleteErrorMessage = style({
   width: '100%',
   justifyContent: 'flex-end',
   paddingRight: '10px',
+});
+
+export const emojiChooseFileErrorMessage = style({
+  display: 'flex',
+  color: colors.R300,
+  width: '100%',
+  paddingRight: '10px',
+  justifyContent: 'flex-start',
 });

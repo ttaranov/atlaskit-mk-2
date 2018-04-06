@@ -181,6 +181,17 @@ export function calculatePosition({
         (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft) +
         offset[0],
     );
+  } else if (horizontalPlacement === 'center') {
+    const parentWidth = target.parentElement!.clientWidth;
+    const parentLeft = target.parentElement!.getBoundingClientRect().left;
+    const targetWidth = target.clientWidth;
+    position.left = Math.ceil(
+      parentLeft -
+        popupOffsetParentLeft +
+        (targetWidth > parentWidth ? parentWidth : targetWidth) / 2 -
+        popup.clientWidth / 2 +
+        offset[0],
+    );
   } else {
     position.right = Math.ceil(
       popupOffsetParentRight -

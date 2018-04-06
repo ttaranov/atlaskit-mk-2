@@ -3,29 +3,28 @@ import * as fs from './fs';
 import { packages as packagesData } from '../site';
 
 export default (groupId?: string, packageId?: string, exampleId?: string) => {
-  let groups = fs.getDirectories(packagesData.children);
-  let resolvedGroupId = groupId || groups[0].id;
-  let group = fs.getById(groups, resolvedGroupId);
-  let packages = fs.getDirectories(group.children);
-  let resolvedPackageId = packageId || packages[0].id;
-  let pkg = fs.getById(packages, resolvedPackageId);
+  const groups = fs.getDirectories(packagesData.children);
+  const resolvedGroupId = groupId || groups[0].id;
+  const group = fs.getById(groups, resolvedGroupId);
+  const packages = fs.getDirectories(group.children);
+  const resolvedPackageId = packageId || packages[0].id;
+  const pkg = fs.getById(packages, resolvedPackageId);
 
-  let examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
+  const examples = fs.maybeGetById(fs.getDirectories(pkg.children), 'examples');
   let example;
 
   if (examples) {
     example = fs.find(examples, file => {
       if (exampleId) {
         return fs.normalize(file.id) === exampleId;
-      } else {
-        return true;
       }
+      return true;
     });
   }
 
-  let resolvedExampleId = example ? example.id : null;
+  const resolvedExampleId = example ? example.id : null;
 
-  let hasChanged =
+  const hasChanged =
     groupId !== resolvedGroupId ||
     packageId !== resolvedPackageId ||
     (exampleId || null) !==

@@ -21,6 +21,7 @@ import {
 } from '../../package.json';
 
 import { ClearIndicator, DropdownIndicator } from '../internal';
+import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -100,10 +101,9 @@ const StyledMenu = styled.div`
   background-color: ${colors.N0};
   border: 1px solid ${colors.N40};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px ${colors.N30};
-  margin-top: 7px;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
+  margin: 7px 0;
   overflow: hidden;
-  position: absolute;
   text-align: center;
   z-index: ${layers.dialog};
 `;
@@ -111,6 +111,7 @@ const StyledMenu = styled.div`
 class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<typeof Calendar>;
+  containerRef: ?HTMLElement;
   input: Element | null;
 
   static defaultProps = {
@@ -218,6 +219,16 @@ class DatePicker extends Component<Props, State> {
     ensureValueIsDisplayed();
   };
 
+  getContainerRef = (ref: ?HTMLElement) => {
+    const oldRef = this.containerRef;
+    this.containerRef = ref;
+    // Cause a re-render if we're getting the container ref for the first time
+    // as the layered menu requires it for dimension calculation
+    if (oldRef == null && ref != null) {
+      this.forceUpdate();
+    }
+  };
+
   render() {
     const {
       autoFocus,
@@ -230,22 +241,29 @@ class DatePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-    const isOpenAndNotDisabled = isOpen && !isDisabled;
-    const Menu = () =>
-      isOpenAndNotDisabled ? (
-        <StyledMenu>
-          <Calendar
-            {...isoToObj(value)}
-            {...isoToObj(view)}
-            disabled={disabled}
-            onChange={this.onCalendarChange}
-            onSelect={this.onCalendarSelect}
-            // $FlowFixMe
-            ref={this.refCalendar}
-            selected={[value]}
-          />
-        </StyledMenu>
-      ) : null;
+
+    const Menu = ({ innerProps: menuInnerProps }) => (
+      <StyledMenu>
+        <Calendar
+          {...isoToObj(value)}
+          {...isoToObj(view)}
+          disabled={disabled}
+          onChange={this.onCalendarChange}
+          onSelect={this.onCalendarSelect}
+          // $FlowFixMe
+          ref={this.refCalendar}
+          selected={[value]}
+          innerProps={menuInnerProps}
+        />
+      </StyledMenu>
+    );
+
+    const FixedLayeredMenu = props => (
+      <FixedLayer
+        containerRef={this.containerRef}
+        content={<Menu {...props} />}
+      />
+    );
 
     return (
       <div
@@ -254,6 +272,7 @@ class DatePicker extends Component<Props, State> {
         onClick={this.onInputClick}
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
+        ref={this.getContainerRef}
       >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
@@ -261,13 +280,13 @@ class DatePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpenAndNotDisabled}
+          menuIsOpen={isOpen && !isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-            Menu,
+            Menu: FixedLayeredMenu,
           }}
           placeholder="e.g. 2018/12/31"
           value={

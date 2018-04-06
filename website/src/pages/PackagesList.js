@@ -1,16 +1,12 @@
-/* @flow */
+// @flow
 
 import React from 'react';
-import Page, { Title, Section } from '../components/Page';
-import { externalPackages as packages, pkgData, getConfig } from '../site';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
+import { gridSize } from '@atlaskit/theme';
 import * as fs from '../utils/fs';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
-import Loadable from 'react-loadable';
-import Loading from '../components/Loading';
-
-const navdata: Object = pkgData;
+import Page, { Title, Section } from '../components/Page';
+import { externalPackages as packages, getConfig } from '../site';
 
 const head = {
   cells: [
@@ -148,7 +144,4 @@ export default function PackagesList() {
 const RowCell = styled.div`
   padding-bottom: ${gridSize}px;
   padding-top: ${gridSize}px;
-`;
-const Time = styled.time`
-  color: ${themed({ dark: colors.DN80, light: colors.N80 })};
 `;

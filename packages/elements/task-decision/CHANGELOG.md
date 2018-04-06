@@ -1,5 +1,13 @@
 # @atlaskit/task-decision
 
+## 6.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 5.2.2
+
+## 5.2.1
+- [patch] FS-1855 Cache new state received via pubsub [f77a424](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f77a424)
+
 ## 5.2.0
 - [minor] FS-1855 Add missing dependency to @atlassian/pubsub [31ae3d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31ae3d4)
 

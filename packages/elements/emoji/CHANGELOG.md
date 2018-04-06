@@ -1,5 +1,20 @@
 # @atlaskit/emoji
 
+## 34.1.0
+- [minor] FS-1660 emoji upload preview uses new design [52a8dd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52a8dd9)
+
+## 34.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 33.0.3
+
+## 33.0.2
+- [patch] FS-1853 custom category button scrolls to Your Uploads if present [f42e14e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f42e14e)
+
+## 33.0.1
+- [patch] code clean up [6c1c0a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c1c0a0)
+- [patch] custom emoji pre-upload file validation for invalid image and files over 1Mb [86244f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86244f5)
+
 ## 33.0.0
 
 - [major] FS-1658 deleteSiteEmoji and getCurrentUser are required for EmojiProvider implementation [ecec57f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecec57f)

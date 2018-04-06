@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.2.2
 - [patch] Remove unused util-readme dependency [ce75fdc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce75fdc)
 

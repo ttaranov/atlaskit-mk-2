@@ -1,5 +1,10 @@
 # @atlaskit/util-data-test
 
+## 9.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 8.0.4
+
 ## 8.0.3
 - [patch] Patch release util-data-test to bump emoji [49ff12f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49ff12f)
 

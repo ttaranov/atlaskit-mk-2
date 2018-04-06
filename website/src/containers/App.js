@@ -1,13 +1,10 @@
-/* @flow */
+// @flow
 
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-
-import type { Directory } from '../types';
-import * as fs from '../utils/fs';
 
 import Home from '../pages/Home';
 import ChangeLogExplorer from '../pages/ChangeLogExplorer';

@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.0.2
 - [patch] fixed missing and inccorect versions of dependencies [7bfbb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bfbb09)
 - [patch] fix dependencies [0e57cde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e57cde)

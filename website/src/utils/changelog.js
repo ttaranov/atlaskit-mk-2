@@ -1,3 +1,4 @@
+// @flow
 import type { Logs } from '../components/ChangeLog';
 
 export const divvyChangelog = (changelog): Logs => {

@@ -15,13 +15,16 @@ export default () => {
   return (
     <div>
       <Label label="Stock" />
-      <DatePicker />
+      <DatePicker onChange={console.log} />
 
       <Label label="Disabled input" />
-      <DatePicker isDisabled />
+      <DatePicker isDisabled onChange={console.log} />
 
       <Label label="Disabled dates" />
-      <DatePicker disabled={[now(10), now(11), now(12)]} />
+      <DatePicker
+        disabled={[now(10), now(11), now(12)]}
+        onChange={console.log}
+      />
     </div>
   );
 };
