@@ -45,7 +45,6 @@ export class Stubs {
       observable: jest.fn(() => subject || new Subject<MediaCollection>()),
       refresh: jest.fn(),
       loadNextPage: jest.fn(),
-      loadNextPageUntil: jest.fn(),
     };
   }
 
