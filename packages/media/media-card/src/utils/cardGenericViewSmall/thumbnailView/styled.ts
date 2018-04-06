@@ -1,9 +1,8 @@
 /* tslint:disable:variable-name */
-
 import styled from 'styled-components';
-
 import { HTMLAttributes, ComponentClass } from 'react';
-import { center, centerX, borderRadius, size } from '../../../styles';
+import { centerX } from '../../../styles';
+import { center, borderRadius, size } from '@atlaskit/media-ui';
 import {
   akGridSizeUnitless,
   akColorN20,

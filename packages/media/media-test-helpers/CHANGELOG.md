@@ -1,5 +1,35 @@
 # @atlaskit/media-test-helpers
 
+## 12.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 12.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 11.0.0
+- [major] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
+## 10.0.6
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 10.0.5
+
+## 10.0.4
+
+## 10.0.3
+
+## 10.0.2
+- [patch] fix(media-test-helpers): bump xhr-mock and add error handling [304265f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/304265f)
+
+## 10.0.1
+- [patch] feature(media-test-helpers): http mocks for media-picker [982085f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/982085f)
+
+## 10.0.0
+
+## 9.0.5
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
 ## 9.0.4
 - [patch] fix(media-test-helpers): configure fetch to send credentials and point calls to correct endpoint [8978f4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8978f4e)
 

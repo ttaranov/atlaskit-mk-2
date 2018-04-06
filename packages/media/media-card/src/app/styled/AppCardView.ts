@@ -12,11 +12,13 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 import { colorWithAlpha } from '../../utils/colorWithAlpha';
-import { borderRadius, cardShadow } from '../../styles';
+import { cardShadow } from '../../styles';
+import { borderRadius } from '@atlaskit/media-ui';
 
 const previewWidth = 116;
 
 export interface CardProps {
+  isClickable: boolean;
   background: string | undefined;
 }
 
@@ -70,6 +72,16 @@ const cardOverlay = ({ background }: CardProps) => {
   }
 };
 
+const cardCursor = ({ isClickable }: CardProps) => {
+  if (isClickable) {
+    return `
+      cursor: pointer;
+    `;
+  } else {
+    return '';
+  }
+};
+
 export const Card: ComponentClass<HTMLAttributes<{}> & CardProps> = styled.div`
   ${cardColors} ${cardOverlay} display: inline-flex; /* make the card fit to its contents */
   flex-direction: row; /* make the preview and content side-by-side */
@@ -81,6 +93,7 @@ export const Card: ComponentClass<HTMLAttributes<{}> & CardProps> = styled.div`
   font-family: ${akFontFamily};
 
   ${borderRadius} ${cardShadow};
+  ${cardCursor};
 `;
 
 export interface PreviewProps {

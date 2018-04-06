@@ -63,7 +63,7 @@ const createListRule = (
           .delete(where, $from.end($from.depth))
           .replaceSelectionWith(
             list.create({ localId: uuid.generate() }, [
-              item.create({}, content),
+              item.create({ localId: uuid.generate() }, content),
             ]),
           )
           .delete(start + 1, end + 1)
@@ -74,7 +74,10 @@ const createListRule = (
           .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
           .replaceSelectionWith(
             list.create({ localId: uuid.generate() }, [
-              item.create({}, tr.doc.nodeAt($from.pos + 1)!.content),
+              item.create(
+                { localId: uuid.generate() },
+                tr.doc.nodeAt($from.pos + 1)!.content,
+              ),
             ]),
           )
           .delete(start, end + 1);

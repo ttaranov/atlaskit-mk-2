@@ -52,6 +52,7 @@ export default class ResultBase extends PureComponent<Props> {
       caption,
       elemAfter,
       href,
+      target,
       icon,
       isCompact,
       isSelected,
@@ -63,6 +64,7 @@ export default class ResultBase extends PureComponent<Props> {
       <AkNavigationItem
         caption={caption}
         href={href}
+        target={target}
         icon={icon}
         isCompact={isCompact}
         isSelected={isSelected}

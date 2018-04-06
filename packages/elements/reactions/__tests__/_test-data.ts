@@ -1,7 +1,7 @@
 import { EmojiDescription, toEmojiId } from '@atlaskit/emoji';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 
-const { newEmojiRepository } = testData;
+const { newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
 
 export const grinningId = toEmojiId(emojiRepository.findByShortName(

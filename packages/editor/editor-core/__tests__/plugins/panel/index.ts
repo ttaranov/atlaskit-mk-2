@@ -138,20 +138,24 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should be possible to remove panel inside table', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(td({})(panel()(p('text{<>}')))))),
+        doc(table()(tr(td({})(panel()(p('text{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(td({})(p())))),
+      );
     });
 
     it('should be possible to remove panel with no text inside table', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(td({})(panel()(p('{<>}')))))),
+        doc(table()(tr(td({})(panel()(p('{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(td({})(p())))),
+      );
     });
 
     it('should be able to remove panel type using function removePanel even if panel has no text content', () => {
@@ -200,6 +204,23 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
       expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should be able to remove panel node if cursor is inside nested list node', () => {
+      const { pluginState, editorView } = editor(
+        doc(p('one'), panel()(p('text'), ol(li(p('te{<>}xt')))), p('two')),
+      );
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).toEqualDocument(doc(p('one'), p('two')));
+    });
+
+    it('should change panel type if cursor is inside nested list node', () => {
+      const { pluginState, editorView } = editor(
+        doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
+      );
+      expect(pluginState.activePanelType).toEqual('info');
+      pluginState.changePanelType(editorView, { panelType: 'note' });
+      expect(pluginState.activePanelType).toEqual('note');
     });
   });
 

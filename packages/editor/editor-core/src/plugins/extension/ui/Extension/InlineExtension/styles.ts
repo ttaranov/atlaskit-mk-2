@@ -23,4 +23,9 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
     width: 1px;
     content: '';
   }
+
+  &.with-children {
+    padding: 0;
+    background: white;
+  }
 `;

@@ -18,12 +18,13 @@ import {
 
 BrowserTestCase(
   'Mention: user can see mention inside blockquote',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
-    await browser.type(editable, '> ', 'this is inside blockquote ');
+    await browser.type(editable, '> ');
+    await browser.type(editable, 'this is inside blockquote ');
     await insertMention(browser, 'Carolyn');
     await browser.waitForSelector(lozenge);
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -97,7 +98,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: user can navigate picker using keyboard',
-  { skip: ['safari'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

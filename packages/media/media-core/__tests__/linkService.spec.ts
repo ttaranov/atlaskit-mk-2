@@ -44,7 +44,7 @@ describe('MediaLinkService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    authProvider = jest.fn(({ collectionName }) =>
+    authProvider = jest.fn(() =>
       Promise.resolve({
         token,
         clientId,

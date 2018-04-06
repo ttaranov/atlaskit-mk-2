@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "6.1.2",
+  "version": "8.0.1",
   "description": "Includes components that show media cards as a filmstrip",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,6 +8,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -19,20 +20,22 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^10.12.0",
+    "@atlaskit/icon": "^11.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "debounce": "^1.0.0",
     "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/field-radio-group": "^1.9.0",
-    "@atlaskit/field-range": "^2.6.3",
-    "@atlaskit/media-card": "^24.1.4",
-    "@atlaskit/media-core": "^14.1.1",
-    "@atlaskit/media-test-helpers": "^9.0.4"
+    "@atlaskit/checkbox": "^2.0.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/field-radio-group": "^2.0.0",
+    "@atlaskit/field-range": "^3.0.0",
+    "@atlaskit/media-card": "^26.0.1",
+    "@atlaskit/media-core": "^16.0.0",
+    "@atlaskit/media-test-helpers": "^12.0.1"
   }
 }

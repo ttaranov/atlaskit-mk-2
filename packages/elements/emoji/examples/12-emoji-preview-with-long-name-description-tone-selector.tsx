@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getEmojis } from '../src/support/story-data';
+import { getEmojis } from '../example-helpers';
 
 import EmojiPreview from '../src/components/common/EmojiPreview';
 

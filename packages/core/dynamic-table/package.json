@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "7.2.1",
+  "version": "8.0.0",
   "description": "Table component with pagination and sorting functionality",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/tables",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/tables",
   "files": [
     "dist"
   ],
@@ -20,10 +20,10 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.6.2",
-    "@atlaskit/pagination": "^3.7.1",
-    "@atlaskit/spinner": "^4.2.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/pagination": "^5.0.0",
+    "@atlaskit/spinner": "^5.0.0",
+    "@atlaskit/theme": "^3.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prop-types": "^15.5.10",
@@ -31,14 +31,14 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.2.1",
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/dropdown-menu": "^3.12.1",
-    "@atlaskit/toggle": "^2.9.1",
+    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/dropdown-menu": "^4.0.0",
+    "@atlaskit/toggle": "^3.0.0",
     "enzyme": "^3.3.0"
   }
 }

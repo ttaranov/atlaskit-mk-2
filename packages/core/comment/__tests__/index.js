@@ -246,7 +246,6 @@ describe('@atlaskit comments', () => {
                 errorActions={errorActions}
               />,
             );
-            //console.log(wrapper.debug());
             expect(wrapper.find(CommentAction).length).toBe(2);
             const actionItems = wrapper.find(ActionsContainer);
             expect(actionItems.find(WarningIcon).length).toBe(1);

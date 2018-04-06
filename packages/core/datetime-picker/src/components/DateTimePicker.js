@@ -1,353 +1,203 @@
 // @flow
 
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import { borderRadius, colors } from '@atlaskit/theme';
+import pick from 'lodash.pick';
 import React, { Component } from 'react';
-import withCtrl from 'react-ctrl';
-import DateField from './internal/DateField';
-import DateDialog from './internal/DateDialog';
-import DateTimePickerStateless from './DateTimePickerStateless';
-import TimeField from './internal/TimeField';
-import TimeDialog from './internal/TimeDialog';
-import { formatDate, formatTime, parseDate, parseTime } from '../util';
-import type { Event } from '../types';
+import styled from 'styled-components';
 
-const noop = () => {};
-
-const defaultTimes = [
-  '09:00',
-  '09:30',
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-  '18:00',
-];
-
-function formatValue([date, time]: [string, string]): [string, string] {
-  return [formatDate(date), formatTime(time)];
-}
+import DatePicker from './DatePicker';
+import TimePicker from './TimePicker';
+import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
-  /** Default for `focused`. */
-  defaultFocused?: string,
-  /** Default for `isOpen`. */
-  defaultIsOpen?: boolean,
-  /** Default for `times`. */
-  defaultTimes?: Array<string>,
   /** Default for `value`. */
-  defaultValue?: string,
-  /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: Array<string>,
+  defaultValue: string,
+  /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
+  id: string,
+  /** Props to apply to the container. **/
+  innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled: boolean,
-  /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
-  /** The time in the dropdown that should be focused. */
-  focused?: string,
-  /** Called when the value changes. The first argument is an ISO date and the second is an ISO time. */
-  onChange: (date: ?string, time: ?string) => void,
-  /** The times to show in the dropdown. */
-  times?: Array<string>,
+  /** The name of the field. */
+  name: string,
+  /** Called when the field is blurred. */
+  onBlur: () => void,
+  /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string. */
+  onChange: string => void,
+  /** Called when the field is focused. */
+  onFocus: () => void,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** The width of the field. */
-  width: number,
 };
 
 type State = {
   active: 0 | 1 | 2,
-  focused: string,
-  isOpen: boolean,
-  times: Array<string>,
-  value: any,
+  dateValue: string,
+  isFocused: boolean,
+  timeValue: string,
+  value: string,
+  zoneValue: string,
 };
 
-class DateTimePicker extends Component<Props, State> {
-  dateTimePicker: any;
+const Flex = styled.div`
+  background-color: ${colors.N10};
+  border-radius: ${borderRadius()}px;
+  display: flex;
+  transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+  ${({ isFocused }) => `
+    border: ${
+      isFocused ? `2px solid ${colors.B100}` : `1px solid ${colors.N20}`
+    };
+    padding: ${isFocused ? '0' : '1px'};
+  `} &:hover {
+    ${({ isFocused, isDisabled }) =>
+      !isFocused && !isDisabled
+        ? `
+        background-color: ${colors.N20};
+      `
+        : ''};
+  }
+`;
 
+const FlexItem = styled.div`
+  flex-basis: 0;
+  flex-grow: 1;
+`;
+
+// react-select overrides (via @atlaskit/select).
+const styles = {
+  control: style => ({
+    ...style,
+    backgroundColor: 'transparent',
+    border: 0,
+    borderRadius: 0,
+    paddingLeft: 0,
+    ':hover': {
+      backgroundColor: 'transparent',
+    },
+  }),
+};
+
+function formatDateTimeZoneIntoIso(
+  date: string,
+  time: string,
+  zone: string,
+): string {
+  return `${date}T${time}${zone}`;
+}
+
+export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     autoFocus: false,
-    disabled: [],
     isDisabled: false,
-    onChange() {},
-    width: 0,
+    name: '',
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
+    innerProps: {},
+    id: '',
+    defaultValue: '',
   };
 
   state = {
     active: 0,
-    focused: '',
-    isOpen: false,
-    times: defaultTimes,
-    value: ['', ''],
+    dateValue: '',
+    isFocused: false,
+    timeValue: '',
+    value: this.props.defaultValue,
+    zoneValue: '',
   };
 
-  onChange = (date: string, time: string) => {
-    this.props.onChange(date, time);
+  // All state needs to be accessed via this function so that the state is mapped from props
+  // correctly to allow controlled/uncontrolled usage.
+  getState = () => {
+    const mappedState = {
+      ...this.state,
+      ...pick(this.props, ['value']),
+    };
+
+    return {
+      ...mappedState,
+      ...parseDateIntoStateValues(
+        mappedState.value,
+        mappedState.dateValue,
+        mappedState.timeValue,
+        mappedState.zoneValue,
+      ),
+    };
   };
 
-  handleBlur = () => {
-    if (!this.state.isOpen && this.state.active !== 1) {
-      this.setState({ active: 0 });
-    }
+  onBlur = () => {
+    this.setState({ isFocused: false });
+    this.props.onBlur();
   };
 
-  // DatePicker
-
-  onDateChange = (value: string) => {
-    if (value !== this.state.value[0]) {
-      this.setState(prevState => ({
-        value: [value, prevState.value[1]],
-      }));
-      this.onChange(value, this.state.value[1]);
-    }
+  onDateChange = (dateValue: string) => {
+    this.onValueChange({ ...this.getState(), dateValue });
   };
 
-  handleDateInputBlur = () => {
-    this.validateDate(this.state.value[0]);
+  onFocus = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus();
   };
 
-  handleDateInputFocus = () => {
-    this.setState({ active: 1 });
+  onTimeChange = (timeValue: string) => {
+    this.onValueChange({ ...this.getState(), timeValue });
   };
 
-  handleDateInputChange = (e: Event) => {
-    const value = e.target.value;
-    this.setState(prevState => ({
-      value: [value, prevState.value[1]],
-    }));
-  };
-
-  handleDateTriggerOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  handleDateTriggerClose = () => {
-    this.setState({ isOpen: false });
-    this.selectDateField();
-  };
-
-  handleDateTriggerValidate = () => {
-    this.validateDate(this.state.value[0]);
-    this.selectTimeField();
-  };
-
-  handleIconClick = () => {
-    if (this.state.isOpen) {
-      this.setState({ isOpen: false });
-      if (this.state.active === 1) {
-        this.selectDateField();
-      } else {
-        this.selectTimeField();
-      }
-    } else {
-      this.setState({ isOpen: true });
-      if (this.state.active === 0) {
-        this.setState({ active: 1 });
-      }
-    }
-  };
-
-  handleDatePickerBlur = () => {
-    this.setState({ isOpen: false });
-  };
-
-  handleDateUpdate = (iso: string) => {
-    const isDateValid = this.validateDate(iso);
-    if (isDateValid) {
-      this.selectTimeField();
-    }
-  };
-
-  // TODO: Display error message for invalid date.
-  validateDate(date: string) {
-    const parsedDate = parseDate(date);
-
-    if (parsedDate) {
-      this.onDateChange(date);
-      this.setState(prevState => ({
-        value: [date, prevState.value[1]],
-      }));
-
-      return true;
-    }
-    this.onDateChange('');
-    this.setState(prevState => ({
-      value: ['', prevState.value[1]],
-    }));
-
-    return false;
-  }
-
-  selectDateField() {
-    if (this.dateTimePicker) {
-      this.dateTimePicker.selectDateField();
-    }
-  }
-
-  // TimePicker
-
-  onTimeChange = (value: string) => {
-    if (value !== this.state.value[1]) {
-      this.setState(prevState => ({
-        value: [prevState.value[0], value],
-      }));
-      this.onChange(this.state.value[0], value);
-    }
-  };
-
-  handleTimeInputBlur = () => {
-    this.validateTime(this.state.value[1]);
-  };
-
-  handleTimeInputFocus = () => {
-    this.setState({ active: 2 });
-  };
-
-  handleTimeInputChange = (e: Event) => {
-    const value = e.target.value;
-    this.setState(prevState => ({
-      value: [prevState.value[0], value],
-    }));
-    this.updateTimes(value, this.state.times);
-  };
-
-  handleTimeInputKeyDown = (e: KeyboardEvent) => {
-    // Handle opening the dialog, keyboard nav, closing the dialog, enter
-    if (!this.state.isOpen) {
-      if (e.key === 'ArrowDown') {
-        this.openDialog();
-      } else if (e.key === 'Enter') {
-        this.validateTime(this.state.value[1]);
-      }
-    } else if (e.key === 'Escape') {
-      this.setState({ isOpen: false });
-    } else if (e.key === 'ArrowDown') {
-      this.selectNextItem();
-    } else if (e.key === 'ArrowUp') {
-      this.selectPreviousItem();
-    } else if (e.key === 'Enter') {
-      if (this.state.focused) {
-        this.validateTime(this.state.focused);
-      }
-    }
-  };
-
-  handleTimeUpdate = (time: string) => {
-    this.validateTime(time);
-  };
-
-  validateTime(value: string) {
-    const parsedTime = parseTime(value);
-
-    if (parsedTime) {
-      this.onTimeChange(value);
-      this.setState(prevState => ({
-        value: [prevState.value[0], value],
-        isOpen: false,
-      }));
-    } else {
-      // TODO: Display an error message
-      this.onTimeChange('');
-      this.setState(prevState => ({
-        value: [prevState.value[0], ''],
-        isOpen: false,
-      }));
-      this.updateTimes('', this.state.times);
-    }
-  }
-
-  updateTimes = (value: ?string, times: Array<string>) => {
-    const timeShouldBeVisible = (time: string) =>
-      value ? time.startsWith(value) : true;
-    const filteredTimes = value ? times.filter(timeShouldBeVisible) : times;
-    this.setState({ times: filteredTimes });
-
-    if (!this.state.focused || !timeShouldBeVisible(this.state.focused)) {
-      this.setState({
-        focused: filteredTimes.length > 0 ? filteredTimes[0] : '',
-      });
-    }
-  };
-
-  openDialog() {
-    const times = this.state.times;
-    this.setState({
-      focused: times.length ? times[0] : '',
-      isOpen: true,
-    });
-  }
-
-  selectNextItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let next = current + 1;
-    next = next > times.length - 1 ? 0 : next;
-    this.setState({ focused: times[next] });
-  }
-
-  selectPreviousItem() {
-    const times = this.state.times;
-    const current = this.state.focused ? times.indexOf(this.state.focused) : -1;
-    let previous = current - 1;
-    previous = previous < 0 ? times.length - 1 : previous;
-    this.setState({ focused: times[previous] });
-  }
-
-  selectTimeField() {
-    if (this.dateTimePicker) {
-      this.dateTimePicker.selectTimeField();
+  onValueChange({
+    dateValue,
+    timeValue,
+    zoneValue,
+  }: {
+    dateValue: string,
+    timeValue: string,
+    zoneValue: string,
+  }) {
+    this.setState({ dateValue, timeValue, zoneValue });
+    if (dateValue && timeValue) {
+      const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
+      this.setState({ value });
+      this.props.onChange(value);
     }
   }
 
   render() {
-    const { value } = this.state;
+    const { autoFocus, id, innerProps, isDisabled, name } = this.props;
+    const { isFocused, value, dateValue, timeValue } = this.getState();
+    const bothProps = {
+      isDisabled,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+    };
     return (
-      <DateTimePickerStateless
-        active={this.state.active}
-        autoFocus={this.props.autoFocus}
-        isDisabled={this.props.isDisabled}
-        isOpen={this.state.isOpen}
-        shouldShowIcon
-        displayValue={formatValue(value)}
-        value={value}
-        dialogProps={[
-          { dialog: this.props.disabled },
-          { times: this.state.times, value: this.state.focused },
-        ]}
-        width={this.props.width}
-        onIconClick={this.handleIconClick}
-        onBlur={this.handleBlur}
-        onFieldBlur={[this.handleDateInputBlur, this.handleTimeInputBlur]}
-        onFieldFocus={[this.handleDateInputFocus, this.handleTimeInputFocus]}
-        onFieldChange={[this.handleDateInputChange, this.handleTimeInputChange]}
-        onFieldKeyDown={[noop, this.handleTimeInputKeyDown]}
-        onFieldTriggerOpen={[this.handleDateTriggerOpen, noop]}
-        onFieldTriggerValidate={[this.handleDateTriggerValidate, noop]}
-        onPickerBlur={[this.handleDatePickerBlur, noop]}
-        onPickerTriggerClose={[this.handleDateTriggerClose, noop]}
-        onPickerUpdate={[this.handleDateUpdate, this.handleTimeUpdate]}
-        dialogs={[DateDialog, TimeDialog]}
-        fields={[DateField, TimeField]}
-        ref={ref => {
-          this.dateTimePicker = ref;
-        }}
-      />
+      <Flex {...innerProps} isFocused={isFocused} isDisabled={isDisabled}>
+        <input name={name} type="hidden" value={value} />
+        <FlexItem>
+          <DatePicker
+            {...bothProps}
+            autoFocus={autoFocus}
+            icon={null}
+            id={id}
+            onChange={this.onDateChange}
+            selectProps={{ styles }}
+            value={dateValue}
+          />
+        </FlexItem>
+        <FlexItem>
+          <TimePicker
+            {...bothProps}
+            icon={CalendarIcon}
+            onChange={this.onTimeChange}
+            selectProps={{ styles }}
+            value={timeValue}
+          />
+        </FlexItem>
+      </Flex>
     );
   }
 }
-
-export default withCtrl(DateTimePicker);

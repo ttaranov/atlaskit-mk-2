@@ -1,6 +1,6 @@
 import { deselectItem } from '../../../actions/deselectItem';
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ComponentClass } from 'react';
 import { connect } from 'react-redux';
 
 import { BinaryUploader } from '../../../../components/binary';
@@ -11,10 +11,14 @@ import { MainContainer } from './styles';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
-// TODO [MSW-421]: re-enable code splitting once Stride support is merged
-import { EditorView } from './editorView/editorView';
+import { EditorViewProps } from './editorView/editorView';
+import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;
+}
+
+export interface MainEditorViewState {
+  EditorViewComponent?: ComponentClass<EditorViewProps>;
 }
 
 export interface MainEditorViewOwnProps {
@@ -35,7 +39,38 @@ export type MainEditorViewProps = MainEditorViewStateProps &
   MainEditorViewOwnProps &
   MainEditorViewDispatchProps;
 
-export class MainEditorView extends Component<MainEditorViewProps, {}> {
+export class MainEditorView extends Component<
+  MainEditorViewProps,
+  MainEditorViewState
+> {
+  static EditorViewComponent: ComponentClass<EditorViewProps>;
+
+  state: MainEditorViewState = {
+    EditorViewComponent: MainEditorView.EditorViewComponent,
+  };
+
+  componentDidMount() {
+    this.loadEditorView(this.props);
+  }
+
+  componentWillReceiveProps(newProps: MainEditorViewProps) {
+    this.loadEditorView(newProps);
+  }
+
+  private loadEditorView = async (props: MainEditorViewProps) => {
+    const { editorData } = props;
+    if (!editorData) {
+      return;
+    }
+
+    const EditorViewComponent = await editorViewLoader();
+
+    MainEditorView.EditorViewComponent = EditorViewComponent;
+    this.setState({
+      EditorViewComponent,
+    });
+  };
+
   render(): JSX.Element | null {
     const { editorData } = this.props;
     if (editorData) {
@@ -45,14 +80,15 @@ export class MainEditorView extends Component<MainEditorViewProps, {}> {
     }
   }
 
-  private renderContent(editorData: EditorData): JSX.Element {
+  private renderContent = (editorData: EditorData): JSX.Element => {
+    const { EditorViewComponent } = this.state;
     const { imageUrl, originalFile, error } = editorData;
 
     if (error) {
       return this.renderError(error);
-    } else if (imageUrl && originalFile) {
+    } else if (imageUrl && originalFile && EditorViewComponent) {
       return (
-        <EditorView
+        <EditorViewComponent
           imageUrl={imageUrl}
           onSave={this.onEditorSave(originalFile)}
           onCancel={this.onCancel}
@@ -62,7 +98,7 @@ export class MainEditorView extends Component<MainEditorViewProps, {}> {
     } else {
       return <SpinnerView onCancel={this.onCancel} />;
     }
-  }
+  };
 
   private renderError({ message, retryHandler }: EditorError): JSX.Element {
     return (

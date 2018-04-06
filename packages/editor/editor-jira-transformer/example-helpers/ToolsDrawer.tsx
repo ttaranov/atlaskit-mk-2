@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
+import { mention } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { JIRATransformer } from '../src';
 
@@ -14,7 +14,7 @@ const pendingPromise = new Promise<any>(() => {});
 
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(mentionStoryData.resourceProvider),
+    resolved: Promise.resolve(mention.storyData.resourceProvider),
     'resolved 2': Promise.resolve(
       new MentionResource({
         url:

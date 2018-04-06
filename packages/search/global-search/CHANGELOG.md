@@ -1,5 +1,28 @@
 # @atlaskit/global-search
 
+## 2.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 1.7.0
+- [minor] Show empty state when no results were found at all [398901a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/398901a)
+
+## 1.6.0
+
+## 1.5.0
+- [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)
+
+## 1.4.0
+- [minor] Improve rendering of Jira issues [7f28452](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f28452)
+
+## 1.3.1
+- [patch] Clean up CSS for examples [1b7ffce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b7ffce)
+
+## 1.3.0
+- [minor] Adds search attribution analytics for confluence search results. [2d73f50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d73f50)
+
 ## 1.2.0
 - [minor] Remove environment prop and replace with explicit service url overrides. [b5bd020](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5bd020)
 

@@ -14,10 +14,17 @@ import Editor from '../../src/components/Editor';
 import CommentContainer from '../../src/containers/Comment';
 
 function findEditAction(comment) {}
-
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 describe('Comment', () => {
   let comment;
-
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+  afterEach(() => {
+    console.error = consoleError;
+  });
   describe('rendering', () => {
     beforeEach(() => {
       comment = shallow(
@@ -366,7 +373,6 @@ describe('Comment', () => {
       );
 
       expect(comment.first().find(ResourcedReactions).length).toEqual(1);
-
       comment.unmount();
     });
 

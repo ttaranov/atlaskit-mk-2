@@ -137,7 +137,12 @@ export default class FocusLockRegistry {
   };
 
   // loop back to the first tabbable element from the last
-  handleKeyDown = ({ key, shiftKey, target, preventDefault }: KeyboardEvent) => {
+  handleKeyDown = ({
+    key,
+    shiftKey,
+    target,
+    preventDefault,
+  }: KeyboardEvent) => {
     if (key !== 'Tab') return;
 
     const els = tabbable(this.currentLock);

@@ -10,6 +10,7 @@ function render(partialProps: Partial<Props>) {
     onSearch: noop,
     getRecentlyViewedItems: noop,
     isLoading: false,
+    isError: false,
     query: '',
     recentlyViewedItems: [],
     recentResults: [],
@@ -40,5 +41,17 @@ describe('GlobalQuickSearch', () => {
     onSearchInput({ target: { value: 'foo' } });
 
     expect(searchMock).toHaveBeenCalledWith('foo');
+  });
+
+  it('should retry the search with current query', () => {
+    const searchMock = jest.fn();
+    const wrapper = render({
+      onSearch: searchMock,
+      query: 'macbook',
+    });
+
+    (wrapper.instance() as GlobalQuickSearch).retrySearch();
+
+    expect(searchMock).toHaveBeenCalledWith('macbook');
   });
 });

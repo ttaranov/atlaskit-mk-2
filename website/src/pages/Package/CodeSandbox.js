@@ -1,8 +1,5 @@
+// @flow
 import React, { Component } from 'react';
-import Button from '@atlaskit/button';
-import Loadable from 'react-loadable';
-
-import CodeSandboxLogo from './CodeSandboxLogo';
 import CodeSandboxer from 'react-codesandboxer';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
@@ -53,10 +50,16 @@ export default class CodeSandbox extends Component<{}, {}> {
       pkgJSON,
     } = this.props;
 
+    const name = example.id
+      .split('.')
+      .slice(0, -1)
+      .join('-');
+
     return (
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
+        name={`${pkgJSON.name}-${name}`}
         gitInfo={{
           account: 'atlassian',
           repository: 'atlaskit-mk-2',

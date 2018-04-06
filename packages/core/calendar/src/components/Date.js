@@ -36,8 +36,8 @@ export default class extends Component<Props, State> {
     isActive: false,
   };
   onMouseDown = (e: MouseEvent) => {
-    /* Prevent mousedown triggering an ancestor onBlur event in IE11 resulting in dates not being
-     * selectable. */
+    // Prevent mousedown triggering an ancestor onBlur event in IE11 resulting
+    // in dates not being selectable.
     e.preventDefault();
     this.setState({ isActive: true });
   };

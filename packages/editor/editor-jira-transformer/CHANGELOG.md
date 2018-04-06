@@ -1,5 +1,39 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 2.5.7
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 2.5.6
+
+## 2.5.5
+
+## 2.5.4
+
+## 2.5.3
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 2.5.2
+
+## 2.5.1
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 2.5.0
+- [minor] Added support to editor-jira-transformer for transforming Jira emoticons to unicode emoji [7315648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7315648)
+
+## 2.4.21
+
+## 2.4.20
+
+## 2.4.19
+
+## 2.4.18
+
+## 2.4.17
+
 ## 2.4.16
 
 ## 2.4.15

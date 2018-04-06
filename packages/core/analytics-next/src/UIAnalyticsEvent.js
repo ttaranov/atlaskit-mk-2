@@ -3,8 +3,7 @@
 import AnalyticsEvent from './AnalyticsEvent';
 import type {
   AnalyticsEventUpdater,
-  ObjectType,
-  UIAnalyticsEventHandlerSignature,
+  UIAnalyticsEventHandler,
   UIAnalyticsEventInterface,
   UIAnalyticsEventProps,
 } from './types';
@@ -13,8 +12,8 @@ const { warn } = console;
 
 export default class UIAnalyticsEvent extends AnalyticsEvent
   implements UIAnalyticsEventInterface {
-  context: Array<ObjectType>;
-  handlers: Array<UIAnalyticsEventHandlerSignature>;
+  context: Array<{}>;
+  handlers: Array<UIAnalyticsEventHandler>;
   hasFired: boolean;
 
   constructor(props: UIAnalyticsEventProps) {

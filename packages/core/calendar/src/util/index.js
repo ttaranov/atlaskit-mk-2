@@ -1,6 +1,6 @@
 // @flow
 
-import type { Date } from '../types';
+import type { DateObj } from '../types';
 
 type DateToStringOptions = {
   fixMonth: boolean,
@@ -51,7 +51,7 @@ export function getMonthName(i: number) {
 }
 
 export function dateToString(
-  date: Date,
+  date: DateObj,
   { fixMonth }: DateToStringOptions = {},
 ) {
   return `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(

@@ -11,7 +11,7 @@ export default class AutoDismissFlag extends Component<
 > {
   props: AutoDismissFlagProps; // eslint-disable-line react/sort-comp
 
-  autoDismissTimer: ?number;
+  autoDismissTimer: ?TimeoutID;
 
   componentDidMount() {
     this.startAutoDismissTimer();

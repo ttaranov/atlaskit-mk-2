@@ -16,7 +16,7 @@ import {
   smileyEmoji,
   thumbsupEmoji,
   thumbsdownEmoji,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -621,6 +621,19 @@ describe('EmojiRepository', () => {
 
         emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
         expect(emoji).to.have.lengthOf(2);
+
+        done();
+      });
+    });
+
+    it('should return frequent emoji on find operations with original category', done => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        const thumbsUp = emojiRepository.findByShortName(':thumbsup:');
+        expect(thumbsUp!.category).to.equal('PEOPLE');
 
         done();
       });

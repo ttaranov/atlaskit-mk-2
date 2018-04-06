@@ -108,7 +108,7 @@ export const SUPPORTED_LANGUAGES = [
   {
     name: 'PlainText',
     alias: ['plaintext', 'text'],
-    value: 'md',
+    value: 'text',
   },
   {
     name: 'VbNet',

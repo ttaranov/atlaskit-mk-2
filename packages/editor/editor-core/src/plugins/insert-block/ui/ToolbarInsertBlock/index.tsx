@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
@@ -40,7 +39,7 @@ import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
-import { MacroProvider } from '../../../macro/types';
+import { ExtensionProvider } from '../../../macro/types';
 import tableCommands from '../../../table/commands';
 import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
@@ -77,13 +76,13 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  macroProvider?: MacroProvider | null;
+  extensionProvider?: ExtensionProvider | null;
   insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
-    macroProvider: MacroProvider,
-  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+    extensionProvider: ExtensionProvider,
+  ) => (editorView: EditorView) => void;
 }
 
 export interface State {
@@ -100,7 +99,7 @@ const blockTypeIcons = {
 /**
  * Checks if an element is detached (i.e. not in the current document)
  */
-const isDetachedElement = el => !document.contains(el);
+const isDetachedElement = el => !document.body.contains(el);
 const noop = () => {};
 
 export default class ToolbarInsertBlock extends React.PureComponent<
@@ -292,7 +291,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
-      macroProvider,
+      extensionProvider,
       linkSupported,
       linkDisabled,
       emojiDisabled,
@@ -416,7 +415,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       // keeping this here for backwards compatibility so confluence
       // has time to implement this button before it disappears.
       // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
-    } else if (typeof macroProvider !== 'undefined' && macroProvider) {
+    } else if (typeof extensionProvider !== 'undefined' && extensionProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -500,7 +499,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       editorActions,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
-      macroProvider,
+      extensionProvider,
       handleImageUpload,
     } = this.props;
 
@@ -540,10 +539,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertMacroFromMacroBrowser!(macroProvider!)(
-          editorView.state,
-          editorView.dispatch,
-        );
+        onInsertMacroFromMacroBrowser!(extensionProvider!)(editorView);
         break;
       case 'date':
         this.createDate();

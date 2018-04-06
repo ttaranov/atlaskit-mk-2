@@ -1,6 +1,6 @@
 // @flow
 
-export const cities = [
+export const cities: Array<{ label: string, value: any }> = [
   { label: 'Adelaide', value: 'adelaide' },
   { label: 'Brisbane', value: 'brisbane' },
   { label: 'Canberra', value: 'canberra' },

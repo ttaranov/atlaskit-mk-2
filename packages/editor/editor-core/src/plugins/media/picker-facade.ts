@@ -19,7 +19,7 @@ import {
   MediaFile,
   UploadParams,
 } from '@atlaskit/media-picker';
-import { ContextConfig } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import MobilePicker from './mobile-picker';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
@@ -33,7 +33,7 @@ export type ExtendedComponentConfigs = ComponentConfigs & {
 
 export type PickerFacadeConfig = {
   uploadParams: UploadParams;
-  contextConfig: ContextConfig;
+  context: Context;
   stateManager: MediaStateManager;
   errorReporter: ErrorReportingHandler;
 };
@@ -63,7 +63,7 @@ export default class PickerFacade {
     } else {
       picker = this.picker = MediaPicker(
         pickerType,
-        this.buildPickerConfigFromContext(config.contextConfig),
+        this.buildPickerConfigFromContext(config.context),
         pickerConfig as any,
       );
     }
@@ -235,11 +235,11 @@ export default class PickerFacade {
     };
   };
 
-  private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
+  private buildPickerConfigFromContext(context: Context): ModuleConfig {
     return {
       uploadParams: this.uploadParams,
-      apiUrl: context.serviceHost,
-      authProvider: context.authProvider,
+      apiUrl: context.config.serviceHost,
+      authProvider: context.config.authProvider,
     };
   }
 
@@ -265,12 +265,13 @@ export default class PickerFacade {
     const { file, progress } = event;
     const tempId = this.generateTempId(file.id);
     const currentState = this.stateManager.getState(tempId);
-    const currentStatus =
-      currentState && currentState.status ? currentState.status : 'unknown';
+    const currentStatus = (currentState && currentState.status) || 'unknown';
 
     const state = this.newState(
       file,
-      currentStatus === 'unknown' ? 'uploading' : currentStatus,
+      currentStatus === 'unknown' || currentStatus === 'preview'
+        ? 'uploading'
+        : currentStatus,
     );
     state.progress = progress && progress.portion;
     this.stateManager.updateState(state.id, state);

@@ -15,6 +15,11 @@ export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: pointer;
   padding: ${padding / 2}px ${padding / 2}px ${padding / 4}px;
   vertical-align: middle;
+
+  &.with-children {
+    padding: 0;
+    background: white;
+  }
 `;
 
 export const Content: ComponentClass<

@@ -17,6 +17,7 @@ import {
   canMoveUp,
   atTheEndOfDoc,
   atTheBeginningOfBlock,
+  isTableCell,
 } from '../utils';
 
 import { hyperlinkPluginKey } from '../plugins/hyperlink';
@@ -369,7 +370,10 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) {
+    if (
+      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
+      isTableCell(state)
+    ) {
       nodes.push(paragraph.create());
     }
 
@@ -483,6 +487,24 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
     topLevelNode.type !== state.schema.nodes.codeBlock &&
     topLevelNode.nodeSize === 2
   );
+}
+
+export function createParagraphAtEnd(): Command {
+  return function(state, dispatch) {
+    const { doc, tr, schema: { nodes } } = state;
+    const lastPos = doc.resolve(doc.content.size - 1);
+    const lastNode = lastPos.node(1);
+    if (
+      lastNode &&
+      !(lastNode.type === nodes.paragraph && lastNode.content.size === 0)
+    ) {
+      tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
+    }
+    tr.setSelection(TextSelection.create(tr.doc, tr.doc.content.size - 1));
+    tr.scrollIntoView();
+    dispatch(tr);
+    return true;
+  };
 }
 
 export interface Command {

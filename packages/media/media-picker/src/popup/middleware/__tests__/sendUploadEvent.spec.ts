@@ -2,6 +2,9 @@ import { mockPopupUploadEventEmitter, mockStore } from '../../mocks';
 import sendUploadEventMiddleware from '../sendUploadEvent';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import { MediaError } from '../../../domain/error';
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 
 describe('sendUploadEvent middleware', () => {
   const uploadId = 'some-upload-id';
@@ -183,6 +186,7 @@ describe('sendUploadEvent middleware', () => {
 
   it('should emit upload error event', () => {
     const { eventEmitter, store, next } = setup();
+    console.error = jest.fn();
     const error: MediaError = {
       name: 'upload_fail',
       description: 'some-description',
@@ -208,5 +212,6 @@ describe('sendUploadEvent middleware', () => {
       },
       error,
     );
+    console.error = consoleError;
   });
 });

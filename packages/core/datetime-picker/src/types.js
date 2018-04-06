@@ -1,4 +1,8 @@
 // @flow
 
-export type Event = { target: { value: string } };
-export type Handler = (e: any) => void;
+export type Event = {
+  key: string,
+  preventDefault: Function,
+  stopPropagation: Function,
+  target: { blur: Function, className: string, focus: Function, value: string },
+};

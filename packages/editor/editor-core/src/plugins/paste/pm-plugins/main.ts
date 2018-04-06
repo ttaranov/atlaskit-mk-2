@@ -13,7 +13,8 @@ import { containsTable } from '../../table/utils';
 import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
-import { isSingleLine, isCode, escapeLinks } from '../util';
+import { isSingleLine, escapeLinks } from '../util';
+import { removeBodiedExtensionsOnPaste } from '../../extension/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -109,10 +110,8 @@ export function createPlugin(
         }
 
         // If the clipboard contents looks like computer code, create a code block
-        if (
-          (text && isCode(text)) ||
-          (text && html && node && node.type === schema.nodes.codeBlock)
-        ) {
+        // Note: Disabling (text && isCode(text)) check (@see ED-4092) until we decide how to improve it (possibly adding the ability to undo)
+        if (text && html && node && node.type === schema.nodes.codeBlock) {
           analyticsService.trackEvent('atlassian.editor.paste.code');
           let tr = view.state.tr;
           if (isSingleLine(text)) {
@@ -167,6 +166,14 @@ export function createPlugin(
             tableState.addHeaderToTableNodes(slice, selectionStart);
             return true;
           }
+
+          // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
+          // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
+          // this function makes sure we prevent that weirdness
+          return removeBodiedExtensionsOnPaste(slice)(
+            view.state,
+            view.dispatch,
+          );
         }
 
         return false;

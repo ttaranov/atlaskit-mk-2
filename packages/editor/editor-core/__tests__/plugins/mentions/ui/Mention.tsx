@@ -3,8 +3,17 @@ import { mount } from 'enzyme';
 import { ResourcedMention } from '@atlaskit/mention';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import Mention from '../../../../src/plugins/mentions/ui/Mention';
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 
 describe('@atlaskit/editor-core/ui/Mention', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+  afterEach(() => {
+    console.error = consoleError;
+  });
   it('should render resourced mention', () => {
     const mention = mount(
       <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" />,
@@ -63,8 +72,8 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
       await profilecardProvider;
     } catch (err) {
       expect(mention.find('WithProfilecardMention').length).toBe(0);
+      mention.unmount();
     }
-    mention.unmount();
   });
 
   ['HipChat', 'all', 'here'].forEach(genericUserId => {

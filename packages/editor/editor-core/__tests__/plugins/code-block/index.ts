@@ -368,11 +368,15 @@ describe('code-block', () => {
     it('should not remove parent block when removing code_block', () => {
       const { pluginState, editorView } = editor(
         doc(
-          table(tr(td({})(code_block({ language: 'java' })('codeBlock{<>}')))),
+          table()(
+            tr(td({})(code_block({ language: 'java' })('codeBlock{<>}'))),
+          ),
         ),
       );
       pluginState.removeCodeBlock(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(td({})(p())))),
+      );
       editorView.destroy();
     });
   });

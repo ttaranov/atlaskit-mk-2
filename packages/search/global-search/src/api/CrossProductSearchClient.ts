@@ -51,7 +51,7 @@ export interface ScopeResult {
 }
 
 export interface CrossProductSearchClient {
-  search(query: string): Promise<CrossProductResults>;
+  search(query: string, searchSessionId: string): Promise<CrossProductResults>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -64,10 +64,13 @@ export default class CrossProductSearchClientImpl
     this.cloudId = cloudId;
   }
 
-  public async search(query: string): Promise<CrossProductResults> {
+  public async search(
+    query: string,
+    searchSessionId: string,
+  ): Promise<CrossProductResults> {
     const response = await this.makeRequest(query);
 
-    return this.parseResponse(response);
+    return this.parseResponse(response, searchSessionId);
   }
 
   private async makeRequest(
@@ -99,13 +102,16 @@ export default class CrossProductSearchClientImpl
 
   private parseResponse(
     response: CrossProductSearchResponse,
+    searchSessionId: string,
   ): CrossProductResults {
     let jiraResults: Result[] = [];
     let confResults: Result[] = [];
 
     response.scopes.forEach(scope => {
       if (scope.id === Scope.ConfluencePageBlog) {
-        confResults = scope.results.map(confluenceItemToResult);
+        confResults = scope.results.map((item: ConfluenceItem) =>
+          confluenceItemToResult(item, searchSessionId),
+        );
       } else if (scope.id === Scope.JiraIssue) {
         jiraResults = scope.results.map(jiraItemToResult);
       } else {
@@ -133,13 +139,16 @@ export function removeHighlightTags(text: string) {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
 
-function confluenceItemToResult(item: ConfluenceItem): Result {
+function confluenceItemToResult(
+  item: ConfluenceItem,
+  searchSessionId: string,
+): Result {
   return {
     type: ResultType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
-    href: item.baseUrl + item.url,
+    href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
   };
 }
@@ -152,5 +161,6 @@ function jiraItemToResult(item: JiraItem): Result {
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
+    objectKey: item.key,
   };
 }

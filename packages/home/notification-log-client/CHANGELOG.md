@@ -1,5 +1,7 @@
 # @atlaskit/notification-log-service
 
+## 2.0.3
+
 ## 2.0.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 

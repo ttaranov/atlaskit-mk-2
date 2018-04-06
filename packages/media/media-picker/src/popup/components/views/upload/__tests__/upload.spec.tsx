@@ -2,13 +2,19 @@ import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
-import { Card } from '@atlaskit/media-card';
-
-import { State, CollectionItem } from '../../../../domain';
+import { FileDetails } from '@atlaskit/media-core';
+import { Card, CardView } from '@atlaskit/media-card';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+import { fakeContext } from '@atlaskit/media-test-helpers';
+import {
+  State,
+  CollectionItem,
+  SelectedItem,
+  LocalUpload,
+} from '../../../../domain';
 import {
   mockStore,
   mockState,
-  mockContext,
   getComponentClassWithStore,
   mockIsWebGLNotAvailable,
 } from '../../../../mocks';
@@ -32,7 +38,7 @@ const createConnectedComponent = (
   state: State,
   enzymeMethod: Function = shallow,
 ) => {
-  const context = mockContext();
+  const context = fakeContext();
   const store = mockStore(state);
   const dispatch = store.dispatch;
   const root = enzymeMethod(
@@ -51,9 +57,14 @@ describe('<StatelessUploadView />', () => {
   const getUploadViewElement = (
     isLoading: boolean,
     recentItems: CollectionItem[] = [],
+    mockStateOverride: Partial<State> = {},
   ) => {
-    const context = mockContext();
-    const { selectedItems, uploads, apiUrl } = mockState;
+    const context = fakeContext();
+
+    const { selectedItems, uploads, apiUrl } = {
+      ...mockState,
+      ...mockStateOverride,
+    } as State;
 
     const recents = {
       items: recentItems,
@@ -88,8 +99,8 @@ describe('<StatelessUploadView />', () => {
     const component = shallow(getUploadViewElement(false));
 
     expect(component.find(Wrapper)).toHaveLength(1);
-    expect(component.find(Wrapper).props().className).toEqual('empty');
     expect(component.find(Dropzone)).toHaveLength(1);
+    expect(component.find(Dropzone).props().isEmpty).toEqual(true);
   });
 
   it('should render cards and dropzone when there are recent items', () => {
@@ -105,10 +116,54 @@ describe('<StatelessUploadView />', () => {
     const component = shallow(getUploadViewElement(false, recentItems));
 
     expect(component.find(Wrapper)).toHaveLength(1);
-    expect(component.find(Wrapper).props().className).toEqual(undefined);
     expect(component.find(Dropzone)).toHaveLength(1);
+    expect(component.find(Dropzone).props().isEmpty).toEqual(false);
 
     expect(component.find(Card)).toHaveLength(3);
+  });
+
+  it('should render currently uploading items', () => {
+    const mockStateOverride: Partial<State> = {
+      uploads: {
+        uploadId1: {
+          file: {
+            metadata: {
+              id: 'id1',
+              mimeType: 'image/jpeg',
+              name: 'some-file-name',
+              size: 42,
+            },
+          },
+          progress: 10,
+        } as LocalUpload,
+      },
+      selectedItems: [
+        {
+          id: 'id1',
+          serviceName: 'upload',
+        },
+      ] as SelectedItem[],
+    };
+    const expectedMetadata: FileDetails = {
+      id: 'id1',
+      name: 'some-file-name',
+      size: 42,
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+    };
+    const component = shallow(
+      getUploadViewElement(false, [], mockStateOverride),
+    );
+    expect(component.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView).props().metadata).toEqual(expectedMetadata);
+    expect(component.find(CardView).props().status).toEqual('uploading');
+    expect(component.find(CardView).props().progress).toEqual(10);
+    expect(component.find(CardView).props().dimensions).toEqual({
+      width: 162,
+      height: 108,
+    });
+    expect(component.find(CardView).props().selectable).toEqual(true);
+    expect(component.find(CardView).props().selected).toEqual(true);
   });
 });
 
@@ -232,5 +287,21 @@ describe('<UploadView />', () => {
 
     expect(root.find(FlagGroup)).toHaveLength(1);
     expect(isWebGLAvailable).toHaveBeenCalled();
+  });
+
+  it('should render annotate card action with annotate icon', () => {
+    const { component } = createConnectedComponent(state, mount);
+    expect(
+      component
+        .find(CardView)
+        .first()
+        .props().actions,
+    ).toContainEqual({
+      label: 'Annotate',
+      icon: expect.objectContaining({
+        type: AnnotateIcon,
+      }),
+      handler: expect.any(Function),
+    });
   });
 });

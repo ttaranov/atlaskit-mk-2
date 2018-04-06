@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 
 import { Content, ButtonGroup } from './styles';
 import imageUploadHandler from './imageUpload';
@@ -15,6 +14,8 @@ import {
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 
+import { mediaMock } from '@atlaskit/media-test-helpers';
+
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
 );
@@ -23,7 +24,7 @@ const pendingPromise = new Promise<any>(() => {});
 const testCloudId = 'f7ebe2c0-0309-4687-b913-41d422f2110b';
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(mentionStoryData.resourceProvider),
+    resolved: Promise.resolve(mention.storyData.resourceProvider),
     external: Promise.resolve(
       new MentionResource({
         url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
@@ -36,7 +37,7 @@ const providers = {
     undefined: undefined,
   },
   emojiProvider: {
-    resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
+    resolved: emoji.storyData.getEmojiResource({ uploadSupported: true }),
     external: Promise.resolve(
       new EmojiResource({
         providers: [
@@ -55,9 +56,7 @@ const providers = {
     undefined: undefined,
   },
   taskDecisionProvider: {
-    resolved: Promise.resolve(
-      taskDecisionStoryData.getMockTaskDecisionResource(),
-    ),
+    resolved: Promise.resolve(taskDecision.getMockTaskDecisionResource()),
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
@@ -109,6 +108,7 @@ interface State {
   contextIdentifierProvider: string;
   activityProvider: string;
   jsonDocument?: string;
+  mediaMockEnabled: boolean;
 }
 
 export default class ToolsDrawer extends React.Component<any, State> {
@@ -126,7 +126,12 @@ export default class ToolsDrawer extends React.Component<any, State> {
       contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
+      mediaMockEnabled: true,
     };
+
+    if (this.state.mediaMockEnabled) {
+      mediaMock.enable();
+    }
   }
 
   private switchProvider = (providerType, providerName) => {
@@ -141,6 +146,13 @@ export default class ToolsDrawer extends React.Component<any, State> {
 
   private toggleDisabled = () =>
     this.setState(prevState => ({ editorEnabled: !prevState.editorEnabled }));
+
+  private toggleMediaMock = () => {
+    this.state.mediaMockEnabled ? mediaMock.disable() : mediaMock.enable();
+    this.setState(prevState => ({
+      mediaMockEnabled: !prevState.mediaMockEnabled,
+    }));
+  };
 
   private onChange = editorView => {
     this.setState({
@@ -160,19 +172,16 @@ export default class ToolsDrawer extends React.Component<any, State> {
       jsonDocument,
       reloadEditor,
       editorEnabled,
+      mediaMockEnabled,
     } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0' }}>
-          ️️️⚠️ Atlassians, for Media integration to work, make sure you're
-          logged into{' '}
+          ️️️⚠️ Atlassians, for Media integration to work in non-mocked state,
+          make sure you're logged into{' '}
           <a href="https://id.stg.internal.atlassian.com" target="_blank">
-            staging Identity server
-          </a>{' '}
-          and run your browser{' '}
-          <a href="https://stackoverflow.com/a/43996863/658086" target="_blank">
-            with CORS disabled
-          </a>.
+            staging Identity server.
+          </a>
         </div>
         {reloadEditor
           ? ''
@@ -233,6 +242,16 @@ export default class ToolsDrawer extends React.Component<any, State> {
               >
                 Reload Editor
               </Button>
+              <Tooltip content="Hot reload is not supported. Enable or disable before opening media-picker">
+                <Button
+                  onClick={this.toggleMediaMock}
+                  appearance={mediaMockEnabled ? 'primary' : 'default'}
+                  theme="dark"
+                  spacing="compact"
+                >
+                  {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker Mock
+                </Button>
+              </Tooltip>
             </ButtonGroup>
           </div>
         </div>

@@ -7,7 +7,7 @@ import {
   getEmojiResourceWithStandardAndAtlassianEmojis,
   loggedUser,
   lorem,
-} from '../src/support/story-data';
+} from '../example-helpers';
 import { onSelection } from '../example-helpers/index';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
@@ -62,7 +62,10 @@ export default class EmojiPickerWithUpload extends React.Component<
             }}
           />
         </Layer>
-        <p style={{ width: '400px' }}>{lorem}</p>
+        <p style={{ width: '400px' }}>
+          {lorem}
+          {lorem}
+        </p>
 
         <button onClick={() => this.enableSiteEmoji(true)}>
           EmojiProvider with Site emoji

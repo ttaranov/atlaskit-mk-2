@@ -3,8 +3,12 @@
 .*/node_modules/raf-schd/test/.*
 .*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
+.*/website/.*
 .*/packages/elements/icon/es5/.*
 .*/node_modules/stylelint/.*
+.*/node_modules/babel-flow-types/.*
+.*/node_modules/babel-normalize-comments/.*
+.*/node_modules/extract-react-types/.*
 
 [include]
 

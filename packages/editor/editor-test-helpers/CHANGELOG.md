@@ -1,5 +1,49 @@
 # @atlaskit/editor-test-helpers
 
+## 3.0.3
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 3.0.2
+
+## 3.0.1
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 3.0.0
+- [major] CFE-1004: Rename anything "macro" to "extension" (i.e: MacroProvider to ExtensionProvider) [453aa52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/453aa52)
+
+## 2.1.1
+- [patch] ED-3476 add table breakout mode [7cd4dfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cd4dfa)
+
+## 2.1.0
+
+## 2.0.14
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
+## 2.0.13
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 2.0.12
+- [patch] Remove JSDOM warning in CI [309af83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/309af83)
+
+## 2.0.11
+
+## 2.0.10
+
+## 2.0.9
+- [patch] CFE-846: Add support to extension handlers (lite version) [4ea9ffe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ea9ffe)
+
+## 2.0.8
+- [patch] restrict nested bodiedExtensions [2583534](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2583534)
+
+## 2.0.7
+
+## 2.0.6
+
+## 2.0.5
+- [patch] support __confluenceMetadata property on link mark [b17f847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b17f847)
+
+## 2.0.4
+
 ## 2.0.3
 
 ## 2.0.2

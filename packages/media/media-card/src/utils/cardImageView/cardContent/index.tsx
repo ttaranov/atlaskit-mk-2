@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import { MediaType, MediaItemType } from '@atlaskit/media-core';
 import { MediaImage } from '../../mediaImage';
 import { CardLoading } from '../../cardLoading';
+import { shouldDisplayImageThumbnail } from '../../shouldDisplayImageThumbnail';
 
 export interface CardContentProps {
   mediaItemType?: MediaItemType;
@@ -12,7 +13,7 @@ export interface CardContentProps {
   crop?: boolean;
 }
 
-export class CardContent extends Component<CardContentProps, {}> {
+export class CardContent extends PureComponent<CardContentProps, {}> {
   render() {
     const { loading, mediaType, mediaItemType, dataURI, crop } = this.props;
 
@@ -20,17 +21,10 @@ export class CardContent extends Component<CardContentProps, {}> {
       return <CardLoading mediaItemType={mediaItemType} />;
     }
 
-    if (this.shouldDisplayImageThumbnail(dataURI, mediaType)) {
+    if (shouldDisplayImageThumbnail(dataURI, mediaType)) {
       return <MediaImage dataURI={dataURI} fadeIn={loading} crop={crop} />;
     } else {
       return null;
     }
-  }
-
-  private shouldDisplayImageThumbnail(
-    dataURI?: string,
-    mediaType?: MediaType,
-  ): dataURI is string {
-    return !!(mediaType !== 'doc' && dataURI);
   }
 }

@@ -1,5 +1,52 @@
 # @atlaskit/media-image
 
+## 26.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 26.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 25.2.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 25.1.8
+
+## 25.1.7
+
+## 25.1.6
+- [patch] Fix typo and potential memory leak [6ecc601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ecc601)
+
+## 25.1.5
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 25.1.4
+
+## 25.1.3
+- [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
+
+## 25.1.2
+- [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
+
+## 25.1.1
+
+## 25.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+- [minor] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
+
+## 25.0.2
+
+## 25.0.1
+
+## 25.0.0
+- [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
+
+## 24.1.6
+- [patch] added a cursor to application cards when the onClick property is passed [97cb9c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97cb9c2)
+
+## 24.1.5
+- [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
+
 ## 24.1.4
 
 ## 24.1.3

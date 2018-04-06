@@ -30,16 +30,18 @@ export default class ApplicationCard extends React.Component<
     const { eventHandlers, useNewApplicationCard = false } = this.props;
 
     return (
-      <AppCardView
-        newDesign={useNewApplicationCard}
-        onClick={this.onClick}
-        model={this.props}
-        onActionClick={
-          eventHandlers &&
-          eventHandlers.applicationCard &&
-          eventHandlers.applicationCard.onActionClick
-        }
-      />
+      <div className="ApplicationCard">
+        <AppCardView
+          newDesign={useNewApplicationCard}
+          onClick={this.onClick}
+          model={this.props}
+          onActionClick={
+            eventHandlers &&
+            eventHandlers.applicationCard &&
+            eventHandlers.applicationCard.onActionClick
+          }
+        />
+      </div>
     );
   }
 }

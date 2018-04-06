@@ -11,6 +11,7 @@ import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf } from './web-to-native/markState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
+import { ContextFactory } from '@atlaskit/media-core';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -45,6 +46,11 @@ class EditorWithState extends Editor {
   }) {
     super.onEditorCreated(instance);
     bridge.editorView = instance.view;
+    bridge.editorActions._privateRegisterEditor(
+      instance.view,
+      instance.eventDispatcher,
+    );
+
     bridge.mediaPicker = mediaProvider.mobilePicker;
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
@@ -52,6 +58,7 @@ class EditorWithState extends Editor {
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
     super.onEditorDestroyed(instance);
+    bridge.editorActions._privateUnregisterEditor();
     bridge.editorView = null;
     bridge.mentionsPluginState = null;
     bridge.textFormattingPluginState = null;
@@ -99,10 +106,12 @@ function getToken(context?: any) {
 }
 
 function getUploadContext(): Promise<any> {
-  return Promise.resolve({
-    serviceHost: toNativeBridge.getServiceHost(),
-    authProvider: getToken,
-  });
+  return Promise.resolve(
+    ContextFactory.create({
+      serviceHost: toNativeBridge.getServiceHost(),
+      authProvider: getToken,
+    }),
+  );
 }
 
 export default function mobileEditor() {

@@ -1,6 +1,7 @@
 import {
   createEditor,
   blockquote,
+  insertText,
   code_block,
   panel,
   doc,
@@ -355,6 +356,28 @@ describe('block-type', () => {
     it('should be true if current selection is wrapped in codeblock', () => {
       const { pluginState } = editor(doc(code_block()('testing{<>}')));
       expect(pluginState.blockTypesDisabled).toBe(true);
+    });
+  });
+
+  describe('block type in comment editor', () => {
+    const editor = (doc: any) =>
+      createEditor({
+        doc,
+        editorProps: { appearance: 'comment', allowCodeBlocks: true },
+      });
+
+    it('should create empty terminal empty paragraph when heading is created', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '# ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(h1(''), p('')));
+    });
+
+    it('should create empty terminal empty paragraph when code block is created', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '```', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()(''), p('')),
+      );
     });
   });
 });

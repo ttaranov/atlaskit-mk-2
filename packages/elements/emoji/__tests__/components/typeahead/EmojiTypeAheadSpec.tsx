@@ -11,8 +11,7 @@ import {
   newEmojiRepository,
   openMouthEmoji,
   standardBoomEmoji,
-  getMockEmojiResourcePromise,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 import {
   hasSelector,
   getEmojiTypeAheadItemById,
@@ -173,7 +172,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should record selection on EmojiProvider even with no onSelection property', done => {
-    const emojiResourcePromise = getMockEmojiResourcePromise();
+    const emojiResourcePromise = getEmojiResourcePromise();
     return setupTypeAhead({
       emojiProvider: emojiResourcePromise,
     }).then(component =>
@@ -200,7 +199,7 @@ describe('EmojiTypeAhead', () => {
   it('should record selection on EmojiProvider and call onSelection property', done => {
     let choseEmoji: OptionalEmojiDescription;
 
-    const emojiResourcePromise = getMockEmojiResourcePromise();
+    const emojiResourcePromise = getEmojiResourcePromise();
     return setupTypeAhead({
       emojiProvider: emojiResourcePromise,
       onSelection: (emojiId, emoji) => {

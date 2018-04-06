@@ -1,5 +1,5 @@
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import {
@@ -36,6 +36,8 @@ export interface EditorAppearanceComponentProps {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+
+  extensionHandlers?: ExtensionHandlers;
 
   disabled?: boolean;
 }

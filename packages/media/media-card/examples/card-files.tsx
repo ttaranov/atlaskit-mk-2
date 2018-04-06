@@ -1,3 +1,4 @@
+/* tslint:disable:no-console */
 import * as React from 'react';
 import {
   StoryList,
@@ -6,26 +7,12 @@ import {
   unknownFileId,
   errorFileId,
 } from '@atlaskit/media-test-helpers';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+
+import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 import { Card, FileIdentifier } from '../src';
-import { createApiCards } from '../example-helpers';
-
-const action = args => console.log;
-
-const menuActions = [
-  {
-    label: 'Open',
-    handler: () => {
-      action('open')();
-    },
-  },
-  {
-    label: 'Close',
-    handler: () => {
-      action('close')();
-    },
-  },
-];
+import { createApiCards, actions } from '../example-helpers';
 
 const context = createStorybookContext();
 // standard
@@ -77,7 +64,7 @@ const menuCards = [
         identifier={successIdentifier}
         context={context}
         appearance="small"
-        actions={menuActions}
+        actions={actions}
       />
     ),
   },
@@ -88,7 +75,7 @@ const menuCards = [
         identifier={successIdentifier}
         context={context}
         appearance="image"
-        actions={menuActions}
+        actions={actions}
       />
     ),
   },
@@ -155,30 +142,37 @@ const collectionConfigCards = [
     content: <Card identifier={successIdentifier} context={context} />,
   },
 ];
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
+  const { payload, context } = analyticsEvent;
+  console.log('Received event:', { payload, context });
+};
+
 export default () => (
-  <div>
-    <h1 style={{ margin: '10px 20px' }}>File cards</h1>
-    <div style={{ margin: '20px 40px' }}>
-      <h3>Standard</h3>
-      <StoryList>{standardCards}</StoryList>
+  <AnalyticsListener channel="media" onEvent={handleEvent}>
+    <div>
+      <h1 style={{ margin: '10px 20px' }}>File cards</h1>
+      <div style={{ margin: '20px 40px' }}>
+        <h3>Standard</h3>
+        <StoryList>{standardCards}</StoryList>
 
-      <h3>Error</h3>
-      <StoryList>{errorCards}</StoryList>
+        <h3>Error</h3>
+        <StoryList>{errorCards}</StoryList>
 
-      <h3>Menu</h3>
-      <StoryList>{menuCards}</StoryList>
+        <h3>Menu</h3>
+        <StoryList>{menuCards}</StoryList>
 
-      <h3>API Cards</h3>
-      <StoryList>{apiCards}</StoryList>
+        <h3>API Cards</h3>
+        <StoryList>{apiCards}</StoryList>
 
-      <h3>Thumbnail not available</h3>
-      <StoryList>{noThumbnailCards}</StoryList>
+        <h3>Thumbnail not available</h3>
+        <StoryList>{noThumbnailCards}</StoryList>
 
-      <h3>Lazy load</h3>
-      <StoryList>{lazyLoadCards}</StoryList>
+        <h3>Lazy load</h3>
+        <StoryList>{lazyLoadCards}</StoryList>
 
-      <h3>Collection configurations</h3>
-      <StoryList>{collectionConfigCards}</StoryList>
+        <h3>Collection configurations</h3>
+        <StoryList>{collectionConfigCards}</StoryList>
+      </div>
     </div>
-  </div>
+  </AnalyticsListener>
 );

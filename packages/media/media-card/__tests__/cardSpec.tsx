@@ -11,6 +11,8 @@ import {
 } from '../src';
 import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -42,11 +44,8 @@ describe('Card', () => {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getUrlPreviewProvider.calledOnce).toBe(true);
-    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).toBe(
-      true,
-    );
-
+    expect(context.getUrlPreviewProvider).toHaveBeenCalledTimes(1);
+    expect(context.getUrlPreviewProvider).toBeCalledWith(dummyUrl);
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
   });
@@ -65,14 +64,12 @@ describe('Card', () => {
     );
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
@@ -92,14 +89,12 @@ describe('Card', () => {
     );
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toEqual(dummyProvider);
@@ -123,14 +118,12 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = fileIdentifier;
-    expect(secondContext.getMediaItemProvider.calledOnce).toBe(true);
-    expect(
-      secondContext.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(secondContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
+    expect(secondContext.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toBe(dummyProvider);
@@ -153,14 +146,12 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
-    expect(context.getMediaItemProvider.calledTwice).toBe(true);
-    expect(
-      context.getMediaItemProvider.calledWithExactly(
-        id,
-        mediaItemType,
-        collectionName,
-      ),
-    ).toBe(true);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+    expect(context.getMediaItemProvider).toBeCalledWith(
+      id,
+      mediaItemType,
+      collectionName,
+    );
 
     expect(mediaCard).toHaveLength(1);
     expect(mediaCard.props().provider).toBe(dummyProvider);
@@ -185,7 +176,7 @@ describe('Card', () => {
 
     expect(clickHandler).not.toHaveBeenCalled();
 
-    mediaCardOnClick({} as any);
+    mediaCardOnClick({} as any, {} as any);
     expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
@@ -315,5 +306,49 @@ describe('Card', () => {
     expect(mediaCard.prop('resizeMode')).toBe('full-fit');
     expect(card.find('CardView').prop('resizeMode')).toBe('full-fit');
     expect(fetchImageDataUriSpy.mock.calls[0][1].mode).toBe('full-fit');
+  });
+
+  it('should contain analytics context with identifier info', () => {
+    const analyticsEventHandler = jest.fn();
+    const fetchImageDataUriSpy = jest.fn(() => Promise.resolve());
+    const context = fakeContext({
+      getDataUriService: {
+        fetchImageDataUri: fetchImageDataUriSpy,
+      },
+    });
+    mount(
+      <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
+        <Card
+          context={context}
+          identifier={fileIdentifier}
+          isLazy={false}
+          resizeMode="full-fit"
+        />
+      </AnalyticsListener>,
+    );
+
+    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+    const actualFiredEvent: UIAnalyticsEventInterface =
+      analyticsEventHandler.mock.calls[0][0];
+    expect(actualFiredEvent.context[0]).toEqual(
+      expect.objectContaining({
+        actionSubject: 'MediaCard',
+        actionSubjectId: 'some-random-id',
+        componentName: 'Card',
+        packageName: '@atlaskit/media-card',
+      }),
+    );
+  });
+
+  it('should use local preview if available', () => {
+    const context = fakeContext({
+      getLocalPreview: 'local-preview-src',
+    });
+    const card = shallow(
+      <Card context={context} identifier={fileIdentifier} />,
+    );
+
+    expect(context.getLocalPreview).toHaveBeenCalledWith('some-random-id');
+    expect(card.find(MediaCard).prop('preview')).toEqual('local-preview-src');
   });
 });

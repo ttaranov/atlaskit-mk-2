@@ -26,6 +26,7 @@ import {
 } from '@atlaskit/editor-json-transformer';
 import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
 import { stateKey as tableStateKey } from '../plugins/table/pm-plugins/main';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 
 export * from './document';
 export * from './action';
@@ -694,4 +695,8 @@ export const isElementInTableCell = (
 export const isLastItemMediaGroup = (node: Node): boolean => {
   const { content } = node;
   return !!content.lastChild && content.lastChild.type.name === 'mediaGroup';
+};
+
+export const isInListItem = (state: EditorState): boolean => {
+  return hasParentNodeOfType(state.schema.nodes.listItem)(state.selection);
 };

@@ -18,7 +18,7 @@ import {
   datePlus,
   getItemsResponse,
   getItemsResponseWithParticipants,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 const query: Query = {
   containerAri: 'cheese',

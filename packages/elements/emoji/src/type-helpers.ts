@@ -10,6 +10,7 @@ import {
   SpriteServiceRepresentation,
   EmojiRepresentation,
 } from './types';
+import { customCategory, dataURLPrefix } from './constants';
 
 export const isSpriteServiceRepresentation = (
   rep,
@@ -26,6 +27,12 @@ export const isPromise = (p): p is Promise<any> =>
 
 export const isMediaEmoji = (emoji: EmojiDescription) =>
   isMediaRepresentation(emoji.representation);
+
+export const hasDataURLImage = rep =>
+  isImageRepresentation(rep) && rep.imagePath.indexOf(dataURLPrefix) === 0;
+
+export const isLoadedMediaEmoji = (emoji: EmojiDescription) =>
+  emoji.category === customCategory && hasDataURLImage(emoji.representation);
 
 export const isEmojiDescriptionWithVariations = (
   emoji,

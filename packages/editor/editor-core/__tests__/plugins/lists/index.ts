@@ -10,16 +10,25 @@ import {
   li,
   p,
   panel,
+  media,
+  mediaSingle,
+  randomId,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import listPlugin from '../../../src/plugins/lists';
 import panelPlugin from '../../../src/plugins/panel';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
+import mediaPlugin from '../../../src/plugins/media';
 
 describe('lists', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [listPlugin, panelPlugin],
+      editorPlugins: [
+        listPlugin,
+        panelPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       editorProps: { analyticsHandler: trackEvent },
       pluginKey: listPluginKey,
     });
@@ -869,6 +878,71 @@ describe('lists', () => {
               li(p('text')),
             ),
           ),
+        );
+      });
+    });
+
+    describe('when adding media inside list', () => {
+      const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+      const temporaryFileId = `temporary:${randomId()}`;
+
+      it('should add media as media single', () => {
+        const { editorView } = editor(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
+        );
+
+        insertMediaAsMediaSingle(
+          editorView,
+          media({
+            id: temporaryFileId,
+            __key: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileMimeType: 'image/png',
+          })()(editorView.state.schema),
+        );
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            ul(
+              li(p('Three')),
+              li(
+                p('Four'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                p(),
+              ),
+            ),
+          ),
+        );
+        editorView.destroy();
+      });
+
+      it('should not add non images inside lists', () => {
+        const { editorView } = editor(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
+        );
+
+        insertMediaAsMediaSingle(
+          editorView,
+          media({
+            id: temporaryFileId,
+            __key: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileMimeType: 'pdf',
+          })()(editorView.state.schema),
+        );
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
         );
       });
     });

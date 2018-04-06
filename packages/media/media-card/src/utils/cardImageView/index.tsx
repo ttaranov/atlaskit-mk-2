@@ -7,15 +7,15 @@ import { Component } from 'react';
 import {
   MediaType,
   MediaItemType,
-  CardAction,
-  CardActionType,
   ImageResizeMode,
 } from '@atlaskit/media-core';
+
 import { CardDimensions, CardStatus } from '../../index';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
 import { Wrapper } from './styled';
 import { UploadingView } from '../../utils/uploadingView';
+import { CardAction } from '../../actions';
 
 export interface CardImageViewProps {
   mediaItemType?: MediaItemType;
@@ -99,7 +99,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   private getUploadingContents = (): JSX.Element => {
     const { actions, mediaName, progress, dataURI, selectable } = this.props;
 
-    const deleteAction = this.getFirstDeleteAction(actions);
     const overlay = selectable ? this.createUploadingCardOverlay() : null;
 
     return (
@@ -109,7 +108,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             title={mediaName}
             progress={progress || 0}
             dataURI={dataURI}
-            deleteAction={deleteAction}
+            actions={actions}
           />
         </div>
         {overlay}
@@ -128,17 +127,6 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
         selected={selected}
       />
     );
-  };
-
-  private getFirstDeleteAction = (
-    actions: Array<CardAction> | undefined,
-  ): CardAction | undefined => {
-    if (!actions) {
-      return;
-    }
-
-    const deleteActions = actions.filter(a => a.type === CardActionType.delete);
-    return deleteActions[0];
   };
 
   private getSuccessCardContents = (): JSX.Element => {

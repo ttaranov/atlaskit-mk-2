@@ -1,5 +1,43 @@
 # @atlaskit/task-decision
 
+## 6.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 5.2.2
+
+## 5.2.1
+- [patch] FS-1855 Cache new state received via pubsub [f77a424](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f77a424)
+
+## 5.2.0
+- [minor] FS-1855 Add missing dependency to @atlassian/pubsub [31ae3d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31ae3d4)
+
+## 5.1.1
+
+## 5.1.0
+- [minor] FS-1855 A&D web component should listen to pubsub event [d7fd82d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7fd82d)
+
+## 5.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
+## 4.10.12
+- [patch] FS-1697 export util functions for use in util-data-test [7f68256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f68256)
+
+## 4.10.11
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 4.10.10
+
+## 4.10.9
+
+## 4.10.8
+
+## 4.10.7
+
+## 4.10.6
+
+## 4.10.5
+
 ## 4.10.4
 
 ## 4.10.3

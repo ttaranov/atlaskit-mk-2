@@ -27,7 +27,7 @@ export default class LoaderItem extends PureComponent<Props, State> {
     delay: 100,
   };
 
-  delayTimeoutId = null;
+  delayTimeoutId: ?TimeoutID;
 
   state: State = {
     phase: 'delaying',
@@ -45,7 +45,9 @@ export default class LoaderItem extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.delayTimeoutId);
+    if (this.delayTimeoutId) {
+      clearTimeout(this.delayTimeoutId);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {

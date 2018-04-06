@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import { nodeViewFactory } from '../../nodeviews';
+import WithPluginState from '../../ui/WithPluginState';
+import { pluginKey as widthPluginKey } from '../width';
+
 import {
   stateKey as pluginKey,
   createPlugin,
@@ -9,10 +14,13 @@ import {
   MediaStateManager,
   DefaultMediaStateManager,
 } from './pm-plugins/main';
-import keymapPlugin from './pm-plugins/keymap';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
+import keymapPlugin from './pm-plugins/keymap';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
+import ReactMediaGroupNode from './nodeviews/media-group';
+import ReactMediaNode from './nodeviews/media';
+import ReactMediaSingleNode from './nodeviews/media-single';
 import MobilePicker from './mobile-picker';
 
 export {
@@ -45,11 +53,52 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     return [
       {
         rank: 1200,
-        plugin: ({ schema, props, dispatch, providerFactory, errorReporter }) =>
+        plugin: ({
+          schema,
+          props,
+          dispatch,
+          eventDispatcher,
+          providerFactory,
+          errorReporter,
+        }) =>
           createPlugin(
             schema,
             {
               providerFactory,
+              nodeViews: {
+                mediaGroup: nodeViewFactory(
+                  providerFactory,
+                  {
+                    mediaGroup: ReactMediaGroupNode,
+                    media: ReactMediaNode,
+                  },
+                  true,
+                ),
+                mediaSingle: nodeViewFactory(
+                  providerFactory,
+                  {
+                    mediaSingle: ({ view, node, ...props }) => (
+                      <WithPluginState
+                        editorView={view}
+                        eventDispatcher={eventDispatcher}
+                        plugins={{
+                          width: widthPluginKey,
+                        }}
+                        render={({ width }) => (
+                          <ReactMediaSingleNode
+                            view={view}
+                            node={node}
+                            width={width}
+                            {...props}
+                          />
+                        )}
+                      />
+                    ),
+                    media: ReactMediaNode,
+                  },
+                  true,
+                ),
+              },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
               waitForMediaUpload: props.waitForMediaUpload,
