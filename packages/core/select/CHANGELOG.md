@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 1.2.0
+- [minor] @atlaskit/select now exports the createFilter [df7d845](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df7d845)
+
 ## 1.1.1
 
 - [patch] Re-export some exports from react-select for use in other packages. [eda9906](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eda9906)
