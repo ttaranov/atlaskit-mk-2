@@ -20,11 +20,6 @@ import {
   ImageRepresentation,
 } from '../../../src/types';
 import { toEmojiId } from '../../../src/type-helpers';
-import {
-  MediaUploadStatusUpdate,
-  MediaUploadEnd,
-  MediaUploadError,
-} from '../../../src/api/media/media-types';
 
 import {
   atlassianServiceEmojis,
@@ -84,7 +79,7 @@ class TestSiteEmojiResource extends SiteEmojiResource {
   }
 
   protected createMediaPicker(type, mpConfig) {
-    return this.mockMediaPicker;
+    return this.mockMediaPicker as any;
   }
 }
 
@@ -103,7 +98,7 @@ describe('SiteEmojiResource', () => {
       height: 30,
     };
 
-    const mediaUploadEnd: MediaUploadEnd = {
+    const mediaUploadEnd = {
       file: {
         id: 'abc-123',
         name: upload.name,
@@ -258,7 +253,7 @@ describe('SiteEmojiResource', () => {
 
       // simulate MediaAPI done - after getToken resolved
       setTimeout(() => {
-        const error: MediaUploadError = {
+        const error = {
           file: mediaUploadEnd.file,
           error: 'oh crap',
         };
@@ -358,7 +353,7 @@ describe('SiteEmojiResource', () => {
 
       // simulate MediaAPI done - after getToken resolved
       setTimeout(() => {
-        const mediaProgress: MediaUploadStatusUpdate = {
+        const mediaProgress = {
           file: mediaUploadEnd.file,
           progress: {
             absolute: 5042,

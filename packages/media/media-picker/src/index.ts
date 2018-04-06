@@ -74,7 +74,7 @@ export interface MediaPickerComponents {
 
 export { UploadParams } from './domain/config';
 
-export { BrowserConfig, DropzoneConfig, PopupConfig };
+export { BrowserConfig, DropzoneConfig, PopupConfig, BinaryConfig };
 export interface ComponentConfigs {
   binary: BinaryConfig;
   browser: BrowserConfig;
