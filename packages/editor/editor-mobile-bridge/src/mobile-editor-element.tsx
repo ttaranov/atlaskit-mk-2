@@ -11,8 +11,6 @@ import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf } from './web-to-native/markState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
-import { ContextConfig } from '../../../media/media-core/src/auth';
-import { Auth } from '../../../media/media-core/src';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -92,19 +90,19 @@ const mediaProvider: MediaProvider = {
   },
 };
 
-async function getUploadContext(): Promise<ContextConfig> {
-  const { serviceHost, clientId, token } = JSON.parse(toNativeBridge.getAuth());
-  return {
-    serviceHost: serviceHost,
-    // authProvider: (context?: any) => return {clientId: clientId, token: token}
-  };
+function getToken(context?: any) {
+  const { clientId, token } = JSON.parse(toNativeBridge.getAuth(context));
+  return Promise.resolve({
+    clientId: clientId,
+    token: token,
+  });
 }
 
-async function authProviderFunction(context?: any): Promise<Auth> {
-  return {
-    clientId: await toNativeBridge.getClientId(),
-    token: await toNativeBridge.getToken(context.collectionName),
-  };
+function getUploadContext(): Promise<any> {
+  return Promise.resolve({
+    serviceHost: toNativeBridge.getServiceHost(),
+    authProvider: getToken,
+  });
 }
 
 export default function mobileEditor() {

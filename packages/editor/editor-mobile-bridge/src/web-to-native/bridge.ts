@@ -10,7 +10,7 @@ export interface TextFormattingBridge {
 
 export interface MediaBridge {
   getServiceHost(): string;
-  getAuth(): string;
+  getAuth(context?: string): string;
   getCollection(): string;
 }
 

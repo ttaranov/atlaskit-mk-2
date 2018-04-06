@@ -8,7 +8,7 @@ export default class DummyBridge implements NativeBridge {
   getServiceHost(): string {
     return '';
   }
-  getAuth(): string {
+  getAuth(context?: string): string {
     return '';
   }
   getCollection(): string {

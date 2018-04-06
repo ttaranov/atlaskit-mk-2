@@ -40,7 +40,7 @@ export default class IosBridge implements NativeBridge {
       return '';
     }
   }
-  getAuth(): string {
+  getAuth(context?: string): string {
     return '';
   }
 
