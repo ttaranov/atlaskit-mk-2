@@ -8,6 +8,7 @@ import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
 export { colors, math, getTheme, themed, AtlaskitThemeProvider };
+export { default as Appearance } from './components/Appearance';
 
 // backwards-compatible export with old AtlasKit case
 export const AtlasKitThemeProvider = AtlaskitThemeProvider;

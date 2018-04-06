@@ -1,7 +1,11 @@
 // @flow
+
+import { Appearance } from '@atlaskit/theme';
 import React, { PureComponent } from 'react';
 import { BadgeElement } from './styled';
+import * as theme from '../theme';
 
+// DEPRECATED export
 export const APPEARANCE_ENUM = {
   values: [
     'default',
@@ -14,21 +18,15 @@ export const APPEARANCE_ENUM = {
   defaultValue: 'default',
 };
 
-function validAppearance(value) {
-  return value && APPEARANCE_ENUM.values.includes(value)
-    ? value
-    : APPEARANCE_ENUM.defaultValue;
-}
-
 function getValue(value, max) {
+  if (value === Infinity) {
+    return '∞';
+  }
   if (value < 0) {
     return '0';
   }
   if (max > 0 && value > max) {
     return `${max}+`;
-  }
-  if (value === Infinity) {
-    return '\u221E'; // ∞ inifinity character
   }
   return String(value);
 }
@@ -41,7 +39,8 @@ type Props = {
     | 'primaryInverted'
     | 'important'
     | 'added'
-    | 'removed',
+    | 'removed'
+    | {},
   /** The maximum value to display. If value is 100, and max is 50,
    "50+" will be displayed */
   max: number,
@@ -70,11 +69,12 @@ export default class Badge extends PureComponent<Props> {
 
   render() {
     const { appearance, max, value } = this.props;
-
     return (
-      <BadgeElement appearance={validAppearance(appearance)}>
-        {getValue(value, max)}
-      </BadgeElement>
+      <Appearance props={appearance} theme={theme}>
+        {styleProps => (
+          <BadgeElement {...styleProps}>{getValue(value, max)}</BadgeElement>
+        )}
+      </Appearance>
     );
   }
 }

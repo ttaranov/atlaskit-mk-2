@@ -45,6 +45,10 @@ export default function Example() {
         <p>Removed (no theme change)</p>
         <Badge appearance="removed" />
       </Item>
+      <Item>
+        <p>Infinity (∞)</p>
+        <Badge value={Infinity} />
+      </Item>
     </div>
   );
 }
