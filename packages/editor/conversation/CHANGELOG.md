@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.1.0
+- [minor] Adding permalink support [c79d549](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c79d549)
+
 ## 7.0.1
 - [patch] Don't allow empty comments [cd9069c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd9069c)
 
