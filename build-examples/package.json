@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build:docs": "./node_modules/.bin/webpack"
+    "build:docs": "./node_modules/.bin/webpack --config ./webpack.config.js"
   },
   "devDependencies": {
     "react-markings": "^1.1.7",

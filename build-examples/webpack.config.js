@@ -35,6 +35,9 @@ async function webpackConfig() {
         },
       ],
     },
+    resolveLoader: {
+      modules: [path.join(__dirname, 'node_modules')],
+    },
   };
 }
 
