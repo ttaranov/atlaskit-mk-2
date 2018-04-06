@@ -10,7 +10,7 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  extensionProvider,
+  macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -113,7 +113,7 @@ const providers = {
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  extensionProvider: Promise.resolve(extensionProvider),
+  macroProvider: Promise.resolve(macroProvider),
 };
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,

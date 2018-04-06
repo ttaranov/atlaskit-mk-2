@@ -1,14 +1,14 @@
 import { Node as PmNode } from 'prosemirror-model';
 import {
-  ExtensionProvider,
-  ExtensionAttributes,
+  MacroProvider,
+  MacroAttributes,
   ExtensionType,
 } from '@atlaskit/editor-core';
 import { inlineExtensionData } from './mock-extension-data';
 
 const allExtensionData = [...inlineExtensionData];
 
-const getMacroADFNode = (macroName, macroParams): ExtensionAttributes => {
+const getMacroADFNode = (macroName, macroParams): MacroAttributes => {
   return {
     type: 'inlineExtension' as ExtensionType,
     attrs: {
@@ -30,15 +30,15 @@ const getMacroADFNode = (macroName, macroParams): ExtensionAttributes => {
   };
 };
 
-export class MockExtensionProvider implements ExtensionProvider {
+export class MockMacroProvider implements MacroProvider {
   public config = {};
 
-  editExtension(macroNode?: PmNode): Promise<ExtensionAttributes> {
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes> {
     const index = Math.floor(Math.random() * allExtensionData.length);
     return Promise.resolve(allExtensionData[index]);
   }
 
-  autoConvert(link: String): ExtensionAttributes | null {
+  autoConvert(link: String): MacroAttributes | null {
     switch (link) {
       case 'www.dumbmacro.com?paramA=CFE':
         return getMacroADFNode('dumbMacro', {
@@ -54,4 +54,4 @@ export class MockExtensionProvider implements ExtensionProvider {
   }
 }
 
-export const extensionProvider = new MockExtensionProvider();
+export const macroProvider = new MockMacroProvider();
