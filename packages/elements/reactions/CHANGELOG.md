@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 11.0.3
+- [patch] FS-1868 always add new reactions to the end of the list [70fdbeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70fdbeb)
+
 ## 11.0.2
 
 ## 11.0.1

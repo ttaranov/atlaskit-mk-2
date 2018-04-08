@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "config": {
     "access": "public"
   },
@@ -27,7 +27,7 @@
     "@atlaskit/comment": "^3.1.0",
     "@atlaskit/editor-common": "^8.1.23",
     "@atlaskit/editor-core": "^68.0.0",
-    "@atlaskit/reactions": "^11.0.0",
+    "@atlaskit/reactions": "^11.0.3",
     "@atlaskit/renderer": "^15.0.0",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",

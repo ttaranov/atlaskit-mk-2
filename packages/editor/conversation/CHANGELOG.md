@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 7.1.2
+
 ## 7.1.1
 - [patch] Adding placholder prop for optionally setting the editor placholder text [9f1696a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f1696a)
 
