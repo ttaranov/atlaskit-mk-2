@@ -6,6 +6,7 @@ import * as sinon from 'sinon';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
+  UploadStatusUpdateEventPayload,
 } from '@atlaskit/media-picker';
 import { waitUntil } from '@atlaskit/util-common-test';
 
@@ -360,7 +361,7 @@ describe('SiteEmojiResource', () => {
 
       // simulate MediaAPI done - after getToken resolved
       setTimeout(() => {
-        const mediaProgress = {
+        const mediaProgress: UploadStatusUpdateEventPayload = {
           file: mediaUploadEnd.file,
           progress: {
             absolute: 5042,
