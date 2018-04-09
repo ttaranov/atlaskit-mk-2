@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import outDent from 'outdent';
 import { normalizeLanguage } from './supportedLanguages';
 import { type Theme, applyTheme } from './themes/themeBuilder';
 
@@ -59,7 +58,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
 
     return (
       <SyntaxHighlighter {...props} onCopy={this.handleCopy}>
-        {outDent.string(codeText)}
+        {codeText}
       </SyntaxHighlighter>
     );
   }
