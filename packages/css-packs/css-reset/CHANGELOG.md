@@ -1,5 +1,8 @@
 # @atlaskit/css-reset
 
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.2.3
 - [patch] Fixed main styles in IE11 [5aa8105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5aa8105)
 

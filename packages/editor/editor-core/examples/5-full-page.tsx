@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+import { akColorN300 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -10,7 +10,7 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  macroProvider,
+  extensionProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -35,7 +35,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN80};
+    color: ${akColorN300};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -113,7 +113,7 @@ const providers = {
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  macroProvider: Promise.resolve(macroProvider),
+  extensionProvider: Promise.resolve(extensionProvider),
 };
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,

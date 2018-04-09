@@ -138,20 +138,24 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should be possible to remove panel inside table', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(td({})(panel()(p('text{<>}')))))),
+        doc(table()(tr(td({})(panel()(p('text{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(td({})(p())))),
+      );
     });
 
     it('should be possible to remove panel with no text inside table', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(td({})(panel()(p('{<>}')))))),
+        doc(table()(tr(td({})(panel()(p('{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.removePanel(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(table(tr(td({})(p())))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(td({})(p())))),
+      );
     });
 
     it('should be able to remove panel type using function removePanel even if panel has no text content', () => {

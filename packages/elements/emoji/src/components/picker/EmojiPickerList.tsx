@@ -82,8 +82,10 @@ class CategoryTracker {
   }
 
   add(category: string, row: number) {
-    this.categoryToRow.set(category, row);
-    this.rowToCategory.set(row, category);
+    if (!this.categoryToRow.has(category)) {
+      this.categoryToRow.set(category, row);
+      this.rowToCategory.set(row, category);
+    }
   }
 
   getRow(category: string): number | undefined {

@@ -10,15 +10,9 @@ import {
   hoverTable,
   hoverRow,
   resetHoverSelection,
-  selectTable,
-  selectColumn,
-  selectRow,
+  insertColumn,
+  insertRow,
 } from '../actions';
-import {
-  checkIfTableSelected,
-  checkIfColumnSelected,
-  checkIfRowSelected,
-} from '../utils';
 
 import { pluginKey as widthPluginKey } from '../../width';
 
@@ -114,10 +108,7 @@ class TableComponent extends React.Component<ComponentProps> {
         }}
         eventDispatcher={eventDispatcher}
         editorView={view}
-        render={({
-          containerWidth,
-          pluginState,
-        }) => {
+        render={({ containerWidth, pluginState }) => {
           return (
             <div
               style={{
@@ -144,14 +135,8 @@ class TableComponent extends React.Component<ComponentProps> {
                   hoverRow={hoverRow}
                   hoverColumn={hoverColumn}
                   resetHoverSelection={resetHoverSelection}
-                  selectTable={selectTable}
-                  selectColumn={selectColumn}
-                  selectRow={selectRow}
-                  checkIfTableSelected={checkIfTableSelected}
-                  checkIfColumnSelected={checkIfColumnSelected}
-                  checkIfRowSelected={checkIfRowSelected}
-                  insertColumn={pluginState.insertColumn}
-                  insertRow={pluginState.insertRow}
+                  insertColumn={insertColumn}
+                  insertRow={insertRow}
                 />
               </div>
               <div
@@ -170,9 +155,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     editorView={view}
                     tableElement={pluginState.tableElement}
                     isTableHovered={isTableHovered}
-                    checkIfSelected={checkIfColumnSelected!}
-                    selectColumn={selectColumn!}
-                    insertColumn={pluginState.insertColumn}
+                    insertColumn={insertColumn}
                     hoverColumn={hoverColumn!}
                     resetHoverSelection={resetHoverSelection!}
                   />

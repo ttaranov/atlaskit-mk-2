@@ -1,5 +1,12 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.15
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 0.2.14
+
+## 0.2.13
+
 ## 0.2.12
 
 ## 0.2.11

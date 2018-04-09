@@ -12,7 +12,7 @@ import {
 // safari failure on browserstack
 BrowserTestCase(
   'Emoji: user can navigate typeahead using keyboard',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

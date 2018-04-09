@@ -9,6 +9,17 @@ const css = serializeStyle({
   width: 'auto',
 });
 
-export default function table({ text }: NodeSerializerOpts) {
-  return createTag('table', { style: css }, text);
+export default function table({ attrs, text }: NodeSerializerOpts) {
+  let colgroup = '';
+
+  if (attrs.columnWidths) {
+    const colTags = attrs.columnWidths.map(colwidth => {
+      const style = colwidth ? `width: ${colwidth}px` : undefined;
+      return createTag('col', { style });
+    });
+
+    colgroup = createTag('colgroup', undefined, colTags.join(''));
+  }
+
+  return createTag('table', { style: css }, colgroup + text);
 }

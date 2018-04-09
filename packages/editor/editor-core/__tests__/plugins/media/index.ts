@@ -112,7 +112,6 @@ describe('Media plugin', () => {
     await provider.uploadContext;
 
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     pluginState.binaryPicker!.upload = jest.fn();
@@ -315,7 +314,7 @@ describe('Media plugin', () => {
       describe('when inserting inside table cell', () => {
         it('inserts media single', async () => {
           const { editorView } = editor(
-            doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+            doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
           );
 
           insertMediaAsMediaSingle(
@@ -332,7 +331,7 @@ describe('Media plugin', () => {
           // Different from media single that those optional properties are copied over only when the thumbnail is ready in media group.
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              table(
+              table()(
                 tr(
                   td({})(
                     mediaSingle({ layout: 'center' })(

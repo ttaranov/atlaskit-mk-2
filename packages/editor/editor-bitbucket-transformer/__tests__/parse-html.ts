@@ -252,7 +252,7 @@ describe('BitbucketTransformer: parser', () => {
         ),
       ).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(
               th({})(p('First Header')),
               th({})(p('Second Header')),
@@ -294,7 +294,7 @@ describe('BitbucketTransformer: parser', () => {
 
       expect(result).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(th({})(p('First Header'))),
             tr(td({})(p('Content Cell'))),
             tr(td({})(p('Content Cell'))),
@@ -323,7 +323,7 @@ describe('BitbucketTransformer: parser', () => {
       );
 
       expect(result).toEqualDocument(
-        doc(table(tr(th({})(p())), tr(td({})(p())), tr(td({})(p())))),
+        doc(table()(tr(th({})(p())), tr(td({})(p())), tr(td({})(p())))),
       );
     });
 
@@ -348,7 +348,7 @@ describe('BitbucketTransformer: parser', () => {
 
       expect(result).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(th({})(p(strong('testing')))),
             tr(td({})(p(em('testing')))),
             tr(td({})(p(strike('testing')))),

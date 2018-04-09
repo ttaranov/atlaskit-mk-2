@@ -39,7 +39,7 @@ import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
-import { MacroProvider } from '../../../macro/types';
+import { ExtensionProvider } from '../../../macro/types';
 import tableCommands from '../../../table/commands';
 import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
@@ -76,12 +76,12 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  macroProvider?: MacroProvider | null;
+  extensionProvider?: ExtensionProvider | null;
   insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
-    macroProvider: MacroProvider,
+    extensionProvider: ExtensionProvider,
   ) => (editorView: EditorView) => void;
 }
 
@@ -291,7 +291,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
-      macroProvider,
+      extensionProvider,
       linkSupported,
       linkDisabled,
       emojiDisabled,
@@ -415,7 +415,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       // keeping this here for backwards compatibility so confluence
       // has time to implement this button before it disappears.
       // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
-    } else if (typeof macroProvider !== 'undefined' && macroProvider) {
+    } else if (typeof extensionProvider !== 'undefined' && extensionProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -499,7 +499,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       editorActions,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
-      macroProvider,
+      extensionProvider,
       handleImageUpload,
     } = this.props;
 
@@ -539,7 +539,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView);
+        onInsertMacroFromMacroBrowser!(extensionProvider!)(editorView);
         break;
       case 'date':
         this.createDate();

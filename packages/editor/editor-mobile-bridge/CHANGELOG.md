@@ -1,5 +1,15 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.0.17
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 0.0.16
+
+## 0.0.15
+
+## 0.0.14
+- [patch] enabled minimization @ mobile bridge [95703e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95703e3)
+
 ## 0.0.13
 - [patch] Implemented setContent for editor mobile native-to-web bridge [b5c150b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5c150b)
 

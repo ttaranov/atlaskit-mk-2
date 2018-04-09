@@ -17,6 +17,7 @@ import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
 import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -203,7 +204,7 @@ export const findCancelLink = component =>
     .at(1);
 
 export const findUploadPreview = component =>
-  component.update() && component.find(`.${commonStyles.uploadPreview}`);
+  component.update() && component.find(EmojiUploadPreview);
 
 export const findEmojiWithId = (component, id) =>
   component.update() &&
@@ -214,12 +215,6 @@ export const findEmojiWithId = (component, id) =>
 
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
-
-export const findUploadError = component =>
-  component.update() && component.find(`.${commonStyles.uploadError}`);
-
-export const uploadErrorVisible = component =>
-  findUploadError(component).length > 0;
 
 export const finishDelete = component =>
   component.update() && component.find(EmojiDeletePreview).length === 0;

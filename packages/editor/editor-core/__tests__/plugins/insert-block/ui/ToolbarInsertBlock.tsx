@@ -314,11 +314,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should trigger insertMacroFromMacroBrowser when "[...] View More" option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const insertMacroFromMacroBrowser = jest.fn();
-    const macroProvider = {} as any;
+    const extensionProvider = {} as any;
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        macroProvider={macroProvider}
+        extensionProvider={extensionProvider}
         onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
         buttons={0}

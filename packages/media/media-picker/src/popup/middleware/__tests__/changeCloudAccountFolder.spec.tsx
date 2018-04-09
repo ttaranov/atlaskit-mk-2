@@ -1,6 +1,6 @@
 import { RequestUnlinkCloudAccountAction } from '../../actions/unlinkCloudAccount';
 import { FileListUpdateAction } from '../../actions/fileListUpdate';
-import { mockAuthService, mockFetcher, mockStore } from '../../mocks';
+import { mockFetcher, mockStore } from '../../mocks';
 import { changeCloudAccountFolderMiddleware } from '../changeCloudAccountFolder';
 import {
   changeCloudAccountFolder,
@@ -17,30 +17,28 @@ describe('changePath', () => {
   const auth = { clientId, token };
 
   const setup = () => {
-    const authService = mockAuthService();
     const fetcher = mockFetcher();
     const store = mockStore();
     const next = jest.fn();
 
-    authService.getUserAuth.mockReturnValue(Promise.resolve(auth));
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockReturnValue(Promise.resolve(auth));
 
-    return { authService, fetcher, store, next };
+    return { fetcher, store, next };
   };
 
   it('should skip fetching for different action type', () => {
-    const { authService, fetcher, store, next } = setup();
+    const { fetcher, store, next } = setup();
     const action = { type: 'SOME_ANOTHER_REQUEST' };
 
-    changeCloudAccountFolderMiddleware(fetcher, authService)(store)(next)(
-      action as any,
-    );
+    changeCloudAccountFolderMiddleware(fetcher)(store)(next)(action as any);
 
     expect(next).toBeCalledWith(action);
     expect(fetcher.fetchCloudAccountFolder).not.toBeCalled();
   });
 
   it('should dispatch path change when fetching successful', () => {
-    const { authService, fetcher, store, next } = setup();
+    const { fetcher, store, next } = setup();
     const action = changeCloudAccountFolder(serviceName, accountId, [
       { id: folderId, name: 'some-folder' },
     ]);
@@ -75,14 +73,12 @@ describe('changePath', () => {
         },
       );
 
-      changeCloudAccountFolderMiddleware(fetcher, authService)(store)(next)(
-        action,
-      );
+      changeCloudAccountFolderMiddleware(fetcher)(store)(next)(action);
     });
   });
 
   it('should dispatch account unlink if fetching ended with 401 error', () => {
-    const { authService, fetcher, store, next } = setup();
+    const { fetcher, store, next } = setup();
     const { apiUrl } = store.getState();
     const action = changeCloudAccountFolder(serviceName, accountId, [
       { id: folderId, name: 'some-folder' },
@@ -123,9 +119,7 @@ describe('changePath', () => {
         },
       );
 
-      changeCloudAccountFolderMiddleware(fetcher, authService)(store)(next)(
-        action,
-      );
+      changeCloudAccountFolderMiddleware(fetcher)(store)(next)(action);
     });
   });
 });

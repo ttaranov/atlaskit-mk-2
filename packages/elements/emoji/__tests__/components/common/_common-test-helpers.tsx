@@ -1,7 +1,8 @@
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
+import * as commonStyles from '../../../src/components/common/styles';
 
 export const findEmojiPreviewSection = component =>
-  component.update() && component.find('.emojiPreviewSection');
+  component.update() && component.find(`.${commonStyles.emojiPreviewSection}`);
 
 export const findCustomEmojiButton = component =>
   component.update() &&

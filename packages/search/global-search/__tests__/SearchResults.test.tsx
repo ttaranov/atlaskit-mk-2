@@ -5,9 +5,10 @@ import {
   AkNavigationItemGroup,
   quickSearchResultTypes,
 } from '@atlaskit/navigation';
-import { ResultType } from '../src/model/Result';
+import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
+import EmptyState from '../src/components/EmptyState';
 
 const { PersonResult, ResultBase } = quickSearchResultTypes;
 
@@ -22,6 +23,17 @@ function findGroup(group: Group, wrapper: ShallowWrapper) {
   return wrapper
     .find(AkNavigationItemGroup)
     .findWhere(n => n.prop('test-selector') === group.valueOf());
+}
+
+function makeResult(partial?: Partial<Result>): Result {
+  return {
+    resultId: '' + Math.random(),
+    name: 'name',
+    type: ResultType.Object,
+    avatarUrl: 'avatarUrl',
+    href: 'href',
+    ...partial,
+  };
 }
 
 describe('SearchResults', () => {
@@ -44,16 +56,7 @@ describe('SearchResults', () => {
   it('should render recently viewed items when no query is entered', () => {
     const props = {
       query: '',
-      recentlyViewedItems: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'rv1',
-        },
-      ],
+      recentlyViewedItems: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -66,16 +69,7 @@ describe('SearchResults', () => {
   it('should only show the recently viewed group when no query is entered', () => {
     const props = {
       query: '',
-      recentlyViewedItems: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'rv1',
-        },
-      ],
+      recentlyViewedItems: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -87,16 +81,7 @@ describe('SearchResults', () => {
   it('should render recent results when there are results', () => {
     const props = {
       query: 'na',
-      recentResults: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'r1',
-        },
-      ],
+      recentResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -109,16 +94,7 @@ describe('SearchResults', () => {
   it('should render jira results when there are results', () => {
     const props = {
       query: 'na',
-      jiraResults: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'j1',
-        },
-      ],
+      jiraResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -131,16 +107,7 @@ describe('SearchResults', () => {
   it('should render confluence results when there are results', () => {
     const props = {
       query: 'na',
-      confluenceResults: [
-        {
-          type: ResultType.Object,
-          name: 'name',
-          containerName: 'container',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'c1',
-        },
-      ],
+      confluenceResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -153,15 +120,7 @@ describe('SearchResults', () => {
   it('should render people results when there are results', () => {
     const props = {
       query: 'na',
-      peopleResults: [
-        {
-          type: ResultType.Person,
-          name: 'name',
-          href: 'href',
-          avatarUrl: 'avatarUrl',
-          resultId: 'p1',
-        },
-      ],
+      peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -174,6 +133,7 @@ describe('SearchResults', () => {
   it('should render a jira result item to search jira', () => {
     const props = {
       query: 'na',
+      jiraResults: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -186,6 +146,7 @@ describe('SearchResults', () => {
   it('should render a confluence result item to search confluence', () => {
     const props = {
       query: 'na',
+      confluenceResults: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -200,6 +161,7 @@ describe('SearchResults', () => {
   it('should render a people result item to search people', () => {
     const props = {
       query: 'na',
+      peopleResults: [makeResult({ type: ResultType.Person })],
     };
 
     const wrapper = render(props);
@@ -227,5 +189,28 @@ describe('SearchResults', () => {
 
     const wrapper = render(props);
     expect(wrapper.find(SearchError).exists()).toBe(true);
+  });
+
+  it('should render empty state when there are no results and a query is entered', () => {
+    const props = {
+      query: 'foo',
+      recentResults: [],
+      jiraResults: [],
+      confluenceResults: [],
+      peopleResults: [],
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(EmptyState).exists()).toBe(true);
+
+    // assert advanced search links are there
+    ['search_jira', 'search_confluence', 'search_people'].forEach(resultId => {
+      expect(
+        wrapper
+          .find(ResultBase)
+          .findWhere(wrapper => wrapper.prop('resultId') === resultId)
+          .exists(),
+      ).toBe(true);
+    });
   });
 });

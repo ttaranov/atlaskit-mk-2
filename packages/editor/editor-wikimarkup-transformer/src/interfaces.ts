@@ -70,7 +70,7 @@ export interface TextMarkElement {
 }
 
 export interface EmojiMapItem {
-  markup: string;
+  markup: string[];
   adf: {
     id: string;
     shortName: string;

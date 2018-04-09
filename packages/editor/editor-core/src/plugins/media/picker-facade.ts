@@ -1,6 +1,5 @@
 import {
   MediaPicker,
-  ModuleConfig,
   MediaPickerComponent,
   MediaPickerComponents,
   ComponentConfigs,
@@ -27,7 +26,6 @@ import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
 export type PickerType = keyof MediaPickerComponents;
 export type PickerFacadeConfig = {
-  uploadParams: UploadParams;
   context: Context;
   stateManager: MediaStateManager;
   errorReporter: ErrorReportingHandler;
@@ -38,7 +36,6 @@ export default class PickerFacade {
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
-  private uploadParams: UploadParams;
   private pickerType: PickerType;
   private stateManager: MediaStateManager;
 
@@ -49,12 +46,10 @@ export default class PickerFacade {
   ) {
     this.pickerType = pickerType;
     this.errorReporter = config.errorReporter;
-    this.uploadParams = config.uploadParams;
     this.stateManager = config.stateManager;
-
     const picker = (this.picker = MediaPicker(
       pickerType,
-      this.buildPickerConfigFromContext(config.context),
+      config.context,
       pickerConfig,
     ));
 
@@ -117,7 +112,6 @@ export default class PickerFacade {
   }
 
   setUploadParams(params: UploadParams): void {
-    this.uploadParams = params;
     this.picker.setUploadParams(params);
   }
 
@@ -224,14 +218,6 @@ export default class PickerFacade {
       fileMimeType: file.type,
     };
   };
-
-  private buildPickerConfigFromContext(context: Context): ModuleConfig {
-    return {
-      uploadParams: this.uploadParams,
-      apiUrl: context.config.serviceHost,
-      authProvider: context.config.authProvider,
-    };
-  }
 
   private generateTempId(id: string) {
     return `temporary:${id}`;

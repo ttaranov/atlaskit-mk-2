@@ -9,7 +9,7 @@ import { tableEditing, columnResizing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { plugin, PluginConfig, stateKey } from './pm-plugins/main';
+import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
@@ -32,8 +32,12 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({ props: { allowTables }, eventDispatcher }) => {
-          return plugin(eventDispatcher, pluginConfig(allowTables));
+        plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
+          return createPlugin(
+            dispatch,
+            eventDispatcher,
+            pluginConfig(allowTables),
+          );
         },
       },
       {

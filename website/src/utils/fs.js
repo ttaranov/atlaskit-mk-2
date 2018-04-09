@@ -1,13 +1,13 @@
 // @flow
-import type { Directory, File } from '../types';
 import sentenceCase from 'sentence-case';
+import type { Directory, File } from '../types';
 
 export function getDirectories(
   items: Array<Directory | File>,
 ): Array<Directory> {
-  let dirs = [];
+  const dirs = [];
 
-  for (let item of items) {
+  for (const item of items) {
     if (item.type === 'dir') {
       dirs.push(item);
     }
@@ -17,9 +17,9 @@ export function getDirectories(
 }
 
 export function getFiles(items: Array<Directory | File>): Array<File> {
-  let files = [];
+  const files = [];
 
-  for (let item of items) {
+  for (const item of items) {
     if (item.type === 'file') {
       files.push(item);
     }
@@ -36,7 +36,7 @@ export function maybeGetById<T: Directory | File>(
 }
 
 export function getById<T: Directory | File>(items: Array<T>, id: string): T {
-  let match = maybeGetById(items, id);
+  const match = maybeGetById(items, id);
 
   if (!match) {
     throw new Error(`Missing ${id} in file system`);
@@ -49,11 +49,11 @@ export function flatMap<T>(
   dir: Directory,
   iteratee: (file: File, filePath: string) => T,
 ): Array<T> {
-  let result = [];
+  const result = [];
 
   function visit(dir, filePath) {
-    for (let item of dir.children) {
-      let currPath = `${filePath}/${item.id}`;
+    for (const item of dir.children) {
+      const currPath = `${filePath}/${item.id}`;
       if (item.type === 'dir') {
         visit(item, currPath);
       } else {
@@ -72,14 +72,12 @@ export function find(
   iteratee: (file: File, filePath: string) => boolean,
 ): File | null {
   function visit(dir, filePath) {
-    for (let item of dir.children) {
-      let currPath = `${filePath}/${item.id}`;
+    for (const item of dir.children) {
+      const currPath = `${filePath}/${item.id}`;
       if (item.type === 'dir') {
-        let result = visit(item, currPath);
+        const result = visit(item, currPath);
         if (result) return result;
-      } else {
-        if (iteratee(item, currPath)) return item;
-      }
+      } else if (iteratee(item, currPath)) return item;
     }
   }
 

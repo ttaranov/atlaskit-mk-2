@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -48,10 +48,9 @@ import {
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {
-  readonly apiUrl: string;
   readonly selectedServiceName: ServiceName;
-  readonly userAuthProvider: AuthProvider;
   readonly isVisible: boolean;
+  readonly context: Context;
 }
 
 export interface AppDispatchProps {
@@ -88,8 +87,6 @@ export class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     const {
-      apiUrl,
-      userAuthProvider,
       onStartApp,
       onUploadsStart,
       onUploadPreviewUpdate,
@@ -97,21 +94,34 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
+      context,
     } = props;
 
+    const { userAuthProvider } = context.config;
+
+    if (!userAuthProvider) {
+      throw new Error('userAuthProvider must be provided in the context');
+    }
     this.state = {
       isDropzoneActive: false,
     };
 
-    const mpConfig = {
-      apiUrl,
-      authProvider: userAuthProvider,
+    const defaultConfig = {
       uploadParams: {
         collection: RECENTS_COLLECTION,
       },
     };
 
-    this.mpBrowser = MediaPicker('browser', mpConfig, { multiple: true });
+    // We can't just use the given context since the Cards in the recents view needs a different authProvider
+    this.mpContext = ContextFactory.create({
+      serviceHost: context.config.serviceHost,
+      authProvider: userAuthProvider,
+    });
+
+    this.mpBrowser = MediaPicker('browser', this.mpContext, {
+      ...defaultConfig,
+      multiple: true,
+    });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBrowser.on('upload-status-update', onUploadStatusUpdate);
@@ -119,7 +129,10 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', mpConfig, { headless: true });
+    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
+      ...defaultConfig,
+      headless: true,
+    });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
     this.mpDropzone.on('uploads-start', onUploadsStart);
@@ -129,18 +142,13 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', mpConfig);
+    this.mpBinary = MediaPicker('binary', this.mpContext, defaultConfig);
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
     this.mpBinary.on('upload-processing', onUploadProcessing);
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
-
-    this.mpContext = ContextFactory.create({
-      serviceHost: apiUrl,
-      authProvider: userAuthProvider,
-    });
 
     onStartApp(uploadId => {
       this.mpBrowser.cancel(uploadId);
@@ -214,15 +222,10 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({
-  apiUrl,
-  userAuthProvider,
-  view,
-}: State): AppStateProps => ({
-  apiUrl,
-  userAuthProvider,
+const mapStateToProps = ({ view, context }: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
+  context,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({

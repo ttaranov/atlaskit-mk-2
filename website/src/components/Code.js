@@ -1,8 +1,7 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Prism from 'prismjs';
-import ToggleIcon from '@atlaskit/icon/glyph/code';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
 // NOTE: stop prism.js classes from being obfuscated
@@ -29,6 +28,7 @@ const Code = styled.pre`
 type Props = {
   content: string,
   grammar: 'jsx',
+  name: string,
 };
 
 export default function CodeBlock(props: Props) {

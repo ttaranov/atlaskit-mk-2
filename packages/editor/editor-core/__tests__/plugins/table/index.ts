@@ -11,7 +11,6 @@ import {
   createEditor,
   thEmpty,
   table,
-  tableWithAttrs,
   tr,
   td,
   th,
@@ -29,23 +28,25 @@ import {
   sendKeyToPm,
   randomId,
 } from '@atlaskit/editor-test-helpers';
-import { setTextSelection, setNodeSelection } from '../../../src/utils';
+import { setNodeSelection } from '../../../src/utils';
+import {
+  toggleHeaderRow,
+  toggleHeaderColumn,
+  toggleNumberColumn,
+  insertColumn,
+  insertRow,
+} from '../../../src/plugins/table/actions';
+import {
+  checkIfNumberColumnEnabled,
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
+} from '../../../src/plugins/table/utils';
 import {
   selectRow,
   selectColumn,
   selectTable,
-  toggleHeaderRow,
-  toggleHeaderColumn,
-  toggleNumberColumn,
-} from '../../../src/plugins/table/actions';
-import {
-  checkIfColumnSelected,
-  checkIfRowSelected,
-  checkIfNumberColumnEnabled,
-  checkIfHeaderColumnEnabled,
-  checkIfHeaderRowEnabled,
-  getTableNode,
-} from '../../../src/plugins/table/utils';
+  findTable,
+} from 'prosemirror-utils';
 import tablesPlugin from '../../../src/plugins/table';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
@@ -80,111 +81,11 @@ describe('table plugin', () => {
     trackEvent = jest.fn();
   });
 
-  describe('subscribe', () => {
-    it('calls subscriber with plugin', () => {
-      const { pluginState } = editor(doc(p('paragraph')));
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-
-      expect(spy).toHaveBeenCalledWith(pluginState);
-    });
-
-    it('should not be possible to add same listener twice', () => {
-      const { pluginState } = editor(doc(p('paragraph')));
-      const spy1 = jest.fn();
-      pluginState.subscribe(spy1);
-      pluginState.subscribe(spy1);
-
-      expect(spy1).toHaveBeenCalledTimes(1);
-    });
-
-    describe('when leaving table', () => {
-      it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(
-          doc(p('{pPos}'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const spy = jest.fn();
-        const { pPos } = refs;
-
-        pluginState.subscribe(spy);
-        setTextSelection(editorView, pPos);
-
-        expect(spy).toHaveBeenCalledTimes(2);
-        editorView.destroy();
-      });
-    });
-
-    describe('when entering table', () => {
-      it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(
-          doc(p('{<>}'), table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty))),
-        );
-        const spy = jest.fn();
-        const { nextPos } = refs;
-
-        pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
-
-        expect(spy).toHaveBeenCalledTimes(2);
-        editorView.destroy();
-      });
-    });
-
-    describe('when moving cursor to a different table', () => {
-      it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(
-          doc(
-            table(tr(tdCursor, tdEmpty, tdEmpty)),
-            table(tr(td({})(p('{nextPos}')), tdEmpty, tdEmpty)),
-          ),
-        );
-        const spy = jest.fn();
-        const { nextPos } = refs;
-
-        pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
-
-        expect(spy).toHaveBeenCalledTimes(2);
-        editorView.destroy();
-      });
-    });
-
-    describe('when moving within the same table', () => {
-      it('notifies subscriber', () => {
-        const { refs, pluginState, editorView } = editor(
-          doc(table(tr(tdCursor, tdEmpty, td({})(p('{nextPos}'))))),
-        );
-        const spy = jest.fn();
-        const { nextPos } = refs;
-
-        pluginState.subscribe(spy);
-        setTextSelection(editorView, nextPos);
-
-        expect(spy).not.toHaveBeenCalledTimes(2);
-        editorView.destroy();
-      });
-    });
-
-    describe('when unsubscribe', () => {
-      it('does not notify the subscriber', () => {
-        const { pluginState } = editor(
-          doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
-        );
-        const spy = jest.fn();
-        pluginState.subscribe(spy);
-
-        pluginState.unsubscribe(spy);
-
-        expect(spy).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
   describe('editorFocued', () => {
     describe('when editor is focused', () => {
       it('it is true', () => {
         const { plugin, editorView, pluginState } = editor(
-          doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+          doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(pluginState.editorFocused).toEqual(true);
@@ -195,7 +96,7 @@ describe('table plugin', () => {
     describe('when editor is not focused', () => {
       it('it is false', () => {
         const { plugin, editorView, pluginState } = editor(
-          doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+          doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
         );
         plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.editorFocused).toEqual(false);
@@ -207,7 +108,7 @@ describe('table plugin', () => {
   describe('createTable()', () => {
     describe('when the cursor is inside the table', () => {
       it('it should not create a new table and return false', () => {
-        const tableNode = table(tr(tdCursor));
+        const tableNode = table()(tr(tdCursor));
         const { plugin, editorView } = editor(doc(tableNode));
         plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(
@@ -248,7 +149,7 @@ describe('table plugin', () => {
         expect(
           tableCommands.createTable()(editorView.state, editorView.dispatch),
         ).toEqual(true);
-        const tableNode = table(
+        const tableNode = table()(
           tr(thEmpty, thEmpty, thEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
@@ -267,7 +168,7 @@ describe('table plugin', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p(strong('text')),
-            table(
+            table()(
               tr(thEmpty, thEmpty, thEmpty),
               tr(tdEmpty, tdEmpty, tdEmpty),
               tr(tdEmpty, tdEmpty, tdEmpty),
@@ -283,16 +184,16 @@ describe('table plugin', () => {
     describe('when table has 2 columns', () => {
       describe('when it called with 0', () => {
         it("it should prepend a new column and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
-            doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))),
+          const { plugin, editorView } = editor(
+            doc(p('text'), table()(tr(td({})(p('c1')), td({})(p('c2{<>}'))))),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertColumn(0);
+          insertColumn(0)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(tdCursor, td({})(p('c1')), td({})(p('c2')))),
+              table()(tr(tdCursor, td({})(p('c1')), td({})(p('c2')))),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -304,16 +205,16 @@ describe('table plugin', () => {
 
       describe('when it called with 1', () => {
         it("it should insert a new column in the middle and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
-            doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+          const { plugin, editorView } = editor(
+            doc(p('text'), table()(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertColumn(1);
+          insertColumn(1)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(td({})(p('c1')), tdCursor, td({})(p('c2')))),
+              table()(tr(td({})(p('c1')), tdCursor, td({})(p('c2')))),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -325,16 +226,16 @@ describe('table plugin', () => {
 
       describe('when it called with 2', () => {
         it("it should append a new column and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
-            doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
+          const { plugin, editorView } = editor(
+            doc(p('text'), table()(tr(td({})(p('c1{<>}')), td({})(p('c2'))))),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertColumn(2);
+          insertColumn(2)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(td({})(p('c1')), td({})(p('c2')), tdCursor)),
+              table()(tr(td({})(p('c1')), td({})(p('c2')), tdCursor)),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -350,19 +251,23 @@ describe('table plugin', () => {
     describe('when table has 2 rows', () => {
       describe('when it called with 0', () => {
         it("it should prepend a new row and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
+          const { plugin, editorView } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}')))),
+              table()(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}')))),
             ),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertRow(0);
+          insertRow(0)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(tdCursor), tr(td({})(p('row1'))), tr(td({})(p('row2')))),
+              table()(
+                tr(tdCursor),
+                tr(td({})(p('row1'))),
+                tr(td({})(p('row2'))),
+              ),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -374,19 +279,23 @@ describe('table plugin', () => {
 
       describe('when it called with 1', () => {
         it("it should insert a new row in the middle and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
+          const { plugin, editorView } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
+              table()(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertRow(1);
+          insertRow(1)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(td({})(p('row1'))), tr(tdCursor), tr(td({})(p('row2')))),
+              table()(
+                tr(td({})(p('row1'))),
+                tr(tdCursor),
+                tr(td({})(p('row2'))),
+              ),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -400,19 +309,23 @@ describe('table plugin', () => {
     describe('when table has 2 row', () => {
       describe('when it called with 2', () => {
         it("it should append a new row and move cursor inside it's first cell", () => {
-          const { plugin, pluginState, editorView } = editor(
+          const { plugin, editorView } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
+              table()(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2')))),
             ),
             trackEvent,
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertRow(2);
+          insertRow(2)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              table(tr(td({})(p('row1'))), tr(td({})(p('row2'))), tr(tdCursor)),
+              table()(
+                tr(td({})(p('row1'))),
+                tr(td({})(p('row2'))),
+                tr(tdCursor),
+              ),
             ),
           );
           expect(trackEvent).toHaveBeenCalledWith(
@@ -430,10 +343,10 @@ describe('table plugin', () => {
         describe(`when called with ${column}`, () => {
           it(`it should select ${column} column`, () => {
             const { plugin, pluginState, editorView } = editor(
-              doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+              doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            selectColumn(column)(editorView.state, editorView.dispatch);
+            editorView.dispatch(selectColumn(column)(editorView.state.tr));
             const selection = (editorView.state
               .selection as any) as CellSelection;
             const map = TableMap.get(pluginState.tableNode!);
@@ -456,10 +369,10 @@ describe('table plugin', () => {
         describe(`when called with ${row}`, () => {
           it(`it should select ${row} row`, () => {
             const { plugin, editorView } = editor(
-              doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
+              doc(p('text'), table()(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            selectRow(row)(editorView.state, editorView.dispatch);
+            editorView.dispatch(selectRow(row)(editorView.state.tr));
             const selection = (editorView.state
               .selection as any) as CellSelection;
             const anchor = selection.$anchorCell.index(-1);
@@ -477,56 +390,14 @@ describe('table plugin', () => {
   describe('selectTable()', () => {
     it('it should select the whole table', () => {
       const { plugin, editorView } = editor(
-        doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
       );
       plugin.props.handleDOMEvents!.focus(editorView, event);
-      selectTable(editorView.state, editorView.dispatch);
+      editorView.dispatch(selectTable(editorView.state.tr));
       const selection = (editorView.state.selection as any) as CellSelection;
       expect(selection.isRowSelection()).toEqual(true);
       expect(selection.isColSelection()).toEqual(true);
       editorView.destroy();
-    });
-  });
-
-  describe('checkIfColumnSelected(number)', () => {
-    describe('when table has 3 columns', () => {
-      [0, 1, 2].forEach(column => {
-        describe(`when column ${column} is selected`, () => {
-          describe(`when called with ${column}`, () => {
-            it(`it should return true`, () => {
-              const { plugin, editorView } = editor(
-                doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
-              );
-              plugin.props.handleDOMEvents!.focus(editorView, event);
-              selectColumn(column)(editorView.state, editorView.dispatch);
-              expect(checkIfColumnSelected(column, editorView.state)).toEqual(
-                true,
-              );
-              editorView.destroy();
-            });
-          });
-        });
-      });
-    });
-  });
-
-  describe('checkIfRowSelected(number)', () => {
-    describe('when table has 3 rows', () => {
-      [0, 1, 2].forEach(row => {
-        describe(`when row ${row} is selected`, () => {
-          describe(`when called with ${row}`, () => {
-            it(`it should return true`, () => {
-              const { plugin, editorView } = editor(
-                doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))),
-              );
-              plugin.props.handleDOMEvents!.focus(editorView, event);
-              selectRow(row)(editorView.state, editorView.dispatch);
-              expect(checkIfRowSelected(row, editorView.state)).toEqual(true);
-              editorView.destroy();
-            });
-          });
-        });
-      });
     });
   });
 
@@ -537,16 +408,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
+              table()(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectColumn(0)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectColumn(0)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdCursor, tdEmpty))),
+            doc(p('text'), table()(tr(tdCursor, tdEmpty))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_column.button',
@@ -561,16 +432,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
+              table()(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectColumn(1)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectColumn(1)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdCursor, tdEmpty))),
+            doc(p('text'), table()(tr(tdCursor, tdEmpty))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_column.button',
@@ -595,13 +466,13 @@ describe('table plugin', () => {
 
         it('it should convert first following row to header if pluginState.isHeaderRowRequired is true', () => {
           const { plugin, pluginState, editorView } = editorTableHeader(
-            doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
+            doc(table()(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(0)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(0)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(table(tr(th({})(p())), tr(tdEmpty))),
+            doc(table()(tr(th({})(p())), tr(tdEmpty))),
           );
           editorView.destroy();
         });
@@ -609,7 +480,7 @@ describe('table plugin', () => {
         it('it should move cursor to the first cell of the new header row', () => {
           const { plugin, pluginState, editorView, refs } = editorTableHeader(
             doc(
-              table(
+              table()(
                 tr(th({})(p('{nextPos}testing{<>}'))),
                 tr(tdEmpty),
                 tr(tdEmpty),
@@ -618,7 +489,7 @@ describe('table plugin', () => {
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(0)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(0)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.selection.$from.pos).toEqual(nextPos);
           expect(editorView.state.selection.$to.pos).toEqual(nextPos);
@@ -631,16 +502,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(tdCursor, td({})(p('{nextPos}')), tdCursor)),
+              table()(tr(tdCursor, td({})(p('{nextPos}')), tdCursor)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectColumn(2)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectColumn(2)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdCursor, tdEmpty))),
+            doc(p('text'), table()(tr(tdCursor, tdEmpty))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_column.button',
@@ -657,16 +528,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty)),
+              table()(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(0)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(0)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdCursor), tr(tdEmpty))),
+            doc(p('text'), table()(tr(tdCursor), tr(tdEmpty))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_row.button',
@@ -681,16 +552,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
+              table()(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(1)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(1)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdEmpty), tr(tdCursor))),
+            doc(p('text'), table()(tr(tdEmpty), tr(tdCursor))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_row.button',
@@ -705,16 +576,16 @@ describe('table plugin', () => {
           const { plugin, pluginState, editorView, refs } = editor(
             doc(
               p('text'),
-              table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
+              table()(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty)),
             ),
             trackEvent,
           );
           const { nextPos } = refs;
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          selectRow(2)(editorView.state, editorView.dispatch);
+          editorView.dispatch(selectRow(2)(editorView.state.tr));
           pluginState.remove();
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(tdEmpty), tr(tdCursor))),
+            doc(p('text'), table()(tr(tdEmpty), tr(tdCursor))),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_row.button',
@@ -731,11 +602,11 @@ describe('table plugin', () => {
       it('it should convert first row to a header row', () => {
         // p('text') goes before table to ensure that conversion uses absolute position of cells relative to the document
         const { editorView } = editor(
-          doc(p('text'), table(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         toggleHeaderRow(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
         );
         editorView.destroy();
       });
@@ -743,11 +614,14 @@ describe('table plugin', () => {
       describe('when header column is enabled', () => {
         it('it should convert the rest of the cells from the first row to header cells', () => {
           const { editorView } = editor(
-            doc(p('text'), table(tr(thCursor, tdEmpty), tr(thEmpty, tdEmpty))),
+            doc(
+              p('text'),
+              table()(tr(thCursor, tdEmpty), tr(thEmpty, tdEmpty)),
+            ),
           );
           toggleHeaderRow(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
           );
           editorView.destroy();
         });
@@ -758,7 +632,7 @@ describe('table plugin', () => {
           const { editorView } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
                 tr(td()(p('3')), tdEmpty, tdEmpty),
@@ -769,7 +643,7 @@ describe('table plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(thEmpty, thEmpty, thEmpty),
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
@@ -784,11 +658,11 @@ describe('table plugin', () => {
     describe('when header row is enabled', () => {
       it('it should convert first row to a normal row', () => {
         const { editorView } = editor(
-          doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
         );
         toggleHeaderRow(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         editorView.destroy();
       });
@@ -796,11 +670,14 @@ describe('table plugin', () => {
       describe('when header column is enabled', () => {
         it('it should convert the rest of the cells from the first row to normal cells', () => {
           const { editorView } = editor(
-            doc(p('text'), table(tr(thCursor, thEmpty), tr(thEmpty, tdEmpty))),
+            doc(
+              p('text'),
+              table()(tr(thCursor, thEmpty), tr(thEmpty, tdEmpty)),
+            ),
           );
           toggleHeaderRow(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
           );
           editorView.destroy();
         });
@@ -811,7 +688,7 @@ describe('table plugin', () => {
           const { editorView } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(thEmpty, thEmpty, thEmpty),
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
@@ -822,7 +699,7 @@ describe('table plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
                 tr(td()(p('3')), tdEmpty, tdEmpty),
@@ -838,7 +715,7 @@ describe('table plugin', () => {
           const { editorView } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(thEmpty, thEmpty, thEmpty),
                 tr(td()(p('1')), thEmpty, tdEmpty),
                 tr(td()(p('2')), thEmpty, tdEmpty),
@@ -849,7 +726,7 @@ describe('table plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), thEmpty, tdEmpty),
                 tr(td()(p('2')), thEmpty, tdEmpty),
                 tr(td()(p('3')), thEmpty, tdEmpty),
@@ -867,11 +744,11 @@ describe('table plugin', () => {
       it('it should convert first column to a header column', () => {
         // p('text') goes before table to ensure that conversion uses absolute position of cells relative to the document
         const { editorView } = editor(
-          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         toggleHeaderColumn(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
         );
         editorView.destroy();
       });
@@ -879,11 +756,11 @@ describe('table plugin', () => {
       describe('when header row is enabled', () => {
         it('it should convert the rest of the cells from the first column to header cells', () => {
           const { editorView } = editor(
-            doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
           );
           toggleHeaderColumn(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
           );
           editorView.destroy();
         });
@@ -894,7 +771,7 @@ describe('table plugin', () => {
           const { editorView } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
               ),
@@ -904,7 +781,7 @@ describe('table plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), thEmpty, tdEmpty),
                 tr(td()(p('2')), thEmpty, tdEmpty),
               ),
@@ -918,11 +795,11 @@ describe('table plugin', () => {
     describe('when header column is enabled', () => {
       it('it should convert first column to a normal column', () => {
         const { editorView } = editor(
-          doc(p('text'), table(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
         );
         toggleHeaderColumn(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         editorView.destroy();
       });
@@ -930,11 +807,11 @@ describe('table plugin', () => {
       describe('when header row is enabled', () => {
         it('it should convert the rest of the cells from the first column to normal cells', () => {
           const { editorView } = editor(
-            doc(p('text'), table(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, thEmpty), tr(thEmpty, tdEmpty))),
           );
           toggleHeaderColumn(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('text'), table(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
+            doc(p('text'), table()(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
           );
           editorView.destroy();
         });
@@ -945,7 +822,7 @@ describe('table plugin', () => {
           const { editorView } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), thEmpty, tdEmpty),
                 tr(td()(p('2')), thEmpty, tdEmpty),
               ),
@@ -955,7 +832,7 @@ describe('table plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
               ),
@@ -971,13 +848,13 @@ describe('table plugin', () => {
     describe('when number column is disabled', () => {
       it('it should add number column before the first existing column', () => {
         const { editorView } = editor(
-          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         toggleNumberColumn(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('text'),
-            tableWithAttrs({ isNumberColumnEnabled: true })(
+            table({ isNumberColumnEnabled: true })(
               tr(td()(p('1')), tdEmpty, tdEmpty),
               tr(td()(p('2')), tdEmpty, tdEmpty),
             ),
@@ -992,7 +869,7 @@ describe('table plugin', () => {
         const { editorView } = editor(
           doc(
             p('text'),
-            tableWithAttrs({ isNumberColumnEnabled: true })(
+            table({ isNumberColumnEnabled: true })(
               tr(td()(p('1')), tdEmpty, tdEmpty),
               tr(td()(p('2')), tdEmpty, tdEmpty),
             ),
@@ -1000,28 +877,28 @@ describe('table plugin', () => {
         );
         toggleNumberColumn(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
+          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
         );
         editorView.destroy();
       });
 
       describe('when adding a new row', () => {
         it('it should reset numbers', () => {
-          const { editorView, plugin, pluginState } = editor(
+          const { editorView, plugin } = editor(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
               ),
             ),
           );
           plugin.props.handleDOMEvents!.focus(editorView, event);
-          pluginState.insertRow(1);
+          insertRow(1)(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(
               p('text'),
-              tableWithAttrs({ isNumberColumnEnabled: true })(
+              table({ isNumberColumnEnabled: true })(
                 tr(td()(p('1')), tdEmpty, tdEmpty),
                 tr(td()(p('2')), tdEmpty, tdEmpty),
                 tr(td()(p('3')), tdEmpty, tdEmpty),
@@ -1038,7 +915,7 @@ describe('table plugin', () => {
     it('should add a paragraph below when arrow down is pressed', () => {
       const { editorView } = editor(
         doc(
-          table(
+          table()(
             tr(
               td()(
                 mediaGroup(
@@ -1063,7 +940,7 @@ describe('table plugin', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(
               td()(
                 mediaGroup(
@@ -1089,7 +966,7 @@ describe('table plugin', () => {
     it('should add a paragraph above when arrow up is pressed', () => {
       const { editorView } = editor(
         doc(
-          table(
+          table()(
             tr(
               td()(
                 mediaGroup(
@@ -1114,7 +991,7 @@ describe('table plugin', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(
               td()(
                 p(''),
@@ -1139,7 +1016,7 @@ describe('table plugin', () => {
 
     it('should not add a paragraph, if there already is a paragraph below when arrow down is pressed', () => {
       const docWithTable = doc(
-        table(
+        table()(
           tr(
             td()(
               mediaGroup(
@@ -1171,7 +1048,7 @@ describe('table plugin', () => {
 
     it('should not add a paragraph, if there already is a paragraph above when arrow up is pressed', () => {
       const docWithTable = doc(
-        table(
+        table()(
           tr(
             td()(
               p('1'),
@@ -1210,7 +1087,11 @@ describe('table plugin', () => {
       const { editorView } = editor(
         doc(
           p('1'),
-          table(tr(td()(p('2'), ul(li(p('3{<>}'))))), tr(tdEmpty), tr(tdEmpty)),
+          table()(
+            tr(td()(p('2'), ul(li(p('3{<>}'))))),
+            tr(tdEmpty),
+            tr(tdEmpty),
+          ),
         ),
       );
 
@@ -1228,7 +1109,7 @@ describe('table plugin', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           p('1'),
-          table(
+          table()(
             tr(
               td()(
                 p('2'),
@@ -1261,7 +1142,7 @@ describe('table plugin', () => {
   describe('checkIfNumberColumnEnabled', () => {
     it('should return false if table is not in focus', () => {
       const { plugin, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(checkIfNumberColumnEnabled(editorView.state)).toBe(false);
@@ -1272,7 +1153,7 @@ describe('table plugin', () => {
   describe('checkIfHeaderColumnEnabled', () => {
     it('should return false if table is not in focus', () => {
       const { plugin, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(checkIfHeaderColumnEnabled(editorView.state)).toBe(false);
@@ -1283,7 +1164,7 @@ describe('table plugin', () => {
   describe('checkIfHeaderRowEnabled', () => {
     it('should return false if table is not in focus', () => {
       const { plugin, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
@@ -1294,7 +1175,7 @@ describe('table plugin', () => {
   describe('checkIfHeaderRowEnabled', () => {
     it('should return false if table is not in focus', () => {
       const { plugin, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       plugin.props.handleDOMEvents!.blur(editorView, event);
       expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
@@ -1305,16 +1186,16 @@ describe('table plugin', () => {
   describe('table layouts', () => {
     it('should update the table node layout attribute', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
-      const nodeInitial = getTableNode(editorView.state);
+      const nodeInitial = findTable(editorView.state.selection)!.node;
       expect(nodeInitial).toBeDefined();
       expect(nodeInitial!.attrs.layout).toBe('default');
 
       pluginState.setTableLayout('full-width');
 
-      const node = getTableNode(editorView.state);
+      const { node } = findTable(editorView.state.selection)!;
 
       expect(node).toBeDefined();
       expect(node!.attrs.layout).toBe('full-width');
@@ -1324,7 +1205,7 @@ describe('table plugin', () => {
 
     it('can set the data-layout attribute on the table DOM element', () => {
       const { pluginState, editorView } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const tables = editorView.dom.getElementsByTagName('table');
@@ -1341,11 +1222,7 @@ describe('table plugin', () => {
 
     it('applies the initial data-layout attribute on the table DOM element', () => {
       const { editorView } = editor(
-        doc(
-          tableWithAttrs({ layout: 'full-width' })(
-            tr(tdCursor, tdEmpty, tdEmpty),
-          ),
-        ),
+        doc(table({ layout: 'full-width' })(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const tables = editorView.dom.getElementsByTagName('table');
@@ -1359,7 +1236,7 @@ describe('table plugin', () => {
 
     it('updates the layout state and attributes from document tables', () => {
       const { editorView, pluginState } = editor(
-        doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const firstTables = editorView.dom.getElementsByTagName('table');
@@ -1379,7 +1256,7 @@ describe('table plugin', () => {
       expect(editorView.state.doc).toEqualDocument(doc(p()));
 
       // insert a new table
-      const defaultTable = table(
+      const defaultTable = table()(
         tr(thCursor, thEmpty, thEmpty),
         tr(tdEmpty, tdEmpty, tdEmpty),
         tr(tdEmpty, tdEmpty, tdEmpty),
@@ -1403,11 +1280,7 @@ describe('table plugin', () => {
 
     it('applies the initial data-layout attribute on the table DOM element', () => {
       const { editorView } = editor(
-        doc(
-          tableWithAttrs({ layout: 'full-width' })(
-            tr(tdCursor, tdEmpty, tdEmpty),
-          ),
-        ),
+        doc(table({ layout: 'full-width' })(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const tables = editorView.dom.getElementsByTagName('table');

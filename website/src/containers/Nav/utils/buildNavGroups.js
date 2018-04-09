@@ -1,13 +1,7 @@
-/* @flow */
-import React, { type ComponentType } from 'react';
+// @flow
+import { type ComponentType } from 'react';
 import type { Directory, NavGroupItem, File } from '../../../types';
 import * as fs from '../../../utils/fs';
-type groupChildType = {
-  to: string,
-  isSelected: boolean,
-  title: string,
-  icon: ComponentType<{}>,
-};
 
 type groupType = {
   title?: string,

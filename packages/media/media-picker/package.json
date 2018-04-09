@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "2.1.6",
+  "version": "3.0.1",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,16 +20,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^1.1.8",
-    "@atlaskit/button": "^6.6.0",
-    "@atlaskit/dropdown-menu": "^3.12.0",
-    "@atlaskit/field-text": "^4.2.0",
-    "@atlaskit/flag": "^6.5.0",
-    "@atlaskit/icon": "^10.12.0",
-    "@atlaskit/media-card": "^25.1.8",
-    "@atlaskit/media-editor": "^5.0.7",
-    "@atlaskit/modal-dialog": "^3.5.0",
-    "@atlaskit/spinner": "^4.2.0",
+    "@atlaskit/analytics-next": "^2.0.0",
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/dropdown-menu": "^4.0.0",
+    "@atlaskit/field-text": "^5.0.0",
+    "@atlaskit/flag": "^7.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/media-card": "^26.0.1",
+    "@atlaskit/media-editor": "^6.0.0",
+    "@atlaskit/modal-dialog": "^4.0.0",
+    "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bricks.js": "^1.8.0",
     "axios": "^0.17.1",
@@ -39,6 +39,7 @@
     "domready": "^1.0.8",
     "eventemitter2": "^4.1.0",
     "filesize": "^3.2.1",
+    "lodash.debounce": "^4.0.8",
     "postis": "^2.2.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
@@ -48,18 +49,20 @@
     "styled-components": "1.4.6 - 3",
     "svg-inline-react": "^3.0.0",
     "url": "^0.11.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^15.0.1",
-    "react": "15.6.0 - 16.2.0",
+    "@atlaskit/media-core": "^16.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.0",
-    "@atlaskit/media-core": "^15.0.1",
-    "@atlaskit/media-test-helpers": "^11.0.0",
-    "@atlaskit/toggle": "^2.9.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/media-core": "^16.0.0",
+    "@atlaskit/media-test-helpers": "^12.0.1",
+    "@atlaskit/toggle": "^3.0.0",
     "@types/dateformat": "^1.0.1",
     "@types/enzyme": "^3.1.6",
     "@types/eventemitter2": "^4.1.0",
@@ -68,7 +71,11 @@
     "@types/react": "^16.0.5",
     "@types/react-redux": "^4.4.0",
     "@types/redux": "^3.6.0",
+    "chai": "^4.1.2",
+    "enzyme": "^3.3.0",
     "identity-obj-proxy": "^3.0.0",
-    "lodash.chunk": "^4.2.0"
+    "lodash.chunk": "^4.2.0",
+    "react": "^16.3.0",
+    "sinon": "^2.2.0"
   }
 }

@@ -1,19 +1,19 @@
-import { colors } from '@atlaskit/theme';
 import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
+
 import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
 
 import { MacroName, RichInterval } from '../interfaces';
 import { getProseMirrorNodeTypeForMacro } from './macros';
-import { findTextAndInlineNodes } from './text';
 import { getCodeLanguage } from './code-language';
-import {
-  getResolvedMacroIntervals,
-  getResolvedTextIntervals,
-} from './intervals';
+import { getResolvedMacroIntervals } from './intervals';
 import { isSpecialMacro } from './special';
+import { getTextWithMarks } from './text';
+import { TEXT_COLOR_GREY } from './effects';
 
+import getHeadingNodeView from './nodes/heading';
+import getMediaNodeView from './nodes/media';
 import getRuleNodeView from './nodes/rule';
 
 // E.g. bq. foo -> [ "foo" ]
@@ -21,6 +21,9 @@ const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 
 // E.g. h1. foo -> [ "1", "foo" ]
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
+
+// E.g. !image.png! and !image.png|attrs!
+const ATTACHMENTS_REGEXP = /^!(.+?)(\|(.+))?!$/;
 
 // E.g. * foo -> [ "*", "foo" ]
 const LIST_REGEXP = /^\s*([*\-#]+)\s+(.+)/;
@@ -36,7 +39,6 @@ const NEWLINE_CELL_REGEXP = /^([^|]*)[|]/;
 
 const HORIZONTAL_RULE = '----';
 const NEWLINE = '\n';
-const DOUBLE_BACKSLASH = '\\\\';
 
 export default class AbstractTree {
   private schema: Schema;
@@ -78,34 +80,6 @@ export default class AbstractTree {
     });
   }
 
-  getTextWithMarks(text: string, useGreyText: boolean): PMNode[] {
-    const intervals = getResolvedTextIntervals(text);
-    const output: PMNode[] = [];
-
-    for (const { effects, text } of intervals) {
-      const textWithLineBreaks = text.split(DOUBLE_BACKSLASH);
-      const textEffects = useGreyText
-        ? effects.concat({ name: 'color', attrs: { color: colors.N80 } })
-        : effects;
-
-      textWithLineBreaks.forEach((chunk, i) => {
-        const inlineNodes = findTextAndInlineNodes(
-          this.schema,
-          chunk,
-          textEffects,
-        );
-        output.push(...inlineNodes);
-
-        if (i + 1 < textWithLineBreaks.length) {
-          const hardBreakNode = this.schema.nodes.hardBreak.createChecked();
-          output.push(hardBreakNode);
-        }
-      });
-    }
-
-    return output;
-  }
-
   /**
    * Convert reduced macros tree into prosemirror model tree
    */
@@ -121,13 +95,15 @@ export default class AbstractTree {
   /**
    * Creates prosemirror node from macro
    */
-  private getProseMirrorMacroNode(
+  private getProseMirrorMacroNodes(
     macro: MacroName,
     attrs: { [key: string]: string },
     content: PMNode[],
-  ): PMNode {
+  ): PMNode[] {
+    const output: PMNode[] = [];
     const nodeType = getProseMirrorNodeTypeForMacro(this.schema, macro);
     const nodeAttrs: { [key: string]: any } = {};
+    const isPanelWithTitle = macro === 'panel' && attrs.title;
 
     if (macro === 'code') {
       nodeAttrs.language = getCodeLanguage(attrs);
@@ -135,7 +111,17 @@ export default class AbstractTree {
       nodeAttrs.panelType = 'info';
     }
 
-    return nodeType.createChecked(nodeAttrs, content);
+    if (isPanelWithTitle) {
+      const headingNode = this.schema.nodes.heading.createChecked(
+        { level: 1 },
+        this.getTextWithMarks(attrs.title, false),
+      );
+
+      output.push(headingNode);
+    }
+
+    output.push(nodeType.createChecked(nodeAttrs, content));
+    return output;
   }
 
   /**
@@ -150,13 +136,13 @@ export default class AbstractTree {
 
       if (macro) {
         const { attrs, macro: macroName } = macro;
-        const macroPMNode = this.getProseMirrorMacroNode(
+        const macroPMNodes = this.getProseMirrorMacroNodes(
           macroName,
           attrs,
           content,
         );
 
-        output.push(macroPMNode);
+        output.push(...macroPMNodes);
       } else {
         output.push(...content);
       }
@@ -194,7 +180,7 @@ export default class AbstractTree {
     containerNodeType: NodeType | null,
     useGreyText: boolean,
   ): PMNode[] {
-    const { blockquote, heading, paragraph } = this.schema.nodes;
+    const { blockquote, paragraph } = this.schema.nodes;
     const output: PMNode[] = [];
 
     if (treatChildrenAsText) {
@@ -251,20 +237,41 @@ export default class AbstractTree {
         continue;
       }
 
-      let lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
+      const lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
 
       // search for headings
       const headingMatches = lineUpdated.match(HEADING_REGEXP);
       if (headingMatches) {
         processAndEmptyStoredText();
 
-        const headingNode = heading.createChecked(
+        const headingNode = getHeadingNodeView(
+          this.schema,
+          containerNodeType,
           { level: headingMatches[1] },
-          this.getTextWithMarks(headingMatches[2], useGreyText),
+          headingMatches[2],
+          useGreyText,
         );
 
         output.push(headingNode);
         continue;
+      }
+
+      // search for images/attachments
+      const mediaMatches = lineUpdated.match(ATTACHMENTS_REGEXP);
+      if (mediaMatches && mediaMatches[1].includes('.')) {
+        processAndEmptyStoredText();
+
+        const [, /* skip */ filename] = mediaMatches;
+        if (
+          !containerNodeType &&
+          filename.includes('.') &&
+          !/^https?:\/\//.test(filename)
+        ) {
+          const mediaNode = getMediaNodeView(this.schema, filename);
+          output.push(mediaNode);
+
+          continue;
+        }
       }
 
       // search for blockquote line
@@ -362,11 +369,6 @@ export default class AbstractTree {
         continue;
       }
 
-      // TODO process images/attachments
-      // TODO process {color} macro
-      // TODO process \\ hardBreak
-      // TODO process text effects and links
-
       textContainer.push(lineUpdated);
     }
 
@@ -391,13 +393,27 @@ export default class AbstractTree {
    * @returns {AddCellArgs[]}
    */
   private getTableCells(line: string, useGreyText: boolean): AddCellArgs[] {
-    let match;
     const cells: AddCellArgs[] = [];
+    const { tableCell } = this.schema.nodes;
+    let match;
+
     while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
       const [, /* discard */ style, content] = match;
-      const contentNode = this.getTextWithMarks(content, useGreyText);
+      const contentNode = this.getTextNodes(
+        content,
+        false,
+        tableCell,
+        useGreyText,
+      );
+
       cells.push({ style, content: contentNode });
     }
+
     return cells;
+  }
+
+  private getTextWithMarks(text: string, useGreyText: boolean) {
+    const extraEffects = useGreyText ? [TEXT_COLOR_GREY] : [];
+    return getTextWithMarks(this.schema, text, extraEffects);
   }
 }

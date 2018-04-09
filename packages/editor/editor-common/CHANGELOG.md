@@ -1,5 +1,29 @@
 # @atlaskit/editor-common
 
+## 8.1.26
+
+## 8.1.25
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 8.1.24
+- [patch] Fixing the nested link issue on paste [5d20a1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d20a1f)
+
+## 8.1.23
+
+## 8.1.22
+- [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
+
+## 8.1.21
+
+## 8.1.20
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
+## 8.1.19
+- [patch] make tableCell/tableHeader attrs object optional [a6e1882](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6e1882)
+
+## 8.1.18
+- [patch] ED-4094: fix ADF generation for inline code [ee9c394](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee9c394)
+
 ## 8.1.17
 - [patch] Adding Media inside lists [07d3dff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07d3dff)
 
