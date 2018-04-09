@@ -33,6 +33,15 @@ export default class PositionExample extends Component<Props, State> {
         <Tooltip content={position} position={position}>
           <Target color={this.props.color}>Target</Target>
         </Tooltip>
+        <br />
+        <br />
+        <Tooltip
+          content={`mouse ${position}`}
+          position="mouse"
+          mousePosition={position}
+        >
+          <Target color={this.props.color}>Mouse</Target>
+        </Tooltip>
       </div>
     );
   }

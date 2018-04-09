@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import renamePropsWithWarning from 'react-deprecate';
 
-import type { CoordinatesType, PositionType } from '../types';
+import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
 import Portal from './Portal';
@@ -27,6 +27,8 @@ type Props = {
   component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
+  /** Where the tooltip should appear relative to the mouse. Only used when the `position` prop is set to 'mouse' */
+  mousePosition: PositionTypeBase,
   /** Function to be called when a mouse leaves the target */
   onMouseOut?: MouseEvent => void,
   /** Function to be called when a mouse enters the target */
@@ -43,7 +45,9 @@ type State = {
   immediatelyShow: boolean,
   isFlipped: boolean,
   isVisible: boolean,
+  /** This is used for the slide transition of tooltips. */
   position: PositionType,
+  mousePosition: PositionTypeBase,
   coordinates: CoordinatesType | null,
 };
 
@@ -57,6 +61,7 @@ function getInitialState(props): State {
     isVisible: false,
     isFlipped: false,
     position: props.position,
+    mousePosition: props.mousePosition,
     coordinates: null,
   };
 }
@@ -69,18 +74,23 @@ type showHideArgs = {
 class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
+  mouseCoordinates: CoordinatesType | null = null;
   static defaultProps = {
     component: StyledTooltip,
     position: 'bottom',
+    mousePosition: 'bottom',
     tag: 'div',
   };
 
   componentWillReceiveProps(nextProps: Props) {
-    const { position, truncate } = nextProps;
+    const { position, truncate, mousePosition } = nextProps;
 
     // handle case where position is changed while visible
-    if (position !== this.props.position) {
-      this.setState({ position, coordinates: null });
+    if (
+      position !== this.props.position ||
+      mousePosition !== this.props.mousePosition
+    ) {
+      this.setState({ position, mousePosition, coordinates: null });
     }
 
     // handle case where truncate is changed while visible
@@ -96,17 +106,27 @@ class Tooltip extends Component<Props, State> {
   handleMeasureRef = (tooltip: HTMLElement) => {
     if (!tooltip || !this.wrapper) return;
 
-    const { position } = this.props;
+    const { position, mousePosition } = this.props;
+    const { mouseCoordinates } = this;
     const target = this.wrapper.children.length
       ? this.wrapper.children[0]
       : this.wrapper;
 
     // NOTE getPosition returns:
-    // position Enum(top | left | bottom | right)
+    // position Enum(top | left | bottom | right | mouse)
     //   - adjusted for edge collision
+    // mousePosition Enum(top | left | bottom | right)
+    //   - adjusted for edge collision and used when `position` === 'mouse'
     // coordinates: Object(left: number, top: number)
     //   - coordinates passed to Transition
-    this.setState(getPosition({ position, target, tooltip }));
+    const positionData = getPosition({
+      position,
+      target,
+      tooltip,
+      mouseCoordinates,
+      mousePosition,
+    });
+    this.setState(positionData);
   };
 
   renderTooltip() {
@@ -115,6 +135,7 @@ class Tooltip extends Component<Props, State> {
       immediatelyHide,
       immediatelyShow,
       isVisible,
+      mousePosition,
       position,
       coordinates,
     } = this.state;
@@ -142,6 +163,7 @@ class Tooltip extends Component<Props, State> {
       component,
       immediatelyHide,
       immediatelyShow,
+      mousePosition,
       position,
       coordinates,
       truncate,
@@ -166,7 +188,6 @@ class Tooltip extends Component<Props, State> {
 
   handleMouseOver = (event: MouseEvent) => {
     const { onMouseOver } = this.props;
-
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
@@ -184,6 +205,19 @@ class Tooltip extends Component<Props, State> {
 
     if (onMouseOut) onMouseOut(event);
   };
+
+  // Update mouse coordinates for use when position is 'mouse'
+  // We are not debouncing/throttling this function because we aren't causing any
+  // re-renders or doing any intensive calculations, we're just updating a value.
+  // React also doesn't play nice debounced DOM event handlers because they pool their
+  // SyntheticEvent objects. Need to use event.persist as a workaround - https://stackoverflow.com/a/24679479/893630
+  handleMouseMove = (event: MouseEvent) => {
+    this.mouseCoordinates = {
+      left: event.clientX,
+      top: event.clientY,
+    };
+  };
+
   handleClick = () => {
     const { hideTooltipOnClick } = this.props;
 
@@ -212,6 +246,7 @@ class Tooltip extends Component<Props, State> {
     return (
       <Tag
         onClick={this.handleClick}
+        onMouseMove={this.handleMouseMove}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
         ref={this.handleWrapperRef}
