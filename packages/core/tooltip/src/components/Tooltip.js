@@ -225,23 +225,7 @@ class Tooltip extends Component<Props, State> {
   };
 
   render() {
-    // NOTE removing props from rest:
-    // - `content` is a valid HTML attribute, but has a different semantic meaning
-    // - `component` is NOT valid and react will warn
-    // - `hideTooltipOnClick` is NOT valid and react will warn
-    // - `position` is NOT valid and react will warn
-    // - `truncate` is NOT valid and react will warn
-    // eslint-disable-next-line no-unused-vars
-    const {
-      children,
-      component,
-      content,
-      hideTooltipOnClick,
-      position,
-      truncate,
-      tag: Tag,
-      ...rest
-    } = this.props;
+    const { children, tag: Tag } = this.props;
 
     return (
       <Tag
@@ -250,7 +234,6 @@ class Tooltip extends Component<Props, State> {
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
         ref={this.handleWrapperRef}
-        {...rest}
       >
         {Children.only(children)}
         {this.renderTooltip()}
