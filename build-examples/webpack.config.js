@@ -62,6 +62,7 @@ async function webpackConfig() {
     output: {
       filename: '[name].js',
       path: path.join(__dirname, 'dist'),
+      libraryTarget: 'umd',
     },
     module: {
       rules: [
