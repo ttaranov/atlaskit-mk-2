@@ -69,10 +69,11 @@ export default class Badge extends PureComponent<Props> {
 
   render() {
     const { appearance, max, value } = this.props;
+    const computedValue = getValue(value, max);
     return (
       <Appearance props={appearance} theme={theme}>
         {styleProps => (
-          <BadgeElement {...styleProps}>{getValue(value, max)}</BadgeElement>
+          <BadgeElement {...styleProps}>{computedValue}</BadgeElement>
         )}
       </Appearance>
     );
