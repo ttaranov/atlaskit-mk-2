@@ -15,7 +15,7 @@ const layoutPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 20,
+        rank: 2400,
         plugin: ({ schema }) =>
           new Plugin({
             key: pluginKey,

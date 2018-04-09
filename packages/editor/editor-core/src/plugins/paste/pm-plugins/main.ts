@@ -19,6 +19,7 @@ import {
   removeLayoutsIfSelectionIsInLayout,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../layout/utils';
+import { linkifyContent } from '../../hyperlink/utils';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -180,7 +181,11 @@ export function createPlugin(
             return true;
           }
 
-          view.dispatch(view.state.tr.replaceSelection(slice));
+          slice = linkifyContent(view.state.schema, slice) || slice;
+
+          view.dispatch(
+            view.state.tr.replaceSelection(slice).setStoredMarks([]),
+          );
           return true;
         }
 
