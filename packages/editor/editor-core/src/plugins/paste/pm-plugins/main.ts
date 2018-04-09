@@ -14,7 +14,11 @@ import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks } from '../util';
-import { removeBodiedExtensionsOnPaste } from '../../extension/actions';
+import { removeBodiedExtensionsIfSelectionIsInBodiedExtension } from '../../extension/actions';
+import {
+  removeLayoutsIfSelectionIsInLayout,
+  transformSliceToRemoveOpenLayoutNodes,
+} from '../../layout/utils';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -50,6 +54,15 @@ export function createPlugin(
         if (clipboard.isPastedFile(event)) {
           return true;
         }
+
+        slice = removeLayoutsIfSelectionIsInLayout(slice, view.state);
+        // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
+        // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
+        // this function makes sure we prevent that weirdness
+        slice = removeBodiedExtensionsIfSelectionIsInBodiedExtension(
+          slice,
+          view.state,
+        );
 
         const { $to, $from } = view.state.selection;
 
@@ -167,16 +180,16 @@ export function createPlugin(
             return true;
           }
 
-          // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
-          // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
-          // this function makes sure we prevent that weirdness
-          return removeBodiedExtensionsOnPaste(slice)(
-            view.state,
-            view.dispatch,
-          );
+          view.dispatch(view.state.tr.replaceSelection(slice));
+          return true;
         }
 
         return false;
+      },
+      transformPasted(slice) {
+        // We do this separately so it also applies to drag/drop events
+        slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
+        return slice;
       },
     },
   });

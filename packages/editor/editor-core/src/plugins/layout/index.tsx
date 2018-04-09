@@ -15,14 +15,15 @@ const layoutPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 2400,
-        plugin: () =>
+        rank: 20,
+        plugin: ({ schema }) =>
           new Plugin({
             key: pluginKey,
             state: {
-              init: () => ({}),
+              init: () => ({}), // TODO store property `forceMediaLayout: 'wide'`
               apply: (tr, state) => state,
             },
+            props: {},
           }),
       },
     ];
