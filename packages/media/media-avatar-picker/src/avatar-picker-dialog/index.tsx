@@ -31,6 +31,7 @@ export interface AvatarPickerDialogProps {
   primaryButtonText?: string;
   errorMessage?: string;
   isLoading?: boolean;
+  predefinedAvatarsText?: string;
 }
 
 export enum Mode {
@@ -269,7 +270,7 @@ export class AvatarPickerDialog extends PureComponent<
   }
 
   renderBody() {
-    const { avatars, isLoading } = this.props;
+    const { avatars, isLoading, predefinedAvatarsText } = this.props;
     const {
       mode,
       selectedImageSource,
@@ -304,6 +305,7 @@ export class AvatarPickerDialog extends PureComponent<
               onAvatarSelected={this.setSelectedAvatarState}
               onGoBack={this.onGoBack}
               selectedAvatar={selectedAvatar}
+              predefinedAvatarsText={predefinedAvatarsText}
             />
           </div>
         );

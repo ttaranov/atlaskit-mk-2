@@ -7,7 +7,6 @@ import {
   GET_CONNECTED_REMOTE_ACCOUNTS,
   GetConnectedRemoteAccountsAction,
 } from '../actions/getConnectedRemoteAccounts';
-import { AuthService } from '../../domain/auth';
 
 const isGetConnectedRemoteAccountsAction = (
   action: Action,
@@ -15,15 +14,13 @@ const isGetConnectedRemoteAccountsAction = (
   return action.type === GET_CONNECTED_REMOTE_ACCOUNTS;
 };
 
-export const getConnectedRemoteAccounts = (
-  fetcher: Fetcher,
-  authService: AuthService,
-) => (store: Store<State>) => (next: Dispatch<Action>) => (action: Action) => {
+export const getConnectedRemoteAccounts = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<Action>) => (action: Action) => {
   if (isGetConnectedRemoteAccountsAction(action)) {
-    const { apiUrl } = store.getState();
+    const { apiUrl, userAuthProvider } = store.getState();
 
-    authService
-      .getUserAuth()
+    userAuthProvider()
       .then(auth => fetcher.getServiceList(apiUrl, auth))
       .then(accounts => store.dispatch(updateServiceList(accounts)));
   }

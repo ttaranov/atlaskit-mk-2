@@ -112,7 +112,6 @@ describe('Media plugin', () => {
     await provider.uploadContext;
 
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     pluginState.binaryPicker!.upload = jest.fn();

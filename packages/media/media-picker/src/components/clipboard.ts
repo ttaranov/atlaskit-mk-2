@@ -1,31 +1,32 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 
 import { LocalUploadComponent } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig } from '../domain/config';
 import * as domready from 'domready';
+import { UploadParams } from '..';
 
 export interface ClipboardConfig {
+  uploadParams: UploadParams;
   userAuthProvider?: AuthProvider;
 }
 
 export interface ClipboardConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
     clipboardConfig: ClipboardConfig,
   ): Clipboard;
 }
 
 export class Clipboard extends LocalUploadComponent {
   constructor(
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    { userAuthProvider }: ClipboardConfig = {},
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: ClipboardConfig = { uploadParams: {} },
   ) {
-    super(context, config, userAuthProvider);
-    this.context.trackEvent(new MPClipboardLoaded());
+    super(analyticsContext, context, config);
+    this.analyticsContext.trackEvent(new MPClipboardLoaded());
   }
 
   public activate(): void {

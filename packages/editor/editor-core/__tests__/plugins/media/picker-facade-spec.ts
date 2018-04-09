@@ -47,7 +47,6 @@ describe('Media PickerFacade', () => {
   const getPickerFacadeConfig = (
     stateManager: MediaStateManager,
   ): PickerFacadeConfig => ({
-    uploadParams: {},
     context,
     stateManager,
     errorReporter,
@@ -205,6 +204,7 @@ describe('Media PickerFacade', () => {
           getPickerFacadeConfig(stateManager),
           {
             userAuthProvider,
+            uploadParams: { collection: '' },
           },
         );
       });

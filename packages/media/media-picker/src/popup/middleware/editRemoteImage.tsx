@@ -11,7 +11,6 @@ import {
   EditRemoteImageAction,
 } from '../actions/editRemoteImage';
 import { State } from '../domain';
-import { AuthService } from '../../domain/auth';
 
 // When we complete upload, we need to check if we can open the editor.
 // What can be changed:
@@ -35,14 +34,11 @@ const continueRenderingEditor = (id: string, store: Store<State>): boolean => {
   }
 };
 
-export const editRemoteImageMiddleware = (
-  fetcher: Fetcher,
-  authService: AuthService,
-) => (store: Store<State>) => (next: Dispatch<State>) => (
-  action: EditRemoteImageAction,
-) => {
+export const editRemoteImageMiddleware = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<State>) => (action: EditRemoteImageAction) => {
   if (action.type === EDIT_REMOTE_IMAGE) {
-    editRemoteImage(fetcher, authService, store, action);
+    editRemoteImage(fetcher, store, action);
   }
 
   return next(action);
@@ -50,17 +46,15 @@ export const editRemoteImageMiddleware = (
 
 export function editRemoteImage(
   fetcher: Fetcher,
-  authService: AuthService,
   store: Store<State>,
   action: EditRemoteImageAction,
 ): Promise<void> {
   const { item, collectionName } = action;
-  const { apiUrl } = store.getState();
+  const { apiUrl, userAuthProvider } = store.getState();
 
   store.dispatch(editorShowLoading(item));
 
-  return authService
-    .getUserAuth()
+  return userAuthProvider()
     .then(auth => fetcher.getImage(apiUrl, auth, item.id, collectionName))
     .then(fileToBase64)
     .then(base64image => {
