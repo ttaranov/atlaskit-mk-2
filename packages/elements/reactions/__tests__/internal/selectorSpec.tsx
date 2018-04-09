@@ -10,6 +10,7 @@ import Selector from '../../src/internal/selector';
 import {
   defaultReactions,
   isDefaultReaction,
+  revealStyle,
 } from '../../src/internal/selector';
 import { emoji } from '@atlaskit/util-data-test';
 
@@ -80,11 +81,11 @@ describe('@atlaskit/reactions/selector', () => {
   it('should reveal default emoji', () => {
     const selector = mount(renderSelector());
 
-    clock.tick((defaultReactions.length + 1) * 50);
-
-    expect(selector.state()).to.have.property(
-      'animationIndex',
-      defaultReactions.length,
-    );
+    expect(
+      selector
+        .find(`.${revealStyle}`)
+        .at(2)
+        .prop('style'),
+    ).to.have.property('animationDelay', '100ms');
   });
 });

@@ -59,19 +59,20 @@ const moreButtonStyle = style({
 
 const revealAnimation = keyframes({
   '0%': {
+    opacity: 1,
     transform: 'scale(0.5)',
   },
   '75%': {
     transform: 'scale(1.25)',
   },
   '100%': {
+    opacity: 1,
     transform: 'scale(1)',
   },
 });
 
-const reveal = style({
-  opacity: 1,
-  animation: `${revealAnimation} 150ms ease-in-out`,
+export const revealStyle = style({
+  animation: `${revealAnimation} 150ms ease-in-out forwards`,
 });
 
 const moreEmojiContainerStyle = style({
@@ -85,6 +86,8 @@ const separatorStyle = style({
   height: '60%',
   display: 'inline-block',
 });
+
+const revealDelay = index => ({ animationDelay: `${index * 50}ms` });
 
 export const defaultReactionsByShortName: Map<string, EmojiId> = new Map<
   string,
@@ -111,12 +114,10 @@ export const isDefaultReaction = (emojiId: EmojiId) =>
 
 export interface State {
   selection: EmojiId | undefined;
-  animationIndex: number;
 }
 
 export default class Selector extends PureComponent<Props, State> {
   private timeouts: Array<number>;
-  private animationInterval: number;
 
   constructor(props) {
     super(props);
@@ -124,32 +125,12 @@ export default class Selector extends PureComponent<Props, State> {
 
     this.state = {
       selection: undefined,
-      animationIndex: 0,
     };
   }
 
   componentWillUnmount() {
     this.timeouts.forEach(clearTimeout);
-    clearInterval(this.animationInterval);
   }
-
-  componentDidMount() {
-    this.revealButtons();
-  }
-
-  private revealButtons = () => {
-    this.animationInterval = setInterval(
-      () =>
-        this.setState(({ animationIndex }) => {
-          const nextAnimationIndex = animationIndex + 1;
-          if (nextAnimationIndex === defaultReactions.length) {
-            clearInterval(this.animationInterval);
-          }
-          return { animationIndex: nextAnimationIndex };
-        }),
-      50,
-    );
-  };
 
   private onEmojiSelected = (
     emojiId: EmojiId,
@@ -165,15 +146,19 @@ export default class Selector extends PureComponent<Props, State> {
   };
 
   private renderShowMore(): React.ReactNode {
-    const className = cx(moreButtonStyle, {
-      [reveal]: this.state.animationIndex >= defaultReactions.length,
-    });
+    const className = cx(moreButtonStyle, revealStyle);
+
+    const style = revealDelay(defaultReactions.length);
 
     return (
-      <div className={moreEmojiContainerStyle} key="more">
+      <div key="more" className={moreEmojiContainerStyle}>
         <div className={separatorStyle} />
         <Tooltip content="More emoji">
-          <button className={className} onMouseDown={this.props.onMoreClick}>
+          <button
+            className={className}
+            style={style}
+            onMouseDown={this.props.onMoreClick}
+          >
             <EditorMoreIcon label="More" />
           </button>
         </Tooltip>
@@ -189,13 +174,14 @@ export default class Selector extends PureComponent<Props, State> {
         {defaultReactions.map((emojiId, index) => {
           const key = emojiId.id || emojiId.shortName;
 
-          const classNames = cx(emojiStyle, {
+          const classNames = cx(emojiStyle, revealStyle, {
             selected: emojiId === this.state.selection,
-            [reveal]: this.state.animationIndex >= index,
           });
 
+          const style = revealDelay(index);
+
           return (
-            <div className={classNames} key={key}>
+            <div key={key} className={classNames} style={style}>
               <Tooltip content={emojiId.shortName}>
                 <EmojiButton
                   emojiId={emojiId}
