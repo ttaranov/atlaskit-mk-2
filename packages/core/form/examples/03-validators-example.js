@@ -165,7 +165,6 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             <Field
               label="Name a mojito ingredient"
               helperText="With validateOnChange enabled validators are called onChange"
-              validateOnChange
               validators={[
                 <Validator
                   func={isMojitoIngredientValue}

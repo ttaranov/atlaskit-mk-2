@@ -126,7 +126,7 @@ export default class Form extends Component<Props, State> {
     };
   };
 
-  /** Returns the form state and methods accessed by children */
+  /** Returns the form state and methods accessed by children. With 16.3 we can look at using new context API */
   getForm = (): FormRef => {
     const { name, fields } = this.state;
     const {

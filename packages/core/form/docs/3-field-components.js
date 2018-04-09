@@ -2,6 +2,8 @@
 import React from 'react';
 import { md, Example } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
+import { fieldComponents } from '../src/data/fieldComponents';
+import ComponentsTable from '../src/utils/ComponentsTable';
 
 const Warning = p => (
   <div
@@ -31,7 +33,7 @@ ${(
   ### Supported Atlaskit Components
 
   The following table lists all the currently supported components and any known issues.
-  
+  ${<ComponentsTable components={fieldComponents} />}
 
   ${(
     <Example

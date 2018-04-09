@@ -20,6 +20,7 @@ import Form, {
   FormFooter,
   Validator,
 } from '../src';
+
 //import type { FormRef } from '../src/Form';
 
 const resultBoxStyle = {
