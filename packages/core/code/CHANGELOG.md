@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 4.0.1
+- [patch] Get rid of outdent dependency [6a2c1d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a2c1d9)
+
 ## 4.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
