@@ -6,6 +6,7 @@ import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 
 import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
+import { CheckboxStatelessBase } from '../CheckboxStateless';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
 import { name } from '../../package.json';
 
@@ -61,6 +62,13 @@ describe(name, () => {
 
       cb.setProps({ isIndeterminate: true });
       expect(element.indeterminate).toBe(true);
+    });
+    it('should have ref to CheckboxStateless class', () => {
+      const spy = jest.fn();
+      mount(<CheckboxStateless ref={spy} />);
+      expect(spy).toHaveBeenCalled();
+      const [instance] = spy.mock.calls[0];
+      expect(instance).toBeInstanceOf(CheckboxStatelessBase);
     });
   });
   describe('<Checkbox />', () => {
