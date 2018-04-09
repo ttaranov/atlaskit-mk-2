@@ -50,6 +50,14 @@ async function webpackConfig() {
   return {
     entry: {
       ...wsMap,
+      vendor: [
+        'react',
+        'react-dom',
+        'styled-components',
+        'highlight.js',
+        'react-router',
+        'react-router-dom',
+      ],
     },
     output: {
       filename: '[name].js',
@@ -75,8 +83,12 @@ async function webpackConfig() {
         },
       ],
     },
+    resolve: {
+      mainFields: ['atlaskit:src', 'browser', 'main'],
+      extensions: ['.js', '.ts', '.tsx'],
+    },
     resolveLoader: {
-      modules: [path.join(__dirname, 'node_modules')],
+      modules: [path.join(__dirname, 'node_modules'), 'node_modules'],
     },
   };
 }

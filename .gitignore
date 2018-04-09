@@ -2,6 +2,7 @@
 node_modules/
 
 # ignore builds
+.cache
 dist
 
 # ignore generated files

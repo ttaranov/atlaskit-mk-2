@@ -1,7 +1,7 @@
 {
   "name": "build-examples",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist",
   "license": "MIT",
   "scripts": {
     "build:docs": "./node_modules/.bin/webpack --config ./webpack.config.js"
