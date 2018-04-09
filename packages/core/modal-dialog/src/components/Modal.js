@@ -65,10 +65,12 @@ type Props = {
   appearance?: AppearanceType,
   /**
     Boolean OR Function indicating which element to focus when the component mounts.
+    By default the modal itself will be focused.
+    FALSE assumes that autofocus is set on an element within the modal.
     TRUE will automatically find the first "tabbable" element within the modal.
     Providing a function should return the element you want to focus.
   */
-  autoFocus?: boolean | (() => ElementType),
+  autoFocus: boolean | (() => ElementType) | void,
   components: { Body: ComponentType },
   /**
     Content of the modal
@@ -159,7 +161,7 @@ type State = {
 class Modal extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
-    autoFocus: false,
+    autoFocus: undefined,
     scrollBehavior: 'inside',
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
