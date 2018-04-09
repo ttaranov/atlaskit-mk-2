@@ -46,6 +46,7 @@ export interface PopupWrapperState {
   inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
+  isUploadingFilesVisible: boolean;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -61,6 +62,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     inflightUploads: {},
     hasTorndown: false,
     publicFiles: {},
+    isUploadingFilesVisible: true,
   };
 
   componentDidMount() {
@@ -270,6 +272,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
   };
 
+  onUploadingFilesToggle = () => {
+    this.setState({
+      isUploadingFilesVisible: !this.state.isUploadingFilesVisible,
+    });
+  };
+
   onCancelUpload = () => {
     const { inflightUploads } = this.state;
 
@@ -351,6 +359,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       collectionName,
       inflightUploads,
       hasTorndown,
+      isUploadingFilesVisible,
     } = this.state;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
@@ -379,6 +388,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             >
               Teardown
             </Button>
+            <Button
+              onClick={this.onUploadingFilesToggle}
+              isDisabled={hasTorndown}
+            >
+              Toggle Uploading files
+            </Button>
             <DropdownMenu trigger={collectionName} triggerType="button">
               <DropdownItem onClick={this.onCollectionChange}>
                 {defaultMediaPickerCollectionName}
@@ -405,10 +420,14 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             />
             Closed times: {closedTimes}
           </PopupHeader>
-          <FilesInfoWrapper>
-            {this.renderUploadingFiles()}
-            {this.renderCards()}
-          </FilesInfoWrapper>
+          {isUploadingFilesVisible ? (
+            <FilesInfoWrapper>
+              {this.renderUploadingFiles()}
+              {this.renderCards()}
+            </FilesInfoWrapper>
+          ) : (
+            undefined
+          )}
           <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
         </PopupContainer>
       </AnalyticsListener>
