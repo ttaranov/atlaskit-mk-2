@@ -1,5 +1,13 @@
 # @atlaskit/reactions
 
+## 11.0.3
+- [patch] FS-1868 always add new reactions to the end of the list [70fdbeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70fdbeb)
+
+## 11.0.2
+
+## 11.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
 ## 11.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

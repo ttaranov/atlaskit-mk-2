@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-ui",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Includes common components and utilities used by other media packages",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -23,6 +23,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "react-render-image": "^1.1.2",
     "styled-components": "1.4.6 - 3",

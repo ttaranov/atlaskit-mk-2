@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,13 +17,20 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/avatar": "^10.0.0",
     "@atlaskit/badge": "^7.0.0",
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/dropdown-menu": "^4.0.0",
+    "@atlaskit/icon": "^11.0.0",
     "@atlaskit/lozenge": "^4.0.0",
-    "@atlaskit/media-ui": "^2.0.0",
+    "@atlaskit/media-ui": "^2.0.1",
+    "@atlaskit/spinner": "^5.0.0",
+    "@atlaskit/tooltip": "^9.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.3",
+    "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
     "react-lazily-render": "^1.0.1",
+    "react-transition-group": "^2.2.1",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {

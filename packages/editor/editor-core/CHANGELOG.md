@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 68.1.1
+
+## 68.1.0
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 68.0.3
+- [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
+
+## 68.0.2
+- [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
+
 ## 68.0.1
 - [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
 

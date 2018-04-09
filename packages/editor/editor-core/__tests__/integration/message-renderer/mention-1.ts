@@ -98,7 +98,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: user can navigate picker using keyboard',
-  { skip: ['safari'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

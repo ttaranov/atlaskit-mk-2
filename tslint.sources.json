@@ -42,7 +42,8 @@
     "typedef": [true],
     "unified-signatures": [false],
     "variable-name": false,
-    "no-only-tests": true
+    "no-only-tests": true,
+    "no-implicit-dependencies": true
   },
   "jsRules": {
     // We use eslint for .js and .jsx, so all the TSLint rules can be disabled.

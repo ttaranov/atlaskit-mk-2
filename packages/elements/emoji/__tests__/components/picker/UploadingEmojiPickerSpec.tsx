@@ -32,6 +32,7 @@ import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePrevie
 import { MockEmojiResource } from '@atlaskit/util-data-test';
 import EmojiRepository from '../../../src/api/EmojiRepository';
 import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
 
 describe('<UploadingEmojiPicker />', () => {
   let firePrivateAnalyticsEvent;
@@ -83,6 +84,8 @@ describe('<UploadingEmojiPicker />', () => {
 
   describe('upload', () => {
     let consoleError;
+    let emojiProviderPromise;
+
     beforeEach(() => {
       consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -93,11 +96,51 @@ describe('<UploadingEmojiPicker />', () => {
       jest
         .spyOn(ImageUtil, 'hasFileExceededSize')
         .mockImplementation(() => false);
+
+      emojiProviderPromise = getEmojiResourcePromise({
+        uploadSupported: true,
+      });
     });
 
     afterEach(() => {
       consoleError.mockRestore();
     });
+
+    const navigateToUploadPreview = async providerPromise => {
+      const component = await helper.setupPicker({
+        emojiProvider: providerPromise,
+        hideToneSelector: true,
+        firePrivateAnalyticsEvent,
+      });
+
+      await providerPromise;
+      await helper.showCategory(customCategory, component, customTitle);
+      await waitUntil(() => commonHelper.previewVisible(component));
+
+      // save emoji initially shown in preview
+      let preview = commonHelper.findPreview(component);
+      expect(preview).toHaveLength(1);
+
+      // click add
+      await waitUntil(() =>
+        commonHelper.findEmojiPreviewSection(component).exists(),
+      );
+      const addEmoji = await safeFindCustomEmojiButton(component);
+      addEmoji.simulate('click');
+      await waitUntil(() => helper.emojiNameInputVisible(component));
+
+      // type name
+      typeEmojiName(component);
+
+      // choose file
+      chooseFile(component, createPngFile());
+      await waitUntil(() => helper.addEmojiButtonVisible(component));
+
+      // upload preview shown
+      uploadPreviewShown(component);
+
+      return component;
+    };
 
     it('Non-uploading EmojiResource - no upload UI', async () => {
       const emojiProvider = getNonUploadingEmojiResourcePromise();
@@ -446,9 +489,12 @@ describe('<UploadingEmojiPicker />', () => {
     });
 
     it('Upload error interaction', async () => {
+      const spy = jest
+        .spyOn(MockEmojiResource.prototype, 'uploadCustomEmoji')
+        .mockImplementation(() => Promise.reject(new Error('upload error')));
+
       const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
-        uploadError: 'bad times',
       });
       const component = await helper.setupPicker({
         emojiProvider,
@@ -487,11 +533,19 @@ describe('<UploadingEmojiPicker />', () => {
       addEmojiButton.simulate('click');
 
       // wait for error
-      await waitUntil(() => helper.uploadErrorVisible(component));
+      await waitUntil(() => helper.errorMessageVisible(component));
 
       // Check error displayed
-      const uploadError = helper.findUploadError(component);
-      expect(uploadError).toHaveLength(1);
+      expect(component.find(EmojiErrorMessage).prop('message')).toEqual(
+        'Upload failed',
+      );
+
+      const retryButton = component
+        .find(EmojiUploadPreview)
+        .find('button')
+        .at(0);
+
+      expect(retryButton.text()).toEqual('Retry');
 
       // upload not called on provider
       let uploads = provider.getUploads();
@@ -532,6 +586,44 @@ describe('<UploadingEmojiPicker />', () => {
         `${analyticsEmojiPrefix}.upload.cancel`,
         {},
       );
+      spy.mockReset();
+    });
+
+    it('Retry on upload error', async () => {
+      const spy = jest
+        .spyOn(MockEmojiResource.prototype, 'uploadCustomEmoji')
+        .mockImplementation(() => Promise.reject(new Error('upload error')));
+
+      const component = await navigateToUploadPreview(emojiProviderPromise);
+      const provider = await emojiProviderPromise;
+
+      // add emoji
+      const addEmojiButton = helper.findAddEmojiButton(component);
+      addEmojiButton.simulate('click');
+
+      // wait for error
+      await waitUntil(() => helper.errorMessageVisible(component));
+
+      // Check error displayed
+      expect(component.find(EmojiErrorMessage).prop('message')).toEqual(
+        'Upload failed',
+      );
+
+      const retryButton = component
+        .find(EmojiUploadPreview)
+        .find('button')
+        .at(0);
+
+      expect(retryButton.text()).toEqual('Retry');
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      // remove mock to make upload successful
+      // @ts-ignore: prevent TS from complaining about mockRestore function
+      spy.mockRestore();
+
+      retryButton.simulate('click');
+      // wait for upload
+      await waitUntil(() => provider.getUploads().length > 0);
     });
   });
 

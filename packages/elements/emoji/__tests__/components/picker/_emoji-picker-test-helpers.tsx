@@ -216,12 +216,6 @@ export const findEmojiWithId = (component, id) =>
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
 
-export const findUploadError = component =>
-  component.update() && component.find(`.${commonStyles.uploadError}`);
-
-export const uploadErrorVisible = component =>
-  findUploadError(component).length > 0;
-
 export const finishDelete = component =>
   component.update() && component.find(EmojiDeletePreview).length === 0;
 

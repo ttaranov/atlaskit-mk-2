@@ -63,9 +63,6 @@ Object {
       ],
       "type": "paragraph",
     },
-    Object {
-      "type": "paragraph",
-    },
   ],
   "type": "doc",
 }

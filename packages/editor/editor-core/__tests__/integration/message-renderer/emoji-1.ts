@@ -11,6 +11,7 @@ import {
 
 BrowserTestCase(
   'Emoji: should be able to see emoji if typed the name in full',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -50,8 +51,10 @@ BrowserTestCase(
   },
 );
 
+// IE now keying in CAPs on browserstack
 BrowserTestCase(
   'user should not be able to see emoji inside inline code',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
