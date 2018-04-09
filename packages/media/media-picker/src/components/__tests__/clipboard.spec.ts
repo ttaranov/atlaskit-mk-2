@@ -1,8 +1,6 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { ContextFactory } from '@atlaskit/media-core';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
-
-import { ModuleConfig, UploadParams } from '../../domain/config';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
 
@@ -12,18 +10,16 @@ class MockContext implements MediaPickerContext {
   trackEvent(event: UserEvent) {}
 }
 
-class MockConfig implements ModuleConfig {
-  apiUrl: string;
-  authProvider: AuthProvider;
-  uploadParams?: UploadParams;
-}
-
 describe('Clipboard', () => {
   let clipboard: Clipboard;
   let addFile: any;
+  const context = ContextFactory.create({
+    serviceHost: '',
+    authProvider: {} as any,
+  });
 
   beforeEach(done => {
-    clipboard = new Clipboard(new MockContext(), new MockConfig());
+    clipboard = new Clipboard(new MockContext(), context);
     clipboard.activate();
     document.dispatchEvent(new Event('DOMContentLoaded'));
 
