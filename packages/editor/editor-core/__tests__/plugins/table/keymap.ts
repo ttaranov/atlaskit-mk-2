@@ -17,9 +17,21 @@ import {
   tdCursor,
   thEmpty,
   p,
+  defaultSchema,
+  pmNodeBuilder,
 } from '@atlaskit/editor-test-helpers';
+import {
+  tablesPlugin,
+  extensionPlugin,
+  tasksAndDecisionsPlugin,
+  codeBlockPlugin,
+  mediaPlugin,
+  panelPlugin,
+  rulePlugin,
+  listsPlugin,
+} from '../../../src/plugins';
 import { findTable } from 'prosemirror-utils';
-import tablesPlugin from '../../../src/plugins/table';
+import { EditorView } from 'prosemirror-view';
 
 describe('table keymap', () => {
   const event = createEvent('event');
@@ -27,6 +39,24 @@ describe('table keymap', () => {
     createEditor<TableState>({
       doc,
       editorPlugins: [tablesPlugin],
+      editorProps: {
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: tablesPluginKey,
+    });
+  const editorWithPlugins = (doc: any, trackEvent = () => {}) =>
+    createEditor<TableState>({
+      doc,
+      editorPlugins: [
+        tablesPlugin,
+        rulePlugin,
+        listsPlugin,
+        panelPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+        codeBlockPlugin,
+        tasksAndDecisionsPlugin,
+        extensionPlugin,
+      ],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -236,6 +266,68 @@ describe('table keymap', () => {
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.selection.$from.pos).toEqual(nextPos);
         editorView.destroy();
+      });
+
+      const backspace = (view: EditorView) => {
+        const { state: { tr, selection: { $head } } } = view;
+        view.dispatch(tr.delete($head.pos - 1, $head.pos));
+      };
+
+      const excludeNodes = ['doc', 'table', 'applicationCard'];
+
+      Object.keys(defaultSchema.nodes).forEach(nodeName => {
+        const node = defaultSchema.nodes[nodeName];
+        if (
+          node.spec.group !== 'block' ||
+          excludeNodes.indexOf(nodeName) > -1
+        ) {
+          return;
+        }
+
+        if (!pmNodeBuilder[nodeName]) {
+          return;
+        }
+
+        it(`should remove a ${nodeName}, and place the cursor into the last cell`, () => {
+          const { editorView, plugin, refs } = editorWithPlugins(
+            doc(
+              table()(tr(tdEmpty, td({})(p('hello{nextPos}')))),
+              pmNodeBuilder[nodeName],
+            ),
+          );
+          const { nextPos } = refs;
+          const { state } = editorView;
+
+          // work backwards from document end to find out where to put the cursor
+          let last = state.doc.lastChild;
+
+          while (last && !last.isTextblock) {
+            last = last.lastChild;
+          }
+
+          let backspaceAmount = 0;
+          if (last) {
+            // also delete any existing placeholder content that pmNodeBuilder gave us
+            backspaceAmount += last.content.size;
+          }
+
+          // lists need an an extra backspace before cursor moves to table, since we need to
+          // outdent the first item, first.
+          if (nodeName.endsWith('List')) {
+            backspaceAmount++;
+          }
+
+          plugin.props.handleDOMEvents!.focus(editorView, event);
+
+          for (let i = 0; i < backspaceAmount; i++) {
+            sendKeyToPm(editorView, 'Backspace');
+            backspace(editorView);
+          }
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.selection.$from.pos).toEqual(nextPos);
+          editorView.destroy();
+        });
       });
     });
 
