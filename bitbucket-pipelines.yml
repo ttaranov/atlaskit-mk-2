@@ -32,20 +32,52 @@ pipelines:
     - step:
         script:
           - source ./build-setup.sh
+          - git merge master --no-edit
           - bolt install --pure-lockfile
           - yarn build
-          - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
-          - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
-          - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
-          - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
-          - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
-          - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-          - yarn test
-          - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
-        caches:
-          - node
+          - yarn lint
+          - yarn typecheck
+    - parallel:
+        - step:
+            name: Running Jest 1 of 4 chunks
+            script:
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+        - step:
+            name: Running Jest 2 of 4 chunks
+            script:
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+        - step:
+            name: Running Jest 3 of 4 chunks
+            script:
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+        - step:
+            name: Running Jest 4 of 4 chunks
+            script:
+              - yarn global add "bolt@^0.19.2"
+              - bolt
+              - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+
+        #   - source ./build-setup.sh
+        #   - bolt install --pure-lockfile
+        #   - yarn build
+        #   - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+        #   - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
+        #   - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
+        #   - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
+        #   - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+        #   - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
+        #   - yarn test
+        #   - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+        #   - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
+        #   - node build/ci-scripts/update.build.status.with.netlify.link.js
+        # caches:
+        #   - node
 
   custom: # Pipelines that can be scheduled or triggered manually
 
