@@ -4,7 +4,6 @@ import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Renders inline code snippets and code blocks.
-  
   ${(
     <Example
       Component={require('../examples/00-inline-code-basic').default}

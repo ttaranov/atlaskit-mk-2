@@ -14,7 +14,7 @@ import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
-import Heading from './heading';
+import Heading, { HeadingProps } from './heading';
 import Image from './image';
 import InlineExtension, {
   Props as InlineExtensionProps,
@@ -24,7 +24,7 @@ import Media from './media';
 import MediaGroup from './mediaGroup';
 import MediaSingle from './mediaSingle';
 import Mention from './mention';
-import OrderedList from './orderedList';
+import OrderedList, { OrderedListProps } from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
 import Rule from './rule';
@@ -215,6 +215,8 @@ const isEmojiBlock = (pnode: Fragment): boolean => {
 
 export {
   AppCardViewProps,
+  HeadingProps,
+  OrderedListProps,
   ApplicationCard,
   Blockquote,
   BodiedExtension,

@@ -1,6 +1,24 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { IndentLevel } from '../types';
+
+export interface OrderedListProps {
+  indentLevel?: IndentLevel;
+  start?: number;
+}
+
+const StyledOrderedList = styled.ol`
+  margin-left: ${({ indentLevel }: OrderedListProps) =>
+    (indentLevel || 0) * 30}px;
+`;
+
 export default function OrderedList(
-  props: { start?: number } & React.Props<any>,
+  props: OrderedListProps & React.Props<any>,
 ) {
-  return <ol start={props.start}>{props.children}</ol>;
+  const { indentLevel, start, children } = props;
+  return (
+    <StyledOrderedList start={start} indentLevel={indentLevel}>
+      {children}
+    </StyledOrderedList>
+  );
 }
