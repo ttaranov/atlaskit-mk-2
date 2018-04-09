@@ -12,9 +12,11 @@ import * as resultTypes from './components/Results';
 
 // API v0 Exports:
 export {
-  default as NavigationItemGroup,
+  default as AkNavigationItemGroup,
 } from './components/ResultItem/ResultItemGroup';
-export { default as NavigationItem } from './components/ResultItem/ResultItem';
+export {
+  default as AkNavigationItem,
+} from './components/ResultItem/ResultItem';
 export { default as AkQuickSearch } from './components/QuickSearch';
 export { resultTypes as quickSearchResultTypes };
 
