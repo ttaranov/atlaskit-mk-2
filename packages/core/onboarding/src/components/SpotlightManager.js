@@ -16,7 +16,8 @@ type Props = {
   component: ElementType,
 };
 
-// must ensure that the registry instances are the same when react < 16.3
+// NOTE: Instantiate a global registry, as this component will likely be
+// re-rendered by its parent tree
 const registry = new SpotlightRegistry();
 
 export default class SpotlightManager extends PureComponent<Props> {
@@ -29,8 +30,8 @@ export default class SpotlightManager extends PureComponent<Props> {
     const { children, component: Tag } = this.props;
 
     return (
-      <Provider>
-        <Subscribe to={[registry]}>
+      <Provider inject={[registry]}>
+        <Subscribe to={[SpotlightRegistry]}>
           {spotlightRegistry => {
             const dialogIsVisible = spotlightRegistry.hasMounted();
             return (
@@ -52,7 +53,7 @@ export default class SpotlightManager extends PureComponent<Props> {
 }
 
 export const withSpotlightState = (WrappedComponent: any) => (props: any) => (
-  <Subscribe to={[registry]}>
+  <Subscribe to={[SpotlightRegistry]}>
     {spotlightRegistry => (
       <WrappedComponent {...props} spotlightRegistry={spotlightRegistry} />
     )}
