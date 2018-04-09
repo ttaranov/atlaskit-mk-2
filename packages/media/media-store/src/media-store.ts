@@ -24,10 +24,13 @@ import {
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
 
-  createCollection(name: string): Promise<MediaStoreResponse<MediaCollection>> {
+  createCollection(
+    collectionName: string,
+  ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request('/collection', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name: collectionName }),
+      authContext: { collectionName },
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -39,6 +42,7 @@ export class MediaStore {
     collectionName: string,
   ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request(`/collection/${collectionName}`, {
+      authContext: { collectionName },
       headers: {
         Accept: 'application/json',
       },
@@ -50,6 +54,7 @@ export class MediaStore {
     params: MediaStoreGetCollectionItemsPrams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
+      authContext: { collectionName },
       params,
       headers: {
         Accept: 'application/json',
@@ -97,6 +102,7 @@ export class MediaStore {
   ): Promise<MediaStoreResponse<MediaFile>> {
     return this.request('/file/upload', {
       method: 'POST',
+      authContext: { collectionName: params.collection },
       params,
       body: JSON.stringify(body),
       headers: {
@@ -110,7 +116,10 @@ export class MediaStore {
     fileId: string,
     params: MediaStoreGetFileParams = {},
   ): Promise<MediaStoreResponse<MediaFile>> => {
-    return this.request(`/file/${fileId}`, { params }).then(mapResponseToJson);
+    return this.request(`/file/${fileId}`, {
+      params,
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
   };
 
   getFileImageURL = async (
@@ -128,6 +137,7 @@ export class MediaStore {
   ): Promise<void> {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
+      // TODO do we need to get proper authProvider token using collectionName here?
       body: JSON.stringify(body),
       headers: {
         Accept: 'application/json',
@@ -142,8 +152,9 @@ export class MediaStore {
   ): Promise<void> {
     return this.request('file/copy/withToken', {
       method: 'POST',
+      authContext: { collectionName: body.collection }, // Collection name to read from
       body: JSON.stringify(body),
-      params,
+      params, // Contains collection name to write to
     }).then(mapResponseToVoid);
   }
 

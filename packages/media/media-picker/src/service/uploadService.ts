@@ -19,7 +19,6 @@ import { MediaClient, MediaApiError, isTokenError } from './mediaClient';
 import { MediaClientPool } from './mediaClientPool';
 import { MediaApi, MediaFileData } from './mediaApi';
 import { Preview } from '../domain/preview';
-import { UploadParams } from '../domain/config';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,
@@ -31,6 +30,12 @@ type ChunkId = string;
 const MAX_RETRY_COUNT = 1;
 
 export type FileFinalize = () => void;
+
+export interface UploadParams {
+  collection?: string;
+  fetchMetadata?: boolean;
+  autoFinalize?: boolean;
+}
 
 export interface UploadRequestParams {
   collection?: string;

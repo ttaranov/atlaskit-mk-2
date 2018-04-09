@@ -10,10 +10,10 @@ import {
 } from '@atlaskit/media-core';
 import { EventEmitter2 } from 'eventemitter2';
 import { UploadParams } from '../domain/config';
+import { defaultUploadParams } from '../domain/uploadParams';
 import { Preview } from '../domain/preview';
 import { MediaError } from '../domain/error';
 import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
-import { defaultUploadParams } from '../domain/uploadParams';
 import { SmartMediaProgress } from '../domain/progress';
 
 import { MediaApi } from './mediaApi';
@@ -50,6 +50,7 @@ export interface FileConvertingEventPayload {
 }
 
 export interface FileConvertedEventPayload {
+  readonly localId: string;
   readonly fileDetails: FileDetails;
 }
 
@@ -67,6 +68,10 @@ export type UploadServiceEventPayloadTypes = {
   readonly 'file-upload-error': FileUploadErrorEventPayload;
   readonly 'file-dropped': DragEvent;
 };
+
+export type UploadServiceEventListener<
+  E extends keyof UploadServiceEventPayloadTypes
+> = (payload: UploadServiceEventPayloadTypes[E]) => void;
 
 const MAX_FILE_SIZE_FOR_PREVIEW = 10e6; // 10 MB
 
@@ -168,6 +173,20 @@ export class UploadService {
     }
   };
 
+  on<E extends keyof UploadServiceEventPayloadTypes>(
+    event: E,
+    listener: UploadServiceEventListener<E>,
+  ): void {
+    this.emitter.on(event, listener);
+  }
+
+  off<E extends keyof UploadServiceEventPayloadTypes>(
+    event: E,
+    listener: UploadServiceEventListener<E>,
+  ): void {
+    this.emitter.off(event, listener);
+  }
+
   private readonly emit = <E extends keyof UploadServiceEventPayloadTypes>(
     event: E,
     payload: UploadServiceEventPayloadTypes[E],
@@ -212,9 +231,8 @@ export class UploadService {
 
   private readonly onFileSuccess = (expFile: ExpFile, fileId: string) => {
     const errorCallback = this.onFileError.bind(this, expFile);
-    this.copyFileToUsersCollection(fileId, this.uploadParams.collection).catch(
-      errorCallback,
-    );
+    const collectionName = this.uploadParams.collection;
+    this.copyFileToUsersCollection(fileId, collectionName).catch(errorCallback);
 
     const publicMediaFile = this.mapExpFileToPublicMediaFile(expFile, fileId);
     this.emit('file-converting', {
@@ -222,7 +240,7 @@ export class UploadService {
     });
 
     this.context
-      .getMediaItemProvider(fileId, 'file')
+      .getMediaItemProvider(fileId, 'file', collectionName)
       .observable()
       .subscribe({
         next: (fileItem: FileItem) => {
@@ -235,6 +253,7 @@ export class UploadService {
           ) {
             // TODO we emit 'file-converted' when it failed?
             this.emit('file-converted', {
+              localId: publicMediaFile.id,
               fileDetails,
             });
           }
@@ -259,6 +278,7 @@ export class UploadService {
   };
 
   private readonly onFileError = (file: ExpFile, reason: Error) => {
+    console.log(file, reason);
     // this.emit('file-upload-error', {
     // TODO we dont have proper errors comming from chunkinator atm
     // });

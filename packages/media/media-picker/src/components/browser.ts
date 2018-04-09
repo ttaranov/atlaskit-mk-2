@@ -17,7 +17,7 @@ export interface BrowserConstructor {
 }
 
 export class Browser extends LocalUploadComponent {
-  private browseElem: HTMLElement;
+  private browseElem: HTMLInputElement;
 
   constructor(
     context: MediaPickerContext,
@@ -26,7 +26,7 @@ export class Browser extends LocalUploadComponent {
   ) {
     super(context, config);
 
-    this.browseElem = document.createElement('INPUT');
+    this.browseElem = document.createElement('INPUT') as HTMLInputElement;
     this.browseElem.setAttribute('type', 'file');
     this.browseElem.style.display = 'none';
 

@@ -20,14 +20,12 @@
   "dependencies": {
     "@types/query-string": "^4.3.1",
     "chunkinator": "^0.0.15",
-    "p-queue": "^2.3.0",
     "query-string": "^4.3.2",
     "rusha": "^0.8.13"
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^11.0.0",
     "@types/fetch-mock": "^5.12.1",
-    "@types/p-queue": "^2.3.1",
     "fetch-mock": "^5.12.1",
     "styled-components": "1.4.6 - 3",
     "whatwg-fetch": "^2.0.3"

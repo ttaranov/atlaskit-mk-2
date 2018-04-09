@@ -36,8 +36,22 @@ export const PopupEventsWrapper: ComponentClass<
   overflow: auto;
 `;
 
-export const PreviewImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+export interface PreviewImageProps {
+  fadedOut: boolean;
+}
+export const PreviewImage: ComponentClass<
+  ImgHTMLAttributes<{}> & PreviewImageProps
+> = styled.img`
   width: 300px;
+  ${({ fadedOut }: PreviewImageProps) => `opacity: ${fadedOut ? 0.3 : 1};`};
+`;
+
+export const PreviewImageWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: relative;
+  float: left;
+  margin-right: 15px;
 `;
 
 export const DropzoneContainer: ComponentClass<
@@ -73,7 +87,16 @@ export const DropzonePreviewsWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   overflow: auto;
-  width: 300px;
+`;
+
+export const ProgressCircleWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  width: 150px;
+  height: 150px;
 `;
 
 export const DropzoneItemsInfo: ComponentClass<HTMLAttributes<{}>> = styled.div`

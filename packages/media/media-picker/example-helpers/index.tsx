@@ -1,10 +1,26 @@
 import * as React from 'react';
-import { PreviewImage } from './styled';
+import {
+  PreviewImage,
+  PreviewImageWrapper,
+  ProgressCircleWrapper,
+} from './styled';
+import { isImagePreview, Preview } from '../src/domain/preview';
+import Circle from 'react-circle';
 
 export type AuthEnvironment = 'asap' | 'client';
 
-export const renderPreviewImage = ({ preview, file }, key) => {
-  if (!preview || !preview.src) {
+export interface PreviewData {
+  readonly fileId: string;
+  readonly preview: Preview;
+  isProcessed: boolean;
+  uploadingProgress: number;
+}
+
+export const renderPreviewImage = (
+  { fileId, preview, isProcessed, uploadingProgress }: PreviewData,
+  key,
+) => {
+  if (!isImagePreview(preview)) {
     return;
   }
 
@@ -16,9 +32,19 @@ export const renderPreviewImage = ({ preview, file }, key) => {
   ) : null;
 
   return (
-    <div key={key}>
+    <PreviewImageWrapper key={key}>
       {dimensionsInfo}
-      <PreviewImage src={preview.src} id={file.id} />
-    </div>
+      <PreviewImage fadedOut={!isProcessed} src={preview.src} id={fileId} />
+      {!isProcessed ? (
+        <ProgressCircleWrapper>
+          <Circle
+            textColor="#172B4D"
+            progressColor="#0052CC"
+            bgColor="#DEEBFF"
+            progress={uploadingProgress}
+          />
+        </ProgressCircleWrapper>
+      ) : null}
+    </PreviewImageWrapper>
   );
 };

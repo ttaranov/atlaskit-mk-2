@@ -3,12 +3,11 @@ import {
   FilePreviewUpdateEventPayload,
   FileConvertedEventPayload,
   FileConvertingEventPayload,
-  FileFinalizeReadyEventPayload,
   FilesAddedEventPayload,
   FileUploadErrorEventPayload,
   FileUploadingEventPayload,
   UploadService,
-} from '../service/uploadService';
+} from '../service/newUploadService';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
 import { ModuleConfig, UploadParams } from '../domain/config';
@@ -35,14 +34,9 @@ export class LocalUploadComponent<
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
     this.uploadService.on('file-uploading', this.onFileUploading);
-    this.uploadService.on('file-finalize-ready', this.onFileFinalizeReady);
     this.uploadService.on('file-converting', this.onFileConverting);
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
-  }
-
-  public cancel(uniqueIdentifier?: string): void {
-    this.uploadService.cancel(uniqueIdentifier);
   }
 
   public setUploadParams(uploadParams: UploadParams): void {
@@ -67,22 +61,12 @@ export class LocalUploadComponent<
     this.emitUploadProgress(file, progress.toJSON());
   };
 
-  private onFileFinalizeReady = ({
-    file,
-    finalize,
-  }: FileFinalizeReadyEventPayload): void => {
-    this.emitUploadFinalizeReady(file, finalize);
-  };
-
   private onFileConverting = ({ file }: FileConvertingEventPayload): void => {
     this.emitUploadProcessing(file);
   };
 
-  private onFileConverted = ({
-    file,
-    metadata,
-  }: FileConvertedEventPayload): void => {
-    this.emitUploadEnd(file, metadata);
+  private onFileConverted = (payload: FileConvertedEventPayload): void => {
+    this.emitUploadEnd(payload.fileDetails, payload.localId);
   };
 
   private onUploadError = ({

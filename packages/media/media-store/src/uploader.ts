@@ -1,6 +1,5 @@
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 import * as Rusha from 'rusha';
-import * as PQueue from 'p-queue';
 
 import { MediaStore } from './media-store';
 import { MediaApiConfig } from './models/auth';
@@ -58,8 +57,15 @@ export const uploadFile = async (
     .then(response => response.data[0].id);
   const uploadingFunction = (chunk: Chunk) =>
     store.uploadChunk(chunk.hash, chunk.blob);
+
   let offset = 0;
-  const queue = new PQueue({ concurrency: 1 });
+  const processingFunction = async (chunks: Chunk[]) => {
+    await store.appendChunksToUpload(await deferredUploadId, {
+      chunks: hashedChunks(chunks),
+      offset,
+    });
+    offset += chunks.length;
+  };
 
   await chunkinator(
     content,
@@ -67,23 +73,15 @@ export const uploadFile = async (
       hashingFunction,
       hashingConcurrency: 5,
       probingBatchSize: 100,
-      chunkSize: 4 * 1024 * 1024,
+      chunkSize: 0.5 * 1024 * 1024,
       uploadingConcurrency: 3,
-      progressBatchSize: 1000,
       uploadingFunction,
       probingFunction: createProbingFunction(store),
+      processingBatchSize: 1000,
+      processingFunction,
     },
     {
-      async onProgress(progress, chunks) {
-        queue.add(async () => {
-          await store.appendChunksToUpload(await deferredUploadId, {
-            chunks: hashedChunks(chunks),
-            offset,
-          });
-
-          offset += chunks.length;
-        });
-
+      onProgress(progress: number) {
         if (callbacks && callbacks.onProgress) {
           callbacks.onProgress(progress);
         }
@@ -91,7 +89,7 @@ export const uploadFile = async (
     },
   );
 
-  const [uploadId] = await Promise.all([deferredUploadId, queue.onIdle()]);
+  const uploadId = await deferredUploadId;
 
   const { data: { id: fileId } } = await store.createFileFromUpload(
     { uploadId, name, mimeType },

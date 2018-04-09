@@ -141,11 +141,6 @@ export class App extends Component<AppProps, AppState> {
       serviceHost: apiUrl,
       authProvider: userAuthProvider,
     });
-
-    onStartApp(uploadId => {
-      this.mpBrowser.cancel(uploadId);
-      this.mpDropzone.cancel(uploadId);
-    });
   }
 
   componentWillReceiveProps({ isVisible }: Readonly<AppProps>): void {
