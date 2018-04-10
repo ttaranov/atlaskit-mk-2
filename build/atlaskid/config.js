@@ -49,6 +49,7 @@ const elementsTeam = [
   'jhoarau',
   'ttjandra',
   'pcurren',
+  'lgpereira',
 ];
 // Jono is a special case atm, and his team doesn't have a name
 const jono = ['jonathan_yeo'];
