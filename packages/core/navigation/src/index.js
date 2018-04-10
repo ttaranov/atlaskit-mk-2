@@ -1,7 +1,6 @@
 // @flow
 
 import * as presets from './theme/presets';
-import * as resultTypes from './components/js/quick-search/results';
 
 export { default } from './components/js/NavigationWithTheme';
 export {
@@ -41,14 +40,10 @@ export {
   default as AkGlobalNavigation,
 } from './components/js/GlobalNavigation';
 export { default as AkGlobalItem } from './components/js/GlobalItem';
-export { default as AkSearch } from './components/js/Search';
-export {
-  default as AkQuickSearch,
-} from './components/js/quick-search/QuickSearch';
+
 export { createGlobalTheme } from './theme/create-provided-theme';
 
 export { presets as presetThemes };
-export { resultTypes as quickSearchResultTypes };
 
 export { default as Skeleton } from './components/js/skeleton';
 
