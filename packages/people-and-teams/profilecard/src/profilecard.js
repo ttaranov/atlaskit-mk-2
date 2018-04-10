@@ -53,8 +53,6 @@ type Props = {
 
 export default class Profilecard extends PureComponent<Props, void> {
   static defaultProps = {
-    isCurrentUser: false,
-    isCensored: false,
     isActive: true,
     isBot: false,
     isNotMentionable: false,
