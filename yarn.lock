@@ -10992,28 +10992,21 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scroll-captor@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-scroll-captor/-/react-scroll-captor-1.0.1.tgz#3f912df72ab8e7f46d4fa27d8707131ffe59b353"
-  dependencies:
-    react-node-resolver "^1.0.1"
-
 react-scrolllock@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-2.0.2.tgz#9752f4c1896d1967ade2fab985d5725d448a0600"
   dependencies:
     exenv "^1.2.2"
 
-react-select@2.0.0-alpha.8:
-  version "2.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.8.tgz#c6e4e18abc7871f78cd6d10d5a8ab1931660d4a6"
+react-select@^2.0.0-alpha.9:
+  version "2.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.9.tgz#66942aa39ca01e8596b80f2856180cc2f01087a4"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
-    react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"
 
 react-syntax-highlighter@^5.5.0:
