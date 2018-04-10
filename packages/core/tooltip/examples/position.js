@@ -42,7 +42,7 @@ const CenterDiv = styled.div`
   position: absolute;
   width: 500px;
   height: 200px;
-  zIndex: 1,
+  z-index: 1;
   text-align: center;
 `;
 
@@ -84,7 +84,6 @@ export default class PositionExample extends Component<Props, State> {
   render() {
     const position = VALID_POSITIONS[this.state.position];
     const viewportStyle = VIEWPORT_POSITIONS[this.state.viewportPosition];
-    console.log(viewportStyle);
     const { positionType } = this.state;
 
     const tooltipPosition = positionType === 'standard' ? position : 'mouse';

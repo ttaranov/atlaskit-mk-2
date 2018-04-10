@@ -33,7 +33,7 @@ type Props = {
   onMouseOut?: MouseEvent => void,
   /** Function to be called when a mouse enters the target */
   onMouseOver?: MouseEvent => void,
-  /** Where the tooltip should appear relative to its target */
+  /** Where the tooltip should appear relative to its target. If set to 'mouse', tooltip will display next to the mouse instead. */
   position: PositionType,
   /** Replace the wrapping element */
   tag: string,
@@ -108,13 +108,6 @@ class Tooltip extends Component<Props, State> {
       ? this.wrapper.children[0]
       : this.wrapper;
 
-    // NOTE getPosition returns:
-    // position Enum(top | left | bottom | right | mouse)
-    //   - adjusted for edge collision
-    // mousePosition Enum(top | left | bottom | right)
-    //   - adjusted for edge collision and used when `position` === 'mouse'
-    // coordinates: Object(left: number, top: number)
-    //   - coordinates passed to Transition, also adjusted for edge collision
     const positionData = getPosition({
       position,
       target,
@@ -203,9 +196,9 @@ class Tooltip extends Component<Props, State> {
     if (onMouseOut) onMouseOut(event);
   };
 
-  // Update mouse coordinates for use when position is 'mouse'
+  // Update mouse coordinates, used when position is 'mouse'.
   // We are not debouncing/throttling this function because we aren't causing any
-  // re-renders or doing any intensive calculations, we're just updating a value.
+  // re-renders or performaing any intensive calculations, we're just updating a value.
   // React also doesn't play nice debounced DOM event handlers because they pool their
   // SyntheticEvent objects. Need to use event.persist as a workaround - https://stackoverflow.com/a/24679479/893630
   handleMouseMove = (event: MouseEvent) => {

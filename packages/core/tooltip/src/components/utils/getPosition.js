@@ -117,15 +117,16 @@ function adjustPosition(originalPosition, positionCoords, gutter) {
   const adjustedPosition = shouldFlip ? flippedPosition : originalPosition;
 
   // Check secondary axis, for positional shift
-  const shiftedCoord = {};
+  const shiftedCoords = {};
   const secondaryPositions = Object.keys(FLIPPED_POSITION).filter(
     position => position !== originalPosition && position !== flippedPosition,
   );
 
   secondaryPositions.forEach(position => {
-    if (!viewportBounds[adjustedPosition][position]) {
+    const inViewport = viewportBounds[adjustedPosition][position];
+    if (!inViewport) {
       Object.assign(
-        shiftedCoord,
+        shiftedCoords,
         shiftCoord(position, positionCoords[adjustedPosition], gutter),
       );
     }
@@ -133,12 +134,12 @@ function adjustPosition(originalPosition, positionCoords, gutter) {
 
   // adjust positions with flipped position on main axis + shifted position on secondary axis
   const left =
-    shiftedCoord.left != null
-      ? shiftedCoord.left
+    shiftedCoords.left != null
+      ? shiftedCoords.left
       : positionCoords[adjustedPosition].left;
   const top =
-    shiftedCoord.top != null
-      ? shiftedCoord.top
+    shiftedCoords.top != null
+      ? shiftedCoords.top
       : positionCoords[adjustedPosition].top;
 
   return { left, top, adjustedPosition };
@@ -248,6 +249,12 @@ function getMousePosition({ mousePosition, tooltip, mouseCoordinates }) {
   };
 }
 
+/**
+ * Gets the coordinates and adjusted position of a tooltip.
+ * Position will be flipped on the primary axis with respect to the initial position
+ * if there is not enough space in the viewport.
+ * Coordinates will be shifted along the secondary axis to render within viewport.
+ */
 export default function getPosition({
   position,
   target,

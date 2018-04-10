@@ -30,8 +30,6 @@
   "devDependencies": {
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/field-base": "^9.0.0",
-    "@atlaskit/field-range": "^3.0.0",
     "@atlaskit/icon": "^11.0.0"
   },
   "keywords": [
