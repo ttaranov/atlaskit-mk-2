@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 11.0.4
+- [patch] FS-1644 reactions ui changes [70ccf94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70ccf94)
+
 ## 11.0.3
 - [patch] FS-1868 always add new reactions to the end of the list [70fdbeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70fdbeb)
 
