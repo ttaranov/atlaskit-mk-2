@@ -97,7 +97,7 @@ const Wrapper = styled.div`
   transition: background-color ${TRANSITION_DURATION};
 `;
 
-const Toggle = styled.div`
+export const Toggle = styled.div`
   align-items: center;
   cursor: pointer;
   display: flex;
@@ -107,7 +107,7 @@ const Toggle = styled.div`
 `;
 
 // NOTE: use of important necessary to override element targeted headings
-const ToggleTitle = styled.h4`
+export const ToggleTitle = styled.h4`
   color: ${toggleColor} !important;
   margin: 0;
 `;
