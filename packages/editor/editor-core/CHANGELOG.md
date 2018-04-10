@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 68.1.4
+
 ## 68.1.3
 - [patch] ED-4283 Fix broken scroll behavior in full-page appearance [8110aa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8110aa0)
 
