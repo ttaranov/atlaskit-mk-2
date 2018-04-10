@@ -1,31 +1,18 @@
 // @flow
 import React from 'react';
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import AkProfilecardResourced, { modifyResponse } from '../src';
+import AkProfilecardResourced from '../src';
+import { getMockProfileClient } from './helper/util';
 
-const { profiles } = profilecardUtils;
-
-class MockClient {
-  getProfile = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const profileData = modifyResponse(profiles[1]);
-        profileData.isCensored = false;
-        resolve(profileData);
-      }, 1500);
-    });
-  };
-}
-
-const client = new MockClient();
+const mockClient = getMockProfileClient(10, 0);
 // With a real client this would look like:
 // const client = new AkProfileClient({ url: 'http://api/endpoint' });
 
 export default function Example() {
   return (
     <AkProfilecardResourced
-      userId="dummy-user"
+      userId="1"
       cloudId="dummy-cloud"
+      resourceClient={mockClient}
       actions={[
         {
           label: 'View profile',
@@ -33,7 +20,6 @@ export default function Example() {
           callback: () => {},
         },
       ]}
-      resourceClient={client}
     />
   );
 }
