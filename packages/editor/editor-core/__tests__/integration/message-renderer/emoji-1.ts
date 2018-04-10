@@ -69,7 +69,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should close emoji picker on Escape',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -91,6 +91,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to click on the emoji button and select emoji',
+  { skip: ['ie'] },
   async client => {
     const emojiButton = '[aria-label="Insert emoji (:)"]';
     const sweatSmile = '[aria-label=":sweat_smile:"]';

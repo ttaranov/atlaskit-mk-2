@@ -11,6 +11,7 @@ editors.forEach(editor => {
     `Toolbar: should be able to select Clear Formatting on toolbar for ${
       editor.name
     } editor`,
+    { skip: ['ie'] },
     async client => {
       const browser = await new Page(client);
       await browser.goto(editor.path);
