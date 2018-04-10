@@ -7,7 +7,6 @@ import { Definition as MediaSingle } from './media-single';
 export interface ListItemArray
   extends Array<Paragraph | OrderedList | BulletList | MediaSingle> {
   0: Paragraph | MediaSingle;
-  1: Paragraph | OrderedList | BulletList | MediaSingle;
 }
 
 /**
