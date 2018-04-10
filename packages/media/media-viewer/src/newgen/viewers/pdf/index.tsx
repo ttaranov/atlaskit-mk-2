@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
 import { PDFPreview } from '../../domain';
 import { PDFWrapper } from '../../styled';
 import pdfViewerLoader from './pdfLoader';
@@ -8,29 +7,23 @@ export type Props = {
   previewData: PDFPreview;
 };
 
-export type State = {
-  PDFComponent?: ComponentClass<any>
-}
+export class PDFViewer extends React.PureComponent<Props, {}> {
 
-export class PDFViewer extends React.PureComponent<Props, State> {
-
-  state: State = { }
+  static PDFComponent;
 
   componentDidMount() {
-    this.loadPDFViewer(this.props)
-  }
-
-  componentWillReceiveProps(newProps: Props) {
-    this.loadPDFViewer(newProps);
+    if (!PDFViewer.PDFComponent) {
+      this.loadPDFViewer(this.props)
+    }
   }
 
   private loadPDFViewer = async (props: Props) => {
-    const PDFComponent = await pdfViewerLoader();
-    this.setState({ PDFComponent })
+    PDFViewer.PDFComponent = await pdfViewerLoader();
+    this.forceUpdate();
   };
 
   render () {
-    const { PDFComponent } = this.state;
+    const { PDFComponent } = PDFViewer;
     const { previewData } = this.props;
     return (
       PDFComponent ?
