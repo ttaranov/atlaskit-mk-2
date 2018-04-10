@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ComponentClass } from 'react';
 import {
-  AkNavigationItemGroup,
-  quickSearchResultTypes,
-} from '@atlaskit/navigation';
+  ResultItemGroup,
+  PersonResult,
+  ResultBase,
+} from '@atlaskit/quick-search';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
@@ -11,8 +12,6 @@ import { Result, ResultType } from '../model/Result';
 import ObjectResult from './ObjectResult';
 import SearchError from './SearchError';
 import EmptyState from './EmptyState';
-
-const { PersonResult, ResultBase } = quickSearchResultTypes;
 
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
@@ -75,39 +74,39 @@ const renderRecent = (results: Result[]) => {
   }
 
   return (
-    <AkNavigationItemGroup
+    <ResultItemGroup
       title="Recently viewed"
       key="recent"
       test-selector="recent"
     >
       {resultsToComponents(results)}
-    </AkNavigationItemGroup>
+    </ResultItemGroup>
   );
 };
 
 const renderJira = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="Jira issues" key="jira" test-selector="jira">
+  <ResultItemGroup title="Jira issues" key="jira" test-selector="jira">
     {resultsToComponents(results)}
     {searchJiraItem(query)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderConfluence = (results: Result[], query: string) => (
-  <AkNavigationItemGroup
+  <ResultItemGroup
     title="Confluence pages and blogs"
     key="confluence"
     test-selector="confluence"
   >
     {resultsToComponents(results)}
     {searchConfluenceItem(query)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="People" key="people" test-selector="people">
+  <ResultItemGroup title="People" key="people" test-selector="people">
     {resultsToComponents(results)}
     {searchPeopleItem()}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderEmptyState = (query: string) => (
@@ -138,7 +137,7 @@ export interface Props {
   peopleResults: Result[];
 }
 
-// TODO: We can only make this a react component once quick-search is fixed. Currently, AkNavigationItemGroup must be a direct child of
+// TODO: We can only make this a react component once quick-search is fixed. Currently, ResultItemGroup must be a direct child of
 // QuickSearch. This is required for QuickSearch's keyboard controls to work
 export default function searchResults(props: Props) {
   const {

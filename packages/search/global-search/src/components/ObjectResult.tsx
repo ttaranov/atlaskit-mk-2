@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
-import { quickSearchResultTypes } from '@atlaskit/navigation';
+import { ResultBase } from '@atlaskit/quick-search';
 
-const { ResultBase } = quickSearchResultTypes;
 const OBJECT_RESULT_TYPE = 'object';
 
 export interface Props {
