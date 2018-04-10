@@ -29,7 +29,7 @@ const defaultAuthParameter: AuthParameter = {
 export const createStorybookContext = (
   authParameter: AuthParameter = defaultAuthParameter,
 ): Context => {
-  const scopes = {
+  const scopes: { [resource: string]: string[] } = {
     'urn:filestore:file:*': ['read'],
     'urn:filestore:chunk:*': ['read'],
   };

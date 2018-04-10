@@ -54,6 +54,7 @@ import {
   placeholder,
   decisionList,
   decisionItem,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -61,6 +62,11 @@ import {
   CONFLUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
 } from '../../src';
 import { mapPanelTypeToPm } from '../../src/utils';
+import {
+  akColorG50,
+  akColorB50,
+  akColorR50,
+} from '../../../editor-core/node_modules/@atlaskit/util-shared-styles';
 
 chai.use(chaiPlugin);
 
@@ -68,28 +74,46 @@ const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
 const encode = (node: PMNode) => transformer.encode(node);
 
-const checkBuilder = (
-  fn: any,
+const checkFromCxhtmlToADF = (
   description: string,
   cxhtml: string,
-  doc: PMNode,
-) => {
-  fn(`parses CXHTML: ${description}`, () => {
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`parses CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
     const actual = parse(cxhtml);
-    expect(actual).to.deep.equal(doc);
+    expect(actual).to.deep.equal(docNode);
   });
 
-  fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(doc));
-    expect(roundTripped).to.deep.equal(doc);
+const checkFromADFtoADF = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+) =>
+  it(`round-trips ADF: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = parse(encode(docNode));
+    expect(roundTripped).to.deep.equal(docNode);
   });
-};
+
+const checkFromADFtoCxhtml = (
+  description: string,
+  doc: (schema: Schema) => PMNode,
+  cxhtml: string,
+) =>
+  it(`converts ADF to CXHTML: ${description}`, () => {
+    const docNode = doc(schema);
+    const roundTripped = encode(docNode);
+    expect(roundTripped).to.deep.equal(cxhtml);
+  });
 
 const check = (
   description: string,
   cxhtml: string,
   doc: (schema: Schema) => PMNode,
-) => checkBuilder(it, description, cxhtml, doc(schema));
+) => {
+  checkFromCxhtmlToADF(description, cxhtml, doc);
+  checkFromADFtoADF(description, doc);
+};
 
 describe('ConfluenceTransformer: encode - parse:', () => {
   describe('empty', () => {
@@ -608,7 +632,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><td><p>1</p></td><td><p>2</p></td></tr><tr><th><p>two</p></th><td><p>3</p></td><td><p>4</p></td></tr></tbody></table>',
         doc(
-          table(
+          table()(
             tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
             tr(th({})(p('two')), td({})(p('3')), td({})(p('4'))),
           ),
@@ -619,7 +643,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table>',
         doc(
-          table(
+          table()(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3'))),
           ),
@@ -630,9 +654,203 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row and header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><th><p>four</p></th><td><p>1</p></td><td><p>2</p></td></tr></tbody></table>',
         doc(
-          table(
+          table()(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(th({})(p('four')), td({})(p('1')), td({})(p('2'))),
+          ),
+        ),
+      );
+
+      let col1 = 340;
+      check(
+        'with fixed table and rowspan but missing col2',
+        `<table class="wrapped"><colgroup><col style="width: ${col1}px;" /><col /></colgroup><tbody><tr><th>1</th><th>2</th></tr><tr><td>a</td><td>fdfdfddfdffdfdfdfdfdf</td></tr><tr><td>c</td><td rowspan="2">dkjlkjlklkjlkj</td></tr><tr><td colspan="1"></td></tr></tbody></table>`,
+        doc(
+          table()(
+            tr(th({ colwidth: [col1] })(p('1')), th()(p('2'))),
+            tr(
+              td({ colwidth: [col1] })(p('a')),
+              td()(p('fdfdfddfdffdfdfdfdfdf')),
+            ),
+            tr(
+              td({ colwidth: [col1] })(p('c')),
+              td({ rowspan: 2 })(p('dkjlkjlklkjlkj')),
+            ),
+            tr(td({ colwidth: [col1] })(p(''))),
+          ),
+        ),
+      );
+
+      let col2 = 977;
+      check(
+        'with fixed table and rowspan',
+        `<table class="fixed-table wrapped"><colgroup><col style="width: ${col1}px;" /><col style="width: ${col2}px;" /></colgroup><tbody><tr><th>1</th><th>2</th></tr><tr><td>a</td><td>fdfdfddfdffdfdfdfdfdf</td></tr><tr><td>c</td><td rowspan="2">dkjlkjlklkjlkj</td></tr><tr><td colspan="1"></td></tr></tbody></table>`,
+        doc(
+          table()(
+            tr(
+              th({ colwidth: [col1] })(p('1')),
+              th({ colwidth: [col2] })(p('2')),
+            ),
+            tr(
+              td({ colwidth: [col1] })(p('a')),
+              td({ colwidth: [col2] })(p('fdfdfddfdffdfdfdfdfdf')),
+            ),
+            tr(
+              td({ colwidth: [col1] })(p('c')),
+              td({ colwidth: [col2], rowspan: 2 })(p('dkjlkjlklkjlkj')),
+            ),
+            tr(td({ colwidth: [col1] })(p(''))),
+          ),
+        ),
+      );
+
+      function calcColumnWidths(
+        editorWidthPx: number,
+        tableWidthPct: number,
+        columns: number[],
+      ): number[] {
+        const relativeTableWidthPx = Math.round(
+          tableWidthPct * (editorWidthPx / 100),
+        );
+        return columns.map(relativeColumnPct =>
+          Math.round(relativeTableWidthPx * (relativeColumnPct / 100)),
+        );
+      }
+
+      // for relative tables we translate them to pixels, which is relative to the editor viewport
+      const EDITOR_WIDTH = 680;
+
+      const table1WidthPct = 46;
+      const table1ColumnPct = [21, 4, 74];
+      const table1ColumnPx = calcColumnWidths(
+        EDITOR_WIDTH,
+        table1WidthPct,
+        table1ColumnPct,
+      );
+
+      check(
+        'with relative table and colspan',
+        `<table class="relative-table wrapped" style="width: ${table1WidthPct}%;"><colgroup><col style="width: ${
+          table1ColumnPct[0]
+        }%;" /><col style="width: ${
+          table1ColumnPct[1]
+        }%;" /><col style="width: ${
+          table1ColumnPct[2]
+        }%;" /></colgroup><tbody><tr><th>1</th><th>2</th><th>3</th></tr><tr><td colspan="2"><br />asd</td><td>asd</td></tr><tr><td>d</td><td colspan="2">asd</td></tr></tbody></table>`,
+        doc(
+          table()(
+            tr(
+              th({ colwidth: [table1ColumnPx[0]] })(p('1')),
+              th({ colwidth: [table1ColumnPx[1]] })(p('2')),
+              th({ colwidth: [table1ColumnPx[2]] })(p('3')),
+            ),
+            tr(
+              td({
+                colwidth: [table1ColumnPx[0], table1ColumnPx[1]],
+                colspan: 2,
+              })(p(hardBreak(), 'asd')),
+              td({ colwidth: [table1ColumnPx[2]] })(p('asd')),
+            ),
+            tr(
+              td({ colwidth: [table1ColumnPx[0]] })(p('d')),
+              td({
+                colwidth: [table1ColumnPx[1], table1ColumnPx[2]],
+                colspan: 2,
+              })(p('asd')),
+            ),
+          ),
+        ),
+      );
+
+      const table2WidthPct = 31;
+      const table2ColumnPct = [23, 46, 22];
+      const table2ColumnPx = calcColumnWidths(
+        EDITOR_WIDTH,
+        table2WidthPct,
+        table2ColumnPct,
+      );
+
+      check(
+        'with numbering column and background colors',
+        `<table class="relative-table wrapped" style="width: ${table2WidthPct}%;"><colgroup><col /><col style="width: ${
+          table2ColumnPct[0]
+        }%;" /><col style="width: ${
+          table2ColumnPct[1]
+        }%;" /><col style="width: ${
+          table2ColumnPct[2]
+        }%;" /></colgroup><tbody><tr><th class="numberingColumn"><br /></th><th>one</th><th>two</th><th>three</th></tr><tr><td class="numberingColumn">1</td><td>14</td><td>2</td><td>3</td></tr><tr><td class="numberingColumn">2</td><td><br /></td><td class="highlight-green" data-highlight-colour="green">5</td><td class="highlight-green" data-highlight-colour="green"><p>6</p></td></tr><tr><td class="numberingColumn" colspan="1">3</td><td colspan="1"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td></tr><tr><th class="numberingColumn">123</th><th colspan="1">qwe</th><th colspan="1"><br /></th><th colspan="1"><p><br /></p></th></tr><tr><td class="numberingColumn" colspan="1">4</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn" colspan="1">5</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">6</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">7</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr></tbody></table>`,
+        doc(
+          table({ isNumberColumnEnabled: true })(
+            tr(
+              th({ colwidth: [40] })(p(hardBreak())),
+              th({ colwidth: [table2ColumnPx[0]] })(p('one')),
+              th({ colwidth: [table2ColumnPx[1]] })(p('two')),
+              th({ colwidth: [table2ColumnPx[2]] })(p('three')),
+            ),
+            tr(
+              td({ colwidth: [40] })(p('1')),
+              td({ colwidth: [table2ColumnPx[0]] })(p('14')),
+              td({ colwidth: [table2ColumnPx[1]] })(p('2')),
+              td({ colwidth: [table2ColumnPx[2]] })(p('3')),
+            ),
+            tr(
+              td({ colwidth: [40] })(p('2')),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({
+                colwidth: [table2ColumnPx[1]],
+                background: akColorG50.toLowerCase(),
+              })(p('5')),
+              td({
+                colwidth: [table2ColumnPx[2]],
+                background: akColorG50.toLowerCase(),
+              })(p('6')),
+            ),
+            tr(
+              td({ colwidth: [40] })(p('3')),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({
+                colwidth: [table2ColumnPx[1]],
+                background: akColorB50.toLowerCase(),
+              })(p(hardBreak())),
+              td({
+                colwidth: [table2ColumnPx[2]],
+                background: akColorB50.toLowerCase(),
+              })(p(hardBreak())),
+            ),
+            tr(
+              th({ colwidth: [40] })(p('123')),
+              th({ colwidth: [table2ColumnPx[0]] })(p('qwe')),
+              th({ colwidth: [table2ColumnPx[1]] })(p(hardBreak())),
+              th({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
+            ),
+            tr(
+              td({ colwidth: [40] })(p('4')),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[1]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
+            ),
+            tr(
+              td({ colwidth: [40] })(p('5')),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[1]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
+            ),
+            tr(
+              td({ colwidth: [40], background: akColorR50.toLowerCase() })(
+                p('6'),
+              ),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[1]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
+            ),
+            tr(
+              td({ colwidth: [40], background: akColorR50.toLowerCase() })(
+                p('7'),
+              ),
+              td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[1]] })(p(hardBreak())),
+              td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
+            ),
           ),
         ),
       );
@@ -877,7 +1095,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     );
 
     describe('inlineExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -888,10 +1106,18 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
       );
+
+      checkFromADFtoCxhtml(
+        'basic',
+        doc(p(inlineExtension(attrs)())),
+        `<p><fab:adf><![CDATA[${JSON.stringify(
+          inlineExtension(attrs)()(schema).toJSON(),
+        )}]]></fab:adf></p>`,
+      );
     });
 
     describe('bodyless', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -905,7 +1131,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     });
 
     describe('bodiedExtension', () => {
-      check(
+      checkFromCxhtmlToADF(
         'basic',
         `<ac:structured-macro ac:name="${
           attrs.extensionKey
@@ -967,18 +1193,43 @@ describe('ConfluenceTransformer: encode - parse:', () => {
   describe('fab:adf', () => {
     check(
       'p encoded in fab:adf tag between two p',
-      String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"storage\"}]}]]></fab:adf><p>world</p>`,
+      String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"paragraph","content":[{"type":"text","text":"storage"}]}]]></fab:adf><p>world</p>`,
       doc(p('hello'), p('storage'), p('world')),
     );
 
     describe('decisionList', () => {
       check(
         'decisionList with single decided item between p',
-        String.raw`<p>hello</p><fab:adf><![CDATA[{\"type\":\"decisionList\",\"attrs\":{\"localId\":\"test-list-id\"},\"content\":[{\"type\":\"decisionItem\",\"attrs\":{\"localId\":\"test-id\",\"state\":\"DECIDED\"},\"content\":[{\"type\":\"text\",\"text\":\"Heading\"}]}]}]]></fab:adf><p>world</p>`,
+        String.raw`<p>hello</p><fab:adf><![CDATA[{"type":"decisionList","attrs":{"localId":"test-list-id"},"content":[{"type":"decisionItem","attrs":{"localId":"test-id","state":"DECIDED"},"content":[{"type":"text","text":"Heading"}]}]}]]></fab:adf><p>world</p>`,
         doc(
           p('hello'),
           decisionList({ localId: 'test-list-id' })(
             decisionItem({ localId: 'test-id', state: 'DECIDED' })('Heading'),
+          ),
+          p('world'),
+        ),
+      );
+    });
+
+    describe('link', () => {
+      check(
+        'renamed link to a confluence space, between p',
+        String.raw`<p>hello</p><fab:adf><![CDATA[{"type": "text","text": "This is a renamed link","marks": [{"type": "link","attrs": {"href": "www.atlassian.com","__confluenceMetadata": {"linkType": "page","versionAtSave": "1","fileName": null,"spaceKey": "TESTSPACE","contentTitle": "Actual page title","isRenamedTitle": true,"anchorName": null}}}]}]]></fab:adf><p>world</p>`,
+        doc(
+          p('hello'),
+          p(
+            a({
+              href: 'www.atlassian.com',
+              __confluenceMetadata: {
+                linkType: 'page',
+                versionAtSave: '1',
+                fileName: null,
+                spaceKey: 'TESTSPACE',
+                contentTitle: 'Actual page title',
+                isRenamedTitle: true,
+                anchorName: null,
+              },
+            })('This is a renamed link'),
           ),
           p('world'),
         ),
@@ -991,7 +1242,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       const actual = parse(
         '<table class="confluenceTable"><tbody><tr><td><div class="content-wrapper"><p>hello</p></div></td></tr></tbody></table>',
       );
-      expect(actual).to.deep.equal(doc(table(tr(td({})(p('hello'))))));
+      expect(actual).to.deep.equal(doc(table()(tr(td({})(p('hello'))))));
     });
   });
 

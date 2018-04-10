@@ -84,10 +84,12 @@ function PropTypeHeading(props: PropTypeHeadingProps) {
       <code>
         <HeadingName>{props.name}</HeadingName>
         <HeadingType>{props.type}</HeadingType>
-        {props.defaultValue && (
+        {props.defaultValue !== undefined && (
           <HeadingDefault> = {props.defaultValue}</HeadingDefault>
         )}
-        {props.required ? <HeadingRequired> required</HeadingRequired> : null}
+        {props.required && props.defaultValue === undefined ? (
+          <HeadingRequired> required</HeadingRequired>
+        ) : null}
       </code>
     </Heading>
   );
@@ -123,6 +125,7 @@ type Inter = {
 
 type DynamicPropsProps = {
   heading?: string,
+  shouldCollapseProps?: boolean,
   props: {
     classes?: Array<{
       kind: string,
@@ -144,10 +147,10 @@ const getPropTypes = propTypesObj => {
   return propTypes;
 };
 
-const renderPropType = propType => {
+const renderPropType = (propType, shouldCollapse) => {
   if (propType.kind === 'spread') {
     const furtherProps = reduceToObj(propType.value);
-    return furtherProps.map(renderPropType);
+    return furtherProps.map(p => renderPropType(p, shouldCollapse));
   }
 
   let description;
@@ -177,7 +180,7 @@ const renderPropType = propType => {
         defaultValue={propType.default && convert(propType.default)}
       />
       {description && <Description>{md([description])}</Description>}
-      <PrettyPropType type={propType.value} />
+      <PrettyPropType shouldCollapse={shouldCollapse} type={propType.value} />
     </PropTypeWrapper>
   );
 };
@@ -194,7 +197,7 @@ export default function DynamicProps(props: DynamicPropsProps) {
 
   return (
     <PageWrapper heading={props.heading}>
-      {propTypes.map(renderPropType)}
+      {propTypes.map(p => renderPropType(p, props.shouldCollapseProps))}
     </PageWrapper>
   );
 }

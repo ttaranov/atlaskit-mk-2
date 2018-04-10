@@ -1,8 +1,15 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import { ReactNode, WheelEvent, MouseEvent } from 'react';
+import {
+  ReactNode,
+  ReactChild,
+  WheelEvent,
+  MouseEvent,
+  ReactElement,
+} from 'react';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRight from '@atlaskit/icon/glyph/arrow-right';
+import * as debounce from 'debounce';
 import {
   FilmStripViewWrapper,
   FilmStripListWrapper,
@@ -18,6 +25,13 @@ const DURATION_MIN = 0.5;
 const DURATION_MAX = 1.0;
 
 const EXTRA_PADDING = 4;
+
+export const MUTATION_CONFIG = {
+  attributes: true,
+  childList: true,
+  subtree: true,
+  characterData: true,
+};
 
 export interface ChildOffset {
   left: number;
@@ -83,6 +97,8 @@ export class FilmstripView extends React.Component<
   bufferElement: HTMLElement;
   windowElement: HTMLElement;
 
+  mutationObserver: MutationObserver;
+
   childOffsets: ChildOffset[];
   previousOffset: number = 0;
 
@@ -90,6 +106,19 @@ export class FilmstripView extends React.Component<
     bufferWidth: 0,
     windowWidth: 0,
   };
+
+  constructor(props) {
+    super(props);
+    try {
+      this.mutationObserver = new MutationObserver(
+        debounce(this.handleMutation, 30, true),
+      );
+    } catch (e) {
+      // in the case where we are running on an unsupported browser,
+      // or where tests include the FilmstripView but do not mock the MutationObserver - we catch it and handle safely here.
+      // NOTE: this won't effect the component, it just means mutations won't be observerd
+    }
+  }
 
   get offset() {
     const { offset } = this.props;
@@ -132,6 +161,14 @@ export class FilmstripView extends React.Component<
       const relativeOffset = diff / windowWidth;
       const duration = DURATION_MAX - DURATION_MIN * relativeOffset;
       return Math.max(Math.min(duration, DURATION_MAX), DURATION_MIN);
+    }
+  }
+
+  initMutationObserver() {
+    const { mutationObserver } = this;
+    if (mutationObserver) {
+      mutationObserver.disconnect();
+      mutationObserver.observe(this.bufferElement, MUTATION_CONFIG);
     }
   }
 
@@ -197,6 +234,7 @@ export class FilmstripView extends React.Component<
     let bufferWidth = 0;
     let windowWidth = 0;
     let childOffsets = [];
+
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
@@ -222,6 +260,7 @@ export class FilmstripView extends React.Component<
       bufferWidth: prevBufferWidth,
       windowWidth: prevWindowWidth,
     } = this.state;
+
     if (bufferWidth === prevBufferWidth && windowWidth === prevWindowWidth) {
       // NOTE: we're not checking here if childOffsets has changed... if the children change size but
       // result in the exact same size buffer, we're not going to update, resulting in incorrect navigations
@@ -258,7 +297,19 @@ export class FilmstripView extends React.Component<
   };
 
   handleBufferElementChange = bufferElement => {
+    if (!bufferElement) {
+      return;
+    }
+
     this.bufferElement = bufferElement;
+    this.handleSizeChange();
+
+    this.initMutationObserver();
+  };
+
+  handleMutation = (mutationList: MutationRecord[]) => {
+    // there are edge cases where the DOM may change outside of the normal React life-cycle
+    // https://product-fabric.atlassian.net/browse/MSW-425
     this.handleSizeChange();
   };
 
@@ -342,15 +393,17 @@ export class FilmstripView extends React.Component<
   }
 
   componentWillUnmount() {
+    const { mutationObserver } = this;
+
     window.removeEventListener('resize', this.handleSizeChange);
+
+    if (mutationObserver) {
+      mutationObserver.disconnect();
+    }
   }
 
   componentDidUpdate() {
     this.previousOffset = this.offset;
-
-    // the children widths and therefore `this.bufferWidth` may have changed so we need to update our stored sizes
-    // note: this reads the DOM on every render (that's nullifying some of the value of having a virtual-dom!)
-    this.handleSizeChange();
 
     // trigger a "real" scroll event so lazily loaded cards realize they've been shown
     // note: we have to wait for the transition to end, otherwise the cards not visible when the scroll
@@ -376,13 +429,20 @@ export class FilmstripView extends React.Component<
             innerRef={this.handleBufferElementChange}
             style={{ transform, transitionProperty, transitionDuration }}
           >
-            {React.Children.map(children, (child, index) => (
-              <FilmStripListItem key={index}>{child}</FilmStripListItem>
-            ))}
+            {React.Children.map(children, mapReactChildToReactNode)}
           </FilmStripList>
         </FilmStripListWrapper>
         {this.renderRightArrow()}
       </FilmStripViewWrapper>
     );
   }
+}
+
+function mapReactChildToReactNode(child: ReactChild, index: number): ReactNode {
+  const key = (isReactElement(child) && child.key) || index;
+  return <FilmStripListItem key={key}>{child}</FilmStripListItem>;
+}
+
+function isReactElement<P>(child: ReactChild): child is ReactElement<P> {
+  return !!(child as ReactElement<P>).type;
 }

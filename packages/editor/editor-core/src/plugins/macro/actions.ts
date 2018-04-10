@@ -1,41 +1,46 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, NodeSelection } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MacroProvider, MacroAttributes } from './types';
+import { ExtensionProvider, ExtensionAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
 import { getValidNode } from '@atlaskit/editor-common';
+import { safeInsert, replaceSelectedNode } from 'prosemirror-utils';
 
 export const insertMacroFromMacroBrowser = (
-  macroProvider: MacroProvider,
+  extensionProvider: ExtensionProvider,
   macroNode?: PmNode,
-) => async (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-  tr?: Transaction,
-): Promise<boolean> => {
-  if (!macroProvider) {
+) => async (view: EditorView): Promise<boolean> => {
+  if (!extensionProvider) {
     return false;
   }
-
   // opens MacroBrowser for editing "macroNode" if passed in
-  const newMacro: MacroAttributes = await macroProvider.openMacroBrowser(
+  const newMacro: ExtensionAttributes = await extensionProvider.editExtension(
     macroNode,
   );
   if (newMacro) {
-    const node = resolveMacro(newMacro, state);
-
+    const node = resolveMacro(newMacro, view.state);
+    const { schema: { nodes: { bodiedExtension } } } = view.state;
+    let { tr } = view.state;
     if (node) {
-      dispatch((tr || state.tr).replaceSelectionWith(node).scrollIntoView());
+      if (
+        tr.selection instanceof NodeSelection &&
+        node.type !== bodiedExtension
+      ) {
+        tr = replaceSelectedNode(node)(tr);
+      } else {
+        tr = safeInsert(node)(tr);
+      }
+      view.dispatch(tr.scrollIntoView());
+      return true;
     }
-    return true;
   }
 
   return false;
 };
 
 export const resolveMacro = (
-  macro?: MacroAttributes,
+  macro?: ExtensionAttributes,
   state?: EditorState,
 ): PmNode | null => {
   if (!macro || !state) {
@@ -60,19 +65,20 @@ export const resolveMacro = (
   return node;
 };
 
-// gets the macroProvider from the state and tries to autoConvert a given text
+// gets the extensionProvider from the state and tries to autoConvert a given text
 export const runMacroAutoConvert = (
   state: EditorState,
   text: String,
 ): PmNode | null => {
   const macroPluginState = pluginKey.getState(state);
 
-  const macroProvider = macroPluginState && macroPluginState.macroProvider;
-  if (!macroProvider || !macroProvider.autoConvert) {
+  const extensionProvider =
+    macroPluginState && macroPluginState.extensionProvider;
+  if (!extensionProvider || !extensionProvider.autoConvert) {
     return null;
   }
 
-  const macroAttributes = macroProvider.autoConvert(text);
+  const macroAttributes = extensionProvider.autoConvert(text);
   if (!macroAttributes) {
     return null;
   }
@@ -81,21 +87,21 @@ export const runMacroAutoConvert = (
   return resolveMacro(macroAttributes, state);
 };
 
-export const setMacroProvider = (provider: Promise<MacroProvider>) => async (
-  view: EditorView,
-): Promise<boolean> => {
-  let resolvedProvider: MacroProvider | null;
+export const setExtensionProvider = (
+  provider: Promise<ExtensionProvider>,
+) => async (view: EditorView): Promise<boolean> => {
+  let resolvedProvider: ExtensionProvider | null;
   try {
     resolvedProvider = await provider;
     assert(
-      resolvedProvider && resolvedProvider.openMacroBrowser,
-      `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`,
+      resolvedProvider && resolvedProvider.editExtension,
+      `ExtensionProvider promise did not resolve to a valid instance of ExtensionProvider - ${resolvedProvider}`,
     );
   } catch (err) {
     resolvedProvider = null;
   }
   view.dispatch(
-    view.state.tr.setMeta(pluginKey, { macroProvider: resolvedProvider }),
+    view.state.tr.setMeta(pluginKey, { extensionProvider: resolvedProvider }),
   );
   return true;
 };

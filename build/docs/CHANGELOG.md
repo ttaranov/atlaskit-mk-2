@@ -1,5 +1,17 @@
 # @atlaskit/docs
 
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 2.6.2
+- [patch] Update look and feel of collapsed props [e42d92e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e42d92e)
+
+## 2.6.1
+- [patch] Props with default values are not marked as required [d00499f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d00499f)
+
+## 2.6.0
+- [minor] Add prop to allow proptype shape to be hidden [3150228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3150228)
+
 ## 2.5.5
 - [patch] Docs now handle props of nested intersections, and remove console errors [fd2d099](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd2d099)
 

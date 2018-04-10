@@ -122,28 +122,25 @@ describe('FieldTextStateless', () => {
       });
     });
 
-    describe('native input attributes should be reflected to input element', () => {
-      [
-        ['type', 'search'],
-        ['disabled', true],
-        ['name', 'test'],
-        ['placeholder', 'test placeholder'],
-        ['maxLength', 5],
-        ['min', 1],
-        ['max', 10],
-        ['required', true],
-        ['autoComplete', 'on'],
-        ['form', 'my-form'],
-        ['pattern', '/.+/'],
-      ].forEach(([prop, propValue]) => {
-        it(prop, () => {
-          expect(
-            shallow(<FieldTextStateless label="" {...{ [prop]: propValue }} />)
-              .find(Input)
-              .prop(prop),
-          ).toBe(propValue);
-        });
-      });
+    it('should reflect native input attributes on input element', () => {
+      const props = {
+        type: 'search',
+        disabled: true,
+        name: 'test',
+        placeholder: 'test placeholder',
+        maxLength: 5,
+        min: 1,
+        max: 10,
+        required: true,
+        autoComplete: 'on',
+        form: 'my-form',
+        pattern: '/.+/',
+      };
+      expect(
+        shallow(<FieldTextStateless label="" {...props} />)
+          .find(Input)
+          .props(),
+      ).toEqual(expect.objectContaining(props));
     });
 
     describe('native input events', () => {

@@ -11,6 +11,7 @@ import {
   setNodeSelection,
   setTextSelection,
   isTableCell,
+  isInListItem,
 } from '../../../utils';
 import analyticsService from '../../../analytics/service';
 import { MediaState } from '../types';
@@ -22,6 +23,9 @@ import {
   isInsidePotentialEmptyParagraph,
   copyOptionalAttrsFromMediaState,
 } from './media-common';
+
+/** These nodes don't allow non images to exist inside them */
+const nonImagesBannedNodes = ['listItem'];
 
 export interface Range {
   start: number;
@@ -54,6 +58,7 @@ export const insertMediaGroupNode = (
   // and there is no media group in the front or selection is a non media block node
   if (
     isTableCell(state) ||
+    isInListItem(state) ||
     (atTheEndOfDoc(state) &&
       (!posOfPreceedingMediaGroup(state) ||
         isSelectionNonMediaBlockNode(state)))
@@ -94,7 +99,7 @@ const createMediaFileNodes = (
   const nodes = mediaStates.map(mediaState => {
     const { id } = mediaState;
 
-    const node = media.create({ id, type: 'file', collection });
+    const node = media.create({ id, type: 'file', collection, __key: id });
     copyOptionalAttrsFromMediaState(mediaState, node);
     return node;
   });
@@ -164,4 +169,8 @@ const setSelectionAfterMediaInsertion = (
   } else {
     setTextSelection(view, endOfMediaGroup + 1);
   }
+};
+
+export const isNonImagesBanned = (node: PMNode) => {
+  return nonImagesBannedNodes.indexOf(node.type.name) > -1;
 };

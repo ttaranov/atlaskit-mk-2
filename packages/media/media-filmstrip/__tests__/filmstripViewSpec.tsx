@@ -1,3 +1,4 @@
+declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case MutationObserver
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { FilmstripView, LeftArrow, RightArrow } from '../src/filmstripView';
@@ -54,6 +55,33 @@ function mockSizing(
 }
 
 describe('FilmstripView', () => {
+  class MockMutationObserver {
+    handler: (list: Array<{}>) => {};
+
+    constructor(handler) {
+      this.handler = handler;
+    }
+
+    observe = jest.fn();
+    disconnect = jest.fn();
+
+    fakeTrigger(mutationList) {
+      // do what a MutationObserver will do if there was an appropriate DOM change
+      this.handler(mutationList);
+    }
+  }
+
+  let nativeMutationObserver;
+
+  beforeEach(() => {
+    nativeMutationObserver = window['MutationObserver'];
+    window['MutationObserver'] = MockMutationObserver;
+  });
+
+  afterEach(() => {
+    window['MutationObserver'] = nativeMutationObserver;
+  });
+
   describe('.minOffset', () => {
     it('should return minOffset', () => {
       const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
@@ -322,6 +350,103 @@ describe('FilmstripView', () => {
       element.find(FilmStripListItem).forEach((child, index) => {
         expect(child.children().text()).toEqual(`${children[index]}`);
       });
+    });
+
+    it('should use child keys if available', () => {
+      const element = shallow(
+        <FilmstripView>
+          <div key="a" />
+          <div />
+          <div key="c" />
+        </FilmstripView>,
+      );
+
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(0)
+          .key(),
+      ).toContain('a');
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(1)
+          .key(),
+      ).toContain('1');
+      expect(
+        element
+          .find(FilmStripListItem)
+          .at(2)
+          .key(),
+      ).toContain('c');
+    });
+  });
+
+  describe('child dom mutations', () => {
+    const mutationList = [
+      {
+        type: 'attributes',
+      },
+      {
+        type: 'childList',
+      },
+      {
+        type: 'subtree',
+      },
+    ];
+
+    it('should use mutationObserver by default', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.initMutationObserver();
+      expect(instance.mutationObserver).toBeInstanceOf(MockMutationObserver);
+    });
+
+    it('should still work if MutationObserver is not available globally', () => {
+      const globalMutationObserver = global.MutationObserver;
+      delete global.MutationObserver;
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.initMutationObserver();
+      expect(instance.mutationObserver).toBeUndefined();
+      global.MutationObserver = globalMutationObserver;
+    });
+
+    it('should call handleSizeChange when mutations occur', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.initMutationObserver();
+      const spy = jest.spyOn(instance, 'handleSizeChange');
+      const mutationObserver = instance.mutationObserver as any;
+      mutationObserver.fakeTrigger(mutationList);
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should debounce multiple handleMutation calls', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.initMutationObserver();
+      const spy = jest.spyOn(instance, 'handleSizeChange');
+      const mutationObserver = instance.mutationObserver as any;
+      for (let i = 0; i < 10; i++) {
+        mutationObserver.fakeTrigger(mutationList);
+      }
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should disconnect when component un-mounts', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.initMutationObserver();
+      const mutationObserver = instance.mutationObserver as any;
+      const spy = jest.spyOn(mutationObserver, 'disconnect');
+      element.unmount();
+      expect(spy).toBeCalled();
     });
   });
 });

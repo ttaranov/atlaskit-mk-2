@@ -108,7 +108,7 @@ export default class BreadcrumbsItem extends Component<Props, State> {
         spacing="none"
         href={href}
         target={target}
-        ref={(el: HTMLButtonElement) => {
+        ref={el => {
           this.button = el;
         }}
         component={component}

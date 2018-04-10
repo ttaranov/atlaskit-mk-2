@@ -1,10 +1,9 @@
-import { NodeSelection } from 'prosemirror-state';
 import {
   doc,
   createEditor,
   p as paragraph,
   bodiedExtension,
-  macroProvider,
+  extensionProvider,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 
@@ -12,12 +11,11 @@ import {
   setExtensionElement,
   editExtension,
   removeExtension,
-  selectExtension,
 } from '../../../src/plugins/extension/actions';
 import { pluginKey } from '../../../src/plugins/extension/plugin';
 import extensionPlugin from '../../../src/plugins/extension';
 
-const macroProviderPromise = Promise.resolve(macroProvider);
+const extensionProviderPromise = Promise.resolve(extensionProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
@@ -70,25 +68,23 @@ describe('extension', () => {
     });
 
     describe('editExtension', () => {
-      it('should return false if macroProvider is not available', () => {
-        const { editorView: { state, dispatch } } = editor(
+      it('should return false if extensionProvider is not available', () => {
+        const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        expect(editExtension(null)(state, dispatch)).toBe(false);
+        expect(editExtension(null)(editorView)).toBe(false);
       });
       it('should return false if extension node is not selected or cursor is not inside extension body', async () => {
-        const { editorView: { state, dispatch } } = editor(
-          doc(paragraph('te{<>}xt')),
-        );
-        const provider = await macroProviderPromise;
-        expect(editExtension(provider)(state, dispatch)).toBe(false);
+        const { editorView } = editor(doc(paragraph('te{<>}xt')));
+        const provider = await extensionProviderPromise;
+        expect(editExtension(provider)(editorView)).toBe(false);
       });
-      it('should return true if macroProvider is available and cursor is inside extension node', async () => {
-        const { editorView: { state, dispatch } } = editor(
+      it('should return true if extensionProvider is available and cursor is inside extension node', async () => {
+        const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        const provider = await macroProviderPromise;
-        expect(editExtension(provider)(state, dispatch)).toBe(true);
+        const provider = await extensionProviderPromise;
+        expect(editExtension(provider)(editorView)).toBe(true);
       });
     });
 
@@ -108,20 +104,6 @@ describe('extension', () => {
         const pluginState = pluginKey.getState(editorView.state);
         expect(pluginState.element).toEqual(null);
         expect(editorView.state.doc).toEqualDocument(doc(paragraph('')));
-      });
-    });
-
-    describe('selectExtension', () => {
-      it('should create a NodeSelection and return true', () => {
-        const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
-        );
-        expect(selectExtension(editorView.state, editorView.dispatch)).toBe(
-          true,
-        );
-        expect(editorView.state.selection instanceof NodeSelection).toEqual(
-          true,
-        );
       });
     });
   });

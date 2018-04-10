@@ -5,9 +5,11 @@ import { Auth, isAsapBasedAuth, isClientBasedAuth } from '../../auth';
 
 export type ResponseType = 'json' | 'image';
 
-export interface CreateRequestFunc {
-  (requestOptions: RequestOptions): Promise<any>;
-}
+export type CreateRequestFunc = (requestOptions: RequestOptions) => Response;
+export type Response<R = any> = {
+  response: Promise<R>;
+  cancel: (message?: string) => void;
+};
 
 export interface RequesterOptions {
   collectionName?: string;
@@ -23,7 +25,7 @@ export interface RequestOptions {
   data?: Object;
   responseType?: ResponseType;
 }
-const addAcceptHeader = (headers: any, responseType?: ResponseType) =>
+const addAcceptHeader = (headers: any) =>
   checkWebpSupport().then(isWebpSupported => {
     // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
     if (isWebpSupported) {
@@ -41,10 +43,10 @@ const buildHeaders = (
   preventPreflight?: boolean,
   responseType?: ResponseType,
 ): Promise<object> => {
-  const headers = {
+  const headers: any = {
     ...baseHeaders,
     'Content-Type': 'application/json',
-  } as any;
+  };
 
   // We can add custom headers if we don't want to avoid preflight - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method
   if (!preventPreflight) {
@@ -57,7 +59,7 @@ const buildHeaders = (
   }
 
   if (responseType === 'image') {
-    return addAcceptHeader(headers, responseType);
+    return addAcceptHeader(headers);
   }
 
   return Promise.resolve(headers);
@@ -98,14 +100,14 @@ const responseTypeToAxios = (responseType?: ResponseType): string => {
   return responseTypeMap[responseType];
 };
 
-export default (requesterOptions: RequesterOptions) => {
+export default (requesterOptions: RequesterOptions): CreateRequestFunc => {
   const {
     preventPreflight,
     collectionName,
     config: { authProvider, serviceHost },
   } = requesterOptions;
 
-  return (requestOptions: RequestOptions) => {
+  return requestOptions => {
     const { url, headers, params, responseType, method, data } = requestOptions;
     const acquireAuth: Promise<Auth> = authProvider({ collectionName });
 
@@ -115,7 +117,8 @@ export default (requesterOptions: RequesterOptions) => {
         buildParams(auth, params, preventPreflight, collectionName),
       ]);
 
-    const sendAxiosRequest = ([headers, params]) =>
+    const source = axios.CancelToken.source();
+    const sendAxiosRequest = ([headers, params]: object[]) =>
       axios({
         method: method || 'get',
         url,
@@ -124,11 +127,16 @@ export default (requesterOptions: RequesterOptions) => {
         params,
         data,
         responseType: responseTypeToAxios(responseType),
+        cancelToken: source.token,
       });
 
-    return acquireAuth
+    const response = acquireAuth
       .then(createHeadersAndParams)
       .then(sendAxiosRequest)
       .then(response => response.data);
+
+    const cancel = (message?: string) => source.cancel(message);
+
+    return { response, cancel };
   };
 };

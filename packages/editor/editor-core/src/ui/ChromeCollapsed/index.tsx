@@ -4,9 +4,7 @@ import { Input } from './styles';
 
 export interface Props {
   text?: string;
-  onFocus?: (
-    e: React.EventHandler<React.FocusEvent<HTMLInputElement>> | undefined,
-  ) => void;
+  onFocus?: (e: React.EventHandler<React.FocusEvent<HTMLInputElement>>) => void;
 }
 
 export default class ChromeCollapsed extends PureComponent<Props, {}> {

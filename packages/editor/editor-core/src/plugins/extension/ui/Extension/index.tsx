@@ -2,8 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
-import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
-import { setExtensionElement, selectExtension } from '../../actions';
+import {
+  ProviderFactory,
+  WithProviders,
+  ExtensionHandlers,
+} from '@atlaskit/editor-common';
+import { setExtensionElement } from '../../actions';
 import ExtensionComponent from './ExtensionComponent';
 
 export interface Props {
@@ -11,6 +15,7 @@ export interface Props {
   node: PMNode;
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
+  extensionHandlers: ExtensionHandlers;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -30,17 +35,22 @@ export default class Extension extends Component<Props, any> {
   }
 
   private renderWithProvider = providers => {
-    const { node, editorView, handleContentDOMRef } = this.props;
-    const { macroProvider } = providers;
+    const {
+      node,
+      editorView,
+      handleContentDOMRef,
+      extensionHandlers,
+    } = this.props;
+    const { extensionProvider } = providers;
 
     return (
       <ExtensionComponent
         editorView={editorView}
         node={node}
-        macroProvider={macroProvider}
+        extensionProvider={extensionProvider}
         setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}
-        selectExtension={selectExtension}
+        extensionHandlers={extensionHandlers}
       />
     );
   };
@@ -48,7 +58,7 @@ export default class Extension extends Component<Props, any> {
   render() {
     return (
       <WithProviders
-        providers={['macroProvider']}
+        providers={['extensionProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />

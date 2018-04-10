@@ -1,5 +1,5 @@
 import { couldNotLoadImage } from '../../components/views/editor/phrases';
-import { mockAuthService, mockFetcher, mockStore } from '../../mocks';
+import { mockFetcher, mockStore } from '../../mocks';
 
 import { editRemoteImage } from '../editRemoteImage';
 import { editorShowImage } from '../../actions/editorShowImage';
@@ -20,21 +20,20 @@ describe('editRemoteImage', () => {
   const auth = { clientId: 'some-client-id', token: 'some-token' };
 
   const setup = () => {
-    const authService = mockAuthService();
     const fetcher = mockFetcher();
     const store = mockStore({
       editorData: {
         originalFile: file,
       },
     });
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockReturnValue(Promise.resolve(auth));
 
-    authService.getUserAuth.mockReturnValue(Promise.resolve(auth));
-
-    return { authService, fetcher, store };
+    return { fetcher, store };
   };
 
   it('should handle fetching failure', async () => {
-    const { authService, fetcher, store } = setup();
+    const { fetcher, store } = setup();
     const action: EditRemoteImageAction = {
       type: EDIT_REMOTE_IMAGE,
       item: file,
@@ -44,7 +43,7 @@ describe('editRemoteImage', () => {
 
     fetcher.getImage.mockReturnValueOnce(Promise.reject('some-error'));
 
-    await editRemoteImage(fetcher, authService, store, action);
+    await editRemoteImage(fetcher, store, action);
 
     expect(fetcher.getImage).toBeCalledWith(
       apiUrl,
@@ -60,7 +59,7 @@ describe('editRemoteImage', () => {
   });
 
   it('should handle fetching success', async () => {
-    const { authService, fetcher, store } = setup();
+    const { fetcher, store } = setup();
     const action: EditRemoteImageAction = {
       type: EDIT_REMOTE_IMAGE,
       item: file,
@@ -70,7 +69,7 @@ describe('editRemoteImage', () => {
 
     fetcher.getImage.mockReturnValueOnce(Promise.resolve(new Blob()));
 
-    await editRemoteImage(fetcher, authService, store, action);
+    await editRemoteImage(fetcher, store, action);
 
     expect(fetcher.getImage).toBeCalledWith(
       apiUrl,

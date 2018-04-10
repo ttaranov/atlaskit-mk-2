@@ -9,7 +9,7 @@
     "pause": "node scripts/pause.js",
     "unpause": "node scripts/unpause.js",
     "fix-locked": "node scripts/fix-locked",
-    "watch-for-empty": "node scripts/watch-for-empty.js"
+    "release": "node scripts/release"
   },
   "author": "Luke Batchelor",
   "license": "Apache-2.0",
@@ -19,6 +19,10 @@
   },
   "dependencies": {
     "bunyan": "^1.8.12",
-    "landkid": "^0.0.20"
+    "chalk": "^2.1.0",
+    "execa": "^0.10.0",
+    "landkid": "^0.0.20",
+    "node-yaml": "^3.1.1",
+    "p-wait-for": "^1.0.0"
   }
 }

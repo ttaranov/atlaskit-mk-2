@@ -5,7 +5,7 @@ import TaskItem from '../../src/components/TaskItem';
 import Participants from '../../src/components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../src/styled/Item';
 import { Placeholder } from '../../src/styled/Placeholder';
-import { getParticipants } from '../../src/support/test-data';
+import { getParticipants } from '../_test-data';
 
 describe('<TaskItem/>', () => {
   it('should render children', () => {

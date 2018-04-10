@@ -1,25 +1,31 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
+import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
-import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
-import Avatars from '../../plugins/collab-edit/ui/avatars';
+import { ClickAreaBlock } from '../Addon';
+import WidthDetector from '../WidthDetector';
+
+const GUTTER_PADDING = 26;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding-bottom: 55px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
   overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -29,10 +35,9 @@ ScrollContainer.displayName = 'ScrollContainer';
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
-  max-width: 680px;
+  max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -40,7 +45,6 @@ const ContentArea = styled.div`
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 55px;
   }
 
   && .ProseMirror {
@@ -73,6 +77,7 @@ const MainToolbar = styled.div`
   border-bottom: 1px solid ${akColorN30};
   display: flex;
   height: 80px;
+  flex-shrink: 0;
 `;
 MainToolbar.displayName = 'MainToolbar';
 
@@ -99,6 +104,9 @@ export default class Editor extends React.Component<
 > {
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
+
+  stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
+    event.stopPropagation();
 
   render() {
     const {
@@ -133,28 +141,41 @@ export default class Editor extends React.Component<
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
-            <Avatars />
+            <Avatars
+              editorView={editorView}
+              eventDispatcher={eventDispatcher}
+            />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
         <ScrollContainer>
-          <ContentArea>
-            {customContentComponents}
-            <PluginSlot
-              editorView={editorView}
-              editorActions={editorActions}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={contentComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              popupsScrollableElement={popupsScrollableElement}
-              disabled={!!disabled}
-            />
-            {editorDOMElement}
-          </ContentArea>
+          <ClickAreaBlock editorView={editorView}>
+            <ContentArea>
+              <div
+                style={{ padding: `0 ${GUTTER_PADDING}px` }}
+                className="content-area"
+              >
+                {customContentComponents}
+                {
+                  <PluginSlot
+                    editorView={editorView}
+                    editorActions={editorActions}
+                    eventDispatcher={eventDispatcher}
+                    providerFactory={providerFactory}
+                    appearance={this.appearance}
+                    items={contentComponents}
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                    disabled={!!disabled}
+                  />
+                }
+                {editorDOMElement}
+              </div>
+            </ContentArea>
+          </ClickAreaBlock>
         </ScrollContainer>
+        <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );
   }

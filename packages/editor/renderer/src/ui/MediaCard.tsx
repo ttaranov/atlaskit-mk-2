@@ -5,23 +5,23 @@ import {
   CardDimensions,
   Card,
   CardView,
+  CardOnClickCallback,
 } from '@atlaskit/media-card';
-import {
-  Context,
-  ContextConfig,
-  ContextFactory,
-  ImageResizeMode,
-} from '@atlaskit/media-core';
-import { EventHandlers, MediaType } from '@atlaskit/editor-common';
+import { Context, ImageResizeMode } from '@atlaskit/media-core';
+import { MediaType } from '@atlaskit/editor-common';
 
 export interface MediaProvider {
-  viewContext?: ContextConfig;
+  viewContext?: Context;
 }
 
 export interface MediaCardProps {
   id: string;
   mediaProvider?: MediaProvider;
-  eventHandlers?: EventHandlers;
+  eventHandlers?: {
+    media?: {
+      onClick?: CardOnClickCallback;
+    };
+  };
   type: MediaType;
   collection: string;
   cardDimensions?: CardDimensions;
@@ -35,12 +35,7 @@ export interface State {
 }
 
 export class MediaCard extends Component<MediaCardProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      context: undefined,
-    };
-  }
+  state: State = {};
 
   async componentDidMount() {
     const { mediaProvider } = this.props;
@@ -49,13 +44,7 @@ export class MediaCard extends Component<MediaCardProps, State> {
     }
 
     const provider = await mediaProvider;
-    const viewContext = await provider.viewContext;
-
-    let context;
-
-    if ('serviceHost' in viewContext!) {
-      context = ContextFactory.create(viewContext!);
-    }
+    const context = await provider.viewContext;
 
     this.setState({
       context,

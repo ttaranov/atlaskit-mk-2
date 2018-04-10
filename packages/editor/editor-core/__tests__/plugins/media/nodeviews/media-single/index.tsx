@@ -38,7 +38,11 @@ describe('nodeviews/mediaSingle', () => {
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
 
     const wrapper = shallow(
-      <MediaSingle view={view} node={mediaSingleNode(defaultSchema)}>
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        width={680}
+      >
         <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
     );
@@ -58,7 +62,11 @@ describe('nodeviews/mediaSingle', () => {
     pluginState.updateLayout = updateLayoutSpy;
 
     const wrapper = mount(
-      <MediaSingle view={view} node={mediaSingleNode(defaultSchema)}>
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        width={680}
+      >
         <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
     );

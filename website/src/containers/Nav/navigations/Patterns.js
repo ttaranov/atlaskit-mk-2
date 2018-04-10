@@ -1,7 +1,6 @@
-/* @flow */
+// @flow
 
 import React from 'react';
-import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import type { Directory } from '../../../types';
 import renderNav from '../utils/renderNav';

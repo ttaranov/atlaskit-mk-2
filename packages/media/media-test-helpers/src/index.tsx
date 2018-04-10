@@ -10,3 +10,4 @@ export * from './exampleMediaItems';
 export * from './createMouseEvent';
 export * from './userAuthProvider';
 export * from './mediaPickerAuthProvider';
+export * from './mocks';

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import InlineExtension from '../../../../src/react/nodes/inlineExtension';
-import {
-  ExtensionHandlers,
-  ExtensionHandler,
-} from '../../../../src/ui/Renderer';
 import { RendererContext } from '../../../../src/react';
 import ReactSerializer from '../../../../src/react';
-import { defaultSchema } from '@atlaskit/editor-common';
+import {
+  defaultSchema,
+  ExtensionHandlers,
+  ExtensionHandler,
+} from '@atlaskit/editor-common';
 
 describe('Renderer - React/Nodes/InlineExtension', () => {
   const extensionHandlers: ExtensionHandlers = {

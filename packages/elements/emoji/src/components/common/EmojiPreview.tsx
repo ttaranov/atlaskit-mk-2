@@ -144,7 +144,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   render() {
     const sectionClasses = classNames([
       styles.emojiPreview,
-      'emojiPreviewSection',
+      styles.emojiPreviewSection,
     ]);
     return (
       <div className={sectionClasses} onMouseLeave={this.onMouseLeave}>

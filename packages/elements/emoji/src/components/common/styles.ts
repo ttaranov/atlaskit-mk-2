@@ -1,14 +1,21 @@
 import { borderRadius, colors } from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
-import { style, keyframes } from 'typestyle';
+import { style } from 'typestyle';
 
 export const selected = 'emoji-common-selected';
 export const selectOnHover = 'emoji-common-select-on-hover';
 export const emojiSprite = 'emoji-common-emoji-sprite';
+export const emojiNode = 'emoji-common-node';
 
-const checkerBoard =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
+export const deleteButton = style({
+  // hide by default
+  display: 'none',
+  float: 'right',
+  height: '0px',
+  marginRight: '-14px',
+  marginTop: '-14px',
+});
 
 export const emoji = style({
   borderRadius: '5px',
@@ -23,6 +30,10 @@ export const emoji = style({
   $nest: {
     [`&.${selected},&.${selectOnHover}:hover`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
+    },
+    [`&.${selected},&.${selectOnHover}:hover .${deleteButton}`]: {
+      // show delete button on hover
+      display: 'inline-block',
     },
     img: {
       display: 'block',
@@ -96,25 +107,6 @@ export const emojiButton = style({
   },
 });
 
-export const slideUp = keyframes({
-  '0%': {
-    transform: 'translate(-50%, 12px)',
-    opacity: 0,
-    animationTimingFunction:
-      'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)',
-  },
-  '20%': {
-    transform: 'translate(-50%, 2.3999999999999986px)',
-    opacity: 0.8,
-    animationTimingFunction:
-      'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)',
-  },
-  '100%': {
-    transform: 'translate(-50%, 0px)',
-    opacity: 1,
-  },
-});
-
 // Emoji Preview
 
 export const buttons = 'emoji-common-buttons';
@@ -126,6 +118,7 @@ export const shortName = 'emoji-common-shortname';
 export const previewSingleLine = 'emoji-common-preview-single-line';
 export const toneSelectorContainer = 'emoji-common-tone-selector-container';
 export const withToneSelector = 'emoji-common-with-tone-selector';
+export const emojiPreviewSection = 'emoji-preview-section';
 
 export const emojiPreview = style({
   display: 'flex',
@@ -268,13 +261,17 @@ export const emojiUpload = style({
   padding: '10px',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-around',
 });
 
 export const uploadChooseFileMessage = style({
   color: colors.N300,
-  marginBottom: '20px',
-  fontSize: '0.9em',
+  fontSize: '12px',
+  paddingBottom: '7px',
+});
+
+export const emojiUploadBottom = style({
+  fontSize: '11px',
 });
 
 export const uploadChooseFileRow = style({
@@ -290,9 +287,10 @@ export const uploadChooseFileEmojiName = style({
     input: {
       background: 'transparent',
       border: 0,
-      fontSize: '14px',
+      fontSize: '12px',
       outline: 'none',
       width: '100%',
+      height: '22px', // fixed height is required to work in IE11 and other browsers in Windows
 
       $nest: {
         ['&:invalid']: {
@@ -310,56 +308,159 @@ export const uploadChooseFileBrowse = style({
   flex: '0 0 auto',
 });
 
-export const uploadPreview = style({
-  background: `url(${checkerBoard})`,
-  borderRadius: `${borderRadius()}px`,
-  marginBottom: '10px',
-  padding: '7px',
-  width: '286px',
+export const uploadPreviewFooter = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100px',
+  padding: '10px',
+});
 
+export const uploadPreview = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: colors.N20,
+  borderRadius: `${borderRadius()}px`,
+  marginBottom: '12px',
+  padding: '10px',
+});
+
+export const uploadPreviewText = style({
   $nest: {
+    h5: {
+      color: colors.N300,
+      paddingBottom: '4px',
+      fontSize: '12px',
+    },
     img: {
       maxHeight: '20px',
-      maxWidth: '100px',
+      maxWidth: '50px',
     },
   },
 });
 
-export const uploadError = style({
-  margin: '12px 0',
-
+export const bigEmojiPreview = style({
   $nest: {
-    span: {
-      verticalAlign: 'middle',
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
-    },
-    svg: {
-      color: colors.R500,
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
+    img: {
+      maxHeight: '40px',
+      maxWidth: '100px',
     },
   },
 });
 
 export const uploadAddRow = style({
   display: 'flex',
-  alignItems: 'center',
-
-  $nest: {
-    ':first-child': {
-      marginRight: '5px',
-    },
-  },
+  justifyContent: 'flex-end',
 });
 
 export const AddCustomEmoji = style({
   alignSelf: 'center',
   marginLeft: '10px',
+});
+
+// Emoji Delete preview
+
+export const submitDelete = 'emoji-submit-delete';
+
+export const previewButtonGroup = 'emoji-preview-button-group';
+
+export const deletePreview = style({
+  height: '100px',
+  padding: '10px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  fontSize: '12px',
+});
+
+export const deleteText = style({
+  height: '64px',
+
+  $nest: {
+    ':first-child': {
+      color: colors.N300,
+      lineHeight: '16px',
+    },
+  },
+});
+
+export const deleteFooter = style({
+  display: 'flex',
+  height: '40px',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  $nest: {
+    img: {
+      maxHeight: '32px',
+      maxWidth: '72px',
+    },
+
+    [`.${previewButtonGroup}`]: {
+      display: 'flex',
+    },
+
+    [`.${submitDelete}`]: {
+      width: '80px',
+      fontWeight: 'bold',
+      marginRight: '6px',
+    },
+    button: {
+      display: 'flex',
+      justifyContent: 'center',
+      fontSize: '14px',
+
+      $nest: {
+        div: {
+          display: 'flex',
+        },
+      },
+    },
+  },
+});
+
+export const emojiDeleteErrorMessage = style({
+  display: 'flex',
+  color: colors.R300,
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  paddingRight: '10px',
+});
+
+export const emojiChooseFileErrorMessage = style({
+  display: 'flex',
+  color: colors.R300,
+  paddingRight: '10px',
+  justifyContent: 'flex-start',
+});
+
+export const emojiPreviewErrorMessage = style({
+  display: 'inline-flex',
+  color: colors.R300,
+  paddingRight: '10px',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+});
+
+export const uploadRetryButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  fontWeight: 'bold',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
+});
+
+export const uploadEmojiButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
 });

@@ -1,5 +1,12 @@
 # @atlaskit/inline-edit
 
+## 5.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 4.6.5
+
+## 4.6.4
+
 ## 4.6.3
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

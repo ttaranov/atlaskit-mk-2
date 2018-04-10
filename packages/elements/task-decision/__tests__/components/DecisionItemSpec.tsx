@@ -4,7 +4,7 @@ import DecisionItem from '../../src/components/DecisionItem';
 import Participants from '../../src/components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../src/styled/Item';
 import { Placeholder } from '../../src/styled/Placeholder';
-import { getParticipants } from '../../src/support/test-data';
+import { getParticipants } from '../_test-data';
 
 describe('<DecisionItem/>', () => {
   it('should render children', () => {

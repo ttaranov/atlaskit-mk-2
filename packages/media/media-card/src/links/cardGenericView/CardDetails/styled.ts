@@ -6,8 +6,12 @@ import {
   akColorN300,
   akColorN30,
 } from '@atlaskit/util-shared-styles';
-import { size, ellipsis, borderRadius } from '../../../styles';
-import newCardDetailsHeight from '../../../shared/newCardDetailsHeight';
+import {
+  size,
+  ellipsis,
+  borderRadius,
+  newCardDetailsHeight,
+} from '@atlaskit/media-ui';
 
 export interface PlaceholderProps {
   isPlaceholder: boolean;

@@ -8,7 +8,7 @@ import {
   akColorN0,
   akColorN300,
 } from '@atlaskit/util-shared-styles';
-import { center, ellipsis, size } from '../../styles';
+import { center, ellipsis, size } from '@atlaskit/media-ui';
 
 const iconSize = akGridSizeUnitless * 2;
 const marginSize = akGridSizeUnitless * 2;

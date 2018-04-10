@@ -16,6 +16,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'message',
     disabled: false,
+    extensionHandlers: {},
   };
 
   static contextTypes = {
@@ -118,7 +119,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEditProvider,
       activityProvider,
       presenceProvider,
-      macroProvider,
+      extensionProvider,
       legacyImageUploadProvider,
       media,
     } = props;
@@ -143,7 +144,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
-    this.providerFactory.setProvider('macroProvider', macroProvider);
+    this.providerFactory.setProvider('extensionProvider', extensionProvider);
   }
 
   render() {

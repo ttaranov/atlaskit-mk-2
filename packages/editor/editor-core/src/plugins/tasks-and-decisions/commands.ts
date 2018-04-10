@@ -103,7 +103,9 @@ export const createListAtSelection = (
   tr
     .delete(where, $from.end($from.depth))
     .replaceSelectionWith(
-      list.create({ localId: uuid.generate() }, [item.create({}, content)]),
+      list.create({ localId: uuid.generate() }, [
+        item.create({ localId: uuid.generate() }, content),
+      ]),
     );
 
   // Adjust selection into new item, if not there (e.g. in full page editor)

@@ -1,5 +1,34 @@
 # @atlaskit/media-filmstrip
 
+## 8.0.1
+
+## 8.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 7.1.0
+- [minor] add MutationObserver to FilmstripView to catch dom mutations [625ee2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/625ee2b)
+
+## 7.0.8
+
+## 7.0.7
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 7.0.6
+
+## 7.0.5
+
+## 7.0.4
+
+## 7.0.3
+
+## 7.0.2
+- [patch] Use child.key if available [d4835bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4835bd)
+
+## 7.0.1
+
+## 7.0.0
+
 ## 6.1.3
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
 

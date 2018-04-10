@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Ellipsify } from '../src/ellipsify';
 
-const getElementHeight = (wrapper, container) => {
-  container.appendChild(wrapper.node);
+const getElementHeight = (wrapper: ReactWrapper, container: HTMLDivElement) => {
+  container.appendChild(wrapper.getDOMNode());
 
-  const el = wrapper.find('.ellipsed-text').node;
+  const el = wrapper.find('.ellipsed-text').getDOMNode();
   const height = el.getBoundingClientRect().height;
 
-  container.removeChild(wrapper.node);
+  container.removeChild(wrapper.getDOMNode());
 
   return height;
 };
 
-const mountEllipsis = (text, lines, width = 1000) => {
+const mountEllipsis = (text: string, lines: number, width = 1000) => {
   const wrapper = mount(
     <div style={{ width: `${width}px` }}>
       <Ellipsify text={text} lines={lines} />
@@ -25,15 +25,15 @@ const mountEllipsis = (text, lines, width = 1000) => {
 
 describe.skip('Ellipsify', () => {
   let lineHeight = 0;
-  let container;
+  let container: HTMLDivElement;
 
   beforeEach(() => {
     container = document.createElement('div');
     container.innerHTML = '<div id="lineheight-check">a</div>';
     document.body.appendChild(container);
-    lineHeight = container
-      .querySelector('#lineheight-check')
-      .getBoundingClientRect().height;
+    lineHeight = container.querySelector(
+      '#lineheight-check',
+    )!.getBoundingClientRect().height;
   });
 
   afterEach(() => {

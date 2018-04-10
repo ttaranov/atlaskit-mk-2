@@ -17,6 +17,7 @@ import {
 
 BrowserTestCase(
   'Mention: user can click ToolbarMentionPicker and see mention',
+  { skip: ['ie'] },
   async client => {
     const mentionButton = '[aria-label="Add mention"]';
     const mentionId = '[data-mention-id="0"]';
@@ -70,7 +71,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Mention: user should not see mention inside inline code',
   // TODO: Fix unknown character on BS
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -86,7 +87,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Mention: user should not see mention inside a code block',
   // TODO: Fix unknown character on BS
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

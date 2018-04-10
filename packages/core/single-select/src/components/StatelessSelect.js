@@ -144,7 +144,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
   droplistNode: HTMLElement | null;
   nativeSearchKey: string;
   previousKey: string;
-  nativeSearchCounter: number | void;
+  nativeSearchCounter: ?TimeoutID;
 
   static defaultProps = {
     appearance: appearances.default,
@@ -390,7 +390,9 @@ export default class StatelessSelect extends PureComponent<Props, State> {
       this.focusItem(matchingItem);
     }
 
-    clearTimeout(this.nativeSearchCounter);
+    if (this.nativeSearchCounter) {
+      clearTimeout(this.nativeSearchCounter);
+    }
     this.nativeSearchCounter = setTimeout(this.clearNativeSearch, 200);
     this.previousKey = eventKey;
     this.nativeSearchKey = nativeSearchKey;

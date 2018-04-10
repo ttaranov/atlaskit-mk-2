@@ -6,6 +6,7 @@ export interface Result {
   href: string;
   avatarUrl: string;
   containerName?: string;
+  objectKey?: string;
 }
 
 // Use string enum here because the type prop in quick-search Result is actually a string

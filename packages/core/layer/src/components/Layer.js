@@ -2,6 +2,7 @@
 import React, { Component, type Node, type ElementRef } from 'react';
 
 import Popper from '../../popper/index-min';
+import ScrollBlock from './internal/ScrollBlock';
 import {
   getFlipBehavior,
   positionPropToPopperPosition,
@@ -35,6 +36,8 @@ export type Props = {
   position?: PositionType,
   /** z-index for the layer component */
   zIndex?: number,
+  /** Lock scrolling behind the layer */
+  lockScroll?: boolean,
 };
 
 type State = {
@@ -74,6 +77,7 @@ export default class Layer extends Component<Props, State> {
     onFlippedChange: () => {},
     position: 'right middle',
     zIndex: 400,
+    lockScroll: false,
   };
 
   constructor(props: Props) {
@@ -268,7 +272,7 @@ export default class Layer extends Component<Props, State> {
   }
 
   render() {
-    const { zIndex } = this.props;
+    const { zIndex, lockScroll } = this.props;
     const {
       cssPosition,
       transform,
@@ -286,6 +290,7 @@ export default class Layer extends Component<Props, State> {
         >
           {this.props.children}
         </div>
+        {lockScroll && <ScrollBlock />}
         <ContentContainer maxHeight={maxHeight}>
           <div
             ref={ref => {

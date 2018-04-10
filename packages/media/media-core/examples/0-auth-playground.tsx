@@ -22,7 +22,17 @@ const FormattedBlock = styled.pre`
   word-wrap: break-word;
 `;
 
-const requestToken = ({ access, withAsapIssuer, collectionName }) => {
+type RequestTokenParams = {
+  readonly access: { [resource: string]: string[] };
+  readonly withAsapIssuer: boolean;
+  readonly collectionName: string;
+};
+
+const requestToken = ({
+  access,
+  withAsapIssuer,
+  collectionName,
+}: RequestTokenParams) => {
   return axios
     .post(
       '/token/tenant',
@@ -41,12 +51,12 @@ const requestToken = ({ access, withAsapIssuer, collectionName }) => {
 // We leverage the fact, that our internal /toke/tenant API returns data in the same format as Auth
 const tokenDataToAuth = (tokenData: any): Auth => tokenData as Auth;
 
-const clientIdBaseAuthProvider = (collection): Promise<Auth> =>
+const clientIdBaseAuthProvider = (): Promise<Auth> =>
   requestToken({ access, collectionName, withAsapIssuer: false }).then(
     tokenDataToAuth,
   );
 
-const asapIssuerBaseAuthProvider = (collection): Promise<Auth> =>
+const asapIssuerBaseAuthProvider = (): Promise<Auth> =>
   requestToken({ access, collectionName, withAsapIssuer: true }).then(
     tokenDataToAuth,
   );
@@ -144,6 +154,8 @@ class AuthPlayground extends Component<Props, State> {
           </FormattedBlock>
         );
       }
+    } else {
+      return null;
     }
   };
 

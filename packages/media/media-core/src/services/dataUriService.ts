@@ -1,16 +1,8 @@
-import createRequest, { CreateRequestFunc } from './util/createRequest';
 import { MediaItem } from '../';
 import { AuthProvider } from '../auth';
+import { MediaBlobService, FetchImageOptions } from './blobService';
 
 export type DataUri = string;
-export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
-
-export interface FetchImageOptions {
-  width: number;
-  height: number;
-  mode?: ImageResizeMode;
-  allowAnimated?: boolean;
-}
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;
@@ -21,49 +13,31 @@ export interface DataUriService {
 }
 
 export class MediaDataUriService implements DataUriService {
-  private request: CreateRequestFunc;
+  private blobService: MediaBlobService;
 
   constructor(
-    private readonly authProvider: AuthProvider,
-    private readonly serviceHost: string,
-    private readonly collectionName?: string,
+    readonly authProvider: AuthProvider,
+    readonly serviceHost: string,
+    readonly collectionName?: string,
   ) {
-    this.request = createRequest({
-      config: {
-        serviceHost: this.serviceHost,
-        authProvider: this.authProvider,
-      },
-      collectionName: this.collectionName,
-    });
+    this.blobService = new MediaBlobService(
+      authProvider,
+      serviceHost,
+      collectionName,
+    );
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
-    return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/binary`, {
-      'max-age': 3600,
-      collection: this.collectionName,
-    });
+    return this.blobService.fetchOriginalBlob(mediaItem).then(this.readBlob);
   }
 
   fetchImageDataUri(
     mediaItem: MediaItem,
-    { width, height, mode = 'crop', allowAnimated = true }: FetchImageOptions,
+    options: FetchImageOptions,
   ): Promise<DataUri> {
-    return this.fetchSomeDataUri(`/file/${mediaItem.details.id}/image`, {
-      width,
-      height,
-      mode,
-      allowAnimated,
-      'max-age': 3600,
-      collection: this.collectionName,
-    });
-  }
-
-  fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
-    return this.request({
-      url,
-      params,
-      responseType: 'image',
-    }).then(this.readBlob);
+    return this.blobService
+      .fetchImageBlob(mediaItem, options)
+      .then(this.readBlob);
   }
 
   private readBlob(blob: Blob): Promise<DataUri> {

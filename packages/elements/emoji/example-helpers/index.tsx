@@ -2,6 +2,10 @@ import { OnLifecycle } from '../src/components/typeahead/EmojiTypeAheadComponent
 import debug, { enableLogger } from '../src/util/logger';
 import { OnEmojiEvent, OnToneSelected, EmojiUpload } from '../src/types';
 import { OnUploadEmoji } from '../src/components/common/EmojiUploadPicker';
+import { emoji, UsageClearEmojiResource } from '@atlaskit/util-data-test';
+import EmojiRepository from '../src/api/EmojiRepository';
+
+const storyData = emoji.storyData;
 
 enableLogger(true);
 
@@ -42,3 +46,16 @@ export const toJavascriptString = (obj: any): string => {
   }
   return obj.toString();
 };
+
+export const {
+  lorem,
+  getEmojiResourceWithStandardAndAtlassianEmojis,
+  loggedUser,
+  getEmojis,
+  getEmojiResource,
+} = storyData;
+
+export const getUsageClearEmojiResource: () => UsageClearEmojiResource =
+  storyData.getUsageClearEmojiResource;
+export const getEmojiRepository: () => EmojiRepository =
+  storyData.getEmojiRepository;

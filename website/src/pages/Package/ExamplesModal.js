@@ -1,41 +1,30 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Loadable from 'react-loadable';
-import { Link, Redirect, Route, withRouter } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { akElevationMixins } from '@atlaskit/util-shared-styles';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';
-import EditIcon from '@atlaskit/icon/glyph/edit';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ScreenIcon from '@atlaskit/icon/glyph/screen';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { AkCodeBlock } from '@atlaskit/code';
-import Flag, { FlagGroup } from '@atlaskit/flag';
+import { FlagGroup } from '@atlaskit/flag';
 import Tooltip from '@atlaskit/tooltip';
-import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import Modal, {
   ModalBody as Body,
   ModalHeader as OgModalHeader,
   ModalTitle,
 } from '@atlaskit/modal-dialog';
-import SingleSelect from '@atlaskit/single-select';
-import Spinner from '@atlaskit/spinner';
 import { colors } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
 import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
-import type { Directory, RouterMatch } from '../../types';
+import type { RouterMatch } from '../../types';
 import ExampleDisplay from '../../components/Examples/ExampleDisplay';
-import Loading from '../../components/Loading';
-import CodeBlock from '../../components/Code';
-import { packages as packagesData, getConfig } from '../../site';
-import { packageUrl } from '../../utils/url';
+import { getConfig } from '../../site';
 import CodeSandbox from './CodeSandbox';
 import CodeSandboxLogo from './CodeSandboxLogo';
 
@@ -43,21 +32,8 @@ import CodeSandboxLogo from './CodeSandboxLogo';
 // PAGE
 // ==============================
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-`;
-
 const Content = styled.div`
   flex: 1 1 auto;
-`;
-
-const ComponentContainer = styled.div`
-  height: 100%;
-  position: relative;
-  width: 100%;
 `;
 
 const CodeContainer = styled.div``;
@@ -310,7 +286,7 @@ export default class ExamplesModal extends Component<Props, State> {
   };
 
   onPackageSelected = (selected: { item: { value: string } }) => {
-    let [groupId, packageId] = selected.item.value.split('/');
+    const [groupId, packageId] = selected.item.value.split('/');
     this.updateSelected(groupId, packageId);
   };
 
@@ -323,8 +299,8 @@ export default class ExamplesModal extends Component<Props, State> {
   };
 
   updateSelected(groupId?: string, packageId?: string, exampleId?: string) {
-    let resolved = packageResolver(groupId, packageId, exampleId);
-    let url = toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
+    const resolved = packageResolver(groupId, packageId, exampleId);
+    const url = toUrl(resolved.groupId, resolved.packageId, resolved.exampleId);
     this.context.router.history.push(url);
   }
 
@@ -346,10 +322,9 @@ export default class ExamplesModal extends Component<Props, State> {
   };
 
   render() {
-    let {
+    const {
       hasChanged,
       groups,
-      packages,
       examples,
       packageId,
       groupId,
@@ -387,7 +362,6 @@ export default class ExamplesModal extends Component<Props, State> {
             examples={examples}
             exampleId={exampleId}
             groupId={groupId}
-            packageId={packageId}
             pkgJSON={pkgJSON}
             displayCode={displayCode}
             loaderUrl={loaderUrl}
