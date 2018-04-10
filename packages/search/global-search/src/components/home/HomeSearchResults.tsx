@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AkNavigationItemGroup } from '@atlaskit/navigation';
+import { ResultItemGroup } from '@atlaskit/quick-search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import EmptyState from '../EmptyState';
@@ -18,39 +18,39 @@ const renderRecent = (results: Result[]) => {
   }
 
   return (
-    <AkNavigationItemGroup
+    <ResultItemGroup
       title="Recently viewed"
       key="recent"
       test-selector="recent"
     >
       {resultsToComponents(results)}
-    </AkNavigationItemGroup>
+    </ResultItemGroup>
   );
 };
 
 const renderJira = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="Jira issues" key="jira" test-selector="jira">
+  <ResultItemGroup title="Jira issues" key="jira" test-selector="jira">
     {resultsToComponents(results)}
     {searchJiraItem(query)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderConfluence = (results: Result[], query: string) => (
-  <AkNavigationItemGroup
+  <ResultItemGroup
     title="Confluence pages and blogs"
     key="confluence"
     test-selector="confluence"
   >
     {resultsToComponents(results)}
     {searchConfluenceItem(query)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="People" key="people" test-selector="people">
+  <ResultItemGroup title="People" key="people" test-selector="people">
     {resultsToComponents(results)}
     {searchPeopleItem()}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderEmptyState = (query: string) => (

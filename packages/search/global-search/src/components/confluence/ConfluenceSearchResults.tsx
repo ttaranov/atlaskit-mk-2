@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AkNavigationItemGroup } from '@atlaskit/navigation';
+import { ResultItemGroup } from '@atlaskit/quick-search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import EmptyState from '../EmptyState';
@@ -12,30 +12,30 @@ import {
 } from '../SearchResults';
 
 const renderObjects = (results: Result[], query: string) => (
-  <AkNavigationItemGroup
+  <ResultItemGroup
     title="Pages, blogs, attachments"
     key="confluence-objects"
     test-selector="confluence-objects"
   >
     {resultsToComponents(results)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderSpaces = (results: Result[], query: string) => (
-  <AkNavigationItemGroup
+  <ResultItemGroup
     title="Spaces"
     key="confluence-spaces"
     test-selector="confluence-spaces"
   >
     {resultsToComponents(results)}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <AkNavigationItemGroup title="People" key="people" test-selector="people">
+  <ResultItemGroup title="People" key="people" test-selector="people">
     {resultsToComponents(results)}
     {searchPeopleItem()}
-  </AkNavigationItemGroup>
+  </ResultItemGroup>
 );
 
 const renderEmptyState = (query: string) => (
