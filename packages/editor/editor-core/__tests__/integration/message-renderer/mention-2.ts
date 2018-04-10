@@ -31,17 +31,21 @@ BrowserTestCase(
   },
 );
 
-BrowserTestCase('Mention: text@ should not invoke picker', async client => {
-  const browser = await new Page(client);
-  await browser.goto(messageEditor);
-  await browser.waitForSelector(editable);
-  await browser.type(editable, 'test@');
-  expect(await browser.isExisting(picker)).toBe(false);
-});
+BrowserTestCase(
+  'Mention: text@ should not invoke picker',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, 'test@');
+    expect(await browser.isExisting(picker)).toBe(false);
+  },
+);
 
 BrowserTestCase(
   'Mention: user should be able remove mention on backspace',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -89,7 +93,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: user should see space after node',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.waitForSelector(editable);
@@ -103,7 +107,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: escape closes picker',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
