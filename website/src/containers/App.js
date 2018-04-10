@@ -55,7 +55,6 @@ class Boundary extends Component {
   state = { hasError: false };
 
   componentDidCatch(error, info) {
-    console.log('catching error', error, info);
     this.setState({ hasError: true });
   }
 
