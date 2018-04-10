@@ -40,7 +40,7 @@ describe('JIRATransformer', () => {
       );
       const encoded = encode(node, schema);
       expect(encoded).toEqual(
-        '<p><a class="external-link" href="https://product-fabric.atlassian.net/browse/ED-1" rel="nofollow">ED-1</a></p>',
+        '<p><a class="external-link" rel="nofollow" href="https://product-fabric.atlassian.net/browse/ED-1">ED-1</a></p>',
       );
     });
   });
