@@ -5,6 +5,10 @@ import {
   bodiedExtension,
   macroProvider,
   sendKeyToPm,
+  bodiedExtensionData,
+  sleep,
+  h5,
+  underline,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -25,11 +29,7 @@ describe('extension', () => {
     });
   };
 
-  const extensionAttrs = {
-    bodyType: 'rich',
-    extensionType: 'com.atlassian.confluence.macro',
-    extensionKey: 'expand',
-  };
+  const extensionAttrs = bodiedExtensionData[1].attrs;
 
   describe('when cursor is at the beginning of the content', () => {
     it('should create a paragraph above extension node on Enter', () => {
@@ -85,6 +85,22 @@ describe('extension', () => {
         );
         const provider = await macroProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(true);
+      });
+      it('should replace selected bodiedExtension node with a new bodiedExtension node', async () => {
+        const { editorView } = editor(
+          doc(bodiedExtension(extensionAttrs)(paragraph('{<>}'))),
+        );
+        const provider = await macroProviderPromise;
+        editExtension(provider)(editorView);
+        await sleep(0);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            bodiedExtension(bodiedExtensionData[0].attrs)(
+              h5('Heading'),
+              paragraph(underline('Foo')),
+            ),
+          ),
+        );
       });
     });
 
