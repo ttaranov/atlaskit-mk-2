@@ -11,6 +11,7 @@ import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import Toggle from '@atlaskit/toggle';
 import { MediaPicker, Browser, UploadPreviewUpdateEventPayload } from '../src';
+import { ModuleConfig, UploadParams } from '../src/domain/config';
 import {
   DropzonePreviewsWrapper,
   PopupHeader,
@@ -18,7 +19,6 @@ import {
 } from '../example-helpers/styled';
 import { PreviewData, renderPreviewImage } from '../example-helpers';
 import { AuthEnvironment } from '../example-helpers';
-import { ModuleConfig, UploadParams } from '../src/domain/config';
 
 export interface BrowserWrapperState {
   collectionName: string;
@@ -102,23 +102,23 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       },
     );
 
-    fileBrowser.on('upload-status-update', ({ file, progress }) => {
+    fileBrowser.on('upload-status-update', ({ file: { id }, progress }) => {
       let uploadProgress = Math.round(progress.portion * 98);
-      console.log(`upload progress: ${uploadProgress}% for ${file.id} file`);
-      this.updatePreviewDataFile(file.id, uploadProgress);
+      console.log(`upload progress: ${uploadProgress}% for ${id} file`);
+      this.updatePreviewDataFile(id, uploadProgress);
     });
 
-    fileBrowser.on('upload-processing', ({ file }) => {
-      console.log(`processing has started for ${file.id} file`);
-      this.updatePreviewDataFile(file.id, 99);
+    fileBrowser.on('upload-processing', ({ file: { id } }) => {
+      console.log(`processing has started for ${id} file`);
+      this.updatePreviewDataFile(id, 99);
     });
 
-    fileBrowser.on('upload-end', ({ fileDetails, localId }) => {
-      console.log(`upload end for ${localId} file`);
-      this.updatePreviewDataFile(localId, 100);
+    fileBrowser.on('upload-end', ({ file: { id, publicId } }) => {
+      console.log(`upload end for ${publicId} (local id: ${id}) file`);
+      this.updatePreviewDataFile(id, 100);
 
       setTimeout(() => {
-        this.updatePreviewDataFile(localId, 100, true);
+        this.updatePreviewDataFile(id, 100, true);
       }, 700);
     });
 

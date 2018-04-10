@@ -1,5 +1,6 @@
 import { Popup } from '../popup';
 import { MPPopupLoaded } from '../../outer/analytics/events';
+import { UploadParams } from '../..';
 
 describe('MediaPickerPopup', () => {
   const fakeContext = { trackEvent: jest.fn() };
@@ -31,11 +32,12 @@ describe('MediaPickerPopup', () => {
     it('sets uploadParams to the default when none are supplied', () => {
       const mediaPicker = new Popup(fakeContext, fakeModuleConfig, popupConfig);
 
-      expect((mediaPicker as any)['uploadParams']).toEqual({
+      const expectedUploadParams: UploadParams = {
         collection: '',
-        fetchMetadata: true,
-        autoFinalize: true,
-      });
+      };
+      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
+        expectedUploadParams,
+      );
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {

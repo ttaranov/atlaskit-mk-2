@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { App } from '../app';
+import ConnectedApp, { App, AppDispatchProps } from '../app';
 import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
@@ -13,8 +13,8 @@ describe('App', () => {
   const token = 'some-token';
   const userAuthProvider = () => Promise.resolve({ clientId, token });
 
-  const setup = () => ({
-    handlers: {
+  const setup = () => {
+    const handlers: AppDispatchProps = {
       onStartApp: jest.fn(),
       onClose: jest.fn(),
       onUploadsStart: jest.fn(),
@@ -23,9 +23,12 @@ describe('App', () => {
       onUploadProcessing: jest.fn(),
       onUploadEnd: jest.fn(),
       onUploadError: jest.fn(),
-    },
-    store: mockStore(),
-  });
+    };
+    return {
+      handlers,
+      store: mockStore(),
+    };
+  };
 
   it('should render UploadView given selectedServiceName is "upload"', () => {
     const { handlers, store } = setup();

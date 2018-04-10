@@ -6,15 +6,11 @@ import {
   UploadableFile,
   MediaType,
   FileItem,
-  FileDetails,
 } from '@atlaskit/media-core';
 import { EventEmitter2 } from 'eventemitter2';
 import { UploadParams } from '../domain/config';
 import { defaultUploadParams } from '../domain/uploadParams';
-import { Preview } from '../domain/preview';
-import { MediaError } from '../domain/error';
 import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
-import { SmartMediaProgress } from '../domain/progress';
 
 import { MediaApi } from './mediaApi';
 import { MediaClient } from './mediaClient';
@@ -24,7 +20,15 @@ import {
 } from '../popup/domain/source-file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
+import {
+  UploadEndEventPayload,
+  UploadErrorEventPayload,
+  UploadPreviewUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadsStartEventPayload,
+  UploadStatusUpdateEventPayload,
+} from '../domain/uploadEvent';
+import { SmartMediaProgress } from '../domain/progress';
 
 export interface ExpFile {
   id: string;
@@ -32,43 +36,13 @@ export interface ExpFile {
   file: File;
 }
 
-export interface FilesAddedEventPayload {
-  readonly files: MediaFile[];
-}
-
-export interface FilePreviewUpdateEventPayload {
-  readonly file: MediaFile;
-  readonly preview: Preview;
-}
-
-export interface FileUploadingEventPayload {
-  readonly file: MediaFile;
-  readonly progress: SmartMediaProgress;
-}
-
-export interface FileConvertingEventPayload {
-  readonly file: PublicMediaFile;
-}
-
-export interface FileConvertedEventPayload {
-  // readonly localId: string;
-  // readonly fileDetails: FileDetails;
-  readonly file: PublicMediaFile;
-  readonly public: MediaFileData;
-}
-
-export interface FileUploadErrorEventPayload {
-  readonly file: MediaFile;
-  readonly error: MediaError;
-}
-
 export type UploadServiceEventPayloadTypes = {
-  readonly 'files-added': FilesAddedEventPayload;
-  readonly 'file-preview-update': FilePreviewUpdateEventPayload;
-  readonly 'file-uploading': FileUploadingEventPayload;
-  readonly 'file-converting': FileConvertingEventPayload;
-  readonly 'file-converted': FileConvertedEventPayload;
-  readonly 'file-upload-error': FileUploadErrorEventPayload;
+  readonly 'files-added': UploadsStartEventPayload;
+  readonly 'file-preview-update': UploadPreviewUpdateEventPayload;
+  readonly 'file-uploading': UploadStatusUpdateEventPayload;
+  readonly 'file-converting': UploadProcessingEventPayload;
+  readonly 'file-converted': UploadEndEventPayload;
+  readonly 'file-upload-error': UploadErrorEventPayload;
   readonly 'file-dropped': DragEvent;
 };
 
@@ -282,8 +256,8 @@ export class UploadService {
           ) {
             // TODO we emit 'file-converted' when it failed?
             this.emit('file-converted', {
-              localId: publicMediaFile.id,
-              fileDetails,
+              file: publicMediaFile,
+              public: fileItem.details,
             });
           }
         },
@@ -302,7 +276,7 @@ export class UploadService {
 
     this.emit('file-uploading', {
       file: this.mapExpFileToMediaFile(expFile),
-      progress,
+      progress: progress.toJSON(),
     });
   };
 

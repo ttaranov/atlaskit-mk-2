@@ -75,7 +75,7 @@ describe('MediaLocalUpload', () => {
 
     emitUploadServiceEvent('file-converted', {
       file: imageFile,
-      metadata: { id: 'some-id' },
+      public: { id: 'some-id' },
     });
 
     expect(emitter.emit).toHaveBeenCalledTimes(1);

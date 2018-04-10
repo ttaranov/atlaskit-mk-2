@@ -1,8 +1,8 @@
-import { MediaProgress } from './progress';
+import { FileDetails } from '@atlaskit/media-core';
 import { MediaError } from './error';
 import { Preview } from './preview';
 import { MediaFile, PublicMediaFile } from './file';
-import { MediaFileData } from '..';
+import { MediaProgress } from './progress';
 
 export type UploadsStartEventPayload = {
   readonly files: MediaFile[];
@@ -23,10 +23,8 @@ export type UploadProcessingEventPayload = {
 };
 
 export type UploadEndEventPayload = {
-  // readonly localId: string;
-  // readonly fileDetails: FileDetails;
   readonly file: PublicMediaFile;
-  readonly public: MediaFileData;
+  readonly public: FileDetails;
 };
 
 export type UploadErrorEventPayload = {

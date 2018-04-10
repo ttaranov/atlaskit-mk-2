@@ -129,30 +129,29 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       },
     );
 
-    dropzone.on('upload-status-update', ({ file, progress }) => {
+    dropzone.on('upload-status-update', ({ file: { id }, progress }) => {
       let uploadProgress = Math.round(progress.portion * 98);
-      console.log(`upload progress: ${uploadProgress}% for ${file.id} file`);
-      this.updatePreviewDataFile(file.id, uploadProgress);
+      console.log(`upload progress: ${uploadProgress}% for ${id} file`);
+      this.updatePreviewDataFile(id, uploadProgress);
     });
 
-    dropzone.on('upload-processing', data => {
+    dropzone.on('upload-processing', ({ file: { id } }) => {
       console.log('file processing');
-      const processingFileId = data.file.id;
       // TODO inflightUploads could be replaces with previews
       const inflightUploads = this.state.inflightUploads.filter(
-        fileId => fileId !== processingFileId,
+        fileId => fileId !== id,
       );
 
       this.setState({ inflightUploads });
-      this.updatePreviewDataFile(data.file.id, 99);
+      this.updatePreviewDataFile(id, 99);
     });
 
-    dropzone.on('upload-end', ({ localId }) => {
-      console.log(`upload end for ${localId} file`);
-      this.updatePreviewDataFile(localId, 100);
+    dropzone.on('upload-end', ({ file: { id, publicId } }) => {
+      console.log(`upload end for ${publicId} (local id: ${id}) file`);
+      this.updatePreviewDataFile(id, 100);
 
       setTimeout(() => {
-        this.updatePreviewDataFile(localId, 100, true);
+        this.updatePreviewDataFile(id, 100, true);
       }, 700);
     });
 

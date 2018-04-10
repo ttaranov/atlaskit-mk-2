@@ -5,6 +5,7 @@ import { MediaFile, PublicMediaFile } from '../domain/file';
 import { MediaProgress } from '../domain/progress';
 import { MediaError } from '../domain/error';
 import { Preview } from '../domain/preview';
+import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 import {
   MPFileProcessingStarted,
@@ -12,14 +13,13 @@ import {
 } from '../outer/analytics/events';
 
 import { GenericEventEmitter } from '../util/eventEmitter';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;
   emitUploadProgress(file: MediaFile, progress: MediaProgress): void;
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void;
   emitUploadProcessing(file: PublicMediaFile): void;
-  emitUploadEnd(fileDetails: FileDetails, localId: string): void;
+  emitUploadEnd(file: PublicMediaFile, fileDetails: FileDetails): void;
   emitUploadError(file: MediaFile, error: MediaError): void;
 }
 
@@ -55,8 +55,8 @@ export class UploadComponent<
     this.context.trackEvent(new MPFileProcessingStarted());
   }
 
-  emitUploadEnd(fileDetails: FileDetails, localId: string): void {
-    this.emit('upload-end', { fileDetails, localId });
+  emitUploadEnd(file: PublicMediaFile, fileDetails: FileDetails): void {
+    this.emit('upload-end', { file, public: fileDetails });
     this.context.trackEvent(new MPFileUploadEnded());
   }
 

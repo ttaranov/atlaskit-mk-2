@@ -46,32 +46,6 @@ describe('sendUploadEvent middleware', () => {
     expect(next).toBeCalledWith(action);
   });
 
-  it('should emit finalize ready event', () => {
-    const { eventEmitter, store, next } = setup();
-    const finalize = jest.fn();
-
-    sendUploadEventMiddleware(eventEmitter)(store)(next)(
-      sendUploadEvent({
-        event: {
-          name: 'upload-finalize-ready',
-          data: {
-            file,
-            finalize,
-          },
-        },
-        uploadId,
-      }),
-    );
-
-    expect(eventEmitter.emitUploadFinalizeReady).toBeCalledWith(
-      {
-        ...file,
-        id: uploadId,
-      },
-      finalize,
-    );
-  });
-
   it('should emit upload status update event', () => {
     const { eventEmitter, store, next } = setup();
     const progress = {

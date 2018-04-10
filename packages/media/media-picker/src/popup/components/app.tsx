@@ -90,6 +90,7 @@ export class App extends Component<AppProps, AppState> {
     const {
       apiUrl,
       userAuthProvider,
+      onStartApp,
       onUploadsStart,
       onUploadPreviewUpdate,
       onUploadStatusUpdate,
@@ -140,6 +141,8 @@ export class App extends Component<AppProps, AppState> {
       serviceHost: apiUrl,
       authProvider: userAuthProvider,
     });
+
+    onStartApp(() => {});
   }
 
   componentWillReceiveProps({ isVisible }: Readonly<AppProps>): void {
@@ -221,42 +224,24 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
   onStartApp: onCancelUpload => dispatch(startApp({ onCancelUpload })),
-  onUploadsStart: ({ files }) =>
-    dispatch(
-      fileUploadsStart({
-        files,
-      }),
-    ),
+  onUploadsStart: (payload: UploadsStartEventPayload) =>
+    dispatch(fileUploadsStart(payload)),
   onClose: () => dispatch(hidePopup()),
-  onUploadPreviewUpdate: ({ file, preview }) => {
-    dispatch(
-      fileUploadPreviewUpdate({
-        file,
-        preview,
-      }),
-    );
+  onUploadPreviewUpdate: (payload: UploadPreviewUpdateEventPayload) => {
+    dispatch(fileUploadPreviewUpdate(payload));
   },
-  onUploadStatusUpdate: ({ file, progress }) =>
-    dispatch(
-      fileUploadProgress({
-        file,
-        progress,
-      }),
-    ),
-  onUploadProcessing: ({ file }) =>
-    dispatch(
-      fileUploadProcessingStart({
-        file,
-      }),
-    ),
-  onUploadEnd: ({ file, public: publicFileDetails }) =>
+  onUploadStatusUpdate: (payload: UploadStatusUpdateEventPayload) =>
+    dispatch(fileUploadProgress(payload)),
+  onUploadProcessing: (payload: UploadProcessingEventPayload) =>
+    dispatch(fileUploadProcessingStart(payload)),
+  onUploadEnd: ({ file, public: publicFileDetails }: UploadEndEventPayload) =>
     dispatch(
       fileUploadEnd({
         file,
         public: publicFileDetails,
       }),
     ),
-  onUploadError: ({ file, error }) =>
+  onUploadError: ({ file, error }: UploadErrorEventPayload) =>
     dispatch(
       fileUploadError({
         file,

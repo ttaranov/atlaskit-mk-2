@@ -74,36 +74,8 @@ describe('finalizeUploadMiddleware', () => {
     expect(next).toBeCalledWith(action);
   });
 
-  it('should send upload end event without metadata given fetch metadata param false', () => {
-    const { fetcher, authService, store, action } = setup({
-      fetchMetadata: false,
-    });
-
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
-      expect(action).toEqual(
-        sendUploadEvent({
-          event: {
-            name: 'upload-end',
-            data: {
-              file: {
-                ...file,
-                publicId: copiedFile.id,
-              },
-              public: {
-                id: copiedFile.id,
-              },
-            },
-          },
-          uploadId,
-        }),
-      );
-    });
-  });
-
-  it('should send upload end event with metadata given fetch metadata param true', () => {
-    const { fetcher, authService, store, action } = setup({
-      fetchMetadata: true,
-    });
+  it('should send upload end event', () => {
+    const { fetcher, authService, store, action } = setup();
 
     return finalizeUpload(fetcher, authService, store, action).then(action => {
       expect(action).toEqual(
@@ -116,50 +88,6 @@ describe('finalizeUploadMiddleware', () => {
                 publicId: copiedFile.id,
               },
               public: copiedFile,
-            },
-          },
-          uploadId,
-        }),
-      );
-    });
-  });
-
-  it('should send upload processing event with metadata given fetch metadata param true', () => {
-    const { fetcher, authService, store, action } = setup({
-      fetchMetadata: true,
-    });
-
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
-      expect(store.dispatch).toBeCalledWith(
-        sendUploadEvent({
-          event: {
-            name: 'upload-processing',
-            data: {
-              file: {
-                ...file,
-                publicId: copiedFile.id,
-              },
-            },
-          },
-          uploadId,
-        }),
-      );
-    });
-  });
-
-  it('should send upload finalize ready event given auto finalize param false', () => {
-    const { fetcher, authService, store, action } = setup({
-      autoFinalize: false,
-    });
-
-    return finalizeUpload(fetcher, authService, store, action).then(action => {
-      expect(store.dispatch).toBeCalledWith(
-        sendUploadEvent({
-          event: {
-            name: 'upload-finalize-ready',
-            data: {
-              file,
-              finalize: expect.any(Function),
             },
           },
           uploadId,
