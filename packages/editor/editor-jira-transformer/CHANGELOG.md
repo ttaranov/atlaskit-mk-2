@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.0.2
+
 ## 3.0.1
 - [patch] Fixing the up external-link attribute [e4a8e8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4a8e8f)
 
