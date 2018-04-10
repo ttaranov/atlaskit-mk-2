@@ -78,7 +78,7 @@ describe('@atlaskit/reactions/selector', () => {
     expect(onMoreClick.mock.calls).to.have.lengthOf(1);
   });
 
-  it('should reveal default emoji', () => {
+  it('should calculate animation delay based on reaction index', () => {
     const selector = mount(renderSelector());
 
     expect(
