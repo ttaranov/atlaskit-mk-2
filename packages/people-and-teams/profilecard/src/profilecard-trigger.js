@@ -21,7 +21,7 @@ type Props = {
   position: ProfilecardTriggerPosition,
   userId: string,
   cloudId: string,
-  actions: ProfileCardAction[],
+  actions: Array<ProfileCardAction>,
   resourceClient: ProfileClient,
   trigger: 'click' | 'hover',
   analytics?: Function,

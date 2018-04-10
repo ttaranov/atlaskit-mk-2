@@ -12,7 +12,7 @@ import type {
 type Props = {
   userId: string,
   cloudId: string,
-  actions?: ProfileCardAction[],
+  actions?: Array<ProfileCardAction>,
   resourceClient: ProfileClient,
   analytics?: Function,
 };
@@ -102,7 +102,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
     });
   }
 
-  filterActions(): ProfileCardAction[] {
+  filterActions(): Array<ProfileCardAction> {
     const actions = this.props.actions || [];
     return actions.filter(action => {
       if (!action.shouldRender) {
