@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.1.3
+- [patch] Close Editor when comment is saved [ae181bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae181bf)
+
 ## 7.1.2
 
 ## 7.1.1
