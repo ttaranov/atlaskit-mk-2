@@ -97,7 +97,7 @@ export default class PositionExample extends Component<Props, State> {
             This example showcases the tooltips rendered with different
             positions.
             <br />
-            Click the tooltip targets to change the position of the tooltip.
+            Click the tooltip target to change the position of the tooltip.
           </ButtonDiv>
           <ButtonDiv>
             <Button onClick={this.changePositionType}>
