@@ -119,28 +119,28 @@ pipelines:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 2 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 3 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 4 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
 
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install and test to seed the jest and node_modules

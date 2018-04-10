@@ -4,12 +4,12 @@ const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
 // These are set by Pipelines if you are running in a parallel steps
-const BITBUCKET_PARALLEL_STEP = process.env.BITBUCKET_PARALLEL_STEP;
-const BITBUCKET_PARALLEL_STEP_COUNT = process.env.BITBUCKET_PARALLEL_STEP_COUNT;
+const STEP_IDX = process.env.STEP_IDX;
+const STEPS = process.env.STEPS;
 
 /**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
- * have the BITBUCKET_PARALLEL_STEP and BITBUCKET_PARALLEL_STEP_COUNT vars set will automatically distribute them evenly.
+ * have the STEPS and STEP_IDX vars set will automatically distribute them evenly.
  * It is important that **ALL** parallel steps are running the same command with the same number of tests and that **ALL**
  * parallel steps are running the command (i.e you can have 3 steps running jest and one running linting) as this will throw
  * the calculations off
@@ -76,24 +76,18 @@ if (INTEGRATION_TESTS) {
 /**
  * Batching.
  * In CI we want to be able to split out tests into multiple parallel steps that can be run concurrently.
- * We do this by passing in a list of test files (PARALLELIZE_TESTS), the number of a parallel steps (BITBUCKET_PARALLEL_STEP_COUNT)
- * and the (0 indexed) index of the current step (BITBUCKET_PARALLEL_STEP). Using these we can split the test up evenly
+ * We do this by passing in a list of test files (PARALLELIZE_TESTS), the number of a parallel steps (STEPS)
+ * and the (0 indexed) index of the current step (STEP_IDX). Using these we can split the test up evenly
  */
 if (PARALLELIZE_TESTS) {
   const allTests = JSON.parse(PARALLELIZE_TESTS);
-  const filesPerJob = Math.ceil(
-    allTests.length / Number(BITBUCKET_PARALLEL_STEP_COUNT),
-  );
-  const startIdx = filesPerJob * Number(BITBUCKET_PARALLEL_STEP);
+  const filesPerJob = Math.ceil(allTests.length / Number(STEPS));
+  const startIdx = filesPerJob * Number(STEP_IDX);
   const endIdx = startIdx + filesPerJob;
   config.testMatch = allTests.slice(startIdx, startIdx + filesPerJob);
 
   console.log('Parallelising jest tests.');
-  console.log(
-    `Parallel step ${String(BITBUCKET_PARALLEL_STEP)} of ${String(
-      BITBUCKET_PARALLEL_STEP_COUNT,
-    )}`,
-  );
+  console.log(`Parallel step ${String(STEP_IDX)} of ${String(STEPS)}`);
   console.log('Total test files', allTests.length);
   console.log(`Running filess: ${startIdx}-${endIdx}`);
 }
