@@ -66,10 +66,6 @@ function getInitialState(props): State {
   };
 }
 
-type showHideArgs = {
-  immediate: boolean,
-};
-
 /* eslint-disable react/sort-comp */
 class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
@@ -118,7 +114,7 @@ class Tooltip extends Component<Props, State> {
     // mousePosition Enum(top | left | bottom | right)
     //   - adjusted for edge collision and used when `position` === 'mouse'
     // coordinates: Object(left: number, top: number)
-    //   - coordinates passed to Transition
+    //   - coordinates passed to Transition, also adjusted for edge collision
     const positionData = getPosition({
       position,
       target,
@@ -171,14 +167,15 @@ class Tooltip extends Component<Props, State> {
     return <Transition {...transitionProps}>{content}</Transition>;
   }
 
-  show = ({ immediate }: showHideArgs) => {
+  show = ({ immediate }: { immediate: boolean }) => {
     this.setState({
       immediatelyShow: immediate,
       isVisible: true,
       coordinates: null,
     });
   };
-  hide = ({ immediate }: showHideArgs) => {
+  // eslint-disable-next-line react/no-unused-prop-types
+  hide = ({ immediate }: { immediate: boolean }) => {
     // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {

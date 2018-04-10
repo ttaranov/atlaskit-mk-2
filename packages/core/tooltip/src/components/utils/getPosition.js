@@ -1,7 +1,5 @@
 // @flow
 
-import inViewport from './inViewport';
-
 import type {
   CoordinatesType,
   PositionType,
@@ -50,6 +48,102 @@ const FLIPPED_POSITION = {
   left: 'right',
 };
 
+// Returns a top or left position that shifts the original coord to within viewport
+function shiftCoord(coordName, coords, gutter) {
+  const shiftedCoord = {};
+  if (coordName === 'top' || coordName === 'left') {
+    shiftedCoord[coordName] = 0 + gutter;
+  }
+
+  const docEl = document.documentElement;
+  if (coordName === 'bottom') {
+    const viewportHeight =
+      window.innerHeight || (docEl && docEl.clientHeight) || 0;
+    const amountClipped = coords.bottom - viewportHeight;
+
+    const shiftedTop = coords.top - amountClipped - gutter;
+
+    shiftedCoord.top = shiftedTop >= 0 ? shiftedTop : coords.top;
+  } else if (coordName === 'right') {
+    const viewportWidth =
+      window.innerWidth || (docEl && docEl.clientWidth) || 0;
+    const amountClipped = coords.right - viewportWidth;
+
+    const shiftedLeft = coords.left - amountClipped - gutter;
+
+    shiftedCoord.left = shiftedLeft >= 0 ? shiftedLeft : coords.top;
+  }
+
+  return shiftedCoord;
+}
+
+// Returns a map of positions to whether they fit in viewport
+function getViewportBounds({ top, right, bottom, left }: Coords) {
+  const docEl = document.documentElement;
+
+  return {
+    top: top >= 0,
+    left: left >= 0,
+    bottom:
+      bottom <= (window.innerHeight || (docEl && docEl.clientHeight) || 0),
+    right: right <= (window.innerWidth || (docEl && docEl.clientWidth) || 0),
+  };
+}
+
+// Get the viewport bounds for each position coord
+function getAllViewportBounds(allCoords: GetCoordsResults) {
+  const viewportBounds = {};
+  Object.keys(allCoords).forEach(position => {
+    const coords = allCoords[position];
+
+    viewportBounds[position] = getViewportBounds(coords);
+  });
+
+  return viewportBounds;
+}
+
+// Adjust the position and top/left coords to fit inside viewport
+// Performs flipping on the primary axis and shifting on the secondary axis
+function adjustPosition(originalPosition, positionCoords, gutter) {
+  const flippedPosition = FLIPPED_POSITION[originalPosition];
+
+  const viewportBounds = getAllViewportBounds(positionCoords);
+
+  // Should flip if the original position was not within bounds and the new position is
+  const shouldFlip =
+    !viewportBounds[originalPosition][originalPosition] &&
+    viewportBounds[flippedPosition][originalPosition];
+
+  const adjustedPosition = shouldFlip ? flippedPosition : originalPosition;
+
+  // Check secondary axis, for positional shift
+  const shiftedCoord = {};
+  const secondaryPositions = Object.keys(FLIPPED_POSITION).filter(
+    position => position !== originalPosition && position !== flippedPosition,
+  );
+
+  secondaryPositions.forEach(position => {
+    if (!viewportBounds[adjustedPosition][position]) {
+      Object.assign(
+        shiftedCoord,
+        shiftCoord(position, positionCoords[adjustedPosition], gutter),
+      );
+    }
+  });
+
+  // adjust positions with flipped position on main axis + shifted position on secondary axis
+  const left =
+    shiftedCoord.left != null
+      ? shiftedCoord.left
+      : positionCoords[adjustedPosition].left;
+  const top =
+    shiftedCoord.top != null
+      ? shiftedCoord.top
+      : positionCoords[adjustedPosition].top;
+
+  return { left, top, adjustedPosition };
+}
+
 function getCoords({
   targetRect,
   tooltipRect,
@@ -93,31 +187,31 @@ function getMouseCoords({
   return {
     top: {
       top: mouseCoordinates.top - (tooltipRect.height + gutter),
-      right: 0,
-      bottom: 0,
+      right: mouseCoordinates.left + tooltipRect.width / 2,
+      bottom: mouseCoordinates.top - gutter,
       left: mouseCoordinates.left - tooltipRect.width / 2,
     },
     right: {
-      top: mouseCoordinates.top + (0 - tooltipRect.height) / 2,
+      top: mouseCoordinates.top - tooltipRect.height / 2,
       right:
-        mouseCoordinates.left + cursorPaddingRight + gutter + tooltipRect.width, // used to calculate flip
-      bottom: 0,
+        mouseCoordinates.left + cursorPaddingRight + gutter + tooltipRect.width,
+      bottom: mouseCoordinates.top + tooltipRect.height / 2,
       left: mouseCoordinates.left + cursorPaddingRight + gutter,
     },
     bottom: {
       top: mouseCoordinates.top + cursorPaddingBottom + gutter,
-      right: 0,
+      right: mouseCoordinates.left + tooltipRect.width / 2,
       bottom:
         mouseCoordinates.top +
         cursorPaddingBottom +
         gutter +
-        tooltipRect.height, // used to calculate flip
+        tooltipRect.height,
       left: mouseCoordinates.left - tooltipRect.width / 2,
     },
     left: {
       top: mouseCoordinates.top - tooltipRect.height / 2,
-      right: 0,
-      bottom: 0,
+      right: mouseCoordinates.left - gutter,
+      bottom: mouseCoordinates.top + tooltipRect.height / 2,
       left: mouseCoordinates.left - (tooltipRect.width + gutter),
     },
   };
@@ -141,17 +235,11 @@ function getMousePosition({ mousePosition, tooltip, mouseCoordinates }) {
 
   const POSITIONS = getMouseCoords({ mouseCoordinates, tooltipRect, gutter });
 
-  // set tooltip positions before viewport check
-  const attemptedPosition = POSITIONS[mousePosition];
-
-  // check if the tooltip is in view or must be flipped
-  const adjustedPosition = inViewport(attemptedPosition)
-    ? mousePosition
-    : FLIPPED_POSITION[mousePosition];
-
-  // adjust positions with (possibly) flipped position
-  const left = POSITIONS[adjustedPosition].left;
-  const top = POSITIONS[adjustedPosition].top;
+  const { left, top, adjustedPosition } = adjustPosition(
+    mousePosition,
+    POSITIONS,
+    gutter,
+  );
 
   return {
     coordinates: { left, top },
@@ -190,17 +278,11 @@ export default function getPosition({
 
   const POSITIONS = getCoords({ targetRect, tooltipRect, gutter });
 
-  // set tooltip positions before viewport check
-  const attemptedPosition = POSITIONS[position];
-
-  // check if the tooltip is in view or must be flipped
-  const adjustedPosition = inViewport(attemptedPosition)
-    ? position
-    : FLIPPED_POSITION[position];
-
-  // adjust positions with (possibly) flipped position
-  const left = POSITIONS[adjustedPosition].left;
-  const top = POSITIONS[adjustedPosition].top;
+  const { left, top, adjustedPosition } = adjustPosition(
+    position,
+    POSITIONS,
+    gutter,
+  );
 
   return {
     coordinates: { left, top },

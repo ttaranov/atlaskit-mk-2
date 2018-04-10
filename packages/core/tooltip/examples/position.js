@@ -116,7 +116,7 @@ export default class PositionExample extends Component<Props, State> {
           style={{ position: 'absolute', ...viewportStyle }}
         >
           <Tooltip
-            content={`The position of the tooltip is ${position}`}
+            content={`The position of the tooltip is ${position}. Click to change this.`}
             position={tooltipPosition}
             mousePosition={mousePosition}
           >
