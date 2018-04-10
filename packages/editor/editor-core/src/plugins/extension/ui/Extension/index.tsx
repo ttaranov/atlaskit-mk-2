@@ -41,13 +41,13 @@ export default class Extension extends Component<Props, any> {
       handleContentDOMRef,
       extensionHandlers,
     } = this.props;
-    const { extensionProvider } = providers;
+    const { macroProvider } = providers;
 
     return (
       <ExtensionComponent
         editorView={editorView}
         node={node}
-        extensionProvider={extensionProvider}
+        macroProvider={macroProvider}
         setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}
         extensionHandlers={extensionHandlers}
@@ -58,7 +58,7 @@ export default class Extension extends Component<Props, any> {
   render() {
     return (
       <WithProviders
-        providers={['extensionProvider']}
+        providers={['macroProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />

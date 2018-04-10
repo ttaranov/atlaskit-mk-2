@@ -48,11 +48,7 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-export {
-  ExtensionProvider,
-  ExtensionAttributes,
-  ExtensionType,
-} from './plugins/macro';
+export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
 
 export { CollabEditProvider } from './plugins/collab-edit';
 
