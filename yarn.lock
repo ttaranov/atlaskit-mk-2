@@ -2998,12 +2998,13 @@ chromatism@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
 
-chunkinator@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-0.0.15.tgz#52e88c4f7cd4f9384a7d5e6a9a9fa51730ea8ea6"
+chunkinator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-1.0.0.tgz#60dfd2e90c7f9bcf88f5d375887b2f8d0618712f"
   dependencies:
     rxjs "^5.5.6"
     rxjs-async-map "^0.1.0"
+    tslib "^1.8.0"
 
 ci-info@^1.0.0:
   version "1.1.1"
@@ -11763,9 +11764,15 @@ rxjs@^5.0.0-beta.11:
   dependencies:
     symbol-observable "^1.0.1"
 
-rxjs@^5.1.0, rxjs@^5.5.6:
+rxjs@^5.1.0:
   version "5.5.6"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.6.tgz#e31fb96d6fd2ff1fd84bcea8ae9c02d007179c02"
+  dependencies:
+    symbol-observable "1.0.1"
+
+rxjs@^5.5.6:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.8.tgz#b2b0809a57614ad6254c03d7446dea0d83ca3791"
   dependencies:
     symbol-observable "1.0.1"
 

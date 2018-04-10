@@ -255,7 +255,7 @@
     "calendar-base": "^0.3.0",
     "chalk": "^2.1.0",
     "chromatism": "^2.6.0",
-    "chunkinator": "^0.0.15",
+    "chunkinator": "^1.0.0",
     "classnames": "^2.2.5",
     "clipboard-polyfill": "2.4.3",
     "codesandbox": "^1.1.14",

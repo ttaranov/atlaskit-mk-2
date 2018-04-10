@@ -38,7 +38,6 @@ describe('MediaPicker', () => {
     it('should be able to register listeners to generic upload events', () => {
       const binary = MediaPicker('binary', moduleConfig);
       binary.on('upload-status-update', payload => {});
-      binary.on('upload-finalize-ready', payload => {});
       binary.on('upload-preview-update', payload => {});
       binary.on('upload-processing', payload => {});
       binary.on('upload-end', payload => {});
@@ -71,7 +70,6 @@ describe('MediaPicker', () => {
 
       browser.on('uploads-start', payload => {});
       browser.on('upload-status-update', payload => {});
-      browser.on('upload-finalize-ready', payload => {});
       browser.on('upload-preview-update', payload => {});
       browser.on('upload-processing', payload => {});
       browser.on('upload-end', payload => {});
@@ -95,7 +93,6 @@ describe('MediaPicker', () => {
 
       clipboard.on('uploads-start', payload => {});
       clipboard.on('upload-status-update', payload => {});
-      clipboard.on('upload-finalize-ready', payload => {});
       clipboard.on('upload-preview-update', payload => {});
       clipboard.on('upload-processing', payload => {});
       clipboard.on('upload-end', payload => {});
@@ -125,7 +122,6 @@ describe('MediaPicker', () => {
 
       dropzone.on('uploads-start', payload => {});
       dropzone.on('upload-status-update', payload => {});
-      dropzone.on('upload-finalize-ready', payload => {});
       dropzone.on('upload-preview-update', payload => {});
       dropzone.on('upload-processing', payload => {});
       dropzone.on('upload-end', payload => {});
@@ -165,7 +161,6 @@ describe('MediaPicker', () => {
 
       popup.on('uploads-start', payload => {});
       popup.on('upload-status-update', payload => {});
-      popup.on('upload-finalize-ready', payload => {});
       popup.on('upload-preview-update', payload => {});
       popup.on('upload-processing', payload => {});
       popup.on('upload-end', payload => {});

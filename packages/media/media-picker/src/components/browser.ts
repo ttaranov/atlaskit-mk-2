@@ -17,7 +17,7 @@ export interface BrowserConstructor {
 }
 
 export class Browser extends LocalUploadComponent {
-  private browseElem: HTMLInputElement;
+  private readonly browseElement: HTMLInputElement;
 
   constructor(
     context: MediaPickerContext,
@@ -26,16 +26,16 @@ export class Browser extends LocalUploadComponent {
   ) {
     super(context, config);
 
-    this.browseElem = document.createElement('INPUT') as HTMLInputElement;
-    this.browseElem.setAttribute('type', 'file');
-    this.browseElem.style.display = 'none';
+    this.browseElement = document.createElement('INPUT') as HTMLInputElement;
+    this.browseElement.setAttribute('type', 'file');
+    this.browseElement.style.display = 'none';
 
     if (browserConfig.multiple) {
-      this.browseElem.setAttribute('multiple', '');
+      this.browseElement.setAttribute('multiple', '');
     }
 
     if (browserConfig.fileExtensions) {
-      this.browseElem.setAttribute(
+      this.browseElement.setAttribute(
         'accept',
         browserConfig.fileExtensions.join(','),
       );
@@ -43,20 +43,20 @@ export class Browser extends LocalUploadComponent {
 
     // IE11 hack - click will not execute if input has no parent
     // WebDriver hack - click will not execute if input isn't in the document
-    document.body.appendChild(this.browseElem);
+    document.body.appendChild(this.browseElement);
 
-    this.uploadService.addBrowse(this.browseElem);
+    this.uploadService.addBrowse(this.browseElement);
     this.context.trackEvent(new MPBrowserLoaded());
   }
 
   public browse(): void {
-    this.browseElem.click();
+    this.browseElement.click();
   }
 
   public teardown(): void {
-    const parentNode = this.browseElem.parentNode;
+    const parentNode = this.browseElement.parentNode;
     if (parentNode) {
-      parentNode.removeChild(this.browseElem);
+      parentNode.removeChild(this.browseElement);
     }
   }
 }

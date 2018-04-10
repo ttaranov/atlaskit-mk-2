@@ -18,6 +18,7 @@ import {
 } from '../example-helpers/styled';
 import { PreviewData, renderPreviewImage } from '../example-helpers';
 import { AuthEnvironment } from '../example-helpers';
+import { ModuleConfig, UploadParams } from '../src/domain/config';
 
 export interface BrowserWrapperState {
   collectionName: string;
@@ -65,15 +66,13 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   }
 
   createBrowse() {
-    const uploadParams = {
-      autoFinalize: true,
+    const uploadParams: UploadParams = {
       collection: defaultMediaPickerCollectionName,
-      authMethod: 'client',
     };
-    const config = {
+    const config: ModuleConfig = {
       apiUrl: defaultServiceHost,
       authProvider: mediaPickerAuthProvider(this),
-      uploadParams,
+      uploadParams: uploadParams,
     };
     const browseConfig = {
       multiple: true,

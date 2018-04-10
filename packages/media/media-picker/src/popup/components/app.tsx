@@ -90,7 +90,6 @@ export class App extends Component<AppProps, AppState> {
     const {
       apiUrl,
       userAuthProvider,
-      onStartApp,
       onUploadsStart,
       onUploadPreviewUpdate,
       onUploadStatusUpdate,

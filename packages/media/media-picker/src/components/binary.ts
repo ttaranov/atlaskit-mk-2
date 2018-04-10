@@ -14,7 +14,7 @@ export class BinaryUploader extends LocalUploadComponent {
   public upload(base64: string, name: string): void {
     const filename = name || 'file';
     const file = this._urltoFile(base64, filename);
-    this.uploadService.addFile(file);
+    this.uploadService.addFiles([file]);
   }
 
   private _urltoFile(dataurl: string, filename: string): File {

@@ -1,12 +1,12 @@
 import { AuthProvider } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from '../localUpload';
 import { MPDropzoneLoaded } from '../../outer/analytics/events';
+import { whenDomReady } from '../../util/documentReady';
 import { MediaPickerContext } from '../../domain/context';
 import { ModuleConfig } from '../../domain/config';
-import { whenDomReady } from '../../util/documentReady';
-import dropzoneUI from './dropzoneUI';
 import { UploadEventPayloadMap } from '../../domain/uploadEvent';
+import { LocalUploadComponent } from '../localUpload';
+import dropzoneUI from './dropzoneUI';
 
 export interface DropzoneConfig {
   userAuthProvider?: AuthProvider;
@@ -122,9 +122,7 @@ export class Dropzone extends LocalUploadComponent<
   };
 
   private createInstance(): void {
-    const element = this.getDropzoneUI();
-
-    this.instance = element;
+    this.instance = this.getDropzoneUI();
     this.container.appendChild(this.instance);
     this.uploadService.on('file-dropped', this.onDrop);
   }

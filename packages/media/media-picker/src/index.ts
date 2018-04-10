@@ -28,7 +28,6 @@ const trackEvent = new UserTracker().track();
 export {
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
-  UploadFinalizeReadyEventPayload,
   UploadPreviewUpdateEventPayload,
   UploadProcessingEventPayload,
   UploadEndEventPayload,
@@ -42,7 +41,6 @@ export { MediaError } from './domain/error';
 export { ImagePreview, Preview, NonImagePreview } from './domain/preview';
 
 export { MediaFileData } from './service/mediaApi';
-export { FileFinalize } from './service/uploadService';
 
 // Constructor public API and types
 export interface MediaPickerConstructors {

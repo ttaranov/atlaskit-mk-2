@@ -7,7 +7,7 @@ import {
   FileUploadErrorEventPayload,
   FileUploadingEventPayload,
   UploadService,
-} from '../service/newUploadService';
+} from '../service/uploadService';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
 import { ModuleConfig, UploadParams } from '../domain/config';

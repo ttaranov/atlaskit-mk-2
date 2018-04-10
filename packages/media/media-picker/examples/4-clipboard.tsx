@@ -20,7 +20,6 @@ import {
 
 export interface ClipboardWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
@@ -33,7 +32,6 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
   state: ClipboardWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],

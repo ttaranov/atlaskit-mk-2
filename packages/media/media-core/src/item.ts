@@ -1,6 +1,5 @@
 import { MediaType } from './mediaTypes';
 import { SmartCardResponse } from './smartCardResponse';
-import { MediaArtifact } from '../../media-picker/src/service/mediaApi';
 
 export type MediaItemType = 'file' | 'link';
 

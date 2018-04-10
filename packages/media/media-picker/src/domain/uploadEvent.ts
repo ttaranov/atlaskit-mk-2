@@ -1,9 +1,8 @@
-import { FileDetails } from '@atlaskit/media-core';
 import { MediaProgress } from './progress';
 import { MediaError } from './error';
 import { Preview } from './preview';
-import { FileFinalize } from '../service/uploadService';
 import { MediaFile, PublicMediaFile } from './file';
+import { MediaFileData } from '..';
 
 export type UploadsStartEventPayload = {
   readonly files: MediaFile[];
@@ -24,18 +23,15 @@ export type UploadProcessingEventPayload = {
 };
 
 export type UploadEndEventPayload = {
-  readonly localId: string;
-  readonly fileDetails: FileDetails;
+  // readonly localId: string;
+  // readonly fileDetails: FileDetails;
+  readonly file: PublicMediaFile;
+  readonly public: MediaFileData;
 };
 
 export type UploadErrorEventPayload = {
   readonly file: MediaFile;
   readonly error: MediaError;
-};
-
-export type UploadFinalizeReadyEventPayload = {
-  readonly file: MediaFile;
-  readonly finalize: FileFinalize;
 };
 
 export type UploadEventPayloadMap = {

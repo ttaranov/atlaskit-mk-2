@@ -9,7 +9,7 @@ import {
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import Spinner from '@atlaskit/spinner';
-import { MediaPicker, Dropzone } from '../src';
+import { MediaPicker, Dropzone, UploadPreviewUpdateEventPayload } from '../src';
 import {
   DropzoneContainer,
   PopupHeader,
@@ -18,11 +18,12 @@ import {
   DropzonePreviewsWrapper,
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
-import { renderPreviewImage } from '../example-helpers';
+import { PreviewData, renderPreviewImage } from '../example-helpers';
+import { ModuleConfig } from '../src/domain/config';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
+  previewsData: PreviewData[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
@@ -63,9 +64,35 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       });
   }
 
+  // TODO Extract to one place
+  getPreviewData(fileId: string): PreviewData | null {
+    return (
+      this.state.previewsData.find(preview => preview.fileId === fileId) || null
+    );
+  }
+
+  updatePreviewDataFile(
+    fileId: string,
+    progress: number,
+    isProcessed: boolean = false,
+  ) {
+    const previewData = this.getPreviewData(fileId);
+    if (
+      previewData &&
+      (previewData.uploadingProgress !== progress ||
+        previewData.isProcessed !== isProcessed)
+    ) {
+      previewData.uploadingProgress = progress;
+      previewData.isProcessed = isProcessed;
+      this.forceUpdate();
+    } else {
+      console.log('update is not needed');
+    }
+  }
+
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
-    const config = {
+    const config: ModuleConfig = {
       authProvider: defaultMediaPickerAuthProvider,
       apiUrl: userAuthProviderBaseURL,
     };
@@ -87,28 +114,46 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       });
     });
 
-    dropzone.on('upload-preview-update', data => {
-      this.setState({ previewsData: [...this.state.previewsData, data] });
-    });
+    dropzone.on(
+      'upload-preview-update',
+      (payload: UploadPreviewUpdateEventPayload) => {
+        const previewData: PreviewData = {
+          preview: payload.preview,
+          isProcessed: false,
+          fileId: payload.file.id,
+          uploadingProgress: 0,
+        };
+        this.setState({
+          previewsData: [previewData, ...this.state.previewsData],
+        });
+      },
+    );
 
-    dropzone.on('upload-status-update', data => {
-      console.log('upload progress update');
-      console.log(data);
+    dropzone.on('upload-status-update', ({ file, progress }) => {
+      let uploadProgress = Math.round(progress.portion * 98);
+      console.log(`upload progress: ${uploadProgress}% for ${file.id} file`);
+      this.updatePreviewDataFile(file.id, uploadProgress);
     });
 
     dropzone.on('upload-processing', data => {
       console.log('file processing');
       const processingFileId = data.file.id;
+      // TODO inflightUploads could be replaces with previews
       const inflightUploads = this.state.inflightUploads.filter(
         fileId => fileId !== processingFileId,
       );
 
       this.setState({ inflightUploads });
+      this.updatePreviewDataFile(data.file.id, 99);
     });
 
-    dropzone.on('upload-end', data => {
-      console.log('upload finished');
-      console.log(data);
+    dropzone.on('upload-end', ({ localId }) => {
+      console.log(`upload end for ${localId} file`);
+      this.updatePreviewDataFile(localId, 100);
+
+      setTimeout(() => {
+        this.updatePreviewDataFile(localId, 100, true);
+      }, 700);
     });
 
     dropzone.on('drag-enter', data => {
@@ -157,10 +202,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   };
 
   onCancel = () => {
-    const { inflightUploads } = this.state;
-
-    inflightUploads.forEach(uploadId => this.dropzone.cancel(uploadId));
-
     this.setState({ inflightUploads: [] });
   };
 

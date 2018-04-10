@@ -37,8 +37,6 @@ export type PublicFile = {
   preview?: string;
 };
 export interface PopupWrapperState {
-  isAutoFinalizeActive: boolean;
-  isFetchMetadataActive: boolean;
   collectionName: string;
   closedTimes: number;
   events: any[];
@@ -52,8 +50,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   popup: Popup;
 
   state: PopupWrapperState = {
-    isAutoFinalizeActive: true,
-    isFetchMetadataActive: true,
     collectionName: defaultMediaPickerCollectionName,
     closedTimes: 0,
     events: [],
@@ -161,30 +157,16 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onShow = () => {
-    const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
-      collectionName: collection,
-    } = this.state;
+    const { collectionName: collection } = this.state;
 
     this.popup.setUploadParams({
       collection,
-      autoFinalize: isAutoFinalizeActive,
-      fetchMetadata: isFetchMetadataActive,
     });
 
     // Populate cache in userAuthProvider.
     userAuthProvider();
     // Synchronously with next command tenantAuthProvider will be requested.
     this.popup.show().catch(console.error);
-  };
-
-  onAutoFinalizeChange = () => {
-    this.setState({ isAutoFinalizeActive: !this.state.isAutoFinalizeActive });
-  };
-
-  onFetchMetadataChange = () => {
-    this.setState({ isFetchMetadataActive: !this.state.isFetchMetadataActive });
   };
 
   onCollectionChange = e => {
@@ -239,7 +221,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           <div key={key}>
             {this.renderSerializedEvent(eventName, newData, key)}
             <div>
-              <PreviewImage src={imageUrl} id={data.file.id} />
+              <PreviewImage src={imageUrl} id={data.file.id} fadedOut={false} />
             </div>
           </div>
         );
@@ -343,8 +325,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   render() {
     const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
       closedTimes,
       events,
       authEnvironment,
@@ -394,15 +374,9 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
             autoFinalize
-            <Toggle
-              isDefaultChecked={isAutoFinalizeActive}
-              onChange={this.onAutoFinalizeChange}
-            />
+            <Toggle isDefaultChecked={true} isDisabled={true} />
             fetchMetadata
-            <Toggle
-              isDefaultChecked={isFetchMetadataActive}
-              onChange={this.onFetchMetadataChange}
-            />
+            <Toggle isDefaultChecked={true} isDisabled={true} />
             Closed times: {closedTimes}
           </PopupHeader>
           <FilesInfoWrapper>
