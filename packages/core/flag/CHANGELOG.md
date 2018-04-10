@@ -1,5 +1,14 @@
 # @atlaskit/flag
 
+## 7.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 6.5.3
+- [patch] Export the AppearanceTypes type [d38fc10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d38fc10)
+
+## 6.5.2
+- [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
+
 ## 6.5.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

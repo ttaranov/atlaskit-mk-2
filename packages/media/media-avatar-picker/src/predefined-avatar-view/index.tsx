@@ -28,18 +28,26 @@ export interface PredefinedAvatarViewProps {
   onGoBack?: () => void;
   onAvatarSelected: (avatar: Avatar) => void;
   selectedAvatar?: Avatar;
+  predefinedAvatarsText?: string;
 }
 
 export class PredefinedAvatarView extends PureComponent<
   PredefinedAvatarViewProps,
   {}
 > {
-  static defaultProps = {
+  static defaultProps: PredefinedAvatarViewProps = {
     avatars: [],
+    predefinedAvatarsText: 'Default avatars',
+    onAvatarSelected() {},
   };
 
   render() {
-    const { avatars, selectedAvatar, onGoBack } = this.props;
+    const {
+      avatars,
+      selectedAvatar,
+      onGoBack,
+      predefinedAvatarsText,
+    } = this.props;
     const cards = avatars.map((avatar, idx) => {
       const elementKey = `predefined-avatar-${idx}`;
       return (
@@ -57,7 +65,7 @@ export class PredefinedAvatarView extends PureComponent<
       <PredefinedAvatarViewWrapper>
         <div className="header">
           <BackBtn onClick={onGoBack} />
-          <div className="description">Default avatars</div>
+          <div className="description">{predefinedAvatarsText}</div>
         </div>
         <ul>{cards}</ul>
       </PredefinedAvatarViewWrapper>

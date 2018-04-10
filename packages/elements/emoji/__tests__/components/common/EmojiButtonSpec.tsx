@@ -5,7 +5,7 @@ import { expect } from 'chai';
 
 import * as styles from '../../../src/components/common/styles';
 import EmojiButton from '../../../src/components/common/EmojiButton';
-import { spriteEmoji, imageEmoji } from '../../../src/support/test-data';
+import { spriteEmoji, imageEmoji } from '../../_test-data';
 
 describe('<EmojiButton />', () => {
   describe('as sprite', () => {

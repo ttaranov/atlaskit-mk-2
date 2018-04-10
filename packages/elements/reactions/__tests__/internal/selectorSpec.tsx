@@ -10,9 +10,9 @@ import {
   defaultReactions,
   isDefaultReaction,
 } from '../../src/internal/selector';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 
-const { getEmojiResourcePromise } = testData;
+const { getEmojiResourcePromise } = emoji.testData;
 
 const { expect } = chai;
 

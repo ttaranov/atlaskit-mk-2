@@ -88,6 +88,7 @@ describe(name, () => {
         'check-circle',
         'check',
         'checkbox',
+        'checkbox-indeterminate',
         'chevron-down-circle',
         'chevron-down',
         'chevron-left-circle',
@@ -390,13 +391,14 @@ describe(name, () => {
 
   describe('component structure', () => {
     it('should be possible to create the components', () => {
-      Object.values(components).forEach(iconData => {
-        // $FlowFixMe - Object.values does not have a consistent return value
-        const Icon = iconData.component;
-        const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).not.toBe(undefined);
-        expect(Icon).toBeInstanceOf(Function);
-      });
+      Object.keys(components)
+        .map(index => components[index])
+        .forEach(iconData => {
+          const Icon = iconData.component;
+          const wrapper = shallow(<Icon label="My icon" />);
+          expect(wrapper).not.toBe(undefined);
+          expect(Icon).toBeInstanceOf(Function);
+        });
     });
   });
 

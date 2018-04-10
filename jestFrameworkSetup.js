@@ -3,6 +3,10 @@ import 'jest-styled-components';
 import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
 
+let consoleError;
+let consoleWarn;
+let consoleLog;
+
 // URL is not available for non Node environment
 if (global.URL) {
   global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
@@ -246,3 +250,20 @@ expect.extend({
     return ret;
   },
 });
+
+if (process.env.CI) {
+  beforeEach(() => {
+    consoleError = console.error;
+    consoleWarn = console.warn;
+    consoleLog = console.log;
+    console.error = jest.fn();
+    console.warn = jest.fn();
+    console.log = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = consoleError;
+    console.warn = consoleWarn;
+    console.log = consoleLog;
+  });
+}

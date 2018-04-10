@@ -12,12 +12,15 @@ import type { ButtonAppearances } from '../types';
 
 export type ButtonGroupProps = {
   /** The appearance to apply to all buttons. */
-  appearance?: ButtonAppearances,
+  appearance: ButtonAppearances,
   /** The buttons to render. */
   children: ChildrenArray<Element<any>>,
 };
 
 class ButtonGroup extends Component<ButtonGroupProps> {
+  static defaultProps = {
+    appearance: 'default',
+  };
   render() {
     const { appearance, children } = this.props;
 

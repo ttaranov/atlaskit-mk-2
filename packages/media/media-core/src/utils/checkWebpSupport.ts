@@ -3,7 +3,7 @@
  * We know that creating a new image in memory and checking its height,
  * later on we cache this value forever.
  */
-let isSupported;
+let isSupported: boolean;
 
 export const checkWebpSupport = (): Promise<boolean> => {
   if (isSupported !== undefined) {

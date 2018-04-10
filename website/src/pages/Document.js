@@ -1,13 +1,13 @@
-/* @flow */
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 import { Redirect } from 'react-router-dom';
-import type { Directory, File, RouterMatch } from '../types';
+import Loadable from 'react-loadable';
+import type { RouterMatch } from '../types';
 import * as fs from '../utils/fs';
 import Page from '../components/Page';
 import Markdown from '../components/Markdown';
 import FourOhFour from './FourOhFour';
 import Loading from '../components/Loading';
-import Loadable from 'react-loadable';
 import { docs } from '../site';
 
 type DocProps = {
@@ -30,9 +30,8 @@ export default function Document({ match: { params: { docId } } }: DocProps) {
     render(md) {
       if (md) {
         return <Markdown>{md}</Markdown>;
-      } else {
-        return <FourOhFour />;
       }
+      return <FourOhFour />;
     },
   });
 

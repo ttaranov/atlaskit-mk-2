@@ -1,4 +1,130 @@
+import { bodiedExtensionData } from './mock-extension-data';
+
 export const customInsertMenuItems = [
+  {
+    content: 'Inline macro (EH)',
+    value: { name: 'inline-eh' },
+    tooltipDescription: 'Inline macro (Using extension handlers)',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'inlineExtension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'inline-eh',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              macroId: { value: new Date().valueOf() },
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  },
+  {
+    content: 'Block macro (EH)',
+    value: { name: 'block-eh' },
+    tooltipDescription: 'Block macro (Using extension handlers)',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'extension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'block-eh',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              macroId: { value: new Date().valueOf() },
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  },
+  {
+    content: 'Bodied macro (EH)',
+    value: { name: 'bodied-eh' },
+    tooltipDescription: 'Bodied macro (Using extension handlers)',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'bodiedExtension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'bodied-eh',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              macroId: { value: new Date().valueOf() },
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+        content: [
+          {
+            type: 'paragraph',
+            content: [],
+          },
+        ],
+      });
+    },
+  },
+  {
+    content: 'Bodied macro (NON-EH)',
+    value: { name: 'bodied-non-eh' },
+    tooltipDescription: 'Bodied macro',
+    tooltipPosition: 'right',
+    elemBefore: '-',
+    onClick: function(editorActions) {
+      editorActions.replaceSelection({
+        type: 'bodiedExtension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'bodied-non-eh',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              macroId: { value: new Date().valueOf() },
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+        content: [
+          {
+            type: 'paragraph',
+            content: [],
+          },
+        ],
+      });
+    },
+  },
   {
     content: 'Loren ipsun',
     value: { name: 'loren-ipsun' },
@@ -51,31 +177,13 @@ export const customInsertMenuItems = [
         'Fake promise that simulates the macro browser opening. Will resolve in 1 sec with a selected macro to be inserted.',
       );
 
-      const openMacroBrowser = new Promise(resolve => {
+      const editExtension = new Promise(resolve => {
         setTimeout(() => {
-          resolve({
-            type: 'inlineExtension',
-            attrs: {
-              extensionType: 'com.atlassian.confluence.macro.core',
-              extensionKey: 'cheese',
-              parameters: {
-                macroParams: {},
-                macroMetadata: {
-                  macroId: { value: new Date().valueOf() },
-                  placeholder: [
-                    {
-                      data: { url: '' },
-                      type: 'icon',
-                    },
-                  ],
-                },
-              },
-            },
-          });
+          resolve(bodiedExtensionData[0]);
         }, 1000);
       });
 
-      openMacroBrowser.then(macro => editorActions.replaceSelection(macro));
+      editExtension.then(macro => editorActions.replaceSelection(macro));
     },
   },
 ];

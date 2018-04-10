@@ -15,9 +15,10 @@ import {
   UploadErrorEventPayload,
   UploadEndEventPayload,
 } from '@atlaskit/media-picker';
+import { ContextFactory } from '@atlaskit/media-core';
 import {
   StoryBookAuthProvider,
-  StoryBookUserAuthProvider,
+  userAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { randomId } from '@atlaskit/editor-test-helpers';
 
@@ -37,19 +38,16 @@ describe('Media PickerFacade', () => {
     captureMessage: (msg: any) => {},
   };
 
-  const userAuthProvider = StoryBookUserAuthProvider.create();
-
-  const contextConfig = {
+  const context = ContextFactory.create({
     serviceHost: 'http://test',
     authProvider: StoryBookAuthProvider.create(false),
     userAuthProvider,
-  };
+  });
 
   const getPickerFacadeConfig = (
     stateManager: MediaStateManager,
   ): PickerFacadeConfig => ({
-    uploadParams: {},
-    contextConfig,
+    context,
     stateManager,
     errorReporter,
   });
@@ -206,6 +204,7 @@ describe('Media PickerFacade', () => {
           getPickerFacadeConfig(stateManager),
           {
             userAuthProvider,
+            uploadParams: { collection: '' },
           },
         );
       });

@@ -53,14 +53,14 @@ describe('tasks and decisions - input rules', () => {
 
     it('should replace "<> " with a decisionList inside table header', () => {
       const { editorView, sel } = editor(
-        doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
+        doc(table()(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
       );
 
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(
               th({})(
                 decisionList({ localId: 'local-decision' })(
@@ -77,14 +77,14 @@ describe('tasks and decisions - input rules', () => {
 
     it('should replace "<> " with a decisionList inside table cell', () => {
       const { editorView, sel } = editor(
-        doc(table(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
+        doc(table()(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
       );
 
       insertText(editorView, '<> ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(
               td({})(
@@ -102,7 +102,7 @@ describe('tasks and decisions - input rules', () => {
     it('should not replace "<> " after shift+enter with a decisionList inside table cell', () => {
       const { editorView, sel } = editor(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(td({})(p('Hello', hardBreak(), '{<>}'))),
             tr(tdEmpty),
@@ -114,7 +114,7 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(td({})(p('Hello', hardBreak(), '<> '))),
             tr(tdEmpty),
@@ -206,14 +206,14 @@ describe('tasks and decisions - input rules', () => {
     });
     it('should replace "[] " with a taskList inside table header', () => {
       const { editorView, sel } = editor(
-        doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
+        doc(table()(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
       );
 
       insertText(editorView, '[] ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(
               th({})(
                 taskList({ localId: 'local-decision' })(
@@ -230,14 +230,14 @@ describe('tasks and decisions - input rules', () => {
 
     it('should replace "[] " with a taskList inside table cell', () => {
       const { editorView, sel } = editor(
-        doc(table(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
+        doc(table()(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
       );
 
       insertText(editorView, '[] ', sel);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(
               td({})(
@@ -255,7 +255,7 @@ describe('tasks and decisions - input rules', () => {
     it('should not replace "[] " after shift+enter with a taskList inside table cell', () => {
       const { editorView, sel } = editor(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(td({})(p('Hello', hardBreak(), '{<>}'))),
             tr(tdEmpty),
@@ -267,7 +267,7 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          table(
+          table()(
             tr(thEmpty),
             tr(td({})(p('Hello', hardBreak(), '[] '))),
             tr(tdEmpty),

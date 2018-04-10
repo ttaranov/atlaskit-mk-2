@@ -8,6 +8,7 @@ export interface Props {
   compact?: boolean;
   disabled?: boolean;
   id?: string;
+  invalidMessage?: React.ReactNode;
   isLabelHidden?: boolean;
   isReadOnly?: boolean;
   isInvalid?: boolean;

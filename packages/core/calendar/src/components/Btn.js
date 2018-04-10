@@ -4,8 +4,8 @@ import React, { type Node } from 'react';
 import Button from '@atlaskit/button';
 
 type Props = {
-  onClick: () => void,
-  children: Node,
+  onClick?: () => void,
+  children?: Node,
 };
 
 export default (props: Props) => (

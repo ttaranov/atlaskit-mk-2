@@ -1,6 +1,3 @@
-import { Promise } from 'es6-promise';
-import 'whatwg-fetch';
-
 import { findIndex, equalEmojiId } from './internal/helpers';
 import { analyticsService } from './analytics';
 

@@ -20,6 +20,7 @@ export interface ObjectKey {
 
 export interface BaseItem<S> extends ObjectKey {
   state: S;
+  lastUpdateDate: Date;
   type: DecisionType | TaskType;
 }
 
@@ -59,6 +60,14 @@ export interface ServiceItemResponse {
 export interface ServiceTaskResponse {
   tasks: ServiceTask[];
   meta: Meta;
+}
+
+export interface ServiceTaskState {
+  containerAri: string;
+  lastUpdateDate: string;
+  localId: string;
+  objectAri: string;
+  state: TaskState;
 }
 
 export interface Decision extends BaseItem<DecisionState> {
@@ -165,13 +174,14 @@ export interface RecentUpdatesListener {
    *
    * There will be a number of retries until expectedLocalId, if passed.
    *
-   * @param the expectedLocalId expected to be found in updates
+   * @param updateContext Recent update context
    */
   recentUpdates(updateContext: RecentUpdateContext);
 }
 
 export interface TaskDecisionResourceConfig extends ServiceConfig {
   currentUser?: User;
+  pubSubClient?: PubSubClient;
 }
 
 export interface TaskDecisionProvider {
@@ -215,3 +225,30 @@ export interface OnUpdate<T> {
 }
 
 export type Appearance = 'inline' | 'card';
+
+/**
+ * Same as PubSub client types (don't want a direct dep though)
+ */
+
+export type ARI = string;
+export type AVI = string;
+
+export interface PubSubOnEvent<T = any> {
+  (event: string, data: T): void;
+}
+
+export interface PubSubClient {
+  on(eventAvi: string, listener: PubSubOnEvent): PubSubClient;
+
+  off(eventAvi: string, listener: PubSubOnEvent): PubSubClient;
+
+  join(aris: ARI[]): Promise<PubSubClient>;
+
+  leave(aris: ARI[]): Promise<PubSubClient>;
+}
+
+export enum PubSubSpecialEventType {
+  ERROR = 'ERROR',
+  CONNECTED = 'CONNECTED',
+  RECONNECT = 'RECONNECT',
+}

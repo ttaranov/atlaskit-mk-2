@@ -1,9 +1,7 @@
 /* tslint:disable:variable-name */
-
 import styled from 'styled-components';
-
 import { HTMLAttributes, ComponentClass } from 'react';
-import { borderRadius } from '../../styles';
+import { borderRadius } from '@atlaskit/media-ui';
 
 export const ProgressWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${borderRadius} z-index: 30;

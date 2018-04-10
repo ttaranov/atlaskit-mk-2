@@ -4,14 +4,18 @@ import { Component } from 'react';
 import EmojiTypeAhead from '../src/components/typeahead/EmojiTypeAhead';
 import debug from '../src/util/logger';
 
-import { onOpen, onClose, onSelection } from '../example-helpers';
+import {
+  onOpen,
+  onClose,
+  onSelection,
+  lorem,
+  getEmojiResource,
+} from '../example-helpers';
 import {
   TypeaheadProps,
   TypeaheadState,
 } from '../example-helpers/typeahead-props';
 import SearchTextInput from '../example-helpers/demo-search-text-input';
-import { lorem, getEmojiResource } from '../src/support/story-data';
-
 import { akZIndexModal } from '@atlaskit/util-shared-styles';
 
 export class EmojiTypeAheadTextInput extends Component<

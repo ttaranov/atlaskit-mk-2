@@ -1,16 +1,20 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
 import { Component } from 'react';
+import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import {
   userAuthProvider,
   mediaPickerAuthProvider,
   defaultCollectionName,
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
+  createStorybookContext,
 } from '@atlaskit/media-test-helpers';
+import { Card } from '@atlaskit/media-card';
 import { MediaPicker, Popup, MediaProgress } from '../src';
 import {
   PopupContainer,
@@ -19,10 +23,19 @@ import {
   PreviewImage,
   UploadingFilesWrapper,
   FileProgress,
+  FilesInfoWrapper,
+  CardsWrapper,
+  CardItemWrapper,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
 
+const context = createStorybookContext();
+
 export type InflightUpload = { [key: string]: {} };
+export type PublicFile = {
+  publicId: string;
+  preview?: string;
+};
 export interface PopupWrapperState {
   isAutoFinalizeActive: boolean;
   isFetchMetadataActive: boolean;
@@ -32,6 +45,8 @@ export interface PopupWrapperState {
   authEnvironment: AuthEnvironment;
   inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
+  publicFiles: { [key: string]: PublicFile };
+  isUploadingFilesVisible: boolean;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -46,20 +61,22 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     authEnvironment: 'client',
     inflightUploads: {},
     hasTorndown: false,
+    publicFiles: {},
+    isUploadingFilesVisible: true,
   };
 
   componentDidMount() {
-    const config = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this),
-      apiUrl: userAuthProviderBaseURL,
+      userAuthProvider,
+    });
+
+    this.popup = MediaPicker('popup', context, {
+      container: document.body,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-    };
-
-    this.popup = MediaPicker('popup', config, {
-      container: document.body,
-      userAuthProvider,
     });
 
     this.popup.onAny(this.onPopupEvent);
@@ -110,6 +127,36 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       this.setState({ inflightUploads });
     }
 
+    if (eventName === 'upload-preview-update') {
+      const id = data.file.id;
+      const preview = data.preview && data.preview.src;
+
+      if (preview) {
+        const newPublicFile = { [id]: { preview } };
+
+        this.setState({
+          publicFiles: { ...this.state.publicFiles, ...newPublicFile },
+        });
+      }
+    }
+
+    if (eventName === 'upload-processing') {
+      const { publicFiles } = this.state;
+      const publicFile = publicFiles[data.file.id];
+
+      if (publicFile) {
+        const publicId = data.file.publicId;
+        publicFile.publicId = publicId;
+        if (publicFile.preview) {
+          context.setLocalPreview(publicId, publicFile.preview);
+        }
+
+        this.setState({
+          publicFiles,
+        });
+      }
+    }
+
     this.setState({
       events: [...this.state.events, { eventName, data }],
     });
@@ -128,6 +175,9 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       fetchMetadata: isFetchMetadataActive,
     });
 
+    // Populate cache in userAuthProvider.
+    userAuthProvider();
+    // Synchronously with next command tenantAuthProvider will be requested.
     this.popup.show().catch(console.error);
   };
 
@@ -222,6 +272,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
   };
 
+  onUploadingFilesToggle = () => {
+    this.setState({
+      isUploadingFilesVisible: !this.state.isUploadingFilesVisible,
+    });
+  };
+
   onCancelUpload = () => {
     const { inflightUploads } = this.state;
 
@@ -230,6 +286,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
 
     this.setState({ inflightUploads: {} });
+  };
+
+  onEvent = event => {
+    console.log(event);
   };
 
   renderUploadingFiles = () => {
@@ -257,6 +317,38 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   };
 
+  renderCards = () => {
+    const { publicFiles } = this.state;
+    const publicIds = Object.keys(publicFiles)
+      .map(id => publicFiles[id].publicId)
+      .filter(id => !!id);
+
+    if (!publicIds.length) {
+      return;
+    }
+
+    const cards = publicIds.map((id, key) => (
+      <CardItemWrapper>
+        <Card
+          key={key}
+          context={context}
+          isLazy={false}
+          identifier={{
+            mediaItemType: 'file',
+            id,
+          }}
+        />
+      </CardItemWrapper>
+    ));
+
+    return (
+      <CardsWrapper>
+        <h1>{'<Cards />'}</h1>
+        {cards}
+      </CardsWrapper>
+    );
+  };
+
   render() {
     const {
       isAutoFinalizeActive,
@@ -267,60 +359,78 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       collectionName,
       inflightUploads,
       hasTorndown,
+      isUploadingFilesVisible,
     } = this.state;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (
-      <PopupContainer>
-        <PopupHeader>
-          <Button
-            appearance="primary"
-            onClick={this.onShow}
-            isDisabled={hasTorndown}
-          >
-            Show
-          </Button>
-          <Button
-            appearance="warning"
-            onClick={this.onCancelUpload}
-            isDisabled={isCancelButtonDisabled || hasTorndown}
-          >
-            Cancel uploads
-          </Button>
-          <Button
-            appearance="danger"
-            onClick={this.onTeardown}
-            isDisabled={hasTorndown}
-          >
-            Teardown
-          </Button>
-          <DropdownMenu trigger={collectionName} triggerType="button">
-            <DropdownItem onClick={this.onCollectionChange}>
-              {defaultMediaPickerCollectionName}
-            </DropdownItem>
-            <DropdownItem onClick={this.onCollectionChange}>
-              {defaultCollectionName}
-            </DropdownItem>
-          </DropdownMenu>
-          <DropdownMenu trigger={authEnvironment} triggerType="button">
-            <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
-            <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
-          </DropdownMenu>
-          autoFinalize
-          <Toggle
-            isDefaultChecked={isAutoFinalizeActive}
-            onChange={this.onAutoFinalizeChange}
-          />
-          fetchMetadata
-          <Toggle
-            isDefaultChecked={isFetchMetadataActive}
-            onChange={this.onFetchMetadataChange}
-          />
-          Closed times: {closedTimes}
-        </PopupHeader>
-        {this.renderUploadingFiles()}
-        <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
-      </PopupContainer>
+      <AnalyticsListener onEvent={this.onEvent} channel="media">
+        <PopupContainer>
+          <PopupHeader>
+            <Button
+              appearance="primary"
+              onClick={this.onShow}
+              isDisabled={hasTorndown}
+            >
+              Show
+            </Button>
+            <Button
+              appearance="warning"
+              onClick={this.onCancelUpload}
+              isDisabled={isCancelButtonDisabled || hasTorndown}
+            >
+              Cancel uploads
+            </Button>
+            <Button
+              appearance="danger"
+              onClick={this.onTeardown}
+              isDisabled={hasTorndown}
+            >
+              Teardown
+            </Button>
+            <Button
+              onClick={this.onUploadingFilesToggle}
+              isDisabled={hasTorndown}
+            >
+              Toggle Uploading files
+            </Button>
+            <DropdownMenu trigger={collectionName} triggerType="button">
+              <DropdownItem onClick={this.onCollectionChange}>
+                {defaultMediaPickerCollectionName}
+              </DropdownItem>
+              <DropdownItem onClick={this.onCollectionChange}>
+                {defaultCollectionName}
+              </DropdownItem>
+            </DropdownMenu>
+            <DropdownMenu trigger={authEnvironment} triggerType="button">
+              <DropdownItem onClick={this.onAuthTypeChange}>
+                client
+              </DropdownItem>
+              <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
+            </DropdownMenu>
+            autoFinalize
+            <Toggle
+              isDefaultChecked={isAutoFinalizeActive}
+              onChange={this.onAutoFinalizeChange}
+            />
+            fetchMetadata
+            <Toggle
+              isDefaultChecked={isFetchMetadataActive}
+              onChange={this.onFetchMetadataChange}
+            />
+            Closed times: {closedTimes}
+          </PopupHeader>
+          {isUploadingFilesVisible ? (
+            <FilesInfoWrapper>
+              {this.renderUploadingFiles()}
+              {this.renderCards()}
+            </FilesInfoWrapper>
+          ) : (
+            undefined
+          )}
+          <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
+        </PopupContainer>
+      </AnalyticsListener>
     );
   }
 }

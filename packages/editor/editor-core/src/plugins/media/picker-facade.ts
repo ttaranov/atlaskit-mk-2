@@ -1,6 +1,5 @@
 import {
   MediaPicker,
-  ModuleConfig,
   MediaPickerComponent,
   MediaPickerComponents,
   ComponentConfigs,
@@ -19,7 +18,7 @@ import {
   MediaFile,
   UploadParams,
 } from '@atlaskit/media-picker';
-import { ContextConfig } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
@@ -27,8 +26,7 @@ import { MediaStateManager, MediaState, MediaStateStatus } from './types';
 
 export type PickerType = keyof MediaPickerComponents;
 export type PickerFacadeConfig = {
-  uploadParams: UploadParams;
-  contextConfig: ContextConfig;
+  context: Context;
   stateManager: MediaStateManager;
   errorReporter: ErrorReportingHandler;
 };
@@ -38,7 +36,6 @@ export default class PickerFacade {
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
-  private uploadParams: UploadParams;
   private pickerType: PickerType;
   private stateManager: MediaStateManager;
 
@@ -49,12 +46,10 @@ export default class PickerFacade {
   ) {
     this.pickerType = pickerType;
     this.errorReporter = config.errorReporter;
-    this.uploadParams = config.uploadParams;
     this.stateManager = config.stateManager;
-
     const picker = (this.picker = MediaPicker(
       pickerType,
-      this.buildPickerConfigFromContext(config.contextConfig),
+      config.context,
       pickerConfig,
     ));
 
@@ -117,7 +112,6 @@ export default class PickerFacade {
   }
 
   setUploadParams(params: UploadParams): void {
-    this.uploadParams = params;
     this.picker.setUploadParams(params);
   }
 
@@ -225,14 +219,6 @@ export default class PickerFacade {
     };
   };
 
-  private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
-    return {
-      uploadParams: this.uploadParams,
-      apiUrl: context.serviceHost,
-      authProvider: context.authProvider,
-    };
-  }
-
   private generateTempId(id: string) {
     return `temporary:${id}`;
   }
@@ -255,12 +241,13 @@ export default class PickerFacade {
     const { file, progress } = event;
     const tempId = this.generateTempId(file.id);
     const currentState = this.stateManager.getState(tempId);
-    const currentStatus =
-      currentState && currentState.status ? currentState.status : 'unknown';
+    const currentStatus = (currentState && currentState.status) || 'unknown';
 
     const state = this.newState(
       file,
-      currentStatus === 'unknown' ? 'uploading' : currentStatus,
+      currentStatus === 'unknown' || currentStatus === 'preview'
+        ? 'uploading'
+        : currentStatus,
     );
     state.progress = progress && progress.portion;
     this.stateManager.updateState(state.id, state);

@@ -29,6 +29,7 @@ async function getChangedPackagesSinceCommit(commit) {
   );
 }
 
+// Safe to use this one in master branch as it showing changes since some commit as opposed to a branch head.
 async function getChangedPackagesSincePublishCommit() {
   const lastRelease = await git.getLastPublishCommit();
   return getChangedPackagesSinceCommit(lastRelease);
@@ -36,6 +37,8 @@ async function getChangedPackagesSincePublishCommit() {
 
 // Note: This returns the packages that have changed AND been committed since master,
 // it wont include staged/unstaged changes
+//
+// Don't use this function in master branch as it returns nothing in that case.
 async function getChangedPackagesSinceMaster() {
   const masterRef = await git.getMasterRef();
   return getChangedPackagesSinceCommit(masterRef);

@@ -6,7 +6,7 @@ import {
   ProviderFactory,
   defaultSchema,
   EventHandlers,
-  ADNode,
+  ExtensionHandlers,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
@@ -16,15 +16,6 @@ export interface Extension<T> {
   extensionKey: string;
   parameters?: T;
   content?: any; // This would be the original Atlassian Document Format
-}
-
-export type ExtensionHandler<T> = (
-  ext: Extension<T>,
-  doc: any,
-) => JSX.Element | ADNode[] | null;
-
-export interface ExtensionHandlers {
-  [key: string]: ExtensionHandler<any>;
 }
 
 export interface Props {

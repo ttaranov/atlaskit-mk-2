@@ -8,7 +8,7 @@ import {
   emojiPickerBoxShadow,
 } from '../../shared-styles';
 
-import { emojiSprite, placeholder } from '../common/styles';
+import { emojiSprite, placeholder, emojiNode } from '../common/styles';
 
 import { emojiPickerHeight, emojiPickerWidth } from '../../constants';
 
@@ -150,8 +150,6 @@ export const pickerSearch = style({
   $nest: {
     [`.${searchIcon}`]: {
       opacity: 0.5,
-      marginTop: '-2px',
-      height: '17px',
     },
 
     [`.${input}`]: {
@@ -219,7 +217,7 @@ export const emojiItem = style({
   width: '40px',
 
   $nest: {
-    '&>span': {
+    [`&>.${emojiNode}`]: {
       cursor: 'pointer',
       padding: '8px',
       borderRadius: '5px',

@@ -6,13 +6,15 @@ import {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-import { CardDimensions } from '@atlaskit/media-card';
-import { CardEventHandler, ImageResizeMode } from '@atlaskit/media-core';
+import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
+import { ImageResizeMode } from '@atlaskit/media-core';
+
 import { MediaStateManager } from '../../pm-plugins/main';
 import MediaComponent, { Appearance } from './MediaComponent';
 
 export interface Props {
   id: string;
+  tempId: string;
   providers?: ProviderFactory;
   type: MediaType;
   collection: string;
@@ -53,11 +55,13 @@ export default class MediaItem extends PureComponent<Props, {}> {
       appearance,
       stateManagerFallback,
       selected,
+      tempId,
     } = this.props;
 
     return (
       <MediaComponent
         id={id}
+        tempId={tempId}
         mediaProvider={providers.mediaProvider}
         type={type}
         collection={collection}

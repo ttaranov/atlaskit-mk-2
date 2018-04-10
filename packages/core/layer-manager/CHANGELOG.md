@@ -1,5 +1,11 @@
 # @atlaskit/layer-manager
 
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 2.8.3
+- [patch] Preserve analytics-next context across portalled contents [69c606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69c606b)
+
 ## 2.8.2
 - [patch] Fix flow type error and bug not calling preventDefault [aac58a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aac58a9)
 

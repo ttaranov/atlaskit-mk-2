@@ -3,7 +3,7 @@ import 'rxjs/add/observable/of';
 import { MediaItem, MediaItemProvider } from '../src';
 import { ContextFactory } from '../src/context/context';
 
-const authProvider = collection =>
+const authProvider = () =>
   Promise.resolve({
     token: 'some-token-that-does-not-really-matter-in-this-tests',
     clientId: 'some-clientId',
@@ -184,6 +184,18 @@ describe('Context', () => {
           done(error || new Error('Uknown error.'));
         },
       });
+    });
+  });
+
+  describe('local preview', () => {
+    it('should get the local preview after being asigned', () => {
+      const context = createFakeContext();
+
+      expect(context.getLocalPreview('123')).toBeUndefined();
+      context.setLocalPreview('123', 'some-preview');
+      expect(context.getLocalPreview('123')).toEqual('some-preview');
+      context.removeLocalPreview('123');
+      expect(context.getLocalPreview('123')).toBeUndefined();
     });
   });
 });

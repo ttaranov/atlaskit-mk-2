@@ -8,7 +8,7 @@ import {
   akColorR400,
   akColorN0,
 } from '@atlaskit/util-shared-styles';
-import { center } from '../../styles';
+import { center } from '@atlaskit/media-ui';
 
 export interface MessageProps {
   tryAgain?: boolean;

@@ -23,7 +23,7 @@ import {
   siteServiceEmojis,
   siteUrl,
   standardServiceEmojis,
-} from '../../src/support/test-data';
+} from '../_test-data';
 
 import { alwaysPromise } from '../_test-util';
 
@@ -369,6 +369,7 @@ describe('helpers', () => {
     getSelectedTone = () => -1;
     setSelectedTone = tone => {};
     deleteSiteEmoji = emoji => Promise.resolve(false);
+    getCurrentUser = () => undefined;
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};

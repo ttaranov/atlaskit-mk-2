@@ -14,7 +14,7 @@ function pickRandom(array: Array<any>) {
   return array[index];
 }
 
-function jiraIconUrl() {
+function randomJiraIconUrl() {
   const urls = [
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
@@ -23,28 +23,26 @@ function jiraIconUrl() {
   return pickRandom(urls);
 }
 
-function objectIconUrl() {
+function randomConfluenceIconUrl() {
   const urls = [
-    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
     'https://home.useast.atlassian.io/confluence-page-icon.svg',
-    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
+    'https://home.useast.atlassian.io/confluence-blogpost-icon.svg',
   ];
 
   return pickRandom(urls);
 }
 
-function provider() {
+function randomProvider() {
   const providers = ['jira', 'confluence'];
   return pickRandom(providers);
 }
 
-function issueKey() {
-  const keys = ['ETH', 'XRP', 'ADA', 'TRON'];
-
+function randomIssueKey() {
+  const keys = ['ETH', 'XRP', 'ADA', 'TRON', 'DOGE'];
   return pickRandom(keys) + '-' + faker.random.number(1000);
 }
 
-function iconCssClass() {
+function randomIconCssClass() {
   const classes = [
     'aui-iconfont-page-default',
     'aui-iconfont-homepage',
@@ -57,13 +55,23 @@ export function recentData(n = 50): RecentItemsResponse {
   const items = [];
 
   for (let i = 0; i < n; i++) {
+    const provider = randomProvider();
+
+    const name =
+      provider === 'jira'
+        ? `${randomIssueKey()} ${faker.company.catchPhrase()}`
+        : faker.company.catchPhrase();
+
+    const iconUrl =
+      provider === 'jira' ? randomJiraIconUrl() : randomConfluenceIconUrl();
+
     items.push({
       objectId: faker.random.uuid(),
-      name: faker.company.catchPhrase(),
-      iconUrl: objectIconUrl(),
+      name: name,
+      iconUrl: iconUrl,
       container: faker.company.companyName(),
       url: faker.internet.url(),
-      provider: provider(),
+      provider: provider,
     });
   }
 
@@ -84,7 +92,7 @@ export function makeCrossProductSearchData(
       container: {
         title: faker.company.companyName(),
       },
-      iconCssClass: iconCssClass(),
+      iconCssClass: randomIconCssClass(),
       url: faker.internet.url(),
       baseUrl: '',
     });
@@ -92,14 +100,14 @@ export function makeCrossProductSearchData(
 
   for (let i = 0; i < n; i++) {
     jiraData.push({
-      key: issueKey(),
+      key: randomIssueKey(),
       fields: {
         summary: faker.company.catchPhrase(),
         project: {
           name: faker.company.companyName(),
         },
         issuetype: {
-          iconUrl: jiraIconUrl(),
+          iconUrl: randomJiraIconUrl(),
         },
       },
     });

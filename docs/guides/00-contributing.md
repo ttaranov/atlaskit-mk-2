@@ -1,5 +1,11 @@
 # Contributing
 
+## Code of Conduct
+
+This project is bound by a [Code of Conduct](https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CODE_OF_CONDUCT.md).
+
+## Introduction
+
 Although Atlaskit is responsible for the main development of their components, contributions from outside of our team account for a major part of our development. There are two types of contributions that we are capable of accepting:
 
 1. Open source

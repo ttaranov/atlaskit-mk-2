@@ -38,13 +38,17 @@ export {
 } from './media-single';
 export {
   table,
+  TableAttributes,
   tableCell,
   toJSONTableCell,
   tableHeader,
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
+  tableBackgroundColorNames,
   CellAttributes,
+  Layout as TableLayout,
+  calcTableColumnWidths,
 } from './tableNodes';
 export {
   applicationCard,

@@ -1,13 +1,18 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement, editorUrl } from '../_helpers';
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+import { getDocFromElement } from '../_helpers';
 
-const clipboardHelper = `${editorUrl}=clipboard-helper`;
+const clipboardHelper = getExampleUrl(
+  'editor',
+  'editor-core',
+  'clipboard-helper',
+);
 const clipboardInput = '#input';
 const copyAsPlaintextButton = '#copy-as-plaintext';
 const copyAsHTMLButton = '#copy-as-html';
 
-const messageEditor = `${editorUrl}=message`;
+const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 
 BrowserTestCase(

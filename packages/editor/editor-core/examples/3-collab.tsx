@@ -12,9 +12,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 
 import {
   akEditorCodeBackground,
@@ -25,6 +23,8 @@ import {
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import { extensionHandlers } from '../example-helpers/extension-handlers';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -126,13 +126,13 @@ export default function Example() {
                 customDropzoneContainer: parentContainer,
               }}
               emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+                emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
               }
               mentionProvider={Promise.resolve(
-                mentionStoryData.resourceProvider,
+                mention.storyData.resourceProvider,
               )}
               taskDecisionProvider={Promise.resolve(
-                taskDecisionStoryData.getMockTaskDecisionResource(),
+                taskDecision.getMockTaskDecisionResource(),
               )}
               contextIdentifierProvider={storyContextIdentifierProviderFactory()}
               collabEditProvider={collabEditProvider('rick')}
@@ -151,6 +151,9 @@ export default function Example() {
                   )}
                 />
               }
+              allowExtension={true}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
             />
           </EditorContext>
         )}
@@ -173,10 +176,10 @@ export default function Example() {
                 customDropzoneContainer: parentContainer,
               }}
               emojiProvider={
-                emojiStoryData.getEmojiResource() as Promise<EmojiProvider>
+                emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
               }
               mentionProvider={Promise.resolve(
-                mentionStoryData.resourceProvider,
+                mention.storyData.resourceProvider,
               )}
               collabEditProvider={collabEditProvider('morty')}
               placeholder="Write something..."
@@ -194,6 +197,9 @@ export default function Example() {
                   )}
                 />
               }
+              allowExtension={true}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
             />
           </EditorContext>
         )}

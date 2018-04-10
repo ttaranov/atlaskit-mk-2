@@ -1,8 +1,11 @@
 import * as React from 'react';
 
 import MentionItem from '../src/components/MentionItem';
-import { sampleAvatarUrl as avatarUrl } from '../src/support/story-data';
-import { generateMentionItem, onSelection } from '../example-helpers';
+import {
+  generateMentionItem,
+  onSelection,
+  sampleAvatarUrl as avatarUrl,
+} from '../example-helpers';
 
 export default function Example() {
   const mention = {

@@ -1,4 +1,7 @@
-import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
+import {
+  emoji as emojiData,
+  mention as mentionData,
+} from '@atlaskit/util-data-test';
 import {
   MentionsState,
   mentionPluginKey,
@@ -15,12 +18,13 @@ import {
   mention,
   code,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import mentionsPlugin from '../../../src/plugins/mentions';
 import emojiPlugin from '../../../src/plugins/emoji';
 import codeBlockPlugin from '../../../src/plugins/code-block';
+import { EditorView } from 'prosemirror-view';
+import { setTextSelection } from '../../../src';
 
-const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
 describe('mentions - input rules', () => {
   let trackEvent;
@@ -41,13 +45,20 @@ describe('mentions - input rules', () => {
     trackEvent = jest.fn();
   });
 
-  const assert = (what: string, expected: boolean, docContents?: any) => {
+  const assert = (
+    what: string,
+    expected: boolean,
+    docContents?: any,
+    after?: ((view: EditorView, pluginState: MentionsState) => void),
+  ) => {
     const { editorView, pluginState, sel, refs } = editor(
       doc(docContents || p('{<>}')),
     );
 
     return pluginState
-      .setMentionProvider(Promise.resolve(mentionStoryData.resourceProvider))
+      .setMentionProvider(
+        Promise.resolve(mentionData.storyData.resourceProvider),
+      )
       .then(() => {
         insertText(editorView, what, sel || refs['<']);
 
@@ -63,6 +74,10 @@ describe('mentions - input rules', () => {
           expect(trackEvent).not.toHaveBeenCalledWith(
             'atlassian.fabric.mention.picker.trigger.shortcut',
           );
+        }
+
+        if (after) {
+          after(editorView, pluginState);
         }
       });
   };
@@ -121,5 +136,67 @@ describe('mentions - input rules', () => {
 
   it('should replace "@" when preceded by an open round bracket', () => {
     return assert('(@', true);
+  });
+
+  it('should keep an active mention query if the query text is replaced', () => {
+    return assert('@hey', true, null, (view, pluginState) => {
+      // select the whole document, bar the @
+      setTextSelection(view, 2, view.state.doc.nodeSize - 2);
+      expect(pluginState.queryActive).toBe(true);
+
+      'nice'.split('').forEach(char => {
+        view.dispatch(
+          view.state.tr.insertText(
+            char,
+            view.state.selection.from,
+            view.state.selection.to,
+          ),
+        );
+      });
+
+      expect(pluginState.queryActive).toBe(true);
+      expect(pluginState.query).toEqual('nice');
+    });
+  });
+
+  it('should still show mention query if the original mention is replaced with another', () => {
+    return assert('@hey', true, null, (view, pluginState) => {
+      // select the whole document
+      setTextSelection(view, 1, view.state.doc.nodeSize - 2);
+      expect(pluginState.queryActive).toBe(true);
+
+      '@nice'.split('').forEach(char => {
+        view.dispatch(
+          view.state.tr.insertText(
+            char,
+            view.state.selection.from,
+            view.state.selection.to,
+          ),
+        );
+      });
+
+      expect(pluginState.queryActive).toBe(true);
+      expect(pluginState.query).toEqual('nice');
+    });
+  });
+
+  it('should remove the mention query if the entire mention is replaced', () => {
+    return assert('@hey', true, null, (view, pluginState) => {
+      // select the whole document
+      setTextSelection(view, 1, view.state.doc.nodeSize - 2);
+      expect(pluginState.queryActive).toBe(true);
+
+      'text'.split('').forEach(char => {
+        view.dispatch(
+          view.state.tr.insertText(
+            char,
+            view.state.selection.from,
+            view.state.selection.to,
+          ),
+        );
+      });
+
+      expect(pluginState.queryActive).toBe(false);
+    });
   });
 });

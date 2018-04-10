@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { MockEmojiResourceConfig } from '../../../src/support/support-types';
-import {
-  getEmojiResourcePromise,
-  newEmojiRepository,
-} from '../../../src/support/test-data';
+import { getEmojiResourcePromise, newEmojiRepository } from '../../_test-data';
 import EmojiPicker, { Props } from '../../../src/components/picker/EmojiPicker';
 import EmojiPickerComponent from '../../../src/components/picker/EmojiPickerComponent';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -19,7 +15,9 @@ import EmojiPickerList from '../../../src/components/picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../src/components/picker/EmojiPickerListSearch';
 import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
-import { customCategory } from '../../../src/constants';
+import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
+import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -32,7 +30,7 @@ export function setupPickerWithoutToneSelector(): Promise<
 
 export function setupPicker(
   props?: Props,
-  config?: MockEmojiResourceConfig,
+  config?,
 ): Promise<ReactWrapper<any, any>> {
   const pickerProps: Props = {
     ...props,
@@ -175,16 +173,6 @@ export const findSearchInput = component =>
 export const searchInputVisible = component =>
   findSearchInput(component).length > 0;
 
-const findCustomSection = component =>
-  component.findWhere(
-    wrapper =>
-      wrapper.type() === EmojiPickerCategoryHeading &&
-      wrapper.prop('title') === customCategory,
-  );
-
-export const customSectionVisible = (component): boolean =>
-  component.update() && component.findWhere(findCustomSection).length > 0;
-
 export const findEmojiNameInput = component =>
   component.update() &&
   component.find(`.${commonStyles.uploadChooseFileEmojiName} input`);
@@ -216,7 +204,7 @@ export const findCancelLink = component =>
     .at(1);
 
 export const findUploadPreview = component =>
-  component.update() && component.find(`.${commonStyles.uploadPreview}`);
+  component.update() && component.find(EmojiUploadPreview);
 
 export const findEmojiWithId = (component, id) =>
   component.update() &&
@@ -228,8 +216,8 @@ export const findEmojiWithId = (component, id) =>
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
 
-export const findUploadError = component =>
-  component.update() && component.find(`.${commonStyles.uploadError}`);
+export const finishDelete = component =>
+  component.update() && component.find(EmojiDeletePreview).length === 0;
 
-export const uploadErrorVisible = component =>
-  findUploadError(component).length > 0;
+export const errorMessageVisible = component =>
+  component.update() && component.find(EmojiErrorMessage).length === 1;

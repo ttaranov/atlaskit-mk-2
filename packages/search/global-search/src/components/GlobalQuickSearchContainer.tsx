@@ -9,6 +9,7 @@ import {
 } from '../api/CrossProductSearchClient';
 import { Result } from '../model/Result';
 import { PeopleSearchClient } from '../api/PeopleSearchClient';
+import * as uuid from 'uuid/v4';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
@@ -20,7 +21,9 @@ export interface Props {
 
 export interface State {
   query: string;
+  searchSessionId: string;
   isLoading: boolean;
+  isError: boolean;
   recentlyViewedItems: Result[];
   recentResults: Result[];
   jiraResults: Result[];
@@ -41,7 +44,9 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
 
     this.state = {
       isLoading: false,
+      isError: false,
       query: '',
+      searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedItems: [],
       recentResults: [],
       jiraResults: [],
@@ -58,6 +63,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     if (query.length < 2) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
+        isError: false,
         recentResults: [],
         jiraResults: [],
         confluenceResults: [],
@@ -67,7 +73,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  async searchRecent(query: string) {
+  async searchRecent(query: string): Promise<Result[]> {
     const results = await this.props.recentSearchClient.search(query);
 
     if (this.state.query === query) {
@@ -80,7 +86,10 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
   }
 
   async searchCrossProduct(query: string): Promise<CrossProductResults> {
-    const results = await this.props.crossProductSearchClient.search(query);
+    const results = await this.props.crossProductSearchClient.search(
+      query,
+      this.state.searchSessionId,
+    );
 
     if (this.state.query === query) {
       this.setState({
@@ -104,34 +113,74 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     return results;
   }
 
-  doSearch = async (query: string) => {
-    try {
-      this.setState({
-        isLoading: true,
-      });
-
-      await Promise.all([
-        this.searchRecent(query),
-        this.searchCrossProduct(query),
-        this.searchPeople(query),
-      ]);
-    } catch (error) {
-      // log error to analytics
+  handleSearchErrorAnalytics(source: string) {
+    return error => {
       const { firePrivateAnalyticsEvent } = this.props;
+
       if (firePrivateAnalyticsEvent) {
         firePrivateAnalyticsEvent(
           'atlassian.fabric.global-search.search-error',
           {
             name: error.name,
             message: error.message,
+            source: source,
           },
         );
       }
-    } finally {
+    };
+  }
+
+  doSearch = async (query: string) => {
+    const searchRecentPromise = this.searchRecent(query);
+    const searchCrossProductPromise = this.searchCrossProduct(query);
+    const searchPeoplePromise = this.searchPeople(query);
+
+    // trigger error analytics when a search fails
+    searchRecentPromise.catch(this.handleSearchErrorAnalytics('recent'));
+    searchCrossProductPromise.catch(
+      this.handleSearchErrorAnalytics('xpsearch'),
+    );
+    searchPeoplePromise.catch(this.handleSearchErrorAnalytics('people'));
+
+    /*
+    * Handle error state: Only show the error state when searching recent and xpsearch together fails.
+    * For a better degraded experience we still want to display partial results when it makes sense.
+    * So, if only recent or if only people search fails we can still display xpsearch results. However, if recent AND xpsearch
+    * fails, then we show the error state.
+    */
+    (async () => {
+      const criticalPromises = [searchRecentPromise, searchCrossProductPromise];
+      const promiseResults = await Promise.all(
+        criticalPromises.map(p => p.catch(Error)),
+      );
+      const allCriticalPromisesFailed = promiseResults.every(
+        p => p instanceof Error,
+      );
       this.setState({
-        isLoading: false,
+        isError: allCriticalPromisesFailed,
       });
-    }
+    })();
+
+    // handle loading state. true at the beginning, false only after all promises have settled.
+    (async () => {
+      try {
+        this.setState({
+          isLoading: true,
+        });
+
+        await Promise.all(
+          [
+            searchRecentPromise,
+            searchCrossProductPromise,
+            searchPeoplePromise,
+          ].map(p => p.catch(Error)),
+        );
+      } finally {
+        this.setState({
+          isLoading: false,
+        });
+      }
+    })();
   };
 
   // leading:true so that we start searching as soon as the user typed in 2 characters since we don't search before that

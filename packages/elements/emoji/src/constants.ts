@@ -5,6 +5,8 @@ export const customType = 'SITE';
 export const customTitle = 'All uploads';
 export const userCustomTitle = 'Your uploads';
 
+export const dataURLPrefix = 'data:';
+
 /**
  * A constant used in sorting/ordering to represent a number 'obviously much bigger than any item in the set being handled'.
  * This is used instead of Number.MAX_VALUE since subtraction of MAX_VALUE from itself occassionaly doesn't equal zero exactly :-(

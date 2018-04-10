@@ -4,6 +4,8 @@ import {
   MediaSingleAttributes,
   ApplicationCardAttributes,
   CellAttributes,
+  LinkAttributes,
+  TableAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -298,8 +300,7 @@ export const emoji = (attrs: {
 };
 export const mention = (attrs: MentionAttributes) =>
   nodeFactory(sampleSchema.nodes.mention, attrs);
-export const table = nodeFactory(sampleSchema.nodes.table, {});
-export const tableWithAttrs = (attrs: { isNumberColumnEnabled?: boolean }) =>
+export const table = (attrs?: TableAttributes) =>
   nodeFactory(sampleSchema.nodes.table, attrs);
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
 export const td = (attrs?: CellAttributes) =>
@@ -370,7 +371,7 @@ export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const mentionQuery = (attrs = { active: true }) =>
   markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {});
-export const a = (attrs: { href: string; title?: string }) =>
+export const a = (attrs: LinkAttributes) =>
   markFactory(sampleSchema.marks.link, attrs);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
 export const textColor = (attrs: { color: string }) =>

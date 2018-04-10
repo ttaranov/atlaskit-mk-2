@@ -15,6 +15,7 @@ export type MentionEventHandler = (
 export type CardEventClickHandler = (
   result: CardEvent,
   surroundings?: CardSurroundings,
+  analyticsEvent?: any,
 ) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;

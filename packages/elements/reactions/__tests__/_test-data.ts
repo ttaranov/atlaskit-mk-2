@@ -1,7 +1,7 @@
 import { EmojiDescription, toEmojiId } from '@atlaskit/emoji';
-import { testData } from '@atlaskit/emoji/dist/es5/support';
+import { emoji } from '@atlaskit/util-data-test';
 
-const { newEmojiRepository } = testData;
+const { newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
 
 export const grinningId = toEmojiId(emojiRepository.findByShortName(
@@ -18,4 +18,10 @@ export const grinId = toEmojiId(emojiRepository.findByShortName(
 ) as EmojiDescription);
 export const smileyId = toEmojiId(emojiRepository.findByShortName(
   ':smiley:',
+) as EmojiDescription);
+export const flagBlackId = toEmojiId(emojiRepository.findByShortName(
+  ':flag_black:',
+) as EmojiDescription);
+export const thumbsdownId = toEmojiId(emojiRepository.findByShortName(
+  ':thumbsdown:',
 ) as EmojiDescription);

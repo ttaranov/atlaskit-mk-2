@@ -62,7 +62,7 @@ type DropdownMenuBaseProps = {
   items: Array<DeprecatedItemGroup>,
   /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
   onItemActivated: OnItemActivatedArgs => void,
-  /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
+  /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position: string,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
@@ -75,7 +75,7 @@ type DropdownMenuBaseProps = {
   shouldFlip: boolean,
   /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
    * to easily get a button trigger. */
-  trigger?: Element<any> | string,
+  trigger?: Node | string,
   /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
   triggerButtonProps: {},
   /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
