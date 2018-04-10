@@ -9,9 +9,8 @@ import {
   OptionalEmojiDescription,
 } from '@atlaskit/emoji';
 import Tooltip from '@atlaskit/tooltip';
-import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
-import { borderRadius, colors } from '@atlaskit/theme';
 import EmojiButton from './emoji-button';
+import ShowMore from './show-more';
 
 import { equalEmojiId } from './helpers';
 
@@ -39,24 +38,6 @@ const emojiStyle = style({
   },
 });
 
-const moreButtonStyle = style({
-  opacity: 0,
-  outline: 'none',
-  backgroundColor: 'transparent',
-  border: 0,
-  borderRadius: borderRadius(),
-  cursor: 'pointer',
-  margin: '4px 4px 4px 0',
-  padding: '4px',
-  width: '38px',
-  verticalAlign: 'top',
-  $nest: {
-    '&:hover': {
-      backgroundColor: colors.N30A,
-    },
-  },
-});
-
 const revealAnimation = keyframes({
   '0%': {
     opacity: 1,
@@ -73,18 +54,6 @@ const revealAnimation = keyframes({
 
 export const revealStyle = style({
   animation: `${revealAnimation} 150ms ease-in-out forwards`,
-});
-
-const moreEmojiContainerStyle = style({
-  display: 'flex',
-});
-
-const separatorStyle = style({
-  backgroundColor: colors.N30A,
-  margin: '8px 8px 8px 4px',
-  width: '1px',
-  height: '60%',
-  display: 'inline-block',
 });
 
 const revealDelay = index => ({ animationDelay: `${index * 50}ms` });
@@ -145,26 +114,14 @@ export default class Selector extends PureComponent<Props, State> {
     });
   };
 
-  private renderShowMore(): React.ReactNode {
-    const className = cx(moreButtonStyle, revealStyle);
-
-    const style = revealDelay(defaultReactions.length);
-
-    return (
-      <div key="more" className={moreEmojiContainerStyle}>
-        <div className={separatorStyle} />
-        <Tooltip content="More emoji">
-          <button
-            className={className}
-            style={style}
-            onMouseDown={this.props.onMoreClick}
-          >
-            <EditorMoreIcon label="More" />
-          </button>
-        </Tooltip>
-      </div>
-    );
-  }
+  private renderShowMore = (): React.ReactNode => (
+    <ShowMore
+      key="more"
+      className={{ button: revealStyle }}
+      style={{ button: revealDelay(defaultReactions.length) }}
+      onClick={this.props.onMoreClick}
+    />
+  );
 
   render() {
     const { emojiProvider, showMore } = this.props;
