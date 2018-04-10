@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { PDFPreview } from '../domain';
-import { PDFWrapper } from '../styled';
-
+import { PDFPreview } from '../../domain';
+import { PDFWrapper } from '../../styled';
 import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 

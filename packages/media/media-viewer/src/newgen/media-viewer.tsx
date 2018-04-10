@@ -6,7 +6,7 @@ import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 import { constructAuthTokenUrl } from './util';
-import { fetch } from './viewers/pdf';
+import { fetch } from './viewers/pdf/pdfComponent';
 
 export type Props = {
   onClose?: () => void;
