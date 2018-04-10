@@ -95,14 +95,7 @@ export default class AvatarGroup extends Component<Props> {
       .slice(max)
       .map((avatar: AvatarPropTypes, index: number) => (
         <DropdownItem
-          elemBefore={
-            <Avatar
-              {...avatar}
-              borderColor="transparent"
-              enableTooltip={false}
-              size="small"
-            />
-          }
+          elemBefore={<Avatar {...avatar} enableTooltip={false} size="small" />}
           href={avatar.href}
           key={index}
           onClick={(event: KeyboardEvent | MouseEvent) => {
