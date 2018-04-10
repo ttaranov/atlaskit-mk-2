@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 1.1.0
+- [minor] Improve accessibility. Use AkButton for the Chevrons. [8ec5a94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec5a94)
+
 ## 1.0.1
 - [patch] Update deps and examples. [b775a12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b775a12)
 - [patch] Add a performance example [8eb1472](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eb1472)
