@@ -10,13 +10,7 @@
   "types": "dist/es5/index.d.ts",
   "atlaskit:src": "src/index.js",
   "files": [
-    "dist/es5/**/*.js",
-    "dist/es5/**/*.d.ts",
-    "dist/es5/**/*.json",
-    "dist/es2015/**/*.js",
-    "dist/es2015/**/*.d.ts",
-    "dist/es2015/**/*.json",
-    "src"
+    "dist"
   ],
   "dependencies": {
     "@atlaskit/avatar": "^10.0.0",

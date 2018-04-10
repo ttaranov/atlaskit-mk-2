@@ -12,17 +12,10 @@ import {
   labelIconColor,
 } from '../styled/constants';
 
-// $FlowFixMe
-const marginNameWithoutJobTitle = `${math.multiply(
-  gridSize,
-  4.5,
-  // $FlowFixMe
-)()}px 0 ${math.multiply(gridSize, 1.5)()}px 0`;
-// $FlowFixMe
-const marginName = `${math.multiply(gridSize, 1.5)()}px 0 0 0`;
-
-const getFullNameMargin = p =>
-  p.noMeta ? marginNameWithoutJobTitle : marginName;
+const getFullNameMargin = props =>
+  props.noMeta
+    ? `${gridSize() * 4.5}px 0 ${gridSize() * 1.5}px 0`
+    : `${gridSize() * 1.5}px 0 0 0`;
 
 export const ProfileImage = styled.div`
   position: absolute;

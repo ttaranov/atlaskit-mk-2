@@ -6,7 +6,7 @@ export default md`
 
   ## Try it out
 
-  Interact with a [live demo of the @atlaskit/profilecard component](https://atlaskit.atlassian.com/packages/elements/profilecard).
+  Interact with a [live demo of the @atlaskit/profilecard component](https://atlaskit.atlassian.com/packages/people-and-teams/profilecard).
 
   ## Installation
 
