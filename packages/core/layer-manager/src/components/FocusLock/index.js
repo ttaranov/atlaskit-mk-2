@@ -19,10 +19,12 @@ type Props = {
   /**
     Boolean OR Function indicating which element to focus when the component
     initialises (mounts or becomes enabled):
-    - TRUE will automatically find the first "tabbable" element within the modal
+    - undefined sets the focus on the boundary itself
+    - FALSE assumes the user has set autoFocus on another element within the boundary
+    - TRUE will automatically find the first "tabbable" element within the boundary
     - Providing a function should return the element you want to focus
   */
-  autoFocus: AutoFocus,
+  autoFocus?: AutoFocus,
   /**
     Accepts a single child
   */
@@ -42,9 +44,6 @@ export default class FocusLock extends Component<Props> {
   boundary: Boundary;
   initFromProps: boolean = false;
   teardownFromProps: boolean = false;
-  static defaultProps = {
-    autoFocus: false,
-  };
   static contextTypes = {
     /** available when invoked within @atlaskit/layer-manager */
     ariaHiddenNode: PropTypes.object,

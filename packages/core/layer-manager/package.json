@@ -33,7 +33,8 @@
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/onboarding": "^3.0.0",
-    "@atlaskit/tooltip": "^9.0.0"
+    "@atlaskit/tooltip": "^9.0.0",
+    "@atlaskit/webdriver-runner": "^0.0.3"
   },
   "keywords": [
     "atlaskit",
