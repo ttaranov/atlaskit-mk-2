@@ -130,7 +130,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     dropzone.activate();
   }
 
-  saveDropzoneContainer = element => {
+  saveDropzoneContainer = (element: any) => {
     this.dropzoneContainer = element;
 
     this.createDropzone();
