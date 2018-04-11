@@ -4,7 +4,7 @@ import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import EmptyState from '../EmptyState';
 import {
-  resultsToComponents,
+  renderResults,
   searchConfluenceItem,
   searchPeopleItem,
   take,
@@ -17,7 +17,7 @@ const renderObjects = (results: Result[], query: string) => (
     key="confluence-objects"
     test-selector="confluence-objects"
   >
-    {resultsToComponents(results)}
+    {renderResults(results)}
   </ResultItemGroup>
 );
 
@@ -27,13 +27,13 @@ const renderSpaces = (results: Result[], query: string) => (
     key="confluence-spaces"
     test-selector="confluence-spaces"
   >
-    {resultsToComponents(results)}
+    {renderResults(results)}
   </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people" test-selector="people">
-    {resultsToComponents(results)}
+    {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
 );

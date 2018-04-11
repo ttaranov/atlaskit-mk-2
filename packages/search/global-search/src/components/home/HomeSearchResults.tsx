@@ -4,7 +4,7 @@ import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import EmptyState from '../EmptyState';
 import {
-  resultsToComponents,
+  renderResults,
   searchConfluenceItem,
   searchJiraItem,
   searchPeopleItem,
@@ -23,14 +23,14 @@ const renderRecent = (results: Result[]) => {
       key="recent"
       test-selector="recent"
     >
-      {resultsToComponents(results)}
+      {renderResults(results)}
     </ResultItemGroup>
   );
 };
 
 const renderJira = (results: Result[], query: string) => (
   <ResultItemGroup title="Jira issues" key="jira" test-selector="jira">
-    {resultsToComponents(results)}
+    {renderResults(results)}
     {searchJiraItem(query)}
   </ResultItemGroup>
 );
@@ -41,14 +41,14 @@ const renderConfluence = (results: Result[], query: string) => (
     key="confluence"
     test-selector="confluence"
   >
-    {resultsToComponents(results)}
+    {renderResults(results)}
     {searchConfluenceItem(query)}
   </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people" test-selector="people">
-    {resultsToComponents(results)}
+    {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
 );

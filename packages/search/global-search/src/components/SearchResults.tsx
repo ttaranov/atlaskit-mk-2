@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { ComponentClass } from 'react';
-import {
-  PersonResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
+import { PersonResult, ResultBase } from '@atlaskit/quick-search';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
@@ -28,7 +25,7 @@ function getResultComponent(resultType: ResultType): ComponentClass {
   }
 }
 
-export function resultsToComponents(results: Result[]) {
+export function renderResults(results: Result[]) {
   return results.map(result => {
     const Result = getResultComponent(result.type);
     return <Result key={result.resultId} {...result} />;

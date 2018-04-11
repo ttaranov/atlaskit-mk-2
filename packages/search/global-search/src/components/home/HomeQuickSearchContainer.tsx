@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
@@ -16,7 +15,6 @@ export interface Props {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
-  debounceMillis?: number; // for testing only
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -36,10 +34,6 @@ export interface State {
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
 export class HomeQuickSearchContainer extends React.Component<Props, State> {
-  static defaultProps: Partial<Props> = {
-    debounceMillis: 350,
-  };
-
   constructor(props: Props) {
     super(props);
 
@@ -70,7 +64,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         confluenceResults: [],
       });
     } else {
-      this.doDebouncedSearch(query);
+      this.doSearch(query);
     }
   };
 
@@ -183,11 +177,6 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       }
     })();
   };
-
-  // leading:true so that we start searching as soon as the user typed in 2 characters since we don't search before that
-  doDebouncedSearch = debounce(this.doSearch, this.props.debounceMillis, {
-    leading: true,
-  });
 
   handleGetRecentItems = async () => {
     this.setState({

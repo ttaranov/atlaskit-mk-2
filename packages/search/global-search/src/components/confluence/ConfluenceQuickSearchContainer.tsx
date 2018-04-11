@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
@@ -16,7 +15,6 @@ export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
-  debounceMillis?: number; // for testing only
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -39,10 +37,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   Props,
   State
 > {
-  static defaultProps: Partial<Props> = {
-    debounceMillis: 350,
-  };
-
   constructor(props: Props) {
     super(props);
 
@@ -73,7 +67,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         peopleResults: [],
       });
     } else {
-      this.doDebouncedSearch(query);
+      this.doSearch(query);
     }
   };
 
@@ -165,11 +159,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       }
     })();
   };
-
-  // leading:true so that we start searching as soon as the user typed in 2 characters since we don't search before that
-  doDebouncedSearch = debounce(this.doSearch, this.props.debounceMillis, {
-    leading: true,
-  });
 
   handleMount = async () => {
     // TODO are both call made at the same time?

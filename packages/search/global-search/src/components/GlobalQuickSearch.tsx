@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
 
 export interface Props {
@@ -20,8 +21,14 @@ export default class GlobalQuickSearch extends React.Component<Props> {
 
   handleSearchInput = ({ target }) => {
     const query = target.value;
-    this.props.onSearch(query);
+    this.debouncedSearch(query);
   };
+
+  debouncedSearch = debounce(this.doSearch, 350, { leading: true });
+
+  doSearch(query: string) {
+    this.props.onSearch(query);
+  }
 
   render() {
     const { query, isLoading, children } = this.props;
