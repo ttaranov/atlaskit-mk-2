@@ -7,6 +7,7 @@ import { mount } from 'enzyme';
 
 import { hasSelector } from '../_test-utils';
 import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
+import Flash from '../../src/internal/flash';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -18,27 +19,28 @@ const { expect } = chai;
 const grinning: EmojiDescription = emojiRepository.findByShortName(
   ':grinning:',
 ) as EmojiDescription;
+
+const buildReaction = (count: number, reacted: boolean) => ({
+  ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+  containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+  emojiId: toEmojiId(grinning).id!,
+  count,
+  reacted,
+});
+
 const renderReaction = (
   reacted: boolean,
   count: number,
   onClick: ReactionOnClick,
-) => {
-  const reactionData = {
-    ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-    containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-    emojiId: toEmojiId(grinning).id!,
-    count: count,
-    reacted: reacted,
-  };
-
-  return (
-    <Reaction
-      reaction={reactionData}
-      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      onClick={onClick}
-    />
-  );
-};
+  flashOnMount: boolean = false,
+) => (
+  <Reaction
+    reaction={buildReaction(count, reacted)}
+    emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+    onClick={onClick}
+    flashOnMount={flashOnMount}
+  />
+);
 
 describe('@atlaskit/reactions/reaction', () => {
   it('should render emoji with resolved emoji data', () => {
@@ -58,5 +60,47 @@ describe('@atlaskit/reactions/reaction', () => {
 
     reaction.simulate('mouseup', { button: 0 });
     expect(onClickSpy.called).to.equal(true);
+  });
+
+  it('should delegate flash to Flash component', () => {
+    const reaction = mount(renderReaction(true, 10, () => {}));
+
+    const flash = reaction.find(Flash).instance() as Flash;
+
+    const flashSpy = jest.spyOn(flash, 'flash');
+
+    (reaction.instance() as Reaction).flash();
+
+    expect(flashSpy.mock.calls).to.have.lengthOf(1);
+  });
+
+  it('should call flash when change to reacted', () => {
+    const reaction = mount(renderReaction(false, 10, () => {}));
+
+    const flash = reaction.find(Flash).instance() as Flash;
+    const flashSpy = jest.spyOn(flash, 'flash');
+
+    reaction.setProps({
+      reaction: {
+        ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+        containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+        emojiId: toEmojiId(grinning).id!,
+        count: 11,
+        reacted: true,
+      },
+    });
+
+    expect(flashSpy.mock.calls).to.have.lengthOf(1);
+  });
+
+  it('should call flash on mount', () => {
+    const reaction = mount(renderReaction(true, 10, () => {}, true));
+
+    const flash = reaction.find(Flash).instance() as Flash;
+    const flashSpy = jest.spyOn(flash, 'flash');
+
+    (reaction.instance() as Reaction).componentDidMount();
+
+    expect(flashSpy.mock.calls).to.have.lengthOf(1);
   });
 });
