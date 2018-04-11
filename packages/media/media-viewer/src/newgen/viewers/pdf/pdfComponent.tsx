@@ -22,9 +22,13 @@ export class PDFViewer extends React.PureComponent<Props, {}> {
     this.pdfViewer.setDocument(this.props.previewData.doc);
   }
 
+  private savePdfElement = (el) => {
+    this.el = el;
+  }
+
   render () {
     return (
-      <PDFWrapper innerRef={x => this.el = x}>
+      <PDFWrapper innerRef={this.savePdfElement}>
         <div className="pdfViewer" />
       </PDFWrapper>
     );
