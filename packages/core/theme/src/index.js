@@ -36,3 +36,6 @@ export const layers = {
   spotlight: () => 700,
   tooltip: () => 800,
 };
+
+export { default as Context } from './components/Context';
+export { default as Reset } from './components/Reset';
