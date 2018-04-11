@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.0.8
+- [patch] ED-4294: fix editing bodiedExtension nodes [35d2648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2648)
+
 ## 3.0.7
 - [patch] fix deletion of lists and other elements placed after tables; bump prosemirror-commands to 1.0.7 [162960f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/162960f)
 
