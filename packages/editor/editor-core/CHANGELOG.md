@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.0.3
+- [patch] work around short document content not saving in Android Chrome [11cf48c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11cf48c)
+
 ## 70.0.2
 - [patch] ED-4294: fix editing bodiedExtension nodes [35d2648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2648)
 
