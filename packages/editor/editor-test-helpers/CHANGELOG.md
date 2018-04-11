@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.0
+- [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
+
 ## 3.0.8
 - [patch] ED-4294: fix editing bodiedExtension nodes [35d2648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2648)
 
