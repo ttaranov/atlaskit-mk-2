@@ -157,6 +157,10 @@ describe('@atlaskit/reactions/reactions', () => {
         .map(reaction => reaction.prop('flashOnMount'))
         .reduce((a, b) => a || b),
     ).to.be.false;
+  });
+
+  it('should flash new reaction on mount', () => {
+    const reactions = mount(renderReactions());
 
     return reactionsProvider
       .addReaction(containerAri, demoAri, flagBlackId.id!)
