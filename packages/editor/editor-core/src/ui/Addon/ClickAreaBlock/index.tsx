@@ -21,7 +21,17 @@ export default class ClickAreaBlock extends React.Component<Props> {
     const contentArea = event.currentTarget.getElementsByClassName(
       'content-area',
     )[0];
-    if ((!contentArea || !contentArea.contains(event.target)) && editorView) {
+    // @see https://product-fabric.atlassian.net/browse/ED-4287
+    // click event gets triggered twice on a checkbox (on <label> first and then on <input>)
+    // by the time it gets triggered on input, PM already re-renders nodeView and detaches it from DOM
+    // which doesn't pass the check !contentArea.contains(event.target)
+    const isInputClicked = event.target.nodeName === 'INPUT';
+
+    if (
+      (!contentArea || !contentArea.contains(event.target)) &&
+      !isInputClicked &&
+      editorView
+    ) {
       if (createParagraphAtEnd()(editorView.state, editorView.dispatch)) {
         editorView.focus();
         event.stopPropagation();
