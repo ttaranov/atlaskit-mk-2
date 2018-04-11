@@ -453,7 +453,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         })
         .catch(err => {
           this.setState({
-            uploadErrorMessage: 'Upload failed.',
+            uploadErrorMessage: 'Upload failed',
           });
           // tslint:disable-next-line
           console.error('Unable to upload emoji', err);

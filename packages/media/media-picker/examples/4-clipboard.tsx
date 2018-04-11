@@ -17,6 +17,7 @@ import {
   DropzoneItemsInfo,
   ClipboardContainer,
 } from '../example-helpers/styled';
+import { ContextFactory } from '@atlaskit/media-core';
 
 export interface ClipboardWrapperState {
   isConnectedToUsersCollection: boolean;
@@ -82,15 +83,14 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
   createClipboard() {
     const { isConnectedToUsersCollection, isActive } = this.state;
-    const config = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
-      apiUrl: userAuthProviderBaseURL,
-    };
-    const clipboard = MediaPicker('clipboard', config, {
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
         : undefined,
     });
+    const clipboard = MediaPicker('clipboard', context);
 
     this.clipboard = clipboard;
 

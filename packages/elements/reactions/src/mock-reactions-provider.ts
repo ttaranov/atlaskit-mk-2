@@ -35,6 +35,14 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         {
           ari: 'ari:cloud:owner:demo-cloud-id:item/1',
           containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+          emojiId: (defaultReactionsByShortName.get(':thumbsdown:') as EmojiId)
+            .id!,
+          count: 5,
+          reacted: false,
+        },
+        {
+          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
           emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
           count: 100,
           reacted: false,

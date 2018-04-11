@@ -47,6 +47,7 @@ pipelines:
         caches:
           - node
 
+
   custom: # Pipelines that can be scheduled or triggered manually
 
     # This should only be called by a scheduled build
@@ -84,18 +85,62 @@ pipelines:
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
 
+
     landkid:
-      - step:
-          script:
-            - source ./build-setup.sh
-            - git merge master --no-edit
-            - bolt install --pure-lockfile
-            - yarn build
-            - yarn lint
-            - yarn typecheck
-            - yarn test
-            # Disabled until we find the source of the flakeyness
-            # - yarn test:browser:browserstack
+      - parallel:
+          - step:
+              name: Building
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - yarn build
+
+          - step:
+              name: Linting
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - yarn lint
+
+          - step:
+              name: Typechecking
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - yarn typecheck
+
+      - parallel:
+          - step:
+              name: Running Jest 1 of 4 chunks
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+          - step:
+              name: Running Jest 2 of 4 chunks
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+          - step:
+              name: Running Jest 3 of 4 chunks
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+          - step:
+              name: Running Jest 4 of 4 chunks
+              script:
+                - source ./build-setup.sh
+                - git merge master --no-edit
+                - bolt install --pure-lockfile
+                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
 
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install and test to seed the jest and node_modules

@@ -10,7 +10,9 @@ export default function getHeadingNodeView(
   text: string,
   useGreyText: boolean,
 ): PMNode {
-  if (!containerNodeType) {
+  const { tableCell } = schema.nodes;
+
+  if (!containerNodeType || containerNodeType === tableCell) {
     const extraEffects = useGreyText ? [TEXT_COLOR_GREY] : [];
     const textNodes = getTextWithMarks(schema, text, extraEffects);
 

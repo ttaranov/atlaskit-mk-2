@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import GlobalQuickSearch, { Props } from '../src/components/GlobalQuickSearch';
-import { AkQuickSearch } from '@atlaskit/navigation';
+import { QuickSearch } from '@atlaskit/quick-search';
 
 const noop = () => {};
 
@@ -36,7 +36,7 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock });
 
     const onSearchInput: Function = wrapper
-      .find(AkQuickSearch)
+      .find(QuickSearch)
       .prop('onSearchInput');
     onSearchInput({ target: { value: 'foo' } });
 

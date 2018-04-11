@@ -1,4 +1,5 @@
 import { LocalUploadComponent } from '../localUpload';
+import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaLocalUpload', () => {
   const imagePreviewSrc = 'some-image-src';
@@ -11,14 +12,23 @@ describe('MediaLocalUpload', () => {
     publicId: 'some-public-id',
   };
   const setup = () => {
-    const context = {
+    const analyticsContext = {
       trackEvent: jest.fn(),
     };
-    const moduleConfig = {
-      apiUrl: 'some-api-url',
+    const context = ContextFactory.create({
+      serviceHost: 'some-api-url',
       authProvider: jest.fn(),
+    });
+    const config = {
+      uploadParams: {
+        collection: '',
+      },
     };
-    const localUpload = new LocalUploadComponent(context, moduleConfig);
+    const localUpload = new LocalUploadComponent(
+      analyticsContext,
+      context,
+      config,
+    );
     const uploadService = localUpload['uploadService'];
     const emitUploadServiceEvent = uploadService['emit'];
     const emitter = localUpload['emitter'];

@@ -1,6 +1,6 @@
 'use strict';
 //@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 120e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
 const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT

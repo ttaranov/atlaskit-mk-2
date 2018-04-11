@@ -12,7 +12,7 @@ import {
 // safari failure on browserstack
 BrowserTestCase(
   'Emoji: user can navigate typeahead using keyboard',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -31,7 +31,7 @@ BrowserTestCase(
 // issue with safari on browserstack works on local
 BrowserTestCase(
   'Emoji: should select emoji on return',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -46,16 +46,20 @@ BrowserTestCase(
   },
 );
 
-BrowserTestCase('Emoji: should render emoji inside codeblock', async client => {
-  const browser = await new Page(client);
-  await browser.goto(messageEditor);
-  await browser.waitForSelector(editable);
-  await browser.type(editable, '```');
-  await browser.waitForSelector('pre');
-  await browser.type(editable, ':smile:');
-  const doc = await browser.$eval(editable, getDocFromElement);
-  expect(doc).toMatchDocSnapshot();
-});
+BrowserTestCase(
+  'Emoji: should render emoji inside codeblock',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, '```');
+    await browser.waitForSelector('pre');
+    await browser.type(editable, ':smile:');
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
 
 // BUG on IE
 BrowserTestCase(
@@ -75,6 +79,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should not show typeahead with text: ',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

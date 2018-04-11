@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { ChangeEvent, ChangeEventHandler, PureComponent } from 'react';
 
-import ErrorIcon from '@atlaskit/icon/glyph/error';
-import AkButton from '@atlaskit/button';
 import AkFieldBase from '@atlaskit/field-base';
-import Spinner from '@atlaskit/spinner';
 
-import { customCategory } from '../../constants';
-import { EmojiDescription, EmojiUpload } from '../../types';
+import { EmojiUpload } from '../../types';
 import * as ImageUtil from '../../util/image';
 import debug from '../../util/logger';
 import * as styles from './styles';
-import Emoji from './Emoji';
 import FileChooser from './FileChooser';
 import EmojiErrorMessage from './EmojiErrorMessage';
+import { UploadStatus } from './internal-types';
+import EmojiUploadPreview from './EmojiUploadPreview';
 
 export interface OnUploadEmoji {
   (upload: EmojiUpload): void;
@@ -25,12 +22,6 @@ export interface Props {
   onFileChosen?: (name: string) => void;
   errorMessage?: string;
   initialUploadName?: string;
-}
-
-export enum UploadStatus {
-  Waiting,
-  Uploading,
-  Error,
 }
 
 export interface State {
@@ -139,83 +130,6 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
   }
 }
 
-interface PreviewEmojiUploadProps {
-  name: string;
-  previewImage: string;
-  uploadStatus?: UploadStatus;
-  errorMessage?: string;
-  onUploadCancelled: () => void;
-  onAddEmoji: () => void;
-}
-
-class PreviewEmojiUpload extends PureComponent<PreviewEmojiUploadProps, {}> {
-  render() {
-    const {
-      name,
-      previewImage,
-      uploadStatus,
-      errorMessage,
-      onAddEmoji,
-      onUploadCancelled,
-    } = this.props;
-
-    let emojiComponent;
-
-    if (previewImage) {
-      const emoji: EmojiDescription = {
-        shortName: `:${name}:`,
-        type: customCategory,
-        category: customCategory,
-        representation: {
-          imagePath: previewImage,
-          width: 24,
-          height: 24,
-        },
-        searchable: true,
-      };
-
-      emojiComponent = <Emoji emoji={emoji} />;
-    }
-
-    const uploading = uploadStatus === UploadStatus.Uploading;
-    const spinner = uploading ? <Spinner size="medium" /> : undefined;
-
-    const error = !errorMessage ? (
-      undefined
-    ) : (
-      <span className={styles.uploadError}>
-        <ErrorIcon label="Error" /> {errorMessage}
-      </span>
-    );
-
-    return (
-      <div className={styles.emojiUpload}>
-        <div className={styles.uploadPreview}>
-          Your new emoji {emojiComponent} looks great!
-        </div>
-        <div className={styles.uploadAddRow}>
-          <AkButton
-            onClick={onAddEmoji}
-            appearance="primary"
-            isDisabled={uploading}
-          >
-            Add emoji
-          </AkButton>
-          <AkButton
-            onClick={onUploadCancelled}
-            appearance="link"
-            isDisabled={uploading}
-          >
-            Cancel
-          </AkButton>
-          {spinner}
-          {error}
-        </div>
-      </div>
-    );
-  }
-}
-
 export default class EmojiUploadPicker extends PureComponent<Props, State> {
   state = {
     uploadStatus: UploadStatus.Waiting,
@@ -260,10 +174,19 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
 
   private onAddEmoji = () => {
     const { onUploadEmoji } = this.props;
-    const { filename, name, previewImage } = this.state;
+    const { filename, name, previewImage, uploadStatus } = this.state;
+
+    if (uploadStatus === UploadStatus.Uploading) {
+      return;
+    }
+
     if (filename && name && previewImage) {
       const notifyUpload = size => {
         const { width, height } = size;
+        this.setState({
+          uploadStatus: UploadStatus.Uploading,
+        });
+
         onUploadEmoji({
           name: toEmojiName(name),
           shortName: `:${name}:`,
@@ -271,9 +194,6 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
           dataURL: previewImage,
           width,
           height,
-        });
-        this.setState({
-          uploadStatus: UploadStatus.Uploading,
         });
       };
       ImageUtil.getNaturalImageSize(previewImage)
@@ -362,7 +282,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
 
     if (name && previewImage) {
       return (
-        <PreviewEmojiUpload
+        <EmojiUploadPreview
           errorMessage={errorMessage}
           name={name}
           onAddEmoji={this.onAddEmoji}

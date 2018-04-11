@@ -1,5 +1,19 @@
 # @atlaskit/datetime-picker
 
+## 2.0.3
+
+
+
+- [patch] Change pickers to use fixed positioning and scroll lock to allow them to break out of modals. [d4981fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4981fe)
+
+## 2.0.2
+- [patch] Fix datetime picker without a value and defaultValue not working [a88aee0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88aee0)
+
+## 2.0.1
+
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.0.1
 - [patch] Fix picker value not being able to be set programatically [17c7a15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17c7a15)
 - [patch] Fix `isDisabled` not restricting pickers from opening [f396f2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f396f2e)

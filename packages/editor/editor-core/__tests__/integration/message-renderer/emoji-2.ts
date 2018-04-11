@@ -11,6 +11,7 @@ import {
 
 BrowserTestCase(
   'Emoji: should be able to use emoji inside blockquote',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -25,6 +26,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to use emoji inside bulletList',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -38,6 +40,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to use emoji inside orderedList',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -88,6 +91,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to change text with emoji into decisions',
+  { skip: ['ie'] },
   async client => {
     const decisions = 'span[aria-label="Decision"]';
     const createDecisions = '[aria-label="Create decision"]';

@@ -1,14 +1,27 @@
 import { LocalUploadComponent } from './localUpload';
-import { ModuleConfig } from '../domain/config';
 import { MediaPickerContext } from '../domain/context';
+import { Context } from '@atlaskit/media-core';
+import { UploadParams } from '..';
+
+export interface BinaryConfig {
+  uploadParams: UploadParams;
+}
 
 export interface BinaryUploaderConstructor {
-  new (context: MediaPickerContext, config: ModuleConfig): BinaryUploader;
+  new (
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: BinaryConfig,
+  ): BinaryUploader;
 }
 
 export class BinaryUploader extends LocalUploadComponent {
-  constructor(context: MediaPickerContext, config: ModuleConfig) {
-    super(context, config);
+  constructor(
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: BinaryConfig,
+  ) {
+    super(analyticsContext, context, config);
   }
 
   public upload(base64: string, name: string): void {

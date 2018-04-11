@@ -1,17 +1,19 @@
 import { LocalUploadComponent } from './localUpload';
 import { MPBrowserLoaded } from '../outer/analytics/events';
-import { ModuleConfig } from '../domain/config';
 import { MediaPickerContext } from '../domain/context';
+import { Context } from '@atlaskit/media-core';
+import { UploadParams } from '..';
 
 export interface BrowserConfig {
+  uploadParams: UploadParams;
   multiple?: boolean;
   fileExtensions?: Array<string>;
 }
 
 export interface BrowserConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
     browserConfig: BrowserConfig,
   ): Browser;
 }
@@ -20,11 +22,11 @@ export class Browser extends LocalUploadComponent {
   private readonly browseElement: HTMLInputElement;
 
   constructor(
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    browserConfig: BrowserConfig = {},
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    browserConfig: BrowserConfig = { uploadParams: {} },
   ) {
-    super(context, config);
+    super(analyticsContext, context, browserConfig);
 
     this.browseElement = document.createElement('INPUT') as HTMLInputElement;
     this.browseElement.setAttribute('type', 'file');
@@ -46,7 +48,7 @@ export class Browser extends LocalUploadComponent {
     document.body.appendChild(this.browseElement);
 
     this.uploadService.addBrowse(this.browseElement);
-    this.context.trackEvent(new MPBrowserLoaded());
+    this.analyticsContext.trackEvent(new MPBrowserLoaded());
   }
 
   public browse(): void {

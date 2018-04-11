@@ -1,6 +1,7 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
 import { Component } from 'react';
+import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
@@ -27,7 +28,6 @@ import {
   CardItemWrapper,
 } from '../example-helpers/styled';
 import { AuthEnvironment } from '../example-helpers';
-import { ModuleConfig } from '../src/domain/config';
 
 const context = createStorybookContext();
 
@@ -44,6 +44,7 @@ export interface PopupWrapperState {
   inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
+  isUploadingFilesVisible: boolean;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -57,20 +58,21 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     inflightUploads: {},
     hasTorndown: false,
     publicFiles: {},
+    isUploadingFilesVisible: true,
   };
 
   componentDidMount() {
-    const config: ModuleConfig = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this),
-      apiUrl: userAuthProviderBaseURL,
+      userAuthProvider,
+    });
+
+    this.popup = MediaPicker('popup', context, {
+      container: document.body,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-    };
-
-    this.popup = MediaPicker('popup', config, {
-      container: document.body,
-      userAuthProvider,
     });
 
     this.popup.onAny(this.onPopupEvent);
@@ -252,6 +254,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
   };
 
+  onUploadingFilesToggle = () => {
+    this.setState({
+      isUploadingFilesVisible: !this.state.isUploadingFilesVisible,
+    });
+  };
+
   onCancelUpload = () => {
     const { inflightUploads } = this.state;
 
@@ -331,6 +339,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       collectionName,
       inflightUploads,
       hasTorndown,
+      isUploadingFilesVisible,
     } = this.state;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
@@ -359,6 +368,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             >
               Teardown
             </Button>
+            <Button
+              onClick={this.onUploadingFilesToggle}
+              isDisabled={hasTorndown}
+            >
+              Toggle Uploading files
+            </Button>
             <DropdownMenu trigger={collectionName} triggerType="button">
               <DropdownItem onClick={this.onCollectionChange}>
                 {defaultMediaPickerCollectionName}
@@ -379,10 +394,14 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             <Toggle isDefaultChecked={true} isDisabled={true} />
             Closed times: {closedTimes}
           </PopupHeader>
-          <FilesInfoWrapper>
-            {this.renderUploadingFiles()}
-            {this.renderCards()}
-          </FilesInfoWrapper>
+          {isUploadingFilesVisible ? (
+            <FilesInfoWrapper>
+              {this.renderUploadingFiles()}
+              {this.renderCards()}
+            </FilesInfoWrapper>
+          ) : (
+            undefined
+          )}
           <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
         </PopupContainer>
       </AnalyticsListener>

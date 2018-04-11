@@ -26,7 +26,7 @@ export interface UploadEventEmitter {
 export class UploadComponent<
   M extends UploadEventPayloadMap
 > extends GenericEventEmitter<M> implements UploadEventEmitter {
-  constructor(protected readonly context: MediaPickerContext) {
+  constructor(protected readonly analyticsContext: MediaPickerContext) {
     super();
   }
 
@@ -52,12 +52,12 @@ export class UploadComponent<
 
   emitUploadProcessing(file: PublicMediaFile): void {
     this.emit('upload-processing', { file });
-    this.context.trackEvent(new MPFileProcessingStarted());
+    this.analyticsContext.trackEvent(new MPFileProcessingStarted());
   }
 
   emitUploadEnd(file: PublicMediaFile, fileDetails: FileDetails): void {
     this.emit('upload-end', { file, public: fileDetails });
-    this.context.trackEvent(new MPFileUploadEnded());
+    this.analyticsContext.trackEvent(new MPFileUploadEnded());
   }
 
   emitUploadError(file: MediaFile, error: MediaError): void {

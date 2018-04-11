@@ -1,23 +1,27 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { ContextFactory } from '@atlaskit/media-core';
 import { Browser } from '../browser';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
-import { ModuleConfig, UploadParams } from '../../domain/config';
+import { UploadParams } from '../../domain/config';
 
 class MockContext implements MediaPickerContext {
   trackEvent(event: UserEvent) {}
 }
 
-class MockConfig implements ModuleConfig {
-  apiUrl: string;
-  authProvider: AuthProvider;
-  uploadParams?: UploadParams;
+class MockConfig {
+  uploadParams: UploadParams;
 }
 
 describe('Browser', () => {
   let browser: Browser | undefined;
+  let context;
 
-  afterEach(() => {
+  beforeEach(() => {
+    context = ContextFactory.create({
+      serviceHost: '',
+      authProvider: {} as any,
+    });
+
     if (browser) {
       browser.teardown();
       browser = undefined;
@@ -26,13 +30,13 @@ describe('Browser', () => {
 
   it('should append the input to the body', () => {
     const inputsBefore = document.querySelectorAll('input[type=file]');
-    browser = new Browser(new MockContext(), new MockConfig());
+    browser = new Browser(new MockContext(), context, new MockConfig());
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeGreaterThan(inputsBefore.length);
   });
 
   it('should remove the input from the body', () => {
-    browser = new Browser(new MockContext(), new MockConfig());
+    browser = new Browser(new MockContext(), context, new MockConfig());
     const inputsBefore = document.querySelectorAll('input[type=file]');
     browser.teardown();
     const inputsAfter = document.querySelectorAll('input[type=file]');

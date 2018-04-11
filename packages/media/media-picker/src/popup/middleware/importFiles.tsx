@@ -19,7 +19,6 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { AuthService } from '../../domain/auth';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
@@ -66,65 +65,65 @@ const mapSelectedItemToSelectedUploadFile = ({
 
 export function importFilesMiddleware(
   eventEmitter: PopupUploadEventEmitter,
-  authService: AuthService,
   wsProvider: WsProvider,
 ): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isStartImportAction(action)) {
-      importFiles(eventEmitter, store as any, authService, wsProvider);
+      importFiles(eventEmitter, store as any, wsProvider);
     }
     return next(action);
   };
 }
 
-export function importFiles(
+export async function importFiles(
   eventEmitter: PopupUploadEventEmitter,
   store: Store<State>,
-  authService: AuthService,
   wsProvider: WsProvider,
 ): Promise<void> {
-  const { apiUrl, uploads, tenant, selectedItems } = store.getState();
+  const {
+    apiUrl,
+    uploads,
+    tenant,
+    selectedItems,
+    userAuthProvider,
+  } = store.getState();
 
   store.dispatch(hidePopup());
 
-  return authService.getUserAuth().then(auth => {
-    const selectedUploadFiles = selectedItems.map(
-      mapSelectedItemToSelectedUploadFile,
-    );
+  const auth = await userAuthProvider();
+  const selectedUploadFiles = selectedItems.map(
+    mapSelectedItemToSelectedUploadFile,
+  );
 
-    eventEmitter.emitUploadsStart(
-      selectedUploadFiles.map(({ file, uploadId }) =>
-        copyMediaFileForUpload(file, uploadId),
-      ),
-    );
+  eventEmitter.emitUploadsStart(
+    selectedUploadFiles.map(({ file, uploadId }) =>
+      copyMediaFileForUpload(file, uploadId),
+    ),
+  );
 
-    selectedUploadFiles.forEach(selectedUploadFile => {
-      const { file, serviceName, uploadId } = selectedUploadFile;
-      const selectedItemId = file.id;
-      if (serviceName === 'upload') {
-        const localUpload: LocalUpload = uploads[selectedItemId];
-        importFilesFromLocalUpload(
-          selectedItemId,
-          tenant,
-          uploadId,
-          store,
-          localUpload,
-        );
-      } else if (serviceName === 'recent_files') {
-        importFilesFromRecentFiles(selectedUploadFile, tenant, store);
-      } else if (isRemoteService(serviceName)) {
-        const wsConnectionHolder = wsProvider.getWsConnectionHolder(
-          apiUrl,
-          auth,
-        );
-        importFilesFromRemoteService(
-          selectedUploadFile,
-          tenant,
-          store,
-          wsConnectionHolder,
-        );
-      }
-    });
+  selectedUploadFiles.forEach(selectedUploadFile => {
+    const { file, serviceName, uploadId } = selectedUploadFile;
+    const selectedItemId = file.id;
+    if (serviceName === 'upload') {
+      const localUpload: LocalUpload = uploads[selectedItemId];
+      importFilesFromLocalUpload(
+        selectedItemId,
+        tenant,
+        uploadId,
+        store,
+        localUpload,
+      );
+    } else if (serviceName === 'recent_files') {
+      importFilesFromRecentFiles(selectedUploadFile, tenant, store);
+    } else if (isRemoteService(serviceName)) {
+      const wsConnectionHolder = wsProvider.getWsConnectionHolder(apiUrl, auth);
+      importFilesFromRemoteService(
+        selectedUploadFile,
+        tenant,
+        store,
+        wsConnectionHolder,
+      );
+    }
   });
 }
 

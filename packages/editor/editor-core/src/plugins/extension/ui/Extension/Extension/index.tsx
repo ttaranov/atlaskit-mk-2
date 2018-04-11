@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
-import { ExtensionProvider } from '../../../../macro';
+import { MacroProvider } from '../../../../macro';
 import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
 import ExtensionLozenge from '../Lozenge';
 
 export interface Props {
   node: PmNode;
-  extensionProvider?: ExtensionProvider;
+  macroProvider?: MacroProvider;
   onClick: (event: React.SyntheticEvent<any>) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;

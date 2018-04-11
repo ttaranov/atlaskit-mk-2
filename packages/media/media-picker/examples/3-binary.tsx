@@ -7,6 +7,7 @@ import {
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 import { MediaPicker, BinaryUploader } from '../src';
+import { ContextFactory } from '@atlaskit/media-core';
 
 class BinaryWrapper extends Component<{}, {}> {
   binary: BinaryUploader;
@@ -17,15 +18,17 @@ class BinaryWrapper extends Component<{}, {}> {
   }
 
   createBinary() {
-    const config = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
-      apiUrl: userAuthProviderBaseURL,
+    });
+    const config = {
       uploadParams: {
         autoFinalize: false,
         collection: defaultMediaPickerCollectionName,
       },
     };
-    const binary = MediaPicker('binary', config);
+    const binary = MediaPicker('binary', context, config);
 
     this.binary = binary;
 

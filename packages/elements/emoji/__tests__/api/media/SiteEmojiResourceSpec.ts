@@ -3,7 +3,11 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-
+import {
+  UploadEndEventPayload,
+  UploadErrorEventPayload,
+  UploadStatusUpdateEventPayload,
+} from '@atlaskit/media-picker';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import SiteEmojiResource, {
@@ -20,11 +24,6 @@ import {
   ImageRepresentation,
 } from '../../../src/types';
 import { toEmojiId } from '../../../src/type-helpers';
-import {
-  MediaUploadStatusUpdate,
-  MediaUploadEnd,
-  MediaUploadError,
-} from '../../../src/api/media/media-types';
 
 import {
   atlassianServiceEmojis,
@@ -34,7 +33,7 @@ import {
   missingMediaEmojiId,
   missingMediaServiceEmoji,
   siteServiceConfig,
-  loadedMediaEmoji
+  loadedMediaEmoji,
 } from '../../_test-data';
 
 interface MediaCallback {
@@ -84,7 +83,7 @@ class TestSiteEmojiResource extends SiteEmojiResource {
   }
 
   protected createMediaPicker(type, mpConfig) {
-    return this.mockMediaPicker;
+    return this.mockMediaPicker as any;
   }
 }
 
@@ -103,9 +102,10 @@ describe('SiteEmojiResource', () => {
       height: 30,
     };
 
-    const mediaUploadEnd: MediaUploadEnd = {
+    const mediaUploadEnd: UploadEndEventPayload = {
       file: {
         id: 'abc-123',
+        publicId: 'abc-123',
         name: upload.name,
         size: 12345,
         creationDate: Date.now(),
@@ -253,14 +253,17 @@ describe('SiteEmojiResource', () => {
             uploadEmojiCalls.length,
             'Emoji service upload emoji called',
           ).to.equal(0);
-          expect(error, 'Error message').to.equal('oh crap');
+          expect(error.name, 'Error message').to.equal('upload_fail');
         });
 
       // simulate MediaAPI done - after getToken resolved
       setTimeout(() => {
-        const error: MediaUploadError = {
+        const error: UploadErrorEventPayload = {
           file: mediaUploadEnd.file,
-          error: 'oh crap',
+          error: {
+            name: 'upload_fail',
+            description: 'some error',
+          },
         };
         mockMediaPicker.event('upload-error', error);
       }, 0);
@@ -358,7 +361,7 @@ describe('SiteEmojiResource', () => {
 
       // simulate MediaAPI done - after getToken resolved
       setTimeout(() => {
-        const mediaProgress: MediaUploadStatusUpdate = {
+        const mediaProgress: UploadStatusUpdateEventPayload = {
           file: mediaUploadEnd.file,
           progress: {
             absolute: 5042,

@@ -1,4 +1,4 @@
-import { Auth, AuthProvider } from '@atlaskit/media-core';
+import { Auth, AuthProvider, Context } from '@atlaskit/media-core';
 
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
@@ -35,7 +35,7 @@ export interface State {
   readonly isCancelling: boolean;
   readonly isUploading: boolean;
   readonly userAuthProvider: AuthProvider;
-
+  readonly context: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
 

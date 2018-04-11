@@ -20,6 +20,7 @@ import {
 } from '../example-helpers/styled';
 import { PreviewData, renderPreviewImage } from '../example-helpers';
 import { ModuleConfig } from '../src/domain/config';
+import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
@@ -92,15 +93,18 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
-    const config: ModuleConfig = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
-      apiUrl: userAuthProviderBaseURL,
-    };
-    const dropzone = MediaPicker('dropzone', config, {
-      container: this.dropzoneContainer,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
         : undefined,
+    });
+    const dropzone = MediaPicker('dropzone', context, {
+      container: this.dropzoneContainer,
+      uploadParams: {
+        collection: '',
+      },
     });
 
     this.dropzone = dropzone;

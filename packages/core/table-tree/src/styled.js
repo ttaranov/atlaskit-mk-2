@@ -18,7 +18,6 @@ function defaultToPx(length) {
 }
 
 export const iconColor = colors.N800;
-export const iconColorFocus = colors.linkHover;
 
 export const TreeRowContainer = styled.div`
   border-bottom: 1px solid ${colors.N30};
@@ -30,27 +29,23 @@ export const HeadersContainer = styled.div`
   display: flex;
 `;
 
-const indentWidth = 20;
+const indentWidth = 25;
 
 const commonChevronContainer = css`
   display: flex;
   align-items: center;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  margin-left: -22px;
-
-  button {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    padding: 0;
-    outline: none;
-  }
+  top: 7px;
+  margin-left: ${defaultToPx(-indentWidth)};
 `;
 
 export const ChevronContainer = styled.span`
   ${commonChevronContainer};
+`;
+
+export const ChevronIconContainer = styled.span`
+  position: relative;
+  top: 1px;
 `;
 
 export const LoaderItemContainer = styled.span`

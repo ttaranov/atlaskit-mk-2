@@ -1,5 +1,14 @@
 # @atlaskit/modal-dialog
 
+## 4.0.2
+- [patch] AK-4416 changes meaning of autofocus prop values [c831a3d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c831a3d)
+
+## 4.0.1
+- [patch] Add possibility to display heading in modal in one line (with ellipsis if content is wider than modal) [30883b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30883b4)
+
+## 4.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 3.5.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

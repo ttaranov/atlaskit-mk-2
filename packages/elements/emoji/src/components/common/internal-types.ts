@@ -5,3 +5,9 @@ export interface EmojiContext {
     emojiProvider: EmojiProvider;
   };
 }
+
+export enum UploadStatus {
+  Waiting,
+  Uploading,
+  Error,
+}

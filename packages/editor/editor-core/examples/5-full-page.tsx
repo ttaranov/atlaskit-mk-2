@@ -10,7 +10,7 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  extensionProvider,
+  macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -44,14 +44,14 @@ TitleInput.displayName = 'TitleInput';
  * +-------------------------------+
  * + [Editor core v] [Full page v] +  48px height
  * +-------------------------------+
- * +                               +  20px padding-top
+ * +                               +  16px padding-top
  * +            Content            +
- * +                               +  20px padding-bottom
+ * +                               +  16px padding-bottom
  * +-------------------------------+  ----
- *                                    88px
+ *                                    80px - 48px (Outside of iframe)
  */
 export const Wrapper: any = styled.div`
-  height: calc(100vh - 88px);
+  height: calc(100vh - 32px);
 `;
 Wrapper.displayName = 'Wrapper';
 
@@ -113,7 +113,7 @@ const providers = {
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  extensionProvider: Promise.resolve(extensionProvider),
+  macroProvider: Promise.resolve(macroProvider),
 };
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,

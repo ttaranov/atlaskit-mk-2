@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import { PureComponent, SyntheticEvent } from 'react';
-import { style } from 'typestyle';
+import { style, keyframes } from 'typestyle';
 import {
   EmojiId,
   EmojiProvider,
@@ -10,12 +10,15 @@ import {
 } from '@atlaskit/emoji';
 import Tooltip from '@atlaskit/tooltip';
 import EmojiButton from './emoji-button';
+import ShowMore from './show-more';
 
 import { equalEmojiId } from './helpers';
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection: OnEmojiEvent;
+  showMore: boolean;
+  onMoreClick: React.MouseEventHandler<HTMLElement>;
 }
 
 const selectorStyle = style({
@@ -26,13 +29,34 @@ const selectorStyle = style({
 
 const emojiStyle = style({
   display: 'inline-block',
-  transition: 'transform 200ms ease-in-out',
+  opacity: 0,
   $nest: {
     '&.selected': {
+      transition: 'transform 200ms ease-in-out  ',
       transform: 'translateY(-48px) scale(2.667)',
     },
   },
 });
+
+const revealAnimation = keyframes({
+  '0%': {
+    opacity: 1,
+    transform: 'scale(0.5)',
+  },
+  '75%': {
+    transform: 'scale(1.25)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'scale(1)',
+  },
+});
+
+export const revealStyle = style({
+  animation: `${revealAnimation} 150ms ease-in-out forwards`,
+});
+
+const revealDelay = index => ({ animationDelay: `${index * 50}ms` });
 
 export const defaultReactionsByShortName: Map<string, EmojiId> = new Map<
   string,
@@ -90,20 +114,31 @@ export default class Selector extends PureComponent<Props, State> {
     });
   };
 
+  private renderShowMore = (): React.ReactNode => (
+    <ShowMore
+      key="more"
+      className={{ button: revealStyle }}
+      style={{ button: revealDelay(defaultReactions.length) }}
+      onClick={this.props.onMoreClick}
+    />
+  );
+
   render() {
-    const { emojiProvider } = this.props;
+    const { emojiProvider, showMore } = this.props;
 
     return (
       <div className={selectorStyle}>
-        {defaultReactions.map(emojiId => {
+        {defaultReactions.map((emojiId, index) => {
           const key = emojiId.id || emojiId.shortName;
 
-          const classNames = cx(emojiStyle, {
+          const classNames = cx(emojiStyle, revealStyle, {
             selected: emojiId === this.state.selection,
           });
 
+          const style = revealDelay(index);
+
           return (
-            <div className={classNames} key={key}>
+            <div key={key} className={classNames} style={style}>
               <Tooltip content={emojiId.shortName}>
                 <EmojiButton
                   emojiId={emojiId}
@@ -114,6 +149,8 @@ export default class Selector extends PureComponent<Props, State> {
             </div>
           );
         })}
+
+        {showMore ? this.renderShowMore() : null}
       </div>
     );
   }

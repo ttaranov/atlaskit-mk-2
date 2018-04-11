@@ -1,5 +1,33 @@
 # @atlaskit/editor-core
 
+## 69.0.0
+- [major] CHANGESET: Revert "CFE-1004  macroProvider to extensionProvider (pull request #1308)" [33cb5fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33cb5fe)
+
+## 68.1.4
+
+## 68.1.3
+- [patch] ED-4283 Fix broken scroll behavior in full-page appearance [8110aa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8110aa0)
+
+## 68.1.2
+- [patch] Use media-core context in MediaPicker constructor [6cc9f55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6cc9f55)
+
+## 68.1.1
+
+## 68.1.0
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 68.0.3
+- [patch] Upgrading PM transform [d3ec47d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ec47d)
+
+## 68.0.2
+- [patch] Fixing the popup height for recent activity [760d798](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760d798)
+
+## 68.0.1
+- [patch] ED-4175, table toolbar should always be centally aligned. [5d98a75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d98a75)
+
+## 68.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 67.0.4
 
 ## 67.0.3

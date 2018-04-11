@@ -19,6 +19,7 @@ import {
 } from '../example-helpers/styled';
 import { PreviewData, renderPreviewImage } from '../example-helpers';
 import { AuthEnvironment } from '../example-helpers';
+import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
   collectionName: string;
@@ -66,19 +67,19 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   }
 
   createBrowse() {
+    const context = ContextFactory.create({
+      serviceHost: defaultServiceHost,
+      authProvider: mediaPickerAuthProvider(this),
+    });
     const uploadParams: UploadParams = {
       collection: defaultMediaPickerCollectionName,
-    };
-    const config: ModuleConfig = {
-      apiUrl: defaultServiceHost,
-      authProvider: mediaPickerAuthProvider(this),
-      uploadParams: uploadParams,
     };
     const browseConfig = {
       multiple: true,
       fileExtensions: ['image/jpeg', 'image/png', 'video/mp4'],
+      uploadParams,
     };
-    const fileBrowser = MediaPicker('browser', config, browseConfig);
+    const fileBrowser = MediaPicker('browser', context, browseConfig);
 
     this.fileBrowser = fileBrowser;
 

@@ -7,6 +7,7 @@ import { Conversation, User } from '../model';
 export interface State {
   conversations: Conversation[];
   user?: User;
+  highlighted?: string;
 }
 
 export interface Action {

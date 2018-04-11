@@ -1,4 +1,8 @@
-import { BinaryUploader, BinaryUploaderConstructor } from './components/binary';
+import {
+  BinaryUploader,
+  BinaryUploaderConstructor,
+  BinaryConfig,
+} from './components/binary';
 import {
   Browser,
   BrowserConfig,
@@ -15,9 +19,9 @@ import {
   DropzoneConstructor,
 } from './components/dropzone';
 import { Popup, PopupConfig, PopupConstructor } from './components/popup';
-import { ModuleConfig } from './domain/config';
 import { UserTracker } from './outer/analytics/tracker';
 import { handleError } from './util/handleError';
+import { Context } from '@atlaskit/media-core';
 
 export { DropzoneUploadEventPayloadMap } from './components/dropzone';
 export { PopupUploadEventPayloadMap } from './components/popup';
@@ -66,11 +70,11 @@ export interface MediaPickerComponents {
   popup: Popup;
 }
 
-export { ModuleConfig, UploadParams } from './domain/config';
+export { UploadParams } from './domain/config';
 
-export { BrowserConfig, DropzoneConfig, PopupConfig };
+export { BrowserConfig, DropzoneConfig, PopupConfig, BinaryConfig };
 export interface ComponentConfigs {
-  binary?: void;
+  binary: BinaryConfig;
   browser: BrowserConfig;
   clipboard: ClipboardConfig;
   dropzone: DropzoneConfig;
@@ -99,35 +103,44 @@ export function MediaPicker<K extends keyof MediaPickerComponents>(
 // returns component instance when supplied with component name and module config
 export function MediaPicker<K extends keyof MediaPickerComponents>(
   componentName: K,
-  moduleConfig: ModuleConfig,
+  context: Context,
   pickerConfig?: ComponentConfigs[K],
 ): MediaPickerComponents[K];
 
+// TODO: Remove factory ??
 export function MediaPicker<K extends keyof MediaPickerComponents>(
   componentName: K,
-  moduleConfig?: ModuleConfig,
+  context?: Context,
   pickerConfig?: ComponentConfigs[K],
 ): MediaPickerComponents[K] | MediaPickerConstructors[K] {
-  if (moduleConfig) {
-    const context = { trackEvent };
+  if (context) {
+    const analyticsContext = { trackEvent };
 
     switch (componentName) {
       case 'binary':
-        return new BinaryUploader(context, moduleConfig);
+        return new BinaryUploader(
+          analyticsContext,
+          context,
+          pickerConfig as BinaryConfig,
+        );
       case 'browser':
-        return new Browser(context, moduleConfig, pickerConfig as
+        return new Browser(analyticsContext, context, pickerConfig as
           | BrowserConfig
           | undefined);
       case 'clipboard':
-        return new Clipboard(context, moduleConfig, pickerConfig as
+        return new Clipboard(analyticsContext, context, pickerConfig as
           | ClipboardConfig
           | undefined);
       case 'dropzone':
-        return new Dropzone(context, moduleConfig, pickerConfig as
+        return new Dropzone(analyticsContext, context, pickerConfig as
           | DropzoneConfig
           | undefined);
       case 'popup':
-        return new Popup(context, moduleConfig, pickerConfig as PopupConfig);
+        return new Popup(
+          analyticsContext,
+          context,
+          pickerConfig as PopupConfig,
+        );
       default:
         const message = `The component ${componentName} does not exist`;
         handleError('wrong_component', message);

@@ -6,6 +6,7 @@ import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
 import { fileUploadsStart } from '../../actions/fileUploadsStart';
+import { ContextFactory } from '@atlaskit/media-core';
 
 describe('App', () => {
   const apiUrl = 'some-api-url';
@@ -14,6 +15,11 @@ describe('App', () => {
   const userAuthProvider = () => Promise.resolve({ clientId, token });
 
   const setup = () => {
+    const context = ContextFactory.create({
+      serviceHost: apiUrl,
+      authProvider: userAuthProvider,
+      userAuthProvider,
+    });
     const handlers: AppDispatchProps = {
       onStartApp: jest.fn(),
       onClose: jest.fn(),
@@ -25,20 +31,21 @@ describe('App', () => {
       onUploadError: jest.fn(),
     };
     return {
+      context,
       handlers,
       store: mockStore(),
+      userAuthProvider,
     };
   };
 
   it('should render UploadView given selectedServiceName is "upload"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
         isVisible={true}
+        context={context}
         {...handlers}
       />,
     );
@@ -47,13 +54,12 @@ describe('App', () => {
   });
 
   it('should render Browser given selectedServiceName is "google"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -63,13 +69,12 @@ describe('App', () => {
   });
 
   it('should call onStartApp', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -79,13 +84,12 @@ describe('App', () => {
   });
 
   it('should activate dropzone when visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={false}
         {...handlers}
       />
@@ -99,13 +103,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when not visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />
@@ -119,13 +122,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when unmounted', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />
@@ -136,6 +138,26 @@ describe('App', () => {
     wrapper.unmount();
 
     expect(spy).toBeCalled();
+  });
+
+  it('should pass new context to the local MediaPicker components', () => {
+    const { handlers, store, context, userAuthProvider } = setup();
+    const component = shallow(
+      <App
+        store={store}
+        selectedServiceName="upload"
+        context={context}
+        isVisible={true}
+        {...handlers}
+      />,
+    );
+    const instance = component.instance();
+    const mpContext = instance['mpContext'];
+
+    expect(mpContext.config.authProvider).toEqual(userAuthProvider);
+    expect(instance['mpBrowser'].context).toEqual(mpContext);
+    expect(instance['mpDropzone'].context).toEqual(mpContext);
+    expect(instance['mpBinary'].context).toEqual(mpContext);
   });
 });
 
