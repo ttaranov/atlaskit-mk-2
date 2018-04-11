@@ -253,7 +253,7 @@ export class StatelessUploadView extends Component<
 
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
-      if (fileDetails && fileDetails.id) {
+      if (fileDetails) {
         onFileClick(
           {
             id: fileDetails.id,
@@ -270,19 +270,17 @@ export class StatelessUploadView extends Component<
       if (mediaItem.type === 'file') {
         const { id, name } = mediaItem.details;
 
-        if (id) {
-          if (isWebGLAvailable()) {
-            onEditRemoteImage(
-              {
-                id,
-                name: name || '',
-              },
-              recentsCollection,
-            );
-          } else {
-            // WebGL not available - show warning flag
-            this.showWebGLWarningFlag();
-          }
+        if (isWebGLAvailable()) {
+          onEditRemoteImage(
+            {
+              id,
+              name: name || '',
+            },
+            recentsCollection,
+          );
+        } else {
+          // WebGL not available - show warning flag
+          this.showWebGLWarningFlag();
         }
       }
     };
@@ -324,12 +322,7 @@ export class StatelessUploadView extends Component<
     const payload = cardLoadingState.payload as FileDetails;
     const type = cardLoadingState.type;
 
-    if (
-      type === 'complete' &&
-      payload &&
-      payload.mediaType === 'image' &&
-      payload.id
-    ) {
+    if (type === 'complete' && payload && payload.mediaType === 'image') {
       const imageIds = this.state.imageIds.concat(payload.id);
       this.setState({ imageIds });
     }

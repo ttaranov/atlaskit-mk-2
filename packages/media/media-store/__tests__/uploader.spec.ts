@@ -9,7 +9,7 @@ describe('Uploader', () => {
   const setup = () => {
     const ChunkinatorMock = jest.fn();
     const config = {
-      apiUrl: '',
+      serviceHost: '',
       authProvider,
     };
     const createFileFromUpload = jest

@@ -10441,9 +10441,9 @@ property-information@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/property-information/-/property-information-3.2.0.tgz#fd1483c8fbac61808f5fe359e7693a1f48a58331"
 
-prosemirror-commands@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/prosemirror-commands/-/prosemirror-commands-1.0.5.tgz#224835d3cf31deaf72ac800c1d2b3d6fa2c81ff9"
+prosemirror-commands@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/prosemirror-commands/-/prosemirror-commands-1.0.7.tgz#e5a2ba821e29ea7065c88277fe2c3d7f6b0b9d37"
   dependencies:
     prosemirror-model "^1.0.0"
     prosemirror-state "^1.0.0"

@@ -22,7 +22,7 @@ export interface UploaderExampleState {
 }
 
 const store = new MediaStore({
-  apiUrl: defaultServiceHost,
+  serviceHost: defaultServiceHost,
   authProvider: defaultMediaPickerAuthProvider,
 });
 
@@ -98,7 +98,7 @@ class UploaderExample extends Component<
     uploadFile(
       { content: tallImage },
       {
-        apiUrl: defaultServiceHost,
+        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
@@ -120,7 +120,7 @@ class UploaderExample extends Component<
     uploadFile(
       { content: file, name: file.name, mimeType: file.type },
       {
-        apiUrl: defaultServiceHost,
+        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {

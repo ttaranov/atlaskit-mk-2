@@ -2,7 +2,9 @@ import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 import * as Rusha from 'rusha';
 import * as PQueue from 'p-queue';
 
-import { MediaStoreConfig, MediaStore } from './media-store';
+import { MediaStore } from './media-store';
+import { MediaApiConfig } from './models/auth';
+
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
   content: ChunkinatorFile;
@@ -11,7 +13,7 @@ export type UploadableFile = {
   collection?: string;
 };
 
-export type Callbacks = {
+export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
 };
 
@@ -47,8 +49,8 @@ const createProbingFunction = (store: MediaStore) => async (
 
 export const uploadFile = async (
   file: UploadableFile,
-  config: MediaStoreConfig,
-  callbacks?: Callbacks,
+  config: MediaApiConfig,
+  callbacks?: UploadFileCallbacks,
 ): Promise<string> => {
   const { content, collection, name, mimeType } = file;
   const store = new MediaStore(config);

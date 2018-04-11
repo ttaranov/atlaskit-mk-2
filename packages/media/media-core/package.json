@@ -21,6 +21,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/media-store": "^1.0.8",
     "axios": "^0.17.1",
     "lru-fast": "^0.2.2",
     "tslib": "^1.8.0"
