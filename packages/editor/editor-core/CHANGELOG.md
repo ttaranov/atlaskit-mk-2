@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.0.4
+- [patch] ED-4063 fix placeholder not diappearing on Android Chrome [27debe2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27debe2)
+
 ## 70.0.3
 - [patch] work around short document content not saving in Android Chrome [11cf48c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11cf48c)
 
