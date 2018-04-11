@@ -82,7 +82,7 @@ export function isAppMention(mention: MentionDescription) {
 }
 
 export function isTeamMention(mention: MentionDescription) {
-  return mention.userType && mention.userType == UserType[UserType.TEAM];
+  return mention.userType && mention.userType === UserType[UserType.TEAM];
 }
 
 export function isSpecialMentionText(mentionText: string) {
