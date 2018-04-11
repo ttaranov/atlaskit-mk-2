@@ -1,5 +1,7 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.0.4
+
 ## 3.0.3
 - [patch] Fixes a bug where the HTML for 'Done' Jira issues was not transformed properly [87a5253](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a5253)
 

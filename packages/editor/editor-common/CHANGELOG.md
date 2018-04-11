@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 9.0.0
+
 ## 8.1.27
 - [patch] Removing redundant array item from schema [ab8533d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab8533d)
 

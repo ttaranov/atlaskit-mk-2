@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 70.0.0
+
 ## 69.0.0
 - [major] CHANGESET: Revert "CFE-1004  macroProvider to extensionProvider (pull request #1308)" [33cb5fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33cb5fe)
 
