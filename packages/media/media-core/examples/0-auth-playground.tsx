@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { Context, ContextFactory } from '../src/context/context';
 import { MediaItem } from '../src/item';
-import { MediaCollection } from '../src/collection';
+import { isError } from '../src/error';
 import { Auth, AuthProvider, isClientBasedAuth } from '@atlaskit/media-store';
 
 const collectionName = 'MediaServicesSample';
@@ -109,8 +109,10 @@ class AuthPlayground extends Component<Props, State> {
       3,
     );
     const observable = mediaCollectionProvider.observable();
-    observable.subscribe((next: MediaCollection) => {
-      this.setState({ items: next.items });
+    observable.subscribe(next => {
+      if (!isError(next)) {
+        this.setState({ items: next.items });
+      }
     });
   };
 

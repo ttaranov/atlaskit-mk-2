@@ -1,5 +1,7 @@
 # @atlaskit/reactions
 
+## 11.0.5
+
 ## 11.0.4
 - [patch] FS-1644 reactions ui changes [70ccf94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70ccf94)
 
