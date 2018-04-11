@@ -78,25 +78,31 @@ function shiftCoord(coordName, coords, gutter) {
 }
 
 // Returns a map of positions to whether they fit in viewport
-function getViewportBounds({ top, right, bottom, left }: Coords) {
+function getViewportBounds(
+  { top, right, bottom, left }: Coords,
+  gutter: number,
+) {
   const docEl = document.documentElement;
 
   return {
-    top: top >= 0,
-    left: left >= 0,
+    top: top >= 0 + gutter,
+    left: left >= 0 + gutter,
     bottom:
-      bottom <= (window.innerHeight || (docEl && docEl.clientHeight) || 0),
-    right: right <= (window.innerWidth || (docEl && docEl.clientWidth) || 0),
+      bottom <=
+      (window.innerHeight || (docEl && docEl.clientHeight) || 0) - gutter,
+    right:
+      right <=
+      (window.innerWidth || (docEl && docEl.clientWidth) || 0) - gutter,
   };
 }
 
 // Get the viewport bounds for each position coord
-function getAllViewportBounds(allCoords: GetCoordsResults) {
+function getAllViewportBounds(allCoords: GetCoordsResults, gutter: number) {
   const viewportBounds = {};
   Object.keys(allCoords).forEach(position => {
     const coords = allCoords[position];
 
-    viewportBounds[position] = getViewportBounds(coords);
+    viewportBounds[position] = getViewportBounds(coords, gutter);
   });
 
   return viewportBounds;
@@ -107,7 +113,7 @@ function getAllViewportBounds(allCoords: GetCoordsResults) {
 function adjustPosition(originalPosition, positionCoords, gutter) {
   const flippedPosition = FLIPPED_POSITION[originalPosition];
 
-  const viewportBounds = getAllViewportBounds(positionCoords);
+  const viewportBounds = getAllViewportBounds(positionCoords, gutter);
 
   // Should flip if the original position was not within bounds and the new position is
   const shouldFlip =
