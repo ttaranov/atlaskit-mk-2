@@ -63,6 +63,7 @@ enum UserType {
   DEFAULT,
   SPECIAL,
   APP,
+  TEAM,
   SYSTEM,
 }
 
@@ -78,6 +79,10 @@ export function isSpecialMention(mention: MentionDescription) {
 
 export function isAppMention(mention: MentionDescription) {
   return mention.userType && mention.userType === UserType[UserType.APP];
+}
+
+export function isTeamMention(mention: MentionDescription) {
+  return mention.userType && mention.userType == UserType[UserType.TEAM];
 }
 
 export function isSpecialMentionText(mentionText: string) {
