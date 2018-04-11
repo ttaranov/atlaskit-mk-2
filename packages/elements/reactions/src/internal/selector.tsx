@@ -58,24 +58,24 @@ export const revealStyle = style({
 
 const revealDelay = index => ({ animationDelay: `${index * 50}ms` });
 
+export const defaultReactions: EmojiId[] = [
+  { id: '1f44d', shortName: ':thumbsup:' },
+  { id: '1f44e', shortName: ':thumbsdown:' },
+  { id: '1f525', shortName: ':fire:' },
+  { id: '1f60d', shortName: ':heart_eyes:' },
+  { id: '1f602', shortName: ':joy:' },
+  { id: '1f622', shortName: ':cry:' },
+];
+
 export const defaultReactionsByShortName: Map<string, EmojiId> = new Map<
   string,
   EmojiId
->([
-  [':thumbsup:', { id: '1f44d', shortName: ':thumbsup:' }],
-  [':thumbsdown:', { id: '1f44e', shortName: ':thumbsdown:' }],
-  [':grinning:', { id: '1f600', shortName: ':grinning:' }],
-  [':tada:', { id: '1f389', shortName: ':tada:' }],
-  [':heart:', { id: '2764', shortName: ':heart:' }],
-]);
-
-export const defaultReactions: EmojiId[] = [
-  defaultReactionsByShortName.get(':thumbsup:') as EmojiId,
-  defaultReactionsByShortName.get(':thumbsdown:') as EmojiId,
-  defaultReactionsByShortName.get(':grinning:') as EmojiId,
-  defaultReactionsByShortName.get(':tada:') as EmojiId,
-  defaultReactionsByShortName.get(':heart:') as EmojiId,
-];
+>(
+  defaultReactions.map<[string, EmojiId]>(reaction => [
+    reaction.shortName,
+    reaction,
+  ]),
+);
 
 export const isDefaultReaction = (emojiId: EmojiId) =>
   defaultReactions.filter(otherEmojiId => equalEmojiId(otherEmojiId, emojiId))

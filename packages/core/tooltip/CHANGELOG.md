@@ -1,5 +1,9 @@
 # @atlaskit/tooltip
 
+## 9.1.0
+- [patch] Improve viewport edge collision detection. Tooltips will now shift along the secondary position axis (e.g. left/right when position is top/bottom) to show within viewport. Fix auto flip occurring incorrectly in these situations as well. [ebf331a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf331a)
+- [minor] Add new 'mouse' value for position prop and mousePosition prop to allow the tooltip to display relative to the mouse. [1d5577d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d5577d)
+
 ## 9.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

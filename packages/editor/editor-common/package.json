@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -47,7 +47,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^3.0.6",
+    "@atlaskit/editor-test-helpers": "^3.1.0",
     "@atlaskit/media-core": "^17.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",

@@ -255,14 +255,22 @@ function plugins(
 
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['examples'],
     }),
 
     new HtmlWebpackPlugin({
       filename: 'examples.html',
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
       template: path.join(cwd, 'public/examples.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['main'],
     }),
 

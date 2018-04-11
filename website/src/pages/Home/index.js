@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { gridSize, math, colors } from '@atlaskit/theme';
-import Cards from './Home/Cards';
-import { TABLET_BREAKPOINT_MIN } from './Home/config';
+import Cards from './Cards';
+import { TABLET_BREAKPOINT_MIN } from './config';
 
 const fonts =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';

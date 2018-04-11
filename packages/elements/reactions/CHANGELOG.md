@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 11.0.7
+- [patch] FS-1882 update reaction button to match mobile [acc8118](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acc8118)
+
+## 11.0.6
+- [patch] FS-1876 update default reactions emoji [114cee6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/114cee6)
+
 ## 11.0.5
 
 ## 11.0.4

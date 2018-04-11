@@ -75,6 +75,9 @@ export interface EditorProps {
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
 
+  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
+  UNSAFE_allowQuickInsert?: boolean;
+
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
   disabled?: boolean;

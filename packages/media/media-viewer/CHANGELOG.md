@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.1.0
+- [minor] Add PDF viewer to MVNG [f4dbaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4dbaa0)
+
 ## 13.0.0
 
 ## 12.0.0

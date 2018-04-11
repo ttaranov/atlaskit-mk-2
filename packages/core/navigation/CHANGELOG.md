@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 30.0.2
+- [patch] removes app-switcher dev dependency [fad3bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad3bbe)
+
 ## 30.0.1
 - [patch] Upgrade react-scrolllock dependency [99b852c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99b852c)
 
