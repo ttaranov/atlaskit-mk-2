@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.0.7
+- [patch] fix deletion of lists and other elements placed after tables; bump prosemirror-commands to 1.0.7 [162960f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/162960f)
+
 ## 3.0.6
 
 ## 3.0.5
