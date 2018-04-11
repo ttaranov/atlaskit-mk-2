@@ -208,8 +208,6 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/app-switcher": "^3.3.0",
-    "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/profilecard": "^3.7.1",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
