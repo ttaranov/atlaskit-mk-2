@@ -71,6 +71,7 @@ if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
+  config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
 }
 
 /**
