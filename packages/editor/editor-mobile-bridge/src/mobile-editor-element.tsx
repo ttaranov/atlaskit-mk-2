@@ -12,6 +12,7 @@ import { valueOf } from './web-to-native/markState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
 import { ContextFactory } from '@atlaskit/media-core';
+import { createPromise } from './cross-platform-promise';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -98,10 +99,11 @@ const mediaProvider: MediaProvider = {
 };
 
 function getToken(context?: any) {
-  const { clientId, token } = JSON.parse(toNativeBridge.getAuth(context));
-  return Promise.resolve({
-    clientId: clientId,
-    token: token,
+  return new Promise<any>((resolve, reject) => {
+    createPromise('getAuth', context.collectionName)
+      .submit()
+      .then(resolve)
+      .catch(reject);
   });
 }
 

@@ -14,4 +14,6 @@ export default class DummyBridge implements NativeBridge {
   getCollection(): string {
     return '';
   }
+
+  submitPromise(name: string, uuid: string, args: string) {}
 }

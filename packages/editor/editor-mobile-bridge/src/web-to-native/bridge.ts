@@ -20,7 +20,12 @@ export type Auth = {
   token: string;
 };
 
+export interface PromiseBridge {
+  submitPromise(name: string, uuid: string, args: string);
+}
+
 export default interface NativeBridge
   extends MentionBridge,
     TextFormattingBridge,
-    MediaBridge {};
+    MediaBridge,
+    PromiseBridge {};

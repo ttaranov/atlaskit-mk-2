@@ -1,4 +1,9 @@
-import { MediaBridge, MentionBridge, TextFormattingBridge } from './bridge';
+import {
+  MediaBridge,
+  MentionBridge,
+  PromiseBridge,
+  TextFormattingBridge,
+} from './bridge';
 import AndroidBridge from './android-impl';
 import IosBridge from './ios-impl';
 import DummyBridge from './dummy-impl';
@@ -9,6 +14,7 @@ declare global {
     mentionsBridge?: MentionBridge;
     textFormatBridge?: TextFormattingBridge;
     mediaBridge?: MediaBridge;
+    promiseBridge?: PromiseBridge;
     webkit?: any;
   }
 }
