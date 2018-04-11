@@ -31,7 +31,7 @@ describe('MediaBlobService', () => {
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
-        { type: 'file', details: {} },
+        { type: 'file', details: { id: 'id' } },
         { width: 100, height: 100 },
       );
 
@@ -44,7 +44,7 @@ describe('MediaBlobService', () => {
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
-        { type: 'file', details: {} },
+        { type: 'file', details: { id: 'id' } },
         {
           width: 100,
           height: 100,
@@ -61,7 +61,7 @@ describe('MediaBlobService', () => {
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
-        { type: 'file', details: {} },
+        { type: 'file', details: { id: 'id' } },
         { width: 100, height: 100 },
       );
 
@@ -73,7 +73,7 @@ describe('MediaBlobService', () => {
       service.fetchSomeBlob = fetchSomeBlobSpy;
 
       service.fetchImageBlob(
-        { type: 'file', details: {} },
+        { type: 'file', details: { id: 'id' } },
         {
           width: 100,
           height: 100,
