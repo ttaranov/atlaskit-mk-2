@@ -8,6 +8,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { MediaPicker, BinaryUploader } from '../src';
 import { ContextFactory } from '@atlaskit/media-core';
+import { BinaryConfig } from '../src/components/binary';
 
 class BinaryWrapper extends Component<{}, {}> {
   binary: BinaryUploader;
@@ -22,9 +23,8 @@ class BinaryWrapper extends Component<{}, {}> {
       serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
     });
-    const config = {
+    const config: BinaryConfig = {
       uploadParams: {
-        autoFinalize: false,
         collection: defaultMediaPickerCollectionName,
       },
     };

@@ -42,10 +42,8 @@ describe('MediaPickerPopup', () => {
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {
-      const newUploadParams = {
+      const newUploadParams: UploadParams = {
         collection: 'hello-world',
-        fetchMetadata: false,
-        autoFinalize: false,
       };
       const mediaPicker = new Popup(fakeContext, context, {
         ...popupConfig,
@@ -54,8 +52,6 @@ describe('MediaPickerPopup', () => {
 
       expect((mediaPicker as any)['uploadParams']).toEqual({
         collection: 'hello-world',
-        fetchMetadata: false,
-        autoFinalize: false,
       });
     });
   });
@@ -63,38 +59,14 @@ describe('MediaPickerPopup', () => {
   describe('setUploadParams', () => {
     it('updates collection uploadParam when it is supplied', () => {
       const collection = 'some-collection-name';
-      const newUploadParams = { collection };
+      const newUploadParams: UploadParams = { collection };
 
       const mediaPicker = new Popup(fakeContext, context, popupConfig);
       mediaPicker.setUploadParams(newUploadParams);
 
-      expect((mediaPicker as any)['uploadParams'].collection).toEqual(
-        collection,
-      );
-    });
-
-    it('updates fetchMetadata uploadParam when it is supplied', () => {
-      const fetchMetadata = false;
-      const newUploadParams = { fetchMetadata, collection: '' };
-
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
-      mediaPicker.setUploadParams(newUploadParams);
-
-      expect((mediaPicker as any)['uploadParams'].fetchMetadata).toEqual(
-        fetchMetadata,
-      );
-    });
-
-    it('updates autoFinalize uploadParam when it is supplied', () => {
-      const autoFinalize = false;
-      const newUploadParams = { autoFinalize, collection: '' };
-
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
-      mediaPicker.setUploadParams(newUploadParams);
-
-      expect((mediaPicker as any)['uploadParams'].autoFinalize).toEqual(
-        autoFinalize,
-      );
+      expect(
+        ((mediaPicker as any)['uploadParams'] as UploadParams).collection,
+      ).toEqual(collection);
     });
   });
 

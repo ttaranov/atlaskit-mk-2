@@ -175,10 +175,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
-          autoFinalize
-          <Toggle isDefaultChecked isDisabled />
-          fetchMetadata
-          <Toggle isDefaultChecked isDisabled />
         </PopupHeader>
         <DropzonePreviewsWrapper>
           <h1>Upload previews</h1>

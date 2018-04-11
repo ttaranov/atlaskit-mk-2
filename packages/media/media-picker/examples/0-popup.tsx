@@ -388,10 +388,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               </DropdownItem>
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
-            autoFinalize
-            <Toggle isDefaultChecked={true} isDisabled={true} />
-            fetchMetadata
-            <Toggle isDefaultChecked={true} isDisabled={true} />
             Closed times: {closedTimes}
           </PopupHeader>
           {isUploadingFilesVisible ? (
