@@ -184,7 +184,7 @@ function getMouseCoords({
   gutter,
 }: getMouseCoordsArgs) {
   const cursorPaddingRight = 8;
-  const cursorPaddingBottom = 12;
+  const cursorPaddingBottom = 16;
   return {
     top: {
       top: mouseCoordinates.top - (tooltipRect.height + gutter),
