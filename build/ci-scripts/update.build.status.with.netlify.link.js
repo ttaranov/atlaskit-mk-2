@@ -5,13 +5,6 @@ const updateBuildStatus = require('../utils/updateBuildStatus');
 const netlifyLogFilePath = './netlify-build.txt';
 
 try {
-  const buildStatusOpts = {
-    buildName: 'Netlify build',
-    description: 'A static preview build hosted on netlify',
-    url: URL,
-    state: 'SUCCESSFUL',
-  };
-
   const logFile = fs.readFileSync(netlifyLogFilePath, 'utf-8');
   const lines = logFile.split('\n');
   const indexOfLineBeforeUrl = lines.findIndex(
@@ -23,7 +16,17 @@ try {
   if (!permalinkUrlMatch) {
     throw new Error(`Unable to find permalinkUrl in ${netlifyLogFilePath}`);
   }
+  console.log('permalinkUrlMatch', permalinkUrlMatch);
   const permalinkUrl = permalinkUrlMatch[0];
+  console.log('permalinkUrl', permalinkUrl);
+
+  const buildStatusOpts = {
+    buildName: 'Netlify build',
+    description: 'A static preview build hosted on netlify',
+    url: permalinkUrl,
+    state: 'SUCCESSFUL',
+  };
+  console.log('buildStatusOpts', buildStatusOpts);
 
   console.log('Updating build status...');
   updateBuildStatus(buildStatusOpts);

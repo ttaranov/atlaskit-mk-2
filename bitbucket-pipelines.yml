@@ -75,6 +75,7 @@ pipelines:
           - cd build/ci-scripts
           - yarn install
           - node download.build.artefact.for.commit.js netlify-build.txt
+          - cat netlify-build.txt
           - node update.build.status.with.netlify.link.js
 
 

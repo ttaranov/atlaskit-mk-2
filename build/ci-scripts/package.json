@@ -13,6 +13,7 @@
   "dependencies": {
     "@atlaskit/build-utils": "^1.12.1",
     "axios": "^0.17.1",
+    "bitbucket-build-status": "^1.0.3",
     "npm-run": "^4.1.2",
     "s3-cli": "^0.13.0",
     "spawndamnit": "^1.0.0"
