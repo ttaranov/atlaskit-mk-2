@@ -43,7 +43,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror .placeholder-decoration {
     position: absolute;
-    width: 100%;
     pointer-events: none;
     user-select: none;
 
