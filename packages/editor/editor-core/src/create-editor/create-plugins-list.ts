@@ -158,7 +158,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(placeholderTextPlugin(options));
   }
 
-  if (props.allowLayouts) {
+  if (props.UNSAFE_allowLayouts) {
     plugins.push(layoutPlugin);
   }
 
