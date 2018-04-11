@@ -65,7 +65,7 @@
     "markdown-it": "^8.4.0",
     "orderedmap": "^1.0.0",
     "prop-types": "^15.5.10",
-    "prosemirror-commands": "^1.0.5",
+    "prosemirror-commands": "^1.0.7",
     "prosemirror-history": "^1.0.2",
     "prosemirror-inputrules": "^1.0.1",
     "prosemirror-keymap": "^1.0.1",
