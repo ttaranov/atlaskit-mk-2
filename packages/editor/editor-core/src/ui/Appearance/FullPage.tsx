@@ -19,7 +19,6 @@ const FullPageEditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-bottom: 55px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -41,6 +40,7 @@ const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-bottom: 55px;
 
   & .ProseMirror {
     flex-grow: 1;
