@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 1.3.0
+- [minor] Update react-select dep in @atlaskit/select to alpha.10 [4073781](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4073781)
+
 ## 1.2.0
 - [minor] @atlaskit/select now exports the createFilter [df7d845](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df7d845)
 
