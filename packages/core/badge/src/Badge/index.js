@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { BadgeElement } from './styled';
+import styled from './styled';
 
 export const APPEARANCE_ENUM = {
   values: [
@@ -70,11 +70,7 @@ export default class Badge extends PureComponent<Props> {
 
   render() {
     const { appearance, max, value } = this.props;
-
-    return (
-      <BadgeElement appearance={validAppearance(appearance)}>
-        {getValue(value, max)}
-      </BadgeElement>
-    );
+    const StyledBadge = styled[appearance];
+    return <StyledBadge>{getValue(value, max)}</StyledBadge>;
   }
 }

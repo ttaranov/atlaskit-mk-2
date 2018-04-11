@@ -37,5 +37,7 @@ export const layers = {
   tooltip: () => 800,
 };
 
+// New API
 export { default as Context } from './components/Context';
 export { default as Reset } from './components/Reset';
+export { default as Theme } from './components/Theme';
