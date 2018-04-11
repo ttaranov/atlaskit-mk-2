@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
 import { stringify } from 'query-string';
 
-import { MediaStore } from '../src/';
+import { AuthProvider, MediaStore } from '../src/';
 import {
   MediaUpload,
   MediaChunksProbe,
@@ -10,6 +10,7 @@ import {
   MediaCollection,
   MediaCollectionItems,
 } from '../src/models/media';
+import { MediaStoreGetFileParams } from '../src/media-store';
 
 describe('MediaStore', () => {
   const serviceHost = 'http://some-host';
@@ -20,10 +21,17 @@ describe('MediaStore', () => {
     const clientId = 'some-client-id';
     const token = 'some-token';
     const auth = { clientId, token };
-    const authProvider = () => Promise.resolve(auth);
-    const mediaStore = new MediaStore({
-      serviceHost,
-      authProvider,
+    let authProvider: jest.Mock<AuthProvider>;
+    let mediaStore: MediaStore;
+
+    beforeEach(() => {
+      authProvider = jest.fn();
+      authProvider.mockReturnValue(Promise.resolve(auth));
+
+      mediaStore = new MediaStore({
+        serviceHost,
+        authProvider,
+      });
     });
 
     describe('createUpload', () => {
@@ -167,6 +175,48 @@ describe('MediaStore', () => {
             },
             body: JSON.stringify(body),
           });
+          expect(authProvider).toHaveBeenCalledWith({
+            collectionName: params.collection,
+          });
+        });
+      });
+    });
+
+    describe('getFile', () => {
+      it('should GET to /file/{fileId} endpoint with correct options', () => {
+        const collectionName = 'some-collection-name';
+        const fileId = 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6';
+        const params: MediaStoreGetFileParams = {
+          collection: collectionName,
+        };
+        const responseData: MediaFile = {
+          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
+          mediaType: 'document',
+          mimeType: 'application/pdf',
+          name: 'example document.pdf',
+          processingStatus: 'pending',
+          size: 231392,
+          artifacts: {},
+        };
+
+        fetchMock.mock(`begin:${serviceHost}/file/${fileId}`, {
+          body: {
+            data: responseData,
+          },
+          status: 201,
+        });
+
+        return mediaStore.getFile(fileId, params).then(response => {
+          expect(response).toEqual({ data: responseData });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${serviceHost}/file/${fileId}?client=${clientId}&collection=${collectionName}&token=${token}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual(
+            expect.objectContaining({
+              method: 'GET',
+            }),
+          );
+          expect(authProvider).toHaveBeenCalledWith({ collectionName });
         });
       });
     });
@@ -233,6 +283,7 @@ describe('MediaStore', () => {
             },
             body: JSON.stringify({ name: collectionName }),
           });
+          expect(authProvider).toHaveBeenCalledWith({ collectionName });
         });
       });
     });
@@ -263,6 +314,7 @@ describe('MediaStore', () => {
               Accept: 'application/json',
             },
           });
+          expect(authProvider).toHaveBeenCalledWith({ collectionName });
         });
       });
     });
@@ -300,6 +352,7 @@ describe('MediaStore', () => {
                 Accept: 'application/json',
               },
             });
+            expect(authProvider).toHaveBeenCalledWith({ collectionName });
           });
       });
     });
