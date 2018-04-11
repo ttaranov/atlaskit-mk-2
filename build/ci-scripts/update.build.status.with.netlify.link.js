@@ -16,19 +16,15 @@ try {
   if (!permalinkUrlMatch) {
     throw new Error(`Unable to find permalinkUrl in ${netlifyLogFilePath}`);
   }
-  console.log('permalinkUrlMatch', permalinkUrlMatch);
   const permalinkUrl = permalinkUrlMatch[0];
-  console.log('permalinkUrl', permalinkUrl);
-
   const buildStatusOpts = {
     buildName: 'Netlify build',
     description: 'A static preview build hosted on netlify',
     url: permalinkUrl,
     state: 'SUCCESSFUL',
   };
-  console.log('buildStatusOpts', buildStatusOpts);
 
-  console.log('Updating build status...');
+  console.log('Updating build status with link: ', permalinkUrl);
   updateBuildStatus(buildStatusOpts);
 } catch (e) {
   console.error('Unable to update build status');
