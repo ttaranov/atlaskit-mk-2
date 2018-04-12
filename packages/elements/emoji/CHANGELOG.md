@@ -1,5 +1,7 @@
 # @atlaskit/emoji
 
+## 34.1.2
+
 ## 34.1.1
 - [patch] Fixed flex issue in IE11 [137d8bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/137d8bd)
 - [patch] Improve custom emoji upload failure and waiting experience [1ab5945](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ab5945)

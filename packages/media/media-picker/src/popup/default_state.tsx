@@ -42,6 +42,7 @@ const state: State = {
   onCancelUpload: () => {
     throw new Error('onCancelUpload has not been set yet.');
   },
+  context: {} as any, // TODO: fix this
 };
 
 export default state;

@@ -1,4 +1,4 @@
-import { Auth, isClientBasedAuth, AuthProvider } from '@atlaskit/media-core';
+import { Auth, isClientBasedAuth } from '@atlaskit/media-core';
 
 export interface ClientBasedAuthHeaders {
   readonly 'X-Client-Id': string;
@@ -52,9 +52,4 @@ export function mapAuthToQueryParameters(auth: Auth): AuthQueryParameters {
       token: auth.token,
     };
   }
-}
-
-export interface AuthService {
-  readonly getUserAuth: AuthProvider;
-  readonly getTenantAuth: AuthProvider;
 }

@@ -12,6 +12,8 @@ import {
 import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../src/avatar-picker-dialog/layout-const';
 import { dataURItoFile, fileToDataURI } from '../src/util';
 import { smallImage } from '@atlaskit/media-test-helpers';
+import { PredefinedAvatarView } from '../src/predefined-avatar-view';
+import { Mode } from '../src';
 
 describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {
@@ -298,5 +300,19 @@ describe('Avatar Picker Dialog', () => {
     expect(button.prop('isDisabled')).toBeTruthy();
     expect(component.find(ImageNavigator).prop('isLoading')).toBeTruthy();
     expect(component.find(PredefinedAvatarList)).toHaveLength(0);
+  });
+
+  it('should pass props down to PredefinedAvatarView', () => {
+    const component = renderWithProps({
+      avatars: [{ dataURI: '1' }],
+      predefinedAvatarsText: 'some text',
+    });
+    component.setState({ mode: Mode.PredefinedAvatars });
+    expect(component.find(PredefinedAvatarView).prop('avatars')).toEqual([
+      { dataURI: '1' },
+    ]);
+    expect(
+      component.find(PredefinedAvatarView).prop('predefinedAvatarsText'),
+    ).toEqual('some text');
   });
 });
