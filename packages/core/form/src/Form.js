@@ -3,6 +3,7 @@
 /* eslint-disable react/no-unused-prop-types */
 import React, { Component, type Node } from 'react';
 import type { FieldState } from './Field';
+import FormWrapper from './styled/Form';
 
 type Props = {
   /** Specifies where to send the form-data when a form is submitted */
@@ -70,14 +71,6 @@ type FormFields = {
   /** Has the form been submitted yet */
   isSubmitted: boolean,
 };
-
-/*
-const formStyle = {
-  display: 'flex',
-  minHeight: '100vh',
-  flexDirection: 'column',
-};
-*/
 
 export default class Form extends Component<Props, State> {
   static defaultProps = {
@@ -228,22 +221,24 @@ export default class Form extends Component<Props, State> {
     } = this.props;
 
     return (
-      <form
-        action={action}
-        encType={encType}
-        method={method}
-        name={name}
-        target={target}
-        accept={accept}
-        acceptCharset={acceptCharset}
-        autoComplete={autoComplete}
-        //$FlowFixMe Only for dev preview. TODO: resolve this type error
-        ref={(form: HTMLFormElement) => {
-          this.form = form;
-        }}
-      >
-        {this.renderChildren()}
-      </form>
+      <FormWrapper>
+        <form
+          action={action}
+          encType={encType}
+          method={method}
+          name={name}
+          target={target}
+          accept={accept}
+          acceptCharset={acceptCharset}
+          autoComplete={autoComplete}
+          //$FlowFixMe Only for dev preview. TODO: resolve this type error
+          ref={(form: HTMLFormElement) => {
+            this.form = form;
+          }}
+        >
+          {this.renderChildren()}
+        </form>
+      </FormWrapper>
     );
   }
 }

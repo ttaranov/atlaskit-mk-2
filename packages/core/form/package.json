@@ -42,6 +42,7 @@
     "@atlaskit/toggle": "^3.0.0",
     "@atlaskit/button": "7.0.0",
     "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/tooltip": "^9.0.0",
     "validator": "^9.4.1",
     "enzyme": "^3.3.0",
     "react-router": "^4.2.0",

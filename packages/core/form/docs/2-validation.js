@@ -34,7 +34,7 @@ ${(
   ~~~js
   import Form { Field, Validator } from '@atlaskit/form';
   ~~~
-  Tip: If you don't need form state management or validation you will only need to import Field & Validator
+  Validation is available for both the FormState & FieldState. If you don't need form state management or validation you will only need to import Field & Validator
 
   ${(
     <Example

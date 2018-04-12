@@ -33,6 +33,7 @@ ${(
   ### Supported Atlaskit Components
 
   The following table lists all the currently supported components and any known issues.
+  
   ${<ComponentsTable components={fieldComponents} />}
 
   ${(
