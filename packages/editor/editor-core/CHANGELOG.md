@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 70.2.0
+- [patch] Rename allowLayouts props to UNSAFE_allowLayouts to prevent accidental use by consumers [f4098d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4098d8)
+- [minor] Add initial Page Layouts supports for Confluence. Doesn't currently support different layout types / enforcing column constraints in the editor. [ec8f6d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8f6d8)
+
 ## 70.1.0
 - [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
 
