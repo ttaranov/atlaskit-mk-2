@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "1.5.11",
+  "version": "1.5.12",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -30,7 +30,7 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "bolt-query": "^1.1.4",
     "chalk": "^2.1.0",
-    "extract-react-types-loader": "^0.1.1",
+    "extract-react-types-loader": "^0.1.2",
     "netlify-cli": "^1.2.2"
   },
   "dependencies": {
@@ -58,7 +58,7 @@
     "@atlaskit/tag": "^4.0.0",
     "@atlaskit/tag-group": "^4.0.0",
     "@atlaskit/theme": "^3.0.0",
-    "@atlaskit/tooltip": "^9.0.0",
+    "@atlaskit/tooltip": "^9.1.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/webpack-config": "^2.0.0",
     "@lbatchelor/netlify": "^1.2.0-patched.7",

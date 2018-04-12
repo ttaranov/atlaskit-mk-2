@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 70.2.6
+- [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
+
+## 70.2.5
+- [patch] ED-4333 fix handleSave callback [9071629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9071629)
+
+## 70.2.4
+- [patch] Fix MediaCard loading state inside editor [5262ad6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5262ad6)
+
+## 70.2.3
+
+- [patch] ED-4287: fix scroll to the bottom of the page when checking a task item [0905309](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0905309)
+
+## 70.2.2
+- [patch] Fix Markdown-it dependency to be the same version that prosemirror-markdown uses internally to prevent unnecessary bundle size increase [9abf097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9abf097)
+
 ## 70.2.1
 - [patch] Fixing the selection of table just after an image [20a90cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a90cb)
 
