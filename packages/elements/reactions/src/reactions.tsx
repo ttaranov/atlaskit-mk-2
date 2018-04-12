@@ -107,13 +107,16 @@ export default class Reactions extends Component<Props, State> {
     );
   };
 
-  private handleReactionPickerSelection = emojiId => {
-    const { reactions } = this.state;
-    if (
-      reactions.filter(
+  private hasAlreadyReacted(emojiId: any): boolean {
+    return (
+      this.state.reactions.find(
         reaction => reaction.emojiId === emojiId && reaction.reacted,
-      ).length === 0
-    ) {
+      ) !== undefined
+    );
+  }
+
+  private handleReactionPickerSelection = emojiId => {
+    if (this.hasAlreadyReacted(emojiId)) {
       this.onEmojiClick(emojiId);
     } else {
       this.flash(emojiId);
