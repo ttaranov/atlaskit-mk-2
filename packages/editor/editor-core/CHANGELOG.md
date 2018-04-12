@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.5
+- [patch] ED-4333 fix handleSave callback [9071629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9071629)
+
 ## 70.2.4
 - [patch] Fix MediaCard loading state inside editor [5262ad6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5262ad6)
 
