@@ -66,11 +66,6 @@ export interface FileUploadingEventPayload {
   readonly progress: SmartMediaProgress;
 }
 
-export interface FileFinalizeReadyEventPayload {
-  readonly file: MediaFile;
-  readonly finalize: FileFinalize;
-}
-
 export interface FileConvertingEventPayload {
   readonly file: PublicMediaFile;
 }
@@ -89,7 +84,6 @@ export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': FilesAddedEventPayload;
   readonly 'file-preview-update': FilePreviewUpdateEventPayload;
   readonly 'file-uploading': FileUploadingEventPayload;
-  readonly 'file-finalize-ready': FileFinalizeReadyEventPayload;
   readonly 'file-converting': FileConvertingEventPayload;
   readonly 'file-converted': FileConvertedEventPayload;
   readonly 'file-upload-error': FileUploadErrorEventPayload;
@@ -429,21 +423,9 @@ export class UploadService {
   };
 
   private onFileSuccess = (resumableFile: ResumableFile): void => {
-    const { autoFinalize } = this.getResumableFileUploadParams(resumableFile);
-
     this.emitLastUploadingPercentage(resumableFile);
 
-    if (autoFinalize) {
-      this.finalizeFile(resumableFile);
-      return;
-    }
-
-    this.emit('file-finalize-ready', {
-      file: this.mapResumableFileToMediaFile(resumableFile),
-      finalize: () => {
-        this.finalizeFile(resumableFile);
-      },
-    });
+    this.finalizeFile(resumableFile);
   };
 
   private onFileError = (
@@ -588,18 +570,12 @@ export class UploadService {
     publicId: string,
     resumableFile: ResumableFile,
   ): Promise<MediaFileData> {
-    const { collection, fetchMetadata } = this.getResumableFileUploadParams(
-      resumableFile,
-    );
+    const { collection } = this.getResumableFileUploadParams(resumableFile);
 
-    if (fetchMetadata) {
-      this.emit('file-converting', {
-        file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
-      });
-      return this.api.pollForFileMetadata(mediaClient, publicId, collection);
-    }
-
-    return Promise.resolve({ id: publicId });
+    this.emit('file-converting', {
+      file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
+    });
+    return this.api.pollForFileMetadata(mediaClient, publicId, collection);
   }
 
   // Error handling

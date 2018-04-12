@@ -43,28 +43,23 @@ describe('UploadService', () => {
     it('should apply defaultUploadParams', () => {
       const { uploadService } = setup();
 
-      uploadService.setUploadParams({ collection: '' });
+      uploadService.setUploadParams({});
 
       expect(uploadService.getUploadParams()).toEqual({
         collection: '',
-        fetchMetadata: true,
-        autoFinalize: true,
       });
     });
 
     it('should combine default uploadParams given new upload parameters', () => {
       const { uploadService } = setup();
-      const newUploadParams = {
+      const newUploadParams: UploadParams = {
         collection,
-        autoFinalize: false,
       };
 
       uploadService.setUploadParams(newUploadParams);
 
       expect(uploadService.getUploadParams()).toEqual({
         collection,
-        fetchMetadata: true,
-        autoFinalize: false,
       });
     });
   });
@@ -512,7 +507,7 @@ describe('UploadService', () => {
 
     it('should finalize file automatically if finalizeFile in uploadParams is true', () => {
       const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -524,7 +519,7 @@ describe('UploadService', () => {
 
     it('should emit a 100% upload percentage when the file has been uploaded', () => {
       const { resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -540,32 +535,6 @@ describe('UploadService', () => {
           }),
         }),
       );
-    });
-
-    it('should emit "file-finalize-ready" if finalizeFile in uploadParams is false', () => {
-      const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: false },
-      });
-
-      resumable.fire('fileSuccess', resumableFile as any, '');
-
-      expect(emitter.emit).toHaveBeenCalledTimes(2);
-      expect(emitter.emit).toHaveBeenCalledWith(
-        'file-finalize-ready',
-        expect.objectContaining({
-          file: expect.objectContaining({
-            name: resumableFile.file.name,
-          }),
-        }),
-      );
-      expect(uploadService['finalizeFile']).not.toHaveBeenCalled();
-
-      const { finalize } = (emitter.emit as jest.Mock<void>).mock.calls[1][1];
-
-      finalize();
-
-      expect(uploadService['finalizeFile']).toHaveBeenCalledTimes(1);
-      expect(uploadService['finalizeFile']).toHaveBeenCalledWith(resumableFile);
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {

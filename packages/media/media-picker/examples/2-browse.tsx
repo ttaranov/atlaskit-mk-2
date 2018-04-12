@@ -9,8 +9,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import Toggle from '@atlaskit/toggle';
-import { MediaPicker, Browser } from '../src';
+import { MediaPicker, Browser, UploadParams } from '../src';
 import {
   DropzonePreviewsWrapper,
   PopupHeader,
@@ -21,8 +20,6 @@ import { AuthEnvironment } from '../example-helpers';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
-  isAutoFinalizeActive: boolean;
-  isFetchMetadataActive: boolean;
   collectionName: string;
   finalizeCallbacks: any[];
   previewsData: any[];
@@ -34,8 +31,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   dropzoneContainer: HTMLDivElement;
 
   state: BrowserWrapperState = {
-    isAutoFinalizeActive: true,
-    isFetchMetadataActive: true,
     finalizeCallbacks: [],
     previewsData: [],
     authEnvironment: 'client',
@@ -51,10 +46,8 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       serviceHost: defaultServiceHost,
       authProvider: mediaPickerAuthProvider(this),
     });
-    const uploadParams = {
-      autoFinalize: true,
+    const uploadParams: UploadParams = {
       collection: defaultMediaPickerCollectionName,
-      authMethod: 'client',
     };
     const browseConfig = {
       multiple: true,
@@ -77,15 +70,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       console.log('upload progress:', data.progress.portion + '%');
     });
 
-    fileBrowser.on('upload-finalize-ready', data => {
-      console.log('upload finalize ready:', data);
-      const { finalizeCallbacks } = this.state;
-
-      this.setState({
-        finalizeCallbacks: [...finalizeCallbacks, data.finalize],
-      });
-    });
-
     fileBrowser.on('upload-end', data => {
       console.log('upload end:', data);
     });
@@ -95,58 +79,16 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     });
   }
 
-  onAutoFinalizeChange = () => {
-    const { collectionName: collection, isAutoFinalizeActive } = this.state;
-
-    this.setState({ isAutoFinalizeActive: !isAutoFinalizeActive }, () => {
-      const { isAutoFinalizeActive, isFetchMetadataActive } = this.state;
-      this.fileBrowser.setUploadParams({
-        collection,
-        autoFinalize: isAutoFinalizeActive,
-        fetchMetadata: isFetchMetadataActive,
-      });
-    });
-  };
-
-  onFetchMetadataChange = () => {
-    this.setState(
-      { isFetchMetadataActive: !this.state.isFetchMetadataActive },
-      () => {
-        const {
-          isAutoFinalizeActive,
-          collectionName: collection,
-          isFetchMetadataActive,
-        } = this.state;
-        this.fileBrowser.setUploadParams({
-          collection,
-          autoFinalize: isAutoFinalizeActive,
-          fetchMetadata: isFetchMetadataActive,
-        });
-      },
-    );
-  };
-
   onOpen = () => {
     this.fileBrowser.browse();
-  };
-
-  onFinalize = () => {
-    const { finalizeCallbacks } = this.state;
-
-    finalizeCallbacks.forEach(cb => cb());
-
-    this.setState({ finalizeCallbacks: [], isAutoFinalizeActive: false });
   };
 
   onCollectionChange = e => {
     const { innerText: collectionName } = e.target;
 
     this.setState({ collectionName }, () => {
-      const { isAutoFinalizeActive, isFetchMetadataActive } = this.state;
       this.fileBrowser.setUploadParams({
         collection: collectionName,
-        autoFinalize: isAutoFinalizeActive,
-        fetchMetadata: isFetchMetadataActive,
       });
     });
   };
@@ -164,26 +106,13 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   }
 
   render() {
-    const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
-      collectionName,
-      authEnvironment,
-      finalizeCallbacks,
-    } = this.state;
+    const { collectionName, authEnvironment } = this.state;
 
     return (
       <PopupContainer>
         <PopupHeader>
           <Button appearance="primary" onClick={this.onOpen}>
             Open
-          </Button>
-          <Button
-            appearance="primary"
-            onClick={this.onFinalize}
-            isDisabled={finalizeCallbacks.length === 0}
-          >
-            Finalize
           </Button>
           <DropdownMenu trigger={collectionName} triggerType="button">
             <DropdownItem onClick={this.onCollectionChange}>
@@ -197,16 +126,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
-          autoFinalize
-          <Toggle
-            isDefaultChecked={isAutoFinalizeActive}
-            onChange={this.onAutoFinalizeChange}
-          />
-          fetchMetadata
-          <Toggle
-            isDefaultChecked={isFetchMetadataActive}
-            onChange={this.onFetchMetadataChange}
-          />
         </PopupHeader>
         <DropzonePreviewsWrapper>
           <h1>Upload previews</h1>

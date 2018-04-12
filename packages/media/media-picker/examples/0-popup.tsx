@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
-import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import {
@@ -37,8 +36,6 @@ export type PublicFile = {
   preview?: string;
 };
 export interface PopupWrapperState {
-  isAutoFinalizeActive: boolean;
-  isFetchMetadataActive: boolean;
   collectionName: string;
   closedTimes: number;
   events: any[];
@@ -53,8 +50,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   popup: Popup;
 
   state: PopupWrapperState = {
-    isAutoFinalizeActive: true,
-    isFetchMetadataActive: true,
     collectionName: defaultMediaPickerCollectionName,
     closedTimes: 0,
     events: [],
@@ -163,30 +158,16 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onShow = () => {
-    const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
-      collectionName: collection,
-    } = this.state;
+    const { collectionName: collection } = this.state;
 
     this.popup.setUploadParams({
       collection,
-      autoFinalize: isAutoFinalizeActive,
-      fetchMetadata: isFetchMetadataActive,
     });
 
     // Populate cache in userAuthProvider.
     userAuthProvider();
     // Synchronously with next command tenantAuthProvider will be requested.
     this.popup.show().catch(console.error);
-  };
-
-  onAutoFinalizeChange = () => {
-    this.setState({ isAutoFinalizeActive: !this.state.isAutoFinalizeActive });
-  };
-
-  onFetchMetadataChange = () => {
-    this.setState({ isFetchMetadataActive: !this.state.isFetchMetadataActive });
   };
 
   onCollectionChange = e => {
@@ -351,8 +332,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   render() {
     const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
       closedTimes,
       events,
       authEnvironment,
@@ -408,16 +387,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               </DropdownItem>
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
-            autoFinalize
-            <Toggle
-              isDefaultChecked={isAutoFinalizeActive}
-              onChange={this.onAutoFinalizeChange}
-            />
-            fetchMetadata
-            <Toggle
-              isDefaultChecked={isFetchMetadataActive}
-              onChange={this.onFetchMetadataChange}
-            />
             Closed times: {closedTimes}
           </PopupHeader>
           {isUploadingFilesVisible ? (
