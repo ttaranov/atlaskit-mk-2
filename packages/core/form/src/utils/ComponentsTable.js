@@ -1,9 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { type FieldComponentsType } from '../data/fieldComponents';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
+/* eslint-disable import/no-extraneous-dependencies */
 import Tooltip from '@atlaskit/tooltip';
+import { type FieldComponentsType } from '../data/fieldComponents';
 
 type Props = {
   components: FieldComponentsType,

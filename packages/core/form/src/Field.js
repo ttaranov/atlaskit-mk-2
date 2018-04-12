@@ -4,7 +4,7 @@
 import React, { Component, type Node } from 'react';
 import { colors, fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
-import type { FormRef } from './Form';
+import { type FormRef } from './Form';
 import FieldWrapper, { HelperText } from './styled/Field';
 import { ValidatorMessage } from './';
 

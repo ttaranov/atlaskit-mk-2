@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
+import { Link } from 'react-router-dom';
 
 const Warning = p => (
   <div
@@ -28,17 +29,30 @@ ${(
   </Warning>
 )}
 
-  ### Migrating existing forms (WIP)
+  ### Migrating existing forms
 
   If you have forms already using Atlaskit form components then you can migrate them relelatively easily to
   use the Form package.
 
   ${(
-    <Example
-      Component={require('../examples/01-form-fields-example').default}
-      title="Fields"
-      source={require('!!raw-loader!../examples/01-form-fields-example')}
-    />
+    <ol>
+      <li>
+        <Link to="field-components">
+          Check your field component is supported
+        </Link>
+      </li>
+      <li>
+        <Link to="field-components">
+          Wrap your field component in &lt; Field &gt; using the sample code
+          here as a reference
+        </Link>
+      </li>
+      <li>
+        <Link to="validation">
+          Optional: Add validators to your fields and forms
+        </Link>
+      </li>
+    </ol>
   )}
 
 
