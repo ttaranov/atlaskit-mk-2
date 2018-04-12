@@ -2,13 +2,16 @@
 
 import type { ComponentType, Node } from 'react';
 
-export type LayoutManagerProps = {
+export type WrappedLayoutManagerProps = {
   children: Node,
-  defaultDrawerIcon: ComponentType<*>,
-  navigation: Object,
+  defaultDrawerIcon?: ComponentType<*>,
   globalNavigation: ComponentType<*>,
   productRootNavigation: ComponentType<{}>,
   productContainerNavigation: ComponentType<{}>,
+};
+
+export type LayoutManagerProps = WrappedLayoutManagerProps & {
+  navigation: Object,
 };
 
 export type DrawerGatewayProps = { innerRef: (?HTMLElement) => void };

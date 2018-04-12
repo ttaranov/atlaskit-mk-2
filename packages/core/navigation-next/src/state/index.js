@@ -11,8 +11,8 @@ export const NavigationSubscriber = ({ children }: SubscriberProps) => (
   <Subscribe to={[NavigationState]}>{children}</Subscribe>
 );
 
-export const withNavigationState = (WrappedComponent: any) => (props: any) => (
-  <Subscribe to={[NavigationState]}>
-    {navigation => <WrappedComponent {...props} navigation={navigation} />}
-  </Subscribe>
-);
+// export const withNavigationState = (WrappedComponent: any) => (props: any) => (
+//   <Subscribe to={[NavigationState]}>
+//     {navigation => <WrappedComponent {...props} navigation={navigation} />}
+//   </Subscribe>
+// );

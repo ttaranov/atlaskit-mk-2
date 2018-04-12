@@ -80,7 +80,7 @@ const productRootNavSections = [
     items: [
       {
         type: Item,
-        key: 'ashboards',
+        key: 'dashboards',
         text: 'Dashboards',
         before: DashboardIcon,
       },

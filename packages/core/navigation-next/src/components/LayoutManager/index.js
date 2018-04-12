@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 
-import { withNavigationState } from '../../state';
+import { NavigationSubscriber } from '../../state';
 import { light } from '../../theme';
 import ProductNav from '../ProductNav';
 import Transition from './Transition';
 import ResizeControl from './ResizeControl';
 import { LayoutContainer, NavContainer } from './primitives';
-import type { DrawerGatewayProps, LayoutManagerProps } from './types';
+import type {
+  DrawerGatewayProps,
+  LayoutManagerProps,
+  WrappedLayoutManagerProps,
+} from './types';
 
 import { GLOBAL_NAV_WIDTH } from '../GlobalNav';
 
@@ -32,14 +36,14 @@ class LayoutManager extends Component<LayoutManagerProps> {
     return (
       <ThemeProvider
         theme={theme => ({
-          mode: light, // If no theme exists default to light mode
+          mode: light, // If no theme already exists default to light mode
           ...theme,
           context: navigation.state.productNavIsCollapsed
             ? 'collapsed'
             : 'expanded',
         })}
       >
-        <GlobalNavigation navigation={navigation} />
+        <GlobalNavigation />
       </ThemeProvider>
     );
   }
@@ -106,4 +110,8 @@ class LayoutManager extends Component<LayoutManagerProps> {
   }
 }
 
-export default withNavigationState(LayoutManager);
+export default (props: WrappedLayoutManagerProps) => (
+  <NavigationSubscriber>
+    {navigation => <LayoutManager navigation={navigation} {...props} />}
+  </NavigationSubscriber>
+);
