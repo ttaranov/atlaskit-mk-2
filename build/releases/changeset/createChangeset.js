@@ -42,6 +42,7 @@ type changesetDependentType = {
 }
 type changesetType = {
   summary: string,
+  issueId: string,
   releases: Array<releaseType>,
   dependents: Array<changesetDependentType>,
   releaseNotes?: any,
@@ -79,6 +80,7 @@ async function createChangeset(
   const allPackages = await bolt.getWorkspaces({ cwd });
   const changeset /*: changesetType */ = {
     summary: '',
+    issueId: '',
     releases: [],
     dependents: [],
   };
@@ -111,6 +113,8 @@ async function createChangeset(
     changeset.releases.push({ name: pkg, type: bumpType });
   }
 
+  logger.log('Please enter related Jira issue');
+  const issueId = await cli.askQuestion('IssueId');
   /** Get summary for changeset */
 
   logger.log(
@@ -144,6 +148,7 @@ async function createChangeset(
   // }
 
   changeset.summary = summary;
+  changeset.issueId = issueId;
   // as the changeset is printed to console, the unneeded verified property needs
   // to be removed
   changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
