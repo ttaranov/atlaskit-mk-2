@@ -289,7 +289,7 @@ describe('layout', () => {
     it('should return the original slice if selection is not inside a layout', () => {
       const { editorView } = createEditor({
         doc: doc(p('{<>}')),
-        editorProps: { allowLayouts: true },
+        editorProps: { UNSAFE_allowLayouts: true },
       });
       const slice = new Slice(
         fragment(
@@ -313,7 +313,7 @@ describe('layout', () => {
             layoutColumn(p('World')),
           ),
         ),
-        editorProps: { allowLayouts: true },
+        editorProps: { UNSAFE_allowLayouts: true },
       });
       const slice = new Slice(
         fragment(
