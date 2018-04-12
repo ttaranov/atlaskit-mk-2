@@ -1,6 +1,9 @@
 // @flow
-import React, { PureComponent } from 'react';
-import styled from './styled';
+
+import { Theme } from '@atlaskit/theme';
+import React, { PureComponent, type ComponentType } from 'react';
+import themes from '../theme';
+import * as styled from './styled';
 
 export const APPEARANCE_ENUM = {
   values: [
@@ -14,21 +17,15 @@ export const APPEARANCE_ENUM = {
   defaultValue: 'default',
 };
 
-function validAppearance(value) {
-  return value && APPEARANCE_ENUM.values.includes(value)
-    ? value
-    : APPEARANCE_ENUM.defaultValue;
-}
-
 function getValue(value, max) {
+  if (value === Infinity) {
+    return '∞';
+  }
   if (value < 0) {
     return '0';
   }
   if (max > 0 && value > max) {
     return `${max}+`;
-  }
-  if (value === Infinity) {
-    return '\u221E'; // ∞ inifinity character
   }
   return String(value);
 }
@@ -48,6 +45,9 @@ type Props = {
   /** Handler function to be called when the value prop is changed.
    Called with fn({ oldValue, newValue }) */
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
+  styled: {
+    Container: ComponentType<*>,
+  },
   /** The value displayed within the badge. */
   value: number,
 };
@@ -56,6 +56,7 @@ export default class Badge extends PureComponent<Props> {
   static defaultProps = {
     appearance: 'default',
     max: 99,
+    styled: {},
     value: 0,
   };
 
@@ -70,7 +71,12 @@ export default class Badge extends PureComponent<Props> {
 
   render() {
     const { appearance, max, value } = this.props;
-    const StyledBadge = styled[appearance];
-    return <StyledBadge>{getValue(value, max)}</StyledBadge>;
+    const computedValue = getValue(value, max);
+    const { Container } = { ...styled, ...this.props.styled };
+    return (
+      <Theme themes={themes[appearance]}>
+        {theme => <Container {...theme}>{computedValue}</Container>}
+      </Theme>
+    );
   }
 }
