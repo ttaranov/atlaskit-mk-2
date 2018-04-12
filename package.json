@@ -303,7 +303,7 @@
     "lodash.pick": "^4.4.0",
     "lodash.sample": "^4.2.1",
     "lru-fast": "^0.2.2",
-    "markdown-it": "^8.4.0",
+    "markdown-it": "^6.0.4",
     "markdown-it-table": "^2.0.2",
     "memoize-one": "^3.0.1",
     "minimatch": "^3.0.4",
