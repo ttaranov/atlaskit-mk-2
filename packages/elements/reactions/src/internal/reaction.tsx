@@ -10,7 +10,7 @@ import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { isPromise } from './helpers';
 import Counter from './counter';
-import Flash from './flash';
+import FlashAnimation from './flash-animation';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
@@ -82,7 +82,7 @@ export interface State {
 export default class Reaction extends PureComponent<Props, State> {
   private timeouts: Array<number>;
   private tooltipTimeout: number;
-  private flashRef: Flash;
+  private flashRef: FlashAnimation;
 
   static defaultProps = {
     flash: false,
@@ -178,7 +178,7 @@ export default class Reaction extends PureComponent<Props, State> {
     }
   };
 
-  private handleFlashRef = (flash: Flash) => {
+  private handleFlashRef = (flash: FlashAnimation) => {
     this.flashRef = flash;
   };
 
@@ -210,7 +210,7 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOut={this.handleMouseOut}
       >
         {tooltip}
-        <Flash ref={this.handleFlashRef} className={flashStyle}>
+        <FlashAnimation ref={this.handleFlashRef} className={flashStyle}>
           <div className={emojiStyle}>
             <ResourcedEmoji
               emojiProvider={emojiProvider}
@@ -223,7 +223,7 @@ export default class Reaction extends PureComponent<Props, State> {
             value={reaction.count}
             highlight={reaction.reacted}
           />
-        </Flash>
+        </FlashAnimation>
       </button>
     );
   }

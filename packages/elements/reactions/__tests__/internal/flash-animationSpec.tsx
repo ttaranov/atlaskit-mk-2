@@ -2,21 +2,21 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { CSSTransition } from 'react-transition-group';
 
-import Flash from '../../src/internal/flash';
+import FlashAnimation from '../../src/internal/flash-animation';
 
 jest.useFakeTimers();
 
 describe('Flash', () => {
   const renderFlash = () => (
-    <Flash>
+    <FlashAnimation>
       <span>my background will flash</span>
-    </Flash>
+    </FlashAnimation>
   );
 
   it('should flash background', () => {
     const flash = mount(renderFlash());
 
-    (flash.instance() as Flash).flash();
+    (flash.instance() as FlashAnimation).flash();
 
     flash.update();
 
@@ -33,11 +33,11 @@ describe('Flash', () => {
   it('should restart animation when calling flash during an animation', () => {
     const flash = mount(renderFlash());
 
-    (flash.instance() as Flash).flash();
+    (flash.instance() as FlashAnimation).flash();
     expect(flash.state('flashing')).toBeTruthy();
 
     jest.runTimersToTime(350);
-    (flash.instance() as Flash).flash();
+    (flash.instance() as FlashAnimation).flash();
 
     expect(flash.state('flashing')).toBeTruthy();
     jest.runTimersToTime(700);

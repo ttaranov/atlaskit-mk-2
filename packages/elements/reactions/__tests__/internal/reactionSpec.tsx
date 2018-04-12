@@ -7,7 +7,7 @@ import { mount } from 'enzyme';
 
 import { hasSelector } from '../_test-utils';
 import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
-import Flash from '../../src/internal/flash';
+import FlashAnimation from '../../src/internal/flash-animation';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -65,7 +65,7 @@ describe('@atlaskit/reactions/reaction', () => {
   it('should delegate flash to Flash component', () => {
     const reaction = mount(renderReaction(true, 10, () => {}));
 
-    const flash = reaction.find(Flash).instance() as Flash;
+    const flash = reaction.find(FlashAnimation).instance() as FlashAnimation;
 
     const flashSpy = jest.spyOn(flash, 'flash');
 
@@ -77,7 +77,7 @@ describe('@atlaskit/reactions/reaction', () => {
   it('should call flash when change to reacted', () => {
     const reaction = mount(renderReaction(false, 10, () => {}));
 
-    const flash = reaction.find(Flash).instance() as Flash;
+    const flash = reaction.find(FlashAnimation).instance() as FlashAnimation;
     const flashSpy = jest.spyOn(flash, 'flash');
 
     reaction.setProps({
@@ -96,7 +96,7 @@ describe('@atlaskit/reactions/reaction', () => {
   it('should call flash on mount', () => {
     const reaction = mount(renderReaction(true, 10, () => {}, true));
 
-    const flash = reaction.find(Flash).instance() as Flash;
+    const flash = reaction.find(FlashAnimation).instance() as FlashAnimation;
     const flashSpy = jest.spyOn(flash, 'flash');
 
     (reaction.instance() as Reaction).componentDidMount();

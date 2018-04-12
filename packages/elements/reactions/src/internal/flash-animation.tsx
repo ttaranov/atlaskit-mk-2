@@ -39,7 +39,10 @@ const flashStyle = style({
   animation: `${flashAnimation} ${flashTime}ms ease-in-out`,
 });
 
-export default class Flash extends React.PureComponent<Props, State> {
+/**
+ * Flash animation background component. See Reaction component for usage.
+ */
+export default class FlashAnimation extends React.PureComponent<Props, State> {
   static defaultProps = {
     className: undefined,
     flash: false,
