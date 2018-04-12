@@ -5,7 +5,6 @@ export type MediaStateStatus =
   | 'unknown'
   | 'uploading'
   | 'processing'
-  | 'unfinalized'
   | 'ready'
   | 'error'
   | 'cancelled'
@@ -27,7 +26,6 @@ export interface MediaState {
       height: number;
     };
   };
-  finalizeCb?: () => void;
   error?: {
     name: string;
     description: string;

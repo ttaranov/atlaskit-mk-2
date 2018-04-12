@@ -23,7 +23,7 @@ export function request(
 ): Promise<Response> {
   const { method = 'GET', auth, params, headers, body } = options;
 
-  const processFetchResponse = response => {
+  const processFetchResponse = (response: Response) => {
     if (response.ok || response.redirected) {
       return response;
     } else {

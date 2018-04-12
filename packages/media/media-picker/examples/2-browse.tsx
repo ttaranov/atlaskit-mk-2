@@ -21,7 +21,6 @@ import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
   collectionName: string;
-  finalizeCallbacks: any[];
   previewsData: any[];
   authEnvironment: AuthEnvironment;
 }
@@ -31,7 +30,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   dropzoneContainer: HTMLDivElement;
 
   state: BrowserWrapperState = {
-    finalizeCallbacks: [],
     previewsData: [],
     authEnvironment: 'client',
     collectionName: defaultMediaPickerCollectionName,

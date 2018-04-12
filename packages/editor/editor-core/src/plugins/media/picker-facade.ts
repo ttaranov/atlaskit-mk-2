@@ -12,7 +12,6 @@ import {
   UploadPreviewUpdateEventPayload,
   UploadStatusUpdateEventPayload,
   UploadProcessingEventPayload,
-  UploadFinalizeReadyEventPayload,
   UploadErrorEventPayload,
   UploadEndEventPayload,
   MediaFile,
@@ -57,7 +56,6 @@ export default class PickerFacade {
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
     picker.on('upload-status-update', this.handleUploadStatusUpdate);
-    picker.on('upload-finalize-ready', this.handleUploadFinalizeReady);
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
@@ -86,7 +84,6 @@ export default class PickerFacade {
     picker.removeAllListeners('upload-preview-update');
     picker.removeAllListeners('upload-status-update');
     picker.removeAllListeners('upload-processing');
-    picker.removeAllListeners('upload-finalize-ready');
     picker.removeAllListeners('upload-error');
     picker.removeAllListeners('upload-end');
 
@@ -257,22 +254,6 @@ export default class PickerFacade {
     const { file } = event;
 
     const state = this.newState(file, 'processing', file.publicId);
-    this.stateManager.updateState(state.id, state);
-  };
-
-  private handleUploadFinalizeReady = (
-    event: UploadFinalizeReadyEventPayload,
-  ) => {
-    const { file, finalize } = event;
-
-    if (!finalize) {
-      throw new Error(
-        "Editor: Media: Picker emitted finalize-ready event but didn't provide finalize callback",
-      );
-    }
-
-    const state = this.newState(file, 'unfinalized');
-    state.finalizeCb = finalize;
     this.stateManager.updateState(state.id, state);
   };
 

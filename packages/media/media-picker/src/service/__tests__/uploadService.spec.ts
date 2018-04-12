@@ -430,7 +430,6 @@ describe('UploadService', () => {
         progress: jest.fn().mockReturnValue(config.progress),
       };
 
-      jest.spyOn(uploadService as any, 'finalizeFile');
       jest.spyOn(uploadService as any, 'copyFileToUsersCollection');
       jest.spyOn(emitter, 'emit');
       jest.spyOn(resumable, 'upload');
@@ -505,7 +504,7 @@ describe('UploadService', () => {
       );
     });
 
-    it('should finalize file automatically if finalizeFile in uploadParams is true', () => {
+    it('should finalize file automatically', () => {
       const { uploadService, resumable, resumableFile, emitter } = setup({
         uploadParams: { collection },
       });

@@ -3,7 +3,6 @@ import {
   FilePreviewUpdateEventPayload,
   FileConvertedEventPayload,
   FileConvertingEventPayload,
-  // FileFinalizeReadyEventPayload,
   FilesAddedEventPayload,
   FileUploadErrorEventPayload,
   FileUploadingEventPayload,

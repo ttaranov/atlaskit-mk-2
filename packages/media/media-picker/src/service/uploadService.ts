@@ -30,8 +30,6 @@ type ChunkId = string;
 
 const MAX_RETRY_COUNT = 1;
 
-export type FileFinalize = () => void;
-
 export interface UploadRequestParams {
   collection?: string;
 }
