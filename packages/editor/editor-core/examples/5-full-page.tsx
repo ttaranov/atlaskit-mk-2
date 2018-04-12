@@ -139,6 +139,7 @@ export default class Example extends React.Component<Props, State> {
             <Editor
               appearance="full-page"
               analyticsHandler={analyticsHandler}
+              UNSAFE_allowQuickInsert={true}
               allowTasksAndDecisions={true}
               allowCodeBlocks={true}
               allowLists={true}

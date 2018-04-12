@@ -10,6 +10,7 @@ import {
   taskItem,
   mediaGroup,
   media,
+  br,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import { changeToTaskDecision } from '../../../src/plugins/tasks-and-decisions/commands';
@@ -70,6 +71,14 @@ describe('tasks and decisions - commands', () => {
 
     it('can convert blockquote to action/decision', () => {
       const { editorView } = editor(doc(blockquote(p('Text'))));
+      const { state } = editorView;
+      const { tr } = state;
+      tr.setSelection(new NodeSelection(tr.doc.resolve(1)));
+      expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
+    });
+
+    it('can convert content with hardbreaks to action/decision', () => {
+      const { editorView } = editor(doc(p('hello', br(), 'world')));
       const { state } = editorView;
       const { tr } = state;
       tr.setSelection(new NodeSelection(tr.doc.resolve(1)));

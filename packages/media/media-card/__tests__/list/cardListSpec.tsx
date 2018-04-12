@@ -232,6 +232,7 @@ describe('CardList', () => {
 
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
     const newItemDetails: FileDetails = {
+      id: 'id',
       processingStatus: 'succeeded',
     };
 

@@ -9,21 +9,6 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
-"@atlaskit/app-switcher@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/app-switcher/-/app-switcher-3.3.0.tgz#1ecf68890dea7739a7f7e9d44f1a365e1efdf75b"
-  dependencies:
-    "@atlaskit/avatar" "^8.1.0"
-    "@atlaskit/button" "^5.4.8"
-    "@atlaskit/dropdown-menu" "^3.0.0"
-    "@atlaskit/icon" "^10.1.3"
-    "@atlaskit/logo" "^6.0.1"
-    "@atlaskit/lozenge" "^3.4.2"
-    "@atlaskit/util-shared-styles" "^2.10.4"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    prop-types "^15.5.10"
-
 "@atlaskit/avatar@^8.0.5":
   version "8.0.8"
   resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-8.0.8.tgz#5b7ca390c0275d34727b6dfc30d9e3b0b119010b"
@@ -33,25 +18,6 @@
     "@atlaskit/theme" "^2.0.0"
     "@atlaskit/util-shared-styles" "^2.1.0"
     babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
-"@atlaskit/avatar@^8.1.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-8.4.0.tgz#13c05d6b5d0d6ca56cc04a6fc8c7d6f7acb26944"
-  dependencies:
-    "@atlaskit/dropdown-menu" "^3.5.0"
-    "@atlaskit/item" "^4.2.3"
-    "@atlaskit/polyfills" "^1.4.0"
-    "@atlaskit/theme" "^2.3.0"
-    "@atlaskit/tooltip" "^8.1.0"
-    styled-components "^1.4.6"
-
-"@atlaskit/button-group@^1.5.3":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button-group/-/button-group-1.5.4.tgz#cb7883fcfb6697bf0bf828f5c15a51726649c5c8"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^2.0.1"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
@@ -65,7 +31,7 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/button@^5.4.13", "@atlaskit/button@^5.4.2", "@atlaskit/button@^5.4.8":
+"@atlaskit/button@^5.4.2":
   version "5.4.14"
   resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-5.4.14.tgz#600975141fd356ccbf712885a00f63a1367dd28d"
   dependencies:
@@ -73,30 +39,6 @@
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
     prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
-"@atlaskit/button@^6.3.0":
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-6.3.1.tgz#dd40c16eda7d1efddbbcb226e05696423987810d"
-  dependencies:
-    "@atlaskit/theme" "^2.3.1"
-    babel-runtime "^6.26.0"
-    styled-components "^1.4.6"
-
-"@atlaskit/dropdown-menu@^3.0.0":
-  version "3.11.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-3.11.4.tgz#519950eda6c902fa6c4e64c6a698cf4e0295f72a"
-  dependencies:
-    uid "0.0.2"
-    "@atlaskit/button" "^5.4.13"
-    "@atlaskit/droplist" "^4.11.0"
-    "@atlaskit/icon" "^10.1.3"
-    "@atlaskit/item" "^4.2.0"
-    "@atlaskit/util-shared-styles" "^2.10.3"
-    array-find "^1.0.0"
-    babel-runtime "^6.23.0"
-    prop-types "^15.5.10"
-    prop-types-extra "^1.0.1"
     styled-components "^1.4.6"
 
 "@atlaskit/dropdown-menu@^3.0.1":
@@ -114,21 +56,7 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/dropdown-menu@^3.5.0":
-  version "3.11.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-3.11.5.tgz#2b28f617bc49f257d16d3c96a2253b249178944a"
-  dependencies:
-    "@atlaskit/button" "^6.3.0"
-    "@atlaskit/droplist" "^4.11.3"
-    "@atlaskit/icon" "^10.7.0"
-    "@atlaskit/item" "^4.2.3"
-    "@atlaskit/theme" "^2.3.0"
-    array-find "^1.0.0"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-    uuid "^3.1.0"
-
-"@atlaskit/droplist@^4.11.0", "@atlaskit/droplist@^4.11.3":
+"@atlaskit/droplist@^4.11.0":
   version "4.11.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/droplist/-/droplist-4.11.4.tgz#ba9f342152dc647de511c66b806b8d8fa9f1411f"
   dependencies:
@@ -175,15 +103,6 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/icon@^10.7.0":
-  version "10.8.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.8.0.tgz#147153ec676695e0865427de9d3a32b6627bd418"
-  dependencies:
-    "@atlaskit/theme" "^2.3.1"
-    babel-runtime "^6.26.0"
-    styled-components "^1.4.6"
-    uuid "^3.1.0"
-
 "@atlaskit/icon@^7.0.1":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-7.1.0.tgz#7334150848735263de4a13bc98f4d44d4f2be8df"
@@ -211,39 +130,9 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
-"@atlaskit/item@^4.2.0":
-  version "4.2.7"
-  resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-4.2.7.tgz#7fd621d19e7be3754c8d1a85b0ed33e48ac3fa7a"
-  dependencies:
-    "@atlaskit/theme" "^2.3.1"
-    prop-types "^15.5.10"
-    react-addons-text-content "^0.0.4"
-    styled-components "^1.4.6"
-    uuid "^3.1.0"
-
-"@atlaskit/item@^4.2.3":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-4.2.3.tgz#3707d2cde48822d34fa7c7cb14dc1388c7bd86a9"
-  dependencies:
-    uid "0.0.2"
-    "@atlaskit/theme" "^2.1.0"
-    babel-runtime "^6.23.0"
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/layer-manager@^2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.5.0.tgz#08a6d2e86ba94c49b267ae10ab709c3d86b9dad9"
-  dependencies:
-    focusin "^2.0.0"
-    prop-types "^15.5.10"
-    react-transition-group "^2.2.1"
-    styled-components "^1.4.6"
-    tabbable "^1.1.0"
-
-"@atlaskit/layer-manager@^2.6.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-2.7.0.tgz#6d4ed60a68f800c06f3a766e26d4de6ab0b20698"
   dependencies:
     focusin "^2.0.0"
     prop-types "^15.5.10"
@@ -261,32 +150,11 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/logo@^6.0.1":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-6.1.0.tgz#4ea2849392033dc9f99e0d36d10a6e1eb58fd88b"
-  dependencies:
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-    uuid "^3.1.0"
-
-"@atlaskit/lozenge@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/lozenge/-/lozenge-3.4.2.tgz#1a30b34c41a38f78c772649e09ddaa4b802532ec"
-  dependencies:
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    prop-types "^15.5.10"
-    styled-components "^1.3.0"
-
 "@atlaskit/polyfills@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/polyfills/-/polyfills-1.1.0.tgz#ce64c358dfaadbce4ac4926f13e3ba3099b6e917"
   dependencies:
     babel-runtime "^6.11.6"
-
-"@atlaskit/polyfills@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/polyfills/-/polyfills-1.4.0.tgz#077c027e238557ab85c025640a2fb2a92728f768"
 
 "@atlaskit/profilecard@^3.7.1":
   version "3.9.0"
@@ -333,36 +201,12 @@
     prop-types "^15.5.10"
     styled-components "^1.3.0"
 
-"@atlaskit/theme@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.3.0.tgz#099525cf3f73ed83c4d39930fd5ed1d83efafd3a"
-  dependencies:
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
-"@atlaskit/theme@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.3.1.tgz#98aacf31412ed7fddf5d09ce96b9c11d737f8956"
-  dependencies:
-    prop-types "^15.5.10"
-    styled-components "^1.4.6"
-
 "@atlaskit/tooltip@^8.0.1":
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-8.0.4.tgz#d05943b07ffc34335cb16e1db504f45b4e4b22c1"
   dependencies:
     "@atlaskit/layer-manager" "^2.5.0"
     "@atlaskit/theme" "^2.0.0"
-    react-transition-group "^2.2.1"
-    styled-components "^1.4.6"
-
-"@atlaskit/tooltip@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-8.1.0.tgz#997d644a71a97a5c5fa35b31d8e09dd44dc9b001"
-  dependencies:
-    "@atlaskit/layer-manager" "^2.6.0"
-    "@atlaskit/theme" "^2.3.0"
-    react-deprecate "^0.1.0"
     react-transition-group "^2.2.1"
     styled-components "^1.4.6"
 
@@ -397,19 +241,6 @@
     tslib "^1.2.0"
     url "^0.11.0"
     url-search-params "^0.10.0"
-
-"@atlaskit/util-shared-styles@^1.0.0":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.7.1.tgz#0832cb6cc1797431c4ccf67d178aa4112df305e2"
-  dependencies:
-    babel-runtime "^6.11.6"
-
-"@atlaskit/util-shared-styles@^2.0.1", "@atlaskit/util-shared-styles@^2.10.4":
-  version "2.10.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.6.tgz#56aa25d59cef0324f653a6e857d512a70be47c65"
-  dependencies:
-    babel-runtime "^6.11.6"
-    styled-components "^1.4.6"
 
 "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.6.0":
   version "2.10.3"
@@ -755,6 +586,10 @@ ajv-keywords@^2.0.0, ajv-keywords@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.0.tgz#a296e17f7bfae7c1ce4f7e0de53d29cb32162df0"
 
+ajv-keywords@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.1.0.tgz#ac2b27939c543e95d2c06e7f7f5c27be4aa543be"
+
 ajv@^4.11.3, ajv@^4.7.0, ajv@^4.9.1:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.8.tgz#82ffb02b29e662ae53bdc20af15947706739c536"
@@ -770,6 +605,15 @@ ajv@^5.0.0, ajv@^5.1.0, ajv@^5.1.5, ajv@^5.2.0, ajv@^5.2.3:
     fast-deep-equal "^1.0.0"
     json-schema-traverse "^0.3.0"
     json-stable-stringify "^1.0.1"
+
+ajv@^6.1.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.4.0.tgz#d3aff78e9277549771daf0164cff48482b754fc6"
+  dependencies:
+    fast-deep-equal "^1.0.0"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.3.0"
+    uri-js "^3.0.2"
 
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
@@ -5237,6 +5081,10 @@ fast-json-patch@^2.0.5:
   dependencies:
     deep-equal "^1.0.1"
 
+fast-json-stable-stringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
+
 fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
@@ -7972,7 +7820,7 @@ loader-runner@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.3.0.tgz#f482aea82d543e07921700d5a46ef26fdac6b8a2"
 
-loader-utils@1.1.0, loader-utils@^1.0.2, loader-utils@^1.1.0:
+loader-utils@1.1.0, loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.1.0.tgz#c98aef488bcceda2ffb5e2de646d6a754429f5cd"
   dependencies:
@@ -8974,6 +8822,10 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
+node-ensure@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
+
 node-fetch-npm@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/node-fetch-npm/-/node-fetch-npm-2.0.2.tgz#7258c9046182dca345b4208eda918daf33697ff7"
@@ -9789,6 +9641,13 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+pdfjs-dist@^2.0.466:
+  version "2.0.466"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.0.466.tgz#c9b6c438c79ea15df3df0b4f347d0ecf8e0aca74"
+  dependencies:
+    node-ensure "^0.0.0"
+    worker-loader "^1.1.1"
+
 pend@~1.1.2:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.1.3.tgz#ca68dd39e6dd7f8d3f8801dcdbcb44846c431845"
@@ -10434,9 +10293,9 @@ property-information@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/property-information/-/property-information-3.2.0.tgz#fd1483c8fbac61808f5fe359e7693a1f48a58331"
 
-prosemirror-commands@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/prosemirror-commands/-/prosemirror-commands-1.0.5.tgz#224835d3cf31deaf72ac800c1d2b3d6fa2c81ff9"
+prosemirror-commands@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/prosemirror-commands/-/prosemirror-commands-1.0.7.tgz#e5a2ba821e29ea7065c88277fe2c3d7f6b0b9d37"
   dependencies:
     prosemirror-model "^1.0.0"
     prosemirror-state "^1.0.0"
@@ -10534,9 +10393,9 @@ prosemirror-transform@1.0.9, prosemirror-transform@^1.0.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.1.0.tgz#5dbc5746c05cf837cffe6a5960c61a2435324ef4"
+prosemirror-utils@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.2.4.tgz#b47f9dbaa720af4b860f556567f96c5ddd32cdd2"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.2.0:
   version "1.2.0"
@@ -10656,6 +10515,10 @@ punycode@1.3.2, punycode@^1.2.4:
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
+
+punycode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.0.tgz#5f863edc89b96db09074bad7947bf09056ca4e7d"
 
 puppeteer@^0.10.2:
   version "0.10.2"
@@ -10989,28 +10852,21 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scroll-captor@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-scroll-captor/-/react-scroll-captor-1.0.1.tgz#3f912df72ab8e7f46d4fa27d8707131ffe59b353"
-  dependencies:
-    react-node-resolver "^1.0.1"
-
 react-scrolllock@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-2.0.2.tgz#9752f4c1896d1967ade2fab985d5725d448a0600"
   dependencies:
     exenv "^1.2.2"
 
-react-select@2.0.0-alpha.8:
-  version "2.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.8.tgz#c6e4e18abc7871f78cd6d10d5a8ab1931660d4a6"
+react-select@^2.0.0-alpha.10:
+  version "2.0.0-alpha.10"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.10.tgz#91b384fd587441434602592763a682236a071412"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
     prop-types "^15.6.0"
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
-    react-scroll-captor "^1.0.1"
     react-transition-group "^2.2.1"
 
 react-syntax-highlighter@^5.5.0:
@@ -11883,6 +11739,13 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
+
+schema-utils@^0.4.0:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.5.tgz#21836f0608aac17b78f9e3e24daff14a5ca13a3e"
+  dependencies:
+    ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
 
 schema-utils@^0.4.2:
   version "0.4.3"
@@ -13707,6 +13570,12 @@ upper-case@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
 
+uri-js@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-3.0.2.tgz#f90b858507f81dea4dcfbb3c4c3dbfa2b557faaa"
+  dependencies:
+    punycode "^2.1.0"
+
 urijs@^1.18.4:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.0.tgz#d8aa284d0e7469703a6988ad045c4cbfdf08ada0"
@@ -14231,6 +14100,13 @@ worker-farm@^1.5.2:
   dependencies:
     errno "^0.1.4"
     xtend "^4.0.1"
+
+worker-loader@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-1.1.1.tgz#920d74ddac6816fc635392653ed8b4af1929fd92"
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

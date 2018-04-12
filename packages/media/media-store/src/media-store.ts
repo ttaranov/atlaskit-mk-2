@@ -5,6 +5,7 @@ import {
   MediaUpload,
   MediaChunksProbe,
 } from './models/media';
+import { AuthContext, MediaApiConfig } from './models/auth';
 import {
   AsapBasedAuth,
   AuthContext,

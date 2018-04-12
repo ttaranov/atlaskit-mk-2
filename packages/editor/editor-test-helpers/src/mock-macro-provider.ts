@@ -4,9 +4,9 @@ import {
   MacroAttributes,
   ExtensionType,
 } from '@atlaskit/editor-core';
-import { inlineExtensionData } from './mock-extension-data';
+import { bodiedExtensionData } from './mock-extension-data';
 
-const allExtensionData = [...inlineExtensionData];
+const allExtensionData = [...bodiedExtensionData];
 
 const getMacroADFNode = (macroName, macroParams): MacroAttributes => {
   return {
@@ -34,8 +34,7 @@ export class MockMacroProvider implements MacroProvider {
   public config = {};
 
   openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes> {
-    const index = Math.floor(Math.random() * allExtensionData.length);
-    return Promise.resolve(allExtensionData[index]);
+    return Promise.resolve(allExtensionData[0]);
   }
 
   autoConvert(link: String): MacroAttributes | null {

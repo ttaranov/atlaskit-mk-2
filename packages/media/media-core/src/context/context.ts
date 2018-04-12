@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
+import { ContextConfig, MediaApiConfig } from '@atlaskit/media-store';
+
 import {
   uploadFile,
   UploadableFile,

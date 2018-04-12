@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 9.1.0
+- [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
+
+## 9.0.1
+- [patch] Unskipping the backwards compat test [1bbf22e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bbf22e)
+
 ## 9.0.0
 
 ## 8.1.27

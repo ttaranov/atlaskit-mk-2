@@ -88,7 +88,7 @@ class UploaderExample extends Component<
     );
   }
 
-  onProgress = uploadingProgress => {
+  onProgress = (uploadingProgress: number) => {
     this.setState({
       uploadingProgress,
     });
@@ -109,12 +109,15 @@ class UploaderExample extends Component<
       .catch(this.onError);
   };
 
-  onError = error => {
+  onError = (error: any) => {
     this.setState({ error });
   };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { currentTarget: { files } } = e;
+    if (!files) {
+      return;
+    }
     const file = files[0];
 
     uploadFile(

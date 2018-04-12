@@ -46,6 +46,7 @@ export {
   mentionQuery,
   hardBreak,
   emojiQuery,
+  typeAheadQuery,
   media,
   mediaGroup,
   mediaSingle,
