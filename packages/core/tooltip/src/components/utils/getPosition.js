@@ -48,6 +48,18 @@ const FLIPPED_POSITION = {
   left: 'right',
 };
 
+// Get viewport height excluding scrollbars
+function getViewportHeight() {
+  const docEl = document.documentElement;
+  return (docEl && docEl.clientHeight) || window.innerHeight || 0;
+}
+
+// Get viewport width excluding scrollbars
+function getViewportWidth() {
+  const docEl = document.documentElement;
+  return (docEl && docEl.clientWidth) || window.innerWidth || 0;
+}
+
 // Returns a top or left position that shifts the original coord to within viewport
 function shiftCoord(coordName, coords, gutter) {
   const shiftedCoord = {};
@@ -55,23 +67,16 @@ function shiftCoord(coordName, coords, gutter) {
     shiftedCoord[coordName] = 0 + gutter;
   }
 
-  const docEl = document.documentElement;
   if (coordName === 'bottom') {
-    const viewportHeight =
-      window.innerHeight || (docEl && docEl.clientHeight) || 0;
-    const amountClipped = coords.bottom - viewportHeight;
-
+    const amountClipped = coords.bottom - getViewportHeight();
     const shiftedTop = coords.top - amountClipped - gutter;
 
-    shiftedCoord.top = shiftedTop >= 0 ? shiftedTop : coords.top;
+    shiftedCoord.top = shiftedTop >= 0 ? shiftedTop : 0 + gutter;
   } else if (coordName === 'right') {
-    const viewportWidth =
-      window.innerWidth || (docEl && docEl.clientWidth) || 0;
-    const amountClipped = coords.right - viewportWidth;
-
+    const amountClipped = coords.right - getViewportWidth();
     const shiftedLeft = coords.left - amountClipped - gutter;
 
-    shiftedCoord.left = shiftedLeft >= 0 ? shiftedLeft : coords.top;
+    shiftedCoord.left = shiftedLeft >= 0 ? shiftedLeft : 0 + gutter;
   }
 
   return shiftedCoord;
@@ -82,17 +87,11 @@ function getViewportBounds(
   { top, right, bottom, left }: Coords,
   gutter: number,
 ) {
-  const docEl = document.documentElement;
-
   return {
     top: top >= 0 + gutter,
     left: left >= 0 + gutter,
-    bottom:
-      bottom <=
-      (window.innerHeight || (docEl && docEl.clientHeight) || 0) - gutter,
-    right:
-      right <=
-      (window.innerWidth || (docEl && docEl.clientWidth) || 0) - gutter,
+    bottom: bottom <= getViewportHeight() - gutter,
+    right: right <= getViewportWidth() - gutter,
   };
 }
 
@@ -159,26 +158,26 @@ function getCoords({
   return {
     top: {
       top: targetRect.top - (tooltipRect.height + gutter),
-      right: 0,
-      bottom: 0,
+      right: targetRect.right - (targetRect.width - tooltipRect.width) / 2,
+      bottom: targetRect.top + (tooltipRect.height - gutter),
       left: targetRect.left + (targetRect.width - tooltipRect.width) / 2,
     },
     right: {
       top: targetRect.top + (targetRect.height - tooltipRect.height) / 2,
-      right: targetRect.right + gutter + tooltipRect.width, // used to calculate flip
-      bottom: 0,
+      right: targetRect.right + gutter + tooltipRect.width,
+      bottom: targetRect.bottom - (targetRect.height - tooltipRect.height) / 2,
       left: targetRect.right + gutter,
     },
     bottom: {
       top: targetRect.bottom + gutter,
-      right: 0,
-      bottom: targetRect.bottom + gutter + tooltipRect.height, // used to calculate flip
+      right: targetRect.right - (targetRect.width - tooltipRect.width) / 2,
+      bottom: targetRect.bottom + gutter + tooltipRect.height,
       left: targetRect.left + (targetRect.width - tooltipRect.width) / 2,
     },
     left: {
       top: targetRect.top + (targetRect.height - tooltipRect.height) / 2,
-      right: 0,
-      bottom: 0,
+      right: targetRect.left - gutter,
+      bottom: targetRect.bottom - (targetRect.height - tooltipRect.height) / 2,
       left: targetRect.left - (tooltipRect.width + gutter),
     },
   };
