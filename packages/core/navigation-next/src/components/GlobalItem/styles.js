@@ -1,0 +1,171 @@
+// @flow
+
+import { colors, gridSize } from '@atlaskit/theme';
+
+import type { ThemedGlobalComponentStyles } from '../../theme/types';
+import type { PresentationProps } from './types';
+
+/**
+ * We can't have semi-transparent background colors for items so I'm hard-coding
+ * an opaque hex value here, where the designs specify them as an RGBA.
+ */
+const lightExpandedActiveBackground = '#08367C'; // N80A
+const lightCollapsedActiveBackground = '#E2E4E9'; // N30A
+const darkActiveBackground = '#202B3D';
+const darkHoverBackground = '#253247';
+const settingsActiveBackground = '#374864'; // rgba(255, 255, 255, 0.08)
+const settingsHoverBackground = '#0B2043'; // N700A
+
+const baseStyles = ({ isFirst }) => ({
+  itemBase: {
+    alignItems: 'center',
+    border: 0,
+    borderRadius: '50%',
+    color: 'inherit',
+    cursor: 'pointer',
+    display: 'flex',
+    fontSize: 'inherit',
+    justifyContent: 'center',
+    lineHeight: 1,
+    marginBottom: isFirst ? `${gridSize() * 2}` : null,
+    outline: 'none',
+    padding: 0,
+    position: 'relative', // allow badge positioning
+
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${colors.B100}`,
+    },
+  },
+  badgeWrapper: {
+    pointerEvents: 'none',
+    position: 'absolute',
+    userSelect: 'none',
+  },
+});
+
+const sizeStyles = {
+  large: {
+    itemBase: {
+      height: `${gridSize() * 5}px`,
+      width: `${gridSize() * 5}px`,
+    },
+    badgeWrapper: {
+      left: `${gridSize() * 2}px`,
+      top: 0,
+    },
+  },
+  small: {
+    itemBase: {
+      height: `${gridSize() * 4}px`,
+      marginTop: `${gridSize()}px`,
+      width: `${gridSize() * 4}px`,
+    },
+    badgeWrapper: {
+      left: `${gridSize() * 2.5}px`,
+      top: `-${gridSize() / 2}px`,
+    },
+  },
+};
+
+const light = ({ isActive, isFirst, isHover, size }) => {
+  const base = baseStyles({ isFirst });
+  return {
+    collapsed: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return lightCollapsedActiveBackground;
+          if (isHover) return colors.B50;
+          return colors.N20;
+        })(),
+        color: colors.N800,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+    expanded: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return lightExpandedActiveBackground;
+          if (isHover) return colors.B200;
+          return colors.B500;
+        })(),
+        color: colors.N0,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+  };
+};
+
+const dark = ({ isActive, isFirst, isHover, size }) => {
+  const base = baseStyles({ isFirst });
+  return {
+    collapsed: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return darkActiveBackground;
+          if (isHover) return darkHoverBackground;
+          return colors.DN0;
+        })(),
+        color: colors.DN400,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+    expanded: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return darkActiveBackground;
+          if (isHover) return darkHoverBackground;
+          return colors.DN0;
+        })(),
+        color: colors.DN400,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+  };
+};
+
+const settings = ({ isActive, isFirst, isHover, size }) => {
+  const base = baseStyles({ isFirst });
+  return {
+    collapsed: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return settingsActiveBackground;
+          if (isHover) return settingsHoverBackground;
+          return colors.N800;
+        })(),
+        color: colors.N0,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+    expanded: {
+      itemBase: {
+        ...base.itemBase,
+        ...sizeStyles[size].itemBase,
+        backgroundColor: (() => {
+          if (isActive) return settingsActiveBackground;
+          if (isHover) return settingsHoverBackground;
+          return colors.N800;
+        })(),
+        color: colors.N0,
+      },
+      badgeWrapper: { ...base.badgeWrapper, ...sizeStyles[size].badgeWrapper },
+    },
+  };
+};
+
+const theme: ThemedGlobalComponentStyles<PresentationProps> = {
+  dark,
+  light,
+  settings,
+};
+export default theme;

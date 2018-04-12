@@ -1,0 +1,71 @@
+// @flow
+
+import { colors, gridSize } from '@atlaskit/theme';
+
+import type { ThemedGlobalComponentStyles } from '../../theme/types';
+
+export const GLOBAL_NAV_WIDTH = gridSize() * 8;
+
+const baseStyles = {
+  alignItems: 'center',
+  boxSizing: 'border-box',
+  display: 'flex',
+  flexDirection: 'column',
+  flexShrink: 0,
+  height: '100vh',
+  justifyContent: 'space-between',
+  paddingBottom: 16,
+  paddingTop: 16,
+  transition:
+    'background-color 0.3s cubic-bezier(0.2, 0, 0, 1), color 0.3s cubic-bezier(0.2, 0, 0, 1)',
+  width: GLOBAL_NAV_WIDTH,
+};
+
+const light = () => ({
+  expanded: {
+    ...baseStyles,
+    backgroundColor: colors.B500,
+    color: colors.N0,
+    fill: colors.B500,
+  },
+  collapsed: {
+    ...baseStyles,
+    backgroundColor: colors.N20,
+    color: colors.N800,
+    fill: colors.N20,
+  },
+});
+
+const dark = () => ({
+  expanded: {
+    ...baseStyles,
+    backgroundColor: colors.DN0,
+    color: colors.DN400,
+    fill: colors.DN0,
+  },
+  collapsed: {
+    ...baseStyles,
+    backgroundColor: colors.DN0,
+    color: colors.DN400,
+    fill: colors.DN0,
+  },
+});
+
+const settings = () => ({
+  expanded: {
+    ...baseStyles,
+    backgroundColor: colors.N800,
+    color: colors.N0,
+    fill: colors.N800,
+  },
+  collapsed: {
+    ...baseStyles,
+    backgroundColor: colors.N800,
+    color: colors.N0,
+    fill: colors.N800,
+  },
+});
+
+const themes: ThemedGlobalComponentStyles<void> = { dark, light, settings };
+
+export default themes;
