@@ -7,7 +7,7 @@ import { CSSTransition } from 'react-transition-group';
 const animationTime = 300;
 
 export const countStyle = style({
-  fontSize: '12 px',
+  fontSize: '12px',
   lineHeight: '24px',
   color: colors.N90,
   overflow: 'hidden',
