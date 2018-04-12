@@ -43,7 +43,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'task-decision: can paste plain text into a decision',
-  { skip: ['safari'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(clipboardHelper);
@@ -63,10 +63,11 @@ BrowserTestCase(
   },
 );
 
-// Safari adds special characters to the snapshot
+// Safari highlights entire text on clic
+// IE is generally flaky
 BrowserTestCase(
   'task-decision: can edit a decision',
-  { skip: ['ie'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
