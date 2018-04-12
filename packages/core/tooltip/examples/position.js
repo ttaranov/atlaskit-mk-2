@@ -23,13 +23,6 @@ const VIEWPORT_POSITIONS = [
   { top: `calc(50% - ${targetHeight / 2}px)`, left: 0 },
 ];
 
-type Props = { color: Color };
-type State = {
-  position: number,
-  positionType: 'standard' | 'mouse',
-  viewportPosition: number,
-};
-
 const ContainerDiv = styled.div`
   height: calc(100vh - 32px);
   width: calc(100vw - 32px);
@@ -53,6 +46,13 @@ const ButtonDiv = styled.p`
   text-align: center;
 `;
 
+type Props = { color: Color };
+type State = {
+  position: number,
+  positionType: 'standard' | 'mouse',
+  viewportPosition: number,
+};
+
 export default class PositionExample extends Component<Props, State> {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
@@ -67,7 +67,7 @@ export default class PositionExample extends Component<Props, State> {
     });
   };
 
-  changePositionType = () => {
+  togglePositionType = () => {
     this.setState({
       positionType:
         this.state.positionType === 'standard' ? 'mouse' : 'standard',
@@ -79,6 +79,16 @@ export default class PositionExample extends Component<Props, State> {
       viewportPosition:
         (this.state.viewportPosition + 1) % VIEWPORT_POSITIONS.length,
     });
+  };
+
+  toggleScrollbars = () => {
+    if (!document.body) {
+      throw new Error('Body not found');
+    }
+    document.body.style.height =
+      document.body.style.height === '1500px' ? '' : '1500px';
+    document.body.style.width =
+      document.body.style.width === '1500px' ? '' : '1500px';
   };
 
   render() {
@@ -100,13 +110,18 @@ export default class PositionExample extends Component<Props, State> {
             Click the tooltip target to change the position of the tooltip.
           </ButtonDiv>
           <ButtonDiv>
-            <Button onClick={this.changePositionType}>
+            <Button onClick={this.togglePositionType}>
               Toggle position mouse
             </Button>
           </ButtonDiv>
           <ButtonDiv>
             <Button onClick={this.changeViewportPosition}>
               Change viewport position
+            </Button>
+          </ButtonDiv>
+          <ButtonDiv>
+            <Button onClick={this.toggleScrollbars}>
+              Toggle window scrollbars
             </Button>
           </ButtonDiv>
         </CenterDiv>
