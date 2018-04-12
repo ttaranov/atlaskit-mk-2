@@ -27,6 +27,16 @@ pipelines:
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
+    lbatch/testing-deployments:
+      - step:
+          name: Releasing packages
+          deployment: production
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - echo "Do release here"
+          caches:
+            - node
 
   default:
     - parallel:
