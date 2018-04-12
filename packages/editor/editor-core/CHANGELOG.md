@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.4
+- [patch] Fix MediaCard loading state inside editor [5262ad6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5262ad6)
+
 ## 70.2.3
 
 - [patch] ED-4287: fix scroll to the bottom of the page when checking a task item [0905309](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0905309)
