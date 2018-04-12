@@ -10,11 +10,12 @@ pipelines:
   branches:
     master:
       - step:
+          name: Releasing Packages
+          # By making this a deployment we get concurrency control and release history for free
+          deployment: production
           script:
-            # Note: in master, this script will rebase you onto latest origin/master
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd build/ci-scripts && yarn stop-if-older-build)
             - yarn build
             - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
             # Disabled until we get rid of the race condition in Landkid
@@ -24,7 +25,6 @@ pipelines:
             # Disabled until we find the source of the flakeyness
             # - yarn test:browser:browserstack
             - yarn release
-            - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
 
