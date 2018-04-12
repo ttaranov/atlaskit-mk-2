@@ -101,7 +101,7 @@ export default class Reactions extends Component<Props, State> {
         ),
       }),
       // setting to true so new reactions will flash on mount
-      this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
+      !this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
     );
   };
 
@@ -114,7 +114,7 @@ export default class Reactions extends Component<Props, State> {
   }
 
   private handleReactionPickerSelection = emojiId => {
-    if (this.hasAlreadyReacted(emojiId)) {
+    if (!this.hasAlreadyReacted(emojiId)) {
       this.onEmojiClick(emojiId);
     } else {
       this.flash(emojiId);
