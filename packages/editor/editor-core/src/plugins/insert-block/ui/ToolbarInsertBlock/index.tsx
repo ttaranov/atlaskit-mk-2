@@ -53,7 +53,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
-  tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
@@ -284,7 +283,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private createItems = () => {
     const {
       tableHidden,
-      tableActive,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
@@ -361,7 +359,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         content: 'Table',
         value: { name: 'table' },
         isDisabled: tableHidden,
-        isActive: tableActive,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
