@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.2.1
+- [patch] ED-4334 fix column size calculation bug; don't emit default col/rowspan attrs [eb8f140](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb8f140)
+
 ## 9.2.0
 
 - [minor] Add initial Page Layouts supports for Confluence. Doesn't currently support different layout types / enforcing column constraints in the editor. [ec8f6d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8f6d8)
