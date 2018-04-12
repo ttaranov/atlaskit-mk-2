@@ -147,7 +147,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('macroProvider', macroProvider);
   }
 
-  handleSave(view: EditorView): void {
+  handleSave = (view: EditorView): void => {
     if (!this.props.onSave) {
       return;
     }
@@ -164,7 +164,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
 
     return this.props.onSave(view);
-  }
+  };
 
   render() {
     const Component = getUiComponent(this.props.appearance);
