@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.6
+- [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
+
 ## 70.2.5
 - [patch] ED-4333 fix handleSave callback [9071629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9071629)
 
