@@ -149,4 +149,10 @@ describe('getButtonGroupProps > ', () => {
     );
     expect(cmp.find(Button).prop('appearance')).toBe('primary');
   });
+  it('should not default to another value if changed', () => {
+    const cmp = mount(
+      <ButtonGroup>{<Button appearance="warning" />}</ButtonGroup>,
+    );
+    expect(cmp.find(Button).prop('appearance')).toBe('warning');
+  });
 });
