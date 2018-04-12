@@ -19,7 +19,7 @@ export const PrimaryItemsList = (props: *) => (
   />
 );
 
-export const FirstItemWrapper = (props: *) => (
+export const FirstPrimaryItemWrapper = (props: *) => (
   <div css={{ paddingBottom: `${gridSize() * 2}px` }} {...props} />
 );
 

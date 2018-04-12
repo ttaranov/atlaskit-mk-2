@@ -10,7 +10,7 @@ import React from 'react';
 import GlobalItem from '../GlobalItem';
 import { light, withTheme } from '../../theme';
 import {
-  FirstItemWrapper,
+  FirstPrimaryItemWrapper,
   PrimaryItemsList,
   SecondaryItemsList,
 } from './primitives';
@@ -34,14 +34,14 @@ const GlobalNav = ({
           if (!index) {
             const { icon: Icon, ...rest } = props;
             return (
-              <FirstItemWrapper>
+              <FirstPrimaryItemWrapper>
                 <GlobalItem
                   {...rest}
                   icon={provided => <Icon {...provided} size="large" />}
                   key={props.key || props.label}
                   size="large"
                 />
-              </FirstItemWrapper>
+              </FirstPrimaryItemWrapper>
             );
           }
           return (
