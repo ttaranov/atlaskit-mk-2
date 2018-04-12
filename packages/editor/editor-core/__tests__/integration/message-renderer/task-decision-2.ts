@@ -19,7 +19,7 @@ import {
 
 // Cannot paste rich text in IE/Edge
 BrowserTestCase(
-  'task-decision: can paste rich text into a action',
+  'task-decision: can paste rich text into an action',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = await new Page(client);
@@ -42,7 +42,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'task-decision: can paste plain text into a action',
+  'task-decision: can paste plain text into an action',
   { skip: ['safari'] },
   async client => {
     const browser = await new Page(client);
@@ -66,15 +66,14 @@ BrowserTestCase(
 // Safari adds special characters to the snapshot
 BrowserTestCase(
   'task-decision: can edit an action',
-  { skip: ['safari'] },
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadActionButton);
     await browser.waitForSelector('ol');
-
-    await browser.type(editable, 'Enter');
-    await browser.type(editable, 'We have edited ');
+    await browser.click('ol');
+    await browser.type(editable, ' has been edited');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },

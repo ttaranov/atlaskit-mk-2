@@ -66,15 +66,14 @@ BrowserTestCase(
 // Safari adds special characters to the snapshot
 BrowserTestCase(
   'task-decision: can edit a decision',
-  { skip: ['safari'] },
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadDecisionButton);
     await browser.waitForSelector('ol');
-
-    await browser.type(editable, 'Enter');
-    await browser.type(editable, 'We have edited ');
+    await browser.click('ol');
+    await browser.type(editable, ' has been edited');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },

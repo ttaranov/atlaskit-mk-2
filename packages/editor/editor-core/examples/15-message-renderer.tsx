@@ -26,7 +26,7 @@ const exampleAction = {
           content: [
             {
               type: 'text',
-              text: 'a preloaded action ',
+              text: 'a preloaded action',
             },
           ],
         },

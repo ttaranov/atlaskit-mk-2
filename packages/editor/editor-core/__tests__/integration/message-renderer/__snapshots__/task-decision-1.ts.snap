@@ -13,16 +13,9 @@ Object {
             "localId": "abc-123",
             "state": "DECIDED",
           },
-          "type": "decisionItem",
-        },
-        Object {
-          "attrs": Object {
-            "localId": "abc-123",
-            "state": "DECIDED",
-          },
           "content": Array [
             Object {
-              "text": "We have edited a preloaded decision",
+              "text": "a preloaded decision has been edited",
               "type": "text",
             },
           ],
