@@ -3,19 +3,10 @@
 import React, { Component } from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import type { PresentationProps } from '../Item/types';
 import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { StyleReducer, Theme } from '../../theme/types';
+import type { ItemAvatarProps } from './types';
 
-type Props = {
-  itemState: PresentationProps,
-  /** Note: This function will be provided with the styles for an Item, because
-   * ItemAvatar inherits its border color from Item's background color.  */
-  styles: StyleReducer<PresentationProps>,
-  theme: Theme,
-};
-
-class ItemAvatar extends Component<Props> {
+class ItemAvatar extends Component<ItemAvatarProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     theme: { mode: light, context: 'container' },

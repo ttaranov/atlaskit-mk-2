@@ -4,7 +4,7 @@ import { brightness } from 'chromatism';
 import { colors } from '@atlaskit/theme';
 
 import { light } from './modes';
-import type { PresentationProps } from '../components/Item/types';
+import type { ItemPresentationProps } from '../components/Item/types';
 import type { Mode } from './types';
 
 type Args = {
@@ -50,7 +50,12 @@ export default ({ background, text }: Args): Mode => {
         },
       };
     },
-    item: ({ isActive, isHover, isSelected, spacing }: PresentationProps) => {
+    item: ({
+      isActive,
+      isHover,
+      isSelected,
+      spacing,
+    }: ItemPresentationProps) => {
       const { root } = light.item({
         isActive,
         isHover,

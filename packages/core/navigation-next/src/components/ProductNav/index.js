@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, { Component } from 'react';
 
 import {
   ContainerNav,
@@ -9,14 +9,7 @@ import {
   Wrapper,
   RootNav,
 } from './primitives';
-
-type ProductNavProps = {
-  container: ComponentType<{}>,
-  isPeeking: boolean,
-  isResizing: boolean,
-  onOverlayClick?: Event => void,
-  root: ComponentType<{}>,
-};
+import type { ProductNavProps } from './types';
 
 export default class ProductNav extends Component<ProductNavProps> {
   render() {

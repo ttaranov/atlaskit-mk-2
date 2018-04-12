@@ -1,31 +1,18 @@
 // @flow
 
-import React, { Component, Fragment, type Node } from 'react';
+import React, { Component, Fragment } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
 
 import { animationDurationMs } from '../../common';
 import { getSectionWrapperStyles } from './styles';
+import type { SectionProps, SectionState } from './types';
 
-export type RenderProvided = {
-  css: {},
-};
-
-type Props = {
-  id?: string,
-  parentId?: string,
-  children: RenderProvided => Node,
-};
-
-type State = {
-  traversalDirection: 'down' | 'up' | null,
-};
-
-export default class Section extends Component<Props, State> {
+export default class Section extends Component<SectionProps, SectionState> {
   state = {
     traversalDirection: null,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: SectionProps) {
     if (nextProps.parentId && nextProps.parentId === this.props.id) {
       this.setState({ traversalDirection: 'down' });
     }

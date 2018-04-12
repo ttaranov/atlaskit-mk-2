@@ -4,11 +4,10 @@ import React, { Component } from 'react';
 import { gridSize } from '@atlaskit/theme';
 
 import Item from '../Item';
-import type { ItemProps } from '../Item/types';
 import { styleReducerNoOp } from '../../theme';
-import type { StyleReducer } from '../../theme/types';
+import type { ContainerHeaderProps } from './types';
 
-const modifyStyles: StyleReducer<*> = defaultStyles => ({
+const modifyStyles = defaultStyles => ({
   ...defaultStyles,
   itemBase: {
     ...defaultStyles.itemBase,
@@ -26,14 +25,7 @@ const modifyStyles: StyleReducer<*> = defaultStyles => ({
   },
 });
 
-// ContainerHeader passes most of its props through to an underlying Item. There
-// are a couple of props which it doesn't use.
-type ExcludedProps = {
-  spacing: *, // ContainerHeader doesn't have spacing options
-};
-type Props = $Diff<ItemProps, ExcludedProps>;
-
-export default class ContainerHeader extends Component<Props> {
+export default class ContainerHeader extends Component<ContainerHeaderProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,

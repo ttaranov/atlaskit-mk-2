@@ -9,8 +9,9 @@ import React, { Component } from 'react';
 import { gridSize } from '@atlaskit/theme';
 
 import GlobalItem from '../GlobalItem';
-import type { GlobalNavProps } from './types';
 import { light, withTheme } from '../../theme';
+import { FirstItemWrapper } from './primitives';
+import type { GlobalNavProps } from './types';
 
 export { GLOBAL_NAV_WIDTH } from './styles';
 
@@ -55,14 +56,29 @@ class GlobalNav extends Component<GlobalNavProps> {
     return (
       <div css={wrapperStyles}>
         <PrimaryItemsList>
-          {primaryActions.map((props, index) => (
-            <GlobalItem
-              {...props}
-              isFirst={!index}
-              key={props.key || props.label}
-              size="large"
-            />
-          ))}
+          {primaryActions.map((props, index) => {
+            // Render the first item with a margin beneath it and a large icon
+            if (!index) {
+              const Icon = props.icon;
+              return (
+                <FirstItemWrapper>
+                  <GlobalItem
+                    {...props}
+                    icon={provided => <Icon {...provided} size="large" />}
+                    key={props.key || props.label}
+                    size="large"
+                  />
+                </FirstItemWrapper>
+              );
+            }
+            return (
+              <GlobalItem
+                {...props}
+                key={props.key || props.label}
+                size="large"
+              />
+            );
+          })}
         </PrimaryItemsList>
 
         <SecondaryItemsList>

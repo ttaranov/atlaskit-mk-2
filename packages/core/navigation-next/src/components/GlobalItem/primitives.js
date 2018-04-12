@@ -41,7 +41,6 @@ const getItemBase = (
 class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
     isActive: false,
-    isFirst: false,
     isHover: false,
     size: 'large',
     styles: styleReducerNoOp,
@@ -69,7 +68,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       badge: Badge,
       icon: Icon,
       isActive,
-      isFirst,
       isHover,
       label,
       size,
@@ -79,7 +77,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     } = this.props;
 
     const { mode, context } = theme;
-    const presentationProps = { isActive, isFirst, isHover, size };
+    const presentationProps = { isActive, isHover, size };
     const defaultStyles = mode.globalItem(presentationProps)[context];
     const styles = styleReducer(defaultStyles, presentationProps);
 
@@ -88,11 +86,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
         {/* pointer-events: none on the icon wrapper to avoid issues with SVGs swallowing clicks */}
         {!!Icon && (
           <div css={{ pointerEvents: 'none' }}>
-            <Icon
-              label={label || tooltip}
-              secondaryColor="inherit"
-              size={isFirst ? 'large' : null}
-            />
+            <Icon label={label || tooltip} secondaryColor="inherit" />
           </div>
         )}
         {!!Badge && (

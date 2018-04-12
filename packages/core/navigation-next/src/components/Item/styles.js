@@ -3,7 +3,7 @@
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import type { ThemedProductComponentStyles } from '../../theme/types';
-import type { PresentationProps } from './types';
+import type { ItemPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -122,7 +122,7 @@ const light = ({
   isHover,
   isSelected,
   spacing,
-}: PresentationProps) => ({
+}: ItemPresentationProps) => ({
   container: {
     itemBase: {
       ...baseStyles.itemBase,
@@ -190,7 +190,7 @@ const dark = ({
   isHover,
   isSelected,
   spacing,
-}: PresentationProps) => ({
+}: ItemPresentationProps) => ({
   container: {
     itemBase: {
       ...baseStyles.itemBase,
@@ -267,7 +267,7 @@ const settings = ({
   isHover,
   isSelected,
   spacing,
-}: PresentationProps) => ({
+}: ItemPresentationProps) => ({
   container: {
     itemBase: {
       ...baseStyles.itemBase,
@@ -328,7 +328,7 @@ const settings = ({
   },
 });
 
-const themes: ThemedProductComponentStyles<PresentationProps> = {
+const themes: ThemedProductComponentStyles<ItemPresentationProps> = {
   dark,
   light,
   settings,

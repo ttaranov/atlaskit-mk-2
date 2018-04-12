@@ -1,7 +1,7 @@
 // @flow
 
-import type { PresentationProps as GlobalItemPresentationProps } from '../components/GlobalItem/types';
-import type { PresentationProps as ItemPresentationProps } from '../components/Item/types';
+import type { GlobalItemPresentationProps } from '../components/GlobalItem/types';
+import type { ItemPresentationProps } from '../components/Item/types';
 
 /**
  * Types

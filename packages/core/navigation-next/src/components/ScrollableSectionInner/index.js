@@ -1,17 +1,11 @@
 // @flow
 
-import React, { type Node, Component } from 'react';
+import React, { Component } from 'react';
 
 import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { Theme, StyleReducer } from '../../theme/types';
+import type { ScrollableSectionInnerProps } from './types';
 
-type Props = {
-  children: Node,
-  theme: Theme,
-  styles: StyleReducer<void>,
-};
-
-class ScrollableSectionInner extends Component<Props> {
+class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     theme: { mode: light, context: 'container' },

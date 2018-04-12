@@ -1,17 +1,11 @@
 // @flow
 
-import React, { Component, type ComponentType, type Node } from 'react';
+import React, { Component } from 'react';
 
-import type { Theme } from '../../theme/types';
 import { light, withTheme } from '../../theme';
+import type { SectionTitleProps } from './types';
 
-type Props = {
-  after?: ComponentType<*>,
-  children: Node,
-  theme: Theme,
-};
-
-class SectionTitle extends Component<Props> {
+class SectionTitle extends Component<SectionTitleProps> {
   static defaultProps = {
     theme: { mode: light, context: 'container' },
   };

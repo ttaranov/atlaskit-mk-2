@@ -3,11 +3,11 @@
 import type { ComponentType, Node } from 'react';
 
 import type { StyleReducer, Theme } from '../../theme/types';
-import type { InteractionState } from '../InteractionStateManager';
+import type { InteractionState } from '../InteractionStateManager/types';
 
 type Spacing = 'compact' | 'default';
 
-export type PresentationProps = {
+export type ItemPresentationProps = {
   isActive: boolean,
   isHover: boolean,
   isSelected: boolean,
@@ -20,14 +20,14 @@ export type ItemRenderComponentProps = {
 };
 
 export type ItemProps = {
-  after?: ComponentType<PresentationProps>,
-  before?: ComponentType<PresentationProps>,
+  after?: ComponentType<ItemPresentationProps>,
+  before?: ComponentType<ItemPresentationProps>,
   component?: ComponentType<ItemRenderComponentProps>,
   href?: string,
   isSelected: boolean,
   onClick?: (SyntheticEvent<MouseEvent>) => void,
   spacing: Spacing,
-  styles: StyleReducer<PresentationProps>,
+  styles: StyleReducer<ItemPresentationProps>,
   subText?: string,
   /** Note: target will only be used if href is also set */
   target?: string,

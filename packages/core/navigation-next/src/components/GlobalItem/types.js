@@ -3,13 +3,12 @@
 import type { ComponentType, Node } from 'react';
 
 import type { StyleReducer, Theme } from '../../theme/types';
-import type { InteractionState } from '../InteractionStateManager';
+import type { InteractionState } from '../InteractionStateManager/types';
 
 type Size = 'large' | 'small';
 
-export type PresentationProps = {
+export type GlobalItemPresentationProps = {
   isActive: boolean,
-  isFirst: boolean,
   isHover: boolean,
   size: Size,
 };
@@ -26,15 +25,14 @@ type GlobalItemIconProps = {
 };
 
 export type GlobalItemProps = {
-  badge?: ComponentType<PresentationProps>,
+  badge?: ComponentType<GlobalItemPresentationProps>,
   component?: ComponentType<GlobalItemRenderComponentProps>,
   href?: string,
   icon: ComponentType<GlobalItemIconProps>,
-  isFirst?: boolean,
   label: string,
   onClick?: (SyntheticEvent<MouseEvent>) => void,
   size: Size,
-  styles?: StyleReducer<PresentationProps>,
+  styles?: StyleReducer<GlobalItemPresentationProps>,
   /** Note: target will only be used if href is also set */
   target?: string,
   tooltip?: Node,

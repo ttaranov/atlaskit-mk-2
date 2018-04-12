@@ -39,7 +39,6 @@ const globalNavPrimaryItems = [
       </NavigationSubscriber>
     ),
     icon: JiraIcon,
-    isFirst: true,
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon },
@@ -128,7 +127,7 @@ const GlobalNavigation = () => (
   />
 );
 
-const renderSection = section => () => (
+const RenderSection = ({ section }: *) => (
   <div css={{ paddingTop: '16px' }}>
     {section.map(({ key, items }) => (
       <Section key={key}>
@@ -143,8 +142,10 @@ const renderSection = section => () => (
     ))}
   </div>
 );
-const ProductRoot = renderSection(productRootNavSections);
-const ProductContainer = renderSection(productContainerNavSections);
+const ProductRoot = () => <RenderSection section={productRootNavSections} />;
+const ProductContainer = () => (
+  <RenderSection section={productContainerNavSections} />
+);
 
 export default () => (
   <NavigationProvider>

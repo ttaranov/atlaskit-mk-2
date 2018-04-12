@@ -3,13 +3,9 @@
 import React, { Component } from 'react';
 
 import { light, withTheme } from '../../theme';
-import type { Theme } from '../../theme/types';
+import type { SectionSeparatorProps } from './types';
 
-type Props = {
-  theme: Theme,
-};
-
-class SectionSeparator extends Component<Props> {
+class SectionSeparator extends Component<SectionSeparatorProps> {
   static defaultProps = {
     theme: { mode: light, context: 'container' },
   };

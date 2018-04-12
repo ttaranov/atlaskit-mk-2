@@ -1,18 +1,11 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { Component } from 'react';
 
-export type InteractionState = {
-  isActive: boolean,
-  isHover: boolean,
-};
-
-type Props = {
-  children: InteractionState => Node,
-};
+import type { InteractionState, InteractionStateProps } from './types';
 
 export default class InteractionStateManager extends Component<
-  Props,
+  InteractionStateProps,
   InteractionState,
 > {
   state = {
