@@ -131,7 +131,7 @@ class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
         onSearchSubmit={() => console.log('onSearchSubmit', this.state.query)}
         value={this.state.query}
       >
-        {mapResultsDataToComponents(this.state.results)}
+        <div>{mapResultsDataToComponents(this.state.results)}</div>
       </QuickSearch>
     );
   }

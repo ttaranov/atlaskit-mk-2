@@ -24,29 +24,38 @@ type CommonResultProps = {
   isSelected: boolean,
   /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
   onClick: (resultData: ResultData) => mixed,
-  /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-  onMouseEnter: (resultData: ResultData) => mixed,
-  /** Standard onMouseLeave event. */
-  onMouseLeave: () => void,
   /** Unique ID of the result. This is passed as a parameter to certain callbacks */
   resultId: string | number,
   /** Type of the result. This is passed as a parameter to certain callbacks. */
   type: string,
 };
 
+export type Context = {
+  /** Signals whether the Result needs to register itself again. */
+  isDirty: boolean,
+  /** Register itself as keyboard navigation target */
+  registerResult: (result: any) => void,
+  /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
+  onMouseEnter: (resultData: ResultData) => void,
+  /** Standard onMouseLeave event. */
+  onMouseLeave: () => void,
+  /** Fires an analytics event */
+  sendAnalytics: (string, AnalyticsData) => mixed,
+  /** get the index of the search result in the list of */
+  getIndex: (string | number) => number | null,
+};
+
 export type ResultType = CommonResultProps & {
-  /** Data to be sent with analytics events */
-  analyticsData?: AnalyticsData,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** React element to appear to the left of the text. */
   icon?: Node,
-  /** Fires an analytics event */
-  sendAnalytics: (string, AnalyticsData) => mixed,
   /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. */
   text: Element<any> | string,
+  /** The context provided by QuickSearch. */
+  context: Context,
 };
 
 export type ContainerResultType = CommonResultProps & {
