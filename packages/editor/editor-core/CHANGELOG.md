@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.2
+- [patch] Fix Markdown-it dependency to be the same version that prosemirror-markdown uses internally to prevent unnecessary bundle size increase [9abf097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9abf097)
+
 ## 70.2.1
 - [patch] Fixing the selection of table just after an image [20a90cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a90cb)
 
