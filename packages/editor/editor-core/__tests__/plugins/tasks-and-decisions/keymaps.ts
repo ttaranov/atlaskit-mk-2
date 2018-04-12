@@ -235,6 +235,28 @@ describe('tasks and decisions - keymaps', () => {
         });
       });
     });
+
+    describe('Down Arrow', () => {
+      it('should navigate out of decision', () => {
+        const { editorView } = editor(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('Hello world{<>}'),
+            ),
+          ),
+        );
+
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('Hello world'),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
   });
 
   describe('tasks', () => {
@@ -441,6 +463,28 @@ describe('tasks and decisions - keymaps', () => {
             ),
           );
         });
+      });
+    });
+
+    describe('Down Arrow', () => {
+      it('should navigate out of task', () => {
+        const { editorView } = editor(
+          doc(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('Hello world{<>}'),
+            ),
+          ),
+        );
+
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('Hello world'),
+            ),
+            p(),
+          ),
+        );
       });
     });
   });
