@@ -52,6 +52,7 @@ export interface State {
 export default class Reactions extends Component<Props, State> {
   private timeouts: Array<number>;
   private reactionRefs: { [emojiId: string]: Reaction };
+  // flag to avoid flashing the background of the first set of rections
   private flashOnMount: boolean = false;
 
   constructor(props) {
@@ -99,11 +100,8 @@ export default class Reactions extends Component<Props, State> {
           this.getReactionsSortFunction(reactions),
         ),
       }),
-      () => {
-        if (!this.flashOnMount) {
-          this.flashOnMount = true;
-        }
-      },
+      // setting to true so new reactions will flash on mount
+      this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
     );
   };
 
