@@ -63,7 +63,7 @@
     "css-color-names": "0.0.4",
     "date-fns": "^1.29.0",
     "linkify-it": "^2.0.3",
-    "markdown-it": "^8.4.0",
+    "markdown-it": "^6.0.4",
     "orderedmap": "^1.0.0",
     "prop-types": "^15.5.10",
     "prosemirror-commands": "^1.0.7",
