@@ -38,57 +38,6 @@ const SecondaryItemsList = props => (
   />
 );
 
-// class GlobalNav extends Component<GlobalNavProps> {
-//   render() {
-//     const {
-//       children, // drawers
-//       primaryActions,
-//       secondaryActions,
-//       theme,
-//     } = this.props;
-
-//     const wrapperStyles = theme.mode.globalNav()[theme.context];
-
-//     return (
-//       <div css={wrapperStyles}>
-//         <PrimaryItemsList>
-//           {primaryActions.map((props, index) => {
-//             // Render the first item with a margin beneath it and a large icon
-//             if (!index) {
-//               const Icon = props.icon;
-//               return (
-//                 <FirstItemWrapper>
-//                   <GlobalItem
-//                     {...props}
-//                     icon={provided => <Icon {...provided} size="large" />}
-//                     key={props.key || props.label}
-//                     size="large"
-//                   />
-//                 </FirstItemWrapper>
-//               );
-//             }
-//             return (
-//               <GlobalItem
-//                 {...props}
-//                 key={props.key || props.label}
-//                 size="large"
-//               />
-//             );
-//           })}
-//         </PrimaryItemsList>
-
-//         <SecondaryItemsList>
-//           {secondaryActions.map(props => (
-//             <GlobalItem {...props} key={props.label} size="small" />
-//           ))}
-//         </SecondaryItemsList>
-
-//         {children}
-//       </div>
-//     );
-//   }
-// }
-
 const GlobalNav = ({
   children, // drawers
   primaryActions,
