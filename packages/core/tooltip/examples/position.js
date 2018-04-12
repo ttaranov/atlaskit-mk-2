@@ -10,7 +10,7 @@ import Tooltip from '../src';
 const VALID_POSITIONS = ['top', 'right', 'bottom', 'left'];
 
 const targetHeight = 100;
-const targetWidth = 200;
+const targetWidth = 178;
 
 const VIEWPORT_POSITIONS = [
   { top: 0, left: 0 },
