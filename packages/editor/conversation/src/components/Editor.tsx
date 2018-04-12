@@ -107,12 +107,12 @@ export default class Editor extends React.Component<Props, State> {
       if (value && value.content.some(n => n.content && n.content.length)) {
         this.props.onSave(value);
       }
-    } else {
-      this.setState({
-        isExpanded: false,
-        isEditing: false,
-      });
     }
+
+    this.setState({
+      isExpanded: false,
+      isEditing: false,
+    });
 
     actions.clear();
   };

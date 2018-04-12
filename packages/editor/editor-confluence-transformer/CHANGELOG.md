@@ -1,5 +1,9 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.3
+
+## 4.0.2
+
 ## 4.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 

@@ -9,13 +9,11 @@ import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { isPromise } from './helpers';
+import Counter from './counter';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
 const akColorN400 = colors.N400;
-const akColorB50 = colors.B50;
-const akColorB75 = colors.B75;
-const akColorN500 = colors.N500;
 
 export const bouncingAnimation = keyframes({
   $debugName: 'bouncing',
@@ -31,38 +29,9 @@ export const bouncingAnimation = keyframes({
   },
 });
 
-const shakeAnimation = keyframes({
-  $debugName: 'shake',
-  '0%': {
-    transform: 'rotateZ(0)',
-  },
-  '25%': {
-    transform: 'rotateZ(5deg)',
-  },
-  '50%': {
-    transform: 'rotateZ(0)',
-  },
-  '75%': {
-    transform: 'rotateZ(-5deg)',
-  },
-  '100%': {
-    transform: 'rotateZ(0)',
-  },
-});
-
 const emojiStyle = style({
   transformOrigin: 'center center 0',
   margin: '0 4px',
-});
-
-const countStyle = style({
-  flex: 'auto',
-  fontSize: '12px',
-  lineHeight: '24px',
-  padding: '0 4px 0 0',
-  minWidth: '12px',
-  color: akColorN500,
-  fontWeight: 600,
 });
 
 const reactionStyle = style({
@@ -88,21 +57,14 @@ const reactionStyle = style({
         },
       },
     },
-    '&.reacted': {
-      background: akColorB50,
-      $nest: {
-        '&:hover': {
-          background: akColorB75,
-        },
-      },
-    },
     '&.bounce': {
       animation: `${bouncingAnimation} 200ms ease-in-out`,
     },
-    '&.shake': {
-      animation: `${shakeAnimation} 200ms infinite ease-in-out`,
-    },
   },
+});
+
+const counterStyle = style({
+  padding: '0 4px 0 0',
 });
 
 export interface ReactionOnClick {
@@ -237,7 +199,6 @@ export default class Reaction extends PureComponent<Props, State> {
     const { emojiName, showTooltip } = this.state;
 
     const classNames = cx(reactionStyle, {
-      reacted: reaction.reacted,
       bounce: this.state.startBouncing,
     });
 
@@ -264,9 +225,11 @@ export default class Reaction extends PureComponent<Props, State> {
             fitToHeight={16}
           />
         </div>
-        <div className={countStyle}>
-          {reaction.count < 100 ? reaction.count : '99+'}
-        </div>
+        <Counter
+          className={counterStyle}
+          value={reaction.count}
+          highlight={reaction.reacted}
+        />
       </button>
     );
   }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AkQuickSearch } from '@atlaskit/navigation';
+import { QuickSearch } from '@atlaskit/quick-search';
 import { Result } from '../model/Result';
 import renderSearchResults from '../components/SearchResults';
 
@@ -49,7 +49,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
     } = this.props;
 
     return (
-      <AkQuickSearch
+      <QuickSearch
         isLoading={isLoading}
         onSearchInput={this.handleSearchInput}
         value={query}
@@ -64,7 +64,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
           confluenceResults,
           peopleResults,
         })}
-      </AkQuickSearch>
+      </QuickSearch>
     );
   }
 }

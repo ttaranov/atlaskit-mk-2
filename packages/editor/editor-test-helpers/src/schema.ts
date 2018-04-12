@@ -58,6 +58,7 @@ export default createSchema({
     'mentionQuery',
     'subsup',
     'emojiQuery',
+    'typeAheadQuery',
     'textColor',
     'confluenceInlineComment',
   ],

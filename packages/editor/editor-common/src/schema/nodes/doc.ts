@@ -164,5 +164,5 @@ export interface Doc {
 }
 
 export const doc: NodeSpec = {
-  content: 'block+',
+  content: '(block|layoutSection)+',
 };

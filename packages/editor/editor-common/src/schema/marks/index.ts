@@ -6,6 +6,7 @@ export { underline } from './underline';
 export { link, LinkAttributes } from './link';
 export { emojiQuery } from './emoji-query';
 export { mentionQuery } from './mention-query';
+export { typeAheadQuery } from './type-ahead-query';
 export { subsup } from './subsup';
 export { textColor, colorPalette } from './text-color';
 export { confluenceInlineComment } from './confluence-inline-comment';

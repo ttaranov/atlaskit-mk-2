@@ -7,9 +7,11 @@ import {
   sendKeyToPm,
   taskList,
   taskItem,
+  mention,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
+import mentionsPlugin from '../../../src/plugins/mentions';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -23,7 +25,7 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tasksAndDecisionsPlugin],
+      editorPlugins: [tasksAndDecisionsPlugin, mentionsPlugin],
     });
 
   describe('decisions', () => {
@@ -63,6 +65,29 @@ describe('tasks and decisions - keymaps', () => {
             doc(
               decisionList({ localId: 'local-decision' })(
                 decisionItem({ localId: 'local-decision' })('Hello'),
+              ),
+            ),
+          );
+        });
+
+        it('should delete only internal node on backspace', () => {
+          const { editorView } = editor(
+            doc(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })(
+                  'Hello ',
+                  mention({ id: '1234', text: '@Oscar Wallhult' })(),
+                  '{<>}',
+                ),
+              ),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('Hello '),
               ),
             ),
           );
@@ -250,6 +275,29 @@ describe('tasks and decisions - keymaps', () => {
             doc(
               taskList({ localId: 'local-decision' })(
                 taskItem({ localId: 'local-decision' })('Hello'),
+              ),
+            ),
+          );
+        });
+
+        it('should delete only internal node on backspace', () => {
+          const { editorView } = editor(
+            doc(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })(
+                  'Hello ',
+                  mention({ id: '1234', text: '@Oscar Wallhult' })(),
+                  '{<>}',
+                ),
+              ),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })('Hello '),
               ),
             ),
           );

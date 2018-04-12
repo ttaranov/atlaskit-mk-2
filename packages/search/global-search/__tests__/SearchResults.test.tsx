@@ -2,15 +2,14 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import searchResults, { Props } from '../src/components/SearchResults';
 import {
-  AkNavigationItemGroup,
-  quickSearchResultTypes,
-} from '@atlaskit/navigation';
+  ResultItemGroup,
+  PersonResult,
+  ResultBase,
+} from '@atlaskit/quick-search';
 import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
 import EmptyState from '../src/components/EmptyState';
-
-const { PersonResult, ResultBase } = quickSearchResultTypes;
 
 enum Group {
   Recent = 'recent',
@@ -21,7 +20,7 @@ enum Group {
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
   return wrapper
-    .find(AkNavigationItemGroup)
+    .find(ResultItemGroup)
     .findWhere(n => n.prop('test-selector') === group.valueOf());
 }
 
@@ -74,7 +73,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(props);
 
-    const groups = wrapper.find(AkNavigationItemGroup);
+    const groups = wrapper.find(ResultItemGroup);
     expect(groups).toHaveLength(1);
   });
 

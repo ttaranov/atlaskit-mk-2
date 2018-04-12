@@ -1,5 +1,9 @@
 # @atlaskit/comment
 
+## 3.1.2
+
+## 3.1.1
+
 ## 3.1.0
 - [minor] Adding permalink support [c79d549](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c79d549)
 

@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import {
-  extensionProvider,
-  extensionData,
-} from '@atlaskit/editor-test-helpers';
+import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
 
 import Extension from '../../../../src/plugins/extension/ui/Extension';
 import ExtensionComponent from '../../../../src/plugins/extension/ui/Extension/ExtensionComponent';
 
-const extensionProviderPromise = Promise.resolve(extensionProvider);
+const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('@atlaskit/editor-core/ui/Extension', () => {
   const node = extensionData[0] as any;
@@ -30,9 +27,9 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     extension.unmount();
   });
 
-  it('should pass extensionProvider into ExtensionComponent', () => {
+  it('should pass macroProvider into ExtensionComponent', () => {
     const providerFactory = ProviderFactory.create({
-      extensionProvider: extensionProviderPromise,
+      macroProvider: macroProviderPromise,
     });
 
     const extension = mount(
@@ -46,7 +43,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     );
     const component = extension.find(ExtensionComponent);
 
-    expect(component.prop('extensionProvider')).toBe(extensionProviderPromise);
+    expect(component.prop('macroProvider')).toBe(macroProviderPromise);
     extension.unmount();
   });
 

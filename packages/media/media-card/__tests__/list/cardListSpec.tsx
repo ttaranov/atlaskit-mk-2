@@ -2,16 +2,21 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import LazilyRender from 'react-lazily-render';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
-import { MediaCollectionFileItem, FileDetails } from '@atlaskit/media-core';
+import {
+  MediaCollectionFileItem,
+  FileDetails,
+  CollectionNotFoundError,
+} from '@atlaskit/media-core';
 
 import { CardList, CardListProps, CardListState } from '../../src/list';
 import { MediaCard } from '../../src/root/mediaCard';
 import { InfiniteScroll } from '../../src/list/infiniteScroll';
 import { LazyContent } from '../../src/utils/lazyContent';
+import { TransitionGroup } from 'react-transition-group';
 
 describe('CardList', () => {
   const collectionName = 'MyMedia';
@@ -296,13 +301,13 @@ describe('CardList', () => {
       expect(list.children().text()).toContain('loading...');
     });
 
-    it('should render the empty view when the list is not loading and the error is an axios response with a status of 404', () => {
+    it('should render the empty view when the list is not loading and the error is a CollectionNotFoundError', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
         { disableLifecycleMethods: true },
       ) as any;
-      list.setState({ loading: false, error: { response: { status: 404 } } });
+      list.setState({ loading: false, error: new CollectionNotFoundError() });
       expect(list.children().text()).toContain('No items');
     });
 
@@ -415,6 +420,85 @@ describe('CardList', () => {
         collection,
       });
       expect(list.find(LazyContent)).toHaveLength(0);
+    });
+  });
+
+  describe('Errors', () => {
+    const setup = () => {
+      const subject = new Subject();
+      const context = fakeContext({
+        getMediaCollectionProvider: {
+          observable() {
+            return subject;
+          },
+        },
+      });
+
+      return {
+        context,
+        subject,
+        ErrorComponent: () => <div>Error</div>,
+        EmptyComponent: () => <div>Empty</div>,
+      };
+    };
+
+    it('should render <EmptyComponent /> given CollectionNotFoundError', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new CollectionNotFoundError());
+      wrapper.update();
+
+      expect(wrapper.find(EmptyComponent)).toHaveLength(1);
+    });
+
+    it('should render <ErrorComponent /> given other Error', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new Error());
+      wrapper.update();
+
+      expect(wrapper.find(ErrorComponent)).toHaveLength(1);
+    });
+
+    it('should recover from error given provider emits valid value after error', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new Error());
+      wrapper.update();
+
+      expect(wrapper.find(TransitionGroup)).toHaveLength(0);
+      expect(wrapper.find(ErrorComponent)).toHaveLength(1);
+
+      subject.next({ id: 'some-collection', items: [] });
+      wrapper.update();
+
+      // TransitionGroup is rendered when we want to show a card list
+      expect(wrapper.find(TransitionGroup)).toHaveLength(1);
+      expect(wrapper.find(ErrorComponent)).toHaveLength(0);
     });
   });
 });

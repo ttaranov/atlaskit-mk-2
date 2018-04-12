@@ -119,7 +119,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEditProvider,
       activityProvider,
       presenceProvider,
-      extensionProvider,
+      macroProvider,
       legacyImageUploadProvider,
       media,
     } = props;
@@ -144,16 +144,40 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
-    this.providerFactory.setProvider('extensionProvider', extensionProvider);
+    this.providerFactory.setProvider('macroProvider', macroProvider);
+  }
+
+  handleSave(view: EditorView): void {
+    if (!this.props.onSave) {
+      return;
+    }
+
+    // ED-4021: if you type a short amount of content
+    // inside a content-editable on Android, Chrome only sends a
+    // compositionend when it feels like it.
+    //
+    // to work around the PM editable being out of sync with
+    // the document, force a DOM sync before calling onSave
+    // if we've already started typing
+    if (view['inDOMChange']) {
+      view['inDOMChange'].finish(true);
+    }
+
+    return this.props.onSave(view);
   }
 
   render() {
     const Component = getUiComponent(this.props.appearance);
 
+    const overriddenEditorProps = {
+      ...this.props,
+      onSave: this.props.onSave ? this.handleSave : undefined,
+    };
+
     return (
       <EditorContext editorActions={this.editorActions}>
         <ReactEditorView
-          editorProps={this.props}
+          editorProps={overriddenEditorProps}
           providerFactory={this.providerFactory}
           onEditorCreated={this.onEditorCreated}
           onEditorDestroyed={this.onEditorDestroyed}
@@ -166,7 +190,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
               providerFactory={this.providerFactory}
               eventDispatcher={eventDispatcher}
               maxHeight={this.props.maxHeight}
-              onSave={this.props.onSave}
+              onSave={this.props.onSave ? this.handleSave : undefined}
               onCancel={this.props.onCancel}
               popupsMountPoint={this.props.popupsMountPoint}
               popupsBoundariesElement={this.props.popupsBoundariesElement}
