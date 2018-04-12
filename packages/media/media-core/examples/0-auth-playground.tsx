@@ -3,9 +3,7 @@ import { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import { Context, ContextFactory } from '../src/context/context';
-import { MediaItem } from '../src/item';
-import { isError } from '../src/error';
+import { Context, ContextFactory, MediaItem, isError } from '../src';
 import { Auth, AuthProvider, isClientBasedAuth } from '@atlaskit/media-store';
 
 const collectionName = 'MediaServicesSample';
