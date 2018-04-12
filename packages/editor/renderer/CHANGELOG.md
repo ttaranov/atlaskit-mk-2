@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 16.0.1
+- [patch] Always wrap text [bcd3361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcd3361)
+
 ## 16.0.0
 
 ## 15.0.2
