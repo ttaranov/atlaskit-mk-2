@@ -59,9 +59,11 @@ export const Wrapper = ({ shouldBlockInteraction, ...props }: WrapperProps) => (
 /**
  * RootNav
  */
-const RootNavPrimitive = withTheme(({ children, theme = { mode: light } }) => (
-  <div css={theme.mode.productNav().root}>{children}</div>
-));
+const RootNavPrimitive = withTheme({ mode: light, context: 'root' })(
+  ({ children, theme = { mode: light } }) => (
+    <div css={theme.mode.productNav().root}>{children}</div>
+  ),
+);
 
 type RootNavProps = { children: Node };
 
@@ -76,27 +78,29 @@ export const RootNav = (props: RootNavProps) => (
 /**
  * ContainerNav
  */
-const ContainerNavPrimitive = withTheme(({ children, isPeeking, theme }) => (
-  <div
-    css={{
-      ...theme.mode.productNav().container,
-      boxShadow: 'none',
-      transitionProperty: 'boxShadow, transform',
-      transitionDuration: animationDuration,
-      transitionTimingFunction: animationTimingFunction,
-      ...(isPeeking
-        ? {
-            boxShadow: `-${gridSize() * 2.5}px ${gridSize() *
-              2.5}px ${gridSize() *
-              4}px -${gridSize()}px rgba(23, 43, 77, 0.4)`,
-            transform: `translateX(calc(100% - ${gridSize() * 4}px))`,
-          }
-        : null),
-    }}
-  >
-    {children}
-  </div>
-));
+const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
+  ({ children, isPeeking, theme }) => (
+    <div
+      css={{
+        ...theme.mode.productNav().container,
+        boxShadow: 'none',
+        transitionProperty: 'boxShadow, transform',
+        transitionDuration: animationDuration,
+        transitionTimingFunction: animationTimingFunction,
+        ...(isPeeking
+          ? {
+              boxShadow: `-${gridSize() * 2.5}px ${gridSize() *
+                2.5}px ${gridSize() *
+                4}px -${gridSize()}px rgba(23, 43, 77, 0.4)`,
+              transform: `translateX(calc(100% - ${gridSize() * 4}px))`,
+            }
+          : null),
+      }}
+    >
+      {children}
+    </div>
+  ),
+);
 
 type ContainerNavProps = {
   children: Node,

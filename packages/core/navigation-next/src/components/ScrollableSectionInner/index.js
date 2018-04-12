@@ -8,7 +8,6 @@ import type { ScrollableSectionInnerProps } from './types';
 class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
-    theme: { mode: light, context: 'container' },
   };
 
   render() {
@@ -25,4 +24,6 @@ class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
   }
 }
 
-export default withTheme(ScrollableSectionInner);
+export default withTheme({ mode: light, context: 'container' })(
+  ScrollableSectionInner,
+);

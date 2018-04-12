@@ -41,7 +41,6 @@ class NavigationItemPrimitive extends Component<ItemPrimitiveProps> {
     spacing: 'default',
     styles: styleReducerNoOp,
     text: '',
-    theme: { mode: light, context: 'container' },
   };
 
   ItemBase: ComponentType<ItemRenderComponentProps> = getItemBase(this.props);
@@ -98,4 +97,6 @@ class NavigationItemPrimitive extends Component<ItemPrimitiveProps> {
   }
 }
 
-export default withTheme(NavigationItemPrimitive);
+export default withTheme({ mode: light, context: 'container' })(
+  NavigationItemPrimitive,
+);

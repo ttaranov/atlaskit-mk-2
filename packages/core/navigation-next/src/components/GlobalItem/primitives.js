@@ -44,7 +44,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     isHover: false,
     size: 'large',
     styles: styleReducerNoOp,
-    theme: { mode: light, context: 'expanded' },
   };
 
   ItemBase: ComponentType<GlobalItemRenderComponentProps> = getItemBase(
@@ -107,4 +106,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
   }
 }
 
-export default withTheme(GlobalNavigationItemPrimitive);
+export default withTheme({ mode: light, context: 'expanded' })(
+  GlobalNavigationItemPrimitive,
+);

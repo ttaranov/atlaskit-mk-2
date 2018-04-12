@@ -8,7 +8,9 @@ import type { Theme } from './types';
 
 type State = { theme: ?Theme };
 
-export default (WrappedComponent: ComponentType<*>) => {
+export default (defaultTheme: Theme) => (
+  WrappedComponent: ComponentType<*>,
+) => {
   return class WithTheme extends Component<{}, State> {
     static contextTypes = {
       [channel]: PropTypes.object,
@@ -53,7 +55,8 @@ export default (WrappedComponent: ComponentType<*>) => {
     }
 
     render() {
-      return <WrappedComponent theme={this.state.theme} {...this.props} />;
+      const theme = this.state.theme || defaultTheme;
+      return <WrappedComponent theme={theme} {...this.props} />;
     }
   };
 };

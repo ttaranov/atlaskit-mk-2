@@ -9,7 +9,6 @@ import type { ItemAvatarProps } from './types';
 class ItemAvatar extends Component<ItemAvatarProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
-    theme: { mode: light, context: 'container' },
   };
 
   render() {
@@ -22,4 +21,4 @@ class ItemAvatar extends Component<ItemAvatarProps> {
   }
 }
 
-export default withTheme(ItemAvatar);
+export default withTheme({ mode: light, context: 'container' })(ItemAvatar);
