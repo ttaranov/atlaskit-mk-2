@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "70.2.2",
+  "version": "70.2.3",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^3.0.0",
-    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/avatar": "^10.0.1",
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/calendar": "^5.0.0",
     "@atlaskit/code": "^4.0.0",
@@ -44,7 +44,7 @@
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/task-decision": "^6.0.2",
     "@atlaskit/theme": "^3.0.0",
-    "@atlaskit/tooltip": "^9.0.0",
+    "@atlaskit/tooltip": "^9.1.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/codemirror": "^0.0.40",
     "@types/orderedmap": "^1.0.0",
