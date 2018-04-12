@@ -6,37 +6,17 @@
  */
 
 import React from 'react';
-import { gridSize } from '@atlaskit/theme';
 
 import GlobalItem from '../GlobalItem';
 import { light, withTheme } from '../../theme';
-import { FirstItemWrapper } from './primitives';
+import {
+  FirstItemWrapper,
+  PrimaryItemsList,
+  SecondaryItemsList,
+} from './primitives';
 import type { GlobalNavProps } from './types';
 
 export { GLOBAL_NAV_WIDTH } from './styles';
-
-const listBaseStyles = {
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  paddingTop: `${gridSize()}px`,
-  width: `${gridSize() * 5}px`,
-};
-
-const PrimaryItemsList = props => (
-  <div
-    css={{ ...listBaseStyles, paddingBottom: `${gridSize() * 2}px` }}
-    {...props}
-  />
-);
-
-const SecondaryItemsList = props => (
-  <div
-    css={{ ...listBaseStyles, paddingBottom: `${gridSize()}px` }}
-    {...props}
-  />
-);
 
 const GlobalNav = ({
   children, // drawers
