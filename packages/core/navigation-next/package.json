@@ -18,6 +18,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/blanket": "^5.0.0",
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/theme": "^3.0.0",
     "@atlaskit/tooltip": "^9.0.0",
@@ -27,6 +28,7 @@
     "interpolate-range": "^2.1.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
+    "react-dom": "^16.3.0",
     "react-transition-group": "^2.2.1",
     "unstated": "^1.2.0"
   },

@@ -43,6 +43,7 @@ const baseStyles = {
     outline: 'none',
     textAlign: 'left',
     textDecoration: 'none',
+    userSelect: 'none',
     width: '100%',
 
     '&:focus': {

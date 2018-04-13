@@ -102,7 +102,12 @@ const productContainerNavSections = [
         type: ContainerHeader,
         key: 'project-switcher',
         before: itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
+          <ItemAvatar
+            isActive={false}
+            isHover={false}
+            itemState={itemState}
+            appearance="square"
+          />
         ),
         text: 'My software project',
         subText: 'Software project',
@@ -126,8 +131,8 @@ const productContainerNavSections = [
  */
 const GlobalNavigation = () => (
   <GlobalNav
-    primaryActions={globalNavPrimaryItems}
-    secondaryActions={globalNavSecondaryItems}
+    primaryItems={globalNavPrimaryItems}
+    secondaryItems={globalNavSecondaryItems}
   />
 );
 

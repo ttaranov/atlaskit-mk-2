@@ -1,0 +1,143 @@
+// @flow
+
+import React, { Component, Fragment } from 'react';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import CreateIcon from '@atlaskit/icon/glyph/add';
+
+import { GlobalNav, NavigationSubscriber } from '../../../';
+
+import Drawer from '../Drawer';
+import type {
+  GlobalNavigationProps,
+  WrappedGlobalNavigationProps,
+} from './types';
+
+// By default we will render a button which toggles the peek behaviour. The
+// consumer can opt out of this by passing their own handler or `false` to the
+// onClick prop, or by passing an href (which will render an <a>).
+const getProductItemComponent = navigation => ({
+  className,
+  children,
+  href,
+  onClick,
+  target,
+}: *) =>
+  href ? (
+    <a
+      className={className}
+      href={href}
+      onClick={onClick || null}
+      target={target}
+    >
+      {children}
+    </a>
+  ) : (
+    <button
+      className={className}
+      onClick={
+        typeof onClick !== 'undefined' ? onClick || null : navigation.togglePeek
+      }
+    >
+      {children}
+    </button>
+  );
+
+class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
+  static defaultProps = {
+    primaryItems: [],
+    secondaryItems: [],
+  };
+
+  constructPrimaryItems = () => {
+    const { create, product, search, primaryItems, navigation } = this.props;
+
+    const inbuiltPrimaryItems = [];
+
+    if (product) {
+      inbuiltPrimaryItems.push({
+        ...product,
+        component: getProductItemComponent(navigation),
+      });
+    }
+
+    if (search) {
+      const defaultSearch = {
+        icon: SearchIcon,
+        label: 'Search',
+        onClick: () => {
+          navigation.openDrawer('search');
+        },
+        tooltip: 'Search',
+      };
+      inbuiltPrimaryItems.push({ ...defaultSearch, ...search });
+    }
+
+    if (create) {
+      const defaultCreate = {
+        icon: CreateIcon,
+        label: 'Create',
+        onClick: () => {
+          navigation.openDrawer('create');
+        },
+        tooltip: 'Create',
+      };
+      inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
+    }
+
+    return [...inbuiltPrimaryItems, ...primaryItems];
+  };
+
+  constructSecondaryItems = () => {
+    const { secondaryItems } = this.props;
+    const inbuiltSecondaryItems = [];
+
+    return [...inbuiltSecondaryItems, ...secondaryItems];
+  };
+
+  renderDrawer = (drawerKey: 'create' | 'search', drawerProps) => {
+    const { navigation } = this.props;
+    const { activeDrawer } = navigation.state;
+    const action = this.props[drawerKey];
+
+    if (!action || !action.drawer) {
+      return null;
+    }
+
+    const DrawerContent = action.drawer.content;
+
+    return (
+      <Drawer
+        isOpen={activeDrawer === drawerKey}
+        onClose={
+          (action.drawer && action.drawer.onClose) ||
+          navigation.closeActiveDrawer
+        }
+        {...drawerProps}
+      >
+        <DrawerContent closeDrawer={navigation.closeActiveDrawer} />
+      </Drawer>
+    );
+  };
+
+  render() {
+    const primaryItems = this.constructPrimaryItems();
+    const secondaryItems = this.constructSecondaryItems();
+
+    return (
+      <Fragment>
+        <GlobalNav
+          primaryItems={primaryItems}
+          secondaryItems={secondaryItems}
+        />
+        {this.renderDrawer('create')}
+        {this.renderDrawer('search', { width: 'wide' })}
+      </Fragment>
+    );
+  }
+}
+
+export default (props: GlobalNavigationProps) => (
+  <NavigationSubscriber>
+    {navigation => <GlobalNavigation navigation={navigation} {...props} />}
+  </NavigationSubscriber>
+);

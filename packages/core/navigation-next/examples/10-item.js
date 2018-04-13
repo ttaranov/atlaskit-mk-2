@@ -62,8 +62,15 @@ class BetterDropdown extends Component<DropdownProps, DropdownState> {
     );
   }
 }
+
 const ConfiguredAvatar = itemState => (
-  <ItemAvatar itemState={itemState} presence="online" size="small" />
+  <ItemAvatar
+    itemState={itemState}
+    isActive={false}
+    isHover={false}
+    presence="online"
+    size="small"
+  />
 );
 
 const ConfiguredBadge = () => <Badge appearance="primary" value={3} />;
