@@ -45,6 +45,8 @@ const unsupportedNodes = [
   // following nodes do not have schema defined
   'image',
   'placeholder',
+  'layoutSection',
+  'layoutColumn',
 ];
 
 const unsupportedMarks = [

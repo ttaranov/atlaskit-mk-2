@@ -280,6 +280,7 @@ export default class PickerFacade {
     const { file } = event;
 
     const state = this.newState(file, 'ready', file.publicId);
+    state.progress = 1;
     this.stateManager.updateState(state.id, state);
   };
 

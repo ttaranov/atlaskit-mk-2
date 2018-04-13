@@ -194,8 +194,14 @@ export default function encode(node: PMNode, schema: Schema) {
             ).toLowerCase(),
           );
         }
-        cellElement.setAttribute('colspan', colspan || 1);
-        cellElement.setAttribute('rowspan', rowspan || 1);
+
+        if (colspan && colspan !== 1) {
+          cellElement.setAttribute('colspan', colspan);
+        }
+
+        if (rowspan && rowspan !== 1) {
+          cellElement.setAttribute('rowspan', rowspan);
+        }
 
         cellElement.appendChild(encodeFragment(colNode.content));
         rowElement.appendChild(cellElement);

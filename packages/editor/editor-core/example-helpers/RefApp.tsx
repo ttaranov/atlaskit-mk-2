@@ -86,7 +86,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
               taskDecisionProvider,
               contextIdentifierProvider,
             })}
-        <legend>JSON output:</legend>
+        <legend>Renderer:</legend>
         {this.renderRenderer(jsonDocument)}
       </Content>
     );

@@ -339,6 +339,7 @@ describe('Media PickerFacade', () => {
             fileName: testFileData.name,
             fileSize: testFileData.size,
             fileMimeType: testFileData.type,
+            progress: 1,
           });
         });
       });
