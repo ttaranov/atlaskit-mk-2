@@ -19,8 +19,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@types/query-string": "^4.3.1",
-    "chunkinator": "^0.0.15",
-    "p-queue": "^2.3.0",
+    "chunkinator": "^1.0.1",
     "query-string": "^4.3.2",
     "rusha": "^0.8.13"
   },
