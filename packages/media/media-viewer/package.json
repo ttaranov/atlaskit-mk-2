@@ -20,7 +20,6 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/blanket": "^5.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "deep-equal": "^1.0.1",
     "pdfjs-dist": "^2.0.466",

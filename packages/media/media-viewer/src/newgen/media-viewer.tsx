@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import Blanket from '@atlaskit/blanket';
 import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
@@ -46,12 +45,7 @@ export class MediaViewer extends React.Component<Props, State> {
 
   render() {
     const { onClose } = this.props;
-    return (
-      <div>
-        <Blanket onBlanketClicked={onClose} isTinted />
-        <MediaViewerRenderer model={this.state} />
-      </div>
-    );
+    return <MediaViewerRenderer onClose={onClose} model={this.state} />;
   }
 
   // It's possible that a different identifier or context was passed.

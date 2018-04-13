@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Positioner } from './styled';
 import { FilePreview } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -22,8 +21,4 @@ const ViewerSelector: React.StatelessComponent<Props> = ({ previewData }) => {
 
 export const FileViewer: React.StatelessComponent<Props> = ({
   previewData,
-}) => (
-  <Positioner>
-    <ViewerSelector previewData={previewData} />
-  </Positioner>
-);
+}) => <ViewerSelector previewData={previewData} />;

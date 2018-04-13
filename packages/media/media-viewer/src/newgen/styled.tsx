@@ -7,38 +7,34 @@ import styled, { StyledComponentClass } from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 
-export const Positioner = styled.div`
+export const Blanket = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  background-color: #1b2638;
+`;
 
+export const Content = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
-  justify-content: space-between;
-  z-index: 500;
-  pointer-events: none;
+  justify-content: center;
+  overflow: auto;
 `;
 
 export const ErrorMessage = styled.div`
-  width: 100%;
-  text-align: center;
+  color: white;
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   max-width: 100%;
-  margin: auto;
-  pointer-events: auto;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   max-width: 100%;
-  margin: auto;
-  pointer-events: auto;
 `;
 
-export const PDFWrapper = styled.div`
-  margin: auto;
-`;
+export const PDFWrapper = styled.div``;
