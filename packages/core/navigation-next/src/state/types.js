@@ -58,5 +58,5 @@ export type NavigationProviderProps = {
  * NavigationSubscriber
  */
 export type NavigationSubscriberProps = {
-  children: NavigationStateShape => Node,
+  children: NavigationStateInterface => Node,
 };
