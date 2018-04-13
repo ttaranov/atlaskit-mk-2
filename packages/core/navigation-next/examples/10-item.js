@@ -1,9 +1,17 @@
 // @flow
 
-import React, { type ComponentType } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 import Badge from '@atlaskit/badge';
+import {
+  DropdownItem,
+  DropdownItemGroup,
+  DropdownMenuStateless,
+} from '@atlaskit/dropdown-menu';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import EditIcon from '@atlaskit/icon/glyph/edit';
@@ -14,6 +22,46 @@ import { Item, ItemPrimitive, ItemAvatar, light, dark, settings } from '../src';
 
 const themeModes = { light, dark, settings };
 
+/**
+ * Helper components
+ */
+type DropdownState = { isOpen: boolean };
+type DropdownProps = {
+  defaultIsOpen: boolean,
+  onOpenChange?: DropdownState => void,
+  trigger: ComponentType<DropdownState>,
+};
+class BetterDropdown extends Component<DropdownProps, DropdownState> {
+  static defaultProps = { defaultIsOpen: false };
+  state = { isOpen: this.props.defaultIsOpen };
+
+  onOpenChange = (openState: DropdownState) => {
+    if (this.props.onOpenChange) {
+      this.props.onOpenChange(openState);
+    }
+    this.setState({ isOpen: openState.isOpen });
+  };
+
+  renderTrigger = () => {
+    const { trigger: Trigger } = this.props;
+    const { isOpen } = this.state;
+    return <Trigger isOpen={isOpen} />;
+  };
+
+  render() {
+    const { isOpen } = this.state;
+    const { trigger, ...props } = this.props;
+    return (
+      <DropdownMenuStateless
+        shouldFitContainer
+        {...props}
+        isOpen={isOpen}
+        onOpenChange={this.onOpenChange}
+        trigger={this.renderTrigger()}
+      />
+    );
+  }
+}
 const ConfiguredAvatar = itemState => (
   <ItemAvatar itemState={itemState} presence="online" size="small" />
 );
@@ -241,6 +289,52 @@ const variations: Array<VariationCategory> = [
       },
     ],
   },
+  {
+    title: 'Composed Item variations',
+    items: [
+      {
+        render: () => (
+          <div css={{ display: 'flex' }}>
+            <Item text={<ArrowLeftIcon />} spacing="compact" />
+            <div css={{ flexGrow: 1 }}>
+              <ItemPrimitive
+                text="Split item"
+                spacing="compact"
+                styles={styles => ({
+                  ...styles,
+                  itemBase: { ...styles.itemBase, cursor: 'default' },
+                })}
+              />
+            </div>
+          </div>
+        ),
+        key: 'split-item',
+      },
+      {
+        render: () => (
+          <BetterDropdown
+            trigger={({ isOpen }) => (
+              <Item
+                isSelected={isOpen}
+                text="Dropdown item"
+                after={() => (isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />)}
+              />
+            )}
+          >
+            <DropdownItemGroup>
+              <DropdownItem>Link 1</DropdownItem>
+              <DropdownItem>Link 2</DropdownItem>
+              <DropdownItem>Link 3</DropdownItem>
+            </DropdownItemGroup>
+          </BetterDropdown>
+        ),
+        key: 'dropdown-item',
+      },
+    ],
+    itemComponent: ({ render: RenderComponent, ...itemProps }: ItemType) => (
+      <RenderComponent {...itemProps} />
+    ),
+  },
 ];
 
 const Container = props => (
@@ -266,7 +360,7 @@ export default () => (
       <VariationWrapper key={title}>
         <h3>{title}</h3>
         {items.map(item => (
-          <ItemWrapper key={item.text}>
+          <ItemWrapper key={item.key || item.text}>
             <ItemComponent {...item} />
           </ItemWrapper>
         ))}

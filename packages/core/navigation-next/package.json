@@ -35,6 +35,7 @@
   "devDependencies": {
     "@atlaskit/badge": "^7.0.0",
     "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/dropdown-menu": "^4.0.0",
     "@atlaskit/logo": "^7.0.0",
     "@atlaskit/lozenge": "^4.0.0"
   }
