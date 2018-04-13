@@ -4,7 +4,7 @@ const pendingPromises: Map<string, Holder<any>> = new Map<
   string,
   Holder<any>
 >();
-let counter: number = 0;
+export var counter: number = 0;
 
 class Holder<T> {
   promise: Promise<T>;
@@ -23,13 +23,18 @@ export function createPromise<T>(
   const holder: Holder<T> = createHolder();
   const uuid = counter++ + '';
   pendingPromises.set(uuid, holder);
-  holder.promise
-    .then(() => pendingPromises.delete(uuid))
-    .catch(() => pendingPromises.delete(uuid));
   return {
     submit(): Promise<T> {
       toNativeBridge.submitPromise(name, uuid, args);
-      return holder.promise;
+      return holder.promise
+        .then(data => {
+          pendingPromises.delete(uuid);
+          return data;
+        })
+        .catch(data => {
+          pendingPromises.delete(uuid);
+          return Promise.reject(data);
+        });
     },
   };
 }
@@ -37,8 +42,8 @@ export function createPromise<T>(
 function createHolder<T>() {
   let holder: Holder<T> = new Holder<T>();
   holder.promise = new Promise<T>((resolve, reject) => {
-    holder.resolve = resolve;
-    holder.reject = reject;
+    holder.resolve = data => resolve(data);
+    holder.reject = () => reject();
   });
   return holder;
 }

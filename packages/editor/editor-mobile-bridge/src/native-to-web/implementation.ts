@@ -10,7 +10,7 @@ import {
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
-import { resolvePromise } from '../cross-platform-promise';
+import { rejectPromise, resolvePromise } from '../cross-platform-promise';
 
 export default class WebBridgeImpl implements NativeToWebBridge {
   textFormattingPluginState: TextFormattingState | null = null;
@@ -101,5 +101,9 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   }
   onPromiseResolved(uuid: string, paylaod: string) {
     resolvePromise(uuid, JSON.parse(paylaod));
+  }
+
+  onPromiseRejected(uuid: string) {
+    rejectPromise(uuid);
   }
 }
