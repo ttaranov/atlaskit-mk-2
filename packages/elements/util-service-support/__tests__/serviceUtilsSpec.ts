@@ -9,7 +9,7 @@ import {
   RequestServiceOptions,
   SecurityProvider,
   ServiceConfig,
-} from '../../src/types';
+} from '../src/types';
 
 const url = 'http://cheese';
 const defaultResponse = {
