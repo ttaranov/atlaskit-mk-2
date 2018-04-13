@@ -4,10 +4,43 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import 'jest-styled-components';
 import Tooltip, { marshal } from '../Tooltip';
+import getPosition from '../utils/getPosition';
 
+jest.mock('../utils/getPosition', () => {
+  return jest.fn(() => ({
+    coordinates: {
+      left: 50,
+      top: 100,
+    },
+    mousePosition: 'bottom',
+    position: 'bottom',
+  }));
+});
 jest.useFakeTimers();
 
+function getPortalChildren(portalWrapper) {
+  // Layer Manager's portal renders its content after a setTimeout
+  jest.runAllTimers();
+  const instance = portalWrapper.instance();
+  // portalChildRef is a raw DOM node. In enzyme 2 we could wrap this with ReactWrapper and
+  // use enzyme functions on it as per https://github.com/airbnb/enzyme/issues/252#issuecomment-266125422.
+  // Enzyme 3 breaks this functionality though so we can only test raw DOM attributes - https://github.com/airbnb/enzyme/issues/1202
+  const portalChildRef = instance && instance.gatewayOrPortalChildRef;
+
+  return portalChildRef && portalChildRef.props
+    ? portalChildRef.props.children
+    : undefined;
+}
+
+function mountBase(element) {
+  return mount(shallow(element).get(0));
+}
+
 describe('Tooltip', () => {
+  beforeEach(() => {
+    // $FlowFixMe - mocked import
+    getPosition.mockClear();
+  });
   it('should be possible to create a component', () => {
     const wrapper = shallow(
       <Tooltip>
@@ -332,6 +365,21 @@ describe('Tooltip', () => {
       expect(wrapper.children().equals(<div>foo</div>)).toBe(true);
     });
 
+    it('should render a tooltip after show method is called', () => {
+      const wrapper = mountBase(
+        <Tooltip content="Tooltip content">
+          <div>foo</div>
+        </Tooltip>,
+      );
+
+      const instance = wrapper.instance();
+      instance.show({ immediate: true });
+      wrapper.update();
+
+      const portalContents = getPortalChildren(wrapper.children().childAt(1));
+      expect(portalContents).toBe('Tooltip content');
+    });
+
     it('should not render a tooltip if no content prop provided', () => {
       const wrapper = shallow(
         <Tooltip>
@@ -344,25 +392,31 @@ describe('Tooltip', () => {
       expect(wrapper.children().equals(<div>foo</div>)).toBe(true);
     });
 
-    it('should render a tooltip after show method is called', () => {
-      const wrapper = mount(
-        shallow(
-          <Tooltip content="Tooltip content">
-            <div>foo</div>
-          </Tooltip>,
-        ).get(0),
+    it('should call getPosition to get the correct tooltip position before showing tooltip', () => {
+      const wrapper = mountBase(
+        <Tooltip content="Tooltip content" position="left">
+          <div>foo</div>
+        </Tooltip>,
       );
+
+      wrapper.simulate('mouseMove', {
+        clientX: 50,
+        clientY: 100,
+      });
 
       const instance = wrapper.instance();
       instance.show({ immediate: true });
-      wrapper.update();
-      jest.runAllTimers();
 
-      const portal = wrapper.children().childAt(1);
-      const portalInstance = portal.instance();
-      const portalChild = portalInstance.gatewayOrPortalChildRef;
-
-      expect(portalChild.props.children).toBe('Tooltip content');
+      expect(getPosition).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mouseCoordinates: {
+            left: 50,
+            top: 100,
+          },
+          mousePosition: 'bottom',
+          position: 'left',
+        }),
+      );
     });
   });
 });
