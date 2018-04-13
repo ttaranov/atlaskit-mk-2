@@ -3,17 +3,14 @@
 import { type ElementRef } from 'react';
 import { Container } from 'unstated';
 
-export type InitialState = {
-  activeDrawer?: string | null,
-  isPeeking?: boolean,
-  productNavIsCollapsed?: boolean,
-  productNavWidth?: number,
-};
-export type State = InitialState & { isResizing?: boolean };
-
-type GetFn = () => State;
-type SetFn = State => void;
-export type Cache = { get: GetFn, set: SetFn };
+import type {
+  InitialNavigationStateShape,
+  NavigationStateCache,
+  NavigationStateCacheGetter,
+  NavigationStateCacheSetter,
+  NavigationStateInterface,
+  NavigationStateShape,
+} from './types';
 
 const defaultState = {
   activeDrawer: null,
@@ -23,12 +20,16 @@ const defaultState = {
   productNavWidth: 270,
 };
 
-export default class NavigationState extends Container<State> {
+export default class NavigationState extends Container<NavigationStateShape>
+  implements NavigationStateInterface {
   drawerGateway: HTMLElement;
-  getCache: ?GetFn;
-  setCache: ?SetFn;
+  getCache: ?NavigationStateCacheGetter;
+  setCache: ?NavigationStateCacheSetter;
 
-  constructor(initialState?: InitialState, cache: Cache | false) {
+  constructor(
+    initialState?: InitialNavigationStateShape,
+    cache: NavigationStateCache | false,
+  ) {
     super();
 
     if (!cache) {
@@ -118,24 +119,4 @@ export default class NavigationState extends Container<State> {
   closeSearchDrawer = () => {
     this.closeActiveDrawer();
   };
-}
-
-export interface NavigationType {
-  state: State;
-
-  collapseProductNav: () => void;
-  expandProductNav: () => void;
-
-  peek: () => void;
-  unPeek: () => void;
-  togglePeek: () => void;
-
-  openDrawer: (key: string) => void;
-  closeActiveDrawer: () => void;
-
-  openCreateDrawer: () => void;
-  closeCreateDrawer: () => void;
-
-  openSearchDrawer: () => void;
-  closeSearchDrawer: () => void;
 }

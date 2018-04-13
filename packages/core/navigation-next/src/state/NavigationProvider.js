@@ -1,29 +1,24 @@
 // @flow
 
-import React, { Component, type Element } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import NavigationState, {
-  type Cache,
-  type InitialState,
-  type State,
-} from './NavigationState';
-
-type ProviderProps = {
-  children: Element<*>,
-  cache: Cache | false,
-  initialState?: InitialState,
-};
+import NavigationState from './NavigationState';
+import type { NavigationProviderProps, NavigationStateShape } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_STATE';
+
 function defaultGetCache() {
   const stored = localStorage.getItem(LS_KEY);
   return stored ? JSON.parse(stored) : {};
 }
-function defaultSetCache(state: State) {
+
+function defaultSetCache(state: NavigationStateShape) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
-export default class NavigationProvider extends Component<ProviderProps> {
+export default class NavigationProvider extends Component<
+  NavigationProviderProps,
+> {
   static defaultProps = {
     cache: {
       get: defaultGetCache,
