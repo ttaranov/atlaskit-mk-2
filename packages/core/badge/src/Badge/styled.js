@@ -12,7 +12,6 @@ const InternalStyledContainer = styled.div`
   ${props => `
     background-color: ${props.backgroundColor};
     color: ${props.textColor};
-    ${props.onClick ? 'border: 3px solid red' : ''};
   `} border-radius: 2em;
   display: inline-block;
   font-size: 12px;

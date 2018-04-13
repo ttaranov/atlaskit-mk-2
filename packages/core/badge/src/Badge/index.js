@@ -45,8 +45,9 @@ type Props = {
   /** Handler function to be called when the value prop is changed.
    Called with fn({ oldValue, newValue }) */
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
+  /** An object of styled components to substitute for the default components. */
   styled: {
-    Container: ComponentType<*>,
+    Container?: ComponentType<*>,
   },
   /** The value displayed within the badge. */
   value: number,

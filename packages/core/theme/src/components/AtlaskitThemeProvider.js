@@ -10,6 +10,9 @@ import ThemeReset from './ThemeReset';
 
 import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 
+// For forward-compat until everything is upgraded.
+import Context from './Context';
+
 function getStylesheetResetCSS(state: ThemeProps) {
   const backgroundColor = background(state);
   return `
@@ -78,9 +81,16 @@ export default class AtlaskitThemeProvider extends Component<
     const { children } = this.props;
     const theme = this.state.theme;
     return (
-      <ThemeProvider theme={theme}>
-        <ThemeReset>{children}</ThemeReset>
-      </ThemeProvider>
+      /* Wrapping the new provider around the old one provides forward
+      compatibility when using the old provider for styled components. This
+      allows us to use components converted to use the new API with consumers
+      using the old provider along side components that may still be using the
+      old theming API. */
+      <Context.Provider value={{ mode: theme[CHANNEL].mode }}>
+        <ThemeProvider theme={theme}>
+          <ThemeReset>{children}</ThemeReset>
+        </ThemeProvider>
+      </Context.Provider>
     );
   }
 }
