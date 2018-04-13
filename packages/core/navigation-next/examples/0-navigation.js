@@ -33,9 +33,13 @@ import {
 const globalNavPrimaryItems = [
   {
     key: 'jira',
-    component: provided => (
+    component: ({ className, children }: *) => (
       <NavigationSubscriber>
-        {navigation => <button {...provided} onClick={navigation.togglePeek} />}
+        {navigation => (
+          <button className={className} onClick={navigation.togglePeek}>
+            {children}
+          </button>
+        )}
       </NavigationSubscriber>
     ),
     icon: JiraIcon,

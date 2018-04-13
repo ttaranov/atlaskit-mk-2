@@ -34,11 +34,10 @@ const GlobalNav = ({
           if (!index) {
             const { icon: Icon, ...rest } = props;
             return (
-              <FirstPrimaryItemWrapper>
+              <FirstPrimaryItemWrapper key={props.key || props.label}>
                 <GlobalItem
                   {...rest}
                   icon={provided => <Icon {...provided} size="large" />}
-                  key={props.key || props.label}
                   size="large"
                 />
               </FirstPrimaryItemWrapper>
