@@ -29,23 +29,55 @@ pipelines:
             - node
 
   default:
+    - parallel:
+        - step:
+            name: Building dists
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - yarn build
+              - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+            caches:
+              - node
+        - step:
+            name: Lint + Typecheck
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
+              - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
+              - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
+              - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+              - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
+            caches:
+              - node
+        - step:
+            name: Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - yarn test:changed
+              - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+            caches:
+              - node
+        - step:
+            name: Building website
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
+              - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
+              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+            caches:
+              - node
     - step:
+        name: Sending Website Build Url
         script:
-          - source ./build-setup.sh
-          - bolt install --pure-lockfile
-          - yarn build
-          - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
-          - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
-          - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
-          - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
-          - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
-          - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-          - yarn test:changed
-          - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-          - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee output.txt
-          - node build/ci-scripts/update.build.status.with.netlify.link.js
-        caches:
-          - node
+          - (cd build/utils && yarn install) # needed for npm-run when updating status
+          - cd build/ci-scripts
+          - yarn install
+          - node download.build.artefact.for.commit.js netlify-build.txt
+          - node update.build.status.with.netlify.link.js
 
 
   custom: # Pipelines that can be scheduled or triggered manually

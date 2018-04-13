@@ -10,12 +10,13 @@ import {
 const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
+// broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
 editors.forEach(editor => {
   BrowserTestCase(
     `Link: paste link and add text, paste link into list for ${
       editor.name
     } editor`,
-    { skip: ['edge', 'ie', 'safari'] },
+    { skip: ['edge', 'ie', 'safari', 'firefox'] },
     async client => {
       const sample = await new Page(client);
       const linkText1 = 'https://www.atlassian.com';

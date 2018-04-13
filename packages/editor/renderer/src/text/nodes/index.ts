@@ -9,6 +9,7 @@ import mediaGroup from './mediaGroup';
 import orderedList from './orderedList';
 import panel from './panel';
 import paragraph from './paragraph';
+import rule from './rule';
 import table from './table';
 import unknown from './unknown';
 
@@ -29,6 +30,7 @@ export const nodeToReducerMapping: { [key: string]: NodeReducer } = {
   orderedList,
   panel,
   paragraph,
+  rule,
   table,
   unknown,
 };
