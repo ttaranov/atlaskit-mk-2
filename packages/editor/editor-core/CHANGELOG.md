@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.7
+- [patch] ED-4249, Table icon should not be highlighted if current selection is inside table. [a7b5597](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7b5597)
+
 ## 70.2.6
 - [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
 
