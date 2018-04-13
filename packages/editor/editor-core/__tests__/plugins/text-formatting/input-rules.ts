@@ -24,6 +24,7 @@ import {
   strikeRegex,
   codeRegex,
 } from '../../../src/plugins/text-formatting/pm-plugins/input-rule';
+import { EditorView } from 'prosemirror-view';
 
 const autoFormatPatterns = [
   {
@@ -91,6 +92,15 @@ describe('text-formatting input rules', () => {
     });
   };
 
+  function typeText(view: EditorView, text: string) {
+    const { $from, $to } = view.state.selection;
+    if (
+      !view.someProp('handleTextInput', f => f(view, $from.pos, $to.pos, text))
+    ) {
+      view.dispatch(view.state.tr.insertText(text, $from.pos, $to.pos));
+    }
+  }
+
   const autoformatCombinations = (
     strings,
     editorContent,
@@ -153,6 +163,20 @@ describe('text-formatting input rules', () => {
       p("let “ it’d close” 'hey"),
       'quote',
     );
+
+    describe('supports composed autoformatting for quotation', () => {
+      trackEvent = jest.fn();
+      const { editorView } = editor(doc(p('{<>}')));
+      typeText(editorView, 'it');
+      expect(editorView.state.doc).toEqualDocument(doc(p('it{<>}')));
+
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p('it’s{<>}')));
+
+      expect(trackEvent).toHaveBeenCalledWith(
+        `atlassian.editor.format.quote.autoformatting`,
+      );
+    });
 
     // test spacing
     autoformats(
