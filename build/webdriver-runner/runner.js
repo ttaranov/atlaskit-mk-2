@@ -15,7 +15,7 @@ process.env.TEST_ENV === 'browserstack'
 function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
-  skipForBrowser = args.length > 0 ? args.shift() : null;
+  const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
     beforeEach(async function() {
@@ -23,15 +23,13 @@ function BrowserTestCase(...args /*:Array<any> */) {
         if (client) {
           const browserName /*: string */ =
             client.driver.desiredCapabilities.browserName;
-          if (skipForBrowser && skipForBrowser.skip) {
-            if (skipForBrowser.skip.indexOf(browserName) > -1) {
+
+          if (skipForBrowser && skipForBrowser[browserName]) {
+            if (client.isReady) {
               client.isReady = false;
               await client.driver.end();
-            } else {
-              if (client.isReady) continue;
-              client.isReady = true;
-              await client.driver.init();
             }
+            continue;
           }
           if (client.isReady) continue;
           client.isReady = true;
