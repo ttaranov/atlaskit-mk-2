@@ -13,7 +13,6 @@ export const fetch = async (url: string) => {
 };
 
 export class PDFViewer extends React.PureComponent<Props, {}> {
-
   private el: HTMLDivElement;
   private pdfViewer: any;
 
@@ -22,11 +21,11 @@ export class PDFViewer extends React.PureComponent<Props, {}> {
     this.pdfViewer.setDocument(this.props.previewData.doc);
   }
 
-  private savePdfElement = (el) => {
+  private savePdfElement = el => {
     this.el = el;
-  }
+  };
 
-  render () {
+  render() {
     return (
       <PDFWrapper innerRef={this.savePdfElement}>
         <div className="pdfViewer" />

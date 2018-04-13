@@ -281,8 +281,10 @@ function getVideoArtifactUrl(fileItem: FileItem) {
 
 function getPDFUrl(fileItem: FileItem) {
   const artifact = 'document.pdf';
-  return fileItem.details &&
+  return (
+    fileItem.details &&
     fileItem.details.artifacts &&
     fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url;
+    fileItem.details.artifacts[artifact].url
+  );
 }

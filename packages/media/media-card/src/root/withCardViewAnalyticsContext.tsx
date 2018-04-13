@@ -80,9 +80,7 @@ export class WithCardViewAnalyticsContext extends React.Component<
     const { dataURI } = this.props;
     const analyticsContext = this.getBaseAnalyticsContext();
 
-    if (metadata.id) {
-      analyticsContext.actionSubjectId = metadata.id;
-    }
+    analyticsContext.actionSubjectId = metadata.id;
     analyticsContext.viewAttributes.viewPreview = shouldDisplayImageThumbnail(
       dataURI,
       metadata.mediaType,

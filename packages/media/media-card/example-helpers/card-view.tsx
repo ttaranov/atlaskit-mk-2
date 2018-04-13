@@ -353,7 +353,7 @@ export const createSelectableCardsWithMenu = (
 };
 
 export const createMissingMetadataFileCards = (appearance: CardAppearance) => {
-  const minimumDetails: FileDetails = {};
+  const minimumDetails: FileDetails = { id: 'id' };
 
   const missingNameDetails: FileDetails = deepcopy(genericFileDetails);
   delete missingNameDetails.name;

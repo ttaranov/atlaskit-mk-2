@@ -1,16 +1,16 @@
 jest.mock('pdfjs-dist/web/pdf_viewer', () => {
   return {
     PDFViewer: () => ({
-      setDocument: () => {}
-    })
-  }
+      setDocument: () => {},
+    }),
+  };
 });
 jest.mock('pdfjs-dist/build/pdf', () => {
   return {
     getDocument: () => ({
-      promise: Promise.resolve()
-    })
-  }
+      promise: Promise.resolve(),
+    }),
+  };
 });
 
 import * as React from 'react';
@@ -211,7 +211,8 @@ describe('<MediaViewer />', () => {
         previewData: {
           status: 'SUCCESSFUL',
           data: {
-            src: 'some-service-host/video?client=some-client-id&token=some-token',
+            src:
+              'some-service-host/video?client=some-client-id&token=some-token',
           },
         },
       });
@@ -246,7 +247,7 @@ describe('<MediaViewer />', () => {
         previewData: {
           status: 'SUCCESSFUL',
           data: {
-            viewer: 'PDF'
+            viewer: 'PDF',
           },
         },
       });
@@ -259,8 +260,7 @@ describe('<MediaViewer />', () => {
           id: 'some-id',
           processingStatus: 'succeeded',
           mediaType: 'doc',
-          artifacts: {
-          },
+          artifacts: {},
         },
       };
       const { subject, el } = createFixture(identifier);
@@ -275,11 +275,10 @@ describe('<MediaViewer />', () => {
       expect(getModel(el)).toMatchObject({
         previewData: {
           status: 'FAILED',
-          err: new Error('no pdf artifacts found for this file')
+          err: new Error('no pdf artifacts found for this file'),
         },
       });
     });
-
   });
 
   it('shows an error when processing failed', () => {

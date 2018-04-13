@@ -130,7 +130,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     dropzone.activate();
   }
 
-  saveDropzoneContainer = element => {
+  saveDropzoneContainer = (element: HTMLDivElement) => {
     this.dropzoneContainer = element;
 
     this.createDropzone();

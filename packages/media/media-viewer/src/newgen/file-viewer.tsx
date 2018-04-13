@@ -17,7 +17,7 @@ const ViewerSelector: React.StatelessComponent<Props> = ({ previewData }) => {
       return <VideoViewer previewData={previewData} />;
     case 'PDF':
       return <PDFViewer previewData={previewData} />;
-    }
+  }
 };
 
 export const FileViewer: React.StatelessComponent<Props> = ({

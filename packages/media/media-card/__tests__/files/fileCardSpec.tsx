@@ -8,6 +8,7 @@ import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
 describe('FileCard', () => {
   it('should render cardFileView with details passed through to props', function() {
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -34,6 +35,7 @@ describe('FileCard', () => {
 
   it('should render CardGenericViewSmall with file details passed through to props', () => {
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -62,6 +64,7 @@ describe('FileCard', () => {
     const fakeDataUri: string = 'l33tdatauri';
 
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -82,6 +85,7 @@ describe('FileCard', () => {
     const fakeDataUri: string = 'l33tdatauri';
 
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',

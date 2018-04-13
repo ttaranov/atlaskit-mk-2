@@ -1,16 +1,16 @@
 jest.mock('pdfjs-dist/web/pdf_viewer', () => {
   return {
     PDFViewer: () => ({
-      setDocument: () => {}
-    })
-  }
+      setDocument: () => {},
+    }),
+  };
 });
 jest.mock('pdfjs-dist/build/pdf', () => {
   return {
     getDocument: () => ({
-      promise: Promise.resolve()
-    })
-  }
+      promise: Promise.resolve(),
+    }),
+  };
 });
 
 import * as React from 'react';
@@ -48,9 +48,7 @@ describe('<FileViewer />', () => {
     const el = mount(<PDFViewer previewData={preview} />);
     expect(el.find(PDFViewer)).toHaveLength(1);
   });
-
 });
-
 
 jest.unmock('pdfjs-dist/build/pdf');
 jest.unmock('pdfjs-dist/web/pdf_viewer');

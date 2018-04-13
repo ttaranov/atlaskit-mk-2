@@ -1,6 +1,18 @@
 export * from './item';
 export * from './actions';
-export * from './auth';
+export {
+  ClientBasedAuth,
+  AsapBasedAuth,
+  Auth,
+  isClientBasedAuth,
+  isAsapBasedAuth,
+  AuthContext,
+  AuthProvider,
+  MediaApiConfig,
+  ContextConfig,
+  UploadableFile,
+  UploadFileCallbacks,
+} from '@atlaskit/media-store';
 export * from './mediaTypes';
 export * from './context/context';
 export * from './collection';

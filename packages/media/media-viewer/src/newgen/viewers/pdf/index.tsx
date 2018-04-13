@@ -8,12 +8,11 @@ export type Props = {
 };
 
 export class PDFViewer extends React.PureComponent<Props, {}> {
-
   static PDFComponent;
 
   componentDidMount() {
     if (!PDFViewer.PDFComponent) {
-      this.loadPDFViewer(this.props)
+      this.loadPDFViewer(this.props);
     }
   }
 
@@ -22,16 +21,15 @@ export class PDFViewer extends React.PureComponent<Props, {}> {
     this.forceUpdate();
   };
 
-  render () {
+  render() {
     const { PDFComponent } = PDFViewer;
     const { previewData } = this.props;
-    return (
-      PDFComponent ?
-        <PDFWrapper>
-          <PDFComponent previewData={previewData}>
-            <div className="pdfViewer" />
-          </PDFComponent>
-        </PDFWrapper> : null
-    );
+    return PDFComponent ? (
+      <PDFWrapper>
+        <PDFComponent previewData={previewData}>
+          <div className="pdfViewer" />
+        </PDFComponent>
+      </PDFWrapper>
+    ) : null;
   }
 }
