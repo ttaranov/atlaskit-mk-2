@@ -156,4 +156,31 @@ describe('Renderer - React/Nodes/Extension', () => {
     ).to.equal('extension');
     extension.unmount();
   });
+
+  it('extension handler should receive type = extension', () => {
+    const extensionHandler = jest.fn();
+    const extensionHandlers: ExtensionHandlers = {
+      'com.atlassian.fabric': extensionHandler,
+    };
+
+    const extension = mount(
+      <Extension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="react"
+      />,
+    );
+
+    expect(extensionHandler.mock.calls[0][0]).to.eql({
+      type: 'extension',
+      extensionType: 'com.atlassian.fabric',
+      extensionKey: 'react',
+      parameters: undefined,
+      content: undefined,
+    });
+
+    extension.unmount();
+  });
 });
