@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.9
+- [patch] ED-4341 fix compositions in autoformatting [fdacc32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdacc32)
+
 ## 70.2.8
 
 ## 70.2.7
