@@ -6,11 +6,10 @@ import {
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
-import { MediaPicker, BinaryUploader } from '../src';
+import { MediaPicker, BinaryUploader, BinaryConfig } from '../src';
 import { ContextFactory } from '@atlaskit/media-core';
-import { BinaryConfig } from '../src/components/binary';
 
-class BinaryWrapper extends Component<{}, {}> {
+class BinaryWrapper extends Component<{}> {
   binary: BinaryUploader;
   dropzoneContainer: HTMLDivElement;
 

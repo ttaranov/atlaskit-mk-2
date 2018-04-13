@@ -6,6 +6,7 @@ const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
   : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
+let skipForBrowser /*:?Object */ = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
@@ -14,19 +15,23 @@ process.env.TEST_ENV === 'browserstack'
 function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
-  const skipForBrowser = args.length > 0 ? args.shift() : null;
+  skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
     beforeEach(async function() {
       for (let client of clients) {
         if (client) {
-          const browserName = client.driver.desiredCapabilities.browserName;
-          if (skipForBrowser && skipForBrowser[browserName]) {
-            if (client.isReady) {
+          const browserName /*: string */ =
+            client.driver.desiredCapabilities.browserName;
+          if (skipForBrowser && skipForBrowser.skip) {
+            if (skipForBrowser.skip.indexOf(browserName) > -1) {
               client.isReady = false;
               await client.driver.end();
+            } else {
+              if (client.isReady) continue;
+              client.isReady = true;
+              await client.driver.init();
             }
-            continue;
           }
           if (client.isReady) continue;
           client.isReady = true;
@@ -127,30 +132,35 @@ function setBrowserStackClients() {
   const launchers = {
     chrome: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'Chrome',
-      browser_version: '64.0',
+      browser_version: '65.0',
       resolution: '1440x900',
     },
     firefox: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'firefox',
-      browser_version: '58',
+      browser_version: '59',
       resolution: '1440x900',
     },
     ie: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'ie',
       browser_version: '11',
       resolution: '1440x900',
     },
     safari: {
       os: 'OS X',
+      os_version: 'Sierra',
       browserName: 'safari',
       browser_version: '10.1',
       resolution: '1920x1080',
     },
     edge: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'edge',
       browser_version: '16',
       resolution: '1440x900',

@@ -66,7 +66,7 @@ export const BigTarget = styled.div`
   align-items: center;
   justify-content: center;
   height: 100px;
-  width: 200px;
+  width: 150px;
   padding-left: 1em;
   padding-right: 1em;
   user-select: none;

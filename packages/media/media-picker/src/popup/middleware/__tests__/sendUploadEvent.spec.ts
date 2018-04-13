@@ -37,7 +37,6 @@ describe('sendUploadEvent middleware', () => {
     expect(eventEmitter.emitReady).not.toBeCalled();
     expect(eventEmitter.emitUploadsStart).not.toBeCalled();
     expect(eventEmitter.emitUploadProgress).not.toBeCalled();
-    expect(eventEmitter.emitUploadFinalizeReady).not.toBeCalled();
     expect(eventEmitter.emitUploadPreviewUpdate).not.toBeCalled();
     expect(eventEmitter.emitUploadProcessing).not.toBeCalled();
     expect(eventEmitter.emitUploadEnd).not.toBeCalled();

@@ -41,8 +41,8 @@ const tableStyle = `
         /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
         background-clip: padding-box;
 
-        & p {
-          margin: 0;
+        th p:not(:first-of-type), td p:not(:first-of-type) {
+          margin-top: 12px;
         }
       }
       th {

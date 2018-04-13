@@ -9,9 +9,12 @@ import {
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import Toggle from '@atlaskit/toggle';
-import { MediaPicker, Browser, UploadPreviewUpdateEventPayload } from '../src';
-import { ModuleConfig, UploadParams } from '../src/domain/config';
+import {
+  MediaPicker,
+  Browser,
+  UploadParams,
+  UploadPreviewUpdateEventPayload,
+} from '../src';
 import {
   DropzonePreviewsWrapper,
   PopupHeader,

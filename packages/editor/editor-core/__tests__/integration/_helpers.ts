@@ -25,3 +25,8 @@ export const clipboardHelper = getExampleUrl(
   'editor-core',
   'clipboard-helper',
 );
+
+export const clipboardInput = '#input';
+
+export const copyAsPlaintextButton = '#copy-as-plaintext';
+export const copyAsHTMLButton = '#copy-as-html';

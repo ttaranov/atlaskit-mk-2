@@ -21,7 +21,7 @@ export const reduceTree = (
       }
     } else {
       if (Object.keys(schema.nodes).indexOf(node.type.name) === -1) {
-        // pass: ignore these nodes
+        childrenChunks.push(nodeToReducerMapping['unknown'](node, schema));
       } else if (nodeToReducerMapping[node.type.name]) {
         childrenChunks.push(nodeToReducerMapping[node.type.name](node, schema));
       } else {

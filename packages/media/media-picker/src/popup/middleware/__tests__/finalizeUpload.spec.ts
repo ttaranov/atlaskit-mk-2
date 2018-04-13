@@ -6,6 +6,7 @@ import {
   FinalizeUploadAction,
   FINALIZE_UPLOAD,
 } from '../../actions/finalizeUpload';
+import { Tenant } from '../../domain';
 
 describe('finalizeUploadMiddleware', () => {
   const auth = {
@@ -29,7 +30,7 @@ describe('finalizeUploadMiddleware', () => {
     id: file.id,
     collection,
   };
-  const tenant = {
+  const tenant: Tenant = {
     auth: {
       clientId: 'some-tenant-client-id',
       token: 'some-tenant-token',
@@ -75,7 +76,7 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload end event', () => {
-    const { fetcher, authService, store, action } = setup();
+    const { fetcher, store, action } = setup();
 
     return finalizeUpload(fetcher, store, action).then(action => {
       expect(action).toEqual(
@@ -88,6 +89,27 @@ describe('finalizeUploadMiddleware', () => {
                 publicId: copiedFile.id,
               },
               public: copiedFile,
+            },
+          },
+          uploadId,
+        }),
+      );
+    });
+  });
+
+  it('should send upload processing event with metadata', () => {
+    const { fetcher, store, action } = setup();
+
+    return finalizeUpload(fetcher, store, action).then(action => {
+      expect(store.dispatch).toBeCalledWith(
+        sendUploadEvent({
+          event: {
+            name: 'upload-processing',
+            data: {
+              file: {
+                ...file,
+                publicId: copiedFile.id,
+              },
             },
           },
           uploadId,

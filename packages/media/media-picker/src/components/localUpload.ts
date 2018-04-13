@@ -1,5 +1,8 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadService } from '../service/uploadService';
+import {
+  UploadService,
+  FileUploadingEventPayload,
+} from '../service/uploadService';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
 import { UploadParams } from '../domain/config';
@@ -10,7 +13,6 @@ import {
   UploadPreviewUpdateEventPayload,
   UploadProcessingEventPayload,
   UploadsStartEventPayload,
-  UploadStatusUpdateEventPayload,
 } from '../domain/uploadEvent';
 
 export interface LocalUploadConfig {
@@ -64,8 +66,8 @@ export class LocalUploadComponent<
   private onFileUploading = ({
     file,
     progress,
-  }: UploadStatusUpdateEventPayload): void => {
-    this.emitUploadProgress(file, progress);
+  }: FileUploadingEventPayload): void => {
+    this.emitUploadProgress(file, progress.toJSON());
   };
 
   private onFileConverting = ({ file }: UploadProcessingEventPayload): void => {

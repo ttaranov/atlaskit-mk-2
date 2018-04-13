@@ -28,6 +28,37 @@ describe('UploadService', () => {
     hasherHashSpy.mockReset();
   });
 
+  describe('setUploadParams', () => {
+    const setup = () => ({
+      uploadService: new UploadService(apiUrl, clientBasedAuthProvider, {
+        collection: '',
+      }),
+    });
+
+    it('should apply defaultUploadParams', () => {
+      const { uploadService } = setup();
+
+      uploadService.setUploadParams({});
+
+      expect(uploadService.getUploadParams()).toEqual({
+        collection: '',
+      });
+    });
+
+    it('should combine default uploadParams given new upload parameters', () => {
+      const { uploadService } = setup();
+      const newUploadParams: UploadParams = {
+        collection,
+      };
+
+      uploadService.setUploadParams(newUploadParams);
+
+      expect(uploadService.getUploadParams()).toEqual({
+        collection,
+      });
+    });
+  });
+
   describe('dropzone', () => {
     const setup = () => {
       const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {

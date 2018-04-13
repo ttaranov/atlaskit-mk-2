@@ -23,28 +23,27 @@ export function request(
 ): Promise<Response> {
   const { method = 'GET', auth, params, headers, body } = options;
 
-  let responsePromise: Promise<Response>;
-  if (method === 'GET') {
-    responsePromise = fetch(createUrl(url, { params, auth }), {
-      method,
-      body,
-      headers,
-    });
-  } else {
-    responsePromise = fetch(createUrl(url, { params }), {
-      method,
-      body,
-      headers: withAuth(auth)(headers),
-    });
-  }
-
-  return responsePromise.then(response => {
+  const processFetchResponse = (response: Response) => {
     if (response.ok || response.redirected) {
       return response;
     } else {
       throw response;
     }
-  });
+  };
+
+  if (method === 'GET') {
+    return fetch(createUrl(url, { params, auth }), {
+      method,
+      body,
+      headers,
+    }).then(processFetchResponse);
+  } else {
+    return fetch(createUrl(url, { params }), {
+      method,
+      body,
+      headers: withAuth(auth)(headers),
+    }).then(processFetchResponse);
+  }
 }
 
 export function mapResponseToJson(response: Response): Promise<any> {

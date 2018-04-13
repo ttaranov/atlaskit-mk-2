@@ -7,7 +7,7 @@ import {
   defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
-import { MediaPicker, Browser } from '../src';
+import { MediaPicker, Browser, BrowserConfig } from '../src';
 import {
   DropzonePreviewsWrapper,
   PopupHeader,

@@ -11,7 +11,6 @@ import {
   UploadPreviewUpdateEventPayload,
   UploadStatusUpdateEventPayload,
   UploadProcessingEventPayload,
-  UploadFinalizeReadyEventPayload,
   UploadErrorEventPayload,
   UploadEndEventPayload,
 } from '@atlaskit/media-picker';
@@ -70,7 +69,6 @@ describe('Media PickerFacade', () => {
     expectedFinishTime: 1,
     timeLeft: 1,
   };
-  const finalizeCb = () => {};
   const preview = { src: '' };
 
   // Spies
@@ -126,18 +124,6 @@ describe('Media PickerFacade', () => {
       ...payload,
     });
     expect(eventName).toBe('upload-status-update');
-  }
-
-  function triggerFinalizeReady(
-    payload?: Partial<UploadFinalizeReadyEventPayload>,
-  ) {
-    const [eventName, cb] = spies.on.mock.calls[4];
-    cb({
-      file: { ...testFileData },
-      finalize: finalizeCb,
-      ...payload,
-    });
-    expect(eventName).toBe('upload-finalize-ready');
   }
 
   function triggerError(payload?: Partial<UploadErrorEventPayload>) {
@@ -223,7 +209,6 @@ describe('Media PickerFacade', () => {
         expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-processing', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-status-update', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-finalize-ready', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-error', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-end', fn);
 
@@ -247,9 +232,6 @@ describe('Media PickerFacade', () => {
         );
         expect(spies.removeAllListeners).toHaveBeenCalledWith(
           'upload-status-update',
-        );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith(
-          'upload-finalize-ready',
         );
         expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-error');
         expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-end');
@@ -334,20 +316,6 @@ describe('Media PickerFacade', () => {
           });
         });
 
-        it('for upload ready for finalization', () => {
-          triggerFinalizeReady();
-
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
-            status: 'unfinalized',
-            finalizeCb,
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
-          });
-        });
-
         it('for upload error', () => {
           triggerError();
           expect(spy).toHaveBeenCalledTimes(1);
@@ -371,6 +339,7 @@ describe('Media PickerFacade', () => {
             fileName: testFileData.name,
             fileSize: testFileData.size,
             fileMimeType: testFileData.type,
+            progress: 1,
           });
         });
       });
@@ -382,7 +351,6 @@ describe('Media PickerFacade', () => {
           status: 'uploading',
         });
 
-        triggerFinalizeReady();
         triggerStatusUpdate();
 
         expect(stateManager.getState(testTemporaryFileId)).toEqual({
@@ -392,7 +360,6 @@ describe('Media PickerFacade', () => {
           fileName: testFileData.name,
           fileSize: testFileData.size,
           fileMimeType: testFileData.type,
-          finalizeCb: finalizeCb,
         });
 
         triggerProcessing();

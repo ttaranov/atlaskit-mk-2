@@ -1,7 +1,8 @@
-import { Popup } from '../popup';
+import { Popup, PopupConfig } from '../popup';
 import { MPPopupLoaded } from '../../outer/analytics/events';
 import { UploadParams } from '../..';
 import { ContextFactory } from '@atlaskit/media-core';
+import { UploadParams } from '../..';
 
 describe('MediaPickerPopup', () => {
   const fakeContext = { trackEvent: jest.fn() };
@@ -14,7 +15,7 @@ describe('MediaPickerPopup', () => {
         token: 'some-token',
       }),
   });
-  const popupConfig = {
+  const popupConfig: PopupConfig = {
     uploadParams: {
       collection: '',
     },
@@ -50,7 +51,7 @@ describe('MediaPickerPopup', () => {
         uploadParams: newUploadParams,
       });
 
-      expect((mediaPicker as any)['uploadParams']).toEqual({
+      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual({
         collection: 'hello-world',
       });
     });
