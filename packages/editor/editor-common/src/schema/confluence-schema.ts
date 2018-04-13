@@ -36,6 +36,8 @@ const nodes = [
   'placeholder',
   'decisionList',
   'decisionItem',
+  'layoutSection',
+  'layoutColumn',
 ];
 
 const marks = [

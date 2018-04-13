@@ -26,7 +26,7 @@ const warnIfDeprecatedAppearance = appearance => {
 };
 
 export default function withDeprecationWarnings<
-  Props: { appearance: ButtonAppearances },
+  Props: { appearance?: ButtonAppearances },
   InnerComponent: ComponentType<Props>,
 >(
   WrappedComponent: InnerComponent,

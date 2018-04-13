@@ -54,6 +54,8 @@ import {
   bodiedExtension,
   date,
   placeholder,
+  layoutSection,
+  layoutColumn,
 } from './nodes';
 
 function addItems(
@@ -135,6 +137,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'mediaSingle', spec: mediaSingle },
   { name: 'placeholder', spec: placeholder },
+  { name: 'layoutSection', spec: layoutSection },
+  { name: 'layoutColumn', spec: layoutColumn },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },

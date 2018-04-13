@@ -45,6 +45,7 @@ import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
+import { insertLayoutColumns } from '../../../layout/actions';
 
 export interface Props {
   buttons: number;
@@ -52,7 +53,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
-  tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
@@ -66,6 +66,7 @@ export interface Props {
   dateEnabled?: boolean;
   horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
+  layoutSectionEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -282,7 +283,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private createItems = () => {
     const {
       tableHidden,
-      tableActive,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
@@ -300,6 +300,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       dateEnabled,
       placeholderTextEnabled,
       horizontalRuleEnabled,
+      layoutSectionEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -358,7 +359,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         content: 'Table',
         value: { name: 'table' },
         isDisabled: tableHidden,
-        isActive: tableActive,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
@@ -407,6 +407,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         tooltipDescription: 'Add placeholder text',
         tooltipPosition: 'right',
         elemBefore: <PlaceholderTextIcon label="Add placeholder text" />,
+      });
+    }
+
+    if (layoutSectionEnabled) {
+      items.push({
+        content: 'Columns',
+        value: { name: 'layout' },
+        tooltipDescription: 'Insert columns',
+        tooltipPosition: 'right',
+        elemBefore: <PlaceholderTextIcon label="Insert columns" />,
       });
     }
 
@@ -463,6 +473,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private createPlaceholderText = (): boolean => {
     const { editorView } = this.props;
     showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.editor.format.layout.button')
+  private insertLayoutColumns = (): boolean => {
+    const { editorView } = this.props;
+    insertLayoutColumns(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -546,6 +563,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'placeholder text':
         this.createPlaceholderText();
+        break;
+      case 'layout':
+        this.insertLayoutColumns();
         break;
       default:
         if (item && item.onClick) {

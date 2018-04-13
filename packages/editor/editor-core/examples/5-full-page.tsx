@@ -159,6 +159,7 @@ export default class Example extends React.Component<Props, State> {
               allowExtension={true}
               allowRule={true}
               allowDate={true}
+              UNSAFE_allowLayouts={true}
               allowTemplatePlaceholders={{ allowInserting: true }}
               {...providers}
               media={{ provider: mediaProvider, allowMediaSingle: true }}
