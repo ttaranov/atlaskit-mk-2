@@ -3,13 +3,19 @@ import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 import Blanket from '@atlaskit/blanket';
 import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
-import { MediaViewerRenderer } from './media-viewer-renderer';
+// import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 import { constructAuthTokenUrl } from './util';
 import { fetch } from './viewers/pdf/pdfComponent';
 
+export interface FileIdentifier {
+  id: string;
+  collectionName?: string;
+}
+
 export type Props = {
   onClose?: () => void;
+  items: FileIdentifier[];
   context: Context;
   data: Identifier;
 };
@@ -44,12 +50,26 @@ export class MediaViewer extends React.Component<Props, State> {
     }
   }
 
+  onNavigationChange = direction => {
+    const { items } = this.props;
+    // const {currentItem} = this.state;
+
+    // if (direction === 'prev') {
+    //   this.setState({currentItem: items.indexOf(curr)})
+    // } else {
+
+    // }
+  };
+
   render() {
     const { onClose } = this.props;
+    const { currentItem } = this.state;
     return (
       <div>
         <Blanket onBlanketClicked={onClose} isTinted />
-        <MediaViewerRenderer model={this.state} />
+        <Navigation onChange={this.onNavigationChange} />
+        <ItemViewer item={currentItem} />
+        {/* <MediaViewerRenderer model={this.state} /> */}
       </div>
     );
   }
@@ -281,8 +301,10 @@ function getVideoArtifactUrl(fileItem: FileItem) {
 
 function getPDFUrl(fileItem: FileItem) {
   const artifact = 'document.pdf';
-  return fileItem.details &&
+  return (
+    fileItem.details &&
     fileItem.details.artifacts &&
     fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url;
+    fileItem.details.artifacts[artifact].url
+  );
 }
