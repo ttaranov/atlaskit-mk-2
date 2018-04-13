@@ -92,7 +92,6 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               isReducedSpacing={isToolbarReducedSpacing}
               isDisabled={disabled}
               editorView={editorView}
-              tableActive={tablesState && tablesState.tableActive}
               tableHidden={tablesState && tablesState.tableHidden}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
