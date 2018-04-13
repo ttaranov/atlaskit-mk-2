@@ -1,5 +1,7 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.1
+
 ## 3.1.0
 - [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
 

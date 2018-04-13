@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 70.2.8
+
 ## 70.2.7
 - [patch] ED-4249, Table icon should not be highlighted if current selection is inside table. [a7b5597](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7b5597)
 
