@@ -16,6 +16,19 @@ export const Blanket = styled.div`
   background-color: #1b2638;
 `;
 
+export const Header = styled.div`
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 98px;
+  opacity: 0.85;
+  background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
+  color: #b8c7e0;
+  padding-top: 17px;
+  padding-left: 17px;
+  line-height: 32px;
+`;
+
 export const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -26,7 +39,7 @@ export const Content = styled.div`
 `;
 
 export const ErrorMessage = styled.div`
-  color: white;
+  color: #b8c7e0;
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`

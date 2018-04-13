@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AkSpinner from '@atlaskit/spinner';
 import { FileViewer } from './file-viewer';
-import { Blanket, Content, ErrorMessage } from './styled';
+import { Blanket, Header, Content, ErrorMessage } from './styled';
 import { Model } from './domain';
 
 export const Spinner: React.StatelessComponent<{}> = ({}) => (
@@ -18,6 +18,9 @@ export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
   onClose,
 }) => (
   <Blanket onClick={onClose}>
+    {model.fileDetails.status === 'SUCCESSFUL' && (
+      <Header>{model.fileDetails.data.name || 'No name given'}</Header>
+    )}
     <Content>
       <Viewer model={model} />
     </Content>

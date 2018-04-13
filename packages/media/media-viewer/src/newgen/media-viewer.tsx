@@ -88,6 +88,7 @@ export class MediaViewer extends React.Component<Props, State> {
                 status: 'SUCCESSFUL',
                 data: {
                   mediaType: mediaType as MediaType,
+                  name: mediaItem.details.name,
                 },
               },
             });
