@@ -2,7 +2,6 @@ import { Popup, PopupConfig } from '../popup';
 import { MPPopupLoaded } from '../../outer/analytics/events';
 import { UploadParams } from '../..';
 import { ContextFactory } from '@atlaskit/media-core';
-import { UploadParams } from '../..';
 
 describe('MediaPickerPopup', () => {
   const fakeContext = { trackEvent: jest.fn() };

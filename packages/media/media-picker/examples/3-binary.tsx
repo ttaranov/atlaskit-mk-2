@@ -40,7 +40,7 @@ class BinaryWrapper extends Component<{}> {
   }
 
   render() {
-    return <div>See console</div>;
+    return <div>See the console</div>;
   }
 }
 

@@ -203,7 +203,6 @@ function plugins(
             // We're intentionally excluding rxjs-async-map from this chunk as it currently breaks our build
             // This package is being used by the media-store package. Unfortunately it's not transpiled, and is thus breaking in ie11.
             (context && !context.includes('node_modules/rxjs-async-map')))
-          // TODO Are we using rxjs-async-map ?
         );
       },
     }),

@@ -15,7 +15,6 @@ import {
 } from '../example-helpers/styled';
 import { renderPreviewImage } from '../example-helpers';
 import { ContextFactory } from '@atlaskit/media-core';
-import { BrowserConfig } from '../src/components/browser';
 
 export interface BrowserWrapperState {
   previewsData: any[];
