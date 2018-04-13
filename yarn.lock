@@ -10851,9 +10851,9 @@ react-scrolllock@^2.0.2:
   dependencies:
     exenv "^1.2.2"
 
-react-select@^2.0.0-alpha.10:
-  version "2.0.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.10.tgz#91b384fd587441434602592763a682236a071412"
+react-select@^2.0.0-alpha.11:
+  version "2.0.0-alpha.11"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-alpha.11.tgz#860766eceefc38b6756ee8561ff539ab24c19688"
   dependencies:
     classnames "^2.2.5"
     glam "^5.0.1"
