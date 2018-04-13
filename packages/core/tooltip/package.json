@@ -31,7 +31,8 @@
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/icon": "^11.0.0",
-    "enzyme": "^3.3.0"
+    "enzyme": "^3.3.0",
+    "jest-styled-components": "^4.11.0-1"
   },
   "keywords": [
     "atlaskit",
