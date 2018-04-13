@@ -234,14 +234,6 @@
     tslib "^1.2.0"
     url "^0.11.0"
 
-"@atlaskit/util-service-support@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-service-support/-/util-service-support-2.0.4.tgz#88ba41a44c9fa33ca70d1b48b3e5e48c1f8bf02a"
-  dependencies:
-    tslib "^1.2.0"
-    url "^0.11.0"
-    url-search-params "^0.10.0"
-
 "@atlaskit/util-shared-styles@^2.1.0", "@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.6.0":
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.3.tgz#5b9dfa1ebd9f6c062aa6309dc7236bdbd50acea9"
