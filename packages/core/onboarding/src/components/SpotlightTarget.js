@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ElementRef, type ElementType } from 'react';
+import React, { Component, type ElementType } from 'react';
 import NodeResolver from 'react-node-resolver';
 
 import { withSpotlightState } from './SpotlightManager';
@@ -37,7 +37,7 @@ class SpotlightTarget extends Component<Props> {
       spotlightRegistry.remove(name);
     }
   }
-  getNode = (ref: ElementRef<*>) => {
+  getNode = (ref: HTMLElement) => {
     this.node = ref;
   };
   render() {
