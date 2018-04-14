@@ -64,9 +64,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       const defaultSearch = {
         icon: SearchIcon,
         label: 'Search',
-        onClick: () => {
-          navigation.openDrawer('search');
-        },
+        onClick: navigation.openSearchDrawer,
         tooltip: 'Search',
       };
       inbuiltPrimaryItems.push({ ...defaultSearch, ...search });
@@ -76,9 +74,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       const defaultCreate = {
         icon: CreateIcon,
         label: 'Create',
-        onClick: () => {
-          navigation.openDrawer('create');
-        },
+        onClick: navigation.openCreateDrawer,
         tooltip: 'Create',
       };
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
