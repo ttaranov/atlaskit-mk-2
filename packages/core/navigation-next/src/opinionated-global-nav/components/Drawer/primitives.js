@@ -1,10 +1,11 @@
 // @flow
 
-import React, { Component, type ComponentType, type Node } from 'react';
+import React, { Component } from 'react';
 import { colors, layers } from '@atlaskit/theme';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 
 import { Slide } from './transitions';
+import type { DrawerProps, DrawerWrapperProps } from './types';
 
 // Misc.
 // ------------------------------
@@ -18,8 +19,7 @@ const widths = {
 // Wrapper
 // ------------------------------
 
-type WrapperProps = { width: $Keys<typeof widths> };
-const Wrapper = ({ width = 'narrow', ...props }: WrapperProps) => {
+const Wrapper = ({ width = 'narrow', ...props }: DrawerWrapperProps) => {
   return (
     <div
       css={{
@@ -46,8 +46,7 @@ const Content = props => <div css={{ flex: 1 }} {...props} />;
 // Sidebar / Icons etc.
 // ------------------------------
 
-type SidebarProps = {};
-const Sidebar = ({ ...props }: SidebarProps) => {
+const Sidebar = props => {
   return (
     <div
       css={{
@@ -96,13 +95,6 @@ const IconWrapper = (props: IconWrapperProps) => (
     {...props}
   />
 );
-export type DrawerProps = WrapperProps & {
-  children: Node,
-  icon: ComponentType<*>,
-  onClose?: any => void,
-  onKeyDown?: (SyntheticKeyboardEvent<*>) => void,
-  navigation: Object,
-};
 
 export default class DrawerPrimitive extends Component<DrawerProps> {
   render() {

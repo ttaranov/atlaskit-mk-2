@@ -7,8 +7,9 @@ import { TransitionGroup } from 'react-transition-group';
 import Blanket from '@atlaskit/blanket';
 
 import { NavigationSubscriber } from '../../../';
-import DrawerPrimitive, { type DrawerProps } from './primitives';
+import DrawerPrimitive from './primitives';
 import { Fade } from './transitions';
+import type { DrawerProps } from './types';
 
 // resolve lifecycle methods
 const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
