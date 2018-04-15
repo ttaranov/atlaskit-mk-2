@@ -1,7 +1,7 @@
 // @flow
 
 export { default as ActionsContainer } from './ActionsContainer';
-export { default as ButtonGroup } from '@atlaskit/button';
+export { ButtonGroup } from '@atlaskit/button';
 export { default as Container } from './Container';
 export { default as Description } from './Description';
 export { default as Header } from './Header';

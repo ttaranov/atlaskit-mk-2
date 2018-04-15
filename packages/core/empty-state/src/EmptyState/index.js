@@ -4,7 +4,8 @@ import React from 'react';
 import type { Node } from 'react';
 
 import Spinner from '@atlaskit/spinner';
-import { ButtonGroup } from '@atlaskit/button';
+import { ButtonGroup, ButtonType } from '@atlaskit/button';
+//import {ButtonType} from '@atlaskit/button';
 
 import {
   ActionsContainer,
