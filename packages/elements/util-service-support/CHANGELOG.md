@@ -1,5 +1,8 @@
 # @atlaskit/util-service-support
 
+## 2.0.5
+- [patch] FS-1698 migrated util-service-support to mk-2 [e0bcb61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bcb61)
+
 ## 2.0.4 (2018-02-06)
 
 * bug fix; added omitCredentials to SecurityOptions ([88cb203](https://bitbucket.org/atlassian/atlaskit/commits/88cb203))
