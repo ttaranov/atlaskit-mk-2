@@ -22,6 +22,7 @@ export type Outcome<Data, Err> =
 
 export type FileDetails = {
   mediaType: MediaType;
+  name?: string;
 };
 
 export type ObjectUrl = string;
