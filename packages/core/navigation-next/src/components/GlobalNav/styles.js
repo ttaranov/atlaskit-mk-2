@@ -21,48 +21,24 @@ const baseStyles = {
 };
 
 const light = () => ({
-  expanded: {
-    ...baseStyles,
-    backgroundColor: colors.B500,
-    color: colors.N0,
-    fill: colors.B500,
-  },
-  collapsed: {
-    ...baseStyles,
-    backgroundColor: colors.N20,
-    color: colors.N800,
-    fill: colors.N20,
-  },
+  ...baseStyles,
+  backgroundColor: colors.B500,
+  color: colors.N0,
+  fill: colors.B500,
 });
 
 const dark = () => ({
-  expanded: {
-    ...baseStyles,
-    backgroundColor: colors.DN0,
-    color: colors.DN400,
-    fill: colors.DN0,
-  },
-  collapsed: {
-    ...baseStyles,
-    backgroundColor: colors.DN0,
-    color: colors.DN400,
-    fill: colors.DN0,
-  },
+  ...baseStyles,
+  backgroundColor: colors.DN0,
+  color: colors.DN400,
+  fill: colors.DN0,
 });
 
 const settings = () => ({
-  expanded: {
-    ...baseStyles,
-    backgroundColor: colors.N800,
-    color: colors.N0,
-    fill: colors.N800,
-  },
-  collapsed: {
-    ...baseStyles,
-    backgroundColor: colors.N800,
-    color: colors.N0,
-    fill: colors.N800,
-  },
+  ...baseStyles,
+  backgroundColor: colors.N800,
+  color: colors.N0,
+  fill: colors.N800,
 });
 
 const themes: ThemedGlobalComponentStyles<void> = { dark, light, settings };

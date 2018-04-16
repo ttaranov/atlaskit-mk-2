@@ -8,16 +8,9 @@ import type { ItemPresentationProps } from '../components/Item/types';
  */
 type ObjectType = { [string]: * };
 
-type GlobalComponentThemeObject = {
-  collapsed: ObjectType,
-  expanded: ObjectType,
-};
-
 type ProductComponentThemeObject = { container: ObjectType, root: ObjectType };
 
-type GlobalComponentTheme<
-  Props: {} | void,
-> = Props => GlobalComponentThemeObject;
+type GlobalComponentTheme<Props: {} | void> = Props => ObjectType;
 
 type ProductComponentTheme<
   Props: {} | void,

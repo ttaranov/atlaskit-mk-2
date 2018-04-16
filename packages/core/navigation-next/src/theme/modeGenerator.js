@@ -21,18 +21,11 @@ export default ({ background, text }: Args): Mode => {
       return light.globalItem(args);
     },
     globalNav: () => {
-      const { collapsed, expanded } = light.globalNav();
+      const styles = light.globalNav();
       return {
-        collapsed: {
-          ...collapsed,
-          backgroundColor: background,
-          color: text,
-        },
-        expanded: {
-          ...expanded,
-          backgroundColor: background,
-          color: text,
-        },
+        ...styles,
+        backgroundColor: background,
+        color: text,
       };
     },
     productNav: () => {
