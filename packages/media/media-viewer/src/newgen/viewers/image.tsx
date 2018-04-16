@@ -1,18 +1,8 @@
 import * as React from 'react';
-import { ImagePreview, Outcome } from '../domain';
+import { Outcome } from '../domain';
 import { Img, ErrorMessage } from '../styled';
 import { Spinner } from '../loading';
 import { Context, FileItem } from '@atlaskit/media-core';
-
-export type Props = {
-  previewData: ImagePreview;
-};
-
-export const ImageViewer: React.StatelessComponent<Props> = ({
-  previewData,
-}) => {
-  return <Img src={previewData.objectUrl} />;
-};
 
 export type ObjectUrl = string;
 
@@ -27,7 +17,7 @@ export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
 };
 
-export class ImageViewer2 extends React.Component<
+export class ImageViewer extends React.Component<
   ImageViewerProps,
   ImageViewerState
 > {

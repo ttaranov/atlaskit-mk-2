@@ -16,6 +16,7 @@ jest.mock('pdfjs-dist/build/pdf', () => {
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
+import { FileItem } from '@atlaskit/media-core';
 import {
   MediaViewerRenderer,
   FileViewer,
@@ -26,6 +27,24 @@ import { FilePreview } from '../../src/newgen/domain';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { PDFViewer } from '../../src/newgen/viewers/pdf';
+import { Stubs } from '../_stubs';
+
+function createContext(subject?, blobService?) {
+  const token = 'some-token';
+  const clientId = 'some-client-id';
+  const serviceHost = 'some-service-host';
+  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
+  const contextConfig = {
+    serviceHost,
+    authProvider,
+  };
+  return Stubs.context(
+    contextConfig,
+    undefined,
+    subject && Stubs.mediaItemProvider(subject),
+    blobService,
+  ) as any;
+}
 
 describe('<MediaViewerRenderer />', () => {
   const fileDetails: FileDetails = { mediaType: 'doc' };
@@ -130,7 +149,18 @@ describe('<FileViewer />', () => {
       viewer: 'IMAGE',
       objectUrl: '',
     };
-    const el = mount(<FileViewer previewData={preview} />);
+    const context = createContext();
+    const item: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'failed',
+        mediaType: 'image',
+      },
+    };
+    const el = mount(
+      <FileViewer previewData={preview} context={context} item={item} />,
+    );
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
 

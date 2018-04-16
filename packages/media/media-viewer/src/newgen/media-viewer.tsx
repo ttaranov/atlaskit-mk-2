@@ -44,8 +44,18 @@ export class MediaViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { onClose } = this.props;
-    return <MediaViewerRenderer onClose={onClose} model={this.state} />;
+    const { onClose, context } = this.props;
+    const { fileDetails } = this.state;
+    const item =
+      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data.item : void 0;
+    return (
+      <MediaViewerRenderer
+        onClose={onClose}
+        item={item}
+        context={context}
+        model={this.state}
+      />
+    );
   }
 
   // It's possible that a different identifier or context was passed.
@@ -89,6 +99,7 @@ export class MediaViewer extends React.Component<Props, State> {
                 data: {
                   mediaType: mediaType as MediaType,
                   name: mediaItem.details.name,
+                  item: mediaItem,
                 },
               },
             });

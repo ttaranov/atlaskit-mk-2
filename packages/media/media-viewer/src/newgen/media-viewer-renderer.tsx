@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StatelessComponent } from 'react';
 import AkSpinner from '@atlaskit/spinner';
+import { Context, FileItem } from '@atlaskit/media-core';
 import { Blanket, Header, Content, ErrorMessage } from './styled';
 import { Model, FilePreview } from './domain';
 import { ImageViewer } from './viewers/image';
@@ -14,23 +15,27 @@ export const Spinner: StatelessComponent<{}> = ({}) => (
 export type Props = {
   model: Model;
   onClose?: () => void;
+  context?: Context;
+  item?: FileItem;
 };
 
 export const MediaViewerRenderer: StatelessComponent<Props> = ({
   model,
   onClose,
+  context,
+  item,
 }) => (
   <Blanket onClick={onClose}>
     {model.fileDetails.status === 'SUCCESSFUL' && (
       <Header>{model.fileDetails.data.name || 'No name given'}</Header>
     )}
     <Content>
-      <Viewer model={model} />
+      <Viewer model={model} context={context} item={item} />
     </Content>
   </Blanket>
 );
 
-export const Viewer: StatelessComponent<Props> = ({ model }) => {
+export const Viewer: StatelessComponent<Props> = ({ model, item, context }) => {
   const { fileDetails, previewData } = model;
 
   switch (fileDetails.status) {
@@ -41,7 +46,13 @@ export const Viewer: StatelessComponent<Props> = ({ model }) => {
         return <ErrorMessage>This file is unsupported</ErrorMessage>;
       }
       if (previewData.status === 'SUCCESSFUL') {
-        return <FileViewer previewData={previewData.data} />;
+        return (
+          <FileViewer
+            previewData={previewData.data}
+            context={context}
+            item={item}
+          />
+        );
       } else if (previewData.status === 'PENDING') {
         return <Spinner />;
       } else {
@@ -54,14 +65,22 @@ export const Viewer: StatelessComponent<Props> = ({ model }) => {
 
 export type FileViewerProps = {
   previewData: FilePreview;
+  context?: Context;
+  item?: FileItem;
 };
 
 export const FileViewer: StatelessComponent<FileViewerProps> = ({
   previewData,
+  context,
+  item,
 }) => {
   switch (previewData.viewer) {
     case 'IMAGE':
-      return <ImageViewer previewData={previewData} />;
+      if (context && item) {
+        return <ImageViewer context={context} item={item} />;
+      } else {
+        return null;
+      }
     case 'VIDEO':
       return <VideoViewer previewData={previewData} />;
     case 'PDF':

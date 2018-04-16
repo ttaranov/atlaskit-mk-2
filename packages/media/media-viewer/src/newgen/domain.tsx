@@ -1,4 +1,4 @@
-import { MediaType, MediaItemType } from '@atlaskit/media-core';
+import { MediaType, MediaItemType, FileItem } from '@atlaskit/media-core';
 
 export type Identifier = {
   type: MediaItemType;
@@ -23,6 +23,7 @@ export type Outcome<Data, Err> =
 export type FileDetails = {
   mediaType: MediaType;
   name?: string;
+  item?: FileItem;
 };
 
 export type ObjectUrl = string;
