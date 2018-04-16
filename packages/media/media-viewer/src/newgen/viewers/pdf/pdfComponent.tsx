@@ -4,11 +4,13 @@ import { PDFWrapper } from '../../styled';
 import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
+
 export type Props = {
   previewData: PDFPreview;
 };
 
-export const fetch = async (url: string) => {
+export const fetch = async (url: string): Promise<Blob> => {
   return pdfjsLib.getDocument(url).promise;
 };
 

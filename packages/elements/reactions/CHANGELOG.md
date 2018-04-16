@@ -1,5 +1,10 @@
 # @atlaskit/reactions
 
+## 11.0.9
+- [patch] FS-1645 update reaction animations [c01d36d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c01d36d)
+
+## 11.0.8
+
 ## 11.0.7
 - [patch] FS-1882 update reaction button to match mobile [acc8118](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acc8118)
 

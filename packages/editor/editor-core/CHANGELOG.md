@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 70.2.14
+- [patch] ED-4348 fix tables built from transformers [0c2a88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2a88a)
+
+## 70.2.13
+- [patch] ED-4293, click on left and right of editor in confluence should not scroll editor to bottom. [0476a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0476a78)
+
+## 70.2.12
+- [patch] ED-4183: added invite to edit button [c0ccb58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0ccb58)
+
+## 70.2.11
+- [patch] Fix issue where attempting to edit copied link on editor would throw error [12146b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12146b2)
+
+## 70.2.10
+
+## 70.2.9
+- [patch] ED-4341 fix compositions in autoformatting [fdacc32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdacc32)
+
 ## 70.2.8
 
 ## 70.2.7

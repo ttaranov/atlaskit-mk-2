@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 16.0.4
+- [patch] CFE-1078: Add the type of extension to the call to extension handler [4db252c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4db252c)
+
 ## 16.0.3
 
 ## 16.0.2

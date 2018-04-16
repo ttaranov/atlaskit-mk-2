@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 13.1.3
+- [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
+
+## 13.1.2
+- [patch] Fix dynamic import in PDF viewer (next gen) [2e37250](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e37250)
+
 ## 13.1.1
 
 ## 13.1.0
