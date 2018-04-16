@@ -2,7 +2,8 @@ import { StoryBookAuthProvider } from './authProvider';
 import { collectionNames } from './collectionNames';
 import { ContextFactory, Context } from '@atlaskit/media-core';
 
-export const defaultServiceHost = 'https://dt-api.dev.atl-paas.net';
+export const defaultServiceHost =
+  'https://dt-api.ap-southeast-2.dev.atl-paas.net';
 
 export const defaultParams = {
   clientId: '5a9812fc-d029-4a39-8a46-d3cc36eed7ab',

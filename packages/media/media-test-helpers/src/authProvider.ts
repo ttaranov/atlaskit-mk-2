@@ -4,8 +4,9 @@ import { Auth, AuthProvider, AuthContext } from '@atlaskit/media-core';
 
 const cachedAuths: { [key: string]: Promise<Auth> } = {};
 const authProviderBaseURL =
-  'https://api-private.dev.atlassian.com/media-playground/api/';
-export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';
+  'https://api-private.dev.atlassian.com/media-playground-ddev/api/';
+export const userAuthProviderBaseURL =
+  'https://dt-api.ap-southeast-2.dev.atl-paas.net';
 
 export class StoryBookAuthProvider {
   static create(

@@ -24,7 +24,7 @@ const requestAuthProvider = async (
   authEnvironment: string,
   collectionName: string,
 ): Promise<Auth> => {
-  const url = `https://api-private.dev.atlassian.com/media-playground/api/token/tenant?environment=${authEnvironment}`;
+  const url = `https://api-private.dev.atlassian.com/media-playground-ddev/api/token/tenant?environment=${authEnvironment}`;
   const body = JSON.stringify({
     access: accessUrns[collectionName],
   });
