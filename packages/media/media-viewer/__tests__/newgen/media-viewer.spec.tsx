@@ -72,15 +72,6 @@ describe('<MediaViewer />', () => {
     type: 'file' as MediaItemType,
   };
 
-  const imageItem: MediaItem = {
-    type: 'file',
-    details: {
-      id: 'some-id',
-      processingStatus: 'succeeded',
-      mediaType: 'image',
-    },
-  };
-
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture(identifier);
     el.find(Blanket).simulate('click');

@@ -72,7 +72,6 @@ describe('<MediaViewerRenderer />', () => {
         status: 'SUCCESSFUL',
         data: {
           viewer: 'IMAGE',
-          objectUrl: '',
         },
       },
     };
@@ -147,7 +146,6 @@ describe('<FileViewer />', () => {
   it('should show the image viewer if media type is image', () => {
     const preview: FilePreview = {
       viewer: 'IMAGE',
-      objectUrl: '',
     };
     const context = createContext();
     const item: FileItem = {
