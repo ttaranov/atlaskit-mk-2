@@ -8,13 +8,7 @@ import { sortByRelevance } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import ReactionPicker from '../src/reaction-picker';
 import { reactionsProvider } from '../src/mock-reactions-provider';
-import {
-  smileyId,
-  flagBlackId,
-  thumbsdownId,
-  thumbsupId,
-  grinningId,
-} from './_test-data';
+import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -180,17 +174,24 @@ describe('@atlaskit/reactions/reactions', () => {
   it('should call flash on Reaction after trying to react again', () => {
     const reactions = mount(renderReactions());
 
-    const reactedReaction = reactions
-      .find(Reaction)
-      .filterWhere(
-        reaction => reaction.prop('reaction').emojiId === grinningId.id!,
-      )
-      .instance() as Reaction;
+    return reactionsProvider
+      .addReaction(containerAri, demoAri, thumbsupId.id!)
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state);
+        reactions.update();
 
-    const reactionFlash = sinon.spy(reactedReaction, 'flash');
+        const reactedReaction = reactions
+          .find(Reaction)
+          .filterWhere(
+            reaction => reaction.prop('reaction').emojiId === thumbsupId.id!,
+          )
+          .instance() as Reaction;
 
-    reactions.find(ReactionPicker).prop('onSelection')(grinningId.id!);
+        const reactionFlash = sinon.spy(reactedReaction, 'flash');
 
-    expect(reactionFlash.calledOnce).to.be.true;
+        reactions.find(ReactionPicker).prop('onSelection')(thumbsupId.id!);
+
+        expect(reactionFlash.calledOnce).to.be.true;
+      });
   });
 });
