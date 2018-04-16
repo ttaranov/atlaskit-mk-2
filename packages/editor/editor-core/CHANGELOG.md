@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.12
+- [patch] ED-4183: added invite to edit button [c0ccb58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0ccb58)
+
 ## 70.2.11
 - [patch] Fix issue where attempting to edit copied link on editor would throw error [12146b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12146b2)
 
