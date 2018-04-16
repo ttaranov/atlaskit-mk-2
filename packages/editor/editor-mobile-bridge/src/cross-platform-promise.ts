@@ -4,7 +4,7 @@ const pendingPromises: Map<string, Holder<any>> = new Map<
   string,
   Holder<any>
 >();
-export var counter: number = 0;
+export let counter: number = 0;
 
 class Holder<T> {
   promise: Promise<T>;
