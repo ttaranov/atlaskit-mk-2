@@ -8,15 +8,21 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       const { selection, schema: { nodes } } = state;
       const { $from, $to } = selection;
       const node = $from.node($from.depth);
+      const selectionIsAtEndOfCodeBlock =
+        $from.parentOffset === $from.parent.nodeSize - 2 &&
+        $from.indexAfter($from.depth) === node.childCount;
       if (
         node &&
         node.type === nodes.codeBlock &&
-        node.textContent.slice(node.textContent.length - 1) === '\n'
+        node.lastChild &&
+        node.lastChild.text!.endsWith('\n') &&
+        selectionIsAtEndOfCodeBlock
       ) {
         const tr = state.tr
           .split($to.pos)
           .setBlockType($to.pos + 2, $to.pos + 2, nodes.paragraph)
-          .delete($from.pos - 1, $from.pos);
+          .delete($from.pos - 1, $from.pos)
+          .scrollIntoView();
         dispatch(tr);
         return true;
       }
