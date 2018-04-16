@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.14
+- [patch] ED-4348 fix tables built from transformers [0c2a88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2a88a)
+
 ## 70.2.13
 - [patch] ED-4293, click on left and right of editor in confluence should not scroll editor to bottom. [0476a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0476a78)
 
