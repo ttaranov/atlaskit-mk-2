@@ -9,7 +9,7 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
-} from '../SearchResults';
+} from '../SearchResultsUtil';
 
 const renderObjects = (results: Result[], query: string) => (
   <ResultItemGroup

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, { Props } from '../src/components/SearchResults';
+import searchResults, { Props } from '../src/components/home/HomeSearchResults';
 import {
   ResultItemGroup,
   PersonResult,

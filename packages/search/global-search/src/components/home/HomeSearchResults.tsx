@@ -10,7 +10,7 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
-} from '../SearchResults';
+} from '../SearchResultsUtil';
 
 const renderRecent = (results: Result[]) => {
   if (results.length === 0) {
