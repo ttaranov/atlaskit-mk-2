@@ -16,7 +16,7 @@ editors.forEach(editor => {
     `Link: paste link and add text, paste link into list for ${
       editor.name
     } editor`,
-    { skip: ['edge', 'ie', 'safari', 'firefox'] },
+    { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const sample = await new Page(client);
       const linkText1 = 'https://www.atlassian.com';
