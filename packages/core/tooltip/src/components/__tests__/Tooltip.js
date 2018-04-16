@@ -1,35 +1,32 @@
 // @flow
 
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+
+import { shallow, mount, ReactWrapper } from 'enzyme';
 import 'jest-styled-components';
 import Tooltip, { marshal } from '../Tooltip';
 import getPosition from '../utils/getPosition';
 
+// Variables starting with mock are executed before jest.mock's hoisting
+// See https://facebook.github.io/jest/docs/en/es6-class-mocks.html#calling-jestmock-jest-docs-en-jest-objecthtml-jestmockmodulename-factory-options-with-the-module-factory-parameter
+let mockStatus;
+jest.mock('react-transition-group/Transition', () => {
+  const MockTransition = ({ children }) => children(mockStatus);
+  return MockTransition;
+});
+
+let mockPosition;
 jest.mock('../utils/getPosition', () => {
-  return jest.fn(() => ({
-    coordinates: {
-      left: 50,
-      top: 100,
-    },
-    mousePosition: 'bottom',
-    position: 'bottom',
-  }));
+  return jest.fn(() => mockPosition);
 });
 jest.useFakeTimers();
 
-function getPortalChildren(portalWrapper) {
+function getPortalContents(wrapper) {
   // Layer Manager's portal renders its content after a setTimeout
   jest.runAllTimers();
-  const instance = portalWrapper.instance();
-  // portalChildRef is a raw DOM node. In enzyme 2 we could wrap this with ReactWrapper and
-  // use enzyme functions on it as per https://github.com/airbnb/enzyme/issues/252#issuecomment-266125422.
-  // Enzyme 3 breaks this functionality though so we can only test raw DOM attributes - https://github.com/airbnb/enzyme/issues/1202
-  const portalChildRef = instance && instance.gatewayOrPortalChildRef;
-
-  return portalChildRef && portalChildRef.props
-    ? portalChildRef.props.children
-    : undefined;
+  wrapper.update();
+  const instance = wrapper.find('Portal').instance();
+  return new ReactWrapper(instance.props.children);
 }
 
 function mountBase(element) {
@@ -40,6 +37,15 @@ describe('Tooltip', () => {
   beforeEach(() => {
     // $FlowFixMe - mocked import
     getPosition.mockClear();
+    mockStatus = 'exited';
+    mockPosition = {
+      coordinates: {
+        left: 50,
+        top: 100,
+      },
+      mousePosition: 'bottom',
+      position: 'right',
+    };
   });
   it('should be possible to create a component', () => {
     const wrapper = shallow(
@@ -366,6 +372,7 @@ describe('Tooltip', () => {
     });
 
     it('should render a tooltip after show method is called', () => {
+      mockStatus = 'entered';
       const wrapper = mountBase(
         <Tooltip content="Tooltip content">
           <div>foo</div>
@@ -376,8 +383,8 @@ describe('Tooltip', () => {
       instance.show({ immediate: true });
       wrapper.update();
 
-      const portalContents = getPortalChildren(wrapper.children().childAt(1));
-      expect(portalContents).toBe('Tooltip content');
+      const tooltip = getPortalContents(wrapper);
+      expect(tooltip.text()).toBe('Tooltip content');
     });
 
     it('should not render a tooltip if no content prop provided', () => {
@@ -404,6 +411,14 @@ describe('Tooltip', () => {
         clientY: 100,
       });
 
+      expect(wrapper.state()).toEqual(
+        expect.objectContaining({
+          coordinates: null,
+          mousePosition: 'bottom',
+          position: 'left',
+        }),
+      );
+
       const instance = wrapper.instance();
       instance.show({ immediate: true });
 
@@ -415,6 +430,37 @@ describe('Tooltip', () => {
           },
           mousePosition: 'bottom',
           position: 'left',
+        }),
+      );
+
+      expect(wrapper.state()).toEqual(
+        expect.objectContaining({
+          coordinates: {
+            left: 50,
+            top: 100,
+          },
+          mousePosition: 'bottom',
+          position: 'right',
+        }),
+      );
+    });
+
+    it('should render the tooltip with the correct coordinates', () => {
+      const wrapper = mountBase(
+        <Tooltip content="Tooltip content">
+          <div>foo</div>
+        </Tooltip>,
+      );
+
+      const instance = wrapper.instance();
+      instance.show({ immediate: true });
+      wrapper.update();
+
+      const tooltip = getPortalContents(wrapper);
+      expect(tooltip.find('div').prop('style')).toEqual(
+        expect.objectContaining({
+          left: 50,
+          top: 100,
         }),
       );
     });
