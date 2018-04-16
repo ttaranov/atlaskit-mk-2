@@ -25,7 +25,7 @@ const getItemBase = (
     // We have to specifically destructure children here or else eslint
     // complains about the <a> not having content
     return ({ children, ...props }: GlobalItemRenderComponentProps) => (
-      <a href={href} onClick={onClick} target={target} {...props}>
+      <a {...props} href={href} onClick={onClick} target={target}>
         {children}
       </a>
     );

@@ -219,14 +219,15 @@ const ItemWrapper = props => (
     {...props}
   />
 );
-const Description = ({ size, ...props }: ItemType) => (
+const Description = ({ size, children }: ItemType) => (
   <div
     css={{
       marginLeft: '16px',
       marginTop: size === 'small' ? '8px' : '0',
     }}
-    {...props}
-  />
+  >
+    {children}
+  </div>
 );
 
 export default () => (
@@ -236,7 +237,7 @@ export default () => (
         <VariationWrapper key={title}>
           <h3>{title}</h3>
           {items.map(({ description, ...item }) => (
-            <ItemWrapper key={item.text}>
+            <ItemWrapper key={description}>
               <ItemComponent {...item} />
               <Description {...item}>{description}</Description>
             </ItemWrapper>
