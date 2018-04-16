@@ -10,6 +10,7 @@ import {
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './HomeSearchResults';
+import settlePromises from '../../util/settle-promises';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
@@ -145,9 +146,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     */
     (async () => {
       const criticalPromises = [searchRecentPromise, searchCrossProductPromise];
-      const promiseResults = await Promise.all(
-        criticalPromises.map(p => p.catch(Error)),
-      );
+      const promiseResults = await settlePromises(criticalPromises);
       const allCriticalPromisesFailed = promiseResults.every(
         p => p instanceof Error,
       );
@@ -163,13 +162,11 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
           isLoading: true,
         });
 
-        await Promise.all(
-          [
-            searchRecentPromise,
-            searchCrossProductPromise,
-            searchPeoplePromise,
-          ].map(p => p.catch(Error)),
-        );
+        await settlePromises([
+          searchRecentPromise,
+          searchCrossProductPromise,
+          searchPeoplePromise,
+        ]);
       } finally {
         this.setState({
           isLoading: false,

@@ -10,6 +10,7 @@ import {
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
+import settlePromises from '../../util/settle-promises';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -151,9 +152,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           isLoading: true,
         });
 
-        await Promise.all(
-          [confXpSearchPromise, searchPeoplePromise].map(p => p.catch(Error)),
-        );
+        await settlePromises([confXpSearchPromise, searchPeoplePromise]);
       } finally {
         this.setState({
           isLoading: false,
