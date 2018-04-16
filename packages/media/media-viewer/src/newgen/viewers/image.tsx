@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Outcome } from '../domain';
+import { Context, FileItem } from '@atlaskit/media-core';
 import { Img, ErrorMessage } from '../styled';
 import { Spinner } from '../loading';
-import { Context, FileItem } from '@atlaskit/media-core';
 
 export type ObjectUrl = string;
 
@@ -16,24 +16,23 @@ export type ImageViewerProps = {
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
 };
+const initialState: ImageViewerState = {
+  objectUrl: { status: 'PENDING' },
+};
 
 export class ImageViewer extends React.Component<
   ImageViewerProps,
   ImageViewerState
 > {
-  state: ImageViewerState = {
-    objectUrl: { status: 'PENDING' },
-  };
+  state: ImageViewerState = initialState;
 
   componentDidMount() {
-    this.populateImagePreviewData(this.props.item, this.props.context);
+    this.init(this.props.item, this.props.context);
   }
 
   componentWillUnmount() {
     this.release();
   }
-
-  // TODO rerender on prop change, e.g. context?
 
   render() {
     const { objectUrl } = this.state;
@@ -56,7 +55,7 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async populateImagePreviewData(fileItem: FileItem, context: Context) {
+  private async init(fileItem: FileItem, context: Context) {
     try {
       const service = context.getBlobService();
       const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {

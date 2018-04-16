@@ -30,7 +30,6 @@ export type ObjectUrl = string;
 
 export type ImagePreview = {
   viewer: 'IMAGE';
-  objectUrl: ObjectUrl;
 };
 export type VideoPreview = {
   viewer: 'VIDEO';

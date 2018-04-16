@@ -284,7 +284,14 @@ describe('<MediaViewer />', () => {
   it('resets the state when the context property value is changed', () => {
     const { el, subject } = createFixture(identifier);
 
-    subject.next(imageItem);
+    subject.next({
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+        mediaType: 'video',
+      },
+    });
     el.update();
 
     expect(getModel(el)).toMatchObject({
