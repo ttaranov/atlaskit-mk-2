@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, mount, ShallowWrapper } from 'enzyme';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearchConfiguration';
+import GlobalQuickSearch from '../src/components/GlobalQuickSearchWrapper';
 import { HomeQuickSearchContainer } from '../src/components/home/HomeQuickSearchContainer';
 import { ConfluenceQuickSearchContainer } from '../src/components/confluence/ConfluenceQuickSearchContainer';
 
