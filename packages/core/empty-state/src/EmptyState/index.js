@@ -63,8 +63,8 @@ export default class EmptyState extends React.Component<Props> {
       primaryAction || secondaryAction || isLoading ? (
         <ActionsContainer>
           <ButtonGroup>
-            {primaryAction || null}
-            {secondaryAction || null}
+            {primaryAction}
+            {secondaryAction}
           </ButtonGroup>
           <SpinnerContainer>{isLoading && <Spinner />}</SpinnerContainer>
         </ActionsContainer>
