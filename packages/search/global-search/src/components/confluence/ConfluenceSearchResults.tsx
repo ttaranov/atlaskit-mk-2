@@ -58,7 +58,9 @@ export default function searchResults(props: Props) {
     query,
     isError,
     retrySearch,
+    // @ts-ignore unused
     recentlyViewedPages,
+    // @ts-ignore unused
     recentlyViewedSpaces,
     objectResults,
     spaceResults,

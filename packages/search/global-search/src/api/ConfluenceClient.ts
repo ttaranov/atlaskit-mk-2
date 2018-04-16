@@ -1,9 +1,5 @@
-import { Result, ResultType } from '../model/Result';
-import {
-  RequestServiceOptions,
-  ServiceConfig,
-  utils,
-} from '@atlaskit/util-service-support';
+import { Result } from '../model/Result';
+import { ServiceConfig } from '@atlaskit/util-service-support';
 
 export interface ConfluenceClient {
   getRecentPages(): Promise<Result[]>;
@@ -11,7 +7,9 @@ export interface ConfluenceClient {
 }
 
 export default class ConfluenceClientImpl implements ConfluenceClient {
+  // @ts-ignore TODO ignore unused for now
   private serviceConfig: ServiceConfig;
+  // @ts-ignore TODO ignore unused for now
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
