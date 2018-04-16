@@ -1,5 +1,5 @@
 import React from 'react';
-import PrettyProps from 'prettyproptypes';
+import PrettyProps from 'pretty-proptypes';
 import Button from '@atlaskit/button';
 import components from './components';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
