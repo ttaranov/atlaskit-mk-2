@@ -1,17 +1,29 @@
 import * as React from 'react';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import Renderer from '../../../src/ui/Renderer';
 
 describe('@atlaskit/renderer/ui/Renderer', () => {
-  it('should catch errors and render unsupported content text', () => {
+  it('should fire the validation error handler on unsupported content text', () => {
     const doc = {
       type: 'doc',
       content: 'foo',
     };
 
-    const renderer = mount(<Renderer document={doc} />);
-    expect(renderer.find('UnsupportedBlockNode')).to.have.length(1);
+    const validationErrorCb = sinon.spy();
+
+    const renderer = mount(
+      <Renderer document={doc} onValidationError={validationErrorCb} />,
+    );
+
+    expect(
+      validationErrorCb.calledWith({
+        type: 'DocumentContent',
+        nodes: [doc],
+      }),
+    ).to.be.true;
+
     renderer.unmount();
   });
 

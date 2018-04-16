@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
-import { getValidNode } from '@atlaskit/editor-common';
+import { getValidNode, validateNode } from '@atlaskit/editor-common';
 import {
   safeInsert,
   replaceSelectedNode,
@@ -54,7 +54,12 @@ export const resolveMacro = (
   }
 
   const { schema } = state;
-  const { type, attrs } = getValidNode(macro, schema);
+  const validatedNode = getValidNode(validateNode(macro, schema));
+  if (!validatedNode) {
+    return null;
+  }
+
+  const { type, attrs } = validatedNode;
   let node;
 
   if (type === 'extension') {

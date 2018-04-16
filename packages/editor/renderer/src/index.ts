@@ -4,6 +4,9 @@ import {
   getValidNode,
   ADNode,
   ADFStage,
+  ParsedADNode,
+  convertToValidatedDoc,
+  validateNode,
 } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 
@@ -33,6 +36,13 @@ export interface ResultWithTime<T> {
   time: number;
 }
 
+export interface DocumentContentError {
+  type: 'DocumentContent';
+  nodes: ADNode[];
+}
+
+export type RendererError = DocumentContentError;
+
 const SUPPORTS_HIRES_TIMER_API = window.performance && performance.now;
 
 const withStopwatch = <T>(cb: () => T): ResultWithTime<T> => {
@@ -44,21 +54,49 @@ const withStopwatch = <T>(cb: () => T): ResultWithTime<T> => {
   return { output, time };
 };
 
+const collectInvalidNodes = (node: ParsedADNode): ADNode[] => {
+  let invalid: ADNode[] = [];
+  if (!node.valid && node.originalNode) {
+    invalid.push(node.originalNode);
+  }
+
+  if (node.content) {
+    node.content.forEach(child => {
+      invalid = invalid.concat(collectInvalidNodes(child));
+    });
+  }
+
+  return invalid;
+};
+
 export const renderDocument = <T>(
   doc: any,
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
+  onValidationError?: (error: DocumentContentError) => void,
 ): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
-  const { output: validDoc, time: sanitizeTime } = withStopwatch(() =>
-    getValidDocument(doc, schema, adfStage),
+  const { output: validatedDoc, time: sanitizeTime } = withStopwatch(() =>
+    convertToValidatedDoc(doc, schema, adfStage),
   );
 
   // save sanitize time to stats
   stat.sanitizeTime = sanitizeTime;
 
+  // only bother collecting invalid nodes if we have a handler for them
+  if (onValidationError) {
+    const invalidNodes = collectInvalidNodes(validatedDoc);
+    if (invalidNodes.length) {
+      onValidationError({
+        type: 'DocumentContent',
+        nodes: invalidNodes,
+      });
+    }
+  }
+
+  const validDoc = getValidDocument(validatedDoc);
   if (!validDoc) {
     return { stat, result: null };
   }
@@ -89,7 +127,9 @@ export const renderNodes = <T>(
   target?: any,
   adfStage: ADFStage = 'final',
 ): T | null => {
-  const validNodes = nodes.map(n => getValidNode(n, schema, adfStage));
+  const validNodes = nodes.map(n =>
+    getValidNode(validateNode(n, schema, adfStage), true),
+  );
 
   const pmFragment = Fragment.fromJSON(schema, validNodes);
 

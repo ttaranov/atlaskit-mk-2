@@ -55,8 +55,8 @@ describe('Renderer', () => {
   describe('renderDocument', () => {
     const serializer = new MockSerializer();
 
-    it('should call getValidDocument', () => {
-      const spy = sinon.spy(common, 'getValidDocument');
+    it('should call convertToValidatedDoc', () => {
+      const spy = sinon.spy(common, 'convertToValidatedDoc');
       renderDocument(doc, serializer, schema);
       expect(spy.calledWith(doc)).to.equal(true);
     });
@@ -97,6 +97,34 @@ describe('Renderer', () => {
       unexpectedContent.forEach(content => {
         expect(renderDocument(content, serializer).result).to.equal(null);
       });
+    });
+
+    it('should return any invalid nodes via error callback', () => {
+      const semiValidDoc = {
+        version: 1,
+        type: 'doc',
+        content: [
+          ...doc.content,
+          {
+            type: 'invalid',
+            text: 'something',
+          },
+        ],
+      };
+
+      let called = false;
+      const res = renderDocument(semiValidDoc, serializer, schema, 'final', error => {
+        expect(error.nodes).deep.equals([
+          {
+            type: 'invalid',
+            text: 'something',
+          },
+        ]);
+        called = true;
+      });
+
+      expect(called).to.be.true;
+      expect(res).to.not.be.null;
     });
   });
 });

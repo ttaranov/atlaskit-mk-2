@@ -21,6 +21,25 @@ export interface ADNode {
   text?: string;
 }
 
+export type ValidADNode = ADNode;
+
+export interface ParsedADNode {
+  type: string;
+  attrs?: any;
+  content?: ParsedADNode[];
+  marks?: ADMark[];
+  text?: string;
+
+  valid: boolean;
+  originalNode: ADNode | null;
+}
+
+export interface ParsedADDoc {
+  version: 1;
+  type: 'doc';
+  content: ParsedADNode[];
+}
+
 export interface ADMark {
   type: string;
   attrs?: any;
@@ -72,26 +91,92 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
   return mark.eq(otherMark);
 };
 
-export const getValidDocument = (
+/**
+ * Validates an existing document-like structure, converting each node
+ * to a valid version, storing whether or not the original node was valid/converted,
+ * as well as the original node that was passed in.
+ * @param doc The ADF-like document.
+ * @param schema Schema to validate against.
+ */
+export const convertToValidatedDoc = (
   doc: ADDoc,
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
-): ADDoc | null => {
-  const node = getValidNode(doc as ADNode, schema, adfStage);
+): ParsedADNode => {
+  const node = validateNode(doc as ADNode, schema, adfStage);
 
   if (node.type === 'doc') {
     node.content = wrapInlineNodes(node.content);
-    return node as ADDoc;
+    return node;
   }
 
-  return null;
+  return node;
 };
 
-const wrapInlineNodes = (nodes: ADNode[] = []): ADNode[] => {
+/**
+ * Returns an ADNode tree representation from a validated ADF tree.
+ * @param node the root of the tree
+ * @param onlyValid return a tree with invalid nodes stripped out, such as fallback and unsupported nodes.
+ */
+export const getValidNode = (
+  node: ParsedADNode,
+  onlyValid: boolean = false,
+): ADNode | null => {
+  if (onlyValid && !node.valid) {
+    return null;
+  }
+
+  const { type, attrs, marks, text, content: validatedContent } = node;
+
+  const content: ADNode[] = [];
+  if (validatedContent) {
+    validatedContent.forEach(validatedChild => {
+      const validChild = getValidNode(validatedChild, onlyValid);
+      if (validChild) {
+        content.push(validChild);
+      }
+    });
+  }
+
+  return {
+    type,
+    attrs,
+    marks,
+    text,
+    content: validatedContent ? content : undefined,
+  };
+};
+
+/**
+ * Returns a valid ADDoc with valid children, if the root document was valid.
+ */
+export const getValidDocument = (doc: ParsedADNode): ADDoc | null => {
+  if (!doc.valid) {
+    return null;
+  }
+
+  const validNode = getValidNode(doc);
+  if (
+    !validNode ||
+    validNode.type !== 'doc' ||
+    typeof validNode.content === 'undefined'
+  ) {
+    return null;
+  }
+
+  return { type: 'doc', version: 1, content: validNode.content };
+};
+
+const wrapInlineNodes = (nodes: ParsedADNode[] = []): ParsedADNode[] => {
   return nodes.map(
     node =>
       inlineNodes.has(node.type)
-        ? { type: 'paragraph', content: [node] }
+        ? {
+            type: 'paragraph',
+            content: [node],
+            valid: true,
+            originalNode: null,
+          }
         : node,
   );
 };
@@ -100,8 +185,8 @@ export const getValidContent = (
   content: ADNode[],
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
-): ADNode[] => {
-  return content.map(node => getValidNode(node, schema, adfStage));
+): ParsedADNode[] => {
+  return content.map(node => validateNode(node, schema, adfStage));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
@@ -111,8 +196,8 @@ const flattenUnknownBlockTree = (
   node: ADNode,
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
-): ADNode[] => {
-  const output: ADNode[] = [];
+): ParsedADNode[] => {
+  const output: ParsedADNode[] = [];
   let isPrevLeafNode = false;
 
   for (let i = 0; i < node.content!.length; i++) {
@@ -121,14 +206,23 @@ const flattenUnknownBlockTree = (
 
     if (i > 0) {
       if (isPrevLeafNode) {
-        output.push({ type: 'text', text: ' ' } as ADNode);
+        output.push({
+          type: 'text',
+          text: ' ',
+          valid: true,
+          originalNode: null,
+        } as ParsedADNode);
       } else {
-        output.push({ type: 'hardBreak' } as ADNode);
+        output.push({
+          type: 'hardBreak',
+          valid: true,
+          originalNode: null,
+        } as ParsedADNode);
       }
     }
 
     if (isLeafNode) {
-      output.push(getValidNode(childNode, schema, adfStage));
+      output.push(validateNode(childNode, schema, adfStage));
     } else {
       output.push(...flattenUnknownBlockTree(childNode, schema, adfStage));
     }
@@ -165,13 +259,20 @@ const isValidUser = user => {
  *
  * @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-ImplementationdetailsforHCNGwebrenderer
  */
-export const getValidUnknownNode = (node: ADNode): ADNode => {
+export const getValidUnknownNode = (
+  node: ADNode,
+  originalNode: ADNode,
+  schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
+): ParsedADNode => {
   const { attrs = {}, content, text, type } = node;
 
   if (!content || !content.length) {
-    const unknownInlineNode: ADNode = {
+    const unknownInlineNode: ParsedADNode = {
       type: 'text',
       text: text || attrs.text || `[${type}]`,
+      valid: false,
+      originalNode,
     };
 
     const { textUrl } = attrs;
@@ -196,7 +297,9 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
    */
   return {
     type: 'unknownBlock',
-    content: flattenUnknownBlockTree(node),
+    originalNode,
+    valid: false,
+    content: flattenUnknownBlockTree(originalNode, schema, adfStage),
   };
 };
 
@@ -209,28 +312,34 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (
+export const validateNode = (
   originalNode: ADNode,
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
-): ADNode => {
+): ParsedADNode => {
   const { attrs, marks, text, type } = originalNode;
-  let { content } = originalNode;
 
-  const node: ADNode = {
+  const node: ParsedADNode = {
     attrs,
     marks,
     text,
     type,
+    valid: false,
+    originalNode,
   };
 
-  if (content) {
-    node.content = content = getValidContent(content, schema, adfStage);
+  let content;
+  if (originalNode.content) {
+    if (Array.isArray(originalNode.content)) {
+      content = getValidContent(originalNode.content, schema, adfStage);
+    }
+
+    node.content = content;
   }
 
   // If node type doesn't exist in schema, make it an unknown node
   if (!schema.nodes[type]) {
-    return getValidUnknownNode(node);
+    return getValidUnknownNode(node, originalNode, schema, adfStage);
   }
 
   if (type) {
@@ -344,6 +453,8 @@ export const getValidNode = (
           type,
           text,
           attrs,
+          valid: true,
+          originalNode,
         };
       }
       case 'doc': {
@@ -352,6 +463,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -362,11 +475,15 @@ export const getValidNode = (
             type,
             attrs,
             content,
+            valid: true,
+            originalNode,
           };
         }
         return {
           type,
           content,
+          valid: true,
+          originalNode,
         };
       }
       case 'emoji': {
@@ -374,6 +491,8 @@ export const getValidNode = (
           return {
             type,
             attrs,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -384,6 +503,8 @@ export const getValidNode = (
           return {
             type,
             attrs,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -394,6 +515,8 @@ export const getValidNode = (
             type,
             attrs,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -401,6 +524,8 @@ export const getValidNode = (
       case 'hardBreak': {
         return {
           type,
+          valid: true,
+          originalNode,
         };
       }
       case 'media': {
@@ -425,6 +550,8 @@ export const getValidNode = (
               width: attrs.width,
               height: attrs.height,
             },
+            valid: true,
+            originalNode,
           };
         } else if (mediaId && mediaType) {
           const mediaAttrs: any = {
@@ -444,6 +571,8 @@ export const getValidNode = (
           return {
             type,
             attrs: mediaAttrs,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -453,6 +582,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -467,6 +598,8 @@ export const getValidNode = (
             type,
             attrs,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -493,6 +626,8 @@ export const getValidNode = (
               id: mentionId,
               text: mentionText,
             },
+            valid: true,
+            originalNode,
           };
           if (mentionAccess) {
             mentionNode.attrs['accessLevel'] = mentionAccess;
@@ -506,11 +641,15 @@ export const getValidNode = (
         return {
           type,
           content: content || [],
+          valid: true,
+          originalNode,
         };
       }
       case 'rule': {
         return {
           type,
+          valid: true,
+          originalNode,
         };
       }
       case 'text': {
@@ -520,6 +659,7 @@ export const getValidNode = (
             marks = marks.reduce(
               (acc, mark) => {
                 const validMark = getValidMark(mark, adfStage);
+                // TODO: keep track of invalid marks
                 if (validMark) {
                   acc.push(validMark);
                 }
@@ -529,7 +669,20 @@ export const getValidNode = (
               [] as ADMark[],
             );
           }
-          return marks ? { type, text, marks: marks } : { type, text };
+          return marks
+            ? {
+                type,
+                text,
+                marks: marks,
+                valid: true,
+                originalNode,
+              }
+            : {
+                type,
+                text,
+                valid: true,
+                originalNode,
+              };
         }
         break;
       }
@@ -544,6 +697,8 @@ export const getValidNode = (
               attrs: {
                 level,
               },
+              valid: true,
+              originalNode,
             };
           }
         }
@@ -554,6 +709,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -566,6 +723,8 @@ export const getValidNode = (
             attrs: {
               order: attrs && attrs.order,
             },
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -575,6 +734,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -584,6 +745,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -597,6 +760,8 @@ export const getValidNode = (
               type,
               attrs: { panelType },
               content,
+              valid: true,
+              originalNode,
             };
           }
         }
@@ -609,6 +774,8 @@ export const getValidNode = (
           attrs: {
             localId: (attrs && attrs.localId) || uuid(),
           },
+          valid: true,
+          originalNode,
         };
       }
       case 'decisionItem': {
@@ -619,6 +786,8 @@ export const getValidNode = (
             localId: (attrs && attrs.localId) || uuid(),
             state: (attrs && attrs.state) || 'DECIDED',
           },
+          valid: true,
+          originalNode,
         };
       }
       case 'taskList': {
@@ -628,6 +797,8 @@ export const getValidNode = (
           attrs: {
             localId: (attrs && attrs.localId) || uuid(),
           },
+          valid: true,
+          originalNode,
         };
       }
       case 'taskItem': {
@@ -638,6 +809,8 @@ export const getValidNode = (
             localId: (attrs && attrs.localId) || uuid(),
             state: (attrs && attrs.state) || 'TODO',
           },
+          valid: true,
+          originalNode,
         };
       }
       case 'table': {
@@ -650,6 +823,8 @@ export const getValidNode = (
             type,
             content,
             attrs,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -663,6 +838,8 @@ export const getValidNode = (
           return {
             type,
             content,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -694,6 +871,8 @@ export const getValidNode = (
             type,
             content,
             attrs: attrs ? cellAttrs : undefined,
+            valid: true,
+            originalNode,
           };
         }
         break;
@@ -703,13 +882,15 @@ export const getValidNode = (
           return {
             type,
             attrs,
+            valid: true,
+            originalNode,
           };
         }
         break;
       }
       case 'placeholder': {
         if (attrs && typeof attrs.text !== 'undefined') {
-          return { type, attrs };
+          return { type, attrs, valid: true, originalNode };
         }
 
         break;
@@ -717,7 +898,7 @@ export const getValidNode = (
     }
   }
 
-  return getValidUnknownNode(node);
+  return getValidUnknownNode(node, originalNode, schema, adfStage);
 };
 
 /*

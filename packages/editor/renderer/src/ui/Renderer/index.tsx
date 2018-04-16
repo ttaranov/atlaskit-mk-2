@@ -3,13 +3,17 @@ import { PureComponent } from 'react';
 import { Schema } from 'prosemirror-model';
 import {
   ADFStage,
-  UnsupportedBlock,
   ProviderFactory,
   defaultSchema,
   EventHandlers,
   ExtensionHandlers,
 } from '@atlaskit/editor-common';
-import { ReactSerializer, renderDocument, RendererContext } from '../../';
+import {
+  ReactSerializer,
+  renderDocument,
+  RendererContext,
+  RendererError,
+} from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
 
@@ -33,6 +37,7 @@ export interface Props {
   eventHandlers?: EventHandlers;
   extensionHandlers?: ExtensionHandlers;
   onComplete?: (stat: RenderOutputStat) => void;
+  onValidationError?: (error: RendererError) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema;
@@ -84,28 +89,28 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, onComplete, schema, appearance, adfStage } = this.props;
+    const {
+      document,
+      onComplete,
+      schema,
+      appearance,
+      onValidationError,
+      adfStage,
+    } = this.props;
 
-    try {
-      const { result, stat } = renderDocument(
-        document,
-        this.serializer,
-        schema || defaultSchema,
-        adfStage,
-      );
+    const { result, stat } = renderDocument(
+      document,
+      this.serializer,
+      schema || defaultSchema,
+      adfStage,
+      onValidationError,
+    );
 
-      if (onComplete) {
-        onComplete(stat);
-      }
-
-      return <Wrapper appearance={appearance}>{result}</Wrapper>;
-    } catch (ex) {
-      return (
-        <Wrapper appearance={appearance}>
-          <UnsupportedBlock />
-        </Wrapper>
-      );
+    if (onComplete) {
+      onComplete(stat);
     }
+
+    return <Wrapper appearance={appearance}>{result}</Wrapper>;
   }
 
   componentWillUnmount() {

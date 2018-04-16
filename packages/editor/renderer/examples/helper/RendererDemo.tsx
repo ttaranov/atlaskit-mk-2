@@ -173,6 +173,7 @@ export interface DemoRendererProps {
 export interface DemoRendererState {
   input: string;
   portal?: HTMLElement;
+  componentError?: Error;
 }
 
 export default class RendererDemo extends PureComponent<
@@ -265,14 +266,29 @@ export default class RendererDemo extends PureComponent<
     }
   }
 
+  componentDidCatch(error, info) {
+    this.setState({ componentError: error });
+  }
+
   private renderRenderer() {
     if (this.props.serializer !== 'react') {
       return null;
     }
 
+    if (this.state.componentError) {
+      return (
+        <pre>
+          Child component failed to render: {this.state.componentError.stack}
+        </pre>
+      );
+    }
+
     try {
       const props: RendererProps = {
         document: JSON.parse(this.state.input),
+        onValidationError: error => {
+          console.error('some nodes failed to validate', error.nodes);
+        },
       };
 
       if (this.props.withProviders) {
@@ -350,5 +366,5 @@ export default class RendererDemo extends PureComponent<
   }
 
   private onDocumentChange = () =>
-    this.setState({ input: this.refs.input.value });
+    this.setState({ input: this.refs.input.value, componentError: undefined });
 }
