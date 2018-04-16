@@ -13,6 +13,16 @@ jest.mock('pdfjs-dist/build/pdf', () => {
   };
 });
 
+jest.mock('../../src/newgen/viewers/pdf/loader', () => {
+  const doc = {
+    getPage: () => { }
+  };
+  return {
+    fetch: (url) => Promise.resolve(doc),
+    componentLoader: () => {}
+  }
+});
+
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
@@ -386,3 +396,4 @@ describe('<MediaViewer />', () => {
 
 jest.unmock('pdfjs-dist/build/pdf');
 jest.unmock('pdfjs-dist/web/pdf_viewer');
+jest.unmock('../../src/newgen/viewers/pdf/loader');

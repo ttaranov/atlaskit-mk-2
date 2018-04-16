@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PDFPreview } from '../../domain';
 import { PDFWrapper } from '../../styled';
-import pdfViewerLoader from './pdfLoader';
+import { componentLoader } from './loader';
 
 export type Props = {
   previewData: PDFPreview;
@@ -17,7 +17,7 @@ export class PDFViewer extends React.PureComponent<Props, {}> {
   }
 
   private loadPDFViewer = async (props: Props) => {
-    PDFViewer.PDFComponent = await pdfViewerLoader();
+    PDFViewer.PDFComponent = await componentLoader();
     this.forceUpdate();
   };
 
