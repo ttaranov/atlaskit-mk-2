@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { CSSTransition } from 'react-transition-group';
 
-import Counter from '../../src/internal/counter';
-import { Props, highlightStyle } from '../../src/internal/counter';
+import Counter, {
+  Props,
+  highlightStyle,
+  slideUpStyle,
+  slideDownStyle,
+  containerStyle,
+} from '../../src/internal/counter';
+
+jest.useFakeTimers();
 
 const renderCounter = (props: Props) => {
   return mount(<Counter {...props} />);
@@ -30,12 +38,81 @@ describe('Counter', () => {
 
   it('should add highlight class', () => {
     const counter = renderCounter({ value: 10, highlight: true });
-    expect(counter.find('div').prop('className')).toContain(highlightStyle);
+    expect(counter.find(`div.${highlightStyle}`).exists()).toBeTruthy();
   });
 
   it('should set width to avoid resizing', () => {
     const counter = renderCounter({ value: 11 });
 
-    expect(counter.find('div').prop('style')).toHaveProperty('width', 20);
+    expect(
+      counter
+        .children()
+        .first()
+        .prop('style'),
+    ).toHaveProperty('width', 20);
+  });
+
+  it('should animate number when value increase', () => {
+    const counter = renderCounter({ value: 5 });
+
+    expect(counter.find(CSSTransition).prop('in')).toBeFalsy();
+
+    counter.setProps({ value: 6, highlight: true });
+
+    expect(counter.state('previous')).toEqual({
+      highlight: false,
+      value: 5,
+    });
+    expect(counter.find(CSSTransition).prop('in')).toBeTruthy();
+    expect(counter.find(CSSTransition).prop('classNames')).toHaveProperty(
+      'enter',
+      slideUpStyle,
+    );
+
+    const container = counter.find(`.${containerStyle}`);
+    expect(container.childAt(0).prop('className')).not.toContain(
+      highlightStyle,
+    );
+    expect(container.childAt(0).text()).toEqual('5');
+    expect(container.childAt(1).prop('className')).toContain(highlightStyle);
+    expect(container.childAt(1).text()).toEqual('6');
+
+    jest.runTimersToTime(300);
+
+    expect(counter.state('previous')).toBeUndefined();
+    counter.update();
+    expect(counter.find(CSSTransition).prop('in')).toBeFalsy();
+  });
+
+  it('should animate number when value decrease', () => {
+    const counter = renderCounter({ value: 5, highlight: true });
+
+    expect(counter.find(CSSTransition).prop('in')).toBeFalsy();
+
+    counter.setProps({ value: 4, highlight: false });
+
+    expect(counter.state('previous')).toEqual({
+      highlight: true,
+      value: 5,
+    });
+    expect(counter.find(CSSTransition).prop('in')).toBeTruthy();
+    expect(counter.find(CSSTransition).prop('classNames')).toHaveProperty(
+      'enter',
+      slideDownStyle,
+    );
+
+    const container = counter.find(`.${containerStyle}`);
+    expect(container.childAt(0).prop('className')).not.toContain(
+      highlightStyle,
+    );
+    expect(container.childAt(0).text()).toEqual('4');
+    expect(container.childAt(1).prop('className')).toContain(highlightStyle);
+    expect(container.childAt(1).text()).toEqual('5');
+
+    jest.runTimersToTime(300);
+
+    expect(counter.state('previous')).toBeUndefined();
+    counter.update();
+    expect(counter.find(CSSTransition).prop('in')).toBeFalsy();
   });
 });
