@@ -25,7 +25,7 @@
     "@atlaskit/editor-core": "^70.0.0",
     "@atlaskit/editor-json-transformer": "^3.0.3",
     "@atlaskit/mention": "^11.0.0",
-    "@atlaskit/media-core": "^16.0.0",
+    "@atlaskit/media-core": "^18.0.0",
     "@types/prosemirror-view": "^1.0.0",
     "babel-polyfill": "^6.26.0",
     "prosemirror-view": "^1.2.0"
