@@ -117,7 +117,8 @@ export function createPlugin(
 
         /** If a partial paste of bodied extension, paste only text */
         if (
-          slice.content!.firstChild!.type === schema.nodes.bodiedExtension &&
+          slice.content!.firstChild &&
+          slice.content.firstChild!.type === schema.nodes.bodiedExtension &&
           (slice.openEnd > 0 || slice.openStart > 0)
         ) {
           view.dispatch(view.state.tr.insertText(text));
