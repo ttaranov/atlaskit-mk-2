@@ -26,27 +26,34 @@ export default class Items extends PureComponent<Props, State> {
   };
 
   state: State = {
-    isLoaderShown: false,
+    isLoaderShown: true,
   };
 
   loadCancelled = false;
 
-  componentWillMount() {
-    if (!this.state.itemsData) {
-      this.setState({
-        isLoaderShown: true,
+  componentDidMount() {
+    Promise.resolve()
+      .then(() => this.props.getItemsData(this.props.parentData))
+      .then(itemsData => {
+        if (!this.loadCancelled) {
+          this.setState({
+            isLoaderShown: false,
+            itemsData,
+          });
+        }
       });
-      this.loadCancelled = false;
-      Promise.resolve()
-        .then(() => this.props.getItemsData(this.props.parentData))
-        .then(itemsData => {
-          if (!this.loadCancelled) {
-            this.setState({
-              itemsData,
-            });
-          }
-        });
-    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    Promise.resolve()
+      .then(() => nextProps.getItemsData(this.props.parentData))
+      .then(itemsData => {
+        if (!this.loadCancelled) {
+          this.setState({
+            itemsData,
+          });
+        }
+      });
   }
 
   componentWillUnmount() {
