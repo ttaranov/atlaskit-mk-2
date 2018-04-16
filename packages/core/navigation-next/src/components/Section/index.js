@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
 
 import { animationDurationMs } from '../../common';
 import { getSectionWrapperStyles } from './styles';
 import type { SectionProps, SectionState } from './types';
 
-export default class Section extends Component<SectionProps, SectionState> {
+export default class Section extends PureComponent<SectionProps, SectionState> {
   state = {
     traversalDirection: null,
   };

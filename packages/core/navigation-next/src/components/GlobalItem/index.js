@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
-export default class GlobalItem extends Component<GlobalItemProps> {
+export default class GlobalItem extends PureComponent<GlobalItemProps> {
   static defaultProps = {
     size: 'large',
     styles: styleReducerNoOp,

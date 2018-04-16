@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import ItemPrimitive from './primitives';
 import type { ItemProps } from './types';
 
-export default class Item extends Component<ItemProps> {
+export default class Item extends PureComponent<ItemProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,

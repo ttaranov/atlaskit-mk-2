@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import type { InteractionState, InteractionStateProps } from './types';
 
-export default class InteractionStateManager extends Component<
+export default class InteractionStateManager extends PureComponent<
   InteractionStateProps,
   InteractionState,
 > {

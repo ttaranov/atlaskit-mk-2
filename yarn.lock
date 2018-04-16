@@ -6635,6 +6635,10 @@ internal-ip@1.2.0:
   dependencies:
     meow "^3.3.0"
 
+interpolate-range@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/interpolate-range/-/interpolate-range-2.1.0.tgz#fec3f907a3a075476feb478439ae8d166bc826a5"
+
 interpret@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.4.tgz#820cdd588b868ffb191a809506d6c9c8f212b1b0"

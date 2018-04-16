@@ -1,10 +1,9 @@
 // @flow
 
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 
 import type { ThemedGlobalComponentStyles } from '../../theme/types';
-
-export const GLOBAL_NAV_WIDTH = gridSize() * 8;
+import { GLOBAL_NAV_WIDTH } from '../../common';
 
 const baseStyles = {
   alignItems: 'center',

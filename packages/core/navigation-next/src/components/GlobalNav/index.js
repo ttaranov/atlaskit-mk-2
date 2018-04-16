@@ -16,8 +16,6 @@ import {
 } from './primitives';
 import type { GlobalNavProps } from './types';
 
-export { GLOBAL_NAV_WIDTH } from './styles';
-
 const GlobalNav = ({
   children, // drawers
   primaryActions,

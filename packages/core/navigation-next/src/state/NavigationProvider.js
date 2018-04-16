@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Provider } from 'unstated';
 import NavigationState from './NavigationState';
 import type { NavigationProviderProps, NavigationStateShape } from './types';
@@ -16,7 +16,7 @@ function defaultSetCache(state: NavigationStateShape) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
-export default class NavigationProvider extends Component<
+export default class NavigationProvider extends PureComponent<
   NavigationProviderProps,
 > {
   static defaultProps = {

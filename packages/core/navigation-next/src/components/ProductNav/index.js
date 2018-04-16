@@ -1,28 +1,26 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 
 import {
   ContainerNav,
   ContainerOverlay,
   InnerShadow,
-  Wrapper,
   RootNav,
 } from './primitives';
 import type { ProductNavProps } from './types';
 
-export default class ProductNav extends Component<ProductNavProps> {
+export default class ProductNav extends PureComponent<ProductNavProps> {
   render() {
     const {
       container: Container,
       isPeeking,
-      isResizing,
       onOverlayClick,
       root: Root,
     } = this.props;
 
     return (
-      <Wrapper shouldBlockInteraction={isResizing}>
+      <Fragment>
         {isPeeking || !!Container ? (
           <RootNav>
             <Root />
@@ -33,7 +31,7 @@ export default class ProductNav extends Component<ProductNavProps> {
           <ContainerOverlay isVisible={isPeeking} onClick={onOverlayClick} />
         </ContainerNav>
         <InnerShadow isVisible={isPeeking} />
-      </Wrapper>
+      </Fragment>
     );
   }
 }

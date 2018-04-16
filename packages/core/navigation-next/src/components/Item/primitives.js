@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 
 import { light, styleReducerNoOp, withTheme } from '../../theme';
@@ -33,7 +33,7 @@ const getItemBase = (
   return props => <span {...props} />;
 };
 
-class NavigationItemPrimitive extends Component<ItemPrimitiveProps> {
+class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   static defaultProps = {
     isActive: false,
     isHover: false,

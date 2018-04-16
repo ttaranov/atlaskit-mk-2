@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { gridSize } from '@atlaskit/theme';
 
 import Item from '../Item';
@@ -25,7 +25,9 @@ const modifyStyles = defaultStyles => ({
   },
 });
 
-export default class ContainerHeader extends Component<ContainerHeaderProps> {
+export default class ContainerHeader extends PureComponent<
+  ContainerHeaderProps,
+> {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,

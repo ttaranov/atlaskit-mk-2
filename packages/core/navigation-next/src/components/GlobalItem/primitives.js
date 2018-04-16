@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -38,7 +38,7 @@ const getItemBase = (
   return props => <span {...props} />;
 };
 
-class GlobalNavigationItemPrimitive extends Component<*> {
+class GlobalNavigationItemPrimitive extends PureComponent<*> {
   static defaultProps = {
     isActive: false,
     isHover: false,

@@ -12,12 +12,19 @@ import type {
   NavigationStateShape,
 } from './types';
 
+import { PRODUCT_NAV_WIDTH } from '../common';
+
 const defaultState = {
   activeDrawer: null,
   isPeeking: false,
   isResizing: false,
   productNavIsCollapsed: false,
-  productNavWidth: 270,
+  productNavWidth: PRODUCT_NAV_WIDTH,
+};
+
+type Resize = {
+  productNavWidth: number,
+  productNavIsCollapsed: boolean,
 };
 
 export default class NavigationState extends Container<NavigationStateShape>
@@ -54,11 +61,6 @@ export default class NavigationState extends Container<NavigationStateShape>
   // UI
   // ==============================
 
-  resizeProductNav = (width: any) => {
-    const productNavWidth = width > 0 ? width : 0;
-    this.setState({ productNavWidth });
-  };
-
   collapseProductNav = () => {
     this.storeState({ productNavIsCollapsed: true });
   };
@@ -66,11 +68,19 @@ export default class NavigationState extends Container<NavigationStateShape>
     this.storeState({ productNavIsCollapsed: false });
   };
 
-  manualResizeStart = () => {
-    this.storeState({ isResizing: true });
+  manualResizeStart = ({ productNavWidth, productNavIsCollapsed }: Resize) => {
+    this.storeState({
+      isResizing: true,
+      productNavWidth,
+      productNavIsCollapsed,
+    });
   };
-  manualResizeEnd = () => {
-    this.storeState({ isResizing: false });
+  manualResizeEnd = ({ productNavWidth, productNavIsCollapsed }: Resize) => {
+    this.storeState({
+      isResizing: false,
+      productNavWidth,
+      productNavIsCollapsed,
+    });
   };
 
   peek = () => {

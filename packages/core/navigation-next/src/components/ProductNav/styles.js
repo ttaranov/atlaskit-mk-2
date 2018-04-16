@@ -3,6 +3,7 @@
 import { colors } from '@atlaskit/theme';
 
 import type { ThemedProductComponentStyles } from '../../theme/types';
+import { PRODUCT_NAV_WIDTH } from '../../common';
 
 const baseStyles = {
   boxSizing: 'border-box',
@@ -13,6 +14,7 @@ const baseStyles = {
   position: 'absolute',
   top: 0,
   width: '100%',
+  minWidth: PRODUCT_NAV_WIDTH,
   // Reset stacking context so scroll hints from the root nav don't sit above
   // container nav
   zIndex: 0,

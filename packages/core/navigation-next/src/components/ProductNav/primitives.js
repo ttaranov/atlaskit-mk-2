@@ -28,33 +28,11 @@ const animationFade = transitionState => ({
 
 /**
  * Component tree structure
- * - Wrapper
- *   - RootNav
- *   - ContainerNav
- *     - ContainerOverlay
- *   - InnerShadow
+ *  - RootNav
+ *  - ContainerNav
+ *    - ContainerOverlay
+ *  - InnerShadow
  */
-
-/**
- * Wrapper
- */
-type WrapperProps = { shouldBlockInteraction: boolean };
-
-export const Wrapper = ({ shouldBlockInteraction, ...props }: WrapperProps) => (
-  <div
-    css={{
-      height: '100%',
-      overflowX: 'hidden',
-      overflowY: 'hidden',
-      position: 'relative',
-
-      // Block interaction during resize
-      pointerEvents: shouldBlockInteraction ? 'none' : null,
-      userSelect: shouldBlockInteraction ? 'none' : null,
-    }}
-    {...props}
-  />
-);
 
 /**
  * RootNav
