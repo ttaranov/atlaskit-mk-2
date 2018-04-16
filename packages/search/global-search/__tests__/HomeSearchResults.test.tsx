@@ -35,7 +35,7 @@ function makeResult(partial?: Partial<Result>): Result {
   };
 }
 
-describe('SearchResults', () => {
+describe('HomeSearchResults', () => {
   function render(partialProps: Partial<Props>) {
     const props = {
       query: '',
@@ -66,7 +66,7 @@ describe('SearchResults', () => {
   });
 
   it('should only show the recently viewed group when no query is entered', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: '',
       recentlyViewedItems: [makeResult()],
     };
@@ -78,7 +78,7 @@ describe('SearchResults', () => {
   });
 
   it('should render recent results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       recentResults: [makeResult({ name: 'name' })],
     };
@@ -91,7 +91,7 @@ describe('SearchResults', () => {
   });
 
   it('should render jira results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       jiraResults: [makeResult({ name: 'name' })],
     };
@@ -104,7 +104,7 @@ describe('SearchResults', () => {
   });
 
   it('should render confluence results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       confluenceResults: [makeResult({ name: 'name' })],
     };
@@ -117,7 +117,7 @@ describe('SearchResults', () => {
   });
 
   it('should render people results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
     };
@@ -130,7 +130,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a jira result item to search jira', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       jiraResults: [makeResult()],
     };
@@ -143,7 +143,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a confluence result item to search confluence', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       confluenceResults: [makeResult()],
     };
@@ -158,7 +158,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a people result item to search people', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       peopleResults: [makeResult({ type: ResultType.Person })],
     };
@@ -171,7 +171,7 @@ describe('SearchResults', () => {
   });
 
   it('should not render recent results group when there are no recent results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'aslfkj',
       recentResults: [],
     };
@@ -182,7 +182,7 @@ describe('SearchResults', () => {
   });
 
   it('should render search error when there is an error', () => {
-    const props = {
+    const props: Partial<Props> = {
       isError: true,
     };
 
@@ -191,7 +191,7 @@ describe('SearchResults', () => {
   });
 
   it('should render empty state when there are no results and a query is entered', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'foo',
       recentResults: [],
       jiraResults: [],

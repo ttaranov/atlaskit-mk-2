@@ -14,19 +14,15 @@ import {
 const renderObjects = (results: Result[], query: string) => (
   <ResultItemGroup
     title="Pages, blogs, attachments"
-    key="confluence-objects"
-    test-selector="confluence-objects"
+    key="objects"
+    test-selector="objects"
   >
     {renderResults(results)}
   </ResultItemGroup>
 );
 
 const renderSpaces = (results: Result[], query: string) => (
-  <ResultItemGroup
-    title="Spaces"
-    key="confluence-spaces"
-    test-selector="confluence-spaces"
-  >
+  <ResultItemGroup title="Spaces" key="spaces" test-selector="spaces">
     {renderResults(results)}
   </ResultItemGroup>
 );
