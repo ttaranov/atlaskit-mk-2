@@ -122,6 +122,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       macroProvider,
       legacyImageUploadProvider,
       media,
+      collabEdit,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
@@ -141,7 +142,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
       'imageUploadProvider',
       legacyImageUploadProvider,
     );
-    this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
+    this.providerFactory.setProvider(
+      'collabEditProvider',
+      collabEdit && collabEdit.provider
+        ? collabEdit.provider
+        : collabEditProvider,
+    );
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
     this.providerFactory.setProvider('macroProvider', macroProvider);
@@ -206,6 +212,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
                 this.props.secondaryToolbarComponents
               }
               addonToolbarComponents={this.props.addonToolbarComponents}
+              collabEdit={this.props.collabEdit}
             />
           )}
         />
