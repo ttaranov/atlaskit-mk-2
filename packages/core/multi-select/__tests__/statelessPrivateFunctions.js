@@ -61,7 +61,7 @@ describe(`${name} - stateless`, () => {
 
     describe('handleTriggerClick', () => {
       it('default behavior', () => {
-        const args = { event: {}, isOpen: true };
+        const args = { event: {}, isOpen: true, inputNode: instance.inputNode };
         instance.handleTriggerClick({});
         expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
         expect(onOpenChangeSpy).toHaveBeenCalledWith(args);
@@ -94,7 +94,11 @@ describe(`${name} - stateless`, () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyboardInteractions(event);
         expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
-        expect(onOpenChangeSpy).toHaveBeenCalledWith({ event, isOpen: true });
+        expect(onOpenChangeSpy).toHaveBeenCalledWith({
+          event,
+          isOpen: true,
+          inputNode: instance.inputNode,
+        });
       });
 
       it('should call removeLatestItem when there was no value and Backspace was pressed', () => {
