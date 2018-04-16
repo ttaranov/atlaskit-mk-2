@@ -1,5 +1,8 @@
 # @atlaskit/util-service-support
 
+## 2.0.6
+- [patch] Fixed tsconfig in build/es5 [c8e55d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8e55d0)
+
 ## 2.0.5
 - [patch] FS-1698 migrated util-service-support to mk-2 [e0bcb61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e0bcb61)
 
