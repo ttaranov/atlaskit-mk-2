@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { StatelessComponent } from 'react';
 import AkSpinner from '@atlaskit/spinner';
 import { FileViewer } from './file-viewer';
 import { Blanket, Header, Content, ErrorMessage } from './styled';
 import { Model } from './domain';
 
-export const Spinner: React.StatelessComponent<{}> = ({}) => (
+export const Spinner: StatelessComponent<{}> = ({}) => (
   <AkSpinner invertColor size="large" />
 );
 
@@ -13,7 +14,7 @@ export type Props = {
   onClose?: () => void;
 };
 
-export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
+export const MediaViewerRenderer: StatelessComponent<Props> = ({
   model,
   onClose,
 }) => (
@@ -27,7 +28,7 @@ export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
   </Blanket>
 );
 
-export const Viewer: React.StatelessComponent<Props> = ({ model }) => {
+export const Viewer: StatelessComponent<Props> = ({ model }) => {
   const { fileDetails, previewData } = model;
 
   switch (fileDetails.status) {
