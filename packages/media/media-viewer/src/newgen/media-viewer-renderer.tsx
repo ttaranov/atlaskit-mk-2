@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { StatelessComponent } from 'react';
 import AkSpinner from '@atlaskit/spinner';
-import { FileViewer } from './file-viewer';
 import { Blanket, Header, Content, ErrorMessage } from './styled';
-import { Model } from './domain';
+import { Model, FilePreview } from './domain';
+import { ImageViewer } from './viewers/image';
+import { VideoViewer } from './viewers/video';
+import { PDFViewer } from './viewers/pdf';
 
 export const Spinner: StatelessComponent<{}> = ({}) => (
   <AkSpinner invertColor size="large" />
@@ -47,5 +49,22 @@ export const Viewer: StatelessComponent<Props> = ({ model }) => {
       }
     case 'FAILED':
       return <ErrorMessage>Error</ErrorMessage>;
+  }
+};
+
+export type FileViewerProps = {
+  previewData: FilePreview;
+};
+
+export const FileViewer: StatelessComponent<FileViewerProps> = ({
+  previewData,
+}) => {
+  switch (previewData.viewer) {
+    case 'IMAGE':
+      return <ImageViewer previewData={previewData} />;
+    case 'VIDEO':
+      return <VideoViewer previewData={previewData} />;
+    case 'PDF':
+      return <PDFViewer previewData={previewData} />;
   }
 };
