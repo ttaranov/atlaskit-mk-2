@@ -10,15 +10,8 @@ export interface TextFormattingBridge {
 
 export interface MediaBridge {
   getServiceHost(): string;
-  getAuth(context?: string): string;
   getCollection(): string;
 }
-
-export type Auth = {
-  serviceHost: string;
-  clientId: string;
-  token: string;
-};
 
 export interface PromiseBridge {
   submitPromise(name: string, uuid: string, args: string);

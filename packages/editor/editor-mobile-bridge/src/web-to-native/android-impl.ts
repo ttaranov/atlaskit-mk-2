@@ -39,10 +39,6 @@ export default class AndroidBridge implements NativeBridge {
     return this.mediaBridge.getServiceHost();
   }
 
-  getAuth(context?: string): string {
-    return this.mediaBridge.getAuth(context);
-  }
-
   getCollection(): string {
     return this.mediaBridge.getCollection();
   }

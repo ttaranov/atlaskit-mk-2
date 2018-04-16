@@ -37,15 +37,14 @@ export default class IosBridge implements NativeBridge {
     if (window.mediaBridge) {
       return window.mediaBridge.getServiceHost();
     } else {
-      return '';
+      // ¯\_(ツ)_/¯ ugly, I know, but we need this data, and don't want call native side
+      return 'http://www.atlassian.com';
     }
-  }
-  getAuth(context?: string): string {
-    return '';
   }
 
   getCollection(): string {
-    return '';
+    // ¯\_(ツ)_/¯ @see #getServiceHost()
+    return 'FabricSampleCollection';
   }
 
   submitPromise(name: string, uuid: string, args: string) {}
