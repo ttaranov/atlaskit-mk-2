@@ -75,9 +75,9 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
       tooltip,
     } = this.props;
 
-    const { mode, context } = theme;
+    const { mode } = theme;
     const presentationProps = { isActive, isHover, size };
-    const defaultStyles = mode.globalItem(presentationProps)[context];
+    const defaultStyles = mode.globalItem(presentationProps);
     const styles = styleReducer(defaultStyles, presentationProps);
 
     const item = (
@@ -106,6 +106,4 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
   }
 }
 
-export default withTheme({ mode: light, context: 'expanded' })(
-  GlobalNavigationItemPrimitive,
-);
+export default withTheme({ mode: light })(GlobalNavigationItemPrimitive);
