@@ -14,7 +14,7 @@ export type ButtonGroupProps = {
   /** The appearance to apply to all buttons. */
   appearance?: ButtonAppearances,
   /** The buttons to render. */
-  children: ChildrenArray<Element<any>>,
+  children: ChildrenArray<Element<any> | null | void>,
 };
 
 class ButtonGroup extends Component<ButtonGroupProps> {
@@ -24,7 +24,7 @@ class ButtonGroup extends Component<ButtonGroupProps> {
     return (
       <Group>
         {Children.map(children, (child, idx) => {
-          if (child === null || child === false) {
+          if (!child) {
             return child;
           }
           return (
