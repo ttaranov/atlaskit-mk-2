@@ -13,6 +13,7 @@ import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
 import EmptyState from '../src/components/EmptyState';
+import { makeResult } from './_test-util';
 
 enum Group {
   Objects = 'objects',
@@ -24,17 +25,6 @@ function findGroup(group: Group, wrapper: ShallowWrapper) {
   return wrapper
     .find(ResultItemGroup)
     .findWhere(n => n.prop('test-selector') === group.valueOf());
-}
-
-function makeResult(partial?: Partial<Result>): Result {
-  return {
-    resultId: '' + Math.random(),
-    name: 'name',
-    type: ResultType.Object,
-    avatarUrl: 'avatarUrl',
-    href: 'href',
-    ...partial,
-  };
 }
 
 describe('ConfluenceSearchResults', () => {

@@ -71,7 +71,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     }
   };
 
-  async searchConfluence(query: string): Promise<CrossProductResults> {
+  async searchCrossProductConfluence(
+    query: string,
+  ): Promise<CrossProductResults> {
     // TODO search for pages,blogs,attachments & search for spaces
     const results = await this.props.crossProductSearchClient.search(
       query,
@@ -119,11 +121,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
-    const confluencePromise = this.searchConfluence(query);
+    const confXpSearchPromise = this.searchCrossProductConfluence(query);
     const searchPeoplePromise = this.searchPeople(query);
 
     // trigger error analytics when a search fails
-    confluencePromise.catch(this.handleSearchErrorAnalytics('confluence'));
+    confXpSearchPromise.catch(this.handleSearchErrorAnalytics('confluence'));
     searchPeoplePromise.catch(this.handleSearchErrorAnalytics('people'));
 
     /*
@@ -131,7 +133,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     */
     (async () => {
       try {
-        await confluencePromise;
+        await confXpSearchPromise;
         this.setState({
           isError: false,
         });
@@ -150,7 +152,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         });
 
         await Promise.all(
-          [confluencePromise, searchPeoplePromise].map(p => p.catch(Error)),
+          [confXpSearchPromise, searchPeoplePromise].map(p => p.catch(Error)),
         );
       } finally {
         this.setState({
