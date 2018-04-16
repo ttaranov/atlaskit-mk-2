@@ -4,10 +4,14 @@ import {
   makePeopleSearchData,
   recentData,
   makeCrossProductSearchData,
+  makeConfluenceRecentPagesData,
+  makeConfluenceRecentSpacesData,
 } from '../example-helpers/mockData';
 import { Scope } from '../src/api/CrossProductSearchClient';
 
 const recentResponse = recentData();
+const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
+const confluenceRecentSpacesResponse = makeConfluenceRecentSpacesData();
 const queryMockSearch = makeCrossProductSearchData();
 const queryPeopleSearch = makePeopleSearchData();
 
@@ -17,6 +21,17 @@ function delay<T>(millis: number, value?: T): Promise<T> {
 
 function mockRecentApi() {
   fetchMock.get(new RegExp('/api/client/recent\\?'), recentResponse);
+}
+
+function mockConfluenceRecentApi() {
+  fetchMock.get(
+    new RegExp('/wiki/rest/recentlyviewed/1.0/recent/spaces\\?'),
+    confluenceRecentSpacesResponse,
+  );
+  fetchMock.get(
+    new RegExp('/wiki/rest/recentlyviewed/1.0/recent\\?'),
+    confluenceRecentPagesResponse,
+  );
 }
 
 function mockCrossProductSearchApi() {
@@ -43,6 +58,7 @@ export function setupMocks() {
   mockRecentApi();
   mockCrossProductSearchApi();
   mockPeopleApi();
+  mockConfluenceRecentApi();
 }
 
 export function teardownMocks() {

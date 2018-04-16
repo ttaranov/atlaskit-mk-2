@@ -162,10 +162,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
-    // TODO are both call made at the same time?
+    const recentItemsPromise = this.props.confluenceClient.getRecentItems();
+    const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
+
     this.setState({
-      recentlyViewedPages: await this.props.confluenceClient.getRecentPages(),
-      recentlyViewedSpaces: await this.props.confluenceClient.getRecentSpaces(),
+      recentlyViewedPages: await recentItemsPromise,
+      recentlyViewedSpaces: await recentSpacesPromise,
     });
   };
 
@@ -195,6 +197,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         {renderSearchResults({
           query,
           isError,
+          isLoading,
           retrySearch: this.retrySearch,
           recentlyViewedPages,
           recentlyViewedSpaces,
