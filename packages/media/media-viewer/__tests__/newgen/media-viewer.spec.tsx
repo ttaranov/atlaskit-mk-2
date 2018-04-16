@@ -32,7 +32,6 @@ import { Stubs } from '../_stubs';
 import { Blanket } from '../../src/newgen/styled';
 import { MediaViewer, REQUEST_CANCELLED } from '../../src/newgen/media-viewer';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
-import { ImageViewer } from '../../src/newgen/viewers/image';
 
 function createContext(subject, blobService?) {
   const token = 'some-token';
@@ -151,23 +150,6 @@ describe('<MediaViewer />', () => {
       el.update();
 
       expect(cancel).toHaveBeenCalled();
-    });
-
-    it.skip('revokes an existing object url when unmounted', async () => {
-      const { subject, el } = createFixture(identifier);
-
-      const revokeObjectUrl = jest.fn();
-      el.find(ImageViewer).instance()['revokeObjectUrl'] = revokeObjectUrl;
-
-      subject.next(imageItem);
-
-      await waitUntil(() => {
-        el.update();
-        return getModel(el).fileDetails.status === 'SUCCESSFUL';
-      }, 5);
-      el.unmount();
-
-      expect(revokeObjectUrl).toHaveBeenCalled();
     });
 
     it('does not update state when image fetch request is cancelled', async () => {
