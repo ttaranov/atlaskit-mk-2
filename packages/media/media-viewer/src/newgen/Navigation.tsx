@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { FileIdentifier } from './media-viewer';
 
 export type NavigationDirection = 'prev' | 'next';
 
 export interface NavigationProps {
   items: FileIdentifier[];
   currentItem: FileIdentifier;
-  onChange: (direction: NavigationDirection) => void;
+  onChange: (item: FileIdentifier) => void;
 }
 
-export class Navigation extends Component<NavigationProps, any> {
+export default class Navigation extends Component<NavigationProps, any> {
   render() {
     const { items, currentItem } = this.props;
     const isLeftVisible = items[0] !== currentItem;
