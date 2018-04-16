@@ -22,6 +22,7 @@ export default class TableView implements NodeView {
   private reactDomRef: HTMLElement | null;
 
   private props: Props;
+  private component: TableComponent;
 
   constructor(props: Props) {
     this.props = props;
@@ -54,7 +55,7 @@ export default class TableView implements NodeView {
   render() {
     const setContentDOM = elem => (this.contentDOM = elem);
 
-    ReactDOM.render(
+    this.component = ReactDOM.render(
       <TableComponent
         {...this.props}
         node={this.node}
@@ -65,6 +66,11 @@ export default class TableView implements NodeView {
   }
 
   ignoreMutation(record: MutationRecord) {
+    if (!this.component) {
+      // force initial render
+      return false;
+    }
+
     return true;
   }
 
