@@ -108,7 +108,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
         contentRef={contentRef}
         icon={icon}
         participants={participants}
-        placeholder="Add an action…"
+        placeholder="Type your action, use '@' to assign to someone."
         showPlaceholder={showPlaceholder}
         attribution={this.getAttributionText()}
       >

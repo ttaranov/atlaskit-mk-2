@@ -9,10 +9,10 @@ import {
 import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
 
-export const getFilesInRecents = (
-  fetcher: Fetcher,
-  userAuthProvider: AuthProvider,
-) => (store: Store<State>) => (next: Dispatch<Action>) => (action: Action) => {
+export const getFilesInRecents = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<Action>) => (action: Action) => {
+  const { userAuthProvider } = store.getState();
   if (isGetFilesInRecentsAction(action)) {
     requestRecentFiles(fetcher, userAuthProvider, store);
   }

@@ -19,6 +19,7 @@ import { analyticsService } from '../../analytics';
 import { stateKey } from './pm-plugins/main';
 import { resetHoverSelection, insertRow } from './actions';
 import { createTableNode, isIsolating } from './utils';
+import { outdentList } from '../../commands';
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
@@ -156,6 +157,22 @@ const moveCursorBackward = (): Command => {
     // if the node before is not a table node - do nothing
     if (!before || before.type !== state.schema.nodes.table) {
       return false;
+    }
+
+    // ensure we're just at a top level paragraph
+    // otherwise, perform regular backspace behaviour
+    const grandparent = $cursor.node($cursor.depth - 1);
+    const { listItem } = state.schema.nodes;
+
+    if (
+      $cursor.parent.type !== state.schema.nodes.paragraph ||
+      (grandparent && grandparent.type !== state.schema.nodes.doc)
+    ) {
+      if (grandparent && grandparent.type === listItem) {
+        return outdentList()(state, dispatch);
+      } else {
+        return false;
+      }
     }
 
     const { tr } = state;

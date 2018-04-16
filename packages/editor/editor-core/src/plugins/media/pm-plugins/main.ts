@@ -593,16 +593,16 @@ export class MediaPluginState {
     if (this.destroyed) {
       return;
     }
-
     const { errorReporter, pickers, stateManager } = this;
-
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {
       const pickerFacadeConfig: PickerFacadeConfig = {
-        uploadParams,
         context,
         stateManager,
         errorReporter,
+      };
+      const defaultPickerConfig = {
+        uploadParams,
       };
 
       if (this.editorAppearance === 'mobile') {
@@ -618,26 +618,40 @@ export class MediaPluginState {
           pickers.push(
             (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
               userAuthProvider: context.config.userAuthProvider,
+              ...defaultPickerConfig,
             })),
           );
         } else {
           pickers.push(
-            (this.popupPicker = new Picker('browser', pickerFacadeConfig)),
+            (this.popupPicker = new Picker(
+              'browser',
+              pickerFacadeConfig,
+              defaultPickerConfig,
+            )),
           );
         }
 
         pickers.push(
-          (this.binaryPicker = new Picker('binary', pickerFacadeConfig)),
+          (this.binaryPicker = new Picker(
+            'binary',
+            pickerFacadeConfig,
+            defaultPickerConfig,
+          )),
         );
 
         pickers.push(
-          (this.clipboardPicker = new Picker('clipboard', pickerFacadeConfig)),
+          (this.clipboardPicker = new Picker(
+            'clipboard',
+            pickerFacadeConfig,
+            defaultPickerConfig,
+          )),
         );
 
         pickers.push(
           (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
             container: this.options.customDropzoneContainer,
             headless: true,
+            ...defaultPickerConfig,
           })),
         );
 

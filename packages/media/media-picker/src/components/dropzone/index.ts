@@ -1,14 +1,15 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 
 import { LocalUploadComponent } from '../localUpload';
 import { MPDropzoneLoaded } from '../../outer/analytics/events';
 import { MediaPickerContext } from '../../domain/context';
-import { ModuleConfig } from '../../domain/config';
 import { whenDomReady } from '../../util/documentReady';
 import dropzoneUI from './dropzoneUI';
 import { UploadEventPayloadMap } from '../../domain/uploadEvent';
+import { UploadParams } from '../..';
 
 export interface DropzoneConfig {
+  uploadParams: UploadParams;
   userAuthProvider?: AuthProvider;
   container?: HTMLElement;
   headless?: boolean;
@@ -16,8 +17,8 @@ export interface DropzoneConfig {
 
 export interface DropzoneConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
     dropzoneConfig: DropzoneConfig,
   ): Dropzone;
 }
@@ -43,17 +44,17 @@ export class Dropzone extends LocalUploadComponent<
   private uiActive: boolean;
 
   constructor(
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    { userAuthProvider, container, headless }: DropzoneConfig = {},
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: DropzoneConfig = { uploadParams: {} },
   ) {
-    super(context, config, userAuthProvider);
-
+    super(analyticsContext, context, config);
+    const { container, headless } = config;
     this.container = container || document.body;
     this.headless = headless || false;
     this.uiActive = false;
 
-    this.context.trackEvent(new MPDropzoneLoaded());
+    this.analyticsContext.trackEvent(new MPDropzoneLoaded());
   }
 
   public activate(): Promise<void> {

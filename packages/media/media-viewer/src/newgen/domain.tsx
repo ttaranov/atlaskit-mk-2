@@ -34,7 +34,11 @@ export type VideoPreview = {
   viewer: 'VIDEO';
   src: string;
 };
-export type FilePreview = ImagePreview | VideoPreview;
+export type PDFPreview = {
+  viewer: 'PDF';
+  doc: Blob;
+};
+export type FilePreview = ImagePreview | VideoPreview | PDFPreview;
 
 export type Model = {
   fileDetails: Outcome<FileDetails, Error>;

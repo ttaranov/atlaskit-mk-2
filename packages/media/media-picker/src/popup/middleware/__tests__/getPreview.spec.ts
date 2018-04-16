@@ -1,4 +1,4 @@
-import { mockStore, mockFetcher, mockAuthService } from '../../mocks';
+import { mockStore, mockFetcher } from '../../mocks';
 import getPreviewMiddleware, { getPreview } from '../getPreview';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import { GetPreviewAction } from '../../actions/getPreview';
@@ -21,16 +21,16 @@ describe('getPreviewMiddleware', () => {
     src: 'some-preview-src',
   };
   const setup = () => {
-    const authService = mockAuthService();
-    authService.getUserAuth.mockImplementation(() => Promise.resolve(auth));
+    const store = mockStore();
+    const { userAuthProvider } = store.getState();
+    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
 
     const fetcher = mockFetcher();
     fetcher.getPreview.mockImplementation(() => Promise.resolve(preview));
 
     return {
       fetcher,
-      store: mockStore(),
-      authService,
+      store,
       next: jest.fn(),
       action: {
         type: 'GET_PREVIEW',
@@ -42,20 +42,20 @@ describe('getPreviewMiddleware', () => {
   };
 
   it('should do nothing given unknown action', () => {
-    const { fetcher, store, authService, next } = setup();
+    const { fetcher, store, next } = setup();
     const action = {
       type: 'UNKNOWN',
     };
 
-    getPreviewMiddleware(fetcher, authService)(store)(next)(action);
+    getPreviewMiddleware(fetcher)(store)(next)(action);
 
     expect(store.dispatch).not.toBeCalled();
     expect(next).toBeCalledWith(action);
   });
 
   it('should dispatch send upload event action with upload-preview-update event', () => {
-    const { fetcher, store, authService, action } = setup();
-    return getPreview(fetcher, authService, store, action).then(action => {
+    const { fetcher, store, action } = setup();
+    return getPreview(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -72,10 +72,10 @@ describe('getPreviewMiddleware', () => {
   });
 
   it('should get preview from fetcher', () => {
-    const { fetcher, store, authService, action } = setup();
+    const { fetcher, store, action } = setup();
     const { apiUrl } = store.getState();
 
-    return getPreview(fetcher, authService, store, action).then(action => {
+    return getPreview(fetcher, store, action).then(action => {
       expect(fetcher.getPreview).toBeCalledWith(
         apiUrl,
         auth,

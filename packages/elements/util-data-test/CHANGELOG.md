@@ -1,5 +1,17 @@
 # @atlaskit/util-data-test
 
+## 9.1.2
+
+## 9.1.1
+- [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
+
+## 9.1.0
+- [minor] If a Mention item is a team then render a TEAM lozenge automatically [d4976d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4976d4)
+
+## 9.0.3
+
+## 9.0.2
+
 ## 9.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 

@@ -23,18 +23,26 @@ export function request(
 ): Promise<Response> {
   const { method = 'GET', auth, params, headers, body } = options;
 
+  const processFetchResponse = (response: Response) => {
+    if (response.ok || response.redirected) {
+      return response;
+    } else {
+      throw response;
+    }
+  };
+
   if (method === 'GET') {
     return fetch(createUrl(url, { params, auth }), {
       method,
       body,
       headers,
-    });
+    }).then(processFetchResponse);
   } else {
     return fetch(createUrl(url, { params }), {
       method,
       body,
       headers: withAuth(auth)(headers),
-    });
+    }).then(processFetchResponse);
   }
 }
 

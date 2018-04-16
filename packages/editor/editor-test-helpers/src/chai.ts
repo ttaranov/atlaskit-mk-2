@@ -1,4 +1,3 @@
-/// <reference path="./types/chai.d.ts"/>
 import {
   Fragment,
   Mark,

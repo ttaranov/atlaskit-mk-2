@@ -7,20 +7,18 @@ import {
 import { fileListUpdate } from '../actions/fileListUpdate';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import { State } from '../domain';
-import { AuthService } from '../../domain/auth';
 
-export const changeCloudAccountFolderMiddleware = (
-  fetcher: Fetcher,
-  authService: AuthService,
-) => (store: Store<State>) => (next: Dispatch<State>) => (action: Action) => {
+export const changeCloudAccountFolderMiddleware = (fetcher: Fetcher) => (
+  store: Store<State>,
+) => (next: Dispatch<State>) => (action: Action) => {
   if (isChangeCloudAccountFolderAction(action)) {
+    const { userAuthProvider } = store.getState();
     const { apiUrl } = store.getState();
     const { serviceName, accountId, path } = action;
     const lastPath =
       path.length === 0 ? { id: '', name: '' } : path[path.length - 1];
 
-    authService
-      .getUserAuth()
+    userAuthProvider()
       .then(auth =>
         fetcher.fetchCloudAccountFolder(
           apiUrl,

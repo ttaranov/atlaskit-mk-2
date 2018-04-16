@@ -4,10 +4,10 @@ import * as sinon from 'sinon';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
-import { sortReactions } from '../src/internal/helpers';
+import { sortByRelevance } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import { reactionsProvider } from '../src/mock-reactions-provider';
-import { smileyId } from './_test-data';
+import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -50,7 +50,7 @@ const getSortedReactions = () => {
   const reactionSummaries = (reactionsProvider as any).cachedReactions[
     reactionsProvider.objectReactionKey(containerAri, demoAri)
   ];
-  return [...reactionSummaries].sort(sortReactions);
+  return [...reactionSummaries].sort(sortByRelevance);
 };
 
 describe('@atlaskit/reactions/reactions', () => {
@@ -94,6 +94,61 @@ describe('@atlaskit/reactions/reactions', () => {
         expect(reactions.find(Reaction).length).to.equal(
           sortedReactions.length + 1,
         );
+      });
+  });
+
+  it('should update reactions without affecting original order', () => {
+    const reactions = mount(renderReactions());
+
+    return reactionsProvider
+      .getReactions([{ containerAri, ari: demoAri }])
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state[demoAri]);
+        return reactionsProvider.addReaction(
+          containerAri,
+          demoAri,
+          flagBlackId.id!,
+        );
+      })
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state);
+        reactions.update();
+        expect(
+          reactions
+            .find(Reaction)
+            .last()
+            .prop('reaction').emojiId,
+        ).to.equal(flagBlackId.id);
+      });
+  });
+
+  it('should not reorder existing reactions', () => {
+    const reactions = mount(renderReactions());
+
+    return reactionsProvider
+      .getReactions([{ containerAri, ari: demoAri }])
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state[demoAri]);
+        return reactionsProvider.addReaction(
+          containerAri,
+          demoAri,
+          thumbsdownId.id!,
+        );
+      })
+      .then(state => {
+        reactionsProvider.notifyUpdated(containerAri, demoAri, state);
+        reactions.update();
+        const thumbsupReaction = reactions.find(Reaction).at(1);
+
+        const thumbsDownReaction = reactions.find(Reaction).at(2);
+        expect(thumbsupReaction.prop('reaction').emojiId).to.equal(
+          thumbsupId.id!,
+        );
+        expect(thumbsupReaction.prop('reaction').count).to.equal(5);
+        expect(thumbsDownReaction.prop('reaction').emojiId).to.equal(
+          thumbsdownId.id!,
+        );
+        expect(thumbsDownReaction.prop('reaction').count).to.equal(6);
       });
   });
 });

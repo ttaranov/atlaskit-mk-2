@@ -1,5 +1,12 @@
 # @atlaskit/media-viewer
 
+## 13.1.1
+
+## 13.1.0
+- [minor] Add PDF viewer to MVNG [f4dbaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4dbaa0)
+
+## 13.0.0
+
 ## 12.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

@@ -352,7 +352,7 @@ export const reducers = createReducer(initialState, {
 
   [HIGHLIGHT_COMMENT](state: State, action: Action) {
     const { payload } = action;
-    const highlighted = payload.commentId;
+    const highlighted = payload.commentId.toString();
 
     return {
       ...state,

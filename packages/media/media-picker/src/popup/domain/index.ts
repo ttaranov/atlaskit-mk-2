@@ -1,4 +1,4 @@
-import { Auth, AuthProvider, MediaType } from '@atlaskit/media-core';
+import { Auth, AuthProvider, MediaType, Context } from '@atlaskit/media-core';
 
 import { UploadParams } from '../../domain/config';
 import { MediaArtifact } from '../../service/mediaApi';
@@ -36,7 +36,7 @@ export interface State {
   readonly isCancelling: boolean;
   readonly isUploading: boolean;
   readonly userAuthProvider: AuthProvider;
-
+  readonly context: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
 

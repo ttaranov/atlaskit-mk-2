@@ -26,6 +26,12 @@ export default class TooltipMarshal {
 
   scrollListenerBound: boolean = false;
 
+  immediatelySwitch() {
+    return (
+      this.visibleTooltip && this.visibleTooltip.state.position !== 'mouse'
+    );
+  }
+
   show(tooltip: TooltipType) {
     // if the tooltip is already queued for show, don't interfere
     if (this.queuedForShow === tooltip) return;
@@ -45,7 +51,7 @@ export default class TooltipMarshal {
 
     // if a tooltip is already visible, but is not the one that should be
     // displayed, immediately switch them
-    if (this.visibleTooltip) {
+    if (this.immediatelySwitch()) {
       // the visible tooltip may be queued to be hidden; prevent that
       if (this.queuedForHide) {
         this.clearHideTimeout();

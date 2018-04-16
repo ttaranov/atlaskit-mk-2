@@ -1,9 +1,12 @@
 import { State } from '../domain';
 import { Store } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
+import { ContextFactory } from '@atlaskit/media-core';
+
+const apiUrl = 'some-api-url';
 
 export const mockState: State = {
-  apiUrl: 'some-api-url',
+  apiUrl,
   redirectUrl: 'some-redirect-url',
   view: {
     isVisible: true,
@@ -36,12 +39,16 @@ export const mockState: State = {
   remoteUploads: {},
   isCancelling: false,
   isUploading: false,
-  userAuthProvider: jest.fn(),
+  userAuthProvider: jest.fn().mockReturnValue(Promise.resolve({})),
   giphy: {
     imageCardModels: [],
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
+  context: ContextFactory.create({
+    serviceHost: apiUrl,
+    authProvider: jest.fn(),
+  }),
 };
 
 export const mockStore = (state?: Partial<State>) => ({
@@ -66,11 +73,6 @@ export const mockChannel = () => {
 
   return channel;
 };
-
-export const mockAuthService = () => ({
-  getUserAuth: jest.fn(),
-  getTenantAuth: jest.fn(),
-});
 
 export const mockProvider = jest.fn(() => ({
   observable: () => {

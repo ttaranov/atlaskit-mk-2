@@ -174,10 +174,19 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
 
   private onAddEmoji = () => {
     const { onUploadEmoji } = this.props;
-    const { filename, name, previewImage } = this.state;
+    const { filename, name, previewImage, uploadStatus } = this.state;
+
+    if (uploadStatus === UploadStatus.Uploading) {
+      return;
+    }
+
     if (filename && name && previewImage) {
       const notifyUpload = size => {
         const { width, height } = size;
+        this.setState({
+          uploadStatus: UploadStatus.Uploading,
+        });
+
         onUploadEmoji({
           name: toEmojiName(name),
           shortName: `:${name}:`,
@@ -185,9 +194,6 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
           dataURL: previewImage,
           width,
           height,
-        });
-        this.setState({
-          uploadStatus: UploadStatus.Uploading,
         });
       };
       ImageUtil.getNaturalImageSize(previewImage)

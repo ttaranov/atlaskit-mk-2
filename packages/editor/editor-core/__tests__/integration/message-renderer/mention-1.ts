@@ -34,7 +34,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: user can see mention inside bulletList',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -51,7 +51,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: user can see mention inside orderedList',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

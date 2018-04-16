@@ -118,6 +118,7 @@ export const shortName = 'emoji-common-shortname';
 export const previewSingleLine = 'emoji-common-preview-single-line';
 export const toneSelectorContainer = 'emoji-common-tone-selector-container';
 export const withToneSelector = 'emoji-common-with-tone-selector';
+export const emojiPreviewSection = 'emoji-preview-section';
 
 export const emojiPreview = style({
   display: 'flex',
@@ -347,38 +348,9 @@ export const bigEmojiPreview = style({
   },
 });
 
-export const uploadError = style({
-  margin: '12px 0',
-
-  $nest: {
-    span: {
-      verticalAlign: 'middle',
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
-    },
-    svg: {
-      color: colors.R500,
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
-    },
-  },
-});
-
 export const uploadAddRow = style({
   display: 'flex',
-  alignItems: 'center',
-
-  $nest: {
-    ':first-child': {
-      marginRight: '5px',
-    },
-  },
+  justifyContent: 'flex-end',
 });
 
 export const AddCustomEmoji = style({
@@ -450,7 +422,7 @@ export const deleteFooter = style({
 export const emojiDeleteErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
+  alignItems: 'center',
   justifyContent: 'flex-end',
   paddingRight: '10px',
 });
@@ -458,7 +430,37 @@ export const emojiDeleteErrorMessage = style({
 export const emojiChooseFileErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
   paddingRight: '10px',
   justifyContent: 'flex-start',
+});
+
+export const emojiPreviewErrorMessage = style({
+  display: 'inline-flex',
+  color: colors.R300,
+  paddingRight: '10px',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+});
+
+export const uploadRetryButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  fontWeight: 'bold',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
+});
+
+export const uploadEmojiButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
 });

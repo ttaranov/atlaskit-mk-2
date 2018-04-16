@@ -1,5 +1,28 @@
 # @atlaskit/conversation
 
+## 7.1.10
+
+## 7.1.9
+
+## 7.1.8
+- [patch] Fix permalink check [8d715f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d715f1)
+
+## 7.1.7
+
+## 7.1.6
+
+## 7.1.5
+
+## 7.1.4
+
+## 7.1.3
+- [patch] Close Editor when comment is saved [ae181bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae181bf)
+
+## 7.1.2
+
+## 7.1.1
+- [patch] Adding placholder prop for optionally setting the editor placholder text [9f1696a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f1696a)
+
 ## 7.1.0
 - [minor] Adding permalink support [c79d549](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c79d549)
 

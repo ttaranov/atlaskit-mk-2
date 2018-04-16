@@ -1,4 +1,4 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -10,14 +10,8 @@ import { resetView } from '../popup/actions/resetView';
 import { setTenant } from '../popup/actions/setTenant';
 import { getFilesInRecents } from '../popup/actions/getFilesInRecents';
 import { getConnectedRemoteAccounts } from '../popup/actions/getConnectedRemoteAccounts';
-import { WsProvider } from '../popup/tools/websocket/wsProvider';
 import { State } from '../popup/domain';
-
-import { MediaApiFetcher } from '../popup/tools/fetcher/fetcher';
-import { CloudService } from '../popup/services/cloud-service';
 import { hidePopup } from '../popup/actions/hidePopup';
-
-import appConfig from '../config';
 import { createStore } from '../store';
 import { UploadComponent, UploadEventEmitter } from './component';
 
@@ -28,21 +22,21 @@ import {
 } from '../outer/analytics/events';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig, UploadParams } from '../domain/config';
+import { UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface PopupConfig {
-  readonly userAuthProvider: AuthProvider;
   readonly container?: HTMLElement;
+  readonly uploadParams: UploadParams;
 }
 
 export const USER_RECENTS_COLLECTION = 'recents';
 
 export interface PopupConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    popupConfig: PopupConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: PopupConfig,
   ): Popup;
 }
 
@@ -61,37 +55,18 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private uploadParams: UploadParams;
 
   constructor(
-    context: MediaPickerContext,
-    readonly config: ModuleConfig,
-    { userAuthProvider, container = document.body }: PopupConfig,
+    anlyticsContext: MediaPickerContext,
+    readonly context: Context,
+    { container = document.body, uploadParams }: PopupConfig,
   ) {
-    super(context);
+    super(anlyticsContext);
 
-    const { apiUrl } = config;
-    const redirectUrl = appConfig.html.redirectUrl;
-    const fetcher = new MediaApiFetcher();
-    const authService = {
-      getUserAuth: userAuthProvider,
-      getTenantAuth: config.authProvider,
-    };
-    const cloudService = new CloudService(() => authService.getUserAuth());
-    const wsProvider = new WsProvider();
-
-    this.context.trackEvent(new MPPopupLoaded());
-    this.store = createStore(
-      this,
-      apiUrl,
-      redirectUrl,
-      userAuthProvider,
-      fetcher,
-      authService,
-      cloudService,
-      wsProvider,
-    );
+    this.analyticsContext.trackEvent(new MPPopupLoaded());
+    this.store = createStore(this, context);
 
     this.uploadParams = {
       ...defaultUploadParams,
-      ...config.uploadParams,
+      ...uploadParams,
     };
 
     const popup = this.renderPopup();
@@ -101,7 +76,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   }
 
   public show(): Promise<void> {
-    return this.config
+    return this.context.config
       .authProvider({
         collectionName: this.uploadParams.collection,
       })
@@ -119,7 +94,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getConnectedRemoteAccounts());
 
         this.store.dispatch(showPopup());
-        this.context.trackEvent(new MPPopupShown());
+        this.analyticsContext.trackEvent(new MPPopupShown());
       });
   }
 
@@ -144,7 +119,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
   public emitClosed(): void {
     this.emit('closed', undefined);
-    this.context.trackEvent(new MPPopupHidden());
+    this.analyticsContext.trackEvent(new MPPopupHidden());
   }
 
   private renderPopup(): HTMLElement {

@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 7.1.0
+- [minor] Allow to customize default avatar list text [d2a7642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2a7642)
+
 ## 7.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 
