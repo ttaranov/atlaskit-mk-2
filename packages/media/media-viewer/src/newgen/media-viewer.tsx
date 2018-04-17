@@ -99,8 +99,6 @@ export class MediaViewer extends React.Component<Props, State> {
                 },
               },
             });
-
-            this.populatePreviewData(mediaItem, context, collectionName);
           }
         }
       },
@@ -118,49 +116,6 @@ export class MediaViewer extends React.Component<Props, State> {
   private release() {
     if (this.itemDetails) {
       this.itemDetails.unsubscribe();
-    }
-  }
-
-  private populatePreviewData(mediaItem, context, collectionName) {
-    switch (mediaItem.details.mediaType) {
-      case 'image':
-        this.setState({
-          previewData: {
-            status: 'SUCCESSFUL',
-            data: {
-              viewer: 'IMAGE',
-            },
-          },
-        });
-        break;
-      case 'video':
-        this.setState({
-          previewData: {
-            status: 'SUCCESSFUL',
-            data: {
-              viewer: 'VIDEO',
-            },
-          },
-        });
-        break;
-      case 'doc':
-        this.setState({
-          previewData: {
-            status: 'SUCCESSFUL',
-            data: {
-              viewer: 'PDF',
-            },
-          },
-        });
-        break;
-      default:
-        this.setState({
-          previewData: {
-            status: 'FAILED',
-            err: new Error(`not supported`),
-          },
-        });
-        break;
     }
   }
 }

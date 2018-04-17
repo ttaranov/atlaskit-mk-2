@@ -26,25 +26,10 @@ export type FileDetails = {
   item?: FileItem;
 };
 
-export type ObjectUrl = string;
-
-export type ImagePreview = {
-  viewer: 'IMAGE';
-};
-export type VideoPreview = {
-  viewer: 'VIDEO';
-};
-export type PDFPreview = {
-  viewer: 'PDF';
-};
-export type FilePreview = ImagePreview | VideoPreview | PDFPreview;
-
 export type Model = {
   fileDetails: Outcome<FileDetails, Error>;
-  previewData: Outcome<FilePreview, Error>;
 };
 
 export const initialModel: Model = {
   fileDetails: { status: 'PENDING' },
-  previewData: { status: 'PENDING' },
 };
