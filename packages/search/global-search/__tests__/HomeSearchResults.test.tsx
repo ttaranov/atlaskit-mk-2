@@ -22,7 +22,7 @@ enum Group {
 function findGroup(group: Group, wrapper: ShallowWrapper) {
   return wrapper
     .find(ResultItemGroup)
-    .findWhere(n => n.prop('test-selector') === group.valueOf());
+    .findWhere(n => n.key() === group.valueOf());
 }
 
 describe('HomeSearchResults', () => {

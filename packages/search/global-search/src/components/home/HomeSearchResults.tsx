@@ -18,36 +18,28 @@ const renderRecent = (results: Result[]) => {
   }
 
   return (
-    <ResultItemGroup
-      title="Recently viewed"
-      key="recent"
-      test-selector="recent"
-    >
+    <ResultItemGroup title="Recently viewed" key="recent">
       {renderResults(results)}
     </ResultItemGroup>
   );
 };
 
 const renderJira = (results: Result[], query: string) => (
-  <ResultItemGroup title="Jira issues" key="jira" test-selector="jira">
+  <ResultItemGroup title="Jira issues" key="jira">
     {renderResults(results)}
     {searchJiraItem(query)}
   </ResultItemGroup>
 );
 
 const renderConfluence = (results: Result[], query: string) => (
-  <ResultItemGroup
-    title="Confluence pages and blogs"
-    key="confluence"
-    test-selector="confluence"
-  >
+  <ResultItemGroup title="Confluence pages and blogs" key="confluence">
     {renderResults(results)}
     {searchConfluenceItem(query)}
   </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <ResultItemGroup title="People" key="people" test-selector="people">
+  <ResultItemGroup title="People" key="people">
     {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
