@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import { FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
-import { Model, FileDetails } from '../../src/newgen/domain';
+import { Model } from '../../src/newgen/domain';
 import { ErrorMessage } from '../../src/newgen/styled';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
@@ -43,8 +43,6 @@ function createContext(subject?, blobService?) {
 }
 
 describe('<MediaViewerRenderer />', () => {
-  const fileDetails: FileDetails = { mediaType: 'doc' };
-
   it('shows an indicator while loading', () => {
     const model: Model = {
       fileDetails: {

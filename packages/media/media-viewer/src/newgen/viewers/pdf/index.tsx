@@ -83,7 +83,7 @@ export class PDFViewer extends React.PureComponent<Props, State> {
           </PDFWrapper>
         );
       case 'FAILED':
-        return <ErrorMessage>{doc.err}</ErrorMessage>;
+        return <ErrorMessage>{doc.err.message}</ErrorMessage>;
     }
   }
 }
