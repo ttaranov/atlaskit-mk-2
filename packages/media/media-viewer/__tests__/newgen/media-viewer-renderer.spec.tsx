@@ -186,7 +186,18 @@ describe('<FileViewer />', () => {
       viewer: 'PDF',
       doc: new Blob(),
     };
-    const el = mount(<PDFViewer previewData={preview} />);
+    const context = createContext();
+    const item: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'failed',
+        mediaType: 'image',
+      },
+    };
+    const el = mount(
+      <FileViewer context={context} item={item} previewData={preview} />,
+    );
     expect(el.find(PDFViewer)).toHaveLength(1);
   });
 });

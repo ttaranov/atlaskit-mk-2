@@ -74,20 +74,19 @@ export const FileViewer: StatelessComponent<FileViewerProps> = ({
   context,
   item,
 }) => {
+  if (!(context && item)) {
+    return <Spinner />;
+  }
   switch (previewData.viewer) {
     case 'IMAGE':
-      if (context && item) {
-        return <ImageViewer context={context} item={item} />;
-      } else {
-        return null;
-      }
+      return <ImageViewer context={context} item={item} />;
     case 'VIDEO':
-      if (context && item) {
-        return <VideoViewer context={context} item={item} previewData={previewData} />;
-      } else {
-        return null;
-      }
+      return (
+        <VideoViewer context={context} item={item} previewData={previewData} />
+      );
     case 'PDF':
-      return <PDFViewer previewData={previewData} />;
+      return (
+        <PDFViewer context={context} item={item} previewData={previewData} />
+      );
   }
 };

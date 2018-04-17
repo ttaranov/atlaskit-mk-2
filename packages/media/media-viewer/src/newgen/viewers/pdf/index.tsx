@@ -1,14 +1,26 @@
 import * as React from 'react';
-import { PDFPreview } from '../../domain';
+import { Context, FileItem } from '@atlaskit/media-core';
+import { PDFPreview, Outcome } from '../../domain';
 import { PDFWrapper } from '../../styled';
 import { componentLoader } from './loader';
 
 export type Props = {
   previewData: PDFPreview;
+  context: Context;
+  item: FileItem;
+  collectionName?: string;
 };
 
-export class PDFViewer extends React.PureComponent<Props, {}> {
+export type State = {
+  src: Outcome<string, Error>;
+};
+
+export class PDFViewer extends React.PureComponent<Props, State> {
   static PDFComponent;
+
+  state: State = {
+    src: { status: 'PENDING' },
+  };
 
   componentDidMount() {
     if (!PDFViewer.PDFComponent) {
