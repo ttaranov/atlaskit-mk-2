@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.16
+- [patch] ED-4381 add space guards around product and endash autoformat rules [729a77c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/729a77c)
+
 ## 70.2.15
 - [patch] ED-4220 Shift + Enter on selected media card in editor clears out the collection/id properties from the media node [e002c18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e002c18)
 
