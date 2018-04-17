@@ -89,6 +89,23 @@ const Button = ({ show, ...props }: ButtonProps) => (
   />
 );
 
+// tinker with the DOM directly by setting style properties, makes the
+function applyMutations(
+  elements: Array<{ property: string, ref: HTMLElement }>,
+  width: number,
+) {
+  elements.forEach(({ property, ref }) => {
+    const newValue = `${width}px`;
+    const oldValue = ref.style.getPropertyValue(property);
+
+    // avoid thrashing
+    if (oldValue === newValue) return;
+
+    // direct attribute manipulation
+    ref.style.setProperty(property, newValue);
+  });
+}
+
 type Props = {
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
@@ -188,8 +205,12 @@ export default class ResizeControl extends PureComponent<Props, State> {
     const { mutationRefs } = this.props;
     const { initialX, initialWidth, isDragging, mouseIsDown } = this.state;
 
-    // initialize dragging, once
-    if (!isDragging && mouseIsDown) {
+    // on occasion a mouse move event occurs before the event listeners
+    // have a chance to detach
+    if (!mouseIsDown) return;
+
+    // initialize dragging
+    if (!isDragging) {
       this.initializeDrag(event);
       return;
     }
@@ -202,16 +223,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
     const width = initialWidth + delta;
 
     // apply updated styles to the applicable DOM nodes
-    mutationRefs.forEach(({ property, ref }) => {
-      const newValue = `${width}px`;
-      const oldValue = ref.style.getPropertyValue(property);
-
-      // mouse position hasn't exceeded a complete pixel, bail
-      if (oldValue === newValue) return;
-
-      // direct attribute manipulation
-      ref.style.setProperty(property, newValue);
-    });
+    applyMutations(mutationRefs, width);
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {

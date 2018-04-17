@@ -22,9 +22,9 @@ export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
         pointerEvents: 'none',
         position: 'absolute',
         top: 0,
-        transitionDuration: transitionDuration,
+        transitionDuration,
         transitionProperty: 'left, opacity, width',
-        transitionTimingFunction: transitionTimingFunction,
+        transitionTimingFunction,
         width,
       }}
       {...props}
