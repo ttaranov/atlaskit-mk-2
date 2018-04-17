@@ -28,10 +28,10 @@ editors.forEach(editor => {
       );
       await sample.click(copyAsHTMLButton);
       await sample.goto(editor.path);
+      await sample.waitForSelector(editor.placeholder);
       await sample.click(editor.placeholder);
       await sample.waitForSelector(editable);
       await sample.paste(editable);
-      await sample.keys('ArrowRight');
       await sample.type(editable, '.');
       await sample.type(editable, 'Return');
 
