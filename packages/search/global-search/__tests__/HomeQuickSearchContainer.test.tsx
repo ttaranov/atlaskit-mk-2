@@ -8,15 +8,22 @@ import {
 import GlobalQuickSearch, {
   Props as GlobalQuickSearchProps,
 } from '../src/components/GlobalQuickSearch';
-import { RecentSearchClient } from '../src/api/RecentSearchClient';
-import {
-  CrossProductSearchClient,
-  CrossProductResults,
-} from '../src/api/CrossProductSearchClient';
+import { CrossProductResults } from '../src/api/CrossProductSearchClient';
 import { Result, ResultType } from '../src/model/Result';
-import { PeopleSearchClient } from '../src/api/PeopleSearchClient';
 import SearchError from '../src/components/SearchError';
 import { makeResult } from './_test-util';
+import {
+  noResultsPeopleSearchClient,
+  errorPeopleSearchClient,
+} from './mocks/_mockPeopleSearchClient';
+import {
+  noResultsCrossProductSearchClient,
+  errorCrossProductSearchClient,
+} from './mocks/_mockCrossProductSearchClient';
+import {
+  noResultsRecentSearchClient,
+  errorRecentSearchClient,
+} from './mocks/_mockRecentSearchClient';
 
 function delay<T>(millis: number = 1, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -37,36 +44,6 @@ async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   await delay(millis);
   wrapper.update();
 }
-
-const noResultsRecentSearchClient: RecentSearchClient = {
-  getRecentItems() {
-    return Promise.resolve([]);
-  },
-  search(query: string) {
-    return Promise.resolve([]);
-  },
-};
-
-const errorRecentSearchClient: RecentSearchClient = {
-  getRecentItems() {
-    return Promise.reject('error');
-  },
-  search(query: string) {
-    return Promise.reject('error');
-  },
-};
-
-const noResultsCrossProductSearchClient: CrossProductSearchClient = {
-  search(query: string) {
-    return Promise.resolve({ jira: [], confluence: [] });
-  },
-};
-
-const noResultsPeopleSearchClient: PeopleSearchClient = {
-  search(query: string) {
-    return Promise.resolve([]);
-  },
-};
 
 enum Group {
   Recent = 'recent',
@@ -361,12 +338,6 @@ describe('HomeQuickSearchContainer', () => {
   });
 
   describe('Error handling', () => {
-    const errorCrossProductSearchClient: CrossProductSearchClient = {
-      search(query: string) {
-        return Promise.reject('error');
-      },
-    };
-
     it('should show error state when both recent search and xpsearch fails', async () => {
       const wrapper = render({
         recentSearchClient: errorRecentSearchClient,
@@ -415,11 +386,7 @@ describe('HomeQuickSearchContainer', () => {
 
     it('should not show the error state when only people search fails', async () => {
       const wrapper = render({
-        peopleSearchClient: {
-          search(query: string) {
-            return Promise.reject(new TypeError('failed'));
-          },
-        },
+        peopleSearchClient: errorPeopleSearchClient,
       });
 
       searchFor('dav', wrapper);

@@ -8,16 +8,20 @@ import {
 import GlobalQuickSearch, {
   Props as GlobalQuickSearchProps,
 } from '../src/components/GlobalQuickSearch';
-import { RecentSearchClient } from '../src/api/RecentSearchClient';
-import {
-  CrossProductSearchClient,
-  CrossProductResults,
-} from '../src/api/CrossProductSearchClient';
+import { CrossProductResults } from '../src/api/CrossProductSearchClient';
 import { ConfluenceClient } from '../src/api/ConfluenceClient';
 import { Result, ResultType } from '../src/model/Result';
-import { PeopleSearchClient } from '../src/api/PeopleSearchClient';
 import SearchError from '../src/components/SearchError';
 import { makeResult } from './_test-util';
+import {
+  noResultsCrossProductSearchClient,
+  errorCrossProductSearchClient,
+} from './mocks/_mockCrossProductSearchClient';
+import {
+  noResultsPeopleSearchClient,
+  errorPeopleSearchClient,
+} from './mocks/_mockPeopleSearchClient';
+import { noResultsConfluenceClient } from './mocks/_mockConfluenceClient';
 
 function delay<T>(millis: number = 1, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -39,27 +43,6 @@ async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   wrapper.update();
 }
 
-const noResultConfluenceClient: ConfluenceClient = {
-  getRecentPages() {
-    return Promise.resolve([]);
-  },
-  getRecentSpaces() {
-    return Promise.resolve([]);
-  },
-};
-
-const noResultsCrossProductSearchClient: CrossProductSearchClient = {
-  search(query: string) {
-    return Promise.resolve({ jira: [], confluence: [] });
-  },
-};
-
-const noResultsPeopleSearchClient: PeopleSearchClient = {
-  search(query: string) {
-    return Promise.resolve([]);
-  },
-};
-
 enum Group {
   Objects = 'objects',
   Spaces = 'spaces',
@@ -74,7 +57,7 @@ function findGroup(group: Group, wrapper: ShallowWrapper) {
 
 function render(partialProps?: Partial<Props>) {
   const props: Props = {
-    confluenceClient: noResultConfluenceClient,
+    confluenceClient: noResultsConfluenceClient,
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
     ...partialProps,
@@ -108,11 +91,7 @@ describe('ConfluenceQuickSearchContainer', () => {
        * 3. Make sure loading state is unset
        */
       const wrapper = render({
-        peopleSearchClient: {
-          search(query: string) {
-            return Promise.reject('error');
-          },
-        },
+        peopleSearchClient: errorPeopleSearchClient,
         crossProductSearchClient: {
           search(query: string) {
             return delay(5, {
@@ -358,12 +337,6 @@ describe('ConfluenceQuickSearchContainer', () => {
   });
 
   describe('Error handling', () => {
-    const errorCrossProductSearchClient: CrossProductSearchClient = {
-      search(query: string) {
-        return Promise.reject('error');
-      },
-    };
-
     it('should show error state when xpsearch fails', async () => {
       const wrapper = render({
         crossProductSearchClient: errorCrossProductSearchClient,
@@ -401,11 +374,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     it('should not show the error state when only people search fails', async () => {
       const wrapper = render({
-        peopleSearchClient: {
-          search(query: string) {
-            return Promise.reject(new TypeError('failed'));
-          },
-        },
+        peopleSearchClient: errorPeopleSearchClient,
       });
 
       searchFor('dav', wrapper);
