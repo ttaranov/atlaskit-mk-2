@@ -37,19 +37,24 @@ const WEBPACK_BUILD_TIMEOUT = 10000;
 let server;
 let config;
 
+const pattern = process.argv[2] || '';
+
+function packageIsInPattern(workspace) {
+  if (workspace.files.webdriver.length < 1) return false;
+  else if (pattern === '') return true;
+  else {
+    let matchesPattern = workspace.dir.includes(pattern);
+    return matchesPattern;
+  }
+}
+
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
-    .filter(
-      workspace =>
-        process.argv.slice(2)[1]
-          ? workspace.dir.includes(process.argv.slice(2)[1])
-          : workspace,
-    )
-    .filter(workspace => workspace.files.webdriver.length)
+    .filter(packageIsInPattern)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
 //
@@ -72,13 +77,8 @@ async function startDevServer() {
     : utils.createDefaultGlob();
 
   if (!globs.length) {
-    print(
-      errorMsg({
-        title: 'Nothing to run',
-        msg: `Pattern doesn't match anything.`,
-      }),
-    );
-    process.exit(2);
+    console.info('Nothing to run or pattern does not match!');
+    process.exit(0);
   }
 
   config = createConfig({

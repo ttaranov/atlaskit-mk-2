@@ -2,6 +2,7 @@
 'use strict';
 
 const child = require('child_process');
+const isPortAvailable = require('is-port-available');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
@@ -26,7 +27,8 @@ function runTests() {
 }
 
 async function main() {
-  process.env.BUILD_SERVER ? await webpack.startDevServer() : {};
+  (await isPortAvailable(9000)) ? await webpack.startDevServer() : {};
+  // console.log("Josef")
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -35,7 +37,7 @@ async function main() {
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  process.env.BUILD_SERVER ? webpack.stopDevServer() : {};
+  (await isPortAvailable(9000)) ? webpack.stopDevServer() : {};
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();

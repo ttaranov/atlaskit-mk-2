@@ -58,6 +58,7 @@ pipelines:
               - bolt install --pure-lockfile
               - yarn test:changed
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack
             caches:
               - node
         - step:
@@ -89,6 +90,7 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
+            - yarn yarn test:webdriver:browserstack website
           caches:
             - node
 
@@ -98,7 +100,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test:build:webdriver:browserstack
+            - yarn test:webdriver:browserstack
           caches:
             - node
 
@@ -114,6 +116,7 @@ pipelines:
             - yarn typecheck
             - yarn test
             - yarn test:browser:browserstack
+            - yarn test:webdriver:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
 
