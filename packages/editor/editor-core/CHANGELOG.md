@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.2.15
+- [patch] ED-4220 Shift + Enter on selected media card in editor clears out the collection/id properties from the media node [e002c18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e002c18)
+
 ## 70.2.14
 - [patch] ED-4348 fix tables built from transformers [0c2a88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2a88a)
 
