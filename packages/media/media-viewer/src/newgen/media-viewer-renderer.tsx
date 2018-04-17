@@ -1,30 +1,56 @@
 import * as React from 'react';
-import Spinner from '@atlaskit/spinner';
-import { FileViewer } from './file-viewer';
-import { ErrorMessage } from './styled';
+import { StatelessComponent } from 'react';
+import { Context, FileItem } from '@atlaskit/media-core';
+import { Blanket, Header, Content, ErrorMessage } from './styled';
 import { Model } from './domain';
+import { ImageViewer } from './viewers/image';
+import { VideoViewer } from './viewers/video';
+import { PDFViewer } from './viewers/pdf';
+import { Spinner } from './loading';
 
 export type Props = {
   model: Model;
+  onClose?: () => void;
+  context?: Context;
+  item?: FileItem;
 };
 
-export const MediaViewerRenderer: React.StatelessComponent<Props> = ({
+export const MediaViewerRenderer: StatelessComponent<Props> = ({
   model,
-}) => {
-  const { fileDetails, previewData } = model;
+  onClose,
+  context,
+  item,
+}) => (
+  <Blanket onClick={onClose}>
+    {model.fileDetails.status === 'SUCCESSFUL' && (
+      <Header>{model.fileDetails.data.name || 'No name given'}</Header>
+    )}
+    <Content>
+      <Viewer model={model} context={context} item={item} />
+    </Content>
+  </Blanket>
+);
+
+export const Viewer: StatelessComponent<Props> = ({ model, item, context }) => {
+  const { fileDetails } = model;
+
   switch (fileDetails.status) {
     case 'PENDING':
       return <Spinner />;
     case 'SUCCESSFUL':
-      if (fileDetails.data.mediaType === 'unknown') {
-        return <ErrorMessage>This file is unsupported</ErrorMessage>;
-      }
-      if (previewData.status === 'SUCCESSFUL') {
-        return <FileViewer previewData={previewData.data} />;
-      } else if (previewData.status === 'PENDING') {
+      if (!(context && item)) {
         return <Spinner />;
-      } else {
-        return <ErrorMessage>Error rendering preview</ErrorMessage>;
+      }
+      switch (item.details.mediaType) {
+        case 'image':
+          return <ImageViewer context={context} item={item} />;
+        case 'audio':
+        case 'video':
+          return <VideoViewer context={context} item={item} />;
+        case 'doc':
+          return <PDFViewer context={context} item={item} />;
+        default:
+          return <ErrorMessage>This file is unsupported</ErrorMessage>;
       }
     case 'FAILED':
       return <ErrorMessage>Error</ErrorMessage>;

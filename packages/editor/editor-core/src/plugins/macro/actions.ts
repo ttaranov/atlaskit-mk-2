@@ -5,7 +5,11 @@ import { MacroProvider, MacroAttributes } from './types';
 import { pluginKey } from './';
 import * as assert from 'assert';
 import { getValidNode } from '@atlaskit/editor-common';
-import { safeInsert, replaceSelectedNode } from 'prosemirror-utils';
+import {
+  safeInsert,
+  replaceSelectedNode,
+  hasParentNodeOfType,
+} from 'prosemirror-utils';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
@@ -24,8 +28,12 @@ export const insertMacroFromMacroBrowser = (
     let { tr } = view.state;
     if (node) {
       if (
+        // trying to replace selected node
         tr.selection instanceof NodeSelection &&
-        node.type !== bodiedExtension
+        // with bodiedExtension
+        node.type === bodiedExtension &&
+        // selected node is not nested in bodiedExtension
+        !hasParentNodeOfType(bodiedExtension)(tr.selection)
       ) {
         tr = replaceSelectedNode(node)(tr);
       } else {

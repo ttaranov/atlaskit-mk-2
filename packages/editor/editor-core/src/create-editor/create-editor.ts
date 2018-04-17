@@ -33,10 +33,33 @@ export function processPluginsList(
   plugins: EditorPlugin[],
   editorProps: EditorProps,
 ): EditorConfig {
+  /**
+   * First pass to collect pluginsOptions
+   */
+  const pluginsOptions = plugins.reduce((acc, plugin) => {
+    if (plugin.pluginsOptions) {
+      Object.keys(plugin.pluginsOptions).forEach(pluginName => {
+        if (!acc[pluginName]) {
+          acc[pluginName] = [];
+        }
+        acc[pluginName].push(plugin.pluginsOptions![pluginName]);
+      });
+    }
+
+    return acc;
+  }, {});
+
+  /**
+   * Process plugins
+   */
   return plugins.reduce(
     (acc, plugin) => {
       if (plugin.pmPlugins) {
-        acc.pmPlugins.push(...plugin.pmPlugins());
+        acc.pmPlugins.push(
+          ...plugin.pmPlugins(
+            plugin.name ? pluginsOptions[plugin.name] : undefined,
+          ),
+        );
       }
 
       if (plugin.nodes) {

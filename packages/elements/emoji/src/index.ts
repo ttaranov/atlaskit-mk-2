@@ -8,6 +8,7 @@ import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, {
   EmojiProvider,
   UploadingEmojiProvider,
+  EmojiResourceConfig,
 } from './api/EmojiResource';
 import EmojiRepository from './api/EmojiRepository';
 import EmojiLoader from './api/EmojiLoader';
@@ -44,6 +45,7 @@ export {
   emojiPickerHeight,
   defaultEmojiHeight,
   customCategory,
+  EmojiResourceConfig,
 };
 
 export * from './types';

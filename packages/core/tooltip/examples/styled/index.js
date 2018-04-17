@@ -55,3 +55,20 @@ export const Target = styled.div`
   padding-right: 1em;
   user-select: none;
 `;
+
+export const BigTarget = styled.div`
+  background-color: ${p => color[p.color] || colors.primary};
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 150px;
+  padding-left: 1em;
+  padding-right: 1em;
+  user-select: none;
+  text-align: center;
+`;

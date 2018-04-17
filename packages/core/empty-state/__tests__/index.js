@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
 import EmptyState from '../src/EmptyState';
@@ -61,5 +61,12 @@ describe('Empty state', () => {
     const wrapper = shallow(<EmptyState header="Test header" isLoading />);
 
     expect(wrapper.find(Spinner).length).toBe(1);
+  });
+
+  it('should render primary and seconday actions inside a ButtonGroup', () => {
+    const wrapper = shallow(
+      <EmptyState primaryAction={<Button />} secondaryAction={<Button />} />,
+    );
+    expect(wrapper.find(ButtonGroup).length).toBe(1);
   });
 });

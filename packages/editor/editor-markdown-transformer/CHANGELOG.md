@@ -1,5 +1,10 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.18
+- [patch] Fix Markdown-it dependency to be the same version that prosemirror-markdown uses internally to prevent unnecessary bundle size increase [9abf097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9abf097)
+
+## 0.2.17
+
 ## 0.2.16
 
 ## 0.2.15

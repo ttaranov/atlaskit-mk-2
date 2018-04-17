@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 5.0.1
+
+## 5.0.0
+
 ## 4.0.0
 - [major] Use media-core context in MediaPicker constructor [6cc9f55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6cc9f55)
 

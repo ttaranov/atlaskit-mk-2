@@ -590,4 +590,18 @@ describe('Renderer - TextSerializer', () => {
 
     expect(render(doc)).to.equal('foo\nbar');
   });
+
+  it('should render unsupported node with the node type', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'bodiedExtension',
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('[bodiedExtension]');
+  });
 });

@@ -94,7 +94,7 @@ export function toggleHeading(level: number): Command {
  * Sometimes a selection in the editor can be slightly offset, for example:
  * it's possible for a selection to start or end at an empty node at the very end of
  * a line. This isn't obvious by looking at the editor and it's likely not what the
- * user intended - so we need to adjust the seletion a bit in scenarios like that.
+ * user intended - so we need to adjust the selection a bit in scenarios like that.
  */
 export function adjustSelectionInList(
   doc,
@@ -314,20 +314,24 @@ export function showLinkPanel(): Command {
 export function insertNewLine(): Command {
   return function(state, dispatch) {
     const { $from } = state.selection;
-    const node = $from.parent;
+    const parent = $from.parent;
     const { hardBreak } = state.schema.nodes;
 
     if (hardBreak) {
       const hardBreakNode = hardBreak.create();
 
-      if (node.type.validContent(Fragment.from(hardBreakNode))) {
+      if (parent && parent.type.validContent(Fragment.from(hardBreakNode))) {
         dispatch(state.tr.replaceSelectionWith(hardBreakNode));
         return true;
       }
     }
 
-    dispatch(state.tr.insertText('\n'));
-    return true;
+    if (state.selection instanceof TextSelection) {
+      dispatch(state.tr.insertText('\n'));
+      return true;
+    }
+
+    return false;
   };
 }
 

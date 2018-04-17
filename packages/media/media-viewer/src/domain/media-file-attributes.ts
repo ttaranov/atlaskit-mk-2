@@ -80,7 +80,7 @@ export class MediaFileAttributesFactory {
     serviceHost: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
-      id: item.details.id as string,
+      id: item.details.id,
       occurrenceKey: item.occurrenceKey,
       type: 'file',
     });
@@ -92,7 +92,7 @@ export class MediaFileAttributesFactory {
     serviceHost: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
-      id: item.details.id as string,
+      id: item.details.id,
       occurrenceKey: item.details.occurrenceKey,
       type: 'file',
     });

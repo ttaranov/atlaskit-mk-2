@@ -77,7 +77,7 @@ export function calcTableColumnWidths(node: PmNode): number[] {
 
   node.forEach((rowNode, _, i) => {
     rowNode.forEach((colNode, _, j) => {
-      let colwidth = colNode.attrs.colwidth;
+      let colwidth = colNode.attrs.colwidth || [0];
 
       if (isNumberColumnEnabled && j === 0) {
         if (!colwidth) {

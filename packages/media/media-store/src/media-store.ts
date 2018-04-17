@@ -1,4 +1,3 @@
-import { AuthProvider, AuthContext } from './models/auth-provider';
 import {
   MediaFile,
   MediaCollection,
@@ -6,6 +5,7 @@ import {
   MediaUpload,
   MediaChunksProbe,
 } from './models/media';
+import { AuthContext, MediaApiConfig } from './models/auth';
 import {
   request,
   createUrl,
@@ -16,18 +16,16 @@ import {
   mapResponseToVoid,
 } from './utils/request';
 
-export interface MediaStoreConfig {
-  readonly apiUrl: string;
-  readonly authProvider: AuthProvider;
-}
-
 export class MediaStore {
-  constructor(private readonly config: MediaStoreConfig) {}
+  constructor(private readonly config: MediaApiConfig) {}
 
-  createCollection(name: string): Promise<MediaStoreResponse<MediaCollection>> {
+  createCollection(
+    collectionName: string,
+  ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request('/collection', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name: collectionName }),
+      authContext: { collectionName },
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -39,6 +37,7 @@ export class MediaStore {
     collectionName: string,
   ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request(`/collection/${collectionName}`, {
+      authContext: { collectionName },
       headers: {
         Accept: 'application/json',
       },
@@ -50,6 +49,7 @@ export class MediaStore {
     params: MediaStoreGetCollectionItemsPrams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
+      authContext: { collectionName },
       params,
       headers: {
         Accept: 'application/json',
@@ -97,6 +97,7 @@ export class MediaStore {
   ): Promise<MediaStoreResponse<MediaFile>> {
     return this.request('/file/upload', {
       method: 'POST',
+      authContext: { collectionName: params.collection },
       params,
       body: JSON.stringify(body),
       headers: {
@@ -110,16 +111,18 @@ export class MediaStore {
     fileId: string,
     params: MediaStoreGetFileParams = {},
   ): Promise<MediaStoreResponse<MediaFile>> => {
-    return this.request(`/file/${fileId}`, { params }).then(mapResponseToJson);
+    return this.request(`/file/${fileId}`, {
+      params,
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
   };
 
   getFileImageURL = async (
     id: string,
     params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
-    return createUrl(`${this.config.apiUrl}/file/${id}/image`, {
+    return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
       params,
-      auth: await this.config.authProvider(),
     });
   };
 
@@ -143,12 +146,12 @@ export class MediaStore {
       method: 'GET',
     },
   ): Promise<Response> {
-    const { apiUrl, authProvider } = this.config;
+    const { serviceHost, authProvider } = this.config;
     const { method, authContext, params, headers, body } = options;
 
     const auth = await authProvider(authContext);
 
-    return request(`${apiUrl}${path}`, {
+    return request(`${serviceHost}${path}`, {
       method,
       auth,
       params,
@@ -198,7 +201,7 @@ export type MediaStoreGetFileParams = {
 
 export type MediaStoreGetFileImageParams = {
   readonly version?: number;
-  readonly collection?: number;
+  readonly collection?: string;
   readonly width?: number;
   readonly height?: number;
   readonly mode?: 'fit' | 'full-fit' | 'crop';

@@ -6,7 +6,7 @@ import {
   MediaCollectionProvider,
   MediaItemProvider,
   MediaItem,
-  BlobService,
+  BlobService
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -45,7 +45,6 @@ export class Stubs {
       observable: jest.fn(() => subject || new Subject<MediaCollection>()),
       refresh: jest.fn(),
       loadNextPage: jest.fn(),
-      loadNextPageUntil: jest.fn(),
     };
   }
 
@@ -74,7 +73,7 @@ export class Stubs {
     config: ContextConfig,
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
-    blobService?: BlobService,
+    blobService?: BlobService
   ) {
     return {
       config,
@@ -84,7 +83,7 @@ export class Stubs {
       getMediaItemProvider: jest.fn(
         () => mediaItemProvider || Stubs.mediaItemProvider(),
       ),
-      getBlobService: jest.fn(() => blobService || Stubs.blobService()),
+      getBlobService: jest.fn(() => blobService || Stubs.blobService())
     };
   }
 }

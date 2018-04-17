@@ -25,6 +25,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
+import { CollabEditOptions } from '../plugins/collab-edit';
 
 export type EditorAppearance =
   | 'message'
@@ -74,6 +75,11 @@ export interface EditorProps {
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
+  // Temporary flag to enable layouts while it's under development
+  UNSAFE_allowLayouts?: boolean;
+
+  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
+  UNSAFE_allowQuickInsert?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
@@ -97,6 +103,7 @@ export interface EditorProps {
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 
   media?: MediaOptions;
+  collabEdit?: CollabEditOptions;
   textFormatting?: TextFormattingOptions;
 
   maxHeight?: number;

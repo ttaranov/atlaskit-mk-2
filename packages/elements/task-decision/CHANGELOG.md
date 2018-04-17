@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 6.0.3
+
+## 6.0.2
+
 ## 6.0.1
 - [patch] Updated placeholder displayed when rendering an empty action [9f87255](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f87255)
 
