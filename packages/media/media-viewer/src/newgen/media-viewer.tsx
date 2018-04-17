@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import { Context, MediaType } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
 import { Model, Identifier, initialModel } from './domain';
 import { Blanket, Header, Content } from './styled';
@@ -44,11 +44,11 @@ export class MediaViewer extends React.Component<Props, State> {
     const { onClose, context } = this.props;
     const { fileDetails } = this.state;
     const item =
-      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data.item : void 0;
+      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data : void 0;
     return (
       <Blanket onClick={onClose}>
         {fileDetails.status === 'SUCCESSFUL' && (
-          <Header>{fileDetails.data.name || 'No name given'}</Header>
+          <Header>{fileDetails.data.details.name || 'No name given'}</Header>
         )}
         <Content>
           <ItemViewer model={this.state} context={context} item={item} />
@@ -82,7 +82,7 @@ export class MediaViewer extends React.Component<Props, State> {
             },
           });
         } else {
-          const { processingStatus, mediaType } = mediaItem.details;
+          const { processingStatus } = mediaItem.details;
 
           if (processingStatus === 'failed') {
             this.setState({
@@ -95,11 +95,7 @@ export class MediaViewer extends React.Component<Props, State> {
             this.setState({
               fileDetails: {
                 status: 'SUCCESSFUL',
-                data: {
-                  mediaType: mediaType as MediaType,
-                  name: mediaItem.details.name,
-                  item: mediaItem,
-                },
+                data: mediaItem,
               },
             });
           }

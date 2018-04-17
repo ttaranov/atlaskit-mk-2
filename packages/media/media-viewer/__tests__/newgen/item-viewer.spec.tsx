@@ -50,20 +50,18 @@ describe('<ItemViewer />', () => {
   });
 
   it('shows an error if file is unsupported', () => {
-    const model: Model = {
-      fileDetails: {
-        status: 'SUCCESSFUL',
-        data: {
-          mediaType: 'unknown',
-        },
-      },
-    };
     const item: FileItem = {
       type: 'file',
       details: {
         id: 'some-id',
         processingStatus: 'failed',
         mediaType: 'unknown',
+      },
+    };
+    const model: Model = {
+      fileDetails: {
+        status: 'SUCCESSFUL',
+        data: item,
       },
     };
     const context = createContext();
@@ -86,9 +84,7 @@ describe('<ItemViewer />', () => {
     const model: Model = {
       fileDetails: {
         status: 'SUCCESSFUL',
-        data: {
-          mediaType: 'image',
-        },
+        data: item,
       },
     };
     const el = mount(
@@ -110,9 +106,7 @@ describe('<ItemViewer />', () => {
     const model: Model = {
       fileDetails: {
         status: 'SUCCESSFUL',
-        data: {
-          mediaType: 'video',
-        },
+        data: item,
       },
     };
     const el = mount(
@@ -134,9 +128,7 @@ describe('<ItemViewer />', () => {
     const model: Model = {
       fileDetails: {
         status: 'SUCCESSFUL',
-        data: {
-          mediaType: 'doc',
-        },
+        data: item,
       },
     };
     const el = mount(
