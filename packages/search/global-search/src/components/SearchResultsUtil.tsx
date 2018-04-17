@@ -55,7 +55,7 @@ export const searchJiraItem = (query: string) => (
 export const searchPeopleItem = () => (
   <ResultBase
     href="/home/people"
-    icon={<PeopleIcon size="large" label="Search Peopls" />}
+    icon={<PeopleIcon size="large" label="Search People" />}
     key="search_people"
     resultId="search_people"
     text="Search for more people"
