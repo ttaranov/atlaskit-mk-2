@@ -25,7 +25,7 @@ class ButtonGroup extends Component<ButtonGroupProps> {
       <Group>
         {Children.map(children, (child, idx) => {
           if (!child) {
-            return child;
+            return null;
           }
           return (
             <GroupItem key={idx}>
