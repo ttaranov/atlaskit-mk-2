@@ -9,7 +9,6 @@ import { Spinner } from './loading';
 
 export type Props = {
   model: Model;
-  onClose?: () => void;
   context: Context;
   item?: FileItem;
 };
