@@ -143,13 +143,19 @@ export default function getButtonStyles(props: Object) {
 
   /* Note use of !important to override the ThemeReset on anchor tag styles */
 
+  const colorFromTheme = (getter, fallback) => p =>
+    p.theme.pallet ? getter(p.theme.pallet) : fallback;
+
   return css`
     align-items: baseline;
-    background: ${background};
+    background: ${colorFromTheme(pallet => pallet.primary.main, background)};
     border-radius: ${borderRadius}px;
     border-width: 0;
     box-sizing: border-box;
-    color: ${color} !important;
+    color: ${colorFromTheme(
+      pallet => pallet.primary.contrastText,
+      color,
+    )} !important;
     cursor: ${cursor};
     display: inline-flex;
     font-size: inherit;

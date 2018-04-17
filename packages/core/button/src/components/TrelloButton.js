@@ -4,72 +4,73 @@ import { css } from 'styled-components';
 import ButtonBase from './Button-v2';
 import { type ButtonProps } from '../types';
 
+const colorFromTheme = (getter, fallback) => p =>
+  p.theme.pallet ? getter(p.theme.pallet) : fallback;
+
 const defaultStyle = css`
   &:not([disabled]):focus,
   &:not([disabled]):hover {
-    background: -webkit-linear-gradient(top, #d6dadc 0%, #cdd2d4 100%);
-    background: linear-gradient(to bottom, #d6dadc 0%, #cdd2d4 100%);
-    color: #4d4d4d;
+    background: ${colorFromTheme(pallet => pallet.primary.main, '#d6dadc')};
+    box-shadow: 0 2px 0
+      ${colorFromTheme(pallet => pallet.primary.dark, '#959da1')};
   }
 
   &:not([disabled]):active {
-    background: -webkit-linear-gradient(top, #cdd2d4 0%, #c4c9cc 100%);
-    background: linear-gradient(to bottom, #cdd2d4 0%, #c4c9cc 100%);
-    color: #4d4d4d;
+    background: ${colorFromTheme(pallet => pallet.primary.dark, '#c4c9cc ')};
+    box-shadow: none;
+    color: #fff;
   }
 `;
 
 const primaryStyle = css`
   &:not([disabled]) {
-    background: -webkit-linear-gradient(top, #61bd4f 0%, #5aac44 100%);
-    background: linear-gradient(to bottom, #61bd4f 0%, #5aac44 100%);
-    box-shadow: 0 2px 0 #3f6f21;
+    background: #5aac44;
+    box-shadow: 0 2px 0 #519839;
     color: #fff;
-    padding: 0.6em 2.2em;
   }
 
   &:not([disabled]):focus,
   &:not([disabled]):hover {
-    background: -webkit-linear-gradient(top, #5aac44 0%, #519839 100%);
-    background: linear-gradient(to bottom, #5aac44 0%, #519839 100%);
+    background: #519839;
+    box-shadow: 0 2px 0 #49852e;
     color: #fff;
   }
 
   &:not([disabled]):active {
-    background: -webkit-linear-gradient(top, #519839 0%, #49852e 100%);
-    background: linear-gradient(to bottom, #519839 0%, #49852e 100%);
+    background: #49852e;
+    box-shadow: none;
     color: #fff;
   }
 `;
 
 const dangerStyle = css`
   :not([disabled]) {
-    color: #eb5a46;
+    background: #eb5a46;
+    box-shadow: 0 2px 0 #b04632;
+    color: #fff;
   }
 
   :not([disabled]):focus,
   :not([disabled]):hover {
-    background: -webkit-linear-gradient(top, #eb5a46 0%, #cf513d 100%);
-    background: linear-gradient(to bottom, #eb5a46 0%, #cf513d 100%);
-    box-shadow: 0 2px 0 #6e2f1a;
+    background: #cf513d
+    box-shadow: 0 2px 0 #933b27;
     color: #fff;
   }
 
   :not([disabled]):active {
-    background: -webkit-linear-gradient(top, #cf513d 0%, #b04632 100%);
-    background: linear-gradient(to bottom, #cf513d 0%, #b04632 100%);
-    box-shadow: 0 2px 0 #6e2f1a;
+    background: #933b27;
+    box-shadow: none;
     color: #fff;
   }
 `;
 
 const rootStyles = css`
-  background: -webkit-linear-gradient(top, #e2e4e6 0%, #d6dadc 100%);
-  background: linear-gradient(to bottom, #e2e4e6 0%, #d6dadc 100%);
+  background: ${colorFromTheme(pallet => pallet.primary.light, '#e2e4e6')};
   border: 0;
   border-radius: 3px;
-  box-shadow: 0 2px 0 #959da1;
-  color: #4d4d4d;
+  box-shadow: 0 2px 0
+    ${colorFromTheme(pallet => pallet.primary.main, '#959da1')};
+  color: ${colorFromTheme(pallet => pallet.primary.contrastText, '#4d4d4d')};
   display: inline-block;
   font-weight: 700 !important;
   height: 40px;
