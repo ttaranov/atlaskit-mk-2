@@ -162,10 +162,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
-    // TODO are both call made at the same time?
+    const [recentItems, recentSpaces] = await Promise.all([
+      this.props.confluenceClient.getRecentItems(),
+      this.props.confluenceClient.getRecentSpaces(),
+    ]);
+
     this.setState({
-      recentlyViewedPages: await this.props.confluenceClient.getRecentItems(),
-      recentlyViewedSpaces: await this.props.confluenceClient.getRecentSpaces(),
+      recentlyViewedPages: recentItems,
+      recentlyViewedSpaces: recentSpaces,
     });
   };
 
