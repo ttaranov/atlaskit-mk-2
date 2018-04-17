@@ -13,7 +13,7 @@ import {
 
 const renderObjects = (results: Result[], query: string) => (
   <ResultItemGroup
-    title="Pages, blogs, attachments"
+    title="Pages, blogs and attachments"
     key="objects"
     test-selector="objects"
   >
