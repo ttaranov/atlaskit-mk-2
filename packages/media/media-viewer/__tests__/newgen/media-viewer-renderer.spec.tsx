@@ -165,7 +165,6 @@ describe('<FileViewer />', () => {
   it('should show the video viewer if media type is video', () => {
     const preview: FilePreview = {
       viewer: 'VIDEO',
-      src: '',
     };
     const context = createContext();
     const item: FileItem = {
@@ -176,7 +175,9 @@ describe('<FileViewer />', () => {
         mediaType: 'image',
       },
     };
-    const el = mount(<FileViewer context={context} item={item} previewData={preview} />);
+    const el = mount(
+      <FileViewer context={context} item={item} previewData={preview} />,
+    );
     expect(el.find(VideoViewer)).toHaveLength(1);
   });
 

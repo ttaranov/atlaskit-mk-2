@@ -195,16 +195,6 @@ export class MediaViewer extends React.Component<Props, State> {
   }
 }
 
-function getVideoArtifactUrl(fileItem: FileItem) {
-  const artifact = 'video_640.mp4';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
-}
-
 function getPDFUrl(fileItem: FileItem) {
   const artifact = 'document.pdf';
   return (
