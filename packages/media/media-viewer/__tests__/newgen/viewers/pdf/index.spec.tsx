@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
-import { MediaItem, MediaItemType } from '@atlaskit/media-core';
+import { FileItem } from '@atlaskit/media-core';
 import { Stubs } from '../../../_stubs';
-import { MediaViewer } from '../../../../src/newgen/media-viewer';
-import { MediaViewerRenderer } from '../../../../src/newgen/media-viewer-renderer';
+import { Spinner } from '../../../../src/newgen/loading';
+import { PDFViewer } from '../../../../src/newgen/viewers/pdf/index';
 
-const identifier = {
-  id: 'some-id',
-  occurrenceKey: 'some-custom-occurrence-key',
-  type: 'file' as MediaItemType,
-};
-
-function createContext(subject, blobService?) {
+function createContext() {
+  const subject = new Subject<FileItem>();
   const token = 'some-token';
   const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
@@ -24,29 +19,22 @@ function createContext(subject, blobService?) {
   return Stubs.context(
     contextConfig,
     undefined,
-    subject && Stubs.mediaItemProvider(subject),
-    blobService,
+    Stubs.mediaItemProvider(subject),
   ) as any;
 }
 
-function createFixture(identifier) {
-  const subject = new Subject<MediaItem>();
-  const blobService = Stubs.blobService();
-  const context = createContext(subject, blobService);
-  const onClose = jest.fn();
-  const el = mount(
-    <MediaViewer data={identifier} context={context} onClose={onClose} />,
-  );
-  return { blobService, subject, context, el, onClose };
+function createFixture(fetchPromise, item) {
+  const context = createContext();
+  const onClose = jest.fn(() => fetchPromise);
+  const el = mount(<PDFViewer item={item} context={context} />);
+  el.instance()['fetch'] = jest.fn();
+  return { context, el, onClose };
 }
 
-function getModel(el) {
-  return el.find(MediaViewerRenderer).props().model;
-}
-
-describe.skip('PDFViewer', () => {
-  it('assigns a document object for pdf when successful', async () => {
-    const docItem: MediaItem = {
+describe('PDFViewer', () => {
+  it('assigns a document object when successful', async () => {
+    const fetchPromise = Promise.resolve();
+    const item: FileItem = {
       type: 'file',
       details: {
         id: 'some-id',
@@ -59,27 +47,40 @@ describe.skip('PDFViewer', () => {
         },
       },
     };
-    const { subject, el } = createFixture(identifier);
+    const { el } = createFixture(fetchPromise, item);
+    await el.instance()['init']();
 
-    subject.next(docItem);
-
-    await waitUntil(() => {
-      el.update();
-      return getModel(el).previewData.status === 'SUCCESSFUL';
-    }, 5);
-
-    expect(getModel(el)).toMatchObject({
-      previewData: {
+    expect(el.state()).toMatchObject({
+      doc: {
         status: 'SUCCESSFUL',
-        data: {
-          viewer: 'PDF',
-        },
       },
     });
   });
 
-  it('shows an error if no pdf artifact found', async () => {
-    const docItem: MediaItem = {
+  it('shows an indicator while loading', async () => {
+    const fetchPromise = new Promise(() => {});
+    const item: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+        mediaType: 'doc',
+        artifacts: {
+          'document.pdf': {
+            url: '/pdf',
+          },
+        },
+      },
+    };
+    const { el } = createFixture(fetchPromise, item);
+    await el.instance()['init']();
+
+    expect(el.find(Spinner)).toHaveLength(1);
+  });
+
+  it('shows an error if no artifact found', async () => {
+    const fetchPromise = Promise.resolve(() => {});
+    const item: FileItem = {
       type: 'file',
       details: {
         id: 'some-id',
@@ -88,17 +89,12 @@ describe.skip('PDFViewer', () => {
         artifacts: {},
       },
     };
-    const { subject, el } = createFixture(identifier);
+    const { el } = createFixture(fetchPromise, item);
 
-    subject.next(docItem);
+    await el.instance()['init']();
 
-    await waitUntil(() => {
-      el.update();
-      return getModel(el).previewData.status === 'FAILED';
-    }, 5);
-
-    expect(getModel(el)).toMatchObject({
-      previewData: {
+    expect(el.state()).toMatchObject({
+      doc: {
         status: 'FAILED',
         err: new Error('no pdf artifacts found for this file'),
       },

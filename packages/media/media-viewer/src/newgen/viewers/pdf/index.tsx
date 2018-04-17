@@ -14,7 +14,7 @@ export type Props = {
 };
 
 export type State = {
-  doc: Outcome<Blob, Error>;
+  doc: Outcome<any, Error>;
 };
 
 export class PDFViewer extends React.PureComponent<Props, State> {
@@ -36,23 +36,33 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     const { item, context, collectionName } = this.props;
 
     const pdfArtifactUrl = getPDFUrl(item);
-    if (pdfArtifactUrl) {
+    if (!pdfArtifactUrl) {
+      this.setState({
+        doc: {
+          status: 'FAILED',
+          err: new Error('no artifacts found for this file'),
+        },
+      });
+      return;
+    }
+    try {
       const src = await constructAuthTokenUrl(
         pdfArtifactUrl,
         context,
         collectionName,
       );
+      const data = await this.fetch(src);
       this.setState({
         doc: {
           status: 'SUCCESSFUL',
-          data: await fetch(src),
+          data: data,
         },
       });
-    } else {
+    } catch (err) {
       this.setState({
         doc: {
           status: 'FAILED',
-          err: new Error('no artifacts found for this file'),
+          err,
         },
       });
     }
@@ -85,6 +95,10 @@ export class PDFViewer extends React.PureComponent<Props, State> {
       case 'FAILED':
         return <ErrorMessage>{doc.err.message}</ErrorMessage>;
     }
+  }
+
+  public fetch(src: string): Promise<any> {
+    return fetch(src);
   }
 }
 
