@@ -43,15 +43,13 @@ export class MediaViewer extends React.Component<Props, State> {
   render() {
     const { onClose, context } = this.props;
     const { fileDetails } = this.state;
-    const item =
-      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data : void 0;
     return (
       <Blanket onClick={onClose}>
         {fileDetails.status === 'SUCCESSFUL' && (
           <Header>{fileDetails.data.details.name || 'No name given'}</Header>
         )}
         <Content>
-          <ItemViewer model={this.state} context={context} item={item} />
+          <ItemViewer model={this.state} context={context} />
         </Content>
       </Blanket>
     );

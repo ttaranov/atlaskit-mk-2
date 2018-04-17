@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
 import { Model } from './domain';
 import { ImageViewer } from './viewers/image';
@@ -10,12 +10,10 @@ import { Spinner } from './loading';
 export type Props = {
   model: Model;
   context: Context;
-  item?: FileItem;
 };
 
 export const ItemViewer: React.StatelessComponent<Props> = ({
   model,
-  item,
   context,
 }) => {
   const { fileDetails } = model;
@@ -24,9 +22,7 @@ export const ItemViewer: React.StatelessComponent<Props> = ({
     case 'PENDING':
       return <Spinner />;
     case 'SUCCESSFUL':
-      if (!item) {
-        return <Spinner />;
-      }
+      const item = fileDetails.data;
       switch (item.details.mediaType) {
         case 'image':
           return <ImageViewer context={context} item={item} />;

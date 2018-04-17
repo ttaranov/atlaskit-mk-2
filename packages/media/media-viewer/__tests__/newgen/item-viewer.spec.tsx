@@ -64,9 +64,7 @@ describe('<ItemViewer />', () => {
         data: item,
       },
     };
-    const el = mount(
-      <ItemViewer model={model} item={item} context={createContext()} />,
-    );
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(ErrorMessage).text()).toContain('unsupported');
   });
 
@@ -85,9 +83,7 @@ describe('<ItemViewer />', () => {
         data: item,
       },
     };
-    const el = mount(
-      <ItemViewer model={model} item={item} context={createContext()} />,
-    );
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
 
@@ -106,9 +102,7 @@ describe('<ItemViewer />', () => {
         data: item,
       },
     };
-    const el = mount(
-      <ItemViewer model={model} item={item} context={createContext()} />,
-    );
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(VideoViewer)).toHaveLength(1);
   });
 
@@ -127,9 +121,7 @@ describe('<ItemViewer />', () => {
         data: item,
       },
     };
-    const el = mount(
-      <ItemViewer model={model} item={item} context={createContext()} />,
-    );
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(PDFViewer)).toHaveLength(1);
   });
 });
