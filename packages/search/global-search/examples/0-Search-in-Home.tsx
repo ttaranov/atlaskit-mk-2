@@ -15,7 +15,9 @@ export default class extends React.Component {
   render() {
     return (
       <BasicNavigation
-        searchDrawerContent={<GlobalQuickSearch cloudId="cloudId" />}
+        searchDrawerContent={
+          <GlobalQuickSearch cloudId="cloudId" context="home" />
+        }
       />
     );
   }

@@ -1,21 +1,21 @@
 import * as React from 'react';
-import * as debounce from 'lodash.debounce';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
-import GlobalQuickSearch from './GlobalQuickSearch';
-import { RecentSearchClient } from '../api/RecentSearchClient';
+import * as uuid from 'uuid/v4';
+import GlobalQuickSearch from '../GlobalQuickSearch';
+import { RecentSearchClient } from '../../api/RecentSearchClient';
 import {
   CrossProductSearchClient,
   CrossProductResults,
-} from '../api/CrossProductSearchClient';
-import { Result } from '../model/Result';
-import { PeopleSearchClient } from '../api/PeopleSearchClient';
-import * as uuid from 'uuid/v4';
+} from '../../api/CrossProductSearchClient';
+import { Result } from '../../model/Result';
+import { PeopleSearchClient } from '../../api/PeopleSearchClient';
+import renderSearchResults from './HomeSearchResults';
+import settlePromises from '../../util/settle-promises';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
-  debounceMillis?: number; // for testing only
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -34,11 +34,7 @@ export interface State {
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
-export class GlobalQuickSearchContainer extends React.Component<Props, State> {
-  static defaultProps: Partial<Props> = {
-    debounceMillis: 350,
-  };
-
+export class HomeQuickSearchContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -60,7 +56,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
       query: query,
     });
 
-    if (query.length < 2) {
+    if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
         isError: false,
@@ -69,7 +65,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
         confluenceResults: [],
       });
     } else {
-      this.doDebouncedSearch(query);
+      this.doSearch(query);
     }
   };
 
@@ -150,9 +146,7 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     */
     (async () => {
       const criticalPromises = [searchRecentPromise, searchCrossProductPromise];
-      const promiseResults = await Promise.all(
-        criticalPromises.map(p => p.catch(Error)),
-      );
+      const promiseResults = await settlePromises(criticalPromises);
       const allCriticalPromisesFailed = promiseResults.every(
         p => p instanceof Error,
       );
@@ -168,13 +162,11 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
           isLoading: true,
         });
 
-        await Promise.all(
-          [
-            searchRecentPromise,
-            searchCrossProductPromise,
-            searchPeoplePromise,
-          ].map(p => p.catch(Error)),
-        );
+        await settlePromises([
+          searchRecentPromise,
+          searchCrossProductPromise,
+          searchPeoplePromise,
+        ]);
       } finally {
         this.setState({
           isLoading: false,
@@ -183,26 +175,48 @@ export class GlobalQuickSearchContainer extends React.Component<Props, State> {
     })();
   };
 
-  // leading:true so that we start searching as soon as the user typed in 2 characters since we don't search before that
-  doDebouncedSearch = debounce(this.doSearch, this.props.debounceMillis, {
-    leading: true,
-  });
-
   handleGetRecentItems = async () => {
     this.setState({
       recentlyViewedItems: await this.props.recentSearchClient.getRecentItems(),
     });
   };
 
+  retrySearch = () => {
+    this.handleSearch(this.state.query);
+  };
+
   render() {
+    const {
+      query,
+      isLoading,
+      isError,
+      recentlyViewedItems,
+      recentResults,
+      jiraResults,
+      confluenceResults,
+      peopleResults,
+    } = this.state;
+
     return (
       <GlobalQuickSearch
-        getRecentlyViewedItems={this.handleGetRecentItems}
+        onMount={this.handleGetRecentItems}
         onSearch={this.handleSearch}
-        {...this.state}
-      />
+        isLoading={isLoading}
+        query={query}
+      >
+        {renderSearchResults({
+          query,
+          isError,
+          retrySearch: this.retrySearch,
+          recentlyViewedItems,
+          recentResults,
+          jiraResults,
+          confluenceResults,
+          peopleResults,
+        })}
+      </GlobalQuickSearch>
     );
   }
 }
 
-export default withAnalytics(GlobalQuickSearchContainer, {}, {});
+export default withAnalytics(HomeQuickSearchContainer, {}, {});

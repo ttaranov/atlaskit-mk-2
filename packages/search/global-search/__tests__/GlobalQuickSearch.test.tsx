@@ -8,15 +8,10 @@ const noop = () => {};
 function render(partialProps: Partial<Props>) {
   const props: Props = {
     onSearch: noop,
-    getRecentlyViewedItems: noop,
+    onMount: noop,
     isLoading: false,
-    isError: false,
     query: '',
-    recentlyViewedItems: [],
-    recentResults: [],
-    jiraResults: [],
-    confluenceResults: [],
-    peopleResults: [],
+    children: [],
     ...partialProps,
   };
 
@@ -24,11 +19,11 @@ function render(partialProps: Partial<Props>) {
 }
 
 describe('GlobalQuickSearch', () => {
-  it('should get recent items on mount', () => {
-    const getRecentlyViewedItemsMock = jest.fn();
-    render({ getRecentlyViewedItems: getRecentlyViewedItemsMock });
+  it('should call onMount on mount, duh', () => {
+    const onMountMock = jest.fn();
+    render({ onMount: onMountMock });
 
-    expect(getRecentlyViewedItemsMock).toHaveBeenCalled();
+    expect(onMountMock).toHaveBeenCalled();
   });
 
   it('should handle search input', () => {
@@ -41,17 +36,5 @@ describe('GlobalQuickSearch', () => {
     onSearchInput({ target: { value: 'foo' } });
 
     expect(searchMock).toHaveBeenCalledWith('foo');
-  });
-
-  it('should retry the search with current query', () => {
-    const searchMock = jest.fn();
-    const wrapper = render({
-      onSearch: searchMock,
-      query: 'macbook',
-    });
-
-    (wrapper.instance() as GlobalQuickSearch).retrySearch();
-
-    expect(searchMock).toHaveBeenCalledWith('macbook');
   });
 });

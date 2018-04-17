@@ -1,5 +1,10 @@
 import * as React from 'react';
-import GlobalQuickSearchContainer from './GlobalQuickSearchContainer';
+import HomeQuickSearchContainer, {
+  Props as HomeContainerProps,
+} from './home/HomeQuickSearchContainer';
+import ConfluenceQuickSearchContainer, {
+  Props as ConfContainerProps,
+} from './confluence/ConfluenceQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
 import memoizeOne from 'memoize-one';
 
@@ -10,6 +15,11 @@ export interface Props {
    * The cloudId of the site the component is embedded in.
    */
   cloudId: string;
+
+  /**
+   * The context for quick-search determines the UX and what kind of entities the component is searching.
+   */
+  context: 'confluence' | 'home';
 
   /**
    * For development purposes only: Overrides the URL to the activity service.
@@ -30,9 +40,7 @@ export interface Props {
 /**
  * Component that exposes the public API for global quick search. Its only purpose is to offer a simple, user-friendly API to the outside and hide the implementation detail of search clients etc.
  */
-export default class GlobalQuickSearchConfiguration extends React.Component<
-  Props
-> {
+export default class GlobalQuickSearchWrapper extends React.Component<Props> {
   // configureSearchClients is a potentially expensive function that we don't want to invoke on re-renders
   memoizedConfigureSearchClients = memoizeOneTyped(configureSearchClients);
 
@@ -58,12 +66,26 @@ export default class GlobalQuickSearchConfiguration extends React.Component<
     return config;
   }
 
+  private getContainerComponent(): React.ComponentClass<
+    HomeContainerProps | ConfContainerProps
+  > {
+    if (this.props.context === 'confluence') {
+      return ConfluenceQuickSearchContainer;
+    } else if (this.props.context === 'home') {
+      return HomeQuickSearchContainer;
+    } else {
+      // fallback to home if nothing specified
+      return HomeQuickSearchContainer;
+    }
+  }
+
   render() {
+    const ContainerComponent = this.getContainerComponent();
     const searchClients = this.memoizedConfigureSearchClients(
       this.props.cloudId,
       this.makeConfig(),
     );
 
-    return <GlobalQuickSearchContainer {...searchClients} />;
+    return <ContainerComponent {...searchClients} />;
   }
 }

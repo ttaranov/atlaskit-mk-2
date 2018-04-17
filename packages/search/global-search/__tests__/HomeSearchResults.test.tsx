@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, { Props } from '../src/components/SearchResults';
+import searchResults, { Props } from '../src/components/home/HomeSearchResults';
 import {
   ResultItemGroup,
   PersonResult,
@@ -10,6 +10,7 @@ import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
 import EmptyState from '../src/components/EmptyState';
+import { makeResult } from './_test-util';
 
 enum Group {
   Recent = 'recent',
@@ -24,18 +25,7 @@ function findGroup(group: Group, wrapper: ShallowWrapper) {
     .findWhere(n => n.prop('test-selector') === group.valueOf());
 }
 
-function makeResult(partial?: Partial<Result>): Result {
-  return {
-    resultId: '' + Math.random(),
-    name: 'name',
-    type: ResultType.Object,
-    avatarUrl: 'avatarUrl',
-    href: 'href',
-    ...partial,
-  };
-}
-
-describe('SearchResults', () => {
+describe('HomeSearchResults', () => {
   function render(partialProps: Partial<Props>) {
     const props = {
       query: '',
@@ -66,7 +56,7 @@ describe('SearchResults', () => {
   });
 
   it('should only show the recently viewed group when no query is entered', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: '',
       recentlyViewedItems: [makeResult()],
     };
@@ -78,7 +68,7 @@ describe('SearchResults', () => {
   });
 
   it('should render recent results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       recentResults: [makeResult({ name: 'name' })],
     };
@@ -91,7 +81,7 @@ describe('SearchResults', () => {
   });
 
   it('should render jira results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       jiraResults: [makeResult({ name: 'name' })],
     };
@@ -104,7 +94,7 @@ describe('SearchResults', () => {
   });
 
   it('should render confluence results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       confluenceResults: [makeResult({ name: 'name' })],
     };
@@ -117,7 +107,7 @@ describe('SearchResults', () => {
   });
 
   it('should render people results when there are results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
     };
@@ -130,7 +120,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a jira result item to search jira', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       jiraResults: [makeResult()],
     };
@@ -143,7 +133,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a confluence result item to search confluence', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       confluenceResults: [makeResult()],
     };
@@ -158,7 +148,7 @@ describe('SearchResults', () => {
   });
 
   it('should render a people result item to search people', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'na',
       peopleResults: [makeResult({ type: ResultType.Person })],
     };
@@ -171,7 +161,7 @@ describe('SearchResults', () => {
   });
 
   it('should not render recent results group when there are no recent results', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'aslfkj',
       recentResults: [],
     };
@@ -182,7 +172,7 @@ describe('SearchResults', () => {
   });
 
   it('should render search error when there is an error', () => {
-    const props = {
+    const props: Partial<Props> = {
       isError: true,
     };
 
@@ -191,7 +181,7 @@ describe('SearchResults', () => {
   });
 
   it('should render empty state when there are no results and a query is entered', () => {
-    const props = {
+    const props: Partial<Props> = {
       query: 'foo',
       recentResults: [],
       jiraResults: [],
