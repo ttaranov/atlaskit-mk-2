@@ -1,30 +1,31 @@
 // @flow
 
 import React, { type Node } from 'react';
-import { keyframes } from 'emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Transition } from 'react-transition-group';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 
 import {
-  animationDuration,
-  animationDurationMs,
-  animationTimingFunction,
-} from '../../common';
+  transitionDuration,
+  transitionDurationMs,
+  transitionTimingFunction,
+} from '../../common/constants';
+import { Shadow } from '../../common/primitives';
 import { light, withTheme } from '../../theme';
 
-const animationFade = transitionState => ({
-  animationName: (() => {
-    if (transitionState === 'entering')
-      return keyframes`from { opacity: 0; } to { opacity: 1; }`;
-    if (transitionState === 'exiting')
-      return keyframes`from { opacity: 1; } to { opacity: 0; }`;
-    return 'none';
-  })(),
-  animationDuration,
-  animationFillMode: 'forwards',
-  animationTimingFunction,
-});
+const animationFade = state => {
+  const defaultStyle = {
+    opacity: 0,
+    transitionDuration,
+    transitionProperty: 'opacity',
+    transitionTimingFunction,
+  };
+  const transitionStyles = {
+    entering: { opacity: 0 },
+    entered: { opacity: 1 },
+  };
+  return { ...defaultStyle, ...transitionStyles[state] };
+};
 
 /**
  * Component tree structure
@@ -34,12 +35,27 @@ const animationFade = transitionState => ({
  *  - InnerShadow
  */
 
+const ScrollProvider = (props: any) => (
+  <div
+    css={{
+      boxSizing: 'border-box',
+      height: '100%',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+      width: '100%',
+    }}
+    {...props}
+  />
+);
+
 /**
  * RootNav
  */
 const RootNavPrimitive = withTheme({ mode: light, context: 'root' })(
   ({ children, theme = { mode: light } }) => (
-    <div css={theme.mode.productNav().root}>{children}</div>
+    <div css={theme.mode.productNav().root}>
+      <ScrollProvider>{children}</ScrollProvider>
+    </div>
   ),
 );
 
@@ -57,27 +73,25 @@ export const RootNav = (props: RootNavProps) => (
  * ContainerNav
  */
 const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
-  ({ children, isPeeking, theme }) => (
-    <div
-      css={{
-        ...theme.mode.productNav().container,
-        boxShadow: 'none',
-        transitionProperty: 'boxShadow, transform',
-        transitionDuration: animationDuration,
-        transitionTimingFunction: animationTimingFunction,
-        ...(isPeeking
-          ? {
-              boxShadow: `-${gridSize() * 2.5}px ${gridSize() *
-                2.5}px ${gridSize() *
-                4}px -${gridSize()}px rgba(23, 43, 77, 0.4)`,
-              transform: `translateX(calc(100% - ${gridSize() * 4}px))`,
-            }
-          : null),
-      }}
-    >
-      {children}
-    </div>
-  ),
+  ({ children, isHinting, isPeeking, theme }) => {
+    let transform = null;
+    if (isHinting) transform = 'translateX(16px)';
+    if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+    return (
+      <div
+        css={{
+          ...theme.mode.productNav().container,
+          transitionProperty: 'boxShadow, transform',
+          transitionDuration,
+          transitionTimingFunction,
+          transform,
+        }}
+      >
+        <Shadow isBold={isPeeking} isOverDarkBg />
+        <ScrollProvider>{children}</ScrollProvider>
+      </div>
+    );
+  },
 );
 
 type ContainerNavProps = {
@@ -101,30 +115,28 @@ type ContainerOverlayProps = { isVisible: boolean, onClick?: Event => void };
 export const ContainerOverlay = ({
   isVisible,
   onClick,
+  ...props
 }: ContainerOverlayProps) => (
-  <Transition
-    in={isVisible}
-    mountOnEnter
-    timeout={animationDurationMs}
-    unmountOnExit
-  >
-    {state => {
-      const styles = {
-        ...animationFade(state),
-        backgroundColor: colors.N70A,
-        cursor: state === 'entered' ? 'pointer' : 'default',
-        height: '100%',
-        left: 0,
-        pointerEvents: state === 'entered' ? 'auto' : 'none',
-        position: 'absolute',
-        top: 0,
-        transitionProperty: 'background, opacity',
-        width: '100%',
-        zIndex: 5,
-      };
-      return <div css={styles} onClick={onClick} role="presentation" />;
+  <div
+    css={{
+      backgroundColor: colors.N70A,
+      cursor: isVisible ? 'pointer' : 'default',
+      height: '100%',
+      left: 0,
+      opacity: isVisible ? 1 : 0,
+      pointerEvents: 'none',
+      position: 'absolute',
+      top: 0,
+      transitionDuration,
+      transitionProperty: 'opacity',
+      transitionTimingFunction,
+      width: '100%',
+      zIndex: 5,
     }}
-  </Transition>
+    onClick={onClick}
+    role="presentation"
+    {...props}
+  />
 );
 
 /**
@@ -134,27 +146,19 @@ type InnerShadowProps = { isVisible: boolean };
 
 export const InnerShadow = ({ isVisible }: InnerShadowProps) => (
   <Transition
+    appear
     in={isVisible}
     mountOnEnter
-    timeout={animationDurationMs}
+    timeout={transitionDurationMs}
     unmountOnExit
   >
     {state => {
       const styles = {
         ...animationFade(state),
-        background: `linear-gradient(
-          to left,
-          rgba(0, 0, 0, 0.15) 0%,
-          rgba(0, 0, 0, 0) 100%
-        )`,
-        height: '100%',
-        pointerEvents: 'none',
-        position: 'absolute',
+        left: 'auto',
         right: 0,
-        top: 0,
-        width: `${gridSize() * 2.5}px`,
       };
-      return <div css={styles} />;
+      return <Shadow isBold style={styles} />;
     }}
   </Transition>
 );

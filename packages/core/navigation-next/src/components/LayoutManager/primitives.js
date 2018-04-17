@@ -50,10 +50,19 @@ export const ProductNavWrapper = ({
     ref={innerRef}
     css={{
       height: '100%',
-      overflowX: 'hidden',
-      overflowY: 'hidden',
       position: 'relative',
       ...blockInteraction(isDisabled),
+    }}
+    {...props}
+  />
+);
+export const ContainerNavMask = (props: any) => (
+  <div
+    css={{
+      display: 'flex',
+      flexDirection: 'row',
+      overflow: 'hidden',
+      height: '100%',
     }}
     {...props}
   />

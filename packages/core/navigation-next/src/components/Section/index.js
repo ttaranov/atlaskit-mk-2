@@ -3,7 +3,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
 
-import { animationDurationMs } from '../../common';
+import { transitionDurationMs } from '../../common/constants';
 import { getSectionWrapperStyles } from './styles';
 import type { SectionProps, SectionState } from './types';
 
@@ -26,7 +26,7 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
 
     return (
       <TransitionGroup component={Fragment}>
-        <Transition key={id} timeout={animationDurationMs}>
+        <Transition key={id} timeout={transitionDurationMs}>
           {state => {
             const { traversalDirection } = this.state;
             const css = getSectionWrapperStyles({ state, traversalDirection });

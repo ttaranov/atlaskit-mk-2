@@ -14,6 +14,7 @@ import {
   PageWrapper,
   NavContainer,
   ProductNavWrapper,
+  ContainerNavMask,
 } from './primitives';
 import type {
   DrawerGatewayProps,
@@ -21,7 +22,7 @@ import type {
   WrappedLayoutManagerProps,
 } from './types';
 
-import { GLOBAL_NAV_WIDTH } from '../../common';
+import { GLOBAL_NAV_WIDTH } from '../../common/constants';
 
 const DrawerGateway = ({ innerRef, ...props }: DrawerGatewayProps) => (
   <div ref={innerRef} {...props} />
@@ -62,6 +63,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
       productContainerNavigation,
     } = this.props;
     const {
+      isHinting,
       isPeeking,
       isResizing,
       productNavIsCollapsed,
@@ -81,32 +83,38 @@ class LayoutManager extends Component<LayoutManagerProps> {
 
           return (
             <Fragment>
-              <ProductNavWrapper
-                key="product-nav-wrapper"
-                innerRef={this.getNavRef}
-                isDisabled={isResizing || isTransitioning}
-                style={style}
-              >
-                {shouldRenderNav ? (
-                  <ProductNav
-                    container={productContainerNavigation}
-                    key="product-nav"
-                    isPeeking={isPeeking}
-                    isResizing={isResizing || isTransitioning}
-                    onOverlayClick={navigation.unPeek}
-                    root={productRootNavigation}
-                  />
-                ) : null}
-              </ProductNavWrapper>
               <ResizeControl
-                isTransitioning={isTransitioning}
-                blanketStyle={style}
                 navigation={navigation}
                 mutationRefs={[
                   { ref: this.pageRef, property: 'padding-left' },
                   { ref: this.productNavRef, property: 'width' },
                 ]}
-              />
+              >
+                {resizeState => (
+                  <ContainerNavMask>
+                    {this.renderGlobalNav()}
+                    <ProductNavWrapper
+                      key="product-nav-wrapper"
+                      innerRef={this.getNavRef}
+                      isDisabled={isResizing || isTransitioning}
+                      style={style}
+                    >
+                      {shouldRenderNav ? (
+                        <ProductNav
+                          container={productContainerNavigation}
+                          key="product-nav"
+                          isHinting={isHinting}
+                          isPeeking={isPeeking}
+                          resizeState={resizeState}
+                          transitionState={transitionState}
+                          onOverlayClick={navigation.unPeek}
+                          root={productRootNavigation}
+                        />
+                      ) : null}
+                    </ProductNavWrapper>
+                  </ContainerNavMask>
+                )}
+              </ResizeControl>
             </Fragment>
           );
         }}
@@ -131,10 +139,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
     return (
       <Fragment>
         <LayoutContainer>
-          <NavContainer>
-            {this.renderGlobalNav()}
-            {this.renderProductNav()}
-          </NavContainer>
+          <NavContainer>{this.renderProductNav()}</NavContainer>
           <ResizeTransition
             in={!productNavIsCollapsed}
             isDisabled={isResizing}

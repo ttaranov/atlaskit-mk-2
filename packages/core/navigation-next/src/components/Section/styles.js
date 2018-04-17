@@ -3,7 +3,10 @@
 import { keyframes } from 'emotion';
 import { gridSize } from '@atlaskit/theme';
 
-import { animationDuration, animationTimingFunction } from '../../common';
+import {
+  transitionDuration,
+  transitionTimingFunction,
+} from '../../common/constants';
 
 const baseStyles = {
   boxSizing: 'border-box',
@@ -47,9 +50,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        animationDuration,
+        transitionDuration,
         animationFillMode: 'forwards',
-        animationTimingFunction,
+        transitionTimingFunction,
       };
     }
 
@@ -59,9 +62,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        animationDuration,
+        transitionDuration,
         animationFillMode: 'forwards',
-        animationTimingFunction,
+        transitionTimingFunction,
         position: 'absolute',
         width: '100%',
       };

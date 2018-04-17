@@ -44,7 +44,7 @@ export type Mode = {
 
 export type Theme = {
   mode: Mode,
-  context: string,
+  context?: string,
 };
 
 export type StyleReducer<State> = (ObjectType, State) => ObjectType;
