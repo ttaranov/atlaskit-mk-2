@@ -13,4 +13,5 @@ export interface Result {
 export enum ResultType {
   Person = 'person',
   Object = 'object',
+  Space = 'space',
 }

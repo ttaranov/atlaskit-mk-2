@@ -1,13 +1,17 @@
-import { Result } from '../model/Result';
-import { ServiceConfig } from '@atlaskit/util-service-support';
+import { Result, ResultType } from '../model/Result';
+import {
+  RequestServiceOptions,
+  utils,
+  ServiceConfig,
+} from '@atlaskit/util-service-support';
 
-const RECENT_PAGES_PATH: string =
+const RECENT_ITEMS_PATH: string =
   '/wiki/rest/recentlyviewed/1.0/recent?limit=10';
 const RECENT_SPACE_PATH: string =
   'wiki/rest/recentlyviewed/1.0/recent/spaces?limit=5';
 
 export interface ConfluenceClient {
-  getRecentPages(): Promise<Result[]>;
+  getRecentItems(): Promise<Result[]>;
   getRecentSpaces(): Promise<Result[]>;
 }
 
@@ -35,42 +39,24 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   private serviceConfig: ServiceConfig;
   // @ts-ignore TODO ignore unused for now
   private cloudId: string;
-  private recentPagesRequestPromise: Promise<RecentPage[]>;
-  private recentSpacesRequestPromise: Promise<RecentSpace[]>;
 
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
   }
 
-  public async getRecentPages(): Promise<Result[]> {
-    const recentPages = await this.fetchRecentPages();
-    return recentPages.map(recentPageToResult);
+  public async getRecentItems(): Promise<Result[]> {
+    const recentPages = await this.createRecentRequestPromise<RecentPage>(
+      RECENT_ITEMS_PATH,
+    );
+    return recentPages.map(recentItemToResult);
   }
 
   public async getRecentSpaces(): Promise<Result[]> {
-    const recentSpaces = await this.fetchRecentSpaces();
+    const recentSpaces = await this.createRecentRequestPromise<RecentSpace>(
+      RECENT_SPACE_PATH,
+    );
     return recentSpaces.map(recentSpaceToResult);
-  }
-
-  private async fetchRecentPages(): Promise<RecentPage[]> {
-    if (!this.recentPagesRequestPromise) {
-      this.recentPagesRequestPromise = this.createRecentRequestPromise<
-        RecentPage
-      >(RECENT_PAGES_PATH);
-    }
-
-    return await this.recentPagesRequestPromise;
-  }
-
-  private async fetchRecentSpaces(): Promise<RecentSpace[]> {
-    if (!this.recentSpacesRequestPromise) {
-      this.recentSpacesRequestPromise = this.createRecentRequestPromise<
-        RecentSpace
-      >(RECENT_SPACE_PATH);
-    }
-
-    return await this.recentSpacesRequestPromise;
   }
 
   private createRecentRequestPromise<T>(path: string): Promise<Array<T>> {
@@ -85,7 +71,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   }
 }
 
-function recentPageToResult(recentPage: RecentPage): Result {
+function recentItemToResult(recentPage: RecentPage): Result {
   return {
     resultId: recentPage.id,
     type: ResultType.Object,

@@ -11,20 +11,24 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderObjects = (results: Result[], query: string) => (
-  <ResultItemGroup title="Pages, blogs and attachments" key="objects">
+const renderObjectsGroup = (
+  title: string,
+  results: Result[],
+  query: string,
+) => (
+  <ResultItemGroup title={title} key="objects">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
-const renderSpaces = (results: Result[], query: string) => (
-  <ResultItemGroup title="Spaces" key="spaces">
+const renderSpacesGroup = (title: string, results: Result[], query: string) => (
+  <ResultItemGroup title={title} key="spaces">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
-const renderPeople = (results: Result[], query: string) => (
-  <ResultItemGroup title="People" key="people">
+const renderPeopleGroup = (title: string, results: Result[], query: string) => (
+  <ResultItemGroup title={title} key="people">
     {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
@@ -68,8 +72,10 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
-    // TODO render recent pages, recent spaces, recent people
-    return ['pre-query state'];
+    return [
+      renderObjectsGroup('Recent pages and blogs', recentlyViewedPages, query),
+      renderSpacesGroup('Recent spaces', recentlyViewedSpaces, query),
+    ];
   }
 
   // TODO need to pass isLoading down to avoid showing no results screen when still searching
@@ -78,8 +84,8 @@ export default function searchResults(props: Props) {
   }
 
   return [
-    renderObjects(take(objectResults, 5), query),
-    renderSpaces(take(spaceResults, 5), query),
-    renderPeople(take(peopleResults, 3), query),
+    renderObjectsGroup('Objects', take(objectResults, 5), query),
+    renderSpacesGroup('Spaces', take(spaceResults, 5), query),
+    renderPeopleGroup('People', take(peopleResults, 3), query),
   ];
 }

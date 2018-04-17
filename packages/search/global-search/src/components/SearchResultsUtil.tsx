@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { ComponentClass } from 'react';
-import { PersonResult, ResultBase } from '@atlaskit/quick-search';
+import {
+  PersonResult,
+  ContainerResult,
+  ResultBase,
+} from '@atlaskit/quick-search';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
@@ -14,6 +18,9 @@ function getResultComponent(resultType: ResultType): ComponentClass {
     }
     case ResultType.Person: {
       return PersonResult;
+    }
+    case ResultType.Space: {
+      return ContainerResult;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched

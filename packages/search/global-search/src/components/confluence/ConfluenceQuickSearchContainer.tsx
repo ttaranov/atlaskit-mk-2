@@ -164,7 +164,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   handleMount = async () => {
     // TODO are both call made at the same time?
     this.setState({
-      recentlyViewedPages: await this.props.confluenceClient.getRecentPages(),
+      recentlyViewedPages: await this.props.confluenceClient.getRecentItems(),
       recentlyViewedSpaces: await this.props.confluenceClient.getRecentSpaces(),
     });
   };
