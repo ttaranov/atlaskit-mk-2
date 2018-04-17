@@ -107,6 +107,16 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
+  createFile(): Promise<MediaStoreResponse<EmptyFile>> {
+    return this.request('/file', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then(mapResponseToJson);
+  }
+
   getFile = (
     fileId: string,
     params: MediaStoreGetFileParams = {},
@@ -224,3 +234,8 @@ export type AppendChunksToUploadRequestBody = {
   readonly hash?: string;
   readonly offset?: number;
 };
+
+export interface EmptyFile {
+  id: string;
+  createdAt: number;
+}
