@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import { Context } from '@atlaskit/media-core';
+import { Context, FileItem } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
-import { Model, Identifier, initialModel } from './domain';
+import { Identifier, Outcome } from './domain';
 import { Blanket, Header, Content } from './styled';
 
 export type Props = {
@@ -12,10 +12,16 @@ export type Props = {
   data: Identifier;
 };
 
-export type State = Model;
+export type State = {
+  fileDetails: Outcome<FileItem, Error>;
+};
+
+const intialState: State = {
+  fileDetails: { status: 'PENDING' },
+};
 
 export class MediaViewer extends React.Component<Props, State> {
-  state: State = initialModel;
+  state: State = intialState;
 
   componentDidMount() {
     this.init();
@@ -29,7 +35,7 @@ export class MediaViewer extends React.Component<Props, State> {
   // We therefore need to reset Media Viewer.
   componentWillUpdate(nextProps) {
     if (this.needsReset(this.props, nextProps)) {
-      this.setState(initialModel);
+      this.setState(intialState);
     }
   }
 

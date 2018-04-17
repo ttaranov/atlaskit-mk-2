@@ -1,4 +1,4 @@
-import { MediaItemType, FileItem } from '@atlaskit/media-core';
+import { MediaItemType } from '@atlaskit/media-core';
 
 export type Identifier = {
   type: MediaItemType;
@@ -19,11 +19,3 @@ export type Outcome<Data, Err> =
       status: 'FAILED';
       err: Err;
     };
-
-export type Model = {
-  fileDetails: Outcome<FileItem, Error>;
-};
-
-export const initialModel: Model = {
-  fileDetails: { status: 'PENDING' },
-};
