@@ -1,11 +1,15 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ImagePreview } from '@atlaskit/media-picker';
 
 import { isImage, setTextSelection, isTableCell } from '../../../utils';
-import { insertNodesEndWithNewParagraph } from '../../../commands';
+import {
+  insertNodesEndWithNewParagraph,
+  shouldAppendParagraphAfterBlockNode,
+} from '../../../commands';
 import { copyOptionalAttrsFromMediaState } from '../utils/media-common';
 import { MediaState } from '../types';
+import { safeInsert } from 'prosemirror-utils';
 
 export interface MediaSingleState extends MediaState {
   thumbnail: ImagePreview;
@@ -46,14 +50,32 @@ export const insertMediaSingleNode = (
   }
 
   const { state, dispatch } = view;
+  const grandParent = state.selection.$from.node(-1);
   const node = createMediaSingleNode(state.schema, collection)(mediaState);
-  const paraAdded = insertNodesEndWithNewParagraph([node])(state, dispatch);
+  const shouldSplit =
+    grandParent && grandParent.type.validContent(Fragment.from(node));
 
-  if (isTableCell(state)) {
-    /** If table cell, the default is to move to the next cell, override to select paragraph */
-    setTextSelection(view, state.selection.head + 1, state.selection.head + 1);
+  if (shouldSplit) {
+    insertNodesEndWithNewParagraph([node])(state, dispatch);
+    if (isTableCell(state)) {
+      /** If table cell, the default is to move to the next cell, override to select paragraph */
+      setTextSelection(
+        view,
+        state.selection.head + 1,
+        state.selection.head + 1,
+      );
+    }
+  } else {
+    dispatch(
+      safeInsert(
+        shouldAppendParagraphAfterBlockNode(view.state)
+          ? Fragment.fromArray([node, state.schema.nodes.paragraph.create()])
+          : node,
+      )(state.tr),
+    );
   }
-  return paraAdded;
+
+  return true;
 };
 
 export const createMediaSingleNode = (schema: Schema, collection: string) => (
