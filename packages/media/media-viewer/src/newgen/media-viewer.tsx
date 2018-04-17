@@ -136,7 +136,14 @@ export class MediaViewer extends React.Component<Props, State> {
         });
         break;
       case 'video':
-        this.populateVideoPreviewData(mediaItem, context, collectionName);
+        this.setState({
+          previewData: {
+            status: 'SUCCESSFUL',
+            data: {
+              viewer: 'VIDEO',
+            },
+          },
+        });
         break;
       case 'doc':
         this.populatePDFPreviewData(mediaItem, context, collectionName);
@@ -144,37 +151,6 @@ export class MediaViewer extends React.Component<Props, State> {
       default:
         this.notSupportedPreview(mediaItem);
         break;
-    }
-  }
-
-  private async populateVideoPreviewData(
-    fileItem: FileItem,
-    context: Context,
-    collectionName?: string,
-  ) {
-    const videoArtifactUrl = getVideoArtifactUrl(fileItem);
-    if (videoArtifactUrl) {
-      const src = await constructAuthTokenUrl(
-        videoArtifactUrl,
-        context,
-        collectionName,
-      );
-      this.setState({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'VIDEO',
-            src,
-          },
-        },
-      });
-    } else {
-      this.setState({
-        previewData: {
-          status: 'FAILED',
-          err: new Error('no pdf artifacts found for this file'),
-        },
-      });
     }
   }
 

@@ -162,12 +162,21 @@ describe('<FileViewer />', () => {
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
 
-  it('should show the video viewer if media type is image', () => {
+  it('should show the video viewer if media type is video', () => {
     const preview: FilePreview = {
       viewer: 'VIDEO',
       src: '',
     };
-    const el = mount(<FileViewer previewData={preview} />);
+    const context = createContext();
+    const item: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'failed',
+        mediaType: 'image',
+      },
+    };
+    const el = mount(<FileViewer context={context} item={item} previewData={preview} />);
     expect(el.find(VideoViewer)).toHaveLength(1);
   });
 

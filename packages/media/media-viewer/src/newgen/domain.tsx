@@ -33,7 +33,6 @@ export type ImagePreview = {
 };
 export type VideoPreview = {
   viewer: 'VIDEO';
-  src: string;
 };
 export type PDFPreview = {
   viewer: 'PDF';
