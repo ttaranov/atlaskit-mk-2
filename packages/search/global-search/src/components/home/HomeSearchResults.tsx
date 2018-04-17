@@ -13,7 +13,7 @@ import {
 } from '../SearchResultsUtil';
 
 const renderRecent = (results: Result[]) => {
-  if (results.length === 0) {
+  if (isEmpty(results)) {
     return null;
   }
 
