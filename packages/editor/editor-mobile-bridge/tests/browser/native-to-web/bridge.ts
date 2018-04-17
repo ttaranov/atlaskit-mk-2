@@ -47,11 +47,10 @@ describe('NativeToWebBridge', () => {
 
 describe('insert media', () => {
   let editor;
-  beforeEach(async done => {
+  beforeEach(done => {
     editor = mount(mobileEditor());
     //FIXME we need a better way to make sure media is loaded
-    await new Promise(resolve => setTimeout(resolve, 50));
-    done();
+    setTimeout(done, 50);
   });
 
   afterEach(() => {
