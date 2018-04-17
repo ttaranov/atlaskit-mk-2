@@ -5,7 +5,7 @@ import { MediaItem, MediaItemType, LinkItem } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
 import { Blanket } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
-import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
+import { ItemViewer } from '../../src/newgen/item-viewer';
 
 function createContext(subject, blobService?) {
   const token = 'some-token';
@@ -36,7 +36,7 @@ function createFixture(identifier) {
 }
 
 function getModel(el) {
-  return el.find(MediaViewerRenderer).props().model;
+  return el.find(ItemViewer).props().model;
 }
 
 describe('<MediaViewer />', () => {

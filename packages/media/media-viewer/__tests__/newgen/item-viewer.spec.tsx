@@ -1,23 +1,8 @@
-jest.mock('pdfjs-dist/web/pdf_viewer', () => {
-  return {
-    PDFViewer: () => ({
-      setDocument: () => {},
-    }),
-  };
-});
-jest.mock('pdfjs-dist/build/pdf', () => {
-  return {
-    getDocument: () => ({
-      promise: Promise.resolve(),
-    }),
-  };
-});
-
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import { FileItem } from '@atlaskit/media-core';
-import { MediaViewerRenderer } from '../../src/newgen/media-viewer-renderer';
+import { ItemViewer } from '../../src/newgen/item-viewer';
 import { Model } from '../../src/newgen/domain';
 import { ErrorMessage } from '../../src/newgen/styled';
 import { ImageViewer } from '../../src/newgen/viewers/image';
@@ -42,14 +27,14 @@ function createContext(subject?, blobService?) {
   ) as any;
 }
 
-describe('<MediaViewerRenderer />', () => {
+describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
     const model: Model = {
       fileDetails: {
         status: 'PENDING',
       },
     };
-    const el = mount(<MediaViewerRenderer model={model} />);
+    const el = mount(<ItemViewer model={model} />);
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
@@ -60,7 +45,7 @@ describe('<MediaViewerRenderer />', () => {
         err: new Error('something went wrong'),
       },
     };
-    const el = mount(<MediaViewerRenderer model={model} />);
+    const el = mount(<ItemViewer model={model} />);
     expect(el.find(ErrorMessage)).toHaveLength(1);
   });
 
@@ -83,7 +68,7 @@ describe('<MediaViewerRenderer />', () => {
     };
     const context = createContext();
     const el = mount(
-      <MediaViewerRenderer model={model} item={item} context={context} />,
+      <ItemViewer model={model} item={item} context={context} />,
     );
     expect(el.find(ErrorMessage).text()).toContain('unsupported');
   });
@@ -107,7 +92,7 @@ describe('<MediaViewerRenderer />', () => {
       },
     };
     const el = mount(
-      <MediaViewerRenderer model={model} context={context} item={item} />,
+      <ItemViewer model={model} context={context} item={item} />,
     );
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
@@ -131,7 +116,7 @@ describe('<MediaViewerRenderer />', () => {
       },
     };
     const el = mount(
-      <MediaViewerRenderer model={model} context={context} item={item} />,
+      <ItemViewer model={model} context={context} item={item} />,
     );
     expect(el.find(VideoViewer)).toHaveLength(1);
   });
@@ -155,11 +140,8 @@ describe('<MediaViewerRenderer />', () => {
       },
     };
     const el = mount(
-      <MediaViewerRenderer model={model} context={context} item={item} />,
+      <ItemViewer model={model} context={context} item={item} />,
     );
     expect(el.find(PDFViewer)).toHaveLength(1);
   });
 });
-
-jest.unmock('pdfjs-dist/build/pdf');
-jest.unmock('pdfjs-dist/web/pdf_viewer');

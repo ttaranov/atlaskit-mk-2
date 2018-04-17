@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StatelessComponent } from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { Blanket, Header, Content, ErrorMessage } from './styled';
+import { ErrorMessage } from './styled';
 import { Model } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -15,23 +14,11 @@ export type Props = {
   item?: FileItem;
 };
 
-export const MediaViewerRenderer: StatelessComponent<Props> = ({
+export const ItemViewer: React.StatelessComponent<Props> = ({
   model,
-  onClose,
-  context,
   item,
-}) => (
-  <Blanket onClick={onClose}>
-    {model.fileDetails.status === 'SUCCESSFUL' && (
-      <Header>{model.fileDetails.data.name || 'No name given'}</Header>
-    )}
-    <Content>
-      <Viewer model={model} context={context} item={item} />
-    </Content>
-  </Blanket>
-);
-
-export const Viewer: StatelessComponent<Props> = ({ model, item, context }) => {
+  context,
+}) => {
   const { fileDetails } = model;
 
   switch (fileDetails.status) {

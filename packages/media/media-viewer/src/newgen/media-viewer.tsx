@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 import { Context, MediaType } from '@atlaskit/media-core';
-import { MediaViewerRenderer } from './media-viewer-renderer';
+import { ItemViewer } from './item-viewer';
 import { Model, Identifier, initialModel } from './domain';
+import { Blanket, Header, Content } from './styled';
 
 export type Props = {
   onClose?: () => void;
@@ -45,12 +46,14 @@ export class MediaViewer extends React.Component<Props, State> {
     const item =
       fileDetails.status === 'SUCCESSFUL' ? fileDetails.data.item : void 0;
     return (
-      <MediaViewerRenderer
-        onClose={onClose}
-        item={item}
-        context={context}
-        model={this.state}
-      />
+      <Blanket onClick={onClose}>
+        {fileDetails.status === 'SUCCESSFUL' && (
+          <Header>{fileDetails.data.name || 'No name given'}</Header>
+        )}
+        <Content>
+          <ItemViewer model={this.state} context={context} item={item} />
+        </Content>
+      </Blanket>
     );
   }
 
