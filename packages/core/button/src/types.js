@@ -16,7 +16,7 @@ export type ButtonAppearances =
 
 export type ButtonProps = {
   /** The base styling to apply to the button. */
-  appearance: ButtonAppearances,
+  appearance?: ButtonAppearances,
   /** Pass aria-controls to underlying html button. */
   ariaControls?: string,
   /** Pass aria-expanded to underlying html button. */

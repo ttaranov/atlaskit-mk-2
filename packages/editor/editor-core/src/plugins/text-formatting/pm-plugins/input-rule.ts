@@ -42,16 +42,13 @@ function replaceTextUsingCaptureGroup(
     const [, prefix, , suffix] = match;
     const replacement = (prefix || '') + text + (suffix || '');
 
-    const charFrom = end - match[0].length + 1;
-    const charTo = end;
-
     if (trackingEventName) {
       analyticsService.trackEvent(
         `atlassian.editor.format.${trackingEventName}.autoformatting`,
       );
     }
 
-    return state.tr.insertText(replacement, charFrom, charTo);
+    return state.tr.replaceWith(start, end, state.schema.text(replacement));
   };
 }
 

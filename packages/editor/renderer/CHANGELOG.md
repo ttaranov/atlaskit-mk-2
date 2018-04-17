@@ -1,5 +1,23 @@
 # @atlaskit/renderer
 
+## 16.0.5
+- [patch] Fix rendering of multiple text nodes in inline code [9ee5612](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ee5612)
+
+## 16.0.4
+- [patch] CFE-1078: Add the type of extension to the call to extension handler [4db252c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4db252c)
+
+## 16.0.3
+
+## 16.0.2
+- [patch] Use node type as fallback behavior for unsupported node [090d962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/090d962)
+
+## 16.0.1
+- [patch] Always wrap text [bcd3361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcd3361)
+
+## 16.0.0
+
+## 15.0.2
+
 ## 15.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 

@@ -19,7 +19,7 @@ export type FileProcessingStatus =
   | 'failed';
 
 export interface FileDetails {
-  id?: string;
+  id: string;
   name?: string;
   size?: number;
   mimeType?: string;

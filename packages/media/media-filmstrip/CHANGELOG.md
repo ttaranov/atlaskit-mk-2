@@ -1,5 +1,9 @@
 # @atlaskit/media-filmstrip
 
+## 8.0.3
+
+## 8.0.2
+
 ## 8.0.1
 
 ## 8.0.0

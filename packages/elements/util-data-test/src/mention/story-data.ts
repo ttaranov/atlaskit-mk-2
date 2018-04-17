@@ -97,6 +97,13 @@ export const mentions = [
       time: '1:57pm',
     },
   },
+  {
+    id: '12312428',
+    avatarUrl: 'https://api.adorable.io/avatars/64/monkeytrousers.png',
+    name: 'Monkey Trousers',
+    lozenge: 'TEAM',
+    mentionName: 'Monkey Trousers',
+  },
 ];
 
 export const slowResourceProvider = new MentionResource({

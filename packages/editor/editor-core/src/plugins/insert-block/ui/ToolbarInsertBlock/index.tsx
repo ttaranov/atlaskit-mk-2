@@ -39,12 +39,13 @@ import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
-import { ExtensionProvider } from '../../../macro/types';
+import { MacroProvider } from '../../../macro/types';
 import tableCommands from '../../../table/commands';
 import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
+import { insertLayoutColumns } from '../../../layout/actions';
 
 export interface Props {
   buttons: number;
@@ -52,7 +53,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
-  tableActive?: boolean;
   tableHidden?: boolean;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
@@ -66,6 +66,7 @@ export interface Props {
   dateEnabled?: boolean;
   horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
+  layoutSectionEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -76,12 +77,12 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  extensionProvider?: ExtensionProvider | null;
+  macroProvider?: MacroProvider | null;
   insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
   onInsertMacroFromMacroBrowser?: (
-    extensionProvider: ExtensionProvider,
+    macroProvider: MacroProvider,
   ) => (editorView: EditorView) => void;
 }
 
@@ -282,7 +283,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private createItems = () => {
     const {
       tableHidden,
-      tableActive,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
@@ -291,7 +291,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
-      extensionProvider,
+      macroProvider,
       linkSupported,
       linkDisabled,
       emojiDisabled,
@@ -300,6 +300,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       dateEnabled,
       placeholderTextEnabled,
       horizontalRuleEnabled,
+      layoutSectionEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -358,7 +359,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         content: 'Table',
         value: { name: 'table' },
         isDisabled: tableHidden,
-        isActive: tableActive,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
@@ -410,12 +410,22 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       });
     }
 
+    if (layoutSectionEnabled) {
+      items.push({
+        content: 'Columns',
+        value: { name: 'layout' },
+        tooltipDescription: 'Insert columns',
+        tooltipPosition: 'right',
+        elemBefore: <PlaceholderTextIcon label="Insert columns" />,
+      });
+    }
+
     if (insertMenuItems) {
       items = items.concat(insertMenuItems);
       // keeping this here for backwards compatibility so confluence
       // has time to implement this button before it disappears.
       // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
-    } else if (typeof extensionProvider !== 'undefined' && extensionProvider) {
+    } else if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -466,6 +476,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
+  @analyticsDecorator('atlassian.editor.format.layout.button')
+  private insertLayoutColumns = (): boolean => {
+    const { editorView } = this.props;
+    insertLayoutColumns(editorView.state, editorView.dispatch);
+    return true;
+  };
+
   @analyticsDecorator('atlassian.editor.format.media.button')
   private openMediaPicker = (): boolean => {
     const { onShowMediaPicker } = this.props;
@@ -499,7 +516,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       editorActions,
       onInsertBlockType,
       onInsertMacroFromMacroBrowser,
-      extensionProvider,
+      macroProvider,
       handleImageUpload,
     } = this.props;
 
@@ -539,13 +556,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertMacroFromMacroBrowser!(extensionProvider!)(editorView);
+        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView);
         break;
       case 'date':
         this.createDate();
         break;
       case 'placeholder text':
         this.createPlaceholderText();
+        break;
+      case 'layout':
+        this.insertLayoutColumns();
         break;
       default:
         if (item && item.onClick) {

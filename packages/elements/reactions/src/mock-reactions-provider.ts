@@ -19,8 +19,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         {
           ari: 'ari:cloud:owner:demo-cloud-id:item/1',
           containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId)
-            .id!,
+          emojiId: (defaultReactionsByShortName.get(':fire:') as EmojiId).id!,
           count: 1,
           reacted: true,
         },
@@ -29,7 +28,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
           containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
           emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId)
             .id!,
-          count: 5,
+          count: 9,
           reacted: false,
         },
         {
@@ -43,7 +42,8 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         {
           ari: 'ari:cloud:owner:demo-cloud-id:item/1',
           containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
+          emojiId: (defaultReactionsByShortName.get(':heart_eyes:') as EmojiId)
+            .id!,
           count: 100,
           reacted: false,
         },

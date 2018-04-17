@@ -66,11 +66,12 @@ export default class TableView implements NodeView {
   }
 
   ignoreMutation(record: MutationRecord) {
-    const { target, type } = record;
+    if (!this.component) {
+      // force initial render
+      return false;
+    }
 
-    return (
-      type === 'attributes' && this.component.isTableComponentMutation(target)
-    );
+    return true;
   }
 
   destroy() {

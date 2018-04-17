@@ -1,8 +1,8 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { ExtensionProvider } from './types';
+import { MacroProvider } from './types';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { setExtensionProvider } from './actions';
+import { setMacroProvider } from './actions';
 import { Dispatch } from '../../event-dispatcher';
 
 export * from './types';
@@ -11,7 +11,7 @@ export * from './actions';
 export const pluginKey = new PluginKey('macroPlugin');
 
 export type MacroState = {
-  extensionProvider: ExtensionProvider | null;
+  macroProvider: MacroProvider | null;
 };
 
 export const createPlugin = (
@@ -20,7 +20,7 @@ export const createPlugin = (
 ) =>
   new Plugin({
     state: {
-      init: () => ({ extensionProvider: null }),
+      init: () => ({ macroProvider: null }),
 
       apply(tr, state: MacroState) {
         const meta = tr.getMeta(pluginKey);
@@ -39,9 +39,9 @@ export const createPlugin = (
       // make sure editable DOM node is mounted
       if (view.dom.parentNode) {
         providerFactory.subscribe(
-          'extensionProvider',
-          (name, provider: Promise<ExtensionProvider>) =>
-            setExtensionProvider(provider)(view),
+          'macroProvider',
+          (name, provider: Promise<MacroProvider>) =>
+            setMacroProvider(provider)(view),
         );
       }
       return {};

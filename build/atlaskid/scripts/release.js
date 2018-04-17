@@ -84,9 +84,9 @@ async function run() {
   const data = yaml.readSync(serviceDescriptorPath);
 
   const currentTag = data.links.binary.tag;
-  const [wholeMath, tagNumber] = currentTag.match(/v([0-9]+)/);
+  const [wholeMatch, tagNumber] = currentTag.match(/v([0-9]+)/);
 
-  console.log('Current tag: ', wholeMath, ' would you like to bump this tag?');
+  console.log('Current tag: ', wholeMatch, ' would you like to bump this tag?');
   const shouldBump = await promptConfirm('Confirm?: ');
 
   if (shouldBump) {
@@ -107,10 +107,10 @@ async function run() {
   console.log('Ready!!');
 
   console.log(chalk.blue('Building docker image...'));
-  await buildDockerImage(newTag);
+  await buildDockerImage(data.links.binary.tag);
 
   console.log(chalk.blue('Pushing docker image...'));
-  await pushDockerImage(newTag);
+  await pushDockerImage(data.links.binary.tag);
 
   console.log(chalk.blue('Deploying to micros...'));
   await deployToMicros();

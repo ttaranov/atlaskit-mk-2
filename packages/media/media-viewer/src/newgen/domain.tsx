@@ -1,4 +1,4 @@
-import { MediaType, MediaItemType } from '@atlaskit/media-core';
+import { MediaType, MediaItemType, FileItem } from '@atlaskit/media-core';
 
 export type Identifier = {
   type: MediaItemType;
@@ -22,19 +22,24 @@ export type Outcome<Data, Err> =
 
 export type FileDetails = {
   mediaType: MediaType;
+  name?: string;
+  item?: FileItem;
 };
 
 export type ObjectUrl = string;
 
 export type ImagePreview = {
   viewer: 'IMAGE';
-  objectUrl: ObjectUrl;
 };
 export type VideoPreview = {
   viewer: 'VIDEO';
   src: string;
 };
-export type FilePreview = ImagePreview | VideoPreview;
+export type PDFPreview = {
+  viewer: 'PDF';
+  doc: Blob;
+};
+export type FilePreview = ImagePreview | VideoPreview | PDFPreview;
 
 export type Model = {
   fileDetails: Outcome<FileDetails, Error>;

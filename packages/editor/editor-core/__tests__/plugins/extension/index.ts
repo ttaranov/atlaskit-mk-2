@@ -3,8 +3,12 @@ import {
   createEditor,
   p as paragraph,
   bodiedExtension,
-  extensionProvider,
+  macroProvider,
   sendKeyToPm,
+  bodiedExtensionData,
+  sleep,
+  h5,
+  underline,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -15,7 +19,7 @@ import {
 import { pluginKey } from '../../../src/plugins/extension/plugin';
 import extensionPlugin from '../../../src/plugins/extension';
 
-const extensionProviderPromise = Promise.resolve(extensionProvider);
+const macroProviderPromise = Promise.resolve(macroProvider);
 
 describe('extension', () => {
   const editor = (doc: any) => {
@@ -25,11 +29,7 @@ describe('extension', () => {
     });
   };
 
-  const extensionAttrs = {
-    bodyType: 'rich',
-    extensionType: 'com.atlassian.confluence.macro',
-    extensionKey: 'expand',
-  };
+  const extensionAttrs = bodiedExtensionData[1].attrs;
 
   describe('when cursor is at the beginning of the content', () => {
     it('should create a paragraph above extension node on Enter', () => {
@@ -68,7 +68,7 @@ describe('extension', () => {
     });
 
     describe('editExtension', () => {
-      it('should return false if extensionProvider is not available', () => {
+      it('should return false if macroProvider is not available', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
@@ -76,15 +76,31 @@ describe('extension', () => {
       });
       it('should return false if extension node is not selected or cursor is not inside extension body', async () => {
         const { editorView } = editor(doc(paragraph('te{<>}xt')));
-        const provider = await extensionProviderPromise;
+        const provider = await macroProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(false);
       });
-      it('should return true if extensionProvider is available and cursor is inside extension node', async () => {
+      it('should return true if macroProvider is available and cursor is inside extension node', async () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        const provider = await extensionProviderPromise;
+        const provider = await macroProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(true);
+      });
+      it('should replace selected bodiedExtension node with a new bodiedExtension node', async () => {
+        const { editorView } = editor(
+          doc(bodiedExtension(extensionAttrs)(paragraph('{<>}'))),
+        );
+        const provider = await macroProviderPromise;
+        editExtension(provider)(editorView);
+        await sleep(0);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            bodiedExtension(bodiedExtensionData[0].attrs)(
+              h5('Heading'),
+              paragraph(underline('Foo')),
+            ),
+          ),
+        );
       });
     });
 

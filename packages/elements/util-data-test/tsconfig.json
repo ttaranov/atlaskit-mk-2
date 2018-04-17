@@ -6,6 +6,6 @@
     "./__tests__/**/*.ts",
     "./__tests__/**/*.tsx",
     "./docs/**/*.ts",
-    "./docs/**/*.tsx",
+    "./docs/**/*.tsx"
   ]
 }

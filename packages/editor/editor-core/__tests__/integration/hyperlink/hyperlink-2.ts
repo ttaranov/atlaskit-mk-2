@@ -10,6 +10,7 @@ import {
 const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
+// broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
 editors.forEach(editor => {
   BrowserTestCase(
     `Link: paste link and add text, paste link into list for ${

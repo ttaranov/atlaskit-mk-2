@@ -18,6 +18,7 @@ export default class WidthDetector extends Component<Props> {
         containerStyle={{
           height: 0,
           width: '100%',
+          flex: 'none',
         }}
       >
         {({ width }) => this.broadcastWidth(width) || null}

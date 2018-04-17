@@ -2,25 +2,26 @@ import { Node as PmNode } from 'prosemirror-model';
 
 export type ExtensionType = 'extension' | 'bodiedExtension' | 'inlineExtension';
 
-export interface ExtensionAttributes {
+export interface MacroAttributes {
   type: ExtensionType;
   attrs: {
     extensionKey: string;
     extensionType: string;
     parameters?: {
-      [key: string]: object;
+      macroParams?: object;
+      macroMetadata?: object;
     };
     text?: string; // fallback text
   };
   content?: any; // only bodiedExtension has content
 }
 
-export interface ExtensionProvider {
+export interface MacroProvider {
   config: {};
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
-  editExtension(extensionNode?: PmNode): Promise<ExtensionAttributes>;
+  openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes>;
 
-  autoConvert(link: String): ExtensionAttributes | null;
+  autoConvert(link: String): MacroAttributes | null;
 }

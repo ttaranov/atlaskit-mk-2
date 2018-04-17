@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 27.0.1
+
+## 27.0.0
+
 ## 26.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 

@@ -26,7 +26,13 @@ const Extension: React.StatelessComponent<Props> = ({
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, extensionType, parameters, content: text },
+        {
+          type: 'extension',
+          extensionKey,
+          extensionType,
+          parameters,
+          content: text,
+        },
         rendererContext.adDoc,
       );
 

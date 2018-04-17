@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { PreviewImage } from './styled';
+import { UploadPreviewUpdateEventPayload } from '../src/domain/uploadEvent';
+import { isImagePreview } from '../src/domain/preview';
 
 export type AuthEnvironment = 'asap' | 'client';
 
-export const renderPreviewImage = ({ preview, file }, key) => {
-  if (!preview || !preview.src) {
+export const renderPreviewImage = (
+  { preview, file }: UploadPreviewUpdateEventPayload,
+  key: number,
+) => {
+  if (!isImagePreview(preview)) {
     return;
   }
 

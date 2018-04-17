@@ -9,7 +9,7 @@ describe('JIRATransformer', () => {
     checkParseEncodeRoundTrips(
       'external link',
       schema,
-      `<p>Text <a class="external-link" href="https://atlassian.com" rel="nofollow">atlassian.com</a> text</p>`,
+      `<p>Text <a class="external-link" rel="nofollow" href="https://atlassian.com">atlassian.com</a> text</p>`,
       doc(
         p(
           'Text ',
@@ -22,7 +22,7 @@ describe('JIRATransformer', () => {
     checkParseEncodeRoundTrips(
       'mailto link',
       schema,
-      `<p>Text <a class="external-link" href="mailto:me@atlassian.com" rel="nofollow">me@atlassian.com</a> text</p>`,
+      `<p>Text <a class="external-link" rel="nofollow" href="mailto:me@atlassian.com">me@atlassian.com</a> text</p>`,
       doc(
         p(
           'Text ',

@@ -2,7 +2,11 @@
 import tabbable from 'tabbable';
 import focusin from 'focusin';
 
-export type AutoFocus = boolean | (() => HTMLElement);
+// undefined means the boundary itself should be focused
+// false means the user has set autoFocus on an element inside the boundary
+// true focuses the first focusable element insidethe boundary
+// a function should return an element inside the boundary to focus.
+export type AutoFocus = boolean | (() => HTMLElement) | void;
 export type Boundary = HTMLElement;
 export type TeardownOptions = { shouldRestoreFocus: boolean };
 type LockOptions = { autoFocus: AutoFocus, boundary: Boundary };
@@ -42,7 +46,7 @@ export default class FocusLockRegistry {
     document.addEventListener('keydown', this.handleKeyDown);
 
     // ensure that "focusin" has something to focus
-    if (boundary && !autoFocus) {
+    if (boundary && autoFocus === undefined) {
       this.originalTabindex = boundary.getAttribute('tabindex') || '';
 
       // catch negative indexes
@@ -50,8 +54,12 @@ export default class FocusLockRegistry {
       if (!idx || (idx && idx < 0)) boundary.setAttribute('tabindex', '0');
     }
 
-    // initial focus call
-    this.handleFocus();
+    // false means the user has set autoFocus on an element inside the boundary.
+    // In that case, nothing to do.
+    if (autoFocus !== false) {
+      // initial focus call
+      this.handleFocus();
+    }
   }
 
   clearLock(options: TeardownOptions) {
@@ -137,20 +145,17 @@ export default class FocusLockRegistry {
   };
 
   // loop back to the first tabbable element from the last
-  handleKeyDown = ({
-    key,
-    shiftKey,
-    target,
-    preventDefault,
-  }: KeyboardEvent) => {
-    if (key !== 'Tab') return;
+  // Do not destructure methods like preventDefault from event.
+  // Doing so changes the 'this' context from event to the handleKeyDown function.
+  handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Tab') return;
 
     const els = tabbable(this.currentLock);
     const first = els[0];
     const last = els[els.length - 1];
 
-    if (target === last && !shiftKey) {
-      preventDefault();
+    if (event.target === last && !event.shiftKey) {
+      event.preventDefault();
       first.focus();
     }
   };

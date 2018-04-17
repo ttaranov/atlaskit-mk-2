@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import Blanket from '@atlaskit/blanket';
-import { Context, MediaType, MediaItem, FileItem } from '@atlaskit/media-core';
+import { Context, MediaType, FileItem } from '@atlaskit/media-core';
 import { MediaViewerRenderer } from './media-viewer-renderer';
 import { Model, Identifier, initialModel } from './domain';
 import { constructAuthTokenUrl } from './util';
+import { fetch } from './viewers/pdf/loader';
 
 export type Props = {
   onClose?: () => void;
@@ -14,8 +14,6 @@ export type Props = {
 };
 
 export type State = Model;
-
-export const REQUEST_CANCELLED = 'request_cancelled';
 
 export class MediaViewer extends React.Component<Props, State> {
   state: State = initialModel;
@@ -44,12 +42,17 @@ export class MediaViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { onClose } = this.props;
+    const { onClose, context } = this.props;
+    const { fileDetails } = this.state;
+    const item =
+      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data.item : void 0;
     return (
-      <div>
-        <Blanket onBlanketClicked={onClose} isTinted />
-        <MediaViewerRenderer model={this.state} />
-      </div>
+      <MediaViewerRenderer
+        onClose={onClose}
+        item={item}
+        context={context}
+        model={this.state}
+      />
     );
   }
 
@@ -93,6 +96,8 @@ export class MediaViewer extends React.Component<Props, State> {
                 status: 'SUCCESSFUL',
                 data: {
                   mediaType: mediaType as MediaType,
+                  name: mediaItem.details.name,
+                  item: mediaItem,
                 },
               },
             });
@@ -116,81 +121,30 @@ export class MediaViewer extends React.Component<Props, State> {
     if (this.itemDetails) {
       this.itemDetails.unsubscribe();
     }
-    if (this.cancelImageFetch) {
-      this.cancelImageFetch();
-    }
-    const { previewData } = this.state;
-    if (previewData.status === 'SUCCESSFUL') {
-      const { data } = previewData;
-      if (data.viewer === 'IMAGE') {
-        this.revokeObjectUrl(data.objectUrl);
-      }
-    }
   }
 
   private populatePreviewData(mediaItem, context, collectionName) {
     switch (mediaItem.details.mediaType) {
       case 'image':
-        this.populateImagePreviewData(mediaItem, context);
+        this.setState({
+          previewData: {
+            status: 'SUCCESSFUL',
+            data: {
+              viewer: 'IMAGE',
+            },
+          },
+        });
         break;
       case 'video':
         this.populateVideoPreviewData(mediaItem, context, collectionName);
+        break;
+      case 'doc':
+        this.populatePDFPreviewData(mediaItem, context, collectionName);
         break;
       default:
         this.notSupportedPreview(mediaItem);
         break;
     }
-  }
-
-  private cancelImageFetch?: () => void;
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public revokeObjectUrl(objectUrl) {
-    URL.revokeObjectURL(objectUrl);
-  }
-
-  private async populateImagePreviewData(
-    fileItem: MediaItem,
-    context: Context,
-  ) {
-    try {
-      const service = context.getBlobService();
-      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
-        width: 800,
-        height: 600,
-        mode: 'fit',
-        allowAnimated: true,
-      });
-      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-      const objectUrl = URL.createObjectURL(await response);
-      this.setState({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'IMAGE',
-            objectUrl,
-          },
-        },
-      });
-    } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
-        this.setState({
-          previewData: {
-            status: 'FAILED',
-            err,
-          },
-        });
-      }
-    }
-  }
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public preventRaceCondition() {
-    // Calling setState might introduce a race condition, because the app has
-    // already transitioned to a different state. To avoid this we're not doing
-    // anything.
   }
 
   private async populateVideoPreviewData(
@@ -218,7 +172,7 @@ export class MediaViewer extends React.Component<Props, State> {
       this.setState({
         previewData: {
           status: 'FAILED',
-          err: new Error('no video artifacts found for this file'),
+          err: new Error('no pdf artifacts found for this file'),
         },
       });
     }
@@ -232,10 +186,51 @@ export class MediaViewer extends React.Component<Props, State> {
       },
     });
   }
+
+  private async populatePDFPreviewData(
+    fileItem: FileItem,
+    context: Context,
+    collectionName?: string,
+  ) {
+    const pdfArtifactUrl = getPDFUrl(fileItem);
+    if (pdfArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        pdfArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        previewData: {
+          status: 'SUCCESSFUL',
+          data: {
+            viewer: 'PDF',
+            doc: await fetch(src),
+          },
+        },
+      });
+    } else {
+      this.setState({
+        previewData: {
+          status: 'FAILED',
+          err: new Error('no video artifacts found for this file'),
+        },
+      });
+    }
+  }
 }
 
 function getVideoArtifactUrl(fileItem: FileItem) {
   const artifact = 'video_640.mp4';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
+}
+
+function getPDFUrl(fileItem: FileItem) {
+  const artifact = 'document.pdf';
   return (
     fileItem.details &&
     fileItem.details.artifacts &&
