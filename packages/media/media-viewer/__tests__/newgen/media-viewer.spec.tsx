@@ -1,33 +1,7 @@
-jest.mock('pdfjs-dist/web/pdf_viewer', () => {
-  return {
-    PDFViewer: () => ({
-      setDocument: () => {},
-    }),
-  };
-});
-jest.mock('pdfjs-dist/build/pdf', () => {
-  return {
-    getDocument: () => ({
-      promise: Promise.resolve(),
-    }),
-  };
-});
-
-jest.mock('../../src/newgen/viewers/pdf/loader', () => {
-  const doc = {
-    getPage: () => {},
-  };
-  return {
-    fetch: url => Promise.resolve(doc),
-    componentLoader: () => {},
-  };
-});
-
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType, LinkItem } from '@atlaskit/media-core';
-import { waitUntil } from '@atlaskit/media-test-helpers';
 import { Stubs } from '../_stubs';
 import { Blanket } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
@@ -94,68 +68,6 @@ describe('<MediaViewer />', () => {
     expect(subject.observers).toHaveLength(1);
     el.unmount();
     expect(subject.observers).toHaveLength(0);
-  });
-
-  describe('pdf', () => {
-    it('assigns a document object for pdf when successful', async () => {
-      const docItem: MediaItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-          mediaType: 'doc',
-          artifacts: {
-            'document.pdf': {
-              url: '/pdf',
-            },
-          },
-        },
-      };
-      const { subject, el } = createFixture(identifier);
-
-      subject.next(docItem);
-
-      await waitUntil(() => {
-        el.update();
-        return getModel(el).previewData.status === 'SUCCESSFUL';
-      }, 5);
-
-      expect(getModel(el)).toMatchObject({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            viewer: 'PDF',
-          },
-        },
-      });
-    });
-
-    it('shows an error if no pdf artifact found', async () => {
-      const docItem: MediaItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-          mediaType: 'doc',
-          artifacts: {},
-        },
-      };
-      const { subject, el } = createFixture(identifier);
-
-      subject.next(docItem);
-
-      await waitUntil(() => {
-        el.update();
-        return getModel(el).previewData.status === 'FAILED';
-      }, 5);
-
-      expect(getModel(el)).toMatchObject({
-        previewData: {
-          status: 'FAILED',
-          err: new Error('no pdf artifacts found for this file'),
-        },
-      });
-    });
   });
 
   it('shows an error when processing failed', () => {
@@ -267,7 +179,3 @@ describe('<MediaViewer />', () => {
     });
   });
 });
-
-jest.unmock('pdfjs-dist/build/pdf');
-jest.unmock('pdfjs-dist/web/pdf_viewer');
-jest.unmock('../../src/newgen/viewers/pdf/loader');

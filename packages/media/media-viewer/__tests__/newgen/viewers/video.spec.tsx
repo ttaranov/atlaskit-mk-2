@@ -35,15 +35,13 @@ function createContext(authPromise) {
   return Stubs.context(
     contextConfig,
     undefined,
-    Stubs.mediaItemProvider(new Subject<FileItem>())
+    Stubs.mediaItemProvider(new Subject<FileItem>()),
   ) as any;
 }
 
 function createFixture(authPromise) {
   const context = createContext(authPromise);
-  const el = mount(<VideoViewer context={context} item={videoItem} previewData={{
-    viewer: 'VIDEO'
-  }} />);
+  const el = mount(<VideoViewer context={context} item={videoItem} />);
   return { context, el };
 }
 
@@ -63,7 +61,9 @@ describe('Video viewer', () => {
     const { el } = createFixture(authPromise);
     await el.instance()['init']();
     el.update();
-    expect(el.find(Video).prop('src')).toEqual('some-service-host/video?client=some-client-id&token=some-token')
+    expect(el.find(Video).prop('src')).toEqual(
+      'some-service-host/video?client=some-client-id&token=some-token',
+    );
   });
 
   it('shows spinner when pending', async () => {
