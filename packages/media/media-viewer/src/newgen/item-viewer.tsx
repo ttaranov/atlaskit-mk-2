@@ -1,36 +1,34 @@
 import * as React from 'react';
-import { Context } from '@atlaskit/media-core';
+import { Context, FileItem } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
-import { Model } from './domain';
+import { Outcome } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { PDFViewer } from './viewers/pdf';
 import { Spinner } from './loading';
 
 export type Props = {
-  model: Model;
+  item: Outcome<FileItem, Error>;
   context: Context;
 };
 
 export const ItemViewer: React.StatelessComponent<Props> = ({
-  model,
+  item,
   context,
 }) => {
-  const { fileDetails } = model;
-
-  switch (fileDetails.status) {
+  switch (item.status) {
     case 'PENDING':
       return <Spinner />;
     case 'SUCCESSFUL':
-      const item = fileDetails.data;
-      switch (item.details.mediaType) {
+      const itemUnwrapped = item.data;
+      switch (itemUnwrapped.details.mediaType) {
         case 'image':
-          return <ImageViewer context={context} item={item} />;
+          return <ImageViewer context={context} item={itemUnwrapped} />;
         case 'audio':
         case 'video':
-          return <VideoViewer context={context} item={item} />;
+          return <VideoViewer context={context} item={itemUnwrapped} />;
         case 'doc':
-          return <PDFViewer context={context} item={item} />;
+          return <PDFViewer context={context} item={itemUnwrapped} />;
         default:
           return <ErrorMessage>This file is unsupported</ErrorMessage>;
       }

@@ -36,7 +36,7 @@ function createFixture(identifier) {
 }
 
 function getModel(el) {
-  return el.find(ItemViewer).props().model;
+  return el.find(ItemViewer).props().item;
 }
 
 describe('<MediaViewer />', () => {
@@ -57,9 +57,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'PENDING',
-      },
+      status: 'PENDING',
     });
   });
 
@@ -85,9 +83,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'FAILED',
-      },
+      status: 'FAILED',
     });
   });
 
@@ -102,9 +98,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'FAILED',
-      },
+      status: 'FAILED',
     });
   });
 
@@ -115,9 +109,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'FAILED',
-      },
+      status: 'FAILED',
     });
   });
 
@@ -162,9 +154,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'SUCCESSFUL',
-      },
+      status: 'SUCCESSFUL',
     });
 
     const context = createContext(new Subject<MediaItem>());
@@ -173,9 +163,7 @@ describe('<MediaViewer />', () => {
     el.update();
 
     expect(getModel(el)).toMatchObject({
-      fileDetails: {
-        status: 'PENDING',
-      },
+      status: 'PENDING',
     });
   });
 });

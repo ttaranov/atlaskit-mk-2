@@ -49,7 +49,7 @@ export class MediaViewer extends React.Component<Props, State> {
           <Header>{fileDetails.data.details.name || 'No name given'}</Header>
         )}
         <Content>
-          <ItemViewer model={this.state} context={context} />
+          <ItemViewer item={this.state.fileDetails} context={context} />
         </Content>
       </Blanket>
     );
