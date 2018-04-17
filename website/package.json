@@ -53,6 +53,7 @@
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/navigation": "^30.0.0",
     "@atlaskit/page": "^6.0.0",
+    "@atlaskit/quick-search": "^1.2.0",
     "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/tag": "^4.0.0",

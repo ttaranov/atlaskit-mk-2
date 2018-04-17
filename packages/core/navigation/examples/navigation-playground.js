@@ -12,6 +12,7 @@ import Tooltip from '@atlaskit/tooltip';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { FieldTextStateless } from '@atlaskit/field-text';
 import Checkbox from '@atlaskit/checkbox';
+import { AkSearch } from '@atlaskit/quick-search';
 
 import Navigation, {
   AkNavigationItemGroup,
@@ -20,7 +21,6 @@ import Navigation, {
   AkCustomDrawer,
   AkCreateDrawer,
   AkContainerTitle,
-  AkSearch,
   presetThemes,
 } from '../src';
 

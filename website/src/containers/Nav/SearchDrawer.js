@@ -4,10 +4,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   AkSearchDrawer,
-  AkSearch,
   AkNavigationItem,
   AkNavigationItemGroup,
 } from '@atlaskit/navigation';
+import { AkSearch } from '@atlaskit/quick-search';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
