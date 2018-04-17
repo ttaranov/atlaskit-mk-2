@@ -19,15 +19,19 @@ import {
   UploadParams,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
-import MobilePicker from './mobile-picker';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
-import { MediaStateManager, MediaState, MediaStateStatus } from './types';
+import {
+  MediaStateManager,
+  MediaState,
+  MediaStateStatus,
+  CustomMediaPicker,
+} from './types';
 
-export type PickerType = keyof MediaPickerComponents | 'mobile';
+export type PickerType = keyof MediaPickerComponents | 'customMediaPicker';
 export type ExtendedComponentConfigs = ComponentConfigs & {
-  mobile: MobilePicker;
+  customMediaPicker: CustomMediaPicker;
 };
 
 export type PickerFacadeConfig = {
@@ -37,7 +41,7 @@ export type PickerFacadeConfig = {
 };
 
 export default class PickerFacade {
-  private picker: MediaPickerComponent | MobilePicker;
+  private picker: MediaPickerComponent | CustomMediaPicker;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
@@ -54,8 +58,8 @@ export default class PickerFacade {
     this.stateManager = config.stateManager;
 
     let picker;
-    if (pickerType === 'mobile') {
-      picker = this.picker = pickerConfig as MobilePicker;
+    if (pickerType === 'customMediaPicker') {
+      picker = this.picker = pickerConfig as CustomMediaPicker;
     } else {
       picker = this.picker = MediaPicker(
         pickerType,

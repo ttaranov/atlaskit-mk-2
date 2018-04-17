@@ -6,7 +6,7 @@ import {
   MentionsState,
   TextFormattingState,
   EditorActions,
-  MobilePicker,
+  CustomMediaPicker,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
@@ -18,7 +18,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   editorView: EditorView | null = null;
   transformer: JSONTransformer = new JSONTransformer();
   editorActions: EditorActions = new EditorActions();
-  mediaPicker: MobilePicker | undefined;
+  mediaPicker: CustomMediaPicker | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {

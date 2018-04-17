@@ -608,9 +608,9 @@ export class MediaPluginState {
       if (this.editorAppearance === 'mobile') {
         pickers.push(
           (this.mobilePicker = new Picker(
-            'mobile',
+            'customMediaPicker',
             pickerFacadeConfig,
-            this.mediaProvider.mobilePicker,
+            this.options.customMediaPicker,
           )),
         );
       } else {

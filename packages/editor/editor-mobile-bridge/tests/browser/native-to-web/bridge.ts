@@ -1,10 +1,5 @@
 import * as sinon from 'sinon';
 import { toNativeBridge } from '../../../src/web-to-native';
-sinon.stub(toNativeBridge, 'getCollection').returns('FabricSampleCollection');
-sinon
-  .stub(toNativeBridge, 'getServiceHost')
-  .returns('http://www.atlassian.com/');
-sinon.mock(toNativeBridge, '');
 import mobileEditor from '../../../src/mobile-editor-element';
 import * as React from 'react';
 import * as chai from 'chai';
@@ -45,9 +40,15 @@ describe('NativeToWebBridge', () => {
   });
 });
 
-describe('insert media', () => {
+describe.only('insert media', () => {
   let editor;
+  const getCollection = sinon.stub(toNativeBridge, 'getCollection');
+  const getServiceHost = sinon.stub(toNativeBridge, 'getServiceHost');
   beforeEach(done => {
+    getCollection.reset();
+    getCollection.returns('FabricSampleCollection');
+    getServiceHost.reset();
+    getServiceHost.returns('http://www.atlassian.com/');
     editor = mount(mobileEditor());
     //FIXME we need a better way to make sure media is loaded
     setTimeout(done, 50);

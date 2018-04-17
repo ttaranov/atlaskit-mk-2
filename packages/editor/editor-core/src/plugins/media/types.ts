@@ -1,6 +1,5 @@
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import MobilePicker from './mobile-picker';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -44,8 +43,6 @@ export interface MediaStateManager {
 }
 
 export interface MediaProvider {
-  mobilePicker?: MobilePicker;
-
   uploadParams?: UploadParams;
 
   /**
@@ -70,4 +67,14 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context>;
+}
+
+export type Listener = (data: any) => void;
+
+export interface CustomMediaPicker {
+  on(event: string, cb: Listener): void;
+  removeAllListeners(event: any);
+  emit(event: string, data: any): void;
+  destroy(): void;
+  setUploadParams(uploadParams: UploadParams);
 }
