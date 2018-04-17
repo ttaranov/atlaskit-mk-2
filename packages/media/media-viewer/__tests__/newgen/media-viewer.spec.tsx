@@ -96,42 +96,6 @@ describe('<MediaViewer />', () => {
     expect(subject.observers).toHaveLength(0);
   });
 
-  describe('videos', () => {
-    it('assigns a src for videos when successful', async () => {
-      const videoItem: MediaItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-          mediaType: 'video',
-          artifacts: {
-            'video_640.mp4': {
-              url: '/video',
-            },
-          },
-        },
-      };
-      const { subject, el } = createFixture(identifier);
-
-      subject.next(videoItem);
-
-      await waitUntil(() => {
-        el.update();
-        return getModel(el).previewData.status === 'SUCCESSFUL';
-      }, 5);
-
-      expect(getModel(el)).toMatchObject({
-        previewData: {
-          status: 'SUCCESSFUL',
-          data: {
-            src:
-              'some-service-host/video?client=some-client-id&token=some-token',
-          },
-        },
-      });
-    });
-  });
-
   describe('pdf', () => {
     it('assigns a document object for pdf when successful', async () => {
       const docItem: MediaItem = {
@@ -280,7 +244,7 @@ describe('<MediaViewer />', () => {
       details: {
         id: 'some-id',
         processingStatus: 'succeeded',
-        mediaType: 'video',
+        mediaType: 'image',
       },
     });
     el.update();
