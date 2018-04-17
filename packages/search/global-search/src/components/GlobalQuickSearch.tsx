@@ -24,7 +24,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
     this.debouncedSearch(query);
   };
 
-  debouncedSearch = debounce(this.doSearch, 350, { leading: true });
+  debouncedSearch = debounce(this.doSearch, 350);
 
   doSearch(query: string) {
     this.props.onSearch(query);
