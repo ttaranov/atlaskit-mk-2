@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { VideoPreview } from '../domain';
 import { Video } from '../styled';
 import { FileItem, Context } from '@atlaskit/media-core';
 import { constructAuthTokenUrl } from '../util';
@@ -8,7 +7,6 @@ import { Spinner } from '../loading';
 import { ErrorMessage } from '../styled';
 
 export type Props = {
-  previewData: VideoPreview;
   item: FileItem;
   context: Context;
   collectionName?: string;
@@ -16,13 +14,12 @@ export type Props = {
 
 export type State = {
   src: Outcome<string, Error>;
-}
+};
 
 export class VideoViewer extends React.Component<Props, State> {
-
   state: State = { src: { status: 'PENDING' } };
 
-  componentDidMount () {
+  componentDidMount() {
     this.init();
   }
 
@@ -30,7 +27,7 @@ export class VideoViewer extends React.Component<Props, State> {
     const { src } = this.state;
     switch (src.status) {
       case 'PENDING':
-        return <Spinner/>;
+        return <Spinner />;
       case 'SUCCESSFUL':
         return <Video controls src={src.data} />;
       case 'FAILED':
@@ -45,19 +42,19 @@ export class VideoViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'SUCCESSFUL',
-          data: await constructAuthTokenUrl(videoUrl, context, collectionName)
-        }
-      })
-    } catch(err) {
+          data: await constructAuthTokenUrl(videoUrl, context, collectionName),
+        },
+      });
+    } catch (err) {
       this.setState({
         src: {
           status: 'FAILED',
-          err
-        }
-      })
+          err,
+        },
+      });
     }
   }
-};
+}
 
 function getVideoArtifactUrl(fileItem: FileItem) {
   const artifact = 'video_640.mp4';
