@@ -34,7 +34,7 @@ describe('<ItemViewer />', () => {
         status: 'PENDING',
       },
     };
-    const el = mount(<ItemViewer model={model} />);
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
@@ -45,7 +45,7 @@ describe('<ItemViewer />', () => {
         err: new Error('something went wrong'),
       },
     };
-    const el = mount(<ItemViewer model={model} />);
+    const el = mount(<ItemViewer model={model} context={createContext()} />);
     expect(el.find(ErrorMessage)).toHaveLength(1);
   });
 
@@ -64,15 +64,13 @@ describe('<ItemViewer />', () => {
         data: item,
       },
     };
-    const context = createContext();
     const el = mount(
-      <ItemViewer model={model} item={item} context={context} />,
+      <ItemViewer model={model} item={item} context={createContext()} />,
     );
     expect(el.find(ErrorMessage).text()).toContain('unsupported');
   });
 
   it('should show the image viewer if media type is image', () => {
-    const context = createContext();
     const item: FileItem = {
       type: 'file',
       details: {
@@ -88,13 +86,12 @@ describe('<ItemViewer />', () => {
       },
     };
     const el = mount(
-      <ItemViewer model={model} context={context} item={item} />,
+      <ItemViewer model={model} item={item} context={createContext()} />,
     );
     expect(el.find(ImageViewer)).toHaveLength(1);
   });
 
   it('should show the video viewer if media type is video', () => {
-    const context = createContext();
     const item: FileItem = {
       type: 'file',
       details: {
@@ -110,13 +107,12 @@ describe('<ItemViewer />', () => {
       },
     };
     const el = mount(
-      <ItemViewer model={model} context={context} item={item} />,
+      <ItemViewer model={model} item={item} context={createContext()} />,
     );
     expect(el.find(VideoViewer)).toHaveLength(1);
   });
 
   it('should show the document viewer if media type is doc', () => {
-    const context = createContext();
     const item: FileItem = {
       type: 'file',
       details: {
@@ -132,7 +128,7 @@ describe('<ItemViewer />', () => {
       },
     };
     const el = mount(
-      <ItemViewer model={model} context={context} item={item} />,
+      <ItemViewer model={model} item={item} context={createContext()} />,
     );
     expect(el.find(PDFViewer)).toHaveLength(1);
   });

@@ -10,7 +10,7 @@ import { Spinner } from './loading';
 export type Props = {
   model: Model;
   onClose?: () => void;
-  context?: Context;
+  context: Context;
   item?: FileItem;
 };
 
@@ -25,7 +25,7 @@ export const ItemViewer: React.StatelessComponent<Props> = ({
     case 'PENDING':
       return <Spinner />;
     case 'SUCCESSFUL':
-      if (!(context && item)) {
+      if (!item) {
         return <Spinner />;
       }
       switch (item.details.mediaType) {
