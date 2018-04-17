@@ -1,4 +1,4 @@
-import { ConfluenceClient } from '../src/api/ConfluenceClient';
+import { ConfluenceClient } from '../../src/api/ConfluenceClient';
 
 export const noResultsConfluenceClient: ConfluenceClient = {
   getRecentPages() {

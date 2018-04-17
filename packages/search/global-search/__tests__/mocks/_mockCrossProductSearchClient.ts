@@ -1,4 +1,4 @@
-import { CrossProductSearchClient } from '../src/api/CrossProductSearchClient';
+import { CrossProductSearchClient } from '../../src/api/CrossProductSearchClient';
 
 export const noResultsCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {

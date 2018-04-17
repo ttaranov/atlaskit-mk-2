@@ -59,7 +59,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       query: query,
     });
 
-    if (query.length < 2) {
+    if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
         isError: false,

@@ -56,7 +56,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       query: query,
     });
 
-    if (query.length < 2) {
+    if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
         isError: false,

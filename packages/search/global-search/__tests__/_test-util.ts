@@ -10,3 +10,7 @@ export function makeResult(partial?: Partial<Result>): Result {
     ...partial,
   };
 }
+
+export function delay<T>(millis: number = 1, value?: T): Promise<T> {
+  return new Promise(resolve => setTimeout(() => resolve(value), millis));
+}

@@ -12,7 +12,7 @@ import { CrossProductResults } from '../src/api/CrossProductSearchClient';
 import { ConfluenceClient } from '../src/api/ConfluenceClient';
 import { Result, ResultType } from '../src/model/Result';
 import SearchError from '../src/components/SearchError';
-import { makeResult } from './_test-util';
+import { makeResult, delay } from './_test-util';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
@@ -22,10 +22,6 @@ import {
   errorPeopleSearchClient,
 } from './mocks/_mockPeopleSearchClient';
 import { noResultsConfluenceClient } from './mocks/_mockConfluenceClient';
-
-function delay<T>(millis: number = 1, value?: T): Promise<T> {
-  return new Promise(resolve => setTimeout(() => resolve(value), millis));
-}
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -112,13 +108,12 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
   });
 
-  it('should start searching when more than one character is typed', async () => {
+  it('should start searching when a character has been typed', async () => {
     const wrapper = render();
 
-    searchFor('d', wrapper);
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
 
-    searchFor('da', wrapper);
+    searchFor('x', wrapper);
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 

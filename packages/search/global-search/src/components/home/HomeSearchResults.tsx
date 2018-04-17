@@ -89,7 +89,7 @@ export default function searchResults(props: Props) {
     return <SearchError onRetryClick={retrySearch} />;
   }
 
-  if (query.length < 2) {
+  if (query.length === 0) {
     return renderRecent(take(recentlyViewedItems, 10));
   }
 

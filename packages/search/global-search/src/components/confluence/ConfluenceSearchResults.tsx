@@ -71,7 +71,7 @@ export default function searchResults(props: Props) {
     return <SearchError onRetryClick={retrySearch} />;
   }
 
-  if (query.length < 2) {
+  if (query.length === 0) {
     // TODO render recent pages, recent spaces, recent people
     return ['pre-query state'];
   }
