@@ -10,7 +10,6 @@ import type { GlobalItemPresentationProps } from './types';
  * an opaque hex value here, where the designs specify them as an RGBA.
  */
 const lightExpandedActiveBackground = '#08367C'; // N80A
-const lightCollapsedActiveBackground = '#E2E4E9'; // N30A
 const darkActiveBackground = '#202B3D';
 const darkHoverBackground = '#253247';
 const settingsActiveBackground = '#374864'; // rgba(255, 255, 255, 0.08)
@@ -67,107 +66,53 @@ const sizeStyles = {
 };
 
 const light = ({ isActive, isHover, size }) => ({
-  collapsed: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return lightCollapsedActiveBackground;
-        if (isHover) return colors.B50;
-        return colors.N20;
-      })(),
-      color: colors.N800,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  itemBase: {
+    ...baseStyles.itemBase,
+    ...sizeStyles[size].itemBase,
+    backgroundColor: (() => {
+      if (isActive) return lightExpandedActiveBackground;
+      if (isHover) return colors.B200;
+      return colors.B500;
+    })(),
+    color: colors.N0,
   },
-  expanded: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return lightExpandedActiveBackground;
-        if (isHover) return colors.B200;
-        return colors.B500;
-      })(),
-      color: colors.N0,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  badgeWrapper: {
+    ...baseStyles.badgeWrapper,
+    ...sizeStyles[size].badgeWrapper,
   },
 });
 
 const dark = ({ isActive, isHover, size }) => ({
-  collapsed: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-      color: colors.DN400,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  itemBase: {
+    ...baseStyles.itemBase,
+    ...sizeStyles[size].itemBase,
+    backgroundColor: (() => {
+      if (isActive) return darkActiveBackground;
+      if (isHover) return darkHoverBackground;
+      return colors.DN0;
+    })(),
+    color: colors.DN400,
   },
-  expanded: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-      color: colors.DN400,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  badgeWrapper: {
+    ...baseStyles.badgeWrapper,
+    ...sizeStyles[size].badgeWrapper,
   },
 });
 
 const settings = ({ isActive, isHover, size }) => ({
-  collapsed: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isHover) return settingsHoverBackground;
-        return colors.N800;
-      })(),
-      color: colors.N0,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  itemBase: {
+    ...baseStyles.itemBase,
+    ...sizeStyles[size].itemBase,
+    backgroundColor: (() => {
+      if (isActive) return settingsActiveBackground;
+      if (isHover) return settingsHoverBackground;
+      return colors.N800;
+    })(),
+    color: colors.N0,
   },
-  expanded: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...sizeStyles[size].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isHover) return settingsHoverBackground;
-        return colors.N800;
-      })(),
-      color: colors.N0,
-    },
-    badgeWrapper: {
-      ...baseStyles.badgeWrapper,
-      ...sizeStyles[size].badgeWrapper,
-    },
+  badgeWrapper: {
+    ...baseStyles.badgeWrapper,
+    ...sizeStyles[size].badgeWrapper,
   },
 });
 

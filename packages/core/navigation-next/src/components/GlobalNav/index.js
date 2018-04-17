@@ -22,7 +22,7 @@ const GlobalNav = ({
   secondaryItems,
   theme,
 }: GlobalNavProps) => {
-  const wrapperStyles = theme.mode.globalNav()[theme.context];
+  const wrapperStyles = theme.mode.globalNav();
 
   return (
     <div css={wrapperStyles}>
