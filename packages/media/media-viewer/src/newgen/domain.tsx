@@ -36,7 +36,6 @@ export type VideoPreview = {
 };
 export type PDFPreview = {
   viewer: 'PDF';
-  doc: Blob;
 };
 export type FilePreview = ImagePreview | VideoPreview | PDFPreview;
 

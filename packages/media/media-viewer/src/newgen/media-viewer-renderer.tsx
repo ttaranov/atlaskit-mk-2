@@ -83,8 +83,6 @@ export const FileViewer: StatelessComponent<FileViewerProps> = ({
     case 'VIDEO':
       return <VideoViewer context={context} item={item} />;
     case 'PDF':
-      return (
-        <PDFViewer context={context} item={item} previewData={previewData} />
-      );
+      return <PDFViewer context={context} item={item} />;
   }
 };

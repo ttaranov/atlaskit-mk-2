@@ -1,47 +1,99 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { PDFPreview, Outcome } from '../../domain';
-import { PDFWrapper } from '../../styled';
+import { Outcome } from '../../domain';
+import { PDFWrapper, ErrorMessage } from '../../styled';
+import { Spinner } from '../../loading';
 import { componentLoader } from './loader';
+import { constructAuthTokenUrl } from '../../util';
+import { fetch } from './loader';
 
 export type Props = {
-  previewData: PDFPreview;
   context: Context;
   item: FileItem;
   collectionName?: string;
 };
 
 export type State = {
-  src: Outcome<string, Error>;
+  doc: Outcome<Blob, Error>;
 };
 
 export class PDFViewer extends React.PureComponent<Props, State> {
   static PDFComponent;
 
   state: State = {
-    src: { status: 'PENDING' },
+    doc: { status: 'PENDING' },
   };
 
   componentDidMount() {
+    this.init();
+  }
+
+  private async init() {
     if (!PDFViewer.PDFComponent) {
-      this.loadPDFViewer(this.props);
+      await this.loadPDFViewer(this.props);
+    }
+
+    const { item, context, collectionName } = this.props;
+
+    const pdfArtifactUrl = getPDFUrl(item);
+    if (pdfArtifactUrl) {
+      const src = await constructAuthTokenUrl(
+        pdfArtifactUrl,
+        context,
+        collectionName,
+      );
+      this.setState({
+        doc: {
+          status: 'SUCCESSFUL',
+          data: await fetch(src),
+        },
+      });
+    } else {
+      this.setState({
+        doc: {
+          status: 'FAILED',
+          err: new Error('no artifacts found for this file'),
+        },
+      });
     }
   }
 
-  private loadPDFViewer = async (props: Props) => {
+  private async loadPDFViewer(props: Props) {
     PDFViewer.PDFComponent = await componentLoader();
     this.forceUpdate();
-  };
+  }
 
   render() {
     const { PDFComponent } = PDFViewer;
-    const { previewData } = this.props;
-    return PDFComponent ? (
-      <PDFWrapper>
-        <PDFComponent previewData={previewData}>
-          <div className="pdfViewer" />
-        </PDFComponent>
-      </PDFWrapper>
-    ) : null;
+    const { doc } = this.state;
+
+    if (!PDFComponent) {
+      return null;
+    }
+
+    switch (doc.status) {
+      case 'PENDING':
+        return <Spinner />;
+      case 'SUCCESSFUL':
+        return (
+          <PDFWrapper>
+            <PDFComponent doc={doc.data}>
+              <div className="pdfViewer" />
+            </PDFComponent>
+          </PDFWrapper>
+        );
+      case 'FAILED':
+        return <ErrorMessage>{doc.err}</ErrorMessage>;
+    }
   }
+}
+
+function getPDFUrl(fileItem: FileItem) {
+  const artifact = 'document.pdf';
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[artifact] &&
+    fileItem.details.artifacts[artifact].url
+  );
 }

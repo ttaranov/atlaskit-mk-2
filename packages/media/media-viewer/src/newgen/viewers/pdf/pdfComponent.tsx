@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PDFPreview } from '../../domain';
 import { PDFWrapper } from '../../styled';
 import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
@@ -7,7 +6,7 @@ import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
 export type Props = {
-  previewData: PDFPreview;
+  doc: any;
 };
 
 export const fetch = async (url: string): Promise<Blob> => {
@@ -20,7 +19,7 @@ export class PDFViewer extends React.PureComponent<Props, {}> {
 
   componentDidMount() {
     this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
-    this.pdfViewer.setDocument(this.props.previewData.doc);
+    this.pdfViewer.setDocument(this.props.doc);
   }
 
   private savePdfElement = el => {
