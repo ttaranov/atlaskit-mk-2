@@ -215,11 +215,11 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [
     ...createReplacementRules(
       {
-        Atlassian: /(\s+|^)(atlassian)$/,
-        Jira: /(\s+|^)(jira|JIRA)$/,
-        Bitbucket: /(\s+|^)(bitbucket|BitBucket)$/,
-        Hipchat: /(\s+|^)(hipchat|HipChat)$/,
-        Trello: /(\s+|^)(trello)$/,
+        Atlassian: /(\s+|^)(atlassian)(\s)$/,
+        Jira: /(\s+|^)(jira|JIRA)(\s)$/,
+        Bitbucket: /(\s+|^)(bitbucket|BitBucket)(\s)$/,
+        Hipchat: /(\s+|^)(hipchat|HipChat)(\s)$/,
+        Trello: /(\s+|^)(trello)(\s)$/,
       },
       'product',
     ),
@@ -234,7 +234,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
     ...createReplacementRules(
       {
-        '–': /()(--)(\s)$/,
+        '–': /(\s+|^)(--)(\s)$/,
         '…': /()(\.\.\.)$/,
       },
       'typography',
