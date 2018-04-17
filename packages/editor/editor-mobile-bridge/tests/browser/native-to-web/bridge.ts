@@ -40,7 +40,7 @@ describe('NativeToWebBridge', () => {
   });
 });
 
-describe.only('insert media', () => {
+describe('insert media', () => {
   let editor;
   const getCollection = sinon.stub(toNativeBridge, 'getCollection');
   const getServiceHost = sinon.stub(toNativeBridge, 'getServiceHost');
