@@ -378,6 +378,32 @@ describe('HomeQuickSearchContainer', () => {
       expect(wrapper.find(SearchError).exists()).toBe(true);
     });
 
+    it('should clear error state after subsequent search', async () => {
+      const searchMock = jest
+        .fn()
+        .mockImplementationOnce((query: string) => Promise.reject('error'))
+        .mockImplementationOnce((query: string) =>
+          Promise.resolve({ confluence: [], jira: [] }),
+        );
+
+      const mockSearchClient = {
+        search: searchMock,
+      };
+
+      const wrapper = render({
+        recentSearchClient: errorRecentSearchClient,
+        crossProductSearchClient: mockSearchClient,
+      });
+
+      searchFor('error state', wrapper);
+      await waitForRender(wrapper);
+      expect(wrapper.find(SearchError).exists()).toBe(true);
+
+      searchFor('good state', wrapper);
+      await waitForRender(wrapper);
+      expect(wrapper.find(SearchError).exists()).toBe(false);
+    });
+
     it('should not show the error state when getting the initial recently viewed items fails', async () => {
       const wrapper = render({
         recentSearchClient: errorRecentSearchClient,
