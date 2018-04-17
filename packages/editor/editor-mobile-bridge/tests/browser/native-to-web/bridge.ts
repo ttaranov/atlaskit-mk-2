@@ -50,7 +50,7 @@ describe('insert media', () => {
   beforeEach(async done => {
     editor = mount(mobileEditor());
     //FIXME we need a better way to make sure media is loaded
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 50));
     done();
   });
 
