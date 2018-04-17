@@ -22,7 +22,6 @@ const CustomComponentProxy = (props: DerivedButtonProps) => {
     isHover,
     isSelected,
     shouldFitContainer,
-    fit,
     ...proxiedProps
   } = props;
   if (!component)

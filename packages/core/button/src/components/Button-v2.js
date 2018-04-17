@@ -37,9 +37,9 @@ type BaseProps = {
     IconAfter?: ElementType,
   },
   styles?: {
-    root?: string,
-    iconBefore?: string,
-    iconAfter?: string,
+    root?: any[],
+    iconBefore?: any[],
+    iconAfter?: any[],
   },
 };
 
@@ -47,13 +47,16 @@ type AllProps = BaseProps & A11yProps & InteractionProps;
 
 // BUTTON SECTION
 
-const StyledButton = styled.button``;
-
 const ButtonComponent = (props: AllProps) => {
-  const { Root } = props.components || {};
-  if (Root) {
-    return <Root {...props} />;
+  const { Root: RootComponent } = props.components || {};
+  const { root: rootStyles } = props.styles || {};
+  if (RootComponent) {
+    return <RootComponent {...props} />;
   }
+  const StyledButton = styled.button`
+    width: ${props.shouldFitContainer ? '100%' : 'auto'};
+    ${rootStyles};
+  `;
   return <StyledButton {...props} />;
 };
 

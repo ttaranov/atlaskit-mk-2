@@ -22,7 +22,7 @@ const getAppearanceProps = (props, state) => {
     isHover,
     isSelected,
     spacing,
-    fit: shouldFitContainer,
+    shouldFitContainer,
   };
 };
 

@@ -137,7 +137,7 @@ export default function getButtonStyles(props: Object) {
   }
 
   // Fit to parent width
-  if (props.fit) {
+  if (props.shouldFitContainer) {
     width = '100%';
   }
 
