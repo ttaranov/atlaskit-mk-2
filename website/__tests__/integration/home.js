@@ -9,25 +9,7 @@ import {
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
-let urlHome;
-
-// This has to be modified to correctly read the url from website
-try {
-  const netlifyLogFilePath = './netlify-build.txt';
-  const fs = require('fs');
-
-  const logFile = fs.readFileSync(netlifyLogFilePath, 'utf-8');
-  const lines = logFile.split('\n');
-  const indexOfLineBeforeUrl = lines.findIndex(
-    line => line.indexOf('Deploy is live (permalink):') > -1,
-  );
-  const permalinkUrlMatch = lines[indexOfLineBeforeUrl + 1].match(
-    /http:\/\/.+?.netlify.com/,
-  );
-  urlHome = permalinkUrlMatch[0];
-} catch (err) {
-  urlHome = 'https://atlaskit.atlassian.com/';
-}
+const urlHome = 'https://atlaskit.atlassian.com/';
 
 const app = '#app';
 const atlaskitLayer = '[spacing="cosy"]';

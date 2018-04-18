@@ -90,7 +90,7 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
-            - yarn yarn test:webdriver:browserstack website
+            - yarn test:webdriver:browserstack website
           caches:
             - node
 
