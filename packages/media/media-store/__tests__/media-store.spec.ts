@@ -368,7 +368,7 @@ describe('MediaStore', () => {
           body: {
             data,
           },
-          status: 200,
+          status: 201,
         });
 
         return mediaStore.createFile().then(response => {
@@ -380,7 +380,6 @@ describe('MediaStore', () => {
               'X-Client-Id': clientId,
               Authorization: `Bearer ${token}`,
               Accept: 'application/json',
-              'Content-Type': 'application/json',
             },
             body: undefined,
           });

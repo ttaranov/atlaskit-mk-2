@@ -67,7 +67,7 @@ export const uploadFile = async (
     offset += chunks.length;
   };
 
-  const fileIdDeferred = store.createFile();
+  const emptyFile = store.createFile();
 
   await chunkinator(
     content,
@@ -92,7 +92,7 @@ export const uploadFile = async (
   );
 
   const uploadId = await deferredUploadId;
-  const fileId = (await fileIdDeferred).data.id;
+  const fileId = (await emptyFile).data.id;
 
   await store.createFileFromUpload(
     { uploadId, name, mimeType },

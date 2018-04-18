@@ -112,7 +112,6 @@ export class MediaStore {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
       },
     }).then(mapResponseToJson);
   }
@@ -131,8 +130,11 @@ export class MediaStore {
     id: string,
     params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
+    const auth = await this.config.authProvider();
+
     return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
       params,
+      auth,
     });
   };
 
@@ -236,6 +238,6 @@ export type AppendChunksToUploadRequestBody = {
 };
 
 export interface EmptyFile {
-  id: string;
-  createdAt: number;
+  readonly id: string;
+  readonly createdAt: number;
 }
