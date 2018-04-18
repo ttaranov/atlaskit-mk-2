@@ -1,49 +1,35 @@
 // @flow
 import React from 'react';
 import { AvatarGroup } from '../src';
+import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
-const data = [
-  {
-    appearance: 'circle',
-    enableTooltip: true,
-    name: 'blah',
-    size: 'medium',
-    src: 'https://api.adorable.io/avatars/80/chak1233i@me.com.png',
-    status: 'approved',
-  },
-  {
-    appearance: 'circle',
-    enableTooltip: true,
-    name: 'blah',
-    size: 'medium',
-    src: 'https://api.adorable.io/avatars/80/chaasdf45ki@me.com.png',
-    status: 'approved',
-  },
-  {
-    appearance: 'circle',
-    enableTooltip: true,
-    name: 'blah',
-    size: 'medium',
-    src: 'https://api.adorable.io/avatars/80/chasdfaki@me.com.png',
-    status: 'declined',
-  },
-  {
-    appearance: 'circle',
-    enableTooltip: true,
-    name: 'blah',
-    size: 'medium',
-    src: 'https://api.adorable.io/avatars/80/c13243214has213dfaki@me.com.png',
-    status: 'locked',
-  },
-];
+function getStatus() {
+  const chance = Math.random();
+  switch (true) {
+    case chance < 0.25:
+      return 'approved';
+    case chance < 0.5:
+      return 'declined';
+    default:
+      return 'locked';
+  }
+}
+
+const data = RANDOM_USERS.slice(0, 10).map(user => ({
+  ...user,
+  appearance: 'circle',
+  enableTooltip: true,
+  size: 'medium',
+  src: getAdorableAvatar(user.email),
+  status: getStatus(),
+}));
 
 export default () => (
   <div>
     <AvatarGroup
-      appearance="grid"
+      appearance="stack"
       onAvatarClick={console.log}
       data={data}
-      maxCount={2}
       size="large"
     />
   </div>
