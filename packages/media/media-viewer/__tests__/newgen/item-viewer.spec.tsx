@@ -182,7 +182,8 @@ describe('<ItemViewer />', () => {
       // if the context changes, we will also resubscribe
       const newContext = createContext(subject);
       el.setProps({ context: newContext, identifier: identifier2 });
-      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
+      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+      expect(newContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
     });
   });
 });
