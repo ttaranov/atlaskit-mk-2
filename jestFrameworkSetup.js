@@ -251,6 +251,28 @@ expect.extend({
   },
 });
 
+// Copied from react-beautiful-dnd/test/setup.js
+// overriding these properties in jsdom to allow them to be controlled
+Object.defineProperties(document.documentElement, {
+  clientWidth: { writable: true, value: document.documentElement.clientWidth },
+  clientHeight: {
+    writable: true,
+    value: document.documentElement.clientHeight,
+  },
+  scrollWidth: { writable: true, value: document.documentElement.scrollWidth },
+  scrollHeight: {
+    writable: true,
+    value: document.documentElement.scrollHeight,
+  },
+});
+
+// Setting initial viewport
+// Need to set clientWidth and clientHeight as jsdom does not set these properties
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  document.documentElement.clientWidth = window.innerWidth;
+  document.documentElement.clientHeight = window.innerHeight;
+}
+
 if (process.env.CI) {
   beforeEach(() => {
     consoleError = console.error;
