@@ -2,10 +2,10 @@
 'use strict';
 
 const child = require('child_process');
-const isPortAvailable = require('is-port-available');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
+const isReachable = require('is-reachable');
 
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
@@ -27,17 +27,9 @@ function runTests() {
 }
 
 async function main() {
-  (async function() {
-    const port = 9000;
-    const status = await isPortAvailable(port);
-
-    if (status) {
-      console.log(`Port: ${port} is available - start webpack!`);
-      await webpack.startDevServer();
-    } else {
-      console.log(`Port: ${port}  is already in use!`);
-    }
-  })();
+  isReachable('http://localhost:9000').then(async reachable => {
+    reachable ? {} : await webpack.startDevServer();
+  });
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -46,7 +38,9 @@ async function main() {
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  (await isPortAvailable(9000)) ? webpack.stopDevServer() : {};
+  isReachable('http://localhost:9000').then(reachable => {
+    reachable ? {} : webpack.stopDevServer();
+  });
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();

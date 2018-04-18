@@ -43,7 +43,10 @@ function packageIsInPattern(workspace) {
   if (workspace.files.webdriver.length < 1) return false;
   else if (pattern === '') return true;
   else {
-    let matchesPattern = workspace.dir.includes(pattern);
+    let matchesPattern =
+      pattern.length < workspace.dir.length
+        ? workspace.dir.includes(pattern)
+        : pattern.includes(workspace.dir);
     return matchesPattern;
   }
 }
