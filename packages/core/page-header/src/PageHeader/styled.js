@@ -6,8 +6,8 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-const truncationStyles = `
-  overflow: hidden;
+const truncationStyles = css`
+  overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
