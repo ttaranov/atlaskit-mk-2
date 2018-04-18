@@ -51,3 +51,7 @@ export { presets as presetThemes };
 export { resultTypes as quickSearchResultTypes };
 
 export { default as Skeleton } from './components/js/skeleton';
+
+export {
+  default as SkeletonDefaultContainerHeader,
+} from './components/js/skeleton/SkeletonDefaultContainerHeader';
