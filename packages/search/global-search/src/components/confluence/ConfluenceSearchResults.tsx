@@ -12,23 +12,19 @@ import {
 } from '../SearchResultsUtil';
 
 const renderObjects = (results: Result[], query: string) => (
-  <ResultItemGroup
-    title="Pages, blogs and attachments"
-    key="objects"
-    test-selector="objects"
-  >
+  <ResultItemGroup title="Pages, blogs and attachments" key="objects">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
 const renderSpaces = (results: Result[], query: string) => (
-  <ResultItemGroup title="Spaces" key="spaces" test-selector="spaces">
+  <ResultItemGroup title="Spaces" key="spaces">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
-  <ResultItemGroup title="People" key="people" test-selector="people">
+  <ResultItemGroup title="People" key="people">
     {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
