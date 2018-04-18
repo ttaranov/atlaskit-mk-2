@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.1.12
+- [patch] Close empty editor on save [e5a9f36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5a9f36)
+
 ## 7.1.11
 
 ## 7.1.10
