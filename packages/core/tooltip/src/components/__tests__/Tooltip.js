@@ -19,15 +19,26 @@ let mockPosition;
 jest.mock('../utils/getPosition', () => {
   return jest.fn(() => mockPosition);
 });
-jest.useFakeTimers();
 
+/* We obtain the portal contents via the children prop of @atlaskit/layer-manager's Portal
+ * rather than trying to access the node via ref directly because enzyme 3 no longer supports
+ * wrapping nodes in ReactWrapper to get an instance of enzyme's wrapper anymore
+ * See https://github.com/airbnb/enzyme/issues/1202#issuecomment-334965230.
+ * One benefit of this approach is we don't have to set fake jest timers that we would have needed
+ * with the ref approach since layer manager's Portal renders its contents after a timeout.
+ */
 function getPortalContents(wrapper) {
-  // Layer Manager's portal renders its content after a setTimeout
-  jest.runAllTimers();
   const instance = wrapper.find('Portal').instance();
   return new ReactWrapper(instance.props.children);
 }
 
+/* Render the actual base tooltip component as the root element so we can call root-only methods
+ * on the tooltip component itself.
+ * Note that instance() is now not root-only in enzyme 3 so this may not be needed in the majority
+ * of cases.
+ * We do need to use mount tests for checking the majority of our tooltip renders since the render
+ * logic relies on ref callbacks for measurement and refs do not get executed when shallow rendering.
+ */
 function mountBase(element) {
   return mount(shallow(element).get(0));
 }
