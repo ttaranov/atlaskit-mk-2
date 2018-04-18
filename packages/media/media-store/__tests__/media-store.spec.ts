@@ -10,7 +10,7 @@ import {
   MediaCollection,
   MediaCollectionItems,
 } from '../src/models/media';
-import { MediaStoreGetFileParams } from '../src/media-store';
+import { MediaStoreGetFileParams, EmptyFile } from '../src/media-store';
 
 describe('MediaStore', () => {
   const serviceHost = 'http://some-host';
@@ -354,6 +354,36 @@ describe('MediaStore', () => {
             });
             expect(authProvider).toHaveBeenCalledWith({ collectionName });
           });
+      });
+    });
+
+    describe('createFile', () => {
+      it('should POST to /file with empty body and params', () => {
+        const data: EmptyFile = {
+          id: '1234',
+          createdAt: 999,
+        };
+
+        fetchMock.mock(`begin:${serviceHost}/file`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.createFile().then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/file`);
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+            body: undefined,
+          });
+        });
       });
     });
   });
