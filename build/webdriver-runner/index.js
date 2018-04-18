@@ -27,8 +27,17 @@ function runTests() {
 }
 
 async function main() {
-  (await isPortAvailable(9000)) ? await webpack.startDevServer() : {};
-  // console.log("Josef")
+  (async function() {
+    const port = 9000;
+    const status = await isPortAvailable(port);
+
+    if (status) {
+      console.log(`Port: ${port} is available - start webpack!`);
+      await webpack.startDevServer();
+    } else {
+      console.log(`Port: ${port}  is already in use!`);
+    }
+  })();
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
