@@ -1,32 +1,16 @@
 // @flow
 
-import React, { PureComponent, type ElementRef, type Node } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import { Transition } from 'react-transition-group';
+
+const DURATION = 300;
 
 function camelToKebab(str: string): string {
   return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
-type Props = {
-  children: ({
-    isTransitioning: boolean,
-    style: Object,
-    transitionState: TransitionState,
-  }) => Node,
-  innerRef?: ElementRef<*>,
-  in: boolean,
-  isDisabled?: boolean,
-  properties: Array<string>,
-  from: Array<number | string>,
-  to: Array<number | string>,
-};
-
-const DURATION = 300;
-
 function getTransition(keys) {
   return {
-    transform: 'translate3d(0, 0, 0)', // enable GPU acceleration
     transition: keys
       .map(k => `${camelToKebab(k)} ${DURATION}ms cubic-bezier(0.2, 0, 0, 1)`)
       .join(','),
@@ -39,13 +23,27 @@ function getStyle({ keys, values }) {
   });
   return style;
 }
+export function isTransitioning(state: TransitionState) {
+  return ['entering', 'exiting'].includes(state);
+}
+
+type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
+type Props = {
+  children: ({
+    transitionStyle: Object,
+    transitionState: TransitionState,
+  }) => Node,
+  innerRef?: HTMLElement => any,
+  in: boolean,
+  userIsDragging: boolean,
+  properties: Array<string>,
+  from: Array<number | string>,
+  to: Array<number | string>,
+};
 
 export default class ResizeTransition extends PureComponent<Props> {
-  static defaultProps = {
-    isEnabled: true,
-  };
   target: HTMLElement;
-  getTarget = (ref: ElementRef<*>) => {
+  getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
     const { innerRef } = this.props;
@@ -53,33 +51,41 @@ export default class ResizeTransition extends PureComponent<Props> {
   };
 
   render() {
-    const { isDisabled, properties, from, to } = this.props;
+    const { userIsDragging, properties, from, to } = this.props;
 
     return (
       <Transition in={this.props.in} timeout={DURATION}>
-        {state => {
-          // let consumers now when know when we're animating
-          const isTransitioning = ['entering', 'exiting'].includes(state);
+        {transitionState => {
+          // transitions interupt manual resize behaviour
+          const cssTransition = !userIsDragging
+            ? getTransition(properties)
+            : {};
 
-          // NOTE: due to the use of 3d transform for GPU acceleration, which
-          // changes the stacking context, we only apply the transition during
-          // the animation period.
-          const applyAnimation = !isDisabled && isTransitioning;
-          const transition = applyAnimation ? getTransition(properties) : {};
-          const dynamicStyles = {
+          // `from` and `to` styles tweened by the transition
+          const dynamicProperties = {
             exiting: getStyle({ keys: properties, values: from }),
             exited: getStyle({ keys: properties, values: from }),
             entering: getStyle({ keys: properties, values: to }),
             entered: getStyle({ keys: properties, values: to }),
           };
 
-          // build the dynamic style object for consumers to pass onto their child node
-          const style = { ...transition, ...dynamicStyles[state] };
+          // NOTE: due to the use of 3d transform for GPU acceleration, which
+          // changes the stacking context, we only apply the transform during
+          // the animation period.
+          const gpuAcceleration = isTransitioning(transitionState)
+            ? { transform: 'translate3d(0, 0, 0)' }
+            : {};
+
+          // put it all together
+          const transitionStyle = {
+            ...cssTransition,
+            ...gpuAcceleration,
+            ...dynamicProperties[transitionState],
+          };
 
           return this.props.children({
-            isTransitioning,
-            style,
-            transitionState: state,
+            transitionStyle, // consumers must apply `transitionStyle` to the node
+            transitionState, // let consumers know the current state
           });
         }}
       </Transition>
