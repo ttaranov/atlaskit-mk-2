@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/onboarding",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,7 @@
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/layer": "^3.0.0",
-    "@atlaskit/layer-manager": "^3.0.0",
+    "@atlaskit/layer-manager": "^3.0.2",
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/theme": "^3.0.0",
     "prop-types": "^15.5.10",
