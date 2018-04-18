@@ -32,7 +32,7 @@
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/dynamic-table": "^8.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^9.0.0",
+    "@atlaskit/util-data-test": "^9.1.2",
     "enzyme": "^3.3.0",
     "fetch-mock": "^5.12.1",
     "loader-utils": "^1.1.0",
