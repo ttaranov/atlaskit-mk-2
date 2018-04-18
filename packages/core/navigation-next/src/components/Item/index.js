@@ -14,12 +14,9 @@ export default class Item extends PureComponent<ItemProps> {
     spacing: 'default',
     text: '',
   };
+  renderItem = (state: *) => <ItemPrimitive {...state} {...this.props} />;
 
   render() {
-    return (
-      <InteractionStateManager>
-        {state => <ItemPrimitive {...state} {...this.props} />}
-      </InteractionStateManager>
-    );
+    return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
   }
 }

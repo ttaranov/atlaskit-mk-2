@@ -23,6 +23,10 @@ function getStyle({ keys, values }) {
   });
   return style;
 }
+function getChanges(keys) {
+  const props = keys.map(k => camelToKebab(k));
+  return { willChange: props.join(',') };
+}
 export function isTransitioning(state: TransitionState) {
   return ['entering', 'exiting'].includes(state);
 }
@@ -69,23 +73,27 @@ export default class ResizeTransition extends PureComponent<Props> {
             entered: getStyle({ keys: properties, values: to }),
           };
 
-          // NOTE: due to the use of 3d transform for GPU acceleration, which
+          // due to the use of 3d transform for GPU acceleration, which
           // changes the stacking context, we only apply the transform during
           // the animation period.
           const gpuAcceleration = isTransitioning(transitionState)
             ? { transform: 'translate3d(0, 0, 0)' }
             : {};
 
+          // let the browser know what we're up to
+          const willChange = getChanges(properties);
+
           // put it all together
           const transitionStyle = {
+            ...willChange,
             ...cssTransition,
             ...gpuAcceleration,
             ...dynamicProperties[transitionState],
           };
 
           return this.props.children({
-            transitionStyle, // consumers must apply `transitionStyle` to the node
-            transitionState, // let consumers know the current state
+            transitionStyle, // consumers must apply `transitionStyle`
+            transitionState, // lets consumers react to the current state
           });
         }}
       </Transition>
