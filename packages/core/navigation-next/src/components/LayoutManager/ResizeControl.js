@@ -291,6 +291,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
     // account for rare case where the user moves their mouse fast enough
     // to invoke a leave event and "hide" the resize control
     const shouldBeVisible = isDragging || isVisible;
+    const isDisabled = navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     const ButtonIcon =
@@ -301,19 +302,23 @@ export default class ResizeControl extends PureComponent<Props, State> {
     return (
       <Fragment>
         {children(this.state)}
-        <Outer onMouseEnter={this.show} onMouseLeave={this.hide}>
-          <Shadow isBold={mouseIsDown} />
-          <Inner show={shouldBeVisible}>
-            <Handle onMouseDown={this.handleResizeStart} />
-            <Button onClick={this.toggleProductNav} show={shouldBeVisible}>
-              <ButtonIcon />
-            </Button>
-          </Inner>
-        </Outer>
-        <PropertyToggle
-          isActive={isDragging}
-          styles={{ cursor: 'ew-resize' }}
-        />
+        {isDisabled ? null : (
+          <Fragment>
+            <Outer onMouseEnter={this.show} onMouseLeave={this.hide}>
+              <Shadow isBold={mouseIsDown} />
+              <Inner show={shouldBeVisible}>
+                <Handle onMouseDown={this.handleResizeStart} />
+                <Button onClick={this.toggleProductNav} show={shouldBeVisible}>
+                  <ButtonIcon />
+                </Button>
+              </Inner>
+            </Outer>
+            <PropertyToggle
+              isActive={isDragging}
+              styles={{ cursor: 'ew-resize' }}
+            />
+          </Fragment>
+        )}
       </Fragment>
     );
   }

@@ -29,9 +29,12 @@ export const NavContainer = (props: {}) => (
 
 // Resizable Elements can be disabled
 
-export type Resizable = { innerRef?: ElementRef<*>, isDisabled: boolean };
-export function blockInteraction(isDisabled: boolean) {
-  return isDisabled
+export type Resizable = {
+  innerRef?: ElementRef<*>,
+  disableInteraction: boolean,
+};
+export function applyDisabledProperties(disableInteraction: boolean) {
+  return disableInteraction
     ? {
         pointerEvents: 'none',
         userSelect: 'none',
@@ -43,7 +46,7 @@ export function blockInteraction(isDisabled: boolean) {
 
 export const ProductNavWrapper = ({
   innerRef,
-  isDisabled,
+  disableInteraction,
   ...props
 }: Resizable) => (
   <div
@@ -51,7 +54,7 @@ export const ProductNavWrapper = ({
     css={{
       height: '100%',
       position: 'relative',
-      ...blockInteraction(isDisabled),
+      ...applyDisabledProperties(disableInteraction),
     }}
     {...props}
   />
@@ -73,7 +76,7 @@ export const ContainerNavMask = (props: any) => (
 type PageProps = Resizable & { offset: number };
 export const PageWrapper = ({
   innerRef,
-  isDisabled,
+  disableInteraction,
   offset,
   ...props
 }: PageProps) => (
@@ -82,7 +85,7 @@ export const PageWrapper = ({
     css={{
       flex: 1,
       marginLeft: offset,
-      ...blockInteraction(isDisabled),
+      ...applyDisabledProperties(disableInteraction),
     }}
     {...props}
   />

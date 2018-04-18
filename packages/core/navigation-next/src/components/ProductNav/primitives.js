@@ -124,7 +124,7 @@ export const ContainerOverlay = ({
       height: '100%',
       left: 0,
       opacity: isVisible ? 1 : 0,
-      pointerEvents: 'none',
+      pointerEvents: isVisible ? 'all' : 'none',
       position: 'absolute',
       top: 0,
       transitionDuration,

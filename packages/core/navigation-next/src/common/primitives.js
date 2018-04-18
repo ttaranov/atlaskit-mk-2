@@ -3,7 +3,7 @@
 import React from 'react';
 import { transitionTimingFunction, transitionDuration } from './constants';
 
-type ShadowProps = { isBold: boolean, isOverDarkBg?: boolean };
+type ShadowProps = { isBold?: boolean, isOverDarkBg?: boolean };
 export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
   let width = isOverDarkBg ? 16 : 12;
   if (isBold) width = isOverDarkBg ? 32 : 24;
