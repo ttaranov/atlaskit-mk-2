@@ -3,7 +3,10 @@
 import React, { Component, type ComponentType } from 'react';
 import { Transition } from 'react-transition-group';
 
-import { animationDurationMs, animationTimingFunction } from '../../../common';
+import {
+  transitionDuration,
+  transitionTimingFunction,
+} from '../../../common/constants';
 
 // Transitions
 // ------------------------------
@@ -47,7 +50,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       transitionProps,
       ...props
     } = this.props;
-    const timeout = { enter: 0, exit: animationDurationMs };
+    const timeout = { enter: 0, exit: transitionDuration };
 
     return (
       <Transition in={inProp} timeout={timeout} {...transitionProps}>
@@ -67,7 +70,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
 export const Fade = ({ onExited, ...props }: TransitionProps) => (
   <TransitionHandler
     defaultStyles={{
-      transition: `opacity ${animationDurationMs}ms ${animationTimingFunction}`,
+      transition: `opacity ${transitionDuration}ms ${transitionTimingFunction}`,
       opacity: 0,
     }}
     transitionStyles={{
@@ -81,7 +84,7 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
 export const Slide = ({ onExited, ...props }: TransitionProps) => (
   <TransitionHandler
     defaultStyles={{
-      transition: `transform ${animationDurationMs}ms ${animationTimingFunction}`,
+      transition: `transform ${transitionDuration}ms ${transitionTimingFunction}`,
       transform: 'translate3d(-100%,0,0)',
     }}
     transitionStyles={{
