@@ -79,6 +79,15 @@ describe('layout', () => {
       );
       expect(unwrapContentFromLayout(layout)).toEqual(expected);
     });
+
+    it('should ignore content not wrapped in layoutColumn inside a layoutSection', () => {
+      const content = fragment(p('Column A'), hr(), p('Column B'));
+      // The slice PM creates is not a valid node, so we can't use the builders
+      const layout = defaultSchema.nodes.layoutSection.create({}, content);
+
+      const expected = array(p('Column A'), hr(), p('Column B'));
+      expect(unwrapContentFromLayout(layout)).toEqual(expected);
+    });
   });
 
   describe('#removeLayoutFromFirstChild', () => {

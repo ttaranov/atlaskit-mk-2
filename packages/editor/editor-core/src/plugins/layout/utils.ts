@@ -1,5 +1,5 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror-model';
-import { findParentNodeOfType } from 'prosemirror-utils';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 import { EditorState } from 'prosemirror-state';
 
 export type FlatMapCallback = (
@@ -30,10 +30,15 @@ export function unwrapContentFromLayout(
   const { schema } = maybeLayoutSection.type;
   if (maybeLayoutSection.type === schema.nodes.layoutSection) {
     const content = [] as Node[];
-    maybeLayoutSection.content.forEach(layoutColumn => {
-      layoutColumn.forEach(node => {
-        content.push(node);
-      });
+    maybeLayoutSection.content.forEach(maybeLayoutColumn => {
+      // Content in some cases isn't wrapped with a layoutColumn, so leave the contents as is
+      if (maybeLayoutColumn.type === schema.nodes.layoutColumn) {
+        maybeLayoutColumn.forEach(node => {
+          content.push(node);
+        });
+      } else {
+        content.push(maybeLayoutColumn);
+      }
     });
     return content;
   }
@@ -117,7 +122,7 @@ export function removeLayoutsIfSelectionIsInLayout(
   state: EditorState,
 ) {
   // If pasting into a layout, remove any layouts from the slice
-  const isSelectionInLayout = !!findParentNodeOfType(
+  const isSelectionInLayout = hasParentNodeOfType(
     state.schema.nodes.layoutColumn,
   )(state.selection);
   if (isSelectionInLayout) {
