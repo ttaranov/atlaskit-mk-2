@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import { Context, MediaType } from '@atlaskit/media-core';
-import { MediaViewerRenderer } from './media-viewer-renderer';
-import { Model, Identifier, initialModel } from './domain';
+import { Context, FileItem } from '@atlaskit/media-core';
+import { ItemViewer } from './item-viewer';
+import { Identifier, Outcome } from './domain';
+import { Blanket, Header, Content } from './styled';
 
 export type Props = {
   onClose?: () => void;
@@ -11,10 +12,16 @@ export type Props = {
   data: Identifier;
 };
 
-export type State = Model;
+export type State = {
+  fileDetails: Outcome<FileItem, Error>;
+};
+
+const intialState: State = {
+  fileDetails: { status: 'PENDING' },
+};
 
 export class MediaViewer extends React.Component<Props, State> {
-  state: State = initialModel;
+  state: State = intialState;
 
   componentDidMount() {
     this.init();
@@ -28,7 +35,7 @@ export class MediaViewer extends React.Component<Props, State> {
   // We therefore need to reset Media Viewer.
   componentWillUpdate(nextProps) {
     if (this.needsReset(this.props, nextProps)) {
-      this.setState(initialModel);
+      this.setState(intialState);
     }
   }
 
@@ -42,15 +49,15 @@ export class MediaViewer extends React.Component<Props, State> {
   render() {
     const { onClose, context } = this.props;
     const { fileDetails } = this.state;
-    const item =
-      fileDetails.status === 'SUCCESSFUL' ? fileDetails.data.item : void 0;
     return (
-      <MediaViewerRenderer
-        onClose={onClose}
-        item={item}
-        context={context}
-        model={this.state}
-      />
+      <Blanket onClick={onClose}>
+        {fileDetails.status === 'SUCCESSFUL' && (
+          <Header>{fileDetails.data.details.name || 'No name given'}</Header>
+        )}
+        <Content>
+          <ItemViewer item={this.state.fileDetails} context={context} />
+        </Content>
+      </Blanket>
     );
   }
 
@@ -79,7 +86,7 @@ export class MediaViewer extends React.Component<Props, State> {
             },
           });
         } else {
-          const { processingStatus, mediaType } = mediaItem.details;
+          const { processingStatus } = mediaItem.details;
 
           if (processingStatus === 'failed') {
             this.setState({
@@ -92,11 +99,7 @@ export class MediaViewer extends React.Component<Props, State> {
             this.setState({
               fileDetails: {
                 status: 'SUCCESSFUL',
-                data: {
-                  mediaType: mediaType as MediaType,
-                  name: mediaItem.details.name,
-                  item: mediaItem,
-                },
+                data: mediaItem,
               },
             });
           }
