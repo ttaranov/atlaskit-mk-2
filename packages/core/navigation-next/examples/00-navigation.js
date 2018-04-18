@@ -35,11 +35,24 @@ const globalNavPrimaryItems = [
     key: 'jira',
     component: ({ className, children }: *) => (
       <NavigationSubscriber>
-        {navigation => (
-          <button className={className} onClick={navigation.togglePeek}>
-            {children}
-          </button>
-        )}
+        {navigation => {
+          function onClick() {
+            if (navigation.state.productNavIsCollapsed) {
+              navigation.expandProductNav();
+            }
+            navigation.togglePeek();
+          }
+          return (
+            <button
+              className={className}
+              onClick={onClick}
+              onMouseEnter={navigation.hint}
+              onMouseLeave={navigation.unHint}
+            >
+              {children}
+            </button>
+          );
+        }}
       </NavigationSubscriber>
     ),
     icon: JiraIcon,
@@ -163,7 +176,7 @@ export default () => (
       productRootNavigation={ProductRoot}
       productContainerNavigation={ProductContainer}
     >
-      Page content
+      <div style={{ padding: 30 }}>Page content</div>
     </LayoutManager>
   </NavigationProvider>
 );

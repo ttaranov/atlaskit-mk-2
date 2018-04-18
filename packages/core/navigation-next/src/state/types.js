@@ -7,6 +7,7 @@ import type { Element, Node } from 'react';
  */
 export type InitialNavigationStateShape = {
   activeDrawer?: string | null,
+  isHinting?: boolean,
   isPeeking?: boolean,
   productNavIsCollapsed?: boolean,
   productNavWidth?: number,
@@ -30,6 +31,11 @@ export interface NavigationStateInterface {
 
   collapseProductNav: () => void;
   expandProductNav: () => void;
+  toggleProductNav: () => void;
+
+  hint: () => void;
+  unHint: () => void;
+  toggleHint: () => void;
 
   peek: () => void;
   unPeek: () => void;

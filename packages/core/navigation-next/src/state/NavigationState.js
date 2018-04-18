@@ -12,10 +12,11 @@ import type {
   NavigationStateShape,
 } from './types';
 
-import { PRODUCT_NAV_WIDTH } from '../common';
+import { PRODUCT_NAV_WIDTH } from '../common/constants';
 
 const defaultState = {
   activeDrawer: null,
+  isHinting: false,
   isPeeking: false,
   isResizing: false,
   productNavIsCollapsed: false,
@@ -67,6 +68,12 @@ export default class NavigationState extends Container<NavigationStateShape>
   expandProductNav = () => {
     this.storeState({ productNavIsCollapsed: false });
   };
+  toggleProductNav = () => {
+    const toggle = this.state.productNavIsCollapsed
+      ? this.expandProductNav
+      : this.collapseProductNav;
+    toggle();
+  };
 
   manualResizeStart = ({ productNavWidth, productNavIsCollapsed }: Resize) => {
     this.storeState({
@@ -83,14 +90,23 @@ export default class NavigationState extends Container<NavigationStateShape>
     });
   };
 
+  hint = () => {
+    this.storeState({ isHinting: true });
+  };
+  unHint = () => {
+    this.storeState({ isHinting: false });
+  };
+  toggleHint = () => {
+    const toggle = this.state.isHinting ? this.unHint : this.hint;
+    toggle();
+  };
+
   peek = () => {
     this.storeState({ isPeeking: true });
   };
-
   unPeek = () => {
     this.storeState({ isPeeking: false });
   };
-
   togglePeek = () => {
     const toggle = this.state.isPeeking ? this.unPeek : this.peek;
     toggle();

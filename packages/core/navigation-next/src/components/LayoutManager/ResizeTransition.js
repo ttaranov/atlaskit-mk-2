@@ -21,7 +21,6 @@ type Props = {
   from: Array<number | string>,
   to: Array<number | string>,
 };
-type State = { isTransitioning: boolean };
 
 const DURATION = 300;
 
@@ -41,7 +40,7 @@ function getStyle({ keys, values }) {
   return style;
 }
 
-export default class ResizeTransition extends PureComponent<Props, State> {
+export default class ResizeTransition extends PureComponent<Props> {
   static defaultProps = {
     isEnabled: true,
   };

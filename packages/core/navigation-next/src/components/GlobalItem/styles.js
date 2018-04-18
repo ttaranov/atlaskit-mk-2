@@ -9,7 +9,7 @@ import type { GlobalItemPresentationProps } from './types';
  * We can't have semi-transparent background colors for items so I'm hard-coding
  * an opaque hex value here, where the designs specify them as an RGBA.
  */
-const lightExpandedActiveBackground = '#08367C'; // N80A
+const lightActiveBackground = '#08367C'; // N80A
 const darkActiveBackground = '#202B3D';
 const darkHoverBackground = '#253247';
 const settingsActiveBackground = '#374864'; // rgba(255, 255, 255, 0.08)
@@ -70,11 +70,10 @@ const light = ({ isActive, isHover, size }) => ({
     ...baseStyles.itemBase,
     ...sizeStyles[size].itemBase,
     backgroundColor: (() => {
-      if (isActive) return lightExpandedActiveBackground;
-      if (isHover) return colors.B200;
+      if (isActive || isHover) return lightActiveBackground;
       return colors.B500;
     })(),
-    color: colors.N0,
+    color: colors.B50,
   },
   badgeWrapper: {
     ...baseStyles.badgeWrapper,
