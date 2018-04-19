@@ -6,8 +6,10 @@ const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
 const isReachable = require('is-reachable');
+const util = require('util');
 
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
+let buildServer;
 
 function runTests() {
   return new Promise((resolve, reject) => {
@@ -27,9 +29,8 @@ function runTests() {
 }
 
 async function main() {
-  isReachable('http://localhost:9000').then(async reachable => {
-    reachable ? {} : await webpack.startDevServer();
-  });
+  buildServer = await isReachable('http://localhost:9000');
+  buildServer ? {} : await webpack.startDevServer();
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
@@ -38,9 +39,7 @@ async function main() {
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
-  isReachable('http://localhost:9000').then(reachable => {
-    reachable ? {} : webpack.stopDevServer();
-  });
+  buildServer ? {} : webpack.stopDevServer();
   process.env.TEST_ENV === 'browserstack'
     ? browserstack.stopBrowserStack()
     : selenium.stopSelenium();
