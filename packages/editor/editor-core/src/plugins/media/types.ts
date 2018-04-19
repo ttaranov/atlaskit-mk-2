@@ -68,3 +68,13 @@ export interface MediaProvider {
    */
   linkCreateContext?: Promise<Context>;
 }
+
+export type Listener = (data: any) => void;
+
+export interface CustomMediaPicker {
+  on(event: string, cb: Listener): void;
+  removeAllListeners(event: any);
+  emit(event: string, data: any): void;
+  destroy(): void;
+  setUploadParams(uploadParams: UploadParams);
+}

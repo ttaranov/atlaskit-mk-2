@@ -1,10 +1,18 @@
 // @flow
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   akTypographyMixins,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+
+const truncationStyles = css`
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const getTruncation = ({ truncate }) => (truncate ? truncationStyles : null);
 
 export const Outer = styled.div`
   margin: ${akGridSizeUnitless * 3}px 0 0;
@@ -12,11 +20,8 @@ export const Outer = styled.div`
 
 export const StyledTitle = styled.h1`
   ${akTypographyMixins.h700};
-  line-height: ${akGridSizeUnitless * 4}px;
+  ${getTruncation} line-height: ${akGridSizeUnitless * 4}px;
   margin-top: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const BreadcrumbsContainer = styled.div`

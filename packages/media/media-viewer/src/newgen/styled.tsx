@@ -7,38 +7,61 @@ import styled, { StyledComponentClass } from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 
-export const Positioner = styled.div`
+export const Blanket = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  background-color: #1b2638;
+`;
 
+export const Header = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 98px;
+  opacity: 0.85;
+  background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
+  color: #b8c7e0;
+  padding-top: 17px;
+  padding-left: 17px;
+  line-height: 32px;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
-  justify-content: space-between;
-  z-index: 500;
-  pointer-events: none;
+  justify-content: center;
+  overflow: auto;
 `;
 
 export const ErrorMessage = styled.div`
-  width: 100%;
-  text-align: center;
+  color: #b8c7e0;
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   max-width: 100%;
-  margin: auto;
-  pointer-events: auto;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
-  max-width: 100%;
-  margin: auto;
-  pointer-events: auto;
+  width: 100%;
+  height: 100%;
 `;
 
-export const PDFWrapper = styled.div`
-  margin: auto;
+export const PDFWrapper = styled.div``;
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+`;
+
+export const ArrowWrapper = styled.div`
+  cursor: pointer;
+  flex: 1;
+  padding: 20px;
 `;

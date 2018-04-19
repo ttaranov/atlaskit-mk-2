@@ -1,5 +1,7 @@
 # @atlaskit/mention
 
+## 11.1.1
+
 ## 11.1.0
 - [minor] If a Mention item is a team then render a TEAM lozenge automatically [d4976d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4976d4)
 

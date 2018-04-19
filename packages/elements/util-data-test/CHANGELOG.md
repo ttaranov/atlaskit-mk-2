@@ -1,5 +1,7 @@
 # @atlaskit/util-data-test
 
+## 9.1.2
+
 ## 9.1.1
 - [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
 

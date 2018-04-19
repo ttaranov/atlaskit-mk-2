@@ -46,15 +46,15 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       collectionName,
     } = this.props;
     if (featureFlags && featureFlags.nextGen) {
+      const items = (this.props.dataSource.list || [])
+        .map(i => ({id: i.id, type: i.type, collectionName, occurrenceKey: i.occurrenceKey }));
       return (
         <MediaViewerNextGen
           context={context}
-          data={{
-            ...selectedItem,
-            collectionName,
-          }}
+          selectedItem={selectedItem}
+          items={items}
           onClose={onClose}
-        />
+      />
       );
     }
 

@@ -13,4 +13,9 @@ describe('Renderer - React/Marks/Code', () => {
   it('should output correct html', () => {
     expect(mark.html()).to.include('<code>This is code</code>');
   });
+
+  it('should handle arrays correctly', () => {
+    const markWithArray = shallow(<Code>{['This ', 'is', ' code']}</Code>);
+    expect(markWithArray.html()).to.include('<code>This is code</code>');
+  });
 });

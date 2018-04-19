@@ -2,6 +2,8 @@ import {
   doc,
   createEditor,
   p,
+  mediaGroup,
+  media,
   sendKeyToPm,
   storyMediaProviderFactory,
   randomId,
@@ -81,13 +83,22 @@ describe('media - keymaps', () => {
   });
 
   describe('Shift-Enter keypress', () => {
-    // Wait for ED-3741 to refactor
-    it.skip('splits media group', () => {
-      const { editorView, pluginState } = editor(doc(p('{<>}')));
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(
+        doc(
+          mediaGroup(
+            media({
+              id: 'media1',
+              type: 'file',
+              collection: testCollectionName,
+            })(),
+          ),
+        ),
+      );
+
       const splitMediaGroupSpy = jest.spyOn(pluginState, 'splitMediaGroup');
 
       sendKeyToPm(editorView, 'Shift-Enter');
-
       expect(splitMediaGroupSpy).toHaveBeenCalled();
       editorView.destroy();
     });

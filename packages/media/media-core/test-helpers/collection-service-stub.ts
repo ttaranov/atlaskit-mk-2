@@ -75,6 +75,7 @@ export class CollectionServiceStub {
     return {
       type: 'file',
       details: {
+        id: 'id',
         occurrenceKey,
       },
     };

@@ -1,4 +1,4 @@
-import { MediaApiConfig } from '../auth';
+import { MediaApiConfig } from '@atlaskit/media-store';
 import { RemoteMediaCollectionProvider } from './remoteMediaCollectionProvider';
 import {
   CollectionService,

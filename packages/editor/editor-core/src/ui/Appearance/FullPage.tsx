@@ -19,7 +19,6 @@ const FullPageEditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-bottom: 55px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -41,6 +40,7 @@ const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-bottom: 55px;
 
   & .ProseMirror {
     flex-grow: 1;
@@ -123,6 +123,7 @@ export default class Editor extends React.Component<
       popupsBoundariesElement,
       popupsScrollableElement,
       disabled,
+      collabEdit,
     } = this.props;
 
     return (
@@ -144,6 +145,10 @@ export default class Editor extends React.Component<
             <Avatars
               editorView={editorView}
               eventDispatcher={eventDispatcher}
+              inviteToEditHandler={collabEdit && collabEdit.inviteToEditHandler}
+              isInviteToEditButtonSelected={
+                collabEdit && collabEdit.isInviteToEditButtonSelected
+              }
             />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>

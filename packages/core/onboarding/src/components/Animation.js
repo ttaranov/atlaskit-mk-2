@@ -1,12 +1,11 @@
 // @flow
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import { Transition } from 'react-transition-group';
 import { layers } from '@atlaskit/theme';
-import { type ComponentType } from '../types';
 
 const duration = 500;
 type Props = {
-  component: ComponentType,
+  component: ComponentType<*>,
   in: boolean,
 };
 

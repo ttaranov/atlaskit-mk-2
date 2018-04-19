@@ -1,21 +1,14 @@
 import * as React from 'react';
-
+import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
-import { Result } from '../model/Result';
-import renderSearchResults from '../components/SearchResults';
 
 export interface Props {
-  getRecentlyViewedItems();
+  onMount();
   onSearch(query: string);
 
   isLoading: boolean;
-  isError: boolean;
   query: string;
-  recentlyViewedItems: Result[];
-  recentResults: Result[];
-  jiraResults: Result[];
-  confluenceResults: Result[];
-  peopleResults: Result[];
+  children: React.ReactNode;
 }
 
 /**
@@ -23,30 +16,22 @@ export interface Props {
  */
 export default class GlobalQuickSearch extends React.Component<Props> {
   componentDidMount() {
-    this.props.getRecentlyViewedItems();
+    this.props.onMount();
   }
 
   handleSearchInput = ({ target }) => {
     const query = target.value;
-    this.props.onSearch(query);
+    this.debouncedSearch(query);
   };
 
-  retrySearch = () => {
-    const { query, onSearch } = this.props;
-    onSearch(query);
-  };
+  debouncedSearch = debounce(this.doSearch, 350);
+
+  doSearch(query: string) {
+    this.props.onSearch(query);
+  }
 
   render() {
-    const {
-      query,
-      isLoading,
-      isError,
-      recentlyViewedItems,
-      recentResults,
-      jiraResults,
-      confluenceResults,
-      peopleResults,
-    } = this.props;
+    const { query, isLoading, children } = this.props;
 
     return (
       <QuickSearch
@@ -54,16 +39,7 @@ export default class GlobalQuickSearch extends React.Component<Props> {
         onSearchInput={this.handleSearchInput}
         value={query}
       >
-        {renderSearchResults({
-          query,
-          isError,
-          retrySearch: this.retrySearch,
-          recentlyViewedItems,
-          recentResults,
-          jiraResults,
-          confluenceResults,
-          peopleResults,
-        })}
+        {children}
       </QuickSearch>
     );
   }
