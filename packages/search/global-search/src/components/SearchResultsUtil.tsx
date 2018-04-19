@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
 import {
   PersonResult,
   ContainerResult,
@@ -8,19 +7,23 @@ import {
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import { Result, ResultType } from '../model/Result';
+import {
+  ClientResult,
+  ClientResultType,
+  ClientResultContentType,
+} from '../model/ClientResult';
 import ObjectResult from './ObjectResult';
 
-function getResultComponent(resultType: ResultType): ComponentClass {
+function getResultRenderer(resultType: ClientResultType): Function {
   switch (resultType) {
-    case ResultType.Object: {
-      return ObjectResult;
+    case ClientResultType.Object: {
+      return renderObjectResult;
     }
-    case ResultType.Person: {
-      return PersonResult;
+    case ClientResultType.Person: {
+      return renderPersonResult;
     }
-    case ResultType.Space: {
-      return ContainerResult;
+    case ClientResultType.Container: {
+      return renderContainerResult;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched
@@ -32,11 +35,36 @@ function getResultComponent(resultType: ResultType): ComponentClass {
   }
 }
 
-export function renderResults(results: Result[]) {
+export function renderResults(results: ClientResult[]) {
   return results.map(result => {
-    const Result = getResultComponent(result.type);
-    return <Result key={result.resultId} {...result} />;
+    const renderer = getResultRenderer(result.type);
+    return renderer(result);
   });
+}
+
+export function renderObjectResult(result: ClientResult) {
+  // TODO insert the confluence Avatar logic here.
+  if (result.contentType == ClientResultContentType.Page) {
+  }
+
+  return (
+    <ObjectResult
+      {...result}
+      avatar={
+        result.contentType == ClientResultContentType.Page
+          ? undefined
+          : undefined
+      }
+    />
+  );
+}
+
+export function renderPersonResult(result: ClientResult) {
+  return <PersonResult {...result} />;
+}
+
+export function renderContainerResult(result: ClientResult) {
+  return <ContainerResult {...result} />;
 }
 
 export const searchConfluenceItem = (query: string) => (

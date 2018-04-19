@@ -9,8 +9,9 @@ const OBJECT_RESULT_TYPE = 'object';
 
 export interface Props {
   name: string;
-  containerName: string;
+  containerName?: string;
   avatarUrl?: string;
+  avatar?: React.Component;
   objectKey?: string;
   contentType?: ResultContentType;
 }
@@ -28,15 +29,12 @@ export default class ObjectResult extends React.Component<Props> {
     type: OBJECT_RESULT_TYPE,
   };
 
-  getAvatar = () => {
-    if (this.props.contentType == ResultContentType.Page) {
-      return <Objects24PageIcon size="large" label={this.props.name} />;
-    } else if (this.props.contentType == ResultContentType.Space) {
-      return <Objects24BlogIcon size="large" label={this.props.name} />;
-    } else {
-      return <Avatar src={this.props.avatarUrl} appearance="square" />;
-    }
-  };
+  getAvatar = () =>
+    this.props.avatar ? (
+      this.props.avatar
+    ) : (
+      <Avatar src={this.props.avatarUrl} appearance="square" />
+    );
 
   getSubtext() {
     const { objectKey, containerName } = this.props;

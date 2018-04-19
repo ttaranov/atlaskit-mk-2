@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { ClientResult, ClientResultType } from '../model/ClientResult';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -11,8 +11,8 @@ export enum Scope {
 }
 
 export interface CrossProductResults {
-  jira: Result[];
-  confluence: Result[];
+  jira: ClientResult[];
+  confluence: ClientResult[];
 }
 
 export interface CrossProductSearchResponse {
@@ -104,8 +104,8 @@ export default class CrossProductSearchClientImpl
     response: CrossProductSearchResponse,
     searchSessionId: string,
   ): CrossProductResults {
-    let jiraResults: Result[] = [];
-    let confResults: Result[] = [];
+    let jiraResults: ClientResult[] = [];
+    let confResults: ClientResult[] = [];
 
     response.scopes.forEach(scope => {
       if (scope.id === Scope.ConfluencePageBlog) {
@@ -142,9 +142,9 @@ export function removeHighlightTags(text: string) {
 function confluenceItemToResult(
   item: ConfluenceItem,
   searchSessionId: string,
-): Result {
+): ClientResult {
   return {
-    type: ResultType.Object,
+    type: ClientResultType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
@@ -153,9 +153,9 @@ function confluenceItemToResult(
   };
 }
 
-function jiraItemToResult(item: JiraItem): Result {
+function jiraItemToResult(item: JiraItem): ClientResult {
   return {
-    type: ResultType.Object,
+    type: ClientResultType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,

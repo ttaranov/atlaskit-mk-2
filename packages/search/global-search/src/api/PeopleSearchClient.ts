@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { ClientResult, ClientResultType } from '../model/ClientResult';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -24,7 +24,7 @@ export interface GraphqlError {
 }
 
 export interface PeopleSearchClient {
-  search(query: string): Promise<Result[]>;
+  search(query: string): Promise<ClientResult[]>;
 }
 
 export default class PeopleSearchClientImpl implements PeopleSearchClient {
@@ -64,7 +64,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     };
   }
 
-  public async search(query: string): Promise<Result[]> {
+  public async search(query: string): Promise<ClientResult[]> {
     const options: RequestServiceOptions = {
       path: 'graphql',
       requestInit: {
@@ -98,9 +98,9 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
   return `${firstError.category}: ${firstError.message}`;
 }
 
-function userSearchResultToResult(searchResult: SearchResult): Result {
+function userSearchResultToResult(searchResult: SearchResult): ClientResult {
   return {
-    type: ResultType.Person,
+    type: ClientResultType.Person,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
     href: '/home/people/' + searchResult.id,

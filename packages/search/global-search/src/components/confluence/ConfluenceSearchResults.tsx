@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
-import { Result } from '../../model/Result';
+import { ClientResult } from '../../model/ClientResult';
 import SearchError from '../SearchError';
 import EmptyState from '../EmptyState';
 import {
@@ -13,7 +13,7 @@ import {
 
 const renderObjectsGroup = (
   title: string,
-  results: Result[],
+  results: ClientResult[],
   query: string,
 ) => (
   <ResultItemGroup title={title} key="objects">
@@ -21,13 +21,21 @@ const renderObjectsGroup = (
   </ResultItemGroup>
 );
 
-const renderSpacesGroup = (title: string, results: Result[], query: string) => (
+const renderSpacesGroup = (
+  title: string,
+  results: ClientResult[],
+  query: string,
+) => (
   <ResultItemGroup title={title} key="spaces">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
-const renderPeopleGroup = (title: string, results: Result[], query: string) => (
+const renderPeopleGroup = (
+  title: string,
+  results: ClientResult[],
+  query: string,
+) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
     {searchPeopleItem()}
@@ -47,11 +55,11 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  objectResults: Result[];
-  spaceResults: Result[];
-  peopleResults: Result[];
+  recentlyViewedPages: ClientResult[];
+  recentlyViewedSpaces: ClientResult[];
+  objectResults: ClientResult[];
+  spaceResults: ClientResult[];
+  peopleResults: ClientResult[];
 }
 
 export default function searchResults(props: Props) {

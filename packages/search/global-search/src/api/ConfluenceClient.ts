@@ -1,4 +1,8 @@
-import { Result, ResultType, ResultContentType } from '../model/Result';
+import {
+  ClientResult,
+  ClientResultType,
+  ClientResultContentType,
+} from '../model/ClientResult';
 import {
   RequestServiceOptions,
   utils,
@@ -11,13 +15,13 @@ const RECENT_SPACE_PATH: string =
   'wiki/rest/recentlyviewed/1.0/recent/spaces?limit=5';
 
 export interface ConfluenceClient {
-  getRecentItems(): Promise<Result[]>;
-  getRecentSpaces(): Promise<Result[]>;
+  getRecentItems(): Promise<ClientResult[]>;
+  getRecentSpaces(): Promise<ClientResult[]>;
 }
 
 export interface RecentPage {
   available: boolean;
-  contentType: ResultContentType;
+  contentType: ClientResultContentType;
   id: string;
   lastSeen: number;
   space: string;
@@ -45,14 +49,14 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     this.cloudId = cloudId;
   }
 
-  public async getRecentItems(): Promise<Result[]> {
+  public async getRecentItems(): Promise<ClientResult[]> {
     const recentPages = await this.createRecentRequestPromise<RecentPage>(
       RECENT_ITEMS_PATH,
     );
     return recentPages.map(recentItemToResult);
   }
 
-  public async getRecentSpaces(): Promise<Result[]> {
+  public async getRecentSpaces(): Promise<ClientResult[]> {
     const recentSpaces = await this.createRecentRequestPromise<RecentSpace>(
       RECENT_SPACE_PATH,
     );
@@ -71,24 +75,24 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   }
 }
 
-function recentItemToResult(recentPage: RecentPage): Result {
+function recentItemToResult(recentPage: RecentPage): ClientResult {
   return {
     resultId: recentPage.id,
-    type: ResultType.Object,
+    type: ClientResultType.Object,
     name: recentPage.title,
     href: recentPage.url,
-    avatarUrl: '',
     containerName: recentPage.space,
     contentType: recentPage.contentType,
   };
 }
 
-function recentSpaceToResult(recentSpace: RecentSpace): Result {
+function recentSpaceToResult(recentSpace: RecentSpace): ClientResult {
   return {
     resultId: recentSpace.id,
-    type: ResultType.Object,
+    type: ClientResultType.Object,
     name: recentSpace.name,
     href: `/wiki/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
+    contentType: ClientResultContentType.Space,
   };
 }

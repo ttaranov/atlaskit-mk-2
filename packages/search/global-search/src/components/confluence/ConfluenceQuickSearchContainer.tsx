@@ -7,7 +7,7 @@ import {
   CrossProductSearchClient,
   CrossProductResults,
 } from '../../api/CrossProductSearchClient';
-import { Result } from '../../model/Result';
+import { ClientResult } from '../../model/ClientResult';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
@@ -24,11 +24,11 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  objectResults: Result[];
-  spaceResults: Result[];
-  peopleResults: Result[];
+  recentlyViewedPages: ClientResult[];
+  recentlyViewedSpaces: ClientResult[];
+  objectResults: ClientResult[];
+  spaceResults: ClientResult[];
+  peopleResults: ClientResult[];
 }
 
 /**
@@ -91,7 +91,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     return results;
   }
 
-  async searchPeople(query: string): Promise<Result[]> {
+  async searchPeople(query: string): Promise<ClientResult[]> {
     const results = await this.props.peopleSearchClient.search(query);
 
     if (this.state.query === query) {

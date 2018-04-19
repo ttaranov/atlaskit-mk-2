@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { ClientResult, ClientResultType } from '../model/ClientResult';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -19,8 +19,8 @@ export interface RecentItem {
 }
 
 export interface RecentSearchClient {
-  getRecentItems(): Promise<Result[]>;
-  search(query: string): Promise<Result[]>;
+  getRecentItems(): Promise<ClientResult[]>;
+  search(query: string): Promise<ClientResult[]>;
 }
 
 export default class RecentSearchClientImpl implements RecentSearchClient {
@@ -33,12 +33,12 @@ export default class RecentSearchClientImpl implements RecentSearchClient {
     this.cloudId = cloudId;
   }
 
-  public async getRecentItems(): Promise<Result[]> {
+  public async getRecentItems(): Promise<ClientResult[]> {
     const recentItems = await this.fetchRecentItems();
     return recentItems.map(recentItemToResult);
   }
 
-  public async search(query: string): Promise<Result[]> {
+  public async search(query: string): Promise<ClientResult[]> {
     const recentItems = await this.fetchRecentItems();
     const filteredRecentItems = this.filterItems(recentItems, query);
 
@@ -114,11 +114,11 @@ function maybeSplitIssueKeyAndName(recentItem: RecentItem) {
   }
 }
 
-function recentItemToResult(recentItem: RecentItem): Result {
+function recentItemToResult(recentItem: RecentItem): ClientResult {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
   return {
-    type: ResultType.Object,
+    type: ClientResultType.Object,
     resultId: 'recent-' + recentItem.objectId,
     avatarUrl: recentItem.iconUrl,
     name: name,
