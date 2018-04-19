@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { MediaItemType } from '@atlaskit/media-core';
 import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
