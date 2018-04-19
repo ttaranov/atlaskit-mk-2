@@ -29,7 +29,7 @@ export const BreadcrumbsContainer = styled.div`
 `;
 
 export const TitleWrapper = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: space-between;
   margin-bottom: ${akGridSizeUnitless * 3}px;
