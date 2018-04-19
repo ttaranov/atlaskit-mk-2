@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Video } from '../styled';
 import { FileItem, Context } from '@atlaskit/media-core';
-import { constructAuthTokenUrl } from '../util';
-import { Outcome } from '../domain';
-import { Spinner } from '../loading';
-import { ErrorMessage } from '../styled';
+import { constructAuthTokenUrl } from '../../util';
+import { Outcome } from '../../domain';
+import { Spinner } from '../../loading';
+import { ErrorMessage } from '../../styled';
+import { CustomVideo } from './customVideo';
 
 export type Props = {
   item: FileItem;
@@ -29,7 +29,8 @@ export class VideoViewer extends React.Component<Props, State> {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <Video controls src={src.data} />;
+        return <CustomVideo src={src.data} />;
+      // return <Video controls src={src.data} />;
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
