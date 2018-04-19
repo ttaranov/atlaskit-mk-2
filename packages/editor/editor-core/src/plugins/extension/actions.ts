@@ -66,6 +66,18 @@ export const removeExtension = (
   return true;
 };
 
+export const removeBodiedExtensionWrapper = (state: EditorState, slice: Slice): Slice => {
+  const { schema: { nodes: { bodiedExtension } } } = state;
+  const nodes: PmNode[] = [];
+  slice.content.forEach(child => {
+    if (child.type !== bodiedExtension) {
+      nodes.push(child);
+    }
+  });
+
+  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
+}
+
 export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   slice: Slice,
   state: EditorState,
@@ -73,14 +85,7 @@ export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   const { selection, schema: { nodes: { bodiedExtension } } } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    const nodes: PmNode[] = [];
-    slice.content.forEach(child => {
-      if (child.type !== bodiedExtension) {
-        nodes.push(child);
-      }
-    });
-
-    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
+    return removeBodiedExtensionWrapper(state, slice);
   }
 
   return slice;

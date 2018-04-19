@@ -14,12 +14,14 @@ import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks } from '../util';
-import { removeBodiedExtensionsIfSelectionIsInBodiedExtension } from '../../extension/actions';
+import { removeBodiedExtensionsIfSelectionIsInBodiedExtension, removeBodiedExtensionWrapper } from '../../extension/actions';
 import {
   removeLayoutsIfSelectionIsInLayout,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
+import { hasOpenEnd } from '../../../utils';
+
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -117,12 +119,12 @@ export function createPlugin(
 
         /** If a partial paste of bodied extension, paste only text */
         if (
-          slice.content!.firstChild &&
-          slice.content.firstChild!.type === schema.nodes.bodiedExtension &&
-          (slice.openEnd > 0 || slice.openStart > 0)
+          node &&
+          node.type === schema.nodes.bodiedExtension &&
+          hasOpenEnd(slice)
         ) {
-          view.dispatch(view.state.tr.insertText(text));
-          return true;
+          slice = removeBodiedExtensionWrapper(view.state, slice);
+          // return true;
         }
 
         if (
