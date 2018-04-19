@@ -12,12 +12,9 @@ export default class GlobalItem extends PureComponent<GlobalItemProps> {
     size: 'large',
     styles: styleReducerNoOp,
   };
+  renderItem = (state: *) => <GlobalItemPrimitive {...state} {...this.props} />;
 
   render() {
-    return (
-      <InteractionStateManager>
-        {state => <GlobalItemPrimitive {...state} {...this.props} />}
-      </InteractionStateManager>
-    );
+    return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
   }
 }
