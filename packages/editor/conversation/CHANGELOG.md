@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.1.14
+- [patch] Avatar should display tooltip on hover and be clickable if profile url is provided [272893c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272893c)
+
 ## 7.1.13
 
 ## 7.1.12
