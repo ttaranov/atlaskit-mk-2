@@ -1,8 +1,3 @@
-/**
- * TODO remove when using styled-components > v1.
- *
- * @jest-environment node
- */
 // @flow
 import React from 'react';
 import { shallow } from 'enzyme';
