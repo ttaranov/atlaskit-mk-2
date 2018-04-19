@@ -38,13 +38,13 @@ export default class Navigation extends Component<NavigationProps, any> {
       <ArrowsWrapper>
 
         {isLeftVisible ? (
-          <LeftWrapper style={{ textAlign: 'left' }} onClick={this.navigate('prev')}>
+          <LeftWrapper onClick={this.navigate('prev')}>
             <ArrowLeftCircleIcon primaryColor={colors.N800} size='xlarge' label='Previous'/>
           </LeftWrapper>
         ) : null}
 
         {isRightVisible ? (
-          <RightWrapper style={{ textAlign: 'right' }} onClick={this.navigate('next')}>
+          <RightWrapper onClick={this.navigate('next')}>
             <ArrowRightCircleIcon primaryColor={colors.N800} size='xlarge' label='Next'/>
           </RightWrapper>
         ) : null}
