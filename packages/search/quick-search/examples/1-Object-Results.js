@@ -2,10 +2,15 @@
 import React, { Component } from 'react';
 import { randomJiraIconUrl, randomConfluenceIconUrl } from './utils/mockData';
 import { ObjectResult, ResultItemGroup } from '../src';
+import Avatar from '@atlaskit/avatar';
 
 const defaultProps = {
   resultId: 'result_id',
 };
+
+const dummyAvatarComponent = (
+  <Avatar src={randomConfluenceIconUrl()} appearance="square" />
+);
 
 export default class extends Component<*> {
   render() {
@@ -37,6 +42,13 @@ export default class extends Component<*> {
             {...defaultProps}
             avatarUrl={randomConfluenceIconUrl()}
             name="Prank schedule: April 2017"
+            containerName="The Scream Team"
+            isPrivate
+          />
+          <ObjectResult
+            {...defaultProps}
+            avatar={dummyAvatarComponent}
+            name="This one has an avatar component!"
             containerName="The Scream Team"
             isPrivate
           />
