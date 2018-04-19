@@ -59,7 +59,7 @@ export class ItemViewer extends React.Component<Props, State> {
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }
       case 'FAILED':
-        return <ErrorMessage>Error</ErrorMessage>;
+        return <ErrorMessage>{item.err.message}</ErrorMessage>;
     }
   }
 
