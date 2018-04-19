@@ -1,11 +1,9 @@
 import * as sinon from 'sinon';
 import { toNativeBridge } from '../../../src/web-to-native';
 import mobileEditor from '../../../src/mobile-editor-element';
-import * as React from 'react';
-import * as chai from 'chai';
-import { mount } from 'enzyme';
 import { expect } from 'chai';
-import { EditorActions, Editor } from '@atlaskit/editor-core';
+import { mount } from 'enzyme';
+import { mountEditor } from './utils';
 
 declare var bridge;
 
@@ -49,9 +47,9 @@ describe('insert media', () => {
     getCollection.returns('FabricSampleCollection');
     getServiceHost.reset();
     getServiceHost.returns('http://www.atlassian.com/');
-    editor = mount(mobileEditor());
+    editor = mountEditor(editor);
     //FIXME we need a better way to make sure media is loaded
-    setTimeout(done, 50);
+    setTimeout(done, 150);
   });
 
   afterEach(() => {
