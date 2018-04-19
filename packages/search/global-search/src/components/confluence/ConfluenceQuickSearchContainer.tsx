@@ -162,14 +162,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
-    const [recentItems, recentSpaces] = await Promise.all([
-      this.props.confluenceClient.getRecentItems(),
-      this.props.confluenceClient.getRecentSpaces(),
-    ]);
+    const recentItemsPromise = this.props.confluenceClient.getRecentItems();
+    const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
 
     this.setState({
-      recentlyViewedPages: recentItems,
-      recentlyViewedSpaces: recentSpaces,
+      recentlyViewedPages: await recentItemsPromise,
+      recentlyViewedSpaces: await recentSpacesPromise,
     });
   };
 
