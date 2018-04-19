@@ -11,7 +11,36 @@ export function isEmptyParagraph(node?: Node | null): boolean {
 }
 
 /**
- * Checks if a node has any significant content.
+ * Returns false if node contains only empty inline nodes and hardBreaks.
+ */
+export function hasVisibleContent(node: Node): boolean {
+  const isInlineNodeHasVisibleContent = (inlineNode: Node) => {
+    return inlineNode.isText
+      ? !!inlineNode.textContent.trim()
+      : inlineNode.type.name !== 'hardBreak';
+  };
+
+  if (node.isInline) {
+    return isInlineNodeHasVisibleContent(node);
+  } else if (node.isBlock && node.isLeaf) {
+    return true;
+  } else if (!node.childCount) {
+    return false;
+  }
+
+  for (let index = 0; index < node.childCount; index++) {
+    const child = node.child(index);
+
+    if (hasVisibleContent(child)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Checks if a node has any content. Ignores node that only contain emoty block nodes.
  */
 export function isEmptyNode(node?: Node): boolean {
   if (node && node.textContent) {
