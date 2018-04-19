@@ -450,7 +450,14 @@ export default class Comment extends React.Component<Props, State> {
             <CommentAuthor>{createdBy && createdBy.name}</CommentAuthor>
           )
         }
-        avatar={<AkAvatar src={createdBy && createdBy.avatarUrl} />}
+        avatar={
+          <AkAvatar
+            src={createdBy && createdBy.avatarUrl}
+            href={createdBy && createdBy.profileUrl}
+            name={createdBy && createdBy.name}
+            enableTooltip={true}
+          />
+        }
         time={
           <CommentTime onClick={this.handleTimeClick} href={`#${commentId}`}>
             {distanceInWordsToNow(new Date(comment.createdAt), {
