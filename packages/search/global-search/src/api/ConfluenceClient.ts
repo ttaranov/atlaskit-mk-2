@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { Result, ResultType, ResultContentType } from '../model/Result';
 import {
   RequestServiceOptions,
   utils,
@@ -17,7 +17,7 @@ export interface ConfluenceClient {
 
 export interface RecentPage {
   available: boolean;
-  contentType: string;
+  contentType: ResultContentType;
   id: string;
   lastSeen: number;
   space: string;
@@ -79,6 +79,7 @@ function recentItemToResult(recentPage: RecentPage): Result {
     href: recentPage.url,
     avatarUrl: '',
     containerName: recentPage.space,
+    contentType: recentPage.contentType,
   };
 }
 

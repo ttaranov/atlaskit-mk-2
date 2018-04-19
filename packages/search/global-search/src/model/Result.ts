@@ -7,11 +7,18 @@ export interface Result {
   avatarUrl: string;
   containerName?: string;
   objectKey?: string;
+  contentType?: ResultContentType;
 }
 
 // Use string enum here because the type prop in quick-search Result is actually a string
 export enum ResultType {
   Person = 'person',
   Object = 'object',
+  Space = 'space',
+}
+
+export enum ResultContentType {
+  Page = 'page',
+  Blogpost = 'blogpost',
   Space = 'space',
 }
