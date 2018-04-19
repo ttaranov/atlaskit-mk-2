@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 
 export type Props = {
-  identifier: Identifier;
-  context: Context;
+  readonly identifier: Identifier;
+  readonly context: Context;
 };
 
 export type State = {
@@ -59,7 +59,7 @@ export class ItemViewer extends React.Component<Props, State> {
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }
       case 'FAILED':
-        return <ErrorMessage>Error</ErrorMessage>;
+        return <ErrorMessage>{item.err.message}</ErrorMessage>;
     }
   }
 
