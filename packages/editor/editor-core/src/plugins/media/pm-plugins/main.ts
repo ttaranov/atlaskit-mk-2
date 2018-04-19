@@ -85,7 +85,7 @@ export class MediaPluginState {
   private popupPicker?: PickerFacade;
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
-  private mobilePicker?: PickerFacade;
+  private customPicker?: PickerFacade;
 
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
@@ -582,7 +582,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
     this.clipboardPicker = undefined;
     this.dropzonePicker = undefined;
-    this.mobilePicker = undefined;
+    this.customPicker = undefined;
   };
 
   private initPickers(
@@ -605,9 +605,9 @@ export class MediaPluginState {
         uploadParams,
       };
 
-      if (this.editorAppearance === 'mobile') {
+      if (this.options.customMediaPicker) {
         pickers.push(
-          (this.mobilePicker = new Picker(
+          (this.customPicker = new Picker(
             'customMediaPicker',
             pickerFacadeConfig,
             this.options.customMediaPicker,

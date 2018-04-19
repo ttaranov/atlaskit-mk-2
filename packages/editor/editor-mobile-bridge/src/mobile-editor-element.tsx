@@ -98,12 +98,7 @@ function subscribeForTextFormatChanges(view: EditorView) {
 }
 
 function getToken(context?: any) {
-  return new Promise<any>((resolve, reject) => {
-    createPromise('getAuth', context.collectionName)
-      .submit()
-      .then(resolve)
-      .catch(reject);
-  });
+  return createPromise<any>('getAuth', context.collectionName).submit();
 }
 
 function getUploadContext(): Promise<any> {
