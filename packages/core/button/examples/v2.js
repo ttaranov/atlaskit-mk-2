@@ -6,7 +6,6 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ButtonBase from '../src/components/Button-v2';
 import AkButton from '../src/components/AtlaskitButton';
 import TrelloButton from '../src/components/TrelloButton';
-import CurrentButton from '../src';
 
 const Section = styled.div`
   padding-top: 8px;
@@ -72,32 +71,6 @@ const trelloDarkPallet = {
   },
 };
 
-const RainbowButton = (props: { children: Node }) => (
-  <ButtonBase
-    iconBefore={<AtlassianIcon />}
-    styles={{
-      root: css`
-        background: linear-gradient(45deg, #e66465, #9198e5);
-        color: white;
-        font-size: 1em;
-        height: 2.5em;
-        padding: 0.25em 1em;
-        border: none;
-        border-radius: 3px;
-        &:hover {
-          opacity: 0.95;
-          cursor: pointer;
-        }
-        &:active {
-          opacity: 1;
-        }
-      `,
-    }}
-  >
-    {props.children}
-  </ButtonBase>
-);
-
 type LightDarkProps = { children: Node, light: {}, dark: {} };
 type LightDarkState = { mode: string, pallet: {} };
 
@@ -136,8 +109,8 @@ class LightDarkProvider extends React.Component<
   }
 }
 
-export default () => (
-  <div>
+const BasicExamples = () => (
+  <React.Fragment>
     <h2>Basic Button</h2>
     <Section>
       <ButtonBase onClick={() => console.log('base click')}>
@@ -150,26 +123,29 @@ export default () => (
         Click me
       </ButtonBase>
     </Section>
+  </React.Fragment>
+);
+
+const AtlaskitExamples = () => (
+  <React.Fragment>
     <h2>Atlaskit Button</h2>
     <Section>
       <LightDarkProvider light={adgLightPallet} dark={adgDarkPallet}>
-        <div>
-          <AkButton appearance="primary">Click me</AkButton>
-          <AkButton
-            iconBefore={<AtlassianIcon />}
-            onClick={() => console.log('ak click')}
-          >
-            Click me
-          </AkButton>
-          <CurrentButton
-            iconBefore={<AtlassianIcon />}
-            onClick={() => console.log('ak click')}
-          >
-            Click me
-          </CurrentButton>
-        </div>
+        <AkButton appearance="primary">Click me</AkButton>
+        <AkButton
+          iconBefore={<AtlassianIcon />}
+          onClick={() => console.log('ak click')}
+        >
+          Click me
+        </AkButton>
+        <AkButton iconBefore={<AtlassianIcon />} />
       </LightDarkProvider>
     </Section>
+  </React.Fragment>
+);
+
+const TrelloExamples = () => (
+  <React.Fragment>
     <h2>Trello Button</h2>
     <Section>
       <LightDarkProvider light={trelloLightPallet} dark={trelloDarkPallet}>
@@ -177,7 +153,6 @@ export default () => (
           Click me
         </TrelloButton>
         <TrelloButton
-          iconBefore={<AtlassianIcon />}
           appearance="primary"
           onClick={() => console.log('trello click')}
         >
@@ -191,9 +166,45 @@ export default () => (
         </TrelloButton>
       </LightDarkProvider>
     </Section>
+  </React.Fragment>
+);
+
+const CustomExamples = () => (
+  <React.Fragment>
     <h2>Custom Button</h2>
     <Section>
-      <RainbowButton>Click me</RainbowButton>
+      <ButtonBase
+        iconBefore={<AtlassianIcon />}
+        styles={{
+          root: css`
+            background: linear-gradient(45deg, #e66465, #9198e5);
+            color: white;
+            font-size: 1em;
+            height: 2.5em;
+            padding: 0.25em 1em;
+            border: none;
+            border-radius: 3px;
+            &:hover {
+              opacity: 0.95;
+              cursor: pointer;
+            }
+            &:active {
+              opacity: 1;
+            }
+          `,
+        }}
+      >
+        Click me
+      </ButtonBase>
     </Section>
+  </React.Fragment>
+);
+
+export default () => (
+  <div>
+    <BasicExamples />
+    <AtlaskitExamples />
+    <TrelloExamples />
+    <CustomExamples />
   </div>
 );

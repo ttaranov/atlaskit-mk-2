@@ -105,12 +105,8 @@ const IconBefore = (props: AllProps) => {
   const { iconBefore } = props;
   if (IconBeforeComponent) {
     return <IconBeforeComponent {...props} />;
-  } else if (iconBefore) {
-    return (
-      <StyledIcon isOnlyChild={isOnlyChild(props)}>{iconBefore}</StyledIcon>
-    );
   }
-  return null;
+  return <StyledIcon isOnlyChild={isOnlyChild(props)}>{iconBefore}</StyledIcon>;
 };
 
 const IconAfter = (props: AllProps) => {
@@ -118,12 +114,8 @@ const IconAfter = (props: AllProps) => {
   const { iconAfter } = props;
   if (IconAfterComponent) {
     return <IconAfterComponent {...props} />;
-  } else if (iconAfter) {
-    return (
-      <StyledIcon isOnlyChild={isOnlyChild(props)}>{iconAfter}</StyledIcon>
-    );
   }
-  return null;
+  return <StyledIcon isOnlyChild={isOnlyChild(props)}>{iconAfter}</StyledIcon>;
 };
 
 // COMPONENT SECTION
@@ -131,11 +123,13 @@ const IconAfter = (props: AllProps) => {
 const Button = (props: AllProps) => (
   <ButtonComponent {...props}>
     <ButtonWrapper shouldFitContainer={props.shouldFitContainer}>
-      <IconBefore {...props} />
-      <ButtonContent iconBefore={props.iconBefore}>
-        {props.children}
-      </ButtonContent>
-      <IconAfter {...props} />
+      {props.iconBefore && <IconBefore {...props} />}
+      {props.children && (
+        <ButtonContent iconBefore={props.iconBefore}>
+          {props.children}
+        </ButtonContent>
+      )}
+      {props.iconAfter && <IconAfter {...props} />}
     </ButtonWrapper>
   </ButtonComponent>
 );
