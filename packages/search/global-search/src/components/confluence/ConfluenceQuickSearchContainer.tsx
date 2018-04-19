@@ -199,6 +199,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         {renderSearchResults({
           query,
           isError,
+          isLoading,
           retrySearch: this.retrySearch,
           recentlyViewedPages,
           recentlyViewedSpaces,

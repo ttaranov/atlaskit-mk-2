@@ -79,7 +79,6 @@ function recentItemToResult(recentPage: RecentPage): Result {
     href: recentPage.url,
     avatarUrl: '',
     containerName: recentPage.space,
-    objectKey: recentPage.id,
   };
 }
 

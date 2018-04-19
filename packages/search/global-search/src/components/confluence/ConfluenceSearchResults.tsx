@@ -45,6 +45,7 @@ const renderEmptyState = (query: string) => (
 export interface Props {
   query: string;
   isError: boolean;
+  isLoading: boolean;
   retrySearch();
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
@@ -57,6 +58,7 @@ export default function searchResults(props: Props) {
   const {
     query,
     isError,
+    isLoading,
     retrySearch,
     // @ts-ignore unused
     recentlyViewedPages,
@@ -67,18 +69,25 @@ export default function searchResults(props: Props) {
     peopleResults,
   } = props;
 
+  if (isLoading) {
+    return null; // better than showing empty error, but worth some more thought.
+  }
+
   if (isError) {
     return <SearchError onRetryClick={retrySearch} />;
   }
 
   if (query.length === 0) {
     return [
-      renderObjectsGroup('Recent pages and blogs', recentlyViewedPages, query),
-      renderSpacesGroup('Recent spaces', recentlyViewedSpaces, query),
+      renderObjectsGroup(
+        'Recent pages and blogs',
+        take(recentlyViewedPages, 5),
+        query,
+      ),
+      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 5), query),
     ];
   }
 
-  // TODO need to pass isLoading down to avoid showing no results screen when still searching
   if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
     return renderEmptyState(query);
   }
