@@ -1,5 +1,10 @@
 'use strict';
 //@flow
+
+/*
+This file contains the logic for BrowserTestCase and to set the clients either using local or browserstack.
+*/
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
 const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT

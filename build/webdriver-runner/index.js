@@ -9,6 +9,14 @@ const isReachable = require('is-reachable');
 
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
+/*
+This file contains the logic to run the tests.
+It uses jest runner and are invoked passing the INTEGRATION_TESTS env variable.
+The logic does two things:
+- Identify through the TEST_ENV variable if the test needs to be running locally using selenium or on browserstack
+- Identify through the isReachable function if the webpack server is running
+*/
+
 function runTests() {
   return new Promise((resolve, reject) => {
     const cmd = `INTEGRATION_TESTS=true jest`;

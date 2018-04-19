@@ -1,5 +1,9 @@
 //@flow
 
+/*
+This file contains the logic to start and stop the browserstack
+*/
+
 const browserstack = require('browserstack-local');
 const bsLocal = new browserstack.Local();
 const bsKey = process.env.BROWSERSTACK_KEY;

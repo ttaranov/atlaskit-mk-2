@@ -4,6 +4,10 @@
 const Selenium = require('selenium-standalone');
 const util = require('util');
 
+/*
+This file contains the logic to start and stop the selenium server
+*/
+
 const install = util.promisify(Selenium.install);
 const start = util.promisify(Selenium.start);
 

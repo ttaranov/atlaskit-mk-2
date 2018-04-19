@@ -1,3 +1,7 @@
+/*
+This file contains all the commands that can be used to interact with the browser
+*/
+
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
 const WAIT_TIMEOUT = 5000;

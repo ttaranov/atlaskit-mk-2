@@ -1,5 +1,9 @@
 // @flow
 
+/*
+This file contains the build the example url using during the test
+*/
+
 const baseUrl = 'http://localhost:9000';
 
 const getExampleUrl = (
