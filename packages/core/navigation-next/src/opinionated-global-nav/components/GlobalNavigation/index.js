@@ -3,6 +3,12 @@
 import React, { Component, Fragment } from 'react';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
+import Avatar from '@atlaskit/avatar';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import SignInIcon from '@atlaskit/icon/glyph/sign-in';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
+import NotificationIcon from '@atlaskit/icon/glyph/notification';
+import PeopleIcon from '@atlaskit/icon/glyph/people';
 
 import { GlobalNav, NavigationSubscriber } from '../../../';
 
@@ -84,13 +90,89 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   constructSecondaryItems = () => {
-    const { secondaryItems } = this.props;
+    const {
+      secondaryItems,
+      navigation,
+      help = {},
+      user = {},
+      appSwitcher = {},
+      notification,
+      people,
+    } = this.props;
     const inbuiltSecondaryItems = [];
+
+    if (notification) {
+      const defaultNotifications = {
+        icon: NotificationIcon,
+        label: 'Notifications',
+        onClick: navigation.openNotificationDrawer,
+        tooltip: 'Notifications',
+      };
+      inbuiltSecondaryItems.push({ ...defaultNotifications, ...notification });
+    }
+
+    if (people) {
+      const defaultPeople = {
+        icon: PeopleIcon,
+        label: 'People directory',
+        onClick: navigation.openPeopleDrawer,
+        tooltip: 'People directory',
+      };
+      inbuiltSecondaryItems.push({ ...defaultPeople, ...people });
+    }
+
+    if (appSwitcher) {
+      const defaultAppSwitcher = {
+        icon: MenuIcon,
+        label: 'App Switcher',
+        tooltip: 'App Switcher',
+      };
+      inbuiltSecondaryItems.push({ ...defaultAppSwitcher, ...appSwitcher });
+    }
+
+    if (help) {
+      const defaultHelp = {
+        icon: QuestionCircleIcon,
+        label: 'Help',
+        tooltip: 'Help',
+      };
+      inbuiltSecondaryItems.push({ ...defaultHelp, ...help });
+    }
+
+    if (user) {
+      const defaultUser = {
+        icon: () => (
+          <Avatar
+            borderColor="transparent"
+            isActive={false}
+            isHover={false}
+            size="small"
+          />
+        ),
+        label: 'Your profile and Settings',
+        tooltip: 'Your profile and Settings',
+      };
+      inbuiltSecondaryItems.push({ ...defaultUser, ...user });
+    }
+
+    if (!user) {
+      const annonymousUser = {
+        icon: SignInIcon,
+        label: 'Log In',
+        onClick:
+          navigation.redirectToLogin || (() => console.log('Login clicked')),
+        tooltip: 'Log In',
+      };
+      inbuiltSecondaryItems.push(annonymousUser);
+    }
 
     return [...inbuiltSecondaryItems, ...secondaryItems];
   };
 
-  renderDrawer = (drawerKey: 'create' | 'search', drawerProps) => {
+  renderDrawer = (
+    drawerKey: 'create' | 'search' | 'notification' | 'people',
+    drawerProps,
+  ) => {
     const { navigation } = this.props;
     const { activeDrawer } = navigation.state;
     const action = this.props[drawerKey];
@@ -127,6 +209,8 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
         />
         {this.renderDrawer('create')}
         {this.renderDrawer('search', { width: 'wide' })}
+        {this.renderDrawer('notification', { width: 'wide' })}
+        {this.renderDrawer('people', { width: 'wide' })}
       </Fragment>
     );
   }

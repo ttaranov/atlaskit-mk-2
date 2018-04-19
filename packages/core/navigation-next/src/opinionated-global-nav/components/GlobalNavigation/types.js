@@ -19,11 +19,16 @@ type GlobalNavigationItemOptions = {
 };
 
 export type GlobalNavigationProps = {
-  create?: GlobalNavigationItemOptions,
   primaryItems?: Array<ItemDataShape>,
+  secondaryItems?: Array<ItemDataShape>,
   product: GlobalNavigationItemOptions,
   search?: GlobalNavigationItemOptions,
-  secondaryItems?: Array<ItemDataShape>,
+  create?: GlobalNavigationItemOptions,
+  notification?: GlobalNavigationItemOptions,
+  people?: GlobalNavigationItemOptions,
+  appSwitcher?: GlobalNavigationItemOptions,
+  help?: GlobalNavigationItemOptions,
+  profile?: GlobalNavigationItemOptions,
 };
 
 export type WrappedGlobalNavigationProps = {

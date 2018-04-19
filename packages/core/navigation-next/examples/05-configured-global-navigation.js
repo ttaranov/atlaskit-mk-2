@@ -49,6 +49,42 @@ const Global = () => (
         ),
       },
     }}
+    notification={{
+      drawer: {
+        content: ({ closeDrawer }: DrawerContentProps) => (
+          <div style={{ paddingTop: 80 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: 40,
+              }}
+            >
+              Notification Drawer
+            </div>
+            <button onClick={closeDrawer}>Close</button>
+          </div>
+        ),
+      },
+    }}
+    people={{
+      drawer: {
+        content: ({ closeDrawer }: DrawerContentProps) => (
+          <div style={{ paddingTop: 80 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: 40,
+              }}
+            >
+              People Drawer
+            </div>
+            <button onClick={closeDrawer}>Close</button>
+          </div>
+        ),
+      },
+    }}
   />
 );
 

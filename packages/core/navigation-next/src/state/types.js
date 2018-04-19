@@ -49,6 +49,12 @@ export interface NavigationStateInterface {
 
   openSearchDrawer: () => void;
   closeSearchDrawer: () => void;
+
+  openNotificationDrawer: () => void;
+  closeNotificationDrawer: () => void;
+
+  openPeopleDrawer: () => void;
+  closePeopleDrawer: () => void;
 }
 
 /**
