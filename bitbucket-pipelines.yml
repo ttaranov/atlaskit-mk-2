@@ -52,7 +52,15 @@ pipelines:
             caches:
               - node
         - step:
-            name: Testing
+            name: Unit Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - yarn test:changed
+            caches:
+              - node
+        - step:
+            name: Browser Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile

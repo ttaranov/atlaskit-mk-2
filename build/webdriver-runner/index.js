@@ -9,7 +9,6 @@ const isReachable = require('is-reachable');
 const util = require('util');
 
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
-let buildServer;
 
 function runTests() {
   return new Promise((resolve, reject) => {
@@ -29,7 +28,7 @@ function runTests() {
 }
 
 async function main() {
-  buildServer = await isReachable('http://localhost:9000');
+  const buildServer = await isReachable('http://localhost:9000');
   buildServer ? {} : await webpack.startDevServer();
   process.env.TEST_ENV === 'browserstack'
     ? await browserstack.startBrowserStack()
