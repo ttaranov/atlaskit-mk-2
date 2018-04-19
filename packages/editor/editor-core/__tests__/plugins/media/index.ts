@@ -34,10 +34,7 @@ import {
 } from '../../../src/plugins/media/pm-plugins/main';
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
-import mediaPlugin, {
-  MediaOptions,
-  MediaProvider,
-} from '../../../src/plugins/media';
+import mediaPlugin from '../../../src/plugins/media';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import rulePlugin from '../../../src/plugins/rule';
 import tablePlugin from '../../../src/plugins/table';
@@ -73,7 +70,7 @@ describe('Media plugin', () => {
           provider: mediaProvider,
           allowMediaSingle: true,
           customDropzoneContainer: dropzoneContainer,
-        } as MediaOptions),
+        }),
         codeBlockPlugin,
         rulePlugin,
         tablePlugin,
@@ -707,13 +704,9 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider1 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider1);
     const mediaProvider2 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider2 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
     const resolvedMediaProvider2 = await mediaProvider2;
@@ -728,18 +721,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider1 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1.length).toBe(4);
 
     const mediaProvider2 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider2 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     const pickersAfterMediaProvider2 = pluginState.pickers;
@@ -759,18 +748,14 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider1 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
     const spy = jest.spyOn((pluginState as any).popupPicker, 'hide');
 
     const mediaProvider2 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider2 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
     expect(spy).toHaveBeenCalledTimes(1);
@@ -781,9 +766,7 @@ describe('Media plugin', () => {
     expect(pluginState.pickers.length).toBe(0);
 
     const mediaProvider1 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider1 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
@@ -792,9 +775,7 @@ describe('Media plugin', () => {
     });
 
     const mediaProvider2 = getFreshMediaProvider();
-    await pluginState.setMediaProvider(mediaProvider2 as Promise<
-      MediaProvider
-    >);
+    await pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
@@ -1240,9 +1221,7 @@ describe('Media plugin', () => {
 
       provider.linkCreateContext = Promise.resolve(linkCreateContextMock);
 
-      await pluginState.setMediaProvider(
-        Promise.resolve(provider as MediaProvider),
-      );
+      await pluginState.setMediaProvider(Promise.resolve(provider));
 
       // way to stub private member
       (pluginState as any).linkRanges = [{ href, pos: 1 }];
