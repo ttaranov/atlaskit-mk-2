@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
+import Button from '@atlaskit/button';
 
 import { mount, shallow } from 'enzyme';
 import Trigger from '../../src/internal/trigger';
@@ -12,7 +13,7 @@ const noop = () => {};
 describe('@atlaskit/reactions/trigger', () => {
   it('should render a button', () => {
     const trigger = shallow(<Trigger onClick={noop} />);
-    expect(trigger.find('button').length).to.equal(1);
+    expect(trigger.find(Button).length).to.equal(1);
   });
 
   it('should add "miniMode" css-class when miniMode is true', () => {
@@ -23,7 +24,14 @@ describe('@atlaskit/reactions/trigger', () => {
   it('should call "onClick" when clicked', () => {
     const onClick = sinon.spy();
     const trigger = mount(<Trigger onClick={onClick} />);
-    trigger.simulate('mousedown', { button: 0 });
+    trigger.simulate('click');
     expect(onClick.called).to.equal(true);
+  });
+
+  it('should disable button', () => {
+    const onClick = sinon.spy();
+    const trigger = mount(<Trigger onClick={onClick} disabled />);
+    trigger.find(Button).simulate('click');
+    expect(onClick.called).to.equal(false);
   });
 });

@@ -1,4 +1,3 @@
-import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import Layer from '@atlaskit/layer';
 import { borderRadius, colors } from '@atlaskit/theme';
@@ -23,7 +22,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
-  text?: string;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -33,7 +32,6 @@ export interface State {
 
 const pickerStyle = style({
   verticalAlign: 'middle',
-  width: '24px',
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
@@ -59,8 +57,9 @@ const popupStyle = style({
 });
 
 export default class ReactionPicker extends PureComponent<Props, State> {
-  // @ts-ignore: unused variable, TODO: delete?
-  private trigger?: Trigger | Button;
+  static defaultProps = {
+    disabled: false,
+  };
 
   constructor(props) {
     super(props);
@@ -168,21 +167,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private renderTrigger(content) {
-    const { text, miniMode } = this.props;
-
-    if (text) {
-      return (
-        <Button
-          appearance="subtle-link"
-          spacing="none"
-          type="button"
-          onClick={this.onTriggerClick}
-          ref={this.handleTriggerRef}
-        >
-          {text}
-        </Button>
-      );
-    }
+    const { miniMode } = this.props;
 
     return (
       <Layer
@@ -194,15 +179,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
         <Trigger
           onClick={this.onTriggerClick}
           miniMode={miniMode}
-          ref={this.handleTriggerRef}
+          disabled={this.props.disabled}
         />
       </Layer>
     );
   }
-
-  private handleTriggerRef = ref => {
-    this.trigger = ref;
-  };
 
   render() {
     const { isOpen } = this.state;

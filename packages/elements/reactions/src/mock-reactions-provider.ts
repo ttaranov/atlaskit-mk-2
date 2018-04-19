@@ -4,6 +4,7 @@ import { equalEmojiId, findIndex } from './internal/helpers';
 import {
   default as AbstractReactionsProvider,
   ObjectReactionKey,
+  ReactionsState,
 } from './reactions-resource';
 import { Reactions, ReactionSummary } from './reactions-resource';
 import { defaultReactionsByShortName } from './internal/selector';
@@ -15,39 +16,44 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
       [this.objectReactionKey(
         'ari:cloud:owner:demo-cloud-id:container/1',
         'ari:cloud:owner:demo-cloud-id:item/1',
-      )]: [
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':fire:') as EmojiId).id!,
-          count: 1,
-          reacted: true,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId)
-            .id!,
-          count: 9,
-          reacted: false,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':thumbsdown:') as EmojiId)
-            .id!,
-          count: 5,
-          reacted: false,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':heart_eyes:') as EmojiId)
-            .id!,
-          count: 100,
-          reacted: false,
-        },
-      ],
+      )]: {
+        status: 'ready',
+        reactions: [
+          {
+            ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+            containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+            emojiId: (defaultReactionsByShortName.get(':fire:') as EmojiId).id!,
+            count: 1,
+            reacted: true,
+          },
+          {
+            ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+            containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+            emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId)
+              .id!,
+            count: 9,
+            reacted: false,
+          },
+          {
+            ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+            containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+            emojiId: (defaultReactionsByShortName.get(
+              ':thumbsdown:',
+            ) as EmojiId).id!,
+            count: 5,
+            reacted: false,
+          },
+          {
+            ari: 'ari:cloud:owner:demo-cloud-id:item/1',
+            containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
+            emojiId: (defaultReactionsByShortName.get(
+              ':heart_eyes:',
+            ) as EmojiId).id!,
+            count: 100,
+            reacted: false,
+          },
+        ],
+      },
     };
   }
 
@@ -61,15 +67,20 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         ) {
           this.cachedReactions[
             this.objectReactionKey(key.containerAri, key.ari)
-          ] = [];
+          ] = {
+            status: 'ready',
+            reactions: [],
+          };
         }
       });
 
-      const results = {};
+      const results: Reactions = {};
       Object.keys(this.cachedReactions).forEach(cacheKey => {
         const objectReactions = this.cachedReactions[cacheKey];
-        const ari = cacheKey.split('|')[1];
-        results[ari] = objectReactions;
+        if (objectReactions.status === 'ready') {
+          const ari = cacheKey.split('|')[1];
+          results[ari] = objectReactions.reactions;
+        }
       });
 
       resolve(results);
@@ -109,24 +120,30 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     return new Promise<ReactionSummary>((resolve, reject) => {
       this.getDetailedReaction(reaction).then(reactionDetails => {
         if (!this.cachedReactions[ari]) {
-          this.cachedReactions[ari] = [];
+          this.cachedReactions[ari] = {
+            status: 'ready',
+            reactions: [],
+          };
         }
 
         const key = this.objectReactionKey(containerAri, ari);
-        const index = findIndex(
-          this.cachedReactions[key],
-          r => r.emojiId === emojiId,
-        );
+        const reactionsState = this.cachedReactions[key];
+        if (reactionsState.status === 'ready') {
+          const index = findIndex(
+            reactionsState.reactions,
+            r => r.emojiId === emojiId,
+          );
 
-        setTimeout(() => {
-          if (index !== -1) {
-            this.cachedReactions[key][index] = reactionDetails;
-          } else {
-            this.cachedReactions[key].push(reactionDetails);
-          }
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
-          resolve(reactionDetails);
-        }, 1000);
+          setTimeout(() => {
+            if (index !== -1) {
+              reactionsState.reactions[index] = reactionDetails;
+            } else {
+              reactionsState.reactions.push(reactionDetails);
+            }
+            this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
+            resolve(reactionDetails);
+          }, 1);
+        }
       });
     });
   }
@@ -135,25 +152,28 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
-  ): Promise<ReactionSummary[]> {
-    return new Promise<ReactionSummary[]>((resolve, reject) => {
+  ): Promise<ReactionsState> {
+    return new Promise<ReactionsState>((resolve, reject) => {
       const key = this.objectReactionKey(containerAri, ari);
-      const index = findIndex(this.cachedReactions[key], reaction =>
-        equalEmojiId(reaction.emojiId, emojiId),
-      );
+      const reactionsState = this.cachedReactions[key];
+      if (reactionsState.status === 'ready') {
+        const index = findIndex(reactionsState.reactions, reaction =>
+          equalEmojiId(reaction.emojiId, emojiId),
+        );
 
-      if (index !== -1) {
-        const reaction = this.cachedReactions[key][index];
-        reaction.reacted = true;
-        reaction.count++;
-      } else {
-        this.cachedReactions[key].push({
-          ari: ari,
-          containerAri: containerAri,
-          emojiId: emojiId,
-          count: 1,
-          reacted: true,
-        });
+        if (index !== -1) {
+          const reaction = reactionsState.reactions[index];
+          reaction.reacted = true;
+          reaction.count++;
+        } else {
+          reactionsState.reactions.push({
+            ari: ari,
+            containerAri: containerAri,
+            emojiId: emojiId,
+            count: 1,
+            reacted: true,
+          });
+        }
       }
 
       resolve(this.cachedReactions[key]);
@@ -164,19 +184,22 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
-  ): Promise<ReactionSummary[]> {
-    return new Promise<ReactionSummary[]>((resolve, reject) => {
+  ): Promise<ReactionsState> {
+    return new Promise<ReactionsState>((resolve, reject) => {
       const key = this.objectReactionKey(containerAri, ari);
-      const index = findIndex(this.cachedReactions[key], reaction =>
-        equalEmojiId(reaction.emojiId, emojiId),
-      );
-      const reaction = this.cachedReactions[key][index];
+      const reactionsState = this.cachedReactions[key];
+      if (reactionsState.status === 'ready') {
+        const index = findIndex(reactionsState.reactions, reaction =>
+          equalEmojiId(reaction.emojiId, emojiId),
+        );
+        const reaction = reactionsState.reactions[index];
 
-      reaction.reacted = false;
-      reaction.count--;
+        reaction.reacted = false;
+        reaction.count--;
 
-      if (reaction.count < 1) {
-        this.cachedReactions[key].splice(index, 1);
+        if (reaction.count < 1) {
+          reactionsState.reactions.splice(index, 1);
+        }
       }
 
       resolve(this.cachedReactions[key]);
