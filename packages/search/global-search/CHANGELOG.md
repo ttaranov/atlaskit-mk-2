@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 3.0.1
+- [patch] Simplify tests [d2437e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2437e9)
+
 ## 3.0.0
 - [major] Building blocks to support Confluence mode. "context" is a required prop now. [a5f1cef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5f1cef)
 

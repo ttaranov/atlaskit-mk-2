@@ -34,7 +34,11 @@ export default class RowControls extends Component<Props, any> {
     if (!tableElement) {
       return null;
     }
-    const tbody = tableElement.querySelector('tbody')!;
+    const tbody = tableElement.querySelector('tbody');
+    if (!tbody) {
+      return null;
+    }
+
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
     const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);

@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-loader": "^7.1.2",
-    "bolt": "^0.19.2",
+    "bolt": "^0.20.4",
     "bolt-fs-loader": "^0.0.0",
     "nav-info-loader": "^0.0.0",
     "chalk": "^2.1.0",

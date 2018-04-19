@@ -1,5 +1,8 @@
 # @atlaskit/comment
 
+## 3.1.3
+- [patch] Avatar margin should be 8px [d4945ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4945ae)
+
 ## 3.1.2
 
 ## 3.1.1

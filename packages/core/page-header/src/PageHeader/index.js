@@ -23,10 +23,13 @@ type Props = {
   children?: Node,
   /** Disable default styles for page title */
   disableTitleStyles?: boolean,
+  /** Prevent the title from wrapping across lines */
+  truncateTitle?: boolean,
 };
 export default class PageHeader extends Component<Props> {
   static defaultProps: $Shape<Props> = {
     disableTitleStyles: false,
+    truncateTitle: false,
   };
 
   render() {
@@ -36,6 +39,7 @@ export default class PageHeader extends Component<Props> {
       bottomBar,
       children,
       disableTitleStyles,
+      truncateTitle,
     } = this.props;
     return (
       <Outer>
@@ -47,7 +51,7 @@ export default class PageHeader extends Component<Props> {
             {disableTitleStyles ? (
               children
             ) : (
-              <StyledTitle>{children}</StyledTitle>
+              <StyledTitle truncate={truncateTitle}>{children}</StyledTitle>
             )}
           </TitleContainer>
           <ActionsWrapper>{actions}</ActionsWrapper>

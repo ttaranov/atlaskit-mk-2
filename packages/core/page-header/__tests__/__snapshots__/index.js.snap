@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@atlaskit/page-header should renders correctly 1`] = `
+exports[`@atlaskit/page-header should render correctly 1`] = `
 .c0 {
   margin: 24px 0 0;
 }
@@ -17,9 +17,6 @@ exports[`@atlaskit/page-header should renders correctly 1`] = `
   margin-top: 40px;
   line-height: 32px;
   margin-top: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .c1 {
@@ -107,7 +104,7 @@ exports[`@atlaskit/page-header should renders correctly 1`] = `
 </div>
 `;
 
-exports[`@atlaskit/page-header should renders correctly with disableTitleStyles prop 1`] = `
+exports[`@atlaskit/page-header should render correctly with disableTitleStyles prop 1`] = `
 .c0 {
   margin: 24px 0 0;
 }
