@@ -133,6 +133,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
         stickToBottom={stickToolbarToBottom}
         alignY="bottom"
         alignX="center"
+        ariaLabel="Table floating controls"
       >
         <Toolbar>
           {allowBackgroundColor && (

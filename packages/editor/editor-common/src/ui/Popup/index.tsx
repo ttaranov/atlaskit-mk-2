@@ -24,6 +24,7 @@ export interface Props {
   onPlacementChanged?: (placement: [string, string]) => void;
   scrollableElement?: HTMLElement;
   stickToBottom?: boolean;
+  ariaLabel?: string;
 }
 
 export interface State {
@@ -177,6 +178,7 @@ export default class Popup extends PureComponent<Props, State> {
           zIndex: akEditorFloatingPanelZIndex,
           ...position,
         }}
+        aria-label={this.props.ariaLabel || 'Popup'}
       >
         {this.props.children}
       </div>
