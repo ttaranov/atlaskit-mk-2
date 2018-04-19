@@ -97,6 +97,7 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
+            # This is a sanity check to make sure the website renders on all browsers without error
             - yarn test:webdriver:browserstack website
           caches:
             - node
