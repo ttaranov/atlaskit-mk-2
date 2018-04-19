@@ -1,7 +1,11 @@
 import mobileEditor from '../../../src/mobile-editor-element';
 import { mount } from 'enzyme';
 
-export function mountEditor(editor) {
+export async function mountEditor() {
   const place = document.body.appendChild(document.createElement('div'));
-  return mount(mobileEditor(), { attachTo: place });
+  const editor = mount(mobileEditor(), { attachTo: place });
+  const provider = await editor.props().media.provider;
+  await provider.viewContext;
+  await provider.uploadContext;
+  return editor;
 }

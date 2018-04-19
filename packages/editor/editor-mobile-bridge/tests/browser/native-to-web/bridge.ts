@@ -42,14 +42,12 @@ describe('insert media', () => {
   let editor;
   const getCollection = sinon.stub(toNativeBridge, 'getCollection');
   const getServiceHost = sinon.stub(toNativeBridge, 'getServiceHost');
-  beforeEach(done => {
+  beforeEach(async () => {
     getCollection.reset();
     getCollection.returns('FabricSampleCollection');
     getServiceHost.reset();
     getServiceHost.returns('http://www.atlassian.com/');
-    editor = mountEditor(editor);
-    //FIXME we need a better way to make sure media is loaded
-    setTimeout(done, 150);
+    editor = await mountEditor();
   });
 
   afterEach(() => {
