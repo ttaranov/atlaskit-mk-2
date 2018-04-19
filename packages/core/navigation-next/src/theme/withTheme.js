@@ -4,13 +4,12 @@ import React, { Component, type ComponentType } from 'react';
 import { channel } from 'emotion-theming';
 import PropTypes from 'prop-types';
 
-import type { Theme } from './types';
+import type { GlobalTheme, ProductTheme } from './types';
 
-type State = { theme: ?Theme };
+type State = { theme: GlobalTheme | ProductTheme | void };
 
-export default (defaultTheme: Theme) => (
-  WrappedComponent: ComponentType<*>,
-) => {
+// export default (defaultTheme: ProductTheme) => (
+export default (defaultTheme: any) => (WrappedComponent: ComponentType<*>) => {
   return class WithTheme extends Component<{}, State> {
     static contextTypes = {
       [channel]: PropTypes.object,
