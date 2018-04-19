@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 
 export type Props = {
-  identifier: Identifier;
-  context: Context;
+  readonly identifier: Identifier;
+  readonly context: Context;
 };
 
 export type State = {
