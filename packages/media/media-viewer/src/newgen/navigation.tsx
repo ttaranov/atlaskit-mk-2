@@ -5,7 +5,7 @@ import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { ArrowsWrapper, ArrowWrapper } from './styled';
+import { ArrowsWrapper, RightWrapper, LeftWrapper } from './styled';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -38,15 +38,15 @@ export default class Navigation extends Component<NavigationProps, any> {
       <ArrowsWrapper>
 
         {isLeftVisible ? (
-          <ArrowWrapper style={{ textAlign: 'left' }} onClick={this.navigate('prev')}>
+          <LeftWrapper style={{ textAlign: 'left' }} onClick={this.navigate('prev')}>
             <ArrowLeftCircleIcon primaryColor={colors.N800} size='xlarge' label='Previous'/>
-          </ArrowWrapper>
+          </LeftWrapper>
         ) : null}
 
         {isRightVisible ? (
-          <ArrowWrapper style={{ textAlign: 'right' }} onClick={this.navigate('next')}>
+          <RightWrapper style={{ textAlign: 'right' }} onClick={this.navigate('next')}>
             <ArrowRightCircleIcon primaryColor={colors.N800} size='xlarge' label='Next'/>
-          </ArrowWrapper>
+          </RightWrapper>
         ) : null}
 
       </ArrowsWrapper>

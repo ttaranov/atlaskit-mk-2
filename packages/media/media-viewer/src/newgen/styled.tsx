@@ -60,8 +60,17 @@ export const ArrowsWrapper = styled.div`
   width: 100%;
 `;
 
-export const ArrowWrapper = styled.div`
+const ArrowWrapper = styled.div`
   cursor: pointer;
   flex: 1;
   padding: 20px;
 `;
+
+export const LeftWrapper = ArrowWrapper.extend`
+  text-align: left;
+`;
+
+export const RightWrapper = ArrowWrapper.extend`
+  text-align: right;
+`;
+
