@@ -1,7 +1,7 @@
 //@flow
 
 /*
-This file contains the logic to start and stop the browserstack
+This file contains the logic to start and stop testing through browserstack
 */
 
 const browserstack = require('browserstack-local');

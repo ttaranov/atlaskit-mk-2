@@ -2,7 +2,9 @@
 //@flow
 
 /*
-This file contains the logic for BrowserTestCase and to set the clients either using local or browserstack.
+This file contains the logic:
+ - BrowserTestCase - wrapper use to replace describe, afterAll and beforeAll
+ - Set the clients either using local through selenium standalone or browserstack.
 */
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
