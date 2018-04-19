@@ -40,6 +40,7 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 const HOST = 'localhost';
 const PORT = 9000;
 const WEBPACK_BUILD_TIMEOUT = 10000;
+const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 
 let server;
 let config;
@@ -48,12 +49,24 @@ const pattern = process.argv[2] || '';
 
 function packageIsInPattern(workspace) {
   if (workspace.files.webdriver.length < 1) return false;
-  else if (pattern === '') return true;
+  else if (pattern === '' && !CHANGED_PACKAGES) return true;
   else {
+    /* Match and existing pattern is passed through the command line */
     let matchesPattern =
       pattern.length < workspace.dir.length
         ? workspace.dir.includes(pattern)
         : pattern.includes(workspace.dir);
+    /* If the CHANGED_PACKAGES variable is set,
+    parsing it to get an array of changed packages and only 
+    build those packages */
+    if (CHANGED_PACKAGES) {
+      console.log('changed packages');
+      const packageChanged = JSON.parse(CHANGED_PACKAGES).filter(pkgPath =>
+        workspace.dir.includes(pkgPath),
+      );
+      console.log(packageChanged);
+      return packageChanged;
+    }
     return matchesPattern;
   }
 }
@@ -63,6 +76,7 @@ async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
     cwd: path.join(__dirname, '..'),
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
+  console.log('project', project.workspaces.filter(packageIsInPattern));
   return project.workspaces
     .filter(packageIsInPattern)
     .map(workspace => workspace.pkg.name.split('/')[1]);
@@ -72,6 +86,7 @@ async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
 //
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithWebdriverTests();
+  console.log('globa', workspacesGlob);
   const env = 'production';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;

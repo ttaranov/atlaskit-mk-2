@@ -65,7 +65,7 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/get.changed.packages.since.master.js -- yarn test:webdriver:browserstack
+              - node build/ci-scripts/run.tool.if.changed.js webdriver --  yarn test:webdriver:browserstack CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) 
             caches:
               - node
         - step:
