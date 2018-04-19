@@ -64,7 +64,6 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - yarn test:changed
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
               - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack
             caches:
