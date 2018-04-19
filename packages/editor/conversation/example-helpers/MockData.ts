@@ -6,19 +6,16 @@ export const MOCK_USERS: User[] = [
     id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user',
     name: 'Oscar Wallhult',
     avatarUrl: 'https://api.adorable.io/avatars/80/oscarwallhult.png',
-    profileUrl: 'http://www.bitbucket.org/owallhult',
   },
   {
     id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user3',
     name: 'Tong Li',
     avatarUrl: 'https://api.adorable.io/avatars/80/tongli.png',
-    profileUrl: 'http://www.bitbucket.org/tli',
   },
   {
     id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user4',
     name: 'Dmitrii Sorin',
     avatarUrl: 'https://api.adorable.io/avatars/80/dmitriisorin.png',
-    profileUrl: 'http://www.bitbucket.org/dsorin',
   },
   {
     id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user5',
