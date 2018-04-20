@@ -96,6 +96,10 @@ class Tooltip extends Component<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    marshal.unmount(this);
+  }
+
   handleWrapperRef = (ref: HTMLElement | null) => {
     this.wrapper = ref;
   };

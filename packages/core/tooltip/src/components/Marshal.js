@@ -30,20 +30,23 @@ export default class TooltipMarshal {
     return this.visibleTooltip && tooltip.state.position !== 'mouse';
   }
 
+  /**
+   * Queue a tooltip for showing.
+   *
+   * This should be called from Tooltip directly.
+   */
   show(tooltip: TooltipType) {
     // if the tooltip is already queued for show, don't interfere
     if (this.queuedForShow === tooltip) return;
 
     // if another tooltip is queued for show, clear it out
     if (this.queuedForShow) {
-      this.clearShowTimeout();
+      this.clearShowTimeout(this.queuedForShow);
     }
 
     // if the tooltip is already visible, make sure it's not about to be hidden
     if (this.visibleTooltip === tooltip) {
-      if (this.queuedForHide === tooltip) {
-        this.clearHideTimeout();
-      }
+      this.clearHideTimeout(tooltip);
       return;
     }
 
@@ -51,9 +54,7 @@ export default class TooltipMarshal {
     // displayed, immediately switch them
     if (this.immediatelySwitch(tooltip)) {
       // the visible tooltip may be queued to be hidden; prevent that
-      if (this.queuedForHide) {
-        this.clearHideTimeout();
-      }
+      this.clearHideTimeout(this.visibleTooltip);
       // immediately hide the old tooltip and show the new one
       this.showTooltip(tooltip, { immediate: true });
       return;
@@ -66,6 +67,12 @@ export default class TooltipMarshal {
       this.showTooltip(tooltip, { immediate: false });
     }, SHOW_DELAY);
   }
+
+  /**
+   * Performs the action of showing the tooltip.
+   *
+   * This is an internal method and should not be called directly.
+   */
   showTooltip(tooltip: TooltipType, options: Options) {
     this.queuedForShow = null;
     this.showTimeout = null;
@@ -76,12 +83,15 @@ export default class TooltipMarshal {
     this.addScrollListener(tooltip);
     tooltip.show(options);
   }
-  clearShowTimeout() {
-    if (this.showTimeout) {
+
+  clearShowTimeout(tooltip: ?TooltipType) {
+    if (this.showTimeout && this.queuedForShow === tooltip) {
       clearTimeout(this.showTimeout);
+      this.queuedForShow = null;
+      this.showTimeout = null;
     }
-    this.showTimeout = null;
   }
+
   addScrollListener(tooltip: TooltipType) {
     if (this.scrollListenerBound) return;
 
@@ -130,14 +140,19 @@ export default class TooltipMarshal {
     if (!this.visibleTooltip) return;
     this.hideTooltip(this.visibleTooltip, { immediate: true });
   };
+
+  /**
+   * Queue a tooltip for hiding.
+   *
+   * This should be called from Tooltip directly.
+   */
   hide(tooltip: TooltipType) {
     // if the tooltip is already queued for hide, don't interfere
     if (this.queuedForHide === tooltip) return;
 
     // if the tooltip is queued for show clear it
     if (this.queuedForShow === tooltip) {
-      this.clearShowTimeout();
-      this.queuedForShow = null;
+      this.clearShowTimeout(tooltip);
       return;
     }
 
@@ -151,6 +166,12 @@ export default class TooltipMarshal {
       this.hideTooltip(tooltip, { immediate: false });
     }, HIDE_DELAY);
   }
+
+  /**
+   * Performs the action of hiding the tooltip.
+   *
+   * This is an internal method and should not be called directly.
+   */
   hideTooltip(tooltip: TooltipType, options: Options) {
     this.queuedForHide = null;
     this.hideTimeout = null;
@@ -161,11 +182,26 @@ export default class TooltipMarshal {
     this.visibleTooltip = null;
     tooltip.hide(options);
   }
-  clearHideTimeout() {
-    if (this.hideTimeout) {
+
+  clearHideTimeout(tooltip: ?TooltipType) {
+    if (this.hideTimeout && this.queuedForHide === tooltip) {
       clearTimeout(this.hideTimeout);
+      this.queuedForHide = null;
+      this.hideTimeout = null;
     }
-    this.queuedForHide = null;
+  }
+
+  /**
+   * Called by a tooltip on unmount.
+   * Remove tooltip from any show/hide queues and remove any scroll listeners
+   */
+  unmount(tooltip: TooltipType) {
+    this.clearShowTimeout(tooltip);
+    this.clearHideTimeout(tooltip);
+    if (this.visibleTooltip === tooltip) {
+      this.removeScrollListener(tooltip);
+      this.visibleTooltip = null;
+    }
   }
 
   // Used to cleanup unit tests
