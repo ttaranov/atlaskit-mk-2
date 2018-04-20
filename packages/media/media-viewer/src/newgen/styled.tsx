@@ -61,9 +61,12 @@ export const ArrowsWrapper = styled.div`
 `;
 
 const ArrowWrapper = styled.div`
-  cursor: pointer;
   flex: 1;
   padding: 20px;
+`;
+
+export const Arrow = styled.span`
+  cursor: pointer;
 `;
 
 export const LeftWrapper = ArrowWrapper.extend`
