@@ -18,8 +18,8 @@ import type { GlobalNavProps } from './types';
 
 const GlobalNav = ({
   children, // drawers
-  primaryItems,
-  secondaryItems,
+  primaryActions,
+  secondaryActions,
   theme,
 }: GlobalNavProps) => {
   const wrapperStyles = theme.mode.globalNav();
@@ -27,7 +27,7 @@ const GlobalNav = ({
   return (
     <div css={wrapperStyles}>
       <PrimaryItemsList>
-        {primaryItems.map((props, index) => {
+        {primaryActions.map((props, index) => {
           // Render the first item with a margin beneath it and a large icon
           if (!index) {
             const { icon: Icon, ...rest } = props;
@@ -52,7 +52,7 @@ const GlobalNav = ({
       </PrimaryItemsList>
 
       <SecondaryItemsList>
-        {secondaryItems.map(props => (
+        {secondaryActions.map(props => (
           <GlobalItem {...props} key={props.label} size="small" />
         ))}
       </SecondaryItemsList>

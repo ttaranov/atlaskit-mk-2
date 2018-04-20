@@ -50,12 +50,12 @@ const getProductPrimaryItemComponent = navigation => ({
 
 class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
-    primaryItems: [],
-    secondaryItems: [],
+    primaryActions: [],
+    secondaryActions: [],
   };
 
   constructPrimaryItems = () => {
-    const { create, product, search, primaryItems, navigation } = this.props;
+    const { create, product, search, primaryActions, navigation } = this.props;
 
     const inbuiltPrimaryItems = [];
 
@@ -86,15 +86,15 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
     }
 
-    return [...inbuiltPrimaryItems, ...primaryItems];
+    return [...inbuiltPrimaryItems, ...primaryActions];
   };
 
   constructSecondaryItems = () => {
     const {
-      secondaryItems,
+      secondaryActions,
       navigation,
       help = {},
-      user = {},
+      profile = {},
       appSwitcher = {},
       notification,
       people,
@@ -139,7 +139,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltSecondaryItems.push({ ...defaultHelp, ...help });
     }
 
-    if (user) {
+    if (profile) {
       const defaultUser = {
         icon: () => (
           <Avatar
@@ -152,10 +152,10 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
         label: 'Your profile and Settings',
         tooltip: 'Your profile and Settings',
       };
-      inbuiltSecondaryItems.push({ ...defaultUser, ...user });
+      inbuiltSecondaryItems.push({ ...defaultUser, ...profile });
     }
 
-    if (!user) {
+    if (!profile) {
       const annonymousUser = {
         icon: SignInIcon,
         label: 'Log In',
@@ -166,7 +166,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltSecondaryItems.push(annonymousUser);
     }
 
-    return [...inbuiltSecondaryItems, ...secondaryItems];
+    return [...inbuiltSecondaryItems, ...secondaryActions];
   };
 
   renderDrawer = (
@@ -198,14 +198,14 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   render() {
-    const primaryItems = this.constructPrimaryItems();
-    const secondaryItems = this.constructSecondaryItems();
+    const primaryActions = this.constructPrimaryItems();
+    const secondaryActions = this.constructSecondaryItems();
 
     return (
       <Fragment>
         <GlobalNav
-          primaryItems={primaryItems}
-          secondaryItems={secondaryItems}
+          primaryActions={primaryActions}
+          secondaryActions={secondaryActions}
         />
         {this.renderDrawer('create')}
         {this.renderDrawer('search', { width: 'wide' })}

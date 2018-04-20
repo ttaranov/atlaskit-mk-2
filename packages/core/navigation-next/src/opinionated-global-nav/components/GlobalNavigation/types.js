@@ -19,8 +19,8 @@ type GlobalNavigationItemOptions = {
 };
 
 export type GlobalNavigationProps = {
-  primaryItems?: Array<ItemDataShape>,
-  secondaryItems?: Array<ItemDataShape>,
+  primaryActions?: Array<ItemDataShape>,
+  secondaryActions?: Array<ItemDataShape>,
   product: GlobalNavigationItemOptions,
   search?: GlobalNavigationItemOptions,
   create?: GlobalNavigationItemOptions,
@@ -34,6 +34,6 @@ export type GlobalNavigationProps = {
 export type WrappedGlobalNavigationProps = {
   ...GlobalNavigationProps,
   navigation: NavigationStateInterface,
-  primaryItems: Array<ItemDataShape>,
-  secondaryItems: Array<ItemDataShape>,
+  primaryActions: Array<ItemDataShape>,
+  secondaryActions: Array<ItemDataShape>,
 };
