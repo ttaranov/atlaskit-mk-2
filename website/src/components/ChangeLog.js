@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
 import styled, { css } from 'styled-components';
 import { math, gridSize, colors, borderRadius } from '@atlaskit/theme';
+import { heading } from '@atlaskit/theme/dist/cjs/colors';
 
 const gutter = math.multiply(gridSize, 3);
 
@@ -19,10 +20,12 @@ function getVersion(str: string) {
 const Heading = ({
   children,
   packageName,
+  url,
 }: {
   children: Node,
   level: number,
   packageName: string,
+  url: string,
 }) => {
   const childrenArray = Children.toArray(children);
   const title = childrenArray[0];
@@ -35,10 +38,8 @@ const Heading = ({
 
   const versionNumber = version[1];
   const versionDate = version[2];
-
-  const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
   const anchorProps = {
-    href,
+    href: url,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
@@ -106,7 +107,10 @@ export default class ChangeLog extends Component<Props> {
             const major = v.version.substr(0, 1);
             const majorHasChanged = currentMajor !== major;
             currentMajor = major;
-
+            // In case of blank / empty changelogs, the default commit points to mk-2
+            const href = v.url
+              ? v.url
+              : `https://bitbucket.org/atlassian/atlaskit-mk-2/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
             return (
               // Version is not unique enough due to untidy changelogs.
               /* eslint-disable react/no-array-index-key */
@@ -116,7 +120,12 @@ export default class ChangeLog extends Component<Props> {
                   source={v.md}
                   renderers={{
                     Heading: props => (
-                      <Heading packageName={packageName} {...props} />
+                      <Heading
+                        packageName={packageName}
+                        url={href}
+                        {...props}
+                      />
+                      // console.log(heading, 'head')
                     ),
                   }}
                 />

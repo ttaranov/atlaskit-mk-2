@@ -10,11 +10,14 @@ export const divvyChangelog = (changelog): Logs => {
       // This should only allow us to skip the first chunk which is the name, as
       // well as the unreleased section.
       const match = md.match(/\d+\.\d+\.\d+/);
+      // Getting the commits url and removing the parenthesis
+      const url = md.replace(/[()]/g, '').match(/(https?:\/\/[^\s]+.)/g);
       const version = match ? match[0] : null;
       if (!version) return all;
       return all.concat({
         version,
         md,
+        url,
       });
     }, []);
 };
