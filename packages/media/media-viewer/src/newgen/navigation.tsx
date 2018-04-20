@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Component } from 'react';
 import { Identifier } from './domain';
@@ -18,19 +17,22 @@ export interface NavigationProps {
 export default class Navigation extends Component<NavigationProps, any> {
   private navigate(direction: NavigationDirection) {
     return () => {
-      const {onChange, items} = this.props;
-      const {selectedIndex} = this;
-      const newItem = direction === 'next' ? items[selectedIndex + 1] : items[selectedIndex - 1];
+      const { onChange, items } = this.props;
+      const { selectedIndex } = this;
+      const newItem =
+        direction === 'next'
+          ? items[selectedIndex + 1]
+          : items[selectedIndex - 1];
       onChange(newItem);
     };
   }
   get selectedIndex() {
-    const {items, selectedItem} = this.props;
+    const { items, selectedItem } = this.props;
     return items.findIndex(item => item.id === selectedItem.id);
   }
   render() {
     const { items } = this.props;
-    const {selectedIndex} = this;
+    const { selectedIndex } = this;
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
@@ -40,7 +42,12 @@ export default class Navigation extends Component<NavigationProps, any> {
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow>
-              <ArrowLeftCircleIcon onClick={this.navigate('prev')} primaryColor={colors.N800} size='xlarge' label='Previous'/>
+              <ArrowLeftCircleIcon
+                onClick={this.navigate('prev')}
+                primaryColor={colors.N800}
+                size='xlarge'
+                label='Previous'
+              />
             </Arrow>
           ) : null}
         </LeftWrapper>
@@ -48,7 +55,12 @@ export default class Navigation extends Component<NavigationProps, any> {
         <RightWrapper>
           {isRightVisible ? (
             <Arrow>
-              <ArrowRightCircleIcon onClick={this.navigate('next')} primaryColor={colors.N800} size='xlarge' label='Next'/>
+              <ArrowRightCircleIcon
+                onClick={this.navigate('next')}
+                primaryColor={colors.N800}
+                size='xlarge'
+                label='Next'
+              />
             </Arrow>
           ) : null}
         </RightWrapper>

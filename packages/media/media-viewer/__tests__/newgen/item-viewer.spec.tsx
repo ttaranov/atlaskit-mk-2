@@ -83,20 +83,24 @@ const linkItem: MediaItem = {
     id: 'some-id',
     type: '',
     url: '',
-    title: ''
+    title: '',
   },
 };
 
 describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
   it('shows an error on failure', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.error(new Error('error'));
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -104,7 +108,9 @@ describe('<ItemViewer />', () => {
 
   it('should show the image viewer if media type is image', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(imageItem);
     el.update();
     expect(el.find(ImageViewer)).toHaveLength(1);
@@ -112,7 +118,9 @@ describe('<ItemViewer />', () => {
 
   it('should error if processing Status failed', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(videoItemFailedProcessing);
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -120,7 +128,9 @@ describe('<ItemViewer />', () => {
 
   it('should show the video viewer if media type is video', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(videoItem);
     el.update();
     expect(el.find(VideoViewer)).toHaveLength(1);
@@ -128,7 +138,9 @@ describe('<ItemViewer />', () => {
 
   it('should show the document viewer if media type is document', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(docItem);
     el.update();
     expect(el.find(PDFViewer)).toHaveLength(1);
@@ -136,7 +148,9 @@ describe('<ItemViewer />', () => {
 
   it('should error if file is unsupported', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(unsupportedItem);
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -144,7 +158,9 @@ describe('<ItemViewer />', () => {
 
   it('should show not support links', () => {
     const subject = new Subject<MediaItem>();
-    const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
     subject.next(linkItem);
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -153,7 +169,9 @@ describe('<ItemViewer />', () => {
   describe('Subscription', () => {
     it('unsubscribes from the provider when unmounted', () => {
       const subject = new Subject<MediaItem>();
-      const el = mount(<ItemViewer context={createContext(subject)} identifier={identifier} />);
+      const el = mount(
+        <ItemViewer context={createContext(subject)} identifier={identifier} />,
+      );
       expect(subject.observers).toHaveLength(1);
       el.unmount();
       expect(subject.observers).toHaveLength(0);
@@ -163,7 +181,9 @@ describe('<ItemViewer />', () => {
       const identifierCopy = { ...identifier };
       const subject = new Subject<MediaItem>();
       const context = createContext(subject);
-      const el = mount(<ItemViewer context={context} identifier={identifier} />);
+      const el = mount(
+        <ItemViewer context={context} identifier={identifier} />,
+      );
 
       expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
 
