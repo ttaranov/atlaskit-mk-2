@@ -230,9 +230,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.reactions.length).to.equal(
-            fetchGetReactions()[ari].length + 1,
-          );
+          expect(state.status).equal('ready');
+          if (state.status === 'ready') {
+            expect(state.reactions.length).to.equal(
+              fetchGetReactions()[ari].length + 1,
+            );
+          }
         });
     });
   });
@@ -260,9 +263,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.reactions.length).to.equal(
-            fetchGetReactions()[ari].length - 1,
-          );
+          expect(state.status).equal('ready');
+          if (state.status === 'ready') {
+            expect(state.reactions.length).to.equal(
+              fetchGetReactions()[ari].length - 1,
+            );
+          }
         });
     });
   });

@@ -1,4 +1,3 @@
-import { waitUntil } from '@atlaskit/util-common-test';
 import AbstractReactionsResource from '../src/reactions-resource';
 import {
   ReactionSummary,
