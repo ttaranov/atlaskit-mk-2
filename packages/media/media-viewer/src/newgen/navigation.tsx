@@ -4,7 +4,7 @@ import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { ArrowsWrapper, RightWrapper, LeftWrapper } from './styled';
+import { ArrowsWrapper, RightWrapper, LeftWrapper, Arrow } from './styled';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -38,25 +38,33 @@ export default class Navigation extends Component<NavigationProps, any> {
 
     return (
       <ArrowsWrapper>
-        {isLeftVisible ? (
-          <LeftWrapper onClick={this.navigate('prev')}>
-            <ArrowLeftCircleIcon
-              primaryColor={colors.N800}
-              size="xlarge"
-              label="Previous"
-            />
-          </LeftWrapper>
-        ) : null}
 
-        {isRightVisible ? (
-          <RightWrapper onClick={this.navigate('next')}>
-            <ArrowRightCircleIcon
-              primaryColor={colors.N800}
-              size="xlarge"
-              label="Next"
-            />
-          </RightWrapper>
-        ) : null}
+        <LeftWrapper>
+          {isLeftVisible ? (
+            <Arrow>
+              <ArrowLeftCircleIcon
+                onClick={this.navigate('prev')}
+                primaryColor={colors.N800}
+                size='xlarge'
+                label='Previous'
+              />
+            </Arrow>
+          ) : null}
+        </LeftWrapper>
+
+        <RightWrapper>
+          {isRightVisible ? (
+            <Arrow>
+              <ArrowRightCircleIcon
+                onClick={this.navigate('next')}
+                primaryColor={colors.N800}
+                size='xlarge'
+                label='Next'
+              />
+            </Arrow>
+          ) : null}
+        </RightWrapper>
+
       </ArrowsWrapper>
     );
   }
