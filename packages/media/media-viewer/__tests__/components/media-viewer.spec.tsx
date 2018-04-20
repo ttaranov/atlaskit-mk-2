@@ -5,6 +5,8 @@ import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
 import { Stubs } from '../_stubs';
 
+declare var global: any;
+
 describe('<MediaViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
@@ -59,6 +61,26 @@ describe('<MediaViewer />', () => {
         />,
       );
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
+    });
+
+    it('should show the next gen viewer when dev flag is enabled', () => {
+      let originalLocalStorage = global.window.localStorage;
+      global.window.localStorage = {
+        getItem: key => key === 'MediaViewerNextGenEnabled',
+      };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={listDataSource}
+          collectionName={collectionName}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+        />,
+      );
+      expect(el.find(MediaViewerNextGen)).toHaveLength(1);
+      global.window.localStorage = originalLocalStorage;
     });
   });
 
