@@ -1,7 +1,7 @@
 //@flow
 
 /*
-This file contains the logic to start and stop testing through browserstack
+* util module to support connect and disconnect from browserstack.
 */
 
 const browserstack = require('browserstack-local');

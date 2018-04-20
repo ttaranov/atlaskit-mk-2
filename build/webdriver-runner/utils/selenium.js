@@ -1,11 +1,13 @@
 // @flow
 'use strict';
-
 const Selenium = require('selenium-standalone');
 const util = require('util');
 
 /*
-This file contains the logic to start and stop the selenium server
+* util module to support 
+*   a. install chrome-driver / gecko-driver on local selenium-standlone setup
+*   b. start and stop selenium server
+* more about selenium : https://www.seleniumhq.org/docs/
 */
 
 const install = util.promisify(Selenium.install);

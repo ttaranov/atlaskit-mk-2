@@ -1,13 +1,10 @@
 //@flow
 'use strict';
 
-/*
-This file contains the logic to build the example using webpack.
-Before starting the dev server:
-- getPackagesWithWebdriverTests identify the packages that have webdriver tests
-- packageIsInPatternOrChanged identify:
- * if a pattern is passed or not - a pattern can be only the package name or a full path
- * if CHANGED_PACKAGES is set, it identifies the changed packages and build them
+/* 
+* util module to build webpack-dev-server for running integration test.
+* const CHANGED_PACKAGES accepts environment variable which is used to 
+* identify changed packages and return changed packages containing webdriverTests to be built.
 */
 
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files

@@ -2,12 +2,16 @@
 //@flow
 
 /*
-This file contains the logic:
- - BrowserTestCase - wrapper use to replace describe, afterAll and beforeAll
- - Set the clients either using local through selenium standalone or browserstack.
+* Setup webdriver clients depending on environment on which the test is run against.
+* BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and 
+* teardown for webdriver tests .
 */
 
+// increase default jasmine timeout not to fail on webdriver tests as tests run can
+// take a while depending on the number of threads executing.
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
+
 const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
