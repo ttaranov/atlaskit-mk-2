@@ -66,17 +66,23 @@ export const removeExtension = (
   return true;
 };
 
-export const removeBodiedExtensionWrapper = (state: EditorState, slice: Slice): Slice => {
+export const removeBodiedExtensionWrapper = (
+  state: EditorState,
+  slice: Slice,
+) => {
   const { schema: { nodes: { bodiedExtension } } } = state;
-  const nodes: PmNode[] = [];
-  slice.content.forEach(child => {
-    if (child.type !== bodiedExtension) {
-      nodes.push(child);
-    }
-  });
+  const { content: { firstChild: wrapper } } = slice;
 
-  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
-}
+  if (wrapper!.type !== bodiedExtension) {
+    return slice;
+  }
+
+  return new Slice(
+    Fragment.from(wrapper!.content),
+    slice.openStart,
+    slice.openEnd,
+  );
+};
 
 export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   slice: Slice,
@@ -85,7 +91,14 @@ export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   const { selection, schema: { nodes: { bodiedExtension } } } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    return removeBodiedExtensionWrapper(state, slice);
+    const nodes: PmNode[] = [];
+    slice.content.forEach(child => {
+      if (child.type !== bodiedExtension) {
+        nodes.push(child);
+      }
+    });
+
+    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
   }
 
   return slice;

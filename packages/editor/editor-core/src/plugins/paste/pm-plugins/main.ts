@@ -14,14 +14,16 @@ import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks } from '../util';
-import { removeBodiedExtensionsIfSelectionIsInBodiedExtension, removeBodiedExtensionWrapper } from '../../extension/actions';
+import {
+  removeBodiedExtensionsIfSelectionIsInBodiedExtension,
+  removeBodiedExtensionWrapper,
+} from '../../extension/actions';
 import {
   removeLayoutsIfSelectionIsInLayout,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
 import { hasOpenEnd } from '../../../utils';
-
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -124,7 +126,6 @@ export function createPlugin(
           hasOpenEnd(slice)
         ) {
           slice = removeBodiedExtensionWrapper(view.state, slice);
-          // return true;
         }
 
         if (
