@@ -47,25 +47,24 @@ let config;
 const pattern = process.argv[2] || '';
 
 function packageIsInPatternOrChanged(workspace) {
-  if (workspace.files.webdriver.length < 1) return false;
-  else if (pattern === '' && !CHANGED_PACKAGES) return true;
-  else {
-    /* Match and existing pattern is passed through the command line */
-    let matchesPattern =
-      pattern.length < workspace.dir.length
-        ? workspace.dir.includes(pattern)
-        : pattern.includes(workspace.dir);
-    /* If the CHANGED_PACKAGES variable is set,
-    parsing it to get an array of changed packages and only 
-    build those packages */
-    if (CHANGED_PACKAGES) {
-      const packageChanged = JSON.parse(CHANGED_PACKAGES)
-        .map(pkg => pkg)
-        .some(pkg => workspace.dir.includes(pkg));
-      return packageChanged;
-    }
-    return matchesPattern;
+  if (!workspace.files.webdriver.length) return false;
+  if (pattern === '' && !CHANGED_PACKAGES) return true;
+
+  /**
+   * If the CHANGED_PACKAGES variable is set,
+   * parsing it to get an array of changed packages and only
+   * build those packages
+   */
+  if (CHANGED_PACKAGES) {
+    return JSON.parse(CHANGED_PACKAGES).some(pkg =>
+      workspace.dir.includes(pkg),
+    );
   }
+
+  /* Match and existing pattern is passed through the command line */
+  return pattern.length < workspace.dir.length
+    ? workspace.dir.includes(pattern)
+    : pattern.includes(workspace.dir);
 }
 
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
