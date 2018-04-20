@@ -8,16 +8,16 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       const { selection, schema: { nodes } } = state;
       const { $from, $to } = selection;
       const node = $from.node($from.depth);
+
       const selectionIsAtEndOfCodeBlock =
-        $from.parentOffset === $from.parent.nodeSize - 2 &&
-        $from.indexAfter($from.depth) === node.childCount;
-      if (
         node &&
         node.type === nodes.codeBlock &&
-        node.lastChild &&
-        node.lastChild.text!.endsWith('\n') &&
-        selectionIsAtEndOfCodeBlock
-      ) {
+        $from.parentOffset === $from.parent.nodeSize - 2 && // cursor offset is at the end of block
+        $from.indexAfter($from.depth) === node.childCount; // paragraph is the last child of code block
+      const codeBlockEndsWithNewLine =
+        node.lastChild && node.lastChild.text!.endsWith('\n');
+
+      if (selectionIsAtEndOfCodeBlock && codeBlockEndsWithNewLine) {
         const tr = state.tr
           .split($to.pos)
           .setBlockType($to.pos + 2, $to.pos + 2, nodes.paragraph)
