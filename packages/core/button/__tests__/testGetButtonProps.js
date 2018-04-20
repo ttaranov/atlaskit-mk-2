@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Button from '../src';
+import Button, { ButtonGroup } from '../src';
 
 const Component = () => null;
 
@@ -17,7 +17,6 @@ describe('getButtonProps', () => {
 
     expect(cmp.find('StyledComponent').prop('customProp')).toBeUndefined();
   });
-
   it('should add appearance props', () => {
     const cmp = mount(<Button />);
 
@@ -141,5 +140,19 @@ describe('getButtonProps', () => {
     expect(Object.keys(cmp2.find('StyledComponent').props())).not.toEqual(
       expect.arrayContaining(['href', 'target']),
     );
+  });
+});
+describe('getButtonGroupProps > ', () => {
+  it('should not default appearance', () => {
+    const cmp = mount(
+      <ButtonGroup>{<Button appearance="primary" />}</ButtonGroup>,
+    );
+    expect(cmp.find(Button).prop('appearance')).toBe('primary');
+  });
+  it('should not default to another value if changed', () => {
+    const cmp = mount(
+      <ButtonGroup>{<Button appearance="warning" />}</ButtonGroup>,
+    );
+    expect(cmp.find(Button).prop('appearance')).toBe('warning');
   });
 });

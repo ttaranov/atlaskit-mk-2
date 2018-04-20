@@ -3,7 +3,7 @@ import {
   MediaCollectionService,
   DEFAULT_COLLECTION_PAGE_SIZE,
 } from '../src/services/collectionService';
-import { MediaApiConfig } from '../src/auth';
+import { MediaApiConfig } from '@atlaskit/media-store';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';

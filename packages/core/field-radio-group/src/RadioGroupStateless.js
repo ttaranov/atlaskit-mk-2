@@ -45,7 +45,7 @@ export default class FieldRadioGroupStateless extends Component<
     return (
       <div>
         {/* $FlowFixMe TEMPORARY */}
-        <Label label={this.props.label} />
+        <Label label={this.props.label} isRequired={this.props.isRequired} />
         <Base
           appearance="none"
           isRequired={this.props.isRequired}

@@ -6,6 +6,7 @@ import {
   videoFileId,
   docFileId,
   defaultCollectionName,
+  unknownFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -29,6 +30,12 @@ const videoItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const unsupportedItem: MediaViewerItem = {
+  type: 'file',
+  id: unknownFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 export type State = {
   selectedItem?: MediaViewerItem;
 };
@@ -47,6 +54,11 @@ export default class Example extends React.Component<{}, State> {
         </Button>
         <Button onClick={() => this.setState({ selectedItem: docItem })}>
           Preview a doc item
+        </Button>
+        <Button
+          onClick={() => this.setState({ selectedItem: unsupportedItem })}
+        >
+          Preview unsupported item
         </Button>
 
         {this.state.selectedItem && (

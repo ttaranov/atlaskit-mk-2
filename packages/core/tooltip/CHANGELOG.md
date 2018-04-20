@@ -1,5 +1,11 @@
 # @atlaskit/tooltip
 
+## 9.1.2
+- [patch] Fix tooltip scroll listeners not being removed properly and an edgecase viewport autoflip issue [0a3ccc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3ccc9)
+
+## 9.1.1
+- [patch] Fix viewport edge collision detection for non-mouse positions in some cases and improve detection to include scrollbars [e66bce5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66bce5)
+
 ## 9.1.0
 - [patch] Improve viewport edge collision detection. Tooltips will now shift along the secondary position axis (e.g. left/right when position is top/bottom) to show within viewport. Fix auto flip occurring incorrectly in these situations as well. [ebf331a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf331a)
 - [minor] Add new 'mouse' value for position prop and mousePosition prop to allow the tooltip to display relative to the mouse. [1d5577d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d5577d)

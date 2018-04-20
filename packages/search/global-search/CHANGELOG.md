@@ -1,5 +1,14 @@
 # @atlaskit/global-search
 
+## 3.0.1
+- [patch] Simplify tests [d2437e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2437e9)
+
+## 3.0.0
+- [major] Building blocks to support Confluence mode. "context" is a required prop now. [a5f1cef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5f1cef)
+
+## 2.1.1
+- [patch] Bumping dependency on avatar [ca55e9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca55e9c)
+
 ## 2.1.0
 - [minor] Remove dependency on navigation. [0ae3355](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ae3355)
 

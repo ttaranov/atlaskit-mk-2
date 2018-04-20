@@ -22,9 +22,18 @@ import { Context } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
-import { MediaStateManager, MediaState, MediaStateStatus } from './types';
+import {
+  MediaStateManager,
+  MediaState,
+  MediaStateStatus,
+  CustomMediaPicker,
+} from './types';
 
-export type PickerType = keyof MediaPickerComponents;
+export type PickerType = keyof MediaPickerComponents | 'customMediaPicker';
+export type ExtendedComponentConfigs = ComponentConfigs & {
+  customMediaPicker: CustomMediaPicker;
+};
+
 export type PickerFacadeConfig = {
   context: Context;
   stateManager: MediaStateManager;
@@ -32,7 +41,7 @@ export type PickerFacadeConfig = {
 };
 
 export default class PickerFacade {
-  private picker: MediaPickerComponent;
+  private picker: MediaPickerComponent | CustomMediaPicker;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
@@ -42,16 +51,22 @@ export default class PickerFacade {
   constructor(
     pickerType: PickerType,
     config: PickerFacadeConfig,
-    pickerConfig?: ComponentConfigs[PickerType],
+    pickerConfig?: ExtendedComponentConfigs[PickerType],
   ) {
     this.pickerType = pickerType;
     this.errorReporter = config.errorReporter;
     this.stateManager = config.stateManager;
-    const picker = (this.picker = MediaPicker(
-      pickerType,
-      config.context,
-      pickerConfig,
-    ));
+
+    let picker;
+    if (pickerType === 'customMediaPicker') {
+      picker = this.picker = pickerConfig as CustomMediaPicker;
+    } else {
+      picker = this.picker = MediaPicker(
+        pickerType,
+        config.context,
+        pickerConfig as any,
+      );
+    }
 
     picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
@@ -82,13 +97,13 @@ export default class PickerFacade {
       return;
     }
 
-    picker.removeAllListeners('uploads-start');
-    picker.removeAllListeners('upload-preview-update');
-    picker.removeAllListeners('upload-status-update');
-    picker.removeAllListeners('upload-processing');
-    picker.removeAllListeners('upload-finalize-ready');
-    picker.removeAllListeners('upload-error');
-    picker.removeAllListeners('upload-end');
+    (picker as any).removeAllListeners('uploads-start');
+    (picker as any).removeAllListeners('upload-preview-update');
+    (picker as any).removeAllListeners('upload-status-update');
+    (picker as any).removeAllListeners('upload-processing');
+    (picker as any).removeAllListeners('upload-finalize-ready');
+    (picker as any).removeAllListeners('upload-error');
+    (picker as any).removeAllListeners('upload-end');
 
     if (picker instanceof Dropzone) {
       picker.removeAllListeners('drag-enter');
@@ -299,6 +314,7 @@ export default class PickerFacade {
     const { file } = event;
 
     const state = this.newState(file, 'ready', file.publicId);
+    state.progress = 1;
     this.stateManager.updateState(state.id, state);
   };
 

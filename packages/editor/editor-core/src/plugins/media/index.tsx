@@ -21,18 +21,21 @@ import MediaSingleEdit from './ui/MediaSingleEdit';
 import ReactMediaGroupNode from './nodeviews/media-group';
 import ReactMediaNode from './nodeviews/media';
 import ReactMediaSingleNode from './nodeviews/media-single';
+import { CustomMediaPicker } from './types';
 
 export {
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
   MediaProvider,
+  CustomMediaPicker,
 };
 
 export interface MediaOptions {
   provider?: Promise<MediaProvider>;
   allowMediaSingle?: boolean;
   customDropzoneContainer?: HTMLElement;
+  customMediaPicker?: CustomMediaPicker;
 }
 
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
@@ -102,6 +105,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               waitForMediaUpload: props.waitForMediaUpload,
               customDropzoneContainer:
                 options && options.customDropzoneContainer,
+              customMediaPicker: options && options.customMediaPicker,
             },
             dispatch,
             props.appearance,

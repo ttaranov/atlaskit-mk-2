@@ -45,7 +45,7 @@ const requestAuthProvider = async (
 
 export const mediaPickerAuthProvider = (
   component: React.Component<any, any>,
-) => (context: AuthContext) => {
+) => (context?: AuthContext) => {
   const collectionName =
     (context && context.collectionName) || 'MediaServicesSample';
   const authEnvironment =
