@@ -10,6 +10,7 @@ export interface CalculatePositionParams {
   target?: HTMLElement;
   popup?: HTMLElement;
   offset: number[];
+  stickToBottom?: boolean;
 }
 
 export function isBody(elem: HTMLElement | Element): boolean {
@@ -122,6 +123,7 @@ export function calculatePosition({
   target,
   popup,
   offset,
+  stickToBottom,
 }: CalculatePositionParams): Position {
   const position: Position = {};
 
@@ -164,7 +166,7 @@ export function calculatePosition({
         offset[1],
     );
   } else {
-    position.top = Math.ceil(
+    let top = Math.ceil(
       targetTop -
         popupOffsetParentTop +
         targetHeight +
@@ -172,6 +174,25 @@ export function calculatePosition({
         borderBottomWidth +
         offset[1],
     );
+    if (stickToBottom) {
+      const scrollParent = findOverflowScrollParent(target);
+      if (scrollParent) {
+        let topOffsetTop = targetTop - scrollParent.getBoundingClientRect().top;
+        let targetEnd = targetHeight + topOffsetTop;
+        if (
+          scrollParent.clientHeight - targetEnd <
+            popup.clientHeight + offset[1] + 1 &&
+          topOffsetTop < scrollParent.clientHeight
+        ) {
+          const marginBottom = window.getComputedStyle(target).marginBottom;
+          const marginBottomCalc = marginBottom ? parseFloat(marginBottom) : 0;
+          const scroll =
+            targetEnd + marginBottomCalc - scrollParent.clientHeight;
+          top -= scroll + popup.clientHeight + 1;
+        }
+      }
+    }
+    position.top = top;
   }
 
   if (horizontalPlacement === 'left') {
