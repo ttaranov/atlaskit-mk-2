@@ -3,7 +3,8 @@ import { Component } from 'react';
 import FieldRange from '@atlaskit/field-range';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
-import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
+import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import HipchatOutgoingSoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
 import Button from '@atlaskit/button';
 import Video from 'react-video-renderer';
 import { TimeRange } from './TimeRange';
@@ -14,6 +15,8 @@ import {
   TimebarWrapper,
   VolumeWrapper,
   TimeWrapper,
+  LeftControls,
+  RightControls,
 } from './styled';
 
 export interface CustomVideoState {}
@@ -54,8 +57,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
               );
             const fullScreenButton = (
               <Button
-                appearance="primary"
-                iconBefore={<VidFullScreenOnIcon label="fullscreen" />}
+                iconBefore={<EditorMediaFullWidthIcon label="fullscreen" />}
                 onClick={actions.requestFullscreen}
               />
             );
@@ -72,31 +74,26 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
                     // step={2}
                     onChange={this.onTimeChange(actions.navigate)}
                   />
-                  {/* <FieldRange
-                    value={videoState.currentTime}
-                    min={0}
-                    max={videoState.duration}
-                    // step={2}
-                    onChange={this.onTimeChange(actions.navigate)}
-                  /> */}
                 </TimeWrapper>
                 <TimebarWrapper>
-                  {button}
-                  <CurrentTime>
-                    {Math.round(videoState.currentTime)} /{' '}
-                    {Math.round(videoState.duration)}
-                  </CurrentTime>
-
-                  <VolumeWrapper>
-                    <FieldRange
-                      value={videoState.volume}
-                      min={0}
-                      max={1}
-                      step={0.01}
-                      onChange={this.onVolumeChange(actions.setVolume)}
-                    />
-                  </VolumeWrapper>
-                  {fullScreenButton}
+                  <LeftControls>{button}</LeftControls>
+                  <RightControls>
+                    <CurrentTime>
+                      {Math.round(videoState.currentTime)} /{' '}
+                      {Math.round(videoState.duration)}
+                    </CurrentTime>
+                    <VolumeWrapper>
+                      <HipchatOutgoingSoundIcon label="volume" />
+                      {/* <FieldRange
+                        value={videoState.volume}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        onChange={this.onVolumeChange(actions.setVolume)}
+                      /> */}
+                    </VolumeWrapper>
+                    {fullScreenButton}
+                  </RightControls>
                 </TimebarWrapper>
               </VideoWrapper>
             );

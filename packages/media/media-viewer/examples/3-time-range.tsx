@@ -2,13 +2,25 @@ import * as React from 'react';
 import { Component } from 'react';
 import { TimeRange } from '../src/newgen/viewers/video/TimeRange';
 
-class Example extends Component<any, any> {
-  onChange = () => {};
+export interface ExampleState {
+  currentTime: number;
+}
+
+class Example extends Component<any, ExampleState> {
+  state: ExampleState = {
+    currentTime: 20,
+  };
+
+  onChange = (currentTime: number) => {
+    this.setState({ currentTime });
+  };
 
   render() {
+    const { currentTime } = this.state;
+
     return (
       <TimeRange
-        currentTime={20}
+        currentTime={currentTime}
         duration={100}
         bufferedTime={30}
         onChange={this.onChange}
