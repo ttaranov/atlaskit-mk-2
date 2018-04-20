@@ -41,7 +41,7 @@
     "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/select": "^1.1.0",
     "@atlaskit/toggle": "^3.0.0",
-    "@atlaskit/button": "7.0.0",
+    "@atlaskit/button": "7.0.2",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/tooltip": "^9.0.0",
     "validator": "^9.4.1",

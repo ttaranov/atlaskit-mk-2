@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import { colors } from '@atlaskit/theme';
@@ -11,40 +10,12 @@ import Modal, {
 } from '@atlaskit/modal-dialog';
 import Select from '@atlaskit/select';
 import FieldText from '@atlaskit/field-text';
-import isEmail from 'validator/lib/isEmail';
 
-import Form, {
-  Field,
-  FormHeader,
-  FormSection,
-  FormFooter,
-  Validator,
-} from '../src';
-
-const Hint = styled.span`
-  align-items: center;
-  color: ${colors.subtleText};
-  cursor: help;
-  display: flex;
-`;
-const HintText = styled.span`
-  margin-left: 1em;
-`;
-const Body = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`;
-const Image = styled.img`
-  max-width: 100%;
-  margin-bottom: 1em;
-  margin-top: 1em;
-`;
+import Form, { Field, FormSection } from '../src';
 
 type Props = {
   onClose: Function,
   showKeyline: boolean,
-  formRef?: any,
 };
 
 const Header = ({ onClose, showKeyline }: Props) => (
@@ -65,7 +36,6 @@ class Footer extends Component<Props, FooterState> {
 
   render() {
     const { onClose, showKeyline } = this.props;
-    const { isOpen } = this.state;
 
     return (
       <ModalFooter showKeyline={showKeyline}>
