@@ -4,7 +4,6 @@ import Navigation from '../../src/newgen/navigation';
 import { Identifier } from '../../src/newgen/domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
-import { LeftWrapper, RightWrapper } from '../../src/newgen/styled';
 
 describe('Navigation', () => {
   const identifier: Identifier = {
@@ -83,7 +82,7 @@ describe('Navigation', () => {
       />,
     );
     el
-      .find(LeftWrapper)
+      .find(ArrowLeftCircleIcon)
       .first()
       .simulate('click');
     expect(onChange).toBeCalledWith(identifier);
@@ -99,7 +98,7 @@ describe('Navigation', () => {
       />,
     );
     el
-      .find(RightWrapper)
+      .find(ArrowRightCircleIcon)
       .first()
       .simulate('click');
     expect(onChange).toBeCalledWith(identifier2);
