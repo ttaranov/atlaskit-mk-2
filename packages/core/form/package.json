@@ -37,6 +37,7 @@
     "@atlaskit/field-text-area": "2.0.0",
     "@atlaskit/inline-edit": "^5.0.0",
     "@atlaskit/multi-select": "^9.0.0",
+    "@atlaskit/modal-dialog": "^4.0.2",
     "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/select": "^1.1.0",
     "@atlaskit/toggle": "^3.0.0",
