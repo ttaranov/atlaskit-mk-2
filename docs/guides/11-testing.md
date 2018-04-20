@@ -33,8 +33,10 @@ We encourage adding tests to all components on **Atlaskit**.
 - on CI these are run against 5 different browsers across OS for changed packages only. 
 - to run on local `yarn test:webdriver`
 - to run single test on local `yarn test:webriver <path_to_file>`
+- to run all tests under a package on local `yarn test:webriver <pkg>`
 - to run on *browserstack* 
     - set `BROWSERSTACK_USERNAME = <username>`
     - set `BROWSERSTACK_KEY = <userkey>`
-    - run all *webdriver tests* `test:webdriver:browserstack`
+    - run all *webdriver tests* `yarn test:webdriver:browserstack`
+    - run all tests under a package `yarn test:webriver:browserstack <pkg>`
     - run single test `yarn test:webriver:browserstack <path_to_file>`
