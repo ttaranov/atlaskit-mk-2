@@ -2,10 +2,10 @@
 
 import type { Node } from 'react';
 
-import type { Theme, StyleReducer } from '../../theme/types';
+import type { ProductTheme, StyleReducer } from '../../theme/types';
 
 export type ScrollableSectionInnerProps = {
   children: Node,
-  theme: Theme,
+  theme: ProductTheme,
   styles: StyleReducer<void>,
 };

@@ -2,7 +2,7 @@
 
 import type { ComponentType, Node } from 'react';
 
-import type { StyleReducer, Theme } from '../../theme/types';
+import type { StyleReducer, ProductTheme } from '../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
 
 type Spacing = 'compact' | 'default';
@@ -35,4 +35,4 @@ export type ItemProps = {
 };
 
 export type ItemPrimitiveProps = ItemProps &
-  InteractionState & { theme: Theme };
+  InteractionState & { theme: ProductTheme };

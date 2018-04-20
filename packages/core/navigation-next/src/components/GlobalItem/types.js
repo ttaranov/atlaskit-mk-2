@@ -2,7 +2,7 @@
 
 import type { ComponentType, Node } from 'react';
 
-import type { StyleReducer, Theme } from '../../theme/types';
+import type { StyleReducer, GlobalTheme } from '../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
 
 type Size = 'large' | 'small';
@@ -39,4 +39,4 @@ export type GlobalItemProps = {
 };
 
 export type GlobalItemPrimitiveProps = GlobalItemProps &
-  InteractionState & { theme: Theme };
+  InteractionState & { theme: GlobalTheme };
