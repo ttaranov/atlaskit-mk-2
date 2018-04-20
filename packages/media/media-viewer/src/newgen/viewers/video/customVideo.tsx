@@ -6,6 +6,7 @@ import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
 import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
 import Button from '@atlaskit/button';
 import Video from 'react-video-renderer';
+import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
   VideoWrapper,
@@ -63,13 +64,21 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
               <VideoWrapper>
                 {video}
                 <TimeWrapper>
-                  <FieldRange
+                  <TimeRange
+                    currentTime={videoState.currentTime}
+                    bufferedTime={0}
+                    // min={0}
+                    duration={videoState.duration}
+                    // step={2}
+                    onChange={this.onTimeChange(actions.navigate)}
+                  />
+                  {/* <FieldRange
                     value={videoState.currentTime}
                     min={0}
                     max={videoState.duration}
                     // step={2}
                     onChange={this.onTimeChange(actions.navigate)}
-                  />
+                  /> */}
                 </TimeWrapper>
                 <TimebarWrapper>
                   {button}
