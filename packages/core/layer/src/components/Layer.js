@@ -38,6 +38,8 @@ export type Props = {
   zIndex?: number,
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
+  /** Force the layer to always be positioned fixed to the viewport. This will cause scroll to be locked regardless of the lockScroll prop. */
+  isAlwaysFixed?: boolean,
 };
 
 type State = {
@@ -56,6 +58,7 @@ type State = {
   cssPosition: CSSPositionType,
   originalHeight: ?number,
   maxHeight: ?number,
+  fixedOffset: ?number,
 };
 
 export default class Layer extends Component<Props, State> {
@@ -78,6 +81,7 @@ export default class Layer extends Component<Props, State> {
     position: 'right middle',
     zIndex: 400,
     lockScroll: false,
+    isAlwaysFixed: false,
   };
 
   constructor(props: Props) {
@@ -101,16 +105,19 @@ export default class Layer extends Component<Props, State> {
       cssPosition: 'absolute',
       originalHeight: null,
       maxHeight: null,
+      fixedOffset: null,
     };
     this.extractStyles = this.extractStyles.bind(this);
   }
 
   componentDidMount() {
     this.applyPopper(this.props);
+    this.calculateFixedOffset(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
     this.applyPopper(nextProps);
+    this.calculateFixedOffset(nextProps);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -162,6 +169,19 @@ export default class Layer extends Component<Props, State> {
       ? // allow some spacing either side of viewport height
         viewportHeight - 12
       : null;
+  }
+
+  /* Popper may return either a fixed or absolute position which would be applied to the
+   * content style. In order to overcome clipping issues for overflow containing blocks when
+   * the position is absolute, we create a fixed position wrapper.
+   */
+  calculateFixedOffset(props: Props) {
+    const { isAlwaysFixed } = props;
+
+    if (isAlwaysFixed && this.targetRef) {
+      const actualTarget = this.targetRef.firstChild;
+      this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
+    }
   }
 
   /* Clamp fixed position to the window for fixed position poppers that flow off the top of the
@@ -278,6 +298,7 @@ export default class Layer extends Component<Props, State> {
       transform,
       hasExtractedStyles,
       maxHeight,
+      fixedOffset,
     } = this.state;
     const opacity = hasExtractedStyles ? {} : { opacity: 0 };
 
@@ -291,7 +312,7 @@ export default class Layer extends Component<Props, State> {
           {this.props.children}
         </div>
         {lockScroll && <ScrollBlock />}
-        <ContentContainer maxHeight={maxHeight}>
+        <ContentContainer maxHeight={maxHeight} fixedOffset={fixedOffset}>
           <div
             ref={ref => {
               this.contentRef = ref;

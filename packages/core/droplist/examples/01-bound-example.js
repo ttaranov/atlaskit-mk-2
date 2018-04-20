@@ -4,12 +4,6 @@ import Item, { ItemGroup } from '@atlaskit/item';
 import DropList from '../src';
 
 export default class BoundingExample extends Component<void, void> {
-  componentDidMount() {
-    /* if(this.scroll && this.scroll.scrollTop){
-      htmlElement.scroll.scrollTop = 200;
-    }*/
-  }
-
   render() {
     return (
       <div>

@@ -198,6 +198,7 @@ export default class Droplist extends Component<Props, void> {
           offset={dropOffset}
           // $FlowFixMe
           position={position}
+          isAlwaysFixed
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}
