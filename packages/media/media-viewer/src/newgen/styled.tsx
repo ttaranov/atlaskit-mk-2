@@ -73,4 +73,3 @@ export const LeftWrapper = ArrowWrapper.extend`
 export const RightWrapper = ArrowWrapper.extend`
   text-align: right;
 `;
-

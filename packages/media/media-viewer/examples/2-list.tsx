@@ -45,12 +45,14 @@ export default class Example extends React.Component<{}, {}> {
           basePath={null as any}
           context={context}
           selectedItem={imageIdentifier}
-          dataSource={{ list: [
-            videoIdentifier,
-            imageIdentifier,
-            docIdentifier,
-            unsupportedIdentifier
-          ] }}
+          dataSource={{
+            list: [
+              videoIdentifier,
+              imageIdentifier,
+              docIdentifier,
+              unsupportedIdentifier,
+            ],
+          }}
           collectionName={defaultCollectionName}
         />
       </div>

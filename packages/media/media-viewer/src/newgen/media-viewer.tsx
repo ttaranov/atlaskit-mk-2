@@ -17,7 +17,6 @@ export type State = {
 };
 
 export class MediaViewer extends React.Component<Props, State> {
-
   state: State = { selectedItem: this.props.selectedItem };
 
   render() {
@@ -27,7 +26,7 @@ export class MediaViewer extends React.Component<Props, State> {
     return (
       <Blanket onClick={onClose}>
         <Content>
-          <ItemViewer context={context} identifier={selectedItem}/>
+          <ItemViewer context={context} identifier={selectedItem} />
           <Navigation
             items={items}
             selectedItem={selectedItem}
@@ -39,6 +38,6 @@ export class MediaViewer extends React.Component<Props, State> {
   }
 
   onNavigationChange = (selectedItem: Identifier) => {
-    this.setState({selectedItem});
-  }
+    this.setState({ selectedItem });
+  };
 }

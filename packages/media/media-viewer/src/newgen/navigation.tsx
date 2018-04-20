@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Component } from 'react';
 import { Identifier } from './domain';
@@ -18,37 +17,46 @@ export interface NavigationProps {
 export default class Navigation extends Component<NavigationProps, any> {
   private navigate(direction: NavigationDirection) {
     return () => {
-      const {onChange, items} = this.props;
-      const {selectedIndex} = this;
-      const newItem = direction === 'next' ? items[selectedIndex + 1] : items[selectedIndex - 1];
+      const { onChange, items } = this.props;
+      const { selectedIndex } = this;
+      const newItem =
+        direction === 'next'
+          ? items[selectedIndex + 1]
+          : items[selectedIndex - 1];
       onChange(newItem);
     };
   }
   get selectedIndex() {
-    const {items, selectedItem} = this.props;
+    const { items, selectedItem } = this.props;
     return items.findIndex(item => item.id === selectedItem.id);
   }
   render() {
     const { items } = this.props;
-    const {selectedIndex} = this;
+    const { selectedIndex } = this;
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
     return (
       <ArrowsWrapper>
-
         {isLeftVisible ? (
           <LeftWrapper onClick={this.navigate('prev')}>
-            <ArrowLeftCircleIcon primaryColor={colors.N800} size='xlarge' label='Previous'/>
+            <ArrowLeftCircleIcon
+              primaryColor={colors.N800}
+              size="xlarge"
+              label="Previous"
+            />
           </LeftWrapper>
         ) : null}
 
         {isRightVisible ? (
           <RightWrapper onClick={this.navigate('next')}>
-            <ArrowRightCircleIcon primaryColor={colors.N800} size='xlarge' label='Next'/>
+            <ArrowRightCircleIcon
+              primaryColor={colors.N800}
+              size="xlarge"
+              label="Next"
+            />
           </RightWrapper>
         ) : null}
-
       </ArrowsWrapper>
     );
   }

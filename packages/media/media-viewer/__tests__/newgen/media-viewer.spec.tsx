@@ -29,7 +29,12 @@ function createFixture(identifier) {
   const context = createContext(subject, blobService);
   const onClose = jest.fn();
   const el = mount(
-    <MediaViewer selectedItem={identifier} items={[identifier]} context={context} onClose={onClose} />,
+    <MediaViewer
+      selectedItem={identifier}
+      items={[identifier]}
+      context={context}
+      onClose={onClose}
+    />,
   );
   return { blobService, subject, context, el, onClose };
 }
