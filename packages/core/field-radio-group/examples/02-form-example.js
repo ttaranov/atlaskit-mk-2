@@ -42,6 +42,7 @@ export default class FormExample extends Component<void, void> {
             items={colorItems}
             label="Pick a color:"
             onRadioChange={this.onRadioChange}
+            isRequired
           />
           <FieldRadioGroup
             items={fruitItems}

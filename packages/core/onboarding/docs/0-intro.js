@@ -9,9 +9,9 @@ export default md`
   ## Example
   ${(
     <Example
-      Component={require('../examples/0-spotlight-basic').default}
+      Component={require('../examples/10-spotlight-basic').default}
       title="Basic"
-      source={require('!!raw-loader!../examples/0-spotlight-basic')}
+      source={require('!!raw-loader!../examples/10-spotlight-basic')}
     />
   )}
   ## Modal

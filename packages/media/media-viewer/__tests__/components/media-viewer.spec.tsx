@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { MediaItemType } from '@atlaskit/media-core';
 import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
@@ -47,23 +47,18 @@ describe('<MediaViewer />', () => {
     it('should show the next gen viewer', () => {
       const featureFlags = { nextGen: true };
       const context = Stubs.context(contextConfig);
-      const el = shallow(
+      const el = mount(
         <MediaViewer
           context={context as any}
           selectedItem={selectedItem}
-          dataSource={collectionDataSource}
+          dataSource={listDataSource}
           collectionName={collectionName}
           MediaViewer={Stubs.mediaViewerConstructor() as any}
           basePath={basePath}
           featureFlags={featureFlags}
         />,
       );
-
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
-
-      // This is a temporary expectation that is only valid
-      // as long as we do not implement any viewer.
-      expect(context.getMediaItemProvider).not.toHaveBeenCalled();
     });
   });
 

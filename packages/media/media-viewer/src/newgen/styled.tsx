@@ -52,3 +52,24 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
 `;
 
 export const PDFWrapper = styled.div``;
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+`;
+
+const ArrowWrapper = styled.div`
+  cursor: pointer;
+  flex: 1;
+  padding: 20px;
+`;
+
+export const LeftWrapper = ArrowWrapper.extend`
+  text-align: left;
+`;
+
+export const RightWrapper = ArrowWrapper.extend`
+  text-align: right;
+`;

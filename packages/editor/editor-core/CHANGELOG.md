@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 70.3.1
+- [patch] Adding tooltips for header icons [555a750](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/555a750)
+
+## 70.3.0
+- [minor] Media APIs exposed to mobile clients and can be used by native media components [31c66f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31c66f4)
+
+## 70.2.18
+- [patch] ED-4407: bumping pm-utils [7b76b7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b76b7c)
+
 ## 70.2.17
 - [patch] ED-4348 unbreak table rendering [ee4c378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee4c378)
 

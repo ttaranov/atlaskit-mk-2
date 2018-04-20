@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@atlaskit/page-header should renders correctly 1`] = `
+exports[`@atlaskit/page-header should render correctly 1`] = `
 .c0 {
   margin: 24px 0 0;
 }
@@ -17,9 +17,6 @@ exports[`@atlaskit/page-header should renders correctly 1`] = `
   margin-top: 40px;
   line-height: 32px;
   margin-top: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .c1 {
@@ -27,10 +24,10 @@ exports[`@atlaskit/page-header should renders correctly 1`] = `
 }
 
 .c2 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -107,7 +104,7 @@ exports[`@atlaskit/page-header should renders correctly 1`] = `
 </div>
 `;
 
-exports[`@atlaskit/page-header should renders correctly with disableTitleStyles prop 1`] = `
+exports[`@atlaskit/page-header should render correctly with disableTitleStyles prop 1`] = `
 .c0 {
   margin: 24px 0 0;
 }
@@ -117,10 +114,10 @@ exports[`@atlaskit/page-header should renders correctly with disableTitleStyles 
 }
 
 .c2 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

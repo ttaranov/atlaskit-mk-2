@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 9.1.2
+- [patch] Fix tooltip scroll listeners not being removed properly and an edgecase viewport autoflip issue [0a3ccc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3ccc9)
+
 ## 9.1.1
 - [patch] Fix viewport edge collision detection for non-mouse positions in some cases and improve detection to include scrollbars [e66bce5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66bce5)
 

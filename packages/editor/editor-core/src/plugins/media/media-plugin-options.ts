@@ -2,7 +2,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { ErrorReporter } from '../../utils';
-import { MediaState } from './types';
+import { MediaState, CustomMediaPicker } from './types';
 
 export type MediaPluginOptions = {
   providerFactory: ProviderFactory;
@@ -17,4 +17,5 @@ export type MediaPluginOptions = {
   uploadErrorHandler?: (state: MediaState) => void;
   waitForMediaUpload?: boolean;
   customDropzoneContainer?: HTMLElement;
+  customMediaPicker?: CustomMediaPicker;
 };

@@ -51,12 +51,32 @@ type State = {
   position: number,
   positionType: 'standard' | 'mouse',
   viewportPosition: number,
+  tooltipContent: number,
 };
+
+function getTooltipContent(position, index) {
+  const contentArray = [
+    `The position of the tooltip is ${position}.`,
+    `The position of the tooltip is ${position}.
+     It has a longer content description that wraps multiple lines but is not taller than target.`,
+    `The position of the tooltip is ${position}.
+     It has a longer content description that wraps multiple lines and is taller than target.
+     This should showcase any edge cases related to viewport boundary detection logic. In most
+     cases tooltips shouldn't have this much content though.`,
+  ];
+
+  return contentArray[index];
+}
 
 export default class PositionExample extends Component<Props, State> {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state = { position: 0, positionType: 'standard', viewportPosition: 0 };
+  state = {
+    position: 0,
+    positionType: 'standard',
+    viewportPosition: 0,
+    tooltipContent: 0,
+  };
   static defaultProps = {
     color: 'blue',
   };
@@ -91,10 +111,16 @@ export default class PositionExample extends Component<Props, State> {
       document.body.style.width === '1500px' ? '' : '1500px';
   };
 
+  changeTooltipSize = () => {
+    this.setState({
+      tooltipContent: (this.state.tooltipContent + 1) % 3,
+    });
+  };
+
   render() {
     const position = VALID_POSITIONS[this.state.position];
     const viewportStyle = VIEWPORT_POSITIONS[this.state.viewportPosition];
-    const { positionType } = this.state;
+    const { positionType, tooltipContent } = this.state;
 
     const tooltipPosition = positionType === 'standard' ? position : 'mouse';
     const mousePosition = positionType === 'mouse' ? position : undefined;
@@ -125,13 +151,18 @@ export default class PositionExample extends Component<Props, State> {
               Toggle window scrollbars
             </Button>
           </ButtonDiv>
+          <ButtonDiv>
+            <Button onClick={this.changeTooltipSize}>
+              Change tooltip size
+            </Button>
+          </ButtonDiv>
         </CenterDiv>
         <div
           onClick={this.changeDirection}
           style={{ position: 'absolute', ...viewportStyle }}
         >
           <Tooltip
-            content={`The position of the tooltip is ${position}. Click to change this.`}
+            content={getTooltipContent(position, tooltipContent)}
             position={tooltipPosition}
             mousePosition={mousePosition}
           >
