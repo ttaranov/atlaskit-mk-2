@@ -5,10 +5,8 @@ import {
   ServiceConfig,
 } from '@atlaskit/util-service-support';
 
-const RECENT_ITEMS_PATH: string =
-  '/wiki/rest/recentlyviewed/1.0/recent?limit=10';
-const RECENT_SPACE_PATH: string =
-  'wiki/rest/recentlyviewed/1.0/recent/spaces?limit=5';
+const RECENT_ITEMS_PATH: string = '/wiki/rest/recentlyviewed/1.0/recent';
+const RECENT_SPACE_PATH: string = '/wiki/rest/recentlyviewed/1.0/recent/spaces';
 
 export interface ConfluenceClient {
   getRecentItems(): Promise<Result[]>;
@@ -35,9 +33,7 @@ export interface RecentSpace {
 }
 
 export default class ConfluenceClientImpl implements ConfluenceClient {
-  // @ts-ignore TODO ignore unused for now
   private serviceConfig: ServiceConfig;
-  // @ts-ignore TODO ignore unused for now
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
@@ -64,6 +60,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
       path: path,
       queryParams: {
         cloudId: this.cloudId,
+        limit: 10,
       },
     };
 

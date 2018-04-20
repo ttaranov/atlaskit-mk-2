@@ -119,7 +119,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
   it.skip('should render recently viewed pages on mount', async () => {
     const mockConfluenceClient = {
-      getRecentPages() {
+      getRecentItems() {
         return Promise.resolve([makeResult()]);
       },
       getRecentSpaces() {
@@ -142,7 +142,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
   it.skip('should render recently viewed spaces on mount', async () => {
     const mockConfluenceClient = {
-      getRecentPages() {
+      getRecentItems() {
         return Promise.resolve([]);
       },
       getRecentSpaces() {
