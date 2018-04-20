@@ -15,8 +15,6 @@ import {
   TimeWrapper,
 } from './styled';
 
-console.log('Video', Video);
-
 export interface CustomVideoState {}
 
 export interface CustomVideoProps {
@@ -44,13 +42,11 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             const button =
               videoState.status === 'playing' ? (
                 <Button
-                  appearance="primary"
                   iconBefore={<VidPauseIcon label="play" />}
                   onClick={actions.pause}
                 />
               ) : (
                 <Button
-                  appearance="primary"
                   iconBefore={<VidPlayIcon label="pause" />}
                   onClick={actions.play}
                 />
@@ -66,21 +62,22 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             return (
               <VideoWrapper>
                 {video}
+                <TimeWrapper>
+                  <FieldRange
+                    value={videoState.currentTime}
+                    min={0}
+                    max={videoState.duration}
+                    // step={2}
+                    onChange={this.onTimeChange(actions.navigate)}
+                  />
+                </TimeWrapper>
                 <TimebarWrapper>
                   {button}
                   <CurrentTime>
                     {Math.round(videoState.currentTime)} /{' '}
                     {Math.round(videoState.duration)}
                   </CurrentTime>
-                  <TimeWrapper>
-                    <FieldRange
-                      value={videoState.currentTime}
-                      min={0}
-                      max={videoState.duration}
-                      // step={2}
-                      onChange={this.onTimeChange(actions.navigate)}
-                    />
-                  </TimeWrapper>
+
                   <VolumeWrapper>
                     <FieldRange
                       value={videoState.volume}

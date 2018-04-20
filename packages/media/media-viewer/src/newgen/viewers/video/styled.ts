@@ -3,6 +3,10 @@ import styled from 'styled-components';
 export const AppWrapper = styled.div`
   width: 100%;
   height: 100%;
+
+  button {
+    color: white !important;
+  }
 `;
 
 export const VideoWrapper = styled.div`
@@ -21,16 +25,17 @@ export const Timebar = styled.progress``;
 export const TimebarWrapper = styled.div`
   display: flex;
   align-items: center;
+  color: white;
 `;
 
 export const VolumeWrapper = styled.div`
-  flex: 1;
+  background: white;
   margin-right: 10px;
 `;
 
 export const TimeWrapper = styled.div`
-  width: 700px;
-  margin-right: 30px;
+  padding: 0 20px;
+  background-color: white;
 `;
 
 export const CurrentTime = styled.div`
