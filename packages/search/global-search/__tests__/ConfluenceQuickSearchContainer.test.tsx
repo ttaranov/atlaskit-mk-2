@@ -117,7 +117,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
-  it.skip('should render recently viewed pages on mount', async () => {
+  it('should render recently viewed pages on mount', async () => {
     const mockConfluenceClient = {
       getRecentItems() {
         return Promise.resolve([makeResult()]);
@@ -140,7 +140,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(group.children()).toHaveLength(1);
   });
 
-  it.skip('should render recently viewed spaces on mount', async () => {
+  it('should render recently viewed spaces on mount', async () => {
     const mockConfluenceClient = {
       getRecentItems() {
         return Promise.resolve([]);

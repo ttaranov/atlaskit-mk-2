@@ -31,7 +31,7 @@ const MOCK_SPACE = {
   name: 'Search & Smarts',
 };
 
-function mockRecentlyViewPages(pages: RecentPage[]) {
+function mockRecentlyViewedPages(pages: RecentPage[]) {
   fetchMock.get(
     'begin:http://localhost//wiki/rest/recentlyviewed/1.0/recent',
     pages,
@@ -39,12 +39,10 @@ function mockRecentlyViewPages(pages: RecentPage[]) {
 }
 
 function mockRecentlyViewedSpaces(spaces: RecentSpace[]) {
-  fetchMock
-    .get(
-      'begin:http://localhost//wiki/rest/recentlyviewed/1.0/recent/spaces',
-      spaces,
-    )
-    .catch(u => console.log(u));
+  fetchMock.get(
+    'begin:http://localhost//wiki/rest/recentlyviewed/1.0/recent/spaces',
+    spaces,
+  );
 }
 
 describe('ConfluenceClient', () => {
@@ -58,7 +56,6 @@ describe('ConfluenceClient', () => {
   });
 
   afterEach(() => {
-    fetchMock.reset();
     fetchMock.restore();
   });
 
@@ -69,7 +66,7 @@ describe('ConfluenceClient', () => {
         buildMockPage(ResultContentType.Blogpost),
       ];
 
-      mockRecentlyViewPages(pages);
+      mockRecentlyViewedPages(pages);
 
       const result = await confluenceClient.getRecentItems();
 
@@ -96,7 +93,7 @@ describe('ConfluenceClient', () => {
     });
 
     it('should not break if no results are returned', async () => {
-      mockRecentlyViewPages([]);
+      mockRecentlyViewedPages([]);
       const result = await confluenceClient.getRecentItems();
       expect(result).toEqual([]);
     });
