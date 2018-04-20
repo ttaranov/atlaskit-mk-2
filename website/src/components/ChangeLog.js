@@ -35,7 +35,6 @@ const Heading = ({
 
   const versionNumber = version[1];
   const versionDate = version[2];
-
   const href = `https://bitbucket.org/atlassian/atlaskit/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
   const anchorProps = {
     href,
@@ -116,7 +115,11 @@ export default class ChangeLog extends Component<Props> {
                   source={v.md}
                   renderers={{
                     Heading: props => (
-                      <Heading packageName={packageName} {...props} />
+                      <Heading
+                        packageName={packageName}
+                        {...props}
+                        url={v.url}
+                      />
                     ),
                   }}
                 />
