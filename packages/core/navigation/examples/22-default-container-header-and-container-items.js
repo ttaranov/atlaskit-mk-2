@@ -2,29 +2,18 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import AddonIcon from '@atlaskit/icon/glyph/addon';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
-import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
-import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
-import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import EditorAlignLeftIcon from '@atlaskit/icon/glyph/editor/align-left';
-import EditorFeedbackIcon from '@atlaskit/icon/glyph/editor/feedback';
-import FolderIcon from '@atlaskit/icon/glyph/folder';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import PeopleIcon from '@atlaskit/icon/glyph/people';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import Tooltip from '@atlaskit/tooltip';
-import TrayIcon from '@atlaskit/icon/glyph/tray';
-import WorldIcon from '@atlaskit/icon/glyph/world';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 
-import { getProvided } from '../src/theme/util';
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
   AkContainerNavigationNested,
@@ -35,6 +24,7 @@ import Navigation, {
   AkSearchDrawer,
   presetThemes,
   SkeletonDefaultContainerHeader,
+  SkeletonContainerItems,
 } from '../src';
 
 const BackIcon = (
@@ -94,71 +84,7 @@ export default class ConfluenceHome extends Component<*, *> {
     isOpen: true,
     menuLoading: true,
     openDrawer: null,
-    stack: [
-      [
-        <AkNavigationItem
-          text="Activity"
-          icon={<DiscoverIcon label="Activity icon" size="medium" />}
-          isSelected
-        />,
-        <AkNavigationItem
-          text="Your work"
-          icon={<TrayIcon label="Your work icon" size="medium" />}
-        />,
-        <AkNavigationItem
-          text="Spaces"
-          icon={<FolderIcon label="Spaces icon" size="medium" />}
-        />,
-        <AkNavigationItem
-          text="People"
-          icon={<PeopleIcon label="People icon" size="medium" />}
-        />,
-        <AkNavigationItem
-          action={
-            <Button
-              appearance="subtle"
-              iconBefore={<ChevronRightIcon label="add" size="medium" />}
-              spacing="none"
-            />
-          }
-          text="Add-ons"
-          onClick={() => this.addOnsNestedNav()}
-          icon={<AddonIcon label="Add-ons icon" size="medium" />}
-        />,
-        <AkNavigationItem
-          text="Settings"
-          icon={<SettingsIcon label="Settings icon" size="medium" />}
-        />,
-        <AkNavigationItemGroup title="New Confluence Experience">
-          <AkNavigationItem
-            icon={<EditorFeedbackIcon label="Feedback icon" size="medium" />}
-            text="Give feedback"
-          />
-          <AkNavigationItem
-            icon={
-              <CrossCircleIcon
-                secondaryColor={({ theme }) =>
-                  getProvided(theme).background.primary
-                }
-                label="Opt icon"
-                size="medium"
-              />
-            }
-            text="Opt out for now"
-          />
-        </AkNavigationItemGroup>,
-        <AkNavigationItemGroup title="My Spaces">
-          <AkNavigationItem
-            icon={<ConfluenceIcon label="Confluence icon" size="medium" />}
-            text="Confluence ADG 3"
-          />
-          <AkNavigationItem
-            icon={<WorldIcon label="World icon" size="medium" />}
-            text="Atlaskit"
-          />
-        </AkNavigationItemGroup>,
-      ],
-    ],
+    stack: [[<SkeletonContainerItems />]],
     width: this.props.width,
   };
 
