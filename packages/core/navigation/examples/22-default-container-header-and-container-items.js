@@ -84,7 +84,7 @@ export default class ConfluenceHome extends Component<*, *> {
     isOpen: true,
     menuLoading: true,
     openDrawer: null,
-    stack: [[<SkeletonContainerItems />]],
+    stack: [<SkeletonContainerItems />],
     width: this.props.width,
   };
 
