@@ -75,3 +75,7 @@ export {
 export {
   default as SkeletonGlobalBottomItems,
 } from './components/js/skeleton/SkeletonGlobalBottomItems';
+
+export {
+  default as SkeletonContainerNavigation,
+} from './components/js/skeleton/SkeletonContainerNavigation';
