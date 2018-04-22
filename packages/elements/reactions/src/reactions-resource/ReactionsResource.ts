@@ -119,7 +119,10 @@ export default class ReactionsResource extends AbstractReactionsResource
   }
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
-    let aris = keys.map(key => key.ari);
+    if (keys.length === 0) {
+      return Promise.resolve({});
+    }
+    const aris = keys.map(key => key.ari);
     const containerAri = keys[0].containerAri;
     return new Promise<Reactions>((resolve, reject) => {
       requestService<Reactions>(this.config.baseUrl, 'reactions/view', {

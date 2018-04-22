@@ -205,6 +205,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
           ).to.deep.equal(anotherAriData);
         });
     });
+
+    it('should not fail with empty args', () => {
+      return reactionsProvider.getReactions([]).then(reactions => {
+        expect(reactions).to.deep.equal({});
+      });
+    });
   });
 
   describe('addReaction', () => {
