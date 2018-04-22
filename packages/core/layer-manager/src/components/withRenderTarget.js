@@ -13,7 +13,7 @@ type Props = {
 
 export default function withRenderTarget(
   { target, withTransitionGroup }: Props,
-  WrappedComponent: ComponentType<{}>,
+  WrappedComponent: ComponentType<*>,
 ) {
   // Access the analytics context types so we can provide them across portal boundaries
   // until we can support React 16 where it can be provided natively

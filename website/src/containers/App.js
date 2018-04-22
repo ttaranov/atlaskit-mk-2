@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
@@ -51,6 +52,20 @@ const SiteAnlaytics = ({ children }) => {
   );
 };
 
+class ScrollToTop extends Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  render() {
+    return null;
+  }
+}
+
+const ScrollHandler = withRouter(ScrollToTop);
+
 class Boundary extends Component {
   state = { hasError: false };
 
@@ -71,6 +86,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <SiteAnlaytics>
+        <Route>
+          <ScrollHandler />
+        </Route>
         <Switch>
           <Route
             path="/examples/:groupId?/:pkgId?/:exampleId*"

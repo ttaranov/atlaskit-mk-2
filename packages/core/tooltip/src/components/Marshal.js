@@ -26,10 +26,8 @@ export default class TooltipMarshal {
 
   scrollListenerBound: boolean = false;
 
-  immediatelySwitch() {
-    return (
-      this.visibleTooltip && this.visibleTooltip.state.position !== 'mouse'
-    );
+  immediatelySwitch(tooltip: TooltipType) {
+    return this.visibleTooltip && tooltip.state.position !== 'mouse';
   }
 
   show(tooltip: TooltipType) {
@@ -51,7 +49,7 @@ export default class TooltipMarshal {
 
     // if a tooltip is already visible, but is not the one that should be
     // displayed, immediately switch them
-    if (this.immediatelySwitch()) {
+    if (this.immediatelySwitch(tooltip)) {
       // the visible tooltip may be queued to be hidden; prevent that
       if (this.queuedForHide) {
         this.clearHideTimeout();
@@ -72,7 +70,7 @@ export default class TooltipMarshal {
     this.queuedForShow = null;
     this.showTimeout = null;
     if (this.visibleTooltip) {
-      this.visibleTooltip.hide({ immediate: true });
+      this.hideTooltip(this.visibleTooltip, { immediate: true });
     }
     this.visibleTooltip = tooltip;
     this.addScrollListener(tooltip);
@@ -117,7 +115,7 @@ export default class TooltipMarshal {
 
       while (parent) {
         if (parent.tagName === 'BODY') {
-          window.addEventListener('scroll', this.handleScroll);
+          window.removeEventListener('scroll', this.handleScroll);
           break;
         } else if (isScrollable(parent)) {
           parent.removeEventListener('scroll', this.handleScroll);
@@ -168,5 +166,12 @@ export default class TooltipMarshal {
       clearTimeout(this.hideTimeout);
     }
     this.queuedForHide = null;
+  }
+
+  // Used to cleanup unit tests
+  destroy() {
+    if (this.visibleTooltip) {
+      this.removeScrollListener(this.visibleTooltip);
+    }
   }
 }

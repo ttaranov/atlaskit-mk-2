@@ -1,19 +1,19 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementType, type Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Modal from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
 import { Actions, ActionItem, Body, Heading, Image } from '../styled/Modal';
 import { getModalTheme } from './theme';
-import type { ActionsType, ChildrenType, ElementType } from '../types';
+import type { ActionsType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {|
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** The elements rendered in the modal */
-  children: ChildrenType,
+  children: Node,
   /** Path to the the your image */
   image?: string,
   /** Optional element rendered above the body */

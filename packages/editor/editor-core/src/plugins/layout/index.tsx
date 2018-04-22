@@ -16,13 +16,14 @@ const layoutPlugin: EditorPlugin = {
     return [
       {
         rank: 2400,
-        plugin: () =>
+        plugin: ({ schema }) =>
           new Plugin({
             key: pluginKey,
             state: {
-              init: () => ({}),
+              init: () => ({}), // TODO store property `forceMediaLayout: 'wide'`
               apply: (tr, state) => state,
             },
+            props: {},
           }),
       },
     ];

@@ -159,7 +159,7 @@ function getCoords({
     top: {
       top: targetRect.top - (tooltipRect.height + gutter),
       right: targetRect.right - (targetRect.width - tooltipRect.width) / 2,
-      bottom: targetRect.top + (tooltipRect.height - gutter),
+      bottom: targetRect.top - gutter,
       left: targetRect.left + (targetRect.width - tooltipRect.width) / 2,
     },
     right: {

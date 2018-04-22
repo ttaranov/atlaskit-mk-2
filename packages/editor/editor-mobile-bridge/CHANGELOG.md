@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.1.0
+- [minor] Media APIs exposed to mobile clients and can be used by native media components [31c66f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31c66f4)
+
 ## 0.0.19
 
 ## 0.0.18

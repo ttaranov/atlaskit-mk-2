@@ -27,7 +27,7 @@ const CONTROLLER_PADDING = 52;
 import { Props } from './table';
 
 export interface ComponentProps extends Props {
-  contentDOM: (element: HTMLTableSectionElement) => void;
+  contentDOM: (element: HTMLElement | undefined) => void;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
@@ -153,6 +153,7 @@ class TableComponent extends React.Component<ComponentProps> {
                 <table
                   ref={elem => {
                     this.table = elem;
+                    this.props.contentDOM(elem ? elem : undefined);
                   }}
                   data-number-column={node.attrs.isNumberColumnEnabled}
                   data-layout={node.attrs.layout}
@@ -164,7 +165,6 @@ class TableComponent extends React.Component<ComponentProps> {
                       }}
                     />
                   ) : null}
-                  <tbody ref={this.props.contentDOM} />
                 </table>
               </div>
               {columnShadows}

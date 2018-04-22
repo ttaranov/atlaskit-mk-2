@@ -25,3 +25,7 @@ export const MetadataWrapper: React.ComponentClass<
   overflow: scroll;
   flex: 1;
 `;
+
+export const FileInput: any = styled.input`
+  color: transparent;
+`;
