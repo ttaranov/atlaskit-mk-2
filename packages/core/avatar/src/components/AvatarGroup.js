@@ -17,6 +17,7 @@ import type {
   SizeType,
 } from '../types';
 import itemTheme from '../theme/itemTheme';
+import AvatarGroupItem from './AvatarGroupItem';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -94,9 +95,9 @@ export default class AvatarGroup extends Component<Props> {
     const items = data
       .slice(max)
       .map((avatar: AvatarPropTypes, index: number) => (
-        <DropdownItem
-          elemBefore={<Avatar {...avatar} enableTooltip={false} size="small" />}
-          href={avatar.href}
+        <AvatarGroupItem
+          isInteractive
+          avatar={avatar}
           key={index}
           onClick={(event: KeyboardEvent | MouseEvent) => {
             if (typeof onAvatarClick === 'function') {
