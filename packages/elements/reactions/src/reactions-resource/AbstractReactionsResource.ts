@@ -9,8 +9,6 @@ import {
   ReactionsState,
 } from './types';
 
-let debounced: number | null = null;
-
 export default abstract class AbstractReactionsResource
   implements ReactionsProvider {
   protected excludeArisFromAutoPoll: string[] = [];
@@ -21,6 +19,7 @@ export default abstract class AbstractReactionsResource
   protected lastActionForAri: { [ari: string]: number } = {};
 
   private batchedKeys: ObjectReactionKey[] = [];
+  private debounced: number | null = null;
 
   private loadingStatus: ReactionsState = {
     status: 'loading',
@@ -144,13 +143,13 @@ export default abstract class AbstractReactionsResource
       this.loadingStatus,
     );
 
-    if (debounced) {
-      clearTimeout(debounced);
+    if (this.debounced) {
+      clearTimeout(this.debounced);
     }
 
     this.queueAri(subscriptionKey);
 
-    debounced = setTimeout(() => {
+    this.debounced = setTimeout(() => {
       this.getReactions(this.batchedKeys)
         .then(reactions => {
           Object.keys(reactions).forEach(key => {
