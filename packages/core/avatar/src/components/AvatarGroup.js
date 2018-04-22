@@ -2,10 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
-import DropdownMenu, {
-  DropdownItem,
-  DropdownItemGroup,
-} from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import MoreIndicator from '../components/MoreIndicator';
