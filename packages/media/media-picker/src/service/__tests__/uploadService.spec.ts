@@ -430,6 +430,7 @@ describe('UploadService', () => {
         progress: jest.fn().mockReturnValue(config.progress),
       };
 
+      jest.spyOn(uploadService as any, 'finalizeFile');
       jest.spyOn(uploadService as any, 'copyFileToUsersCollection');
       jest.spyOn(emitter, 'emit');
       jest.spyOn(resumable, 'upload');
