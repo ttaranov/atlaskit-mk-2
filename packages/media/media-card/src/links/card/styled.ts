@@ -13,3 +13,5 @@ export const A: ComponentClass<HTMLAttributes<{}> & HrefProps> = styled(Href)`
   /* We need to do this to make TS happy */
   ${(props: HrefProps) => ''};
 `;
+
+A.displayName = 'A-CARD';

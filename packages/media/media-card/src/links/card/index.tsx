@@ -55,7 +55,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { isLoading, isError } = this;
     if (link && !isLoading && !isError) {
       return (
-        <A linkUrl={link} className="link-wrapper">
+        <A linkUrl={link} className="link-wrapper" underline={true}>
           {child}
         </A>
       );

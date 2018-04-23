@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as cx from 'classnames';
 import { Component } from 'react';
 
 import { A } from './styled';
@@ -21,13 +20,13 @@ export class Href extends Component<HrefProps, {}> {
       className,
       ...otherProps
     } = this.props;
-    const classNames = cx(className, { underline });
 
     return (
       <A
         {...otherProps}
+        underline={underline}
         href={linkUrl}
-        className={classNames}
+        className={className}
         target="_blank"
         rel="noopener"
       >
