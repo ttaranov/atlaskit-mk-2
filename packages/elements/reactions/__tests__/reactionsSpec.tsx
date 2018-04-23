@@ -10,7 +10,7 @@ import Reaction from '../src/internal/reaction';
 import ReactionPicker from '../src/reaction-picker';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
-import { ObjectReactionKey } from '../src/reactions-resource';
+import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -200,7 +200,7 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactions = mount(renderReactions());
 
     reactionsProvider.notifyUpdated(containerAri, demoAri, {
-      status: 'loading',
+      status: ReactionStatus.loading,
     });
 
     reactions.update();
@@ -213,7 +213,7 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactions = mount(renderReactions());
 
     reactionsProvider.notifyUpdated(containerAri, demoAri, {
-      status: 'error',
+      status: ReactionStatus.error,
       message: 'Something is wrong',
     });
 

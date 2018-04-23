@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import * as fetchMock from 'fetch-mock/src/client';
 import * as sinon from 'sinon';
 import { ReactionsResource } from '../src';
-import { ReactionsState } from '../src/reactions-resource';
+import { ReactionsState, ReactionStatus } from '../src/reactions-resource';
 import { equalEmojiId } from '../src/internal/helpers';
 import {
   grinId,
@@ -114,7 +114,7 @@ const populateCache = (reactionsProvider: ReactionsResource) => {
   Object.keys(response).forEach(ari => {
     const key = `${response[ari][0].containerAri}|${response[ari][0].ari}`;
     cachedReactions[key] = {
-      status: 'ready',
+      status: ReactionStatus.ready,
       reactions: response[ari],
     };
   });
@@ -169,7 +169,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       populateCache(reactionsProvider);
       const anotherAri = 'another:ari:123';
       const anotherAriData: ReactionsState = {
-        status: 'ready',
+        status: ReactionStatus.ready,
         reactions: [
           {
             ari: anotherAri,
@@ -236,8 +236,8 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.status).equal('ready');
-          if (state.status === 'ready') {
+          expect(state.status).equal(ReactionStatus.ready);
+          if (state.status === ReactionStatus.ready) {
             expect(state.reactions.length).to.equal(
               fetchGetReactions()[ari].length + 1,
             );
@@ -269,8 +269,8 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.status).equal('ready');
-          if (state.status === 'ready') {
+          expect(state.status).equal(ReactionStatus.ready);
+          if (state.status === ReactionStatus.ready) {
             expect(state.reactions.length).to.equal(
               fetchGetReactions()[ari].length - 1,
             );
@@ -412,7 +412,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     it('should call notifyUpdated if cached', () => {
       const key = `${reaction.containerAri}|${reaction.ari}`;
       const reactionsState = {
-        status: 'ready',
+        status: ReactionStatus.ready,
         reactions: [reaction],
       };
       (reactionsProvider as any).cachedReactions = {

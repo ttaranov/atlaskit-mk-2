@@ -9,6 +9,7 @@ import {
   ReactionsProvider,
   ReactionSummary,
   ReactionsState,
+  ReactionStatus,
 } from './reactions-resource';
 import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
 
@@ -103,7 +104,7 @@ export default class Reactions extends Component<Props, State> {
       : sortByRelevance;
 
   private updateState = (reactionState: ReactionsState) => {
-    if (reactionState.status === 'ready') {
+    if (reactionState.status === ReactionStatus.ready) {
       const newReactions = reactionState.reactions;
       this.setState(
         ({ reactions }) => ({
@@ -116,13 +117,13 @@ export default class Reactions extends Component<Props, State> {
         // setting to true so new reactions will flash on mount
         !this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
       );
-    } else if (reactionState.status === 'loading') {
+    } else if (reactionState.status === ReactionStatus.loading) {
       this.setState({
         error: false,
         loading: true,
         reactions: [],
       });
-    } else if (reactionState.status === 'error') {
+    } else if (reactionState.status === ReactionStatus.error) {
       this.setState({
         loading: false,
         error: true,

@@ -7,6 +7,7 @@ import {
   ReactionSummary,
   SubscriptionHandler,
   ReactionsState,
+  ReactionStatus,
 } from './types';
 
 export default abstract class AbstractReactionsResource
@@ -22,11 +23,11 @@ export default abstract class AbstractReactionsResource
   private debounced: number | null = null;
 
   private loadingStatus: ReactionsState = {
-    status: 'loading',
+    status: ReactionStatus.loading,
   };
 
   private errorStatus: ReactionsState = {
-    status: 'error',
+    status: ReactionStatus.error,
     message: 'Error while fetching reactions',
   };
 
@@ -50,7 +51,7 @@ export default abstract class AbstractReactionsResource
           Object.keys(reactions).forEach(ari => {
             this.includeAriInAutoPoll(ari);
             this.notifyUpdated(reactions[ari][0].containerAri, ari, {
-              status: 'ready',
+              status: ReactionStatus.ready,
               reactions: reactions[ari],
             });
           });
@@ -67,7 +68,7 @@ export default abstract class AbstractReactionsResource
     emojiId: string,
   ): ReactionSummary | undefined {
     const reactionState = this.cachedReactions[key];
-    if (reactionState && reactionState.status === 'ready') {
+    if (reactionState && reactionState.status === ReactionStatus.ready) {
       return reactionState.reactions.find(reaction =>
         equalEmojiId(reaction.emojiId, emojiId),
       );
@@ -161,7 +162,7 @@ export default abstract class AbstractReactionsResource
               containerAri: containerAri,
             });
             this.notifyUpdated(containerAri, ari, {
-              status: 'ready',
+              status: ReactionStatus.ready,
               reactions: objectReactions,
             });
           });
@@ -238,7 +239,7 @@ export default abstract class AbstractReactionsResource
 
     if (!this.cachedReactions[key]) {
       this.cachedReactions[key] = {
-        status: 'ready',
+        status: ReactionStatus.ready,
         reactions: [],
       };
     }
@@ -248,7 +249,7 @@ export default abstract class AbstractReactionsResource
     if (reaction) {
       reaction.reacted = true;
       reaction.count++;
-    } else if (reactionState.status === 'ready') {
+    } else if (reactionState.status === ReactionStatus.ready) {
       reactionState.reactions.push({
         ari: ari,
         containerAri: containerAri,
@@ -277,7 +278,7 @@ export default abstract class AbstractReactionsResource
 
       if (reaction.count < 1) {
         const reactionState = this.cachedReactions[key];
-        if (reactionState.status === 'ready') {
+        if (reactionState.status === ReactionStatus.ready) {
           reactionState.reactions = reactionState.reactions.filter(
             r => r !== reaction,
           );

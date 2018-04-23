@@ -6,6 +6,7 @@ import {
   ObjectReactionKey,
   Reactions,
   ReactionsState,
+  ReactionStatus,
 } from './types';
 import AbstractReactionsResource from './AbstractReactionsResource';
 
@@ -96,13 +97,13 @@ export default class ReactionsResource extends AbstractReactionsResource
         const key = this.objectReactionKey(containerAri, ari);
         if (!this.cachedReactions[key]) {
           this.cachedReactions[key] = {
-            status: 'ready',
+            status: ReactionStatus.ready,
             reactions: [],
           };
         }
 
         const state = this.cachedReactions[key];
-        if (state.status === 'ready') {
+        if (state.status === ReactionStatus.ready) {
           const index = findIndex(state.reactions, r => r.emojiId === emojiId);
           if (index !== -1) {
             state.reactions[index] = reactionDetails;
@@ -137,7 +138,7 @@ export default class ReactionsResource extends AbstractReactionsResource
         Object.keys(reactions).forEach(ari => {
           const cacheKey = this.objectReactionKey(containerAri, ari);
           this.cachedReactions[cacheKey] = {
-            status: 'ready',
+            status: ReactionStatus.ready,
             reactions: reactions[ari],
           };
         });
@@ -177,7 +178,7 @@ export default class ReactionsResource extends AbstractReactionsResource
           // Do not update cache if it was already updated by a more recent action
           if (this.lastActionForAri[ari] === timestamp) {
             this.cachedReactions[key] = {
-              status: 'ready',
+              status: ReactionStatus.ready,
               reactions: reactions.reactions,
             };
           }
@@ -218,7 +219,7 @@ export default class ReactionsResource extends AbstractReactionsResource
           // Do not update cache if it was already updated by a more recent action
           if (this.lastActionForAri[ari] === timestamp) {
             this.cachedReactions[key] = {
-              status: 'ready',
+              status: ReactionStatus.ready,
               reactions: reactions.reactions,
             };
           }

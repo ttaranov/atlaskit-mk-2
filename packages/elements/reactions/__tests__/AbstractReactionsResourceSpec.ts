@@ -4,6 +4,7 @@ import {
   ReactionsState,
   ObjectReactionKey,
   Reactions,
+  ReactionStatus,
 } from '../src/reactions-resource';
 
 const buildAbstractClass = () => {
@@ -118,7 +119,7 @@ describe('AbstractReactionsResource', () => {
       handler,
     );
     expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler).toHaveBeenCalledWith({ status: 'loading' });
+    expect(handler).toHaveBeenCalledWith({ status: ReactionStatus.loading });
 
     jest.runAllTimers();
 
@@ -131,7 +132,7 @@ describe('AbstractReactionsResource', () => {
         .then(() => {
           expect(handler).toHaveBeenCalledTimes(2);
           expect(handler).toHaveBeenCalledWith({
-            status: 'error',
+            status: ReactionStatus.error,
             message: 'Error while fetching reactions',
           });
         })

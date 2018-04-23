@@ -3,17 +3,23 @@ export type ReactionsState =
   | ReactionsLoading
   | ReactionsError;
 
-export type ReactionsReadyState = {
-  status: 'ready';
+export enum ReactionStatus {
+  ready = 'READY',
+  loading = 'LOADING',
+  error = 'ERROR',
+}
+
+export interface ReactionsReadyState {
+  status: ReactionStatus.ready;
   reactions: ReactionSummary[];
-};
+}
 
 export type ReactionsLoading = {
-  status: 'loading';
+  status: ReactionStatus.loading;
 };
 
 export type ReactionsError = {
-  status: 'error';
+  status: ReactionStatus.error;
   message: string;
 };
 

@@ -5,6 +5,7 @@ import {
   default as AbstractReactionsProvider,
   ObjectReactionKey,
   ReactionsState,
+  ReactionStatus,
 } from './reactions-resource';
 import { Reactions, ReactionSummary } from './reactions-resource';
 import { defaultReactionsByShortName } from './internal/selector';
@@ -17,7 +18,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         'ari:cloud:owner:demo-cloud-id:container/1',
         'ari:cloud:owner:demo-cloud-id:item/1',
       )]: {
-        status: 'ready',
+        status: ReactionStatus.ready,
         reactions: [
           {
             ari: 'ari:cloud:owner:demo-cloud-id:item/1',
@@ -68,7 +69,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
           this.cachedReactions[
             this.objectReactionKey(key.containerAri, key.ari)
           ] = {
-            status: 'ready',
+            status: ReactionStatus.ready,
             reactions: [],
           };
         }
@@ -77,7 +78,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
       const results: Reactions = {};
       Object.keys(this.cachedReactions).forEach(cacheKey => {
         const objectReactions = this.cachedReactions[cacheKey];
-        if (objectReactions.status === 'ready') {
+        if (objectReactions.status === ReactionStatus.ready) {
           const ari = cacheKey.split('|')[1];
           results[ari] = objectReactions.reactions;
         }
@@ -121,14 +122,14 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
       this.getDetailedReaction(reaction).then(reactionDetails => {
         if (!this.cachedReactions[ari]) {
           this.cachedReactions[ari] = {
-            status: 'ready',
+            status: ReactionStatus.ready,
             reactions: [],
           };
         }
 
         const key = this.objectReactionKey(containerAri, ari);
         const reactionsState = this.cachedReactions[key];
-        if (reactionsState.status === 'ready') {
+        if (reactionsState.status === ReactionStatus.ready) {
           const index = findIndex(
             reactionsState.reactions,
             r => r.emojiId === emojiId,
@@ -156,7 +157,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     return new Promise<ReactionsState>((resolve, reject) => {
       const key = this.objectReactionKey(containerAri, ari);
       const reactionsState = this.cachedReactions[key];
-      if (reactionsState.status === 'ready') {
+      if (reactionsState.status === ReactionStatus.ready) {
         const index = findIndex(reactionsState.reactions, reaction =>
           equalEmojiId(reaction.emojiId, emojiId),
         );
@@ -188,7 +189,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     return new Promise<ReactionsState>((resolve, reject) => {
       const key = this.objectReactionKey(containerAri, ari);
       const reactionsState = this.cachedReactions[key];
-      if (reactionsState.status === 'ready') {
+      if (reactionsState.status === ReactionStatus.ready) {
         const index = findIndex(reactionsState.reactions, reaction =>
           equalEmojiId(reaction.emojiId, emojiId),
         );
