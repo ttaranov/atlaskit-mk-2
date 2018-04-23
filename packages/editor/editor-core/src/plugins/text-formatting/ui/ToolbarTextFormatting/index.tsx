@@ -3,8 +3,14 @@ import { PureComponent } from 'react';
 import { EditorView } from 'prosemirror-view';
 import BoldIcon from '@atlaskit/icon/glyph/editor/bold';
 import ItalicIcon from '@atlaskit/icon/glyph/editor/italic';
+import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { analyticsDecorator as analytics } from '../../../../analytics';
-import { toggleBold, toggleItalic, tooltip } from '../../../../keymaps';
+import {
+  toggleBold,
+  toggleItalic,
+  toggleCode,
+  tooltip,
+} from '../../../../keymaps';
 import { TextFormattingState } from '../../pm-plugins/main';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { ButtonGroup } from '../../../../ui/styles';
@@ -23,9 +29,9 @@ export interface State {
   italicActive?: boolean;
   italicDisabled?: boolean;
   italicHidden?: boolean;
-  underlineActive?: boolean;
-  underlineDisabled?: boolean;
-  underlineHidden?: boolean;
+  codeActive?: boolean;
+  codeDisabled?: boolean;
+  codeHidden?: boolean;
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props, State> {
@@ -65,6 +71,17 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
             iconBefore={<ItalicIcon label="Italic" />}
           />
         )}
+
+        {this.state.codeHidden ? null : (
+          <ToolbarButton
+            spacing={isReducedSpacing ? 'none' : 'default'}
+            onClick={this.handleCodeClick}
+            selected={this.state.codeActive}
+            disabled={disabled || this.state.codeDisabled}
+            title={tooltip(toggleCode)}
+            iconBefore={<CodeIcon label="code" />}
+          />
+        )}
       </ButtonGroup>
     );
   }
@@ -77,9 +94,9 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
       italicActive: pluginState.emActive,
       italicDisabled: pluginState.emDisabled,
       italicHidden: pluginState.emHidden,
-      underlineActive: pluginState.underlineActive,
-      underlineDisabled: pluginState.underlineDisabled,
-      underlineHidden: pluginState.underlineHidden,
+      codeActive: pluginState.codeActive,
+      codeDisabled: pluginState.codeDisabled,
+      codeHidden: pluginState.codeHidden,
     });
   };
 
@@ -95,6 +112,14 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
   private handleItalicClick = (): boolean => {
     if (!this.state.italicDisabled) {
       return this.props.pluginState.toggleEm(this.props.editorView);
+    }
+    return false;
+  };
+
+  @analytics('atlassian.editor.format.code.button')
+  private handleCodeClick = (): boolean => {
+    if (!this.state.codeDisabled) {
+      return this.props.pluginState.toggleCode(this.props.editorView);
     }
     return false;
   };

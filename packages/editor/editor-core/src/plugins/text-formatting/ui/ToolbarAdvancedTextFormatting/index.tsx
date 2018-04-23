@@ -32,9 +32,9 @@ export interface State {
   underlineActive?: boolean;
   underlineDisabled?: boolean;
   underlineHidden?: boolean;
-  codeActive?: boolean;
-  codeDisabled?: boolean;
-  codeHidden?: boolean;
+  // codeActive?: boolean;
+  // codeDisabled?: boolean;
+  // codeHidden?: boolean;
   strikethroughActive?: boolean;
   strikethroughDisabled?: boolean;
   strikeHidden?: boolean;
@@ -102,12 +102,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
   render() {
     const {
       isOpen,
-      codeActive,
+      // codeActive,
       underlineActive,
       strikethroughActive,
       subscriptActive,
       superscriptActive,
-      codeDisabled,
+      // codeDisabled,
       underlineDisabled,
       strikethroughDisabled,
       clearFormattingDisabled,
@@ -127,7 +127,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         selected={
           isOpen ||
           underlineActive ||
-          codeActive ||
+          // codeActive ||
           strikethroughActive ||
           subscriptActive ||
           superscriptActive
@@ -147,7 +147,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       !(
         strikethroughDisabled &&
         clearFormattingDisabled &&
-        codeDisabled &&
+        // codeDisabled &&
         subscriptDisabled &&
         superscriptDisabled &&
         underlineDisabled
@@ -192,7 +192,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     if (pluginStateTextFormatting) {
       const {
         underlineHidden,
-        codeHidden,
+        // codeHidden,
         strikeHidden,
         subscriptHidden,
         superscriptHidden,
@@ -213,9 +213,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
           tooltip(toggleStrikethrough),
         );
       }
-      if (!codeHidden) {
-        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
-      }
+      /* Disabled to surface in main toolbar instead*/
+      // if (!codeHidden && false) {
+      //   this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
+      // }
       if (!subscriptHidden) {
         this.addRecordToItems(
           items,
@@ -267,9 +268,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       underlineDisabled: pluginState.underlineDisabled,
       underlineHidden: pluginState.underlineHidden,
 
-      codeActive: pluginState.codeActive,
-      codeDisabled: pluginState.codeDisabled,
-      codeHidden: pluginState.codeHidden,
+      // codeActive: pluginState.codeActive,
+      // codeDisabled: pluginState.codeDisabled,
+      // codeHidden: pluginState.codeHidden,
 
       strikethroughActive: pluginState.strikeActive,
       strikethroughDisabled: pluginState.strikeDisabled,
@@ -303,9 +304,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       case 'underline':
         pluginStateTextFormatting!.toggleUnderline(this.props.editorView);
         break;
-      case 'code':
-        pluginStateTextFormatting!.toggleCode(this.props.editorView);
-        break;
+      // case 'code':
+      //   pluginStateTextFormatting!.toggleCode(this.props.editorView);
+      //   break;
       case 'strike':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);
         break;
