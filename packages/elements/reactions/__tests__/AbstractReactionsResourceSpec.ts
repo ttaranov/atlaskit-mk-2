@@ -51,6 +51,7 @@ describe('AbstractReactionsResource', () => {
     resource = buildAbstractClass();
   });
 
+  // Skip for now. This is failing due a bug. See issue FS-1891
   it.skip('should notify subscribers of different containers', () => {
     jest.spyOn(resource, 'getReactions').mockImplementation(args => {
       return Promise.reject('Error');
@@ -86,6 +87,7 @@ describe('AbstractReactionsResource', () => {
     });
   });
 
+  // Skip for now. This is failing dua a bug. See issue FS-1921
   it.skip('should not refresh interacted reactions', () => {
     jest.spyOn(resource, 'getReactions').mockImplementation(args => {
       return Promise.resolve({
