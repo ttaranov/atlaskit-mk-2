@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.5.2
+- [patch] Fix inserting media inside blocks that don't support media [d2458b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2458b8)
+
 ## 70.5.1
 - [patch] Fixing the expand macro copy [ef01bbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef01bbd)
 
