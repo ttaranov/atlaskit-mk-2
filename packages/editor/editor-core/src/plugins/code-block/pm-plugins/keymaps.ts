@@ -15,7 +15,9 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         $from.parentOffset === $from.parent.nodeSize - 2 && // cursor offset is at the end of block
         $from.indexAfter($from.depth) === node.childCount; // paragraph is the last child of code block
       const codeBlockEndsWithNewLine =
-        node.lastChild && node.lastChild.text!.endsWith('\n');
+        node.lastChild &&
+        node.lastChild.text &&
+        node.lastChild.text.endsWith('\n');
 
       if (selectionIsAtEndOfCodeBlock && codeBlockEndsWithNewLine) {
         const tr = state.tr

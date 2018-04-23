@@ -298,7 +298,8 @@ export class MediaPluginState {
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
 
-    if (isNonImagesBanned(grandParentNode)) {
+    // in case of gap cursor, selection might be at depth=0
+    if (grandParentNode && isNonImagesBanned(grandParentNode)) {
       nonImageAttachements = [];
     }
 
