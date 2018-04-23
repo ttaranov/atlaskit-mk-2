@@ -1,5 +1,7 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.5
+
 ## 4.0.4
 - [patch] ED-4334 fix column size calculation bug; don't emit default col/rowspan attrs [eb8f140](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb8f140)
 
