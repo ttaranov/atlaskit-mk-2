@@ -35,27 +35,25 @@ It's important to strike a balance here because the more contributions we get, t
 1. **MAJOR** version when 
     - You make incompatible API changes 
     - Change named exports exposed via the main entry point.
-    - Imperative methods.
     - Change in props.
     - Renaming a public prop.
     - Making a public prop more restrictive in what it accepts.
     - Renaming a named export that's exposed via the main entry point.
     - Icon sizes changing.
-    - Flex parent instead of a box and vice-versa.
+    - Changes in CSS that can affect layout outside of a component. For example, changing display property from flex to block and vice-versa.
     - Upgrade peer dependencies.
 2. **MINOR** version when 
     - You add functionality in a backwards-compatible manner
-    - Anything inside render(). This includes elements, attributes and classes.
     - Anything that has a leading underscore.
-    - Refactoring stuff in `render()`. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
+    - Anything inside render(). This includes elements, attributes and classes.. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
 3. **PATCH** version when 
     - You make backwards-compatible bug fixes
     - update package dependencies
     - Directory structure changes
         - Reworking our directory structure. We offer a `dist/esm` build where the module field in the `package.json` points to the entry point within that folder. There should be no reason to reach into packages.
 4. **NO RELEASE** when
-    - update dev dependencies
-    - add tests or examples
-    - update examples
-    - update internal documentation    
+    - Update dev dependencies
+    - Add tests or examples
+    - Update examples
+    - Update internal documentation    
 
