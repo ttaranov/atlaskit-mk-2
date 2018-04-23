@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.4.2
+- [patch] Prevent 'Enter' from splitting a code-block that ends in a new-line, when the cursor is not at the end of the code-block. [140c76c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/140c76c)
+
 ## 70.4.1
 - [patch] Fix vertical positioning of table floating toolbar. [3c96ad5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c96ad5)
 
