@@ -2,10 +2,10 @@
 /* eslint-disable no-console */ // While in dev preview console.info will be used
 /* eslint-disable react/no-unused-prop-types */
 import React, { Component, type Node } from 'react';
-import { colors, fontSize } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 import { type FormRef } from './Form';
-import FieldWrapper, { HelperText } from './styled/Field';
+import FieldWrapper, { HelperText, Label } from './styled/Field';
 import { ValidatorMessage } from './';
 
 type Props = {
@@ -76,10 +76,6 @@ export type FieldState = {
 
 export type FieldComponent = React$Element<*> & {
   onChange: () => {},
-};
-
-const labelStyle = {
-  fontSize: `${fontSize()}px`,
 };
 
 const RequiredIndicator = styled.span`
@@ -322,12 +318,12 @@ export default class Field extends Component<Props, State> {
   renderLabel = () => {
     if (this.props.label && this.props.label.length) {
       return (
-        <label htmlFor={this.props.id} style={labelStyle}>
+        <Label htmlFor={this.props.id}>
+          {this.props.label}
           {this.props.isRequired ? (
             <RequiredIndicator role="presentation">*</RequiredIndicator>
           ) : null}
-          {this.props.label}
-        </label>
+        </Label>
       );
     }
     return null;

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize, typography } from '@atlaskit/theme';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 
@@ -18,11 +18,26 @@ type Props = {
   isInvalid?: boolean,
 };
 
+const IconWrapper = styled.span`
+  display: inline-block;
+  vertical-align: text-top;
+`;
+
+const Error = () => (
+  <IconWrapper>
+    <ErrorIcon size="small" role="presentation" />
+  </IconWrapper>
+);
+const Success = () => (
+  <IconWrapper>
+    <SuccessIcon size="small" role="presentation" />
+  </IconWrapper>
+);
+
 const Message = styled.div`
-  align-items: center;
+  ${typography.h200} font-weight: normal;
   color: ${props => (props.invalid ? colors.R400 : colors.G400)};
-  display: flex;
-  margin-top: ${gridSize}px;
+  margin-top: ${gridSize() / 2}px;
 `;
 
 export default class ValidatorMessage extends Component<Props> {
@@ -40,7 +55,7 @@ export default class ValidatorMessage extends Component<Props> {
     if (isInvalid) {
       return (
         <Message invalid>
-          <ErrorIcon label="error icon" role="presentation" />
+          <Error />
           {invalidMessage}
         </Message>
       );
@@ -52,7 +67,7 @@ export default class ValidatorMessage extends Component<Props> {
     ) {
       return (
         <Message>
-          <SuccessIcon label="success icon" role="presentation" />
+          <Success />
           {validMessage}
         </Message>
       );
