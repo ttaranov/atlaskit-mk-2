@@ -36,7 +36,7 @@ export default md`
 
   ## Helpers
 
-  The \`themed\` export is a function that generates functions which switch on mode. These generated functions can be passed to a styled component to make a property responsive to mode. AtlasKit components will do this by default.
+  The \`themed\` export is a function that generates functions which switch on mode. These generated functions can be passed to a styled component to make a property responsive to mode. Atlaskit components will do this by default.
   colors object
 
   The \`colors\` object is an export that has the ADG colors attached to it, for easy use.

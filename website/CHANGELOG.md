@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 1.5.14
+- [patch] Remove quick-search component from navigation. See docs for how to upgrade. [5447ec2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5447ec2)
+
 ## 1.5.13
 
 ## 1.5.12

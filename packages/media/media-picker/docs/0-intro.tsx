@@ -65,7 +65,6 @@ export default md`
       }),
     uploadParams: {
       collection: 'collection-id',
-      fetchMetadata: true,
     },
   };
   ~~~
@@ -80,20 +79,10 @@ export default md`
 
   MediaPicker uses this parameter to get a client id and JWT token used for authorization against the Media API.
 
-  ### uploadParams? <_{collection: string, fetchMetadata: boolean, autoFinalize: boolean})_>
+  ### uploadParams? <_{collection: string})_>
 
   **collection** <_string_> —
   The name of the collection where files should be uploaded to
-
-  **fetchMetadata** <_boolean_> —
-  If true, MediaPicker will wait until all file processing is done and will return file objects with metadata (which includes links to previews, file size, etc.).
-
-  Default is true.
-
-  **autoFinalize** <_boolean_> —
-  If true, the file will be finalized automatically. If false, the file should be finalized by handling the event **upload-finalize-ready**.
-
-  Default is true.
 
   ---
 
@@ -134,10 +123,6 @@ export default md`
   #### upload-status-update _{file: MediaFile, progress: MediaProgress}_
 
   Emitted when upload is in action
-
-  #### upload-finalize-ready _{file: MediaFile, finalize: function () => void}_
-
-  Emitted when the chunks were uploaded, but **autoFinalize** in the upload parameters is false. To create the file call **finalize()**.
 
   #### upload-processing _{file: MediaFile}_
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "27.0.1",
+  "version": "27.0.2",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -46,7 +46,6 @@
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
-    "polished": "1.5.0",
     "react-lazily-render": "^1.0.1",
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",

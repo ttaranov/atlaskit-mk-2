@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.2.4
+- [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
+
 ## 9.2.3
 
 ## 9.2.2
