@@ -45,9 +45,13 @@ describe('AbstractReactionsResource', () => {
   beforeAll(() => jest.useFakeTimers());
   afterAll(() => jest.useRealTimers());
 
-  it.skip('should notify subscribers of different containers', () => {
-    const resource = buildAbstractClass();
+  let resource: AbstractReactionsResource;
 
+  beforeEach(() => {
+    resource = buildAbstractClass();
+  });
+
+  it.skip('should notify subscribers of different containers', () => {
     jest.spyOn(resource, 'getReactions').mockImplementation(args => {
       return Promise.reject('Error');
     });
@@ -83,8 +87,6 @@ describe('AbstractReactionsResource', () => {
   });
 
   it.skip('should not refresh interacted reactions', () => {
-    const resource = buildAbstractClass();
-
     jest.spyOn(resource, 'getReactions').mockImplementation(args => {
       return Promise.resolve({
         'ari-1': [],
@@ -104,7 +106,6 @@ describe('AbstractReactionsResource', () => {
   });
 
   it('should handle error', () => {
-    const resource = buildAbstractClass();
     jest
       .spyOn(resource, 'getReactions')
       .mockImplementation(args => Promise.reject('Error'));
