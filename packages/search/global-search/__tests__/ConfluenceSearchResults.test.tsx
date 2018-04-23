@@ -44,7 +44,7 @@ describe('ConfluenceSearchResults', () => {
     return shallow(<div>{searchResults(props)}</div>);
   }
 
-  it.skip('should render recently viewed objects when no query is entered', () => {
+  it('should render recently viewed objects when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyViewedPages: [makeResult()],
@@ -56,7 +56,7 @@ describe('ConfluenceSearchResults', () => {
     // TODO asssert
   });
 
-  it.skip('should render recently viewed spaces when no query is entered', () => {
+  it('should render recently viewed spaces when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyViewedSpaces: [makeResult()],
