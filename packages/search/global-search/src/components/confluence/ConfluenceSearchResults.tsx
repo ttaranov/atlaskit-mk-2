@@ -26,7 +26,7 @@ const renderSpaces = (results: Result[], query: string) => (
 const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </ResultItemGroup>
 );
 
@@ -34,7 +34,7 @@ const renderEmptyState = (query: string) => (
   <>
     <EmptyState />
     {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </>
 );
 

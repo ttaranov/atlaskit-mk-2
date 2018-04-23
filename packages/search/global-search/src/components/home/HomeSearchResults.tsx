@@ -41,7 +41,7 @@ const renderConfluence = (results: Result[], query: string) => (
 const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </ResultItemGroup>
 );
 
@@ -50,7 +50,7 @@ const renderEmptyState = (query: string) => (
     <EmptyState />
     {searchJiraItem(query)}
     {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </>
 );
 
