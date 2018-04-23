@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 70.5.1
+- [patch] Fixing the expand macro copy [ef01bbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef01bbd)
+
 ## 70.5.0
 - [minor] The editor now only allows ordered list creation via autoformatting that starts with `1`. e.g. `1) Content` or `1. Content`. Using a number other than `1` will no longer trigger the input rules (ED-4344) [9c543c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c543c8)
 
