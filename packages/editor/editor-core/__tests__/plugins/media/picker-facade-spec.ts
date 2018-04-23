@@ -352,16 +352,6 @@ describe('Media PickerFacade', () => {
         });
 
         triggerStatusUpdate();
-
-        // expect(stateManager.getState(testTemporaryFileId)).toEqual({
-        //   id: testTemporaryFileId,
-        //   status: 'unfinalized',
-        //   progress: testFileProgress.portion,
-        //   fileName: testFileData.name,
-        //   fileSize: testFileData.size,
-        //   fileMimeType: testFileData.type,
-        // });
-
         triggerProcessing();
         triggerStatusUpdate();
 
