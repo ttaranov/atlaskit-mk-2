@@ -107,6 +107,15 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
+  createFile(): Promise<MediaStoreResponse<EmptyFile>> {
+    return this.request('/file', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then(mapResponseToJson);
+  }
+
   getFile = (
     fileId: string,
     params: MediaStoreGetFileParams = {},
@@ -121,8 +130,11 @@ export class MediaStore {
     id: string,
     params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
+    const auth = await this.config.authProvider();
+
     return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
       params,
+      auth,
     });
   };
 
@@ -224,3 +236,8 @@ export type AppendChunksToUploadRequestBody = {
   readonly hash?: string;
   readonly offset?: number;
 };
+
+export interface EmptyFile {
+  readonly id: string;
+  readonly createdAt: number;
+}

@@ -114,6 +114,29 @@ export default class Selector extends PureComponent<Props, State> {
     });
   };
 
+  private renderEmoji = (emojiId, index) => {
+    const { emojiProvider } = this.props;
+    const key = emojiId.id || emojiId.shortName;
+
+    const classNames = cx(emojiStyle, revealStyle, {
+      selected: emojiId === this.state.selection,
+    });
+
+    const style = revealDelay(index);
+
+    return (
+      <div key={key} className={classNames} style={style}>
+        <Tooltip content={emojiId.shortName}>
+          <EmojiButton
+            emojiId={emojiId}
+            emojiProvider={emojiProvider}
+            onClick={this.onEmojiSelected}
+          />
+        </Tooltip>
+      </div>
+    );
+  };
+
   private renderShowMore = (): React.ReactNode => (
     <ShowMore
       key="more"
@@ -124,31 +147,11 @@ export default class Selector extends PureComponent<Props, State> {
   );
 
   render() {
-    const { emojiProvider, showMore } = this.props;
+    const { showMore } = this.props;
 
     return (
       <div className={selectorStyle}>
-        {defaultReactions.map((emojiId, index) => {
-          const key = emojiId.id || emojiId.shortName;
-
-          const classNames = cx(emojiStyle, revealStyle, {
-            selected: emojiId === this.state.selection,
-          });
-
-          const style = revealDelay(index);
-
-          return (
-            <div key={key} className={classNames} style={style}>
-              <Tooltip content={emojiId.shortName}>
-                <EmojiButton
-                  emojiId={emojiId}
-                  emojiProvider={emojiProvider}
-                  onClick={this.onEmojiSelected}
-                />
-              </Tooltip>
-            </div>
-          );
-        })}
+        {defaultReactions.map(this.renderEmoji)}
 
         {showMore ? this.renderShowMore() : null}
       </div>

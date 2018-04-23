@@ -1,5 +1,5 @@
 export {
   default as GlobalQuickSearch,
-} from './components/GlobalQuickSearchConfiguration';
+} from './components/GlobalQuickSearchWrapper';
 
 export { Config } from './api/configureSearchClients';

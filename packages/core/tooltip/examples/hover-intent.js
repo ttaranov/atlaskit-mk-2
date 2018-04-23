@@ -25,12 +25,6 @@ export default class HoverIntent extends Component<{}, S> {
     return (
       <Fragment>
         <p>
-          Hovering over another tooltip while one is already displaying will
-          immediately show the new tooltip and hide the old one. When position
-          is set to {`'mouse'`}, there will be a small delay between this
-          transition.
-        </p>
-        <p>
           Click a target to toggle the position of the tooltips between{' '}
           {`'bottom'`} and {`'mouse'`}.
         </p>

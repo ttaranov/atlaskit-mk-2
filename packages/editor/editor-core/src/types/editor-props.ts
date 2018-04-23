@@ -25,6 +25,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
+import { CollabEditOptions } from '../plugins/collab-edit';
 
 export type EditorAppearance =
   | 'message'
@@ -102,6 +103,7 @@ export interface EditorProps {
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 
   media?: MediaOptions;
+  collabEdit?: CollabEditOptions;
   textFormatting?: TextFormattingOptions;
 
   maxHeight?: number;

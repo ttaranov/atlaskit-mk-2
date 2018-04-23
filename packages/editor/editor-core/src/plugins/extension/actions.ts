@@ -66,34 +66,22 @@ export const removeExtension = (
   return true;
 };
 
-export const removeBodiedExtensionsOnPaste = (slice: Slice) => (
+export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
+  slice: Slice,
   state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const nodes: PmNode[] = [];
-  const { tr, selection, schema: { nodes: { bodiedExtension } } } = state;
+) => {
+  const { selection, schema: { nodes: { bodiedExtension } } } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    let modified = false;
-
+    const nodes: PmNode[] = [];
     slice.content.forEach(child => {
-      if (child.type === bodiedExtension) {
-        modified = true;
-      } else {
+      if (child.type !== bodiedExtension) {
         nodes.push(child);
       }
     });
 
-    if (modified) {
-      const content = new Slice(
-        Fragment.from(nodes),
-        slice.openStart,
-        slice.openEnd,
-      );
-      dispatch(tr.replaceSelection(content));
-      return true;
-    }
+    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
   }
 
-  return false;
+  return slice;
 };

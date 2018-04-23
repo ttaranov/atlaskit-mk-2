@@ -1,5 +1,7 @@
 # @atlaskit/pubsub
 
+## 2.0.1
+
 ## 2.0.0
 - [major] Update to React 16.3. [8a96fc8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a96fc8)
 

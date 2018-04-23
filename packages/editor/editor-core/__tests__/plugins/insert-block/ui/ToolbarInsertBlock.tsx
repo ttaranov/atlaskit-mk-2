@@ -112,7 +112,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        buttons={5}
+        buttons={0}
         isReducedSpacing={false}
       />,
     );
