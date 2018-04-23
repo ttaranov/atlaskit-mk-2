@@ -252,6 +252,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
             disabled={isDisabled || btn.isDisabled}
             iconBefore={btn.elemBefore}
             selected={btn.isActive}
+            title={btn.content}
             onClick={() => this.onItemActivated({ item: btn })}
           />
         ))}

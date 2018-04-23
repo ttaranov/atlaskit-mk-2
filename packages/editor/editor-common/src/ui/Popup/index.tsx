@@ -23,6 +23,8 @@ export interface Props {
   onPositionCalculated?: (position: Position) => Position;
   onPlacementChanged?: (placement: [string, string]) => void;
   scrollableElement?: HTMLElement;
+  stickToBottom?: boolean;
+  ariaLabel?: string;
 }
 
 export interface State {
@@ -35,6 +37,7 @@ export interface State {
 }
 
 export default class Popup extends PureComponent<Props, State> {
+  scrollElement: undefined | false | HTMLElement;
   static defaultProps = {
     offset: [0, 0],
     boundariesElement: document.body,
@@ -61,6 +64,7 @@ export default class Popup extends PureComponent<Props, State> {
       onPlacementChanged,
       alignX,
       alignY,
+      stickToBottom,
     } = props;
     const { popup } = state;
 
@@ -86,6 +90,7 @@ export default class Popup extends PureComponent<Props, State> {
       popup,
       target,
       offset: offset!,
+      stickToBottom,
     });
     position = onPositionCalculated ? onPositionCalculated(position) : position;
 
@@ -139,9 +144,15 @@ export default class Popup extends PureComponent<Props, State> {
   componentDidMount() {
     window.addEventListener('resize', this.handleReposition);
 
-    const { scrollableElement } = this.props;
-    if (scrollableElement) {
-      scrollableElement.addEventListener('scroll', this.handleReposition);
+    const { stickToBottom } = this.props;
+
+    if (stickToBottom) {
+      this.scrollElement = findOverflowScrollParent(this.props.target!);
+    } else {
+      this.scrollElement = this.props.scrollableElement;
+    }
+    if (this.scrollElement) {
+      this.scrollElement.addEventListener('scroll', this.handleReposition);
     }
   }
 
@@ -151,9 +162,8 @@ export default class Popup extends PureComponent<Props, State> {
       cancelAnimationFrame(this.scheduledResizeFrame);
     }
 
-    const { scrollableElement } = this.props;
-    if (scrollableElement) {
-      scrollableElement.removeEventListener('scroll', this.handleReposition);
+    if (this.scrollElement) {
+      this.scrollElement.removeEventListener('scroll', this.handleReposition);
     }
   }
 
@@ -168,6 +178,7 @@ export default class Popup extends PureComponent<Props, State> {
           zIndex: akEditorFloatingPanelZIndex,
           ...position,
         }}
+        aria-label={this.props.ariaLabel || 'Popup'}
       >
         {this.props.children}
       </div>

@@ -13,8 +13,6 @@ const breadcrumbs = (
 
 export default () => (
   <PageHeader breadcrumbs={breadcrumbs}>
-    Title describing the content but really really really really really really
-    really really really really really really really really really long text in
-    order to get it to truncate into an ellipsis
+    Title describing the content
   </PageHeader>
 );

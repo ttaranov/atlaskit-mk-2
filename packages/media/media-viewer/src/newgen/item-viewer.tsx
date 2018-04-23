@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 
 export type Props = {
-  identifier: Identifier;
-  context: Context;
+  readonly identifier: Identifier;
+  readonly context: Context;
 };
 
 export type State = {
@@ -19,8 +19,7 @@ export type State = {
 };
 
 export class ItemViewer extends React.Component<Props, State> {
-
-  state: State = { item: { status: 'PENDING'} };
+  state: State = { item: { status: 'PENDING' } };
 
   private subscription: Subscription;
 
@@ -59,13 +58,17 @@ export class ItemViewer extends React.Component<Props, State> {
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }
       case 'FAILED':
-        return <ErrorMessage>Error</ErrorMessage>;
+        return <ErrorMessage>{item.err.message}</ErrorMessage>;
     }
   }
 
   private init(props: Props) {
     const { context, identifier } = props;
-    const provider = context.getMediaItemProvider(identifier.id, identifier.type, identifier.collectionName);
+    const provider = context.getMediaItemProvider(
+      identifier.id,
+      identifier.type,
+      identifier.collectionName,
+    );
 
     this.subscription = provider.observable().subscribe({
       next: mediaItem => {
@@ -73,8 +76,8 @@ export class ItemViewer extends React.Component<Props, State> {
           this.setState({
             item: {
               status: 'FAILED',
-              err: new Error('links are not supported at the moment')
-            }
+              err: new Error('links are not supported at the moment'),
+            },
           });
         } else {
           const { processingStatus } = mediaItem.details;
@@ -106,11 +109,12 @@ export class ItemViewer extends React.Component<Props, State> {
     });
   }
 
-    // It's possible that a different identifier or context was passed.
+  // It's possible that a different identifier or context was passed.
   // We therefore need to reset Media Viewer.
   private needsReset(propsA: Props, propsB: Props) {
     return (
-      !deepEqual(propsA.identifier, propsB.identifier) || propsA.context !== propsB.context
+      !deepEqual(propsA.identifier, propsB.identifier) ||
+      propsA.context !== propsB.context
     );
   }
 
@@ -119,4 +123,4 @@ export class ItemViewer extends React.Component<Props, State> {
       this.subscription.unsubscribe();
     }
   }
-};
+}

@@ -24,10 +24,10 @@ exports[`@atlaskit/page-header should render correctly 1`] = `
 }
 
 .c2 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -114,10 +114,10 @@ exports[`@atlaskit/page-header should render correctly with disableTitleStyles p
 }
 
 .c2 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

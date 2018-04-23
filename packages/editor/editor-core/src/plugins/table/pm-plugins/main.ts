@@ -59,6 +59,7 @@ export interface PluginConfig {
   allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
+  stickToolbarToBottom?: boolean;
   permittedLayouts?: PermittedLayoutsDescriptor;
 }
 
@@ -81,6 +82,7 @@ export class TableState {
   allowBackgroundColor: boolean = false;
   allowHeaderRow: boolean = false;
   allowHeaderColumn: boolean = false;
+  stickToolbarToBottom: boolean = false;
   permittedLayouts: PermittedLayoutsDescriptor;
 
   private isHeaderRowRequired: boolean = false;
@@ -99,6 +101,7 @@ export class TableState {
     this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
     this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
     this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
+    this.stickToolbarToBottom = !!pluginConfig.stickToolbarToBottom;
     this.eventDispatcher = eventDispatcher;
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
