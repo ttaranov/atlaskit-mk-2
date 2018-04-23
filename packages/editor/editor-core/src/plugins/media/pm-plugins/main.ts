@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -42,7 +42,7 @@ import {
   MediaStateManager,
 } from '../types';
 import DefaultMediaStateManager from '../default-state-manager';
-import { insertMediaSingleNode } from './media-single';
+import { insertMediaSingleNode } from '../utils/media-single';
 
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
@@ -306,15 +306,7 @@ export class MediaPluginState {
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
 
-    const allowMediaSingle =
-      mediaSingle &&
-      grandParentNode.type.validContent(Fragment.from(mediaSingle.create()));
-
-    if (
-      this.editorAppearance !== 'message' &&
-      allowMediaSingle &&
-      mediaSingle
-    ) {
+    if (this.editorAppearance !== 'message' && mediaSingle) {
       imageAttachments.forEach(mediaState =>
         this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );

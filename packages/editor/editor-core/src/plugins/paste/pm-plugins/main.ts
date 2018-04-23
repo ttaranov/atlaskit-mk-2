@@ -11,7 +11,7 @@ import { EditorAppearance } from '../../../types';
 import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
 import { containsTable } from '../../table/utils';
 import { runMacroAutoConvert } from '../../macro';
-import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
+import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks } from '../util';
 import {
