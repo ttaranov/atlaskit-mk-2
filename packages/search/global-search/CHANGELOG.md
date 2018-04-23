@@ -1,5 +1,7 @@
 # @atlaskit/global-search
 
+## 3.0.3
+
 ## 3.0.2
 - [patch] Rename EmptyState component to NoResults [cb73105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73105)
 
