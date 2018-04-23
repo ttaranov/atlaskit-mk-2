@@ -700,3 +700,7 @@ export const isLastItemMediaGroup = (node: Node): boolean => {
 export const isInListItem = (state: EditorState): boolean => {
   return hasParentNodeOfType(state.schema.nodes.listItem)(state.selection);
 };
+
+export const hasOpenEnd = (slice: Slice): boolean => {
+  return slice.openStart > 0 || slice.openEnd > 0;
+};

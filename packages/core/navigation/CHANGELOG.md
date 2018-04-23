@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 30.0.3
+- [patch] exporting the skeleton header from navigation [7697346](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7697346)
+
 ## 30.0.2
 - [patch] removes app-switcher dev dependency [fad3bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad3bbe)
 

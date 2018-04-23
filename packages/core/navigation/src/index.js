@@ -51,3 +51,31 @@ export { presets as presetThemes };
 export { resultTypes as quickSearchResultTypes };
 
 export { default as Skeleton } from './components/js/skeleton';
+
+export {
+  default as SkeletonDefaultContainerHeader,
+} from './components/js/skeleton/SkeletonDefaultContainerHeader';
+
+export {
+  default as SkeletonContainerItems,
+} from './components/js/skeleton/SkeletonContainerItems';
+
+export {
+  default as SkeletonContainerItem,
+} from './components/js/skeleton/SkeletonContainerItem';
+
+export {
+  default as SkeletonGlobalNavigation,
+} from './components/js/skeleton/SkeletonGlobalNavigation';
+
+export {
+  default as SkeletonGlobalTopItems,
+} from './components/js/skeleton/SkeletonGlobalTopItems';
+
+export {
+  default as SkeletonGlobalBottomItems,
+} from './components/js/skeleton/SkeletonGlobalBottomItems';
+
+export {
+  default as SkeletonContainerNavigation,
+} from './components/js/skeleton/SkeletonContainerNavigation';

@@ -93,6 +93,7 @@ import EditorAlignCenterIcon from '../glyph/editor/align-center';
 import EditorAlignLeftIcon from '../glyph/editor/align-left';
 import EditorAlignRightIcon from '../glyph/editor/align-right';
 import EditorAttachmentIcon from '../glyph/editor/attachment';
+import EditorBackgroundColorIcon from '../glyph/editor/background-color';
 import EditorBoldIcon from '../glyph/editor/bold';
 import EditorBulletListIcon from '../glyph/editor/bullet-list';
 import EditorCloseIcon from '../glyph/editor/close';
@@ -135,6 +136,7 @@ import EditorRemoveIcon from '../glyph/editor/remove';
 import EditorSearchIcon from '../glyph/editor/search';
 import EditorStrikethroughIcon from '../glyph/editor/strikethrough';
 import EditorSuccessIcon from '../glyph/editor/success';
+import EditorTableDisplayOptionsIcon from '../glyph/editor/table-display-options';
 import EditorTableIcon from '../glyph/editor/table';
 import EditorTaskIcon from '../glyph/editor/task';
 import EditorTextColorIcon from '../glyph/editor/text-color';
@@ -921,6 +923,12 @@ export default {
     componentName: 'EditorAttachmentIcon',
     package: '@atlaskit/icon/glyph/editor/attachment',
   },
+  'editor/background-color': {
+    keywords: ['editor/background-color', 'editorbackgroundcolor', 'fill'],
+    component: EditorBackgroundColorIcon,
+    componentName: 'EditorBackgroundColorIcon',
+    package: '@atlaskit/icon/glyph/editor/background-color',
+  },
   'editor/bold': {
     keywords: ['editor/bold', 'editorbold'],
     component: EditorBoldIcon,
@@ -1172,6 +1180,12 @@ export default {
     component: EditorSuccessIcon,
     componentName: 'EditorSuccessIcon',
     package: '@atlaskit/icon/glyph/editor/success',
+  },
+  'editor/table-display-options': {
+    keywords: ['editor/table-display-options', 'editortabledisplayoptions', 'display-options', 'display'],
+    component: EditorTableDisplayOptionsIcon,
+    componentName: 'EditorTableDisplayOptionsIcon',
+    package: '@atlaskit/icon/glyph/editor/table-display-options',
   },
   'editor/table': {
     keywords: ['editor/table', 'editortable', 'grid'],
