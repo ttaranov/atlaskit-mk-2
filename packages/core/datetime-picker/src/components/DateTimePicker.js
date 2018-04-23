@@ -204,7 +204,7 @@ export default class DateTimePicker extends Component<Props, State> {
             icon={CalendarIcon}
             onChange={this.onTimeChange}
             selectProps={{ styles }}
-            value={timeValue}
+            defaultValue={timeValue}
             isTimesEditable={isTimesEditable}
           />
         </FlexItem>
