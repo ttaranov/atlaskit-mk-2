@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
-import EmptyState from '../EmptyState';
+import NoResults from '../NoResults';
 import {
   renderResults,
   searchConfluenceItem,
@@ -45,9 +45,9 @@ const renderPeople = (results: Result[], query: string) => (
   </ResultItemGroup>
 );
 
-const renderEmptyState = (query: string) => (
+const renderNoResults = (query: string) => (
   <>
-    <EmptyState />
+    <NoResults />
     {searchJiraItem(query)}
     {searchConfluenceItem(query)}
     {searchPeopleItem()}
@@ -90,7 +90,7 @@ export default function searchResults(props: Props) {
       isEmpty,
     )
   ) {
-    return renderEmptyState(query);
+    return renderNoResults(query);
   }
 
   return [
