@@ -138,6 +138,17 @@ export default () => {
         onChange={console.log}
       />
 
+      <Label
+        htmlFor="react-select-timepicker-4--input"
+        label="editable times"
+      />
+      <TimePicker
+        id="timepicker-4"
+        defaultValue="14:30"
+        onChange={console.log}
+        isTimesEditable
+      />
+
       <h3>Date / time picker</h3>
       <Label htmlFor="react-select-datetimepicker-1--input" label="default" />
       <DateTimePicker id="datetimepicker-1" onChange={console.log} />
@@ -164,6 +175,17 @@ export default () => {
         id="datetimepicker-3"
         defaultValue="2018-01-02T14:30+10:00"
         onChange={console.log}
+      />
+
+      <Label
+        htmlFor="react-select-datetimepicker-4--input"
+        label="editable times (UTC+10:00)"
+      />
+      <DateTimePicker
+        id="datetimepicker-4"
+        defaultValue="2018-01-02T14:30+10:00"
+        onChange={console.log}
+        isTimesEditable
       />
     </div>
   );

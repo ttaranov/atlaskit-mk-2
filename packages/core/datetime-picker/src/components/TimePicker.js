@@ -1,6 +1,6 @@
 // @flow
 
-import Select, { components, mergeStyles } from '@atlaskit/select';
+import { CreatableSelect, components, mergeStyles } from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
@@ -43,6 +43,8 @@ type Props = {
   selectProps: Object,
   /** The times to show in the dropdown. */
   times: Array<string>,
+  /** Allow users to edit the input and add a time */
+  isTimesEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
 };
@@ -85,6 +87,7 @@ export default class TimePicker extends Component<Props, State> {
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
+    isTimesEditable: false,
   };
 
   state = {
@@ -114,6 +117,17 @@ export default class TimePicker extends Component<Props, State> {
     const value = v ? v.value : '';
     this.setState({ value });
     this.props.onChange(value);
+  };
+
+  /** Only allow custom times if isTimesEditable prop is true  */
+  onCreateOption = (inputValue: any): void => {
+    const value = inputValue || '';
+    if (this.props.isTimesEditable) {
+      this.setState({ value });
+      this.props.onChange(value);
+    } else {
+      this.onChange(inputValue);
+    }
   };
 
   onMenuOpen = () => {
@@ -163,7 +177,7 @@ export default class TimePicker extends Component<Props, State> {
       <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <Select
+        <CreatableSelect
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
@@ -175,6 +189,7 @@ export default class TimePicker extends Component<Props, State> {
           menuIsOpen={isOpen && !isDisabled}
           menuPlacement="auto"
           onBlur={onBlur}
+          onCreateOption={this.onCreateOption}
           onChange={this.onChange}
           options={this.getOptions()}
           onFocus={onFocus}
