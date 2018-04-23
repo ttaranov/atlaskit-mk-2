@@ -107,9 +107,9 @@ export default class ChangeLog extends Component<Props> {
             const majorHasChanged = currentMajor !== major;
             currentMajor = major;
             // In case of blank / empty changelogs, the default commit points to mk-2
-            const href = v.url
-              ? v.url
-              : `https://bitbucket.org/atlassian/atlaskit-mk-2/commits/tag/%40atlaskit%2F${packageName}%40${versionNumber}`;
+            const href = `https://bitbucket.org/atlassian/${
+              v.repository
+            }/commits/tag/%40atlaskit%2F${packageName}%40${v.version}`;
             return (
               // Version is not unique enough due to untidy changelogs.
               /* eslint-disable react/no-array-index-key */
