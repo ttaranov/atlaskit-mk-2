@@ -10,7 +10,7 @@ export const divvyChangelog = (changelog): Logs => {
       // This should only allow us to skip the first chunk which is the name, as
       // well as the unreleased section.
       const match = md.match(/\d+\.\d+\.\d+/);
-      // Getting the commits url and removing the parenthesis
+      // Getting the repository url
       let repository = md.match(
         'https://bitbucket.org/atlassian/atlaskit/commits/',
       )

@@ -124,7 +124,6 @@ export default class ChangeLog extends Component<Props> {
                         repository={href}
                         {...props}
                       />
-                      // console.log(heading, 'head')
                     ),
                   }}
                 />
