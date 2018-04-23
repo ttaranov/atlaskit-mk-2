@@ -63,7 +63,6 @@ const RouterLink = ({
 export const RouterNavigationItem = (props: any) => {
   return (
     <AkNavigationItem
-      isCompact
       linkComponent={linkProps => (
         <RouterLink
           onClick={props.onClick}

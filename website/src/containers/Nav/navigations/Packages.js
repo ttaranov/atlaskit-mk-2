@@ -3,7 +3,6 @@
 import React, { type ComponentType } from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
-import HipchatMediaAttachmentCountIcon from '@atlaskit/icon/glyph/hipchat/media-attachment-count';
 import { isSubNavExpanded } from '../utils/linkComponents';
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
@@ -31,7 +30,10 @@ export function buildSubNavGroup(
 
 const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
   let navigationItemIcon = (
-    <HipchatMediaAttachmentCountIcon label={`${fs.titleize(pkg.id)} icon`} />
+    <PackageIcon
+      primaryColor="transparent"
+      label={`${fs.titleize(pkg.id)} icon`}
+    />
   );
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.maybeGetById(
@@ -70,6 +72,7 @@ const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
   }
 
   return {
+    isCompact: true,
     icon: navigationItemIcon,
     to: packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
