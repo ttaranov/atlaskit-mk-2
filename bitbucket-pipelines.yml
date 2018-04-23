@@ -143,36 +143,36 @@ pipelines:
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - yarn typecheck
-
-      - parallel:
+          # Rest of the steps are jest tests. We no longer use the $BITBUCKET_PARALLEL_STEP_COUNT and $BITBUCKET_PARALLEL_STEP
+          # variables as they mean the jest steps need to be in their own parallel block, so we just hardcode them here
           - step:
               name: Running Jest 1 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 2 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 3 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 4 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
 
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules
