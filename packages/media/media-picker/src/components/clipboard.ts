@@ -3,8 +3,8 @@ import { AuthProvider, Context } from '@atlaskit/media-core';
 import { LocalUploadComponent } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
-import * as domready from 'domready';
 import { UploadParams } from '..';
+import { whenDomReady } from '../util/documentReady';
 
 export interface ClipboardConfig {
   uploadParams: UploadParams;
@@ -29,11 +29,11 @@ export class Clipboard extends LocalUploadComponent {
     this.analyticsContext.trackEvent(new MPClipboardLoaded());
   }
 
-  public activate(): void {
-    domready(() => {
-      this.deactivate();
-      document.addEventListener('paste', this.pasteHandler, false);
-    });
+  public async activate(): Promise<void> {
+    await whenDomReady;
+
+    this.deactivate();
+    document.addEventListener('paste', this.pasteHandler, false);
   }
 
   public deactivate(): void {
