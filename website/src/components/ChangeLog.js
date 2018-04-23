@@ -19,12 +19,12 @@ function getVersion(str: string) {
 const Heading = ({
   children,
   packageName,
-  repository,
+  href,
 }: {
   children: Node,
   level: number,
   packageName: string,
-  repository: string,
+  href: string,
 }) => {
   const childrenArray = Children.toArray(children);
   const title = childrenArray[0];
@@ -38,7 +38,7 @@ const Heading = ({
   const versionNumber = version[1];
   const versionDate = version[2];
   const anchorProps = {
-    href: repository,
+    href,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
@@ -121,7 +121,7 @@ export default class ChangeLog extends Component<Props> {
                     Heading: props => (
                       <Heading
                         packageName={packageName}
-                        repository={href}
+                        href={href}
                         {...props}
                       />
                     ),
