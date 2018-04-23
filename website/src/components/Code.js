@@ -8,7 +8,7 @@ import { colors, gridSize, themed } from '@atlaskit/theme';
 // $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
-import { replaceImports } from 'react-codesandboxer';
+import { replaceImports } from 'codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;
