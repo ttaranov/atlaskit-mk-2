@@ -73,14 +73,14 @@ export const removeBodiedExtensionWrapper = (
   const { schema: { nodes: { bodiedExtension } } } = state;
   const { content: { firstChild: wrapper } } = slice;
 
-  if (wrapper!.type !== bodiedExtension) {
+  if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
     return slice;
   }
 
   return new Slice(
     Fragment.from(wrapper!.content),
-    slice.openStart,
-    slice.openEnd,
+    Math.max(0, slice.openStart - 1),
+    Math.max(0, slice.openEnd - 1),
   );
 };
 
