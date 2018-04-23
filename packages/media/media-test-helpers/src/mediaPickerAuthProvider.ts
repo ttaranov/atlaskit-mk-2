@@ -10,6 +10,8 @@ const accessUrns: { [key: string]: Access } = {
     'urn:filestore:chunk:*': ['create', 'read'],
     'urn:filestore:upload': ['create'],
     'urn:filestore:upload:*': ['read', 'update'],
+    'urn:filestore:file': ['create'],
+    'urn:filestore:file:*': ['read', 'update'],
   },
   'mediapicker-test': {
     'urn:filestore:collection': ['create'],
@@ -17,6 +19,8 @@ const accessUrns: { [key: string]: Access } = {
     'urn:filestore:chunk:*': ['create', 'read'],
     'urn:filestore:upload': ['create'],
     'urn:filestore:upload:*': ['read', 'update'],
+    'urn:filestore:file': ['create'],
+    'urn:filestore:file:*': ['read', 'update'],
   },
 };
 

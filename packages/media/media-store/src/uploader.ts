@@ -67,7 +67,7 @@ export const uploadFile = async (
     offset += chunks.length;
   };
 
-  const emptyFile = store.createFile();
+  const emptyFile = store.createFile({ collection });
 
   await chunkinator(
     content,
@@ -75,7 +75,7 @@ export const uploadFile = async (
       hashingFunction,
       hashingConcurrency: 5,
       probingBatchSize: 100,
-      chunkSize: 0.5 * 1024 * 1024,
+      chunkSize: 4 * 1024 * 1024,
       uploadingConcurrency: 3,
       uploadingFunction,
       probingFunction: createProbingFunction(store),

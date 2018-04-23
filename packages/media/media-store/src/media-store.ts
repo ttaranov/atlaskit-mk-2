@@ -5,7 +5,6 @@ import {
   MediaUpload,
   MediaChunksProbe,
 } from './models/media';
-import { AuthContext, MediaApiConfig } from './models/auth';
 import {
   AsapBasedAuth,
   AuthContext,
@@ -113,12 +112,16 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
-  createFile(): Promise<MediaStoreResponse<EmptyFile>> {
+  createFile(
+    params: MediaStoreCreateFileParams = {},
+  ): Promise<MediaStoreResponse<EmptyFile>> {
     return this.request('/file', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
       },
+      params,
+      authContext: { collectionName: params.collection },
     }).then(mapResponseToJson);
   }
 
@@ -210,6 +213,10 @@ export type MediaStoreCreateFileFromUploadParams = {
   readonly expireAfter?: number;
   readonly replaceFileId?: string;
   readonly skipConversions?: boolean;
+};
+
+export type MediaStoreCreateFileParams = {
+  readonly collection?: string;
 };
 
 export type MediaStoreCreateFileFromUploadConditions = {
