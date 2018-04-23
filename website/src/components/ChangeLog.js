@@ -38,7 +38,7 @@ const Heading = ({
   const versionNumber = version[1];
   const versionDate = version[2];
   const anchorProps = {
-    href: url,
+    href: repository,
     rel: 'noopener noreferrer',
     style: { fontWeight: 500 },
     target: '_blank',
