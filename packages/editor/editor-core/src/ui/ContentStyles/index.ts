@@ -270,7 +270,15 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     & [layout='wrap-left'] + [layout='wrap-right'],
     & [layout='wrap-right'] + [layout='wrap-left'] {
       clear: none;
-      & + p {
+      & + p,
+      & + ul,
+      & + ol,
+      & + h1,
+      & + h2,
+      & + h3,
+      & + h4,
+      & + h5,
+      & + h6 {
         clear: both;
       }
       & > div {

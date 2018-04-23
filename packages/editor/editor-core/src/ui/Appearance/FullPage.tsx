@@ -51,9 +51,9 @@ const ContentArea = styled.div`
     & > * {
       clear: both;
     }
-    & > p,
-    & > ul,
-    & > ol,
+    > p,
+    > ul,
+    > ol,
     > h1,
     > h2,
     > h3,
