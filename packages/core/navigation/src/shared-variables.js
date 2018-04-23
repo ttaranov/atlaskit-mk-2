@@ -121,25 +121,5 @@ export const globalSecondaryActions = (() => {
   };
 })();
 
-export const search = {
-  layout: {
-    padding: {
-      top: 0,
-      bottom: gridSize * 2,
-      side: gridSize * 3,
-    },
-    margin: {
-      top: 0,
-      bottom: gridSize * 3,
-      side: 0,
-    },
-    /**
-     * Restore the height setting that was lost due to the ClearButton no longer being there to
-     * stretch the box. (this height aligns it nicely with the back button in drawers)
-     */
-    height: gridSize * 4,
-  },
-};
-
 export const resizerClickableWidth = gridSize * 2;
 export const resizerVisibleWidth = 2;

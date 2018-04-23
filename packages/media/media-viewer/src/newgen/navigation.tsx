@@ -38,15 +38,14 @@ export default class Navigation extends Component<NavigationProps, any> {
 
     return (
       <ArrowsWrapper>
-
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow>
               <ArrowLeftCircleIcon
                 onClick={this.navigate('prev')}
                 primaryColor={colors.N800}
-                size='xlarge'
-                label='Previous'
+                size="xlarge"
+                label="Previous"
               />
             </Arrow>
           ) : null}
@@ -58,13 +57,12 @@ export default class Navigation extends Component<NavigationProps, any> {
               <ArrowRightCircleIcon
                 onClick={this.navigate('next')}
                 primaryColor={colors.N800}
-                size='xlarge'
-                label='Next'
+                size="xlarge"
+                label="Next"
               />
             </Arrow>
           ) : null}
         </RightWrapper>
-
       </ArrowsWrapper>
     );
   }

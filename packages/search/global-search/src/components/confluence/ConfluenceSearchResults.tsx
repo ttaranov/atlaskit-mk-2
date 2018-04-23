@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
-import EmptyState from '../EmptyState';
+import NoResults from '../NoResults';
 import {
   renderResults,
   searchConfluenceItem,
@@ -30,9 +30,9 @@ const renderPeople = (results: Result[], query: string) => (
   </ResultItemGroup>
 );
 
-const renderEmptyState = (query: string) => (
+const renderNoResults = (query: string) => (
   <>
-    <EmptyState />
+    <NoResults />
     {searchConfluenceItem(query)}
     {searchPeopleItem()}
   </>
@@ -74,7 +74,7 @@ export default function searchResults(props: Props) {
 
   // TODO need to pass isLoading down to avoid showing no results screen when still searching
   if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return renderEmptyState(query);
+    return renderNoResults(query);
   }
 
   return [

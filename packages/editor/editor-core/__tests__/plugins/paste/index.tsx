@@ -379,4 +379,24 @@ describe('paste plugins', () => {
       );
     });
   });
+
+  describe('paste part of bodied extension as test', () => {
+    it('should remove bodiedExtension from the pasted content, paste only text', () => {
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: 'expand',
+      };
+      const { editorView } = editor(
+        doc(bodiedExtension(attrs)(p('Hello')), p('{<>}')),
+      );
+
+      dispatchPasteEvent(editorView, {
+        html: `<meta charset='utf-8'><p data-pm-slice=1 1 [&quot;bodiedExtension&quot;,null]>llo</p>`,
+      });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(bodiedExtension(attrs)(p('Hello')), p('llo')),
+      );
+    });
+  });
 });

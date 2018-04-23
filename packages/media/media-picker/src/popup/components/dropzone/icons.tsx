@@ -4,7 +4,7 @@ import { StyledIcon, StyledSvgGroup } from './styled';
 
 export class UploadIcon extends Component {
   render() {
-    // TODO: Use AtlasKit color
+    // TODO: Use Atlaskit color
     // https://product-fabric.atlassian.net/browse/MSW-156
     return (
       <StyledIcon

@@ -22,6 +22,9 @@ function calcWidth(
   width: number,
   containerWidth: number,
 ): string {
+  // we need 4px space for the gap cursor
+  const gapCursorSpace = 4;
+
   switch (layout) {
     case 'wrap-right':
     case 'wrap-left':
@@ -31,7 +34,7 @@ function calcWidth(
     case 'wide':
       return `${Math.min(960, width)}px`;
     case 'full-width':
-      return `${Math.min(width, containerWidth)}px`;
+      return `${Math.min(width, containerWidth) - gapCursorSpace}px`;
     default:
       return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
   }

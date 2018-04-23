@@ -135,7 +135,6 @@ export const mockPopupUploadEventEmitter = () => ({
   emitClosed: jest.fn(),
   emitUploadsStart: jest.fn(),
   emitUploadProgress: jest.fn(),
-  emitUploadFinalizeReady: jest.fn(),
   emitUploadPreviewUpdate: jest.fn(),
   emitUploadProcessing: jest.fn(),
   emitUploadEnd: jest.fn(),

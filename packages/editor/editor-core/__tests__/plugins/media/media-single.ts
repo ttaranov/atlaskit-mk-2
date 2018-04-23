@@ -10,7 +10,7 @@ import {
 import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
-} from '../../../src/plugins/media/pm-plugins/media-single';
+} from '../../../src/plugins/media/utils/media-single';
 import {
   MediaState,
   MediaStateStatus,
