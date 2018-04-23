@@ -51,8 +51,9 @@ type State = {
   coordinates: CoordinatesType | null,
 };
 
-// global tooltip marshall
-const marshall = new TooltipMarshal();
+// global tooltip marshal
+// export for testing purposes
+export const marshal = new TooltipMarshal();
 
 function getInitialState(props): State {
   return {
@@ -157,6 +158,7 @@ class Tooltip extends Component<Props, State> {
       coordinates,
       truncate,
     };
+
     return <Transition {...transitionProps}>{content}</Transition>;
   }
 
@@ -181,7 +183,7 @@ class Tooltip extends Component<Props, State> {
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
-    marshall.show(this);
+    marshal.show(this);
 
     if (onMouseOver) onMouseOver(event);
   };
@@ -191,7 +193,7 @@ class Tooltip extends Component<Props, State> {
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
-    marshall.hide(this);
+    marshal.hide(this);
 
     if (onMouseOut) onMouseOut(event);
   };
@@ -231,6 +233,8 @@ class Tooltip extends Component<Props, State> {
     );
   }
 }
+
+export { Tooltip as TooltipBase };
 
 export type TooltipType = Tooltip;
 

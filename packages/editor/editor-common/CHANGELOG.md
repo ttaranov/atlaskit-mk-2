@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 9.2.3
+
 ## 9.2.2
 
 - [patch] ED-3633, fixing paragarph margins inside table. [9d8c2a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d8c2a4)

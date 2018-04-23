@@ -114,7 +114,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(imageUploadPlugin);
   }
 
-  if (props.collabEditProvider) {
+  if (props.collabEdit || props.collabEditProvider) {
     plugins.push(collabEditPlugin);
   }
 

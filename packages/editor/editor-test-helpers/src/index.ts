@@ -75,6 +75,8 @@ export {
   sequence,
   date,
   placeholder,
+  layoutSection,
+  layoutColumn,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';

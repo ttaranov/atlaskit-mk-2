@@ -45,14 +45,14 @@ export type PublicFile = {
   preview?: string;
 };
 export interface Event<K extends keyof PopupUploadEventPayloadMap> {
-  eventName: K;
-  data: PopupUploadEventPayloadMap[K];
+  readonly eventName: K;
+  readonly data: PopupUploadEventPayloadMap[K];
 }
-export type EventsList = Event<keyof PopupUploadEventPayloadMap>[];
+export type Events = Event<keyof PopupUploadEventPayloadMap>[];
 export interface PopupWrapperState {
   collectionName: string;
   closedTimes: number;
-  events: EventsList;
+  events: Events;
   authEnvironment: AuthEnvironment;
   inflightUploads: { [key: string]: MediaProgress };
   hasTorndown: boolean;
@@ -234,7 +234,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   }
 
-  renderEvents(events: EventsList) {
+  renderEvents(events: Events) {
     return events.map(({ eventName, data: payload }, key) => {
       if (eventName === 'uploads-start') {
         const data = payload as UploadsStartEventPayload;
@@ -337,9 +337,8 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     const cards = publicIds.map((id, key) => (
-      <CardItemWrapper>
+      <CardItemWrapper key={key}>
         <Card
-          key={key}
           context={context}
           isLazy={false}
           identifier={{

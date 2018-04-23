@@ -427,4 +427,42 @@ describe('table keymap', () => {
       });
     });
   });
+
+  describe('Cmd-A keypress', () => {
+    describe('when a table cell is selected', () => {
+      it('it should select whole editor', () => {
+        const { editorView } = editor(
+          doc(
+            p('testing'),
+            table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty)),
+            p('testing'),
+          ),
+        );
+        sendKeyToPm(editorView, 'Mod-a');
+        expect(editorView.state.selection.$from.pos).toEqual(0);
+        expect(editorView.state.selection.$to.pos).toEqual(
+          editorView.state.doc.content.size,
+        );
+        editorView.destroy();
+      });
+    });
+
+    describe('when a table row is selected', () => {
+      it('it should select whole editor', () => {
+        const { editorView } = editor(
+          doc(
+            p('testing'),
+            table()(tr(td()(p('{<}testing{>}'))), tr(tdEmpty)),
+            p('testing'),
+          ),
+        );
+        sendKeyToPm(editorView, 'Mod-a');
+        expect(editorView.state.selection.$from.pos).toEqual(0);
+        expect(editorView.state.selection.$to.pos).toEqual(
+          editorView.state.doc.content.size,
+        );
+        editorView.destroy();
+      });
+    });
+  });
 });

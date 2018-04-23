@@ -151,6 +151,7 @@ export default class Example extends React.Component<Props, State> {
                 allowBackgroundColor: true,
                 allowHeaderRow: true,
                 allowHeaderColumn: true,
+                stickToolbarToBottom: true,
                 permittedLayouts: 'all',
               }}
               allowJiraIssue={true}

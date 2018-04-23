@@ -16,7 +16,7 @@ export const editors = [
   {
     name: 'fullpage',
     path: getExampleUrl('editor', 'editor-core', 'full-page'),
-    placeholder: 'p',
+    placeholder: '.ProseMirror',
   },
 ];
 

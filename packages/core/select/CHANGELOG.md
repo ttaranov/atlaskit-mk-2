@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 1.3.1
+- [patch] Update react-select version to fix flowtype errors [240a083](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/240a083)
+
 ## 1.3.0
 - [minor] Update react-select dep in @atlaskit/select to alpha.10 [4073781](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4073781)
 

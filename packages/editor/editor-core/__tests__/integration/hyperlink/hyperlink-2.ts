@@ -16,7 +16,7 @@ editors.forEach(editor => {
     `Link: paste link and add text, paste link into list for ${
       editor.name
     } editor`,
-    { skip: ['edge', 'ie', 'safari', 'firefox'] },
+    { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const sample = await new Page(client);
       const linkText1 = 'https://www.atlassian.com';
@@ -28,10 +28,10 @@ editors.forEach(editor => {
       );
       await sample.click(copyAsHTMLButton);
       await sample.goto(editor.path);
+      await sample.waitForSelector(editor.placeholder);
       await sample.click(editor.placeholder);
       await sample.waitForSelector(editable);
       await sample.paste(editable);
-      await sample.keys('ArrowRight');
       await sample.type(editable, '.');
       await sample.type(editable, 'Return');
 

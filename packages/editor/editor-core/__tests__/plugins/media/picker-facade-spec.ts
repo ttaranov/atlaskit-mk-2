@@ -127,7 +127,7 @@ describe('Media PickerFacade', () => {
   }
 
   function triggerError(payload?: Partial<UploadErrorEventPayload>) {
-    const [eventName, cb] = spies.on.mock.calls[5];
+    const [eventName, cb] = spies.on.mock.calls[4];
     cb({
       error: {
         name: 'some-error',
@@ -140,7 +140,7 @@ describe('Media PickerFacade', () => {
   }
 
   function triggerEnd(payload?: Partial<UploadEndEventPayload>) {
-    const [eventName, cb] = spies.on.mock.calls[6];
+    const [eventName, cb] = spies.on.mock.calls[5];
     cb({
       file: { ...testFileData, publicId: testFilePublicId },
       public: { id: 'test-id' },
@@ -203,7 +203,7 @@ describe('Media PickerFacade', () => {
       it(`listens to picker events`, () => {
         const fn = jasmine.any(Function);
         expect(spies.on).toHaveBeenCalledTimes(
-          pickerType === 'dropzone' ? 9 : 7,
+          pickerType === 'dropzone' ? 8 : 6,
         );
         expect(spies.on).toHaveBeenCalledWith('uploads-start', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
@@ -221,7 +221,7 @@ describe('Media PickerFacade', () => {
       it('removes listeners on destruction', () => {
         facade.destroy();
         expect(spies.removeAllListeners).toHaveBeenCalledTimes(
-          pickerType === 'dropzone' ? 9 : 7,
+          pickerType === 'dropzone' ? 8 : 6,
         );
         expect(spies.removeAllListeners).toHaveBeenCalledWith('uploads-start');
         expect(spies.removeAllListeners).toHaveBeenCalledWith(
@@ -352,16 +352,6 @@ describe('Media PickerFacade', () => {
         });
 
         triggerStatusUpdate();
-
-        expect(stateManager.getState(testTemporaryFileId)).toEqual({
-          id: testTemporaryFileId,
-          status: 'unfinalized',
-          progress: testFileProgress.portion,
-          fileName: testFileData.name,
-          fileSize: testFileData.size,
-          fileMimeType: testFileData.type,
-        });
-
         triggerProcessing();
         triggerStatusUpdate();
 
