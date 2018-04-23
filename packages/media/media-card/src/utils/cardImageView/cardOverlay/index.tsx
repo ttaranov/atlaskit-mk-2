@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { MouseEvent, Component } from 'react';
-import * as cx from 'classnames';
 import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import { Ellipsify } from '@atlaskit/media-ui';
@@ -63,15 +62,14 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   private get wrapperClassNames() {
     const { error, selectable, selected, mediaType, persistent } = this.props;
     const { isMenuExpanded } = this.state;
+    const erroredClassName = `overlay error ${isMenuExpanded ? 'active' : ''}`;
+    const nonErroredClassName = `overlay ${mediaType ? mediaType : ''} ${
+      isMenuExpanded ? 'active' : ''
+    } ${selectable ? 'selectable' : ''} ${selected ? 'selected' : ''} ${
+      !persistent ? 'persistent' : ''
+    }`;
 
-    return error
-      ? cx('overlay', { error, active: isMenuExpanded })
-      : cx('overlay', mediaType, {
-          active: isMenuExpanded,
-          selectable,
-          selected,
-          persistent: !persistent,
-        });
+    return error ? erroredClassName : nonErroredClassName;
   }
 
   render() {
@@ -118,7 +116,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   tickBox() {
     const { selected, selectable } = this.props;
     const tick = <TickIcon label="tick" />;
-    const className = cx('tickbox', { selected });
+    const className = `tickbox ${selected ? 'selected' : ''}`;
 
     return selectable && <TickBox className={className}> {tick} </TickBox>;
   }
@@ -139,7 +137,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       );
     } else {
       const { mediaType, subtitle, icon } = this.props;
-      const classNames = cx('metadata');
+      const classNames = 'metadata';
 
       const fileIcon =
         mediaType || icon ? (

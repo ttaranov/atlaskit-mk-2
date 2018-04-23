@@ -43,7 +43,6 @@
     "axios": "^0.17.1",
     "babel-runtime": "^6.26.0",
     "bytes": "^2.4.0",
-    "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "polished": "1.5.0",

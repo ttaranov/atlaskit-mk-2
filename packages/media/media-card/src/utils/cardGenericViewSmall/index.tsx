@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import * as cx from 'classnames';
 import { MediaType, MediaItemType } from '@atlaskit/media-core';
 import { ErrorIcon } from '../../utils';
 import { MediaTypeIcon } from '../../utils/mediaTypeIcon';
@@ -108,7 +107,7 @@ export class CardGenericViewSmall extends Component<
 
   private formatCard(left: JSX.Element, right: JSX.Element) {
     const { actions, loading, error } = this.props;
-    const cardClass = cx('media-card', { loading });
+    const cardClass = `media-card ${loading ? 'loading' : ''}`;
 
     return (
       <SmallCard hasError={!!error} className={cardClass}>
