@@ -337,9 +337,8 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     const cards = publicIds.map((id, key) => (
-      <CardItemWrapper>
+      <CardItemWrapper key={key}>
         <Card
-          key={key}
           context={context}
           isLazy={false}
           identifier={{
