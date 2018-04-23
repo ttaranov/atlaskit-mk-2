@@ -13,6 +13,7 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
+import { AkSearch } from '@atlaskit/quick-search';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
@@ -20,7 +21,6 @@ import Navigation, {
   AkCreateDrawer,
   AkNavigationItemGroup,
   AkNavigationItem,
-  AkSearch,
   AkSearchDrawer,
   presetThemes,
   SkeletonDefaultContainerHeader,
