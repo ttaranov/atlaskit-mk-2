@@ -34,7 +34,6 @@
     "@types/bricks.js": "^1.8.0",
     "axios": "^0.17.1",
     "bricks.js": "^1.8.0",
-    "classnames": "^2.2.5",
     "dateformat": "^1.0.12",
     "eventemitter2": "^4.1.0",
     "filesize": "^3.2.1",
