@@ -3,6 +3,7 @@ import {
   defaultSchema,
   mediaToJSON,
   mentionToJSON,
+  tableToJSON,
   toJSONTableCell,
   toJSONTableHeader,
   Transformer,
@@ -27,6 +28,7 @@ const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
 const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
+const isTable = (node: PMNode) => node.type.name === 'table';
 const isTableCell = (node: PMNode) => node.type.name === 'tableCell';
 const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
 
@@ -39,6 +41,8 @@ const toJSON = (node: PMNode): JSONNode => {
     obj.attrs = mentionToJSON(node).attrs;
   } else if (isCodeBlock(node)) {
     obj.attrs = codeBlockToJSON(node).attrs;
+  } else if (isTable(node)) {
+    obj.attrs = tableToJSON(node).attrs;
   } else if (isTableCell(node)) {
     obj.attrs = toJSONTableCell(node).attrs;
   } else if (isTableHeader(node)) {

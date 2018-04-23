@@ -18,6 +18,10 @@ const tableStyle = `
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
 
+    &[data-autosize="true"] {
+      table-layout: auto;
+    }
+
     & {
       * {
         box-sizing: border-box;
