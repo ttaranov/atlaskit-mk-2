@@ -9,7 +9,7 @@ import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
 export { colors, math, getTheme, themed, AtlaskitThemeProvider };
 
-// backwards-compatible export with old AtlasKit case
+// backwards-compatible export with old Atlaskit case
 export const AtlasKitThemeProvider = AtlaskitThemeProvider;
 
 /*

@@ -32,7 +32,7 @@ export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   animation: ${dropzoneAppear} 0.5s;
 `;
 
-// TODO: Use AtlasKit color
+// TODO: Use Atlaskit color
 // https://product-fabric.atlassian.net/browse/MSW-156
 export const Label: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: 10px;

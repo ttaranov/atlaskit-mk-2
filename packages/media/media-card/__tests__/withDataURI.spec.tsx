@@ -17,6 +17,7 @@ import {
 } from '../src/root/withDataURI';
 import { getElementDimension } from '../src/utils/getElementDimension';
 import { isRetina } from '../src/utils/isRetina';
+import { FileDetails } from '../../media-core/src';
 
 interface DemoComponentProps {
   foo?: string;
@@ -47,7 +48,8 @@ const waitUntilDataURIIsTruthy = (
 };
 
 describe('WithDataURI', () => {
-  const metadata = {
+  const metadata: FileDetails = {
+    id: 'id',
     mimeType: 'image/gif',
     name: 'foobar.gif',
   };
@@ -79,7 +81,7 @@ describe('WithDataURI', () => {
       const instance = element.instance() as WithDataURI<DemoComponentProps>;
       const updateDataURI = jest.spyOn(instance, 'updateDataURI');
 
-      instance.componentWillReceiveProps({ metadata: {} }, {});
+      instance.componentWillReceiveProps({ metadata: { id: 'id' } }, {});
 
       expect(updateDataURI).toHaveBeenCalledTimes(1);
     });
@@ -101,7 +103,8 @@ describe('WithDataURI', () => {
     it('should clear the dataURI when the metadata is undefined', () => {
       const dataURIService = createDataURIService();
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.gif',
       };
 
@@ -145,7 +148,8 @@ describe('WithDataURI', () => {
     it('should set the dataURI to a GIF when the mimeType indicates the item is a GIF', () => {
       const dataURIService = createDataURIService('data:gif');
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         mimeType: 'image/gif',
       };
 
@@ -166,7 +170,8 @@ describe('WithDataURI', () => {
     it('should set the dataURI to a JPG when the mimeType indicates the item is not a GIF', () => {
       const dataURIService = createDataURIService();
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         mimeType: 'image/jpeg',
       };
 
@@ -187,7 +192,8 @@ describe('WithDataURI', () => {
 
     it('should call fetchImageDataUri with allowAnimated false', () => {
       const dataURIService = createDataURIService();
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.png',
       };
 
@@ -209,7 +215,8 @@ describe('WithDataURI', () => {
 
     it('should call fetchImageDataUri with allowAnimated true', () => {
       const dataURIService = createDataURIService();
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.png',
       };
 

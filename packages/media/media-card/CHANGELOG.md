@@ -1,5 +1,10 @@
 # @atlaskit/media-image
 
+## 27.0.2
+- [patch] remove polished dependency [0e54c69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e54c69)
+
+## 27.0.1
+
 ## 27.0.0
 
 ## 26.0.1

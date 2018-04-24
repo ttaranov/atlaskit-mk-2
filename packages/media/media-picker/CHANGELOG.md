@@ -1,5 +1,13 @@
 # @atlaskit/media-picker
 
+## 6.0.1
+- [patch] Remove classnames + domready dependencies from MediaPicker [44f94f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44f94f6)
+
+## 6.0.0
+- [major] For media-picker: fetchMetadata and autoFinalize options are removed from UploadParams and replaced with always "true" in the code. For editor-core: "unfinalized" status is removed from MediaStateStatus and finalizeCb from MediaState. [a41759a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a41759a)
+
+## 5.0.1
+
 ## 5.0.0
 
 ## 4.0.0

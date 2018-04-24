@@ -1,5 +1,11 @@
 # @atlaskit/docs
 
+## 3.0.2
+- [patch] Upgrade pretty proptypes [0ad9962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ad9962)
+
+## 3.0.1
+- [patch] Switch to using pretty-proptypes [2b08b6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b08b6b)
+
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

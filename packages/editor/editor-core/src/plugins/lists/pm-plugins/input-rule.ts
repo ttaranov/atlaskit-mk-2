@@ -103,7 +103,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     // markdown (where a ordered list will always start on 1). This is a slightly modified
     // version of that input rule.
     const rule = defaultInputRuleHandler(
-      createInputRule(/^(\d+)[\.\)] $/, schema.nodes.orderedList),
+      createInputRule(/^(1)[\.\)] $/, schema.nodes.orderedList),
       true,
     );
     (rule as any).handler = trackAndInvoke(
@@ -113,7 +113,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(rule);
     rules.push(
       defaultCreateInputRule(
-        new RegExp(`${leafNodeReplacementCharacter}(\\d+)[\\.\\)] $`),
+        new RegExp(`${leafNodeReplacementCharacter}(1)[\\.\\)] $`),
         (state, match, start, end): Transaction | undefined => {
           return insertList(
             state,

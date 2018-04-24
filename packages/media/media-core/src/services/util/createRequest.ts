@@ -1,7 +1,11 @@
 import axios from 'axios';
-import { MediaApiConfig } from '../../auth';
+import {
+  Auth,
+  isAsapBasedAuth,
+  isClientBasedAuth,
+  MediaApiConfig,
+} from '@atlaskit/media-store';
 import { checkWebpSupport } from '../../utils';
-import { Auth, isAsapBasedAuth, isClientBasedAuth } from '../../auth';
 
 export type ResponseType = 'json' | 'image';
 

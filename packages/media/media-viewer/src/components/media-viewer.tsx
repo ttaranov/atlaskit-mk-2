@@ -45,14 +45,25 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       selectedItem,
       collectionName,
     } = this.props;
-    if (featureFlags && featureFlags.nextGen) {
+
+    const devOverride =
+      window.localStorage &&
+      window.localStorage.getItem('MediaViewerNextGenEnabled');
+    if (devOverride || (featureFlags && featureFlags.nextGen)) {
+      if (!this.props.dataSource.list) {
+        throw new Error(
+          'MediaViewer next gen only supports a list data source at this point',
+        );
+      }
+      const items = this.props.dataSource.list.map(i => ({
+        ...i,
+        collectionName,
+      }));
       return (
         <MediaViewerNextGen
           context={context}
-          data={{
-            ...selectedItem,
-            collectionName,
-          }}
+          selectedItem={selectedItem}
+          items={items}
           onClose={onClose}
         />
       );

@@ -1,5 +1,24 @@
 # @atlaskit/editor-common
 
+## 9.2.4
+- [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
+
+## 9.2.3
+
+## 9.2.2
+
+- [patch] ED-3633, fixing paragarph margins inside table. [9d8c2a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d8c2a4)
+
+## 9.2.1
+- [patch] ED-4334 fix column size calculation bug; don't emit default col/rowspan attrs [eb8f140](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb8f140)
+
+## 9.2.0
+
+- [minor] Add initial Page Layouts supports for Confluence. Doesn't currently support different layout types / enforcing column constraints in the editor. [ec8f6d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8f6d8)
+
+## 9.1.0
+- [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
+
 ## 9.0.1
 - [patch] Unskipping the backwards compat test [1bbf22e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bbf22e)
 

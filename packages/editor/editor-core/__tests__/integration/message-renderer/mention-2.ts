@@ -72,24 +72,23 @@ BrowserTestCase(
   },
 );
 
-// TODO: Unskip when FS-1697 util-data-test migration has completed
-// BrowserTestCase(
-//   'Mention: insert on space if unique exact nickname match, with multiple results',
-//   { skip: ['ie', 'edge'] },
-//   async client => {
-//     const browser = await new Page(client);
-//     await browser.goto(messageEditor);
-//     await browser.waitForSelector(editable);
-//     await browser.type(editable, '@');
-//     await browser.waitForSelector(picker);
-//     await browser.type(editable, 'penelope');
-//     await browser.isVisible('[data-mention-name=pgill]');
-//     await browser.isVisible('[data-mention-name=plim]');
-//     await browser.type(editable, ' some');
-//     await browser.type(editable, ' text');
-//     expect(await browser.isExisting('span=@penelope')).toBe(true);
-//   },
-// );
+BrowserTestCase(
+  'Mention: insert on space if unique exact nickname match, with multiple results',
+  { skip: ['ie', 'edge'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, '@');
+    await browser.waitForSelector(picker);
+    await browser.type(editable, 'penelope');
+    await browser.isVisible('[data-mention-name=pgill]');
+    await browser.isVisible('[data-mention-name=plim]');
+    await browser.type(editable, ' some');
+    await browser.type(editable, ' text');
+    expect(await browser.isExisting('span=@penelope')).toBe(true);
+  },
+);
 
 BrowserTestCase(
   'Mention: user should see space after node',

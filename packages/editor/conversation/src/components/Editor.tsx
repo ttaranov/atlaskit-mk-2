@@ -106,6 +106,10 @@ export default class Editor extends React.Component<Props, State> {
 
       if (value && value.content.some(n => n.content && n.content.length)) {
         this.props.onSave(value);
+        actions.clear();
+      } else {
+        this.onCancel();
+        return;
       }
     }
 
@@ -113,8 +117,6 @@ export default class Editor extends React.Component<Props, State> {
       isExpanded: false,
       isEditing: false,
     });
-
-    actions.clear();
   };
 
   private renderEditor = (actions: EditorActions) => {

@@ -31,7 +31,12 @@ export default class ColumnControls extends Component<Props, any> {
     if (!tableElement) {
       return null;
     }
-    const cols = tableElement.querySelector('tr')!.children;
+    const tr = tableElement.querySelector('tr');
+    if (!tr) {
+      return null;
+    }
+
+    const cols = tr.children;
     const nodes: any = [];
     const tableHeight = tableElement.offsetHeight;
 

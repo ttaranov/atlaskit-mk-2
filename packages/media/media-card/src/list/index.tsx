@@ -110,7 +110,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           !!firstItemKey && firstItemKey !== newFirstItemKey;
         this.providersByMediaItemId = {};
         value.items.forEach(mediaItem => {
-          if (!mediaItem.details || !mediaItem.details.id) {
+          if (!mediaItem.details) {
             return;
           }
 
@@ -262,7 +262,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const cards = collection
       ? collection.items.map((mediaItem: MediaCollectionItem) => {
-          if (!mediaItem.details || !mediaItem.details.id) {
+          if (!mediaItem.details) {
             return null;
           }
           const key = this.getItemKey(mediaItem);

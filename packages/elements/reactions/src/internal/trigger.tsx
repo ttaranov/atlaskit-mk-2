@@ -1,4 +1,4 @@
-import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import EmojiAddIcon from '@atlaskit/icon/glyph/emoji-add';
 import { borderRadius, colors } from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -35,13 +35,6 @@ const triggerStyle = style({
       height: '24px',
       overflow: 'hidden',
       verticalAlign: 'middle',
-      $nest: {
-        '&> span': {
-          width: '24px',
-          height: '24px',
-          verticalAlign: 'middle',
-        },
-      },
     },
   },
 });
@@ -61,7 +54,7 @@ export default class Trigger extends PureComponent<Props, {}> {
 
     return (
       <button className={classNames} onMouseDown={this.handleMouseDown}>
-        {<EditorEmojiIcon label="Add reaction" />}
+        {<EmojiAddIcon size="small" label="Add reaction" />}
       </button>
     );
   }

@@ -4,6 +4,7 @@ import { Node as PmNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import TableComponent from './TableComponent';
 import { EventDispatcher } from '../../../event-dispatcher';
+import ContentNodeView from '../../../nodeviews/contentNodeView';
 
 export interface Props {
   node: PmNode;
@@ -13,23 +14,18 @@ export interface Props {
   eventDispatcher?: EventDispatcher;
 }
 
-export default class TableView implements NodeView {
-  contentDOM: HTMLElement | null;
-
+export default class TableView extends ContentNodeView implements NodeView {
   private node: PmNode;
-
   private domRef: HTMLElement | null;
-  private reactDomRef: HTMLElement | null;
-
   private props: Props;
   private component: TableComponent;
 
   constructor(props: Props) {
+    super(props.node, props.view, 'tbody');
     this.props = props;
     this.node = props.node;
 
     this.domRef = document.createElement('div');
-    this.reactDomRef = this.domRef.appendChild(document.createElement('div'));
 
     this.render();
   }
@@ -53,29 +49,27 @@ export default class TableView implements NodeView {
   }
 
   render() {
-    const setContentDOM = elem => (this.contentDOM = elem);
-
     this.component = ReactDOM.render(
       <TableComponent
         {...this.props}
         node={this.node}
-        contentDOM={setContentDOM}
+        contentDOM={this.handleRef}
       />,
-      this.reactDomRef,
+      this.domRef,
     );
   }
 
   ignoreMutation(record: MutationRecord) {
-    const { target, type } = record;
+    if (!this.component) {
+      // force initial render
+      return false;
+    }
 
-    return (
-      type === 'attributes' && this.component.isTableComponentMutation(target)
-    );
+    return true;
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.reactDomRef);
-    this.reactDomRef = null;
+    ReactDOM.unmountComponentAtNode(this.domRef);
     this.domRef = null;
   }
 }

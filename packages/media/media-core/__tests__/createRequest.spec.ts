@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 
 import createRequest from '../src/services/util/createRequest';
-import { AuthProvider } from '../src/auth';
+import { AuthProvider } from '@atlaskit/media-store';
 import * as UtilsModule from '../src/utils';
 
 describe('createRequest()', () => {
