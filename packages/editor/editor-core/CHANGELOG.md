@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.4
+- [patch] Fix WithEditorActions depends on where it's renderer.  [9de70c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9de70c6)
+
 ## 71.0.3
 - [patch] ED-4324 clear selection after doing text replacement [d4a3f3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3f3c)
 
