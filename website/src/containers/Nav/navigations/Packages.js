@@ -4,6 +4,7 @@ import React, { type ComponentType } from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import { isSubNavExpanded } from '../utils/linkComponents';
+import HipchatMediaAttachmentCountIcon from '@atlaskit/icon/glyph/hipchat/media-attachment-count';
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
@@ -21,6 +22,12 @@ export function buildSubNavGroup(
       acc.items.push({
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
+        icon: (
+          <HipchatMediaAttachmentCountIcon
+            size="small"
+            label={`${fs.titleize(item.id)} icon`}
+          />
+        ),
       });
       return acc;
     },
@@ -30,8 +37,8 @@ export function buildSubNavGroup(
 
 const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
   let navigationItemIcon = (
-    <PackageIcon
-      primaryColor="transparent"
+    <HipchatMediaAttachmentCountIcon
+      size="small"
       label={`${fs.titleize(pkg.id)} icon`}
     />
   );
@@ -65,9 +72,9 @@ const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
       packageUrl(group.id, pkg.id),
       pathname,
     ) ? (
-      <ChevronDownIcon label={`${fs.titleize(pkg.id)} icon`} />
+      <ChevronDownIcon size="small" label={`${fs.titleize(pkg.id)} icon`} />
     ) : (
-      <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />
+      <PackageIcon size="small" label={`${fs.titleize(pkg.id)} icon`} />
     );
   }
 
