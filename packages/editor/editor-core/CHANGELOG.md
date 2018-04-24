@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.3
+- [patch] ED-4324 clear selection after doing text replacement [d4a3f3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3f3c)
+
 ## 71.0.2
 - [patch] ED-4082, fixing position for hyperlink floating toolbar. [c5bfedd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5bfedd)
 
