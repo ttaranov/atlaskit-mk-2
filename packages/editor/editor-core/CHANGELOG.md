@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.2
+- [patch] ED-4082, fixing position for hyperlink floating toolbar. [c5bfedd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5bfedd)
+
 ## 71.0.1
 - [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
 
