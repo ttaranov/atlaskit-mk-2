@@ -30,24 +30,20 @@ For contributors, they want to feel empowered to make a useful contribution. The
 
 It's important to strike a balance here because the more contributions we get, the better it is for us because it takes the brunt of the initial weight off our shoulders. By contributing components into our repo as dev releases, it allows contributors a bit more leeway in terms of getting an initial iteration into Atlaskit. Even if it has some nits and some things that need work, using dev releases gives us time to polish those off before going 1.0.
 
-## Versioning guidelines
-##### Given a version number MAJOR.MINOR.PATCH, increment the:
+## Versioning examples
+##### Some examples of what would fall under the abstract semver umbrella :
 1. **MAJOR** version when 
-    - You make incompatible API changes 
     - Change named exports exposed via the main entry point.
-    - Change in props.
-    - Renaming a public prop.
+    - Changing and renaming public props.
     - Making a public prop more restrictive in what it accepts.
-    - Renaming a named export that's exposed via the main entry point.
+    - Change named exports exposed via the main entry point.
     - Icon sizes changing.
     - Changes in CSS that can affect layout outside of a component. For example, changing display property from flex to block and vice-versa.
     - Upgrade peer dependencies.
 2. **MINOR** version when 
-    - You add functionality in a backwards-compatible manner
     - Anything that has a leading underscore.
-    - Anything inside render(). This includes elements, attributes and classes.. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
+    - Anything inside render(). This includes elements, attributes and classes. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
 3. **PATCH** version when 
-    - You make backwards-compatible bug fixes
     - update package dependencies
     - Directory structure changes
         - Reworking our directory structure. We offer a `dist/esm` build where the module field in the `package.json` points to the entry point within that folder. There should be no reason to reach into packages.
@@ -55,5 +51,26 @@ It's important to strike a balance here because the more contributions we get, t
     - Update dev dependencies
     - Add tests or examples
     - Update examples
-    - Update internal documentation    
+    - Update internal documentation  
+
+## Hotfix process
+#### Process to patch older versions
+It's very important to understand this is a one-time deal. This is the last resort of last resorts.
+
+1. Branch off of the tag.
+  ```sh 
+  git checkout $tag
+  git checkout -b $branch
+  ```
+2. Apply fix.
+3. Commit
+4. Manually release
+ ```sh
+ cd packages/whatever
+ npm version patch -m "Your message" --no-git-tag-version
+ git tag $component@$version
+ git push --follow-tags
+npm publish
+ ```
+
 
