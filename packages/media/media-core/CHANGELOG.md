@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 18.0.2
+- [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
+
 ## 18.0.1
 
 ## 18.0.0

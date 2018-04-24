@@ -168,6 +168,88 @@ describe('Marshal', () => {
     });
   });
 
+  describe('unmount method', () => {
+    it('should remove the tooltip from the show queue', () => {
+      marshal.show(tooltip);
+      marshal.unmount(tooltip);
+
+      jest.runAllTimers();
+
+      expect(tooltip.show).not.toHaveBeenCalled();
+    });
+
+    it('should remove the tooltip from the hide queue', () => {
+      marshal.show(tooltip);
+      jest.runAllTimers();
+
+      marshal.hide(tooltip);
+      marshal.unmount(tooltip);
+
+      jest.runAllTimers();
+
+      expect(tooltip.hide).not.toHaveBeenCalled();
+    });
+
+    it('should unmark tooltip as being visible', () => {
+      marshal.show(tooltip);
+      jest.runAllTimers();
+
+      marshal.unmount(tooltip);
+
+      jest.runAllTimers();
+
+      expect(tooltip.hide).not.toHaveBeenCalled();
+
+      marshal.show(anotherTooltip);
+      jest.runAllTimers();
+
+      // Hide would be called after showing another tooltip if this tooltip
+      // was still marked as visible
+      expect(tooltip.hide).not.toHaveBeenCalled();
+    });
+
+    it('should not unmark another tooltip as visible', () => {
+      marshal.show(tooltip);
+      jest.runAllTimers();
+
+      marshal.unmount(anotherTooltip);
+      marshal.hide(tooltip);
+      jest.runAllTimers();
+
+      expect(tooltip.hide).toHaveBeenCalled();
+    });
+
+    it('should remove the scroll listeners attached to the tooltip if it was visible when unmounted', () => {
+      jest.spyOn(window, 'addEventListener');
+      jest.spyOn(window, 'removeEventListener');
+
+      marshal.show(tooltip);
+      jest.runAllTimers();
+      expect(window.addEventListener).toHaveBeenCalledTimes(1);
+
+      marshal.unmount(tooltip);
+      jest.runAllTimers();
+
+      expect(window.addEventListener).toHaveBeenCalledTimes(1);
+      expect(window.removeEventListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not remove scroll listeners attached to another tooltip if the unmounted tooltip was not visible', () => {
+      jest.spyOn(window, 'addEventListener');
+      jest.spyOn(window, 'removeEventListener');
+
+      marshal.show(tooltip);
+      jest.runAllTimers();
+      expect(window.addEventListener).toHaveBeenCalledTimes(1);
+
+      marshal.unmount(anotherTooltip);
+      jest.runAllTimers();
+
+      expect(window.addEventListener).toHaveBeenCalledTimes(1);
+      expect(window.removeEventListener).toHaveBeenCalledTimes(0);
+    });
+  });
+
   describe('scroll', () => {
     it('should hide tooltips immediately on scroll', () => {
       marshal.show(tooltip);

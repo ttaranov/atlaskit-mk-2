@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 9.1.3
+- [patch] Fix react warnings caused when unmounting a tooltip when it is queued for show/hide [6d9cc52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9cc52)
+
 ## 9.1.2
 - [patch] Fix tooltip scroll listeners not being removed properly and an edgecase viewport autoflip issue [0a3ccc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3ccc9)
 
