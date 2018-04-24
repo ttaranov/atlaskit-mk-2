@@ -58,19 +58,19 @@ It's important to strike a balance here because the more contributions we get, t
 It's very important to understand this is a one-time deal. This is the last resort of last resorts.
 
 1. Branch off of the tag.
-  ```sh 
-  git checkout $tag
-  git checkout -b $branch
-  ```
+```
+ git checkout $tag
+ git checkout -b $branch
+```
 2. Apply fix.
 3. Commit
 4. Manually release
- ```sh
+```  
  cd packages/whatever
  npm version patch -m "Your message" --no-git-tag-version
  git tag $component@$version
  git push --follow-tags
-npm publish
- ```
+ npm publish
+```
 
 
