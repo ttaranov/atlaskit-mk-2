@@ -264,6 +264,14 @@ function plugins(
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
+      async: 'people-and-teams-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return context && context.includes('packages/people-and-teams');
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'core-packages',
       minChunks(module, count) {
         const context = module.context;
