@@ -1,5 +1,104 @@
 # @atlaskit/editor-core
 
+## 71.0.1
+- [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
+
+## 71.0.0
+- [major] For media-picker: fetchMetadata and autoFinalize options are removed from UploadParams and replaced with always "true" in the code. For editor-core: "unfinalized" status is removed from MediaStateStatus and finalizeCb from MediaState. [a41759a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a41759a)
+
+## 70.5.2
+- [patch] Fix inserting media inside blocks that don't support media [d2458b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2458b8)
+
+## 70.5.1
+- [patch] Fixing the expand macro copy [ef01bbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef01bbd)
+
+## 70.5.0
+- [minor] The editor now only allows ordered list creation via autoformatting that starts with `1`. e.g. `1) Content` or `1. Content`. Using a number other than `1` will no longer trigger the input rules (ED-4344) [9c543c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c543c8)
+
+## 70.4.3
+- [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
+
+## 70.4.2
+- [patch] Prevent 'Enter' from splitting a code-block that ends in a new-line, when the cursor is not at the end of the code-block. [140c76c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/140c76c)
+
+## 70.4.1
+- [patch] Fix vertical positioning of table floating toolbar. [3c96ad5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c96ad5)
+
+## 70.4.0
+- [minor] Handle pasting of page-layouts to prevent unpredictable node-splitting behaviour. Will now 'unwrap' the contents of a layout if the slice is a partial range across page layouts, or if we are attempting to paste a layout inside a layout. We now always handle dispatching the transaction to handle paste ourselves (instead of falling back to PM). [f4ca7ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4ca7ac)
+
+## 70.3.1
+- [patch] Adding tooltips for header icons [555a750](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/555a750)
+
+## 70.3.0
+- [minor] Media APIs exposed to mobile clients and can be used by native media components [31c66f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31c66f4)
+
+## 70.2.18
+- [patch] ED-4407: bumping pm-utils [7b76b7c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b76b7c)
+
+## 70.2.17
+- [patch] ED-4348 unbreak table rendering [ee4c378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee4c378)
+
+## 70.2.16
+- [patch] ED-4381 add space guards around product and endash autoformat rules [729a77c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/729a77c)
+
+## 70.2.15
+- [patch] ED-4220 Shift + Enter on selected media card in editor clears out the collection/id properties from the media node [e002c18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e002c18)
+
+## 70.2.14
+- [patch] ED-4348 fix tables built from transformers [0c2a88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2a88a)
+
+## 70.2.13
+- [patch] ED-4293, click on left and right of editor in confluence should not scroll editor to bottom. [0476a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0476a78)
+
+## 70.2.12
+- [patch] ED-4183: added invite to edit button [c0ccb58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0ccb58)
+
+## 70.2.11
+- [patch] Fix issue where attempting to edit copied link on editor would throw error [12146b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12146b2)
+
+## 70.2.10
+
+## 70.2.9
+- [patch] ED-4341 fix compositions in autoformatting [fdacc32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdacc32)
+
+## 70.2.8
+
+## 70.2.7
+- [patch] ED-4249, Table icon should not be highlighted if current selection is inside table. [a7b5597](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7b5597)
+
+## 70.2.6
+- [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
+
+## 70.2.5
+- [patch] ED-4333 fix handleSave callback [9071629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9071629)
+
+## 70.2.4
+- [patch] Fix MediaCard loading state inside editor [5262ad6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5262ad6)
+
+## 70.2.3
+
+- [patch] ED-4287: fix scroll to the bottom of the page when checking a task item [0905309](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0905309)
+
+## 70.2.2
+- [patch] Fix Markdown-it dependency to be the same version that prosemirror-markdown uses internally to prevent unnecessary bundle size increase [9abf097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9abf097)
+
+## 70.2.1
+- [patch] Fixing the selection of table just after an image [20a90cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a90cb)
+
+## 70.2.0
+- [patch] Rename allowLayouts props to UNSAFE_allowLayouts to prevent accidental use by consumers [f4098d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4098d8)
+- [minor] Add initial Page Layouts supports for Confluence. Doesn't currently support different layout types / enforcing column constraints in the editor. [ec8f6d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8f6d8)
+
+## 70.1.0
+- [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
+
+## 70.0.4
+- [patch] ED-4063 fix placeholder not diappearing on Android Chrome [27debe2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27debe2)
+
+## 70.0.3
+- [patch] work around short document content not saving in Android Chrome [11cf48c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11cf48c)
+
 ## 70.0.2
 - [patch] ED-4294: fix editing bodiedExtension nodes [35d2648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2648)
 

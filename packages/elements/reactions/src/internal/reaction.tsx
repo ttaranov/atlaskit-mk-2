@@ -3,31 +3,18 @@ import { borderRadius, colors } from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
-import { style, keyframes } from 'typestyle';
+import { style } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { isPromise } from './helpers';
 import Counter from './counter';
+import FlashAnimation from './flash-animation';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
 const akColorN400 = colors.N400;
-
-export const bouncingAnimation = keyframes({
-  $debugName: 'bouncing',
-  '0%': {
-    transform: 'translateY(8px)',
-    opacity: 0,
-  },
-  '75%': {
-    opacity: 1,
-  },
-  '100%': {
-    transform: 'translateY(0)',
-  },
-});
 
 const emojiStyle = style({
   transformOrigin: 'center center 0',
@@ -48,6 +35,7 @@ const reactionStyle = style({
   cursor: 'pointer',
   padding: 0,
   margin: 0,
+  transition: '200ms ease-in-out',
   $nest: {
     '&:hover': {
       background: akColorN30A,
@@ -57,10 +45,13 @@ const reactionStyle = style({
         },
       },
     },
-    '&.bounce': {
-      animation: `${bouncingAnimation} 200ms ease-in-out`,
-    },
   },
+});
+
+const flashStyle = style({
+  display: 'flex',
+  flexDirection: 'row',
+  borderRadius: akBorderRadius,
 });
 
 const counterStyle = style({
@@ -75,35 +66,49 @@ export interface Props {
   reaction: ReactionSummary;
   emojiProvider: Promise<EmojiProvider>;
   onClick: ReactionOnClick;
+  className?: string;
   onMouseOver?: (
     reaction: ReactionSummary,
     event?: SyntheticEvent<any>,
   ) => void;
+  flashOnMount?: boolean;
 }
 
 export interface State {
   showTooltip: boolean;
-  startBouncing: boolean;
   emojiName: string | undefined;
 }
 
 export default class Reaction extends PureComponent<Props, State> {
   private timeouts: Array<number>;
   private tooltipTimeout: number;
+  private flashRef: FlashAnimation;
+
+  static defaultProps = {
+    flash: false,
+    className: undefined,
+    onMouseOver: undefined,
+    flashOnMount: false,
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       showTooltip: false,
-      startBouncing: false,
       emojiName: undefined,
     };
 
     this.timeouts = [];
   }
 
-  componentWillMount() {
+  componentDidUpdate({ reaction: prevReaction }) {
+    if (!prevReaction.reacted && this.props.reaction.reacted) {
+      this.flash();
+    }
+  }
+
+  componentDidMount() {
     this.props.emojiProvider.then(emojiResource => {
       const foundEmoji = emojiResource.findByEmojiId({
         shortName: '',
@@ -124,41 +129,20 @@ export default class Reaction extends PureComponent<Props, State> {
         });
       }
     });
-    this.bounce();
+    if (this.props.flashOnMount && this.props.reaction.reacted) {
+      this.flash();
+    }
   }
 
   componentWillUnmount() {
     this.timeouts.forEach(clearTimeout);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      !this.props.reaction.reacted &&
-      nextProps.reaction.reacted &&
-      nextProps.reaction.count > 0
-    ) {
-      this.bounce();
-    }
-  }
-
-  private bounce = () => {
-    this.setState({
-      startBouncing: true,
-    });
-    this.timeouts.push(
-      setTimeout(() => this.setState({ startBouncing: false }), 300),
-    );
-  };
-
   private handleMouseDown = event => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
       const { reaction } = this.props;
       analyticsService.trackEvent('reactions.reaction.click', reaction as {});
-
-      if (!reaction.reacted || reaction.count > 1) {
-        this.bounce();
-      }
 
       this.props.onClick(this.props.reaction.emojiId, event);
     }
@@ -194,13 +178,21 @@ export default class Reaction extends PureComponent<Props, State> {
     }
   };
 
+  private handleFlashRef = (flash: FlashAnimation) => {
+    this.flashRef = flash;
+  };
+
+  public flash = () => {
+    if (this.flashRef) {
+      this.flashRef.flash();
+    }
+  };
+
   render() {
-    const { emojiProvider, reaction } = this.props;
+    const { emojiProvider, reaction, className: classNameProp } = this.props;
     const { emojiName, showTooltip } = this.state;
 
-    const classNames = cx(reactionStyle, {
-      bounce: this.state.startBouncing,
-    });
+    const classNames = cx(reactionStyle, classNameProp);
 
     const { users } = reaction;
 
@@ -218,18 +210,20 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOut={this.handleMouseOut}
       >
         {tooltip}
-        <div className={emojiStyle}>
-          <ResourcedEmoji
-            emojiProvider={emojiProvider}
-            emojiId={emojiId}
-            fitToHeight={16}
+        <FlashAnimation ref={this.handleFlashRef} className={flashStyle}>
+          <div className={emojiStyle}>
+            <ResourcedEmoji
+              emojiProvider={emojiProvider}
+              emojiId={emojiId}
+              fitToHeight={16}
+            />
+          </div>
+          <Counter
+            className={counterStyle}
+            value={reaction.count}
+            highlight={reaction.reacted}
           />
-        </div>
-        <Counter
-          className={counterStyle}
-          value={reaction.count}
-          highlight={reaction.reacted}
-        />
+        </FlashAnimation>
       </button>
     );
   }

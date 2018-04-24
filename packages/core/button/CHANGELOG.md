@@ -1,5 +1,12 @@
 # @atlaskit/button
 
+## 7.0.2
+- [patch] Update empty state and button to have consistent types [f0da143](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0da143)
+
+## 7.0.1
+- [patch] Update tests + flow [05d406d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05d406d)
+- [patch] Remove default props to have it optional [0907a36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0907a36)
+
 ## 7.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

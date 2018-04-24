@@ -8,6 +8,7 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
+import { GapCursorSelection } from '../gap-cursor';
 import { toJSON } from '../../utils';
 import { taskDecisionSliceFilter } from '../../utils/filter';
 
@@ -83,30 +84,39 @@ export const createListAtSelection = (
   const isAlreadyDecisionTask =
     $from.parent.type === decisionList || $from.parent.type === taskList;
   const isMediaNode = $from.parent.type === mediaGroup;
+  const isGapCursor = state.selection instanceof GapCursorSelection;
 
   if (isAlreadyDecisionTask || isMediaNode) {
     return false;
   }
 
-  let where;
-  let content = $from.node($from.depth).content;
-
-  // Handle entire document selected case
-  if ($from.depth === 0) {
-    where = $from.before($from.depth + 1);
-    const slice = Slice.fromJSON(schema, toJSON($from.node($from.depth)));
-    content = taskDecisionSliceFilter(slice, schema).content;
-  } else {
-    where = $from.before($from.depth);
-  }
-
-  tr
-    .delete(where, $from.end($from.depth))
-    .replaceSelectionWith(
+  // we don't take the content of a block node next to the gap cursor and always create an empty task
+  if (isGapCursor) {
+    tr.insert(
+      $from.pos,
       list.create({ localId: uuid.generate() }, [
-        item.create({ localId: uuid.generate() }, content),
+        item.create({ localId: uuid.generate() }),
       ]),
     );
+  } else {
+    let where;
+    let content = $from.node($from.depth).content;
+
+    if ($from.depth === 0) {
+      where = $from.before($from.depth + 1);
+      const slice = Slice.fromJSON(schema, toJSON($from.node($from.depth)));
+      content = taskDecisionSliceFilter(slice, schema).content;
+    } else {
+      where = $from.before($from.depth);
+    }
+    tr
+      .delete(where, $from.end($from.depth))
+      .replaceSelectionWith(
+        list.create({ localId: uuid.generate() }, [
+          item.create({ localId: uuid.generate() }, content),
+        ]),
+      );
+  }
 
   // Adjust selection into new item, if not there (e.g. in full page editor)
   const newSelection = tr.selection;

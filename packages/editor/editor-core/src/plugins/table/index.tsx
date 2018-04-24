@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { tableEditing, columnResizing } from 'prosemirror-tables';
 import {
   table,
   tableCell,
   tableHeader,
   tableRow,
 } from '@atlaskit/editor-common';
-import { tableEditing, columnResizing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import TableFloatingToolbar from './ui/TableFloatingToolbar';
@@ -89,6 +89,7 @@ const tablesPlugin: EditorPlugin = {
             allowBackgroundColor={tablesState.allowBackgroundColor}
             allowHeaderRow={tablesState.allowHeaderRow}
             allowHeaderColumn={tablesState.allowHeaderColumn}
+            stickToolbarToBottom={tablesState.stickToolbarToBottom}
             permittedLayouts={tablesState.permittedLayouts}
           />
         )}

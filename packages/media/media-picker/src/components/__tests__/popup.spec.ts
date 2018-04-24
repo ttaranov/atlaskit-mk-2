@@ -1,6 +1,7 @@
-import { Popup } from '../popup';
+import { Popup, PopupConfig } from '../popup';
 import { MPPopupLoaded } from '../../outer/analytics/events';
 import { ContextFactory } from '@atlaskit/media-core';
+import { UploadParams } from '../..';
 
 describe('MediaPickerPopup', () => {
   const fakeContext = { trackEvent: jest.fn() };
@@ -13,7 +14,7 @@ describe('MediaPickerPopup', () => {
         token: 'some-token',
       }),
   });
-  const popupConfig = {
+  const popupConfig: PopupConfig = {
     uploadParams: {
       collection: '',
     },
@@ -32,28 +33,24 @@ describe('MediaPickerPopup', () => {
     it('sets uploadParams to the default when none are supplied', () => {
       const mediaPicker = new Popup(fakeContext, context, popupConfig);
 
-      expect((mediaPicker as any)['uploadParams']).toEqual({
-        collection: '',
-        fetchMetadata: true,
-        autoFinalize: true,
-      });
+      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
+        <UploadParams>{
+          collection: '',
+        },
+      );
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {
-      const newUploadParams = {
+      const newUploadParams: UploadParams = {
         collection: 'hello-world',
-        fetchMetadata: false,
-        autoFinalize: false,
       };
       const mediaPicker = new Popup(fakeContext, context, {
         ...popupConfig,
         uploadParams: newUploadParams,
       });
 
-      expect((mediaPicker as any)['uploadParams']).toEqual({
+      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual({
         collection: 'hello-world',
-        fetchMetadata: false,
-        autoFinalize: false,
       });
     });
   });
@@ -61,38 +58,14 @@ describe('MediaPickerPopup', () => {
   describe('setUploadParams', () => {
     it('updates collection uploadParam when it is supplied', () => {
       const collection = 'some-collection-name';
-      const newUploadParams = { collection };
+      const newUploadParams: UploadParams = { collection };
 
       const mediaPicker = new Popup(fakeContext, context, popupConfig);
       mediaPicker.setUploadParams(newUploadParams);
 
-      expect((mediaPicker as any)['uploadParams'].collection).toEqual(
-        collection,
-      );
-    });
-
-    it('updates fetchMetadata uploadParam when it is supplied', () => {
-      const fetchMetadata = false;
-      const newUploadParams = { fetchMetadata, collection: '' };
-
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
-      mediaPicker.setUploadParams(newUploadParams);
-
-      expect((mediaPicker as any)['uploadParams'].fetchMetadata).toEqual(
-        fetchMetadata,
-      );
-    });
-
-    it('updates autoFinalize uploadParam when it is supplied', () => {
-      const autoFinalize = false;
-      const newUploadParams = { autoFinalize, collection: '' };
-
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
-      mediaPicker.setUploadParams(newUploadParams);
-
-      expect((mediaPicker as any)['uploadParams'].autoFinalize).toEqual(
-        autoFinalize,
-      );
+      expect(
+        ((mediaPicker as any)['uploadParams'] as UploadParams).collection,
+      ).toEqual(collection);
     });
   });
 

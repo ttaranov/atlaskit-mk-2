@@ -200,9 +200,8 @@ function plugins(
         return (
           count === 1 &&
           (context &&
-            // We're intentionally excluding p-queue and rxjs-async-map from this chunk as it currently breaks our build
-            // These two packages are being used by the media-store package. Unfortunately neither of them are transpiled, and are thus breaking in ie11.
-            !context.includes('node_modules/p-queue') &&
+            // We're intentionally excluding rxjs-async-map from this chunk as it currently breaks our build
+            // This package is being used by the media-store package. Unfortunately it's not transpiled, and is thus breaking in ie11.
             (context && !context.includes('node_modules/rxjs-async-map')))
         );
       },

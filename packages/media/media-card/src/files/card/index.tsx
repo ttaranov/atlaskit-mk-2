@@ -38,7 +38,8 @@ export class FileCard extends Component<FileCardProps, {}> {
       resizeMode,
       onRetry,
     } = this.props;
-    const defaultDetails = {
+    const defaultDetails: FileDetails = {
+      id: '',
       name: undefined,
       mediaType: undefined,
       size: undefined,
@@ -85,16 +86,16 @@ export class FileCard extends Component<FileCardProps, {}> {
 
   private _getActions(): Array<CardAction> {
     const { details } = this.props;
-    // redundant 'or' guarding to satisfy compiler
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
+    if (!details) {
+      return [];
+    }
     const actions = this.props.actions || [];
 
     return actions.map((action: CardAction) => {
       return {
         ...action,
         handler: () => {
-          // TODO remove || guarding and update action signature to be correct
-          action.handler({ type: 'file', details: details || {} });
+          action.handler({ type: 'file', details });
         },
       };
     });

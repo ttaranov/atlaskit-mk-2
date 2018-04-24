@@ -1,5 +1,8 @@
 # @atlaskit/layer-manager
 
+## 3.0.2
+- [patch] support new property "targetNode" on spotlight component [48397b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48397b6)
+
 ## 3.0.1
 - [patch] AK-4416 changes meaning of autofocus prop values [c831a3d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c831a3d)
 

@@ -21,6 +21,7 @@ export {
   toJSON,
   filterContentByType,
   setTextSelection,
+  setGapCursorSelection,
 } from './utils';
 
 // Plugin Keys for WithPluginState
@@ -62,6 +63,7 @@ export {
   MediaStateManager,
   MediaProvider,
   MediaState,
+  CustomMediaPicker,
 } from './plugins/media';
 
 export { MediaOptions } from './plugins/media';

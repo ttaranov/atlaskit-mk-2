@@ -7,7 +7,7 @@ import {
   defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
-import { MediaPicker, Browser } from '../src';
+import { MediaPicker, Browser, BrowserConfig } from '../src';
 import {
   DropzonePreviewsWrapper,
   PopupHeader,
@@ -40,13 +40,11 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       authProvider: mediaPickerAuthProvider(this),
     });
 
-    const browseConfig = {
+    const browseConfig: BrowserConfig = {
       multiple: true,
       fileExtensions: ['image/jpeg', 'image/png'],
       uploadParams: {
-        autoFinalize: true,
         collection: defaultMediaPickerCollectionName,
-        authMethod: 'client',
       },
     };
     const fileBrowser = MediaPicker('browser', context, browseConfig);

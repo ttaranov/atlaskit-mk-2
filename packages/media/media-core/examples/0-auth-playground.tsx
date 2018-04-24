@@ -3,16 +3,8 @@ import { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-
-import {
-  Context,
-  ContextFactory,
-  MediaItem,
-  Auth,
-  AuthProvider,
-  isClientBasedAuth,
-  isError,
-} from '..';
+import { Context, ContextFactory, MediaItem, isError } from '../src';
+import { Auth, AuthProvider, isClientBasedAuth } from '@atlaskit/media-store';
 
 const collectionName = 'MediaServicesSample';
 const serviceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';

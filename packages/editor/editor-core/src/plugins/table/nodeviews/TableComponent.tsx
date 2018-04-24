@@ -27,13 +27,11 @@ const CONTROLLER_PADDING = 52;
 import { Props } from './table';
 
 export interface ComponentProps extends Props {
-  contentDOM: (element: HTMLTableSectionElement) => void;
+  contentDOM: (element: HTMLElement | undefined) => void;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
-  private rowControls: HTMLDivElement | null;
   private wrapper: HTMLDivElement | null;
-  private columnControls: HTMLDivElement | null;
   private table: HTMLTableElement | null;
   private colgroup: HTMLTableColElement | null;
 
@@ -123,12 +121,7 @@ class TableComponent extends React.Component<ComponentProps> {
               className="table-container"
               data-layout={node.attrs.layout}
             >
-              <div
-                className="table-row-controls"
-                ref={elem => {
-                  this.rowControls = elem;
-                }}
-              >
+              <div className="table-row-controls">
                 <TableFloatingControls
                   editorView={view}
                   tableElement={pluginState.tableElement}
@@ -147,12 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   this.wrapper = elem;
                 }}
               >
-                <div
-                  className="table-column-controls"
-                  ref={elem => {
-                    this.columnControls = elem;
-                  }}
-                >
+                <div className="table-column-controls">
                   <ColumnControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
@@ -165,6 +153,7 @@ class TableComponent extends React.Component<ComponentProps> {
                 <table
                   ref={elem => {
                     this.table = elem;
+                    this.props.contentDOM(elem ? elem : undefined);
                   }}
                   data-number-column={node.attrs.isNumberColumnEnabled}
                   data-layout={node.attrs.layout}
@@ -176,7 +165,6 @@ class TableComponent extends React.Component<ComponentProps> {
                       }}
                     />
                   ) : null}
-                  <tbody ref={this.props.contentDOM} />
                 </table>
               </div>
               {columnShadows}
@@ -233,31 +221,6 @@ class TableComponent extends React.Component<ComponentProps> {
   };
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
-
-  isTableComponentMutation(target: Node) {
-    const {
-      table,
-      rowControls,
-      columnControls,
-      colgroup,
-      leftShadow,
-      rightShadow,
-    } = this;
-
-    const tableMutation = target === table;
-
-    const controlsMutation =
-      (columnControls !== null && columnControls.contains(target)) ||
-      (rowControls !== null && rowControls.contains(target));
-
-    const resizingMutation =
-      this.props.allowColumnResizing &&
-      ((colgroup !== null && colgroup.contains(target)) ||
-        (leftShadow !== null && leftShadow.contains(target)) ||
-        (rightShadow !== null && rightShadow.contains(target)));
-
-    return tableMutation || controlsMutation || resizingMutation;
-  }
 }
 
 export default TableComponent;

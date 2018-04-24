@@ -1,5 +1,7 @@
 # @atlaskit/modal-dialog
 
+## 4.0.3
+
 ## 4.0.2
 - [patch] AK-4416 changes meaning of autofocus prop values [c831a3d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c831a3d)
 

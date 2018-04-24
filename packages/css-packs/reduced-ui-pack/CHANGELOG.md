@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.7.4
+- [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
+
 ## 8.7.3
 
 ## 8.7.2

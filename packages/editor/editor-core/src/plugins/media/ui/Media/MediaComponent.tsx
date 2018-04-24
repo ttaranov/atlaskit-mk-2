@@ -65,7 +65,6 @@ function mapMediaStatusIntoCardStatus(
       return progress === 1 ? 'complete' : 'uploading';
     case 'ready':
     case 'unknown':
-    case 'unfinalized':
     case 'processing':
     // Happens after swap, @see `handleMediaStateChange` method below for more context
     case 'cancelled':

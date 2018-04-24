@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -42,7 +42,7 @@ import {
   MediaStateManager,
 } from '../types';
 import DefaultMediaStateManager from '../default-state-manager';
-import { insertMediaSingleNode } from './media-single';
+import { insertMediaSingleNode } from '../utils/media-single';
 
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
@@ -63,8 +63,6 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public allUploadsFinished: boolean = true;
@@ -81,9 +79,14 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
+
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   private popupPicker?: PickerFacade;
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
+  private customPicker?: PickerFacade;
+
   private linkRanges: Array<URLInfo>;
   private editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
@@ -295,7 +298,8 @@ export class MediaPluginState {
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
 
-    if (isNonImagesBanned(grandParentNode)) {
+    // in case of gap cursor, selection might be at depth=0
+    if (grandParentNode && isNonImagesBanned(grandParentNode)) {
       nonImageAttachements = [];
     }
 
@@ -303,15 +307,7 @@ export class MediaPluginState {
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
 
-    const allowMediaSingle =
-      mediaSingle &&
-      grandParentNode.type.validContent(Fragment.from(mediaSingle.create()));
-
-    if (
-      this.editorAppearance !== 'message' &&
-      allowMediaSingle &&
-      mediaSingle
-    ) {
+    if (this.editorAppearance !== 'message' && mediaSingle) {
       imageAttachments.forEach(mediaState =>
         this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );
@@ -579,6 +575,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
     this.clipboardPicker = undefined;
     this.dropzonePicker = undefined;
+    this.customPicker = undefined;
   };
 
   private initPickers(
@@ -601,56 +598,66 @@ export class MediaPluginState {
         uploadParams,
       };
 
-      if (context.config.userAuthProvider) {
+      if (this.options.customMediaPicker) {
         pickers.push(
-          (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-            userAuthProvider: context.config.userAuthProvider,
-            ...defaultPickerConfig,
-          })),
+          (this.customPicker = new Picker(
+            'customMediaPicker',
+            pickerFacadeConfig,
+            this.options.customMediaPicker,
+          )),
         );
       } else {
+        if (context.config.userAuthProvider) {
+          pickers.push(
+            (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
+              userAuthProvider: context.config.userAuthProvider,
+              ...defaultPickerConfig,
+            })),
+          );
+        } else {
+          pickers.push(
+            (this.popupPicker = new Picker(
+              'browser',
+              pickerFacadeConfig,
+              defaultPickerConfig,
+            )),
+          );
+        }
+
         pickers.push(
-          (this.popupPicker = new Picker(
-            'browser',
+          (this.binaryPicker = new Picker(
+            'binary',
             pickerFacadeConfig,
             defaultPickerConfig,
           )),
         );
+
+        pickers.push(
+          (this.clipboardPicker = new Picker(
+            'clipboard',
+            pickerFacadeConfig,
+            defaultPickerConfig,
+          )),
+        );
+
+        pickers.push(
+          (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
+            container: this.options.customDropzoneContainer,
+            headless: true,
+            ...defaultPickerConfig,
+          })),
+        );
+
+        this.dropzonePicker.onDrag(this.handleDrag);
+        this.removeOnCloseListener = this.popupPicker.onClose(
+          this.onPopupPickerClose,
+        );
       }
-
-      pickers.push(
-        (this.binaryPicker = new Picker(
-          'binary',
-          pickerFacadeConfig,
-          defaultPickerConfig,
-        )),
-      );
-
-      pickers.push(
-        (this.clipboardPicker = new Picker(
-          'clipboard',
-          pickerFacadeConfig,
-          defaultPickerConfig,
-        )),
-      );
-
-      pickers.push(
-        (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
-          container: this.options.customDropzoneContainer,
-          headless: true,
-          ...defaultPickerConfig,
-        })),
-      );
 
       pickers.forEach(picker => {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
-
-      this.dropzonePicker.onDrag(this.handleDrag);
-      this.removeOnCloseListener = this.popupPicker.onClose(
-        this.onPopupPickerClose,
-      );
     }
 
     if (this.popupPicker) {
