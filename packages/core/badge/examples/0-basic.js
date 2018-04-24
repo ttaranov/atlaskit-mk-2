@@ -18,6 +18,18 @@ const Item = styled.div`
   }
 `;
 
+const ItemPrimaryInverted = styled.div`
+  align-items: center;
+  background: ${colors.B400};
+  border-radius: ${borderRadius}px;
+  color: ${colors.N0};
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  max-width: 300px;
+  padding: 0.6em 1em;
+`;
+
 export default function Example() {
   return (
     <div>
@@ -29,6 +41,14 @@ export default function Example() {
         <p>Primary</p>
         <Badge appearance="primary" value={-5} />
       </Item>
+      <Item>
+        <p>Important</p>
+        <Badge appearance="important" value={25} />
+      </Item>
+      <ItemPrimaryInverted>
+        <p>Primary Inverted</p>
+        <Badge appearance="primaryInverted" value={-5} />
+      </ItemPrimaryInverted>
       <Item>
         <p>Added (no theme change)</p>
         <Badge appearance="added" max={99} value={3000} />
