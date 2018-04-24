@@ -2251,9 +2251,9 @@ bolt@^0.13.0:
     sort-object "^3.0.2"
     typeable-promisify "^2.0.1"
 
-bolt@^0.20.5:
-  version "0.20.5"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.20.5.tgz#d7e96c1614109ac6825a725d4e9177369ab22408"
+bolt@^0.20.6:
+  version "0.20.6"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.20.6.tgz#e43439a9c3eb0c08db675e747e073a6abdf55f61"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
