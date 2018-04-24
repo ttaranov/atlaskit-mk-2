@@ -30,14 +30,6 @@ export default function Example() {
         <Badge appearance="primary" value={-5} />
       </Item>
       <Item>
-        <p>Primary Inverted</p>
-        <Badge appearance="primaryInverted" value={-5} />
-      </Item>
-      <Item>
-        <p>Important</p>
-        <Badge appearance="important" value={25} />
-      </Item>
-      <Item>
         <p>Added (no theme change)</p>
         <Badge appearance="added" max={99} value={3000} />
       </Item>
