@@ -1,5 +1,20 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.5
+
+## 4.0.4
+- [patch] ED-4334 fix column size calculation bug; don't emit default col/rowspan attrs [eb8f140](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb8f140)
+
+## 4.0.3
+
+## 4.0.2
+
+## 4.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 4.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 3.0.1
 - [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
 

@@ -149,6 +149,10 @@ export default class Page {
     return this.browser.isVisible(selector);
   }
 
+  hasFocus(selector) {
+    return this.browser.hasFocus(selector);
+  }
+
   log(type) {
     return this.browser.log(type);
   }

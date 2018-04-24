@@ -21,17 +21,17 @@ import { TableLayout, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
+// TODO: Should be 50 after ED-4280 is fixed
+const CONTROLLER_PADDING = 52;
 
 import { Props } from './table';
 
 export interface ComponentProps extends Props {
-  contentDOM: (element: HTMLTableSectionElement) => void;
+  contentDOM: (element: HTMLElement | undefined) => void;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
-  private rowControls: HTMLDivElement | null;
   private wrapper: HTMLDivElement | null;
-  private columntControls: HTMLDivElement | null;
   private table: HTMLTableElement | null;
   private colgroup: HTMLTableColElement | null;
 
@@ -70,7 +70,7 @@ class TableComponent extends React.Component<ComponentProps> {
   calcWidth(layout: TableLayout, containerWidth: number): string {
     switch (layout) {
       case 'full-width':
-        return `${containerWidth}px`;
+        return `${containerWidth - CONTROLLER_PADDING}px`;
       default:
         return '100%';
     }
@@ -108,10 +108,7 @@ class TableComponent extends React.Component<ComponentProps> {
         }}
         eventDispatcher={eventDispatcher}
         editorView={view}
-        render={({
-          containerWidth,
-          pluginState,
-        }) => {
+        render={({ containerWidth, pluginState }) => {
           return (
             <div
               style={{
@@ -124,12 +121,7 @@ class TableComponent extends React.Component<ComponentProps> {
               className="table-container"
               data-layout={node.attrs.layout}
             >
-              <div
-                className="table-row-controls"
-                ref={elem => {
-                  this.rowControls = elem;
-                }}
-              >
+              <div className="table-row-controls">
                 <TableFloatingControls
                   editorView={view}
                   tableElement={pluginState.tableElement}
@@ -148,12 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   this.wrapper = elem;
                 }}
               >
-                <div
-                  className="table-column-controls"
-                  ref={elem => {
-                    this.columntControls = elem;
-                  }}
-                >
+                <div className="table-column-controls">
                   <ColumnControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
@@ -166,6 +153,7 @@ class TableComponent extends React.Component<ComponentProps> {
                 <table
                   ref={elem => {
                     this.table = elem;
+                    this.props.contentDOM(elem ? elem : undefined);
                   }}
                   data-number-column={node.attrs.isNumberColumnEnabled}
                   data-layout={node.attrs.layout}
@@ -177,7 +165,6 @@ class TableComponent extends React.Component<ComponentProps> {
                       }}
                     />
                   ) : null}
-                  <tbody ref={this.props.contentDOM} />
                 </table>
               </div>
               {columnShadows}
@@ -234,31 +221,6 @@ class TableComponent extends React.Component<ComponentProps> {
   };
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
-
-  isTableComponentMutation(target: Node) {
-    const {
-      table,
-      rowControls,
-      columntControls,
-      colgroup,
-      leftShadow,
-      rightShadow,
-    } = this;
-
-    const tableMutation = target === table;
-
-    const controlsMutation =
-      (columntControls !== null && columntControls.contains(target)) ||
-      (rowControls !== null && rowControls.contains(target));
-
-    const resizingMutation =
-      this.props.allowColumnResizing &&
-      ((colgroup !== null && colgroup.contains(target)) ||
-        (leftShadow !== null && leftShadow.contains(target)) ||
-        (rightShadow !== null && rightShadow.contains(target)));
-
-    return tableMutation || controlsMutation || resizingMutation;
-  }
 }
 
 export default TableComponent;

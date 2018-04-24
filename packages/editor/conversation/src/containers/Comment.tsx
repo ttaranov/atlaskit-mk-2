@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { SharedProps } from '../components/Comment';
 import { Comment as CommentType } from '../model';
-import { getComments } from '../internal/selectors';
+import { getComments, getHighlighted } from '../internal/selectors';
 import { State } from '../internal/store';
 
 export interface Props extends SharedProps {
@@ -19,9 +19,13 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     ownProps.comment.commentId,
   );
 
+  const isHighlighted =
+    getHighlighted(state) === ownProps.comment.commentId.toString();
+
   return {
     ...ownProps,
     comments,
+    isHighlighted,
   };
 };
 
@@ -35,4 +39,4 @@ class CommentContainer extends React.Component<
   }
 }
 
-export default connect(mapStateToProps)(CommentContainer);
+export default connect(mapStateToProps)(CommentContainer as any);

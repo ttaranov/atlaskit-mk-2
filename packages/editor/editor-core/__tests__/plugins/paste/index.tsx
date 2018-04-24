@@ -12,10 +12,17 @@ import {
   dispatchPasteEvent,
   bodiedExtension,
   a as link,
+  taskList,
+  taskItem,
+  decisionList,
+  decisionItem,
+  insertText,
 } from '@atlaskit/editor-test-helpers';
 import mediaPlugin from '../../../src/plugins/media';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import extensionPlugin from '../../../src/plugins/extension';
+import { uuid } from '@atlaskit/editor-common';
+import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 
 describe('paste plugins', () => {
   const editor = (doc: any) =>
@@ -25,6 +32,7 @@ describe('paste plugins', () => {
         mediaPlugin({ allowMediaSingle: true }),
         codeBlockPlugin,
         extensionPlugin,
+        tasksAndDecisionsPlugin,
       ],
     });
 
@@ -318,6 +326,42 @@ describe('paste plugins', () => {
         ),
       );
     });
+
+    describe('actions and decisions', () => {
+      beforeEach(() => {
+        uuid.setStatic('local-decision');
+      });
+
+      afterEach(() => {
+        uuid.setStatic(false);
+      });
+
+      it('pastes plain text into an action', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, '[] ', sel);
+        dispatchPasteEvent(editorView, { plain: 'plain text' });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('plain text'),
+            ),
+          ),
+        );
+      });
+
+      it('pastes plain text into a decision', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, '<> ', sel);
+        dispatchPasteEvent(editorView, { plain: 'plain text' });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('plain text'),
+            ),
+          ),
+        );
+      });
+    });
   });
 
   describe('paste bodiedExtension inside another bodiedExtension', () => {
@@ -332,6 +376,26 @@ describe('paste plugins', () => {
       });
       expect(editorView.state.doc).toEqualDocument(
         doc(bodiedExtension(attrs)(p('text'))),
+      );
+    });
+  });
+
+  describe('paste part of bodied extension as test', () => {
+    it('should remove bodiedExtension from the pasted content, paste only text', () => {
+      const attrs = {
+        extensionType: 'com.atlassian.confluence.macro.core',
+        extensionKey: 'expand',
+      };
+      const { editorView } = editor(
+        doc(bodiedExtension(attrs)(p('Hello')), p('{<>}')),
+      );
+
+      dispatchPasteEvent(editorView, {
+        html: `<meta charset='utf-8'><p data-pm-slice=1 1 [&quot;bodiedExtension&quot;,null]>llo</p>`,
+      });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(bodiedExtension(attrs)(p('Hello')), p('llo')),
       );
     });
   });

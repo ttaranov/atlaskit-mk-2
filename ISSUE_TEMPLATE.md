@@ -75,7 +75,7 @@ h2.Level of Consistency
 What percentage of the time does it reproduce?
 
 h2.Information
-|| Component(s)|| Version || Did this work in previous versions of the AtlasKit component? || Browser and OS information
+|| Component(s)|| Version || Did this work in previous versions of the Atlaskit component? || Browser and OS information
  |            |            |Yes /  No/  I don't know | |
 
 * To get the component version:

@@ -1,5 +1,18 @@
 # @atlaskit/media-image
 
+## 27.0.2
+- [patch] remove polished dependency [0e54c69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e54c69)
+
+## 27.0.1
+
+## 27.0.0
+
+## 26.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 26.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 25.2.0
 - [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
 

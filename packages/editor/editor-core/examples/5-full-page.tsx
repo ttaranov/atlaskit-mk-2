@@ -10,7 +10,7 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
-  extensionProvider,
+  macroProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -18,6 +18,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import { DevTools } from '../example-helpers/DevTools';
 
 import {
   akEditorCodeBackground,
@@ -44,14 +45,14 @@ TitleInput.displayName = 'TitleInput';
  * +-------------------------------+
  * + [Editor core v] [Full page v] +  48px height
  * +-------------------------------+
- * +                               +  20px padding-top
+ * +                               +  16px padding-top
  * +            Content            +
- * +                               +  20px padding-bottom
+ * +                               +  16px padding-bottom
  * +-------------------------------+  ----
- *                                    88px
+ *                                    80px - 48px (Outside of iframe)
  */
 export const Wrapper: any = styled.div`
-  height: calc(100vh - 88px);
+  height: calc(100vh - 32px);
 `;
 Wrapper.displayName = 'Wrapper';
 
@@ -113,13 +114,13 @@ const providers = {
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
-  extensionProvider: Promise.resolve(extensionProvider),
+  macroProvider: Promise.resolve(macroProvider),
 };
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-export default class Example extends React.Component<Props, State> {
+export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
@@ -135,57 +136,59 @@ export default class Example extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Content>
-          <EditorContext>
-            <Editor
-              appearance="full-page"
-              analyticsHandler={analyticsHandler}
-              allowTasksAndDecisions={true}
-              allowCodeBlocks={true}
-              allowLists={true}
-              allowTextColor={true}
-              allowTables={{
-                allowColumnResizing: true,
-                allowMergeCells: true,
-                allowNumberColumn: true,
-                allowBackgroundColor: true,
-                allowHeaderRow: true,
-                allowHeaderColumn: true,
-                permittedLayouts: 'all',
-              }}
-              allowJiraIssue={true}
-              allowUnsupportedContent={true}
-              allowPanel={true}
-              allowExtension={true}
-              allowRule={true}
-              allowDate={true}
-              allowTemplatePlaceholders={{ allowInserting: true }}
-              {...providers}
-              media={{ provider: mediaProvider, allowMediaSingle: true }}
-              placeholder="Write something..."
-              shouldFocus={false}
-              disabled={this.state.disabled}
-              contentComponents={
-                <TitleInput
-                  placeholder="Give this page a title..."
-                  // tslint:disable-next-line:jsx-no-lambda
-                  innerRef={this.handleTitleRef}
-                  onFocus={this.handleTitleOnFocus}
-                  onBlur={this.handleTitleOnBlur}
-                />
-              }
-              primaryToolbarComponents={
-                <WithEditorActions
-                  // tslint:disable-next-line:jsx-no-lambda
-                  render={actions => (
-                    <SaveAndCancelButtons editorActions={actions} />
-                  )}
-                />
-              }
-              onSave={SAVE_ACTION}
-              insertMenuItems={customInsertMenuItems}
-              extensionHandlers={extensionHandlers}
-            />
-          </EditorContext>
+          <Editor
+            appearance="full-page"
+            analyticsHandler={analyticsHandler}
+            UNSAFE_allowQuickInsert={true}
+            allowTasksAndDecisions={true}
+            allowCodeBlocks={true}
+            allowLists={true}
+            allowTextColor={true}
+            allowTables={{
+              allowColumnResizing: true,
+              allowMergeCells: true,
+              allowNumberColumn: true,
+              allowBackgroundColor: true,
+              allowHeaderRow: true,
+              allowHeaderColumn: true,
+              permittedLayouts: 'all',
+              stickToolbarToBottom: true,
+            }}
+            allowJiraIssue={true}
+            allowUnsupportedContent={true}
+            allowPanel={true}
+            allowExtension={true}
+            allowRule={true}
+            allowDate={true}
+            UNSAFE_allowLayouts={true}
+            UNSAFE_allowGapCursor={true}
+            allowTemplatePlaceholders={{ allowInserting: true }}
+            {...providers}
+            media={{ provider: mediaProvider, allowMediaSingle: true }}
+            placeholder="Write something..."
+            shouldFocus={false}
+            disabled={this.state.disabled}
+            contentComponents={
+              <TitleInput
+                placeholder="Give this page a title..."
+                // tslint:disable-next-line:jsx-no-lambda
+                innerRef={this.handleTitleRef}
+                onFocus={this.handleTitleOnFocus}
+                onBlur={this.handleTitleOnBlur}
+              />
+            }
+            primaryToolbarComponents={
+              <WithEditorActions
+                // tslint:disable-next-line:jsx-no-lambda
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
+              />
+            }
+            onSave={SAVE_ACTION}
+            insertMenuItems={customInsertMenuItems}
+            extensionHandlers={extensionHandlers}
+          />
         </Content>
       </Wrapper>
     );
@@ -198,4 +201,15 @@ export default class Example extends React.Component<Props, State> {
       ref.focus();
     }
   };
+}
+
+export default function Example() {
+  return (
+    <EditorContext>
+      <div style={{ height: '100%' }}>
+        <DevTools />
+        <ExampleEditor />
+      </div>
+    </EditorContext>
+  );
 }

@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema, NodeType } from 'prosemirror-model';
+
 import { Builder } from './builder/builder';
 import ListBuilder from './builder/list-builder';
 import TableBuilder, { AddCellArgs } from './builder/table-builder';
@@ -12,6 +13,7 @@ import { getTextWithMarks } from './text';
 import { TEXT_COLOR_GREY } from './effects';
 
 import getHeadingNodeView from './nodes/heading';
+import getMediaNodeView from './nodes/media';
 import getRuleNodeView from './nodes/rule';
 
 // E.g. bq. foo -> [ "foo" ]
@@ -19,6 +21,9 @@ const BLOCKQUOTE_LINE_REGEXP = /^bq\.\s(.+)/;
 
 // E.g. h1. foo -> [ "1", "foo" ]
 const HEADING_REGEXP = /^h([1|2|3|4|5|6]+)\.\s(.+)/;
+
+// E.g. !image.png! and !image.png|attrs!
+const ATTACHMENTS_REGEXP = /^!(.+?)(\|(.+))?!$/;
 
 // E.g. * foo -> [ "*", "foo" ]
 const LIST_REGEXP = /^\s*([*\-#]+)\s+(.+)/;
@@ -109,7 +114,7 @@ export default class AbstractTree {
     if (isPanelWithTitle) {
       const headingNode = this.schema.nodes.heading.createChecked(
         { level: 1 },
-        getTextWithMarks(this.schema, attrs.title),
+        this.getTextWithMarks(attrs.title, false),
       );
 
       output.push(headingNode);
@@ -232,7 +237,7 @@ export default class AbstractTree {
         continue;
       }
 
-      let lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
+      const lineUpdated = line.replace(/---/g, '—').replace(/--/g, '–');
 
       // search for headings
       const headingMatches = lineUpdated.match(HEADING_REGEXP);
@@ -249,6 +254,24 @@ export default class AbstractTree {
 
         output.push(headingNode);
         continue;
+      }
+
+      // search for images/attachments
+      const mediaMatches = lineUpdated.match(ATTACHMENTS_REGEXP);
+      if (mediaMatches && mediaMatches[1].includes('.')) {
+        processAndEmptyStoredText();
+
+        const [, /* skip */ filename] = mediaMatches;
+        if (
+          !containerNodeType &&
+          filename.includes('.') &&
+          !/^https?:\/\//.test(filename)
+        ) {
+          const mediaNode = getMediaNodeView(this.schema, filename);
+          output.push(mediaNode);
+
+          continue;
+        }
       }
 
       // search for blockquote line
@@ -346,11 +369,6 @@ export default class AbstractTree {
         continue;
       }
 
-      // TODO process images/attachments
-      // TODO process {color} macro
-      // TODO process \\ hardBreak
-      // TODO process text effects and links
-
       textContainer.push(lineUpdated);
     }
 
@@ -375,13 +393,22 @@ export default class AbstractTree {
    * @returns {AddCellArgs[]}
    */
   private getTableCells(line: string, useGreyText: boolean): AddCellArgs[] {
-    let match;
     const cells: AddCellArgs[] = [];
+    const { tableCell } = this.schema.nodes;
+    let match;
+
     while ((match = TABLE_CELL_REGEXP.exec(line)) !== null) {
       const [, /* discard */ style, content] = match;
-      const contentNode = this.getTextWithMarks(content, useGreyText);
+      const contentNode = this.getTextNodes(
+        content,
+        false,
+        tableCell,
+        useGreyText,
+      );
+
       cells.push({ style, content: contentNode });
     }
+
     return cells;
   }
 

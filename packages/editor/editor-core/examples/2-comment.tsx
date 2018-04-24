@@ -15,6 +15,7 @@ import { name, version } from '../package.json';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import { DevTools } from '../example-helpers/DevTools';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -152,6 +153,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               </div>
             )}
           />
+          <DevTools />
         </div>
       </EditorContext>
     );

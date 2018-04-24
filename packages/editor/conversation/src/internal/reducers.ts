@@ -15,6 +15,7 @@ import {
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
   CREATE_CONVERSATION_ERROR,
+  HIGHLIGHT_COMMENT,
 } from './actions';
 import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
@@ -346,6 +347,16 @@ export const reducers = createReducer(initialState, {
     return {
       ...state,
       conversations,
+    };
+  },
+
+  [HIGHLIGHT_COMMENT](state: State, action: Action) {
+    const { payload } = action;
+    const highlighted = payload.commentId.toString();
+
+    return {
+      ...state,
+      highlighted,
     };
   },
 

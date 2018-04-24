@@ -13,7 +13,7 @@ import {
   selectParentNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
-import { ExtensionProvider, insertMacroFromMacroBrowser } from '../macro';
+import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
 
 export const setExtensionElement = (element: HTMLElement | null) => (
@@ -30,18 +30,18 @@ export const setExtensionElement = (element: HTMLElement | null) => (
   return true;
 };
 
-export const editExtension = (extensionProvider: ExtensionProvider | null) => (
+export const editExtension = (macroProvider: MacroProvider | null) => (
   view: EditorView,
 ): boolean => {
   const { state, dispatch } = view;
-  // insert macro if there's extensionProvider available
-  if (extensionProvider) {
+  // insert macro if there's macroProvider available
+  if (macroProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
       let tr = state.tr.setMeta(pluginKey, { element: null });
       dispatch(selectParentNodeOfType(bodiedExtension)(tr));
-      insertMacroFromMacroBrowser(extensionProvider, node)(view);
+      insertMacroFromMacroBrowser(macroProvider, node)(view);
       return true;
     }
   }
@@ -66,34 +66,40 @@ export const removeExtension = (
   return true;
 };
 
-export const removeBodiedExtensionsOnPaste = (slice: Slice) => (
+export const removeBodiedExtensionWrapper = (
   state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const nodes: PmNode[] = [];
-  const { tr, selection, schema: { nodes: { bodiedExtension } } } = state;
+  slice: Slice,
+) => {
+  const { schema: { nodes: { bodiedExtension } } } = state;
+  const { content: { firstChild: wrapper } } = slice;
+
+  if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
+    return slice;
+  }
+
+  return new Slice(
+    Fragment.from(wrapper!.content),
+    Math.max(0, slice.openStart - 1),
+    Math.max(0, slice.openEnd - 1),
+  );
+};
+
+export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
+  slice: Slice,
+  state: EditorState,
+) => {
+  const { selection, schema: { nodes: { bodiedExtension } } } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    let modified = false;
-
+    const nodes: PmNode[] = [];
     slice.content.forEach(child => {
-      if (child.type === bodiedExtension) {
-        modified = true;
-      } else {
+      if (child.type !== bodiedExtension) {
         nodes.push(child);
       }
     });
 
-    if (modified) {
-      const content = new Slice(
-        Fragment.from(nodes),
-        slice.openStart,
-        slice.openEnd,
-      );
-      dispatch(tr.replaceSelection(content));
-      return true;
-    }
+    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
   }
 
-  return false;
+  return slice;
 };

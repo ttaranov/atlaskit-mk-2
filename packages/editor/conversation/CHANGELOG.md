@@ -1,5 +1,49 @@
 # @atlaskit/conversation
 
+## 7.1.15
+
+## 7.1.14
+- [patch] Avatar should display tooltip on hover and be clickable if profile url is provided [272893c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272893c)
+
+## 7.1.13
+
+## 7.1.12
+- [patch] Close empty editor on save [e5a9f36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5a9f36)
+
+## 7.1.11
+
+## 7.1.10
+
+## 7.1.9
+
+## 7.1.8
+- [patch] Fix permalink check [8d715f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d715f1)
+
+## 7.1.7
+
+## 7.1.6
+
+## 7.1.5
+
+## 7.1.4
+
+## 7.1.3
+- [patch] Close Editor when comment is saved [ae181bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae181bf)
+
+## 7.1.2
+
+## 7.1.1
+- [patch] Adding placholder prop for optionally setting the editor placholder text [9f1696a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f1696a)
+
+## 7.1.0
+- [minor] Adding permalink support [c79d549](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c79d549)
+
+## 7.0.1
+- [patch] Don't allow empty comments [cd9069c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd9069c)
+
+## 7.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 6.3.21
 
 ## 6.3.20

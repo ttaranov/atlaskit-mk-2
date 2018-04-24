@@ -1,4 +1,5 @@
 import {
+  sendKeyToPm,
   insertText,
   createEditor,
   doc,
@@ -17,6 +18,8 @@ import {
   tdEmpty,
   tdCursor,
   thCursor,
+  a as link,
+  br,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
@@ -160,6 +163,56 @@ describe('tasks and decisions - input rules', () => {
         doc(blockquote(p('Hello World<> '))),
       );
     });
+
+    it('should convert long link to hyperlink in decision', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '<> ', sel);
+      insertText(
+        editorView,
+        'media-playground.us-west-1.staging.atl-pass.net ',
+        sel + 1,
+      );
+
+      const a = link({
+        href: 'http://media-playground.us-west-1.staging.atl-pass.net',
+      })('media-playground.us-west-1.staging.atl-pass.net');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })(a, ' '),
+          ),
+        ),
+      );
+    });
+
+    it('should convert markdown link in decision', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '<> ', sel);
+      insertText(editorView, '[text](http://foo)', sel + 1);
+
+      const a = link({ href: 'http://foo' })('text');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })(a),
+          ),
+        ),
+      );
+    });
+
+    it('should add hardbreaks on Shift-Enter', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '<> ', sel);
+      sendKeyToPm(editorView, 'Shift-Enter');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })(br()),
+          ),
+        ),
+      );
+    });
   });
 
   describe('tasks', () => {
@@ -282,6 +335,42 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(blockquote(p('Hello World[] '))),
+      );
+    });
+
+    it('should convert long link to hyperlink in action', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '[] ', sel);
+      insertText(
+        editorView,
+        'media-playground.us-west-1.staging.atl-paas.net ',
+        sel + 1,
+      );
+
+      const a = link({
+        href: 'http://media-playground.us-west-1.staging.atl-paas.net',
+      })('media-playground.us-west-1.staging.atl-paas.net');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })(a, ' '),
+          ),
+        ),
+      );
+    });
+
+    it('should convert markdown link in action', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '[] ', sel);
+      insertText(editorView, '[text](http://foo)', sel + 1);
+
+      const a = link({ href: 'http://foo' })('text');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })(a),
+          ),
+        ),
       );
     });
   });

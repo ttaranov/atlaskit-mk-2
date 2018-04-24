@@ -1,5 +1,16 @@
 # @atlaskit/media-core
 
+## 18.0.1
+
+## 18.0.0
+- [major] FileDetails' `id` property is now mandatory\nAuth interfaces moves from media-core to media-store, though still exported from media-core\nNew Interfaces (UploadableFile, UploadFileCallbacks) are exported from media-store\nMediaStore calls fixed with collection supplied during auth-provider call [d7b5021](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7b5021)
+
+## 17.0.0
+- [major] MediaCollectionProvider now emits errors as next values in observable() [f22e2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f22e2a0)
+
+## 16.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 15.3.0
 - [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
 

@@ -177,13 +177,13 @@ export const customInsertMenuItems = [
         'Fake promise that simulates the macro browser opening. Will resolve in 1 sec with a selected macro to be inserted.',
       );
 
-      const editExtension = new Promise(resolve => {
+      const openMacroBrowser = new Promise(resolve => {
         setTimeout(() => {
           resolve(bodiedExtensionData[0]);
         }, 1000);
       });
 
-      editExtension.then(macro => editorActions.replaceSelection(macro));
+      openMacroBrowser.then(macro => editorActions.replaceSelection(macro));
     },
   },
 ];

@@ -59,6 +59,7 @@ export interface PluginConfig {
   allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
+  stickToolbarToBottom?: boolean;
   permittedLayouts?: PermittedLayoutsDescriptor;
 }
 
@@ -81,11 +82,16 @@ export class TableState {
   allowBackgroundColor: boolean = false;
   allowHeaderRow: boolean = false;
   allowHeaderColumn: boolean = false;
+  stickToolbarToBottom: boolean = false;
   permittedLayouts: PermittedLayoutsDescriptor;
 
   private isHeaderRowRequired: boolean = false;
 
-  constructor(state: EditorState, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) {
+  constructor(
+    state: EditorState,
+    eventDispatcher: EventDispatcher,
+    pluginConfig: PluginConfig,
+  ) {
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
     this.isHeaderRowRequired = !!pluginConfig.isHeaderRowRequired;
@@ -95,6 +101,7 @@ export class TableState {
     this.allowBackgroundColor = !!pluginConfig.allowBackgroundColor;
     this.allowHeaderRow = !!pluginConfig.allowHeaderRow;
     this.allowHeaderColumn = !!pluginConfig.allowHeaderColumn;
+    this.stickToolbarToBottom = !!pluginConfig.stickToolbarToBottom;
     this.eventDispatcher = eventDispatcher;
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
@@ -251,7 +258,6 @@ export class TableState {
 
     const { schema, tr } = this.view.state;
 
-
     this.view.dispatch(
       tr.setNodeMarkup(tableNode.pos - 1, schema.nodes.table, {
         ...tableNode.node.attrs,
@@ -312,7 +318,11 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const createPlugin = (dispatch: Dispatch, eventDispatcher: EventDispatcher, pluginConfig: PluginConfig) =>
+export const createPlugin = (
+  dispatch: Dispatch,
+  eventDispatcher: EventDispatcher,
+  pluginConfig: PluginConfig,
+) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {

@@ -1,5 +1,33 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.3
+
+## 3.1.2
+- [patch] Handle pasting of page-layouts to prevent unpredictable node-splitting behaviour. Will now 'unwrap' the contents of a layout if the slice is a partial range across page layouts, or if we are attempting to paste a layout inside a layout. We now always handle dispatching the transaction to handle paste ourselves (instead of falling back to PM). [f4ca7ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4ca7ac)
+
+## 3.1.1
+
+## 3.1.0
+- [minor] Add a generic type ahead plugin [445c66b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445c66b)
+
+## 3.0.8
+- [patch] ED-4294: fix editing bodiedExtension nodes [35d2648](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2648)
+
+## 3.0.7
+- [patch] fix deletion of lists and other elements placed after tables; bump prosemirror-commands to 1.0.7 [162960f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/162960f)
+
+## 3.0.6
+
+## 3.0.5
+
+## 3.0.4
+- [patch] Remove old chai reference which does not allow using editor-test-helpers in non-atlaskit TS packages [ea627e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea627e4)
+
+## 3.0.3
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 3.0.2
+
 ## 3.0.1
 - [patch] change table node builder constructor for tests, remove tableWithAttrs [cf43535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf43535)
 

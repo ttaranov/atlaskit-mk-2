@@ -1,39 +1,43 @@
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
-  placeholderPlugin,
   blockTypePlugin,
-  mentionsPlugin,
+  clearMarksOnChangeToEmptyDocumentPlugin,
+  codeBlockPlugin,
+  collabEditPlugin,
+  confluenceInlineComment,
+  datePlugin,
   emojiPlugin,
-  tasksAndDecisionsPlugin,
+  extensionPlugin,
+  fakeTextCursorPlugin,
+  helpDialogPlugin,
+  hyperlinkPlugin,
+  imageUploadPlugin,
+  insertBlockPlugin,
+  isMultilineContentPlugin,
+  jiraIssuePlugin,
+  layoutPlugin,
+  listsPlugin,
+  macroPlugin,
+  maxContentSizePlugin,
+  mediaPlugin,
+  mentionsPlugin,
+  panelPlugin,
+  pastePlugin,
+  placeholderPlugin,
+  placeholderTextPlugin,
+  rulePlugin,
   saveOnEnterPlugin,
   submitEditorPlugin,
-  mediaPlugin,
-  imageUploadPlugin,
-  maxContentSizePlugin,
-  isMultilineContentPlugin,
-  codeBlockPlugin,
-  pastePlugin,
-  listsPlugin,
-  textColorPlugin,
-  insertBlockPlugin,
   tablesPlugin,
-  collabEditPlugin,
-  helpDialogPlugin,
-  jiraIssuePlugin,
-  unsupportedContentPlugin,
-  panelPlugin,
-  macroPlugin,
-  confluenceInlineComment,
-  fakeTextCursorPlugin,
-  extensionPlugin,
-  rulePlugin,
-  clearMarksOnChangeToEmptyDocumentPlugin,
-  datePlugin,
-  placeholderTextPlugin,
-  hyperlinkPlugin,
+  tasksAndDecisionsPlugin,
+  textColorPlugin,
   textFormattingPlugin,
+  unsupportedContentPlugin,
   widthPlugin,
+  typeAheadPlugin,
+  quickInsertPlugin,
+  gapCursorPlugin,
 } from '../plugins';
 
 /**
@@ -49,6 +53,7 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     hyperlinkPlugin,
     textFormattingPlugin,
     widthPlugin,
+    typeAheadPlugin,
   ];
 }
 
@@ -57,6 +62,10 @@ export function getDefaultPluginsList(): EditorPlugin[] {
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
+
+  if (props.UNSAFE_allowQuickInsert) {
+    plugins.push(quickInsertPlugin);
+  }
 
   if (props.allowTextColor) {
     plugins.push(textColorPlugin);
@@ -106,7 +115,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(imageUploadPlugin);
   }
 
-  if (props.collabEditProvider) {
+  if (props.collabEdit || props.collabEditProvider) {
     plugins.push(collabEditPlugin);
   }
 
@@ -130,7 +139,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(extensionPlugin);
   }
 
-  if (props.extensionProvider) {
+  if (props.macroProvider) {
     plugins.push(macroPlugin);
   }
 
@@ -148,6 +157,14 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
         ? {}
         : props.allowTemplatePlaceholders;
     plugins.push(placeholderTextPlugin(options));
+  }
+
+  if (props.UNSAFE_allowLayouts) {
+    plugins.push(layoutPlugin);
+  }
+
+  if (props.UNSAFE_allowGapCursor) {
+    plugins.push(gapCursorPlugin);
   }
 
   // UI only plugins

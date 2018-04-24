@@ -172,7 +172,7 @@ export function convert(
          *     </span>
          * </span>
          */
-        if (node.className === 'jira-issue-macro') {
+        if (node.className.split(' ').indexOf('jira-issue-macro') > -1) {
           const jiraKey = node.getAttribute('data-jira-key');
           const link = node.getElementsByTagName('a')[0];
           if (jiraKey && link) {

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, type Element, type Ref } from 'react';
+import styled from 'styled-components';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
@@ -138,11 +139,28 @@ class ControlOption extends Component<OptionProops, OptionState> {
           primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
           secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
         />
-        {children}
+        <Truncate>{children}</Truncate>
       </components.Option>
     );
   }
 }
+/* TODO:
+  the label of an option in the menu
+  should ideally be something we can customise
+  as part of the react-select component API
+  at the moment we are hardcoding it into
+  the custom input-option components for Radio and Checkbox Select
+  and so this behaviour is not customisable / disableable
+  by users who buy into radio / checkbox select.
+*/
+
+const Truncate = styled.div`
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  flex: 1;
+  white-space: nowrap;
+`;
+
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />
 );

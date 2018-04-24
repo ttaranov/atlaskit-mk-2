@@ -45,6 +45,7 @@ export interface Props {
   allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
+  stickToolbarToBottom?: boolean;
   remove?: () => void;
   permittedLayouts?: PermittedLayoutsDescriptor;
   updateLayout?: (layoutName: TableLayout) => void;
@@ -86,6 +87,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       allowBackgroundColor,
       allowHeaderRow,
       allowHeaderColumn,
+      stickToolbarToBottom,
     } = this.props;
 
     if (!tableElement || !tableActive) {
@@ -123,13 +125,15 @@ export default class TableFloatingToolbar extends Component<Props, State> {
 
     return (
       <Popup
-        target={tableElement.parentElement || tableElement}
-        offset={[0, -10]}
+        offset={[0, 20]}
+        target={tableElement}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
+        stickToBottom={stickToolbarToBottom}
         alignY="bottom"
-        alignX="right"
+        alignX="center"
+        ariaLabel="Table floating controls"
       >
         <Toolbar>
           {allowBackgroundColor && (

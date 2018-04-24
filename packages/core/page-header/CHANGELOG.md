@@ -1,5 +1,14 @@
 # @atlaskit/page-header
 
+## 4.0.1
+- [patch] Fixed alignment of title for page-header [a9f95f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9f95f6)
+
+## 4.0.0
+- [major] Titles no longer truncate by default. Use the truncateTitle prop instead. [6879ef0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6879ef0)
+
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 2.4.2
 
 ## 2.4.1

@@ -22,9 +22,10 @@ import { AnalyticsHandler } from '../analytics';
 import { ImageUploadHandler } from '../plugins/image-upload';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit';
-import { ExtensionProvider } from '../plugins/macro/types';
+import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
+import { CollabEditOptions } from '../plugins/collab-edit';
 
 export type EditorAppearance =
   | 'message'
@@ -75,6 +76,15 @@ export interface EditorProps {
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
 
+  // Temporary flag to enable gap cursor while it's under development
+  UNSAFE_allowGapCursor?: boolean;
+
+  // Temporary flag to enable layouts while it's under development
+  UNSAFE_allowLayouts?: boolean;
+
+  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
+  UNSAFE_allowQuickInsert?: boolean;
+
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
   disabled?: boolean;
@@ -92,11 +102,12 @@ export interface EditorProps {
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
-  extensionProvider?: Promise<ExtensionProvider>;
+  macroProvider?: Promise<MacroProvider>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 
   media?: MediaOptions;
+  collabEdit?: CollabEditOptions;
   textFormatting?: TextFormattingOptions;
 
   maxHeight?: number;

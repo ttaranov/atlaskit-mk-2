@@ -16,9 +16,6 @@ import tableCommands from '../../../../src/plugins/table/commands';
 import DropdownMenu from '../../../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../../../src/plugins/insert-block/ui/ToolbarInsertBlock';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
-import codeBlockPlugin from '../../../../src/plugins/code-block';
-import panelPlugin from '../../../../src/plugins/panel';
-import listPlugin from '../../../../src/plugins/lists';
 import EditorActions from '../../../../src/actions';
 import { MediaProvider } from '../../../../src/plugins/media';
 
@@ -38,9 +35,14 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin, panelPlugin, listPlugin],
       pluginKey: blockTypePluginKey,
-      editorProps: { analyticsHandler: trackEvent },
+      editorProps: {
+        analyticsHandler: trackEvent,
+        allowCodeBlocks: true,
+        UNSAFE_allowLayouts: true,
+        allowLists: true,
+        allowPanel: true,
+      },
       providerFactory,
     });
 
@@ -110,7 +112,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         emojiDisabled={false}
         emojiProvider={emojiProvider}
         editorView={editorView}
-        buttons={5}
+        buttons={0}
         isReducedSpacing={false}
       />,
     );
@@ -314,11 +316,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should trigger insertMacroFromMacroBrowser when "[...] View More" option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const insertMacroFromMacroBrowser = jest.fn();
-    const extensionProvider = {} as any;
+    const macroProvider = {} as any;
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        extensionProvider={extensionProvider}
+        macroProvider={macroProvider}
         onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
         editorView={editorView}
         buttons={0}
@@ -358,6 +360,30 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.placeholder.button',
+    );
+    toolbarOption.unmount();
+  });
+
+  it('should track layout section insert event when "Insert columns" option is clicked', () => {
+    const { editorView } = editor(doc(p('text')));
+
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        layoutSectionEnabled={true}
+        editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
+      />,
+    );
+
+    toolbarOption.find(ToolbarButton).simulate('click');
+    const button = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Columns') > -1);
+    button.simulate('click');
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.layout.button',
     );
     toolbarOption.unmount();
   });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "6.3.21",
+  "version": "7.1.15",
   "config": {
     "access": "public"
   },
@@ -19,16 +19,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^9.2.0",
-    "@atlaskit/comment": "^2.8.2",
-    "@atlaskit/editor-common": "^8.1.21",
-    "@atlaskit/editor-core": "^67.0.3",
-    "@atlaskit/reactions": "^10.8.13",
-    "@atlaskit/renderer": "^14.0.0",
+    "@atlaskit/avatar": "^10.0.0",
+    "@atlaskit/comment": "^3.1.4",
+    "@atlaskit/editor-common": "^9.0.0",
+    "@atlaskit/editor-core": "^71.0.0",
+    "@atlaskit/reactions": "^11.0.9",
+    "@atlaskit/renderer": "^16.0.0",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "react-redux": "^5.0.0",
@@ -38,8 +38,8 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.5.3",
-    "@atlaskit/single-select": "^3.3.0",
-    "@atlaskit/util-data-test": "^8.0.3"
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/single-select": "^4.0.0",
+    "@atlaskit/util-data-test": "^9.0.3"
   }
 }

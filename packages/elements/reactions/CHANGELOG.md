@@ -1,5 +1,32 @@
 # @atlaskit/reactions
 
+## 11.0.9
+- [patch] FS-1645 update reaction animations [c01d36d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c01d36d)
+
+## 11.0.8
+
+## 11.0.7
+- [patch] FS-1882 update reaction button to match mobile [acc8118](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acc8118)
+
+## 11.0.6
+- [patch] FS-1876 update default reactions emoji [114cee6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/114cee6)
+
+## 11.0.5
+
+## 11.0.4
+- [patch] FS-1644 reactions ui changes [70ccf94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70ccf94)
+
+## 11.0.3
+- [patch] FS-1868 always add new reactions to the end of the list [70fdbeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70fdbeb)
+
+## 11.0.2
+
+## 11.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 11.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 10.8.15
 - [patch] Remove import from es6 promise at src level [e27f2ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e27f2ac)
 

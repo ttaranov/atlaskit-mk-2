@@ -21,6 +21,7 @@ export {
   toJSON,
   filterContentByType,
   setTextSelection,
+  setGapCursorSelection,
 } from './utils';
 
 // Plugin Keys for WithPluginState
@@ -48,11 +49,7 @@ export {
   ProviderFactory,
   WithProviders,
 } from '@atlaskit/editor-common';
-export {
-  ExtensionProvider,
-  ExtensionAttributes,
-  ExtensionType,
-} from './plugins/macro';
+export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
 
 export { CollabEditProvider } from './plugins/collab-edit';
 
@@ -66,6 +63,7 @@ export {
   MediaStateManager,
   MediaProvider,
   MediaState,
+  CustomMediaPicker,
 } from './plugins/media';
 
 export { MediaOptions } from './plugins/media';

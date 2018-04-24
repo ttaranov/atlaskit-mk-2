@@ -5,7 +5,6 @@ export type MediaStateStatus =
   | 'unknown'
   | 'uploading'
   | 'processing'
-  | 'unfinalized'
   | 'ready'
   | 'error'
   | 'cancelled'
@@ -27,7 +26,6 @@ export interface MediaState {
       height: number;
     };
   };
-  finalizeCb?: () => void;
   error?: {
     name: string;
     description: string;
@@ -67,4 +65,14 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context>;
+}
+
+export type Listener = (data: any) => void;
+
+export interface CustomMediaPicker {
+  on(event: string, cb: Listener): void;
+  removeAllListeners(event: any);
+  emit(event: string, data: any): void;
+  destroy(): void;
+  setUploadParams(uploadParams: UploadParams);
 }

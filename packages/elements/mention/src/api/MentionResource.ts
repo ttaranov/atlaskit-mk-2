@@ -4,7 +4,12 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { MentionDescription, isAppMention, MentionsResult } from '../types';
+import {
+  MentionDescription,
+  isAppMention,
+  isTeamMention,
+  MentionsResult,
+} from '../types';
 import debug from '../util/logger';
 import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 
@@ -405,6 +410,8 @@ class MentionResource extends AbstractMentionResource {
       let lozenge: string | undefined;
       const weight = mention.weight !== undefined ? mention.weight : index;
       if (isAppMention(mention)) {
+        lozenge = mention.userType;
+      } else if (isTeamMention(mention)) {
         lozenge = mention.userType;
       }
 

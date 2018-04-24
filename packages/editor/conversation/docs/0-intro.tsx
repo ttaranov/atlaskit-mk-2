@@ -83,7 +83,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'class',
-                name: 'ResourceProvider',
+                name: { kind: 'id', name: 'ResourceProvider' },
               },
             },
             leadingComments: [
@@ -146,7 +146,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'class',
-                name: 'ProviderFactory',
+                name: { kind: 'id', name: 'ProviderFactory' },
               },
             },
             leadingComments: [
@@ -199,6 +199,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
+                parameters: [],
                 returnType: {
                   kind: 'void',
                 },
@@ -223,6 +224,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
+                parameters: [],
                 returnType: {
                   kind: 'generic',
                   value: {
@@ -264,6 +266,27 @@ const props = {
               },
             ],
           },
+          {
+            key: {
+              kind: 'id',
+              name: 'placeholder',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'string',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally set the placeholder text for the editor. Defaults to "What do you want to say?"',
+              },
+            ],
+          },
         ],
       },
     },
@@ -294,7 +317,7 @@ export default md`
   )}
 
   Omitting the \`id\`-prop means that a new conversation will be created. Of course, in most cases you'll want to render existing conversations on a page as well. The provider let's you fetch all conversations for a container by calling \`.getConversations()\`.
-  
+
   ${(
     <Example
       Component={require('../examples/1-Existing-Conversation').default}

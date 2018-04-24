@@ -1,65 +1,24 @@
 import * as React from 'react';
-import * as cx from 'classnames';
 import { Component } from 'react';
-import { style, keyframes } from 'typestyle';
+import { style } from 'typestyle';
 import { EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
-import { sortReactions } from './internal/helpers';
+import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
 
 export interface OnEmoji {
   (emojiId: string): any;
 }
 
-const shakeAnimation = keyframes({
-  $debugName: 'shake',
-  '0%': {
-    transform: 'rotateZ(0)',
-  },
-  '25%': {
-    transform: 'rotateZ(8deg)',
-  },
-  '50%': {
-    transform: 'rotateZ(0)',
-  },
-  '75%': {
-    transform: 'rotateZ(-8deg)',
-  },
-  '100%': {
-    transform: 'rotateZ(0)',
-  },
-});
-
 const reactionStyle = style({
   display: 'inline-block',
   margin: '4px 4px 0 4px',
-  $nest: {
-    '&.shake': {
-      animation: `${shakeAnimation} 200ms 2 ease-in-out`,
-    },
-  },
 });
 
 const reactionsGroupStyle = style({
   marginTop: '-4px', // Cancel 4px marginTop when not wrapped on reactionStyle
 });
-
-export interface Props {
-  ari: string;
-  containerAri: string;
-  reactionsProvider: ReactionsProvider;
-  emojiProvider: Promise<EmojiProvider>;
-  onReactionClick: OnEmoji;
-  onReactionHover?: Function;
-  boundariesElement?: string;
-  allowAllEmojis?: boolean;
-}
-
-export interface State {
-  reactions: ReactionSummary[];
-  shake: string | undefined;
-}
 
 const reactionsStyle = style({
   display: 'flex',
@@ -75,16 +34,32 @@ const reactionsStyle = style({
   },
 });
 
+export interface Props {
+  ari: string;
+  containerAri: string;
+  reactionsProvider: ReactionsProvider;
+  emojiProvider: Promise<EmojiProvider>;
+  onReactionClick: OnEmoji;
+  onReactionHover?: Function;
+  boundariesElement?: string;
+  allowAllEmojis?: boolean;
+}
+
+export interface State {
+  reactions: ReactionSummary[];
+}
+
 export default class Reactions extends Component<Props, State> {
   private timeouts: Array<number>;
+  private reactionRefs: { [emojiId: string]: Reaction };
+  // flag to avoid flashing the background of the first set of rections
+  private flashOnMount: boolean = false;
 
   constructor(props) {
     super(props);
-    this.state = {
-      reactions: [],
-      shake: undefined,
-    };
+    this.state = { reactions: [] };
     this.timeouts = [];
+    this.reactionRefs = {};
   }
 
   private onEmojiClick = (emojiId: string) => {
@@ -109,27 +84,45 @@ export default class Reactions extends Component<Props, State> {
     this.timeouts.forEach(clearTimeout);
   }
 
-  private updateState = state => {
-    this.setState({
-      reactions: state,
-    });
+  private flash = (emojiId: string) => {
+    if (this.reactionRefs[emojiId]) {
+      this.reactionRefs[emojiId].flash();
+    }
   };
 
-  private handleReactionPickerSelection = emojiId => {
-    if (
-      this.state.reactions.filter(
+  private getReactionsSortFunction = (reactions: ReactionSummary[]) =>
+    reactions.length ? sortByPreviousPosition(reactions) : sortByRelevance;
+
+  private updateState = (newReactions: ReactionSummary[]) => {
+    this.setState(
+      ({ reactions }) => ({
+        reactions: [...newReactions].sort(
+          this.getReactionsSortFunction(reactions),
+        ),
+      }),
+      // setting to true so new reactions will flash on mount
+      !this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
+    );
+  };
+
+  private hasAlreadyReacted(emojiId: any): boolean {
+    return (
+      this.state.reactions.find(
         reaction => reaction.emojiId === emojiId && reaction.reacted,
-      ).length === 0
-    ) {
+      ) !== undefined
+    );
+  }
+
+  private handleReactionPickerSelection = emojiId => {
+    if (!this.hasAlreadyReacted(emojiId)) {
       this.onEmojiClick(emojiId);
     } else {
-      this.setState({
-        shake: emojiId,
-      });
-      this.timeouts.push(
-        setTimeout(() => this.setState({ shake: undefined }), 200),
-      );
+      this.flash(emojiId);
     }
+  };
+
+  private handleReactionRef = (emojiId: string) => (reaction: Reaction) => {
+    this.reactionRefs[emojiId] = reaction;
   };
 
   private renderPicker() {
@@ -146,34 +139,36 @@ export default class Reactions extends Component<Props, State> {
     );
   }
 
-  render() {
-    const { emojiProvider } = this.props;
-    const { reactions } = this.state;
+  private renderReaction = (reaction: ReactionSummary, index: number) => {
+    const { emojiId } = reaction;
+    return (
+      <Reaction
+        key={emojiId}
+        ref={this.handleReactionRef(emojiId)}
+        className={reactionStyle}
+        reaction={{ ...reaction }}
+        emojiProvider={this.props.emojiProvider}
+        onClick={this.onEmojiClick}
+        onMouseOver={this.onReactionHover}
+        flashOnMount={this.flashOnMount}
+      />
+    );
+  };
 
+  private renderReactions = () => {
+    const { reactions } = this.state;
+    return (
+      <div className={reactionsGroupStyle}>
+        {reactions.map(this.renderReaction)}
+      </div>
+    );
+  };
+
+  render() {
     return (
       <div className={reactionsStyle}>
         {this.renderPicker()}
-        <div className={reactionsGroupStyle}>
-          {reactions.sort(sortReactions).map((reaction, index) => {
-            const { emojiId } = reaction;
-            const key = emojiId || `unknown-${index}`;
-
-            const classNames = cx(reactionStyle, {
-              shake: emojiId === this.state.shake,
-            });
-
-            return (
-              <div className={classNames} key={key}>
-                <Reaction
-                  reaction={{ ...reaction }}
-                  emojiProvider={emojiProvider}
-                  onClick={this.onEmojiClick}
-                  onMouseOver={this.onReactionHover}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {this.renderReactions()}
       </div>
     );
   }

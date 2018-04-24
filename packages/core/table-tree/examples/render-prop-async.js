@@ -25,7 +25,12 @@ export default () => (
     <Rows
       items={getItemsData}
       render={({ title, numbering, page, children }) => (
-        <Row itemId={numbering} hasChildren={children.length > 0}>
+        <Row
+          expandLabel={'Expand'}
+          collapseLabel={'Collapse'}
+          itemId={numbering}
+          hasChildren={children.length > 0}
+        >
           <Cell singleLine>{title}</Cell>
           <Cell singleLine>{numbering}</Cell>
           <Cell singleLine>{page}</Cell>

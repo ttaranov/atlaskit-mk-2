@@ -65,10 +65,12 @@ type Props = {
   appearance?: AppearanceType,
   /**
     Boolean OR Function indicating which element to focus when the component mounts.
+    By default the modal itself will be focused.
+    FALSE assumes that autofocus is set on an element within the modal.
     TRUE will automatically find the first "tabbable" element within the modal.
     Providing a function should return the element you want to focus.
   */
-  autoFocus?: boolean | (() => ElementType),
+  autoFocus: boolean | (() => ElementType) | void,
   components: { Body: ComponentType },
   /**
     Content of the modal
@@ -90,6 +92,11 @@ type Props = {
     The modal title; rendered in the header.
   */
   heading?: string,
+  /**
+   * Makes heading multiline.
+   * If false and heading is longer than one line overflow will be not displayed.
+   */
+  isHeadingMultiline?: boolean,
   /**
     Height of the modal. If not set, the modal grows to fit the content until it
     runs out of vertical space, at which point scrollbars appear. If a number is
@@ -154,13 +161,14 @@ type State = {
 class Modal extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
-    autoFocus: false,
+    autoFocus: undefined,
     scrollBehavior: 'inside',
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
     isChromeless: false,
     stackIndex: 0,
     width: 'medium',
+    isHeadingMultiline: true,
   };
 
   state: State = getInitialState();
@@ -220,6 +228,7 @@ class Modal extends Component<Props, State> {
       // $FlowFixMe
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
+      isHeadingMultiline,
       onClose,
       onCloseComplete,
       onStackChange,
@@ -281,6 +290,7 @@ class Modal extends Component<Props, State> {
                 appearance={appearance}
                 footer={footer}
                 heading={heading}
+                isHeadingMultiline={isHeadingMultiline}
                 header={header}
                 onClose={onClose}
                 shouldScroll={scrollBehavior === 'inside'}

@@ -17,6 +17,7 @@ import {
 
 BrowserTestCase(
   'Mention: user can click ToolbarMentionPicker and see mention',
+  { skip: ['ie'] },
   async client => {
     const mentionButton = '[aria-label="Add mention"]';
     const mentionId = '[data-mention-id="0"]';
@@ -32,24 +33,25 @@ BrowserTestCase(
   },
 );
 
-// TODO: Unskip when FS-1697 util-data-test migration has completed
-// BrowserTestCase(
-//   'Mention: should not insert on space if multiple exact nickname match',
-//   async client => {
-//     const browser = await new Page(client);
-//     await browser.goto(messageEditor);
-//     await browser.waitForSelector(editable);
-//     await browser.type(editable, '@');
-//     await browser.waitForSelector(picker);
-//     await browser.type(editable, 'gill');
-//     await browser.isVisible('[data-mention-name=pgill]');
-//     await browser.isVisible('[data-mention-name=jjackson]');
-//     await browser.type(editable, ' some');
-//     await browser.type(editable, ' text');
-//     const doc = await browser.$eval(editable, getDocFromElement);
-//     expect(doc).toMatchDocSnapshot();
-//   },
-// );
+// IE still has mentionQuery true at this point
+BrowserTestCase(
+  'Mention: should not insert on space if multiple exact nickname match',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, '@');
+    await browser.waitForSelector(picker);
+    await browser.type(editable, 'gill');
+    await browser.isVisible('[data-mention-name=pgill]');
+    await browser.isVisible('[data-mention-name=jjackson]');
+    await browser.type(editable, ' some');
+    await browser.type(editable, ' text ');
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
 
 BrowserTestCase(
   'Mention: inserted if space on single match',
@@ -70,7 +72,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Mention: user should not see mention inside inline code',
   // TODO: Fix unknown character on BS
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -86,7 +88,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Mention: user should not see mention inside a code block',
   // TODO: Fix unknown character on BS
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

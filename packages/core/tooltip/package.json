@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "8.4.2",
+  "version": "9.1.2",
   "description": "A React Component for displaying Tooltips",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,20 +17,22 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/layer-manager": "^2.8.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/layer-manager": "^3.0.0",
+    "@atlaskit/theme": "^3.0.0",
     "react-deprecate": "^0.1.0",
     "react-transition-group": "^2.2.1",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.2",
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/icon": "^10.12.1"
+    "@atlaskit/button": "^7.0.0",
+    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/icon": "^11.0.0",
+    "enzyme": "^3.3.0",
+    "jest-styled-components": "^4.11.0-1"
   },
   "keywords": [
     "atlaskit",

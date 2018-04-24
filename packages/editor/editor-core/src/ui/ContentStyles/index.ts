@@ -16,15 +16,19 @@ import {
 import {
   akGridSizeUnitless,
   akColorN20,
+  akColorN40,
   akBorderRadius,
   akColorN40A,
   akColorN300,
+  akColorB200,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import {
   tableStyle,
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
+
+import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -43,7 +47,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror .placeholder-decoration {
     position: absolute;
-    width: 100%;
     pointer-events: none;
     user-select: none;
 
@@ -302,30 +305,16 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .table-container table ${tableStyle} .table-column-controls {
       position: relative;
     }
-    .with-controls .table-container table {
-      margin-left: 0;
-      margin-right: 0;
-    }
-    .with-controls .table-container {
-      margin-left: 8px;
-    }
-
     .table-container {
+      position: relative;
+      margin: 0 auto;
       box-sizing: border-box;
-
-      /* HACK: add a small amount of padding to force the toolbar
-       * off the hard right of the page in breakout so it's not ugly
-       *
-       * when the table toolbar is in the center, remove this */
-      padding-right: 3px;
     }
-
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
       width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
     }
-
     .table-container[data-layout='full-width'] {
       margin-left: 50%;
       transform: translateX(-50%);
@@ -334,12 +323,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
-    .table-container {
-      position: relative;
-    }
-    .with-controls .table-container {
-      margin-left: 0;
-    }
     .with-controls .table-container[data-layout='full-width'] {
       margin-left: 50%;
       transform: translateX(-50%);
@@ -402,6 +385,41 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       position: relative;
     }
   }
+  /* =============== Layouts ================== */
+  .ProseMirror {
+    & [data-layout-type] {
+      display: flex;
+      flex-direction: row;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      /* Ensure first column aligns with the cursor on top-level paragraph */
+      /* (margin + padding) === 24 | 24 * 2 === 48 */
+      position: relative;
+      width: calc(100% + 48px);
+      /* (48px / 2) + layout-section-border (2px) + layout-column-border (2px) */
+      left: -28px;
+
+      /* Inner cursor located 26px from left */
+      & > * {
+        border: 2px solid ${akColorN40};
+        border-radius: 5px;
+        margin: ${akGridSizeUnitless}px;
+        padding: ${akGridSizeUnitless * 2}px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /**
+       * Border to show when node is selected
+       * Helps visualise when 'selectNodeBackwards' selects the node for deletion
+       */
+      &.ProseMirror-selectednode {
+        border-color: ${akColorB200};
+      }
+    }
+  }
+
+  ${gapCursorStyles};
 `;
 
 export default ContentStyles;

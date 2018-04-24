@@ -8,9 +8,6 @@ export const selectOnHover = 'emoji-common-select-on-hover';
 export const emojiSprite = 'emoji-common-emoji-sprite';
 export const emojiNode = 'emoji-common-node';
 
-const checkerBoard =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
-
 export const deleteButton = style({
   // hide by default
   display: 'none',
@@ -121,6 +118,7 @@ export const shortName = 'emoji-common-shortname';
 export const previewSingleLine = 'emoji-common-preview-single-line';
 export const toneSelectorContainer = 'emoji-common-tone-selector-container';
 export const withToneSelector = 'emoji-common-with-tone-selector';
+export const emojiPreviewSection = 'emoji-preview-section';
 
 export const emojiPreview = style({
   display: 'flex',
@@ -310,53 +308,49 @@ export const uploadChooseFileBrowse = style({
   flex: '0 0 auto',
 });
 
-export const uploadPreview = style({
-  background: `url(${checkerBoard})`,
-  borderRadius: `${borderRadius()}px`,
-  marginBottom: '10px',
-  padding: '7px',
-  width: '286px',
+export const uploadPreviewFooter = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100px',
+  padding: '10px',
+});
 
+export const uploadPreview = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: colors.N20,
+  borderRadius: `${borderRadius()}px`,
+  marginBottom: '12px',
+  padding: '10px',
+});
+
+export const uploadPreviewText = style({
   $nest: {
+    h5: {
+      color: colors.N300,
+      paddingBottom: '4px',
+      fontSize: '12px',
+    },
     img: {
       maxHeight: '20px',
-      maxWidth: '100px',
+      maxWidth: '50px',
     },
   },
 });
 
-export const uploadError = style({
-  margin: '12px 0',
-
+export const bigEmojiPreview = style({
   $nest: {
-    span: {
-      verticalAlign: 'middle',
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
-    },
-    svg: {
-      color: colors.R500,
-      $nest: {
-        '&:first-child': {
-          marginRight: 0,
-        },
-      },
+    img: {
+      maxHeight: '40px',
+      maxWidth: '100px',
     },
   },
 });
 
 export const uploadAddRow = style({
   display: 'flex',
-  alignItems: 'center',
-
-  $nest: {
-    ':first-child': {
-      marginRight: '5px',
-    },
-  },
+  justifyContent: 'flex-end',
 });
 
 export const AddCustomEmoji = style({
@@ -428,7 +422,7 @@ export const deleteFooter = style({
 export const emojiDeleteErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
+  alignItems: 'center',
   justifyContent: 'flex-end',
   paddingRight: '10px',
 });
@@ -436,7 +430,37 @@ export const emojiDeleteErrorMessage = style({
 export const emojiChooseFileErrorMessage = style({
   display: 'flex',
   color: colors.R300,
-  width: '100%',
   paddingRight: '10px',
   justifyContent: 'flex-start',
+});
+
+export const emojiPreviewErrorMessage = style({
+  display: 'inline-flex',
+  color: colors.R300,
+  paddingRight: '10px',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+});
+
+export const uploadRetryButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  fontWeight: 'bold',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
+});
+
+export const uploadEmojiButton = style({
+  width: '93px',
+  justifyContent: 'center',
+  marginRight: '6px',
+  $nest: {
+    div: {
+      display: 'flex',
+    },
+  },
 });

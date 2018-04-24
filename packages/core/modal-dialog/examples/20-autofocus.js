@@ -8,6 +8,7 @@ const H4 = styled.h4`
   margin-bottom: 0.66em;
 `;
 
+/* eslint-disable jsx-a11y/no-autofocus */
 export default class ModalDemo extends Component<
   {},
   { isOpen: string | null },
@@ -34,9 +35,11 @@ export default class ModalDemo extends Component<
         <H4>Variants</H4>
         <ButtonGroup>
           <Button onClick={() => this.open('root')}>Boolean on dialog</Button>
-          <Button onClick={() => this.open('node')}>Boolean on child</Button>
           <Button onClick={() => this.open('ref')}>
             Function returns a ref
+          </Button>
+          <Button onClick={() => this.open('autoFocus')}>
+            autofocus as false
           </Button>
         </ButtonGroup>
 
@@ -54,6 +57,12 @@ export default class ModalDemo extends Component<
             <p>The first {'"tabbable"'} element will be focused.</p>
             <button>I am focused!</button>
             <button>I am NOT focused</button>
+          </StubDialog>
+        )}
+        {isOpen === 'autoFocus' && (
+          <StubDialog autoFocus={false} heading="input has autoFocus">
+            <p>The textbox should be focused</p>
+            <input autoFocus type="text" />
           </StubDialog>
         )}
         {isOpen === 'ref' && (
