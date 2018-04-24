@@ -5,14 +5,16 @@ import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 
 import { NavigationSubscriber } from '../../state';
+import { Shadow } from '../../common/primitives';
 import { light } from '../../theme';
 import ProductNav from '../ProductNav';
-import ResizeTransition from './ResizeTransition';
+import ResizeTransition, { isTransitioning } from './ResizeTransition';
 import ResizeControl from './ResizeControl';
 import {
+  ContainerNavMask,
   LayoutContainer,
-  PageWrapper,
   NavContainer,
+  PageWrapper,
   ProductNavWrapper,
 } from './primitives';
 import type {
@@ -21,7 +23,7 @@ import type {
   WrappedLayoutManagerProps,
 } from './types';
 
-import { GLOBAL_NAV_WIDTH } from '../../common';
+import { GLOBAL_NAV_WIDTH } from '../../common/constants';
 
 const DrawerGateway = ({ innerRef, ...props }: DrawerGatewayProps) => (
   <div ref={innerRef} {...props} />
@@ -38,8 +40,11 @@ class LayoutManager extends Component<LayoutManagerProps> {
     return { defaultDrawerIcon: this.props.defaultDrawerIcon };
   }
 
-  renderGlobalNav() {
+  renderGlobalNav(activeTransition) {
     const { navigation, globalNavigation: GlobalNavigation } = this.props;
+    const { isPeeking, productNavIsCollapsed } = navigation.state;
+    const displayShadow =
+      productNavIsCollapsed && !isPeeking && !activeTransition;
     return (
       <ThemeProvider
         theme={theme => ({
@@ -50,69 +55,97 @@ class LayoutManager extends Component<LayoutManagerProps> {
             : 'expanded',
         })}
       >
-        <GlobalNavigation />
+        <Fragment>
+          {displayShadow ? (
+            <Shadow isOverDarkBg style={{ marginLeft: GLOBAL_NAV_WIDTH }} />
+          ) : null}
+          <GlobalNavigation />
+        </Fragment>
       </ThemeProvider>
     );
   }
-
-  renderProductNav() {
+  renderProductNav({
+    disableInteraction,
+    isVisible,
+    resizeState,
+    transitionState,
+    transitionStyle,
+  }) {
     const {
       navigation,
       productRootNavigation,
       productContainerNavigation,
     } = this.props;
-    const {
-      isPeeking,
-      isResizing,
-      productNavIsCollapsed,
-      productNavWidth,
-    } = navigation.state;
+    const { isHinting, isPeeking } = navigation.state;
 
     return (
-      <ResizeTransition
-        in={!productNavIsCollapsed}
-        isDisabled={isResizing}
-        properties={['width']}
-        from={[0]}
-        to={[productNavWidth]}
+      <ProductNavWrapper
+        key="product-nav-wrapper"
+        innerRef={this.getNavRef}
+        disableInteraction={disableInteraction}
+        style={transitionStyle}
       >
-        {({ isTransitioning, style, transitionState }) => {
-          const shouldRenderNav = transitionState !== 'exited';
-
-          return (
-            <Fragment>
-              <ProductNavWrapper
-                key="product-nav-wrapper"
-                innerRef={this.getNavRef}
-                isDisabled={isResizing || isTransitioning}
-                style={style}
-              >
-                {shouldRenderNav ? (
-                  <ProductNav
-                    container={productContainerNavigation}
-                    key="product-nav"
-                    isPeeking={isPeeking}
-                    isResizing={isResizing || isTransitioning}
-                    onOverlayClick={navigation.unPeek}
-                    root={productRootNavigation}
-                  />
-                ) : null}
-              </ProductNavWrapper>
-              <ResizeControl
-                isTransitioning={isTransitioning}
-                blanketStyle={style}
-                navigation={navigation}
-                mutationRefs={[
-                  { ref: this.pageRef, property: 'padding-left' },
-                  { ref: this.productNavRef, property: 'width' },
-                ]}
-              />
-            </Fragment>
-          );
-        }}
-      </ResizeTransition>
+        {isVisible ? (
+          <ProductNav
+            container={productContainerNavigation}
+            isHinting={isHinting}
+            isPeeking={isPeeking}
+            key="product-nav"
+            onOverlayClick={navigation.unPeek}
+            resizeState={resizeState}
+            root={productRootNavigation}
+            transitionState={transitionState}
+          />
+        ) : null}
+      </ProductNavWrapper>
     );
   }
+  navRenderFn = ({ transitionStyle, transitionState }) => {
+    const { navigation } = this.props;
+    const { isResizing } = navigation.state;
+    const isVisible = transitionState !== 'exited';
+    const activeTransition = isTransitioning(transitionState);
+    const disableInteraction = isResizing || activeTransition;
+
+    return (
+      <NavContainer>
+        <ResizeControl
+          navigation={navigation}
+          mutationRefs={[
+            { ref: this.pageRef, property: 'padding-left' },
+            { ref: this.productNavRef, property: 'width' },
+          ]}
+        >
+          {resizeState => (
+            <ContainerNavMask>
+              {this.renderGlobalNav(activeTransition)}
+              {this.renderProductNav({
+                disableInteraction,
+                isVisible,
+                resizeState,
+                transitionState,
+                transitionStyle,
+              })}
+            </ContainerNavMask>
+          )}
+        </ResizeControl>
+      </NavContainer>
+    );
+  };
+  pageRenderFn = ({ transitionStyle, transitionState }) => {
+    const activeTransition = isTransitioning(transitionState);
+    const { isResizing } = this.props.navigation.state;
+    return (
+      <PageWrapper
+        disableInteraction={isResizing || activeTransition}
+        innerRef={this.getPageRef}
+        offset={GLOBAL_NAV_WIDTH}
+        style={transitionStyle}
+      >
+        {this.props.children}
+      </PageWrapper>
+    );
+  };
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
@@ -131,27 +164,23 @@ class LayoutManager extends Component<LayoutManagerProps> {
     return (
       <Fragment>
         <LayoutContainer>
-          <NavContainer>
-            {this.renderGlobalNav()}
-            {this.renderProductNav()}
-          </NavContainer>
           <ResizeTransition
-            in={!productNavIsCollapsed}
-            isDisabled={isResizing}
-            properties={['paddingLeft']}
             from={[0]}
+            in={!productNavIsCollapsed}
+            properties={['width']}
             to={[productNavWidth]}
+            userIsDragging={isResizing}
           >
-            {({ isTransitioning, style }) => (
-              <PageWrapper
-                innerRef={this.getPageRef}
-                offset={GLOBAL_NAV_WIDTH}
-                isDisabled={isResizing || isTransitioning}
-                style={style}
-              >
-                {this.props.children}
-              </PageWrapper>
-            )}
+            {this.navRenderFn}
+          </ResizeTransition>
+          <ResizeTransition
+            from={[0]}
+            in={!productNavIsCollapsed}
+            properties={['paddingLeft']}
+            to={[productNavWidth]}
+            userIsDragging={isResizing}
+          >
+            {this.pageRenderFn}
           </ResizeTransition>
         </LayoutContainer>
         <DrawerGateway innerRef={navigation.getDrawerGateway} />

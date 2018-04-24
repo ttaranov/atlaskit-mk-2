@@ -42,9 +42,13 @@ export type Mode = {
   scrollHint: ProductComponentTheme<void>,
 };
 
-export type Theme = {
+export type ProductTheme = {
   mode: Mode,
   context: string,
+};
+
+export type GlobalTheme = {
+  mode: Mode,
 };
 
 export type StyleReducer<State> = (ObjectType, State) => ObjectType;

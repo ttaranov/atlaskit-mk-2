@@ -1,7 +1,7 @@
 // @flow
 
-import type { Theme } from '../../theme/types';
+import type { ProductTheme } from '../../theme/types';
 
 export type SectionSeparatorProps = {
-  theme: Theme,
+  theme: ProductTheme,
 };
