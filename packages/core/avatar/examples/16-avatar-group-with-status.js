@@ -1,5 +1,7 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
+import { AtlaskitThemeProvider } from '@atlaskit/theme';
+import Toggle from '@atlaskit/toggle';
 import { AvatarGroup } from '../src';
 import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
@@ -24,13 +26,33 @@ const data = RANDOM_USERS.slice(0, 10).map(user => ({
   status: getStatus(),
 }));
 
-export default () => (
-  <div>
-    <AvatarGroup
-      appearance="stack"
-      onAvatarClick={console.log}
-      data={data}
-      size="large"
-    />
-  </div>
-);
+type State = {
+  theme: 'light' | 'dark',
+};
+
+export default class AvatarGroupWithStatus extends Component<{}, State> {
+  state = {
+    theme: 'light',
+  };
+
+  toggleTheme = () => {
+    this.setState(({ theme }) => ({
+      theme: theme === 'light' ? 'dark' : 'light',
+    }));
+  };
+
+  render() {
+    return (
+      <AtlaskitThemeProvider mode={this.state.theme}>
+        <p>Dark Mode</p>
+        <Toggle onChange={this.toggleTheme} />
+        <AvatarGroup
+          appearance="stack"
+          onAvatarClick={console.log}
+          data={data}
+          size="large"
+        />
+      </AtlaskitThemeProvider>
+    );
+  }
+}

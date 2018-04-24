@@ -28,7 +28,7 @@ export default styled.div`
   `};
 `;
 
-const backgroundColor = themed({ light: colors.N0, dark: colors.DN50 });
+const backgroundColor = colors.background;
 const boxShadow = css`
   box-shadow: 0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
         gridSize,
