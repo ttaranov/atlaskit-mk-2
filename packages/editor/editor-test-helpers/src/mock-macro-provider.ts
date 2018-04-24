@@ -37,19 +37,22 @@ export class MockMacroProvider implements MacroProvider {
     return Promise.resolve(allExtensionData[0]);
   }
 
-  autoConvert(link: String): MacroAttributes | null {
-    switch (link) {
-      case 'www.dumbmacro.com?paramA=CFE':
-        return getMacroADFNode('dumbMacro', {
-          paramA: { value: 'CFE' },
-        });
-      case 'www.smartmacro.com?paramB=CFE':
-        return getMacroADFNode('smartMacro', {
-          paramB: { value: 'CFE' },
-        });
-      default:
-        return null;
-    }
+  autoConvert(text: String): Promise<any> {
+    const node = (function(link) {
+      switch (link) {
+        case 'http://www.dumbmacro.com/?paramA=CFE':
+          return getMacroADFNode('dumbMacro', {
+            paramA: { value: 'CFE' },
+          });
+        case 'http://www.smartmacro.com/?paramB=CFE':
+          return getMacroADFNode('smartMacro', {
+            paramB: { value: 'CFE' },
+          });
+        default:
+          return null;
+      }
+    })(text);
+    return new Promise(resolve => setTimeout(() => resolve(node), 2000));
   }
 }
 

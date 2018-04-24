@@ -10,7 +10,7 @@ import * as clipboard from '../../../utils/clipboard';
 import { EditorAppearance } from '../../../types';
 import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
 import { containsTable } from '../../table/utils';
-import { runMacroAutoConvert } from '../../macro';
+import { handleStartCardsOnPaste } from '../actions';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks } from '../util';
@@ -22,10 +22,14 @@ import {
   removeLayoutsIfSelectionIsInLayout,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../layout/utils';
-import { linkifyContent } from '../../hyperlink/utils';
+import { linkifyContent, LINK_REGEXP } from '../../hyperlink/utils';
 import { hasOpenEnd } from '../../../utils';
 
 export const stateKey = new PluginKey('pastePlugin');
+
+export type PasteState = {
+  smartCardPosition: number;
+};
 
 export function createPlugin(
   schema: Schema,
@@ -49,6 +53,27 @@ export function createPlugin(
 
   return new Plugin({
     key: stateKey,
+    state: {
+      init: () => ({ smartCardPosition: null }),
+
+      apply(tr, state: PasteState, prevState, nextState) {
+        const meta = tr.getMeta(stateKey);
+        if (meta) {
+          return { ...state, ...meta };
+        }
+
+        if (tr.docChanged && typeof state.smartCardPosition === 'number') {
+          const { pos, deleted } = tr.mapping.mapResult(
+            state.smartCardPosition,
+          );
+          const smartCardPosition = deleted ? null : pos;
+          console.log('~smartCardPosition~', smartCardPosition);
+          return { smartCardPosition };
+        }
+
+        return state;
+      },
+    },
     props: {
       handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
         if (!event.clipboardData) {
@@ -98,16 +123,15 @@ export function createPlugin(
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
 
-        // runs macro autoconvert prior to other conversions
-        if (text && !html) {
-          const macro = runMacroAutoConvert(view.state, text);
+        // if pasted text is a link, try to convert it into a smartCard
+        if (text && !html && LINK_REGEXP.test(text)) {
+          view.dispatch(
+            view.state.tr
+              .setMeta(stateKey, { smartCardPosition: $from.pos })
+              .scrollIntoView(),
+          );
 
-          if (macro) {
-            view.dispatch(
-              view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
-            );
-            return true;
-          }
+          handleStartCardsOnPaste(text)(view);
         }
 
         const { schema } = view.state;

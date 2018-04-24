@@ -23,5 +23,5 @@ export interface MacroProvider {
    */
   openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes>;
 
-  autoConvert(link: String): MacroAttributes | null;
+  autoConvert(link: String): Promise<MacroAttributes | null>;
 }
