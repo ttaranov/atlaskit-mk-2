@@ -17,7 +17,6 @@ export default function Example() {
   return (
     <EditorContext>
       <div>
-        <DevTools />
         <ToolsDrawer
           // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({
@@ -49,6 +48,7 @@ export default function Example() {
             </AnalyticsListener>
           )}
         />
+        <DevTools />
       </div>
     </EditorContext>
   );

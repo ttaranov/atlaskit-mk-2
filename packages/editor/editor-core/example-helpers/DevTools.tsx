@@ -10,7 +10,7 @@ export function DevTools() {
         if (editorView) {
           applyDevTools(editorView);
         }
-        return <div />;
+        return null;
       }}
     />
   );
