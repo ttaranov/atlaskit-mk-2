@@ -28,7 +28,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "react-render-image": "^1.1.2",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {

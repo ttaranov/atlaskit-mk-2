@@ -28,7 +28,7 @@
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {

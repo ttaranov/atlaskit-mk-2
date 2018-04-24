@@ -86,7 +86,7 @@
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
     "snake-case": "^2.1.0",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "uglify-js": "^3.1.7"
   }
 }

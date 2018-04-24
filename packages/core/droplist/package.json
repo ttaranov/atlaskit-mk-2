@@ -28,7 +28,7 @@
     "classnames": "^2.2.5",
     "keycode": "^2.1.7",
     "prop-types": "^15.5.10",
-    "styled-components": "1.4.6 - 3"
+    "styled-components": "^3.2.6"
   },
   "peerDependencies": {
     "react": "^16.3.0",
