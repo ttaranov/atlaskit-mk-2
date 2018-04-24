@@ -44,7 +44,7 @@ type Props = {
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** Allow users to edit the input and add a time */
-  isTimesEditable?: boolean,
+  timeIsEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
 };
@@ -87,7 +87,7 @@ export default class TimePicker extends Component<Props, State> {
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
-    isTimesEditable: false,
+    timeIsEditable: false,
   };
 
   state = {
@@ -119,10 +119,10 @@ export default class TimePicker extends Component<Props, State> {
     this.props.onChange(value);
   };
 
-  /** Only allow custom times if isTimesEditable prop is true  */
+  /** Only allow custom times if timeIsEditable prop is true  */
   onCreateOption = (inputValue: any): void => {
     const value = inputValue || '';
-    if (this.props.isTimesEditable) {
+    if (this.props.timeIsEditable) {
       this.setState({ value });
       this.props.onChange(value);
     } else {

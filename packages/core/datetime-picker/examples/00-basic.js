@@ -146,7 +146,7 @@ export default () => {
         id="timepicker-4"
         defaultValue="14:30"
         onChange={console.log}
-        isTimesEditable
+        timeIsEditable
       />
 
       <h3>Date / time picker</h3>
@@ -185,7 +185,7 @@ export default () => {
         id="datetimepicker-4"
         defaultValue="2018-01-02T14:30+10:00"
         onChange={console.log}
-        isTimesEditable
+        timeIsEditable
       />
     </div>
   );
