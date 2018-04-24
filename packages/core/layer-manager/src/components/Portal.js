@@ -39,7 +39,9 @@ class Portal extends Component<Props> {
     // re-render an empty react tree into the portal element so that any
     // mounted components get cleaned up and have a chance to complete their
     // lifecycle before the portal is removed from the dom entirely
-    clearTimeout(this.mountTimeout);
+    if (this.mountTimeout) {
+      clearTimeout(this.mountTimeout);
+    }
     if (this.portalElement) {
       const portal = this.portalElement;
       render(this.renderChildren(), portal, () => {
