@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@atlaskit/theme';
@@ -47,7 +48,7 @@ export default function Example() {
       </Item>
       <Item>
         <p>Infinity (∞)</p>
-        <Badge value={Infinity} />
+        <Badge max={Infinity} value={Infinity} />
       </Item>
     </div>
   );
