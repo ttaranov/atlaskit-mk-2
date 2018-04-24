@@ -28,14 +28,17 @@ type Props = {
     | 'added'
     | 'removed'
     | {},
+
   /** The maximum value to display. If value is 100, and max is 50, "50+" will
    be displayed */
   max: number,
+
   /** DEPREACATED - this handler is unnecessary as you already know the value
   and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed.
   Called with fn({ oldValue, newValue }) */
+
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
   /** The value displayed within the badge. */
   value: number,
