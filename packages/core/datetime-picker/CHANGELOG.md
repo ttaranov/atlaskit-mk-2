@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 2.0.6
+- [patch] Added timeIsEditable prop to enable user created times [4695e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4695e5d)
+
 ## 2.0.5
 
 ## 2.0.4
