@@ -10,13 +10,6 @@
         "minify": false,
         "uglifyPure": false
       }
-    ],
-    [
-      "emotion",
-      {
-        "hoist": true,
-        "importedNames": { "injectGlobal": "injectGlobalEmotion" }
-      }
     ]
   ],
   "env": {
