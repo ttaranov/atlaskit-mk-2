@@ -31,16 +31,11 @@ BrowserTestCase(
     expect(pageIsVisible).toBe(true);
     if (homeTest.log('browser').value) {
       homeTest.log('browser').value.forEach(val => {
-        // React 16 issue - https://github.com/hyperfuse/react-anime/issues/33
-        if (
-          !val.message.includes('The tag <main> is unrecognized unrecognized')
-        ) {
-          assert.notEqual(
-            val.level,
-            'SEVERE',
-            `Console errors :${val.message} when navigating to the home page`,
-          );
-        }
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when navigating to the home page`,
+        );
       });
     }
   },
