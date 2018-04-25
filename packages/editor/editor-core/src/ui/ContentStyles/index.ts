@@ -103,7 +103,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     padding: 2px 1px;
     background: ${akColorN20};
     border-radius: 3px;
-    font-family: monospace;
+    font-family: ${akEditorCodeFontFamily};
     white-space: pre-wrap;
 
     &::before,
