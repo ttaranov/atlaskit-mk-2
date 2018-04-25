@@ -1,5 +1,12 @@
 # @atlaskit/media-image
 
+## 27.0.3
+- [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
+- [patch] Turn side effects to true due to rxjs operators imports [5eddd49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5eddd49)
+
+## 27.0.2
+- [patch] remove polished dependency [0e54c69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e54c69)
+
 ## 27.0.1
 
 ## 27.0.0

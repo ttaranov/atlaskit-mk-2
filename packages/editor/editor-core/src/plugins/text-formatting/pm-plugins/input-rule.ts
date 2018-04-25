@@ -1,6 +1,6 @@
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { Schema, MarkType } from 'prosemirror-model';
-import { Plugin, Transaction } from 'prosemirror-state';
+import { Plugin, Transaction, Selection } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { transformToCodeAction } from '../commands/transform-to-code';
 import { InputRuleHandler, createInputRule } from '../../../utils/input-rules';
@@ -48,7 +48,10 @@ function replaceTextUsingCaptureGroup(
       );
     }
 
-    return state.tr.replaceWith(start, end, state.schema.text(replacement));
+    let { tr } = state;
+    tr.replaceWith(start, end, state.schema.text(replacement));
+    tr.setSelection(Selection.near(tr.doc.resolve(tr.selection.to)));
+    return tr;
   };
 }
 
@@ -215,11 +218,11 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [
     ...createReplacementRules(
       {
-        Atlassian: /(\s+|^)(atlassian)$/,
-        Jira: /(\s+|^)(jira|JIRA)$/,
-        Bitbucket: /(\s+|^)(bitbucket|BitBucket)$/,
-        Hipchat: /(\s+|^)(hipchat|HipChat)$/,
-        Trello: /(\s+|^)(trello)$/,
+        Atlassian: /(\s+|^)(atlassian)(\s)$/,
+        Jira: /(\s+|^)(jira|JIRA)(\s)$/,
+        Bitbucket: /(\s+|^)(bitbucket|BitBucket)(\s)$/,
+        Hipchat: /(\s+|^)(hipchat|HipChat)(\s)$/,
+        Trello: /(\s+|^)(trello)(\s)$/,
       },
       'product',
     ),
@@ -234,7 +237,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
     ...createReplacementRules(
       {
-        '–': /()(--)(\s)$/,
+        '–': /(\s+|^)(--)(\s)$/,
         '…': /()(\.\.\.)$/,
       },
       'typography',

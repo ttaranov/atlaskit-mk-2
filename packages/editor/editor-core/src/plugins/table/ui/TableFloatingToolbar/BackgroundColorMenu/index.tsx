@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import MediaServicesBrushIcon from '@atlaskit/icon/glyph/media-services/brush';
+import BackgroundColorIcon from '@atlaskit/icon/glyph/editor/background-color';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import Dropdown from '../../../../../ui/Dropdown';
 import { analyticsDecorator as analytics } from '../../../../../analytics';
@@ -48,7 +48,7 @@ export default class BackgroundColorMenu extends Component<Props, State> {
             onClick={this.toggleOpen}
             iconBefore={
               <TriggerWrapper>
-                <MediaServicesBrushIcon label="Toggle background color menu" />
+                <BackgroundColorIcon label="Toggle background color menu" />
                 <ExpandIconWrapper>
                   <ExpandIcon label="expand-dropdown-menu" />
                 </ExpandIconWrapper>

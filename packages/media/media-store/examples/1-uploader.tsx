@@ -10,12 +10,14 @@ import {
   MetadataWrapper,
   PreviewWrapper,
   Wrapper,
+  FileInput,
 } from '../example-helpers/styled';
 import { uploadFile, MediaStore } from '../src/';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
   uploadingProgress: number;
+  processingStatus?: string;
   fileURL?: string;
   fileMetadata?: any;
   error?: any;
@@ -39,6 +41,8 @@ class UploaderExample extends Component<
       const fileMetadata = response.data;
       const { processingStatus } = fileMetadata;
 
+      this.setState({ processingStatus });
+
       if (processingStatus === 'pending') {
         setTimeout(() => this.fetchFile(id), 1000);
       } else {
@@ -53,21 +57,22 @@ class UploaderExample extends Component<
   };
 
   render() {
-    const { fileURL, uploadingProgress } = this.state;
+    const { fileURL, uploadingProgress, processingStatus } = this.state;
 
     return (
       <Wrapper>
         <PreviewWrapper>
           <div>
-            Upload a file <input type="file" onChange={this.onChange} />
+            File <FileInput type="file" onChange={this.onChange} />
           </div>
           <div>
-            or
-            <button onClick={this.onUploadStringClick}>Upload a string</button>
+            String
+            <button onClick={this.onUploadStringClick}>Upload</button>
           </div>
           <div>
             <progress value={uploadingProgress} max="1" />
           </div>
+          <div>Processing status: {processingStatus}</div>
           <div>
             {fileURL ? <ImagePreview src={fileURL} alt="preview" /> : null}
           </div>

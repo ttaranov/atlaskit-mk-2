@@ -19,7 +19,11 @@ describe('Uploader', () => {
       return Promise.resolve({ data: [{ id: 'upload-id-123' }] });
     };
     const appendChunksToUpload = jest.fn().mockReturnValue(Promise.resolve(1));
+    const createFile = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({ data: { id: 'id-upfront-123' } }));
     const MediaStoreMock = jest.fn().mockImplementation(() => ({
+      createFile,
       createUpload,
       createFileFromUpload,
       appendChunksToUpload,
@@ -49,6 +53,7 @@ describe('Uploader', () => {
       MediaStoreMock,
       ChunkinatorMock,
       config,
+      createFile,
       createFileFromUpload,
       createUpload,
       appendChunksToUpload,
@@ -102,6 +107,7 @@ describe('Uploader', () => {
       { uploadId: 'upload-id-123', name: 'file-name' },
       {
         collection: 'some-collection',
+        replaceFileId: 'id-upfront-123',
       },
     );
   });
@@ -171,7 +177,7 @@ describe('Uploader', () => {
 
     const fileId = await uploadFile({ content: '' }, config);
 
-    expect(fileId).toBe('123');
+    expect(fileId).toBe('id-upfront-123');
   });
 
   it('should reject if there was an error with the upload', () => {
@@ -189,12 +195,31 @@ describe('Uploader', () => {
     );
   });
 
+  it('should use id upfront for the new file', async () => {
+    const { MediaStoreMock, ChunkinatorMock, config, createFile } = setup();
+
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
+
+    ChunkinatorMock.mockImplementation(() => {
+      return Promise.resolve();
+    });
+
+    const file = uploadFile({ content: '' }, config);
+    // notice that we are not awaiting uploadFile here because we want to check that createFile gets called in parallel
+    expect(createFile).toHaveBeenCalledTimes(1);
+
+    const fileId = await file;
+    expect(fileId).toBe('id-upfront-123');
+  });
+
   it('should create the file after all chunks have been appended', async () => {
     expect.assertions(3);
     const {
       createUpload,
       ChunkinatorMock,
       config,
+      createFile,
       appendChunksToUpload,
       createFileFromUpload,
     } = setup();
@@ -203,6 +228,7 @@ describe('Uploader', () => {
 
     (MediaStore as any) = jest.fn().mockImplementation(() => ({
       createUpload,
+      createFile,
       createFileFromUpload() {
         expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
         return createFileFromUpload();

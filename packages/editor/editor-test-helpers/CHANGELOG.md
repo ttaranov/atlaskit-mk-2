@@ -1,5 +1,10 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.3
+
+## 3.1.2
+- [patch] Handle pasting of page-layouts to prevent unpredictable node-splitting behaviour. Will now 'unwrap' the contents of a layout if the slice is a partial range across page layouts, or if we are attempting to paste a layout inside a layout. We now always handle dispatching the transaction to handle paste ourselves (instead of falling back to PM). [f4ca7ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4ca7ac)
+
 ## 3.1.1
 
 ## 3.1.0

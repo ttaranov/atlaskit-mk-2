@@ -202,7 +202,7 @@ export const keyCodes: { [key: string]: number } = {
   Down: 63233,
   PrintScrn: 44,
   Insert: 63302,
-  Delete: 63272,
+  Delete: 46,
   ';': 186,
   '=': 187,
   Mod: 93,

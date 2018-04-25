@@ -28,6 +28,8 @@ import {
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
 
+import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
+
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
    * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
@@ -307,16 +309,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       position: relative;
       margin: 0 auto;
       box-sizing: border-box;
-
-      /* HACK: add a small amount of padding to force the toolbar
-       * off the hard right of the page in breakout so it's not ugly
-       *
-       * when the table toolbar is in the center, remove this */
-      padding-right: 3px;
-      table {
-        margin-left: 0;
-        margin-right: 0;
-      }
     }
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
@@ -426,6 +418,8 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       }
     }
   }
+
+  ${gapCursorStyles};
 `;
 
 export default ContentStyles;

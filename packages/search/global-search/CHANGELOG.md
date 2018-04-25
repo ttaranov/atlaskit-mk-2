@@ -1,5 +1,16 @@
 # @atlaskit/global-search
 
+## 3.0.3
+
+## 3.0.2
+- [patch] Rename EmptyState component to NoResults [cb73105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73105)
+
+## 3.0.1
+- [patch] Simplify tests [d2437e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2437e9)
+
+## 3.0.0
+- [major] Building blocks to support Confluence mode. "context" is a required prop now. [a5f1cef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5f1cef)
+
 ## 2.1.1
 - [patch] Bumping dependency on avatar [ca55e9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca55e9c)
 

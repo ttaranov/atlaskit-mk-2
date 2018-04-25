@@ -15,6 +15,7 @@ import Separator from '../../../../ui/Separator';
 import { HyperlinkState } from '../../pm-plugins/main';
 import { normalizeUrl } from '../../utils';
 import RecentSearch from '../RecentSearch';
+import { ResolvedPos, MarkType } from 'prosemirror-model';
 
 const TEXT_NODE = 3;
 
@@ -98,11 +99,25 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       : (this.props.editorView.dom as HTMLElement).offsetParent;
   }
 
+  private posHasMark = (pos: ResolvedPos, markType: MarkType) =>
+    pos.marks().some(mark => mark.type === markType);
+
   private getPopupTarget(): HTMLElement | null {
-    const { state, docView } = this.props.editorView as EditorView & {
-      docView?: any;
-    };
-    const { node } = docView.domFromPos(state.selection.$from.pos);
+    const { editorView } = this.props;
+    const { state } = editorView;
+    let node;
+    const { empty, $from, $to } = state.selection;
+    const { link } = state.schema.marks;
+    if (!empty && !this.posHasMark($from, link)) {
+      for (let i = $from.pos; i <= $to.pos; i++) {
+        if (this.posHasMark(state.doc.resolve(i), link)) {
+          node = editorView.domAtPos(i).node;
+        }
+      }
+    }
+    if (!node) {
+      node = editorView.domAtPos(state.selection.$from.pos).node;
+    }
     const activeElement = node as HTMLElement;
     return activeElement.nodeType === TEXT_NODE
       ? (activeElement.parentElement as HTMLElement)

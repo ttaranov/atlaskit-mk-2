@@ -39,6 +39,28 @@ describe('codeBlock - keymaps', () => {
         editorView.destroy();
       });
     });
+
+    describe('when there is an empty paragraph at the end of the document', () => {
+      it('it should not exit code block if selection is not at the end', () => {
+        const { editorView } = editor(doc(code_block()('{<>}codeBlock\n')));
+
+        sendKeyToPm(editorView, 'Enter');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(code_block()('\ncodeBlock\n')),
+        );
+        editorView.destroy();
+      });
+
+      it('it should exit code block if selection is at the end', () => {
+        const { editorView } = editor(doc(code_block()('codeBlock\n{<>}')));
+
+        sendKeyToPm(editorView, 'Enter');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(code_block()('codeBlock'), p('{<>}')),
+        );
+        editorView.destroy();
+      });
+    });
   });
 
   describe('Backspace', () => {

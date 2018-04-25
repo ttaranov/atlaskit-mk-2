@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 import PageHeader from '../src';
 import { name } from '../package.json';
 import { StyledTitle } from '../src/PageHeader/styled';
 
 describe(name, () => {
-  it('should renders correctly', () => {
+  it('should render correctly', () => {
     const BreadCrumbs = () => <div>Breadcrumb</div>;
     const Actions = () => <div>Action</div>;
     const Bar = () => <div>Bar</div>;
@@ -25,7 +25,7 @@ describe(name, () => {
     expect(Component).toMatchSnapshot();
   });
 
-  it('should renders correctly with disableTitleStyles prop', () => {
+  it('should render correctly with disableTitleStyles prop', () => {
     const BreadCrumbs = () => <div>Breadcrumb</div>;
     const Actions = () => <div>Action</div>;
     const Bar = () => <div>Bar</div>;
@@ -80,5 +80,18 @@ describe(name, () => {
       </PageHeader>,
     );
     expect(wrapper.find(StyledTitle)).toHaveLength(0);
+  });
+
+  it('should truncate with truncateTitle prop', () => {
+    const wrapper = mount(
+      <PageHeader truncateTitle>Long heading text</PageHeader>,
+    );
+
+    //$FlowFixMe
+    expect(wrapper.find('h1')).toHaveStyleRule('overflow-x', 'hidden');
+    //$FlowFixMe
+    expect(wrapper.find('h1')).toHaveStyleRule('white-space', 'nowrap');
+    //$FlowFixMe
+    expect(wrapper.find('h1')).toHaveStyleRule('text-overflow', 'ellipsis');
   });
 });

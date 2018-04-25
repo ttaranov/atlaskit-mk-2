@@ -89,6 +89,7 @@ const tablesPlugin: EditorPlugin = {
             allowBackgroundColor={tablesState.allowBackgroundColor}
             allowHeaderRow={tablesState.allowHeaderRow}
             allowHeaderColumn={tablesState.allowHeaderColumn}
+            stickToolbarToBottom={tablesState.stickToolbarToBottom}
             permittedLayouts={tablesState.permittedLayouts}
           />
         )}

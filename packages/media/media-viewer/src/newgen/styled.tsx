@@ -47,7 +47,32 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 export const PDFWrapper = styled.div``;
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+`;
+
+const ArrowWrapper = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+export const Arrow = styled.span`
+  cursor: pointer;
+`;
+
+export const LeftWrapper = ArrowWrapper.extend`
+  text-align: left;
+`;
+
+export const RightWrapper = ArrowWrapper.extend`
+  text-align: right;
+`;
