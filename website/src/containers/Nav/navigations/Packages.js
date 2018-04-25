@@ -22,6 +22,7 @@ export function buildSubNavGroup(
       acc.items.push({
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
+        isCompact: true,
         icon: (
           <HipchatMediaAttachmentCountIcon
             size="small"
