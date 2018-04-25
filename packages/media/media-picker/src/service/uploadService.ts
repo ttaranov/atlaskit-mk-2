@@ -8,7 +8,6 @@ import {
   FileItem,
 } from '@atlaskit/media-core';
 import { EventEmitter2 } from 'eventemitter2';
-import { UploadParams } from '../domain/config';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
 
@@ -27,7 +26,8 @@ import {
   UploadProcessingEventPayload,
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
-} from '../domain/uploadEvent';
+  UploadParams,
+} from '..';
 import { SmartMediaProgress } from '../domain/progress';
 
 export interface ExpFile {
@@ -101,6 +101,33 @@ export class UploadService {
     };
   }
 
+  addBrowse(element: HTMLInputElement): void {
+    this.browserElement = element;
+    this.browserElement.addEventListener('change', this.onFilePicked);
+  }
+
+  addDropzone(element: HTMLElement): void {
+    this.dropzoneElement = element;
+    this.dropzoneElement.addEventListener('drop', this.onFileDropped);
+  }
+
+  removeDropzone() {
+    if (!this.dropzoneElement) {
+      return;
+    }
+    this.dropzoneElement.removeEventListener('drop', this.onFileDropped);
+    delete this.dropzoneElement;
+  }
+
+  // TODO call it from somewhere
+  removeBrowse(): void {
+    if (!this.browserElement) {
+      return;
+    }
+    this.browserElement.removeEventListener('change', this.onFilePicked);
+    delete this.browserElement;
+  }
+
   addFiles(files: File[]): void {
     if (files.length === 0) {
       return;
@@ -132,32 +159,6 @@ export class UploadService {
     });
   }
 
-  addBrowse(element: HTMLInputElement): void {
-    this.browserElement = element;
-    this.browserElement.addEventListener('change', this.onFilePicked);
-  }
-
-  removeBrowse(): void {
-    if (!this.browserElement) {
-      return;
-    }
-    this.browserElement.removeEventListener('change', this.onFilePicked);
-    delete this.browserElement;
-  }
-
-  addDropzone(element: HTMLElement) {
-    this.dropzoneElement = element;
-    this.dropzoneElement.addEventListener('drop', this.onFileDropped);
-  }
-
-  removeDropzone() {
-    if (!this.dropzoneElement) {
-      return;
-    }
-    this.dropzoneElement.removeEventListener('drop', this.onFileDropped);
-    delete this.dropzoneElement;
-  }
-
   // Browse listener
   private readonly onFilePicked = () => {
     if (this.browserElement) {
@@ -165,6 +166,10 @@ export class UploadService {
       this.addFiles(filesArray);
     }
   };
+
+  cancel(uniqueIdentifier?: string): void {
+    // TODO
+  }
 
   // Dropzone listener
   private readonly onFileDropped = (dragEvent: DragEvent) => {

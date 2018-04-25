@@ -75,7 +75,7 @@ describe('finalizeUploadMiddleware', () => {
     expect(next).toBeCalledWith(action);
   });
 
-  it('should send upload end event', () => {
+  it('should send upload end event with metadata', () => {
     const { fetcher, store, action } = setup();
 
     return finalizeUpload(fetcher, store, action).then(action => {

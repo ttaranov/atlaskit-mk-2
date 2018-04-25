@@ -1,8 +1,5 @@
 import { Context } from '@atlaskit/media-core';
 import { UploadService } from '../service/uploadService';
-import { UploadComponent } from './component';
-import { MediaPickerContext } from '../domain/context';
-import { UploadParams } from '../domain/config';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -12,6 +9,9 @@ import {
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
 } from '../domain/uploadEvent';
+import { UploadComponent } from './component';
+import { MediaPickerContext } from '../domain/context';
+import { UploadParams } from '../domain/config';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
@@ -44,6 +44,10 @@ export class LocalUploadComponent<
     this.uploadService.on('file-converting', this.onFileConverting);
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
+  }
+
+  public cancel(uniqueIdentifier?: string): void {
+    this.uploadService.cancel(uniqueIdentifier);
   }
 
   public setUploadParams(uploadParams: UploadParams): void {

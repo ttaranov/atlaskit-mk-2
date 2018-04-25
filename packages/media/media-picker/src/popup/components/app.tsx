@@ -27,7 +27,7 @@ import MainEditorView from './views/editor/mainEditorView';
 import { RECENTS_COLLECTION } from '../config';
 
 /* actions */
-import { startApp } from '../actions/startApp';
+import { startApp, StartAppActionPayload } from '../actions/startApp';
 import { hidePopup } from '../actions/hidePopup';
 import { fileUploadsStart } from '../actions/fileUploadsStart';
 import { fileUploadPreviewUpdate } from '../actions/fileUploadPreviewUpdate';
@@ -54,7 +54,7 @@ export interface AppStateProps {
 }
 
 export interface AppDispatchProps {
-  readonly onStartApp: (onCancelUpload: (uploadId: string) => void) => void;
+  readonly onStartApp: (payload: StartAppActionPayload) => void;
   readonly onClose: () => void;
   readonly onUploadsStart: (payload: UploadsStartEventPayload) => void;
   readonly onUploadPreviewUpdate: (
@@ -150,7 +150,12 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
 
-    onStartApp(uploadId => {});
+    onStartApp({
+      onCancelUpload: uploadId => {
+        this.mpBrowser.cancel(uploadId);
+        this.mpDropzone.cancel(uploadId);
+      },
+    });
   }
 
   componentWillReceiveProps({ isVisible }: Readonly<AppProps>): void {
@@ -226,31 +231,20 @@ const mapStateToProps = ({ view, context }: State): AppStateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
-  onStartApp: onCancelUpload => dispatch(startApp({ onCancelUpload })),
+  onStartApp: (payload: StartAppActionPayload) => dispatch(startApp(payload)),
   onUploadsStart: (payload: UploadsStartEventPayload) =>
     dispatch(fileUploadsStart(payload)),
   onClose: () => dispatch(hidePopup()),
-  onUploadPreviewUpdate: (payload: UploadPreviewUpdateEventPayload) => {
-    dispatch(fileUploadPreviewUpdate(payload));
-  },
+  onUploadPreviewUpdate: (payload: UploadPreviewUpdateEventPayload) =>
+    dispatch(fileUploadPreviewUpdate(payload)),
   onUploadStatusUpdate: (payload: UploadStatusUpdateEventPayload) =>
     dispatch(fileUploadProgress(payload)),
   onUploadProcessing: (payload: UploadProcessingEventPayload) =>
     dispatch(fileUploadProcessingStart(payload)),
-  onUploadEnd: ({ file, public: publicFileDetails }: UploadEndEventPayload) =>
-    dispatch(
-      fileUploadEnd({
-        file,
-        public: publicFileDetails,
-      }),
-    ),
-  onUploadError: ({ file, error }: UploadErrorEventPayload) =>
-    dispatch(
-      fileUploadError({
-        file,
-        error,
-      }),
-    ),
+  onUploadEnd: (payload: UploadEndEventPayload) =>
+    dispatch(fileUploadEnd(payload)),
+  onUploadError: (payload: UploadErrorEventPayload) =>
+    dispatch(fileUploadError(payload)),
 });
 
 export default connect<AppStateProps, AppDispatchProps, AppOwnProps>(

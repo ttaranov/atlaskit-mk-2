@@ -20,19 +20,18 @@ describe('App', () => {
       authProvider: userAuthProvider,
       userAuthProvider,
     });
-    const handlers: AppDispatchProps = {
-      onStartApp: jest.fn(),
-      onClose: jest.fn(),
-      onUploadsStart: jest.fn(),
-      onUploadPreviewUpdate: jest.fn(),
-      onUploadStatusUpdate: jest.fn(),
-      onUploadProcessing: jest.fn(),
-      onUploadEnd: jest.fn(),
-      onUploadError: jest.fn(),
-    };
     return {
+      handlers: {
+        onStartApp: jest.fn(),
+        onClose: jest.fn(),
+        onUploadsStart: jest.fn(),
+        onUploadPreviewUpdate: jest.fn(),
+        onUploadStatusUpdate: jest.fn(),
+        onUploadProcessing: jest.fn(),
+        onUploadEnd: jest.fn(),
+        onUploadError: jest.fn(),
+      } as AppDispatchProps,
       context,
-      handlers,
       store: mockStore(),
       userAuthProvider,
     };

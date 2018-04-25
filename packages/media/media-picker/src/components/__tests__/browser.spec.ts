@@ -2,7 +2,7 @@ import { ContextFactory } from '@atlaskit/media-core';
 import { Browser } from '../browser';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
-import { UploadParams } from '../../domain/config';
+import { UploadParams } from '../..';
 
 class MockContext implements MediaPickerContext {
   trackEvent(event: UserEvent) {}

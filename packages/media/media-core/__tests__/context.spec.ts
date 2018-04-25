@@ -198,4 +198,8 @@ describe('Context', () => {
       expect(context.getLocalPreview('123')).toBeUndefined();
     });
   });
+
+  describe('.uploadFile', () => {
+    // TODO
+  });
 });

@@ -1,8 +1,9 @@
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
-import * as Rusha from 'rusha';
 
 import { MediaStore } from './media-store';
 import { MediaApiConfig } from './models/auth';
+import { createHasher } from './utils/hashing/hasherCreator';
+
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
   content: ChunkinatorFile;
@@ -15,25 +16,8 @@ export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
 };
 
-// TODO: Replace custom FileReader by Rusha.createHash().update(blob)
-// Currently Rusha can't handle blobs directly so we need to do the conversion
-// https://github.com/srijs/rusha/issues/55
 const hashingFunction = (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.readAsArrayBuffer(blob);
-
-    reader.onload = () => {
-      resolve(
-        Rusha.createHash()
-          .update(reader.result)
-          .digest('hex'),
-      );
-    };
-
-    reader.onerror = reject;
-  });
+  return createHasher().hash(blob);
 };
 
 const createProbingFunction = (store: MediaStore) => async (

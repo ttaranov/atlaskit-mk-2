@@ -5,7 +5,6 @@ import { MediaFile, PublicMediaFile } from '../domain/file';
 import { MediaProgress } from '../domain/progress';
 import { MediaError } from '../domain/error';
 import { Preview } from '../domain/preview';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 import {
   MPFileProcessingStarted,
@@ -13,6 +12,7 @@ import {
 } from '../outer/analytics/events';
 
 import { GenericEventEmitter } from '../util/eventEmitter';
+import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;

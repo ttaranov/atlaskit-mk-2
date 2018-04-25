@@ -1,17 +1,21 @@
 /* tslint:disable:no-var-requires */
-import { ResumableChunk } from 'resumablejs';
-
-import { Hasher } from './hasher';
+import * as uuid from 'uuid';
 import * as Rusha from 'rusha';
+import { Hasher } from './hasher';
 
 interface HasherWorker {
   worker: Worker;
   activeJobs: number;
 }
 
+export interface Deferred {
+  resolve: (hash: string) => void;
+  reject: (error: any) => void;
+}
+
 export class WorkerHasher implements Hasher {
   private workers: Array<HasherWorker> = [];
-  private jobs: { [id: string]: ResumableChunk } = {};
+  private jobs: { [id: string]: Deferred } = {};
 
   constructor(numOfWorkers: number) {
     for (let i = 0; i < numOfWorkers; ++i) {
@@ -19,8 +23,8 @@ export class WorkerHasher implements Hasher {
     }
   }
 
-  hash(chunk: any): void {
-    this.calculateHashInWorker(chunk);
+  hash(chunk: Blob): Promise<string> {
+    return this.calculateHashInWorker(chunk);
   }
 
   private createWorker(): HasherWorker {
@@ -40,29 +44,29 @@ export class WorkerHasher implements Hasher {
   ): void {
     const id = event.data.id;
 
-    const chunk = this.jobs[id];
-    if (chunk) {
+    if (this.jobs[id]) {
+      const { resolve, reject } = this.jobs[id];
       delete this.jobs[id];
       hasherWorker.activeJobs--;
 
       if (event.data.error) {
-        this.calculateHashInWorker(chunk);
+        // TODO previously we were just calling it again.
+        // this.calculateHashInWorker(chunk);
+        reject(event.data.error);
       } else {
-        (chunk as any).hash = event.data.hash;
-        chunk.preprocessFinished();
+        resolve(event.data.hash);
       }
     }
   }
 
-  private calculateHashInWorker(chunk: ResumableChunk): void {
-    const { file } = chunk.fileObj;
-    const chunkBlob = file.slice(chunk.startByte, chunk.endByte);
+  private calculateHashInWorker(blob: Blob): Promise<string> {
+    const jobId = uuid.v4();
+    return new Promise((resolve, reject) => {
+      this.jobs[jobId] = { resolve, reject };
 
-    const jobId = chunk.fileObj.fileName + chunk.fileObjSize + chunk.startByte;
-    this.jobs[jobId] = chunk;
-
-    const worker = this.getWorker();
-    this.dispatch(jobId, worker, chunkBlob);
+      const worker = this.getMostRelaxedWorker();
+      this.dispatch(jobId, worker, blob);
+    });
   }
 
   private dispatch(
@@ -75,7 +79,7 @@ export class WorkerHasher implements Hasher {
 
     /*
      * postMessage() with chunk blob in Safari results in the error
-     * "Failed to load resource: The operation couldn’t be completed. (WebKitBlobResource error 1.)"
+     * "Failed to load resource: The operation could not be completed. (WebKitBlobResource error 1.)"
      *
      * To prevent it, we read the data from the blob using FileReader and pass it via postMessage to the worker.
      */
@@ -94,8 +98,7 @@ export class WorkerHasher implements Hasher {
     worker.postMessage({ id: jobId, data: chunkBlob });
   }
 
-  private getWorker(): HasherWorker {
-    // Pick the worker with least number of active jobs
+  private getMostRelaxedWorker(): HasherWorker {
     return this.workers.reduce((current, next) => {
       if (next.activeJobs < current.activeJobs) {
         return next;
