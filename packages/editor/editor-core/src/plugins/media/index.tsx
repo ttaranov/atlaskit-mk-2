@@ -67,38 +67,30 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: nodeViewFactory(
-                  providerFactory,
-                  {
-                    mediaGroup: ReactMediaGroupNode,
-                    media: ReactMediaNode,
-                  },
-                  true,
-                ),
-                mediaSingle: nodeViewFactory(
-                  providerFactory,
-                  {
-                    mediaSingle: ({ view, node, ...props }) => (
-                      <WithPluginState
-                        editorView={view}
-                        eventDispatcher={eventDispatcher}
-                        plugins={{
-                          width: widthPluginKey,
-                        }}
-                        render={({ width }) => (
-                          <ReactMediaSingleNode
-                            view={view}
-                            node={node}
-                            width={width}
-                            {...props}
-                          />
-                        )}
-                      />
-                    ),
-                    media: ReactMediaNode,
-                  },
-                  true,
-                ),
+                mediaGroup: nodeViewFactory(providerFactory, {
+                  mediaGroup: ReactMediaGroupNode,
+                  media: ReactMediaNode,
+                }),
+                mediaSingle: nodeViewFactory(providerFactory, {
+                  mediaSingle: ({ view, node, ...props }) => (
+                    <WithPluginState
+                      editorView={view}
+                      eventDispatcher={eventDispatcher}
+                      plugins={{
+                        width: widthPluginKey,
+                      }}
+                      render={({ width }) => (
+                        <ReactMediaSingleNode
+                          view={view}
+                          node={node}
+                          width={width}
+                          {...props}
+                        />
+                      )}
+                    />
+                  ),
+                  media: ReactMediaNode,
+                }),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
