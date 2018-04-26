@@ -13,8 +13,8 @@ export default md`
   
   ${(
     <Example
-      Component={require('../examples/render-prop-async').default}
-      source={require('!!raw-loader!../examples/render-prop-async')}
+      Component={require('../examples/11-update-items').default}
+      source={require('!!raw-loader!../examples/11-update-items')}
       title="Basic Usage: Table of Contents"
       language="javascript"
     />

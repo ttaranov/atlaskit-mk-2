@@ -37,7 +37,6 @@ export default class Item extends PureComponent<Props, State> {
   render() {
     const { depth, data, render, getChildrenData } = this.props;
     const { isExpanded } = this.state;
-
     const renderedRow = render(data);
     if (!renderedRow) {
       return null;

@@ -9,14 +9,17 @@ import {
 } from './../types';
 
 type Props = {
-  parentData?: Object,
-  getItemsData: ItemsProvider,
   depth?: number,
+  getItemsData: ItemsProvider,
+  initialItems: Array<Object>,
+  parentData?: Object,
   render: RenderFunction,
 };
 
 type State = {
+  childItems?: ItemsDataType,
   isLoaderShown: boolean,
+  items: Array<Object>,
   itemsData?: ItemsDataType,
 };
 
@@ -26,27 +29,28 @@ export default class Items extends PureComponent<Props, State> {
   };
 
   state: State = {
-    isLoaderShown: false,
+    isLoaderShown: true,
+    items: this.props.initialItems || [],
   };
 
   loadCancelled = false;
 
-  componentWillMount() {
-    if (!this.state.itemsData) {
-      this.setState({
-        isLoaderShown: true,
+  loadChildren = (parentData: Object) => {
+    Promise.resolve()
+      .then(() => this.props.getItemsData(parentData))
+      .then(itemsData => {
+        if (!this.loadCancelled) {
+          this.setState({
+            childItems: itemsData,
+          });
+        }
       });
-      this.loadCancelled = false;
-      Promise.resolve()
-        .then(() => this.props.getItemsData(this.props.parentData))
-        .then(itemsData => {
-          if (!this.loadCancelled) {
-            this.setState({
-              itemsData,
-            });
-          }
-        });
-    }
+  };
+
+  componentWillReceiveProps(props: Props) {
+    this.setState({
+      items: props.initialItems,
+    });
   }
 
   componentWillUnmount() {
@@ -61,31 +65,38 @@ export default class Items extends PureComponent<Props, State> {
 
   renderLoader() {
     const { depth } = this.props;
-    const { itemsData } = this.state;
+    const { items } = this.state;
     return (
       <LoaderItem
-        isCompleting={!!itemsData}
+        isCompleting={items && items.length}
         onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />
     );
   }
 
-  renderItems() {
+  renderItem = (itemData: Object, index: number) => {
     const { getItemsData, render, depth = 0 } = this.props;
-    const { itemsData } = this.state;
     return (
-      itemsData &&
-      itemsData.map((itemData: Object, index: number) => (
-        <Item
-          data={itemData}
-          getChildrenData={getItemsData}
-          depth={depth + 1}
-          key={(itemData && itemData.id) || index}
-          render={render}
-        />
-      ))
+      <Item
+        data={itemData}
+        getChildrenData={getItemsData}
+        depth={depth + 1}
+        key={(itemData && itemData.id) || index}
+        render={render}
+      />
     );
+  };
+
+  renderItems() {
+    const { parentData } = this.props;
+    if (parentData) {
+      this.loadChildren(parentData);
+      return (
+        this.state.childItems && this.state.childItems.map(this.renderItem)
+      );
+    }
+    return this.state.items && this.state.items.map(this.renderItem);
   }
 
   render() {

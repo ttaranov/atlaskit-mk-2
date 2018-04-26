@@ -12,6 +12,7 @@ type Props = {
   /** The render prop called each time a row needs to be rendered. Receives item data as its only argument. Should
    * return a Row. */
   render: RenderFunction,
+  initialItems?: mixed,
 };
 
 type State = {
@@ -20,10 +21,14 @@ type State = {
 
 export default class Rows extends PureComponent<Props, State> {
   render() {
-    const { items, render } = this.props;
+    const { initialItems, items, render } = this.props;
     return (
       <div>
-        <Items getItemsData={items} render={render} />
+        <Items
+          getItemsData={items}
+          initialItems={initialItems}
+          render={render}
+        />
       </div>
     );
   }
