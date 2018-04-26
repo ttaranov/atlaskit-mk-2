@@ -16,7 +16,7 @@ const Item = styled.div`
   padding: 0.6em 1em;
 
   &:hover {
-    background-color: ${colors.N20};
+    background-color: ${props => (props.inverted ? colors.B500 : colors.N20)};
   }
 `;
 
