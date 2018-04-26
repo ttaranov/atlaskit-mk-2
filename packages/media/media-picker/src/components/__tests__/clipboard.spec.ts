@@ -35,24 +35,24 @@ describe('Clipboard', () => {
     clipboard.deactivate();
   });
 
-  it('should not call this.uploadService.addFile() when a paste event is dispatched without files', () => {
+  it('should not call this.uploadService.addFiles() when a paste event is dispatched without files', () => {
     document.dispatchEvent(new MockClipboardEvent('paste'));
     expect(addFiles).toHaveBeenCalledTimes(0);
   });
 
-  it('should call this.uploadService.addFile() when a paste event is dispatched with a single file', () => {
+  it('should call this.uploadService.addFiles() when a paste event is dispatched with a single file', () => {
     document.dispatchEvent(new MockClipboardEvent('paste', [new MockFile()]));
     expect(addFiles).toHaveBeenCalledTimes(1);
   });
 
-  it('should call this.uploadService.addFile() when a paste event is dispatched with multiple files', () => {
-    document.dispatchEvent(
-      new MockClipboardEvent('paste', [new MockFile(), new MockFile()]),
-    );
-    expect(addFiles).toHaveBeenCalledTimes(2);
+  it('should call this.uploadService.addFiles() when a paste event is dispatched with multiple files', () => {
+    const files = [new MockFile(), new MockFile()];
+    document.dispatchEvent(new MockClipboardEvent('paste', files));
+    expect(addFiles).toHaveBeenCalledTimes(1);
+    expect(addFiles).toHaveBeenCalledWith(files);
   });
 
-  it('should not call this.uploadService.addFile() when deactivated and a paste event is dispatched a single file', () => {
+  it('should not call this.uploadService.addFiles() when deactivated and a paste event is dispatched a single file', () => {
     clipboard.deactivate();
     document.dispatchEvent(new MockClipboardEvent('paste', [new MockFile()]));
     expect(addFiles).toHaveBeenCalledTimes(0);

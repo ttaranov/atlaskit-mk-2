@@ -46,6 +46,8 @@ export class Clipboard extends LocalUploadComponent {
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
     const filesArray = Array.prototype.slice.call(event.clipboardData.files);
-    this.uploadService.addFiles(filesArray);
+    if (filesArray.length > 0) {
+      this.uploadService.addFiles(filesArray);
+    }
   };
 }
