@@ -30,7 +30,7 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) => (
 const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </ResultItemGroup>
 );
 
@@ -38,7 +38,7 @@ const renderNoResults = (query: string) => (
   <>
     <NoResults />
     {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </>
 );
 

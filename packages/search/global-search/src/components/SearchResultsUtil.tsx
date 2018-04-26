@@ -59,9 +59,9 @@ export const searchJiraItem = (query: string) => (
   />
 );
 
-export const searchPeopleItem = () => (
+export const searchPeopleItem = (query: string) => (
   <ResultBase
-    href="/home/people"
+    href={`/home/people?q=${encodeURIComponent(query)}`}
     icon={<PeopleIcon size="large" label="Search People" />}
     key="search_people"
     resultId="search_people"
