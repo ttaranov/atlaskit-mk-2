@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 9.1.4
+- [patch] Fix tooltips sometimes not hiding when rapidly switching between them [760f6a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760f6a0)
+
 ## 9.1.3
 - [patch] Fix react warnings caused when unmounting a tooltip when it is queued for show/hide [6d9cc52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9cc52)
 
