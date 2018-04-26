@@ -127,4 +127,24 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     expect(wrapper.find(NoResults).exists()).toBe(true);
   });
+
+  it('should render a link to confluence and people search when there are no results', () => {
+    const props: Partial<Props> = {
+      query: 'foo',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+    };
+
+    const wrapper = render(props);
+
+    ['search_confluence', 'search_people'].forEach(resultId => {
+      expect(
+        wrapper
+          .find(ResultBase)
+          .findWhere(wrapper => wrapper.prop('resultId') === resultId)
+          .exists(),
+      ).toBe(true);
+    });
+  });
 });
