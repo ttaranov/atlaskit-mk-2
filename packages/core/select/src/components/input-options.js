@@ -1,11 +1,12 @@
 // @flow
 
-import React, { Component, type Element, type Ref } from 'react';
+import React, { Component, type Element } from 'react';
 import styled from 'styled-components';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
+import type { CommonProps, fn, InnerProps } from './types';
 
 // maintains function shape
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
@@ -65,21 +66,12 @@ const getSecondaryColor = ({
   return color(rest);
 };
 
-type fn = any => any;
-type OptionProops = {
+type OptionProps = CommonProps & {
+  [string]: any,
   children: Element<*>,
   getStyles: fn,
   Icon: CheckboxIcon | RadioIcon,
-  innerProps: {
-    'aria-selected': boolean,
-    id: string,
-    innerRef: Ref<*>,
-    key: string,
-    onClick: MouseEventHandler,
-    onMouseOver: MouseEventHandler,
-    role: 'option',
-    tabIndex: number,
-  },
+  innerProps: InnerProps,
   isDisabled: boolean,
   isFocused: boolean,
   isSelected: boolean,
@@ -87,7 +79,8 @@ type OptionProops = {
   label: string,
 };
 type OptionState = { isActive?: boolean };
-class ControlOption extends Component<OptionProops, OptionState> {
+
+class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
   onMouseUp = () => this.setState({ isActive: false });
@@ -118,7 +111,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
     };
 
     // prop assignment
-    const props = {
+    const props: InnerProps = {
       ...innerProps,
       onMouseDown: this.onMouseDown,
       onMouseUp: this.onMouseUp,
