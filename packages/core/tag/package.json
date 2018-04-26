@@ -36,7 +36,7 @@
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/tag-group": "^4.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
     "react-dom": "^16.3.0",
     "react-test-renderer": "^16.3.0"
   }

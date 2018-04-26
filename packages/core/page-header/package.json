@@ -34,7 +34,7 @@
     "@atlaskit/page": "^6.0.0",
     "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/theme": "^3.0.0",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
     "react-test-renderer": "^16.3.0"
   },
   "keywords": [
