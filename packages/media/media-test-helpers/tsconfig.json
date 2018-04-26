@@ -4,6 +4,7 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./tests/**/*.ts",
-    "./tests/**/*.tsx"
+    "./tests/**/*.tsx",
+    "./typings/kakapo.d.ts"
   ]
 }

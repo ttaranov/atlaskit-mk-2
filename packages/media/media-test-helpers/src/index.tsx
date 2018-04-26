@@ -10,4 +10,5 @@ export * from './exampleMediaItems';
 export * from './createMouseEvent';
 export * from './userAuthProvider';
 export * from './mediaPickerAuthProvider';
-export * from './mocks';
+// export * from './mocks';
+export { mediaMock } from './mocks/media-mock';
