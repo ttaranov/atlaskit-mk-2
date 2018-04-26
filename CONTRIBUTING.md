@@ -223,6 +223,7 @@ ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
 ## Testing your code
+
 Currently Atlaskit supports:
   * Unit testing
   * Browser unit testing
