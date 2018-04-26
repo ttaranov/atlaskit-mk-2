@@ -154,6 +154,7 @@ export class App extends Component<AppProps, AppState> {
       onCancelUpload: uploadId => {
         this.mpBrowser.cancel(uploadId);
         this.mpDropzone.cancel(uploadId);
+        this.mpBinary.cancel(uploadId);
       },
     });
   }
