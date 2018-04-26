@@ -47,6 +47,8 @@ type Props = {
   timeIsEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
+  /** Indicates current value is invalid & changes border color */
+  isInvalid?: boolean,
 };
 
 type State = {
@@ -88,6 +90,7 @@ export default class TimePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     timeIsEditable: false,
+    isInvalid: false,
   };
 
   state = {
@@ -161,6 +164,7 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { value, isOpen } = this.getState();
+    const validationState = this.props.isInvalid ? 'error' : 'default';
 
     const FixedLayerMenu = props => {
       return (
@@ -216,6 +220,7 @@ export default class TimePicker extends Component<Props, State> {
             }
           }
           {...otherSelectProps}
+          validationState={validationState}
         />
       </div>
     );

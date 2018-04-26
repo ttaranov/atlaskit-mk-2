@@ -45,6 +45,8 @@ type Props = {
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value?: string,
+  /** Indicates current value is invalid & changes border color */
+  isInvalid?: boolean,
 };
 
 type State = {
@@ -117,6 +119,7 @@ export default class DatePicker extends Component<Props, State> {
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
+    isInvalid: false,
   };
 
   state = {
@@ -230,7 +233,7 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-
+    const validationState = this.props.isInvalid ? 'error' : 'default';
     const Menu = ({ innerProps: menuInnerProps }) => (
       <StyledMenu>
         <Calendar
@@ -285,6 +288,7 @@ export default class DatePicker extends Component<Props, State> {
             }
           }
           {...selectProps}
+          validationState={validationState}
         />
       </div>
     );

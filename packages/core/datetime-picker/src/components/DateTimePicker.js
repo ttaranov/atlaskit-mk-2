@@ -34,6 +34,8 @@ type Props = {
   value?: string,
   /** Allow users to edit the input and add a time */
   timeIsEditable?: boolean,
+  /** Indicates current value is invalid & changes border color */
+  isInvalid?: boolean,
 };
 
 type State = {
@@ -45,14 +47,18 @@ type State = {
   zoneValue: string,
 };
 
+function getBorderColor(isInvalid: boolean) {
+  if (isInvalid) return `2px solid ${colors.R400}`;
+  return `1px solid ${colors.N20}`;
+}
 const Flex = styled.div`
   background-color: ${colors.N10};
   border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
-  ${({ isFocused }) => `
+  ${({ isFocused, isInvalid }) => `
     border: ${
-      isFocused ? `2px solid ${colors.B100}` : `1px solid ${colors.N20}`
+      isFocused ? `2px solid ${colors.B100}` : `${getBorderColor(isInvalid)}`
     };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
@@ -104,6 +110,7 @@ export default class DateTimePicker extends Component<Props, State> {
     id: '',
     defaultValue: '',
     timeIsEditable: false,
+    isInvalid: false,
   };
 
   state = {
@@ -183,9 +190,16 @@ export default class DateTimePicker extends Component<Props, State> {
       isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
+      isInvalid: this.props.isInvalid,
     };
+
     return (
-      <Flex {...innerProps} isFocused={isFocused} isDisabled={isDisabled}>
+      <Flex
+        {...innerProps}
+        isFocused={isFocused}
+        isDisabled={isDisabled}
+        isInvalid={bothProps.isInvalid}
+      >
         <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker
