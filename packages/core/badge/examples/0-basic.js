@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@atlaskit/theme';
@@ -44,6 +45,10 @@ export default function Example() {
       <Item>
         <p>Removed (no theme change)</p>
         <Badge appearance="removed" />
+      </Item>
+      <Item>
+        <p>Infinity (∞)</p>
+        <Badge max={Infinity} value={Infinity} />
       </Item>
     </div>
   );

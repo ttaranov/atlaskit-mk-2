@@ -1,24 +1,9 @@
 // @flow
+
+import { Appearance } from '@atlaskit/theme';
 import React, { PureComponent } from 'react';
 import { BadgeElement } from './styled';
-
-export const APPEARANCE_ENUM = {
-  values: [
-    'default',
-    'primary',
-    'primaryInverted',
-    'important',
-    'added',
-    'removed',
-  ],
-  defaultValue: 'default',
-};
-
-function validAppearance(value) {
-  return value && APPEARANCE_ENUM.values.includes(value)
-    ? value
-    : APPEARANCE_ENUM.defaultValue;
-}
+import * as theme from '../theme';
 
 function getValue(value, max) {
   if (value < 0) {
@@ -28,25 +13,32 @@ function getValue(value, max) {
     return `${max}+`;
   }
   if (value === Infinity) {
-    return '\u221E'; // ∞ inifinity character
+    return '∞';
   }
   return String(value);
 }
 
 type Props = {
-  /** Affects the visual style of the badge */
+  /** Affects the visual style of the badge.*/
   appearance:
     | 'default'
     | 'primary'
     | 'primaryInverted'
     | 'important'
     | 'added'
-    | 'removed',
-  /** The maximum value to display. If value is 100, and max is 50,
-   "50+" will be displayed */
+    | 'removed'
+    | {},
+
+  /** The maximum value to display. If value is 100, and max is 50, "50+" will
+   be displayed */
   max: number,
-  /** Handler function to be called when the value prop is changed.
-   Called with fn({ oldValue, newValue }) */
+
+  /** DEPREACATED - this handler is unnecessary as you already know the value
+  and this component does not have any internal state.
+
+  Handler function to be called when the value prop is changed.
+  Called with fn({ oldValue, newValue }) */
+
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
   /** The value displayed within the badge. */
   value: number,
@@ -70,11 +62,13 @@ export default class Badge extends PureComponent<Props> {
 
   render() {
     const { appearance, max, value } = this.props;
-
+    const computedValue = getValue(value, max);
     return (
-      <BadgeElement appearance={validAppearance(appearance)}>
-        {getValue(value, max)}
-      </BadgeElement>
+      <Appearance props={appearance} theme={theme}>
+        {styleProps => (
+          <BadgeElement {...styleProps}>{computedValue}</BadgeElement>
+        )}
+      </Appearance>
     );
   }
 }
