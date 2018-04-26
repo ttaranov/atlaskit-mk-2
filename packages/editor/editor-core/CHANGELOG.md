@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.8
+- [patch] [fix] Support action/decision '[]' and '<>' autocompletion inside of bodiedExtensions and column layouts [ad7169c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad7169c)
+
 ## 71.0.7
 - [patch] ED-4363, replacing peperclip icon with image icon in top toolbar in editor. [e5cb9b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5cb9b8)
 
