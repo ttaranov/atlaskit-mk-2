@@ -15,7 +15,7 @@ const ShapeGroup = styled.g`
   }
 `;
 
-function DefaultImage({
+export function DefaultImage({
   appearance,
   size,
   title,
