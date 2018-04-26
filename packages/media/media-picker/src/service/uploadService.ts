@@ -1,7 +1,5 @@
 import * as uuid from 'uuid';
 import {
-  AuthProvider,
-  ContextFactory,
   Context,
   UploadableFile,
   MediaType,
@@ -54,8 +52,6 @@ const MAX_FILE_SIZE_FOR_PREVIEW = 10e6; // 10 MB
 
 export class UploadService {
   private readonly context: Context;
-  // private readonly mediaClientPool: MediaClientPool;
-  private readonly authProvider: AuthProvider;
   private readonly userCollectionMediaClient: MediaClient;
   private readonly api: MediaApi;
 
@@ -65,26 +61,14 @@ export class UploadService {
   private dropzoneElement?: HTMLElement;
   private browserElement?: HTMLInputElement;
 
-  constructor(
-    url: string,
-    authProvider: AuthProvider,
-    uploadParams?: UploadParams,
-    userAuthProvider?: AuthProvider,
-  ) {
-    // TODO Move me from here
-    this.context = ContextFactory.create({
-      serviceHost: url,
-      authProvider,
-      userAuthProvider,
-      // cacheSize: 42
-    });
+  constructor(context: Context, uploadParams?: UploadParams) {
     this.emitter = new EventEmitter2();
-    this.authProvider = authProvider;
-    // this.mediaClientPool = new MediaClientPool(url, authProvider);
-    if (userAuthProvider) {
+    this.context = context;
+
+    if (context.config.userAuthProvider) {
       this.userCollectionMediaClient = new MediaClient(
-        url,
-        userAuthProvider,
+        context.config.serviceHost,
+        context.config.userAuthProvider,
         'recents',
       );
     }
@@ -300,8 +284,9 @@ export class UploadService {
       return Promise.resolve();
     }
 
-    return this.authProvider({ collectionName: sourceCollection }).then(
-      auth => {
+    return this.context.config
+      .authProvider({ collectionName: sourceCollection })
+      .then(auth => {
         const sourceFile: SourceFile = {
           id: sourceFileId,
           collection: sourceCollection,
@@ -315,8 +300,7 @@ export class UploadService {
           sourceFile,
           'recents',
         );
-      },
-    );
+      });
   }
 
   private mapExpFileToPublicMediaFile = (

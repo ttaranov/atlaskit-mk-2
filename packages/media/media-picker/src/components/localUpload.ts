@@ -30,13 +30,10 @@ export class LocalUploadComponent<
   ) {
     super(analyticsContext);
 
-    const { userAuthProvider, authProvider, serviceHost } = context.config;
     this.context = context;
     this.uploadService = new UploadService(
-      serviceHost,
-      authProvider,
+      this.context,
       config.uploadParams || { collection: '' },
-      userAuthProvider,
     );
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
