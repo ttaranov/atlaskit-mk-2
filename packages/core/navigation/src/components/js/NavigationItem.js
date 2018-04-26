@@ -37,7 +37,8 @@ type Props = {
   /** Target frame for item `href` link to be aimed at. */
   target?: string,
   /** React element to appear to the left of the text. This should be an
-   @atlaskit/icon component. */
+   @atlaskit/icon component. For accessiblity reasons, don't set a label for the icon if providing
+   a text prop for this item. */
   icon?: Node,
   /** Element displayed to the right of the item. The dropIcon should generally be
    an appropriate @atlaskit icon, such as the ExpandIcon. */
