@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.11
+- [patch] ED-4296, fix for scrollbars always visible in recent search for hyperlink in windows. [5b39e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b39e02)
+
 ## 71.0.10
 - [patch] ED-4270, changing font of inline code according to ADG3 guidelines. [805d02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/805d02a)
 
