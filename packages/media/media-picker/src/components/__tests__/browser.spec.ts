@@ -1,3 +1,5 @@
+jest.mock('../../service/uploadService');
+
 import { ContextFactory } from '@atlaskit/media-core';
 import { Browser } from '../browser';
 import { MediaPickerContext } from '../../domain/context';
@@ -33,6 +35,7 @@ describe('Browser', () => {
     browser = new Browser(new MockContext(), context, new MockConfig());
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeGreaterThan(inputsBefore.length);
+    expect(browser['uploadService'].addBrowse).toHaveBeenCalled();
   });
 
   it('should remove the input from the body', () => {
@@ -41,5 +44,6 @@ describe('Browser', () => {
     browser.teardown();
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeLessThan(inputsBefore.length);
+    expect(browser['uploadService'].removeBrowse).toHaveBeenCalled();
   });
 });

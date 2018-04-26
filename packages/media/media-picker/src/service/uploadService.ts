@@ -103,7 +103,6 @@ export class UploadService {
     delete this.dropzoneElement;
   }
 
-  // TODO call it from somewhere
   removeBrowse(): void {
     if (!this.browserElement) {
       return;

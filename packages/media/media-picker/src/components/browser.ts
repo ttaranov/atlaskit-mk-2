@@ -56,6 +56,7 @@ export class Browser extends LocalUploadComponent {
   }
 
   public teardown(): void {
+    this.uploadService.removeBrowse();
     const parentNode = this.browseElement.parentNode;
     if (parentNode) {
       parentNode.removeChild(this.browseElement);
