@@ -223,13 +223,21 @@ ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
 ## Testing your code
+### Running tests
+ - unit tests   
+ ```sh
+  yarn jest 
+ ```
+ - browser unit tests    
+ ```sh
+  yarn run test:browser
+ ```
+ - webdriver tests    
+ ```sh 
+  yarn run test:webriver
+ ```
 
-Currently Atlaskit supports:
-  * Unit testing
-  * Browser unit testing
-  * Browser webdriver / integration testing
-
-Please review this link before adding any tests [Adding tests][addingtests].
+Please refer to [testing in atlaskit][testing] for more information about testing.
 
 ## Documenting your code
 
@@ -288,4 +296,4 @@ create the changelog entry for each package being released.
 [codeofconduct]: ./CODE_OF_CONDUCT.md
 [issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
 [atlassianbug]: http://go/ak-bug
-[addingtests]: https://atlaskit.atlassian.com/docs/guides/testing
+[testing]: https://atlaskit.atlassian.com/docs/guides/testing

@@ -10,8 +10,10 @@ We encourage adding tests to all components on **Atlaskit**.
 - *unit tests* for packages should be structured under `<pkg>/__tests__` folder.
 - on CI these are run against changed packages only. 
 - run all tests `yarn test`.
-- run for changed packages `yarn test:changed`
-- single test run `yarn test <path_to_test_file>`
+- run all tests in watch mode `yarn jest --watch `
+- run test for changed packages `yarn test:changed`
+- run single test `yarn test <path_to_test_file>`
+- run tests under certain directories `yarn jest <path_to_directory>`
 
 ### Browser unit tests
 - some components require unit tests which can be run against **real browser**.
