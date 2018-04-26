@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.5
+- [patch] ED-4078 Fix single image layout around headings and lists [3f230a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f230a1)
+
 ## 71.0.4
 - [patch] Fix WithEditorActions depends on where it's renderer.  [9de70c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9de70c6)
 
