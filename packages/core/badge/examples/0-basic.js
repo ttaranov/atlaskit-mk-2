@@ -6,7 +6,9 @@ import Badge from '../src';
 
 const Item = styled.div`
   align-items: center;
+  background: ${props => (props.inverted ? colors.B400 : 'none')};
   border-radius: ${borderRadius}px;
+  color: ${props => (props.inverted ? colors.N0 : 'inherit')};
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
@@ -16,18 +18,6 @@ const Item = styled.div`
   &:hover {
     background-color: ${colors.N20};
   }
-`;
-
-const ItemPrimaryInverted = styled.div`
-  align-items: center;
-  background: ${colors.B400};
-  border-radius: ${borderRadius}px;
-  color: ${colors.N0};
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  max-width: 300px;
-  padding: 0.6em 1em;
 `;
 
 export default function Example() {
@@ -45,10 +35,10 @@ export default function Example() {
         <p>Important</p>
         <Badge appearance="important" value={25} />
       </Item>
-      <ItemPrimaryInverted>
+      <Item inverted>
         <p>Primary Inverted</p>
         <Badge appearance="primaryInverted" value={-5} />
-      </ItemPrimaryInverted>
+      </Item>
       <Item>
         <p>Added (no theme change)</p>
         <Badge appearance="added" max={99} value={3000} />
