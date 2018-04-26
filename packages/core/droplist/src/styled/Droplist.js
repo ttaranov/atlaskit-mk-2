@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 
 /* When dropdown contains more than 9 elements (droplist items, droplist groups),
  * it should have scroll and cut off half of the 10th item to indicate that there are more
