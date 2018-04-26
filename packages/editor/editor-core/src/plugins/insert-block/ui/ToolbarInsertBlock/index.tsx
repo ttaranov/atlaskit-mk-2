@@ -5,7 +5,6 @@ import { EditorView } from 'prosemirror-view';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
-import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
@@ -321,7 +320,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         value: { name: 'media' },
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
-        elemBefore: <AttachmentIcon label="Insert files and images" />,
+        elemBefore: <EditorImageIcon label="Insert files and images" />,
       });
     }
     if (imageUploadSupported) {
