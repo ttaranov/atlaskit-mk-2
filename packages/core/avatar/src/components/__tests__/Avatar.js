@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, render } from 'enzyme';
 import Tooltip from '@atlaskit/tooltip';
 import Avatar from '../Avatar';
 import AvatarImage from '../AvatarImage';
@@ -35,10 +35,26 @@ describe('Avatar', () => {
   });
 
   describe('name property', () => {
-    it('should set the alt of the internal span', () => {
+    it('should set an aria-label for the default image', () => {
       const name = 'John Smith';
-      const wrapper = mount(<Avatar name={name} src={src} />);
-      expect(wrapper.find(AvatarImage).props().alt).toBe(name);
+      const wrapper = render(<Avatar name={name} />);
+      expect(wrapper.find(`[aria-label='${name}']`).length).toBe(1);
+    });
+
+    it('should set an aria-label for custom images', () => {
+      const name = 'John Smith';
+      const wrapper = render(<Avatar name={name} src={src} />);
+      expect(wrapper.find(`[aria-label='${name}']`).length).toBe(1);
+    });
+
+    it('should not render a native SVG title for default images', () => {
+      const wrapper = render(<Avatar name="Test" />);
+      expect(wrapper.find('svg > title').length).toBe(0);
+    });
+
+    it('should not render custom images with a title attribute', () => {
+      const wrapper = render(<Avatar name="Test" src={src} />);
+      expect(wrapper.find('[title]').length).toBe(0);
     });
   });
 
