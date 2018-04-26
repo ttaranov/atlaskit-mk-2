@@ -1,11 +1,13 @@
 // @flow
-import styled from 'styled-components';
-import { backgroundColor, textColor } from '../theme';
 
-const BadgeElement = styled.div`
-  background-color: ${backgroundColor};
+import styled from 'styled-components';
+
+const BadgeElement = styled.span`
+  ${props => `
+    background-color: ${props.backgroundColor};
+    color: ${props.textColor};
+  `};
   border-radius: 2em;
-  color: ${textColor};
   display: inline-block;
   font-size: 12px;
   font-weight: normal;

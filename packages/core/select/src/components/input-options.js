@@ -145,6 +145,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
   }
 }
 /* TODO:
+  to be removed
   the label of an option in the menu
   should ideally be something we can customise
   as part of the react-select component API
