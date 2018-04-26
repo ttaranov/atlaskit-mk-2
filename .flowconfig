@@ -9,6 +9,7 @@
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
+.*/.git/.*
 
 [include]
 
