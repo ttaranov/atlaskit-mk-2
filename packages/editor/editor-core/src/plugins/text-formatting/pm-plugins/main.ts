@@ -351,6 +351,27 @@ export const plugin = new Plugin({
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
+    handleClick(view, pos, event) {
+      const { schema, selection } = view.state;
+      const clickingInsideCode = view.domAtPos(pos).node === event.target;
+      if (
+        selection.$from.pos === selection.$from.end() &&
+        schema.marks.code.isInSet(selection.$from.marks())
+      ) {
+        if (clickingInsideCode) {
+          event.preventDefault();
+          view.dispatch(view.state.tr.setStoredMarks([]));
+          return true;
+        } else {
+          event.preventDefault();
+          view.dispatch(
+            view.state.tr.setStoredMarks([schema.marks.code.create()]),
+          );
+          return true;
+        }
+      }
+      return false;
+    },
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
       return stateKey
         .getState(view.state)
