@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.10
+- [patch] ED-4270, changing font of inline code according to ADG3 guidelines. [805d02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/805d02a)
+
 ## 71.0.9
 - [patch] Outdent list item on enter if it doesn't have any visible content [4deb043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4deb043)
 
