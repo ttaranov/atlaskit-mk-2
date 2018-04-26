@@ -1,6 +1,5 @@
 import { MediaPickerContext } from '../domain/context';
 
-import { FileFinalize } from '../service/uploadService';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 import { MediaProgress } from '../domain/progress';
 import { MediaError } from '../domain/error';
@@ -18,7 +17,6 @@ import { UploadEventPayloadMap } from '../domain/uploadEvent';
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;
   emitUploadProgress(file: MediaFile, progress: MediaProgress): void;
-  emitUploadFinalizeReady(file: MediaFile, finalize: FileFinalize): void;
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void;
   emitUploadProcessing(file: PublicMediaFile): void;
   emitUploadEnd(file: PublicMediaFile, mediaApiData: MediaFileData): void;
@@ -43,10 +41,6 @@ export class UploadComponent<
       file,
       progress,
     });
-  }
-
-  emitUploadFinalizeReady(file: MediaFile, finalize: FileFinalize): void {
-    this.emit('upload-finalize-ready', { file, finalize });
   }
 
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void {

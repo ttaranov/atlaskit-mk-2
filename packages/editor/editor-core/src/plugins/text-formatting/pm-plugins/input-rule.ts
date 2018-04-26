@@ -1,6 +1,6 @@
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { Schema, MarkType } from 'prosemirror-model';
-import { Plugin, Transaction } from 'prosemirror-state';
+import { Plugin, Transaction, Selection } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { transformToCodeAction } from '../commands/transform-to-code';
 import { InputRuleHandler, createInputRule } from '../../../utils/input-rules';
@@ -48,7 +48,10 @@ function replaceTextUsingCaptureGroup(
       );
     }
 
-    return state.tr.replaceWith(start, end, state.schema.text(replacement));
+    let { tr } = state;
+    tr.replaceWith(start, end, state.schema.text(replacement));
+    tr.setSelection(Selection.near(tr.doc.resolve(tr.selection.to)));
+    return tr;
   };
 }
 

@@ -39,7 +39,7 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import rulePlugin from '../../../src/plugins/rule';
 import tablePlugin from '../../../src/plugins/table';
 import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
-import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;

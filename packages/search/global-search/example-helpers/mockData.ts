@@ -8,6 +8,7 @@ import {
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
+import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
@@ -164,4 +165,39 @@ export function makePeopleSearchData(
       },
     };
   };
+}
+
+export function makeConfluenceRecentPagesData(n: number = 300) {
+  const items: RecentPage[] = [];
+
+  for (let i = 0; i < n; i++) {
+    items.push({
+      available: true,
+      contentType: 'page',
+      id: faker.random.uuid(),
+      lastSeen: faker.date.past(1).getTime(),
+      space: faker.company.companyName(),
+      spaceKey: faker.hacker.abbreviation(),
+      title: faker.company.catchPhrase(),
+      type: 'page',
+      url: faker.internet.url(),
+    });
+  }
+
+  return items;
+}
+
+export function makeConfluenceRecentSpacesData(n: number = 15) {
+  const spaces: RecentSpace[] = [];
+
+  for (let i = 0; i < n; i++) {
+    spaces.push({
+      id: faker.random.uuid(),
+      key: faker.hacker.abbreviation(),
+      icon: faker.image.avatar(),
+      name: faker.company.companyName(),
+    });
+  }
+
+  return spaces;
 }

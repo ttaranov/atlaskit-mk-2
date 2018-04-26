@@ -12,7 +12,7 @@ import {
 import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
-import EmptyState from '../src/components/EmptyState';
+import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
 
 enum Group {
@@ -44,7 +44,7 @@ describe('ConfluenceSearchResults', () => {
     return shallow(<div>{searchResults(props)}</div>);
   }
 
-  it.skip('should render recently viewed objects when no query is entered', () => {
+  it('should render recently viewed objects when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyViewedPages: [makeResult()],
@@ -56,7 +56,7 @@ describe('ConfluenceSearchResults', () => {
     // TODO asssert
   });
 
-  it.skip('should render recently viewed spaces when no query is entered', () => {
+  it('should render recently viewed spaces when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyViewedSpaces: [makeResult()],
@@ -116,7 +116,7 @@ describe('ConfluenceSearchResults', () => {
     expect(wrapper.find(SearchError).exists()).toBe(true);
   });
 
-  it('should render empty state when there are no results and a query is entered', () => {
+  it('should render no results state when there are no results and a query is entered', () => {
     const props: Partial<Props> = {
       query: 'foo',
       objectResults: [],
@@ -125,6 +125,6 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-    expect(wrapper.find(EmptyState).exists()).toBe(true);
+    expect(wrapper.find(NoResults).exists()).toBe(true);
   });
 });

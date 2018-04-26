@@ -369,15 +369,19 @@ export function outdentList(): Command {
     return false;
   };
 }
+
+export function shouldAppendParagraphAfterBlockNode(state) {
+  return (
+    (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
+  );
+}
+
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (
-      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
-      isTableCell(state)
-    ) {
+    if (shouldAppendParagraphAfterBlockNode(state)) {
       nodes.push(paragraph.create());
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -32,8 +32,8 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/field-radio-group": "^2.0.0",
-    "@atlaskit/modal-dialog": "^4.0.0",
-    "@atlaskit/navigation": "^30.0.0",
+    "@atlaskit/modal-dialog": "^4.0.3",
+    "@atlaskit/navigation": "^31.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/theme": "^3.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz"

@@ -17,7 +17,7 @@ import {
 import { setTextSelection } from '../../../src/utils';
 import listPlugin from '../../../src/plugins/lists';
 import panelPlugin from '../../../src/plugins/panel';
-import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 import mediaPlugin from '../../../src/plugins/media';
 
 describe('lists', () => {

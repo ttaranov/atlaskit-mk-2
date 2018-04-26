@@ -1,5 +1,7 @@
 # @atlaskit/quick-search
 
+## 1.3.1
+
 ## 1.3.0
 - [minor] Remove unecessary dependencies [3bd4dd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3bd4dd8)
 

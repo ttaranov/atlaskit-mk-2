@@ -6,7 +6,7 @@ import {
   toggleNumberColumn,
 } from '../../../actions';
 import { EditorView } from 'prosemirror-view';
-import TableIcon from '@atlaskit/icon/glyph/table';
+import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { akColorB400 } from '@atlaskit/util-shared-styles';
@@ -57,7 +57,7 @@ export default class DisplayOptionsMenu extends Component<Props, State> {
           onClick={this.toggleOpen}
           iconBefore={
             <TriggerWrapper>
-              <TableIcon label="Toggle display options menu" />
+              <TableDisplayOptionsIcon label="Toggle display options menu" />
               <ExpandIconWrapper>
                 <ExpandIcon label="expand-dropdown-menu" />
               </ExpandIconWrapper>

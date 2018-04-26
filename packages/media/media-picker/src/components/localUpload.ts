@@ -3,7 +3,6 @@ import {
   FilePreviewUpdateEventPayload,
   FileConvertedEventPayload,
   FileConvertingEventPayload,
-  FileFinalizeReadyEventPayload,
   FilesAddedEventPayload,
   FileUploadErrorEventPayload,
   FileUploadingEventPayload,
@@ -42,7 +41,6 @@ export class LocalUploadComponent<
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
     this.uploadService.on('file-uploading', this.onFileUploading);
-    this.uploadService.on('file-finalize-ready', this.onFileFinalizeReady);
     this.uploadService.on('file-converting', this.onFileConverting);
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
@@ -72,13 +70,6 @@ export class LocalUploadComponent<
     progress,
   }: FileUploadingEventPayload): void => {
     this.emitUploadProgress(file, progress.toJSON());
-  };
-
-  private onFileFinalizeReady = ({
-    file,
-    finalize,
-  }: FileFinalizeReadyEventPayload): void => {
-    this.emitUploadFinalizeReady(file, finalize);
   };
 
   private onFileConverting = ({ file }: FileConvertingEventPayload): void => {

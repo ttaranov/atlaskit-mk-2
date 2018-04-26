@@ -21,6 +21,7 @@ export {
   toJSON,
   filterContentByType,
   setTextSelection,
+  setGapCursorSelection,
 } from './utils';
 
 // Plugin Keys for WithPluginState

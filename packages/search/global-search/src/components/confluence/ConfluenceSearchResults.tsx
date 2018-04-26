@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
-import EmptyState from '../EmptyState';
+import NoResults from '../NoResults';
 import {
   renderResults,
   searchConfluenceItem,
@@ -11,28 +11,32 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderObjects = (results: Result[], query: string) => (
-  <ResultItemGroup title="Pages, blogs and attachments" key="objects">
+const renderObjectsGroup = (
+  title: string,
+  results: Result[],
+  query: string,
+) => (
+  <ResultItemGroup title={title} key="objects">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
-const renderSpaces = (results: Result[], query: string) => (
-  <ResultItemGroup title="Spaces" key="spaces">
+const renderSpacesGroup = (title: string, results: Result[], query: string) => (
+  <ResultItemGroup title={title} key="spaces">
     {renderResults(results)}
   </ResultItemGroup>
 );
 
-const renderPeople = (results: Result[], query: string) => (
-  <ResultItemGroup title="People" key="people">
+const renderPeopleGroup = (title: string, results: Result[], query: string) => (
+  <ResultItemGroup title={title} key="people">
     {renderResults(results)}
     {searchPeopleItem()}
   </ResultItemGroup>
 );
 
-const renderEmptyState = (query: string) => (
+const renderNoResults = (query: string) => (
   <>
-    <EmptyState />
+    <NoResults />
     {searchConfluenceItem(query)}
     {searchPeopleItem()}
   </>
@@ -41,6 +45,7 @@ const renderEmptyState = (query: string) => (
 export interface Props {
   query: string;
   isError: boolean;
+  isLoading: boolean;
   retrySearch();
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
@@ -53,6 +58,7 @@ export default function searchResults(props: Props) {
   const {
     query,
     isError,
+    isLoading,
     retrySearch,
     // @ts-ignore unused
     recentlyViewedPages,
@@ -63,23 +69,36 @@ export default function searchResults(props: Props) {
     peopleResults,
   } = props;
 
+  if (isLoading) {
+    return null; // better than showing empty error, but worth some more thought.
+  }
+
   if (isError) {
     return <SearchError onRetryClick={retrySearch} />;
   }
 
   if (query.length === 0) {
-    // TODO render recent pages, recent spaces, recent people
-    return ['pre-query state'];
+    return [
+      renderObjectsGroup(
+        'Recent pages and blogs',
+        take(recentlyViewedPages, 5),
+        query,
+      ),
+      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 5), query),
+    ];
   }
 
-  // TODO need to pass isLoading down to avoid showing no results screen when still searching
   if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return renderEmptyState(query);
+    return renderNoResults(query);
   }
 
   return [
-    renderObjects(take(objectResults, 5), query),
-    renderSpaces(take(spaceResults, 5), query),
-    renderPeople(take(peopleResults, 3), query),
+    renderObjectsGroup(
+      'Pages, blogs and attachments',
+      take(objectResults, 5),
+      query,
+    ),
+    renderSpacesGroup('Spaces', take(spaceResults, 5), query),
+    renderPeopleGroup('People', take(peopleResults, 3), query),
   ];
 }

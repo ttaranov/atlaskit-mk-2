@@ -1,6 +1,12 @@
 //@flow
 'use strict';
 
+/* 
+* util module to build webpack-dev-server for running integration test.
+* const CHANGED_PACKAGES accepts environment variable which is used to 
+* identify changed packages and return changed packages containing webdriverTests to be built.
+*/
+
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
@@ -33,9 +39,33 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 const HOST = 'localhost';
 const PORT = 9000;
 const WEBPACK_BUILD_TIMEOUT = 10000;
+const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 
 let server;
 let config;
+
+const pattern = process.argv[2] || '';
+
+function packageIsInPatternOrChanged(workspace) {
+  if (!workspace.files.webdriver.length) return false;
+  if (pattern === '' && !CHANGED_PACKAGES) return true;
+
+  /**
+   * If the CHANGED_PACKAGES variable is set,
+   * parsing it to get an array of changed packages and only
+   * build those packages
+   */
+  if (CHANGED_PACKAGES) {
+    return JSON.parse(CHANGED_PACKAGES).some(pkg =>
+      workspace.dir.includes(pkg),
+    );
+  }
+
+  /* Match and existing pattern is passed through the command line */
+  return pattern.length < workspace.dir.length
+    ? workspace.dir.includes(pattern)
+    : pattern.includes(workspace.dir);
+}
 
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
@@ -43,13 +73,7 @@ async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
   });
   return project.workspaces
-    .filter(
-      workspace =>
-        process.argv.slice(2)[1]
-          ? workspace.dir.includes(process.argv.slice(2)[1])
-          : workspace,
-    )
-    .filter(workspace => workspace.files.webdriver.length)
+    .filter(packageIsInPatternOrChanged)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
 //
@@ -72,13 +96,8 @@ async function startDevServer() {
     : utils.createDefaultGlob();
 
   if (!globs.length) {
-    print(
-      errorMsg({
-        title: 'Nothing to run',
-        msg: `Pattern doesn't match anything.`,
-      }),
-    );
-    process.exit(2);
+    console.info('Nothing to run or pattern does not match!');
+    process.exit(0);
   }
 
   config = createConfig({
