@@ -39,8 +39,8 @@ type Props = {
   /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
    been "sanitised" */
   dangerouslySetGlyph?: string,
-  /** String to use as the aria-label for the icon */
-  label?: string,
+  /** String to use as the aria-label for the icon. Set to an empty string if you are rendering the icon with visible text to prevent accessibility label duplication. */
+  label: string,
   /** onClick handler for the icon element */
   onClick?: () => mixed,
   /** For primary colour for icons */
