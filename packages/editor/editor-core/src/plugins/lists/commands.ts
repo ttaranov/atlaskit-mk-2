@@ -9,7 +9,7 @@ import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import * as commands from '../../commands';
-import { isEmptyNode } from '../../utils/document';
+import { isEmptyNode, hasVisibleContent } from '../../utils/document';
 
 /**
  * Function will lift list item following selection to level-1.
@@ -80,8 +80,8 @@ function liftListItem(
         true,
       ),
     );
-    // TODO: Fix types (ED-2987) - Remove cast to any as soon as we've updated to prosemirror-model 0.24
-    range = new (NodeRange as any)(
+
+    range = new NodeRange(
       tr.doc.resolve($from.pos),
       tr.doc.resolve(endOfList),
       range.depth,
@@ -101,9 +101,9 @@ export const enterKeyCommand = (
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper && wrapper.type === listItem) {
-      /** Check is the wrapper has any content */
-      const wrapperHasContent = wrapper.content.size > 2;
-      if (isEmptyNode(node) && !wrapperHasContent) {
+      /** Check if the wrapper has any visible content */
+      const wrapperHasContent = hasVisibleContent(wrapper);
+      if (isEmptyNode(node) || !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);
