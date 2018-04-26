@@ -24,8 +24,5 @@
     "landkid": "^0.0.20",
     "node-yaml": "^3.1.1",
     "p-wait-for": "^1.0.0"
-  },
-  "dependencies,devDependencies": {
-    "bunyan": "^1.8.12"
   }
 }
