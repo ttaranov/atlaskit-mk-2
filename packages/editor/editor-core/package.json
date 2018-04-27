@@ -76,7 +76,7 @@
     "prosemirror-state": "^1.1.0",
     "prosemirror-tables": "^0.6.3",
     "prosemirror-transform": "1.0.9",
-    "prosemirror-utils": "^0.2.16",
+    "prosemirror-utils": "^0.2.17",
     "prosemirror-view": "^1.2.0",
     "raf-schd": "^2.1.0",
     "styled-components": "1.4.6 - 3",
