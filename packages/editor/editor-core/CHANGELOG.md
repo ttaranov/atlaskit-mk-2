@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.13
+- [patch] Update `editorActions.focus()` to scroll the page to the user's current selection when called [821249b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/821249b)
+
 ## 71.0.12
 - [patch] Expose table plugin config interface [584c085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/584c085)
 
