@@ -23,7 +23,6 @@
   "dependencies": {
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/field-base": "^9.0.0",
-    "@atlaskit/icon": "^11.0.0",
     "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",

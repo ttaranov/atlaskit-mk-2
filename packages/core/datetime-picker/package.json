@@ -22,10 +22,8 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/calendar": "^5.0.0",
-    "@atlaskit/droplist": "^5.0.0",
     "@atlaskit/field-base": "^9.0.0",
     "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/input": "^2.0.0",
     "@atlaskit/layer": "^3.1.0",
     "@atlaskit/select": "^2.0.0",
     "@atlaskit/theme": "^3.0.0",
