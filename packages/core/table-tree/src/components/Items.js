@@ -11,7 +11,7 @@ import {
 type Props = {
   depth?: number,
   getItemsData: ItemsProvider,
-  initialItems: Array<Object>,
+  items: Array<Object>,
   parentData?: Object,
   render: RenderFunction,
 };
@@ -30,7 +30,7 @@ export default class Items extends PureComponent<Props, State> {
 
   state: State = {
     isLoaderShown: true,
-    items: this.props.initialItems || [],
+    items: this.props.items || [],
   };
 
   loadCancelled = false;
@@ -49,7 +49,7 @@ export default class Items extends PureComponent<Props, State> {
 
   componentWillReceiveProps(props: Props) {
     this.setState({
-      items: props.initialItems,
+      items: props.items,
     });
   }
 
@@ -68,7 +68,7 @@ export default class Items extends PureComponent<Props, State> {
     const { items } = this.state;
     return (
       <LoaderItem
-        isCompleting={items && items.length}
+        isCompleting={!!items}
         onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />

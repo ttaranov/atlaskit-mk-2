@@ -16,7 +16,7 @@ const styles = {
 
 export default class App extends React.Component<{}, State> {
   state = {
-    issues: [],
+    issues: staticData.children,
     key: 1,
   };
 
@@ -44,8 +44,8 @@ export default class App extends React.Component<{}, State> {
             <Header>Summary</Header>
           </Headers>
           <Rows
-            initialItems={this.state.issues}
-            items={this.getIssuesData}
+            items={this.state.issues}
+            onRowClicked={this.getIssuesData}
             render={({ title, page, children }) => (
               <Row hasChildren={children.length > 0} itemId={title}>
                 <Cell singleLine>{title}</Cell>

@@ -8,7 +8,11 @@ import Headers from './Headers';
 import Header from './Header';
 import Cell from './Cell';
 
-import { type ItemsProvider, type CSSWidth } from './../types';
+import {
+  type ItemsProvider,
+  type ItemsDataType,
+  type CSSWidth,
+} from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
@@ -23,7 +27,9 @@ type Props = {
   children?: Node,
 
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  items?: ItemsProvider,
+  items?: ItemsDataType,
+
+  childData?: ItemsProvider,
 };
 
 type State = {
@@ -71,7 +77,8 @@ export default class TableTree extends Component<Props, State> {
 
   render() {
     const {
-      items: getRowChildrenData,
+      items,
+      childData: onRowClicked,
       headers,
       columns,
       columnWidths = [],
@@ -87,10 +94,11 @@ export default class TableTree extends Component<Props, State> {
       </Headers>
     );
     let rows = null;
-    if (columns && getRowChildrenData) {
+    if (columns && items) {
       rows = (
         <Rows
-          items={getRowChildrenData}
+          items={items}
+          onRowClicked={onRowClicked}
           render={data => (
             <Row itemId={data.id} hasChildren={data.hasChildren}>
               {columns.map((CellContent, index) => (
