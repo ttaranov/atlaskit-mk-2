@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira-transformer",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Editor JIRA transformer's",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -18,7 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^9.0.0",
+    "@atlaskit/editor-common": "^9.2.5",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "^1.2.0"
   },
