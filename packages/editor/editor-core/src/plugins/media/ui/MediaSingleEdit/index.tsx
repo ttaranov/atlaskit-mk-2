@@ -24,6 +24,7 @@ export interface State {
   target?: HTMLElement;
   layout?: MediaSingleLayout;
   allowBreakout: boolean;
+  isInsideLayout: boolean;
 }
 
 const icons = {
@@ -50,7 +51,11 @@ const icons = {
 };
 
 export default class MediaSingleEdit extends React.Component<Props, State> {
-  state: State = { layout: 'center', allowBreakout: true };
+  state: State = {
+    layout: 'center',
+    allowBreakout: true,
+    isInsideLayout: false,
+  };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -61,9 +66,15 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const { target, layout: selectedLayout, allowBreakout } = this.state;
+    const {
+      target,
+      layout: selectedLayout,
+      allowBreakout,
+      isInsideLayout,
+    } = this.state;
     if (
       target &&
+      !isInsideLayout &&
       !closestElement(target, 'li') &&
       !closestElement(target, 'table')
     ) {
@@ -112,13 +123,13 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
-    const { element: target, layout } = pluginState;
+    const { element: target, layout, isInsideLayout } = pluginState;
     const mediaNode = pluginState.selectedMediaNode();
     const allowBreakout = !!(
       mediaNode &&
       mediaNode.attrs &&
       mediaNode.attrs.width > akEditorFullPageMaxWidth
     );
-    this.setState({ target, layout, allowBreakout });
+    this.setState({ target, layout, allowBreakout, isInsideLayout });
   };
 }

@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { findParentNodeOfType, hasParentNodeOfType } from 'prosemirror-utils';
 import {
   EditorState,
   NodeSelection,
@@ -69,6 +70,7 @@ export class MediaPluginState {
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
+  public isInsideLayout: boolean = false;
 
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
@@ -864,9 +866,11 @@ export const createPlugin = (
         }
 
         // Update Layout
-        const { mediaSingle } = oldState.schema.nodes;
+        const { mediaSingle, layoutSection } = newState.schema.nodes;
         if (parent.type === mediaSingle) {
-          pluginState.layout = parent.attrs.layout;
+          pluginState.isInsideLayout = hasParentNodeOfType(layoutSection)(
+            newState.selection,
+          );
         }
 
         const meta = tr.getMeta(stateKey);
@@ -936,6 +940,29 @@ export const createPlugin = (
         getMediaPluginState(view.state).splitMediaGroup();
         return false;
       },
+    },
+    appendTransaction(txns, oldState, newState) {
+      if (txns.some(tr => tr.docChanged)) {
+        let modified = true;
+        const { tr } = newState;
+        newState.doc.descendants((node, pos, parent) => {
+          if (
+            parent.type === newState.schema.nodes.layoutColumn &&
+            node.type === newState.schema.nodes.mediaSingle
+          ) {
+            if (node.attrs.layout !== 'center') {
+              tr.setNodeMarkup(pos, undefined, {
+                ...node.attrs,
+                layout: 'center',
+              });
+              modified = true;
+            }
+          }
+        });
+        if (modified) {
+          return tr;
+        }
+      }
     },
   });
 };
