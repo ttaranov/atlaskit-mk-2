@@ -7,8 +7,10 @@ import {
   SearchItem,
   ConfluenceItem,
   JiraItem,
+  ConfluenceSpace,
 } from '../src/api/CrossProductSearchClient';
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
+import { ResultContentType } from '../src/model/Result';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
@@ -85,6 +87,7 @@ export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
   const confData: ConfluenceItem[] = [];
+  const confSpaceData: ConfluenceSpace[] = [];
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
@@ -96,6 +99,24 @@ export function makeCrossProductSearchData(
       iconCssClass: randomIconCssClass(),
       url: faker.internet.url(),
       baseUrl: '',
+      contentType: 'page',
+    });
+  }
+
+  for (let i = 0; i < n; i++) {
+    const title = faker.company.companyName();
+    confSpaceData.push({
+      title: title,
+      entityType: 'space',
+      lastModified: '',
+      baseUrl: faker.internet.url(),
+      url: '?abc',
+      content: null,
+      iconCssClass: null,
+      container: {
+        title: title,
+        displayUrl: faker.internet.url(),
+      },
     });
   }
 
@@ -125,6 +146,10 @@ export function makeCrossProductSearchData(
       result => result.fields.summary.toLowerCase().indexOf(term) > -1,
     );
 
+    const filteredSpaceResults = confSpaceData.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
     return {
       scopes: [
         {
@@ -134,6 +159,10 @@ export function makeCrossProductSearchData(
         {
           id: Scope.JiraIssue,
           results: filteredJiraResults,
+        },
+        {
+          id: Scope.ConfluenceSpace,
+          results: filteredSpaceResults,
         },
       ],
     };
@@ -173,7 +202,7 @@ export function makeConfluenceRecentPagesData(n: number = 300) {
   for (let i = 0; i < n; i++) {
     items.push({
       available: true,
-      contentType: 'page',
+      contentType: ResultContentType.Page,
       id: faker.random.uuid(),
       lastSeen: faker.date.past(1).getTime(),
       space: faker.company.companyName(),

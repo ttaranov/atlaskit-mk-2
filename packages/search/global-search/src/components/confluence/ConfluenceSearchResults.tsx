@@ -11,26 +11,24 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderObjectsGroup = (
-  title: string,
-  results: Result[],
-  query: string,
-) => (
-  <ResultItemGroup title={title} key="objects">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderObjectsGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="objects">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
-const renderSpacesGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="spaces">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderSpacesGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="spaces">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
 const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </ResultItemGroup>
 );
 
@@ -38,7 +36,7 @@ const renderNoResults = (query: string) => (
   <>
     <NoResults />
     {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {searchPeopleItem(query)}
   </>
 );
 
@@ -60,9 +58,7 @@ export default function searchResults(props: Props) {
     isError,
     isLoading,
     retrySearch,
-    // @ts-ignore unused
     recentlyViewedPages,
-    // @ts-ignore unused
     recentlyViewedSpaces,
     objectResults,
     spaceResults,

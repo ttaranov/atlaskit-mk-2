@@ -1,5 +1,20 @@
 # @atlaskit/editor-core
 
+## 71.0.11
+- [patch] ED-4296, fix for scrollbars always visible in recent search for hyperlink in windows. [5b39e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b39e02)
+
+## 71.0.10
+- [patch] ED-4270, changing font of inline code according to ADG3 guidelines. [805d02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/805d02a)
+
+## 71.0.9
+- [patch] Outdent list item on enter if it doesn't have any visible content [4deb043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4deb043)
+
+## 71.0.8
+- [patch] [fix] Support action/decision '[]' and '<>' autocompletion inside of bodiedExtensions and column layouts [ad7169c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad7169c)
+
+## 71.0.7
+- [patch] ED-4363, replacing peperclip icon with image icon in top toolbar in editor. [e5cb9b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5cb9b8)
+
 ## 71.0.6
 - [patch] ED-4235 Fix node selection inside node view on load [468bb65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bb65)
 
