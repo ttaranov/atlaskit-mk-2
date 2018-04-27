@@ -7,7 +7,6 @@ import {
   SearchItem,
   ConfluenceItem,
   JiraItem,
-  ConfluenceSpace,
 } from '../src/api/CrossProductSearchClient';
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 import { ResultContentType } from '../src/model/Result';
@@ -87,19 +86,45 @@ export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
   const confData: ConfluenceItem[] = [];
-  const confSpaceData: ConfluenceSpace[] = [];
+  const confSpaceData: ConfluenceItem[] = [];
+  const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
     confData.push({
       title: faker.company.catchPhrase(),
+      lastModified: '',
       container: {
         title: faker.company.companyName(),
+        displayUrl: url,
       },
       iconCssClass: randomIconCssClass(),
-      url: faker.internet.url(),
+      url: url,
       baseUrl: '',
-      contentType: 'page',
+      content: {},
+    });
+  }
+
+  for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
+    const isAttachment = faker.random.boolean();
+
+    const content = isAttachment
+      ? { id: 'abc', type: 'attachment' as ResultContentType }
+      : {};
+
+    confDataWithAttachments.push({
+      title: faker.company.catchPhrase(),
+      lastModified: '',
+      container: {
+        title: faker.company.companyName(),
+        displayUrl: url,
+      },
+      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
+      url: url,
+      baseUrl: '',
+      content: content,
     });
   }
 
@@ -107,7 +132,6 @@ export function makeCrossProductSearchData(
     const title = faker.company.companyName();
     confSpaceData.push({
       title: title,
-      entityType: 'space',
       lastModified: '',
       baseUrl: faker.internet.url(),
       url: '?abc',
@@ -150,11 +174,19 @@ export function makeCrossProductSearchData(
       result => result.container.title.toLowerCase().indexOf(term) > -1,
     );
 
+    const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
     return {
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
           results: filteredConfResults,
+        },
+        {
+          id: Scope.ConfluencePageBlogAttachment,
+          results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,
