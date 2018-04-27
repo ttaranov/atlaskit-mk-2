@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.12
+- [patch] Expose table plugin config interface [584c085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/584c085)
+
 ## 71.0.11
 - [patch] ED-4296, fix for scrollbars always visible in recent search for hyperlink in windows. [5b39e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b39e02)
 
