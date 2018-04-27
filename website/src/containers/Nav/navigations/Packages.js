@@ -3,12 +3,23 @@
 import React, { type ComponentType } from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import styled from 'styled-components';
 import { isSubNavExpanded } from '../utils/linkComponents';
-import HipchatMediaAttachmentCountIcon from '@atlaskit/icon/glyph/hipchat/media-attachment-count';
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import { packageUrl, packageDocUrl } from '../../../utils/url';
+
+const DiscIcon = styled.span`
+  :before {
+    content: '•';
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+  }
+`;
 
 export function buildSubNavGroup(
   children: Array<File>,
@@ -23,12 +34,7 @@ export function buildSubNavGroup(
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
         isCompact: true,
-        icon: (
-          <HipchatMediaAttachmentCountIcon
-            size="small"
-            label={`${fs.titleize(item.id)} icon`}
-          />
-        ),
+        icon: <DiscIcon />,
       });
       return acc;
     },
@@ -37,12 +43,7 @@ export function buildSubNavGroup(
 }
 
 const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
-  let navigationItemIcon = (
-    <HipchatMediaAttachmentCountIcon
-      size="small"
-      label={`${fs.titleize(pkg.id)} icon`}
-    />
-  );
+  let navigationItemIcon = <DiscIcon />;
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.maybeGetById(
     fs.getDirectories(pkg.children) || [],
