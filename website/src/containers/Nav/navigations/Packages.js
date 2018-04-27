@@ -11,7 +11,7 @@ import * as fs from '../../../utils/fs';
 import { packageUrl, packageDocUrl } from '../../../utils/url';
 
 const DiscIcon = styled.span`
-  :before {
+  ::before {
     content: '•';
     font-size: 12px;
     width: 16px;
