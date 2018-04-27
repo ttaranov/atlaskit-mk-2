@@ -86,11 +86,21 @@ export class UploadService {
   }
 
   addBrowse(element: HTMLInputElement): void {
+    if (this.browserElement) {
+      throw new Error(
+        'Browse element was already assigned. call removeBrowse() first.',
+      );
+    }
     this.browserElement = element;
     this.browserElement.addEventListener('change', this.onFilePicked);
   }
 
   addDropzone(element: HTMLElement): void {
+    if (this.dropzoneElement) {
+      throw new Error(
+        'Dropzone element was already assigned. call removeDropzone() first.',
+      );
+    }
     this.dropzoneElement = element;
     this.dropzoneElement.addEventListener('drop', this.onFileDropped);
   }
@@ -110,6 +120,24 @@ export class UploadService {
     this.browserElement.removeEventListener('change', this.onFilePicked);
     delete this.browserElement;
   }
+
+  // Browse listener
+  private readonly onFilePicked = () => {
+    if (this.browserElement) {
+      const filesArray = Array.prototype.slice.call(this.browserElement.files);
+      this.addFiles(filesArray);
+    }
+  };
+
+  // Dropzone listener
+  private readonly onFileDropped = (dragEvent: DragEvent) => {
+    dragEvent.preventDefault();
+    dragEvent.stopPropagation();
+    this.emit('file-dropped', dragEvent);
+
+    const filesArray = Array.prototype.slice.call(dragEvent.dataTransfer.files);
+    this.addFiles(filesArray);
+  };
 
   addFiles(files: File[]): void {
     if (files.length === 0) {
@@ -142,27 +170,9 @@ export class UploadService {
     });
   }
 
-  // Browse listener
-  private readonly onFilePicked = () => {
-    if (this.browserElement) {
-      const filesArray = Array.prototype.slice.call(this.browserElement.files);
-      this.addFiles(filesArray);
-    }
-  };
-
   cancel(uniqueIdentifier?: string): void {
     // TODO
   }
-
-  // Dropzone listener
-  private readonly onFileDropped = (dragEvent: DragEvent) => {
-    dragEvent.preventDefault();
-    dragEvent.stopPropagation();
-    this.emit('file-dropped', dragEvent);
-
-    const filesArray = Array.prototype.slice.call(dragEvent.dataTransfer.files);
-    this.addFiles(filesArray);
-  };
 
   on<E extends keyof UploadServiceEventPayloadTypes>(
     event: E,

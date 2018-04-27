@@ -1,36 +1,29 @@
-import { Hasher } from '../hashing/hasher';
-import * as hasherCreatorModule from '../hashing/hasherCreator';
-import { UploadParams } from '../../domain/config';
-
-// We need this mocking to happen before importing uploadService
-const createHasher = hasherCreatorModule.createHasher;
-const createHasherSpy = jest.spyOn(hasherCreatorModule, 'createHasher');
-let hasherHashSpy: jest.SpyInstance<Hasher['hash']>;
-
-createHasherSpy.mockImplementation(() => {
-  const hasher = createHasher();
-  hasherHashSpy = jest.spyOn(hasher, 'hash');
-  return hasher;
-});
-
+import { AuthProvider } from '@atlaskit/media-core';
+import { UploadParams } from '../..';
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { UploadService } from '../uploadService';
-import { AuthProvider } from '@atlaskit/media-core';
+import { ContextFactory } from '../../../../media-core';
 
 describe('UploadService', () => {
   const apiUrl = 'some-api-url';
   const clientId = 'some-client-id';
+  const asapIssuer = 'some-asap-issuer';
   const token = 'some-token';
+  const collection = 'some-collection';
   const clientBasedAuthProvider = () => Promise.resolve({ clientId, token });
+  // const issuerBasedAuthProvider = () => Promise.resolve({ asapIssuer, token });
 
-  beforeEach(() => {
-    hasherHashSpy.mockReset();
-  });
+  const getContext = (options = {}) =>
+    ContextFactory.create({
+      serviceHost: apiUrl,
+      authProvider: clientBasedAuthProvider,
+      ...options,
+    });
 
   describe('setUploadParams', () => {
     const setup = () => ({
-      uploadService: new UploadService(apiUrl, clientBasedAuthProvider, {
+      uploadService: new UploadService(getContext(), {
         collection: '',
       }),
     });
@@ -40,7 +33,7 @@ describe('UploadService', () => {
 
       uploadService.setUploadParams({});
 
-      expect(uploadService.getUploadParams()).toEqual({
+      expect(uploadService['uploadParams']).toEqual({
         collection: '',
       });
     });
@@ -53,39 +46,33 @@ describe('UploadService', () => {
 
       uploadService.setUploadParams(newUploadParams);
 
-      expect(uploadService.getUploadParams()).toEqual({
+      expect(uploadService['uploadParams']).toEqual({
         collection,
       });
     });
   });
 
-  describe('dropzone', () => {
-    const setup = () => {
-      const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
-        collection: '',
-      });
-      const resumable = uploadService['resumable'];
-      const element = document.createElement('div');
+  const setupWithElement = () => {
+    const uploadService = new UploadService(getContext(), {
+      collection: '',
+    });
+    const element = document.createElement('input');
 
-      jest.spyOn(resumable, 'assignDrop');
-      jest.spyOn(resumable, 'unAssignDrop');
-      jest.spyOn(element, 'addEventListener');
-      jest.spyOn(element, 'removeEventListener');
+    jest.spyOn(element, 'addEventListener');
+    jest.spyOn(element, 'removeEventListener');
 
-      return {
-        uploadService,
-        resumable,
-        element,
-      };
+    return {
+      uploadService,
+      element,
     };
+  };
 
-    it('addDropzone should call addEventListener and assignDrop', () => {
-      const { uploadService, resumable, element } = setup();
+  describe('dropzone', () => {
+    it('addDropzone should call addEventListener', () => {
+      const { uploadService, element } = setupWithElement();
 
       uploadService.addDropzone(element);
 
-      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
-      expect(resumable.assignDrop).toHaveBeenCalledWith(element);
       expect(element.addEventListener).toHaveBeenCalled();
       expect(element.addEventListener).toBeCalledWith(
         'drop',
@@ -93,89 +80,130 @@ describe('UploadService', () => {
       );
     });
 
-    it('addDropzone should not call addEventListener and assignDrop if dropzone was already added to same element', () => {
-      const { uploadService, resumable, element } = setup();
+    it('addDropzone should throw an exception when element added second time', () => {
+      const { uploadService, element } = setupWithElement();
 
       uploadService.addDropzone(element);
-      uploadService.addDropzone(element);
+      expect(() => {
+        uploadService.addDropzone(element);
+      }).toThrow();
 
-      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
-      expect(resumable.assignDrop).toHaveBeenCalledWith(element);
-      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('removeDropzone should call removeEventListener', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.addDropzone(element);
+      uploadService.removeDropzone();
+
+      expect(element.removeEventListener).toHaveBeenCalled();
       expect(element.addEventListener).toBeCalledWith(
         'drop',
         expect.any(Function),
       );
     });
 
-    it('addDropzone should not call addEventListener and assignDrop twice if dropzone was already added to another element', () => {
-      const { uploadService, resumable, element } = setup();
-      const otherElement = document.createElement('span');
-
-      uploadService.addDropzone(otherElement);
-      uploadService.addDropzone(element);
-
-      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
-      expect(resumable.assignDrop).toHaveBeenCalledWith(otherElement);
-      expect(element.addEventListener).not.toHaveBeenCalled();
-    });
-
-    it('removeDropzone should call removeEventListener and unAssignDrop', () => {
-      const { uploadService, resumable, element } = setup();
-
-      uploadService.addDropzone(element);
-      uploadService.removeDropzone();
-
-      expect(resumable.unAssignDrop).toHaveBeenCalledTimes(1);
-      expect(resumable.unAssignDrop).toHaveBeenCalledWith(element);
-      expect(element.addEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'drop',
-        expect.any(Function),
-      );
-    });
-
-    it('removeDropzone should call removeEventListener and unAssignDrop only once if is called twice', () => {
-      const { uploadService, resumable, element } = setup();
+    it('removeDropzone should call removeEventListener only once if is called twice', () => {
+      const { uploadService, element } = setupWithElement();
 
       uploadService.addDropzone(element);
       uploadService.removeDropzone();
       uploadService.removeDropzone();
 
-      expect(resumable.unAssignDrop).toHaveBeenCalledTimes(1);
-      expect(resumable.unAssignDrop).toHaveBeenCalledWith(element);
-      expect(element.addEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'drop',
-        expect.any(Function),
-      );
+      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
     });
 
-    it('removeDropzone should not call removeEventListener and unAssignDrop if the dropzone was not added', () => {
-      const { uploadService, resumable, element } = setup();
+    it('removeDropzone should not call removeEventListener if the dropzone was not added', () => {
+      const { uploadService, element } = setupWithElement();
 
       uploadService.removeDropzone();
 
-      expect(resumable.unAssignDrop).not.toHaveBeenCalled();
-      expect(element.addEventListener).not.toHaveBeenCalled();
+      expect(element.removeEventListener).not.toHaveBeenCalled();
     });
 
-    it('addDropzone should call addEventListener and assignDrop if dropzone was added and removed before', () => {
-      const { uploadService, resumable, element } = setup();
+    it('addDropzone should call addEventListener if dropzone was added and removed before', () => {
+      const { uploadService, element } = setupWithElement();
       const anotherElement = document.createElement('span');
+      jest.spyOn(anotherElement, 'addEventListener');
 
-      uploadService.addDropzone(anotherElement);
-      uploadService.removeDropzone();
       uploadService.addDropzone(element);
+      uploadService.removeDropzone();
+      uploadService.addDropzone(anotherElement);
 
-      expect(resumable.assignDrop).toHaveBeenCalledTimes(2);
-      expect(resumable.assignDrop).toHaveBeenCalledWith(anotherElement);
-      expect(resumable.assignDrop).toHaveBeenLastCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalledTimes(1);
+      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
+      expect(anotherElement.addEventListener).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('browse', () => {
+    it('addBrowse should call addEventListener', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.addBrowse(element);
+
       expect(element.addEventListener).toHaveBeenCalled();
       expect(element.addEventListener).toBeCalledWith(
-        'drop',
+        'change',
         expect.any(Function),
       );
+    });
+
+    it('addBrowse should throw an exception when element added second time', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.addBrowse(element);
+      expect(() => {
+        uploadService.addBrowse(element);
+      }).toThrow();
+
+      expect(element.addEventListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('removeBrowse should call removeEventListener', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.addBrowse(element);
+      uploadService.removeBrowse();
+
+      expect(element.removeEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'change',
+        expect.any(Function),
+      );
+    });
+
+    it('removeBrowse should call removeEventListener only once if is called twice', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.addBrowse(element);
+      uploadService.removeBrowse();
+      uploadService.removeBrowse();
+
+      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
+    });
+
+    it('removeBrowse() should not call removeEventListener if the browse was not added', () => {
+      const { uploadService, element } = setupWithElement();
+
+      uploadService.removeBrowse();
+
+      expect(element.removeEventListener).not.toHaveBeenCalled();
+    });
+
+    it('addBrowse should call addEventListener if dropzone was added and removed before', () => {
+      const { uploadService, element } = setupWithElement();
+      const anotherElement = document.createElement('input');
+      jest.spyOn(anotherElement, 'addEventListener');
+
+      uploadService.addBrowse(element);
+      uploadService.removeBrowse();
+      uploadService.addBrowse(anotherElement);
+
+      expect(element.addEventListener).toHaveBeenCalledTimes(1);
+      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
+      expect(anotherElement.addEventListener).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -188,7 +216,7 @@ describe('UploadService', () => {
         .fn()
         .mockReturnValue(Promise.resolve());
 
-      const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
+      const uploadService = new UploadService(getContext(), {
         collection: '',
       });
 
@@ -200,28 +228,6 @@ describe('UploadService', () => {
 
       return { uploadService, resumable, filesAddedPromise };
     };
-
-    it('should call createHasher once and its hash function twice for different UploadService instance', () => {
-      const { uploadService: uploadService1, resumable: resumable1 } = setup();
-      const { uploadService: uploadService2, resumable: resumable2 } = setup();
-
-      const file = { size: 100, name: 'some-filename', type: '' };
-
-      const promise1 = new Promise(resolve =>
-        resumable1.on('filesAdded', () => resolve()),
-      );
-      const promise2 = new Promise(resolve =>
-        resumable2.on('filesAdded', () => resolve()),
-      );
-
-      uploadService1.addFiles([file as File]);
-      uploadService2.addFiles([file as File]);
-
-      return Promise.all([promise1, promise2]).then(() => {
-        expect(hasherHashSpy).toHaveBeenCalledTimes(2);
-        expect(createHasherSpy).toHaveBeenCalledTimes(1);
-      });
-    });
 
     it('should emit file upload event when file type is "image" and file size is less than 10 MB', () => {
       const { uploadService, filesAddedPromise } = setup();
@@ -309,12 +315,13 @@ describe('UploadService', () => {
       copyFileToCollectionSpy: Function;
     }) => {
       const collectionNameStub = 'some-collection-name';
-      const uploadService = new UploadService(
-        apiUrl,
+      const context = getContext({
         authProvider,
-        config.uploadParams || { collection: collectionNameStub },
-        config.userAuthProvider,
-      );
+        userAuthProvider: config.userAuthProvider,
+      });
+      const uploadService = new UploadService(context, {
+        collection: collectionNameStub,
+      });
 
       (uploadService as any).api = {
         copyFileToCollection: config.copyFileToCollectionSpy,
