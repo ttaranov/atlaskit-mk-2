@@ -30,7 +30,7 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
     this.elementRefs[newselectedIndex].focus();
   };
 
-  onSelect = (selected: TabData, selectedIndex: number) => {
+  onSelect = (selected: TabData<Object>, selectedIndex: number) => {
     this.props.onSelect(selected, selectedIndex);
   };
 
