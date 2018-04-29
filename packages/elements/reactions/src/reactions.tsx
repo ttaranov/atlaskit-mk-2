@@ -2,9 +2,15 @@ import * as React from 'react';
 import { Component } from 'react';
 import { style } from 'typestyle';
 import { EmojiProvider } from '@atlaskit/emoji';
+import Tooltip from '@atlaskit/tooltip';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
-import { ReactionsProvider, ReactionSummary } from './reactions-resource';
+import {
+  ReactionsProvider,
+  ReactionSummary,
+  ReactionsState,
+  ReactionStatus,
+} from './reactions-resource';
 import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
 
 export interface OnEmoji {
@@ -47,6 +53,8 @@ export interface Props {
 
 export interface State {
   reactions: ReactionSummary[];
+  loading: boolean;
+  error: boolean;
 }
 
 export default class Reactions extends Component<Props, State> {
@@ -57,7 +65,7 @@ export default class Reactions extends Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.state = { reactions: [] };
+    this.state = { reactions: [], loading: false, error: false };
     this.timeouts = [];
     this.reactionRefs = {};
   }
@@ -90,19 +98,38 @@ export default class Reactions extends Component<Props, State> {
     }
   };
 
-  private getReactionsSortFunction = (reactions: ReactionSummary[]) =>
-    reactions.length ? sortByPreviousPosition(reactions) : sortByRelevance;
+  private getReactionsSortFunction = reactions =>
+    reactions && reactions.length
+      ? sortByPreviousPosition(reactions)
+      : sortByRelevance;
 
-  private updateState = (newReactions: ReactionSummary[]) => {
-    this.setState(
-      ({ reactions }) => ({
-        reactions: [...newReactions].sort(
-          this.getReactionsSortFunction(reactions),
-        ),
-      }),
-      // setting to true so new reactions will flash on mount
-      !this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
-    );
+  private updateState = (reactionState: ReactionsState) => {
+    if (reactionState.status === ReactionStatus.ready) {
+      const newReactions = reactionState.reactions;
+      this.setState(
+        ({ reactions }) => ({
+          loading: false,
+          error: false,
+          reactions: [...newReactions].sort(
+            this.getReactionsSortFunction(reactions),
+          ),
+        }),
+        // setting to true so new reactions will flash on mount
+        !this.flashOnMount ? () => (this.flashOnMount = true) : undefined,
+      );
+    } else if (reactionState.status === ReactionStatus.loading) {
+      this.setState({
+        error: false,
+        loading: true,
+        reactions: [],
+      });
+    } else if (reactionState.status === ReactionStatus.error) {
+      this.setState({
+        loading: false,
+        error: true,
+        reactions: [],
+      });
+    }
   };
 
   private hasAlreadyReacted(emojiId: any): boolean {
@@ -125,17 +152,31 @@ export default class Reactions extends Component<Props, State> {
     this.reactionRefs[emojiId] = reaction;
   };
 
+  private getTooltip = (): string | null => {
+    switch (true) {
+      case this.state.error:
+        return 'Sorry... something went wrong';
+      case this.state.loading:
+        return 'Loading...';
+      default:
+        return null;
+    }
+  };
+
   private renderPicker() {
     const { emojiProvider, boundariesElement, allowAllEmojis } = this.props;
 
     return (
-      <ReactionPicker
-        emojiProvider={emojiProvider}
-        onSelection={this.handleReactionPickerSelection}
-        miniMode={true}
-        boundariesElement={boundariesElement}
-        allowAllEmojis={allowAllEmojis}
-      />
+      <Tooltip content={this.getTooltip()}>
+        <ReactionPicker
+          emojiProvider={emojiProvider}
+          onSelection={this.handleReactionPickerSelection}
+          miniMode={true}
+          boundariesElement={boundariesElement}
+          allowAllEmojis={allowAllEmojis}
+          disabled={this.state.loading || this.state.error}
+        />
+      </Tooltip>
     );
   }
 

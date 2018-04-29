@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
+import Tooltip from '@atlaskit/tooltip';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
@@ -9,7 +10,7 @@ import Reaction from '../src/internal/reaction';
 import ReactionPicker from '../src/reaction-picker';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
-import { ObjectReactionKey } from '../src/reactions-resource';
+import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
@@ -37,7 +38,7 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactionSummaries = (reactionsProvider as any).cachedReactions[
       reactionsProvider.objectReactionKey(containerAri, demoAri)
     ];
-    return [...reactionSummaries].sort(sortByRelevance);
+    return [...reactionSummaries.reactions].sort(sortByRelevance);
   };
 
   beforeAll(() => {
@@ -193,5 +194,34 @@ describe('@atlaskit/reactions/reactions', () => {
 
         expect(reactionFlash.calledOnce).to.be.true;
       });
+  });
+
+  it('should show loading tooltip and disable picker', () => {
+    const reactions = mount(renderReactions());
+
+    reactionsProvider.notifyUpdated(containerAri, demoAri, {
+      status: ReactionStatus.loading,
+    });
+
+    reactions.update();
+
+    expect(reactions.find(Tooltip).prop('content')).to.equal('Loading...');
+    expect(reactions.find(ReactionPicker).prop('disabled')).to.be.true;
+  });
+
+  it('should show loading tooltip and disable picker', () => {
+    const reactions = mount(renderReactions());
+
+    reactionsProvider.notifyUpdated(containerAri, demoAri, {
+      status: ReactionStatus.error,
+      message: 'Something is wrong',
+    });
+
+    reactions.update();
+
+    expect(reactions.find(Tooltip).prop('content')).to.equal(
+      'Sorry... something went wrong',
+    );
+    expect(reactions.find(ReactionPicker).prop('disabled')).to.be.true;
   });
 });
