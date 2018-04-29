@@ -289,7 +289,7 @@ describe(name, () => {
             stateManager.updateState(testTempFileId, {
               status: 'ready',
               id: testTempFileId,
-              publicId: testPubFileId,
+              publicId: testTempFileId,
             });
           }, 0);
 
@@ -299,7 +299,7 @@ describe(name, () => {
           expect(value.content).to.be.of.length(2);
           expect(value.content[0].type).to.be.eq('mediaGroup');
           expect(value.content[0].content[0].type).to.be.eq('media');
-          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testTempFileId);
         });
 
         it('should resolve after processing status', async () => {
@@ -321,7 +321,7 @@ describe(name, () => {
             stateManager.updateState(testTempFileId, {
               status: 'processing',
               id: testTempFileId,
-              publicId: testPubFileId,
+              publicId: testTempFileId,
             });
           }, 0);
 
@@ -331,7 +331,7 @@ describe(name, () => {
           expect(value.content).to.be.of.length(2);
           expect(value.content[0].type).to.be.eq('mediaGroup');
           expect(value.content[0].content[0].type).to.be.eq('media');
-          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testTempFileId);
         });
       });
 

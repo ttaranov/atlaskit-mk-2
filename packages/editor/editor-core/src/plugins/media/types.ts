@@ -1,5 +1,5 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadParams } from '@atlaskit/media-picker';
+import { UploadParams, MediaFile } from '@atlaskit/media-picker';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -19,6 +19,8 @@ export interface MediaState {
   fileType?: string;
   fileMimeType?: string;
   progress?: number;
+  ready?: boolean;
+  preview?: boolean;
   thumbnail?: {
     src: string;
     dimensions?: {
@@ -35,6 +37,7 @@ export interface MediaState {
 export interface MediaStateManager {
   getState(tempId: string): MediaState | undefined;
   updateState(tempId: string, newState: MediaState): void;
+  newState(file: MediaFile, status: string, publicId?: string): MediaState;
   on(tempId: string, cb: (state: MediaState) => void);
   off(tempId: string, cb: (state: MediaState) => void): void;
   destroy(): void;

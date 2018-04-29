@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { MediaSingleLayout } from '../../schema';
 import Wrapper from './styled';
+import * as classnames from 'classnames';
 
 export interface Props {
   children: ReactElement<any>;
@@ -9,6 +10,7 @@ export interface Props {
   width: number;
   height: number;
   containerWidth?: number;
+  isLoading?: boolean;
 }
 
 export default function MediaSingle({
@@ -17,6 +19,7 @@ export default function MediaSingle({
   width,
   height,
   containerWidth = width,
+  isLoading = false,
 }: Props) {
   return (
     <Wrapper
@@ -24,7 +27,7 @@ export default function MediaSingle({
       width={width}
       height={height}
       containerWidth={containerWidth}
-      className="media-single"
+      className={classnames('media-single', { 'is-loading': isLoading })}
     >
       {React.Children.only(children)}
     </Wrapper>

@@ -7,6 +7,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
+  DefaultMediaStateManager,
 } from '../../../../../src/plugins/media/pm-plugins/main';
 import MediaSingle from '../../../../../src/plugins/media/nodeviews/media-single';
 
@@ -22,6 +23,7 @@ class Media extends React.Component<MediaProps, {}> {
 
 describe('nodeviews/mediaSingle', () => {
   let pluginState;
+  const stateManager = new DefaultMediaStateManager();
   const mediaNode = media({
     id: 'foo',
     type: 'file',
@@ -30,6 +32,7 @@ describe('nodeviews/mediaSingle', () => {
 
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
+    pluginState.stateManager = stateManager;
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
   });
 
