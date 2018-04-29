@@ -1,7 +1,7 @@
 // @flow
 import type { ComponentType, Node } from 'react';
 
-export type TabData<CustomData: {}> =
+export type TabData<CustomData: Object> =
   | { label: [string], content: ?Node, [key: string]: string }
   | CustomData;
 
