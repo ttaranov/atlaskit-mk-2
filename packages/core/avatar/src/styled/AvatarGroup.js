@@ -33,15 +33,6 @@ export const Stack = styled.div`
   }
 `;
 
-const activeBackgroundColor = themed({
-  light: colors.B50,
-  dark: colors.DN40,
-});
-const hoverBackgroundColor = themed({
-  light: colors.N30,
-  dark: colors.DN50,
-});
-
 export function getBackgroundColor({
   isActive,
   isHover,
@@ -49,14 +40,14 @@ export function getBackgroundColor({
   isActive: boolean,
   isHover: boolean,
 }) {
-  let themedBackgroundColor = colors.background;
+  let themedBackgroundColor = colors.backgroundDroplist;
 
   if (isHover) {
-    themedBackgroundColor = hoverBackgroundColor;
+    themedBackgroundColor = colors.backgroundHover;
   }
 
   if (isActive) {
-    themedBackgroundColor = activeBackgroundColor;
+    themedBackgroundColor = colors.backgroundActive;
   }
 
   return themedBackgroundColor;

@@ -1,6 +1,6 @@
 // @flow
 import { itemThemeNamespace } from '@atlaskit/item';
-import { gridSize, math } from '@atlaskit/theme';
+import { gridSize, math, colors } from '@atlaskit/theme';
 
 const dropdownPadding = {
   bottom: 1,
@@ -14,6 +14,9 @@ const avatarItemTheme: Object = {
   padding: {
     default: dropdownPadding,
     compact: dropdownPadding,
+  },
+  default: {
+    background: colors.backgroundDroplist,
   },
 };
 
