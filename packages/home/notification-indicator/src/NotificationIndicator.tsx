@@ -39,6 +39,14 @@ export default class NotificationIndicator extends Component<Props, State> {
     refreshOnHidden: false,
   };
 
+  setIndicatorCount(count) {
+    this.setState({ count });
+  }
+
+  forceUpdate() {
+    this.refresh();
+  }
+
   async componentDidMount() {
     const { refreshRate } = this.props;
     this.notificationLogProvider = await this.props.notificationLogProvider;

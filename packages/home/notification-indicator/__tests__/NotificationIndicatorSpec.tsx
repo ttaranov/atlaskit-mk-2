@@ -45,17 +45,31 @@ describe('NotificationIndicator', () => {
   async function renderNotificationIndicator(
     response: Promise<NotificationCountResponse>,
     props: Object = {},
+    wrapComponent: Boolean = false,
   ) {
     notificationLogClient.setResponse(response);
     const clientPromise = Promise.resolve(notificationLogClient);
 
-    const wrapper = mount(
-      <NotificationIndicator
-        notificationLogProvider={clientPromise}
-        refreshOnHidden={true}
-        {...props}
-      />,
-    );
+    let wrapper;
+    if (wrapComponent) {
+      wrapper = mount(
+        <div>
+          <NotificationIndicator
+            notificationLogProvider={clientPromise}
+            refreshOnHidden={true}
+            {...props}
+          />
+        </div>,
+      );
+    } else {
+      wrapper = mount(
+        <NotificationIndicator
+          notificationLogProvider={clientPromise}
+          refreshOnHidden={true}
+          {...props}
+        />,
+      );
+    }
 
     try {
       await clientPromise;
@@ -149,5 +163,51 @@ describe('NotificationIndicator', () => {
     wrapper.update();
 
     expect(wrapper.state('count')).toEqual(5);
+  });
+
+  it('Should allow setting the count via setIndicatorCount using ref', async () => {
+    let notificationIndicatorRef;
+    const wrapper = await renderNotificationIndicator(
+      returnCount(1),
+      {
+        ref: ref => {
+          notificationIndicatorRef = ref;
+        },
+      },
+      true,
+    );
+
+    expect(wrapper.text()).toEqual('1');
+
+    notificationIndicatorRef.setIndicatorCount(5);
+    wrapper.update();
+    expect(wrapper.text()).toEqual('5');
+
+    notificationIndicatorRef.setIndicatorCount(0);
+    wrapper.update();
+    expect(wrapper.text()).toEqual('');
+  });
+
+  it('Should allow force update via ref', async () => {
+    let notificationIndicatorRef;
+    const wrapper = await renderNotificationIndicator(
+      returnCount(1),
+      {
+        ref: ref => {
+          notificationIndicatorRef = ref;
+        },
+      },
+      true,
+    );
+
+    notificationIndicatorRef.setIndicatorCount(5);
+    wrapper.update();
+    expect(wrapper.text()).toEqual('5');
+
+    notificationIndicatorRef.forceUpdate();
+    await timeout(0);
+
+    wrapper.update();
+    expect(wrapper.text()).toEqual('1');
   });
 });
