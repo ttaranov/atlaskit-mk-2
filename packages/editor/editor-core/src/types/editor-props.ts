@@ -75,9 +75,7 @@ export interface EditorProps {
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
   allowDate?: boolean;
-
-  // Temporary flag to enable gap cursor while it's under development
-  UNSAFE_allowGapCursor?: boolean;
+  allowGapCursor?: boolean;
 
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
