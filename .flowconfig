@@ -47,3 +47,11 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
 
 [lints]
 all=warn
+# sketchy-null=error
+# sketchy-null-bool=error
+# untyped-type-import=error
+# untyped-import=error
+unclear-type=error
+# unsafe-getters-setters=error
+# deprecated-declare-exports=error
+# nonstrict-import=error
