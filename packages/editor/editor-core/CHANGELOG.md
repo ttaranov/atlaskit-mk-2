@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.21
+- [patch] Fixes adding the task/decision below the selected extension inside tables [6dc92f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dc92f9)
+
 ## 71.0.20
 - [patch] ED-4451: added click handler for gap cursor [d89f397](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d89f397)
 
