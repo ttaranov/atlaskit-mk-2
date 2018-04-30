@@ -28,7 +28,7 @@ describe('CrossProductSearchClient', () => {
   afterEach(fetchMock.restore);
 
   describe('Confluence', () => {
-    it('should return confluence result items', async () => {
+    it('should return confluence pages', async () => {
       apiWillReturn({
         scopes: [
           {
@@ -62,6 +62,39 @@ describe('CrossProductSearchClient', () => {
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
+    });
+
+    it('should return confluence spaces', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'confluence.space' as Scope,
+            results: [
+              {
+                baseUrl: 'baseUrl',
+                container: {
+                  title: 'containerTitle',
+                  displayUrl: '/displayUrl',
+                },
+              } as ConfluenceItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search('query', 'test_uuid', [
+        Scope.ConfluenceSpace,
+      ]);
+      expect(result.get(Scope.ConfluenceSpace)).toHaveLength(1);
+
+      const item = result.get(Scope.ConfluenceSpace)[0];
+      expect(item.type).toEqual('container');
+      expect(item.resultId).toEqual('search-/displayUrl');
+      expect(item.avatarUrl).toEqual(
+        '', // TODO XPSRCH-747
+      );
+      expect(item.name).toEqual('containerTitle');
+      expect(item.href).toEqual('baseUrl/displayUrl');
     });
 
     it('should parse the highlight tags from the title', () => {

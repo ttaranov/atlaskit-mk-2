@@ -199,6 +199,6 @@ function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
     resultId: 'search-' + spaceItem.container.displayUrl,
     avatarUrl: '', // depends on XPSRCH-747
     name: spaceItem.container.title,
-    href: spaceItem.container.displayUrl,
+    href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
   };
 }

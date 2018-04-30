@@ -5,8 +5,8 @@ import {
   ServiceConfig,
 } from '@atlaskit/util-service-support';
 
-const RECENT_ITEMS_PATH: string = '/wiki/rest/recentlyviewed/1.0/recent';
-const RECENT_SPACE_PATH: string = '/wiki/rest/recentlyviewed/1.0/recent/spaces';
+const RECENT_PAGES_PATH: string = 'rest/recentlyviewed/1.0/recent';
+const RECENT_SPACE_PATH: string = 'rest/recentlyviewed/1.0/recent/spaces';
 
 export interface ConfluenceClient {
   getRecentItems(): Promise<Result[]>;
@@ -43,16 +43,24 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
 
   public async getRecentItems(): Promise<Result[]> {
     const recentPages = await this.createRecentRequestPromise<RecentPage>(
-      RECENT_ITEMS_PATH,
+      RECENT_PAGES_PATH,
     );
-    return recentPages.map(recentItemToResult);
+    const baseUrl = this.serviceConfig.url;
+
+    return recentPages.map(recentPage =>
+      recentPageToResult(recentPage, baseUrl),
+    );
   }
 
   public async getRecentSpaces(): Promise<Result[]> {
     const recentSpaces = await this.createRecentRequestPromise<RecentSpace>(
       RECENT_SPACE_PATH,
     );
-    return recentSpaces.map(recentSpaceToResult);
+    const baseUrl = this.serviceConfig.url;
+
+    return recentSpaces.map(recentSpace =>
+      recentSpaceToResult(recentSpace, baseUrl),
+    );
   }
 
   private createRecentRequestPromise<T>(path: string): Promise<Array<T>> {
@@ -68,24 +76,27 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   }
 }
 
-function recentItemToResult(recentPage: RecentPage): Result {
+function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
   return {
     resultId: recentPage.id,
     type: ResultType.Object,
     name: recentPage.title,
-    href: recentPage.url,
+    href: `${baseUrl}${recentPage.url}`,
     avatarUrl: '',
     containerName: recentPage.space,
     contentType: recentPage.contentType,
   };
 }
 
-function recentSpaceToResult(recentSpace: RecentSpace): Result {
+function recentSpaceToResult(
+  recentSpace: RecentSpace,
+  baseUrl: string,
+): Result {
   return {
     resultId: recentSpace.id,
     type: ResultType.Container,
     name: recentSpace.name,
-    href: `/wiki/${recentSpace.key}/overview`,
+    href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
   };
 }
