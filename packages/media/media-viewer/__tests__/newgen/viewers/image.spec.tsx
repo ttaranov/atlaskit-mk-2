@@ -129,6 +129,7 @@ describe('ImageViewer', () => {
 
     el.setProps({ item: anotherImageItem });
     el.update();
+    expect(revokeObjectUrl).toHaveBeenCalled();
     expect(el.state().objectUrl.status).toEqual('PENDING');
   });
 });
