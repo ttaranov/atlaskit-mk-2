@@ -10,15 +10,14 @@ import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import { packageUrl, packageDocUrl } from '../../../utils/url';
 
-const DiscIcon = styled.span`
-  ::before {
-    content: '•';
-    font-size: 12px;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    justify-content: center;
-  }
+const CenteredIcon = styled.span`
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  height: 16px;
+  justify-content: center;
+  line-height: 24px;
+  width: 16px;
 `;
 
 export function buildSubNavGroup(
@@ -34,7 +33,7 @@ export function buildSubNavGroup(
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
         isCompact: true,
-        icon: <DiscIcon />,
+        icon: <CenteredIcon>•</CenteredIcon>,
       });
       return acc;
     },
@@ -43,7 +42,7 @@ export function buildSubNavGroup(
 }
 
 const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
-  let navigationItemIcon = <DiscIcon />;
+  let navigationItemIcon = <CenteredIcon>•</CenteredIcon>;
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.maybeGetById(
     fs.getDirectories(pkg.children) || [],
