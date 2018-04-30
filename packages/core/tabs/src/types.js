@@ -2,7 +2,7 @@
 import type { ComponentType, Node } from 'react';
 
 export type TabData<CustomData: Object> =
-  | { label: [string], content: ?Node, [key: string]: string }
+  | { label: string, content?: Node }
   | CustomData;
 
 type TabItemElementProps = {
