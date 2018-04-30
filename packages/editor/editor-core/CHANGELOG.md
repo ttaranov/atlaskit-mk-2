@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.14
+- [patch] Fix toolbar's shouldComponentUpdate was ignoring changes in popupsMountPoint [6a820dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a820dd)
+
 ## 71.0.13
 - [patch] Update `editorActions.focus()` to scroll the page to the user's current selection when called [821249b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/821249b)
 
