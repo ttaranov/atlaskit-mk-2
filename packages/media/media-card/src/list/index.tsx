@@ -261,47 +261,42 @@ export class CardList extends Component<CardListProps, CardListState> {
       });
 
     const cards = collection
-      ? collection.items
-          .filter(item => item.type === 'file')
-          .map((mediaItem: MediaCollectionItem) => {
-            if (!mediaItem.details) {
-              return null;
-            }
-            const key = this.getItemKey(mediaItem);
-            const cardListItem = (
-              <CSSTransition
-                key={key}
-                classNames="card-list-item"
-                timeout={{ enter: 750 }}
-                exit={false}
-                component="div"
-                className="card-list"
+      ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
+          const key = this.getItemKey(mediaItem);
+          const cardListItem = (
+            <CSSTransition
+              key={key}
+              classNames="card-list-item"
+              timeout={{ enter: 750 }}
+              exit={false}
+              component="div"
+              className="card-list"
+            >
+              <CardListItemWrapper
+                shouldAnimate={shouldAnimate}
+                cardWidth={cardWidth}
               >
-                <CardListItemWrapper
-                  shouldAnimate={shouldAnimate}
-                  cardWidth={cardWidth}
-                >
-                  <MediaCard
-                    provider={providersByMediaItemId[mediaItem.details.id]}
-                    dataURIService={dataURIService}
-                    appearance={cardAppearance}
-                    dimensions={dimensions}
-                    onClick={handleCardClick.bind(this, mediaItem)}
-                    actions={cardActions(mediaItem)}
-                  />
-                </CardListItemWrapper>
-              </CSSTransition>
-            );
-            // We don't want to wrap new items into LazyContent aka lazy load new items
-            const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
-            return useLazyContent ? (
-              <LazyContent key={key} placeholder={placeholder}>
-                {cardListItem}
-              </LazyContent>
-            ) : (
-              cardListItem
-            );
-          })
+                <MediaCard
+                  provider={providersByMediaItemId[mediaItem.details.id]}
+                  dataURIService={dataURIService}
+                  appearance={cardAppearance}
+                  dimensions={dimensions}
+                  onClick={handleCardClick.bind(this, mediaItem)}
+                  actions={cardActions(mediaItem)}
+                />
+              </CardListItemWrapper>
+            </CSSTransition>
+          );
+          // We don't want to wrap new items into LazyContent aka lazy load new items
+          const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
+          return useLazyContent ? (
+            <LazyContent key={key} placeholder={placeholder}>
+              {cardListItem}
+            </LazyContent>
+          ) : (
+            cardListItem
+          );
+        })
       : null;
 
     return <TransitionGroup>{cards}</TransitionGroup>;
