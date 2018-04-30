@@ -15,6 +15,8 @@ type Option = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Default appearance includes icon & sublte only shows icon on focus */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -77,6 +79,7 @@ export default class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -154,7 +157,6 @@ export default class TimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
-      icon,
       id,
       innerProps,
       isDisabled,
@@ -165,6 +167,7 @@ export default class TimePicker extends Component<Props, State> {
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
+    const icon = this.props.appearance === 'subtle' ? null : this.props.icon;
 
     const FixedLayerMenu = props => {
       return (
