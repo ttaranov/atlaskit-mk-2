@@ -20,7 +20,6 @@ type State = {
   childItems?: ItemsDataType,
   isLoaderShown: boolean,
   items: Array<Object>,
-  itemsData?: ItemsDataType,
 };
 
 export default class Items extends PureComponent<Props, State> {
@@ -30,22 +29,10 @@ export default class Items extends PureComponent<Props, State> {
 
   state: State = {
     isLoaderShown: true,
-    items: this.props.items || [],
+    items: this.props.items,
   };
 
   loadCancelled = false;
-
-  loadChildren = (parentData: Object) => {
-    Promise.resolve()
-      .then(() => this.props.getItemsData(parentData))
-      .then(itemsData => {
-        if (!this.loadCancelled) {
-          this.setState({
-            childItems: itemsData,
-          });
-        }
-      });
-  };
 
   componentWillReceiveProps(props: Props) {
     this.setState({
@@ -86,6 +73,18 @@ export default class Items extends PureComponent<Props, State> {
         render={render}
       />
     );
+  };
+
+  loadChildren = (parentData: Object) => {
+    Promise.resolve()
+      .then(() => this.props.getItemsData(parentData))
+      .then(itemsData => {
+        if (!this.loadCancelled) {
+          this.setState({
+            childItems: itemsData,
+          });
+        }
+      });
   };
 
   renderItems() {

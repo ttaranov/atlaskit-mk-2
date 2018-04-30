@@ -45,7 +45,7 @@ export default class App extends React.Component<{}, State> {
           </Headers>
           <Rows
             items={this.state.issues}
-            onRowClicked={this.getIssuesData}
+            getRowData={this.getIssuesData}
             render={({ title, page, children }) => (
               <Row hasChildren={children.length > 0} itemId={title}>
                 <Cell singleLine>{title}</Cell>

@@ -13,7 +13,7 @@ type Props = {
    * a promise resolved to such array. Current row's item data is passed as an argument. For root rows, null is passed. */
   items: ItemsDataType,
 
-  onRowClicked: ItemsProvider,
+  getRowData: ItemsProvider,
 
   /** The render prop called each time a row needs to be rendered. Receives item data as its only argument. Should
    * return a Row. */
@@ -26,10 +26,10 @@ type State = {
 
 export default class Rows extends PureComponent<Props, State> {
   render() {
-    const { items, onRowClicked, render } = this.props;
+    const { items, getRowData, render } = this.props;
     return (
       <div>
-        <Items items={items} getItemsData={onRowClicked} render={render} />
+        <Items items={items} getItemsData={getRowData} render={render} />
       </div>
     );
   }

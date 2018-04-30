@@ -14,6 +14,8 @@ import {
   type CSSWidth,
 } from './../types';
 
+const noop = () => {};
+
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
   columns?: Array<ElementType>,
@@ -29,7 +31,7 @@ type Props = {
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
   items?: ItemsDataType,
 
-  childData?: ItemsProvider,
+  getRowData?: ItemsProvider,
 };
 
 type State = {
@@ -78,7 +80,7 @@ export default class TableTree extends Component<Props, State> {
   render() {
     const {
       items,
-      childData: onRowClicked,
+      getRowData,
       headers,
       columns,
       columnWidths = [],
@@ -98,7 +100,7 @@ export default class TableTree extends Component<Props, State> {
       rows = (
         <Rows
           items={items}
-          onRowClicked={onRowClicked}
+          getRowData={getRowData || noop}
           render={data => (
             <Row itemId={data.id} hasChildren={data.hasChildren}>
               {columns.map((CellContent, index) => (
