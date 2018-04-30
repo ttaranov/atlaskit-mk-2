@@ -42,7 +42,7 @@ export default class Gateway extends Component<Props> {
   }
 
   componentDidMount() {
-    console.log('mounted', this.portalDomNode);
+    console.log('gateway mounted', this.portalDomNode);
   }
 
   componentWillReceiveProps(props: Props) {
@@ -64,6 +64,7 @@ export default class Gateway extends Component<Props> {
       this.id,
       props.children,
     );
+    console.log('render into gateway node', this.portalDomNode);
   }
 
   onLayerChange = (layerProps: {}) => {
@@ -72,6 +73,7 @@ export default class Gateway extends Component<Props> {
   };
 
   render() {
+    console.log('rendering gateway', this.portalDomNode);
     const childrenWithLayerProps = React.cloneElement(
       this.props.children,
       this.layerProps,

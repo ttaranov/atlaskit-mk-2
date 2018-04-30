@@ -12,8 +12,13 @@ type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
+const ComponentPortal = ({ innerRef }) => (
+  <div id="component-portal" ref={innerRef} />
+);
+
 export default class GatewayProvider extends Component<Props> {
   gatewayRegistry: GatewayRegistry;
+  componentPortalRef;
   static childContextTypes = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
   };
@@ -37,9 +42,25 @@ export default class GatewayProvider extends Component<Props> {
     };
   }
 
+  componentDidMount() {
+    console.log('provider mounted');
+    this.gatewayRegistry.addContainer('modal', this.componentPortalRef);
+    setInterval(() => this.forceUpdate(), 5000);
+  }
+
+  getComponentPortalRef = r => {
+    this.componentPortalRef = r;
+    console.log('got ref');
+  };
+
   render() {
     const { children, component: Tag } = this.props;
 
-    return <Tag>{children}</Tag>;
+    return (
+      <Tag>
+        {children}
+        <ComponentPortal innerRef={this.getComponentPortalRef} />
+      </Tag>
+    );
   }
 }
