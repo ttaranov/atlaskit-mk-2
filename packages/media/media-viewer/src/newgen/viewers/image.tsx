@@ -3,6 +3,7 @@ import { Outcome } from '../domain';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Img, ErrorMessage } from '../styled';
 import { Spinner } from '../loading';
+import * as deepEqual from 'deep-equal';
 
 export type ObjectUrl = string;
 
@@ -32,6 +33,14 @@ export class ImageViewer extends React.Component<
 
   componentWillUnmount() {
     this.release();
+  }
+
+  componentWillUpdate(nextProps) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.setState(initialState);
+      this.release();
+      this.init(nextProps.item, this.props.context);
+    }
   }
 
   render() {
@@ -95,6 +104,12 @@ export class ImageViewer extends React.Component<
     if (objectUrl.status === 'SUCCESSFUL') {
       this.revokeObjectUrl(objectUrl.data);
     }
+  }
+
+  private needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
+    return (
+      !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
+    );
   }
 
   // This method is spied on by some test cases, so don't rename or remove it.

@@ -107,4 +107,28 @@ describe('ImageViewer', () => {
 
     expect(revokeObjectUrl).toHaveBeenCalled();
   });
+
+  it('restores initial state when new props are passed', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el } = createFixture(response);
+
+    const revokeObjectUrl = jest.fn();
+    el.instance()['revokeObjectUrl'] = revokeObjectUrl;
+
+    await response;
+    expect(el.state().objectUrl.status).toEqual('SUCCESSFUL');
+
+    const anotherImageItem: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-other-id',
+        processingStatus: 'succeeded',
+        mediaType: 'image',
+      },
+    };
+
+    el.setProps({ item: anotherImageItem });
+    el.update();
+    expect(el.state().objectUrl.status).toEqual('PENDING');
+  });
 });
