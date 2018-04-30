@@ -8,10 +8,15 @@ import {
   taskList,
   taskItem,
   mention,
+  table,
+  tr,
+  td,
+  tdEmpty,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 import mentionsPlugin from '../../../src/plugins/mentions';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -25,7 +30,7 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tasksAndDecisionsPlugin, mentionsPlugin],
+      editorPlugins: [tablesPlugin, tasksAndDecisionsPlugin, mentionsPlugin],
     });
 
   describe('decisions', () => {
@@ -400,6 +405,35 @@ describe('tasks and decisions - keymaps', () => {
               ),
             ),
           );
+        });
+      });
+
+      describe('when nested inside tables', () => {
+        describe('when cursor is at the begining of the first taskItem', () => {
+          it('should convert item to paragraph and keep the cursor in the same cell', () => {
+            const { editorView } = editor(
+              doc(
+                table()(
+                  tr(
+                    tdEmpty,
+                    td()(
+                      taskList({ localId: 'local-highlight' })(
+                        taskItem({ localId: 'local-highlight' })('{<>}'),
+                      ),
+                    ),
+                    tdEmpty,
+                  ),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(table()(tr(tdEmpty, tdEmpty, tdEmpty))),
+            );
+
+            expect(editorView.state.selection.$from.pos).toEqual(8);
+          });
         });
       });
     });
