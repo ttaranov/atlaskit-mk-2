@@ -30,22 +30,29 @@ describe('CardList', () => {
     },
   };
   const collection = { items: [oldItem] };
-  const expectedMediaItems = [
-    {
+  const linkItem1 = {
+    type: 'link',
+    details: {
+      id: 'abcd',
       type: 'link',
-      details: {
-        id: 'abcd',
-        type: 'link',
-      },
     },
-    {
+  };
+  const linkItem2 = {
+    type: 'link',
+    details: {
+      id: '1234',
+      type: 'link',
+    },
+  };
+  const fileItem = {
+    type: 'file',
+    details: {
+      id: 'efgh',
       type: 'file',
-      details: {
-        id: 'efgh',
-        type: 'file',
-      },
     },
-  ];
+  };
+  const expectedMediaItems = [linkItem1, fileItem];
+  const linksOnlyItems = [linkItem1, linkItem2];
   const contextWithInclusiveStartKey = fakeContext({
     getMediaCollectionProvider: {
       observable() {
@@ -107,7 +114,7 @@ describe('CardList', () => {
 
     card.setState({ loading: false, error: undefined, collection });
     // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(card.find(MediaCard)).toHaveLength(2);
+    expect(card.find(MediaCard)).toHaveLength(1);
     card
       .find(MediaCard)
       .forEach(mediaCard =>
@@ -421,6 +428,22 @@ describe('CardList', () => {
         collection,
       });
       expect(list.find(LazyContent)).toHaveLength(0);
+    });
+
+    it('should not render link items', () => {
+      const collection = { items: linksOnlyItems };
+      const context = contextWithInclusiveStartKey;
+      const card = mount(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          shouldLazyLoadCards={false}
+        />,
+      );
+
+      card.setState({ loading: false, error: undefined, collection });
+      card.update();
+      expect(card.find(MediaCard)).toHaveLength(0);
     });
   });
 
