@@ -35,7 +35,9 @@ class AvatarGroupItem extends Component<Props> {
         }
         href={avatar.href}
         onClick={(event: KeyboardEvent | MouseEvent) => {
-          onAvatarClick({ event, item: avatar });
+          if (typeof onAvatarClick === 'function') {
+            onAvatarClick({ event, item: avatar });
+          }
         }}
         rel={avatar.target ? 'noopener noreferrer' : null}
         target={avatar.target}

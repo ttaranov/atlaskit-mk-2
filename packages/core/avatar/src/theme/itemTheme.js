@@ -11,12 +11,13 @@ const dropdownPadding = {
 
 // Override specific parts of droplist's item theme
 const avatarItemTheme: Object = {
+  borderRadius: '0px',
+  default: {
+    background: colors.backgroundOnLayer,
+  },
   padding: {
     default: dropdownPadding,
     compact: dropdownPadding,
-  },
-  default: {
-    background: colors.backgroundOnLayer,
   },
 };
 

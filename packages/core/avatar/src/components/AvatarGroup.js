@@ -96,16 +96,8 @@ export default class AvatarGroup extends Component<Props> {
           isInteractive
           avatar={avatar}
           key={index}
-          onClick={(event: KeyboardEvent | MouseEvent) => {
-            if (typeof onAvatarClick === 'function') {
-              onAvatarClick({ event, item: avatar });
-            }
-          }}
-          rel={avatar.target ? 'noopener noreferrer' : null}
-          target={avatar.target}
-        >
-          {avatar.name}
-        </DropdownItem>
+          onAvatarClick={onAvatarClick}
+        />
       ));
 
     return (
