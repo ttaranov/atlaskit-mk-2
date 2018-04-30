@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.18
+- [patch] Fix cursor on collapsed editor [ca12d9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca12d9f)
+
 ## 71.0.17
 - [patch] ED-4428: fix insertiong of task and decisions [ff1b023](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff1b023)
 

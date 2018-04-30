@@ -1,5 +1,7 @@
 # @atlaskit/conversation
 
+## 7.2.1
+
 ## 7.2.0
 - [minor] Support for main conversations. Fixes margin-right on editor component. Added scroll-behavior. [58a90ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58a90ba)
 
