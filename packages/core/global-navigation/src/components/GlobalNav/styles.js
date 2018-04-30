@@ -3,7 +3,7 @@
 import { colors } from '@atlaskit/theme';
 
 import type { ThemedGlobalComponentStyles } from '../../theme/types';
-import { GLOBAL_NAV_WIDTH } from '../../common/constants';
+import { GLOBAL_NAV_WIDTH } from '../../constants';
 
 const baseStyles = {
   alignItems: 'center',

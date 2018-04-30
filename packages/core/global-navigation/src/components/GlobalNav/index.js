@@ -6,8 +6,8 @@
  */
 
 import React from 'react';
+import { GlobalItem } from '@atlaskit/navigation-next';
 
-import GlobalItem from '../GlobalItem';
 import { light, withTheme } from '../../theme';
 import {
   FirstPrimaryItemWrapper,

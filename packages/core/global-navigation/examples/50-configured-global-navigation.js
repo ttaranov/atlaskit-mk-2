@@ -2,10 +2,10 @@
 
 import React from 'react';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
+import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
-import { LayoutManager, NavigationProvider } from '../src';
-import GlobalNavigation from '../src/opinionated-global-nav';
-import type { DrawerContentProps } from '../src/opinionated-global-nav/components/GlobalNavigation/types';
+import { GlobalNavigation } from '../src';
+import type { DrawerContentProps } from '../src/components/GlobalNavigation/types';
 
 const Global = () => (
   <GlobalNavigation

@@ -6,7 +6,7 @@ import { Transition } from 'react-transition-group';
 import {
   transitionDurationMs,
   transitionTimingFunction,
-} from '../../../common/constants';
+} from '../../constants';
 
 // Transitions
 // ------------------------------

@@ -1,0 +1,30 @@
+{
+  "name": "@atlaskit/global-navigation",
+  "version": "0.0.1",
+  "description": "Global navigation component for Atlassian",
+  "main": "dist/cjs/index.js",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@atlaskit/avatar": "^10.0.2",
+    "@atlaskit/blanket": "^5.0.0",
+    "@atlaskit/icon": "^11.0.1",
+    "@atlaskit/navigation-next": "^0.0.2",
+    "@atlaskit/theme": "^3.1.0",
+    "emotion": "^9.1.2",
+    "emotion-theming": "^9.1.2",
+    "prop-types": "^15.6.1",
+    "raf-schd": "^2.1.1",
+    "react-dom": "^16.3.2",
+    "react-transition-group": "^2.3.1",
+    "unstated": "^2.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.3.2"
+  }
+}
