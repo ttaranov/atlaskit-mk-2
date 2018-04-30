@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.2.5
+- [patch] ED-4459, JIRA transformer should return unicode for emoji node. [107bf1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107bf1e)
+
 ## 9.2.4
 - [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
 
