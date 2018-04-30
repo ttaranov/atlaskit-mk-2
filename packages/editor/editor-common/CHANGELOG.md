@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 9.2.6
+
 ## 9.2.5
 - [patch] ED-4459, JIRA transformer should return unicode for emoji node. [107bf1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107bf1e)
 

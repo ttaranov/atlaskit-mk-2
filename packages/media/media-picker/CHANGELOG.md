@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 6.0.2
+- [patch] Add rating "PG" parameter to GIPHY url strings [9cb61d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cb61d3)
+
 ## 6.0.1
 - [patch] Remove classnames + domready dependencies from MediaPicker [44f94f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44f94f6)
 

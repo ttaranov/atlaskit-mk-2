@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 71.0.19
+
 ## 71.0.18
 - [patch] Fix cursor on collapsed editor [ca12d9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca12d9f)
 
