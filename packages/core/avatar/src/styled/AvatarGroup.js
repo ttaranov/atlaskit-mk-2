@@ -40,7 +40,7 @@ export function getBackgroundColor({
   isActive: boolean,
   isHover: boolean,
 }) {
-  let themedBackgroundColor = colors.backgroundDroplist;
+  let themedBackgroundColor = colors.backgroundOnLayer;
 
   if (isHover) {
     themedBackgroundColor = colors.backgroundHover;

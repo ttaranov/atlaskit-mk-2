@@ -142,7 +142,6 @@ export const DN10A = 'rgba(13, 20, 36, 0.97)';
 
 // Themed colors
 export const background = themed({ light: N0, dark: DN30 });
-export const backgroundDroplist = themed({ light: N0, dark: DN50 });
 export const backgroundActive = themed({ light: B50, dark: B75 });
 export const backgroundHover = themed({ light: N30, dark: DN70 });
 export const backgroundOnLayer = themed({ light: N0, dark: DN50 });

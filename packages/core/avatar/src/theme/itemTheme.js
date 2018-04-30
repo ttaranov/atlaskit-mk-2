@@ -16,7 +16,7 @@ const avatarItemTheme: Object = {
     compact: dropdownPadding,
   },
   default: {
-    background: colors.backgroundDroplist,
+    background: colors.backgroundOnLayer,
   },
 };
 
