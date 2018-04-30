@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.17
+- [patch] ED-4428: fix insertiong of task and decisions [ff1b023](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff1b023)
+
 ## 71.0.16
 - [patch] ED-4022 new list backspace behaviour [e6f2d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f2d97)
 
