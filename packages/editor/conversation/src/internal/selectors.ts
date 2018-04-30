@@ -19,11 +19,18 @@ export const getComments = (
       return (conversation.comments || []).filter(c => c.parentId === parentId);
     }
 
-    return (conversation.comments || []).filter(
-      c =>
-        (!c.parentId && c.conversationId === conversation.conversationId) ||
-        (c.parentId && c.parentId === conversation.conversationId),
-    );
+    return (conversation.comments || [])
+      .filter(
+        c =>
+          (!c.parentId && c.conversationId === conversation.conversationId) ||
+          (c.parentId && c.parentId === conversation.conversationId),
+      )
+      .sort((a, b) => {
+        if (a.createdAt === b.createdAt) {
+          return 0;
+        }
+        return a.createdAt < b.createdAt ? -1 : 1;
+      });
   }
   return [];
 };
