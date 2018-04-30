@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.20
+- [patch] ED-4451: added click handler for gap cursor [d89f397](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d89f397)
+
 ## 71.0.19
 
 ## 71.0.18
