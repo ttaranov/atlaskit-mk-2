@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.15
+- [patch] ED-4235 Fix node selection inside node view on load [4be5c46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4be5c46)
+
 ## 71.0.14
 - [patch] Fix toolbar's shouldComponentUpdate was ignoring changes in popupsMountPoint [6a820dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a820dd)
 
