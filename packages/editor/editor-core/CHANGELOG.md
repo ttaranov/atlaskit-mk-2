@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.22
+- [patch] ED-4315, Image layout should be disabled inside bodied extension. [a0ed280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0ed280)
+
 ## 71.0.21
 - [patch] Fixes adding the task/decision below the selected extension inside tables [6dc92f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dc92f9)
 
