@@ -63,3 +63,34 @@ export class MockClipboardEvent extends Event implements ClipboardEvent {
     this.clipboardData = new MockDataTransfer(MockFileList.fromArray(files));
   }
 }
+
+export class MockDragEvent extends MouseEvent implements DragEvent {
+  dataTransfer: DataTransfer;
+  constructor(event: string, files: File[] = []) {
+    super(event);
+    this.dataTransfer = new MockDataTransfer(MockFileList.fromArray(files));
+  }
+  initDragEvent(
+    typeArg: string,
+    canBubbleArg: boolean,
+    cancelableArg: boolean,
+    viewArg: Window,
+    detailArg: number,
+    screenXArg: number,
+    screenYArg: number,
+    clientXArg: number,
+    clientYArg: number,
+    ctrlKeyArg: boolean,
+    altKeyArg: boolean,
+    shiftKeyArg: boolean,
+    metaKeyArg: boolean,
+    buttonArg: number,
+    relatedTargetArg: EventTarget,
+    dataTransferArg: DataTransfer,
+  ): void {
+    // noop
+  }
+  msConvertURL(file: File, targetType: string, targetURL?: string): void {
+    // noop
+  }
+}

@@ -27,6 +27,7 @@ import {
   UploadParams,
 } from '..';
 import { SmartMediaProgress } from '../domain/progress';
+import { MediaErrorName } from '../domain/error';
 
 export interface ExpFile {
   id: string;
@@ -165,7 +166,7 @@ export class UploadService {
         })
         .then(
           this.onFileSuccess.bind(this, expFile),
-          this.onFileError.bind(this, expFile),
+          this.onFileError.bind(this, expFile, 'upload_fail'),
         );
     });
   }
@@ -231,9 +232,8 @@ export class UploadService {
   }
 
   private readonly onFileSuccess = (expFile: ExpFile, fileId: string) => {
-    const errorCallback = this.onFileError.bind(this, expFile);
     const collectionName = this.uploadParams.collection;
-    this.copyFileToUsersCollection(fileId, collectionName).catch(errorCallback);
+    this.copyFileToUsersCollection(fileId, expFile, collectionName);
 
     const publicMediaFile = this.mapExpFileToPublicMediaFile(expFile, fileId);
     this.emit('file-converting', {
@@ -259,7 +259,7 @@ export class UploadService {
             });
           }
         },
-        error: errorCallback,
+        error: this.onFileError.bind(this, expFile, 'metadata_fetch_fail'),
       });
   };
 
@@ -278,15 +278,25 @@ export class UploadService {
     });
   };
 
-  private readonly onFileError = (file: ExpFile, reason: Error) => {
-    console.log(file, reason);
-    // this.emit('file-upload-error', {
-    // TODO we dont have proper errors comming from chunkinator atm
-    // });
+  private readonly onFileError = (
+    expFile: ExpFile,
+    mediaErrorName: MediaErrorName,
+    error: Error | any,
+  ) => {
+    const description = (error && (error.message || error.toString())) || '';
+    this.emit('file-upload-error', {
+      file: this.mapExpFileToMediaFile(expFile),
+      error: {
+        fileId: expFile.id,
+        description: description,
+        name: mediaErrorName,
+      },
+    });
   };
 
   private copyFileToUsersCollection(
     sourceFileId: string,
+    expFile: ExpFile,
     sourceCollection?: string,
   ): Promise<void> {
     if (!this.userCollectionMediaClient) {
@@ -295,20 +305,30 @@ export class UploadService {
 
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
-      .then(auth => {
-        const sourceFile: SourceFile = {
-          id: sourceFileId,
-          collection: sourceCollection,
-          owner: {
-            ...mapAuthToSourceFileOwner(auth),
-          },
-        };
+      .then(
+        auth => {
+          const sourceFile: SourceFile = {
+            id: sourceFileId,
+            collection: sourceCollection,
+            owner: {
+              ...mapAuthToSourceFileOwner(auth),
+            },
+          };
 
-        return this.api.copyFileToCollection(
-          this.userCollectionMediaClient,
-          sourceFile,
-          'recents',
-        );
+          return this.api.copyFileToCollection(
+            this.userCollectionMediaClient,
+            sourceFile,
+            'recents',
+          );
+        },
+        error => {
+          this.onFileError(expFile, 'token_fetch_fail', error);
+          throw error;
+        },
+      )
+      .catch(error => {
+        this.onFileError(expFile, 'upload_fail', error);
+        throw error;
       });
   }
 
