@@ -248,6 +248,33 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     const reactionsProvider = new ReactionsResource({ baseUrl });
     populateCache(reactionsProvider);
 
+    it('should call service with container/objectAri and itemCreationDate', () => {
+      fetchMock.mock({
+        name: 'add',
+        options: {
+          method: 'POST',
+        },
+        matcher: 'end:reactions',
+        response: fetchAddReaction(),
+      });
+      const itemCreationDate = Date.now();
+      const emojiId = smileyId.id!;
+
+      return reactionsProvider
+        .addReaction(containerAri, ari, emojiId, itemCreationDate)
+        .then(state => {
+          const lastCall = fetchMock.lastCall('add');
+          expect(lastCall).to.not.equal(undefined);
+
+          return lastCall[0].json().then(body => {
+            expect(body.containerAri).to.equal(containerAri);
+            expect(body.ari).to.equal(ari);
+            expect(body.emojiId).to.equal(emojiId);
+            expect(body.itemCreationDate).to.equal(itemCreationDate);
+          });
+        });
+    });
+
     it('should optimistically add reaction', () => {
       fetchMock.mock({
         options: {

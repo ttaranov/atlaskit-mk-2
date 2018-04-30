@@ -72,11 +72,14 @@ export interface ReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
+    itemCreationDate?: number,
   ): Promise<ReactionsState>;
+  
   addReaction(
     containerAri: string,
     ari: string,
     emojiId: string,
+    itemCreationDate?: number,
   ): Promise<ReactionsState>;
   deleteReaction(
     containerAri: string,
