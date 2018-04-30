@@ -38,7 +38,6 @@ export class ImageViewer extends React.Component<
   componentWillUpdate(nextProps) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.setState(initialState);
       this.init(nextProps.item, this.props.context);
     }
   }
@@ -65,34 +64,39 @@ export class ImageViewer extends React.Component<
   }
 
   private async init(fileItem: FileItem, context: Context) {
-    try {
-      const service = context.getBlobService();
-      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
-        width: 800,
-        height: 600,
-        mode: 'fit',
-        allowAnimated: true,
-      });
-      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-      const objectUrl = URL.createObjectURL(await response);
-      this.setState({
-        objectUrl: {
-          status: 'SUCCESSFUL',
-          data: objectUrl,
-        },
-      });
-    } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
+    this.setState(initialState, async () => {
+      try {
+        const service = context.getBlobService();
+        const { response, cancel } = service.fetchImageBlobCancelable(
+          fileItem,
+          {
+            width: 800,
+            height: 600,
+            mode: 'fit',
+            allowAnimated: true,
+          },
+        );
+        this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
+        const objectUrl = URL.createObjectURL(await response);
         this.setState({
           objectUrl: {
-            status: 'FAILED',
-            err,
+            status: 'SUCCESSFUL',
+            data: objectUrl,
           },
         });
+      } catch (err) {
+        if (err.message === REQUEST_CANCELLED) {
+          this.preventRaceCondition();
+        } else {
+          this.setState({
+            objectUrl: {
+              status: 'FAILED',
+              err,
+            },
+          });
+        }
       }
-    }
+    });
   }
 
   private release() {
