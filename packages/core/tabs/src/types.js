@@ -1,9 +1,7 @@
 // @flow
 import type { ComponentType, Node } from 'react';
 
-export type TabData<CustomData: Object> =
-  | { label: string, content?: Node }
-  | CustomData;
+export type TabData = { label: string, content?: Node, [string]: any };
 
 type TabItemElementProps = {
   'aria-posinset'?: number,
@@ -20,7 +18,7 @@ type TabItemInnerRef = (ref: HTMLElement) => void;
 
 export type TabItemComponentProvided = {
   /** The complete tab object which you provided to Tabs in the tabs array. */
-  data: TabData<Object>,
+  data: TabData,
   /** Accessibility props and interaction callbacks which should be spread onto
    * your component. */
   elementProps: TabItemElementProps,
@@ -32,7 +30,7 @@ export type TabItemComponentProvided = {
 
 export type TabContentComponentProvided = {
   /** The complete tab object which you provided to Tabs in the tabs array. */
-  data: TabData<Object>,
+  data: TabData,
   /** Accessibility props which should be spread onto your component. */
   elementProps: {
     role?: string,
@@ -45,13 +43,10 @@ export type TabContentType = ComponentType<TabContentComponentProvided>;
 export type selectedProp = any;
 export type IsSelectedTestFunction = (
   selected: selectedProp,
-  tab: TabData<Object>,
+  tab: TabData,
   tabIndex: number,
 ) => boolean;
-type OnSelectCallback = (
-  selected: TabData<Object>,
-  selectedIndex: number,
-) => void;
+type OnSelectCallback = (selected: TabData, selectedIndex: number) => void;
 
 export type TabsProps = {
   /** Custom components to render instead of the default tab item or content.
@@ -81,16 +76,16 @@ export type TabsProps = {
   /** An array of objects containing data for your tabs. By default a tab object
    * must include 'label' and 'content' properties, but if used in conjunction
    * with the components prop this object can have any shape you choose. */
-  tabs: Array<TabData<Object>>,
+  tabs: Array<TabData>,
 };
 
 export type TabsState = {
-  selected: TabData<Object>,
+  selected: TabData,
 };
 
 export type TabsNavigationProps = {
   component: TabItemType,
   onSelect: OnSelectCallback,
-  selected: TabData<Object>,
-  tabs: Array<TabData<Object>>,
+  selected: TabData,
+  tabs: Array<TabData>,
 };

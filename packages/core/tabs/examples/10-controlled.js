@@ -14,11 +14,11 @@ const tabs = [
 
 export default class TabsControlledExample extends Component<
   {},
-  { selected: TabData<Object> },
+  { selected: TabData },
 > {
   state = { selected: tabs[0] };
 
-  handleUpdate = (selected: TabData<Object>) => this.setState({ selected });
+  handleUpdate = (selected: TabData) => this.setState({ selected });
 
   render() {
     const { selected } = this.state;

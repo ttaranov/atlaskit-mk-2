@@ -28,7 +28,7 @@ export const tabs = [
   },
 ];
 
-const customIsSelectedFunction = (selected: string, tab: TabData<Object>) =>
+const customIsSelectedFunction = (selected: string, tab: TabData) =>
   selected === tab.id;
 
 class TabsWithCustomIsSelected extends Component<{}, { selected: string }> {

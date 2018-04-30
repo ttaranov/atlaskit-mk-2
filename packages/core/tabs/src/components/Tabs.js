@@ -61,10 +61,7 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     }
   }
 
-  resolveSelected = (
-    selected: selectedProp,
-    newProps?: TabsProps,
-  ): TabData<Object> => {
+  resolveSelected = (selected: selectedProp, newProps?: TabsProps): TabData => {
     const { tabs, isSelectedTest } = newProps || this.props;
 
     const testFunction: IsSelectedTestFunction = (() => {
@@ -83,7 +80,7 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     );
   };
 
-  onSelect = (newselected: TabData<Object>, newSelectedIndex: number) => {
+  onSelect = (newselected: TabData, newSelectedIndex: number) => {
     const { onSelect, selected } = this.props;
     if (typeof onSelect === 'function') {
       onSelect(newselected, newSelectedIndex);
