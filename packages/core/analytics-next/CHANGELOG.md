@@ -1,5 +1,9 @@
 # @atlaskit/analytics-next
 
+## 2.1.0
+
+- [minor] Export cleanProps function that can be used to strip analytics props provided by our HOCs, useful when spreading props to a child element [973d6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/973d6ea)
+
 ## 2.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
