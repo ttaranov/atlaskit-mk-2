@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import ArrowDown from '@atlaskit/icon/glyph/arrow-down';
 import ArrowUp from '@atlaskit/icon/glyph/arrow-up';
+import { Label } from '@atlaskit/field-base';
+import { ToggleStateless } from '@atlaskit/toggle';
 import { Note, Code } from '../examples-util/helpers';
 import { AvatarGroup } from '../src';
 import { AVATAR_SIZES } from '../src/styled/constants';
@@ -14,6 +16,7 @@ type State = {|
   gridWidth: number,
   mode: 'stack' | 'grid',
   sizeIndex: number,
+  tooltipsEnabled: boolean,
 |};
 
 export default class AvatarGroupExample extends Component<*, State> {
@@ -23,6 +26,7 @@ export default class AvatarGroupExample extends Component<*, State> {
     gridWidth: 220,
     mode: 'stack',
     sizeIndex: 3,
+    tooltipsEnabled: true,
   };
 
   decrement = (key: string) =>
@@ -30,6 +34,12 @@ export default class AvatarGroupExample extends Component<*, State> {
 
   increment = (key: string) =>
     this.setState(state => ({ [key]: state[key] + 1 }));
+
+  toggleTooltips = () => {
+    this.setState({
+      tooltipsEnabled: !this.state.tooltipsEnabled,
+    });
+  };
 
   render() {
     const {
@@ -231,6 +241,26 @@ export default class AvatarGroupExample extends Component<*, State> {
               />
             </div>
           </div>
+        </div>
+
+        <h5>Non-interactive</h5>
+        <div>
+          <Label label="Enable tooltips" />
+          <ToggleStateless
+            isChecked={this.state.tooltipsEnabled}
+            onChange={this.toggleTooltips}
+          />
+          <AvatarGroup
+            data={stackSourceURLs.map(i => ({
+              key: i,
+              name: `Stack Avatar ${i + 1}`,
+              src: avatarUrl,
+              size: avatarSize,
+              appearance: 'circle',
+              enableTooltip: this.state.tooltipsEnabled,
+            }))}
+            size={avatarSize}
+          />
         </div>
       </div>
     );

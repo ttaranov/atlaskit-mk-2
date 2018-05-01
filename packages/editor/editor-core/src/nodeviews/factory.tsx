@@ -41,6 +41,10 @@ class NodeViewElem implements NodeView {
     this.reactNodeViewComponents = reactNodeViewComponents;
 
     this.domRef = createTemporaryContainer(node);
+    this.eventDispatcher = new EventDispatcher();
+
+    this.setDomAttrs(node);
+    this.renderReactComponent(node);
     /**
      * Create temporary containers for children since we are not using contentDOM
      * Without this PM will throw, @see ED-4235
@@ -52,11 +56,6 @@ class NodeViewElem implements NodeView {
       });
       this.domRef.appendChild(fragment);
     }
-
-    this.eventDispatcher = new EventDispatcher();
-
-    this.setDomAttrs(node);
-    this.renderReactComponent(node);
   }
 
   get dom() {

@@ -3,6 +3,7 @@ import { Outcome } from '../domain';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Img, ErrorMessage } from '../styled';
 import { Spinner } from '../loading';
+import * as deepEqual from 'deep-equal';
 
 export type ObjectUrl = string;
 
@@ -34,6 +35,13 @@ export class ImageViewer extends React.Component<
     this.release();
   }
 
+  componentWillUpdate(nextProps) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.release();
+      this.init(nextProps.item, this.props.context);
+    }
+  }
+
   render() {
     const { objectUrl } = this.state;
     switch (objectUrl.status) {
@@ -56,34 +64,39 @@ export class ImageViewer extends React.Component<
   }
 
   private async init(fileItem: FileItem, context: Context) {
-    try {
-      const service = context.getBlobService();
-      const { response, cancel } = service.fetchImageBlobCancelable(fileItem, {
-        width: 800,
-        height: 600,
-        mode: 'fit',
-        allowAnimated: true,
-      });
-      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-      const objectUrl = URL.createObjectURL(await response);
-      this.setState({
-        objectUrl: {
-          status: 'SUCCESSFUL',
-          data: objectUrl,
-        },
-      });
-    } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
+    this.setState(initialState, async () => {
+      try {
+        const service = context.getBlobService();
+        const { response, cancel } = service.fetchImageBlobCancelable(
+          fileItem,
+          {
+            width: 800,
+            height: 600,
+            mode: 'fit',
+            allowAnimated: true,
+          },
+        );
+        this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
+        const objectUrl = URL.createObjectURL(await response);
         this.setState({
           objectUrl: {
-            status: 'FAILED',
-            err,
+            status: 'SUCCESSFUL',
+            data: objectUrl,
           },
         });
+      } catch (err) {
+        if (err.message === REQUEST_CANCELLED) {
+          this.preventRaceCondition();
+        } else {
+          this.setState({
+            objectUrl: {
+              status: 'FAILED',
+              err,
+            },
+          });
+        }
       }
-    }
+    });
   }
 
   private release() {
@@ -95,6 +108,12 @@ export class ImageViewer extends React.Component<
     if (objectUrl.status === 'SUCCESSFUL') {
       this.revokeObjectUrl(objectUrl.data);
     }
+  }
+
+  private needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
+    return (
+      !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
+    );
   }
 
   // This method is spied on by some test cases, so don't rename or remove it.

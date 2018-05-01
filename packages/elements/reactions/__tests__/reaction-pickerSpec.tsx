@@ -1,4 +1,3 @@
-import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import * as chai from 'chai';
@@ -16,18 +15,18 @@ const { getEmojiResourcePromise } = emoji.testData;
 
 const { expect } = chai;
 
-const renderPicker = (onSelection: Function = () => {}, text?: string) => {
-  return (
-    <ReactionPicker
-      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      onSelection={onSelection}
-      allowAllEmojis={true}
-      text={text}
-    />
-  );
-};
-
 describe('@atlaskit/reactions/reaction-picker', () => {
+  const renderPicker = (onSelection: Function = () => {}, disabled = false) => {
+    return (
+      <ReactionPicker
+        emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+        onSelection={onSelection}
+        allowAllEmojis={true}
+        disabled={disabled}
+      />
+    );
+  };
+
   let clock;
   const animStub = window.cancelAnimationFrame;
 
@@ -49,14 +48,14 @@ describe('@atlaskit/reactions/reaction-picker', () => {
   it('should render selector when trigger is clicked', () => {
     const picker = mount(renderPicker());
     const trigger = picker.find(Trigger);
-    trigger.simulate('mousedown', { button: 0 });
+    trigger.simulate('click');
     expect(picker.find(Selector).length).to.equal(1);
   });
 
   it('should render emoji picker when "..." button is clicked', () => {
     const picker = mount(renderPicker());
     const trigger = picker.find(Trigger);
-    trigger.simulate('mousedown', { button: 0 });
+    trigger.simulate('click');
     const moreButton = picker.find(EditorMoreIcon);
     moreButton.simulate('mousedown', { button: 0 });
     expect(picker.find(EmojiPicker).length).to.equal(1);
@@ -66,7 +65,7 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const onSelectionSpy = sinon.spy();
     const picker = mount(renderPicker(onSelectionSpy));
     const trigger = picker.find(Trigger);
-    trigger.simulate('mousedown', { button: 0 });
+    trigger.simulate('click');
     const selector = picker.find(Selector);
     selector
       .find(EmojiButton)
@@ -77,8 +76,9 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     expect(onSelectionSpy.called).to.equal(true);
   });
 
-  it('should render a button if text-prop is set', () => {
-    const picker = mount(renderPicker(() => {}, 'Like'));
-    expect(picker.find(Button).length).to.equal(1);
+  it('should disable trigger', () => {
+    const onSelectionSpy = sinon.spy();
+    const picker = mount(renderPicker(onSelectionSpy, true));
+    expect(picker.find(Trigger).prop('disabled')).to.be.equal(true);
   });
 });

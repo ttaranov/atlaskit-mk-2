@@ -19,7 +19,7 @@ type RouterLinkProps = {
 };
 
 const SubNavWrapper = styled.div`
-  padding: 0 0 0 ${() => gridSize() * 2}px;
+  padding: 0 0 0 ${() => gridSize() * 4}px;
 `;
 
 export function isSubNavExpanded(to: string, pathname: string): boolean {

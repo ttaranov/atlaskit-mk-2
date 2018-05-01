@@ -224,7 +224,6 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
-                parameters: [],
                 returnType: {
                   kind: 'generic',
                   value: {

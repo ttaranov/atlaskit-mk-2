@@ -64,9 +64,13 @@ export function getInnerStyles(
   const isInteractive: boolean = Boolean(
     props.isInteractive || props.href || props.onClick,
   );
+  // We make the distinction between isInteractive and isClickable as supplying a tooltip
+  // makes the avatar interactive but not clickable
+  const isClickable = Boolean(props.href || props.onClick);
 
   let backgroundColor = props.borderColor || colors.background;
-  let cursor = 'default';
+  // Inherit cursor styles so we don't cancel out pointer cursors in places like avatar group more dropdown
+  let cursor = 'inherit';
   let outline = 'none';
   let overlayShade = overlayColorDefault;
   let overlayOpacity = 0;
@@ -82,7 +86,7 @@ export function getInnerStyles(
   }
 
   // Interaction: Active
-  if (isInteractive && props.isActive) {
+  if (isClickable && props.isActive) {
     transform = 'scale(0.9)';
   }
 
@@ -101,8 +105,8 @@ export function getInnerStyles(
     pointerEvents = 'none';
   }
 
-  // Interactive
-  if (isInteractive) {
+  // Clickable
+  if (isClickable) {
     cursor = 'pointer';
   }
 

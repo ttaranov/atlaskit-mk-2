@@ -7,12 +7,8 @@ import {
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
+  ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
-}
-
-export interface CrossProductResults {
-  jira: Result[];
-  confluence: Result[];
 }
 
 export interface CrossProductSearchResponse {
@@ -33,12 +29,15 @@ export interface JiraItem {
 }
 
 export interface ConfluenceItem {
-  title: string;
+  title: string; // this is highlighted
+  lastModified: string;
   baseUrl: string;
   url: string;
+  content: object;
   iconCssClass: string;
   container: {
-    title: string;
+    title: string; // this is unhighlighted
+    displayUrl: string;
   };
 }
 
@@ -51,7 +50,11 @@ export interface ScopeResult {
 }
 
 export interface CrossProductSearchClient {
-  search(query: string, searchSessionId: string): Promise<CrossProductResults>;
+  search(
+    query: string,
+    searchSessionId: string,
+    scopes?: Scope[],
+  ): Promise<Map<Scope, Result[]>>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -67,20 +70,22 @@ export default class CrossProductSearchClientImpl
   public async search(
     query: string,
     searchSessionId: string,
-  ): Promise<CrossProductResults> {
-    const response = await this.makeRequest(query);
+    scopes: Scope[],
+  ): Promise<Map<Scope, Result[]>> {
+    const response = await this.makeRequest(query, scopes);
 
-    return this.parseResponse(response, searchSessionId);
+    return this.parseResponse(response, searchSessionId, scopes);
   }
 
   private async makeRequest(
     query: string,
+    scopes: Scope[],
   ): Promise<CrossProductSearchResponse> {
     const body = {
       query: query,
       cloudId: this.cloudId,
       limit: 5,
-      scopes: [Scope.JiraIssue, Scope.ConfluencePageBlog],
+      scopes: scopes,
     };
 
     const options: RequestServiceOptions = {
@@ -103,31 +108,28 @@ export default class CrossProductSearchClientImpl
   private parseResponse(
     response: CrossProductSearchResponse,
     searchSessionId: string,
-  ): CrossProductResults {
-    let jiraResults: Result[] = [];
-    let confResults: Result[] = [];
-
-    response.scopes.forEach(scope => {
-      if (scope.id === Scope.ConfluencePageBlog) {
-        confResults = scope.results.map((item: ConfluenceItem) =>
-          confluenceItemToResult(item, searchSessionId),
+    scopes: Scope[],
+  ): Map<Scope, Result[]> {
+    const results: Map<Scope, Result[]> = response.scopes.reduce(
+      (resultsMap, scopeResult) => {
+        resultsMap.set(
+          scopeResult.id,
+          scopeResult.results.map(result =>
+            mapItemToResult(scopeResult.id as Scope, result, searchSessionId),
+          ),
         );
-      } else if (scope.id === Scope.JiraIssue) {
-        jiraResults = scope.results.map(jiraItemToResult);
-      } else {
-        throw new Error('Unknown scope id: ' + scope.id);
-      }
-    });
 
-    return {
-      jira: jiraResults,
-      confluence: confResults,
-    };
+        return resultsMap;
+      },
+      new Map(),
+    );
+
+    return results;
   }
 }
 
 // TODO need real icons
-export function getConfluenceAvatarUrl(iconCssClass: string) {
+export function getConfluenceAvatarUrl(iconCssClass: string): string {
   if (iconCssClass.indexOf('blogpost') > -1) {
     return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
   } else {
@@ -135,11 +137,37 @@ export function getConfluenceAvatarUrl(iconCssClass: string) {
   }
 }
 
-export function removeHighlightTags(text: string) {
+export function removeHighlightTags(text: string): string {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
 
-function confluenceItemToResult(
+function mapItemToResult(
+  scope: Scope,
+  item: SearchItem,
+  searchSessionId: string,
+): Result {
+  switch (scope) {
+    case Scope.ConfluencePageBlog: {
+      return mapConfluenceItemToResultObject(
+        item as ConfluenceItem,
+        searchSessionId,
+      );
+    }
+    case Scope.ConfluenceSpace: {
+      return mapConfluenceItemToResultSpace(item as ConfluenceItem);
+    }
+    case Scope.JiraIssue: {
+      return mapJiraItemToResult(item as JiraItem);
+    }
+    default: {
+      // Make the TS compiler verify that all enums have been matched
+      const _nonExhaustiveMatch: never = scope;
+      throw new Error(`Non-exhaustive match for scope: ${_nonExhaustiveMatch}`);
+    }
+  }
+}
+
+function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
 ): Result {
@@ -153,7 +181,7 @@ function confluenceItemToResult(
   };
 }
 
-function jiraItemToResult(item: JiraItem): Result {
+function mapJiraItemToResult(item: JiraItem): Result {
   return {
     type: ResultType.Object,
     resultId: 'search-' + item.key,
@@ -162,5 +190,15 @@ function jiraItemToResult(item: JiraItem): Result {
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
     objectKey: item.key,
+  };
+}
+
+function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
+  return {
+    type: ResultType.Container,
+    resultId: 'search-' + spaceItem.container.displayUrl,
+    avatarUrl: '', // depends on XPSRCH-747
+    name: spaceItem.container.title,
+    href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
   };
 }
