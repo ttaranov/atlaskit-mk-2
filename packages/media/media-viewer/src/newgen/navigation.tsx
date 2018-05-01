@@ -26,10 +26,16 @@ export default class Navigation extends Component<NavigationProps, any> {
       onChange(newItem);
     };
   }
+
   get selectedIndex() {
     const { items, selectedItem } = this.props;
-    return items.findIndex(item => item.id === selectedItem.id);
+    return items.findIndex(
+      item =>
+        item.id === selectedItem.id &&
+        item.occurrenceKey === selectedItem.occurrenceKey,
+    );
   }
+
   render() {
     const { items } = this.props;
     const { selectedIndex } = this;

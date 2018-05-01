@@ -30,6 +30,12 @@ const docIdentifier: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const imageIdentifier2: MediaViewerItem = {
+  type: 'file',
+  id: imageFileId.id,
+  occurrenceKey: 'other-ocurrence-key',
+};
+
 const videoIdentifier: MediaViewerItem = {
   type: 'file',
   id: videoFileId.id,
@@ -58,6 +64,7 @@ export default class Example extends React.Component<{}, {}> {
               imageIdentifier,
               wideImageIdentifier,
               docIdentifier,
+              imageIdentifier2,
               unsupportedIdentifier,
             ],
           }}
