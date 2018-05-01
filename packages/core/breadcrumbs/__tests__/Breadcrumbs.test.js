@@ -121,18 +121,24 @@ describe('BreadcrumbsStateless', () => {
   });
 });
 
+const defaults = {
+  itemTexts: ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'],
+  shouldHaveEllipsis: true,
+};
+
 cases(
   'itemsBeforeCollapse and itemsAfterCollapse',
   ({
-    itemTexts = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'],
+    itemTexts,
     expectedItemTexts,
-    shouldHaveEllipsis = true,
+    shouldHaveEllipsis,
     itemsBefore,
     itemsAfter,
   }) => {
     const wrapper = mount(
       <BreadcrumbsStateless
         maxItems={2}
+        onExpand={() => {}}
         itemsBeforeCollapse={itemsBefore}
         itemsAfterCollapse={itemsAfter}
       >
@@ -150,24 +156,28 @@ cases(
   },
   [
     {
+      ...defaults,
       name: 'items before and after is 2',
       itemsBefore: 2,
       itemsAfter: 2,
       expectedItemTexts: ['item1', 'item2', 'item6', 'item7'],
     },
     {
+      ...defaults,
       name: 'no items after',
       itemsBefore: 1,
       itemsAfter: 0,
       expectedItemTexts: ['item1'],
     },
     {
+      ...defaults,
       name: 'no items before',
       itemsBefore: 0,
       itemsAfter: 1,
       expectedItemTexts: ['item7'],
     },
     {
+      ...defaults,
       name: "Collapse makes no sense so we don't",
       itemsBefore: 5,
       itemsAfter: 5,
