@@ -245,7 +245,7 @@ describe('<ResourcedTaskItem/>', () => {
     const participants = getParticipants(2);
 
     it('participants not used for inline style item', () => {
-      const component = mount(
+      component = mount(
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
@@ -259,7 +259,7 @@ describe('<ResourcedTaskItem/>', () => {
     });
 
     it('participants used for card style item', () => {
-      const component = mount(
+      component = mount(
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
@@ -279,7 +279,7 @@ describe('<ResourcedTaskItem/>', () => {
 
   describe('showPlaceholder', () => {
     it('should render placeholder if task is empty', () => {
-      const component = mount(
+      component = mount(
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
@@ -292,7 +292,7 @@ describe('<ResourcedTaskItem/>', () => {
     });
 
     it('should not render placeholder task if not empty', () => {
-      const component = mount(
+      component = mount(
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
@@ -311,7 +311,7 @@ describe('<ResourcedTaskItem/>', () => {
     it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
       const publicSpy = jest.fn();
       const privateSpy = jest.fn();
-      const component = mount(
+      component = mount(
         <AnalyticsListener onEvent={publicSpy}>
           <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
             <ResourcedTaskItem
@@ -336,7 +336,7 @@ describe('<ResourcedTaskItem/>', () => {
     it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
       const publicSpy = jest.fn();
       const privateSpy = jest.fn();
-      const component = mount(
+      component = mount(
         <AnalyticsListener onEvent={publicSpy}>
           <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
             <ResourcedTaskItem

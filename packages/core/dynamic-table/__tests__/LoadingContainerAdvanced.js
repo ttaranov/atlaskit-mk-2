@@ -723,7 +723,6 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>,
       );
-      wrappers.push(wrapper);
       expect(detachSpy).toHaveBeenCalledTimes(0);
       wrapper.unmount();
       expect(detachSpy).toHaveBeenCalledTimes(1);

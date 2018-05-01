@@ -50,9 +50,7 @@ export default function createEditorForTests<T = any>({
   const editor = mount(
     <TestReactEditorView
       editorProps={editorProps}
-      providerFactory={
-        providerFactory ? providerFactory : new ProviderFactory()
-      }
+      providerFactory={providerFactory || new ProviderFactory()}
       onEditorCreated={() => {}}
       onEditorDestroyed={() => {}}
       plugins={plugins}
@@ -109,7 +107,6 @@ export default function createEditorForTests<T = any>({
   }
 
   afterEach(() => {
-    editor.unmount();
     editor.detach();
     if (place && place.parentNode) {
       place.parentNode.removeChild(place);
