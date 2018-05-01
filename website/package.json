@@ -86,6 +86,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.1",
+    "recompose": "^0.26.0",
     "semver": "^5.4.1",
     "sentence-case": "^2.1.1",
     "snake-case": "^2.1.0",
