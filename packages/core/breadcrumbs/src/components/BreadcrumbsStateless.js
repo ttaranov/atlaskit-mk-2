@@ -19,9 +19,9 @@ export type Props = {
   onExpand: Event => mixed,
   /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
   children?: Node,
-  /** If max items is exceeded, the number of items to show before the separator */
+  /** If max items is exceeded, the number of items to show before the ellipsis */
   itemsBeforeCollapse: number,
-  /** If max items is exceeded, the number of items to show after the separator */
+  /** If max items is exceeded, the number of items to show after the ellipsis */
   itemsAfterCollapse: number,
 };
 
@@ -43,20 +43,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     );
   }
 
-  renderFirstAndLast() {
-    const itemsToRender = this.renderAllItems();
-    return [
-      itemsToRender[0],
-      <EllipsisItem
-        hasSeparator
-        key="ellipsis"
-        onClick={this.props.onExpand}
-      />,
-      itemsToRender[itemsToRender.length - 1],
-    ];
-  }
-
-  renderSomeAndSome() {
+  renderItemsBeforeAndAfter() {
     const { itemsBeforeCollapse, itemsAfterCollapse } = this.props;
     const allItems = this.renderAllItems();
     // This defends against someone passing weird data, to ensure that if all
@@ -66,10 +53,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     }
 
     const beforeItems = allItems.slice(0, itemsBeforeCollapse);
-    const afterItems = allItems.slice(
-      allItems.length - itemsAfterCollapse,
-      allItems.length,
-    );
+    const afterItems = allItems.slice(-itemsAfterCollapse);
 
     return [
       ...beforeItems,
@@ -89,7 +73,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
       <Container>
         {isExpanded || (maxItems && toArray(children).length <= maxItems)
           ? this.renderAllItems()
-          : this.renderSomeAndSome()}
+          : this.renderItemsBeforeAndAfter()}
       </Container>
     );
   }
