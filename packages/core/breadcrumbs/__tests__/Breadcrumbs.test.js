@@ -3,6 +3,7 @@
 import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
+import cases from 'jest-in-case';
 
 import { BreadcrumbsStateless, BreadcrumbsItem as Item } from '../src/';
 
@@ -119,3 +120,67 @@ describe('BreadcrumbsStateless', () => {
     });
   });
 });
+
+cases(
+  'itemsBeforeCollapse and itemsAfterCollapse',
+  ({
+    itemTexts = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'],
+    expectedItemTexts,
+    shouldHaveEllipsis = true,
+    itemsBefore,
+    itemsAfter,
+  }) => {
+    const wrapper = mount(
+      <BreadcrumbsStateless
+        maxItems={2}
+        itemsBeforeCollapse={itemsBefore}
+        itemsAfterCollapse={itemsAfter}
+      >
+        {itemTexts.map(t => <Item text={t} key={t} />)}
+      </BreadcrumbsStateless>,
+    );
+
+    if (shouldHaveEllipsis) {
+      expect(wrapper.find(EllipsisItem).length).toEqual(1);
+    }
+
+    wrapper.find(Item).forEach((node, i) => {
+      expect(node.prop('text')).toEqual(expectedItemTexts[i]);
+    });
+  },
+  [
+    {
+      name: 'items before and after is 2',
+      itemsBefore: 2,
+      itemsAfter: 2,
+      expectedItemTexts: ['item1', 'item2', 'item6', 'item7'],
+    },
+    {
+      name: 'no items after',
+      itemsBefore: 1,
+      itemsAfter: 0,
+      expectedItemTexts: ['item1'],
+    },
+    {
+      name: 'no items before',
+      itemsBefore: 0,
+      itemsAfter: 1,
+      expectedItemTexts: ['item7'],
+    },
+    {
+      name: "Collapse makes no sense so we don't",
+      itemsBefore: 5,
+      itemsAfter: 5,
+      shouldHaveEllipsis: false,
+      expectedItemTexts: [
+        'item1',
+        'item2',
+        'item3',
+        'item4',
+        'item5',
+        'item6',
+        'item7',
+      ],
+    },
+  ],
+);
