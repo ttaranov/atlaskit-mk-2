@@ -24,7 +24,7 @@
   "dependencies": {
     "@atlaskit/util-service-support": "^2.0.5",
     "eventemitter2": "^4.1.0",
-    "pubnub": "^4.20.0",
+    "pubnub": "^4.20.3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
