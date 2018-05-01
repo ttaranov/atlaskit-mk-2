@@ -80,6 +80,7 @@ const getPrevFocusable = (
 // i.e [{ heading: 'numbers', items: [...] }, { heading: 'letters', items: [...] }]
 // In this form, the items array matches the one we see above.
 // This function normalises `items` so that it will always be in the later form
+// flowlint-next-line unclear-type:off
 const groupItems = (items: Array<any>): Array<GroupType> => {
   const firstItem = items[0] || {};
   return Array.isArray(firstItem.items) ? items : convertToGroupType(items);

@@ -32,6 +32,7 @@ export default class NavigationPanel extends Component<{}, State> {
     };
   }
 
+  // flowlint-next-line unclear-type:off
   stackPush = (item: any) => {
     const stack = [...this.state.stack, item];
     this.setState({ stack });
@@ -58,6 +59,7 @@ export default class NavigationPanel extends Component<{}, State> {
     return items;
   };
 
+  // flowlint-next-line unclear-type:off
   renderItem = (item: any) => {
     const onClick = item.children && (() => this.stackPush(item.children));
 

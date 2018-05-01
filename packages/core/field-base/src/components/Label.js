@@ -9,6 +9,7 @@ type Props = {
   /** whether to hide the label */
   isLabelHidden?: boolean,
   /** onclick handler */
+  // flowlint-next-line unclear-type:off
   onClick?: (event: any) => mixed,
   /** show a style indicating that the label is for a required field */
   isRequired?: boolean,

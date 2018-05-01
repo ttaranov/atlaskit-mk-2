@@ -10,11 +10,14 @@ its descendents, then passes the event up the hierarchy */
 
 type Props = {
   /** A single element, either Component or DOM node */
+  // flowlint-next-line unclear-type:off
   children?: Element<any>,
   /** Key/values used to extend event data. */
+  // flowlint-next-line unclear-type:off
   data?: Object,
   /** Function called to get the key/values used to extend event data.
    Occurs after event data has been extended with `data`. */
+  // flowlint-next-line unclear-type:off
   getData?: (name: string, decoratedData: Object) => Object,
   /** String, regex, or function filter to limit what events are extended
   based on event name. String filters use exact matching unless they end
@@ -50,6 +53,7 @@ class AnalyticsDecorator extends Component<Props, {}> {
 
   getDecoratedAnalyticsData = (
     name: string,
+    // flowlint-next-line unclear-type:off
     srcData: Object,
     isPrivate: boolean,
   ) => {
@@ -67,6 +71,7 @@ class AnalyticsDecorator extends Component<Props, {}> {
     return decoratedData;
   };
 
+  // flowlint-next-line unclear-type:off
   onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean) => {
     // Check there is a listener to pass the event to, otherwise there's no need
     // to do any of this work

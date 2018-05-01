@@ -31,6 +31,7 @@ const flattenChildren = children =>
  * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
+// flowlint-next-line unclear-type:off
 const getResultIdByIndex = (array: Array<any>, index: number | null) => {
   if (
     array &&
@@ -92,6 +93,7 @@ type Props = {
   /** onBlur callback for search input */
   onSearchBlur: (event: Event) => mixed,
   /** onInput callback for search input */
+  // flowlint-next-line unclear-type:off
   onSearchInput?: (event: SyntheticInputEvent<any>) => mixed,
   /** onKeyDown callback for search input */
   onSearchKeyDown: (event: Event) => mixed,
@@ -124,6 +126,7 @@ export class QuickSearch extends Component<Props, State> {
   };
 
   // eslint-disable-next-line react/sort-comp
+  // flowlint-next-line unclear-type:off
   flatResults: Array<any> = flattenChildren(this.props.children);
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;

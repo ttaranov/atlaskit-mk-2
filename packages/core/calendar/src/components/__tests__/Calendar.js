@@ -10,6 +10,7 @@ import Calendar from '../Calendar';
 import Date from '../Date';
 import { DateTd } from '../../styled/Date';
 
+// flowlint-next-line unclear-type:off
 function createEvent(opts: Object = {}): Object {
   return {
     ...opts,

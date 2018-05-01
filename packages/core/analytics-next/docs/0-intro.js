@@ -8,6 +8,7 @@ type InstrumentedItem = {
   component: string,
   context: { component: string },
   prop: string,
+  // flowlint-next-line unclear-type:off
   payload: Object,
 };
 

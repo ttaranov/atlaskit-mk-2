@@ -1,4 +1,5 @@
 // @flow
+// flowlint-next-line unclear-type:off
 export type Color = string | Function;
 export type Background = Color;
 export type Text = Color;

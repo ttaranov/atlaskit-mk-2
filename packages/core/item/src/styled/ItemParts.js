@@ -17,6 +17,7 @@ export const InputWrapper = styled.span`
 `;
 
 // Elements injected before/after the children
+// flowlint-next-line unclear-type:off
 const BeforeAfterBase: StatelessFunctionalComponent<any> = styled.span`
   align-items: center;
   display: flex;
@@ -34,6 +35,7 @@ const getBeforeSpacing = ({ isCompact, theme }) => {
     margin-right: ${space}px;
   `;
 };
+// flowlint-next-line unclear-type:off
 export const Before: StatelessFunctionalComponent<any> = styled(
   BeforeAfterBase,
 )`

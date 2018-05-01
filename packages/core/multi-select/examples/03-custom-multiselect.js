@@ -83,6 +83,7 @@ export default class CustomMultiSelect extends PureComponent<Props, State> {
   };
 
   handleOpenChange = (attrs: {
+    // flowlint-next-line unclear-type:off
     event: SyntheticEvent<any>,
     isOpen: boolean,
   }) => {

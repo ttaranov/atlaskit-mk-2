@@ -13,10 +13,13 @@ import {
 
 type Props = {
   /** Page breadcrumbs to be rendered above the title. */
+  // flowlint-next-line unclear-type:off
   breadcrumbs?: Element<any>,
   /** Contents of the action bar to be rendered next to the page title. */
+  // flowlint-next-line unclear-type:off
   actions?: Element<any>,
   /** Contents of the header bar to be rendered below the page title. */
+  // flowlint-next-line unclear-type:off
   bottomBar?: Element<any>,
   /** Content of the page title. The text would be trimmed if it doesn't fit the
    header width and end with an ellipsis */

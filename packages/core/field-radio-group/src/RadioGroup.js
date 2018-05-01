@@ -31,6 +31,7 @@ export default class FieldRadioGroup extends Component<
     };
   }
 
+  // flowlint-next-line unclear-type:off
   getItems = (): any => {
     // If there is a user-selected value, then select that item
     if (this.props.items) {
@@ -57,6 +58,7 @@ export default class FieldRadioGroup extends Component<
     return this.props.items;
   };
 
+  // flowlint-next-line unclear-type:off
   changeHandler = (event: any) => {
     this.props.onRadioChange(event);
     this.setState({ selectedValue: event.target.value });

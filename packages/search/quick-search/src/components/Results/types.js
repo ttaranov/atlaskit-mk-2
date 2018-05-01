@@ -46,6 +46,7 @@ export type ResultType = CommonResultProps & {
   /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. */
+  // flowlint-next-line unclear-type:off
   text: Element<any> | string,
 };
 
@@ -57,6 +58,7 @@ export type ContainerResultType = CommonResultProps & {
   /** Set whether to display a lock on the result's icon */
   isPrivate?: boolean,
   /** Name of the container. Provides the main text to be displayed as the item. */
+  // flowlint-next-line unclear-type:off
   name: Element<any> | string,
   /** Text to be shown alongside the main `text`. */
   subText?: string,
@@ -72,6 +74,7 @@ export type ObjectResultType = CommonResultProps & {
   /** Set whether to display a lock on the result's icon */
   isPrivate?: boolean,
   /** Name of the object. Provides the main text to be displayed as the item.. */
+  // flowlint-next-line unclear-type:off
   name: Element<any> | string,
   /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
   objectKey?: string,
@@ -88,6 +91,7 @@ export type PersonResultType = CommonResultProps & {
   /** A character with which to prefix the `mentionName`. Defaults to '@' */
   mentionPrefix: string,
   /** Name of the object. Provides the main text to be displayed as the item.. */
+  // flowlint-next-line unclear-type:off
   name: Element<any> | string,
   /** Text to be shown alongside the main `text`. */
   presenceMessage?: string,

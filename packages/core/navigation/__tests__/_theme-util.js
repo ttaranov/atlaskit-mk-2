@@ -15,6 +15,7 @@ configure({ adapter: new Adapter() });
 export const withRootTheme = (
   provided: Provided,
   isCollapsed?: boolean = false,
+  // flowlint-next-line unclear-type:off
 ): Object => {
   const rootTheme: RootTheme = {
     provided,
@@ -26,10 +27,12 @@ export const withRootTheme = (
   };
 };
 
+// flowlint-next-line unclear-type:off
 const defaultTheme: Object = withRootTheme(presets.container);
 
 export const shallowWithTheme = (
   children: Node,
+  // flowlint-next-line unclear-type:off
   theme?: Object = defaultTheme,
 ) =>
   shallow(children, {
@@ -39,6 +42,7 @@ export const shallowWithTheme = (
 export const mountWithRootTheme = (
   children: Node,
   theme?: {} = defaultTheme,
+  // flowlint-next-line unclear-type:off
   options: Object = {},
 ) => {
   // Context type vars

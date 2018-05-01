@@ -19,6 +19,7 @@ const fruitItems: ItemsPropTypeSmart = [
 ];
 
 export default class FormExample extends Component<void, void> {
+  // flowlint-next-line unclear-type:off
   onRadioChange = (event: any) => {
     console.log(event.target.value);
   };

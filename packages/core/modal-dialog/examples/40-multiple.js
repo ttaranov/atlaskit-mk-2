@@ -6,6 +6,7 @@ import Lorem from 'react-lorem-component';
 import Modal from '../src';
 
 const sizes = ['large', 'medium', 'small'];
+// flowlint-next-line unclear-type:off
 type State = { isOpen: Array<any> };
 export default class ShowHideDemo extends Component<{}, State> {
   state = { isOpen: [] };

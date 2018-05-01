@@ -16,10 +16,13 @@ const Item = withItemClick(withItemFocus(baseItem));
 
 type DnDType = {
   draggableProps: {
+    // flowlint-next-line unclear-type:off
     style: ?Object,
     'data-react-beautiful-dnd-draggable': string,
   },
+  // flowlint-next-line unclear-type:off
   dragHandleProps: ?Object,
+  // flowlint-next-line unclear-type:off
   innerRef: Function,
   placeholder?: Node,
 };
@@ -56,6 +59,7 @@ type Props = {
   as if you are using a different router. Component is passed a href prop, and the content
   of the title as children. Any custom link component must accept a className prop so that
   it can be styled. */
+  // flowlint-next-line unclear-type:off
   linkComponent?: ComponentType<any>,
   /** Function to be called on click. This is passed down to a custom link component,
    if one is provided.  */

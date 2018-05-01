@@ -76,6 +76,7 @@ export default function withRenderTarget(
 
   // eslint-disable-next-line react/prefer-stateless-function
   return class extends Component<{}> {
+    // flowlint-next-line unclear-type:off
     gatewayOrPortalChildRef: ElementRef<any> | null;
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
@@ -83,6 +84,7 @@ export default function withRenderTarget(
       ...analyticsContextTypes,
       ...jiraContextTypes,
     };
+    // flowlint-next-line unclear-type:off
     getWrappedComponentRef = (ref: ElementRef<any> | null): mixed => {
       this.gatewayOrPortalChildRef = ref;
     };

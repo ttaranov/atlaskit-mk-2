@@ -10,7 +10,9 @@ import { AkCodeBlock } from '@atlaskit/code';
  */
 export default function code(
   // Tagged Template Literal support is still WIP for flow: https://github.com/facebook/flow/issues/2616
+  // flowlint-next-line unclear-type:off
   sources: any,
+  // flowlint-next-line unclear-type:off
   ...substitutions: any[]
 ) {
   let source = stringRaw(sources, substitutions);

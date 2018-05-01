@@ -4,10 +4,15 @@
 
 import type { Node } from 'react';
 
+// flowlint-next-line unclear-type:off
 export type ChildrenType = any;
+// flowlint-next-line unclear-type:off
 export type ElementType = any;
+// flowlint-next-line unclear-type:off
 export type FunctionType = (...args: Array<any>) => mixed;
+// flowlint-next-line unclear-type:off
 export type MouseEventFunctionType = (event: MouseEvent) => any;
+// flowlint-next-line unclear-type:off
 export type GenericEventFunctionType = (event: Event) => any;
 
 export type AppearanceTypes =

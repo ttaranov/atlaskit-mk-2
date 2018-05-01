@@ -20,9 +20,13 @@ import type { ItemType } from '../types';
 type Props = {
   appearance: 'default' | 'subtle',
   filterValue: string,
+  // flowlint-next-line unclear-type:off
   handleItemRemove: Function,
+  // flowlint-next-line unclear-type:off
   handleOnChange: Function,
+  // flowlint-next-line unclear-type:off
   handleTriggerClick: Function,
+  // flowlint-next-line unclear-type:off
   inputRefFunction: Function,
   isDisabled?: boolean,
   isFocused?: boolean,
@@ -30,10 +34,13 @@ type Props = {
   invalidMessage: Node,
   isLoading: boolean,
   isRequired?: boolean,
+  // flowlint-next-line unclear-type:off
   onBlur: Function,
+  // flowlint-next-line unclear-type:off
   onFocus: Function,
   placeholder?: string,
   selectedItems: Array<ItemType>,
+  // flowlint-next-line unclear-type:off
   tagGroupRefFunction: Function,
   icon: Node,
 };

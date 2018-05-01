@@ -11,6 +11,7 @@ exports.description =
 const primaryHex = '#42526E';
 const secondaryHex = '#79F2C0';
 
+// flowlint-next-line unclear-type:off
 exports.fn = function callbackOnDefinedFill(item /*: any*/) {
   var fill; // eslint-disable-line no-var
   var stopColor; // eslint-disable-line no-var

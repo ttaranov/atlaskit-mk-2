@@ -18,6 +18,7 @@ type Props = {
 export default function withDimensions<WrappedComponentProps: {}>(
   WrappedComponent: ComponentType<WrappedComponentProps>,
 ): ComponentType<$Diff<WrappedComponentProps, WithDimensionsProps>> {
+  // flowlint-next-line unclear-type:off
   return class WithDimensions extends Component<any, State> {
     ref: ?HTMLElement;
 

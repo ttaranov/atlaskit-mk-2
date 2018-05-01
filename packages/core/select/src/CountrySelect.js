@@ -19,6 +19,7 @@ const Flag = styled.span`
   font-size: 18px;
   margin-right: 8px;
 `;
+// flowlint-next-line unclear-type:off
 const Opt = ({ children, icon }: any) => (
   <Label>
     <Flag>{icon}</Flag>
@@ -48,6 +49,7 @@ const formatOptionLabel = (opt: OptionType, { context }) =>
   context === 'value' ? controlLabel(opt) : optionLabel(opt);
 
 // put it all together
+// flowlint-next-line unclear-type:off
 const CountrySelect = (props: any) => (
   <Select
     // components={{ Menu }}

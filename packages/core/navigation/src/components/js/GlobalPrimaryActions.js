@@ -9,14 +9,18 @@ import GlobalPrimaryActionsItemsWrapper from '../styled/GlobalPrimaryActionsItem
 import type { IconAppearance } from '../../types';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   actions?: Array<Element<any>>,
+  // flowlint-next-line unclear-type:off
   createIcon?: Element<any>,
   linkComponent?: ComponentType<*>,
   onCreateActivate?: (event: Event) => void,
   onSearchActivate?: (event: Event) => void,
+  // flowlint-next-line unclear-type:off
   primaryIcon?: Element<any>,
   primaryIconAppearance?: IconAppearance,
   primaryItemHref?: string,
+  // flowlint-next-line unclear-type:off
   searchIcon?: Element<any>,
 };
 

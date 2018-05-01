@@ -9,6 +9,7 @@ type Props = {
   focused?: boolean,
   isToday?: boolean,
   month: number,
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
   previouslySelected?: boolean,
   selected?: boolean,

@@ -76,6 +76,7 @@ const getButtonElementProps = props => {
 };
 
 // TODO: type this correctly
+// flowlint-next-line unclear-type:off
 export default function getProps(component: Object) {
   const { props } = component;
 

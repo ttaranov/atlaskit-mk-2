@@ -18,6 +18,7 @@ type Props = {
   /** Content to be shown to the right of the heading */
   elemAfter?: Node | string,
   /** A function that returns the DOM ref created by the group */
+  // flowlint-next-line unclear-type:off
   innerRef?: Function,
   /** Accessibility role to be applied to the root component */
   role: string,

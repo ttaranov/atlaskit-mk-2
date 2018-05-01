@@ -6,6 +6,7 @@ import UIAnalyticsEvent from './UIAnalyticsEvent';
 // Basic events
 export type AnalyticsEventPayload = {
   action: string,
+  // flowlint-next-line unclear-type:off
   [string]: any,
 };
 

@@ -9,6 +9,7 @@ type State = {
   active: number | null,
 };
 
+// flowlint-next-line unclear-type:off
 export default class SpotlightBasicExample extends Component<Object, State> {
   state: State = { active: null };
   start = () => this.setState({ active: 0 });

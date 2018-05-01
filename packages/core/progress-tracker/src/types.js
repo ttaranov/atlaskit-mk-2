@@ -17,6 +17,7 @@ export type Stage = {
 export type Stages = Array<Stage>;
 
 export type LinkComponentProps = {
+  // flowlint-next-line unclear-type:off
   item: Stage & any,
 };
 

@@ -107,8 +107,10 @@ function applyMutations(
 }
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
+  // flowlint-next-line unclear-type:off
   navigation: Object,
 };
 type State = {

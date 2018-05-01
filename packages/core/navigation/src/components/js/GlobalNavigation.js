@@ -12,15 +12,18 @@ import type { Provided } from '../../theme/types';
 
 type Props = {
   /** The icon to be used for the create button */
+  // flowlint-next-line unclear-type:off
   createIcon?: Element<any>,
   /** A component that will be used to render links. A default link component is
    used if none is provided. */
   linkComponent?: ComponentType<*>,
   /** A list of nodes to be rendered as the global primary actions.  They appear
    directly underneath the global primary icon. This must not exceed three nodes */
+  // flowlint-next-line unclear-type:off
   primaryActions?: Array<Element<any>>,
   /** The topmost icon to be placed in the global navigation - usually the product
    logo, or the product home icon */
+  // flowlint-next-line unclear-type:off
   primaryIcon?: Element<any>,
   /** The appearance of the primary icon for custom styling purposes */
   primaryIconAppearance: IconAppearance,
@@ -28,8 +31,10 @@ type Props = {
   primaryItemHref?: string,
   /** A list of nodes to be placed in the secondary actions slot at the bottom of
    the global sidebar. This must not exceed five nodes. */
+  // flowlint-next-line unclear-type:off
   secondaryActions: Array<Element<any>>,
   /** The icon to use in the global navigation for the global search button */
+  // flowlint-next-line unclear-type:off
   searchIcon?: Element<any>,
   /** A handler that is called when the search drawer is requesting to be opened */
   onSearchActivate?: () => void,

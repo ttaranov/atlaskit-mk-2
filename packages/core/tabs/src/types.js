@@ -1,6 +1,7 @@
 // @flow
 import type { ComponentType, Node } from 'react';
 
+// flowlint-next-line unclear-type:off
 export type TabData = { label: string, content: Node, [string]: any };
 
 type TabItemElementProps = {
@@ -40,6 +41,7 @@ export type TabContentComponentProvided = {
 export type TabItemType = ComponentType<TabItemComponentProvided>;
 export type TabContentType = ComponentType<TabContentComponentProvided>;
 
+// flowlint-next-line unclear-type:off
 export type selectedProp = any;
 export type IsSelectedTestFunction = (
   selected: selectedProp,

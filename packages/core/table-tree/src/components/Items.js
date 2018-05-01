@@ -9,6 +9,7 @@ import {
 } from './../types';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   parentData?: Object,
   getItemsData: ItemsProvider,
   depth?: number,
@@ -76,6 +77,7 @@ export default class Items extends PureComponent<Props, State> {
     const { itemsData } = this.state;
     return (
       itemsData &&
+      // flowlint-next-line unclear-type:off
       itemsData.map((itemData: Object, index: number) => (
         <Item
           data={itemData}

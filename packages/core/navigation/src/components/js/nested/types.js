@@ -1,4 +1,5 @@
 // @flow
+// flowlint-next-line unclear-type:off
 export type ReactElement = any;
 
 export type TraversalDirection = 'up' | 'down';
@@ -7,6 +8,7 @@ export type OnAnimationEnd = ({
   traversalDirection: TraversalDirection,
 }) => void;
 
+// flowlint-next-line unclear-type:off
 export type Stack = Array<any>;
 
 export type ContainerNavigationNestedType = {

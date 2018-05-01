@@ -24,6 +24,7 @@ const WrappedButtonFunction = withAnalytics(
 );
 
 export default class WrapExample extends Component<{}, {}> {
+  // flowlint-next-line unclear-type:off
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

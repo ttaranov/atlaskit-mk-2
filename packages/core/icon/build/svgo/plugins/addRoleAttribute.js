@@ -15,6 +15,7 @@ const roleAttribute = {
 
 /*::
 type dataType = {
+  // flowlint-next-line unclear-type:off
   content: any[]
 }
 */

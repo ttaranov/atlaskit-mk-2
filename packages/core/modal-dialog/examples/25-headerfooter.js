@@ -40,6 +40,7 @@ const headerStyles = {
   paddingTop: 170,
   position: 'relative',
 };
+// flowlint-next-line unclear-type:off
 const Header = ({ onClose }: { onClose: Function }) => (
   <div style={headerStyles}>
     <span style={{ position: 'absolute', right: 0, top: 4 }}>
@@ -54,6 +55,7 @@ const Header = ({ onClose }: { onClose: Function }) => (
   </div>
 );
 type FooterProps = {
+  // flowlint-next-line unclear-type:off
   onClose: Function,
   showKeyline: boolean,
 };
@@ -95,6 +97,7 @@ export default class ModalDemo extends Component<{}, State> {
   state = { isOpen: null };
   open = (isOpen: string) => this.setState({ isOpen });
   close = (isOpen: string) => this.setState({ isOpen });
+  // flowlint-next-line unclear-type:off
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
   render() {
     const { isOpen } = this.state;

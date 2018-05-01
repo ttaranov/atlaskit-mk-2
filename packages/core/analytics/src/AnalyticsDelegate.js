@@ -10,9 +10,11 @@ stack in a different React root.
 
 type Props = {
   /** A single element, either Component or DOM node */
+  // flowlint-next-line unclear-type:off
   children?: Element<any>,
   delegateAnalyticsEvent?: (
     eventName: string,
+    // flowlint-next-line unclear-type:off
     eventData: Object,
     isPrivate?: boolean,
   ) => void,
@@ -33,6 +35,7 @@ class AnalyticsDelegate extends Component<Props, {}> {
     };
   }
 
+  // flowlint-next-line unclear-type:off
   onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean) => {
     const { delegateAnalyticsEvent } = this.props;
 

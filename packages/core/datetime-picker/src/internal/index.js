@@ -27,6 +27,7 @@ export const defaultTimes = [
   '18:00',
 ];
 
+// flowlint-next-line unclear-type:off
 export const DropdownIndicator = ({ icon: Icon }: { icon?: any } = {}) =>
   Icon ? (
     <span role="img">

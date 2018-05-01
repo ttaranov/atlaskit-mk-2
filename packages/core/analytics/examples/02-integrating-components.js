@@ -5,8 +5,10 @@ import { AnalyticsListener, cleanProps, withAnalytics } from '../src';
 
 type ButtonProps = {
   fireAnalyticsEvent: (eventName: string) => {},
+  // flowlint-next-line unclear-type:off
   firePrivateAnalyticsEvent: (eventName: string, eventData?: Object) => {},
   onClick: (eventObject: {}) => {},
+  // flowlint-next-line unclear-type:off
   children: any,
 };
 
@@ -33,6 +35,7 @@ const IntegratedButton = withAnalytics(Button);
 /* eslint-disable react/no-multi-comp */
 
 export default class IntegratingExample extends Component<{}, {}> {
+  // flowlint-next-line unclear-type:off
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

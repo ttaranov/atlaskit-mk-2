@@ -11,6 +11,7 @@ type Props = {
   sortKey: ?string,
   sortOrder?: SortOrderType,
   isFixedSize?: boolean,
+  // flowlint-next-line unclear-type:off
   onSort: Function,
   isRankable?: boolean,
   isRanking: boolean,

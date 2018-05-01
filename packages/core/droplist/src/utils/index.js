@@ -6,7 +6,8 @@ export function getInputBackground({
   isDisabled,
   isHovered,
   isPressed,
-}: Object) {
+}: // flowlint-next-line unclear-type:off
+Object) {
   let background = colors.N40;
 
   if (isHovered) background = colors.N50;
@@ -18,6 +19,7 @@ export function getInputBackground({
   return background;
 }
 
+// flowlint-next-line unclear-type:off
 export function getInputFill(appearanceProps: Object) {
   return appearanceProps.isChecked ? colors.N0 : 'transparent';
 }

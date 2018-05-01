@@ -21,6 +21,7 @@ export default class FieldRadioGroupStateless extends Component<
     label: '',
   };
 
+  // flowlint-next-line unclear-type:off
   renderItems = (): any => {
     // Check items to avoid flow typing issue
     if (this.props.items) {

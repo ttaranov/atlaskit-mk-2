@@ -41,6 +41,7 @@ export default class StatelessExample extends PureComponent<{}, State> {
       filterValue: '',
     });
   };
+  // flowlint-next-line unclear-type:off
   toggleOpen = ({ isOpen }: Object) => this.setState({ isOpen });
   updateFilter = (filterValue: string) => this.setState({ filterValue });
 

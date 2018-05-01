@@ -13,6 +13,7 @@ export default function Advanced() {
   const defaultMessages = getDefaultMessages('Stride');
   return (
     <WithDataDisplay>
+      {/* flowlint-next-line unclear-type:off */}
       {(props: any) => (
         <NPS
           canClose

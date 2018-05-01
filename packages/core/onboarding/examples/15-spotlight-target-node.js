@@ -11,6 +11,7 @@ type State = {
   spotlightIsVisible: boolean,
 };
 
+// flowlint-next-line unclear-type:off
 export default class SpotlightNodeExample extends Component<Object, State> {
   drawer: HTMLElement;
   state = { drawerIsVisible: false, spotlightIsVisible: false };

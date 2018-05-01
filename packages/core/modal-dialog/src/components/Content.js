@@ -178,6 +178,7 @@ export default class Content extends Component<Props, State> {
   handleKeyUp = () => {
     this.escapeIsHeldDown = false;
   };
+  // flowlint-next-line unclear-type:off
   handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
     const { onClose, shouldCloseOnEscapePress, stackIndex = 0 } = this.props;
 

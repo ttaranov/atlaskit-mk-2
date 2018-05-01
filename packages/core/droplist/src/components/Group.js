@@ -3,6 +3,7 @@ import React, { PureComponent, type Node } from 'react';
 import Group, { Heading, HeadingText, HeadingAfter } from '../styled/Group';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children?: any,
   elemAfter?: Node | string,
   heading?: string,

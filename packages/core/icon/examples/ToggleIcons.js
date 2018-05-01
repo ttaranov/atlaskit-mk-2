@@ -27,6 +27,7 @@ const styles = {
 type State = {
   toggleColor: boolean,
   toggleFill: boolean,
+  // flowlint-next-line unclear-type:off
   icons: any,
 };
 

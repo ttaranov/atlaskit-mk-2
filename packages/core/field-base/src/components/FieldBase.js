@@ -34,6 +34,7 @@ export default class FieldBase extends Component<FieldBaseProps, State> {
     shouldIgnoreNextDialogBlur: false,
   };
 
+  // flowlint-next-line unclear-type:off
   timers: any;
 
   onFocus = (e: SyntheticEvent<*>) => {
@@ -78,6 +79,7 @@ export default class FieldBase extends Component<FieldBaseProps, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   cancelSchedule(key: any) {
     this.timers = this.timers || {};
     if (this.timers[key]) {
@@ -86,6 +88,7 @@ export default class FieldBase extends Component<FieldBaseProps, State> {
     }
   }
 
+  // flowlint-next-line unclear-type:off
   reschedule(key: any, callback: () => mixed) {
     // Use reschedule (not just schedule) to avoid race conditions when multiple blur events
     // happen one by one.

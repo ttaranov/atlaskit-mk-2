@@ -11,6 +11,7 @@ exports.params = {
 };
 
 exports.fn = function callbackOnDefinedFill(
+  // flowlint-next-line unclear-type:off
   item /*: any */,
   params /*: {
   callback: (f: string) => mixed,

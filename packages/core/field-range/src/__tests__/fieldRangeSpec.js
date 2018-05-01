@@ -9,6 +9,7 @@ const simulateValueChange = (range, value) => {
   const input = range.find('input');
   const inputElement: ?HTMLInputElement = (input
     .find('input')
+    // flowlint-next-line unclear-type:off
     .getDOMNode(): any);
   if (inputElement) {
     inputElement.value = `${value}`;

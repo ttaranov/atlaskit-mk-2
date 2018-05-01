@@ -1,5 +1,6 @@
 // @flow
 
+// flowlint-next-line unclear-type:off
 export type ReactElement = any;
 
 export type DrawerProps = {

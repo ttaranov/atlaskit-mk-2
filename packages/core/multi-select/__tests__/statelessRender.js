@@ -265,6 +265,7 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should render loading state for initial fetching when properties are set and no items', () => {
+        // flowlint-next-line unclear-type:off
         const emptyArray: Array<any> = [];
         const select = mount(
           <MultiSelectStateless items={emptyArray} isOpen isLoading />,
@@ -279,6 +280,7 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should not render loading state when field is not open', () => {
+        // flowlint-next-line unclear-type:off
         const emptyArray: Array<any> = [];
         const select = mount(
           <MultiSelectStateless items={emptyArray} isOpen={false} isLoading />,
@@ -289,6 +291,7 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should render a no matches found if there is no item at all', () => {
+        // flowlint-next-line unclear-type:off
         const emptyArray: Array<any> = [];
         const select = mount(
           <MultiSelectStateless items={emptyArray} selectedItems={[]} isOpen />,

@@ -23,6 +23,7 @@ export default class TextExample extends Component<void, State> {
     this.setState(state => ({ editValue: state.readValue }));
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       editValue: event.target.value,

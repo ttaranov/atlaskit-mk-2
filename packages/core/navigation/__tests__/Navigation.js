@@ -32,6 +32,7 @@ const resizeClosedBreakpoint = resizeClosedBreakpointFn(false);
 
 const expect = window.expect;
 
+// flowlint-next-line unclear-type:off
 class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;

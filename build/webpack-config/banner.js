@@ -20,6 +20,7 @@ function devServerBanner(
     host,
   } /*: { entry: string, workspaces: Array<{ name: string, dir: string }>, workspacesGlob: string, isAll: boolean, port: number, host: string } */,
 ) {
+  // flowlint-next-line unclear-type:off
   const msg /*: Array<any> */ = [''];
   const wsNamePadLength = workspaces.reduce(
     (acc, ws) => (ws.name.length > acc ? ws.name.length : acc),
@@ -55,6 +56,7 @@ function devServerBanner(
   return msg;
 }
 
+// flowlint-next-line unclear-type:off
 function buildBanner() /*: any */ {
   return [
     '',
@@ -65,7 +67,8 @@ function buildBanner() /*: any */ {
 
 function errorMsg(
   { title, msg } /*: { title: string, msg: string } */,
-) /*: any */ {
+) // flowlint-next-line unclear-type:off
+/*: any */ {
   return ['', chalk.red(`${redBadge('ERROR')} ${title}:`), '', msg, ''];
 }
 

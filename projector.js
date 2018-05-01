@@ -6,6 +6,7 @@ const release = require('./build/releases/release');
 const { getKarmaConfig } = require('./build/karma-config');
 
 const log = (type /*: string */ = 'log') => (
+  // flowlint-next-line unclear-type:off
   data /*: { toString: Function }*/,
 ) =>
   // eslint-disable-next-line

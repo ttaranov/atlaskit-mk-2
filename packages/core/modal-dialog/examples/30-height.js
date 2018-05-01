@@ -10,12 +10,16 @@ const H4 = styled.h4`
   margin-bottom: 0.66em;
 `;
 
+// flowlint-next-line unclear-type:off
 type State = { isOpen: any };
 
 export default class ModalDemo extends Component<{}, State> {
   state = { isOpen: null };
+  // flowlint-next-line unclear-type:off
   close = (isOpen: any) => this.setState({ isOpen });
+  // flowlint-next-line unclear-type:off
   open = (isOpen: any) => this.setState({ isOpen });
+  // flowlint-next-line unclear-type:off
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
   render() {

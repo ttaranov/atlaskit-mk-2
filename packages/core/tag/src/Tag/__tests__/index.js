@@ -246,6 +246,7 @@ describe('Tag component', () => {
 
     it('should render the standard color option if missing color option is provided', () => {
       const wrapper = mount(
+        // flowlint-next-line unclear-type:off
         <Tag text="gibberish" color={('gibberish': any)} />,
       );
       expect(wrapper.find(Chrome).props().color).toBe('standard');

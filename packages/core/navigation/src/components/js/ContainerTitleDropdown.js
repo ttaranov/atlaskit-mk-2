@@ -22,6 +22,7 @@ type Props = {
   /** Text to appear as the title. This is placed at the top and bolded. */
   text: string,
   /** Theme used */
+  // flowlint-next-line unclear-type:off
   theme: Object,
   /** Controls the initial open state of the dropdown. */
   defaultDropdownOpen?: boolean,
@@ -30,6 +31,7 @@ type Props = {
   /** If true, a Spinner is rendered instead of the items */
   isDropdownLoading?: boolean,
   /** Called when the menu is open or closed. Received an object with isOpen state. */
+  // flowlint-next-line unclear-type:off
   onDropdownOpenChange?: Function,
 };
 

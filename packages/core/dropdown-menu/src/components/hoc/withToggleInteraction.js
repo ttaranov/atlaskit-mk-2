@@ -23,12 +23,15 @@ type Props = {
    * mount. Changing the value will not cause onClick to be called. */
   isSelected?: boolean,
   /** Standard optional onClick handler */
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
 };
 
 // HOC that typically wraps @atlaskit/item
 const withToggleInteraction = (
+  // flowlint-next-line unclear-type:off
   WrappedComponent: ComponentType<any>,
+  // flowlint-next-line unclear-type:off
   SelectionIcon: ComponentType<any>,
   ariaRole: Behaviors,
 ) => {
@@ -48,6 +51,7 @@ const withToggleInteraction = (
       this.callContextFn('setItemSelected', id, isSelected, defaultSelected);
     }
 
+    // flowlint-next-line unclear-type:off
     componentWillReceiveProps(nextProps: Object) {
       const { id, defaultSelected, isSelected } = nextProps;
       if (this.props.isSelected !== isSelected) {

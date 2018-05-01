@@ -2,7 +2,9 @@
 
 import React from 'react';
 
+// flowlint-next-line unclear-type:off
 export class WithDataDisplay extends React.Component<any, any> {
+  // flowlint-next-line unclear-type:off
   constructor(...args: Array<any>) {
     super(...args);
     this.state = {
@@ -16,30 +18,37 @@ export class WithDataDisplay extends React.Component<any, any> {
     };
   }
 
+  // flowlint-next-line unclear-type:off
   onRatingSelect = (rating: any) => {
     this.setState({ rating });
   };
 
+  // flowlint-next-line unclear-type:off
   onCommentChange = (comment: any) => {
     this.setState({ comment });
   };
 
+  // flowlint-next-line unclear-type:off
   onFeedbackSubmit = (feedbackSubmission: any) => {
     this.setState({ feedbackSubmission });
   };
 
+  // flowlint-next-line unclear-type:off
   onRoleSelect = (role: any) => {
     this.setState({ role });
   };
 
+  // flowlint-next-line unclear-type:off
   onAllowContactChange = (allowContact: any) => {
     this.setState({ allowContact });
   };
 
+  // flowlint-next-line unclear-type:off
   onFollowupSubmit = (followupSubmission: any) => {
     this.setState({ followupSubmission });
   };
 
+  // flowlint-next-line unclear-type:off
   onFinish = (finishSubmission: any) => {
     this.setState({ finishSubmission });
   };

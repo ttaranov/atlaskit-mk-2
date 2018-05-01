@@ -16,13 +16,16 @@ const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
   : process.env.USER;
+// flowlint-next-line unclear-type:off
 let clients /*: Array<?Object>*/ = [];
+// flowlint-next-line unclear-type:off
 let skipForBrowser /*:?Object */ = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
+// flowlint-next-line unclear-type:off
 function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
@@ -67,12 +70,15 @@ afterAll(async function() {
 });
 
 /*::
+// flowlint-next-line unclear-type:off
 type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
 */
 
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
+  // flowlint-next-line unclear-type:off
   tester /*: Tester<Object>*/,
+  // flowlint-next-line unclear-type:off
   client /*: Object*/,
   skipBrowser /*: ?{skip:Array<string>}*/,
 ) {

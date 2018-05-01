@@ -16,6 +16,7 @@ const renderItems = ({
 }: {
   items: Array<ItemType>,
   focusedItemIndex?: number,
+  // flowlint-next-line unclear-type:off
   handleItemSelect: Function,
 }) => {
   if (items && items.length) {
@@ -63,6 +64,7 @@ type Props = {
   focusedItemIndex?: number,
   hasFooter: boolean,
   groups: Array<GroupType>,
+  // flowlint-next-line unclear-type:off
   handleItemSelect: Function,
   noMatchesFound?: string,
   selectedItems?: Array<ItemType>,

@@ -6,6 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 
 type Props = {
   children: Node,
+  // flowlint-next-line unclear-type:off
   theme: Object,
   withTransitionGroup: boolean,
 };
@@ -77,10 +78,12 @@ class Portal extends Component<Props> {
 
 // Pass theme through to be consumed
 // TODO: @thejameskyle - Fix Styled Components for Flow 53+
+// flowlint-next-line unclear-type:off
 const PortalWithTheme = (withTheme: any)(Portal);
 
 // Wrap the default export in a ThemeProvider component so that withTheme
 // doesn't freak out if the app doesn't have one already
+// flowlint-next-line unclear-type:off
 export default function PortalWithThemeProvider(props: Object) {
   return (
     <ThemeProvider theme={{}}>

@@ -32,6 +32,7 @@ class Tip extends Component<Props> {
     } = this.props;
 
     // NOTE: `props.in` is NOT public API
+    // flowlint-next-line unclear-type:off
     const transitionIn: boolean = (this.props: any).in;
 
     return (

@@ -32,6 +32,7 @@ type Props = {
   isExpanded?: boolean,
 
   /** Passed implicitly. Called whenever the current row gets expanded or collapsed. */
+  // flowlint-next-line unclear-type:off
   onExpandToggle?: Function,
 
   /** Passed implicitly. The tree-depth (nesting level) of the current row. Used to calculate the indent. */

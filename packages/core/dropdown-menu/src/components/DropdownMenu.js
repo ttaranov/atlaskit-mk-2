@@ -50,6 +50,7 @@ export default class DropdownMenu extends Component<
     }
   }
 
+  // flowlint-next-line unclear-type:off
   findActivatedGroup = (item: Object) =>
     this.state.items.filter(group => group.items.indexOf(item) > -1)[0]; // eslint-disable-line
 

@@ -5,11 +5,13 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { scrollHintSpacing, gridSize } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
+// flowlint-next-line unclear-type:off
 const NestedNavigation: StatelessFunctionalComponent<any> = ({
   traversalDirection,
   children,
   ...props
-}: Object) => (
+}: // flowlint-next-line unclear-type:off
+Object) => (
   // Don't pass the traversalDirection prop to the TransitionGroup
   // eslint-disable-next-line no-unused-vars
   <TransitionGroup {...props}>{children}</TransitionGroup>

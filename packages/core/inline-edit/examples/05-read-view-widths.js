@@ -42,6 +42,7 @@ export default class extends Component<*, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onFieldTextChange = (e: any) => {
     this.setState({
       editFieldTextValue: e.target.value,
@@ -72,6 +73,7 @@ export default class extends Component<*, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onShouldFitContainerChange = (e: any) => {
     this.setState({
       shouldFitContainer: e.target.value === 'true',

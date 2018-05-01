@@ -11,6 +11,7 @@ configure({ adapter: new Adapter() });
 const describe = window.describe;
 const it = window.it;
 
+// flowlint-next-line unclear-type:off
 class Child extends PureComponent<any> {
   render() {
     return <div>Hi there</div>;

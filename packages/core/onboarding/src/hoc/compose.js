@@ -1,7 +1,9 @@
 // @flow
 
+// flowlint-next-line unclear-type:off
 export default function compose(...funcs: any) {
   if (funcs.length === 0) {
+    // flowlint-next-line unclear-type:off
     return (arg: any) => arg;
   }
 

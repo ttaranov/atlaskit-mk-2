@@ -1,5 +1,6 @@
 // @flow
 
+// flowlint-next-line unclear-type:off
 export const cities: Array<{ label: string, value: any }> = [
   { label: 'Adelaide', value: 'adelaide' },
   { label: 'Brisbane', value: 'brisbane' },

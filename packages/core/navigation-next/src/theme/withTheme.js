@@ -9,6 +9,7 @@ import type { GlobalTheme, ProductTheme } from './types';
 type State = { theme: GlobalTheme | ProductTheme | void };
 
 // export default (defaultTheme: ProductTheme) => (
+// flowlint-next-line unclear-type:off
 export default (defaultTheme: any) => (WrappedComponent: ComponentType<*>) => {
   return class WithTheme extends Component<{}, State> {
     static contextTypes = {

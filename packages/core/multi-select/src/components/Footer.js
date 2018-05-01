@@ -8,6 +8,7 @@ type Props = {
   children: Node,
   elemBefore?: Node,
   isFocused: boolean,
+  // flowlint-next-line unclear-type:off
   onClick: Function,
   shouldHideSeparator: boolean,
 };

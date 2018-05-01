@@ -10,6 +10,7 @@ import { whenCollapsed } from '../../theme/util';
 
 const animationTime = animationTimeUnitless / 1000;
 
+// flowlint-next-line unclear-type:off
 export const getAnimation = ({ transitionState, traversalDirection }: Object) =>
   transitionState === 'entering' || transitionState === 'exiting'
     ? `animation: ${animationTime}s ${keyframes`

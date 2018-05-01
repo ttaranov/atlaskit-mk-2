@@ -1,6 +1,7 @@
 // @flow
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children: Function,
   props: {} | string,
   theme: {},

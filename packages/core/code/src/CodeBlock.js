@@ -24,6 +24,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     theme: {},
   };
 
+  // flowlint-next-line unclear-type:off
   handleCopy = (event: any) => {
     /**
      * We don't want to copy the markup after highlighting, but rather the preformatted text in the selection

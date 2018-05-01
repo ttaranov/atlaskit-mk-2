@@ -29,10 +29,13 @@ type Props = {
   /** Maximum height (in pixels) of the image, default value is 160. */
   maxImageHeight?: number,
   /** Primary action button for the page, usually it will be something like "Create" (or "Retry" for error pages). */
+  // flowlint-next-line unclear-type:off
   primaryAction?: Element<any>,
   /** Secondary action button for the page. */
+  // flowlint-next-line unclear-type:off
   secondaryAction?: Element<any>,
   /** Button with link to some external resource like documentation or tutorial, it will be opened in a new tab. */
+  // flowlint-next-line unclear-type:off
   tertiaryAction?: Element<any>,
   /** Shows spinner next to the action buttons. Primary and secondary action buttons are disabled when this prop is set to true. */
   isLoading?: boolean,

@@ -10,12 +10,15 @@ export type StatelessProps = {
   caption?: Node,
   head?: HeadType,
   rows?: Array<RowType>,
+  // flowlint-next-line unclear-type:off
   emptyView?: Element<any>,
   loadingSpinnerSize?: LoadingSpinnerSizeType,
   isLoading?: boolean,
   isFixedSize?: boolean,
   rowsPerPage?: number,
+  // flowlint-next-line unclear-type:off
   onSetPage: Function,
+  // flowlint-next-line unclear-type:off
   onSort: Function,
   page?: number,
   sortKey?: string,

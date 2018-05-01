@@ -24,6 +24,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
     value: this.props.value,
   };
 
+  // flowlint-next-line unclear-type:off
   handleOnChange = (e: any) => {
     this.setState({ value: e.target.value });
     if (this.props.onChange) {

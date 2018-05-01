@@ -3,9 +3,11 @@ import React, { Component, type ComponentType } from 'react';
 import PropTypes from 'prop-types';
 
 type EventMap = {
+  // flowlint-next-line unclear-type:off
   [eventName: string]: string | Function,
 };
 
+// flowlint-next-line unclear-type:off
 type FireAnalyticsEvent = (eventName: string, eventData?: Object) => void;
 
 type EventMapOrFunction =
@@ -14,7 +16,9 @@ type EventMapOrFunction =
 
 type AnalyticsProps = {
   analyticsId?: string,
+  // flowlint-next-line unclear-type:off
   analyticsData?: Object,
+  // flowlint-next-line unclear-type:off
   innerRef?: Function,
 };
 
@@ -61,6 +65,7 @@ const withAnalytics = (
 
     delegateAnalyticsEvent = (
       analyticsId: string,
+      // flowlint-next-line unclear-type:off
       data: Object,
       isPrivate: boolean,
     ) => {
@@ -69,6 +74,7 @@ const withAnalytics = (
       onAnalyticsEvent(analyticsId, data, isPrivate);
     };
 
+    // flowlint-next-line unclear-type:off
     fireAnalyticsEvent = (name: string, data?: Object) => {
       const { analyticsData, analyticsId } = this.props;
       const { onAnalyticsEvent } = this.context;
@@ -77,6 +83,7 @@ const withAnalytics = (
       onAnalyticsEvent(`${analyticsId}.${name}`, eventData, false);
     };
 
+    // flowlint-next-line unclear-type:off
     privateAnalyticsEvent = (name: string, data?: Object) => {
       const { onAnalyticsEvent } = this.context;
       if (!onAnalyticsEvent) return;

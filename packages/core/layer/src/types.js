@@ -41,6 +41,7 @@ export type PopperStateType = {
   flipped: boolean,
   hide: boolean,
   arrowElement: Element,
+  // flowlint-next-line unclear-type:off
   boundaries: Object,
   position: CSSPositionType,
   originalPosition: PositionType,

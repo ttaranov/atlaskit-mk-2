@@ -52,6 +52,7 @@ type ItemLineCardProps = {
     isFocused: boolean,
     item: Item,
   ) => Node,
+  // flowlint-next-line unclear-type:off
   onClick: (item: Item, e?: any) => void,
 };
 
@@ -298,6 +299,7 @@ export default class extends PureComponent<{}, State> {
   state: State = { isOpen: false };
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });
+  // flowlint-next-line unclear-type:off
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
   render() {

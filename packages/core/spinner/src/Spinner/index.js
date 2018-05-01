@@ -49,6 +49,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     this.setState({ phase: 'LEAVE' });
   };
 
+  // flowlint-next-line unclear-type:off
   endListener = (node: ?HTMLElement, done: Function) => {
     const executeCallback = (event: AnimationEvent) => {
       // ignore animation events on the glyph

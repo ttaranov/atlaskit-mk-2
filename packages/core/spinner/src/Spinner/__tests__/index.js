@@ -151,8 +151,10 @@ describe('Spinner', () => {
 
     beforeEach(() => {
       const svg = mount(<Spinner />).find(Svg);
+      // flowlint-next-line unclear-type:off
       const svgInterpolatedStyles: Object => Array<
         string,
+        // flowlint-next-line unclear-type:off
       > = (svgStyles[1]: any);
       styles = svgInterpolatedStyles(svg.props()).join('');
     });

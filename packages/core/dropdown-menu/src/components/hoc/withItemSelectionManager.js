@@ -12,6 +12,7 @@ type Props = {
 
 // HOC that typically wraps @atlaskit/item/ItemGroup
 const withDropdownItemSelectionManager = (
+  // flowlint-next-line unclear-type:off
   WrappedComponent: any,
   selectionBehavior: Behaviors,
 ) =>

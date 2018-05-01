@@ -68,6 +68,7 @@ function packageIsInPatternOrChanged(workspace) {
 }
 
 async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
+  // flowlint-next-line unclear-type:off
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
     workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },

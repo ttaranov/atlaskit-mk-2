@@ -34,6 +34,7 @@ type State = {
 
 /* eslint-disable react/sort-comp */
 export default class SpotlightDialogPlacementExample extends Component<
+  // flowlint-next-line unclear-type:off
   Object,
   State,
 > {

@@ -31,6 +31,7 @@ const withContextFromProps = (
       if (BaseComponent !== null) {
         return <BaseComponent>{this.props.children}</BaseComponent>;
       } else if (React.Children.count(children) === 1) {
+        // flowlint-next-line unclear-type:off
         const onlyChild = ((children: any): Element<*>);
         // Hacky fix to work with TransitionGroup in withRenderTarget
         return React.Children.only(React.cloneElement(onlyChild, props));

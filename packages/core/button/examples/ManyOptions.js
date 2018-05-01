@@ -34,6 +34,7 @@ const css = `
   }
 `;
 
+// flowlint-next-line unclear-type:off
 class CustomComponent extends Component<any, {}> {
   render() {
     const { children, innerRef, ...props } = this.props; // eslint-disable-line no-unused-vars
@@ -41,6 +42,7 @@ class CustomComponent extends Component<any, {}> {
   }
 }
 
+// flowlint-next-line unclear-type:off
 const BuildStory = (props: any) => (
   <div style={{ padding: '10px' }}>
     <style>{css}</style>

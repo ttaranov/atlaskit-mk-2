@@ -7,6 +7,7 @@ export type ProductNavProps = {
   isHinting: boolean,
   isPeeking: boolean,
   onOverlayClick?: Event => void,
+  // flowlint-next-line unclear-type:off
   resizeState: Object,
   root: ComponentType<{}>,
   transitionState: 'entered' | 'entering' | 'exited' | 'exiting',

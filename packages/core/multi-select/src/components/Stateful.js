@@ -57,14 +57,18 @@ type Props = {
    including if there is one item that has been selected. */
   noMatchesFound?: string,
   /** Handler to be called when the filtered items changes.*/
+  // flowlint-next-line unclear-type:off
   onFilterChange: Function,
   /** Handler to be called when a new item is created.
    * Only applicable when the shouldAllowCreateItem is set to true.*/
+  // flowlint-next-line unclear-type:off
   onNewItemCreated: Function,
   /** Handler to be called on select change. */
+  // flowlint-next-line unclear-type:off
   onSelectedChange: Function,
   /** Handler called when the select is opened or closed. Called with an object
    that has both the event, and the new isOpen state. */
+  // flowlint-next-line unclear-type:off
   onOpenChange: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
@@ -88,6 +92,7 @@ type State = {
   isOpen?: boolean,
   selectedItems: Array<ItemType>,
   filterValue: string,
+  // flowlint-next-line unclear-type:off
   items: Array<any>,
 };
 
@@ -159,6 +164,7 @@ export default class MultiSelect extends PureComponent<Props, State> {
   };
 
   handleOpenChange = (attrs: {
+    // flowlint-next-line unclear-type:off
     event: SyntheticEvent<any>,
     isOpen: boolean,
   }) => {
@@ -168,6 +174,7 @@ export default class MultiSelect extends PureComponent<Props, State> {
     this.setState({ isOpen: attrs.isOpen });
   };
 
+  // flowlint-next-line unclear-type:off
   handleNewItemCreate = ({ value: textValue }: Object) => {
     // eslint-disable-line react/no-unused-prop-types
     const { items, selectedItems } = this.state;

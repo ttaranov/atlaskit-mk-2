@@ -21,6 +21,7 @@ module.exports = (config /*: { maxWidth: number, maxHeight: number }*/) => {
 
   const defaultSVGO = initialiseDefaultSVGO();
 
+  // flowlint-next-line unclear-type:off
   const cleanSVGO /*: (string, string) => Promise<{ info: any, data: any }> */ = (
     filename,
     rawSVG,

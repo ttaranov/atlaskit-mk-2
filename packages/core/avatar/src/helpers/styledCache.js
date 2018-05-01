@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CustomComponentProxy from '../components/CustomComponentProxy';
 
 // This is necessary because we don't know what DOM element the custom component will render.
+// flowlint-next-line unclear-type:off
 export default (styles: Function) => {
   const StyledCustomComponent = styled(
     CustomComponentProxy,
@@ -26,6 +27,7 @@ export default (styles: Function) => {
   }: {
     component?: Node,
     href?: string,
+    // flowlint-next-line unclear-type:off
     onClick?: Function,
   }) {
     if (component) {

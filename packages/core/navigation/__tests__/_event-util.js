@@ -2,6 +2,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const dispatchMouseEvent = (
   eventName: string,
+  // flowlint-next-line unclear-type:off
   options?: Object = {},
   target: EventTarget = window,
 ): MouseEvent => {

@@ -41,6 +41,7 @@ type Props = {
   /** Controls the width of the drawer */
   width: 'narrow' | 'wide' | 'full',
   /** Fires anayltics event. Injected by withAnalytics. */
+  // flowlint-next-line unclear-type:off
   fireAnalyticsEvent: (eventName: string, eventData?: Object) => void,
 };
 

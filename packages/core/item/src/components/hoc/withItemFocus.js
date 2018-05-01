@@ -21,6 +21,7 @@ type Props = {
   isHidden?: boolean,
 };
 
+// flowlint-next-line unclear-type:off
 const withItemFocus = (WrappedComponent: any) =>
   class WithItemFocus extends Component<Props> {
     static displayName = `WithItemFocus(${getDisplayName(WrappedComponent)})`;

@@ -4,6 +4,7 @@ import Avatar from '../src/';
 import { Block } from './helpers';
 import { omit } from '../src/utils';
 
+// flowlint-next-line unclear-type:off
 export default (props: Object) => {
   const modifiedProps = omit(props, 'presence', 'status');
   return (

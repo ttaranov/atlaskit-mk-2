@@ -24,8 +24,10 @@ type BaseProps = {
   isConfirmOnBlurDisabled?: boolean,
   /** Handler called when checkmark is clicked. Also by default
    called when the input loses focus. */
+  // flowlint-next-line unclear-type:off
   onConfirm: any => mixed,
   /** Handler called when the cross is clicked on. */
+  // flowlint-next-line unclear-type:off
   onCancel: any => mixed,
   /** html to pass down to the label htmlFor prop. */
   labelHtmlFor?: string,
@@ -41,6 +43,7 @@ export type StatelessProps = BaseProps & {
   /** Whether the component shows the readView or the editView. */
   isEditing: boolean,
   /** Handler called when the wrapper or the label are clicked. */
+  // flowlint-next-line unclear-type:off
   onEditRequested: any => mixed,
 };
 

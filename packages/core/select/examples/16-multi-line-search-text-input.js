@@ -21,6 +21,7 @@ export default class MultiLineSearchInput extends Component<*, State> {
     inputValue: '',
     value: [],
   };
+  // flowlint-next-line unclear-type:off
   handleChange = (value: any, actionMeta: any) => {
     console.group('Value Changed');
     console.log(value);

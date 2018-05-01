@@ -35,6 +35,7 @@ const animationFade = state => {
  *  - InnerShadow
  */
 
+// flowlint-next-line unclear-type:off
 const ScrollProvider = (props: any) => (
   <div
     css={{

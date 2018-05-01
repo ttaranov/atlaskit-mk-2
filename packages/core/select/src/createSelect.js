@@ -10,6 +10,7 @@ import * as defaultComponents from './components';
 // directly from react-select
 
 type ValidationState = 'default' | 'error' | 'success';
+// flowlint-next-line unclear-type:off
 type OptionType = { [string]: any };
 type OptionsType = Array<OptionType>;
 type ValueType = OptionType | OptionsType | null | void;

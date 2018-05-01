@@ -11,6 +11,7 @@ export default class BasicExample extends PureComponent<void, State> {
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       eventResult: `onChange called with value: ${event.target.value}`,

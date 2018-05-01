@@ -30,6 +30,7 @@ describe('Lozenge', () => {
 
     it('should revert to "default" when set to an invalid value', () => {
       expect(
+        // flowlint-next-line unclear-type:off
         shallow(<Lozenge appearance={('foo': any)} />)
           .instance()
           .validAppearance(),

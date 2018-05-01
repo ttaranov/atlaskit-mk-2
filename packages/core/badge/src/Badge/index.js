@@ -39,6 +39,7 @@ type Props = {
   Handler function to be called when the value prop is changed.
   Called with fn({ oldValue, newValue }) */
 
+  // flowlint-next-line unclear-type:off
   onValueUpdated?: ({ oldValue: number, newValue: number }) => any,
   /** The value displayed within the badge. */
   value: number,

@@ -11,6 +11,7 @@ export type WrappedLayoutManagerProps = {
 };
 
 export type LayoutManagerProps = WrappedLayoutManagerProps & {
+  // flowlint-next-line unclear-type:off
   navigation: Object,
 };
 

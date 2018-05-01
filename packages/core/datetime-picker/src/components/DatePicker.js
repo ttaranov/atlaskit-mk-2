@@ -28,6 +28,7 @@ type Props = {
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
+  // flowlint-next-line unclear-type:off
   innerProps: Object,
   /** Whether or not the field is disabled. */
   isDisabled?: boolean,
@@ -42,6 +43,7 @@ type Props = {
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
   /** Props to apply to the select. */
+  // flowlint-next-line unclear-type:off
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value?: string,

@@ -24,6 +24,7 @@ export default class ContainerNavigationNested extends PureComponent<
     traversalDirection: 'down',
   };
 
+  // flowlint-next-line unclear-type:off
   componentWillReceiveProps({ stack }: { stack: Stack }): any {
     const traversalDirection = (() => {
       if (stack.length !== this.props.stack.length) {

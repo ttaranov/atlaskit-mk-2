@@ -6,6 +6,7 @@ import { WithDataDisplay } from './helpers';
 export default function BasicMoreConfig() {
   return (
     <WithDataDisplay>
+      {/* flowlint-next-line unclear-type:off */}
       {(props: any) => {
         return (
           <DefaultNPS

@@ -11,6 +11,7 @@ const BasicUsageExample = class extends PureComponent<void, State> {
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       onChangeResult: `onChange called with value: ${event.value} isChecked: ${

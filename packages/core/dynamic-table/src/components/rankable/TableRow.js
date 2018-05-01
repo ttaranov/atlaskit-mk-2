@@ -20,6 +20,7 @@ type Props = {
 } & WithDimensionsProps;
 
 export class RankableTableRow extends Component<Props, {}> {
+  // flowlint-next-line unclear-type:off
   innerRef = (innerRefFn: Function) => (ref: ?HTMLElement) => {
     innerRefFn(ref);
     this.props.innerRef(ref);

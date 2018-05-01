@@ -14,6 +14,7 @@ export type ButtonGroupProps = {
   /** The appearance to apply to all buttons. */
   appearance?: ButtonAppearances,
   /** The buttons to render. */
+  // flowlint-next-line unclear-type:off
   children: ChildrenArray<Element<any> | null | void>,
 };
 

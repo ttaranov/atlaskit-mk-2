@@ -52,6 +52,7 @@ export default class SpotlightManager extends PureComponent<Props> {
   }
 }
 
+// flowlint-next-line unclear-type:off
 export const withSpotlightState = (WrappedComponent: any) => (props: any) => (
   <Subscribe to={[SpotlightRegistry]}>
     {spotlightRegistry => (

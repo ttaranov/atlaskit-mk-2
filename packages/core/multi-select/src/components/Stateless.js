@@ -91,17 +91,22 @@ type Props = {
   /** name property to be passed to the html select element. */
   name?: string,
   /** Handler to be called when the filtered items changes.*/
+  // flowlint-next-line unclear-type:off
   onFilterChange: Function,
   /** Handler to be called when a new item is created.
    * Only applicable when the shouldAllowCreateItem is set to true.*/
+  // flowlint-next-line unclear-type:off
   onNewItemCreated?: Function,
   /** Handler called when the select is opened or closed. Called with an object
    that has both the event, and the new isOpen state. */
+  // flowlint-next-line unclear-type:off
   onOpenChange: Function,
   /** Handler called when a selection is made, with the item chosen. */
+  // flowlint-next-line unclear-type:off
   onSelected: Function,
   /** Function to be called by the tags representing a selected item. Passed to
    the `onAfterRemoveAction` on the Tag. */
+  // flowlint-next-line unclear-type:off
   onRemoved: Function,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
@@ -209,6 +214,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   onOpenChange = (attrs: { event: SyntheticEvent<any> }) => {
     const target = attrs.event.currentTarget;
     // eslint-disable-next-line react/no-find-dom-node
@@ -240,6 +246,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     return undefined;
   };
 
+  // flowlint-next-line unclear-type:off
   getAllVisibleItems = (groups: Array<any>): Array<ItemType> => {
     const { filterValue, selectedItems } = this.props;
     return groups.reduce((allFilteredItems, val) => {
@@ -248,6 +255,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     }, []);
   };
 
+  // flowlint-next-line unclear-type:off
   handleItemCreate = (event: SyntheticEvent<any>) => {
     const { filterValue: value, items } = this.props;
     if (value) {
@@ -265,6 +273,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
 
   handleItemSelect = (
     item: ItemType,
+    // flowlint-next-line unclear-type:off
     attrs: { event: SyntheticEvent<any> },
   ) => {
     if (!this.isFooterFocused()) {
@@ -312,6 +321,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     return focusedItemIndex === selectableItems.length;
   };
 
+  // flowlint-next-line unclear-type:off
   handleOnChange = (event: SyntheticEvent<any>) => {
     const value = event.currentTarget.value;
 
@@ -329,12 +339,14 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   handleTriggerClick = (event: SyntheticEvent<any>) => {
     if (!this.props.isDisabled) {
       this.onOpenChange({ event, isOpen: true });
     }
   };
 
+  // flowlint-next-line unclear-type:off
   handleFooterActivate = (event: SyntheticEvent<any>) => {
     const { footer } = this.props;
     if (footer && footer.onActivate) {
@@ -368,6 +380,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   handleKeyboardInteractions = (event: SyntheticKeyboardEvent<any>) => {
     const { isOpen, items, filterValue } = this.props;
     const { focusedItemIndex } = this.state;

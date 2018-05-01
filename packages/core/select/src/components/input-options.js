@@ -67,6 +67,7 @@ const getSecondaryColor = ({
 };
 
 type OptionProps = CommonProps & {
+  // flowlint-next-line unclear-type:off
   [string]: any,
   children: Element<*>,
   getStyles: fn,
@@ -155,9 +156,11 @@ const Truncate = styled.div`
   white-space: nowrap;
 `;
 
+// flowlint-next-line unclear-type:off
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />
 );
+// flowlint-next-line unclear-type:off
 export const RadioOption = (props: any) => (
   <ControlOption Icon={RadioIcon} {...props} />
 );

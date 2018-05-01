@@ -6,6 +6,7 @@ import { mount } from 'enzyme';
 import cases from 'jest-in-case';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   Component?: ComponentType<any>,
   language?: string,
   source?: string,
@@ -19,6 +20,7 @@ cases(
     should,
   }: {
     props?: Props,
+    // flowlint-next-line unclear-type:off
     should: (any, props: Props) => mixed,
   }) => {
     let defaultProps = {

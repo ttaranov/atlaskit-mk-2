@@ -26,7 +26,9 @@ type SelectableDropdownMenuState = {
 };
 
 type SelectableDropdownMenuProps = {
+  // flowlint-next-line unclear-type:off
   children: TriggerFunc | any,
+  // flowlint-next-line unclear-type:off
   items?: any,
   onOpenChange?: (openState: OpenState) => void,
   trigger?: TriggerFunc,

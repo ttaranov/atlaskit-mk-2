@@ -92,6 +92,7 @@ const completedStages = [
   },
 ];
 
+// flowlint-next-line unclear-type:off
 class ProgressExample extends Component<any, any> {
   constructor(props) {
     super(props);

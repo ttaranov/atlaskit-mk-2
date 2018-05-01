@@ -59,6 +59,7 @@ export const ProductNavWrapper = ({
     {...props}
   />
 );
+// flowlint-next-line unclear-type:off
 export const ContainerNavMask = (props: any) => (
   <div
     css={{

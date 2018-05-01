@@ -12,9 +12,11 @@ child component fires an analytics event, and passing the event up the hierarchy
 
 type Props = {
   /** A single element, either Component or DOM node */
+  // flowlint-next-line unclear-type:off
   children?: Element<any>,
   /** Function called when an event has been triggered within this
    listener. */
+  // flowlint-next-line unclear-type:off
   onEvent: (eventName: string, eventData: Object) => any,
   /** String, regex, or function filter to limit what events call
   `onEvent` based on event name. String filters use exact matching
@@ -45,6 +47,7 @@ class AnalyticsListener extends Component<Props, {}> {
     };
   }
 
+  // flowlint-next-line unclear-type:off
   onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean) => {
     // Call this component's onEvent method if it's a match
     const { onEvent, match, matchPrivate } = this.props;

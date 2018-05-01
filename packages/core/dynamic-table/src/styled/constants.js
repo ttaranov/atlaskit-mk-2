@@ -38,6 +38,7 @@ export const onClickStyle = ({ onClick }: { onClick: boolean }) =>
     }
   `;
 
+// flowlint-next-line unclear-type:off
 export const arrowsStyle = (props: Object) => {
   const { isSortable, sortOrder } = props;
 

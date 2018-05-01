@@ -53,6 +53,7 @@ export default class NavigationState extends Container<NavigationStateShape>
     this.state = Object.assign({}, defaultState, cachedState, initialState);
   }
 
+  // flowlint-next-line unclear-type:off
   storeState = (state: Object) => {
     this.setState(state);
     if (this.setCache) this.setCache(this.state);

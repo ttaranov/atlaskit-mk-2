@@ -31,6 +31,7 @@ export type Props = {
   /** String representing the offsets from the target element in the format "[x-offset][y-offset]", measured in pixels. */
   offset?: string,
   /** Callback that is used to know when the flipped state of Layer changes. This occurs when placing a Layered element in the requested position would cause Layer to be rendered outside of the boundariesElement (usually viewport). */
+  // flowlint-next-line unclear-type:off
   onFlippedChange?: Function,
   /** Position of a layer relative to its target. The position attribute takes two positional arguments in the format position="edge edge-position", where edge specifies what edge to align the layer to, and edge-position specifies where on that edge the layer should appear. */
   position?: PositionType,
@@ -60,10 +61,13 @@ type State = {
 
 export default class Layer extends Component<Props, State> {
   popper: {
+    // flowlint-next-line unclear-type:off
     destroy: Function,
   };
 
+  // flowlint-next-line unclear-type:off
   targetRef: ?ElementRef<any>;
+  // flowlint-next-line unclear-type:off
   contentRef: ?ElementRef<any>;
 
   // TODO: get the value of zIndex from theme, not using it now as it is not
@@ -233,6 +237,7 @@ export default class Layer extends Component<Props, State> {
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
     const actualTarget = this.targetRef.firstChild;
+    // flowlint-next-line unclear-type:off
     const popperOpts: Object = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,

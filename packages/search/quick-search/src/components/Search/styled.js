@@ -21,6 +21,7 @@ export const SearchInner = styled.div`
   padding: 0 ${gridSize() * 3}px ${gridSize() * 2}px;
 `;
 
+// flowlint-next-line unclear-type:off
 export const getPlaceholderStyle = (style: any) => css`
   &::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */

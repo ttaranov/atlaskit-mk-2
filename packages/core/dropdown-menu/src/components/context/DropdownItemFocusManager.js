@@ -11,6 +11,7 @@ type Props = {
   autoFocus?: boolean,
   children?: Node,
   close?: ({
+    // flowlint-next-line unclear-type:off
     event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
     source?: 'click' | 'keydown',
   }) => void,
@@ -85,6 +86,7 @@ export default class DropdownItemFocusManager extends Component<Props> {
     return -1;
   };
 
+  // flowlint-next-line unclear-type:off
   handleKeyboard = (event: SyntheticKeyboardEvent<any>): void => {
     const { key, shiftKey } = event;
     const focusedItemIndex = this.focusedItemIndex();

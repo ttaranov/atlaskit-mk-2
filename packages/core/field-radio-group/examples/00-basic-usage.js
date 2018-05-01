@@ -19,6 +19,7 @@ export default class BasicExample extends PureComponent<void, State> {
     onRadioChangeResult: 'Click on a radio field to trigger onRadioChange',
   };
 
+  // flowlint-next-line unclear-type:off
   onRadioChange = (event: any) => {
     this.setState({
       onRadioChangeResult: `onRadioChange called with value: ${

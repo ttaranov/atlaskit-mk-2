@@ -40,6 +40,7 @@ export default class AsyncCreatableExample extends Component<*, State> {
       callback(this.filterOptions(inputValue));
     }, 1000);
   };
+  // flowlint-next-line unclear-type:off
   toggleValue = ({ value }: Object) => {
     this.setState(state => ({ ...state, [value]: !state[value] }));
   };

@@ -11,6 +11,7 @@ export default class BasicExample extends PureComponent<void, State> {
     onChangeResult: 'Type in the Field Text Area above to trigger onChange',
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       onChangeResult: `onChange called with value: ${event.target.value}`,

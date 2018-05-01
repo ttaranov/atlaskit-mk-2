@@ -10,8 +10,10 @@ const Container = styled.div`
   display: flex;
 `;
 
+// flowlint-next-line unclear-type:off
 const reorder = (list: any[], startIndex: number, endIndex: number) => {
   // make a shallow copy so we do not modify the original array
+  // flowlint-next-line unclear-type:off
   const result: any[] = Array.from(list);
 
   const [removed] = result.splice(startIndex, 1);
@@ -58,6 +60,7 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   onDragEnd = (result: Object) => {
     if (document.body) {
       document.body.classList.remove(isDraggingClassName);

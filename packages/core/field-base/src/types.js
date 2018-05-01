@@ -33,14 +33,19 @@ export type FieldBaseStatelessProps = {
   /** mark the field as required */
   isRequired?: boolean,
   /** handler for the onBlur event on the field element */
+  // flowlint-next-line unclear-type:off
   onBlur: (event: any) => mixed,
   /** handler for the onBlur event on the dialog element */
+  // flowlint-next-line unclear-type:off
   onDialogBlur?: (event: any) => mixed,
   /** handler for the click event on the dialog element */
+  // flowlint-next-line unclear-type:off
   onDialogClick?: (event: any) => mixed,
   /** handler for the focus event on the dialog element */
+  // flowlint-next-line unclear-type:off
   onDialogFocus?: (event: any) => mixed,
   /** handler for the focus event on the field element */
+  // flowlint-next-line unclear-type:off
   onFocus: (event: any) => mixed,
   /** whether to call the onBlur handler inside componentDidUpdate */
   shouldReset?: boolean,

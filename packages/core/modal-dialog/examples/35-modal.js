@@ -13,7 +13,9 @@ const onClick = () => {};
 
 type Props = {
   children: Node,
+  // flowlint-next-line unclear-type:off
   footer: Function,
+  // flowlint-next-line unclear-type:off
   header: Function,
   heading: string,
 };

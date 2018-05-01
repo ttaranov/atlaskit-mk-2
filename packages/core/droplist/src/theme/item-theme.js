@@ -9,6 +9,7 @@ const dropdownPadding = {
   top: gridSize,
 };
 
+// flowlint-next-line unclear-type:off
 const droplistItemTheme: Object = {
   padding: {
     default: dropdownPadding,

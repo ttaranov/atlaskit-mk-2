@@ -25,6 +25,7 @@ type State = {
   scrollBehavior: 'inside' | 'outside',
 };
 export default class ExampleScroll extends PureComponent<{}, State> {
+  // flowlint-next-line unclear-type:off
   bottomRef: any;
   state: State = {
     isOpen: false,
@@ -34,6 +35,7 @@ export default class ExampleScroll extends PureComponent<{}, State> {
   close = () => this.setState({ isOpen: false });
   scrollToBottom = () => this.bottomRef.scrollIntoView(true);
 
+  // flowlint-next-line unclear-type:off
   onScrollBehaviorChange = (e: any) => {
     this.setState({
       scrollBehavior: e.target.value,

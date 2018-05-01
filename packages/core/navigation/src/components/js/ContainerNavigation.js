@@ -26,19 +26,23 @@ type Props = {
   /** Icon to be rendered in the globalPrimaryActions internal component when
   isCollapsed is true. When clicked, onGlobalCreateActivate is called. It is
   recommended that you use an atlaskit icon. */
+  // flowlint-next-line unclear-type:off
   globalCreateIcon?: Element<any>,
   /** A list of nodes to be rendered as the global primary actions.  They appear
    directly underneath the global primary icon. This must not exceed three nodes */
+  // flowlint-next-line unclear-type:off
   globalPrimaryActions?: Array<Element<any>>,
   /** Icon to be rendered at the top of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the
   globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
+  // flowlint-next-line unclear-type:off
   globalPrimaryIcon?: Element<any>,
   /** href to be used around the globalPrimaryIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be displayed in the middle of the internal globalPrimaryActions
   component. On click, onGlobalSearchActivate is called. It is recommended
   that you use an atlaskit icon. */
+  // flowlint-next-line unclear-type:off
   globalSearchIcon?: Element<any>,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
@@ -65,6 +69,7 @@ type Props = {
   /** Theme object. Custom theme objects should be generated using the createGlobalTheme
    function. */
   theme: Provided,
+  // flowlint-next-line unclear-type:off
   globalSecondaryActions: Array<Element<any>>,
 };
 
@@ -81,6 +86,7 @@ export default class ContainerNavigation extends Component<Props, State> {
     theme: container,
   };
 
+  // flowlint-next-line unclear-type:off
   constructor(props: Props, context: any) {
     super(props, context);
 

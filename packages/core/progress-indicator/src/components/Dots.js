@@ -19,6 +19,7 @@ type Props = {
   /** How much of a gutter is desired between indicators */
   spacing?: 'comfortable' | 'cozy' | 'compact',
   /** An array of values mapped over to create the indicators */
+  // flowlint-next-line unclear-type:off
   values: Array<any>,
 };
 

@@ -57,6 +57,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
   onMouseDown = (client: { clientX: number, clientY: number }) =>
     this.setState({ startX: client.clientX, startY: client.clientY });
 
+  // flowlint-next-line unclear-type:off
   onWrapperClick = (e: any) => {
     if (!this.isReadOnly() && !this.props.isEditing && !this.mouseHasMoved(e)) {
       this.props.onEditRequested();
@@ -84,6 +85,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     this.setState({ wasFocusReceivedSinceLastBlur: true });
   };
 
+  // flowlint-next-line unclear-type:off
   onConfirmClick = (event: any) => {
     //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
     ReactDOM.findDOMNode(this.confirmButtonRef).focus(); //eslint-disable-line react/no-find-dom-node
@@ -91,6 +93,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     this.props.onConfirm();
   };
 
+  // flowlint-next-line unclear-type:off
   onCancelClick = (event: any) => {
     //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
     ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
@@ -99,6 +102,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     this.props.onCancel();
   };
 
+  // flowlint-next-line unclear-type:off
   onDialogClick = (event: any) => {
     event.stopPropagation();
   };
@@ -133,6 +137,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
 
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
+  // flowlint-next-line unclear-type:off
   wrapWithFieldBase = (children: any) => {
     const {
       invalidMessage,

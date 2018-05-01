@@ -15,6 +15,7 @@ type Props = {
 };
 
 type State = {
+  // flowlint-next-line unclear-type:off
   rootRowsData: ?Array<Object>,
 };
 

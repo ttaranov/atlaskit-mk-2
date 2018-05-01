@@ -64,6 +64,7 @@ async function getPackagesInfo(cwd /*: string */) {
   );
 }
 
+// flowlint-next-line unclear-type:off
 const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = {
   typescript: pkg => pkg.isTypeScript,
   tslint: pkg => pkg.isTSLint,

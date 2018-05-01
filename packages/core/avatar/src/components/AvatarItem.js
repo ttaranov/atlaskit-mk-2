@@ -87,6 +87,7 @@ class AvatarItem extends Component<Props> {
     const enhancedProps = getProps(this);
 
     // provide element type based on props
+    // flowlint-next-line unclear-type:off
     const StyledComponent: any = getStyledAvatarItem(this.props);
 
     return (

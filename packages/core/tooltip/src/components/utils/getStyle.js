@@ -1,6 +1,7 @@
 // @flow
 
 export default function getStyle(
+  // flowlint-next-line unclear-type:off
   node: HTMLElement | Object,
   prop?: String,
   pseudo?: ':after' | ':before',

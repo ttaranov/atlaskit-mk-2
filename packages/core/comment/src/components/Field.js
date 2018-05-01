@@ -7,8 +7,11 @@ type Props = {
   hasAuthor?: boolean,
   children?: Node,
   href?: string,
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
+  // flowlint-next-line unclear-type:off
   onFocus?: Function,
+  // flowlint-next-line unclear-type:off
   onMouseOver?: Function,
 };
 

@@ -9,10 +9,13 @@ type Props = {
   /** The URL of the link. If not provided, the element will be rendered as text. */
   href?: string,
   /** Handler called when the element is clicked. */
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
   /** Handler called when the element is focused. */
+  // flowlint-next-line unclear-type:off
   onFocus?: Function,
   /** Handler called when the element is moused over. */
+  // flowlint-next-line unclear-type:off
   onMouseOver?: Function,
 };
 

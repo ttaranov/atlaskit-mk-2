@@ -7,10 +7,13 @@ type Props = {
   /** The content to render inside the action button. */
   children?: Node,
   /** Handler called when the element is clicked. */
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
   /** Handler called when the element is focused. */
+  // flowlint-next-line unclear-type:off
   onFocus?: Function,
   /** Handler called when the element is moused over. */
+  // flowlint-next-line unclear-type:off
   onMouseOver?: Function,
 };
 

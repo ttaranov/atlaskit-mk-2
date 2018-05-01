@@ -18,6 +18,7 @@ export default class BasicExample extends PureComponent<void, State> {
     rangeValue: 50,
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (value: any) => {
     this.setState({
       onChangeResult: `onChange called with value: ${value}`,

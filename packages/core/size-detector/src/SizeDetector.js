@@ -35,6 +35,7 @@ type Props = {
   /** Function that accepts an object parameter containing 'height' and 'width' properties */
   children: SizeMetrics => Node,
   /** Optional styles object to be applied to the containing element */
+  // flowlint-next-line unclear-type:off
   containerStyle?: Object,
 };
 
@@ -46,6 +47,7 @@ export default class SizeDetector extends Component<Props, State> {
   props: Props;
   state: State;
 
+  // flowlint-next-line unclear-type:off
   constructor(props: Object) {
     super(props);
     this.state = {};

@@ -8,6 +8,7 @@ import Button from '../src';
 
 type Props = {
   children: Node,
+  // flowlint-next-line unclear-type:off
   innerRef: () => any,
 };
 

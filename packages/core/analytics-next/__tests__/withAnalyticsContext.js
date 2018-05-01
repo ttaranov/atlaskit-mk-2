@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 import { AnalyticsContext, withAnalyticsContext } from '../src';
 
 type WrappedProps = {
+  // flowlint-next-line unclear-type:off
   children: any,
 };
 

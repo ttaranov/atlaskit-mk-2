@@ -37,6 +37,7 @@ type Props = {
    cases this should just be a string. */
   text?: Node,
   // TODO
+  // flowlint-next-line unclear-type:off
   theme: Object,
 };
 

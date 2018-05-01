@@ -9,6 +9,7 @@ import { ChevronContainer, ChevronIconContainer, iconColor } from '../styled';
 type Props = {
   isExpanded: boolean,
   ariaControls: string,
+  // flowlint-next-line unclear-type:off
   onExpandToggle?: Function,
   expandLabel: string,
   collapseLabel: string,

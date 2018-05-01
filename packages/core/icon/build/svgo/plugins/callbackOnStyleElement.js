@@ -10,6 +10,7 @@ exports.params = {
 };
 
 exports.fn = function callbackOnStyleElement(
+  // flowlint-next-line unclear-type:off
   item /*: any*/,
   params /*: {
   callback: () => mixed

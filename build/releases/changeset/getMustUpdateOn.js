@@ -16,6 +16,7 @@ type changesetType = {
   summary: string,
   releases: Array<releaseType>,
   dependents: Array<dependentType>,
+  // flowlint-next-line unclear-type:off
   releaseNotes?: any,
 }
 type workspaceType = {

@@ -44,6 +44,7 @@ type changesetType = {
   summary: string,
   releases: Array<releaseType>,
   dependents: Array<changesetDependentType>,
+  // flowlint-next-line unclear-type:off
   releaseNotes?: any,
 }
 */

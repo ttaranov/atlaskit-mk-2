@@ -10,8 +10,10 @@ import {
 
 type ButtonProps = {
   fireAnalyticsEvent: (eventName: string) => {},
+  // flowlint-next-line unclear-type:off
   firePrivateAnalyticsEvent: (eventName: string, eventData?: Object) => {},
   onClick: (eventObject: {}) => {},
+  // flowlint-next-line unclear-type:off
   children: any,
 };
 
@@ -37,6 +39,7 @@ const Button = withAnalytics(
 /* eslint-disable react/no-multi-comp */
 
 export default class BasicExample extends Component<{}, {}> {
+  // flowlint-next-line unclear-type:off
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

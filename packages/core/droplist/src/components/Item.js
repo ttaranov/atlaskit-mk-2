@@ -32,6 +32,7 @@ type Props = {
   isFocused?: boolean,
   isHidden?: boolean,
   isSelected?: boolean,
+  // flowlint-next-line unclear-type:off
   onActivate?: any => mixed,
   target?: ?string,
   title?: ?string,

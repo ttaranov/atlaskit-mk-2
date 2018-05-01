@@ -254,8 +254,10 @@ class ExampleNav extends Component<void, State> {
   openCustomDrawer = () => this.setState({ openDrawer: 'customDrawer' });
 
   toggleNavCollapse = () => this.setState({ isOpen: !this.state.isOpen });
+  // flowlint-next-line unclear-type:off
   setCompact = (e: { event: SyntheticEvent<any>, isChecked: boolean }) =>
     this.setState({ compactItems: e.isChecked });
+  // flowlint-next-line unclear-type:off
   setShowIcon = (e: { event: SyntheticEvent<any>, isChecked: boolean }) =>
     this.setState({ showIcon: e.isChecked });
 

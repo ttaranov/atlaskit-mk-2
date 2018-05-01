@@ -68,6 +68,7 @@ const LifeCycleProvider = ({ isActive, ...props }: Props & ProviderProps) =>
   isActive ? <PropertyToggle {...props} /> : null;
 
 // appease flow
+// flowlint-next-line unclear-type:off
 const defaultTarget = ((document.body: any): HTMLElement);
 
 LifeCycleProvider.defaultProps = {

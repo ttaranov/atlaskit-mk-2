@@ -9,7 +9,9 @@ import {
 } from '../src';
 
 type WrappedProps = WithAnalyticsEventsProps & {
+  // flowlint-next-line unclear-type:off
   children: any,
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
 };
 

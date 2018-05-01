@@ -35,7 +35,9 @@ const getState = ({ disabled, isActive, isFocus, isHover, isSelected }) => {
 
 export const getPropertyAppearance = (
   property: string,
+  // flowlint-next-line unclear-type:off
   props: Object = {},
+  // flowlint-next-line unclear-type:off
   definitions: Object = themeDefinitions,
 ) => {
   const { appearance } = props;
@@ -58,6 +60,7 @@ export const getPropertyAppearance = (
   return propertyStyles[state] || propertyStyles.default || fallbacks[property];
 };
 
+// flowlint-next-line unclear-type:off
 export default function getButtonStyles(props: Object) {
   // $FlowFixMe TEMPORARY
   const baseSize = fontSize(props);

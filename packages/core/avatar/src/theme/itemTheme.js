@@ -10,6 +10,7 @@ const dropdownPadding = {
 };
 
 // Override specific parts of droplist's item theme
+// flowlint-next-line unclear-type:off
 const avatarItemTheme: Object = {
   padding: {
     default: dropdownPadding,

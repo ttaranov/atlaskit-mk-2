@@ -12,9 +12,13 @@ type EnterType = (node: Element, isAppearing: boolean) => void;
 type ExitType = (node: Element) => void;
 
 type TransitionType = {
+  // flowlint-next-line unclear-type:off
   entering?: Object,
+  // flowlint-next-line unclear-type:off
   entered?: Object,
+  // flowlint-next-line unclear-type:off
   exiting?: Object,
+  // flowlint-next-line unclear-type:off
   exited?: Object,
 };
 

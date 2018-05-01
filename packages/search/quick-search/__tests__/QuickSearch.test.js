@@ -21,6 +21,7 @@ const isInputFocused = wrapper =>
 
 describe('<QuickSearch />', () => {
   const onAnalyticsEventSpy = jest.fn();
+  // flowlint-next-line unclear-type:off
   const onClickSpy: Object = jest.fn();
 
   const exampleChildren = [
@@ -35,6 +36,7 @@ describe('<QuickSearch />', () => {
 
   let wrapper;
   let searchInput;
+  // flowlint-next-line unclear-type:off
   let onSearchSubmitSpy: Object;
 
   const render = props => {

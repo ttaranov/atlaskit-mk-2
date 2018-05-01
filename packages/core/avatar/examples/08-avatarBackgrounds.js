@@ -36,6 +36,7 @@ const styles = {
   },
 };
 
+// flowlint-next-line unclear-type:off
 const ColorColumn = (props: Object) => (
   <div style={{ ...styles.column, backgroundColor: props.borderColor }}>
     <Avatar onClick={console.log} {...props} size="xlarge" />

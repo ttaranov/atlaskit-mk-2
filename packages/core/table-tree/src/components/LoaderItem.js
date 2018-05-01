@@ -6,6 +6,7 @@ import { Cell, TreeRowContainer, LoaderItemContainer } from '../styled';
 
 type Props = {
   isCompleting: boolean,
+  // flowlint-next-line unclear-type:off
   onComplete: Function,
   depth?: number,
   delay?: number,

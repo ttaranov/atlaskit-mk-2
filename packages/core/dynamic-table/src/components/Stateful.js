@@ -54,6 +54,7 @@ export default class DynamicTable extends Component<Props, State> {
     this.setState({ page });
   };
 
+  // flowlint-next-line unclear-type:off
   onSort = ({ key, item, sortOrder }: Object) => {
     this.props.onSort({ key, item, sortOrder });
     this.setState({ sortKey: key, sortOrder, page: 1 });

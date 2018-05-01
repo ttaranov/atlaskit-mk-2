@@ -18,6 +18,7 @@ type State = {
 
 /* eslint-disable react/sort-comp */
 export default class SpotlightTargetBackgroundExample extends Component<
+  // flowlint-next-line unclear-type:off
   Object,
   State,
 > {

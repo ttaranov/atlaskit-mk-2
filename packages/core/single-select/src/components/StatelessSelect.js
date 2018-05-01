@@ -109,11 +109,14 @@ type Props = {
    including if there is one item that has been selected. */
   noMatchesFound: string,
   /** Handler called when a selection is made, with the item chosen. */
+  // flowlint-next-line unclear-type:off
   onSelected: Function,
   /** Handler to be called when the filtered items changes. */
+  // flowlint-next-line unclear-type:off
   onFilterChange: Function,
   /** Handler called when the select is opened or closed. Called with an object
    that has both the event, and the new isOpen state. */
+  // flowlint-next-line unclear-type:off
   onOpenChange: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
@@ -196,6 +199,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   onOpenChange = (attrs: { event: SyntheticEvent<any>, isOpen: boolean }) => {
     this.props.onOpenChange(attrs);
     this.setState({
@@ -352,6 +356,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     this.scrollToFocused(index);
   };
 
+  // flowlint-next-line unclear-type:off
   handleNativeSearch = (event: SyntheticKeyboardEvent<any>) => {
     const { selectedItem, items } = this.props;
     const { key: eventKey } = event;
@@ -398,6 +403,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     this.nativeSearchKey = nativeSearchKey;
   };
 
+  // flowlint-next-line unclear-type:off
   handleKeyboardInteractions = (event: SyntheticKeyboardEvent<any>) => {
     const isSelectOpen = this.props.isOpen;
     switch (event.key) {
@@ -436,6 +442,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   handleInputOnChange = (event: SyntheticEvent<any>) => {
     const value = event.currentTarget.value;
 
@@ -445,18 +452,21 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     }
   };
 
+  // flowlint-next-line unclear-type:off
   handleTriggerClick = (event: SyntheticEvent<any>) => {
     if (!this.props.isDisabled) {
       this.onOpenChange({ event, isOpen: !this.props.isOpen });
     }
   };
 
+  // flowlint-next-line unclear-type:off
   handleOnBlur = (event: SyntheticEvent<any>) => {
     this.onOpenChange({ event, isOpen: false });
   };
 
   handleItemSelect = (
     item?: ItemType,
+    // flowlint-next-line unclear-type:off
     attrs: { event: SyntheticEvent<any> },
   ) => {
     if (item && !item.isDisabled) {

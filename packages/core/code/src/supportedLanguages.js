@@ -380,6 +380,7 @@ export const SUPPORTED_LANGUAGES = [
 ];
 
 export const languageList: string[] = SUPPORTED_LANGUAGES.reduce(
+  // flowlint-next-line unclear-type:off
   (acc: string[], val: any) => {
     return acc.concat(val.name, val.alias);
   },

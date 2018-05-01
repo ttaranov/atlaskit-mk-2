@@ -124,9 +124,11 @@ export const Slide = ({
   immediatelyShow: boolean,
   position: PositionType,
   mousePosition: PositionTypeBase,
+  // flowlint-next-line unclear-type:off
   props?: any,
   children: Node,
   in: boolean,
+  // flowlint-next-line unclear-type:off
   style: Object,
 }) => {
   const truePosition = position === 'mouse' ? mousePosition : position;

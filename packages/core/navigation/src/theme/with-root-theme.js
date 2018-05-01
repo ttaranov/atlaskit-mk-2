@@ -25,6 +25,7 @@ export default class WithRootTheme extends PureComponent<Props> {
   // 2. The function reference will change if new 'provided' or 'isCollapsed' props are provided,
   //    which will force ThemeProvider to broadcast the update
   getWithOuterTheme = memoizeOne(
+    // flowlint-next-line unclear-type:off
     (provided, isCollapsed) => (outerTheme: ?Object = {}): Object => {
       const theme: RootTheme = {
         isCollapsed: isCollapsed || false,

@@ -25,6 +25,7 @@ const SelectWithTooltips = () => (
     <Select
       items={[
         {
+          // flowlint-next-line unclear-type:off
           items: selectItems.map((i): Object => ({
             ...i,
             tooltipPosition: 'right',
@@ -36,6 +37,7 @@ const SelectWithTooltips = () => (
     <Select
       items={[
         {
+          // flowlint-next-line unclear-type:off
           items: selectItems.map((i): Object => ({
             ...i,
             tooltipPosition: 'top',
@@ -47,6 +49,7 @@ const SelectWithTooltips = () => (
     <Select
       items={[
         {
+          // flowlint-next-line unclear-type:off
           items: selectItems.map((i): Object => ({
             ...i,
             tooltipPosition: 'bottom',
@@ -58,6 +61,7 @@ const SelectWithTooltips = () => (
     <Select
       items={[
         {
+          // flowlint-next-line unclear-type:off
           items: selectItems.map((i): Object => ({
             ...i,
             tooltipPosition: 'left',

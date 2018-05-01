@@ -16,6 +16,7 @@ type Props = {
   isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
    component is used if none is provided. */
+  // flowlint-next-line unclear-type:off
   linkComponent?: ComponentType<any>,
   /** Standard onClick event */
   onClick?: (event: Event, data?: {}) => void,

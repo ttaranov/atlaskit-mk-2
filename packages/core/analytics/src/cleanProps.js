@@ -4,6 +4,7 @@
 cleanProps removes props added by the withAnalytics HOC from an object
 */
 
+// flowlint-next-line unclear-type:off
 function cleanProps(props: Object) {
   /* eslint-disable no-unused-vars */
   const {

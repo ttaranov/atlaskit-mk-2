@@ -7,6 +7,7 @@ import RevealInner from '../src/components/styled/RevealInner';
 
 configure({ adapter: new Adapter() });
 
+// flowlint-next-line unclear-type:off
 class Child extends PureComponent<any> {
   render() {
     return <div />;

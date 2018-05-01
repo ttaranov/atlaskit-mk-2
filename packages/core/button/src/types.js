@@ -2,6 +2,7 @@
 import type { Node, Element, ElementType } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
+// flowlint-next-line unclear-type:off
 type Func = () => any;
 
 export type ButtonAppearances =

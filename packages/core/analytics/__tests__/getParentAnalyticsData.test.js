@@ -10,6 +10,7 @@ import { AnalyticsDecorator, cleanProps, withAnalytics } from '../src';
 const Button = withAnalytics(
   class B extends Component<{
     getParentAnalyticsData: (eventName: string) => {},
+    // flowlint-next-line unclear-type:off
     testSpy: Object => {},
   }> {
     onClick = () => {

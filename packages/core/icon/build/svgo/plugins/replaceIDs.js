@@ -21,6 +21,7 @@ exports.description =
  * @param {Object} extra plugin extra information
  */
 exports.fn = function replaceIDs(
+  // flowlint-next-line unclear-type:off
   item /*: any*/,
   opts /*: {
   placeholderStr: string,

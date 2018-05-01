@@ -50,6 +50,7 @@ export default class OverflowManager extends Component<Props, State> {
   };
 
   availableHeight = 0;
+  // flowlint-next-line unclear-type:off
   groupHeights: Array<{ nonItemHeight: number, itemHeights: Array<any> }> = [];
 
   isGroupVisibleInNav = (groupIndex: number) =>
@@ -113,6 +114,7 @@ export default class OverflowManager extends Component<Props, State> {
   }: {
     groupIndex: number,
     nonItemHeight: number,
+    // flowlint-next-line unclear-type:off
     itemHeights: Array<any>,
   }) => {
     this.groupHeights[groupIndex] = groupHeightInfo;

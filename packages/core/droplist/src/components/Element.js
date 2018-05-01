@@ -17,11 +17,17 @@ export const baseTypes = {
 
 type Props = {
   children?: Node,
+  // flowlint-next-line unclear-type:off
   handleClick?: any => mixed,
+  // flowlint-next-line unclear-type:off
   handleKeyPress?: any => mixed,
+  // flowlint-next-line unclear-type:off
   handleMouseDown: any => mixed,
+  // flowlint-next-line unclear-type:off
   handleMouseOut: any => mixed,
+  // flowlint-next-line unclear-type:off
   handleMouseOver: any => mixed,
+  // flowlint-next-line unclear-type:off
   handleMouseUp: any => mixed,
   href?: ?string,
   isActive?: boolean,

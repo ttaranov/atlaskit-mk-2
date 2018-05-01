@@ -11,6 +11,7 @@ export type Props = {
   innerRef?: (?HTMLElement) => void,
   inlineStyles?: {},
   content: Node,
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
 };
 

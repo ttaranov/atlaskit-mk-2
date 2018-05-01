@@ -51,8 +51,10 @@ export type WithSortedPageRowsProps = {
 
 // get one page of data in table, sorting all rows previously
 export default function withSortedPageRows(
+  // flowlint-next-line unclear-type:off
   WrappedComponent: ComponentType<any>,
 ) {
+  // flowlint-next-line unclear-type:off
   return class WithSortedPageRows extends Component<any> {
     componentWillMount() {
       validateSortKey(this.props.sortKey, this.props.head);

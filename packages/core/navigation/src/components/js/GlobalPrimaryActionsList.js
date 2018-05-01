@@ -13,6 +13,7 @@ function checkIfTooManyPrimaryActions(actions = []) {
 }
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   actions: Array<Element<any>>,
 };
 

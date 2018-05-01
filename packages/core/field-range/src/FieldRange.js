@@ -44,6 +44,7 @@ export default class Slider extends Component<Props, State> {
   };
 
   // eslint-disable-next-line
+  // flowlint-next-line unclear-type:off
   inputElement: any;
 
   constructor(props: Props) {
@@ -85,6 +86,7 @@ export default class Slider extends Component<Props, State> {
     // EventTarget can have these properties, so we cast it to Element through Object. This is
     // the safest thing we can do in this situation.
     // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    // flowlint-next-line unclear-type:off
     const target: HTMLInputElement = (e.target: Object);
     const value = parseFloat(target.value);
     const { max, onChange, min } = this.props;
@@ -101,6 +103,7 @@ export default class Slider extends Component<Props, State> {
   // Instead we need to grab the DOM reference and add the right even manually.
   // https://github.com/facebook/react/issues/3096
   // https://github.com/facebook/react/issues/554
+  // flowlint-next-line unclear-type:off
   addEvents = (element: any) => {
     if (!element) {
       return;

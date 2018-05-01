@@ -8,6 +8,7 @@ import {
   themeNamespace,
 } from '../util/theme';
 
+// flowlint-next-line unclear-type:off
 const getPadding = ({ isCompact, theme }): Array<any> => {
   const paddingType = isCompact ? 'compact' : 'default';
   const { bottom = 0, left = 0, right = 0, top = 0 } = getThemeStyle(

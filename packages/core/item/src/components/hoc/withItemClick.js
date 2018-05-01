@@ -19,10 +19,12 @@ type Props = {
   /** If true, the item appears greyed out and does not fire click events. */
   href?: string,
   /** Standard onClick handler */
+  // flowlint-next-line unclear-type:off
   onClick: Function,
 };
 
 // HOC that typically wraps @atlaskit/item
+// flowlint-next-line unclear-type:off
 const withItemClick = (WrappedItem: ComponentType<any>) =>
   class WithItemClick extends Component<Props> {
     static displayName = `WithItemClick(${getDisplayName(WrappedItem)})`;

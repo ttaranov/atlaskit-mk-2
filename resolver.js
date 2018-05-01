@@ -19,6 +19,7 @@ const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
 
 module.exports = function resolver(
   modulePath /*: string */,
+  // flowlint-next-line unclear-type:off
   params /*: any */,
 ) {
   // If resolving relative paths, make sure we use resolveFrom and not resolve

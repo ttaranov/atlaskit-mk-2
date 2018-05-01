@@ -27,6 +27,7 @@ const arrowKeys = {
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
+// flowlint-next-line unclear-type:off
 type Handler = (e: any) => void;
 type Props = {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
@@ -47,6 +48,7 @@ type Props = {
    This does not prevent these dates being selected. */
   disabled?: Array<string>,
   /** Props to apply to the container. **/
+  // flowlint-next-line unclear-type:off
   innerProps: Object,
   /** The number of the month (from 1 to 12) which the calendar should be on. */
   month?: number,
@@ -93,6 +95,7 @@ function padToTwo(number: number) {
 }
 
 export default class Calendar extends Component<Props, State> {
+  // flowlint-next-line unclear-type:off
   calendar: Object;
   container: HTMLElement | null;
 

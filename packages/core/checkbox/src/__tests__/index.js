@@ -12,6 +12,7 @@ import { name } from '../../package.json';
 
 describe(name, () => {
   describe('<CheckboxStateless />', () => {
+    // flowlint-next-line unclear-type:off
     const mountStatelessCheckbox = (overridingProps: any) =>
       mount(
         <CheckboxStateless

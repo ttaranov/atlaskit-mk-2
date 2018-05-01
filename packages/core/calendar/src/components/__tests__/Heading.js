@@ -7,6 +7,7 @@ import Btn from '../Btn';
 import Heading from '../Heading';
 import { MonthAndYear } from '../../styled/Heading';
 
+// flowlint-next-line unclear-type:off
 const PredefinedHeading = (props: Object) => (
   <Heading month={1} year={2000} {...props} />
 );

@@ -17,6 +17,7 @@ export default class StatelessExample extends Component<void, State> {
     ],
   };
 
+  // flowlint-next-line unclear-type:off
   setValue = (e: any) => {
     this.setState({
       value: e.target.value,

@@ -99,11 +99,16 @@ describe('BreadcrumbsItem', () => {
       it('should be reflected to the Button', () => {
         let expectedProps;
         type LinkProps = {
+          // flowlint-next-line unclear-type:off
           innerRef?: any,
           truncationWidth?: number,
+          // flowlint-next-line unclear-type:off
           iconAfter?: any,
+          // flowlint-next-line unclear-type:off
           iconBefore?: any,
+          // flowlint-next-line unclear-type:off
           children: any,
+          // flowlint-next-line unclear-type:off
           createAnalyticsEvent?: Function,
           to: string,
         };

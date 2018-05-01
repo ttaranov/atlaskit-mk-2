@@ -3,6 +3,7 @@
 import { themeNamespace as buttonThemeNamespace } from '@atlaskit/button';
 import { colors, themed } from '@atlaskit/theme';
 
+// flowlint-next-line unclear-type:off
 type Theme = { [string]: any };
 
 export const getSpotlightTheme = (theme: Theme): Theme => ({

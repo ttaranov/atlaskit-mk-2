@@ -17,10 +17,13 @@ import {
 
 type DnDType = {
   draggableProps: {
+    // flowlint-next-line unclear-type:off
     style: ?Object,
     'data-react-beautiful-dnd-draggable': string,
   },
+  // flowlint-next-line unclear-type:off
   dragHandleProps: ?Object,
+  // flowlint-next-line unclear-type:off
   innerRef: Function,
   placeholder?: Node,
 };
@@ -56,15 +59,20 @@ type Props = {
   isSelected?: boolean,
   /** Optional function to be used for rendering links. Receives `href` and possibly `target`
    * as props. */
+  // flowlint-next-line unclear-type:off
   linkComponent?: Function,
   /** Function to be called when the item is clicked, Receives the MouseEvent. */
+  // flowlint-next-line unclear-type:off
   onClick?: Function,
   /** Function to be called when the item is pressed with a keyboard,
    * Receives the KeyboardEvent. */
+  // flowlint-next-line unclear-type:off
   onKeyDown?: Function,
   /** Standard onmouseenter event */
+  // flowlint-next-line unclear-type:off
   onMouseEnter?: Function,
   /** Standard onmouseleave event */
+  // flowlint-next-line unclear-type:off
   onMouseLeave?: Function,
   /** Allows the role attribute of the item to be altered from it's default of
    *  `role="button"` */
@@ -88,10 +96,13 @@ export default class Item extends Component<Props, {}> {
     shouldAllowMultiline: false,
   };
 
+  // flowlint-next-line unclear-type:off
   rootComponent: ComponentType<any>;
   // eslint-disable-next-line react/sort-comp
+  // flowlint-next-line unclear-type:off
   ref: ElementRef<any> | null;
 
+  // flowlint-next-line unclear-type:off
   constructor(props: Object) {
     super(props);
 
@@ -111,6 +122,7 @@ export default class Item extends Component<Props, {}> {
     }
   }
 
+  // flowlint-next-line unclear-type:off
   setRef = (ref: ElementRef<any> | null) => {
     this.ref = ref;
   };
@@ -134,6 +146,7 @@ export default class Item extends Component<Props, {}> {
     } = this.props;
 
     const { rootComponent: Root } = this;
+    // flowlint-next-line unclear-type:off
     const dragHandleProps: ?Object = (dnd && dnd.dragHandleProps) || null;
 
     const patchedEventHandlers = {

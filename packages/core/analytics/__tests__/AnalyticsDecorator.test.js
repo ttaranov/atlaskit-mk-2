@@ -15,6 +15,7 @@ import {
 const Button = withAnalytics(
   class B extends Component<{
     fireAnalyticsEvent: (eventName: string) => {},
+    // flowlint-next-line unclear-type:off
     firePrivateAnalyticsEvent: (eventName: string, eventData?: Object) => {},
   }> {
     onClick = () => {

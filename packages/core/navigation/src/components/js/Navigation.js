@@ -56,14 +56,17 @@ type Props = {
   containerScrollRef?: (ref: ElementRef<*>) => void,
   /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
    to be rendered. There is no decoration done to the components passed in here. */
+  // flowlint-next-line unclear-type:off
   drawers: Array<Element<any>>,
   /** Theme object to be used to color the global container. */
   globalTheme?: Provided,
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
    is clicked. */
+  // flowlint-next-line unclear-type:off
   globalCreateIcon?: Element<any>,
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
    the linkComponent. */
+  // flowlint-next-line unclear-type:off
   globalPrimaryIcon?: Element<any>,
   /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
   globalPrimaryIconAppearance: IconAppearance,
@@ -71,13 +74,16 @@ type Props = {
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
    is clicked. */
+  // flowlint-next-line unclear-type:off
   globalSearchIcon?: Element<any>,
   /** A list of nodes to be rendered as the global primary actions. They appear
    directly underneath the global primary icon. This must not exceed three nodes */
+  // flowlint-next-line unclear-type:off
   globalPrimaryActions?: Array<Element<any>>,
   /** An array of elements to be displayed at the bottom of the global component.
   These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
+  // flowlint-next-line unclear-type:off
   globalSecondaryActions: Array<Element<any>>,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */

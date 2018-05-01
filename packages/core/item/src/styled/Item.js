@@ -99,6 +99,7 @@ const getInteractiveStyles = ({
 // This is the main item style. It is defined as a basic style variable so it can
 // later be applied to different component types (span / a / custom link component)
 
+// flowlint-next-line unclear-type:off
 export const ItemBase = ({ theme }: any) => css`
   && {
     align-items: center;
@@ -130,6 +131,7 @@ const styledRootElement = ({
   linkComponent,
 }: {
   href?: ?string,
+  // flowlint-next-line unclear-type:off
   linkComponent?: any,
 }) => {
   if (linkComponent) {

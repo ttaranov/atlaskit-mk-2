@@ -34,8 +34,10 @@ const Parent = styled.div`
 `;
 
 type PosTypes = {
+  // flowlint-next-line unclear-type:off
   children?: any, // eslint-disable-line react/require-default-props
   pos: 'relative' | 'absolute' | 'fixed',
+  // flowlint-next-line unclear-type:off
   rest?: Array<any>, // eslint-disable-line react/require-default-props
 };
 

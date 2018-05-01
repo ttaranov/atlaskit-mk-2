@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import type { ButtonAppearances } from '../types';
 
+// flowlint-next-line unclear-type:off
 const getComponentName = (target: any): string => {
   if (target.displayName && typeof target.displayName === 'string') {
     return target.displayName;

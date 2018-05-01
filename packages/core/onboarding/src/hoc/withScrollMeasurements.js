@@ -24,6 +24,7 @@ function computedStyle(node, prop) {
     : window.getComputedStyle(node, null);
 }
 
+// flowlint-next-line unclear-type:off
 function getScrollParent(node: any) {
   if (node == null) return null;
   if (

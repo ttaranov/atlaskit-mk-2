@@ -43,6 +43,7 @@ type State = {
 };
 
 export default class DynamicTable extends Component<Props, State> {
+  // flowlint-next-line unclear-type:off
   tableBody: ?ComponentType<any, any>;
 
   state = {

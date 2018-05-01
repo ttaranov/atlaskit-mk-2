@@ -26,6 +26,7 @@ export default class BasicExample extends PureComponent<void, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       editValue: event.target.value,

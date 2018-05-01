@@ -52,12 +52,15 @@ type Props = {
    including if there is one item that has been selected. */
   noMatchesFound?: string,
   /** Handler to be called when the filtered items changes. */
+  // flowlint-next-line unclear-type:off
   onFilterChange?: Function,
   /** Handler to be called when an item is selected. Called with an object that
    has the item selected as a property on the object. */
+  // flowlint-next-line unclear-type:off
   onSelected?: Function,
   /** Handler called when the select is opened or closed. Called with an object
    that has both the event, and the new isOpen state. */
+  // flowlint-next-line unclear-type:off
   onOpenChange?: ({ event: SyntheticEvent<any>, isOpen: boolean }) => void,
   /** Text to be shown within the select when no item is selected. */
   placeholder?: string,
@@ -111,6 +114,7 @@ export default class AkSingleSelect extends PureComponent<Props, State> {
   };
 
   handleOpenChange = (attrs: {
+    // flowlint-next-line unclear-type:off
     event: SyntheticEvent<any>,
     isOpen: boolean,
   }) => {

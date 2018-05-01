@@ -33,8 +33,11 @@ type Props = {
   isLoading?: boolean,
   /** Controls the open state of the drop list. */
   isOpen?: boolean,
+  // flowlint-next-line unclear-type:off
   onClick?: any => mixed,
+  // flowlint-next-line unclear-type:off
   onKeyDown?: any => mixed,
+  // flowlint-next-line unclear-type:off
   onOpenChange?: any => mixed,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position?: string,

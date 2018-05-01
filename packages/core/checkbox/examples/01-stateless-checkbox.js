@@ -12,6 +12,7 @@ export default class StatelessExample extends PureComponent<void, State> {
     isChecked: false,
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       isChecked: !this.state.isChecked,

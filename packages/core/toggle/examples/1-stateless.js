@@ -8,6 +8,7 @@ type State = {|
   isChecked: boolean,
 |};
 
+// flowlint-next-line unclear-type:off
 export default class StatelessExample extends Component<any, State> {
   state: State = {
     isChecked: false,

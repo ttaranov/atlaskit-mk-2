@@ -5,6 +5,7 @@ import Group from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import InlineEditor from '../src';
 
+// flowlint-next-line unclear-type:off
 const MultiSelectItems: Array<any> = [
   { content: 'Apple', value: 'Apple' },
   { content: 'Banana', value: 'Banana' },
@@ -26,6 +27,7 @@ export default class SelectExample extends Component<void, State> {
     editValue: '',
   };
 
+  // flowlint-next-line unclear-type:off
   onConfirm = (event: any) => {
     this.setState({
       onEventResult: `onConfirm called`,
@@ -33,6 +35,7 @@ export default class SelectExample extends Component<void, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onCancel = (event: any) => {
     this.setState({
       onEventResult: `onCancel called`,

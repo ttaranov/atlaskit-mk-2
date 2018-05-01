@@ -129,6 +129,7 @@ export default class NPS extends React.Component<Props, State> {
       comment,
       role,
       allowContact,
+      // flowlint-next-line unclear-type:off
       rating: ((rating: any): number),
     };
   }

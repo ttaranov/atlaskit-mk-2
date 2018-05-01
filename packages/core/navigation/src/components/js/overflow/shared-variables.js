@@ -12,6 +12,7 @@ export const overflowGroupNamespace = prefix('group_ns');
 export const dropdownHeight = gridSize * 5;
 export const reservedGapHeight = gridSize * 4;
 
+// flowlint-next-line unclear-type:off
 export const isArrayFilled = (testArray: Array<any>): boolean => {
   // Note: we can't use a simple testArray.length check here because it is a set-length
   // array; We also can't use .filter(Boolean).length because that skips any undefined items.

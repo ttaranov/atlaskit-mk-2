@@ -78,6 +78,7 @@ type State = {
   oldPercentageComplete: number,
 };
 
+// flowlint-next-line unclear-type:off
 const Fade = ({ children, ...props }: Object) => (
   <CSSTransition {...props} classNames="fade">
     {children}
@@ -85,6 +86,7 @@ const Fade = ({ children, ...props }: Object) => (
 );
 
 export default class ProgressTrackerStage extends PureComponent<Props, State> {
+  // flowlint-next-line unclear-type:off
   constructor(props: Object) {
     super(props);
     this.state = {

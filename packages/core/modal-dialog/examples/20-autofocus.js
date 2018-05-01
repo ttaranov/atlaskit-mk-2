@@ -17,6 +17,7 @@ export default class ModalDemo extends Component<
   focusTarget: HTMLElement | null;
   open = (isOpen: string) => this.setState({ isOpen });
   close = (isOpen: string) => this.setState({ isOpen });
+  // flowlint-next-line unclear-type:off
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
   render() {
     const { isOpen } = this.state;

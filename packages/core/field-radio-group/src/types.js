@@ -31,6 +31,7 @@ export type RadioBasePropTypes = {
   /** Field name */
   name?: string,
   /** onChange event handler */
+  // flowlint-next-line unclear-type:off
   onChange: any => mixed,
   /** Field value */
   value?: string,
@@ -42,6 +43,7 @@ export type RadioGroupBasePropTypes = {|
   /** Label to display above the radio button options. */
   label?: string,
   /** Called when the value changes; passed the event */
+  // flowlint-next-line unclear-type:off
   onRadioChange: any => mixed,
 |};
 

@@ -13,23 +13,28 @@ export const isDropdownOverflowKey = prefix('isDropdownOverflow');
 export const isElectronMacKey = prefix('isElectronMac');
 export const electronMacTopPadding = 14;
 
+// flowlint-next-line unclear-type:off
 export const isElectronMac = (map?: Object): boolean =>
   map !== undefined &&
   hasOwnProperty(map, isElectronMacKey) &&
   map[isElectronMacKey];
 
+// flowlint-next-line unclear-type:off
 export const getProvided = (map?: Object): Provided => {
   if (map !== undefined && hasOwnProperty(map, rootKey) && map[rootKey]) {
     return map[rootKey].provided;
   }
   return container;
 };
+// flowlint-next-line unclear-type:off
 export const isCollapsed = (map: Object): boolean =>
   map[rootKey] && map[rootKey].isCollapsed;
 
+// flowlint-next-line unclear-type:off
 export const isInOverflowDropdown = (map: Object): boolean =>
   hasOwnProperty(map, isDropdownOverflowKey);
 
+// flowlint-next-line unclear-type:off
 export const isInCompactGroup = (map: Object): boolean => {
   if (!hasOwnProperty(map, groupKey)) {
     return false;
@@ -37,25 +42,30 @@ export const isInCompactGroup = (map: Object): boolean => {
   return map[groupKey].isCompact;
 };
 
+// flowlint-next-line unclear-type:off
 export const whenCollapsed = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')};
 `;
 
+// flowlint-next-line unclear-type:off
 export const whenNotCollapsed = (...args: Array<any>) => css`
   ${({ theme }) => (!isCollapsed(theme) ? css(...args) : '')};
 `;
 
+// flowlint-next-line unclear-type:off
 export const whenNotInOverflowDropdown = (...args: Array<any>) => css`
   ${({ theme }) => (!isInOverflowDropdown(theme) ? css(...args) : '')};
 `;
 
 export const whenCollapsedAndNotInOverflowDropdown = (
+  // flowlint-next-line unclear-type:off
   ...args: Array<any>
 ) => css`
   ${({ theme }) =>
     isCollapsed(theme) && !isInOverflowDropdown(theme) ? css(...args) : ''};
 `;
 
+// flowlint-next-line unclear-type:off
 export const getProvidedScrollbar = (map?: Object): ScrollBarTheme => {
   if (
     map !== undefined &&

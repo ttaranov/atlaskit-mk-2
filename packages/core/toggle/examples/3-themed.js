@@ -8,6 +8,7 @@ type State = {|
   mode: 'light' | 'dark',
 |};
 
+// flowlint-next-line unclear-type:off
 export default class Swapper extends React.Component<any, State> {
   state: State = {
     mode: 'light',

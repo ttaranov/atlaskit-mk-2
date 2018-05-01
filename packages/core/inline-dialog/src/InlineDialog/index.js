@@ -23,14 +23,18 @@ type Props = {
   /** Sets whether to show or hide the dialog. */
   isOpen?: boolean,
   /** Function called when you lose focus on the object. */
+  // flowlint-next-line unclear-type:off
   onContentBlur?: Function,
   /** Function called when you click on the open dialog. */
+  // flowlint-next-line unclear-type:off
   onContentClick?: Function,
   /** Function called when you focus on the open dialog. */
+  // flowlint-next-line unclear-type:off
   onContentFocus?: Function,
   /** Function called when the dialog is open and a click occurs anywhere outside
   the dialog. Calls with an object { isOpen: false } and the type of event that
   triggered the close. */
+  // flowlint-next-line unclear-type:off
   onClose?: Function,
   /** Where the dialog should appear, relative to the contents of the children. */
   position?: PositionType,

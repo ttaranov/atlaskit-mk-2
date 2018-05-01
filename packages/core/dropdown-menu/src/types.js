@@ -23,6 +23,7 @@ export type Behaviors =
 
 export type DeprecatedItem = {
   content?: string,
+  // flowlint-next-line unclear-type:off
   elemBefore?: Element<any>,
   href?: string,
   isChecked?: boolean,
@@ -32,6 +33,7 @@ export type DeprecatedItem = {
 };
 
 export type DeprecatedItemGroup = {
+  // flowlint-next-line unclear-type:off
   elemAfter?: Element<any>,
   heading?: string,
   items: Array<DeprecatedItem>,
@@ -87,6 +89,7 @@ type DropdownMenuBaseProps = {
 
 export type OnOpenChangeArgs = {
   isOpen: boolean,
+  // flowlint-next-line unclear-type:off
   event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
 };
 
@@ -99,5 +102,6 @@ export type DropdownMenuStatefulProps = DropdownMenuBaseProps & {
   /** Controls the initial open state of the dropdown. */
   defaultOpen: boolean,
   /** Called when the menu is open or closed. Received an object with isOpen state. */
+  // flowlint-next-line unclear-type:off
   onOpenChange: Function,
 };

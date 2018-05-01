@@ -9,6 +9,7 @@ export type GroupType = {
 export type FooterType = {
   content?: string,
   elemBefore?: Node,
+  // flowlint-next-line unclear-type:off
   onActivate?: Function,
   appearance?: 'default' | 'primary',
 };

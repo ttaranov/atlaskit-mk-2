@@ -16,15 +16,18 @@ import {
 } from '../styled/LoadingContainerAdvanced';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children: ReactElement<any>,
   isLoading?: boolean,
   spinnerSize?: SpinnerSizeType,
   contentsOpacity: number,
+  // flowlint-next-line unclear-type:off
   targetRef?: Function,
 };
 
 export default class LoadingContainerAdvanced extends Component<Props, {}> {
   children: Element | null;
+  // flowlint-next-line unclear-type:off
   spinner: ComponentType<any> | void | null;
   static defaultProps = {
     isLoading: true,

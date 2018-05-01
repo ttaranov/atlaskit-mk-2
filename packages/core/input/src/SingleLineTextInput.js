@@ -36,6 +36,7 @@ const EditView = styled.input`
 
 type Props = {
   value?: string | number,
+  // flowlint-next-line unclear-type:off
   style?: Object,
   isInitiallySelected?: boolean,
   isEditing: boolean,

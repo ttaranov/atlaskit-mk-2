@@ -29,6 +29,7 @@ type State = {
   appearance: AppearanceTypes,
 };
 
+// flowlint-next-line unclear-type:off
 export default class ConnectionDemo extends Component<any, State> {
   createdFlagCount = 0; // eslint-disable-line react/sort-comp
   state = {

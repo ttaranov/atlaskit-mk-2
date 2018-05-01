@@ -19,6 +19,7 @@ import type {
 } from '../types';
 
 type OpenCloseArgs = {
+  // flowlint-next-line unclear-type:off
   event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
   source?: 'click' | 'keydown',
 };
@@ -164,6 +165,7 @@ export default class DropdownMenuStateless extends Component<
     return isDroplistItem && thisDom ? thisDom.contains(target) : false;
   };
 
+  // flowlint-next-line unclear-type:off
   handleKeyboardInteractionForClosed = (event: SyntheticKeyboardEvent<any>) => {
     if (this.props.isOpen) {
       return;
@@ -182,6 +184,7 @@ export default class DropdownMenuStateless extends Component<
   };
 
   handleKeyboardInteractionsDeprecated = (
+    // flowlint-next-line unclear-type:off
     event: SyntheticKeyboardEvent<any>,
   ) => {
     // KeyboardEvent.target is typed as an EventTarget but we need to access methods on it which
@@ -189,6 +192,7 @@ export default class DropdownMenuStateless extends Component<
     // EventTarget can have these methods, so we cast it to Element through Object. This is the
     // safest thing we can do in this situation.
     // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    // flowlint-next-line unclear-type:off
     const target: Element = (event.target: Object);
     if (this.props.isOpen) {
       if (this.isTargetChildItem(target)) {
@@ -230,9 +234,11 @@ export default class DropdownMenuStateless extends Component<
 
   domMenuContainer: ?HTMLElement;
 
+  // flowlint-next-line unclear-type:off
   handleClickDeprecated = (event: SyntheticMouseEvent<any>) => {
     const menuContainer = this.domMenuContainer;
     // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
+    // flowlint-next-line unclear-type:off
     const target: Element = (event.target: Object);
     if (!menuContainer || (menuContainer && !menuContainer.contains(target))) {
       this.toggle({ source: 'click', event });
@@ -241,6 +247,7 @@ export default class DropdownMenuStateless extends Component<
 
   isUsingDeprecatedAPI = () => Boolean(this.props.items.length);
 
+  // flowlint-next-line unclear-type:off
   handleClick = (event: SyntheticMouseEvent<any>) => {
     if (this.isUsingDeprecatedAPI()) {
       this.handleClickDeprecated(event);
@@ -249,6 +256,7 @@ export default class DropdownMenuStateless extends Component<
 
     const { triggerContainer } = this;
     // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
+    // flowlint-next-line unclear-type:off
     const target: Element = (event.target: Object);
     if (
       triggerContainer &&
@@ -315,6 +323,7 @@ export default class DropdownMenuStateless extends Component<
   };
 
   handleItemClicked = (
+    // flowlint-next-line unclear-type:off
     event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
   ) => {
     this.props.onOpenChange({ isOpen: false, event });

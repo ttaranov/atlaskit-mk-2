@@ -6,6 +6,7 @@ import { AkCodeBlock } from '@atlaskit/code';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   Component: ComponentType<any>,
   language: string,
   source: string,

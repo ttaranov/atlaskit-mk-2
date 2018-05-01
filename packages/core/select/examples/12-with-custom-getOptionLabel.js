@@ -17,6 +17,7 @@ export default class withCustomGetOptionLabel extends Component<
   state = {
     useCustomOptionLabel: true,
   };
+  // flowlint-next-line unclear-type:off
   toggleValue = ({ value }: Object) =>
     this.setState(state => ({ ...state, [value]: !state[value] }));
   render() {

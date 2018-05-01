@@ -36,6 +36,7 @@ export default class StatelessExample extends Component<void, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     this.setState({
       value: event.target.value,

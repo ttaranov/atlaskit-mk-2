@@ -33,6 +33,7 @@ export default class IndeterminateExample extends PureComponent<void, State> {
     },
   };
 
+  // flowlint-next-line unclear-type:off
   onChange = (event: any) => {
     const { checkedItems } = this.state;
     const itemValue = event.target.value;

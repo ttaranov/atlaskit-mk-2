@@ -42,6 +42,7 @@ class Avatar extends Component<AvatarPropTypes> {
 
     if (isDisabled || typeof onClick !== 'function') return;
 
+    // flowlint-next-line unclear-type:off
     const item: Object = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
@@ -76,6 +77,7 @@ class Avatar extends Component<AvatarPropTypes> {
     }
 
     // we can cast here because we already know that it is a valid icon size
+    // flowlint-next-line unclear-type:off
     const size: SupportedSizeWithAnIcon = (this.props.size: any);
 
     const indicator: ?Node = (() => {
@@ -123,10 +125,12 @@ class Avatar extends Component<AvatarPropTypes> {
     } = this.props;
 
     // distill props from context, props, and state
+    // flowlint-next-line unclear-type:off
     const enhancedProps: AvatarPropTypes = (getProps(this): any);
 
     // provide element type based on props
     // TODO: why not enhanced props?
+    // flowlint-next-line unclear-type:off
     const Inner: any = getStyledAvatar(this.props);
 
     const AvatarNode = (

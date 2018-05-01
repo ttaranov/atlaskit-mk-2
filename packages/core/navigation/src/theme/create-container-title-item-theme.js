@@ -6,6 +6,7 @@ import {
   containerTitleIconSpacing,
 } from '../shared-variables';
 
+// flowlint-next-line unclear-type:off
 const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   const original: ItemTheme = outerTheme[key];
 

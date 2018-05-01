@@ -64,6 +64,7 @@ describe(name, () => {
   });
   it('should be able to customize the GatewayDest with custom components', () => {
     // eslint-disable-next-line react/prop-types
+    // flowlint-next-line unclear-type:off
     const Child = ({ children, id }: any) => <h1 id={id}>{children}</h1>;
 
     assertEqual(

@@ -81,6 +81,7 @@ export default class Followup extends React.Component<Props, State> {
     this.props.onRoleSelect(role);
   };
 
+  // flowlint-next-line unclear-type:off
   onAllowContactChange = (e: any) => {
     const allowContact = e.isChecked;
     this.setState({ allowContact });

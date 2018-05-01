@@ -168,6 +168,7 @@ describe('withAnalytics', () => {
     class TestComponent extends Component<{
       delegateAnalyticsEvent: (
         eventName: string,
+        // flowlint-next-line unclear-type:off
         eventData?: Object,
         isPrivate: boolean,
       ) => {},
@@ -235,6 +236,7 @@ describe('withAnalytics', () => {
 
   describe('integrated usage', () => {
     class Button extends Component<{
+      // flowlint-next-line unclear-type:off
       fireAnalyticsEvent: (eventName: string, eventData?: Object) => {},
       firePrivateAnalyticsEvent: (eventName: string) => {},
     }> {

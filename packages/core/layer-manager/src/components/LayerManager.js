@@ -18,6 +18,7 @@ type State = { ariaHiddenNode?: HTMLElement };
 
 export default class LayerManager extends Component<Props, State> {
   state = { ariaHiddenNode: undefined };
+  // flowlint-next-line unclear-type:off
   static childContextTypes: Object = { ariaHiddenNode: PropTypes.object };
 
   getChildContext() {

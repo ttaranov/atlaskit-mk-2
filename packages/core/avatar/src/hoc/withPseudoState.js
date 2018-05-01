@@ -103,6 +103,7 @@ export default function withPseudoState<InnerProps: {}>(
       // if the element is interactive
       const props: CombinedProps = omit(this.props, ...INTERNAL_HANDLERS);
 
+      // flowlint-next-line unclear-type:off
       const self: Object = this;
 
       if (isInteractive) {

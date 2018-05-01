@@ -5,8 +5,10 @@ import PropTypes from 'prop-types';
 import { clickManagerContext } from '../../util/contextNamespace';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children?: Element<any>,
   onItemClicked: (
+    // flowlint-next-line unclear-type:off
     event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
   ) => void,
 };
@@ -25,6 +27,7 @@ export default class DropdownItemClickManager extends Component<Props> {
   }
 
   handleItemClicked = (
+    // flowlint-next-line unclear-type:off
     event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>,
   ) => {
     this.props.onItemClicked(event);

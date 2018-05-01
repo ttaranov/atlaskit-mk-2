@@ -36,6 +36,7 @@ const PerformanceTweakContainer = styled.div`
 type State = {
   childCount: number,
   totalCount: number,
+  // flowlint-next-line unclear-type:off
   selectedChildCountOption: Object,
 };
 
@@ -79,6 +80,7 @@ export default class extends PureComponent<{}, State> {
     selectedChildCountOption: this.childCountOptions[3],
   };
 
+  // flowlint-next-line unclear-type:off
   getItems = (parent: ?Object) =>
     getItemsData(parent, this.state.selectedChildCountOption.value);
 
@@ -89,6 +91,7 @@ export default class extends PureComponent<{}, State> {
     });
   };
 
+  // flowlint-next-line unclear-type:off
   handleItemsCountChange = (option: Object) => {
     this.setState({ selectedChildCountOption: option });
   };

@@ -34,9 +34,11 @@ export function isTransitioning(state: TransitionState) {
 type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
 type Props = {
   children: ({
+    // flowlint-next-line unclear-type:off
     transitionStyle: Object,
     transitionState: TransitionState,
   }) => Node,
+  // flowlint-next-line unclear-type:off
   innerRef?: HTMLElement => any,
   in: boolean,
   userIsDragging: boolean,

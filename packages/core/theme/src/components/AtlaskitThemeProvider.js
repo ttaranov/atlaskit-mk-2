@@ -30,6 +30,7 @@ export default class AtlaskitThemeProvider extends Component<
   Props,
   ThemeProps,
 > {
+  // flowlint-next-line unclear-type:off
   stylesheet: any;
   static defaultProps = {
     mode: DEFAULT_THEME_MODE,

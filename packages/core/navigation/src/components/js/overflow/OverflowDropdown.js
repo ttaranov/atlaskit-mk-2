@@ -22,11 +22,13 @@ const theme = {
 };
 
 export default class OverflowDropdown extends Component<Props, State> {
+  // flowlint-next-line unclear-type:off
   constructor(props: Props, context: any) {
     super(props, context);
     this.state = { isOpen: false };
   }
 
+  // flowlint-next-line unclear-type:off
   handleDropdownToggle = ({ isOpen }: any) => {
     this.setState({ isOpen });
   };

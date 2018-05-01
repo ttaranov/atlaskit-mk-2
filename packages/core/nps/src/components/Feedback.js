@@ -26,6 +26,7 @@ export const CommentBox = ({
         placeholder={placeholder}
         isLabelHidden
         minimumRows={3}
+        // flowlint-next-line unclear-type:off
         onChange={(e: any) => onCommentChange(e.target.value)}
       />
     </StyledComment>

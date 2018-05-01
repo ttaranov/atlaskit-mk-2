@@ -223,6 +223,7 @@ const CheckboxWithTheme = withTheme(CheckboxStateless);
 
 const emptyTheme = {};
 
+// flowlint-next-line unclear-type:off
 export default function(props: any) {
   return (
     <ThemeProvider theme={emptyTheme}>

@@ -52,6 +52,7 @@ type Props = {
 // We are using any as FieldTextArea passes props via spread
 // TODO: if there is no impact props should be passed explicitly from FieldTextArea
 export default class FieldTextAreaStateless extends Component<Props, void> {
+  // flowlint-next-line unclear-type:off
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

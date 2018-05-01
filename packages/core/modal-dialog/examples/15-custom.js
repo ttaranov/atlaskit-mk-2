@@ -29,6 +29,7 @@ const Image = styled.img`
   margin-top: 1em;
 `;
 
+// flowlint-next-line unclear-type:off
 type Props = { onClose: Function, showKeyline: boolean };
 
 const Header = ({ onClose, showKeyline }: Props) => (

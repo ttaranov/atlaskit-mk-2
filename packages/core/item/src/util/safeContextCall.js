@@ -4,8 +4,10 @@
 // the context functions if they are available.
 export default (instance: { context: {} }, contextKey: string) => (
   fnToCall: string,
+  // flowlint-next-line unclear-type:off
   ...args: Array<any>
-): any => {
+): // flowlint-next-line unclear-type:off
+any => {
   if (!instance.context[contextKey]) {
     return null;
   }

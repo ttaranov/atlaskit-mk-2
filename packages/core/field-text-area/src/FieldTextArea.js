@@ -23,6 +23,7 @@ type Props = {|
   value?: string | number,
   /** Handler to be called when the input changes. */
   // onChange?: (event: Event) => mixed,
+  // flowlint-next-line unclear-type:off
   onChange?: any,
   /** Id value to be passed to the html input. */
   id?: string,
@@ -56,6 +57,7 @@ type State = {|
 
 export default class FieldTextArea extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
+  // flowlint-next-line unclear-type:off
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -66,6 +68,7 @@ export default class FieldTextArea extends Component<Props, State> {
     value: this.props.value,
   };
 
+  // flowlint-next-line unclear-type:off
   handleOnChange = (e: any) => {
     this.setState({ value: e.target.value });
     if (this.props.onChange) this.props.onChange(e);

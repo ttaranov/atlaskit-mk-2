@@ -18,18 +18,21 @@ export default class MyComponent extends Component<{}, State> {
     dateTimePickerValue: '2018-01-02T14:30+11:00',
   };
 
+  // flowlint-next-line unclear-type:off
   onDatePickerChange = (e: any) => {
     this.setState({
       datePickerValue: e.target.value,
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onTimePickerChange = (e: any) => {
     this.setState({
       timePickerValue: e.target.value,
     });
   };
 
+  // flowlint-next-line unclear-type:off
   onDateTimePickerChange = (e: any) => {
     this.setState({
       dateTimePickerValue: e.target.value,

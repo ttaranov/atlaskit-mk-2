@@ -6,6 +6,7 @@ import { defaultGridColumns } from './internal/vars';
 import Grid from './internal/GridElement';
 
 type Props = {
+  // flowlint-next-line unclear-type:off
   children?: any,
   spacing?: 'cosy' | 'comfortable' | 'compact',
   layout?: 'fixed' | 'fuild',

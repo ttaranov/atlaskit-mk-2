@@ -15,6 +15,7 @@ const noop = () => {};
 
 type DataShape = {
   title: string,
+  // flowlint-next-line unclear-type:off
   items: Array<any>,
 };
 
