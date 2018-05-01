@@ -24,7 +24,6 @@
     "@atlaskit/pagination": "^5.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/theme": "^3.0.0",
-    "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prop-types": "^15.5.10",
     "react-beautiful-dnd": "^4.0.1",

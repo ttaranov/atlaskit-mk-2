@@ -32,7 +32,6 @@
     "@atlaskit/button": "^7.0.3",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/field-text": "^5.0.0",
-    "@atlaskit/theme": "^3.0.0",
     "enzyme": "^3.3.0",
     "lodash.isequal": "^4.5.0",
     "redux": "^3.7.2"

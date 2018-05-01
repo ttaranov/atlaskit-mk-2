@@ -32,8 +32,6 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/field-radio-group": "^2.0.0",
-    "@atlaskit/modal-dialog": "^4.0.3",
-    "@atlaskit/navigation": "^31.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/theme": "^3.0.0",
     "enzyme": "^3.3.0"
