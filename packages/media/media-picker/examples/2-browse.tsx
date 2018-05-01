@@ -9,24 +9,14 @@ import {
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import {
-  MediaPicker,
-  Browser,
-  UploadParams,
-  UploadPreviewUpdateEventPayload,
-} from '../src';
-import {
-  DropzonePreviewsWrapper,
-  PopupHeader,
-  PopupContainer,
-} from '../example-helpers/styled';
-import { PreviewData, renderPreviewImage } from '../example-helpers';
+import { MediaPicker, Browser, UploadParams } from '../src';
+import { PopupHeader, PopupContainer } from '../example-helpers/styled';
+import { PreviewsData } from '../example-helpers/previews-data';
 import { AuthEnvironment } from '../example-helpers';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
   collectionName: string;
-  previewsData: PreviewData[];
   authEnvironment: AuthEnvironment;
 }
 
@@ -35,38 +25,12 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   dropzoneContainer: HTMLDivElement;
 
   state: BrowserWrapperState = {
-    previewsData: [],
     authEnvironment: 'client',
     collectionName: defaultMediaPickerCollectionName,
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.createBrowse();
-  }
-
-  getPreviewData(fileId: string): PreviewData | null {
-    return (
-      this.state.previewsData.find(preview => preview.fileId === fileId) || null
-    );
-  }
-
-  updatePreviewDataFile(
-    fileId: string,
-    progress: number,
-    isProcessed: boolean = false,
-  ) {
-    const previewData = this.getPreviewData(fileId);
-    if (
-      previewData &&
-      (previewData.uploadingProgress !== progress ||
-        previewData.isProcessed !== isProcessed)
-    ) {
-      previewData.uploadingProgress = progress;
-      previewData.isProcessed = isProcessed;
-      this.forceUpdate();
-    } else {
-      console.log('update is not needed');
-    }
   }
 
   createBrowse() {
@@ -82,53 +46,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       fileExtensions: ['image/jpeg', 'image/png', 'video/mp4'],
       uploadParams,
     };
-    const fileBrowser = MediaPicker('browser', context, browseConfig);
-
-    this.fileBrowser = fileBrowser;
-
-    fileBrowser.on('uploads-start', data => {
-      console.log('uploads-start:', data);
-    });
-
-    fileBrowser.on(
-      'upload-preview-update',
-      (payload: UploadPreviewUpdateEventPayload) => {
-        console.log('preview ready');
-        const previewData: PreviewData = {
-          preview: payload.preview,
-          isProcessed: false,
-          fileId: payload.file.id,
-          uploadingProgress: 0,
-        };
-        this.setState({
-          previewsData: [previewData, ...this.state.previewsData],
-        });
-      },
-    );
-
-    fileBrowser.on('upload-status-update', ({ file: { id }, progress }) => {
-      let uploadProgress = Math.round(progress.portion * 98);
-      console.log(`upload progress: ${uploadProgress}% for ${id} file`);
-      this.updatePreviewDataFile(id, uploadProgress);
-    });
-
-    fileBrowser.on('upload-processing', ({ file: { id } }) => {
-      console.log(`processing has started for ${id} file`);
-      this.updatePreviewDataFile(id, 99);
-    });
-
-    fileBrowser.on('upload-end', ({ file: { id, publicId } }) => {
-      console.log(`upload end for ${publicId} (local id: ${id}) file`);
-      this.updatePreviewDataFile(id, 100);
-
-      setTimeout(() => {
-        this.updatePreviewDataFile(id, 100, true);
-      }, 700);
-    });
-
-    fileBrowser.on('upload-error', data => {
-      console.log('upload error:', data);
-    });
+    this.fileBrowser = MediaPicker('browser', context, browseConfig);
   }
 
   onOpen = () => {
@@ -150,12 +68,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
 
     this.setState({ authEnvironment });
   };
-
-  renderPreviews() {
-    const { previewsData } = this.state;
-
-    return previewsData.map(renderPreviewImage);
-  }
 
   render() {
     const { collectionName, authEnvironment } = this.state;
@@ -179,10 +91,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
         </PopupHeader>
-        <DropzonePreviewsWrapper>
-          <h1>Upload previews</h1>
-          {this.renderPreviews()}
-        </DropzonePreviewsWrapper>
+        <PreviewsData picker={this.fileBrowser} />
       </PopupContainer>
     );
   }

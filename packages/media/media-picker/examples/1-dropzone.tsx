@@ -9,22 +9,19 @@ import {
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import Spinner from '@atlaskit/spinner';
-import { MediaPicker, Dropzone, UploadPreviewUpdateEventPayload } from '../src';
+import { MediaPicker, Dropzone } from '../src';
 import {
   DropzoneContainer,
   PopupHeader,
   PopupContainer,
   DropzoneContentWrapper,
-  DropzonePreviewsWrapper,
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
-import { PreviewData, renderPreviewImage } from '../example-helpers';
-import { ModuleConfig } from '../src/domain/config';
+import { PreviewsData } from '../example-helpers/previews-data';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: PreviewData[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
@@ -37,7 +34,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
   state: DropzoneWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
@@ -65,32 +61,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       });
   }
 
-  // TODO Extract to one place
-  getPreviewData(fileId: string): PreviewData | null {
-    return (
-      this.state.previewsData.find(preview => preview.fileId === fileId) || null
-    );
-  }
-
-  updatePreviewDataFile(
-    fileId: string,
-    progress: number,
-    isProcessed: boolean = false,
-  ) {
-    const previewData = this.getPreviewData(fileId);
-    if (
-      previewData &&
-      (previewData.uploadingProgress !== progress ||
-        previewData.isProcessed !== isProcessed)
-    ) {
-      previewData.uploadingProgress = progress;
-      previewData.isProcessed = isProcessed;
-      this.forceUpdate();
-    } else {
-      console.log('update is not needed');
-    }
-  }
-
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
     const context = ContextFactory.create({
@@ -109,69 +79,8 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
     this.dropzone = dropzone;
 
-    dropzone.on('uploads-start', data => {
-      console.log('uploads-start');
-      const newInflightUploads = data.files.map(file => file.id);
-
-      this.setState({
-        inflightUploads: [...this.state.inflightUploads, ...newInflightUploads],
-      });
-    });
-
-    dropzone.on(
-      'upload-preview-update',
-      (payload: UploadPreviewUpdateEventPayload) => {
-        const previewData: PreviewData = {
-          preview: payload.preview,
-          isProcessed: false,
-          fileId: payload.file.id,
-          uploadingProgress: 0,
-        };
-        this.setState({
-          previewsData: [previewData, ...this.state.previewsData],
-        });
-      },
-    );
-
-    dropzone.on('upload-status-update', ({ file: { id }, progress }) => {
-      let uploadProgress = Math.round(progress.portion * 98);
-      console.log(`upload progress: ${uploadProgress}% for ${id} file`);
-      this.updatePreviewDataFile(id, uploadProgress);
-    });
-
-    dropzone.on('upload-processing', ({ file: { id } }) => {
-      console.log('file processing');
-      // TODO inflightUploads could be replaces with previews
-      const inflightUploads = this.state.inflightUploads.filter(
-        fileId => fileId !== id,
-      );
-
-      this.setState({ inflightUploads });
-      this.updatePreviewDataFile(id, 99);
-    });
-
-    dropzone.on('upload-end', ({ file: { id, publicId } }) => {
-      console.log(`upload end for ${publicId} (local id: ${id}) file`);
-      this.updatePreviewDataFile(id, 100);
-
-      setTimeout(() => {
-        this.updatePreviewDataFile(id, 100, true);
-      }, 700);
-    });
-
-    dropzone.on('drag-enter', data => {
-      console.log('drag-enter', data.length, data);
-    });
-
-    dropzone.on('drag-leave', () => {
-      console.log('drag-leave');
-    });
-
-    dropzone.on('drop', () => {
-      console.log('drop');
-    });
-
     dropzone.activate();
+    this.forceUpdate();
   }
 
   saveDropzoneContainer = (element: HTMLDivElement) => {
@@ -179,12 +88,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
     this.createDropzone();
     this.fetchLastItems();
-  };
-
-  renderPreviews = () => {
-    const { previewsData } = this.state;
-
-    return previewsData.map(renderPreviewImage);
   };
 
   onConnectionChange = () => {
@@ -263,13 +166,10 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
             innerRef={this.saveDropzoneContainer}
           />
           <DropzoneItemsInfo>
+            {this.dropzone ? <PreviewsData picker={this.dropzone} /> : null}
             <h1>User collection items</h1>
             {this.renderLastItems()}
           </DropzoneItemsInfo>
-          <DropzonePreviewsWrapper>
-            <h1>Upload previews</h1>
-            {this.renderPreviews()}
-          </DropzonePreviewsWrapper>
         </DropzoneContentWrapper>
       </PopupContainer>
     );
