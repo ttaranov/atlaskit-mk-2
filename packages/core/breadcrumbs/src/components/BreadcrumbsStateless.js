@@ -7,7 +7,7 @@ const defaultMaxItems = 8;
 
 const { toArray } = Children;
 
-export type Props = {
+type Props = {
   /** Override collapsing of the nav when there are more than maxItems */
   isExpanded?: boolean,
   /** Set the maximum number of breadcrumbs to display. When there are more
