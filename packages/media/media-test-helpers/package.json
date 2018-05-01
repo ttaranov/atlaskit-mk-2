@@ -27,7 +27,7 @@
     "@types/lodash": "^4.14.106",
     "axios": "^0.17.1",
     "lodash": "^4.17.5",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0",
     "xhr-mock": "^2.3.0"

@@ -24,7 +24,7 @@
     "@atlaskit/theme": "^3.0.0",
     "calendar-base": "^0.3.0",
     "lodash.pick": "^4.4.0",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
