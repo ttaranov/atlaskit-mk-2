@@ -118,6 +118,7 @@ export type Layout = 'default' | 'full-width';
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
+  __autoSize?: boolean;
 }
 
 /**
@@ -180,6 +181,7 @@ export const table: any = {
   attrs: {
     isNumberColumnEnabled: { default: false },
     layout: { default: 'default' },
+    __autoSize: { default: false },
   },
   tableRole: 'table',
   isolating: true,
@@ -191,6 +193,7 @@ export const table: any = {
         isNumberColumnEnabled:
           dom.getAttribute('data-number-column') === 'true' ? true : false,
         layout: dom.getAttribute('data-layout') || 'default',
+        __autoSize: dom.getAttribute('data-autosize') || false,
       }),
     },
   ],
@@ -198,10 +201,20 @@ export const table: any = {
     const attrs = {
       'data-number-column': node.attrs.isNumberColumnEnabled,
       'data-layout': node.attrs.layout,
+      'data-autosize': node.attrs.__autoSize,
     };
     return ['table', attrs, ['tbody', 0]];
   },
 };
+
+export const tableToJSON = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs)
+    .filter(key => !key.startsWith('__'))
+    .reduce((obj, key) => {
+      obj[key] = node.attrs[key];
+      return obj;
+    }, {}),
+});
 
 export const tableRow: any = {
   content: '(tableCell | tableHeader)+',

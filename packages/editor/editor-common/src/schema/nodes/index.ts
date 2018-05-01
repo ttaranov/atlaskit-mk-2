@@ -39,6 +39,7 @@ export {
 export {
   table,
   TableAttributes,
+  tableToJSON,
   tableCell,
   toJSONTableCell,
   tableHeader,
