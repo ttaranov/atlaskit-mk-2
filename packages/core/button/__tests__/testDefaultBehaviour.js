@@ -158,6 +158,7 @@ describe('ak-button/default-behaviour', () => {
     expect(mount(<Button />).find('button[aria-haspopup]').length).toBe(0);
     expect(mount(<Button />).find('button[aria-expanded]').length).toBe(0);
     expect(mount(<Button />).find('button[aria-controls]').length).toBe(0);
+    expect(mount(<Button />).find('button[aria-label]').length).toBe(0);
     expect(mount(<Button />).find('button[id]').length).toBe(0);
     expect(
       mount(<Button ariaHaspopup />).find('button[aria-haspopup=true]').length,
@@ -167,6 +168,10 @@ describe('ak-button/default-behaviour', () => {
     ).toBe(1);
     expect(
       mount(<Button ariaControls="test" />).find('button[aria-controls="test"]')
+        .length,
+    ).toBe(1);
+    expect(
+      mount(<Button ariaLabel="test" />).find('button[aria-label="test"]')
         .length,
     ).toBe(1);
     expect(mount(<Button id="test" />).find('button[id="test"]').length).toBe(
