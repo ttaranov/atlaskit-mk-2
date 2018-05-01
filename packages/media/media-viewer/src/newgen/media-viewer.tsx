@@ -4,6 +4,8 @@ import { ItemViewer } from './item-viewer';
 import { Identifier } from './domain';
 import { Blanket, Content } from './styled';
 import Navigation from './navigation';
+import { getSelectedIndex } from './util';
+import { ErrorMessage } from './styled';
 
 export type Props = {
   onClose?: () => void;
@@ -20,11 +22,25 @@ export class MediaViewer extends React.Component<Props, State> {
   state: State = { selectedItem: this.props.selectedItem };
 
   render() {
-    const { onClose, context, items } = this.props;
+    const { onClose } = this.props;
+    return <Blanket onClick={onClose}>{this.getContent()}</Blanket>;
+  }
+
+  getContent() {
+    const { context, items } = this.props;
     const { selectedItem } = this.state;
 
-    return (
-      <Blanket onClick={onClose}>
+    if (getSelectedIndex(items, selectedItem) < 0) {
+      return (
+        <Content>
+          <ErrorMessage>
+            The selected item with id '{selectedItem.id}' was not found on the
+            list
+          </ErrorMessage>;
+        </Content>
+      );
+    } else {
+      return (
         <Content>
           <ItemViewer context={context} identifier={selectedItem} />
           <Navigation
@@ -33,8 +49,8 @@ export class MediaViewer extends React.Component<Props, State> {
             onChange={this.onNavigationChange}
           />
         </Content>
-      </Blanket>
-    );
+      );
+    }
   }
 
   onNavigationChange = (selectedItem: Identifier) => {
