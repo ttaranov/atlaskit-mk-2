@@ -53,7 +53,10 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     }
 
     const beforeItems = allItems.slice(0, itemsBeforeCollapse);
-    const afterItems = allItems.slice(-itemsAfterCollapse);
+    const afterItems = allItems.slice(
+      allItems.length - itemsAfterCollapse,
+      allItems.length,
+    );
 
     return [
       ...beforeItems,
