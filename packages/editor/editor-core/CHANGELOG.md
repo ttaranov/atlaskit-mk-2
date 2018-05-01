@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.0.23
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
 ## 71.0.22
 - [patch] ED-4315, Image layout should be disabled inside bodied extension. [a0ed280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0ed280)
 

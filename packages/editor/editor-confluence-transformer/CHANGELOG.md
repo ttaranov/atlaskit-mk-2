@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.6
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
 ## 4.0.5
 
 ## 4.0.4
