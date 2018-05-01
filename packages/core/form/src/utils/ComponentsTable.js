@@ -1,7 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import { colors } from '@atlaskit/theme';
 /* eslint-disable import/no-extraneous-dependencies */
 import Tooltip from '@atlaskit/tooltip';
 import { type FieldComponentsType } from '../data/fieldComponents';
@@ -12,15 +14,15 @@ type Props = {
 
 export default class ComponentsTable extends PureComponent<Props, void> {
   renderSupportIcon = (support: number) => {
-    if (support) return <CheckCircleIcon />;
-    return null;
+    if (support) return <CheckCircleIcon primaryColor={colors.G400} />;
+    return <CrossCircleIcon primaryColor={colors.R400} />;
   };
 
   renderSupportInfo = (info: string = '') => {
     if (info.length)
       return (
         <Tooltip content={info}>
-          <EditorWarningIcon />
+          <EditorWarningIcon primaryColor={colors.Y400} />
         </Tooltip>
       );
     return null;
