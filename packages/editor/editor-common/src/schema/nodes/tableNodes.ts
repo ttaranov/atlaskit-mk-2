@@ -8,6 +8,7 @@ import {
   akColorR50,
   akColorG50,
   akColorY50,
+  akColorN0,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
 import {
@@ -44,11 +45,24 @@ const setCellAttrs = (node: PmNode) => {
   }
   if (node.attrs.background) {
     const { background } = node.attrs;
-    const color =
-      node.type.name === 'tableCell'
-        ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
-        : background;
-    attrs.style = (attrs.style || '') + `background-color: ${color};`;
+    const nodeType = node.type.name;
+
+    // to ensure that we don't overwrite product's style:
+    // - it clears background color for <th> if its set to grey
+    // - it clears background color for <td> if its set to white
+    const ignored =
+      (nodeType === 'tableHeader' &&
+        background === tableBackgroundColorNames.get('grey')) ||
+      (nodeType === 'tableCell' &&
+        background === tableBackgroundColorNames.get('white'));
+
+    if (!ignored) {
+      const color =
+        nodeType === 'tableCell'
+          ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
+          : background;
+      attrs.style = `${attrs.style || ''}background-color: ${color};`;
+    }
   }
 
   return attrs;
@@ -57,7 +71,6 @@ const setCellAttrs = (node: PmNode) => {
 export const tableBackgroundColorPalette = new Map<string, string>();
 export const tableBackgroundColorNames = new Map<string, string>();
 [
-  // [akColorN800, default],
   [akColorB50, 'Blue'],
   [akColorT50, 'Teal'],
   [akColorR50, 'Red'],
@@ -65,10 +78,13 @@ export const tableBackgroundColorNames = new Map<string, string>();
   [akColorP50, 'Purple'],
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
-  ['', 'White'],
-].forEach(([color, label]) => {
-  tableBackgroundColorPalette.set(color.toLowerCase(), label);
-  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
+  [akColorN0, 'White'],
+].forEach(([colorValue, colorName]) => {
+  tableBackgroundColorPalette.set(colorValue.toLowerCase(), colorName);
+  tableBackgroundColorNames.set(
+    colorName.toLowerCase(),
+    colorValue.toLowerCase(),
+  );
 });
 
 export function calcTableColumnWidths(node: PmNode): number[] {

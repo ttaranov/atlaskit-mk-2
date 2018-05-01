@@ -7,8 +7,8 @@ import {
   akEditorTableCellSelected,
   akEditorTableBorder,
   akEditorTableBorderSelected,
-  akEditorTableFloatingControls,
 } from '../../styles';
+import { tableBackgroundColorNames } from '../../';
 
 const tableStyle = `
   {
@@ -46,7 +46,7 @@ const tableStyle = `
         }
       }
       th {
-        background-color: ${akEditorTableFloatingControls};
+        background-color: ${tableBackgroundColorNames.get('grey')};
         font-weight: bold;
         text-align: left;
       }
