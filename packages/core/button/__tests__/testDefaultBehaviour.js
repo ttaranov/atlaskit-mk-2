@@ -218,6 +218,16 @@ describe('ak-button/default-behaviour', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('should respect autofocus', () => {
+    const wrapper = mount(
+      <Button id="testID123" tabIndex={0} autoFocus>
+        button
+      </Button>,
+    );
+    const id = document.activeElement ? document.activeElement.id : null;
+    expect(wrapper.find('button').prop('id')).toEqual(id);
+  });
+
   it('should trigger onBlur handler on blur', () => {
     const spy = jest.fn();
     const wrapper = mount(
