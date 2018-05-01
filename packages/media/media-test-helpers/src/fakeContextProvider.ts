@@ -25,6 +25,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
+  const uploadFile = jest.fn();
   const defaultContext: Context = {
     getBlobService,
     getLocalPreview,
@@ -36,6 +37,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
     addLinkItem,
     getUrlPreviewProvider,
     refreshCollection,
+    uploadFile,
     config: {
       serviceHost: 'some-service-host',
       authProvider: () =>
