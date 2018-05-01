@@ -43,7 +43,7 @@
     "@atlaskit/layer": "^3.0.0",
     "@atlaskit/navigation": "^31.0.0",
     "@atlaskit/page": "^6.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.2.tgz",
     "react-beautiful-dnd": "^4.0.1",
     "react-lorem-component": "^0.12.2"
   },

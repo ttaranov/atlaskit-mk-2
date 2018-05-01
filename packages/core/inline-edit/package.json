@@ -42,7 +42,7 @@
     "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/tag": "^4.0.0",
     "@atlaskit/tag-group": "^4.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.2.tgz"
   },
   "keywords": [
     "atlaskit",

@@ -38,7 +38,7 @@
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.2.tgz",
     "react-value": "^0.2.0"
   }
 }

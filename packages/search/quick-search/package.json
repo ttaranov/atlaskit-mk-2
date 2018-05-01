@@ -36,7 +36,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/navigation": "^31.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.2.tgz",
     "faker": "^4.1.0",
     "prop-types": "^15.5.10",
     "sinon": "^2.2.0"

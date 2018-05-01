@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.0.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.2.tgz",
     "styled-components": "^3.2.6"
   }
 }
