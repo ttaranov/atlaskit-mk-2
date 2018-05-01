@@ -3,7 +3,7 @@
 When contributing, please ensure to follow and complete our definition of done before submitting your PR.
 
 ## 1. Reviewed
-----------
+--------------
 * Approval by a AK components maintainer
 
 * Code Review
@@ -15,7 +15,7 @@ When contributing, please ensure to follow and complete our definition of done b
 * No regression in core features
 
 ## 2. Developed
-----------
+---------------
 ### a. Test coverage
 
 Please check [Atlaskit testing documentation](https://atlaskit.atlassian.com/docs/guides/testing)
@@ -45,14 +45,14 @@ Please check [Atlaskit testing documentation](https://atlaskit.atlassian.com/doc
   
     
 ## 3. Documented
-----------
+----------------
 
 **Dev docs updated - Atlaskit website**
 
 - Please provide some Examples if applicable
 
 ## 4. Consumable
-----------
+----------------
 
 Released on npm and published on the [AK website](http://atlaskit.atlassian.com/).
 
