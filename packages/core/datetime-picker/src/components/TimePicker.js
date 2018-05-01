@@ -47,7 +47,7 @@ type Props = {
   timeIsEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** Indicates current value is invalid & changes border color */
+  /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
 };
 

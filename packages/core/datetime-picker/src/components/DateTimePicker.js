@@ -32,9 +32,9 @@ type Props = {
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** Allow users to edit the input and add a time */
+  /** Allow users to edit the input and add a time. */
   timeIsEditable?: boolean,
-  /** Indicates current value is invalid & changes border color */
+  /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
   hideIcon?: boolean,
 };

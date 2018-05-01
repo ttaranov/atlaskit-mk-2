@@ -121,6 +121,7 @@ export default class DatePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
