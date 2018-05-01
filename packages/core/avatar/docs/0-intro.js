@@ -14,7 +14,7 @@ export default md`
   - [Status](/mk-2/packages/core/avatar/docs/status)
   - [Skeleton](/mk-2/packages/core/avatar/docs/skeleton)
 
-  ## Avatar - Defult Export
+  ## Avatar - Default Export
 
   Use the \`Avatar\` component to represent users with their profile picture.
   Optionally, a presence to indicate online status can also be displayed.
