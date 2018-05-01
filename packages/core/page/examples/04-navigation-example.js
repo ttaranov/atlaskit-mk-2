@@ -1,71 +1,97 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component, Fragment } from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
-import AkToggle from '@atlaskit/toggle';
-import Page, { Grid, GridColumn } from '../src';
+import Page, { Grid } from '../src';
+import NavigationExplanation from './utils/NavigationExplanation';
 
 type State = {
-  isBannerOpen: boolean,
+  isErrorBannerOpen: boolean,
+  isAnnouncementBannerOpen: boolean,
   navigationWidth?: number,
   isNavigationOpen?: boolean,
 };
 
-export default class NavigationExample extends PureComponent<void, State> {
+export default class NavigationExample extends Component<void, State> {
+  errorBannerRef: ?HTMLElement;
+  announcementBannerRef: ?HTMLElement;
+
   state = {
-    isBannerOpen: false,
+    isErrorBannerOpen: false,
+    isAnnouncementBannerOpen: false,
     navigationWidth: 0,
     isNavigationOpen: false,
   };
 
+  getOffset = () => {
+    const { isErrorBannerOpen, isAnnouncementBannerOpen } = this.state;
+
+    const errorBannerHeight = this.errorBannerRef
+      ? this.errorBannerRef.clientHeight
+      : 0;
+    const announcementBannerHeight = this.announcementBannerRef
+      ? this.announcementBannerRef.clientHeight
+      : 0;
+
+    let offset = 0;
+    if (isErrorBannerOpen) offset += errorBannerHeight;
+    if (isAnnouncementBannerOpen) offset += announcementBannerHeight;
+    return offset;
+  };
+
+  onErrorBannerChange = () =>
+    this.setState({
+      isErrorBannerOpen: !this.state.isErrorBannerOpen,
+    });
+  onAnnouncementBannerChange = () =>
+    this.setState({
+      isAnnouncementBannerOpen: !this.state.isAnnouncementBannerOpen,
+    });
+
   render() {
+    const { isErrorBannerOpen, isAnnouncementBannerOpen } = this.state;
+
     return (
       <Page
-        isBannerOpen={this.state.isBannerOpen}
+        isBannerOpen={isErrorBannerOpen || isAnnouncementBannerOpen}
+        bannerHeight={this.getOffset()}
         banner={
-          <Banner appearance="error" isOpen={this.state.isBannerOpen}>
-            Example Banner
-          </Banner>
+          <Fragment>
+            <Banner
+              appearance="error"
+              isOpen={isErrorBannerOpen}
+              innerRef={ref => {
+                this.errorBannerRef = ref;
+              }}
+            >
+              Example Banner
+            </Banner>
+            <Banner
+              appearance="announcement"
+              isOpen={isAnnouncementBannerOpen}
+              innerRef={ref => {
+                this.announcementBannerRef = ref;
+              }}
+            >
+              <p>What if we have two?</p>
+              <p>Can we render this?</p>
+              <p>Will it work if this expands?</p>
+              <p>To maximum length?</p>
+              <p>In an annoying way</p>
+            </Banner>
+          </Fragment>
         }
         navigation={
-          <Navigation
-            width={this.state.navigationWidth}
-            isOpen={this.state.isNavigationOpen}
-            onResize={({ width, isOpen }) => {
-              this.setState({
-                navigationWidth: width,
-                isNavigationOpen: isOpen,
-              });
-            }}
-          >
-            Example Navigation
+          <Navigation topOffset={this.getOffset()}>
+            The children are the future
           </Navigation>
         }
       >
         <Grid>
-          <GridColumn>
-            <h2>Use fullscreen display to view this example</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Blanditiis voluptatum perspiciatis doloribus dignissimos accusamus
-              commodi, nobis ut, error iusto, quas vitae nesciunt consequatur
-              possimus labore! Mollitia est quis minima asperiores.
-            </p>
-          </GridColumn>
-          <GridColumn>
-            <p>Toggle banner</p>
-            <AkToggle
-              label="toggle"
-              size="large"
-              onChange={() => {
-                this.setState({
-                  isBannerOpen: !this.state.isBannerOpen,
-                });
-              }}
-            >
-              Toggle banner
-            </AkToggle>
-          </GridColumn>
+          <NavigationExplanation
+            onErrorBannerChange={this.onErrorBannerChange}
+            onAnnouncementBannerChange={this.onAnnouncementBannerChange}
+          />
         </Grid>
       </Page>
     );
