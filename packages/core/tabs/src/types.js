@@ -1,7 +1,7 @@
 // @flow
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 
-export type TabData = { [string]: any };
+export type TabData = { label: string, content: Node, [string]: any };
 
 type TabItemElementProps = {
   'aria-posinset'?: number,

@@ -18,6 +18,7 @@ const loadOptions = (inputValue, callback) => {
 
 const AsyncExample = () => (
   <AsyncSelect
+    className="react-select"
     defaultOptions
     loadOptions={loadOptions}
     options={cities}

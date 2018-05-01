@@ -5,7 +5,7 @@ import GlobalQuickSearch from '../GlobalQuickSearch';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
   CrossProductSearchClient,
-  CrossProductResults,
+  Scope,
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
@@ -74,17 +74,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   async searchCrossProductConfluence(
     query: string,
-  ): Promise<CrossProductResults> {
-    // TODO search for pages,blogs,attachments & search for spaces
+  ): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
+      [Scope.ConfluencePageBlog, Scope.ConfluenceSpace],
     );
 
     if (this.state.query === query) {
       this.setState({
-        objectResults: results.confluence,
-        spaceResults: results.confluence,
+        objectResults: results.get(Scope.ConfluencePageBlog) || [],
+        spaceResults: results.get(Scope.ConfluenceSpace) || [],
       });
     }
 
@@ -162,10 +162,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
-    // TODO are both call made at the same time?
+    const recentItemsPromise = this.props.confluenceClient.getRecentItems();
+    const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
+
     this.setState({
-      recentlyViewedPages: await this.props.confluenceClient.getRecentPages(),
-      recentlyViewedSpaces: await this.props.confluenceClient.getRecentSpaces(),
+      recentlyViewedPages: await recentItemsPromise,
+      recentlyViewedSpaces: await recentSpacesPromise,
     });
   };
 
@@ -195,6 +197,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         {renderSearchResults({
           query,
           isError,
+          isLoading,
           retrySearch: this.retrySearch,
           recentlyViewedPages,
           recentlyViewedSpaces,

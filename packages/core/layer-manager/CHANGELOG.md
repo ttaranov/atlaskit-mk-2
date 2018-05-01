@@ -1,5 +1,9 @@
 # @atlaskit/layer-manager
 
+## 3.0.3
+
+- [patch] Fix race condition in layer manager's portal where portalled contents would still display after unmounting if they were quickly mounted and then unmounted [23ef141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23ef141)
+
 ## 3.0.2
 - [patch] support new property "targetNode" on spotlight component [48397b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48397b6)
 

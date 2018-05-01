@@ -37,6 +37,7 @@ import {
   widthPlugin,
   typeAheadPlugin,
   quickInsertPlugin,
+  gapCursorPlugin,
 } from '../plugins';
 
 /**
@@ -160,6 +161,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.UNSAFE_allowLayouts) {
     plugins.push(layoutPlugin);
+  }
+
+  if (props.allowGapCursor) {
+    plugins.push(gapCursorPlugin);
   }
 
   // UI only plugins

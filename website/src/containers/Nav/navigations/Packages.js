@@ -2,11 +2,23 @@
 
 import React, { type ComponentType } from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
-
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import styled from 'styled-components';
+import { isSubNavExpanded } from '../utils/linkComponents';
 import renderNav from '../utils/renderNav';
 import type { Directory, File, NavGroupItem } from '../../../types';
 import * as fs from '../../../utils/fs';
 import { packageUrl, packageDocUrl } from '../../../utils/url';
+
+const CenteredIcon = styled.span`
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  height: 16px;
+  justify-content: center;
+  line-height: 24px;
+  width: 16px;
+`;
 
 export function buildSubNavGroup(
   children: Array<File>,
@@ -20,7 +32,8 @@ export function buildSubNavGroup(
       acc.items.push({
         to: url(fs.normalize(item.id)),
         title: fs.titleize(item.id),
-        icon: <Icon label={`${fs.titleize(item.id)} icon`} />,
+        isCompact: true,
+        icon: <CenteredIcon>•</CenteredIcon>,
       });
       return acc;
     },
@@ -28,7 +41,8 @@ export function buildSubNavGroup(
   );
 }
 
-const getItemDetails = (pkg: Directory, group: Directory) => {
+const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
+  let navigationItemIcon = <CenteredIcon>•</CenteredIcon>;
   const docs = fs.maybeGetById(fs.getDirectories(pkg.children) || [], 'docs');
   const examples = fs.maybeGetById(
     fs.getDirectories(pkg.children) || [],
@@ -54,16 +68,22 @@ const getItemDetails = (pkg: Directory, group: Directory) => {
 
   if (docsSubnav) items.push(docsSubnav);
 
+  if (items.length) {
+    navigationItemIcon = isSubNavExpanded(
+      packageUrl(group.id, pkg.id),
+      pathname,
+    ) ? (
+      <ChevronDownIcon size="small" />
+    ) : (
+      <PackageIcon size="small" />
+    );
+  }
+
   return {
+    isCompact: true,
+    icon: navigationItemIcon,
     to: packageUrl(group.id, pkg.id),
     title: fs.titleize(pkg.id),
-    // icon: <PackageIcon label={`${fs.titleize(pkg.id)} icon`} />,
-    // iconSelected: (
-    //   <PackageSelectedIcon
-    //     label={`${fs.titleize(pkg.id)} icon`}
-    //     secondaryColor={colors.N20}
-    //   />
-    // ),
     items,
   };
 };
@@ -78,13 +98,13 @@ export type PackagesNavProps = {
   packages: Directory,
 };
 
-const standardGroups = (dirs: Array<Directory>) =>
+const standardGroups = (dirs: Array<Directory>, pathname) =>
   dirs.map(group => {
     const packages = fs.getDirectories(group.children);
     return {
       title: group.id,
       items: packages.reduce((items, pkg) => {
-        const details = getItemDetails(pkg, group);
+        const details = getItemDetails(pkg, group, pathname);
         if (details) {
           return items.concat(details);
         }
@@ -99,9 +119,12 @@ export default function PackagesNav(props: PackagesNavProps) {
 
   return (
     <div>
-      {renderNav([{ items: [packagesList] }, ...standardGroups(dirs)], {
-        pathname,
-      })}
+      {renderNav(
+        [{ items: [packagesList] }, ...standardGroups(dirs, pathname)],
+        {
+          pathname,
+        },
+      )}
     </div>
   );
 }

@@ -42,9 +42,8 @@ type Props = {
   borderColor?: string,
   /** Array of avatar data passed to each `avatar` component */
   data: Array<AvatarPropTypes>,
-
   /** Handle the click event on the avatar item */
-  onAvatarClick: AvatarClickType,
+  onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: FunctionType,
@@ -58,7 +57,6 @@ export default class AvatarGroup extends Component<Props> {
     avatar: Avatar,
     maxCount: 0,
     size: 'medium',
-    onAvatarClick: () => {},
   };
 
   renderMoreDropdown(max: number, total: number) {
@@ -108,7 +106,9 @@ export default class AvatarGroup extends Component<Props> {
           href={avatar.href}
           key={index}
           onClick={(event: KeyboardEvent | MouseEvent) => {
-            onAvatarClick({ event, item: avatar });
+            if (typeof onAvatarClick === 'function') {
+              onAvatarClick({ event, item: avatar });
+            }
           }}
           rel={avatar.target ? 'noopener noreferrer' : null}
           target={avatar.target}

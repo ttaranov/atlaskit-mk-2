@@ -27,6 +27,7 @@ import {
 import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
 import { stateKey as tableStateKey } from '../plugins/table/pm-plugins/main';
 import { hasParentNodeOfType } from 'prosemirror-utils';
+import { GapCursorSelection, Side } from '../plugins/gap-cursor/selection';
 
 export * from './document';
 export * from './action';
@@ -150,6 +151,9 @@ export function atTheBeginningOfDoc(state: EditorState): boolean {
 export function atTheEndOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $to } = selection;
+  if (selection instanceof GapCursorSelection) {
+    return false;
+  }
   if (selection instanceof NodeSelection && selection.node.isBlock) {
     return true;
   }
@@ -159,6 +163,9 @@ export function atTheEndOfBlock(state: EditorState): boolean {
 export function atTheBeginningOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $from } = selection;
+  if (selection instanceof GapCursorSelection) {
+    return false;
+  }
   if (selection instanceof NodeSelection && selection.node.isBlock) {
     return true;
   }
@@ -277,6 +284,17 @@ export function setTextSelection(
     TextSelection.create(state.doc, anchor, head),
   );
   view.dispatch(tr);
+}
+
+export function setGapCursorSelection(
+  view: EditorView,
+  pos: number,
+  side: Side,
+) {
+  const { state } = view;
+  view.dispatch(
+    state.tr.setSelection(new GapCursorSelection(state.doc.resolve(pos), side)),
+  );
 }
 
 /**

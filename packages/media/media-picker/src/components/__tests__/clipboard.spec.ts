@@ -27,7 +27,7 @@ describe('Clipboard', () => {
     addFiles = jest.fn();
     ((clipboard as any).uploadService as UploadService).addFiles = addFiles;
 
-    // necessary for `domready` library
+    // necessary for dom ready listener
     setTimeout(done, 0);
   });
 

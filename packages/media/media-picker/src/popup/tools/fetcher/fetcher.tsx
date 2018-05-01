@@ -306,6 +306,7 @@ export class MediaApiFetcher implements Fetcher {
       params: {
         // TODO Move these keys somewhere in config MSW-406
         api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        rating: 'pg',
         offset,
       },
     };
@@ -325,6 +326,7 @@ export class MediaApiFetcher implements Fetcher {
       url: `${baseUrl}`,
       params: {
         api_key: 'lBOxhhz1BM62Y3JsK0iQv1pRYyOGUjR8',
+        rating: 'pg',
         q: query,
         offset,
       },

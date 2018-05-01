@@ -35,6 +35,11 @@ export interface Props {
    * For development purposes only: Overrides the URL to the directory service.
    */
   directoryServiceUrl?: string;
+
+  /**
+   * The URL for Confluence. Must include the context path.
+   */
+  confluenceUrl?: string;
 }
 
 /**
@@ -50,6 +55,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       activityServiceUrl,
       searchAggregatorServiceUrl,
       directoryServiceUrl,
+      confluenceUrl,
     } = this.props;
 
     if (activityServiceUrl) {
@@ -59,8 +65,13 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     if (searchAggregatorServiceUrl) {
       config.searchAggregatorServiceUrl = searchAggregatorServiceUrl;
     }
+
     if (directoryServiceUrl) {
       config.directoryServiceUrl = directoryServiceUrl;
+    }
+
+    if (confluenceUrl) {
+      config.confluenceUrl = confluenceUrl;
     }
 
     return config;

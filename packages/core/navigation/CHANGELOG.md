@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 31.0.0
+- [major] Remove quick-search component from navigation. See docs for how to upgrade. [5447ec2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5447ec2)
+
 ## 30.0.3
 - [patch] exporting the skeleton header from navigation [7697346](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7697346)
 

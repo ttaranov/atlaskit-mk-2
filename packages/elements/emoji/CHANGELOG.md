@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 34.1.8
+
+## 34.1.7
+
 ## 34.1.6
 - [patch] Expose the EmojiResourceConfig interface [3015b9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3015b9d)
 
