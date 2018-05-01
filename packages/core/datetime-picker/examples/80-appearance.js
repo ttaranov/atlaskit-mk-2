@@ -2,32 +2,23 @@
 
 import React from 'react';
 import { Label } from '@atlaskit/field-base';
-import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { DatePicker, DateTimePicker, TimePicker } from '../src';
 
 export default () => {
   return (
     <div>
-      <Label label="TimePicker - no icon by default" />
+      <Label label="TimePicker - default no icon" />
       <TimePicker onChange={console.log} />
-      <Label label="TimePicker - icon provided" />
-      <TimePicker onChange={console.log} icon={CalendarIcon} />
-      <Label label="TimePicker - icon provided & subtle appearance" />
-      <TimePicker
-        onChange={console.log}
-        icon={CalendarIcon}
-        appearance="subtle"
-      />
 
-      <Label label="DatePicker - default appearance" />
+      <Label label="DatePicker - default" />
       <DatePicker onChange={console.log} />
-      <Label label="DatePicker - subtle appearance" />
-      <DatePicker onChange={console.log} appearance="subtle" />
+      <Label label="DatePicker - hideIcon" />
+      <DatePicker onChange={console.log} hideIcon />
 
-      <Label label="DateTimePicker - default appearance" />
+      <Label label="DateTimePicker - default" />
       <DateTimePicker onChange={console.log} />
-      <Label label="DateTimePicker - subtle appearance" />
-      <DateTimePicker onChange={console.log} appearance="subtle" />
+      <Label label="DateTimePicker - hideIcon" />
+      <DateTimePicker onChange={console.log} hideIcon />
     </div>
   );
 };

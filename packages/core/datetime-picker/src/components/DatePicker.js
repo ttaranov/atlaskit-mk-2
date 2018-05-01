@@ -15,8 +15,6 @@ import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Default appearance includes icon & sublte only shows icon on focus */
-  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -49,6 +47,7 @@ type Props = {
   value?: string,
   /** Indicates current value is invalid & changes border color */
   isInvalid?: boolean,
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -108,7 +107,6 @@ export default class DatePicker extends Component<Props, State> {
   input: Element | null;
 
   static defaultProps = {
-    appearance: 'default',
     autoFocus: false,
     disabled: [],
     icon: CalendarIcon,
@@ -236,7 +234,7 @@ export default class DatePicker extends Component<Props, State> {
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
-    const icon = this.props.appearance === 'subtle' ? null : this.props.icon;
+    const icon = this.props.hideIcon ? null : this.props.icon;
     const Menu = ({ innerProps: menuInnerProps }) => (
       <StyledMenu>
         <Calendar

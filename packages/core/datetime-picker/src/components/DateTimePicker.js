@@ -12,8 +12,6 @@ import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Default appearance includes icon & sublte only shows icon on focus */
-  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
@@ -38,6 +36,7 @@ type Props = {
   timeIsEditable?: boolean,
   /** Indicates current value is invalid & changes border color */
   isInvalid?: boolean,
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -102,7 +101,6 @@ function formatDateTimeZoneIntoIso(
 
 export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
-    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -114,6 +112,7 @@ export default class DateTimePicker extends Component<Props, State> {
     defaultValue: '',
     timeIsEditable: false,
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
@@ -189,7 +188,7 @@ export default class DateTimePicker extends Component<Props, State> {
       timeIsEditable,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
-    const icon = this.props.appearance === 'subtle' ? null : CalendarIcon;
+    const icon = this.props.hideIcon ? null : CalendarIcon;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
