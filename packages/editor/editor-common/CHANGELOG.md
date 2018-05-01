@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.2.7
+- [patch] ED-4454: fix setting while bg color for table header cells [83aecb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83aecb3)
+
 ## 9.2.6
 
 ## 9.2.5
