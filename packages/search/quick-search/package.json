@@ -25,7 +25,6 @@
     "@atlaskit/field-base": "^9.0.0",
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/item": "^6.0.0",
-    "@atlaskit/navigation": "^31.0.0",
     "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "styled-components": "1.4.6 - 3"
