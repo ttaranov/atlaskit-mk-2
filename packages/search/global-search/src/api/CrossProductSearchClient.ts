@@ -31,12 +31,11 @@ export interface JiraItem {
 
 export interface ConfluenceItem {
   title: string; // this is highlighted
-  lastModified: string;
   baseUrl: string;
   url: string;
-  content: {
-    id?: string;
-    type?: ResultContentType;
+  content?: {
+    id: string;
+    type: ResultContentType;
   };
   iconCssClass: string;
   container: {

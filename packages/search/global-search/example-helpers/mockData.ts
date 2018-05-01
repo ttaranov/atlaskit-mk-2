@@ -11,6 +11,8 @@ import {
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 import { ResultContentType } from '../src/model/Result';
 
+const DUMMY_BASE_URL = 'http://localhost';
+
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
   return array[index];
@@ -94,15 +96,13 @@ export function makeCrossProductSearchData(
     const url = faker.internet.url();
     confData.push({
       title: faker.company.catchPhrase(),
-      lastModified: '',
       container: {
         title: faker.company.companyName(),
         displayUrl: url,
       },
       iconCssClass: randomIconCssClass(),
       url: url,
-      baseUrl: '',
-      content: {},
+      baseUrl: DUMMY_BASE_URL,
     });
   }
 
@@ -110,31 +110,33 @@ export function makeCrossProductSearchData(
     const url = faker.internet.url();
     const isAttachment = faker.random.boolean();
 
-    const content = isAttachment
-      ? { id: 'abc', type: 'attachment' as ResultContentType }
-      : {};
-
-    confDataWithAttachments.push({
+    const newAttachment: ConfluenceItem = {
       title: faker.company.catchPhrase(),
-      lastModified: '',
       container: {
         title: faker.company.companyName(),
         displayUrl: url,
       },
       iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
       url: url,
-      baseUrl: '',
-      content: content,
-    });
+      baseUrl: DUMMY_BASE_URL,
+    };
+
+    if (isAttachment) {
+      newAttachment.content = {
+        id: faker.random.alphaNumeric(3),
+        type: 'attachment' as ResultContentType,
+      };
+    }
+
+    confDataWithAttachments.push(newAttachment);
   }
 
   for (let i = 0; i < n; i++) {
     const title = faker.company.companyName();
     confSpaceData.push({
       title: title,
-      lastModified: '',
-      baseUrl: faker.internet.url(),
-      url: '?abc',
+      baseUrl: DUMMY_BASE_URL,
+      url: faker.internet.url(),
       content: null,
       iconCssClass: null,
       container: {
