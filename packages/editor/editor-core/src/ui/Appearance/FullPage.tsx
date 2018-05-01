@@ -19,6 +19,7 @@ const FullPageEditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding-bottom: 48px;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -177,6 +178,16 @@ export default class Editor extends React.Component<
                 }
                 {editorDOMElement}
               </div>
+              <div
+                style={{
+                  height: 48,
+                  background: 'pink',
+                  position: 'fixed',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                }}
+              />
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
