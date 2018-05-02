@@ -33,6 +33,12 @@ const identifier2 = {
   type: 'file' as MediaItemType,
 };
 
+const linkIdentifier = {
+  id: 'some-id-2',
+  occurrenceKey: 'some-custom-occurrence-key',
+  type: 'link' as MediaItemType,
+};
+
 const imageItem: MediaItem = {
   type: 'file',
   details: {
@@ -40,6 +46,13 @@ const imageItem: MediaItem = {
     processingStatus: 'succeeded',
     mediaType: 'image',
     name: 'my image',
+  },
+};
+
+const linkItem: MediaItem = {
+  type: 'link',
+  details: {
+    id: 'some-link-id',
   },
 };
 
@@ -90,5 +103,13 @@ describe('<Header />', () => {
     expect(el.state()).toMatchObject({ item: { status: 'SUCCESSFUL' } });
     el.setProps({ identifier: identifier2 });
     expect(el.state()).toMatchObject({ item: { status: 'PENDING' } });
+  });
+
+  it('should not display metadata for links (not supported at this point)', () => {
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const el = mount(<Header context={context} identifier={linkIdentifier} />);
+    subject.next(linkItem);
+    expect(el.text()).toEqual('');
   });
 });
