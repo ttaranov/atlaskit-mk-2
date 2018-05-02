@@ -46,9 +46,9 @@ describe('<MediaViewer />', () => {
     type: 'file' as MediaItemType,
   };
 
-  it('should close Media Viewer on click', () => {
+  it('should not close Media Viewer on click', () => {
     const { el, onClose } = createFixture(identifier);
     el.find(Blanket).simulate('click');
-    expect(onClose).toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

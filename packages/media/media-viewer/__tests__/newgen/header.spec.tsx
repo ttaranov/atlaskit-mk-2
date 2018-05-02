@@ -4,6 +4,7 @@ import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 function createContext(subject: Subject<MediaItem>) {
   const token = 'some-token';
@@ -90,5 +91,16 @@ describe('<Header />', () => {
     expect(el.state()).toMatchObject({ item: { status: 'SUCCESSFUL' } });
     el.setProps({ identifier: identifier2 });
     expect(el.state()).toMatchObject({ item: { status: 'PENDING' } });
+  });
+
+  it('should wire up the close button', () => {
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const onClose = jest.fn();
+    const el = mount(
+      <Header context={context} identifier={identifier} onClose={onClose} />,
+    );
+    el.find(CrossIcon).simulate('click');
+    expect(onClose).toHaveBeenCalled();
   });
 });
