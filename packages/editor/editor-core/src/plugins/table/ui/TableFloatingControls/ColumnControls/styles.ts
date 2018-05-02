@@ -14,6 +14,7 @@ import {
   InsertButtonDefault,
   LineMarkerDefault,
 } from '../styles';
+import { akEditorTableBorderDelete } from '../../../../../styles';
 
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
@@ -61,6 +62,10 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
     border-bottom: 1px solid ${akEditorTableBorderSelected};
     height: ${akEditorTableToolbarSize}px;
   }
+
+  .danger > & {
+    border-bottom: 1px solid ${akEditorTableBorderDelete};
+  }
 `;
 
 export const InsertColumnButtonWrap: ComponentClass<
@@ -75,6 +80,29 @@ export const InsertColumnButtonWrap: ComponentClass<
   cursor: pointer;
   &:hover > div {
     display: flex;
+  }
+`;
+
+export const DeleteColumnButtonSize = 16;
+
+export const DeleteColumnButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: absolute;
+  /* left is set by style prop on component */
+  top: -26px;
+  height: ${DeleteColumnButtonSize}px;
+  width: ${DeleteColumnButtonSize}px;
+  z-index: 2;
+  cursor: pointer;
+  & > div {
+    display: flex;
+  }
+
+  & > div,
+  & > div button {
+    width: ${DeleteColumnButtonSize}px;
+    height: ${DeleteColumnButtonSize}px;
   }
 `;
 

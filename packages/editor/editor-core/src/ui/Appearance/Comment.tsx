@@ -70,6 +70,8 @@ const CommentEditor: any = styled.div`
 `;
 CommentEditor.displayName = 'CommentEditor';
 
+const TableControlsPadding = 16;
+
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
   position: relative;
@@ -77,6 +79,8 @@ const MainToolbar = styled.div`
   padding: ${akGridSize} ${akGridSize} 0;
   display: flex;
   height: auto;
+
+  padding-left: ${TableControlsPadding}px;
 
   & > div > *:first-child {
     margin-left: 0;
@@ -89,6 +93,7 @@ const MainToolbarCustomComponentsSlot = styled.div`
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  padding-right: ${TableControlsPadding}px;
   > div {
     display: flex;
     flex-shrink: 0;
@@ -107,6 +112,9 @@ const ContentArea = styled(ContentStyles)`
   .ProseMirror {
     padding: 12px 20px;
   }
+
+  padding-left: ${TableControlsPadding}px;
+  padding-right: ${TableControlsPadding}px;
 
   .ProseMirror .table-container table {
     margin-left: 0;

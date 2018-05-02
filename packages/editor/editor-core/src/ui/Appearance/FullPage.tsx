@@ -11,7 +11,7 @@ import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
 
-const GUTTER_PADDING = 26;
+const GUTTER_PADDING = 32;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
