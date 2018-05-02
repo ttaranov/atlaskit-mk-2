@@ -1,6 +1,5 @@
 // @flow
-import React, { Component } from 'react';
-import { type ComponentType } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { type ResultData } from './Results/types';
