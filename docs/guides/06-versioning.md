@@ -32,6 +32,8 @@ It's important to strike a balance here because the more contributions we get, t
 
 ## Versioning examples
 
+Some examples of what would fall under the abstract semver umbrella:
+
 1. **MAJOR** version when
   - Change named exports exposed via the main entry point.
   - Changing and renaming public props.
