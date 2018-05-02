@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Spinner from '@atlaskit/spinner';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -11,7 +12,7 @@ import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
 import getButtonStyles from '../styled/getButtonStyles';
-import ButtonContent from '../styled/ButtonContent';
+import ButtonContent, { LoadingWrapper } from '../styled/ButtonContent';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import IconWrapper from '../styled/IconWrapper';
 
@@ -154,7 +155,10 @@ class Button extends Component<ButtonProps, State> {
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
-          {iconBefore ? (
+          <LoadingWrapper followsIcon={false} spacing={buttonProps.spacing}>
+            <Spinner />
+          </LoadingWrapper>
+          {/* {iconBefore ? (
             <IconWrapper
               spacing={buttonProps.spacing}
               isOnlyChild={iconIsOnlyChild}
@@ -177,7 +181,7 @@ class Button extends Component<ButtonProps, State> {
             >
               {iconAfter}
             </IconWrapper>
-          ) : null}
+          ) : null} */}
         </ButtonWrapper>
       </StyledComponent>
     );
