@@ -13,7 +13,7 @@ import {
   MediaCardProps,
   MediaCardState,
 } from '../src/root/mediaCard';
-import { CardOverlay } from '../src/utils/cardImageView/cardOverlay';
+import { CardOverlay } from '../src/files/cardImageView/cardOverlay';
 
 const createNoopProvider = () => ({
   observable: () =>

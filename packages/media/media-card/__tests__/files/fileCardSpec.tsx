@@ -4,6 +4,7 @@ import { FileDetails } from '@atlaskit/media-core';
 
 import { FileCard, FileCardImageView } from '../../src/files';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
+import { toHumanReadableMediaSize } from '../../src/utils';
 
 describe('FileCard', () => {
   it('should render cardFileView with details passed through to props', function() {
@@ -23,7 +24,7 @@ describe('FileCard', () => {
 
       mediaName: details.name,
       mediaType: details.mediaType,
-      mediaSize: details.size,
+      fileSize: toHumanReadableMediaSize(details.size as number),
     };
 
     const card = shallow(<FileCard status="complete" details={details} />);

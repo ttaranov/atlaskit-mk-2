@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { CardContent } from '../../src/utils/cardImageView/cardContent';
+import { CardContent } from '../../src/files/cardImageView/cardContent';
 import { MediaImage } from '../../src/utils/mediaImage';
 
 describe('CardOverlay', () => {

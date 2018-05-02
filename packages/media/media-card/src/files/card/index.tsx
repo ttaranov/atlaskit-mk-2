@@ -64,6 +64,8 @@ export class FileCard extends Component<FileCardProps, {}> {
         />
       );
     } else {
+      const fileSize = toHumanReadableMediaSize(size || 0);
+
       return (
         <FileCardImageView
           error={errorMessage}
@@ -73,7 +75,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           dataURI={dataURI}
           mediaName={name}
           mediaType={mediaType}
-          mediaSize={size}
+          fileSize={fileSize}
           status={status}
           progress={progress}
           resizeMode={resizeMode}
