@@ -23,6 +23,7 @@ import {
   transparentLinkDetails,
   linkNoImageDetails,
   noTitleLinkDetails,
+  noSizeDetails,
 } from '@atlaskit/media-test-helpers';
 import { ImageResizeMode, MediaItemType } from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
@@ -59,6 +60,7 @@ const metadataOptions = [
   { value: 'fileAudio', label: 'File audio' },
   { value: 'fileDoc', label: 'File doc' },
   { value: 'fileUnknown', label: 'File unknown' },
+  { value: 'fileNoSize', label: 'No size' },
   { value: 'genericLink', label: 'Link generic' },
   { value: 'transparentLink', label: 'Link transparent' },
   { value: 'noImageLink', label: 'Link no image' },
@@ -102,6 +104,7 @@ export const generateStoriesForEditableCards = () => {
     fileAudio: audioFileDetails,
     fileDoc: docFileDetails,
     fileUnknown: unknownFileDetails,
+    fileNoSize: noSizeDetails,
     genericLink: genericLinkDetails,
     emptyLink: emptyLinkDetails,
     imageLink: imageLinkDetails,

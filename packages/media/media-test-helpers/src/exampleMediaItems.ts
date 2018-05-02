@@ -415,6 +415,13 @@ export const imageFileDetails: FileDetails = {
   size: 2958464,
 };
 
+export const noSizeDetails: FileDetails = {
+  id: 'some-id',
+  mediaType: 'image',
+  name: 'me.jpg',
+  size: 0,
+};
+
 export const videoFileDetails: FileDetails = {
   id: 'some-id',
   mediaType: 'video',
