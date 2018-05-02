@@ -142,7 +142,12 @@ export const DN10A = 'rgba(13, 20, 36, 0.97)';
 
 // Themed colors
 export const background = themed({ light: N0, dark: DN30 });
+export const backgroundActive = themed({ light: B50, dark: B75 });
+export const backgroundHover = themed({ light: N30, dark: DN70 });
+export const backgroundOnLayer = themed({ light: N0, dark: DN50 });
 export const text = themed({ light: N900, dark: DN600 });
+export const textHover = themed({ light: N800, dark: DN600 });
+export const textActive = themed({ light: B400, dark: B400 });
 export const subtleText = themed({ light: N300, dark: DN300 });
 export const placeholderText = themed({ light: N100, dark: DN200 });
 export const heading = themed({ light: N800, dark: DN600 });

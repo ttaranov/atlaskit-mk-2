@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { toClass } from 'recompose';
 import styled from 'styled-components';
 import { Link, Switch, Route } from 'react-router-dom';
 import Navigation, {
@@ -142,10 +143,12 @@ export default class Nav extends Component<{}, State> {
                       icon={<HeaderIcon {...header} />}
                       text={header.label}
                       href={`/${headerKey}`}
-                      linkComponent={({ href, children, className }) => (
-                        <Link to={href} className={className}>
-                          {children}
-                        </Link>
+                      linkComponent={toClass(
+                        ({ href, children, className }) => (
+                          <Link to={href} className={className}>
+                            {children}
+                          </Link>
+                        ),
                       )}
                     />
                   )

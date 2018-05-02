@@ -1,5 +1,11 @@
 # @atlaskit/avatar
 
+## 10.0.3
+- [patch] Fix avatars appearing clickable when no onClick or href prop is provided [e6fec4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6fec4f)
+
+## 10.0.2
+- [patch] Fix native tooltips appearing for avatars without a src prop [6a3fb67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3fb67)
+
 ## 10.0.1
 
 ## 10.0.0

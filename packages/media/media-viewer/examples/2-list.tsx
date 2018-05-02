@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   createStorybookContext,
   imageFileId,
+  wideImageFileId,
   videoFileId,
   docFileId,
   defaultCollectionName,
@@ -14,6 +15,12 @@ const context = createStorybookContext();
 const imageIdentifier: MediaViewerItem = {
   type: 'file',
   id: imageFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const wideImageIdentifier: MediaViewerItem = {
+  type: 'file',
+  id: wideImageFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -49,6 +56,7 @@ export default class Example extends React.Component<{}, {}> {
             list: [
               videoIdentifier,
               imageIdentifier,
+              wideImageIdentifier,
               docIdentifier,
               unsupportedIdentifier,
             ],

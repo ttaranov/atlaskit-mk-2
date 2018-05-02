@@ -1,5 +1,21 @@
 # @atlaskit/editor-common
 
+## 9.2.9
+
+## 9.2.8
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
+## 9.2.7
+- [patch] ED-4454: fix setting while bg color for table header cells [83aecb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83aecb3)
+
+## 9.2.6
+
+## 9.2.5
+- [patch] ED-4459, JIRA transformer should return unicode for emoji node. [107bf1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107bf1e)
+
+## 9.2.4
+- [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
+
 ## 9.2.3
 
 ## 9.2.2

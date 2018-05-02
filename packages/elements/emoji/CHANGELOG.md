@@ -1,5 +1,12 @@
 # @atlaskit/emoji
 
+## 34.1.9
+- [patch] FS-1860 Fix site emoji stuck in a bad state [bf8622c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf8622c)
+
+## 34.1.8
+
+## 34.1.7
+
 ## 34.1.6
 - [patch] Expose the EmojiResourceConfig interface [3015b9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3015b9d)
 

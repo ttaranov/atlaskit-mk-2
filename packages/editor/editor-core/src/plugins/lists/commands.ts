@@ -9,7 +9,15 @@ import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import * as commands from '../../commands';
-import { isEmptyNode } from '../../utils/document';
+import { isEmptyNode, hasVisibleContent } from '../../utils/document';
+import { chainCommands } from 'prosemirror-commands';
+import {
+  filter,
+  isEmptySelectionAtStart,
+  isFirstChildOfParent,
+  isNthParentOfType,
+  findCutBefore,
+} from '../../utils/commands';
 
 /**
  * Function will lift list item following selection to level-1.
@@ -80,8 +88,8 @@ function liftListItem(
         true,
       ),
     );
-    // TODO: Fix types (ED-2987) - Remove cast to any as soon as we've updated to prosemirror-model 0.24
-    range = new (NodeRange as any)(
+
+    range = new NodeRange(
       tr.doc.resolve($from.pos),
       tr.doc.resolve(endOfList),
       range.depth,
@@ -100,10 +108,11 @@ export const enterKeyCommand = (
     const { listItem } = state.schema.nodes;
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
+
     if (wrapper && wrapper.type === listItem) {
-      /** Check is the wrapper has any content */
-      const wrapperHasContent = wrapper.content.size > 2;
-      if (isEmptyNode(node) && !wrapperHasContent) {
+      /** Check if the wrapper has any visible content */
+      const wrapperHasContent = hasVisibleContent(wrapper);
+      if (isEmptyNode(node) || !wrapperHasContent) {
         return commands.outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);
@@ -112,6 +121,117 @@ export const enterKeyCommand = (
   }
   return false;
 };
+
+const deletePreviousEmptyListItem = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const { $from } = state.selection;
+  const { listItem } = state.schema.nodes;
+
+  const $cut = findCutBefore($from);
+  if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
+    return false;
+  }
+
+  const previousListItemEmpty =
+    $cut.nodeBefore.childCount === 1 &&
+    $cut.nodeBefore.firstChild!.nodeSize <= 2;
+
+  if (previousListItemEmpty) {
+    const { tr } = state;
+    dispatch(
+      tr
+        .delete($cut.pos - $cut.nodeBefore.nodeSize, $from.pos)
+        .scrollIntoView(),
+    );
+    return true;
+  }
+
+  return false;
+};
+
+const joinPToPreviousListItem = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const { $from } = state.selection;
+  const { paragraph, bulletList, orderedList } = state.schema.nodes;
+
+  const $cut = findCutBefore($from);
+  if (!$cut) {
+    return false;
+  }
+  // see if the containing node is a list
+  if (
+    $cut.nodeBefore &&
+    [bulletList, orderedList].indexOf($cut.nodeBefore.type) > -1
+  ) {
+    // and the node after this is a paragraph
+    if ($cut.nodeAfter && $cut.nodeAfter.type === paragraph) {
+      // find the nearest paragraph that precedes this node
+      let $lastNode = $cut.doc.resolve($cut.pos - 1);
+
+      while ($lastNode.parent.type !== paragraph) {
+        $lastNode = state.doc.resolve($lastNode.pos - 1);
+      }
+
+      // take the text content of the paragraph and insert after the paragraph up until before the the cut
+      let tr = state.tr.step(
+        new ReplaceAroundStep(
+          $lastNode.pos,
+          $cut.pos + $cut.nodeAfter!.nodeSize,
+          $cut.pos + 1,
+          $cut.pos + $cut.nodeAfter!.nodeSize - 1,
+          state.tr.doc.slice($lastNode.pos, $cut.pos),
+          0,
+          true,
+        ),
+      );
+
+      // find out if there's now another list following and join them
+      // as in, [list, p, list] => [list with p, list], and we want [joined list]
+      let $postCut = tr.doc.resolve(
+        tr.mapping.map($cut.pos + $cut.nodeAfter!.nodeSize),
+      );
+      if (
+        $postCut.nodeBefore &&
+        $postCut.nodeAfter &&
+        $postCut.nodeBefore.type === $postCut.nodeAfter.type &&
+        [bulletList, orderedList].indexOf($postCut.nodeBefore.type) > -1
+      ) {
+        tr = tr.join($postCut.pos);
+      }
+
+      dispatch(tr.scrollIntoView());
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const backspaceKeyCommand = chainCommands(
+  // if we're at the start of a list item, we need to either backspace
+  // directly to an empty list item above, or outdent this node
+  filter(
+    [
+      isEmptySelectionAtStart,
+
+      // list items might have multiple paragraphs; only do this at the first one
+      isFirstChildOfParent,
+      isNthParentOfType('listItem', 1),
+    ],
+    chainCommands(deletePreviousEmptyListItem, commands.outdentList()),
+  ),
+
+  // if we're just inside a paragraph node and backspace, then try to join
+  // the text to the previous list item, if one exists
+  filter(
+    [isEmptySelectionAtStart, isNthParentOfType('paragraph', 0)],
+    joinPToPreviousListItem,
+  ),
+);
 
 export const toggleList = (
   state: EditorState,

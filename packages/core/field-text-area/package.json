@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text-area",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -23,7 +23,6 @@
   "dependencies": {
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/field-base": "^9.0.0",
-    "@atlaskit/icon": "^11.0.0",
     "@atlaskit/theme": "^3.0.0",
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.5.10",

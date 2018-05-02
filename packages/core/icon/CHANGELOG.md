@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 11.0.1
+- [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
+
 ## 11.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

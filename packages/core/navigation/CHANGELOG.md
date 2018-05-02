@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 31.0.1
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
+## 31.0.0
+- [major] Remove quick-search component from navigation. See docs for how to upgrade. [5447ec2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5447ec2)
+
+## 30.0.3
+- [patch] exporting the skeleton header from navigation [7697346](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7697346)
+
 ## 30.0.2
 - [patch] removes app-switcher dev dependency [fad3bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad3bbe)
 

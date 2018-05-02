@@ -7,6 +7,7 @@ import { defaultSchema } from '../../src/schema';
 import * as v1schema from '../../json-schema/v1/full.json';
 import * as Ajv from 'ajv';
 import { NodeType, MarkType, Node } from 'prosemirror-model';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 /**
  * Folowing nodes produce null atribute values which fail JSON validation.
@@ -158,17 +159,20 @@ const getDisplayName = (node: Node) => {
 describe('ProseMirror and JSON schema tests', () => {
   // create node test data upto 2 level depths.
   const dataSet = getNodeMatches(defaultSchema.nodes.doc, 4, 4);
+  const transformer = new JSONTransformer();
+
   dataSet.forEach(editorData => {
     const editorDoc = editorData(defaultSchema);
+    const editorJson = transformer.encode(editorDoc);
     it(`should validate JSON schema for ${getDisplayName(editorDoc)}`, () => {
-      if (!isValidJSONSchema(editorDoc.toJSON())) {
+      if (!isValidJSONSchema(editorJson)) {
         // tslint:disable-next-line:no-console
         console.warn(
           `Breaking JSON for ${getDisplayName(editorDoc)}`,
-          JSON.stringify(editorDoc.toJSON()),
+          JSON.stringify(editorJson),
         );
       }
-      expect(isValidJSONSchema(editorDoc.toJSON())).toEqual(true);
+      expect(isValidJSONSchema(editorJson)).toEqual(true);
     });
   });
 });

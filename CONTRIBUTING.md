@@ -139,26 +139,6 @@ bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 > Note that there are additional restrictions to dependencies in Bolt than there
 > are in Yarn, so you should not use `yarn` to manage dependencies.
 
-## Unit testing your code
-
-You can run the unit tests by running:
-
-```sh
-yarn jest
-```
-
-If you want to run them continuously, you can run:
-
-```sh
-yarn jest --watch
-```
-
-You can also choose to only run the tests under certain directories by passing a path in as well
-
-```sh
-yarn jest packages/core/
-```
-
 ## Type checking your code
 
 We use both [Flow](https://flow.org/) and
@@ -242,9 +222,22 @@ To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment
 ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
-## Browser testing your code
+## Testing your code
+### Running tests
+ - unit tests   
+ ```sh
+  yarn jest 
+ ```
+ - browser unit tests    
+ ```sh
+  yarn run test:browser
+ ```
+ - webdriver tests    
+ ```sh 
+  yarn run test:webriver
+ ```
 
-> This is internally supported, please review this link [Adding webdriver][addingwebdriver]
+Please refer to [testing in atlaskit][testing] for more information about testing.
 
 ## Documenting your code
 
@@ -303,4 +296,4 @@ create the changelog entry for each package being released.
 [codeofconduct]: ./CODE_OF_CONDUCT.md
 [issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
 [atlassianbug]: http://go/ak-bug
-[addingwebdriver]: https://extranet.atlassian.com/pages/viewpage.action?pageId=3791427559&moved=true
+[testing]: https://atlaskit.atlassian.com/docs/guides/testing

@@ -629,6 +629,7 @@ export const getValidNode = (
           return {
             type,
             content,
+            attrs,
           };
         }
         break;

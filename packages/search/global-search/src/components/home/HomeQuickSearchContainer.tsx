@@ -5,7 +5,7 @@ import GlobalQuickSearch from '../GlobalQuickSearch';
 import { RecentSearchClient } from '../../api/RecentSearchClient';
 import {
   CrossProductSearchClient,
-  CrossProductResults,
+  Scope,
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
@@ -81,16 +81,17 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     return results;
   }
 
-  async searchCrossProduct(query: string): Promise<CrossProductResults> {
+  async searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
+      [Scope.ConfluencePageBlog, Scope.JiraIssue],
     );
 
     if (this.state.query === query) {
       this.setState({
-        jiraResults: results.jira,
-        confluenceResults: results.confluence,
+        jiraResults: results.get(Scope.JiraIssue) || [],
+        confluenceResults: results.get(Scope.ConfluencePageBlog) || [],
       });
     }
 

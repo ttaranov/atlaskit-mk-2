@@ -34,6 +34,7 @@ export default function renderNav(
           />
         ) : (
           <RouterNavigationItem
+            isCompact={item.isCompact}
             key={item.title}
             href={item.to}
             icon={icon}

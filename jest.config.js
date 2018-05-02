@@ -31,7 +31,6 @@ const config = {
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
   ],
-  cacheDirectory: 'node_modules/.jest-cache',
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
@@ -71,7 +70,17 @@ if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
-  config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+  // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
+  if (CHANGED_PACKAGES) {
+    const changedPackages = JSON.parse(CHANGED_PACKAGES);
+    const changedPackagesTestGlobs = changedPackages.map(
+      pkgPath =>
+        `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
+    );
+    config.testMatch = changedPackagesTestGlobs;
+  } else {
+    config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+  }
 }
 
 /**

@@ -1,4 +1,9 @@
-import { Fragment, Slice, Node as PMNode } from 'prosemirror-model';
+import {
+  Fragment,
+  Slice,
+  Node as PMNode,
+  ResolvedPos,
+} from 'prosemirror-model';
 import {
   EditorState,
   NodeSelection,
@@ -362,22 +367,88 @@ export function indentList(): Command {
 export function outdentList(): Command {
   return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
+    const { $from, $to } = state.selection;
     if ($from.node(-1).type === listItem) {
-      return baseListCommand.liftListItem(listItem)(state, dispatch);
+      // if we're backspacing at the start of a list item, unindent it
+      // take the the range of nodes we might be lifting
+      let range = $from.blockRange(
+        $to,
+        node => node.childCount > 0 && node.firstChild!.type === listItem,
+      );
+
+      if (!range) {
+        return false;
+      }
+
+      let tr;
+      if (
+        baseListCommand.liftListItem(listItem)(state, liftTr => (tr = liftTr))
+      ) {
+        /* we now need to handle the case that we lifted a sublist out,
+          * and any listItems at the current level get shifted out to
+          * their own new list; e.g.:
+          *
+          * unorderedList
+          *  listItem(A)
+          *  listItem
+          *    unorderedList
+          *      listItem(B)
+          *  listItem(C)
+          * 
+          * becomes, after unindenting the first, top level listItem, A:
+          * 
+          * content of A
+          * unorderedList
+          *  listItem(B)
+          * unorderedList
+          *  listItem(C)
+          * 
+          * so, we try to merge these two lists if they're of the same type, to give:
+          * 
+          * content of A
+          * unorderedList
+          *  listItem(B)
+          *  listItem(C)
+          */
+
+        const $start: ResolvedPos = state.doc.resolve(range.start);
+        const $end: ResolvedPos = state.doc.resolve(range.end);
+        const $join = tr.doc.resolve(tr.mapping.map(range.end - 1));
+
+        if (
+          $join.nodeBefore &&
+          $join.nodeAfter &&
+          $join.nodeBefore.type === $join.nodeAfter.type
+        ) {
+          if (
+            $end.nodeAfter &&
+            $end.nodeAfter.type === listItem &&
+            $end.parent.type === $start.parent.type
+          ) {
+            tr.join($join.pos);
+          }
+        }
+
+        dispatch(tr.scrollIntoView());
+        return true;
+      }
     }
     return false;
   };
 }
+
+export function shouldAppendParagraphAfterBlockNode(state) {
+  return (
+    (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
+  );
+}
+
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (
-      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
-      isTableCell(state)
-    ) {
+    if (shouldAppendParagraphAfterBlockNode(state)) {
       nodes.push(paragraph.create());
     }
 
