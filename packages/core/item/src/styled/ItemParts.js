@@ -76,6 +76,8 @@ export const Content = styled.span`
   white-space: ${({ allowMultiline }) =>
     allowMultiline ? 'normal' : 'nowrap'};
   line-height: ${16 / fontSize()};
+  /* Fix windows line-height issue */
+  padding-bottom: 1px;
 `;
 
 const getColorStyle = ({ isDisabled, theme }) => {
@@ -112,6 +114,8 @@ const getDescriptionFontStyles = ({ isCompact }) => {
   return css`
     font-size: ${descriptionFontSize}px;
     line-height: ${lineHeight};
+    /* Fix windows line-height issue */
+    padding-bottom: 1px;
   `;
 };
 
