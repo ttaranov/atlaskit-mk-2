@@ -81,4 +81,14 @@ describe('<Header />', () => {
     el.setProps({ identifier: identifier2 });
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
   });
+
+  it('component resets initial state when new props are passed', () => {
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const el = mount(<Header context={context} identifier={identifier} />);
+    subject.next(imageItem);
+    expect(el.state()).toMatchObject({ item: { status: 'SUCCESSFUL' } });
+    el.setProps({ identifier: identifier2 });
+    expect(el.state()).toMatchObject({ item: { status: 'PENDING' } });
+  });
 });
