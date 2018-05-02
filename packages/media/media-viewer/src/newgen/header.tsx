@@ -13,8 +13,12 @@ export type State = {
   item: Outcome<FileItem, Error>;
 };
 
+const initialState: State = {
+  item: { status: 'PENDING' },
+};
+
 export default class Header extends React.Component<Props, State> {
-  state: State = { item: { status: 'PENDING' } };
+  state: State = initialState;
 
   private subscription: Subscription;
 
@@ -34,32 +38,34 @@ export default class Header extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
-    const { context, identifier } = props;
-    const provider = context.getMediaItemProvider(
-      identifier.id,
-      identifier.type,
-      identifier.collectionName,
-    );
+    this.setState(initialState, () => {
+      const { context, identifier } = props;
+      const provider = context.getMediaItemProvider(
+        identifier.id,
+        identifier.type,
+        identifier.collectionName,
+      );
 
-    this.subscription = provider.observable().subscribe({
-      next: mediaItem => {
-        if (mediaItem.type === 'file') {
+      this.subscription = provider.observable().subscribe({
+        next: mediaItem => {
+          if (mediaItem.type === 'file') {
+            this.setState({
+              item: {
+                status: 'SUCCESSFUL',
+                data: mediaItem,
+              },
+            });
+          }
+        },
+        error: err => {
           this.setState({
             item: {
-              status: 'SUCCESSFUL',
-              data: mediaItem,
+              status: 'FAILED',
+              err,
             },
           });
-        }
-      },
-      error: err => {
-        this.setState({
-          item: {
-            status: 'FAILED',
-            err,
-          },
-        });
-      },
+        },
+      });
     });
   }
 
