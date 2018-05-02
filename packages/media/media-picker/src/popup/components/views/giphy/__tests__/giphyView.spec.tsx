@@ -300,8 +300,8 @@ describe('<ConnectedGiphyView />', () => {
       );
 
       expect(giphyView.find(Button)).toHaveLength(1);
-      expect(giphyView.find(Button).props().isDisabled).toBe(true);
-      expect(giphyView.find(Button).props().iconAfter).toEqual(<Spinner />);
+      expect(giphyView.find(Button).prop('isDisabled')).toBe(true);
+      expect(giphyView.find(Button).prop('iconAfter')).toEqual(<Spinner />);
     });
 
     it('should NOT show the load more button when the totalResultCount equals the number of cardModels and the card is NOT loading', () => {
