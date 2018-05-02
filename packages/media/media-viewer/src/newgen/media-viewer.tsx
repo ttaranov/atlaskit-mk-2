@@ -25,10 +25,14 @@ export class MediaViewer extends React.Component<Props, State> {
     const { selectedItem } = this.state;
 
     return (
-      <Blanket onClick={onClose}>
+      <Blanket>
         <Content>
           <HeaderWrapper>
-            <Header context={context} identifier={selectedItem} />
+            <Header
+              context={context}
+              identifier={selectedItem}
+              onClose={onClose}
+            />
           </HeaderWrapper>
           <ItemViewer context={context} identifier={selectedItem} />
           <Navigation

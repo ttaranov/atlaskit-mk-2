@@ -25,8 +25,9 @@ export const HeaderWrapper = styled.div`
   background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
   color: #b8c7e0;
   padding-top: 15px;
-  padding-left: 24px;
+  padding: 24px;
   box-sizing: border-box;
+  z-index: 1000;
 `;
 
 export const Content = styled.div`
@@ -75,4 +76,22 @@ export const LeftWrapper = ArrowWrapper.extend`
 
 export const RightWrapper = ArrowWrapper.extend`
   text-align: right;
+`;
+
+// header.tsx
+export const Header = styled.div`
+  display: flex;
+`;
+
+export const LeftHeader = styled.div`
+  flex: 0.8;
+`;
+
+export const RightHeader = styled.div`
+  flex: 0.2;
+  text-align: right;
+`;
+
+export const CloseWrapper = styled.span`
+  cursor: pointer;
 `;
