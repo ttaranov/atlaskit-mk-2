@@ -1,12 +1,12 @@
 # Definition of done
 
-When contributing, please ensure to follow and complete our definition of done before submitting your PR.
+When contributing, please ensure This definition of done represents the acceptance criteria that are common to every pull request. Everything in this checklist needs to be ticked off before the pull request is merged to the master branch.
 
 ## 1. Reviewed
 --------------
 * Approval by a AK components maintainer
 
-* Code Review
+* Code review by a AK components maintainer
 
 * Design review of examples on the AK website (in PR)
 
@@ -49,7 +49,7 @@ Please check [Atlaskit testing documentation](https://atlaskit.atlassian.com/doc
 
 **Dev docs updated - Atlaskit website**
 
-- Please provide some Examples if applicable
+- Provide examples that demonstrate the intended use cases (if applicable)
 
 ## 4. Consumable
 ----------------
