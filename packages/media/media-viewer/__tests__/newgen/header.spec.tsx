@@ -53,6 +53,9 @@ const linkItem: MediaItem = {
   type: 'link',
   details: {
     id: 'some-link-id',
+    type: 'link',
+    url: 'http://domain.com',
+    title: 'a link',
   },
 };
 
