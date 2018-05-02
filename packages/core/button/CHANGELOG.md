@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 7.1.0
+- [minor] Add `autoFocus` to button, allowing button to be automatically focused on first render. [bf36eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf36eb6)
+
 ## 7.0.3
 - [patch] Fix a react dev warning when using a custom component [8fb3bc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb3bc1)
 
