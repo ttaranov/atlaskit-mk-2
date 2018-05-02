@@ -2,8 +2,6 @@
 import type { Node, Element, ElementType } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
-type Func = () => any;
-
 export type ButtonAppearances =
   | 'default'
   | 'danger'
