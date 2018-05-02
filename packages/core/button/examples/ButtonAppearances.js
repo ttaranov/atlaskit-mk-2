@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+import React, { Component, Fragment } from 'react';
+import Checkbox from '@atlaskit/checkbox';
 import Button from '../src';
 
 const appearances = [
@@ -28,20 +29,40 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default () => (
-  <Table>
-    {appearances.map(a => (
-      <Row key={a}>
-        <Btn appearance={a}>{capitalize(a)}</Btn>
-        <Btn appearance={a} isDisabled>
-          Disabled
-        </Btn>
-        {selectableAppearances.includes(a) ? (
-          <Btn appearance={a} isSelected>
-            Selected
-          </Btn>
-        ) : null}
-      </Row>
-    ))}
-  </Table>
-);
+export default class ButtonAppearance extends Component<*, *> {
+  state = { showLoadingState: false };
+
+  render() {
+    const { showLoadingState } = this.state;
+
+    return (
+      <Fragment>
+        <Checkbox
+          value="showLoading"
+          label="Show Loading State"
+          onChange={({ isChecked }) =>
+            this.setState({ showLoadingState: isChecked })
+          }
+          name="show-loading"
+        />
+        <Table>
+          {appearances.map(a => (
+            <Row key={a}>
+              <Btn isLoading={showLoadingState} appearance={a}>
+                {capitalize(a)}
+              </Btn>
+              <Btn isLoading={showLoadingState} appearance={a} isDisabled>
+                Disabled
+              </Btn>
+              {selectableAppearances.includes(a) ? (
+                <Btn isLoading={showLoadingState} appearance={a} isSelected>
+                  Selected
+                </Btn>
+              ) : null}
+            </Row>
+          ))}
+        </Table>
+      </Fragment>
+    );
+  }
+}

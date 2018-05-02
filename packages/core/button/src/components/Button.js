@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Spinner from '@atlaskit/spinner';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -12,9 +11,10 @@ import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
 import getButtonStyles from '../styled/getButtonStyles';
-import ButtonContent, { LoadingWrapper } from '../styled/ButtonContent';
+import ButtonContent from '../styled/ButtonContent';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import IconWrapper from '../styled/IconWrapper';
+import LoadingSpinner from '../styled/LoadingSpinner';
 
 import type { ButtonProps } from '../types';
 
@@ -62,6 +62,7 @@ class Button extends Component<ButtonProps, State> {
     appearance: 'default',
     isDisabled: false,
     isSelected: false,
+    isLoading: false,
     spacing: 'default',
     type: 'button',
     shouldFitContainer: false,
@@ -142,7 +143,18 @@ class Button extends Component<ButtonProps, State> {
   };
 
   render() {
-    const { children, iconBefore, iconAfter, shouldFitContainer } = this.props;
+    const {
+      children,
+      iconBefore,
+      iconAfter,
+      innerRef,
+      isLoading,
+      shouldFitContainer,
+      spacing,
+      appearance,
+      isSelected,
+      isDisabled,
+    } = this.props;
 
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
@@ -153,36 +165,54 @@ class Button extends Component<ButtonProps, State> {
     );
 
     return (
-      <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
-        <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
-          <LoadingWrapper followsIcon={false} spacing={buttonProps.spacing}>
-            <Spinner />
-          </LoadingWrapper>
-          {/* {iconBefore ? (
-            <IconWrapper
-              spacing={buttonProps.spacing}
-              isOnlyChild={iconIsOnlyChild}
-            >
-              {iconBefore}
-            </IconWrapper>
+      <StyledComponent innerRef={innerRef} {...buttonProps}>
+        <div
+          style={{
+            display: 'inline-flex',
+            flexWrap: 'nowrap',
+            maxWidth: '100%',
+            position: 'relative',
+          }}
+        >
+          {isLoading ? (
+            <LoadingSpinner
+              spacing={spacing}
+              appearance={appearance}
+              isSelected={isSelected}
+              isDisabled={isDisabled}
+            />
           ) : null}
-          {children ? (
-            <ButtonContent
-              followsIcon={!!iconBefore}
-              spacing={buttonProps.spacing}
-            >
-              {children}
-            </ButtonContent>
-          ) : null}
-          {iconAfter ? (
-            <IconWrapper
-              spacing={buttonProps.spacing}
-              isOnlyChild={iconIsOnlyChild}
-            >
-              {iconAfter}
-            </IconWrapper>
-          ) : null} */}
-        </ButtonWrapper>
+          <ButtonWrapper
+            isLoading={isLoading}
+            onClick={this.onInnerClick}
+            fit={!!shouldFitContainer}
+          >
+            {iconBefore ? (
+              <IconWrapper
+                spacing={buttonProps.spacing}
+                isOnlyChild={iconIsOnlyChild}
+              >
+                {iconBefore}
+              </IconWrapper>
+            ) : null}
+            {children ? (
+              <ButtonContent
+                followsIcon={!!iconBefore}
+                spacing={buttonProps.spacing}
+              >
+                {children}
+              </ButtonContent>
+            ) : null}
+            {iconAfter ? (
+              <IconWrapper
+                spacing={buttonProps.spacing}
+                isOnlyChild={iconIsOnlyChild}
+              >
+                {iconAfter}
+              </IconWrapper>
+            ) : null}
+          </ButtonWrapper>
+        </div>
       </StyledComponent>
     );
   }
