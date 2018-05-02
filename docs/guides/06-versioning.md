@@ -131,14 +131,13 @@ git push --follow-tags
 
 Flow - and types, in general - are a development tool. They augment your workflow and provide static analysis of the code you're writing, but they do not provide a public API for anything that you write. Strictly speaking, updating a dev dependency should not bump any versions at all. This is outlined in our versioning guidelines above.
 
-_For this reason, updating `flow-bin` and our types will not trigger a release._
-
-### Some scenarios for illustrative purposes
-
 If types informed version numbers of a public API, it's very likely that we would be releasing only major versions. Many times, when making changes to types, or a type system, you're making a breaking change.
 
-If you were to change the return type of a function in your public API, this alone should does not mean you are releasing a major version. The change that you have to make to your return value does, however. One is the result of the other.
+For this reason:
 
-If you made a type less restrictive, this may not change how you use a type, thus no code change and no release is necessary. This less restrictive might require a code change, but it might be backward compatible. In this scenario you'd add a feature.
+* Updating `flow-bin` should not trigger a release unless you have to update types for certain components.
+* Updating Flow types within a component should trigger a release of the appropriate type and be called out in the changelogs.
+
+If you were to change the return type of a function in your public API, this alone should does not mean you are releasing a major version. The fact that you are expecting a different type of value does, even if no code change is required. Most times, an update to your types will correspond to an update in your code, or your expected public API.
 
 If you're fixing a bug, you might change a type that ends up getting exported, but it may not affect your public API. In this scenario, you'd release a patch, even though the type might cause errors once consumed during development.
