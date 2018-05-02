@@ -33,10 +33,8 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'), ' end')),
             );
-            // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-            const codeDOM = (editorView as any).docView.domFromPos(click - 1)
-              .node.parentNode;
-            const mouseEvent = { target: codeDOM } as MouseEvent;
+            const codeDOM = editorView.domAtPos(click - 1).node.parentNode;
+            const mouseEvent: any = { target: codeDOM } as Partial<MouseEvent>;
             expect(handleClick(editorView, click, mouseEvent)).toBe(true);
             expect(editorView.state.storedMarks).toEqual([
               editorView.state.schema.marks.code.create(),
@@ -48,10 +46,10 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'), ' end')),
             );
-            // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-            const outsideNodeDOM = (editorView as any).docView.domFromPos(click)
-              .node;
-            const mouseEvent = { target: outsideNodeDOM } as MouseEvent;
+            const outsideNodeDOM = editorView.domAtPos(click).node;
+            const mouseEvent: any = { target: outsideNodeDOM } as Partial<
+              MouseEvent
+            >;
             expect(handleClick(editorView, click, mouseEvent)).toBe(true);
             expect(editorView.state.storedMarks).toEqual([]);
           });
@@ -60,10 +58,10 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'), strong(' end'))),
             );
-            // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-            const outsideNodeDOM = (editorView as any).docView.domFromPos(click)
-              .node;
-            const mouseEvent = { target: outsideNodeDOM } as MouseEvent;
+            const outsideNodeDOM = editorView.domAtPos(click).node;
+            const mouseEvent: any = { target: outsideNodeDOM } as Partial<
+              MouseEvent
+            >;
             expect(handleClick(editorView, click, mouseEvent)).toBe(true);
             expect(editorView.state.storedMarks).toEqual([
               editorView.state.schema.marks.strong.create(),
@@ -75,10 +73,10 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'))),
             );
-            // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-            const outsideNodeDOM = (editorView as any).docView.domFromPos(click)
-              .node;
-            const mouseEvent = { target: outsideNodeDOM } as MouseEvent;
+            const outsideNodeDOM = editorView.domAtPos(click).node;
+            const mouseEvent: any = { target: outsideNodeDOM } as Partial<
+              MouseEvent
+            >;
             expect(handleClick(editorView, click, mouseEvent)).toBe(true);
             expect(editorView.state.storedMarks).toEqual([]);
           });
@@ -91,10 +89,8 @@ describe('text-formatting', () => {
           const { editorView, refs: { click } } = editor(
             doc(p('start', code('{click}code'), ' end')),
           );
-          // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-          const codeDOM = (editorView as any).docView.domFromPos(click + 1).node
-            .parentNode;
-          const mouseEvent = { target: codeDOM } as MouseEvent;
+          const codeDOM = editorView.domAtPos(click + 1).node.parentNode;
+          const mouseEvent: any = { target: codeDOM } as Partial<MouseEvent>;
           expect(handleClick(editorView, click, mouseEvent)).toBe(true);
           expect(editorView.state.storedMarks).toEqual([
             editorView.state.schema.marks.code.create(),
@@ -106,11 +102,10 @@ describe('text-formatting', () => {
           const { editorView, refs: { click } } = editor(
             doc(p('start{click}', code('code'), ' end')),
           );
-          // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-          const outsideNodeDOM = (editorView as any).docView.domFromPos(
-            click - 1,
-          ).node;
-          const mouseEvent = { target: outsideNodeDOM } as MouseEvent;
+          const outsideNodeDOM = editorView.domAtPos(click - 1).node;
+          const mouseEvent: any = { target: outsideNodeDOM } as Partial<
+            MouseEvent
+          >;
           expect(handleClick(editorView, click, mouseEvent)).toBe(true);
           expect(editorView.state.storedMarks).toEqual([]);
         });
@@ -119,11 +114,10 @@ describe('text-formatting', () => {
           const { editorView, refs: { click } } = editor(
             doc(p(strong('start{click}'), code('code'), ' end')),
           );
-          // Can be replaced with EditorView::domAtPos once we've upgraded to prosemirror-view 1.3
-          const outsideNodeDOM = (editorView as any).docView.domFromPos(
-            click - 1,
-          ).node;
-          const mouseEvent = { target: outsideNodeDOM } as MouseEvent;
+          const outsideNodeDOM = editorView.domAtPos(click - 1).node;
+          const mouseEvent: any = { target: outsideNodeDOM } as Partial<
+            MouseEvent
+          >;
           expect(handleClick(editorView, click, mouseEvent)).toBe(true);
           expect(editorView.state.storedMarks).toEqual([
             editorView.state.schema.marks.strong.create(),
