@@ -56,7 +56,6 @@ export const Overlay: ComponentClass<
   justify-content: space-between;
   flex-direction: column;
   background: transparent;
-  border: 2px solid transparent;
   transition: 0.3s background ${easeOutCubic}, 0.3s border-color;
   padding: 16px;
 
@@ -197,8 +196,6 @@ export const Overlay: ComponentClass<
       }
 
       &.selected {
-        border-color: ${akColorB200} !important;
-
         .tickbox {
           background-color: ${akColorB200} !important;
           border-color: ${akColorB200} !important;

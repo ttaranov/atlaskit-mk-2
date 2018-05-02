@@ -125,4 +125,12 @@ describe('FileCard', () => {
       'Failed to load',
     );
   });
+
+  it('should pass "disableOverlay" prop to <FileCardImageView /> when appearance is "image"', () => {
+    const card = shallow(
+      <FileCard appearance="image" status="complete" disableOverlay={true} />,
+    );
+
+    expect(card.find(FileCardImageView).props().disableOverlay).toEqual(true);
+  });
 });

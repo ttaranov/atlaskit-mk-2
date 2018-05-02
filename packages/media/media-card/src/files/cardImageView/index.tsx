@@ -11,29 +11,31 @@ import { CardOverlay } from './cardOverlay';
 import { Wrapper } from './styled';
 
 export interface FileCardImageViewProps {
-  mediaName?: string;
-  mediaType?: MediaType;
-  fileSize?: string;
+  readonly mediaName?: string;
+  readonly mediaType?: MediaType;
+  readonly fileSize?: string;
 
-  dataURI?: string;
-  progress?: number;
-  status: CardStatus;
+  readonly dataURI?: string;
+  readonly progress?: number;
+  readonly status: CardStatus;
 
-  dimensions?: CardDimensions;
-  resizeMode?: ImageResizeMode;
+  readonly dimensions?: CardDimensions;
+  readonly resizeMode?: ImageResizeMode;
 
-  selectable?: boolean;
-  selected?: boolean;
+  readonly disableOverlay?: boolean;
+  readonly selectable?: boolean;
+  readonly selected?: boolean;
 
-  error?: string;
+  readonly error?: string;
 
-  actions?: Array<CardAction>;
-  onRetry?: () => void;
+  readonly actions?: Array<CardAction>;
+  readonly onRetry?: () => void;
 }
 
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   static defaultProps = {
     resizeMode: 'crop',
+    disableOverlay: false,
   };
 
   private isDownloadingOrProcessing() {
@@ -42,7 +44,16 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   }
 
   render() {
-    return <Wrapper>{this.getCardContents()}</Wrapper>;
+    const { disableOverlay, selectable, selected } = this.props;
+    return (
+      <Wrapper
+        disableOverlay={disableOverlay}
+        selectable={selectable}
+        selected={selected}
+      >
+        {this.getCardContents()}
+      </Wrapper>
+    );
   }
 
   private getCardContents = (): Array<JSX.Element> | JSX.Element => {
@@ -59,7 +70,7 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
     return this.getSuccessCardContents();
   };
 
-  private getErrorContents = (): Array<JSX.Element> => {
+  private getErrorContents = (): JSX.Element => {
     const {
       error,
       mediaName,
@@ -69,20 +80,20 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
       fileSize,
     } = this.props;
 
-    // key is required by React 15
-    return [
-      <div key={0} className="wrapper" />,
-      <CardOverlay
-        key={1}
-        persistent={true}
-        mediaName={mediaName}
-        mediaType={mediaType}
-        error={error}
-        onRetry={onRetry}
-        actions={actions}
-        subtitle={fileSize}
-      />,
-    ];
+    return (
+      <>
+        <div className="wrapper" />
+        <CardOverlay
+          persistent={true}
+          mediaName={mediaName}
+          mediaType={mediaType}
+          error={error}
+          onRetry={onRetry}
+          actions={actions}
+          subtitle={fileSize}
+        />
+      </>
+    );
   };
 
   private getUploadingContents = (): JSX.Element => {
@@ -119,10 +130,11 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   };
 
   private getSuccessCardContents = (): JSX.Element => {
-    const { mediaType, dataURI } = this.props;
-    const overlay = this.isDownloadingOrProcessing()
-      ? null
-      : this.createSuccessCardOverlay();
+    const { mediaType, dataURI, disableOverlay } = this.props;
+    const overlay =
+      this.isDownloadingOrProcessing() || disableOverlay
+        ? null
+        : this.createSuccessCardOverlay();
 
     return (
       <div className="wrapper">

@@ -49,6 +49,19 @@ describe('MediaCard', () => {
       expect(element.props().status).toBe(status);
     });
 
+    it('should pass "disableOverlay" to CardView', () => {
+      const card = shallow(
+        <MediaCard
+          appearance="image"
+          provider={createNoopProvider()}
+          disableOverlay={true}
+        />,
+        { disableLifecycleMethods: true },
+      );
+
+      expect(card.props().disableOverlay).toBe(true);
+    });
+
     it('should render metadata=object when we have metadata', () => {
       const metadata = {
         mediaType: 'image',

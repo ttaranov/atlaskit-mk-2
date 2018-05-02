@@ -143,4 +143,48 @@ describe('FileCardView', () => {
       selected: undefined,
     });
   });
+
+  it('should NOT render the overlay when "disableOverlay" is true', function() {
+    const card = shallow(
+      <FileCardImageView
+        mediaType="video"
+        status="complete"
+        disableOverlay={true}
+      />,
+    );
+
+    expect(card.find(CardOverlay)).toHaveLength(0);
+  });
+
+  it('should pass "disableOverlay" to the root Wrapper component', function() {
+    const card = shallow(
+      <FileCardImageView
+        mediaType="video"
+        status="complete"
+        disableOverlay={true}
+      />,
+    );
+
+    expect(card.props().disableOverlay).toEqual(true);
+  });
+
+  it('should pass "selectable" to the root Wrapper component', function() {
+    const card = shallow(
+      <FileCardImageView
+        mediaType="video"
+        status="complete"
+        selectable={true}
+      />,
+    );
+
+    expect(card.props().selectable).toEqual(true);
+  });
+
+  it('should pass "selected" to the root Wrapper component', function() {
+    const card = shallow(
+      <FileCardImageView mediaType="video" status="complete" selected={true} />,
+    );
+
+    expect(card.props().selected).toEqual(true);
+  });
 });
