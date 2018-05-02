@@ -3,6 +3,15 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
 
+const params =
+  typeof URLSearchParams !== 'undefined'
+    ? new URLSearchParams(location.search.slice(1))
+    : null;
+const param = params ? params.get('url') : null;
+const defaultURL = param
+  ? param
+  : 'https://trello.com/c/CbrzZIQ2/45-1878-piedmont-ave-former-bank-now-inkaholiks-pringle-and-smith';
+
 export interface ExampleProps {}
 
 export interface ExampleState {
@@ -11,8 +20,7 @@ export interface ExampleState {
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
-    url:
-      'https://trello.com/c/CbrzZIQ2/45-1878-piedmont-ave-former-bank-now-inkaholiks-pringle-and-smith',
+    url: defaultURL,
   };
 
   handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
