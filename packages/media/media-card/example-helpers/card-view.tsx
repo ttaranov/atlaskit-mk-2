@@ -826,11 +826,16 @@ export const generateStoriesForLinksWithAppearance = (
 
 export const generateStoriesForAppearance = (appearance: CardAppearance) => {
   const fileCardStories =
-    appearance !== 'square' && appearance !== 'horizontal'
+    appearance === 'image' || appearance === 'small'
       ? generateStoriesForFilesWithAppearance(appearance)
       : null;
 
-  const linkCardStories = generateStoriesForLinksWithAppearance(appearance);
+  const linkCardStories =
+    appearance === 'square' ||
+    appearance === 'horizontal' ||
+    appearance === 'small'
+      ? generateStoriesForLinksWithAppearance(appearance)
+      : null;
 
   return () => (
     <div>
