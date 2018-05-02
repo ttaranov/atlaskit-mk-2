@@ -18,7 +18,7 @@ export default md`
   ${(
     <Example
       Component={require('../examples/0-editable').default}
-      title="A editable example"
+      title="An editable example"
       source={require('!!raw-loader!../examples/0-editable')}
     />
   )}
