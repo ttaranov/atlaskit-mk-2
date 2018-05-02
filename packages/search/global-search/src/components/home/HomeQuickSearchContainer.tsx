@@ -17,6 +17,7 @@ export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  linkComponent?: React.ComponentType;
 }
 
 export interface State {
@@ -187,6 +188,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
   };
 
   render() {
+    const { linkComponent } = this.props;
     const {
       query,
       isLoading,
@@ -204,6 +206,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         onSearch={this.handleSearch}
         isLoading={isLoading}
         query={query}
+        linkComponent={linkComponent}
       >
         {renderSearchResults({
           query,

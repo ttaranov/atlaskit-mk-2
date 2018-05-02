@@ -9,6 +9,7 @@ export interface Props {
   isLoading: boolean;
   query: string;
   children: React.ReactNode;
+  linkComponent?: React.ComponentType;
 }
 
 /**
@@ -31,13 +32,14 @@ export default class GlobalQuickSearch extends React.Component<Props> {
   }
 
   render() {
-    const { query, isLoading, children } = this.props;
+    const { query, isLoading, linkComponent, children } = this.props;
 
     return (
       <QuickSearch
         isLoading={isLoading}
         onSearchInput={this.handleSearchInput}
         value={query}
+        linkComponent={linkComponent}
       >
         {children}
       </QuickSearch>

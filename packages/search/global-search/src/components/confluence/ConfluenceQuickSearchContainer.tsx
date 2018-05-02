@@ -17,6 +17,7 @@ export interface Props {
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  linkComponent?: React.ComponentType;
 }
 
 export interface State {
@@ -176,6 +177,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   render() {
+    const { linkComponent } = this.props;
     const {
       query,
       isLoading,
@@ -193,6 +195,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         onSearch={this.handleSearch}
         isLoading={isLoading}
         query={query}
+        linkComponent={linkComponent}
       >
         {renderSearchResults({
           query,

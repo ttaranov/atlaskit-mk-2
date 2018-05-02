@@ -40,6 +40,18 @@ export interface Props {
    * The URL for Confluence. Must include the context path.
    */
   confluenceUrl?: string;
+
+  /**
+   * React component to be used for rendering links. It receives a className prop that needs to be applied for
+   * proper styling, a children prop that needs to be rendered, and optional href/target props that should be
+   * respected.
+   */
+  linkComponent?: React.ComponentType<{
+    className: string;
+    children: React.ReactNode;
+    href?: string;
+    target?: string;
+  }>;
 }
 
 /**
@@ -96,7 +108,10 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       this.props.cloudId,
       this.makeConfig(),
     );
+    const { linkComponent } = this.props;
 
-    return <ContainerComponent {...searchClients} />;
+    return (
+      <ContainerComponent {...searchClients} linkComponent={linkComponent} />
+    );
   }
 }

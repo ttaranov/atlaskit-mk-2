@@ -43,6 +43,8 @@ type Props = {
   text?: Node,
   /** React component to be placed to the right of the main text. */
   textAfter?: Node,
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 class ResultItem extends PureComponent<Props> {
@@ -86,6 +88,7 @@ class ResultItem extends PureComponent<Props> {
         isSelected={this.props.isSelected}
         isCompact={this.props.isCompact}
         target={this.props.target}
+        linkComponent={this.props.linkComponent}
         {...interactiveWrapperProps}
       >
         {this.props.text}
