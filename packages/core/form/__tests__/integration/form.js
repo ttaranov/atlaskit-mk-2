@@ -1,4 +1,11 @@
 // @flow
+
+/* Currently, this test will check if the form and its component renders into different browsers.
+Some actual functional tests need to be added:
+- Interaction with all fields
+- Submit the form
+Those tests should be added before the release candidate*/
+
 // eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
