@@ -55,7 +55,7 @@ type State = {
 };
 
 class Button extends Component<ButtonProps, State> {
-  /* eslint-disable react/no-unused-prop-types */
+  button: HTMLElement;
 
   static defaultProps = {
     appearance: 'default',
@@ -75,6 +75,12 @@ class Button extends Component<ButtonProps, State> {
   componentWillReceiveProps(nextProps: ButtonProps) {
     if (this.props.component !== nextProps.component) {
       delete this.customComponent;
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.autoFocus && this.button) {
+      this.button.focus();
     }
   }
 
@@ -128,14 +134,14 @@ class Button extends Component<ButtonProps, State> {
     return StyledButton;
   }
 
+  getInnerRef = (ref: HTMLElement) => {
+    this.button = ref;
+
+    if (this.props.innerRef) this.props.innerRef(ref);
+  };
+
   render() {
-    const {
-      children,
-      iconBefore,
-      iconAfter,
-      innerRef,
-      shouldFitContainer,
-    } = this.props;
+    const { children, iconBefore, iconAfter, shouldFitContainer } = this.props;
 
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
@@ -146,7 +152,7 @@ class Button extends Component<ButtonProps, State> {
     );
 
     return (
-      <StyledComponent innerRef={innerRef} {...buttonProps}>
+      <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
           {iconBefore ? (
             <IconWrapper

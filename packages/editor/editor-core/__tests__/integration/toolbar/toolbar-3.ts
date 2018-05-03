@@ -6,12 +6,13 @@ const more = '[aria-label="Open or close advance text formatting dropdown"]';
 const underline = 'span=Underline';
 const clear = 'span=Clear Formatting';
 
+// https://product-fabric.atlassian.net/browse/ED-4531
 editors.forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select Clear Formatting on toolbar for ${
       editor.name
     } editor`,
-    { skip: ['ie'] },
+    { skip: ['ie', 'safari'] },
     async client => {
       const browser = await new Page(client);
       await browser.goto(editor.path);

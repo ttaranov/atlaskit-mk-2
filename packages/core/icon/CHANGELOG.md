@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 11.1.0
+- [minor] Add label icon [72baa86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72baa86)
+- [minor] Add a new label icon [1afe4fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1afe4fe)
+
 ## 11.0.1
 - [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
 

@@ -165,13 +165,6 @@ describe('ProseMirror and JSON schema tests', () => {
     const editorDoc = editorData(defaultSchema);
     const editorJson = transformer.encode(editorDoc);
     it(`should validate JSON schema for ${getDisplayName(editorDoc)}`, () => {
-      if (!isValidJSONSchema(editorJson)) {
-        // tslint:disable-next-line:no-console
-        console.warn(
-          `Breaking JSON for ${getDisplayName(editorDoc)}`,
-          JSON.stringify(editorJson),
-        );
-      }
       expect(isValidJSONSchema(editorJson)).toEqual(true);
     });
   });
