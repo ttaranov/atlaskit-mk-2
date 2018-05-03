@@ -1,5 +1,9 @@
 # Directory structure
 
+Related reading:
+
+* [Component design](./component-design)
+
 The top-level directory structure for Atlaskit looks like the following diagram:
 
 ```
