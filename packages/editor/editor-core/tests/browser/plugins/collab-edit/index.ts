@@ -8,6 +8,7 @@ import collabEdit, {
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { collabEditProvider } from '../../../../example-helpers/mock-collab-provider';
 import { findPointers } from '../../../../src/plugins/collab-edit/utils';
+import tablesPlugin from '../../../../src/plugins/table';
 
 const setupEditor = (setProvider: boolean = true) => {
   const providerFactory = new ProviderFactory();
@@ -18,7 +19,7 @@ const setupEditor = (setProvider: boolean = true) => {
   }
 
   const { editorView } = createEditor({
-    editorPlugins: [collabEdit],
+    editorPlugins: [collabEdit, tablesPlugin],
     providerFactory,
   });
 
@@ -185,6 +186,69 @@ describe('editor/plugins/collab-edit', () => {
         },
       });
       editorView.destroy();
+    });
+
+    it('should place cursor ', async () => {
+      const { editorView, providerPromise } = setupEditor();
+      const provider = await providerPromise;
+
+      provider.emit('telepointer', {
+        type: 'telepointer',
+        selection: {
+          type: 'textSelection',
+          anchor: 5,
+          head: 5,
+        },
+        sessionId: 'test',
+      });
+
+      provider.emit('data', {
+        json: [
+          {
+            stepType: 'replace',
+            from: 0,
+            to: 13,
+            slice: {
+              content: [
+                {
+                  type: 'table',
+                  attrs: {
+                    isNumberColumnEnabled: false,
+                    layout: 'default',
+                  },
+                  content: [
+                    {
+                      type: 'tableRow',
+                      content: [
+                        {
+                          type: 'tableCell',
+                          attrs: {
+                            colspan: 1,
+                            rowspan: 1,
+                            colwidth: null,
+                            background: null,
+                          },
+                          content: [
+                            {
+                              type: 'paragraph',
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      });
+      // tableCommands.createTable()(editorView.state, editorView.dispatch);
+      // Wait for next tick
+      await new Promise(resolve => setTimeout(resolve, 20));
+      const decorations = collabEditPluginKey.getState(editorView.state)
+        .decorations;
+      expect(findPointers('test', decorations)![0].from).to.eq(4);
     });
   });
 

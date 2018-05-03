@@ -632,7 +632,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><td><p>1</p></td><td><p>2</p></td></tr><tr><th><p>two</p></th><td><p>3</p></td><td><p>4</p></td></tr></tbody></table>',
         doc(
-          table()(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
             tr(th({})(p('two')), td({})(p('3')), td({})(p('4'))),
           ),
@@ -643,7 +643,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table>',
         doc(
-          table()(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3'))),
           ),
@@ -654,7 +654,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row and header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><th><p>four</p></th><td><p>1</p></td><td><p>2</p></td></tr></tbody></table>',
         doc(
-          table()(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(th({})(p('four')), td({})(p('1')), td({})(p('2'))),
           ),
@@ -1242,7 +1242,9 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       const actual = parse(
         '<table class="confluenceTable"><tbody><tr><td><div class="content-wrapper"><p>hello</p></div></td></tr></tbody></table>',
       );
-      expect(actual).to.deep.equal(doc(table()(tr(td({})(p('hello'))))));
+      expect(actual).to.deep.equal(
+        doc(table({ __autoSize: true })(tr(td({})(p('hello'))))),
+      );
     });
   });
 

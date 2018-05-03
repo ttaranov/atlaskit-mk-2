@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 31.0.2
+- [patch] Fix navigation item content and description (subtext) clipping in certain browsers [0f1252b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f1252b)
+
 ## 31.0.1
 - [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
 

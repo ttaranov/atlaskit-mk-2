@@ -1,5 +1,11 @@
 # @atlaskit/datetime-picker
 
+## 3.0.4
+- [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
+
+## 3.0.3
+- [patch] Added appearance prop to enable subtle (no icon) appearance   [c10fd5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c10fd5d)
+
 ## 3.0.2
 - [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
 

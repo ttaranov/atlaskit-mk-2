@@ -1,5 +1,7 @@
 # @atlaskit/renderer
 
+## 16.0.6
+
 ## 16.0.5
 - [patch] Fix rendering of multiple text nodes in inline code [9ee5612](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ee5612)
 

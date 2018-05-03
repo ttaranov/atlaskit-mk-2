@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
 import { Identifier } from './domain';
-import { Blanket, Content } from './styled';
-import Navigation from './navigation';
+import { Blanket, Content, HeaderWrapper } from './styled';
 import { getSelectedIndex } from './util';
 import { ErrorMessage } from './styled';
+import Navigation from './navigation';
+import Header from './header';
 
 export type Props = {
   onClose?: () => void;
@@ -42,6 +43,9 @@ export class MediaViewer extends React.Component<Props, State> {
     } else {
       return (
         <Content>
+          <HeaderWrapper>
+            <Header context={context} identifier={selectedItem} />
+          </HeaderWrapper>
           <ItemViewer context={context} identifier={selectedItem} />
           <Navigation
             items={items}
