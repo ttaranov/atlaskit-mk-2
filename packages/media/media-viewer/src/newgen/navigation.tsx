@@ -36,6 +36,11 @@ export default class Navigation extends Component<NavigationProps, any> {
   render() {
     const { items } = this.props;
     const { selectedIndex } = this;
+
+    if (selectedIndex === -1) {
+      return null;
+    }
+
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
