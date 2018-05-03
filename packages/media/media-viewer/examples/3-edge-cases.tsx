@@ -35,7 +35,7 @@ export type State = {
   dataSource?: MediaViewerDataSource;
 };
 
-export default class Example extends React.Component<{}, {}> {
+export default class Example extends React.Component<{}, State> {
   state: State = {};
 
   render() {
