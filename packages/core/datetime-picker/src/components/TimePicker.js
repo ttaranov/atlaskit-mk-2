@@ -15,6 +15,8 @@ type Option = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon. */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -49,6 +51,8 @@ type Props = {
   value?: string,
   /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -73,10 +77,17 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
+const controlSubtleStyles = {
+  backgroundColor: 'transparent',
+  border: 0,
+  borderRadius: 0,
+};
+
 export default class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -91,6 +102,7 @@ export default class TimePicker extends Component<Props, State> {
     defaultValue: '',
     timeIsEditable: false,
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
@@ -150,6 +162,14 @@ export default class TimePicker extends Component<Props, State> {
       this.forceUpdate();
     }
   };
+  /** Get border styles for select conrol*/
+  getControlStyles = () => {
+    return {
+      backgroundColor: 'transparent',
+      border: 0,
+      borderRadius: 0,
+    };
+  };
 
   render() {
     const {
@@ -161,10 +181,13 @@ export default class TimePicker extends Component<Props, State> {
       onBlur,
       onFocus,
       selectProps,
-      icon,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : this.props.icon;
     const FixedLayerMenu = props => {
       return (
         <FixedLayer
@@ -175,6 +198,8 @@ export default class TimePicker extends Component<Props, State> {
     };
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
+    const controlStyles =
+      this.props.appearance === 'subtle' ? controlSubtleStyles : {};
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
@@ -200,6 +225,10 @@ export default class TimePicker extends Component<Props, State> {
           onMenuClose={this.onMenuClose}
           placeholder="e.g. 9:00am"
           styles={mergeStyles(selectStyles, {
+            control: base => ({
+              ...base,
+              ...controlStyles,
+            }),
             menu: base => ({
               ...base,
               ...menuStyles,

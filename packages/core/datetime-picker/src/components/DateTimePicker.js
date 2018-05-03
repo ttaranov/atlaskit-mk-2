@@ -12,6 +12,8 @@ import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon. */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
@@ -36,6 +38,7 @@ type Props = {
   timeIsEditable?: boolean,
   /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
 };
 
@@ -48,18 +51,25 @@ type State = {
   zoneValue: string,
 };
 
-function getBorderColor(isInvalid: boolean) {
+/** Border style is defined by the appearnace and whether it is invalid */
+function getBorderColor(isInvalid: boolean, appearance: 'default' | 'subtle') {
   if (isInvalid) return `2px solid ${colors.R400}`;
+  if (appearance === 'subtle') return `0`;
   return `1px solid ${colors.N20}`;
 }
+
 const Flex = styled.div`
-  background-color: ${colors.N10};
-  border-radius: ${borderRadius()}px;
+  ${({ appearance }) => `
+    background-color: ${appearance === 'subtle' ? 'transparent' : colors.N10}
+    };
+  `} border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
-  ${({ isFocused, isInvalid }) => `
+  ${({ isFocused, isInvalid, appearance }) => `
     border: ${
-      isFocused ? `2px solid ${colors.B100}` : `${getBorderColor(isInvalid)}`
+      isFocused
+        ? `2px solid ${colors.B100}`
+        : `${getBorderColor(isInvalid, appearance)}`
     };
     padding: ${isFocused ? '0' : '1px'};
   `} &:hover {
@@ -101,6 +111,7 @@ function formatDateTimeZoneIntoIso(
 
 export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -188,12 +199,16 @@ export default class DateTimePicker extends Component<Props, State> {
       timeIsEditable,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
-    const icon = this.props.hideIcon ? null : CalendarIcon;
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : CalendarIcon;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
+      appearance: this.props.appearance,
     };
 
     return (
@@ -202,6 +217,7 @@ export default class DateTimePicker extends Component<Props, State> {
         isFocused={isFocused}
         isDisabled={isDisabled}
         isInvalid={bothProps.isInvalid}
+        appearance={bothProps.appearance}
       >
         <input name={name} type="hidden" value={value} />
         <FlexItem>
