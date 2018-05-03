@@ -16,7 +16,7 @@ export const Blanket = styled.div`
   background-color: #1b2638;
 `;
 
-export const Header = styled.div`
+export const HeaderWrapper = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
@@ -24,9 +24,9 @@ export const Header = styled.div`
   opacity: 0.85;
   background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
   color: #b8c7e0;
-  padding-top: 17px;
-  padding-left: 17px;
-  line-height: 32px;
+  padding-top: 15px;
+  padding-left: 24px;
+  box-sizing: border-box;
 `;
 
 export const Content = styled.div`
