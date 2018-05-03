@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 71.0.26
+
+## 71.0.25
+- [patch] Fix hover-control spacing gap in Comment appearance [1119be5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1119be5)
+
 ## 71.0.24
 - [patch] fix: bump pm-utils to 0.2.19 [b77cb78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77cb78)
 

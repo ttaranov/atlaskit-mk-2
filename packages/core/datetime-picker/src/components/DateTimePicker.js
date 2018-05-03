@@ -32,10 +32,11 @@ type Props = {
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** Allow users to edit the input and add a time */
+  /** Allow users to edit the input and add a time. */
   timeIsEditable?: boolean,
-  /** Indicates current value is invalid & changes border color */
+  /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -111,6 +112,7 @@ export default class DateTimePicker extends Component<Props, State> {
     defaultValue: '',
     timeIsEditable: false,
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
@@ -186,6 +188,7 @@ export default class DateTimePicker extends Component<Props, State> {
       timeIsEditable,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
+    const icon = this.props.hideIcon ? null : CalendarIcon;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
@@ -215,7 +218,7 @@ export default class DateTimePicker extends Component<Props, State> {
         <FlexItem>
           <TimePicker
             {...bothProps}
-            icon={CalendarIcon}
+            icon={icon}
             onChange={this.onTimeChange}
             selectProps={{ styles }}
             defaultValue={timeValue}

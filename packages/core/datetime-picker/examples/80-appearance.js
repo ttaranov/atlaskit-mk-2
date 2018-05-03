@@ -1,0 +1,24 @@
+// @flow
+
+import React from 'react';
+import { Label } from '@atlaskit/field-base';
+import { DatePicker, DateTimePicker, TimePicker } from '../src';
+
+export default () => {
+  return (
+    <div>
+      <Label label="TimePicker - default no icon" />
+      <TimePicker onChange={console.log} />
+
+      <Label label="DatePicker - default" />
+      <DatePicker onChange={console.log} />
+      <Label label="DatePicker - hideIcon" />
+      <DatePicker onChange={console.log} hideIcon />
+
+      <Label label="DateTimePicker - default" />
+      <DateTimePicker onChange={console.log} />
+      <Label label="DateTimePicker - hideIcon" />
+      <DateTimePicker onChange={console.log} hideIcon />
+    </div>
+  );
+};
