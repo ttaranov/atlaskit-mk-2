@@ -3,39 +3,32 @@ import React, { Component } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
-let uuid = 0;
-
 const ROOTS = [
   {
     title: 'Chapter 1: Clean Code',
-    id: ++uuid,
     page: 1,
     numbering: '1',
     hasChildren: true,
   },
   {
     title: 'Chapter 2: Meaningful names',
-    id: ++uuid,
     page: 17,
     numbering: '2',
   },
   {
     title: 'Chapter 3: Functions',
-    id: ++uuid,
     page: 17,
     numbering: '3',
     hasChildren: true,
   },
   {
     title: 'Chapter 4: Comments',
-    id: ++uuid,
     page: 53,
     numbering: '4',
     children: [],
   },
   {
     title: 'Chapter 5: Formatting',
-    id: ++uuid,
     page: 75,
     numbering: '5',
     children: [],
@@ -45,20 +38,17 @@ const ROOTS = [
 const CHILDREN = [
   {
     title: 'There Will Be Code',
-    id: ++uuid,
     page: 2,
     numbering: '1.1',
     hasChildren: true,
   },
   {
     title: 'Bad code',
-    id: ++uuid,
     page: 3,
     numbering: '1.2',
   },
   {
     title: 'The Total Cost of Owning a Mess',
-    id: ++uuid,
     page: 4,
     numbering: '1.3',
     hasChildren: true,
@@ -77,49 +67,29 @@ function fetchChildrenOf(node) {
 
 export default class extends Component<*, *> {
   state = {
-    rootIds: null,
-    itemsById: {},
+    roots: null,
   };
 
   componentDidMount() {
     fetchRoots().then(roots => {
-      const rootsById = {};
-      for (const root of roots) {
-        rootsById[root.id] = root;
-      }
       this.setState({
-        rootIds: roots.map(root => root.id),
-        itemsById: rootsById,
+        roots,
       });
     });
   }
 
-  loadChildren = (parentItem: Object) => {
-    if (parentItem.childIds) {
+  loadChildren = parentItem => {
+    if (parentItem.children) {
       return;
     }
 
     fetchChildrenOf(parentItem).then(childItems => {
-      const updatedParent = {
-        ...parentItem,
-        childIds: childItems.map(child => child.id),
-      };
-      const addedChildItemsById = {};
-      for (const child of childItems) {
-        addedChildItemsById[child.id] = child;
-      }
-      this.setState({
-        itemsById: {
-          ...this.state.itemsById,
-          ...addedChildItemsById,
-          [parentItem.id]: updatedParent,
-        },
-      });
+      parentItem.children = childItems;
+      this.forceUpdate();
     });
   };
 
   render() {
-    const { rootIds, itemsById } = this.state;
     return (
       <TableTree>
         <Headers>
@@ -128,14 +98,14 @@ export default class extends Component<*, *> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          rootItems={rootIds && rootIds.map(rootId => itemsById[rootId])}
-          render={({ title, numbering, page, hasChildren, childIds }) => (
+          rootItems={this.state.roots}
+          render={({ title, numbering, page, hasChildren, children }) => (
             <Row
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
               onExpand={this.loadChildren}
-              childItems={childIds && childIds.map(id => itemsById[id])}
+              childItems={children}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>

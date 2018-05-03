@@ -6,6 +6,8 @@ export type RowData = Object;
 
 export type ItemsDataType = Array<RowData>;
 
+export type LoadableItems = ?Array<RowData> | null;
+
 // prettier-ignore
 export type ItemsProvider = (
   Object | void

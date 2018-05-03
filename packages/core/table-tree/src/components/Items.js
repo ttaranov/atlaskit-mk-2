@@ -5,19 +5,20 @@ import LoaderItem from './LoaderItem';
 import {
   type ItemsProvider,
   type RenderFunction,
-  type ItemsDataType,
+  type LoadableItems,
 } from './../types';
 
 type Props = {
   parentData?: Object,
-  getItemsData: ItemsProvider,
+  // getItemsData: ItemsProvider,
+  items: LoadableItems,
   depth?: number,
   render: RenderFunction,
 };
 
 type State = {
   isLoaderShown: boolean,
-  itemsData?: ItemsDataType,
+  // itemsData: LoadableItems,
 };
 
 export default class Items extends PureComponent<Props, State> {
@@ -29,29 +30,39 @@ export default class Items extends PureComponent<Props, State> {
     isLoaderShown: false,
   };
 
-  loadCancelled = false;
+  // loadCancelled = false;
 
-  componentWillMount() {
-    if (!this.state.itemsData) {
-      this.setState({
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (!nextProps.items && !prevState.isLoaderShown) {
+      return {
         isLoaderShown: true,
-      });
-      this.loadCancelled = false;
-      Promise.resolve()
-        .then(() => this.props.getItemsData(this.props.parentData))
-        .then(itemsData => {
-          if (!this.loadCancelled) {
-            this.setState({
-              itemsData,
-            });
-          }
-        });
+      };
     }
+    return null;
   }
-
-  componentWillUnmount() {
-    this.loadCancelled = true;
-  }
+  // TODO remove if we don't need a provider function API
+  //
+  // componentWillMount() {
+  //   if (!this.state.itemsData) {
+  //     this.setState({
+  //       isLoaderShown: true,
+  //     });
+  //     this.loadCancelled = false;
+  //     Promise.resolve()
+  //       .then(() => this.props.getItemsData(this.props.parentData))
+  //       .then(itemsData => {
+  //         if (!this.loadCancelled) {
+  //           this.setState({
+  //             itemsData,
+  //           });
+  //         }
+  //       });
+  //   }
+  // }
+  //
+  // componentWillUnmount() {
+  //   this.loadCancelled = true;
+  // }
 
   handleLoaderComplete = () => {
     this.setState({
@@ -60,11 +71,10 @@ export default class Items extends PureComponent<Props, State> {
   };
 
   renderLoader() {
-    const { depth } = this.props;
-    const { itemsData } = this.state;
+    const { depth, items } = this.props;
     return (
       <LoaderItem
-        isCompleting={!!itemsData}
+        isCompleting={!!items}
         onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />
@@ -72,14 +82,12 @@ export default class Items extends PureComponent<Props, State> {
   }
 
   renderItems() {
-    const { getItemsData, render, depth = 0 } = this.props;
-    const { itemsData } = this.state;
+    const { render, items, depth = 0 } = this.props;
     return (
-      itemsData &&
-      itemsData.map((itemData: Object, index: number) => (
+      items &&
+      items.map((itemData: Object, index: number) => (
         <Item
           data={itemData}
-          getChildrenData={getItemsData}
           depth={depth + 1}
           key={(itemData && itemData.id) || index}
           render={render}
