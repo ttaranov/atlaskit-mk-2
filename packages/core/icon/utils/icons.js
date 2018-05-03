@@ -211,6 +211,7 @@ import JiraMediumIcon from '../glyph/jira/medium';
 import JiraMinorIcon from '../glyph/jira/minor';
 import JiraTestSessionIcon from '../glyph/jira/test-session';
 import JiraTrivialIcon from '../glyph/jira/trivial';
+import LabelIcon from '../glyph/label';
 import LightbulbFilledIcon from '../glyph/lightbulb-filled';
 import LightbulbIcon from '../glyph/lightbulb';
 import LinkFilledIcon from '../glyph/link-filled';
@@ -1630,6 +1631,12 @@ export default {
     component: JiraTrivialIcon,
     componentName: 'JiraTrivialIcon',
     package: '@atlaskit/icon/glyph/jira/trivial',
+  },
+  label: {
+    keywords: ['label'],
+    component: LabelIcon,
+    componentName: 'LabelIcon',
+    package: '@atlaskit/icon/glyph/label',
   },
   'lightbulb-filled': {
     keywords: ['lightbulb-filled', 'lightbulbfilled', 'idea', 'hint'],

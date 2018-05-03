@@ -47,7 +47,7 @@ type Props = {
   timeIsEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** Indicates current value is invalid & changes border color */
+  /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
 };
 
@@ -154,7 +154,6 @@ export default class TimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
-      icon,
       id,
       innerProps,
       isDisabled,
@@ -162,10 +161,10 @@ export default class TimePicker extends Component<Props, State> {
       onBlur,
       onFocus,
       selectProps,
+      icon,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
-
     const FixedLayerMenu = props => {
       return (
         <FixedLayer

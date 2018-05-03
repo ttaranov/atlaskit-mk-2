@@ -359,21 +359,13 @@ describe('BrowserCacheStrategy', () => {
       }
     });
 
-    it('returns undefined via Promise if uncached and error, Emoji once cached', () => {
+    it('returns undefined via Promise if uncached and error', () => {
       mockMediaImageLoader.reject = true;
       const emojiPromise = browserCacheStrategy.loadEmoji(mediaEmoji);
       expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
       if (isPromise(emojiPromise)) {
         return emojiPromise.then(emoji => {
           expect(emoji, 'Emoji is undefined on load error').to.equal(undefined);
-          const cachedError = browserCacheStrategy.loadEmoji(mediaEmoji);
-          expect(isPromise(cachedError), 'Cached, not a promise').to.equal(
-            false,
-          );
-          expect(
-            cachedError,
-            'Cached error. Emoji is undefined on load error',
-          ).to.equal(undefined);
         });
       }
     });
@@ -442,14 +434,6 @@ describe('MemoryCacheStrategy', () => {
       if (isPromise(emojiPromise)) {
         return emojiPromise.then(emoji => {
           expect(emoji, 'Emoji is undefined on load error').to.equal(undefined);
-          const cachedError = memoryCacheStrategy.loadEmoji(mediaEmoji);
-          expect(isPromise(cachedError), 'Cached, not a promise').to.equal(
-            false,
-          );
-          expect(
-            cachedError,
-            'Cached error. Emoji is undefined on load error',
-          ).to.equal(undefined);
         });
       }
     });

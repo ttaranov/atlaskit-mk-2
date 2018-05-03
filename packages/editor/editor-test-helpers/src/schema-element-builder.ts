@@ -74,6 +74,11 @@ export const pmNodeFactory: object = {
   tableRow: tr,
   mediaSingle: mediaSingle({ layout: 'center' }),
   mediaGroup,
+  media,
+  extension: content =>
+    extension({ extensionKey: '123', extensionType: 'blockExtension' })(
+      content,
+    ),
   bodiedExtension: content =>
     bodiedExtension({ extensionKey: '123', extensionType: 'bodiedExtension' })(
       content,
@@ -81,6 +86,7 @@ export const pmNodeFactory: object = {
 };
 
 export const pmNodeBuilder: object = {
+  doc: doc(p('')),
   text: createText('fake text'),
   paragraph: p('fake paragraph'),
   blockquote: blockquote(p('fake blockquote')),

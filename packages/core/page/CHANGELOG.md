@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 6.0.2
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
 ## 6.0.1
 
 ## 6.0.0

@@ -43,8 +43,8 @@ export const defaultTheme: ItemTheme = {
     },
   },
   default: {
-    background: colors.N0,
-    text: colors.N500,
+    background: colors.background,
+    text: colors.text,
     secondaryText: colors.N200,
   },
   selected: {
@@ -53,13 +53,13 @@ export const defaultTheme: ItemTheme = {
     secondaryText: colors.N200,
   },
   active: {
-    background: colors.B75,
-    text: colors.N800,
+    background: colors.backgroundActive,
+    text: colors.textActive,
     secondaryText: colors.N200,
   },
   hover: {
-    background: colors.N20,
-    text: colors.N800,
+    background: colors.backgroundHover,
+    text: colors.textHover,
     secondaryText: colors.N200,
   },
   disabled: {

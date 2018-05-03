@@ -47,6 +47,7 @@ type Props = {
   value?: string,
   /** Indicates current value is invalid & changes border color */
   isInvalid?: boolean,
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -120,6 +121,7 @@ export default class DatePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
@@ -225,7 +227,6 @@ export default class DatePicker extends Component<Props, State> {
     const {
       autoFocus,
       disabled,
-      icon,
       id,
       innerProps,
       isDisabled,
@@ -234,6 +235,7 @@ export default class DatePicker extends Component<Props, State> {
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
+    const icon = this.props.hideIcon ? null : this.props.icon;
     const Menu = ({ innerProps: menuInnerProps }) => (
       <StyledMenu>
         <Calendar

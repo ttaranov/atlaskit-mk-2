@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,11 +21,9 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/calendar": "^5.0.0",
-    "@atlaskit/droplist": "^5.0.0",
+    "@atlaskit/calendar": "^5.0.1",
     "@atlaskit/field-base": "^9.0.0",
     "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/input": "^2.0.0",
     "@atlaskit/layer": "^3.1.0",
     "@atlaskit/select": "^2.0.0",
     "@atlaskit/theme": "^3.0.0",

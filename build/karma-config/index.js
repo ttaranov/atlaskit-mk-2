@@ -115,7 +115,12 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         os_version: '8.1',
         browser_version: '11',
       },
-      iphone: { os: 'ios', os_version: '9.1', device: 'iPhone 6S' },
+      iphone: {
+        os: 'ios',
+        os_version: '11.0',
+        device: 'iPhone 8',
+        real_mobile: false,
+      },
       chrome_latest_osx: {
         browser: 'chrome',
         os: 'OS X',
@@ -126,10 +131,11 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         os: 'WINDOWS',
         os_version: '10',
       },
-      firefox_latest_osx: {
-        browser: 'firefox',
+      safari_latest: {
+        browser: 'Safari',
         os: 'OS X',
-        os_version: 'El Capitan',
+        os_version: 'High Sierra',
+        browser_version: '11.0',
       },
       edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };

@@ -1,5 +1,8 @@
 # @atlaskit/calendar
 
+## 5.0.1
+- [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
+
 ## 5.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

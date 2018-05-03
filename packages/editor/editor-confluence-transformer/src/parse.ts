@@ -683,8 +683,12 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
     rowNodes.push(tableRow.createChecked(undefined, Fragment.from(cellNodes)));
   }
 
-  return table.createChecked(
-    { isNumberColumnEnabled },
+  return table.create(
+    {
+      isNumberColumnEnabled,
+      __autoSize:
+        columnSizes.length === 0 || columnSizes.every(width => width === 0),
+    },
     Fragment.from(rowNodes),
   );
 }

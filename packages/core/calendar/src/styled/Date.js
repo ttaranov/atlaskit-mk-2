@@ -9,7 +9,7 @@ const getTransparent = themed({ light: 'transparent', dark: 'transparent' });
 const selectedBackground = themed({ light: colors.N500, dark: colors.N0 });
 const prevSelectedBackground = themed({ light: colors.B75, dark: colors.B75 });
 
-const textDisabled = themed({ light: colors.N400, dark: colors.N400 });
+const textDisabled = themed({ light: colors.N40, dark: colors.N40 });
 const textHoverSelected = themed({ light: colors.N600, dark: colors.N600 });
 const textPreviouslySelected = themed({
   light: colors.N600,
@@ -38,9 +38,7 @@ const getBackgroundColorsAfter = props =>
 const getBorderColorFocused = themed({ light: colors.B100, dark: colors.B75 });
 
 const getBorderColors = props =>
-  props.focused && !props.selected
-    ? getBorderColorFocused(props)
-    : getTransparent(props);
+  props.focused ? getBorderColorFocused(props) : getTransparent(props);
 
 function getBackgroundColor(props) {
   if (props.selected) return selectedBackground(props);
@@ -49,8 +47,8 @@ function getBackgroundColor(props) {
 }
 
 function getColor(props) {
-  if (props.selected) return textSelected(props);
   if (props.disabled) return textDisabled(props);
+  if (props.selected) return textSelected(props);
   if (props.previouslySelected) return textPreviouslySelected(props);
   if (props.isToday) return colors.primary(props);
   if (props.sibling) return textSibling(props);
@@ -60,15 +58,18 @@ function getColor(props) {
 const getCursor = ({ disabled }) => (disabled ? 'not-allowed' : 'pointer');
 
 function getHoverBackgroundColor(props) {
+  if (props.disabled) return getTransparent(props);
   if (props.previouslySelected) return hoverPreviouslySelectedBackground(props);
   if (props.isActive) return isActiveBackground(props);
   return hoverBackground(props);
 }
 
-const getHoverColor = props =>
-  props.selected || props.previouslySelected || props.isActive
-    ? textHoverSelected(props)
-    : colors.text(props);
+const getHoverColor = props => {
+  if (props.disabled) return textDisabled(props);
+  if (props.selected || props.previouslySelected || props.isActive)
+    return textHoverSelected(props);
+  return colors.text(props);
+};
 
 export const DateDiv = styled.div`
   background-color: ${getBackgroundColor};

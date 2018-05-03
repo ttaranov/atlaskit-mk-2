@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { toClass } from 'recompose';
 import {
   AkSearchDrawer,
   AkNavigationItem,
@@ -15,11 +16,11 @@ import * as fs from '../../utils/fs';
 import type { Directory } from '../../types';
 import { AtlaskitIcon } from './index';
 
-const LinkComponent = ({ href, children, onClick, className }) => (
+const LinkComponent = toClass(({ href, children, onClick, className }) => (
   <Link className={className} onClick={onClick} to={href}>
     {children}
   </Link>
-);
+));
 
 const NavItem = ({ dirId, id, closeDrawer }) => (
   <AkNavigationItem
