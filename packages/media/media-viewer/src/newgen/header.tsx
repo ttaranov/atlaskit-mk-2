@@ -92,7 +92,9 @@ export default class Header extends React.Component<Props, State> {
 
   private onClose = () => {
     const { onClose } = this.props;
-    onClose && onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   private renderMetadata() {
