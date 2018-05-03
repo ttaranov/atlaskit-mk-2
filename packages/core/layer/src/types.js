@@ -48,3 +48,9 @@ export type PopperStateType = {
     popper: OffsetPopperType,
   },
 };
+
+export type FixedOffsetType = {
+  top: number,
+  width: number,
+  height: number,
+};

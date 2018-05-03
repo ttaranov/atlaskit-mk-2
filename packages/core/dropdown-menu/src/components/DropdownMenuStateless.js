@@ -415,6 +415,7 @@ export default class DropdownMenuStateless extends Component<
           onClick={this.handleClick}
           onOpenChange={onOpenChange}
           position={position}
+          isMenuFixed
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
