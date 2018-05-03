@@ -52,6 +52,20 @@ describe('PubNub', () => {
     mockPubNub.fetchMessages.mockClear();
   });
 
+  function emitPubNubEvent(category: string) {
+    const handlers: Pubnub.ListenerParameters =
+      mockPubNub.addListener.mock.calls[0][0];
+    handlers.status!({
+      category: category,
+      operation: '',
+      affectedChannels: [],
+      subscribedChannels: [],
+      affectedChannelGroups: [],
+      lastTimetoken: '',
+      currentTimetoken: '',
+    });
+  }
+
   describe('#subscribe', () => {
     it('should create a new PubNub client', () => {
       pubNubProtocol.subscribe(subscribeRequest());
@@ -125,6 +139,16 @@ describe('PubNub', () => {
 
       expect(Pubnub).toHaveBeenCalledTimes(2);
     });
+
+    it('should set state to CONNECTING', () => {
+      pubNubProtocol.subscribe(
+        subscribeRequest(['channel1'], ['channelGroup1'], 'subscribeKey1'),
+      );
+
+      expect(pubNubProtocol.getConnectionState()).toBe(
+        ConnectionState.CONNECTING,
+      );
+    });
   });
 
   describe('#networkUp', () => {
@@ -132,6 +156,8 @@ describe('PubNub', () => {
       pubNubProtocol.subscribe(
         subscribeRequest(['channel1'], ['channelGroup1']),
       );
+
+      emitPubNubEvent('PNNetworkDownCategory');
 
       pubNubProtocol.networkUp();
 
@@ -212,17 +238,7 @@ describe('PubNub', () => {
       );
       pubNubProtocol.on(EventType.NETWORK_UP, handler);
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNConnectedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNConnectedCategory');
 
       expect(pubNubProtocol.getConnectionState()).toBe(
         ConnectionState.CONNECTED,
@@ -238,17 +254,7 @@ describe('PubNub', () => {
       );
       pubNubProtocol.on(EventType.NETWORK_UP, handler);
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNNetworkUpCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNNetworkUpCategory');
 
       expect(handler).toHaveBeenCalled();
     });
@@ -262,17 +268,7 @@ describe('PubNub', () => {
       );
       pubNubProtocol.on(EventType.NETWORK_UP, handler);
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNReconnectedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNReconnectedCategory');
 
       expect(handler).toHaveBeenCalled();
     });
@@ -281,7 +277,7 @@ describe('PubNub', () => {
   describe('on PNAccessDeniedCategory', () => {
     beforeEach(() => {});
 
-    it('should call error handler', () => {
+    it('should call handler', () => {
       const errorHandler = jest.fn();
 
       pubNubProtocol.subscribe(
@@ -290,24 +286,27 @@ describe('PubNub', () => {
       pubNubProtocol.on(EventType.ACCESS_DENIED, errorHandler);
       mockPubNub.subscribe.mockReset();
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNAccessDeniedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNAccessDeniedCategory');
 
       jest.runTimersToTime(100);
 
       expect(errorHandler).toHaveBeenCalled();
     });
 
-    it('should debounce call to error handler', () => {
+    it('should set state to ACCESS_DENIED', () => {
+      pubNubProtocol.subscribe(
+        subscribeRequest(['channel1'], ['channelGroup1']),
+      );
+      mockPubNub.subscribe.mockReset();
+
+      emitPubNubEvent('PNAccessDeniedCategory');
+
+      expect(pubNubProtocol.getConnectionState()).toBe(
+        ConnectionState.ACCESS_DENIED,
+      );
+    });
+
+    it('should not call handler if in ACCESS_DENIED state already', () => {
       const errorHandler = jest.fn();
 
       pubNubProtocol.subscribe(
@@ -316,27 +315,8 @@ describe('PubNub', () => {
       pubNubProtocol.on(EventType.ACCESS_DENIED, errorHandler);
       mockPubNub.subscribe.mockReset();
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNAccessDeniedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
-
-      handlers.status!({
-        category: 'PNAccessDeniedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNAccessDeniedCategory');
+      emitPubNubEvent('PNAccessDeniedCategory');
 
       jest.runTimersToTime(100);
 
@@ -353,27 +333,8 @@ describe('PubNub', () => {
       );
       pubNubProtocol.on(EventType.NETWORK_DOWN, handler);
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNConnectedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
-
-      handlers.status!({
-        category: 'PNNetworkDownCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNConnectedCategory');
+      emitPubNubEvent('PNNetworkDownCategory');
 
       expect(handler).toHaveBeenCalled();
     });
@@ -388,27 +349,8 @@ describe('PubNub', () => {
       );
       pubNubProtocol.on(EventType.NETWORK_DOWN, handler);
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNConnectedCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
-
-      handlers.status!({
-        category: 'PNNetworkIssuesCategory',
-        operation: '',
-        affectedChannels: ['channel1', 'channel2'],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNConnectedCategory');
+      emitPubNubEvent('PNNetworkIssuesCategory');
 
       expect(handler).toHaveBeenCalled();
     });
@@ -420,17 +362,7 @@ describe('PubNub', () => {
         subscribeRequest(['channel1'], ['channelGroup1']),
       );
 
-      const handlers: Pubnub.ListenerParameters =
-        mockPubNub.addListener.mock.calls[0][0];
-      handlers.status!({
-        category: 'PNRequestMessageCountExceededCategory',
-        operation: '',
-        affectedChannels: [],
-        subscribedChannels: [],
-        affectedChannelGroups: [],
-        lastTimetoken: '',
-        currentTimetoken: '',
-      });
+      emitPubNubEvent('PNRequestMessageCountExceededCategory');
 
       expect(mockHistoryFetcher.fetch).toHaveBeenCalled();
     });

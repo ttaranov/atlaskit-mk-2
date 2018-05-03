@@ -30,16 +30,11 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.0",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/field-radio-group": "^2.0.0",
     "@atlaskit/field-text": "^5.0.0",
-    "@atlaskit/inline-dialog": "6.0.0",
     "@atlaskit/input": "^2.0.0",
-    "@atlaskit/mention": "^11.0.0",
-    "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/multi-select": "^9.0.0",
-    "@atlaskit/single-select": "^4.0.0",
     "@atlaskit/tag": "^4.0.0",
     "@atlaskit/tag-group": "^4.0.0",
     "enzyme": "^3.3.0"

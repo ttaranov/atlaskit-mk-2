@@ -1,4 +1,4 @@
-let debugEnabled = true;
+let debugEnabled = false;
 let stacktracesEnabled = false;
 
 const LOG_PREFIX = '[Frontend PubSub] ';

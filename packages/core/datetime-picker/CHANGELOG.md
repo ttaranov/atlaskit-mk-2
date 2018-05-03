@@ -1,5 +1,19 @@
 # @atlaskit/datetime-picker
 
+## 3.0.3
+- [patch] Added appearance prop to enable subtle (no icon) appearance   [c10fd5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c10fd5d)
+
+## 3.0.2
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
+## 3.0.1
+- [patch] Added isInvalid prop to DateTimePicker DatePicker & TimePicker [101c306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/101c306)
+
+## 3.0.0
+
+## 2.0.6
+- [patch] Added timeIsEditable prop to enable user created times [4695e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4695e5d)
+
 ## 2.0.5
 
 ## 2.0.4

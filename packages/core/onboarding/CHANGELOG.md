@@ -1,5 +1,7 @@
 # @atlaskit/onboarding
 
+## 3.1.1
+
 ## 3.1.0
 - [minor] support new property "targetNode" on spotlight component [48397b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48397b6)
 

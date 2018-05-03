@@ -1,5 +1,99 @@
 # @atlaskit/editor-core
 
+## 71.0.26
+
+## 71.0.25
+- [patch] Fix hover-control spacing gap in Comment appearance [1119be5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1119be5)
+
+## 71.0.24
+- [patch] fix: bump pm-utils to 0.2.19 [b77cb78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77cb78)
+
+## 71.0.23
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
+## 71.0.22
+- [patch] ED-4315, Image layout should be disabled inside bodied extension. [a0ed280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0ed280)
+
+## 71.0.21
+- [patch] Fixes adding the task/decision below the selected extension inside tables [6dc92f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dc92f9)
+
+## 71.0.20
+- [patch] ED-4451: added click handler for gap cursor [d89f397](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d89f397)
+
+## 71.0.19
+
+## 71.0.18
+- [patch] Fix cursor on collapsed editor [ca12d9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca12d9f)
+
+## 71.0.17
+- [patch] ED-4428: fix insertiong of task and decisions [ff1b023](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff1b023)
+
+## 71.0.16
+- [patch] ED-4022 new list backspace behaviour [e6f2d97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f2d97)
+
+## 71.0.15
+- [patch] ED-4235 Fix node selection inside node view on load [4be5c46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4be5c46)
+
+## 71.0.14
+- [patch] Fix toolbar's shouldComponentUpdate was ignoring changes in popupsMountPoint [6a820dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a820dd)
+
+## 71.0.13
+- [patch] Update `editorActions.focus()` to scroll the page to the user's current selection when called [821249b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/821249b)
+
+## 71.0.12
+- [patch] Expose table plugin config interface [584c085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/584c085)
+
+## 71.0.11
+- [patch] ED-4296, fix for scrollbars always visible in recent search for hyperlink in windows. [5b39e02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b39e02)
+
+## 71.0.10
+- [patch] ED-4270, changing font of inline code according to ADG3 guidelines. [805d02a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/805d02a)
+
+## 71.0.9
+- [patch] Outdent list item on enter if it doesn't have any visible content [4deb043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4deb043)
+
+## 71.0.8
+- [patch] [fix] Support action/decision '[]' and '<>' autocompletion inside of bodiedExtensions and column layouts [ad7169c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad7169c)
+
+## 71.0.7
+- [patch] ED-4363, replacing peperclip icon with image icon in top toolbar in editor. [e5cb9b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5cb9b8)
+
+## 71.0.6
+- [patch] ED-4235 Fix node selection inside node view on load [468bb65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bb65)
+
+## 71.0.5
+- [patch] ED-4078 Fix single image layout around headings and lists [3f230a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f230a1)
+
+## 71.0.4
+- [patch] Fix WithEditorActions depends on where it's renderer.  [9de70c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9de70c6)
+
+## 71.0.3
+- [patch] ED-4324 clear selection after doing text replacement [d4a3f3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3f3c)
+
+## 71.0.2
+- [patch] ED-4082, fixing position for hyperlink floating toolbar. [c5bfedd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5bfedd)
+
+## 71.0.1
+- [patch] added gap cursor [5d81c8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d81c8b)
+
+## 71.0.0
+- [major] For media-picker: fetchMetadata and autoFinalize options are removed from UploadParams and replaced with always "true" in the code. For editor-core: "unfinalized" status is removed from MediaStateStatus and finalizeCb from MediaState. [a41759a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a41759a)
+
+## 70.5.2
+- [patch] Fix inserting media inside blocks that don't support media [d2458b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2458b8)
+
+## 70.5.1
+- [patch] Fixing the expand macro copy [ef01bbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef01bbd)
+
+## 70.5.0
+- [minor] The editor now only allows ordered list creation via autoformatting that starts with `1`. e.g. `1) Content` or `1. Content`. Using a number other than `1` will no longer trigger the input rules (ED-4344) [9c543c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c543c8)
+
+## 70.4.3
+- [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
+
+## 70.4.2
+- [patch] Prevent 'Enter' from splitting a code-block that ends in a new-line, when the cursor is not at the end of the code-block. [140c76c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/140c76c)
+
 ## 70.4.1
 - [patch] Fix vertical positioning of table floating toolbar. [3c96ad5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c96ad5)
 

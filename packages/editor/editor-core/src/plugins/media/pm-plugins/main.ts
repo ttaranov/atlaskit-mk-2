@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
+import { Node as PMNode, Schema, Node } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -42,8 +42,9 @@ import {
   MediaStateManager,
 } from '../types';
 import DefaultMediaStateManager from '../default-state-manager';
-import { insertMediaSingleNode } from './media-single';
+import { insertMediaSingleNode } from '../utils/media-single';
 
+import { hasParentNodeOfType } from 'prosemirror-utils';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -298,7 +299,8 @@ export class MediaPluginState {
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
 
-    if (isNonImagesBanned(grandParentNode)) {
+    // in case of gap cursor, selection might be at depth=0
+    if (grandParentNode && isNonImagesBanned(grandParentNode)) {
       nonImageAttachements = [];
     }
 
@@ -306,15 +308,7 @@ export class MediaPluginState {
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
 
-    const allowMediaSingle =
-      mediaSingle &&
-      grandParentNode.type.validContent(Fragment.from(mediaSingle.create()));
-
-    if (
-      this.editorAppearance !== 'message' &&
-      allowMediaSingle &&
-      mediaSingle
-    ) {
+    if (this.editorAppearance !== 'message' && mediaSingle) {
       imageAttachments.forEach(mediaState =>
         this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
       );
@@ -785,14 +779,26 @@ export class MediaPluginState {
     return false;
   };
 
-  selectedMediaNode(): PMNode | undefined {
+  selectedMediaNode(): Node | undefined {
     const { selection, schema } = this.view.state;
     if (
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return selection.node;
+      const node = selection.node;
+      return node;
     }
+  }
+
+  isLayoutSupported(): boolean {
+    const { selection, schema } = this.view.state;
+    if (
+      selection instanceof NodeSelection &&
+      selection.node.type === schema.nodes.media
+    ) {
+      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+    }
+    return false;
   }
 
   /**

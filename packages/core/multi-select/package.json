@@ -38,7 +38,6 @@
   "devDependencies": {
     "@atlaskit/avatar": "^10.0.0",
     "@atlaskit/button": "^7.0.0",
-    "@atlaskit/code": "^4.0.0",
     "@atlaskit/docs": "^3.0.0",
     "enzyme": "^3.3.0",
     "react-test-renderer": "^16.3.0"

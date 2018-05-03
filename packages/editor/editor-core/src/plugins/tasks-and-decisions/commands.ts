@@ -1,15 +1,13 @@
 import { uuid } from '@atlaskit/editor-common';
-import { Schema, Slice } from 'prosemirror-model';
-import {
-  EditorState,
-  Selection,
-  TextSelection,
-  Transaction,
-} from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-
-import { toJSON } from '../../utils';
-import { taskDecisionSliceFilter } from '../../utils/filter';
+import {
+  safeInsert,
+  hasParentNodeOfType,
+  replaceParentNodeOfType,
+} from 'prosemirror-utils';
+import { GapCursorSelection } from '../gap-cursor';
 
 const getListTypes = (
   listType: TaskDecisionListType,
@@ -72,47 +70,56 @@ export const createListAtSelection = (
   schema: Schema,
   state: EditorState,
 ): boolean => {
-  const { selection: { $from, $to } } = state;
-
+  const { selection } = state;
+  const { $from, $to } = selection;
   if ($from.parent !== $to.parent) {
     // ignore selections across multiple nodes
     return false;
   }
 
-  const { decisionList, taskList, mediaGroup } = schema.nodes;
-  const isAlreadyDecisionTask =
-    $from.parent.type === decisionList || $from.parent.type === taskList;
-  const isMediaNode = $from.parent.type === mediaGroup;
-
-  if (isAlreadyDecisionTask || isMediaNode) {
+  const {
+    paragraph,
+    blockquote,
+    decisionList,
+    taskList,
+    mediaGroup,
+  } = schema.nodes;
+  if ($from.parent.type === mediaGroup) {
     return false;
   }
 
-  let where;
-  let content = $from.node($from.depth).content;
+  const emptyList = list.create({ localId: uuid.generate() }, [
+    item.create({ localId: uuid.generate() }),
+  ]);
 
-  // Handle entire document selected case
-  if ($from.depth === 0) {
-    where = $from.before($from.depth + 1);
-    const slice = Slice.fromJSON(schema, toJSON($from.node($from.depth)));
-    content = taskDecisionSliceFilter(slice, schema).content;
-  } else {
-    where = $from.before($from.depth);
+  // we don't take the content of a block node next to the gap cursor and always create an empty task
+  if (selection instanceof GapCursorSelection) {
+    safeInsert(emptyList)(tr);
+    return true;
   }
 
-  tr
-    .delete(where, $from.end($from.depth))
-    .replaceSelectionWith(
+  // try to replace any of the given nodeTypes
+  if (
+    hasParentNodeOfType([blockquote, paragraph, decisionList, taskList])(
+      selection,
+    )
+  ) {
+    const newTr = replaceParentNodeOfType(
+      [blockquote, paragraph, decisionList, taskList],
       list.create({ localId: uuid.generate() }, [
-        item.create({ localId: uuid.generate() }, content),
+        item.create(
+          { localId: uuid.generate() },
+          $from.node($from.depth).content,
+        ),
       ]),
-    );
+    )(tr);
 
-  // Adjust selection into new item, if not there (e.g. in full page editor)
-  const newSelection = tr.selection;
-  if (newSelection.$from.parent.type !== item) {
-    tr.setSelection(TextSelection.create(tr.doc, newSelection.$from.pos - 2));
+    // replacing successful
+    if (newTr !== tr) {
+      return true;
+    }
   }
 
+  safeInsert(emptyList)(tr);
   return true;
 };

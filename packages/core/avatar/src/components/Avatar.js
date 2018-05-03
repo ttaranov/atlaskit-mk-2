@@ -119,6 +119,7 @@ class Avatar extends Component<AvatarPropTypes> {
       size,
       src,
       stackIndex,
+      onClick,
     } = this.props;
 
     // distill props from context, props, and state
@@ -133,7 +134,7 @@ class Avatar extends Component<AvatarPropTypes> {
         <Inner
           innerRef={this.setRef}
           {...enhancedProps}
-          onClick={this.guardedClick}
+          onClick={onClick != null ? this.guardedClick : undefined}
         >
           <AvatarImage
             alt={name}
@@ -168,5 +169,9 @@ class Avatar extends Component<AvatarPropTypes> {
 export default mapProps({
   appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
   isInteractive: props =>
-    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
+    Boolean(
+      (typeof props.enableTooltip !== 'undefined'
+        ? props.enableTooltip
+        : Avatar.defaultProps.enableTooltip) && props.name,
+    ), // 2
 })(withPseudoState(Avatar)); // 3

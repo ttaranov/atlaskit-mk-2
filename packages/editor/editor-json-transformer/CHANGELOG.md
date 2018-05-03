@@ -1,5 +1,10 @@
 # @atlaskit/editor-json-transformer
 
+## 3.0.5
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
+## 3.0.4
+
 ## 3.0.3
 
 ## 3.0.2

@@ -29,7 +29,6 @@
   "devDependencies": {
     "@atlaskit/button": "^7.0.0",
     "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/logo": "^7.0.0",
     "enzyme": "^3.3.0"
   },
   "keywords": [

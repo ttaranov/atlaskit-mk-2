@@ -57,13 +57,29 @@ describe('Tooltip', () => {
       position: 'top',
     };
   });
-  it('should be possible to create a component', () => {
-    const wrapper = shallow(
-      <Tooltip content="Tooltip content">
-        <div>foo</div>
-      </Tooltip>,
-    );
-    expect(wrapper).not.toBe(undefined);
+
+  describe('unmount', () => {
+    it("should call marshal's unmount method on unmount", () => {
+      const spy = jest.spyOn(marshal, 'unmount');
+      const wrapper = shallow(
+        <Tooltip content="Tooltip content">
+          <div>foo</div>
+        </Tooltip>,
+      ).dive();
+
+      const instance = wrapper.instance();
+      instance.show({ immediate: true });
+      wrapper.update();
+
+      instance.hide({ immediate: true });
+      wrapper.update();
+
+      expect(marshal.unmount).not.toHaveBeenCalled();
+
+      wrapper.unmount();
+      expect(marshal.unmount).toHaveBeenCalled();
+      spy.mockRestore();
+    });
   });
 
   describe('show method', () => {
@@ -295,6 +311,7 @@ describe('Tooltip', () => {
       marshalSpy.mockRestore();
     });
   });
+
   describe('mousemove events', () => {
     it('should update the mouseCoordinates var', () => {
       const wrapper = shallow(
@@ -316,6 +333,7 @@ describe('Tooltip', () => {
       });
     });
   });
+
   describe('click', () => {
     it('should not hide the tooltip by default', () => {
       const wrapper = shallow(
@@ -527,6 +545,8 @@ describe('Tooltip', () => {
       const tooltip = getPortalContents(wrapper);
 
       expect(tooltip).toMatchSnapshot();
+      // $FlowFixMe - jest-styled-components
+      expect(tooltip).toHaveStyleRule('overflow-wrap', 'break-word');
     });
 
     it('should render custom tooltip when component prop passed in', () => {

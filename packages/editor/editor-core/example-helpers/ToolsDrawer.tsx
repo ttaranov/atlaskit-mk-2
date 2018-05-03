@@ -97,7 +97,7 @@ const providers = {
 };
 rejectedPromise.catch(() => {});
 
-interface State {
+export interface State {
   reloadEditor: boolean;
   editorEnabled: boolean;
   imageUploadProvider: string;

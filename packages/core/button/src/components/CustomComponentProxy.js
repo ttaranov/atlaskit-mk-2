@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { cleanProps } from '@atlaskit/analytics-next';
 
 /**
  * Styling a button is complicated and there are a number of properties which inform its appearance.
@@ -23,8 +24,10 @@ const CustomComponentProxy = (props: DerivedButtonProps) => {
     isSelected,
     shouldFitContainer,
     fit,
+    iconBefore,
+    iconAfter,
     ...proxiedProps
-  } = props;
+  } = cleanProps(props);
   if (!component)
     throw new Error(
       'No custom component provided while trying to use custom button component',

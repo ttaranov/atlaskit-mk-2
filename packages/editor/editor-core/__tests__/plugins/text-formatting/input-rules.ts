@@ -189,6 +189,15 @@ describe('text-formatting input rules', () => {
       p('  \t   “hello” ‘world’   '),
       'quote',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, '"');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel”{<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('arrow rule', () => {
@@ -218,6 +227,15 @@ describe('text-formatting input rules', () => {
       ' \t   →  \t  →  ',
       'arrow',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, ' -> ');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel → {<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('typography rule', () => {
@@ -244,6 +262,15 @@ describe('text-formatting input rules', () => {
       '\t –   \t text',
       'typography',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, '...');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel…{<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('strong rule', () => {

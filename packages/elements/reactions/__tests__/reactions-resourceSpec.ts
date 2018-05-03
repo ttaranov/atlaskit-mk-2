@@ -4,6 +4,7 @@ import * as chai from 'chai';
 import * as fetchMock from 'fetch-mock/src/client';
 import * as sinon from 'sinon';
 import { ReactionsResource } from '../src';
+import { ReactionsState, ReactionStatus } from '../src/reactions-resource';
 import { equalEmojiId } from '../src/internal/helpers';
 import {
   grinId,
@@ -112,7 +113,10 @@ const populateCache = (reactionsProvider: ReactionsResource) => {
   const response = fetchGetReactions();
   Object.keys(response).forEach(ari => {
     const key = `${response[ari][0].containerAri}|${response[ari][0].ari}`;
-    cachedReactions[key] = response[ari];
+    cachedReactions[key] = {
+      status: ReactionStatus.ready,
+      reactions: response[ari],
+    };
   });
   (reactionsProvider as any).cachedReactions = cachedReactions;
 };
@@ -164,15 +168,18 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     it('should not overwrite cache for excluded aris', () => {
       populateCache(reactionsProvider);
       const anotherAri = 'another:ari:123';
-      const anotherAriData = [
-        {
-          ari: anotherAri,
-          containerAri: containerAri,
-          emojiId: 'grinning',
-          count: 1,
-          reacted: false,
-        },
-      ];
+      const anotherAriData: ReactionsState = {
+        status: ReactionStatus.ready,
+        reactions: [
+          {
+            ari: anotherAri,
+            containerAri: containerAri,
+            emojiId: 'grinning',
+            count: 1,
+            reacted: false,
+          },
+        ],
+      };
 
       const anotherCacheKey = reactionsProvider.objectReactionKey(
         containerAri,
@@ -191,12 +198,18 @@ describe('@atlaskit/reactions/reactions-provider', () => {
           expect(
             (reactionsProvider as any).cachedReactions[
               reactionsProvider.objectReactionKey(containerAri, ari)
-            ],
+            ].reactions,
           ).to.deep.equal(reactions[ari]);
           expect(
             (reactionsProvider as any).cachedReactions[anotherCacheKey],
           ).to.deep.equal(anotherAriData);
         });
+    });
+
+    it('should not fail with empty args', () => {
+      return reactionsProvider.getReactions([]).then(reactions => {
+        expect(reactions).to.deep.equal({});
+      });
     });
   });
 
@@ -223,7 +236,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.length).to.equal(fetchGetReactions()[ari].length + 1);
+          expect(state.status).equal(ReactionStatus.ready);
+          if (state.status === ReactionStatus.ready) {
+            expect(state.reactions.length).to.equal(
+              fetchGetReactions()[ari].length + 1,
+            );
+          }
         });
     });
   });
@@ -251,7 +269,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
           ).to.deep.equal(state);
-          expect(state.length).to.equal(fetchGetReactions()[ari].length - 1);
+          expect(state.status).equal(ReactionStatus.ready);
+          if (state.status === ReactionStatus.ready) {
+            expect(state.reactions.length).to.equal(
+              fetchGetReactions()[ari].length - 1,
+            );
+          }
         });
     });
   });
@@ -299,7 +322,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
       const reaction = (reactionsProvider as any).cachedReactions[
         reactionsProvider.objectReactionKey(containerAri, ari)
-      ].filter(r => equalEmojiId(r.emojiId, thumbsupId.id!))[0];
+      ].reactions.filter(r => equalEmojiId(r.emojiId, thumbsupId.id!))[0];
       expect(reaction.count).to.equal(6);
       expect(reaction.reacted).to.equal(true);
     });
@@ -314,7 +337,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
       const reaction = (reactionsProvider as any).cachedReactions[
         reactionsProvider.objectReactionKey(containerAri, ari)
-      ].filter(r => equalEmojiId(r.emojiId, laughingId.id!))[0];
+      ].reactions.filter(r => equalEmojiId(r.emojiId, laughingId.id!))[0];
       expect(reaction.count).to.equal(1);
       expect(reaction.reacted).to.equal(false);
     });
@@ -332,12 +355,13 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         ari,
       );
       expect(
-        (reactionsProvider as any).cachedReactions[objectReactionKey].filter(
-          r => equalEmojiId(r.emojiId, grinningId.id!),
-        ).length,
+        (reactionsProvider as any).cachedReactions[
+          objectReactionKey
+        ].reactions.filter(r => equalEmojiId(r.emojiId, grinningId.id!)).length,
       ).to.equal(0);
       expect(
-        (reactionsProvider as any).cachedReactions[objectReactionKey].length,
+        (reactionsProvider as any).cachedReactions[objectReactionKey].reactions
+          .length,
       ).to.equal(fetchGetReactions()[ari].length - 1);
     });
   });
@@ -387,16 +411,18 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
     it('should call notifyUpdated if cached', () => {
       const key = `${reaction.containerAri}|${reaction.ari}`;
+      const reactionsState = {
+        status: ReactionStatus.ready,
+        reactions: [reaction],
+      };
       (reactionsProvider as any).cachedReactions = {
-        [key]: [reaction],
+        [key]: reactionsState,
       };
       const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
       return reactionsProvider.fetchReactionDetails(reaction).then(() => {
         expect(spy.called).to.equal(true);
         expect(
-          spy.calledWith(reaction.containerAri, reaction.ari, [
-            detailedReaction,
-          ]),
+          spy.calledWith(reaction.containerAri, reaction.ari, reactionsState),
         ).to.equal(true);
         spy.restore();
       });
