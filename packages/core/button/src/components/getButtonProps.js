@@ -75,6 +75,7 @@ const getButtonProps = (component: ButtonType) => {
     id: props.id,
     ...getAppearanceProps(props, state),
     ...getInteractionProps(component),
+    'aria-label': props.ariaLabel,
   };
 
   if (props.component) {

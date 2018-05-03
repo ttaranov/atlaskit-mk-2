@@ -10757,9 +10757,9 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-pubnub@^4.20.0:
-  version "4.20.2"
-  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.20.2.tgz#c2af1ebf2e2262eadf466aee462632d0d2f28c26"
+pubnub@^4.20.3:
+  version "4.20.3"
+  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.20.3.tgz#d062a8ecb2cb07094466bf9bfc87ca61da799da8"
   dependencies:
     agentkeepalive "^3.1.0"
     lil-uuid "^0.1.1"

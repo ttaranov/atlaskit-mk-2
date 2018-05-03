@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 9.2.9
+
 ## 9.2.8
 - [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
 
