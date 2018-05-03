@@ -165,7 +165,7 @@ class Button extends Component<ButtonProps, State> {
     );
 
     return (
-      <StyledComponent innerRef={innerRef} {...buttonProps}>
+      <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <div
           style={{
             display: 'inline-flex',

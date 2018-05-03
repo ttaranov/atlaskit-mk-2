@@ -1,6 +1,7 @@
 // @flow
 import { mount, shallow } from 'enzyme';
 import React from 'react';
+import Spinner from '@atlaskit/spinner';
 import {
   UIAnalyticsEvent,
   AnalyticsContext,
@@ -9,6 +10,7 @@ import {
 
 import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
+import ButtonWrapper from '../src/styled/ButtonWrapper';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -231,6 +233,35 @@ describe('ak-button/default-behaviour', () => {
     );
     const id = document.activeElement ? document.activeElement.id : null;
     expect(wrapper.find('button').prop('id')).toEqual(id);
+  });
+
+  describe('isLoading', () => {
+    it('should render the loading spinner when isLoading is true', () => {
+      const wrapper = mount(<Button isLoading>Some text</Button>);
+      expect(wrapper.find(Spinner).length).toEqual(1);
+    });
+    it('should not render the loading spinner when isLoading is false', () => {
+      const wrapper = mount(<Button>Some text</Button>);
+      expect(wrapper.find(Spinner).length).toEqual(0);
+    });
+    it('set the opacity of the text to 0 when isLoading is true', () => {
+      const wrapper = mount(<Button isLoading>Some text</Button>);
+      expect(
+        wrapper
+          .find(ButtonWrapper)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the opacity of the text to undefined when isLoading is false', () => {
+      const wrapper = mount(<Button>Some text</Button>);
+      expect(
+        wrapper
+          .find(ButtonWrapper)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(undefined);
+    });
   });
 
   it('should trigger onBlur handler on blur', () => {
