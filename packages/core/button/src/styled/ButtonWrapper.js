@@ -5,8 +5,8 @@ import React, { type Node } from 'react';
 type Props = {
   onClick: (e: Event) => mixed,
   fit: boolean,
-  isLoading: boolean,
   children: Node,
+  isLoading?: boolean,
 };
 
 type styleObj = {
@@ -25,16 +25,13 @@ const ButtonWrapper = (props: Props) => {
     display: 'inline-flex',
     flexWrap: 'nowrap',
     maxWidth: '100%',
-    transition: 'opacity 0.3s',
+    position: 'relative',
   };
   if (props.fit) {
     style.width = '100%';
     style.justifyContent = 'center';
   }
 
-  if (props.isLoading) {
-    style.opacity = 0;
-  }
   const optionalProps = {};
   if (props.onClick) {
     optionalProps.onClick = props.onClick;

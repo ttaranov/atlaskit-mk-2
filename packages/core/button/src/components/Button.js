@@ -165,14 +165,7 @@ class Button extends Component<ButtonProps, State> {
 
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
-        <div
-          style={{
-            display: 'inline-flex',
-            flexWrap: 'nowrap',
-            maxWidth: '100%',
-            position: 'relative',
-          }}
-        >
+        <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
           {isLoading ? (
             <LoadingSpinner
               spacing={spacing}
@@ -181,37 +174,34 @@ class Button extends Component<ButtonProps, State> {
               isDisabled={isDisabled}
             />
           ) : null}
-          <ButtonWrapper
-            isLoading={isLoading}
-            onClick={this.onInnerClick}
-            fit={!!shouldFitContainer}
-          >
-            {iconBefore ? (
-              <IconWrapper
-                spacing={buttonProps.spacing}
-                isOnlyChild={iconIsOnlyChild}
-              >
-                {iconBefore}
-              </IconWrapper>
-            ) : null}
-            {children ? (
-              <ButtonContent
-                followsIcon={!!iconBefore}
-                spacing={buttonProps.spacing}
-              >
-                {children}
-              </ButtonContent>
-            ) : null}
-            {iconAfter ? (
-              <IconWrapper
-                spacing={buttonProps.spacing}
-                isOnlyChild={iconIsOnlyChild}
-              >
-                {iconAfter}
-              </IconWrapper>
-            ) : null}
-          </ButtonWrapper>
-        </div>
+          {iconBefore ? (
+            <IconWrapper
+              isLoading={isLoading}
+              spacing={buttonProps.spacing}
+              isOnlyChild={iconIsOnlyChild}
+            >
+              {iconBefore}
+            </IconWrapper>
+          ) : null}
+          {children ? (
+            <ButtonContent
+              isLoading={isLoading}
+              followsIcon={!!iconBefore}
+              spacing={buttonProps.spacing}
+            >
+              {children}
+            </ButtonContent>
+          ) : null}
+          {iconAfter ? (
+            <IconWrapper
+              isLoading={isLoading}
+              spacing={buttonProps.spacing}
+              isOnlyChild={iconIsOnlyChild}
+            >
+              {iconAfter}
+            </IconWrapper>
+          ) : null}
+        </ButtonWrapper>
       </StyledComponent>
     );
   }

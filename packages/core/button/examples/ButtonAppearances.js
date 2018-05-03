@@ -12,7 +12,6 @@ const appearances = [
   'warning',
   'danger',
 ];
-const selectableAppearances = ['default', 'primary'];
 
 const Table = props => <div style={{ display: 'table' }} {...props} />;
 const Row = props => <div style={{ display: 'table-row' }} {...props} />;
@@ -54,11 +53,9 @@ export default class ButtonAppearance extends Component<*, *> {
               <Btn isLoading={showLoadingState} appearance={a} isDisabled>
                 Disabled
               </Btn>
-              {selectableAppearances.includes(a) ? (
-                <Btn isLoading={showLoadingState} appearance={a} isSelected>
-                  Selected
-                </Btn>
-              ) : null}
+              <Btn isLoading={showLoadingState} appearance={a} isSelected>
+                Selected
+              </Btn>
             </Row>
           ))}
         </Table>
