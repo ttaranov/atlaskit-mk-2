@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import type { Node } from 'react';
+import type { Node, ComponentType } from 'react';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
 
 import {
