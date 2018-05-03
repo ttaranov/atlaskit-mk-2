@@ -10,6 +10,13 @@ import memoizeOne from 'memoize-one';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
+export type LinkComponent = React.ComponentType<{
+  className: string;
+  children: React.ReactNode;
+  href?: string;
+  target?: string;
+}>;
+
 export interface Props {
   /**
    * The cloudId of the site the component is embedded in.
@@ -46,12 +53,7 @@ export interface Props {
    * proper styling, a children prop that needs to be rendered, and optional href/target props that should be
    * respected.
    */
-  linkComponent?: React.ComponentType<{
-    className: string;
-    children: React.ReactNode;
-    href?: string;
-    target?: string;
-  }>;
+  linkComponent?: LinkComponent;
 }
 
 /**

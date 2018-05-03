@@ -11,13 +11,14 @@ import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
+import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
-  linkComponent?: React.ComponentType;
+  linkComponent?: LinkComponent;
 }
 
 export interface State {
