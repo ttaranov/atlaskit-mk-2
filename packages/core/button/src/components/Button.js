@@ -147,7 +147,6 @@ class Button extends Component<ButtonProps, State> {
       children,
       iconBefore,
       iconAfter,
-      innerRef,
       isLoading,
       shouldFitContainer,
       spacing,
