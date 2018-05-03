@@ -1,8 +1,16 @@
 import { Plugin, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+
+type PosAtDOM = (node: Node) => number | null;
 
 export default new Plugin({
   props: {
-    handleClick(view, clickPos, event) {
+    handleClick(view: EditorView & { posAtDOM: PosAtDOM }, clickPos, event) {
+      // Don't apply in Edge as per ED-4546
+      if (navigator && /Edge\/\d/.test(navigator.userAgent)) {
+        return false;
+      }
+
       const { code } = view.state.schema.marks;
       const $click = view.state.doc.resolve(clickPos);
 
@@ -15,13 +23,23 @@ export default new Plugin({
         ($click.nodeBefore && code.isInSet($click.nodeBefore.marks)) ||
         ($click.nodeAfter && code.isInSet($click.nodeAfter.marks));
 
-      if (clickWasAtEdgeOfATextNode && clickWasNearACodeMark) {
-        // Replace manual DOM check with EditorView::posAtNode once it is released on DefinitelyTyped
-        const clickWasInsideCodeMark =
-          event.target &&
-          event.target['pmViewDesc'] &&
-          event.target['pmViewDesc'].mark &&
-          event.target['pmViewDesc'].mark.type === code;
+      // Find the starting position of the clicked dom-element
+      const clickedDOMElementPosition =
+        event.target &&
+        event.target instanceof Node &&
+        view.posAtDOM(event.target);
+
+      if (
+        clickWasAtEdgeOfATextNode &&
+        clickWasNearACodeMark &&
+        clickedDOMElementPosition
+      ) {
+        const clickWasInsideNodeDOM =
+          (event.target as Node).parentNode ===
+            view.domAtPos(clickedDOMElementPosition).node &&
+          code.isInSet(
+            view.state.doc.resolve(clickedDOMElementPosition).nodeAfter!.marks,
+          );
 
         const nodeNextToClick =
           $click.nodeBefore && code.isInSet($click.nodeBefore.marks)
@@ -29,21 +47,15 @@ export default new Plugin({
             : $click.nodeBefore;
 
         // Need to set the selection here to allow clicking between [code('text'),{<>},emoji()]
-        if (clickWasInsideCodeMark) {
-          view.dispatch(
-            view.state.tr
-              .setSelection(TextSelection.near($click))
-              .setStoredMarks([code.create()]),
-          );
-          return true;
+        const tr = view.state.tr.setSelection(TextSelection.near($click));
+        if (clickWasInsideNodeDOM) {
+          tr.setStoredMarks([code.create()]);
         } else {
-          view.dispatch(
-            view.state.tr
-              .setSelection(TextSelection.near($click))
-              .setStoredMarks(nodeNextToClick ? nodeNextToClick.marks : []),
-          );
-          return true;
+          tr.setStoredMarks(nodeNextToClick ? nodeNextToClick.marks : []);
         }
+
+        view.dispatch(tr);
+        return true;
       }
       return false;
     },

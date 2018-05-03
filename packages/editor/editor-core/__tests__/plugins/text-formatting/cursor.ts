@@ -46,7 +46,8 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'), ' end')),
             );
-            const outsideNodeDOM = editorView.domAtPos(click).node;
+            const outsideNodeDOM = editorView.domAtPos(click + 1).node
+              .parentNode;
             const mouseEvent: any = { target: outsideNodeDOM } as Partial<
               MouseEvent
             >;
@@ -58,7 +59,8 @@ describe('text-formatting', () => {
             const { editorView, refs: { click } } = editor(
               doc(p('start', code('code{click}'), strong(' end'))),
             );
-            const outsideNodeDOM = editorView.domAtPos(click).node;
+            const outsideNodeDOM = editorView.domAtPos(click + 1).node
+              .parentNode;
             const mouseEvent: any = { target: outsideNodeDOM } as Partial<
               MouseEvent
             >;
@@ -102,10 +104,11 @@ describe('text-formatting', () => {
           const { editorView, refs: { click } } = editor(
             doc(p('start{click}', code('code'), ' end')),
           );
-          const outsideNodeDOM = editorView.domAtPos(click - 1).node;
+          const outsideNodeDOM = editorView.domAtPos(click - 1).node.parentNode;
           const mouseEvent: any = { target: outsideNodeDOM } as Partial<
             MouseEvent
           >;
+
           expect(handleClick(editorView, click, mouseEvent)).toBe(true);
           expect(editorView.state.storedMarks).toEqual([]);
         });
@@ -114,7 +117,7 @@ describe('text-formatting', () => {
           const { editorView, refs: { click } } = editor(
             doc(p(strong('start{click}'), code('code'), ' end')),
           );
-          const outsideNodeDOM = editorView.domAtPos(click - 1).node;
+          const outsideNodeDOM = editorView.domAtPos(click - 1).node.parentNode;
           const mouseEvent: any = { target: outsideNodeDOM } as Partial<
             MouseEvent
           >;
