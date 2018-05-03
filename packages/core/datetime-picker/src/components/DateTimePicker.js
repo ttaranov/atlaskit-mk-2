@@ -54,7 +54,7 @@ type State = {
 /** Border style is defined by the appearnace and whether it is invalid */
 function getBorderColor(isInvalid: boolean, appearance: 'default' | 'subtle') {
   if (isInvalid) return `2px solid ${colors.R400}`;
-  if (appearance === 'subtle') return `0`;
+  if (appearance === 'subtle') return `2px solid transparent`;
   return `1px solid ${colors.N20}`;
 }
 

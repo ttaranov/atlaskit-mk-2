@@ -15,7 +15,9 @@ import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Defines the appearance which can be default or subtle - no borders, background or icon. */
+  /** Defines the appearance which can be default or subtle - no borders, background or icon.
+   * Appearance values will be ignored if styles are parsed via the selectProps.
+   */
   appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
@@ -102,12 +104,6 @@ const StyledMenu = styled.div`
   text-align: center;
   z-index: ${layers.dialog};
 `;
-
-const controlSubtleStyles = {
-  backgroundColor: 'transparent',
-  border: 0,
-  borderRadius: 0,
-};
 
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
@@ -233,6 +229,15 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
+  getSubtleControlStyles = () => {
+    return {
+      border: `2px solid ${
+        this.getState().isOpen ? `${colors.B100}` : `transparent`
+      }`,
+      backgroundColor: 'transparent',
+    };
+  };
+
   render() {
     const {
       autoFocus,
@@ -273,7 +278,7 @@ export default class DatePicker extends Component<Props, State> {
     );
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
-      this.props.appearance === 'subtle' ? controlSubtleStyles : {};
+      this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
 
     return (
       <div

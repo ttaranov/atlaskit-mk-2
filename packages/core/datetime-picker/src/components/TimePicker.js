@@ -4,6 +4,7 @@ import { CreatableSelect, components, mergeStyles } from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import { colors } from '@atlaskit/theme';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
@@ -15,7 +16,9 @@ type Option = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Defines the appearance which can be default or subtle - no borders, background or icon. */
+  /** Defines the appearance which can be default or subtle - no borders, background or icon.
+   *  Appearance values will be ignored if styles are parsed via the selectProps.
+   */
   appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
@@ -58,6 +61,7 @@ type Props = {
 type State = {
   isOpen: boolean,
   value: string,
+  isFocused: boolean,
 };
 
 function dateFromTime(time: string): Date {
@@ -75,12 +79,6 @@ const menuStyles = {
   position: 'static',
   /* Need to add overflow to the element with max-height, otherwise causes overflow issues in IE11 */
   overflowY: 'auto',
-};
-
-const controlSubtleStyles = {
-  backgroundColor: 'transparent',
-  border: 0,
-  borderRadius: 0,
 };
 
 export default class TimePicker extends Component<Props, State> {
@@ -108,6 +106,7 @@ export default class TimePicker extends Component<Props, State> {
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
+    isFocused: false,
   };
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -162,12 +161,24 @@ export default class TimePicker extends Component<Props, State> {
       this.forceUpdate();
     }
   };
-  /** Get border styles for select conrol*/
-  getControlStyles = () => {
+
+  onBlur = () => {
+    this.setState({ isFocused: false });
+    this.props.onBlur();
+  };
+
+  onFocus = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus();
+  };
+
+  getSubtleControlStyles = (selectStyles: any) => {
+    if (selectStyles) return {};
     return {
+      border: `2px solid ${
+        this.getState().isFocused ? `${colors.B100}` : `transparent`
+      }`,
       backgroundColor: 'transparent',
-      border: 0,
-      borderRadius: 0,
     };
   };
 
@@ -178,8 +189,6 @@ export default class TimePicker extends Component<Props, State> {
       innerProps,
       isDisabled,
       name,
-      onBlur,
-      onFocus,
       selectProps,
     } = this.props;
     const { value, isOpen } = this.getState();
@@ -199,7 +208,9 @@ export default class TimePicker extends Component<Props, State> {
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
     const controlStyles =
-      this.props.appearance === 'subtle' ? controlSubtleStyles : {};
+      this.props.appearance === 'subtle'
+        ? this.getSubtleControlStyles(selectStyles)
+        : {};
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
@@ -216,11 +227,11 @@ export default class TimePicker extends Component<Props, State> {
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
           menuPlacement="auto"
-          onBlur={onBlur}
+          onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}
           onChange={this.onChange}
           options={this.getOptions()}
-          onFocus={onFocus}
+          onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
           placeholder="e.g. 9:00am"
