@@ -9,7 +9,7 @@ import Form, {
   Field,
   FieldGroup,
   Validator,
-} from '../';
+} from '../src';
 
 // TODO: Add tests to cover all components
 
