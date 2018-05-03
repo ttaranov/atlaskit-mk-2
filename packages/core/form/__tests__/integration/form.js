@@ -6,22 +6,20 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* Url to test the example */
 const urlFormCreateRepo = getExampleUrl('core', 'form', 'create-repository');
 
-const createForm = '.create-repo';
-const owner =
-  'div:nth-child(1) > div > div > div.react-select__value-container';
-const project =
-  'div:nth-child(2) > div > div > div.react-select__value-container';
+/* Css selectors used for the test */
+const createForm = '[name="create-repo"]';
+const owner = 'div:nth-child(1) > div > [role="status"]';
+const project = 'div:nth-child(2) > div > [role="status"]';
 const repoName = '[name="repo_name"]';
-const accessLevel = '[name="access-level"]';
-const includeReadme =
-  'div:nth-child(5) > div > div > div.react-select__value-container';
-const createRepoBtn = '[type="submit"]';
-const cancelBtn = '[type="submit"]';
+const accessLevel = 'div:nth-child(4) > div';
+const includeReadme = 'div:nth-child(5) > div > [role="status"]';
+const createRepoBtn = 'footer > button:nth-child(1)';
+const cancelBtn = 'footer > button:nth-child(2)';
 
 const cssSelectorsForm = [
-  createForm,
   owner,
   project,
   repoName,
@@ -33,31 +31,16 @@ const cssSelectorsForm = [
 
 BrowserTestCase(
   'Create repository form should render',
-  //  { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment
+  { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
   async client => {
     const formTest = await new Page(client);
     await formTest.goto(urlFormCreateRepo);
-    cssSelectorsForm.forEach(async cssSelector => {
-      expect(await formTest.isVisible(cssSelector)).toBe(true);
-    });
-    // const formIsVisible = await formTest.isVisible(createForm);
-    // const ownerFieldIsVisible = await formTest.isVisible(owner);
-    // const projectFieldIsVisible = await formTest.isVisible(project);
-    // const repoNameFieldIsVisible = await formTest.isVisible(repoName);
-    // const accessLevelFieldIsVisible = await formTest.isVisible(accessLevel);
-    // const includeReadmeFieldIsVisible = await formTest.isVisible(includeReadme);
-    // const createRepoBtnFieldIsVisible = await formTest.isVisible(createRepoBtn);
-    // const cancelBtnFieldIsVisible = await formTest.isVisible(cancelBtn);
+    await formTest.waitForSelector(createForm);
 
-    // eslint-disable-next-line
-    // expect(formIsVisible).toBe(true);
-    // expect(ownerFieldIsVisible).toBe(true);
-    // expect(projectFieldIsVisible).toBe(true);
-    // expect(repoNameFieldIsVisible).toBe(true);
-    // expect(accessLevelFieldIsVisible).toBe(true);
-    // expect(includeReadmeFieldIsVisible).toBe(true);
-    // expect(createRepoBtnFieldIsVisible).toBe(true);
-    // expect(cancelBtnFieldIsVisible).toBe(true);
+    cssSelectorsForm.forEach(async cssSelector => {
+      const selectorIsVisible = await formTest.isVisible(cssSelector);
+      expect(selectorIsVisible).toBe(true);
+    });
 
     if (formTest.log('browser').value) {
       formTest.log('browser').value.forEach(val => {
