@@ -25,7 +25,7 @@ export class MediaViewer extends React.Component<Props, State> {
     const { selectedItem } = this.state;
 
     return (
-      <Blanket>
+      <Blanket onClick={onClose}>
         <Content>
           <HeaderWrapper>
             <Header
