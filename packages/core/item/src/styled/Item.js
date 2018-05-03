@@ -25,13 +25,8 @@ const getPadding = ({ isCompact, theme }) => {
     'padding',
   );
 
-  // Subtract the 1px padding-bottom added to the content and description elements
-  // to maintain original height
-  const adjustedTop = top === 0 ? top : top - 1;
-  const adjustedBottom = bottom === 0 ? bottom : bottom - 1;
-
   return css`
-    padding: ${adjustedTop}px ${right}px ${adjustedBottom}px ${left}px;
+    padding: ${top}px ${right}px ${bottom}px ${left}px;
   `;
 };
 
