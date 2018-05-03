@@ -25,10 +25,13 @@ const getPadding = ({ isCompact, theme, description }) => {
     'padding',
   );
 
+  let adjustedTop = typeof top === 'function' ? top() : top;
+  let adjustedBottom = typeof bottom === 'function' ? bottom() : bottom;
+
   // Subtract the 1px padding-bottom added to the content and description elements
   // to maintain original height
-  const adjustedTop = Math.max(description ? top - 1 : top, 0);
-  const adjustedBottom = Math.max(bottom - 1, 0);
+  adjustedTop = Math.max(description ? adjustedTop - 1 : adjustedTop, 0);
+  adjustedBottom = Math.max(adjustedBottom - 1, 0);
 
   return css`
     padding: ${adjustedTop}px ${right}px ${adjustedBottom}px ${left}px;
