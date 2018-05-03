@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 7.2.0
+- [minor] Add ariaLabel prop to button so that it can be passed to the underlying component [d7a1e7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7a1e7e)
+
 ## 7.1.0
 - [minor] Add `autoFocus` to button, allowing button to be automatically focused on first render. [bf36eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf36eb6)
 

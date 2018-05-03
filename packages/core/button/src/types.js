@@ -20,6 +20,8 @@ export type ButtonProps = {
   /** Pass aria-expanded to underlying html button. */
   ariaExpanded?: boolean,
   /** Pass aria-haspopup to underlying html button. */
+  ariaLabel?: string,
+  /** Pass aria-haspopup to underlying html button. */
   ariaHaspopup?: boolean,
   /** This button's child nodes. */
   children?: Node,

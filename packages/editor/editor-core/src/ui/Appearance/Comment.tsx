@@ -107,6 +107,11 @@ const ContentArea = styled(ContentStyles)`
   .ProseMirror {
     padding: 12px 20px;
   }
+
+  .ProseMirror .table-container table {
+    margin-left: 0;
+    margin-right: 0;
+  }
 `;
 ContentArea.displayName = 'ContentArea';
 
