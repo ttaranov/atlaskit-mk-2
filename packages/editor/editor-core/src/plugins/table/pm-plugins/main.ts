@@ -357,13 +357,14 @@ export const createPlugin = (
       decorations: (state: EditorState) => stateKey.getState(state).set,
 
       nodeViews: {
-        table: (node: PmNode, view: EditorView) => {
+        table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const { allowColumnResizing } = stateKey.getState(view.state);
           return new TableNode({
             node,
             view,
             allowColumnResizing,
             eventDispatcher,
+            getPos,
           });
         },
       },

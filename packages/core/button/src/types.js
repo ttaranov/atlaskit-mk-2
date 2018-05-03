@@ -2,8 +2,6 @@
 import type { Node, Element, ElementType } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
-type Func = () => any;
-
 export type ButtonAppearances =
   | 'default'
   | 'danger'
@@ -22,6 +20,8 @@ export type ButtonProps = {
   /** Pass aria-expanded to underlying html button. */
   ariaExpanded?: boolean,
   /** Pass aria-haspopup to underlying html button. */
+  ariaLabel?: string,
+  /** Pass aria-haspopup to underlying html button. */
   ariaHaspopup?: boolean,
   /** This button's child nodes. */
   children?: Node,
@@ -38,7 +38,7 @@ export type ButtonProps = {
   /** Places an icon within the button, before the button's text. */
   iconBefore?: Element<*>,
   /** Pass a reference on to the styled component */
-  innerRef?: Func,
+  innerRef?: HTMLElement => mixed,
   /** Provide a unique id to the button. */
   id?: string,
   /** Set if the button is disabled. */
@@ -61,6 +61,8 @@ export type ButtonProps = {
   type: 'button' | 'submit',
   /** Option to fit button width to its parent width */
   shouldFitContainer: boolean,
+  /** Set the button to autofocus on mount. */
+  autoFocus: boolean,
 };
 
 export type DerivedButtonProps = {

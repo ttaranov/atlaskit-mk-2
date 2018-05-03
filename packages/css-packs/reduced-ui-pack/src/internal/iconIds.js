@@ -206,7 +206,7 @@ const iconIds = [
   'jira/minor',
   'jira/test-session',
   'jira/trivial',
-
+  'label',
   'lightbulb-filled',
   'lightbulb',
   'link-filled',

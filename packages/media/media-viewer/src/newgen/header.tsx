@@ -63,6 +63,13 @@ export default class Header extends React.Component<Props, State> {
                 data: mediaItem,
               },
             });
+          } else if (mediaItem.type === 'link') {
+            this.setState({
+              item: {
+                status: 'FAILED',
+                err: new Error('links are not supported'),
+              },
+            });
           }
         },
         error: err => {

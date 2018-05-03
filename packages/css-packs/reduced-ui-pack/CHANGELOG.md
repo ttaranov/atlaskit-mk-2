@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.8.0
+- [minor] Add label icon [72baa86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72baa86)
+
 ## 8.7.4
 - [patch] ED-4228 adding icons for table floating toolbar advance options. [b466410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b466410)
 

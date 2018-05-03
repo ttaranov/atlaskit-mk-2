@@ -127,7 +127,16 @@ export default class Example extends React.Component<Props, State> {
                 UNSAFE_allowLayouts={true}
                 allowLists={true}
                 allowTextColor={true}
-                allowTables={true}
+                allowTables={{
+                  allowColumnResizing: true,
+                  allowMergeCells: true,
+                  allowNumberColumn: true,
+                  allowBackgroundColor: true,
+                  allowHeaderRow: true,
+                  allowHeaderColumn: true,
+                  permittedLayouts: 'all',
+                  stickToolbarToBottom: true,
+                }}
                 allowTemplatePlaceholders={{ allowInserting: true }}
                 media={{
                   provider: mediaProvider1,
@@ -182,7 +191,16 @@ export default class Example extends React.Component<Props, State> {
                 allowCodeBlocks={true}
                 allowLists={true}
                 allowTextColor={true}
-                allowTables={true}
+                allowTables={{
+                  allowColumnResizing: true,
+                  allowMergeCells: true,
+                  allowNumberColumn: true,
+                  allowBackgroundColor: true,
+                  allowHeaderRow: true,
+                  allowHeaderColumn: true,
+                  permittedLayouts: 'all',
+                  stickToolbarToBottom: true,
+                }}
                 allowTemplatePlaceholders={{ allowInserting: true }}
                 media={{
                   provider: mediaProvider2,
