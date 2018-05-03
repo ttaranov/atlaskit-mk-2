@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.1.2
+
+
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
 ## 0.1.1
 
 ## 0.1.0

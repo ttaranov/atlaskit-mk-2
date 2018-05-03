@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 71.1.0
+- [patch] Support clicking in and out of an inline code mark. [767a8b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/767a8b5)
+- [minor] Support exiting inline-code via clicking to the right of the marked text [7ff302b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ff302b)
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
 ## 71.0.26
 
 ## 71.0.25

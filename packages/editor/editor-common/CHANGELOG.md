@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 9.2.10
+
+
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
 ## 9.2.9
 
 ## 9.2.8

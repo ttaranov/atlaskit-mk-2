@@ -1,5 +1,10 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.4
+
+
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
 ## 3.1.3
 
 ## 3.1.2
