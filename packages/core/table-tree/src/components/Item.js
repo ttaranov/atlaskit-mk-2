@@ -10,7 +10,6 @@ import {
 
 type Props = {
   data: RowData,
-  getChildrenData: ItemsProvider,
   depth?: number,
   render: RenderFunction,
 };
@@ -19,6 +18,7 @@ type State = {
   isExpanded: boolean,
 };
 
+// TODO is it really pure?
 export default class Item extends PureComponent<Props, State> {
   state: State = {
     isExpanded: false,
@@ -35,14 +35,14 @@ export default class Item extends PureComponent<Props, State> {
   };
 
   render() {
-    const { depth, data, render, getChildrenData } = this.props;
+    const { depth, data, render } = this.props;
     const { isExpanded } = this.state;
 
     const renderedRow = render(data);
     if (!renderedRow) {
       return null;
     }
-    const { hasChildren, itemId } = renderedRow.props;
+    const { hasChildren, itemId, childItems } = renderedRow.props;
     const wrappedRow = React.cloneElement(renderedRow, {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
@@ -58,7 +58,8 @@ export default class Item extends PureComponent<Props, State> {
               <Items
                 parentData={data}
                 depth={depth}
-                getItemsData={getChildrenData}
+                items={childItems}
+                // getItemsData={getChildrenData}
                 render={render}
               />
             )}

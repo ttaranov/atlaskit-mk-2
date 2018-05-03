@@ -4,7 +4,7 @@ import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
 import toItemId from '../utils/toItemId';
-import { type RowData } from '../types';
+import { type RowData, type LoadableItems } from '../types';
 
 type Props = {
   /** Whether this row has any child rows. */
@@ -39,6 +39,8 @@ type Props = {
 
   /** Passed implicitly. The data that this row represents. */
   data?: RowData,
+
+  childItems: LoadableItems,
 };
 
 export default class Row extends PureComponent<Props> {

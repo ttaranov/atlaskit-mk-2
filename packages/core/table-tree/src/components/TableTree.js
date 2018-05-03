@@ -22,6 +22,7 @@ type Props = {
 
   children?: Node,
 
+  // TODO this totally doesn't work now
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
   items?: ItemsProvider,
 };
