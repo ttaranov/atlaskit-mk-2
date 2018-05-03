@@ -700,15 +700,16 @@ export class MediaPluginState {
         break;
 
       case 'processing':
-      case 'ready':
-        if (state.publicId && this.nodeHasNoPublicId(state)) {
-          this.replaceTemporaryNode(state);
-        }
-
         if (state.thumbnail && state.publicId) {
           const viewContext = await this.mediaProvider.viewContext;
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
+        }
+        break;
+
+      case 'ready':
+        if (state.publicId && this.nodeHasNoPublicId(state)) {
+          this.replaceTemporaryNode(state);
         }
 
         if (state.preview) {
