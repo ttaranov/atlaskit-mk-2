@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.1.2
+- [patch] Fixing the bodiless extension cursor issue [224281e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/224281e)
+
 ## 71.1.1
 - [patch] Fix for cursor possition in tables in collab editor [3f155e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f155e8)
 
