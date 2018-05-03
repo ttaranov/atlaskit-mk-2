@@ -21,6 +21,8 @@ const BeforeAfterBase: StatelessFunctionalComponent<any> = styled.span`
   align-items: center;
   display: flex;
   flex-shrink: 0;
+  /* Fix windows line-height issue */
+  padding-bottom: 1px;
 `;
 
 const getBeforeSpacing = ({ isCompact, theme }) => {
