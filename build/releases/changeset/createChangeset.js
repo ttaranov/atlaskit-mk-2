@@ -35,6 +35,10 @@ type dependentType = {
   dependencies: Array<string>,
   finalised?: boolean
 }
+type dependents = {
+  immediate: dependentType[],
+  all: dependentType[],
+}
 type changesetDependentType = {
   name: string,
   dependencies: Array<string>,
@@ -54,21 +58,31 @@ async function getAllDependents(packagesToRelease, opts = {}) {
   const dependentsGraph = await bolt.getDependentsGraph({ cwd });
 
   const dependenciesToCheck = [...packagesToRelease];
+  const immediateDependents = [];
+  let i = 0;
   while (dependenciesToCheck.length > 0) {
     const nextDependency = dependenciesToCheck.pop();
     const dependents = dependentsGraph.get(nextDependency);
+    // console.log('deps', dependents);
+    // process.exit();
 
     dependents.forEach(dependent => {
       const foundBefore = allDependents.find(d => d.name === dependent);
       if (!foundBefore) {
-        allDependents.push({ name: dependent, dependencies: [nextDependency] });
+        const depObj = { name: dependent, dependencies: [nextDependency] };
+        allDependents.push(depObj);
         dependenciesToCheck.push(dependent);
+        if (i < packagesToRelease.length) {
+          immediateDependents.push(depObj);
+        }
       } else if (!foundBefore.dependencies.includes(nextDependency)) {
         foundBefore.dependencies.push(nextDependency);
       }
     });
+    i++;
   }
-  return allDependents;
+  // console.log('all deps', allDependents);
+  return { immediate: immediateDependents, all: allDependents };
 }
 
 async function createChangeset(
@@ -120,7 +134,7 @@ async function createChangeset(
 
   /** Get dependents and bumptypes */
 
-  const dependents /*: Array<dependentType> */ = await getAllDependents(
+  const dependents /*: dependents */ = await getAllDependents(
     packagesToRelease,
     { cwd },
   );
@@ -144,9 +158,9 @@ async function createChangeset(
   // }
 
   changeset.summary = summary;
-  // as the changeset is printed to console, the unneeded verified property needs
+  // as the changeset is printed to console, the finalised verified property needs
   // to be removed
-  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
+  changeset.dependents = dependents.all.map(({ finalised, ...rest }) => rest);
 
   return changeset;
 }

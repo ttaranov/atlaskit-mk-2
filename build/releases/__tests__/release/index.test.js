@@ -115,7 +115,7 @@ describe('running release', () => {
       });
     });
 
-    describe('when runing in CI', () => {
+    describe('when running in CI', () => {
       beforeEach(() => {
         isRunningInPipelines.mockReturnValueOnce(true);
       });

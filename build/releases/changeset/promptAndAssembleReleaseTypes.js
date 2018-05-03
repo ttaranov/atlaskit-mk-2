@@ -18,6 +18,10 @@ type dependentType = {
   dependencies: Array<string>,
   finalised?: boolean
 }
+type dependents = {
+  immediate: dependentType[],
+  all: dependentType[],
+}
 type changesetDependentType = {
   name: string,
   type?: string,
@@ -31,7 +35,7 @@ type changesetType = {
 }
 */
 
-function getUpdateDetails(dependent, changeset, dependents, allWorkSpaces) {
+function getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces) {
   // a dependent is finalised when all of its dependencies have a release type.
   let allDependentsFinalised = true;
   let mustUpdateBecause = [];
@@ -40,7 +44,7 @@ function getUpdateDetails(dependent, changeset, dependents, allWorkSpaces) {
   dependent.dependencies.forEach(name => {
     const dependencyType = getMustUpdateOn(allWorkSpaces, dependent, name);
 
-    // there are three possible states for an dependent's update:
+    // there are three possible states for a dependent's update:
     // - a dependency has no release type yet and dependent is not allDependentsFinalised. It may
     // cause a release if this dependency gains a release type
     // - dependency has a release type that requires a release, as its semver
@@ -48,7 +52,7 @@ function getUpdateDetails(dependent, changeset, dependents, allWorkSpaces) {
     // - dependency does not require a release, based on package.json current verion
 
     let release = changeset.releases.find(rel => rel && rel.name === name);
-    if (!release) release = dependents.find(dep => dep.name === name);
+    if (!release) release = allDependents.find(dep => dep.name === name);
     if (!release)
       throw new Error(`Congratulations! You have made an impossible state!`);
     // case 1
@@ -89,21 +93,15 @@ async function promptBumptype({
 
   if (isSubsequent)
     logger.log(
-      `Due to other changes you have selected, you need to change the type of release for ${
-        dependentName
-      }`,
+      `Due to other changes you have selected, you need to change the type of release for ${dependentName}`,
     );
   if (mustUpdateList)
     logger.log(
-      `Bumping [${mustUpdateList}] will cause an update to ${
-        dependentName
-      }'s dependencies.`,
+      `Bumping [${mustUpdateList}] will cause an update to ${dependentName}'s dependencies.`,
     );
   if (mayUpdateList)
     logger.log(
-      `Bumping [${mayUpdateList}] can cause an update to ${
-        dependentName
-      }'s dependencies.`,
+      `Bumping [${mayUpdateList}] can cause an update to ${dependentName}'s dependencies.`,
     );
   return await cli.askList(
     `What kind of change is this for ${dependentName}?`,
@@ -112,21 +110,27 @@ async function promptBumptype({
 }
 
 async function promptAndAssembleReleaseTypes(
-  dependents /*: Array<dependentType> */,
+  dependents /*: dependents */,
   changeset /*: changesetType */,
   cwd /*: string */,
 ) {
   const allWorkSpaces = await bolt.getWorkspaces({ cwd });
 
+  const allDependents = dependents.all;
+  const immediateDependents = dependents.immediate;
+
+  // console.log('dependents', dependents);
+  // process.exit();
+
   // We keep asking questions until everything is finalised
-  while (dependents.find(dependent => !dependent.finalised)) {
-    for (const dependent of dependents) {
+  while (allDependents.find(dependent => !dependent.finalised)) {
+    for (const dependent of allDependents) {
       const {
         allDependentsFinalised,
         mustUpdateBecause,
         mayUpdateBecause,
         skipPrompt,
-      } = getUpdateDetails(dependent, changeset, dependents, allWorkSpaces);
+      } = getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces);
       // if dependent has a type, we have already asked about it, if it is now
       // finalised, then we can verify it without asking about it again.
       if (dependent.finalised || skipPrompt) {
@@ -154,4 +158,53 @@ async function promptAndAssembleReleaseTypes(
   }
 }
 
-module.exports = promptAndAssembleReleaseTypes;
+async function promptAndAssembleReleaseTypesBetter(
+  dependents /*: dependents */,
+  changeset /*: changesetType */,
+  cwd /*: string */,
+) {
+  const allWorkSpaces = await bolt.getWorkspaces({ cwd });
+
+  const allDependents = dependents.all;
+  const immediateDependents = dependents.immediate;
+
+  // console.log('dependents', dependents);
+  // process.exit();
+
+  // We keep asking questions until everything is finalised
+  while (allDependents.find(dependent => !dependent.finalised)) {
+    for (const dependent of allDependents) {
+      const {
+        allDependentsFinalised,
+        mustUpdateBecause,
+        mayUpdateBecause,
+        skipPrompt,
+      } = getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces);
+      // if dependent has a type, we have already asked about it, if it is now
+      // finalised, then we can verify it without asking about it again.
+      if (dependent.finalised || skipPrompt) {
+        dependent.finalised = true;
+        continue;
+      }
+      const updateOptions =
+        mustUpdateBecause.length > 0
+          ? ['patch', 'minor', 'major']
+          : ['none', 'patch', 'minor', 'major'];
+
+      const dependentName = chalk.green(dependent.name);
+      const bumpType /*: bumpType */ = await promptBumptype({
+        mustUpdateBecause,
+        mayUpdateBecause,
+        dependentName,
+        updateOptions,
+        isSubsequent: !!dependent.type,
+      });
+      dependent.type = bumpType;
+      // The only time we are concerned about re-checking are when 'none' is selected
+      // and it was unfinalised
+      dependent.finalised = bumpType !== 'none' || allDependentsFinalised;
+    }
+  }
+}
+
+module.exports = promptAndAssembleReleaseTypesBetter;
