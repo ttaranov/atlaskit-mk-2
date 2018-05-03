@@ -41,7 +41,19 @@ pipelines:
             name: Lint + Typecheck
             script:
               - echo "bar"
-
+              - echo "bar1"
+              - echo "bar2"
+              - echo "bar3"
+              - echo "bar4"
+              - echo "bar5"
+              - echo "bar6"
+              - echo "bar7"
+              - echo "bar8"
+              - echo "bar9"
+              - echo "bar10"
+              - echo "bar11"
+              - echo "bar12"
+              - exit 1
 
   custom: # Pipelines that can be scheduled or triggered manually
 
