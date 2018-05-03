@@ -1,59 +1,68 @@
-# Definition of done
+# Contribution checklist
 
-When contributing, please ensure This definition of done represents the acceptance criteria that are common to every pull request. Everything in this checklist needs to be ticked off before the pull request is merged to the master branch.
+Related reading:
 
-## 1. Reviewed
---------------
-* Approval by a AK components maintainer
+* [Contributing](./contributing)
 
-* Code review by a AK components maintainer
+In order to maintain a high bar of quality for Atlaskit, we've laid out a few things that we want to make sure are covered in each contribution.
 
-* Design review of examples on the AK website (in PR)
+## Development
 
-* Backwards compatible if API changed
+There's a few aspects of development we'll cover here:
 
-* No regression in core features
+* Testing
+* Cutting code
+* Documentation
 
-## 2. Developed
----------------
-### a. Test coverage
+### Testing
 
-Please check [Atlaskit testing documentation](https://atlaskit.atlassian.com/docs/guides/testing)
+The following types of tests are required for all packages:
 
-  *   Static check ( TS or Flow )
-  *   Unit test
-  *   Integration test
-  *   Functional test
-  *   Visual Regression
-  *   Performance test
+* Static check (TS or Flow)
+* Unit test
 
-### b. Manual testing
+However, your component may also require further testing:
 
-  #### I - Browser testing - Latest version
+* Integration test
+* Functional test
+* Visual Regression (work in progress)
+* Performance test
 
-  * Windows
-    * Chrome
-    * Firefox
-    * Edge
-    * IE11
-  * Mac
-    * Chrome
-    * Firefox
-    * Safari
+_For more information on testing components, see the docs on [testing](./testing)._
 
-  #### II - Screen reader testing (Accessibility testing) - when applicable  
-  
+On top of automated testing, we should also be manually testing our examples on the following platforms / browsers:
+
+* Windows
+  * Chrome
+  * Firefox
+  * Edge
+  * IE11
+* Mac
+  * Chrome
+  * Firefox
+  * Safari
+* Screen readers (when applicable)
     
-## 3. Documented
-----------------
+### Documenting
 
-**Dev docs updated - Atlaskit website**
+When documenting a component, there's two things you need to worry about:
 
-- Provide examples that demonstrate the intended use cases (if applicable)
+* Docs - general documentation for the component.
+* Examples - interactive use-cases showing how to use the component.
 
-## 4. Consumable
-----------------
+If you're introducing a new architectural pattern, or something core to the maintenance of Atlaskit, you may also need to add general docs.
 
-Released on npm and published on the [AK website](http://atlaskit.atlassian.com/).
+_See the [component design](./component-design) docs for more information on how all this stuff fits together._
 
-- Version number to reflect the level of API changes, and NOT reflecting design or feature completeness. If unsure Please check [Atlaskit versioning documentation](https://atlaskit.atlassian.com/docs/guides/versioning)
+## In review
+
+* Design should review the examples on the website.
+* Ensure a core maintainer is added to the review. They should also approve the PR before it's merged. Core maintainers can be found in the `maintainers` field in the `package.json`.
+* If changing the API, try and maintain backward compatibility, if possible.
+* Core functionality should not change, unless it's explicitly part of the plan.
+
+## Released
+
+Once your PR is approved and merged, it will automatically be released on npm and published on the [AK website](http://atlaskit.atlassian.com/).
+
+_See the [versioning](./versioning) and [releasing packages](./releasing-packages) docs for more information on this process._

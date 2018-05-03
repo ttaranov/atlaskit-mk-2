@@ -2,6 +2,7 @@
 
 Related reading:
 
+* [Contribution checklist](./contribution-checklist)
 * [Component design](./component-design)
 * [Directory structure](./directory-structure)
 * [Adding new icons](./adding-new-icons)
