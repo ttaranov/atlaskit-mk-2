@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
-import { colors } from '@atlaskit/theme';
 import Modal, {
   ModalHeader,
   ModalFooter,
