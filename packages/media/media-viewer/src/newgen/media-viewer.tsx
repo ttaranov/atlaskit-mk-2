@@ -25,8 +25,8 @@ export class MediaViewer extends React.Component<Props, State> {
     const { selectedItem } = this.state;
 
     return (
-      <Blanket onClick={onClose}>
-        <Content>
+      <Blanket>
+        <Content onClick={this.onClickContentClose}>
           <HeaderWrapper>
             <Header
               context={context}
@@ -47,5 +47,14 @@ export class MediaViewer extends React.Component<Props, State> {
 
   onNavigationChange = (selectedItem: Identifier) => {
     this.setState({ selectedItem });
+  };
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+    if (e.target === e.currentTarget) {
+      if (onClose) {
+        onClose();
+      }
+    }
   };
 }
