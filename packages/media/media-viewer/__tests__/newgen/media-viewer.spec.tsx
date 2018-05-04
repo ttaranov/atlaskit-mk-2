@@ -3,8 +3,9 @@ import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
-import { Blanket } from '../../src/newgen/styled';
+import { Content } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
+import Header from '../../src/newgen/header';
 
 function createContext(subject, blobService?) {
   const token = 'some-token';
@@ -48,7 +49,13 @@ describe('<MediaViewer />', () => {
 
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture(identifier);
-    el.find(Blanket).simulate('click');
+    el.find(Content).simulate('click');
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('should not close Media Viewer when clicking on the Header', () => {
+    const { el, onClose } = createFixture(identifier);
+    el.find(Header).simulate('click');
+    expect(onClose).not.toHaveBeenCalled();
   });
 });
