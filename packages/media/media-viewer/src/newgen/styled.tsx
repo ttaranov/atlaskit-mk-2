@@ -91,7 +91,3 @@ export const RightHeader = styled.div`
   flex: 0.2;
   text-align: right;
 `;
-
-export const CloseWrapper = styled.span`
-  cursor: pointer;
-`;

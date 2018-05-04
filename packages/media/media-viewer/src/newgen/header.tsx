@@ -3,13 +3,9 @@ import { Outcome, Identifier } from './domain';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import {
-  Header as HeaderWrapper,
-  LeftHeader,
-  RightHeader,
-  CloseWrapper,
-} from './styled';
+import { Header as HeaderWrapper, LeftHeader, RightHeader } from './styled';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Button from '@atlaskit/button';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -89,9 +85,10 @@ export default class Header extends React.Component<Props, State> {
       <HeaderWrapper>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
         <RightHeader>
-          <CloseWrapper>
-            <CrossIcon label="Close" onClick={this.onClose} />
-          </CloseWrapper>
+          <Button
+            onClick={this.onClose}
+            iconBefore={<CrossIcon label="Close" />}
+          />
         </RightHeader>
       </HeaderWrapper>
     );
