@@ -28,7 +28,6 @@ import {
   analyticsEmojiPrefix,
 } from '../../../src/constants';
 import * as helper from './_emoji-picker-test-helpers';
-import { customCategory } from '../../../src/constants';
 
 declare var global: any;
 
