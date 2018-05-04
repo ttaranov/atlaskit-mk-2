@@ -18,20 +18,20 @@ export const createGlobalTheme = (
   text: Text,
   background: Background,
 ): CustomisableThemeProperties => {
-  const active: Background = chromatism.brightness(10, background).hex;
+  const active: Background = 'rgba(255, 255, 255, 0.19)';
 
   const item: ItemTheme = {
     default: {
       background: 'transparent',
     },
     hover: {
-      background: chromatism.brightness(-10, background).hex,
+      background: 'rgba(0, 0, 0, 0.25)',
     },
     active: {
       background: active,
     },
     selected: {
-      background: chromatism.brightness(-20, background).hex,
+      background: 'rgba(0, 0, 0, 0.50)',
       text,
     },
     focus: {

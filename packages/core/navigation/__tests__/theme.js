@@ -194,21 +194,21 @@ describe('theme', () => {
       });
 
       describe('global item', () => {
-        it('hover color (background color 10% less bright)', () => {
+        it('hover color (black with 25% transparency)', () => {
           expect(generatedTheme.item.hover.background).toBe(
-            chromatism.brightness(-10, backgroundColor).hex,
+            'rgba(0, 0, 0, 0.25)',
           );
         });
 
-        it('active color (background color 10% brighter)', () => {
+        it('active color (white with 19% transparency)', () => {
           expect(generatedTheme.item.active.background).toBe(
-            chromatism.brightness(10, backgroundColor).hex,
+            'rgba(255, 255, 255, 0.19)',
           );
         });
 
-        it('selected color (background color 20% less bright)', () => {
+        it('selected color (black with 50% transparency)', () => {
           expect(generatedTheme.item.selected.background).toBe(
-            chromatism.brightness(-20, backgroundColor).hex,
+            'rgba(0, 0, 0, 0.50)',
           );
         });
 
