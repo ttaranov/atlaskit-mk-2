@@ -15,10 +15,6 @@ export interface MediaSingleState extends MediaState {
   thumbnail: ImagePreview;
 }
 
-function isMediaSingleState(state: MediaState): state is MediaSingleState {
-  return !!state.thumbnail;
-}
-
 export const insertMediaAsMediaSingle = (
   view: EditorView,
   node: PMNode,
@@ -45,13 +41,15 @@ export const insertMediaSingleNode = (
   mediaState: MediaState,
   collection?: string,
 ): boolean => {
-  if (!collection || !isMediaSingleState(mediaState)) {
+  if (!collection) {
     return false;
   }
 
   const { state, dispatch } = view;
   const grandParent = state.selection.$from.node(-1);
-  const node = createMediaSingleNode(state.schema, collection)(mediaState);
+  const node = createMediaSingleNode(state.schema, collection)(
+    mediaState as MediaSingleState,
+  );
   const shouldSplit =
     grandParent && grandParent.type.validContent(Fragment.from(node));
 
@@ -82,7 +80,10 @@ export const createMediaSingleNode = (schema: Schema, collection: string) => (
   mediaState: MediaSingleState,
 ) => {
   const { id, thumbnail } = mediaState;
-  const { width, height } = thumbnail.dimensions;
+  const { width, height } = (thumbnail && thumbnail.dimensions) || {
+    width: undefined,
+    height: undefined,
+  };
   const { media, mediaSingle } = schema.nodes;
 
   const mediaNode = media.create({

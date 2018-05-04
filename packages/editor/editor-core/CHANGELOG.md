@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 71.1.5
+- [patch] Adding progress loader for cloud pickers [e22266c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e22266c)
+- [patch] Adding cloud picker support for full-page [2a2269e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a2269e)
+
+## 71.1.4
+- [patch] ED-4529: fix insertRow/insertColumn setting selection [784b529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/784b529)
+
+## 71.1.3
+
+## 71.1.2
+- [patch] Fixing the bodiless extension cursor issue [224281e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/224281e)
+
 ## 71.1.1
 - [patch] Fix for cursor possition in tables in collab editor [3f155e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f155e8)
 

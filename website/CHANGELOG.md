@@ -1,5 +1,7 @@
 # @atlaskit/website
 
+## 1.5.17
+
 ## 1.5.16
 - [patch] Fix react dev warnings that appear when running the website in dev mode [b7f2a1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7f2a1a)
 

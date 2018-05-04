@@ -9,7 +9,6 @@ const bodyHeight = 26;
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   height: inherit;
-  border-radius: inherit;
 `;
 
 export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`

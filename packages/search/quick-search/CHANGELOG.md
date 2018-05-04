@@ -1,5 +1,8 @@
 # @atlaskit/quick-search
 
+## 1.3.2
+- [patch] Remove dependency on navigation [756d26b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/756d26b)
+
 ## 1.3.1
 
 ## 1.3.0

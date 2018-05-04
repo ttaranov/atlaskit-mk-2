@@ -9,6 +9,7 @@ import {
   unknownFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
+import Button from '@atlaskit/button';
 
 const context = createStorybookContext();
 
@@ -48,29 +49,44 @@ const unsupportedIdentifier: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
-export default class Example extends React.Component<{}, {}> {
+export type State = {
+  isOpen: boolean;
+};
+export default class Example extends React.Component<{}, State> {
+  state: State = { isOpen: true };
+
   render() {
     return (
       <div>
-        <MediaViewer
-          featureFlags={{ nextGen: true }}
-          MediaViewer={null as any}
-          basePath={null as any}
-          context={context}
-          selectedItem={imageIdentifier}
-          dataSource={{
-            list: [
-              videoIdentifier,
-              imageIdentifier,
-              wideImageIdentifier,
-              docIdentifier,
-              imageIdentifier2,
-              unsupportedIdentifier,
-            ],
-          }}
-          collectionName={defaultCollectionName}
-        />
+        <Button onClick={() => this.setState({ isOpen: true })}>
+          Open MediaViewer
+        </Button>
+        {this.state.isOpen && (
+          <MediaViewer
+            featureFlags={{ nextGen: true }}
+            MediaViewer={null as any}
+            basePath={null as any}
+            context={context}
+            selectedItem={imageIdentifier}
+            dataSource={{
+              list: [
+                videoIdentifier,
+                imageIdentifier,
+                wideImageIdentifier,
+                docIdentifier,
+                imageIdentifier2,
+                unsupportedIdentifier,
+              ],
+            }}
+            collectionName={defaultCollectionName}
+            onClose={this.onClose}
+          />
+        )}
       </div>
     );
   }
+
+  private onClose = () => {
+    this.setState({ isOpen: false });
+  };
 }

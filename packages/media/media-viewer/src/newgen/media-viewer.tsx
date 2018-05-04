@@ -23,17 +23,16 @@ export class MediaViewer extends React.Component<Props, State> {
   state: State = { selectedItem: this.props.selectedItem };
 
   render() {
-    const { onClose } = this.props;
-    return <Blanket onClick={onClose}>{this.getContent()}</Blanket>;
+    return <Blanket>{this.getContent()}</Blanket>;
   }
 
   getContent() {
-    const { context, items } = this.props;
+    const { context, items, onClose } = this.props;
     const { selectedItem } = this.state;
 
     if (getSelectedIndex(items, selectedItem) < 0) {
       return (
-        <Content>
+        <Content onClick={this.onClickContentClose}>
           <ErrorMessage>
             The selected item with id '{selectedItem.id}' was not found on the
             list
@@ -42,9 +41,13 @@ export class MediaViewer extends React.Component<Props, State> {
       );
     } else {
       return (
-        <Content>
+        <Content onClick={this.onClickContentClose}>
           <HeaderWrapper>
-            <Header context={context} identifier={selectedItem} />
+            <Header
+              context={context}
+              identifier={selectedItem}
+              onClose={onClose}
+            />
           </HeaderWrapper>
           <ItemViewer context={context} identifier={selectedItem} />
           <Navigation
@@ -59,5 +62,12 @@ export class MediaViewer extends React.Component<Props, State> {
 
   onNavigationChange = (selectedItem: Identifier) => {
     this.setState({ selectedItem });
+  };
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
   };
 }

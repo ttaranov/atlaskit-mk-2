@@ -270,6 +270,11 @@ export function canJoinDown(
 
 export const setNodeSelection = (view: EditorView, pos: number) => {
   const { state, dispatch } = view;
+
+  if (!isFinite(pos)) {
+    return;
+  }
+
   const tr = state.tr.setSelection(NodeSelection.create(state.doc, pos));
   dispatch(tr);
 };

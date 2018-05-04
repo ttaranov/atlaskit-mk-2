@@ -3,10 +3,14 @@ import { Outcome, Identifier } from './domain';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { Header as HeaderWrapper, LeftHeader, RightHeader } from './styled';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Button from '@atlaskit/button';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
+  readonly onClose?: () => void;
 };
 
 export type State = {
@@ -77,6 +81,27 @@ export default class Header extends React.Component<Props, State> {
   }
 
   render() {
+    return (
+      <HeaderWrapper>
+        <LeftHeader>{this.renderMetadata()}</LeftHeader>
+        <RightHeader>
+          <Button
+            onClick={this.onClose}
+            iconBefore={<CrossIcon label="Close" />}
+          />
+        </RightHeader>
+      </HeaderWrapper>
+    );
+  }
+
+  private onClose = () => {
+    const { onClose } = this.props;
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  private renderMetadata() {
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':

@@ -72,7 +72,12 @@ export default class Example extends React.Component<{}, State> {
         selectedItem={selectedItem}
         dataSource={dataSource}
         collectionName={defaultCollectionName}
+        onClose={this.onClose}
       />
     );
   }
+
+  private onClose = () => {
+    this.setState({ selectedItem: undefined, dataSource: undefined });
+  };
 }

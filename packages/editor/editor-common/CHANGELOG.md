@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 9.2.13
+- [patch] Adding progress loader for cloud pickers [e22266c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e22266c)
+
+## 9.2.12
+
 ## 9.2.11
 - [patch] ED-4431, selecting block extension creates a wrng selection. [c078cf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c078cf2)
 

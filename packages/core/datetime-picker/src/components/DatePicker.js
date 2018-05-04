@@ -2,7 +2,7 @@
 
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import Select from '@atlaskit/select';
+import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
@@ -15,6 +15,10 @@ import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon.
+   * Appearance values will be ignored if styles are parsed via the selectProps.
+   */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -47,6 +51,7 @@ type Props = {
   value?: string,
   /** Indicates current value is invalid & changes border color */
   isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
 };
 
@@ -107,6 +112,7 @@ export default class DatePicker extends Component<Props, State> {
   input: Element | null;
 
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     disabled: [],
     icon: CalendarIcon,
@@ -223,6 +229,16 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
+  getSubtleControlStyles = () => {
+    return {
+      border: `2px solid ${
+        this.getState().isOpen ? `${colors.B100}` : `transparent`
+      }`,
+      backgroundColor: 'transparent',
+      padding: '1px',
+    };
+  };
+
   render() {
     const {
       autoFocus,
@@ -235,7 +251,10 @@ export default class DatePicker extends Component<Props, State> {
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
-    const icon = this.props.hideIcon ? null : this.props.icon;
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : this.props.icon;
     const Menu = ({ innerProps: menuInnerProps }) => (
       <StyledMenu>
         <Calendar
@@ -258,6 +277,9 @@ export default class DatePicker extends Component<Props, State> {
         content={<Menu {...props} />}
       />
     );
+    const { styles: selectStyles = {} } = selectProps;
+    const controlStyles =
+      this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
 
     return (
       <div
@@ -282,6 +304,12 @@ export default class DatePicker extends Component<Props, State> {
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
             Menu: FixedLayeredMenu,
           }}
+          styles={mergeStyles(selectStyles, {
+            control: base => ({
+              ...base,
+              ...controlStyles,
+            }),
+          })}
           placeholder="e.g. 2018/12/31"
           value={
             value && {

@@ -352,6 +352,20 @@ describe('CardView', () => {
 
       expect(linkCard.find(Wrapper).props().dimensions).toEqual(undefined);
     });
+
+    it('should pass "disableOverlay" prop to <FileCard /> when mediaItemType is "file"', () => {
+      const element = shallowCardViewBaseElement(
+        {
+          status: 'complete',
+          mediaItemType: 'file',
+          metadata: file,
+          disableOverlay: true,
+        },
+        { disableLifecycleMethods: true },
+      );
+
+      expect(element.find(FileCard).props().disableOverlay).toEqual(true);
+    });
   });
 
   it('should fire "clicked" analytics event when loading link card clicked', () => {
