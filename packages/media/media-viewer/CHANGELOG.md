@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.2.0
+- [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
+
 ## 13.1.3
 - [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
 
