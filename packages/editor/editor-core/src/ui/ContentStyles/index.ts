@@ -260,6 +260,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    .media-single.is-loading {
+      min-height: 20px;
+    }
+
     li .media-single {
       margin: 0;
     }

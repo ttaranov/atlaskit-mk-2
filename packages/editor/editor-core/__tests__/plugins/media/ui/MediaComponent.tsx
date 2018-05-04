@@ -12,6 +12,10 @@ import {
   DefaultMediaStateManager,
 } from '../../../../src/plugins/media';
 import MediaComponent from '../../../../src/plugins/media/ui/Media/MediaComponent';
+import {
+  MediaState,
+  MediaStateManager as MediaStateManagerType,
+} from '../../../../src/plugins/media/types';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {
@@ -223,11 +227,12 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should use stateManager from Plugin state in Editor mode', async () => {
     const stateManager = {
       getState: () => undefined,
+      newState: (): MediaState | undefined => undefined,
       updateState: () => {},
       on: jest.fn(),
       off: () => {},
       destroy: () => {},
-    };
+    } as MediaStateManagerType;
 
     const mediaProvider = getFreshResolvedProvider({ stateManager });
 
