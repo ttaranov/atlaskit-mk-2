@@ -76,4 +76,16 @@ describe('<MediaViewer />', () => {
     const { el } = createFixture(list, selectedItem);
     expect(el.find(ErrorMessage)).toHaveLength(1);
   });
+
+  it('the error view show close on click', () => {
+    const selectedItem = {
+      id: 'some-id-2',
+      occurrenceKey: 'some-custom-occurrence-key',
+      type: 'file' as MediaItemType,
+    };
+    const { el, onClose } = createFixture([], selectedItem);
+    expect(el.find(ErrorMessage)).toHaveLength(1);
+    el.find(Content).simulate('click');
+    expect(onClose).toHaveBeenCalled();
+  });
 });
