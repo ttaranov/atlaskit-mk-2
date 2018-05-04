@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.1.4
+- [patch] ED-4529: fix insertRow/insertColumn setting selection [784b529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/784b529)
+
 ## 71.1.3
 
 ## 71.1.2
