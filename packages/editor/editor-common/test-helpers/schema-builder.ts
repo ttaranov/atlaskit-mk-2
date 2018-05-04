@@ -6,7 +6,7 @@ import {
   Schema,
   Slice /*MediaAttributes */,
 } from 'prosemirror-model';
-import { Attributes as MediaAttributes } from '../src/schema/nodes/media';
+import { MediaAttributes } from '../src/schema/nodes/media';
 import matches from './matches';
 import sampleSchema from './schema';
 import {

@@ -6,10 +6,17 @@ import {
   Card,
   CardView,
   CardOnClickCallback,
-  CardStatus,
 } from '@atlaskit/media-card';
 import { Context, ImageResizeMode } from '@atlaskit/media-core';
-import { MediaType } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  withImageLoader,
+  ImageStatus,
+  // @ts-ignore
+  ImageLoaderProps,
+  // @ts-ignore
+  ImageLoaderState,
+} from '@atlaskit/editor-common';
 
 export interface MediaProvider {
   viewContext?: Context;
@@ -23,31 +30,25 @@ export interface MediaCardProps {
       onClick?: CardOnClickCallback;
     };
   };
-  type: MediaType | 'external';
+  type: MediaType;
   collection?: string;
   url?: string;
   cardDimensions?: CardDimensions;
   resizeMode?: ImageResizeMode;
   appearance?: CardAppearance;
   occurrenceKey?: string;
-  onExternalImageLoaded?: (
-    dimensions: { width: number; height: number },
-  ) => void;
+  imageStatus?: ImageStatus;
 }
 
 export interface State {
   context?: Context;
-  externalStatus: CardStatus;
+  // externalStatus: CardStatus;
 }
 
-export class MediaCard extends Component<MediaCardProps, State> {
-  state: State = {
-    externalStatus: 'loading',
-  };
+export class MediaCardInternal extends Component<MediaCardProps, State> {
+  state: State = {};
 
   async componentDidMount() {
-    this.fetchExternalImage(this.props);
-
     const { mediaProvider } = this.props;
 
     if (!mediaProvider) {
@@ -62,50 +63,18 @@ export class MediaCard extends Component<MediaCardProps, State> {
     });
   }
 
-  componentWillReceiveProps(nextProps: MediaCardProps) {
-    if (nextProps.url !== this.props.url) {
-      this.setState({
-        externalStatus: 'loading',
-      });
-
-      this.fetchExternalImage(nextProps);
-    }
-  }
-
-  private fetchExternalImage(props: MediaCardProps) {
-    const { type, url, onExternalImageLoaded } = props;
-
-    if (type !== 'external') {
-      return;
-    }
-
-    const img = new Image();
-    img.src = url!;
-    img.onload = () => {
-      this.setState({
-        externalStatus: 'complete',
-      });
-      if (onExternalImageLoaded) {
-        onExternalImageLoaded({
-          width: img.naturalWidth,
-          height: img.naturalHeight,
-        });
-      }
-    };
-    img.onerror = () => {
-      this.setState({
-        externalStatus: 'error',
-      });
-    };
-  }
-
   private renderExternal() {
-    const { externalStatus } = this.state;
-    const { cardDimensions, resizeMode, appearance, url } = this.props;
+    const {
+      cardDimensions,
+      resizeMode,
+      appearance,
+      url,
+      imageStatus,
+    } = this.props;
 
     return (
       <CardView
-        status={externalStatus}
+        status={imageStatus || 'loading'}
         dataURI={url}
         dimensions={cardDimensions}
         metadata={
@@ -166,3 +135,5 @@ export class MediaCard extends Component<MediaCardProps, State> {
     );
   }
 }
+
+export const MediaCard = withImageLoader<MediaCardProps>(MediaCardInternal);

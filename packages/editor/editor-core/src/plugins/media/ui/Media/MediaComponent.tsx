@@ -20,6 +20,12 @@ import {
   MediaType,
   MediaBaseAttributes,
   CardEventClickHandler,
+  withImageLoader,
+  ImageStatus,
+  // @ts-ignore
+  ImageLoaderProps,
+  // @ts-ignore
+  ImageLoaderState,
 } from '@atlaskit/editor-common';
 
 import { isImage } from '../../../../utils';
@@ -47,16 +53,13 @@ export interface Props extends Partial<MediaBaseAttributes> {
   selected?: boolean;
   tempId?: string;
   url?: string;
-  onExternalImageLoaded?: (
-    dimensions: { width: number; height: number },
-  ) => void;
+  imageStatus?: ImageStatus;
 }
 
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
   linkCreateContext?: Context;
-  externalStatus: CardStatus;
 }
 
 /**
@@ -87,7 +90,7 @@ function mapMediaStatusIntoCardStatus(
   }
 }
 
-export default class MediaComponent extends Component<Props, State> {
+export class MediaComponentInternal extends Component<Props, State> {
   private destroyed = false;
 
   static defaultProps = {
@@ -97,7 +100,6 @@ export default class MediaComponent extends Component<Props, State> {
   state: State = {
     id: '',
     status: 'unknown',
-    externalStatus: 'loading',
   };
 
   componentWillMount() {
@@ -111,14 +113,6 @@ export default class MediaComponent extends Component<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     const { mediaProvider } = nextProps;
 
-    if (nextProps.url !== this.props.url) {
-      this.setState({
-        externalStatus: 'loading',
-      });
-
-      this.fetchExternalImage(nextProps);
-    }
-
     if (this.props.mediaProvider !== mediaProvider) {
       if (mediaProvider) {
         mediaProvider.then(this.handleMediaProvider);
@@ -126,10 +120,6 @@ export default class MediaComponent extends Component<Props, State> {
         this.setState({ mediaProvider });
       }
     }
-  }
-
-  componentDidMount() {
-    this.fetchExternalImage(this.props);
   }
 
   componentWillUnmount() {
@@ -149,33 +139,6 @@ export default class MediaComponent extends Component<Props, State> {
     if (stateManagerFallback && id) {
       stateManagerFallback.off(id, this.handleMediaStateChange);
     }
-  }
-
-  private fetchExternalImage(props: Props) {
-    const { type, url, onExternalImageLoaded } = props;
-
-    if (type !== 'external') {
-      return;
-    }
-
-    const img = new Image();
-    img.src = url!;
-    img.onload = () => {
-      this.setState({
-        externalStatus: 'complete',
-      });
-      if (onExternalImageLoaded) {
-        onExternalImageLoaded({
-          width: img.naturalWidth,
-          height: img.naturalHeight,
-        });
-      }
-    };
-    img.onerror = () => {
-      this.setState({
-        externalStatus: 'error',
-      });
-    };
   }
 
   render() {
@@ -365,10 +328,9 @@ export default class MediaComponent extends Component<Props, State> {
       appearance,
       selected,
       resizeMode,
+      imageStatus,
       url,
     } = this.props;
-
-    const { externalStatus } = this.state;
 
     const otherProps: any = {};
     if (onDelete) {
@@ -377,13 +339,11 @@ export default class MediaComponent extends Component<Props, State> {
 
     return (
       <CardView
-        status={externalStatus}
-        metadata={
-          {
-            mediaType: 'image',
-            name: url,
-          } as any
-        }
+        status={imageStatus || 'loading'}
+        metadata={{
+          mediaType: 'image',
+          name: url,
+        }}
         dataURI={url}
         dimensions={cardDimensions}
         appearance={appearance}
@@ -462,3 +422,5 @@ export const createDeleteAction = (
     icon: <CrossIcon size="small" label="delete" />,
   };
 };
+
+export default withImageLoader<Props>(MediaComponentInternal);

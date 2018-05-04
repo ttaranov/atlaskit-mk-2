@@ -50,13 +50,13 @@ export interface MediaAttributes extends MediaBaseAttributes {
 
 export interface ExternalMediaAttributes {
   type: 'external';
-  url?: string | null;
+  url: string;
   width?: number;
   height?: number;
 }
 
 export const defaultAttrs: DefaultAttributes<
-  Attributes | ExternalMediaAttributes
+  MediaAttributes | ExternalMediaAttributes
 > = {
   id: { default: '' },
   type: { default: 'file' },
@@ -80,7 +80,7 @@ export const media: NodeSpec = {
     {
       tag: 'div[data-node-type="media"]',
       getAttrs: (dom: HTMLElement) => {
-        const attrs = {} as Attributes;
+        const attrs = {} as MediaAttributes;
 
         Object.keys(defaultAttrs).forEach(k => {
           const key = camelCaseToKebabCase(k).replace(/^__/, '');
