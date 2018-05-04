@@ -59,15 +59,15 @@
             {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "string",
-                  "minLength": 1
-                },
                 "type": {
                   "enum": [
                     "link",
                     "file"
                   ]
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
                 },
                 "collection": {
                   "type": "string"
@@ -84,8 +84,8 @@
                 }
               },
               "required": [
-                "id",
                 "type",
+                "id",
                 "collection"
               ],
               "additionalProperties": false

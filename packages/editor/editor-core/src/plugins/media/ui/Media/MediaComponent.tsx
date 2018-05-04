@@ -17,7 +17,8 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 import {
-  MediaAttributes,
+  MediaType,
+  MediaBaseAttributes,
   CardEventClickHandler,
 } from '@atlaskit/editor-common';
 
@@ -34,7 +35,8 @@ export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 export const MEDIA_HEIGHT = 125;
 export const FILE_WIDTH = 156;
 
-export interface Props extends MediaAttributes {
+export interface Props extends Partial<MediaBaseAttributes> {
+  type: MediaType;
   mediaProvider?: Promise<MediaProvider>;
   cardDimensions?: CardDimensions;
   onClick?: CardEventClickHandler;
@@ -44,12 +46,17 @@ export interface Props extends MediaAttributes {
   stateManagerFallback?: MediaStateManager;
   selected?: boolean;
   tempId?: string;
+  url?: string;
+  onExternalImageLoaded?: (
+    dimensions: { width: number; height: number },
+  ) => void;
 }
 
 export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
   linkCreateContext?: Context;
+  externalStatus: CardStatus;
 }
 
 /**
@@ -90,6 +97,7 @@ export default class MediaComponent extends Component<Props, State> {
   state: State = {
     id: '',
     status: 'unknown',
+    externalStatus: 'loading',
   };
 
   componentWillMount() {
@@ -100,8 +108,16 @@ export default class MediaComponent extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { mediaProvider } = nextProps;
+
+    if (nextProps.url !== this.props.url) {
+      this.setState({
+        externalStatus: 'loading',
+      });
+
+      this.fetchExternalImage(nextProps);
+    }
 
     if (this.props.mediaProvider !== mediaProvider) {
       if (mediaProvider) {
@@ -112,6 +128,10 @@ export default class MediaComponent extends Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.fetchExternalImage(this.props);
+  }
+
   componentWillUnmount() {
     this.destroyed = true;
 
@@ -120,15 +140,42 @@ export default class MediaComponent extends Component<Props, State> {
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
-      if (stateManager) {
+      if (stateManager && id) {
         stateManager.off(id, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
-    if (stateManagerFallback) {
+    if (stateManagerFallback && id) {
       stateManagerFallback.off(id, this.handleMediaStateChange);
     }
+  }
+
+  private fetchExternalImage(props: Props) {
+    const { type, url, onExternalImageLoaded } = props;
+
+    if (type !== 'external') {
+      return;
+    }
+
+    const img = new Image();
+    img.src = url!;
+    img.onload = () => {
+      this.setState({
+        externalStatus: 'complete',
+      });
+      if (onExternalImageLoaded) {
+        onExternalImageLoaded({
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
+      }
+    };
+    img.onerror = () => {
+      this.setState({
+        externalStatus: 'error',
+      });
+    };
   }
 
   render() {
@@ -138,6 +185,9 @@ export default class MediaComponent extends Component<Props, State> {
 
       case 'link':
         return this.renderLink();
+
+      case 'external':
+        return this.renderExternal();
 
       default:
         return null;
@@ -168,13 +218,13 @@ export default class MediaComponent extends Component<Props, State> {
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
-    if (!hasProviders) {
+    if (!hasProviders || !id) {
       return this.renderLoadingCard('link');
     }
 
     const identifier: Identifier = {
       mediaItemType: 'link',
-      collectionName: collection,
+      collectionName: collection!,
       id,
     };
 
@@ -203,7 +253,7 @@ export default class MediaComponent extends Component<Props, State> {
     const { mediaProvider, viewContext, thumbnail } = this.state;
     const { id } = this.props;
 
-    if (!mediaProvider || !viewContext) {
+    if (!mediaProvider || !viewContext || !id) {
       return this.renderLoadingCard('file');
     }
 
@@ -308,6 +358,43 @@ export default class MediaComponent extends Component<Props, State> {
     );
   }
 
+  private renderExternal() {
+    const {
+      onDelete,
+      cardDimensions,
+      appearance,
+      selected,
+      resizeMode,
+      url,
+    } = this.props;
+
+    const { externalStatus } = this.state;
+
+    const otherProps: any = {};
+    if (onDelete) {
+      otherProps.actions = [createDeleteAction(onDelete)];
+    }
+
+    return (
+      <CardView
+        status={externalStatus}
+        metadata={
+          {
+            mediaType: 'image',
+            name: url,
+          } as any
+        }
+        dataURI={url}
+        dimensions={cardDimensions}
+        appearance={appearance}
+        selectable={true}
+        selected={selected}
+        resizeMode={resizeMode}
+        {...otherProps}
+      />
+    );
+  }
+
   private handleMediaStateChange = (mediaState: MediaState) => {
     /**
      * `cancelled` gets triggered when we do the node swap, so we can ignore it here.
@@ -335,7 +422,7 @@ export default class MediaComponent extends Component<Props, State> {
 
     this.setState({ mediaProvider });
 
-    if (stateManager) {
+    if (stateManager && id) {
       const mediaState = stateManager.getState(tempId || id);
 
       stateManager.on(id, this.handleMediaStateChange);

@@ -45,6 +45,14 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     },
   };
 
+  const external = {
+    type: 'media',
+    attrs: {
+      type: 'external',
+      url: 'http://image.jpg',
+    },
+  };
+
   const defaultStateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -169,6 +177,17 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(1);
+  });
+
+  it('should render a CardView component if media type is external', async () => {
+    const mediaComponent = shallow(
+      <MediaComponent
+        type={external.attrs.type as MediaType}
+        url={external.attrs.url}
+      />,
+    );
+
+    expect(mediaComponent.find(CardView).length).toEqual(1);
   });
 
   /**

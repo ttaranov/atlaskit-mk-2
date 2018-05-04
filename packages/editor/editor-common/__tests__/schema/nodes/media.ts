@@ -3,7 +3,7 @@ import {
   media,
   camelCaseToKebabCase,
   defaultAttrs,
-  Attributes,
+  MediaAttributes,
   toJSON,
 } from '../../../src/schema/nodes/media';
 import { fromHTML, toDOM, schema } from '../../../test-helpers';
@@ -11,7 +11,7 @@ import { fromHTML, toDOM, schema } from '../../../test-helpers';
 // Note: We can't use dom.dataset in jest until it's upgraded to use latest version
 //       of jsdom. In the meantime we can use this helper-method.
 const getDataSet = dom => {
-  const dataSet = {} as Attributes & {
+  const dataSet = {} as MediaAttributes & {
     fileName: string;
     fileSize: string;
     fileMimeType: string;

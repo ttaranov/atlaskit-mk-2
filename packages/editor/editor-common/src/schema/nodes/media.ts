@@ -18,15 +18,14 @@ export interface Definition {
   /**
    * @minItems 1
    */
-  attrs: Attributes | ExternalMediaAttributes;
+  attrs: MediaAttributes | ExternalMediaAttributes;
 }
 
-export interface Attributes {
+export interface MediaBaseAttributes {
   /**
    * @minLength 1
    */
   id: string;
-  type: 'file' | 'link';
   collection: string;
   height?: number;
   width?: number;
@@ -43,6 +42,10 @@ export interface Attributes {
   __displayType?: DisplayType | null;
   // For Stride @see ED-4030
   __key?: string | null;
+}
+
+export interface MediaAttributes extends MediaBaseAttributes {
+  type: 'file' | 'link';
 }
 
 export interface ExternalMediaAttributes {
