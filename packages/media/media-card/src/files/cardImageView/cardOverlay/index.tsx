@@ -5,9 +5,9 @@ import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import { Ellipsify } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
-import { FileIcon } from '../../fileIcon';
-import { ErrorIcon } from '../../errorIcon';
-import CardActions from '../../cardActions';
+import { FileIcon } from '../../../utils/fileIcon';
+import { ErrorIcon } from '../../../utils/errorIcon';
+import CardActions from '../../../utils/cardActions';
 import { CardAction, CardEventHandler } from '../../../actions';
 
 import {

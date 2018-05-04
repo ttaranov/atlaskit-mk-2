@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Ellipsify } from '@atlaskit/media-ui';
-import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
+import { CardOverlay } from '../../src/files/cardImageView/cardOverlay';
 import {
   TitleWrapper,
   Metadata,
   ErrorMessage,
   Retry,
-} from '../../src/utils/cardImageView/cardOverlay/styled';
+} from '../../src/files/cardImageView/cardOverlay/styled';
 
 import { CardActionsView } from '../../src/utils/';
 
