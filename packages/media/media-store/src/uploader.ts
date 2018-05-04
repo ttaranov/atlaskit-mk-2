@@ -1,3 +1,4 @@
+import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 
 import { MediaStore } from './media-store';
@@ -35,6 +36,7 @@ export const uploadFile = async (
   callbacks?: UploadFileCallbacks,
 ): Promise<string> => {
   const { content, collection, name, mimeType } = file;
+  const occurrenceKey = uuid.v4();
   const store = new MediaStore(config);
   const deferredUploadId = store
     .createUpload()
@@ -51,7 +53,7 @@ export const uploadFile = async (
     offset += chunks.length;
   };
 
-  const emptyFile = store.createFile({ collection });
+  const emptyFile = store.createFile({ collection, occurrenceKey });
 
   await chunkinator(
     content,
@@ -81,6 +83,7 @@ export const uploadFile = async (
   await store.createFileFromUpload(
     { uploadId, name, mimeType },
     {
+      occurrenceKey,
       collection,
       replaceFileId: fileId,
     },

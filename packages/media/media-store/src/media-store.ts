@@ -216,6 +216,7 @@ export type MediaStoreCreateFileFromUploadParams = {
 };
 
 export type MediaStoreCreateFileParams = {
+  readonly occurrenceKey?: string;
   readonly collection?: string;
 };
 

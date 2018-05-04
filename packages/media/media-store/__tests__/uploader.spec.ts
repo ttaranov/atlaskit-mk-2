@@ -87,6 +87,7 @@ describe('Uploader', () => {
       MediaStoreMock,
       ChunkinatorMock,
       config,
+      createFile,
       createFileFromUpload,
     } = setup();
 
@@ -101,11 +102,13 @@ describe('Uploader', () => {
       { content: '', name: 'file-name', collection: 'some-collection' },
       config,
     );
+    const occurrenceKey = createFile.mock.calls[0][0].occurrenceKey;
 
     expect(createFileFromUpload).toHaveBeenCalledTimes(1);
     expect(createFileFromUpload).toBeCalledWith(
       { uploadId: 'upload-id-123', name: 'file-name' },
       {
+        occurrenceKey,
         collection: 'some-collection',
         replaceFileId: 'id-upfront-123',
       },
