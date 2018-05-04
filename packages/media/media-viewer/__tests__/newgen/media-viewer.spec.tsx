@@ -6,6 +6,7 @@ import { Stubs } from '../_stubs';
 import { Content } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import Header from '../../src/newgen/header';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
 function createContext(subject, blobService?) {
   const token = 'some-token';
@@ -24,7 +25,7 @@ function createContext(subject, blobService?) {
   ) as any;
 }
 
-function createFixture(identifier) {
+function createFixture(items, identifier) {
   const subject = new Subject<MediaItem>();
   const blobService = Stubs.blobService();
   const context = createContext(subject, blobService);
@@ -32,7 +33,7 @@ function createFixture(identifier) {
   const el = mount(
     <MediaViewer
       selectedItem={identifier}
-      items={[identifier]}
+      items={items}
       context={context}
       onClose={onClose}
     />,
@@ -48,14 +49,27 @@ describe('<MediaViewer />', () => {
   };
 
   it('should close Media Viewer on click', () => {
-    const { el, onClose } = createFixture(identifier);
+    const { el, onClose } = createFixture([identifier], identifier);
     el.find(Content).simulate('click');
     expect(onClose).toHaveBeenCalled();
   });
 
   it('should not close Media Viewer when clicking on the Header', () => {
-    const { el, onClose } = createFixture(identifier);
+    const { el, onClose } = createFixture([identifier], identifier);
     el.find(Header).simulate('click');
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('should update navigation', () => {
+    const identifier2 = {
+      id: 'some-id-2',
+      occurrenceKey: 'some-custom-occurrence-key',
+      type: 'file' as MediaItemType,
+    };
+
+    const { el } = createFixture([identifier, identifier2], identifier);
+    expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
+    el.find(ArrowRightCircleIcon).simulate('click');
+    expect(el.state().selectedItem).toMatchObject({ id: 'some-id-2' });
   });
 });
