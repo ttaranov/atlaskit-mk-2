@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.1.5
+- [patch] Adding progress loader for cloud pickers [e22266c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e22266c)
+- [patch] Adding cloud picker support for full-page [2a2269e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a2269e)
+
 ## 71.1.4
 - [patch] ED-4529: fix insertRow/insertColumn setting selection [784b529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/784b529)
 
