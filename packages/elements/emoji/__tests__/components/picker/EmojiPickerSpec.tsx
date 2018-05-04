@@ -121,19 +121,19 @@ describe('<EmojiPicker />', () => {
 
       await helper.showCategory(customCategory, component, customTitle);
 
-      // const list = getUpdatedList(component);
-      // const customHeading = helper.findCategoryHeading(customTitle, list);
-      // expect(customHeading).toHaveLength(1);
-      // expect(customHeading.prop('title')).toEqual(customTitle);
+      const list = getUpdatedList(component);
+      const customHeading = helper.findCategoryHeading(customCategory, list);
+      expect(customHeading).toHaveLength(1);
+      expect(customHeading.prop('title')).toEqual(customTitle);
 
-      // const customEmojiRows = helper.emojiRowsVisibleInCategory(
-      //   customTitle,
-      //   component,
-      // );
-      // const placeholders = customEmojiRows.find(EmojiPlaceholder);
-      // expect(placeholders).toHaveLength(1);
-      // const props = placeholders.get(0).props;
-      // expect(props.shortName).toEqual(mediaEmoji.shortName);
+      const customEmojiRows = helper.emojiRowsVisibleInCategory(
+        customCategory,
+        component,
+      );
+      const placeholders = customEmojiRows.find(EmojiPlaceholder);
+      expect(placeholders).toHaveLength(1);
+      const props = placeholders.get(0).props;
+      expect(props.shortName).toEqual(mediaEmoji.shortName);
     });
   });
 
