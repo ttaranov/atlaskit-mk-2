@@ -199,6 +199,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(10);
           editorView.destroy();
         });
       });
@@ -220,6 +221,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(16);
           editorView.destroy();
         });
       });
@@ -241,6 +243,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(22);
           editorView.destroy();
         });
       });
@@ -273,6 +276,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(10);
           editorView.destroy();
         });
       });
@@ -301,6 +305,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(20);
           editorView.destroy();
         });
       });
@@ -331,6 +336,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(30);
           editorView.destroy();
         });
       });
