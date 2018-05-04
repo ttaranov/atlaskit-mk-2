@@ -1,0 +1,418 @@
++ umask 000
+
++ GIT_LFS_SKIP_SMUDGE=1 git clone --branch="master" https://x-token-auth:$REPOSITORY_OAUTH_ACCESS_TOKEN@bitbucket.org/atlassian/atlaskit-mk-2.git $BUILD_DIR ; git reset --hard 4a8290a460d51fccf8ad2f54d5be52c7b0f9e84e ; git remote set-url origin git@bitbucket.org:atlassian/atlaskit-mk-2.git
+Cloning into '/opt/atlassian/pipelines/agent/build'...
+HEAD is now at 4a8290a RELEASING: Releasing 2 package(s)
+
++ chmod 777 $BUILD_DIR
+
+Cache "node": Downloading
+Cache "node": Downloaded 228 MB in 18 seconds
+Cache "node": Extracting
+Cache "node": Extracted in 19 seconds
++ source ./build-setup.sh
+Warning: Permanently added the RSA host key for IP address '104.192.143.3' to the list of known hosts.
+From bitbucket.org:atlassian/atlaskit-mk-2
+ * branch            master     -> FETCH_HEAD
+Already on 'master'
+Your branch is up-to-date with 'origin/master'.
+Already on 'master'
+Your branch is up-to-date with 'origin/master'.
+Rebasing on master to ensure we have all release commits from master...
+From bitbucket.org:atlassian/atlaskit-mk-2
+ * branch            master     -> FETCH_HEAD
+Current branch master is up to date.
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  7041    0  7041    0     0   220k      0 --:--:-- --:--:-- --:--:--  221k
+[37mInstalling Yarn![0m
+[36m> Downloading tarball...[0m
+
+[1/2]: https://yarnpkg.com/downloads/1.2.1/yarn-v1.2.1.tar.gz --> /tmp/yarn.tar.gz.xpgn7LuWxv
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    91  100    91    0     0   2518      0 --:--:-- --:--:-- --:--:--  2527
+100   608    0   608    0     0   4896      0 --:--:-- --:--:-- --:--:--  4896
+100  864k  100  864k    0     0  4919k      0 --:--:-- --:--:-- --:--:-- 4919k
+
+[2/2]: https://yarnpkg.com/downloads/1.2.1/yarn-v1.2.1.tar.gz.asc --> /tmp/yarn.tar.gz.xpgn7LuWxv.asc
+100    95  100    95    0     0   3075      0 --:--:-- --:--:-- --:--:--  3075
+100   612    0   612    0     0   4806      0 --:--:-- --:--:-- --:--:--  4806
+100  1028  100  1028    0     0   7363      0 --:--:-- --:--:-- --:--:--  7363
+[36m> Verifying integrity...[0m
+gpg: key 86E50310: "Yarn Packaging <yarn@dan.cx>" 2 new signatures
+gpg: key 86E50310: "Yarn Packaging <yarn@dan.cx>" 1 new subkey
+gpg: Total number processed: 1
+gpg:            new subkeys: 1
+gpg:         new signatures: 2
+gpg: Signature made Thu Oct 12 10:31:08 2017 UTC using RSA key ID FD2497F5
+gpg: Good signature from "Yarn Packaging <yarn@dan.cx>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 72EC F46A 56B4 AD39 C907  BBB7 1646 B01B 86E5 0310
+     Subkey fingerprint: 6A01 0C51 6600 6599 AA17  F081 46C2 130D FD24 97F5
+[32m> GPG signature looks good[0m
+[36m> Extracting to ~/.yarn...[0m
+[36m> Adding to $PATH...[0m
+[36m> We've added the following to your /root/.bashrc
+> If this isn't the profile of your current shell then please add the following to your correct profile:
+   
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+[0m
+[32m> Successfully installed Yarn 1.2.1! Please open another terminal where the `yarn` command will now be available.[0m
+Installing bolt@^0.18.3 || ^0.19.2 || ^0.20.6
+yarn global v1.2.1
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Installed "bolt@0.20.6" with binaries:
+      - bolt
+Done in 8.94s.
+npm info it worked if it ends with ok
+npm info using npm@5.3.0
+npm info using node@v8.4.0
+npm info config set "//registry.npmjs.org/:_authToken" "$NPM_TOKEN"
+npm info ok 
+npm info it worked if it ends with ok
+npm info using npm@5.3.0
+npm info using node@v8.4.0
+npm info config set "//registry.yarnpkg.com/:_authToken" "$NPM_TOKEN"
+npm info ok 
+[2K[1G[1myarn config v1.2.1[22m
+[2K[1G[32msuccess[39m Set "color" to "always".
+[2K[1GDone in 0.14s.
+Get:1 http://security.debian.org jessie/updates InRelease [94.4 kB]
+Ign http://deb.debian.org jessie InRelease
+Get:2 http://deb.debian.org jessie-updates InRelease [145 kB]
+Get:3 http://security.debian.org jessie/updates/main amd64 Packages [649 kB]
+Get:4 http://deb.debian.org jessie Release.gpg [2434 B]
+Get:5 http://deb.debian.org jessie Release [148 kB]
+Get:6 http://deb.debian.org jessie-updates/main amd64 Packages [23.1 kB]
+Get:7 http://deb.debian.org jessie/main amd64 Packages [9064 kB]
+Fetched 10.1 MB in 6s (1462 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following extra packages will be installed:
+  unzip
+The following NEW packages will be installed:
+  unzip zip
+0 upgraded, 2 newly installed, 0 to remove and 88 not upgraded.
+Need to get 390 kB of archives.
+After this operation, 1002 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian/ jessie/main unzip amd64 6.0-16+deb8u3 [162 kB]
+Get:2 http://deb.debian.org/debian/ jessie/main zip amd64 3.0-8 [228 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 390 kB in 0s (444 kB/s)
+Selecting previously unselected package unzip.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 21640 files and directories currently installed.)
+Preparing to unpack .../unzip_6.0-16+deb8u3_amd64.deb ...
+Unpacking unzip (6.0-16+deb8u3) ...
+Selecting previously unselected package zip.
+Preparing to unpack .../archives/zip_3.0-8_amd64.deb ...
+Unpacking zip (3.0-8) ...
+Processing triggers for mime-support (3.58) ...
+Setting up unzip (6.0-16+deb8u3) ...
+Setting up zip (3.0-8) ...
+
++ bolt install --pure-lockfile
+⚡️   [1mbolt v0.20.6[22m [2m(node v8.4.0)[22m
+🔎   [1/3] Validating project...
+📦   [2/3] Installing project dependencies...
+[36m$ /usr/local/share/.config/yarn/global/node_modules/bolt/node_modules/.bin/yarn config get user-agent[39m [2K
+[36m$ /usr/local/share/.config/yarn/global/node_modules/bolt/node_modules/.bin/yarn config get user-agent[39m [1Gyarn/1.6.0 npm/? node/v8.4.0 linux x64
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G
+[36m$ yarn install --pure-lockfile[39m [1myarn install v1.6.0[22m
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[2m[1/5][22m Validating package.json...
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[2m[2/5][22m Resolving packages...
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[2m[3/5][22m Fetching packages...
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[34minfo[39m fsevents@1.1.2: The platform "linux" is incompatible with this module.
+[36m$ yarn install --pure-lockfile[39m [2K[1G[34minfo[39m "fsevents@1.1.2" is an optional dependency and failed compatibility check. Excluding it from installation.
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[2m[4/5][22m Linking dependencies...
+[31m$ yarn install --pure-lockfile[39m [2K
+[31m$ yarn install --pure-lockfile[39m [1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar@8.0.8" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/layer@2.5.4" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/spinner@4.0.0" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/theme@2.2.7" has incorrect peer dependency "react@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > styled-components@1.4.6" has incorrect peer dependency "react@^0.14.0 || ^15.0.0-0".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu@3.10.3" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu@3.10.3" has incorrect peer dependency "react-dom@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/button@5.4.2" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/icon@8.1.0" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/droplist > @atlaskit/theme@2.2.0" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/droplist > @atlaskit/tooltip@8.0.4" has incorrect peer dependency "react@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/droplist > @atlaskit/tooltip@8.0.4" has incorrect peer dependency "react-dom@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/item > @atlaskit/icon@7.1.0" has incorrect peer dependency "react@^15.3.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G
+[31m$ yarn install --pure-lockfile[39m [33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/droplist > @atlaskit/tooltip > @atlaskit/layer-manager@2.5.0" has incorrect peer dependency "react@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "@atlaskit/profilecard > @atlaskit/avatar > @atlaskit/dropdown-menu > @atlaskit/droplist > @atlaskit/tooltip > @atlaskit/layer-manager@2.5.0" has incorrect peer dependency "react-dom@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m "pretty-proptypes > react-markings@1.2.0" has incorrect peer dependency "react@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > prosemirror-utils@0.2.19" has incorrect peer dependency "prosemirror-tables@^0.6.5".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > react-addons-css-transition-group@15.6.2" has incorrect peer dependency "react@^15.4.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > react-markings@1.1.7" has incorrect peer dependency "react@^15.6.1".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > svg-inline-react@3.0.0" has incorrect peer dependency "react@^0.14.0 || ^15.0.0".
+[31m$ yarn install --pure-lockfile[39m [2K
+[31m$ yarn install --pure-lockfile[39m [1G[33mwarning[39m " > chai-as-promised@6.0.0" has incorrect peer dependency "chai@>= 2.1.2 < 4".
+[31m$ yarn install --pure-lockfile[39m [2K
+[31m$ yarn install --pure-lockfile[39m [1G[33mwarning[39m " > react-addons-perf@15.4.2" has incorrect peer dependency "react-dom@^15.4.2".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > react-live-clock@2.0.2" has incorrect peer dependency "react@^0.14 || ^15".
+[31m$ yarn install --pure-lockfile[39m [2K[1G[33mwarning[39m " > react-lorem-component@0.12.2" has incorrect peer dependency "react@15.x".
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1G[2m[5/5][22m Building fresh packages...
+[36m$ yarn install --pure-lockfile[39m [2K
+[36m$ yarn install --pure-lockfile[39m [1GDone in 115.14s.
+🔗   [3/3] Linking workspace dependencies...
+💥  [32msuccess[39m Installed and linked workspaces.
+🏁   Done in 133.03s.
+
++ (cd website && yarn deploy)
+[2K[1G[1myarn run v1.2.1[22m
+[2K[1G[2m$ yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip[22m
+
+[33mBuilding with [1m"all"[22m packages.[39m
+
+[32mts-loader: Using typescript@2.6.2 and /opt/atlassian/pipelines/agent/build/packages/search/global-search/tsconfig.json[39m
+[BABEL] Note: The code generator has deoptimised the styling of "/opt/atlassian/pipelines/agent/build/packages/media/media-editor/src/engine/core/binaries/mediaEditor.js" as it exceeds the max of "500KB".
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+        You or one of the Babel plugins you are using are using Flow declarations as bindings.
+        Support for this will be removed in version 7. To find out the caller, grep for this
+        message and change it to a `console.trace()`.
+      
+
+<--- Last few GCs --->
+
+[524:0x25af040]   419094 ms: Scavenge 1142.9 (1397.7) -> 1142.7 (1398.7) MB, 3.9 / 0.0 ms  allocation failure 
+[524:0x25af040]   419125 ms: Scavenge 1143.8 (1398.7) -> 1143.7 (1400.7) MB, 5.4 / 0.0 ms  allocation failure 
+[524:0x25af040]   421633 ms: Scavenge 1160.3 (1416.2) -> 1158.8 (1415.7) MB, 9.6 / 0.0 ms  allocation failure 
+[524:0x25af040]   421722 ms: Scavenge 1159.8 (1415.7) -> 1159.7 (1417.2) MB, 15.3 / 0.0 ms  allocation failure 
+
+
+<--- JS stacktrace --->
+Cannot get stack trace in GC.
+FATAL ERROR: Scavenger: semi-space copy
+ Allocation failed - process out of memory
+ 1: node::Abort() [node]
+ 2: 0x13740dc [node]
+ 3: v8::Utils::ReportOOMFailure(char const*, bool) [node]
+ 4: v8::internal::V8::FatalProcessOutOfMemory(char const*, bool) [node]
+ 5: 0xb910eb [node]
+ 6: v8::internal::IterateAndScavengePromotedObjectsVisitor::VisitPointers(v8::internal::HeapObject*, v8::internal::Object**, v8::internal::Object**) [node]
+ 7: void v8::internal::BodyDescriptorApply<v8::internal::CallIterateBody, void, v8::internal::HeapObject*, int, v8::internal::ObjectVisitor*>(v8::internal::InstanceType, v8::internal::HeapObject*, int, v8::internal::ObjectVisitor*) [node]
+ 8: v8::internal::Heap::IterateAndScavengePromotedObject(v8::internal::HeapObject*, int) [node]
+ 9: v8::internal::Heap::DoScavenge(unsigned char*) [node]
+10: v8::internal::Heap::Scavenge() [node]
+11: v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [node]
+12: v8::internal::Heap::CollectGarbage(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*, v8::GCCallbackFlags) [node]
+13: v8::internal::Factory::NewRawTwoByteString(int, v8::internal::PretenureFlag) [node]
+14: v8::internal::Factory::NewStringFromUtf8(v8::internal::Vector<char const>, v8::internal::PretenureFlag) [node]
+15: v8::String::NewFromUtf8(v8::Isolate*, char const*, v8::NewStringType, int) [node]
+16: node::StringBytes::Encode(v8::Isolate*, char const*, unsigned long, node::encoding, v8::Local<v8::Value>*) [node]
+17: 0x1391be6 [node]
+18: v8::internal::FunctionCallbackArguments::Call(void (*)(v8::FunctionCallbackInfo<v8::Value> const&)) [node]
+19: 0xc3ac4a [node]
+20: v8::internal::Builtin_HandleApiCall(int, v8::internal::Object**, v8::internal::Isolate*) [node]
+21: 0x1ace497840dd
+Aborted (core dumped)
+[2K[1G[31merror[39m Command failed with exit code 134.
+[2K[1G[31merror[39m Command failed with exit code 1.
+[2K[1G[31merror[39m Command failed with exit code 1.
+[2K[1G[31merror[39m Command failed with exit code 1.
+[2K[1G[34minfo[39m Visit [1mhttps://yarnpkg.com/en/docs/cli/run[22m for documentation about this command.
+
+Skipping cache upload for failed step
+Searching for test report files in directories named [test-results, failsafe-reports, test-reports, surefire-reports] down to a depth of 4
+Finished scanning for test reports. Found 0 test report files.
+Merged test suites, total number tests is 0, with 0 failures and 0 errors.

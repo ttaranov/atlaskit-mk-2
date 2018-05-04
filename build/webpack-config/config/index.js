@@ -62,7 +62,7 @@ module.exports = function createWebpackConfig(
     output: {
       filename: '[name].js',
       path: path.resolve(cwd, 'dist'),
-      publicPath: '/',
+      publicPath: './',
     },
     devtool: env === 'production' ? false : 'cheap-module-source-map',
     module: {
@@ -255,6 +255,7 @@ function plugins(
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
       title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
+      publicPath: './',
       favicon: path.join(
         cwd,
         `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
@@ -266,6 +267,7 @@ function plugins(
       filename: 'examples.html',
       title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
       template: path.join(cwd, 'public/examples.html.ejs'),
+      publicPath: './',
       favicon: path.join(
         cwd,
         `public/favicon${env === 'development' ? '-dev' : ''}.ico`,

@@ -25,7 +25,8 @@ try {
   };
 
   console.log('Updating build status with link: ', permalinkUrl);
-  updateBuildStatus(buildStatusOpts);
+  console.log('(Not actually updating, this is a test)');
+  // updateBuildStatus(buildStatusOpts);
 } catch (e) {
   console.error('Unable to update build status');
   console.error(e.toString());
