@@ -1,5 +1,8 @@
 # @atlaskit/quick-search
 
+## 1.4.0
+- [minor] Add support for linkComponent prop [4c9e683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c9e683)
+
 ## 1.3.2
 - [patch] Remove dependency on navigation [756d26b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/756d26b)
 
