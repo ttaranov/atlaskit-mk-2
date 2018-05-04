@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 71.1.3
+
 ## 71.1.2
 - [patch] Fixing the bodiless extension cursor issue [224281e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/224281e)
 
