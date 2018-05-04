@@ -7,10 +7,12 @@ import {
   AnalyticsContext,
   AnalyticsListener,
 } from '@atlaskit/analytics-next';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
-import ButtonWrapper from '../src/styled/ButtonWrapper';
+import IconWrapper from '../src/styled/IconWrapper';
+import ButtonContent from '../src/styled/ButtonContent';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -248,7 +250,33 @@ describe('ak-button/default-behaviour', () => {
       const wrapper = mount(<Button isLoading>Some text</Button>);
       expect(
         wrapper
-          .find(ButtonWrapper)
+          .find(ButtonContent)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the iconBefore opacity to 0 when isLoading', () => {
+      const wrapper = mount(
+        <Button isLoading iconBefore={<AtlassianIcon />}>
+          Some text
+        </Button>,
+      );
+      expect(
+        wrapper
+          .find(IconWrapper)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the iconAfter opacity to 0 when isLoading', () => {
+      const wrapper = mount(
+        <Button isLoading iconAfter={<AtlassianIcon />}>
+          Some text
+        </Button>,
+      );
+      expect(
+        wrapper
+          .find(IconWrapper)
           .find('span')
           .get(0).props.style.opacity,
       ).toEqual(0);
@@ -257,10 +285,10 @@ describe('ak-button/default-behaviour', () => {
       const wrapper = mount(<Button>Some text</Button>);
       expect(
         wrapper
-          .find(ButtonWrapper)
+          .find(ButtonContent)
           .find('span')
           .get(0).props.style.opacity,
-      ).toEqual(undefined);
+      ).toEqual(1);
     });
   });
 

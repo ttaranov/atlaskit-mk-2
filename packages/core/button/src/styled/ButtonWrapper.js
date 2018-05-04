@@ -6,7 +6,6 @@ type Props = {
   onClick: (e: Event) => mixed,
   fit: boolean,
   children: Node,
-  isLoading?: boolean,
 };
 
 type styleObj = {
@@ -16,7 +15,6 @@ type styleObj = {
   maxWidth: string,
   width?: string,
   justifyContent?: string,
-  opacity?: number,
 };
 
 const ButtonWrapper = (props: Props) => {
