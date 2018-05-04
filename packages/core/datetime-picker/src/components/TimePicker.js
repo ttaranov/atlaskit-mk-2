@@ -179,6 +179,7 @@ export default class TimePicker extends Component<Props, State> {
         this.getState().isFocused ? `${colors.B100}` : `transparent`
       }`,
       backgroundColor: 'transparent',
+      padding: '1px',
     };
   };
 
