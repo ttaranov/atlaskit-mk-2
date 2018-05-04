@@ -55,38 +55,65 @@
           ]
         },
         "attrs": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "enum": [
+                    "link",
+                    "file"
+                  ]
+                },
+                "collection": {
+                  "type": "string"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "occurrenceKey": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "collection"
+              ],
+              "additionalProperties": false
             },
-            "type": {
-              "enum": [
-                "link",
-                "file"
-              ]
-            },
-            "collection": {
-              "type": "string"
-            },
-            "height": {
-              "type": "number"
-            },
-            "width": {
-              "type": "number"
-            },
-            "occurrenceKey": {
-              "type": "string",
-              "minLength": 1
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "external"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "id",
-            "type",
-            "collection"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
