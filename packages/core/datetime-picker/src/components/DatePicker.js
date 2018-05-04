@@ -235,6 +235,7 @@ export default class DatePicker extends Component<Props, State> {
         this.getState().isOpen ? `${colors.B100}` : `transparent`
       }`,
       backgroundColor: 'transparent',
+      padding: '1px',
     };
   };
 

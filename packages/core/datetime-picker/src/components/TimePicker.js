@@ -173,7 +173,7 @@ export default class TimePicker extends Component<Props, State> {
   };
 
   getSubtleControlStyles = (selectStyles: any) => {
-    if (selectStyles) return {};
+    if (selectStyles.control) return {};
     return {
       border: `2px solid ${
         this.getState().isFocused ? `${colors.B100}` : `transparent`

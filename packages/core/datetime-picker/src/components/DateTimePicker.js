@@ -51,11 +51,16 @@ type State = {
   zoneValue: string,
 };
 
-/** Border style is defined by the appearnace and whether it is invalid */
-function getBorderColor(isInvalid: boolean, appearance: 'default' | 'subtle') {
+/** Border style is defined by the appearnace and whether it is invalid. */
+function getBorderStyle(isInvalid: boolean, appearance: 'default' | 'subtle') {
   if (isInvalid) return `2px solid ${colors.R400}`;
   if (appearance === 'subtle') return `2px solid transparent`;
   return `1px solid ${colors.N20}`;
+}
+/** Padding style is defined by the appearnace and whether it is invalid. */
+function getPaddingStyle(isFocused: boolean, appearance: 'default' | 'subtle') {
+  if (appearance === 'subtle' || !isFocused) return `1px`;
+  return '0px';
 }
 
 const Flex = styled.div`
@@ -69,9 +74,9 @@ const Flex = styled.div`
     border: ${
       isFocused
         ? `2px solid ${colors.B100}`
-        : `${getBorderColor(isInvalid, appearance)}`
+        : `${getBorderStyle(isInvalid, appearance)}`
     };
-    padding: ${isFocused ? '0' : '1px'};
+    padding: ${getPaddingStyle(isFocused, appearance)};
   `} &:hover {
     ${({ isFocused, isDisabled }) =>
       !isFocused && !isDisabled
@@ -92,7 +97,7 @@ const styles = {
   control: style => ({
     ...style,
     backgroundColor: 'transparent',
-    border: 0,
+    border: 2,
     borderRadius: 0,
     paddingLeft: 0,
     ':hover': {
