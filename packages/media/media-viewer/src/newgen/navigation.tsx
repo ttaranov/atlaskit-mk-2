@@ -24,7 +24,10 @@ export default class Navigation extends Component<NavigationProps, any> {
         direction === 'next'
           ? items[selectedIndex + 1]
           : items[selectedIndex - 1];
-      onChange(newItem);
+
+      if (newItem) {
+        onChange(newItem);
+      }
     };
   }
 
