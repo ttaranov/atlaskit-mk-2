@@ -51,10 +51,8 @@ export class MediaViewer extends React.Component<Props, State> {
 
   private onClickContentClose = e => {
     const { onClose } = this.props;
-    if (e.target === e.currentTarget) {
-      if (onClose) {
-        onClose();
-      }
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
     }
   };
 }
