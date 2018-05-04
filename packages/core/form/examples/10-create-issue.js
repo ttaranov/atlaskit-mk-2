@@ -13,17 +13,15 @@ import FieldText from '@atlaskit/field-text';
 
 import Form, { Field, FormSection } from '../src';
 
+/* eslint-disable react/no-unused-prop-types*/
 type Props = {
   onClose: Function,
   showKeyline: boolean,
 };
 
-const Header = ({ onClose, showKeyline }: Props) => (
+const Header = ({ showKeyline }: Props) => (
   <ModalHeader showKeyline={showKeyline}>
     <ModalTitle>Create Issue</ModalTitle>
-    <Button onClick={onClose} appearance="link" spacing="none">
-      <CrossIcon label="Close Modal" primaryColor={colors.R400} size="small" />
-    </Button>
   </ModalHeader>
 );
 
@@ -39,7 +37,7 @@ class Footer extends Component<Props, FooterState> {
 
     return (
       <ModalFooter showKeyline={showKeyline}>
-        <Button type="create" appearance="primary">
+        <Button type="submit" appearance="primary">
           Create
         </Button>
         <Button appearance="subtle" onClick={onClose}>
