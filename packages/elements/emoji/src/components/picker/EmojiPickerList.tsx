@@ -5,15 +5,7 @@ import * as classNames from 'classnames';
 import * as uuid from 'uuid/v1';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import {
-  atlassianCategory,
-  customCategory,
-  defaultCategories,
-  frequentCategory,
-  MAX_ORDINAL,
-  customTitle,
-  userCustomTitle,
-} from '../../constants';
+import { customCategory, customTitle, userCustomTitle } from '../../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -34,6 +26,7 @@ import {
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 import { EmojiContext } from '../common/internal-types';
+import { CategoryDescriptionMap } from './categories';
 
 const categoryClassname = 'emoji-category';
 
@@ -62,6 +55,7 @@ interface EmojiGroup {
   emojis: EmojiDescription[];
   title: string;
   category: string;
+  order: number;
 }
 
 /**
@@ -126,23 +120,8 @@ class CategoryTracker {
   }
 }
 
-const titleOrder = [
-  frequentCategory,
-  ...defaultCategories,
-  atlassianCategory,
-  userCustomTitle,
-  customTitle,
-];
-
-const titleComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
-  let title1 = titleOrder.indexOf(eg1.title);
-  let title2 = titleOrder.indexOf(eg2.title);
-
-  title1 = title1 === -1 ? MAX_ORDINAL : title1;
-  title2 = title2 === -1 ? MAX_ORDINAL : title2;
-
-  return title1 - title2;
-};
+const byOrder = (emojiGroupA: EmojiGroup, emojiGroupB: EmojiGroup) =>
+  emojiGroupA.order - emojiGroupB.order;
 
 export default class EmojiPickerVirtualList extends PureComponent<
   Props,
@@ -242,6 +221,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     items.push(
       new CategoryHeadingItem({
         id: this.categoryId(group.category),
+        categoryId: group.category,
         title: group.title,
         className: categoryClassname,
       }),
@@ -292,6 +272,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
             category: 'Search',
             title: 'Search results',
             emojis,
+            order: 0,
           }),
         ];
       } else {
@@ -339,6 +320,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
       emojis: [],
       title: userCustomTitle,
       category: customCategory,
+      order: 11,
     };
 
     const list: EmojiGroup[] = [];
@@ -351,13 +333,15 @@ export default class EmojiPickerVirtualList extends PureComponent<
         if (existingCategories.has(currentCategory)) {
           currentGroup = existingCategories.get(currentCategory);
         } else {
+          const categoryDescription = CategoryDescriptionMap[currentCategory];
           currentGroup = {
             emojis: [],
             title:
               currentCategory === customCategory
                 ? customTitle
-                : currentCategory,
+                : categoryDescription.name,
             category: currentCategory,
+            order: categoryDescription.order,
           };
           existingCategories.set(currentCategory, currentGroup);
           list.push(currentGroup);
@@ -378,7 +362,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     if (userCustomGroup.emojis.length > 0) {
       list.push(userCustomGroup);
     }
-    this.allEmojiGroups = list.sort(titleComparator);
+    this.allEmojiGroups = list.sort(byOrder);
   };
 
   private repaintList = () => {

@@ -62,7 +62,7 @@ export const emojisVisible = (picker, list) => hasSelector(picker, Emoji, list);
 
 const nodeIsCategory = (category: string, n) =>
   n.is(EmojiPickerCategoryHeading) &&
-  n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase();
+  n.prop('categoryId').toLocaleLowerCase() === category.toLocaleLowerCase();
 
 export const findCategoryHeading = (category: string, component) =>
   component
@@ -131,10 +131,7 @@ export const showCategory = (
     return waitUntil(
       () =>
         component.update() &&
-        categoryVisible(
-          categoryTitle || category,
-          component.find(EmojiPickerList),
-        ),
+        categoryVisible(category, component.find(EmojiPickerList)),
     );
   });
 };
