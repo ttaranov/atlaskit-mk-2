@@ -939,6 +939,32 @@ System.out.println("There are " + count + " values >= 5");`,
     {
       type: 'panel',
       attrs: {
+        panelType: 'success',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a success panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'panel',
+      attrs: {
         panelType: 'warning',
       },
       content: [
@@ -948,6 +974,32 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'text',
               text: 'This is a warning panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'error',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a error panel with ',
             },
             {
               type: 'text',
