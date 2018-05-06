@@ -39,6 +39,6 @@ export default () => (
     columns={[Title, Description]}
     headers={['Title', 'Description']}
     columnWidths={['100px', '300px']}
-    items={getItemsData}
+    rootItems={staticData.children}
   />
 );

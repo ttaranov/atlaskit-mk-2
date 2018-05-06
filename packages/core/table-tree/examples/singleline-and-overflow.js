@@ -37,7 +37,7 @@ export default () => (
       <Header width={200}>Description</Header>
     </Headers>
     <Rows
-      items={getItemsData}
+      rootItems={staticData}
       render={({ title, description }) => (
         <Row itemId={title} hasChildren={false}>
           <Cell singleLine>{title}</Cell>

@@ -1,13 +1,9 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
-import staticData from './data-cleancode-toc.json';
+import Data from './data-cleancode-toc.json';
 
-function getItemsData(parent = staticData) {
-  return parent.children;
-}
-
-export default () => (
+const StaticData = ({ tableData }) => (
   <TableTree>
     <Headers>
       <Header width={300}>Chapter title</Header>
@@ -15,12 +11,14 @@ export default () => (
       <Header width={100}>Page</Header>
     </Headers>
     <Rows
-      rootItems={staticData.children}
-      render={({ title, numbering, page, children }) => (
+      rootItems={tableData}
+      render={({ title, numbering, page, hasChildren, children }) => (
         <Row
+          expandLabel={'Expand'}
+          collapseLabel={'Collapse'}
           itemId={numbering}
           childItems={children}
-          hasChildren={children.length > 0}
+          hasChildren={children && !!children.length}
         >
           <Cell singleLine>{title}</Cell>
           <Cell singleLine>{numbering}</Cell>
@@ -30,3 +28,5 @@ export default () => (
     />
   </TableTree>
 );
+
+export default () => <StaticData tableData={Data.children} />;

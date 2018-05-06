@@ -78,7 +78,7 @@ export default class extends Component<*, *> {
     });
   }
 
-  loadChildren = parentItem => {
+  loadChildren = (parentItem: Object) => {
     if (parentItem.children) {
       return;
     }

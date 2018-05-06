@@ -13,7 +13,7 @@ type Props = {
    * a promise resolved to such array. Current row's item data is passed as an argument. For root rows, null is passed. */
   // items?: ItemsProvider,
 
-  rootItems: LoadableItems,
+  rootItems: ?LoadableItems,
 
   /** The render prop called each time a row needs to be rendered. Receives item data as its only argument. Should
    * return a Row. */

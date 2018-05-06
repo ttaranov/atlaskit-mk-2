@@ -8,7 +8,7 @@ import Headers from './Headers';
 import Header from './Header';
 import Cell from './Cell';
 
-import { type ItemsProvider, type CSSWidth } from './../types';
+import type { ItemsProvider, LoadableItems, CSSWidth } from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
@@ -24,7 +24,7 @@ type Props = {
 
   // TODO this totally doesn't work now
   /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  items?: ItemsProvider,
+  rootItems?: LoadableItems,
 };
 
 type State = {
@@ -71,12 +71,7 @@ export default class TableTree extends Component<Props, State> {
   }
 
   render() {
-    const {
-      items: getRowChildrenData,
-      headers,
-      columns,
-      columnWidths = [],
-    } = this.props;
+    const { rootItems, headers, columns, columnWidths = [] } = this.props;
     const heads = headers && (
       <Headers>
         {headers.map((header, index) => (
@@ -88,12 +83,16 @@ export default class TableTree extends Component<Props, State> {
       </Headers>
     );
     let rows = null;
-    if (columns && getRowChildrenData) {
+    if (columns && rootItems) {
       rows = (
         <Rows
-          items={getRowChildrenData}
+          rootItems={rootItems}
           render={data => (
-            <Row itemId={data.id} hasChildren={data.hasChildren}>
+            <Row
+              itemId={data.id}
+              childItems={data.children}
+              hasChildren={data.hasChildren}
+            >
               {columns.map((CellContent, index) => (
                 <Cell
                   // eslint-disable-next-line react/no-array-index-key
