@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.2.1
+- [patch] Fix issues with "selectedItem" not being part of the list. [f542262](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f542262)
+
 ## 13.2.0
 - [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
 
