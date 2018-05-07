@@ -33,9 +33,13 @@ export {
 
 export interface MediaOptions {
   provider?: Promise<MediaProvider>;
-  allowMediaSingle?: boolean;
+  allowMediaSingle?: boolean | MediaSingleOptions;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
+}
+
+export interface MediaSingleOptions {
+  disableLayout?: boolean;
 }
 
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
@@ -115,6 +119,20 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   },
 
   contentComponent({ editorView }) {
+    if (!options) {
+      return null;
+    }
+
+    const { allowMediaSingle } = options;
+    const { disableLayout } = allowMediaSingle as MediaSingleOptions;
+
+    if (
+      (typeof allowMediaSingle === 'boolean' && allowMediaSingle === false) ||
+      (typeof disableLayout === 'boolean' && disableLayout === true)
+    ) {
+      return null;
+    }
+
     const pluginState = pluginKey.getState(editorView.state);
 
     return <MediaSingleEdit pluginState={pluginState} />;

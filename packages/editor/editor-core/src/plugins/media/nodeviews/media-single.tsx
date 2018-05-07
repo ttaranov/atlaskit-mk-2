@@ -6,6 +6,9 @@ import { MediaSingle } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 
+const DEFAULT_WIDTH = 250;
+const DEFAULT_HEIGHT = 200;
+
 export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
@@ -14,6 +17,8 @@ export interface MediaSingleNodeProps {
 
 export interface MediaSingleNodeState {
   progress: number;
+  width?: number;
+  height?: number;
 }
 
 export default class MediaSingleNode extends Component<
@@ -81,10 +86,36 @@ export default class MediaSingleNode extends Component<
     return React.Children.only(React.Children.toArray(props.children)[0]);
   };
 
+  private onExternalImageLoaded = ({ width, height }) => {
+    this.setState(
+      {
+        width,
+        height,
+      },
+      () => {
+        this.forceUpdate();
+      },
+    );
+  };
+
   render() {
     const { layout } = this.props.node.attrs;
-    const { width, height } = this.child.props.node.attrs;
     const { progress } = this.state;
+
+    let { width, height, type } = this.child.props.node.attrs;
+
+    if (type === 'external') {
+      const { width: stateWidth, height: stateHeight } = this.state;
+
+      if (width === null) {
+        width = stateWidth || DEFAULT_WIDTH;
+      }
+
+      if (height === null) {
+        height = stateHeight || DEFAULT_HEIGHT;
+      }
+    }
+
     return (
       <MediaSingle
         layout={layout}
@@ -102,6 +133,7 @@ export default class MediaSingleNode extends Component<
             },
             isMediaSingle: true,
             progress,
+            onExternalImageLoaded: this.onExternalImageLoaded,
           } as MediaNodeProps,
         )}
       </MediaSingle>
