@@ -75,12 +75,10 @@ function getChildren() {
 }
 
 function fetchRoots() {
-  console.log('fetchRoots');
   return Promise.resolve(ROOTS);
 }
 
 function fetchChildrenOf(node) {
-  console.log('fetchChildrenOf');
   return Promise.resolve(getChildren());
 }
 
@@ -103,9 +101,9 @@ export default class extends Component<*, *> {
       return;
     }
 
-    getData(parentItem).then(roots => {
+    getData(parentItem).then(items => {
       this.setState({
-        ...toTableTreeData(roots, parentItem, this.state.itemsById),
+        ...toTableTreeData(items, parentItem, this.state.itemsById),
       });
     });
   };

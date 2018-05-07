@@ -22,7 +22,7 @@ test('flat tree', async () => {
   const wrapper = mount(
     <TableTree>
       <Rows
-        items={getFlatItems}
+        rootItems={getFlatItems()}
         render={({ title, page }) => (
           <Row itemId={title} hasChildren={false}>
             <Cell>{title}</Cell>
@@ -61,13 +61,13 @@ test('chevron next to items with children', async () => {
       ],
     },
   ];
-  const getNestedItems = parent => (parent ? parent.children : nestedData);
+  const getNestedItems = () => nestedData;
   const wrapper = mount(
     <TableTree>
       <Rows
-        items={getNestedItems}
+        rootItems={getNestedItems()}
         render={({ title, page, children }) => (
-          <Row itemId={title} hasChildren={!!children}>
+          <Row itemId={title} hasChildren={!!children} childItems={children}>
             <Cell className={'title'}>{title}</Cell>
             <Cell className={'page'}>{page}</Cell>
           </Row>
@@ -97,9 +97,13 @@ test('expanding and collapsing', async () => {
   const wrapper = mount(
     <TableTree>
       <Rows
-        items={getNestedItems}
+        rootItems={getNestedItems()}
         render={({ title, children }) => (
-          <Row itemId={title} hasChildren={children && children.length}>
+          <Row
+            itemId={title}
+            childItems={children}
+            hasChildren={children && children.length}
+          >
             <Cell>{title}</Cell>
           </Row>
         )}
@@ -181,9 +185,9 @@ test('headers and column widths', async () => {
         <Header width={100}>Page #</Header>
       </Headers>
       <Rows
-        items={getNestedItems}
+        rootItems={getNestedItems()}
         render={({ title, page, children }) => (
-          <Row itemId={title} hasChildren={!!children}>
+          <Row itemId={title} childItems={children} hasChildren={!!children}>
             <Cell className={'title'}>{title}</Cell>
             <Cell className={'page'}>{page}</Cell>
           </Row>
