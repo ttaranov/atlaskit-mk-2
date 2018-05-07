@@ -7,6 +7,7 @@ import { Content } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { ErrorMessage } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
 function createContext(subject, blobService?) {
   const token = 'some-token';
@@ -58,6 +59,18 @@ describe('<MediaViewer />', () => {
     const { el, onClose } = createFixture([identifier], identifier);
     el.find(Header).simulate('click');
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('should update navigation', () => {
+    const identifier2 = {
+      id: 'some-id-2',
+      occurrenceKey: 'some-custom-occurrence-key',
+      type: 'file' as MediaItemType,
+    };
+    const { el } = createFixture([identifier, identifier2], identifier);
+    expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
+    el.find(ArrowRightCircleIcon).simulate('click');
+    expect(el.state().selectedItem).toMatchObject({ id: 'some-id-2' });
   });
 
   it('should show an error if selected item is not found in the list', () => {
