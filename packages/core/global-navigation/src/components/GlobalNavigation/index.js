@@ -4,8 +4,7 @@ import React, { Component, Fragment } from 'react';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
 import Avatar from '@atlaskit/avatar';
-import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
-import SignInIcon from '@atlaskit/icon/glyph/sign-in';
+import QuestionIcon from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
@@ -94,9 +93,9 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     const {
       secondaryActions,
       navigation,
-      help = {},
-      profile = {},
-      appSwitcher = {},
+      help,
+      profile,
+      appSwitcher,
       notification,
       people,
     } = this.props;
@@ -133,7 +132,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
 
     if (help) {
       const defaultHelp = {
-        icon: QuestionCircleIcon,
+        icon: QuestionIcon,
         label: 'Help',
         tooltip: 'Help',
       };
@@ -156,18 +155,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltSecondaryItems.push({ ...defaultUser, ...profile });
     }
 
-    if (!profile) {
-      const annonymousUser = {
-        icon: SignInIcon,
-        label: 'Log In',
-        onClick:
-          navigation.redirectToLogin || (() => console.log('Login clicked')),
-        tooltip: 'Log In',
-      };
-      inbuiltSecondaryItems.push(annonymousUser);
-    }
-
-    return [...inbuiltSecondaryItems, ...secondaryActions];
+    return [...secondaryActions, ...inbuiltSecondaryItems];
   };
 
   renderDrawer = (

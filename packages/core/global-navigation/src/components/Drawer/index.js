@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { TransitionGroup } from 'react-transition-group';
 import Blanket from '@atlaskit/blanket';
 
-import { NavigationSubscriber } from '../../../';
+import { NavigationSubscriber } from '@atlaskit/navigation-next';
 import DrawerPrimitive from './primitives';
 import { Fade } from './transitions';
 import type { DrawerProps } from './types';

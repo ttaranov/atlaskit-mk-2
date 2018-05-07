@@ -1,4 +1,4 @@
 // @flow
 
-/** Components */
-export { default as GlobalNavigation } from './components/GlobalNavigation';
+export { default as GlobalNav } from './components/GlobalNav';
+export { default } from './components/GlobalNavigation';

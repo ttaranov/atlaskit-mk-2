@@ -2,6 +2,8 @@
 
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
+import TrayIcon from '@atlaskit/icon/glyph/tray';
+import BitbucketBranchesIcon from '@atlaskit/icon/glyph/bitbucket/branches';
 import {
   LayoutManager,
   NavigationProvider,
@@ -24,6 +26,20 @@ const Global = () => (
     appSwitcher={{}}
     help={{}}
     profile={{}}
+    primaryActions={[
+      {
+        label: 'Your Work',
+        tooltip: 'Your Work',
+        icon: TrayIcon,
+      },
+    ]}
+    secondaryActions={[
+      {
+        label: 'Ngrok Link',
+        tooltip: 'Ngrok Link',
+        icon: BitbucketBranchesIcon,
+      },
+    ]}
   />
 );
 

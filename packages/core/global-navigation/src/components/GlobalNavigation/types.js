@@ -2,7 +2,6 @@
 
 import type { ComponentType } from 'react';
 
-import type { ItemDataShape } from '../../../components/GlobalNav/types';
 import type { NavigationStateInterface } from '../../../state/types';
 
 export type DrawerContentProps = { closeDrawer: () => void };
