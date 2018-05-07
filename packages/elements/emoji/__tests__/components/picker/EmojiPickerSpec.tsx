@@ -162,15 +162,20 @@ describe('<EmojiPicker />', () => {
       await waitUntil(() =>
         helper.emojisVisible(component, getUpdatedList(component)),
       );
-      expect(helper.categoryVisible('flags', component)).toBe(false);
-      helper.showCategory('flags', component);
-      await waitUntil(() => helper.categoryVisible('flags', component));
+      const categoryId = 'FLAGS';
+      expect(helper.categoryVisible(categoryId, component)).toBe(false);
+
+      helper.showCategory(categoryId, component);
+      await waitUntil(() => helper.categoryVisible(categoryId, component));
       const list = getUpdatedList(component);
-      const emoji = helper.findEmojiInCategory(helper.findEmoji(list), 'flags');
-      expect(emoji!.category).toEqual('FLAGS');
+      const emoji = helper.findEmojiInCategory(
+        helper.findEmoji(list),
+        categoryId,
+      );
+      expect(emoji!.category).toEqual(categoryId);
       expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith(
         `${analyticsEmojiPrefix}.category.select`,
-        { categoryName: 'FLAGS' },
+        { categoryName: categoryId },
       );
     });
 

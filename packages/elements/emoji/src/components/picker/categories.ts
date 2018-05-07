@@ -11,11 +11,23 @@ import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 
 import { CategoryDescription } from '../../types';
-import { customCategory } from '../../constants';
+import { customCategory, userCustomTitle } from '../../constants';
 
-export type CategoryMap = {
-  [id: string]: CategoryDescription;
-};
+export type CategoryId =
+  | 'FREQUENT'
+  | 'PEOPLE'
+  | 'NATURE'
+  | 'FOODS'
+  | 'ACTIVITY'
+  | 'PLACES'
+  | 'OBJECTS'
+  | 'SYMBOLS'
+  | 'FLAGS'
+  | 'ATLASSIAN'
+  | 'USER_CUSTOM'
+  | 'CUSTOM';
+
+export type CategoryMap = { [id in CategoryId]: CategoryDescription };
 
 export const CategoryDescriptionMap: CategoryMap = {
   FREQUENT: {
@@ -78,9 +90,15 @@ export const CategoryDescriptionMap: CategoryMap = {
     icon: CheckCircleIcon,
     order: 10,
   },
+  USER_CUSTOM: {
+    id: customCategory,
+    name: userCustomTitle,
+    icon: EmojiCustomIcon,
+    order: 11,
+  },
   CUSTOM: {
     id: customCategory,
-    name: 'Custom',
+    name: 'All uploads',
     icon: EmojiCustomIcon,
     order: 12,
   },
