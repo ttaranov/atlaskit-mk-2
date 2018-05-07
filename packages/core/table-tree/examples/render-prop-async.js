@@ -1,6 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
+import TableTree, {
+  Headers,
+  Header,
+  Rows,
+  Row,
+  Cell,
+  toTableTreeData,
+} from '../src';
 import staticData from './data-cleancode-toc.json';
 
 let uuid = 0;
@@ -85,13 +92,8 @@ export default class extends Component<*, *> {
 
   componentDidMount() {
     fetchRoots().then(roots => {
-      const rootsById = {};
-      for (const root of roots) {
-        rootsById[root.id] = root;
-      }
       this.setState({
-        rootIds: roots.map(root => root.id),
-        itemsById: rootsById,
+        ...toTableTreeData(roots),
       });
     });
   }
@@ -102,21 +104,11 @@ export default class extends Component<*, *> {
     }
 
     fetchChildrenOf(parentItem).then(childItems => {
-      const updatedParent = {
-        ...parentItem,
-        childIds: childItems.map(child => child.id),
-      };
-      const addedChildItemsById = {};
-      for (const child of childItems) {
-        addedChildItemsById[child.id] = child;
-      }
-      this.setState({
-        itemsById: {
-          ...this.state.itemsById,
-          ...addedChildItemsById,
-          [parentItem.id]: updatedParent,
-        },
-      });
+      setTimeout(() => {
+        this.setState({
+          ...toTableTreeData(childItems, parentItem, this.state.itemsById),
+        });
+      }, 1000);
     });
   };
 
