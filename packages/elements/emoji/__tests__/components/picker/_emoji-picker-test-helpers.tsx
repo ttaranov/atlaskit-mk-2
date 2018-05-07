@@ -62,7 +62,10 @@ export const emojisVisible = (picker, list) => hasSelector(picker, Emoji, list);
 
 const nodeIsCategory = (category: string, n) =>
   n.is(EmojiPickerCategoryHeading) &&
-  n.prop('categoryId').toLocaleLowerCase() === category.toLocaleLowerCase();
+  n
+    .prop('id')
+    .toLocaleLowerCase()
+    .startsWith(`category_${category.toLocaleLowerCase()}`);
 
 export const findCategoryHeading = (category: string, component) =>
   component

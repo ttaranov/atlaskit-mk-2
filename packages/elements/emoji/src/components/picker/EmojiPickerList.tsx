@@ -221,7 +221,6 @@ export default class EmojiPickerVirtualList extends PureComponent<
     items.push(
       new CategoryHeadingItem({
         id: this.categoryId(group.category),
-        categoryId: group.category,
         title: group.title,
         className: categoryClassname,
       }),
