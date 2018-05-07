@@ -31,6 +31,7 @@ const Global = () => (
         label: 'Your Work',
         tooltip: 'Your Work',
         icon: TrayIcon,
+        size: 'small',
       },
     ]}
     secondaryActions={[
@@ -38,6 +39,7 @@ const Global = () => (
         label: 'Ngrok Link',
         tooltip: 'Ngrok Link',
         icon: BitbucketBranchesIcon,
+        size: 'small',
       },
     ]}
   />

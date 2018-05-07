@@ -27,10 +27,10 @@ export type ThemedProductComponentStyles<Props> = {
   dark: ProductComponentTheme<Props>,
   settings: ProductComponentTheme<Props>,
 };
-
 // This is the shape of a theme 'mode', e.g. light, dark and settings modes
 export type Mode = {
   globalNav: GlobalComponentTheme<void>,
+  scrollHint: ProductComponentTheme<void>,
 };
 
 export type ProductTheme = {
