@@ -1,5 +1,7 @@
 # @atlaskit/field-text-area
 
+## 2.0.3
+
 ## 2.0.2
 
 - [patch] Form package developer preview release [9b28847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b28847)

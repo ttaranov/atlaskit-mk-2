@@ -1,5 +1,7 @@
 # @atlaskit/field-base
 
+## 9.0.2
+
 ## 9.0.1
 - [patch] Form developer preview [d8b2b03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8b2b03)
 - [patch] Form package developer preview release [9b28847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b28847)

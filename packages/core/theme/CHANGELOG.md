@@ -1,5 +1,9 @@
 # @atlaskit/theme
 
+## 3.1.1
+- [patch] releasing all compo that depends on theme [86a82d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86a82d2)
+- [patch] Re-release to fix changes merged with @atlaskit/form [baa3c20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/baa3c20)
+
 ## 3.1.0
 - [minor] Added ability to specify an object as the badge appearance. Added an Appearance export to theme so that we can use strings and objects for appearance theming." [6e89615](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e89615)
 

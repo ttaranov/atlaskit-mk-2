@@ -1,5 +1,7 @@
 # @atlaskit/icon
 
+## 11.1.1
+
 ## 11.1.0
 - [minor] Add label icon [72baa86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72baa86)
 - [minor] Add a new label icon [1afe4fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1afe4fe)

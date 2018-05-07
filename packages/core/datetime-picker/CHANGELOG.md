@@ -1,5 +1,7 @@
 # @atlaskit/datetime-picker
 
+## 3.0.6
+
 ## 3.0.5
 - [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
 

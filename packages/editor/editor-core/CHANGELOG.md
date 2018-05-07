@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 71.1.8
+
 ## 71.1.7
 - [patch] ED-4542 Fix replacing media at the end of the doc [a3c6c3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3c6c3b)
 

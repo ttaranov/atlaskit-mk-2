@@ -1,5 +1,7 @@
 # @atlaskit/button
 
+## 7.2.1
+
 ## 7.2.0
 - [minor] Add ariaLabel prop to button so that it can be passed to the underlying component [d7a1e7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7a1e7e)
 

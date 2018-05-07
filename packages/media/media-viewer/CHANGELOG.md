@@ -1,5 +1,7 @@
 # @atlaskit/media-viewer
 
+## 13.2.3
+
 ## 13.2.2
 - [patch] Bump z-index of MVNG [7d1f8fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d1f8fb)
 
