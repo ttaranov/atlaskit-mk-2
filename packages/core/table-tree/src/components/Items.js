@@ -74,7 +74,7 @@ export default class Items extends PureComponent<Props, State> {
     const { depth, items } = this.props;
     return (
       <LoaderItem
-        isCompleting={!!items}
+        isCompleting={!!(items && items.length)}
         onComplete={this.handleLoaderComplete}
         depth={depth + 1}
       />

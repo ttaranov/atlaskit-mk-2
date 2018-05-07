@@ -42,28 +42,30 @@ const ROOTS = [
   },
 ];
 
-const CHILDREN = [
-  {
-    title: 'There Will Be Code',
-    id: ++uuid,
-    page: 2,
-    numbering: '1.1',
-    hasChildren: true,
-  },
-  {
-    title: 'Bad code',
-    id: ++uuid,
-    page: 3,
-    numbering: '1.2',
-  },
-  {
-    title: 'The Total Cost of Owning a Mess',
-    id: ++uuid,
-    page: 4,
-    numbering: '1.3',
-    hasChildren: true,
-  },
-];
+function getChildren() {
+  return [
+    {
+      title: 'There Will Be Code',
+      id: ++uuid,
+      page: 2,
+      numbering: '1.1',
+      hasChildren: true,
+    },
+    {
+      title: 'Bad code',
+      id: ++uuid,
+      page: 3,
+      numbering: '1.2',
+    },
+    {
+      title: 'The Total Cost of Owning a Mess',
+      id: ++uuid,
+      page: 4,
+      numbering: '1.3',
+      hasChildren: true,
+    },
+  ];
+}
 
 function fetchRoots() {
   console.log('fetchRoots');
@@ -72,7 +74,7 @@ function fetchRoots() {
 
 function fetchChildrenOf(node) {
   console.log('fetchChildrenOf');
-  return Promise.resolve(CHILDREN);
+  return Promise.resolve(getChildren());
 }
 
 export default class extends Component<*, *> {

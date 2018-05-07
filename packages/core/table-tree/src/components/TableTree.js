@@ -20,10 +20,11 @@ type Props = {
   /** The headers of the respective columns of the table. */
   headers?: Array<string>,
 
+  /** This will be rendered as content of Table tree, In most cases you are would need to pass Row Element that is exported from table-tree */
   children?: Node,
 
   // TODO this totally doesn't work now
-  /** The function that will be used to provide data for rows at a particular level in the hierarchy */
+  /** Array of root items */
   rootItems?: LoadableItems,
 };
 
@@ -87,12 +88,8 @@ export default class TableTree extends Component<Props, State> {
       rows = (
         <Rows
           rootItems={rootItems}
-          render={data => (
-            <Row
-              itemId={data.id}
-              childItems={data.children}
-              hasChildren={data.hasChildren}
-            >
+          render={({ id, children, hasChildren, content }) => (
+            <Row itemId={id} childItems={children} hasChildren={hasChildren}>
               {columns.map((CellContent, index) => (
                 <Cell
                   // eslint-disable-next-line react/no-array-index-key
@@ -100,7 +97,7 @@ export default class TableTree extends Component<Props, State> {
                   columnIndex={index}
                   width={columnWidths[index]}
                 >
-                  <CellContent {...data.content} />
+                  <CellContent {...content} />
                 </Cell>
               ))}
             </Row>

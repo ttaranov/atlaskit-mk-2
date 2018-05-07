@@ -42,16 +42,17 @@ type Props = {
 };
 
 export default class Row extends PureComponent<Props> {
-  componentWillUpdate(nextProps: Props) {
+  componentDidUpdate(prevProps: Props) {
     const isExpandChanged =
-      Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged || !nextProps.data) {
+      Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
+    if (!isExpandChanged || !this.props.data) {
       return;
     }
-    if (nextProps.isExpanded && this.props.onExpand) {
-      this.props.onExpand(nextProps.data);
-    } else if (!nextProps.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse(nextProps.data);
+
+    if (this.props.isExpanded && this.props.onExpand) {
+      this.props.onExpand(this.props.data);
+    } else if (!this.props.isExpanded && this.props.onCollapse) {
+      this.props.onCollapse(this.props.data);
     }
   }
 
