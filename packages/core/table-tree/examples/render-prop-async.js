@@ -84,6 +84,10 @@ function fetchChildrenOf(node) {
   return Promise.resolve(getChildren());
 }
 
+function getData(parentItem: ?Object) {
+  return !parentItem ? fetchRoots() : fetchChildrenOf(parentItem);
+}
+
 export default class extends Component<*, *> {
   state = {
     rootIds: null,
@@ -91,24 +95,18 @@ export default class extends Component<*, *> {
   };
 
   componentDidMount() {
-    fetchRoots().then(roots => {
-      this.setState({
-        ...toTableTreeData(roots),
-      });
-    });
+    this.loadTableData();
   }
 
-  loadChildren = (parentItem: Object) => {
-    if (parentItem.childIds) {
+  loadTableData = (parentItem: ?Object) => {
+    if (parentItem && parentItem.childIds) {
       return;
     }
 
-    fetchChildrenOf(parentItem).then(childItems => {
-      setTimeout(() => {
-        this.setState({
-          ...toTableTreeData(childItems, parentItem, this.state.itemsById),
-        });
-      }, 1000);
+    getData(parentItem).then(roots => {
+      this.setState({
+        ...toTableTreeData(roots, parentItem, this.state.itemsById),
+      });
     });
   };
 
@@ -128,7 +126,7 @@ export default class extends Component<*, *> {
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
-              onExpand={this.loadChildren}
+              onExpand={this.loadTableData}
               childItems={childIds && childIds.map(id => itemsById[id])}
               hasChildren={hasChildren}
             >
