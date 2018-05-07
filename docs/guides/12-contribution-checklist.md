@@ -1,17 +1,15 @@
 # Contribution checklist
 
-Related reading:
+Prior to contributing, please make sure you have created an issue to discuss the contribution following our [guide](./contributing)
 
-* [Contributing](./contributing)
-
-In order to maintain a high bar of quality for Atlaskit, we've laid out a few things that we want to make sure are covered in each contribution.
+We rely heavily on contributions outside of our team to make Atlaskit great. In order to maintain a high bar of quality for Atlaskit, we've laid out a few things that we want to make sure are covered in each contribution.
 
 ## Development
 
 There's a few aspects of development we'll cover here:
 
 * Testing
-* Cutting code
+* Review
 * Documentation
 
 ### Testing
@@ -54,7 +52,7 @@ If you're introducing a new architectural pattern, or something core to the main
 
 _See the [component design](./component-design) docs for more information on how all this stuff fits together._
 
-## In review
+## Review
 
 * Design should review the examples on the website.
 * Ensure a core maintainer is added to the review. They should also approve the PR before it's merged. Core maintainers can be found in the `maintainers` field in the `package.json`.
