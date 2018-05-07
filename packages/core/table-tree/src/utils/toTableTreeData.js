@@ -4,8 +4,10 @@ export default function toTableTreeData(
   rowsData: Array<Object> | Object,
   parentItem: ?Object = null,
   oldItemsById: ?Object,
-  keyId: string = 'id',
-  customChildId: string = 'childIds',
+  {
+    keyId = 'id',
+    childId = 'childIds',
+  }: { keyId?: string, childId?: string } = {},
 ): {
   itemsById: Object,
   rootIds?: Array<mixed>,
@@ -24,7 +26,7 @@ export default function toTableTreeData(
 
   const updatedParentItem = {
     ...parentItem,
-    [customChildId]: rowsData.map(child => child[keyId]),
+    [childId]: rowsData.map(child => child[keyId]),
   };
 
   return {
