@@ -12,7 +12,7 @@ export default function toTableTreeData(
 } {
   let newItemsById = {};
   for (const rowData of rowsData) {
-    newItemsById[rowData.id] = rowData;
+    newItemsById[rowData[keyId]] = rowData;
   }
 
   if (parentItem === null || parentItem === undefined) {
@@ -24,7 +24,7 @@ export default function toTableTreeData(
 
   let updatedParentItem = {
     ...parentItem,
-    [customChildId]: rowsData.map(child => child.id),
+    [customChildId]: rowsData.map(child => child[keyId]),
   };
 
   return {
