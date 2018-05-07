@@ -5,6 +5,7 @@ import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
 import { Content } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
+import { ErrorMessage } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
@@ -66,10 +67,38 @@ describe('<MediaViewer />', () => {
       occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType,
     };
-
     const { el } = createFixture([identifier, identifier2], identifier);
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
     el.find(ArrowRightCircleIcon).simulate('click');
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id-2' });
+  });
+
+  it('should show an error if selected item is not found in the list', () => {
+    const list = [
+      {
+        id: 'some-id',
+        occurrenceKey: 'some-custom-occurrence-key',
+        type: 'file' as MediaItemType,
+      },
+    ];
+    const selectedItem = {
+      id: 'some-id-2',
+      occurrenceKey: 'some-custom-occurrence-key',
+      type: 'file' as MediaItemType,
+    };
+    const { el } = createFixture(list, selectedItem);
+    expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  it('the error view show close on click', () => {
+    const selectedItem = {
+      id: 'some-id-2',
+      occurrenceKey: 'some-custom-occurrence-key',
+      type: 'file' as MediaItemType,
+    };
+    const { el, onClose } = createFixture([], selectedItem);
+    expect(el.find(ErrorMessage)).toHaveLength(1);
+    el.find(Content).simulate('click');
+    expect(onClose).toHaveBeenCalled();
   });
 });

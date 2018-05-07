@@ -18,6 +18,7 @@ export default class FieldTextStateless extends Component<
     onChange: () => {},
     required: false,
     type: 'text',
+    isValidationHidden: false,
   };
 
   input: ?HTMLInputElement;
@@ -50,6 +51,7 @@ export default class FieldTextStateless extends Component<
           isInvalid={this.props.isInvalid}
           isReadOnly={this.props.isReadOnly}
           isRequired={this.props.required}
+          isValidationHidden={this.props.isValidationHidden}
         >
           <Input
             autoComplete={this.props.autoComplete}

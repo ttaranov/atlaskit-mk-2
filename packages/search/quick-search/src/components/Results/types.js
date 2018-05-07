@@ -1,5 +1,5 @@
 // @flow
-import type { Node, Element } from 'react';
+import type { Node, Element, ComponentType } from 'react';
 
 type AnalyticsData = {};
 
@@ -47,6 +47,8 @@ export type ResultType = CommonResultProps & {
   subText?: string,
   /** Main text to be displayed as the item. */
   text: Element<any> | string,
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 export type ContainerResultType = CommonResultProps & {
