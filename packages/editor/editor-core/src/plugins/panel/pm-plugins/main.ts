@@ -29,7 +29,7 @@ export class PanelState {
   private activeNode: Node | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
 
-  element?: HTMLElement | undefined;
+  element?: HTMLElement;
   activePanelType?: string | undefined;
   toolbarVisible?: boolean | undefined;
   editorFocused: boolean = false;
@@ -74,7 +74,7 @@ export class PanelState {
         this.editorFocused &&
         !!newPanel &&
         (domEvent || this.element !== newElement);
-      this.element = newElement;
+      this.element = newElement || undefined;
       this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));
     }
@@ -88,18 +88,18 @@ export class PanelState {
     }
   }
 
-  private getDomElement(domAtPos: DomAtPos): HTMLElement | undefined {
+  private getDomElement(domAtPos: DomAtPos): HTMLElement | null {
     const { state: { selection, schema: { nodes: { panel } } } } = this;
     let node = findParentDomRefOfType(panel, domAtPos)(
       selection,
-    ) as HTMLElement;
+    ) as HTMLElement | null;
     if (node) {
       // getting panel nodeView wrapper
-      while (!node.attributes['data-panel-type']) {
-        node = node.parentNode as HTMLElement;
+      while (node && !node.attributes['data-panel-type']) {
+        node = node.parentElement;
       }
-      return node;
     }
+    return node;
   }
 }
 
@@ -108,7 +108,7 @@ export type PanelStateSubscriber = (state: PanelState) => any;
 export const stateKey = new PluginKey('panelPlugin');
 
 // TODO: Fix types (ED-2987)
-export const createPlugin = () =>
+export const createPlugin = ({ portalProviderAPI }) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {
@@ -134,7 +134,7 @@ export const createPlugin = () =>
     },
     props: {
       nodeViews: {
-        panel: panelNodeView,
+        panel: panelNodeView(portalProviderAPI),
       },
       handleClick(view: EditorView, event) {
         stateKey

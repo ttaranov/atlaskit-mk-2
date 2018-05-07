@@ -123,6 +123,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             UNSAFE_allowQuickInsert={true}
+            delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
             allowCodeBlocks={true}
             allowLists={true}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent, ComponentClass } from 'react';
-import { EventDispatcher } from '../event-dispatcher';
+import { EventDispatcher } from '../../event-dispatcher';
 
 export interface ConnectProps {
   [key: string]: any;

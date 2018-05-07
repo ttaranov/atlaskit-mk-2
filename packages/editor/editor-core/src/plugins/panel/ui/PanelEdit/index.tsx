@@ -47,7 +47,7 @@ export interface Props {
 
 export interface State {
   toolbarVisible: boolean | undefined;
-  target?: HTMLElement | undefined;
+  target?: HTMLElement;
   activePanelType?: string | undefined;
 }
 
