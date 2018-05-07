@@ -23,7 +23,7 @@ However, your component may also require further testing:
 
 * Integration test
 * Functional test
-* Visual Regression (work in progress)
+* Visual regression test (work in progress)
 * Performance test
 
 _For more information on testing components, see the docs on [testing](./testing)._
