@@ -14,6 +14,7 @@ export const Blanket = styled.div`
   bottom: 0;
   right: 0;
   background-color: #1b2638;
+  z-index: 999;
 `;
 
 export const HeaderWrapper = styled.div`
