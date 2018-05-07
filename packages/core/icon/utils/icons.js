@@ -159,6 +159,7 @@ import EmojiKeyboardIcon from '../glyph/emoji/keyboard';
 import EmojiNatureIcon from '../glyph/emoji/nature';
 import EmojiObjectsIcon from '../glyph/emoji/objects';
 import EmojiPeopleIcon from '../glyph/emoji/people';
+import EmojiProductivityIcon from '../glyph/emoji/productivity';
 import EmojiSymbolsIcon from '../glyph/emoji/symbols';
 import EmojiTravelIcon from '../glyph/emoji/travel';
 import ErrorIcon from '../glyph/error';
@@ -1319,6 +1320,12 @@ export default {
     component: EmojiPeopleIcon,
     componentName: 'EmojiPeopleIcon',
     package: '@atlaskit/icon/glyph/emoji/people',
+  },
+  'emoji/productivity': {
+    keywords: ['emoji/productivity', 'emojiproductivity'],
+    component: EmojiProductivityIcon,
+    componentName: 'EmojiProductivityIcon',
+    package: '@atlaskit/icon/glyph/emoji/productivity',
   },
   'emoji/symbols': {
     keywords: ['emoji/symbols', 'emojisymbols', 'heart', 'love'],

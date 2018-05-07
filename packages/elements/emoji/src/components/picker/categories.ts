@@ -8,7 +8,7 @@ import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
 import EmojiPeopleIcon from '@atlaskit/icon/glyph/emoji/people';
 import EmojiSymbolsIcon from '@atlaskit/icon/glyph/emoji/symbols';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
-import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import EmojiProductivityIcon from '@atlaskit/icon/glyph/emoji/productivity';
 
 import { CategoryDescription } from '../../types';
 import { customCategory, userCustomTitle } from '../../constants';
@@ -87,7 +87,7 @@ export const CategoryDescriptionMap: CategoryMap = {
   ATLASSIAN: {
     id: 'ATLASSIAN',
     name: 'Productivity',
-    icon: CheckCircleIcon,
+    icon: EmojiProductivityIcon,
     order: 10,
   },
   USER_CUSTOM: {
