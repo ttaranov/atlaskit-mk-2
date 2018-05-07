@@ -82,7 +82,7 @@ function fetchChildrenOf() {
 }
 
 function getData(parentItem: ?Object) {
-  return !parentItem ? fetchRoots() : fetchChildrenOf(parentItem);
+  return !parentItem ? fetchRoots() : fetchChildrenOf();
 }
 
 export default class extends Component<*, *> {

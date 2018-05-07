@@ -80,7 +80,7 @@ export default class extends Component<*, *> {
       return;
     }
 
-    fetchChildrenOf(parentItem).then(childItems => {
+    fetchChildrenOf().then(childItems => {
       // eslint-disable-next-line
       parentItem.children = childItems;
       this.forceUpdate();
