@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
-import { type RowData as RowDataType } from '../src/types';
 import staticData from './data-freeform-nodes.json';
 
 export default class SlowLoad extends Component<

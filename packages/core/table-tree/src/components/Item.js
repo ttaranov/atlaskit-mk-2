@@ -2,11 +2,7 @@
 import React, { PureComponent } from 'react';
 import Items from './Items';
 import toItemId from '../utils/toItemId';
-import {
-  type ItemsProvider,
-  type RenderFunction,
-  type RowData,
-} from './../types';
+import { type RenderFunction, type RowData } from './../types';
 
 type Props = {
   data: RowData,

@@ -2,11 +2,7 @@
 import React, { PureComponent } from 'react';
 import Items from './Items';
 
-import {
-  type ItemsProvider,
-  type RenderFunction,
-  type LoadableItems,
-} from './../types';
+import { type RenderFunction, type LoadableItems } from './../types';
 
 type Props = {
   /** Called when a row is expanded and data is needed for its children. The data should be an array of data items, or

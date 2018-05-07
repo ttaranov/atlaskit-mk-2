@@ -1,9 +1,9 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import Data from './data-cleancode-toc.json';
 
-const StaticData = ({ tableData }) => (
+const StaticData = ({ tableData }: Object) => (
   <TableTree>
     <Headers>
       <Header width={300}>Chapter title</Header>
@@ -12,7 +12,7 @@ const StaticData = ({ tableData }) => (
     </Headers>
     <Rows
       rootItems={tableData}
-      render={({ title, numbering, page, hasChildren, children }) => (
+      render={({ title, numbering, page, children }) => (
         <Row
           expandLabel={'Expand'}
           collapseLabel={'Collapse'}

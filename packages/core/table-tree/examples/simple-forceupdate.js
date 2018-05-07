@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
-import staticData from './data-cleancode-toc.json';
 
 const ROOTS = [
   {
@@ -56,12 +55,10 @@ const CHILDREN = [
 ];
 
 function fetchRoots() {
-  console.log('fetchRoots');
   return Promise.resolve(ROOTS);
 }
 
-function fetchChildrenOf(node) {
-  console.log('fetchChildrenOf');
+function fetchChildrenOf() {
   return Promise.resolve(CHILDREN);
 }
 
@@ -84,6 +81,7 @@ export default class extends Component<*, *> {
     }
 
     fetchChildrenOf(parentItem).then(childItems => {
+      // eslint-disable-next-line
       parentItem.children = childItems;
       this.forceUpdate();
     });

@@ -8,7 +8,6 @@ import TableTree, {
   Cell,
   toTableTreeData,
 } from '../src';
-import staticData from './data-cleancode-toc.json';
 
 let uuid = 0;
 
@@ -78,7 +77,7 @@ function fetchRoots() {
   return Promise.resolve(ROOTS);
 }
 
-function fetchChildrenOf(node) {
+function fetchChildrenOf() {
   return Promise.resolve(getChildren());
 }
 

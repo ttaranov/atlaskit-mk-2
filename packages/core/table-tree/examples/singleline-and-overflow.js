@@ -15,10 +15,6 @@ const staticData = [
   },
 ];
 
-function getItemsData(parent) {
-  return parent ? [] : staticData;
-}
-
 const OverflowingBox = styled.div`
   background: red;
   width: 150px;

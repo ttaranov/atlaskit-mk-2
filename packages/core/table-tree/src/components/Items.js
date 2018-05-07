@@ -2,11 +2,7 @@
 import React, { PureComponent } from 'react';
 import Item from './Item';
 import LoaderItem from './LoaderItem';
-import {
-  type ItemsProvider,
-  type RenderFunction,
-  type LoadableItems,
-} from './../types';
+import { type RenderFunction, type LoadableItems } from './../types';
 
 type Props = {
   parentData?: Object,

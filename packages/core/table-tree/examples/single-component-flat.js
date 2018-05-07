@@ -30,10 +30,6 @@ const staticData = {
 const Title = props => <span>{props.title}</span>;
 const Description = props => <span>{props.description}</span>;
 
-function getItemsData(parent = staticData) {
-  return (parent && parent.children) || [];
-}
-
 export default () => (
   <TableTree
     columns={[Title, Description]}

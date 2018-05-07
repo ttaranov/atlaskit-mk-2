@@ -3,10 +3,6 @@ import React from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
-function getItemsData(parent = staticData) {
-  return parent.children;
-}
-
 export default () => (
   <TableTree>
     <Headers>

@@ -77,8 +77,6 @@ test('expanding and collapsing', async () => {
     c('Chapter 3'),
   ];
 
-  const getNestedItems = parent => (parent ? parent.children : nestedData);
-
   const wrapper = mount(
     <TableTree>
       <Rows

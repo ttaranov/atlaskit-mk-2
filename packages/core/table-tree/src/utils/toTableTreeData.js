@@ -10,7 +10,7 @@ export default function toTableTreeData(
   itemsById: Object,
   rootIds?: Array<mixed>,
 } {
-  let newItemsById = {};
+  const newItemsById = {};
   for (const rowData of rowsData) {
     newItemsById[rowData[keyId]] = rowData;
   }
@@ -22,7 +22,7 @@ export default function toTableTreeData(
     };
   }
 
-  let updatedParentItem = {
+  const updatedParentItem = {
     ...parentItem,
     [customChildId]: rowsData.map(child => child[keyId]),
   };
