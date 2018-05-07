@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 16.0.8
+- [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
+
 ## 16.0.7
 
 ## 16.0.6
