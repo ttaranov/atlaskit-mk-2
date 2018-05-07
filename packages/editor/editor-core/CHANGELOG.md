@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.1.7
+- [patch] ED-4542 Fix replacing media at the end of the doc [a3c6c3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3c6c3b)
+
 ## 71.1.6
 - [patch] Fix issue where autoformatting of links that ended in punctuation like '?' would incorrectly include the punctuation in the link itself (and omit the first character). ED-4288 [352f5c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/352f5c4)
 
