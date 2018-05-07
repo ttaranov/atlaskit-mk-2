@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.2.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
 ## 71.1.8
 
 ## 71.1.7

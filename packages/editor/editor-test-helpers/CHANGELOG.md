@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.6
+- [patch] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
 ## 3.1.5
 - [patch] ED-4431, selecting block extension creates a wrng selection. [c078cf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c078cf2)
 

@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.3.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
 ## 9.2.14
 - [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
 
