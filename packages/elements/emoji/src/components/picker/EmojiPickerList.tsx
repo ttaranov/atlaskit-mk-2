@@ -335,7 +335,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     if (
       emoji.category === customCategory &&
       currentUser &&
-      emoji.creatorUserId == currentUser.id
+      emoji.creatorUserId === currentUser.id
     ) {
       this.addToCategory(categories, emoji, 'USER_CUSTOM');
     }
