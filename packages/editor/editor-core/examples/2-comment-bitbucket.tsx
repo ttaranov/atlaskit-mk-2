@@ -119,6 +119,11 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     disabled={disabled}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
+                    media={{
+                      allowMediaSingle: {
+                        disableLayout: true,
+                      },
+                    }}
                     legacyImageUploadProvider={imageUploadProvider}
                     shouldFocus={true}
                     onChange={onChange}

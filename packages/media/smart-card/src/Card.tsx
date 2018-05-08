@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
 import { ErrorCard } from '@atlaskit/media-ui';
 import { Client } from './Client';
-import { convert } from './convert';
+import { extractBlockViewPropsFromJSONLD } from './extract';
 import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
 
 export const LoadingView = () => null;
@@ -92,7 +92,7 @@ export class Card extends React.Component<CardProps, CardState> {
     try {
       const { url } = this.props;
       const json = await client.get(url);
-      this.setState(getLoadedState(convert(json.data)));
+      this.setState(getLoadedState(extractBlockViewPropsFromJSONLD(json.data)));
     } catch (error) {
       // swallow the error and show a generic error message
       this.setState(getErroredState());

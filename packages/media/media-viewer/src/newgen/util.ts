@@ -1,5 +1,6 @@
 import { Context, isClientBasedAuth } from '@atlaskit/media-core';
 import { stringify } from 'query-string';
+import { Identifier } from './domain';
 
 export async function constructAuthTokenUrl(
   url: string,
@@ -50,3 +51,14 @@ function buildIssuerBasedUrl(
 function buildUrl(host: string, url: string, query: Object) {
   return `${host}${url}?${stringify(query)}`;
 }
+
+export const getSelectedIndex = (
+  items: Identifier[],
+  selectedItem: Identifier,
+) => {
+  return items.findIndex(
+    item =>
+      item.id === selectedItem.id &&
+      item.occurrenceKey === selectedItem.occurrenceKey,
+  );
+};

@@ -1,5 +1,16 @@
 # @atlaskit/media-viewer
 
+## 13.2.3
+
+## 13.2.2
+- [patch] Bump z-index of MVNG [7d1f8fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d1f8fb)
+
+## 13.2.1
+- [patch] Fix issues with "selectedItem" not being part of the list. [f542262](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f542262)
+
+## 13.2.0
+- [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
+
 ## 13.1.3
 - [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
 

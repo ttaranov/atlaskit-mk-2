@@ -545,6 +545,8 @@ describe('Tooltip', () => {
       const tooltip = getPortalContents(wrapper);
 
       expect(tooltip).toMatchSnapshot();
+      // $FlowFixMe - jest-styled-components
+      expect(tooltip).toHaveStyleRule('overflow-wrap', 'break-word');
     });
 
     it('should render custom tooltip when component prop passed in', () => {

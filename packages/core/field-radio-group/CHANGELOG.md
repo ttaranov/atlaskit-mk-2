@@ -1,5 +1,7 @@
 # @atlaskit/field-radio-group
 
+## 2.0.2
+
 ## 2.0.1
 - [patch] Fix typos and pass isRequired to label [ffc393c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffc393c)
 

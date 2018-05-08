@@ -381,4 +381,15 @@ describe('HomeQuickSearchContainer', () => {
       expect(wrapper.find(SearchError).exists()).toBe(false);
     });
   });
+
+  it('should pass through the linkComponent prop', async () => {
+    const MyLinkComponent = () => <div />;
+    const wrapper = render({
+      linkComponent: MyLinkComponent,
+    });
+
+    expect(wrapper.find(GlobalQuickSearch).prop('linkComponent')).toBe(
+      MyLinkComponent,
+    );
+  });
 });

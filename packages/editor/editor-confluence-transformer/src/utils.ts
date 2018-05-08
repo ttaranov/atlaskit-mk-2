@@ -345,7 +345,10 @@ export function parseMacro(node: Element): Macro {
 export const getExtensionMacroParams = (params: object) => {
   const macroParams = {};
   Object.keys(params).forEach(key => {
-    macroParams[key] = { value: params[key] };
+    /** Safe check for empty keys */
+    if (key) {
+      macroParams[key] = { value: params[key] };
+    }
   });
   return macroParams;
 };

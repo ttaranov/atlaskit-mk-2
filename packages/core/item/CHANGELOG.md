@@ -1,5 +1,12 @@
 # @atlaskit/item
 
+## 6.0.2
+
+## 6.0.1
+
+
+- [patch] Fix item content being cut off in windows due to line-height and font anti-aliasing issues [0b4181d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b4181d)
+
 ## 6.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

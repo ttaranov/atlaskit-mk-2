@@ -1,14 +1,18 @@
 // @flow
 import { mount, shallow } from 'enzyme';
 import React from 'react';
+import Spinner from '@atlaskit/spinner';
 import {
   UIAnalyticsEvent,
   AnalyticsContext,
   AnalyticsListener,
 } from '@atlaskit/analytics-next';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
+import IconWrapper from '../src/styled/IconWrapper';
+import ButtonContent from '../src/styled/ButtonContent';
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -158,6 +162,7 @@ describe('ak-button/default-behaviour', () => {
     expect(mount(<Button />).find('button[aria-haspopup]').length).toBe(0);
     expect(mount(<Button />).find('button[aria-expanded]').length).toBe(0);
     expect(mount(<Button />).find('button[aria-controls]').length).toBe(0);
+    expect(mount(<Button />).find('button[aria-label]').length).toBe(0);
     expect(mount(<Button />).find('button[id]').length).toBe(0);
     expect(
       mount(<Button ariaHaspopup />).find('button[aria-haspopup=true]').length,
@@ -167,6 +172,10 @@ describe('ak-button/default-behaviour', () => {
     ).toBe(1);
     expect(
       mount(<Button ariaControls="test" />).find('button[aria-controls="test"]')
+        .length,
+    ).toBe(1);
+    expect(
+      mount(<Button ariaLabel="test" />).find('button[aria-label="test"]')
         .length,
     ).toBe(1);
     expect(mount(<Button id="test" />).find('button[id="test"]').length).toBe(
@@ -216,6 +225,71 @@ describe('ak-button/default-behaviour', () => {
     const button = wrapper.find('StyledButton');
     button.prop('onFocus')();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should respect autofocus', () => {
+    const wrapper = mount(
+      <Button id="testID123" tabIndex={0} autoFocus>
+        button
+      </Button>,
+    );
+    const id = document.activeElement ? document.activeElement.id : null;
+    expect(wrapper.find('button').prop('id')).toEqual(id);
+  });
+
+  describe('isLoading', () => {
+    it('should render the loading spinner when isLoading is true', () => {
+      const wrapper = mount(<Button isLoading>Some text</Button>);
+      expect(wrapper.find(Spinner).length).toEqual(1);
+    });
+    it('should not render the loading spinner when isLoading is false', () => {
+      const wrapper = mount(<Button>Some text</Button>);
+      expect(wrapper.find(Spinner).length).toEqual(0);
+    });
+    it('set the opacity of the text to 0 when isLoading is true', () => {
+      const wrapper = mount(<Button isLoading>Some text</Button>);
+      expect(
+        wrapper
+          .find(ButtonContent)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the iconBefore opacity to 0 when isLoading', () => {
+      const wrapper = mount(
+        <Button isLoading iconBefore={<AtlassianIcon />}>
+          Some text
+        </Button>,
+      );
+      expect(
+        wrapper
+          .find(IconWrapper)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the iconAfter opacity to 0 when isLoading', () => {
+      const wrapper = mount(
+        <Button isLoading iconAfter={<AtlassianIcon />}>
+          Some text
+        </Button>,
+      );
+      expect(
+        wrapper
+          .find(IconWrapper)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(0);
+    });
+    it('set the opacity of the text to undefined when isLoading is false', () => {
+      const wrapper = mount(<Button>Some text</Button>);
+      expect(
+        wrapper
+          .find(ButtonContent)
+          .find('span')
+          .get(0).props.style.opacity,
+      ).toEqual(1);
+    });
   });
 
   it('should trigger onBlur handler on blur', () => {

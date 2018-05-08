@@ -25,6 +25,10 @@ export interface Props {
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
   selected: boolean;
+  url?: string;
+  onExternalImageLoaded?: (
+    dimensions: { width: number; height: number },
+  ) => void;
 }
 
 export default class MediaItem extends PureComponent<Props, {}> {
@@ -56,6 +60,8 @@ export default class MediaItem extends PureComponent<Props, {}> {
       stateManagerFallback,
       selected,
       tempId,
+      url,
+      onExternalImageLoaded,
     } = this.props;
 
     return (
@@ -72,6 +78,8 @@ export default class MediaItem extends PureComponent<Props, {}> {
         appearance={appearance}
         stateManagerFallback={stateManagerFallback}
         selected={selected}
+        url={url}
+        onExternalImageLoaded={onExternalImageLoaded}
       />
     );
   };
