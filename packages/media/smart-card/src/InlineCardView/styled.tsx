@@ -11,6 +11,9 @@ export const A: ComponentClass<LinkHTMLAttributes<{}>> = styled.a`
   border-radius: ${akBorderRadius};
   padding: 2px;
 
+  /* Outline looks bad when link has wrapped */
+  outline: none;
+
   &:hover {
     text-decoration: none;
     background-color: ${akColorN20};
