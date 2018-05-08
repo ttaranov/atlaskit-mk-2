@@ -46,4 +46,7 @@ export default class AndroidBridge implements NativeBridge {
   submitPromise(name: string, uuid: string, args: string) {
     this.promiseBridge.submitPromise(name, uuid, args);
   }
+  updateBlockState(currentBlockType: string) {
+    this.textFormatBridge.updateBlockState(currentBlockType);
+  }
 }

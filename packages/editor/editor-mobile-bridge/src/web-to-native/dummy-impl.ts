@@ -12,4 +12,5 @@ export default class DummyBridge implements NativeBridge {
     return '';
   }
   submitPromise(name: string, uuid: string, args: string) {}
+  updateBlockState(currentBlockType: string) {}
 }

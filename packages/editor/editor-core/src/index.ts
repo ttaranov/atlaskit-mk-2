@@ -33,7 +33,7 @@ export {
   TextFormattingState,
   stateKey as textFormattingStateKey,
 } from './plugins/text-formatting/pm-plugins/main';
-
+export { blockPluginStateKey, BlockTypeState } from './plugins';
 // Used in editor-test-helpers
 
 export { keyCodes } from './keymaps';

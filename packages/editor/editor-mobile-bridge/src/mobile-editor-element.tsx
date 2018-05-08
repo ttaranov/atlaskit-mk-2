@@ -4,6 +4,7 @@ import {
   Editor,
   mentionPluginKey,
   textFormattingStateKey,
+  blockPluginStateKey,
 } from '@atlaskit/editor-core';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf } from './web-to-native/markState';
@@ -60,6 +61,7 @@ class EditorWithState extends Editor {
     }
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
+    subscribeForBlockStateChanges(instance.view);
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
@@ -93,6 +95,16 @@ function subscribeForTextFormatChanges(view: EditorView) {
   if (textFormattingPluginState) {
     textFormattingPluginState.subscribe(state =>
       toNativeBridge.updateTextFormat(JSON.stringify(valueOf(state))),
+    );
+  }
+}
+
+function subscribeForBlockStateChanges(view: EditorView) {
+  let blockState = blockPluginStateKey.getState(view.state);
+  bridge.blockState = blockState;
+  if (blockState) {
+    blockState.subscribe(state =>
+      toNativeBridge.updateBlockState(state.currentBlockType.name),
     );
   }
 }

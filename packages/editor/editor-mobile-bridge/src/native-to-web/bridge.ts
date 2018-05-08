@@ -13,4 +13,5 @@ export default interface NativeToWebBridge {
   onMediaPicked(eventName: string, payload: string);
   onPromiseResolved(uuid: string, paylaod: string);
   onPromiseRejected(uuid: string);
+  onBlockSelected(blockType: string);
 };

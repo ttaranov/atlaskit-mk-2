@@ -6,6 +6,7 @@ export interface MentionBridge {
 export interface TextFormattingBridge {
   updateTextFormat(markStates: string);
   updateText(content: string);
+  updateBlockState(currentBlockType: string);
 }
 
 export interface MediaBridge {

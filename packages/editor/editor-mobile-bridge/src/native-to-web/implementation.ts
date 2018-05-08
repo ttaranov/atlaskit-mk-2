@@ -7,6 +7,7 @@ import {
   TextFormattingState,
   EditorActions,
   CustomMediaPicker,
+  BlockTypeState,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
@@ -19,6 +20,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   transformer: JSONTransformer = new JSONTransformer();
   editorActions: EditorActions = new EditorActions();
   mediaPicker: CustomMediaPicker | undefined;
+  blockState: BlockTypeState | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -105,5 +107,11 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   onPromiseRejected(uuid: string) {
     rejectPromise(uuid);
+  }
+
+  onBlockSelected(blockType: string) {
+    if (this.blockState && this.editorView) {
+      this.blockState.toggleBlockType(blockType, this.editorView);
+    }
   }
 }
