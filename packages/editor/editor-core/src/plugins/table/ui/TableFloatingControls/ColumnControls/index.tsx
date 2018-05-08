@@ -49,8 +49,6 @@ export default class ColumnControls extends Component<Props, any> {
           className={`${className} table-column`}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
-          onClick={this.handleMouseDown}
-          onMouseUp={this.handleMouseDown}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
@@ -81,13 +79,11 @@ export default class ColumnControls extends Component<Props, any> {
 
   private handleMouseDown = event => {
     event.preventDefault();
-    event.stopPropagation();
   };
 
   private selectColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;
     dispatch(selectColumn(column)(state.tr));
-    return true;
   };
 
   private hoverColumn = (column: number) => {
