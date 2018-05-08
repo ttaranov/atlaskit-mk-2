@@ -46,6 +46,11 @@ describe('<MediaViewer />', () => {
     type: 'file' as MediaItemType,
   };
 
+  it('should display an error if data source is not supported', () => {
+    const { el } = createFixture([], identifier);
+    expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture([identifier], identifier);
     el.find(Content).simulate('click');
