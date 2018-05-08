@@ -1,6 +1,5 @@
 // @flow
 
-import { brightness } from 'chromatism';
 import { colors } from '@atlaskit/theme';
 
 import { light } from '../theme/modes';

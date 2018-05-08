@@ -4,7 +4,6 @@ import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import {
   LayoutManager,
-  GlobalItem,
   NavigationProvider,
   light,
 } from '@atlaskit/navigation-next';
@@ -19,7 +18,7 @@ import Avatar from '@atlaskit/avatar';
 import GlobalNavigation from '../src/components/GlobalNavigation';
 import { withTheme } from '../src/theme';
 
-const generateDropDown = Trigger => ({ className }) => (
+const generateDropDown = Trigger => ({ className }: { className: string }) => (
   <Dropdown
     /* The trigger needs to be wrapped in a span so that it can accept the styling class */
     trigger={
