@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Items from './Items';
 
 import { type RenderFunction, type LoadableItems } from './../types';
@@ -16,7 +16,7 @@ type Props = {
   render: RenderFunction,
 };
 
-export default class Rows extends PureComponent<Props> {
+export default class Rows extends Component<Props> {
   render() {
     const { rootItems, render } = this.props;
     return (

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Spinner from '@atlaskit/spinner';
 
 import { Cell, TreeRowContainer, LoaderItemContainer } from '../styled';
@@ -14,7 +14,7 @@ type State = {
   phase: 'loading' | 'complete',
 };
 
-export default class LoaderItem extends PureComponent<Props, State> {
+export default class LoaderItem extends Component<Props, State> {
   static defaultProps = {
     depth: 1,
   };

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Element, type ChildrenArray } from 'react';
+import React, { Component, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
@@ -41,7 +41,7 @@ type Props = {
   childItems?: LoadableItems,
 };
 
-export default class Row extends PureComponent<Props> {
+export default class Row extends Component<Props> {
   componentDidUpdate(prevProps: Props) {
     const isExpandChanged =
       Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);

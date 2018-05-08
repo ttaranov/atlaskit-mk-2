@@ -1,12 +1,11 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Item from './Item';
 import LoaderItem from './LoaderItem';
 import { type RenderFunction, type LoadableItems } from './../types';
 
 type Props = {
   parentData?: Object,
-  // getItemsData: ItemsProvider,
   items: LoadableItems,
   depth?: number,
   render: RenderFunction,
@@ -14,10 +13,9 @@ type Props = {
 
 type State = {
   isLoaderShown: boolean,
-  // itemsData: LoadableItems,
 };
 
-export default class Items extends PureComponent<Props, State> {
+export default class Items extends Component<Props, State> {
   static defaultProps = {
     depth: 0,
   };
@@ -25,8 +23,6 @@ export default class Items extends PureComponent<Props, State> {
   state: State = {
     isLoaderShown: false,
   };
-
-  // loadCancelled = false;
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     if (!nextProps.items && !prevState.isLoaderShown) {
@@ -36,29 +32,6 @@ export default class Items extends PureComponent<Props, State> {
     }
     return null;
   }
-  // TODO remove if we don't need a provider function API
-  //
-  // componentWillMount() {
-  //   if (!this.state.itemsData) {
-  //     this.setState({
-  //       isLoaderShown: true,
-  //     });
-  //     this.loadCancelled = false;
-  //     Promise.resolve()
-  //       .then(() => this.props.getItemsData(this.props.parentData))
-  //       .then(itemsData => {
-  //         if (!this.loadCancelled) {
-  //           this.setState({
-  //             itemsData,
-  //           });
-  //         }
-  //       });
-  //   }
-  // }
-  //
-  // componentWillUnmount() {
-  //   this.loadCancelled = true;
-  // }
 
   handleLoaderComplete = () => {
     this.setState({

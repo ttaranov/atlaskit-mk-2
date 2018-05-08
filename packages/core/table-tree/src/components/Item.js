@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Items from './Items';
 import toItemId from '../utils/toItemId';
 import { type RenderFunction, type RowData } from './../types';
@@ -14,8 +14,7 @@ type State = {
   isExpanded: boolean,
 };
 
-// TODO is it really pure?
-export default class Item extends PureComponent<Props, State> {
+export default class Item extends Component<Props, State> {
   state: State = {
     isExpanded: false,
   };
