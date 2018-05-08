@@ -19,6 +19,7 @@ export const Blanket = styled.div`
 export const HeaderWrapper = styled.div`
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 98px;
   opacity: 0.85;
@@ -34,10 +35,12 @@ export const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: auto;
   align-items: center;
   justify-content: center;
-  overflow: auto;
 `;
+
+export const ListWrapper = styled.div``;
 
 export const ErrorMessage = styled.div`
   color: #b8c7e0;
@@ -58,6 +61,7 @@ export const ArrowsWrapper = styled.div`
   display: flex;
   position: absolute;
   top: 40%;
+  left: 0;
   width: 100%;
 `;
 
