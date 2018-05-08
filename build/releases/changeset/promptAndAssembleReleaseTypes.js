@@ -5,6 +5,7 @@ const bolt = require('bolt');
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const getMustUpdateOn = require('./getMustUpdateOn');
+const inquirer = require('inquirer');
 
 /*::
 type bumpType = 'none' | 'patch' | 'minor' | 'major'
@@ -16,11 +17,12 @@ type dependentType = {
   name: string,
   type?: string,
   dependencies: Array<string>,
-  finalised?: boolean
+  dependents: Array<string>,
+  finalised?: boolean,
+  updateCause?: string[],
 }
 type dependents = {
-  immediate: dependentType[],
-  all: dependentType[],
+  [dependent: string]: dependentType,
 }
 type changesetDependentType = {
   name: string,
@@ -34,6 +36,21 @@ type changesetType = {
   releaseNotes?: any,
 }
 */
+
+function leftPad(indent, msg) {
+  return Array(indent + 1).join(' ') + msg;
+}
+function indentLog(indent, msg) {
+  logger.log(leftPad(indent, msg));
+}
+
+function leftPadOptions(indent, options) {
+  return options.map(o => ({
+    name: leftPad(indent, o),
+    value: o,
+    short: o,
+  }));
+}
 
 function getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces) {
   // a dependent is finalised when all of its dependencies have a release type.
@@ -84,127 +101,155 @@ function getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces) {
 async function promptBumptype({
   mustUpdateBecause,
   mayUpdateBecause,
-  dependentName,
+  dependent,
   updateOptions,
   isSubsequent,
+  level,
 }) {
+  const dependentName = chalk.green(dependent.name);
   const mustUpdateList = chalk.green(mustUpdateBecause.join(', '));
   const mayUpdateList = chalk.green(mayUpdateBecause.join(', '));
 
-  if (isSubsequent)
-    logger.log(
+  const indent = level * 4;
+  // const indent = 0;
+
+  if (isSubsequent && mustUpdateList) {
+    indentLog(
+      indent,
       `Due to other changes you have selected, you need to change the type of release for ${dependentName}`,
     );
-  if (mustUpdateList)
-    logger.log(
+  }
+  if (mustUpdateList) {
+    indentLog(
+      indent,
       `Bumping [${mustUpdateList}] will cause an update to ${dependentName}'s dependencies.`,
     );
-  if (mayUpdateList)
-    logger.log(
+  } else if (mayUpdateList) {
+    indentLog(
+      indent,
       `Bumping [${mayUpdateList}] can cause an update to ${dependentName}'s dependencies.`,
     );
+  }
   return await cli.askList(
-    `What kind of change is this for ${dependentName}?`,
+    leftPad(indent, `What kind of change is this for ${dependentName}?`),
+    updateOptions.map(o => ({
+      name: leftPad(indent, o),
+      value: o,
+      short: o,
+    })),
     updateOptions,
   );
 }
 
+async function promptAndAssembleDependentReleaseTypes(
+  packageNames /*: string[] */,
+  allDependents /*: dependents */,
+  changeset /*: changesetType */,
+  allWorkSpaces /*: any */,
+  level /*: number */,
+) {
+  const packages = packageNames.map(name => allDependents[name]);
+
+  for (let pkg of packages) {
+    if (pkg.type === 'none') {
+      /* Don't ask about dependents of pkg if we are not updating it. */
+      continue;
+    }
+
+    const partitionedDeps = pkg.dependents.reduce(
+      (acc, depName) => {
+        const dep = allDependents[depName];
+        const mustUpdateParams = getMustUpdateOn(allWorkSpaces, dep, pkg.name);
+        const mustUpdate = mustUpdateParams.mustUpdateOn.includes(pkg.type);
+
+        if (changeset.releases.find(r => r.name === depName)) {
+          acc.released.push(depName);
+        } else if (mustUpdate) {
+          acc.mustUpdate.push(depName);
+        } else {
+          acc.mayUpdate.push(depName);
+        }
+
+        return acc;
+      },
+      { released: [], mustUpdate: [], mayUpdate: [] },
+    );
+
+    const indent = level * 4;
+    const depsToUpdate = await cli.askCheckbox(
+      leftPad(
+        indent,
+        `Which dependents of ${pkg.name} would you like to bump?`,
+      ),
+      [
+        new inquirer.Separator(leftPad(indent, 'Released packages')),
+        ...leftPadOptions(indent, partitionedDeps.released),
+        new inquirer.Separator(leftPad(indent, 'Packages that must update')),
+        ...leftPadOptions(indent, partitionedDeps.mustUpdate),
+        new inquirer.Separator(leftPad(indent, 'Packages that may update')),
+        ...leftPadOptions(indent, partitionedDeps.mayUpdate),
+      ],
+      { pageSize: 15 },
+    );
+
+    for (let depName of pkg.dependents) {
+      const dependent = allDependents[depName];
+      if (!dependent) {
+        throw new Error(`Dependent '${depName}' not found in allDependents`);
+      }
+
+      const mustUpdate = partitionedDeps.mustUpdate.includes(depName);
+      if (!(mustUpdate || depsToUpdate.includes(depName))) {
+        /* Only show a prompt if the dep must update or the user has selected it. */
+        continue;
+      }
+
+      const dependentName = chalk.green(dependent.name);
+      const bumpType = await promptBumptype({
+        mustUpdateBecause: mustUpdate ? [pkg.name] : [],
+        mayUpdateBecause: [pkg.name],
+        dependent,
+        updateOptions: ['patch', 'minor', 'major'],
+        isSubsequent: !!dependent.type,
+        level,
+      });
+      dependent.type = bumpType;
+      if (dependent.type !== 'none') {
+        dependent.finalised = true;
+        await promptAndAssembleDependentReleaseTypes(
+          [dependent.name],
+          allDependents,
+          changeset,
+          allWorkSpaces,
+          level + 1,
+        );
+      }
+    }
+  }
+}
+
 async function promptAndAssembleReleaseTypes(
-  dependents /*: dependents */,
+  packagesToRelease /*: string[] */,
+  allDependents /*: dependents */,
   changeset /*: changesetType */,
-  cwd /*: string */,
+  allWorkSpaces /*: any */,
 ) {
-  const allWorkSpaces = await bolt.getWorkspaces({ cwd });
-
-  const allDependents = dependents.all;
-  const immediateDependents = dependents.immediate;
-
-  // console.log('dependents', dependents);
-  // process.exit();
-
-  // We keep asking questions until everything is finalised
-  while (allDependents.find(dependent => !dependent.finalised)) {
-    for (const dependent of allDependents) {
-      const {
-        allDependentsFinalised,
-        mustUpdateBecause,
-        mayUpdateBecause,
-        skipPrompt,
-      } = getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces);
-      // if dependent has a type, we have already asked about it, if it is now
-      // finalised, then we can verify it without asking about it again.
-      if (dependent.finalised || skipPrompt) {
-        dependent.finalised = true;
-        continue;
-      }
-      const updateOptions =
-        mustUpdateBecause.length > 0
-          ? ['patch', 'minor', 'major']
-          : ['none', 'patch', 'minor', 'major'];
-
-      const dependentName = chalk.green(dependent.name);
-      const bumpType /*: bumpType */ = await promptBumptype({
-        mustUpdateBecause,
-        mayUpdateBecause,
-        dependentName,
-        updateOptions,
-        isSubsequent: !!dependent.type,
-      });
-      dependent.type = bumpType;
-      // The only time we are concerned about re-checking are when 'none' is selected
-      // and it was unfinalised
-      dependent.finalised = bumpType !== 'none' || allDependentsFinalised;
+  // Add type prop to all packages being released
+  packagesToRelease.forEach(pkgName => {
+    const pkgChangeset = changeset.releases.find(r => r.name === pkgName);
+    if (!pkgChangeset) {
+      throw new Error(`Cannot find changeset for '${pkgName}'`);
     }
-  }
+    allDependents[pkgName].type = pkgChangeset.type;
+  });
+
+  await promptAndAssembleDependentReleaseTypes(
+    packagesToRelease,
+    allDependents,
+    changeset,
+    allWorkSpaces,
+    0,
+  );
 }
 
-async function promptAndAssembleReleaseTypesBetter(
-  dependents /*: dependents */,
-  changeset /*: changesetType */,
-  cwd /*: string */,
-) {
-  const allWorkSpaces = await bolt.getWorkspaces({ cwd });
-
-  const allDependents = dependents.all;
-  const immediateDependents = dependents.immediate;
-
-  // console.log('dependents', dependents);
-  // process.exit();
-
-  // We keep asking questions until everything is finalised
-  while (allDependents.find(dependent => !dependent.finalised)) {
-    for (const dependent of allDependents) {
-      const {
-        allDependentsFinalised,
-        mustUpdateBecause,
-        mayUpdateBecause,
-        skipPrompt,
-      } = getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces);
-      // if dependent has a type, we have already asked about it, if it is now
-      // finalised, then we can verify it without asking about it again.
-      if (dependent.finalised || skipPrompt) {
-        dependent.finalised = true;
-        continue;
-      }
-      const updateOptions =
-        mustUpdateBecause.length > 0
-          ? ['patch', 'minor', 'major']
-          : ['none', 'patch', 'minor', 'major'];
-
-      const dependentName = chalk.green(dependent.name);
-      const bumpType /*: bumpType */ = await promptBumptype({
-        mustUpdateBecause,
-        mayUpdateBecause,
-        dependentName,
-        updateOptions,
-        isSubsequent: !!dependent.type,
-      });
-      dependent.type = bumpType;
-      // The only time we are concerned about re-checking are when 'none' is selected
-      // and it was unfinalised
-      dependent.finalised = bumpType !== 'none' || allDependentsFinalised;
-    }
-  }
-}
-
-module.exports = promptAndAssembleReleaseTypesBetter;
+module.exports = promptAndAssembleReleaseTypes;

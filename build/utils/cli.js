@@ -51,7 +51,7 @@ async function askList(message, choices) {
     .then(responses => responses[name]);
 }
 
-async function askCheckbox(message, choices) {
+async function askCheckbox(message, choices, opts = {}) {
   const name = `Checkbox-${uuid()}`;
 
   return inquirer
@@ -61,6 +61,7 @@ async function askCheckbox(message, choices) {
         message,
         name,
         type: 'checkbox',
+        ...opts,
       },
     ])
     .then(responses => responses[name])

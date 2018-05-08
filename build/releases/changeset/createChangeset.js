@@ -33,15 +33,15 @@ type dependentType = {
   name: string,
   type?: string,
   dependencies: Array<string>,
-  finalised?: boolean
+  dependents: Array<string>,
+  finalised?: boolean,
+  updateCause?: string[],
 }
 type dependents = {
-  immediate: dependentType[],
-  all: dependentType[],
+  [dependent: string]: dependentType,
 }
 type changesetDependentType = {
   name: string,
-  dependencies: Array<string>,
   type?: string,
 }
 type changesetType = {
@@ -54,35 +54,27 @@ type changesetType = {
 
 async function getAllDependents(packagesToRelease, opts = {}) {
   const cwd = opts.cwd || process.cwd();
-  const allDependents = [];
+  const allDependents = {};
   const dependentsGraph = await bolt.getDependentsGraph({ cwd });
+  const dependencyGraph = await bolt.getDependencyGraph({ cwd });
 
   const dependenciesToCheck = [...packagesToRelease];
-  const immediateDependents = [];
-  let i = 0;
   while (dependenciesToCheck.length > 0) {
-    const nextDependency = dependenciesToCheck.pop();
+    const nextDependency = dependenciesToCheck.shift();
     const dependents = dependentsGraph.get(nextDependency);
-    // console.log('deps', dependents);
-    // process.exit();
 
     dependents.forEach(dependent => {
-      const foundBefore = allDependents.find(d => d.name === dependent);
-      if (!foundBefore) {
-        const depObj = { name: dependent, dependencies: [nextDependency] };
-        allDependents.push(depObj);
+      if (!allDependents[dependent]) {
+        allDependents[dependent] = {
+          dependencies: dependencyGraph.get(dependent),
+          dependents: dependentsGraph.get(dependent),
+          name: dependent,
+        };
         dependenciesToCheck.push(dependent);
-        if (i < packagesToRelease.length) {
-          immediateDependents.push(depObj);
-        }
-      } else if (!foundBefore.dependencies.includes(nextDependency)) {
-        foundBefore.dependencies.push(nextDependency);
       }
     });
-    i++;
   }
-  // console.log('all deps', allDependents);
-  return { immediate: immediateDependents, all: allDependents };
+  return allDependents;
 }
 
 async function createChangeset(
@@ -134,14 +126,22 @@ async function createChangeset(
 
   /** Get dependents and bumptypes */
 
-  const dependents /*: dependents */ = await getAllDependents(
+  const allDependents /*: dependents */ = await getAllDependents(
     packagesToRelease,
     { cwd },
   );
 
+  const dependentsGraph = await bolt.getDependentsGraph({ cwd });
+  const allWorkSpaces = await bolt.getWorkspaces({ cwd });
+
   // This modifies the above dependents array to add a 'type' property to all
   // items.
-  await promptAndAssembleReleaseTypes(dependents, changeset, cwd);
+  await promptAndAssembleReleaseTypes(
+    packagesToRelease,
+    allDependents,
+    changeset,
+    allWorkSpaces,
+  );
 
   // (TODO: Get releaseNotes if there is a major change)
 
@@ -160,7 +160,18 @@ async function createChangeset(
   changeset.summary = summary;
   // as the changeset is printed to console, the finalised verified property needs
   // to be removed
-  changeset.dependents = dependents.all.map(({ finalised, ...rest }) => rest);
+  changeset.dependents = Object.keys(allDependents)
+    .filter(
+      depName =>
+        allDependents[depName].type && allDependents[depName].type !== 'none',
+    )
+    .map(depName => {
+      const { name, type, dependencies } = allDependents[depName];
+      return {
+        name,
+        type,
+      };
+    });
 
   return changeset;
 }
