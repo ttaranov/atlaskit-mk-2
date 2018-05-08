@@ -69,8 +69,12 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
         repoUrl,
       )}`,
     );
+
     dependent.dependencies.forEach(depName => {
-      const version = releases.find(r => r.name === depName).version;
+      // check if we are releasing this dependency (ignore if not)
+      const dependencyRelease = releases.find(r => r.name === depName);
+      if (!dependencyRelease) return;
+      const version = dependencyRelease.version;
       lines.push(`  - ${depName}@${version}`);
     });
 
