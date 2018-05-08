@@ -1,7 +1,7 @@
 // @flow
 
 export default function toTableTreeData(
-  rowsData: Array<Object> | Object,
+  rowsData: Array<Object>,
   parentItem: ?Object = null,
   oldItemsById: ?Object,
   {
