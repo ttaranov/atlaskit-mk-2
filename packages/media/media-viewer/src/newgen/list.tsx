@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
 import { Identifier } from './domain';
-import { HeaderWrapper } from './styled';
+import { HeaderWrapper, ListWrapper } from './styled';
 import { getSelectedIndex } from './util';
 import { ErrorMessage } from './styled';
 import Navigation from './navigation';
@@ -39,7 +39,7 @@ export class List extends React.Component<Props, State> {
       );
     } else {
       return (
-        <div>
+        <ListWrapper>
           <HeaderWrapper>
             <Header
               context={context}
@@ -53,7 +53,7 @@ export class List extends React.Component<Props, State> {
             selectedItem={selectedItem}
             onChange={this.onNavigationChange}
           />
-        </div>
+        </ListWrapper>
       );
     }
   }
