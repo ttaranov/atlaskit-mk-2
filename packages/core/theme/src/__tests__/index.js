@@ -34,7 +34,7 @@ describe('colorPalette', () => {
   const palette24 = colorPalette('24');
   const paletteDefault = colorPalette();
   it('should return a function', () => {
-    expect(typeof palette8).toBe('function');
+    expect(typeof palette8).toBe('object');
   });
   it('should return an array of length 8', () => {
     expect(palette8.length).toBe(8);
