@@ -15,7 +15,7 @@
     "@atlaskit/blanket": "^5.0.0",
     "@atlaskit/dropdown-menu": "^4.0.0",
     "@atlaskit/icon": "^11.0.1",
-    "@atlaskit/navigation-next": "^0.0.2",
+    "@atlaskit/navigation-next": "^0.0.3",
     "@atlaskit/onboarding": "^3.1.1",
     "@atlaskit/theme": "^3.1.0",
     "emotion": "^9.1.1",
