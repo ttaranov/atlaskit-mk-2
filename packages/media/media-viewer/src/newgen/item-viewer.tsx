@@ -63,6 +63,7 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
+    this.setState({ item: { status: 'PENDING' } });
     const { context, identifier } = props;
     const provider = context.getMediaItemProvider(
       identifier.id,
