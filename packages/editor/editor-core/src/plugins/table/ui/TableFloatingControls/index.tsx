@@ -44,7 +44,10 @@ export default class TableFloatingControls extends Component<Props, State> {
     }
 
     return (
-      <Container onMouseDown={this.handleMouseDown}>
+      <Container
+        onMouseDown={this.handleMouseDown}
+        className="table-side-controls"
+      >
         <CornerControls
           editorView={editorView}
           tableElement={tableElement}

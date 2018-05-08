@@ -1,20 +1,23 @@
 import styled from 'styled-components';
+
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akEditorTableToolbarSize,
+  akEditorTableToolbar,
   akEditorTableBorder,
   akEditorTableBorderRadius,
   akEditorTableBorderSelected,
   akEditorTableToolbarSelected,
+  akEditorTableControlsHovered,
 } from '../../../../../styles';
 import { LineMarkerDefault } from '../styles';
 
 export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
-  top: -${akEditorTableToolbarSize}px;
-  left: -${akEditorTableToolbarSize}px;
+  top: -${akEditorTableToolbarSize - 1}px;
+  left: -3px;
   width: ${akEditorTableToolbarSize}px;
   height: ${akEditorTableToolbarSize}px;
 
@@ -29,18 +32,11 @@ export const CornerButton: ComponentClass<
   ButtonHTMLAttributes<{}>
 > = styled.button`
   position: absolute;
-  right: -1px;
-  bottom: -1px;
+  left: 0;
+  bottom: 0;
   width: ${akEditorTableToolbarSize}px;
   height: ${akEditorTableToolbarSize}px;
-  background-image: linear-gradient(
-    to bottom right,
-    #fff 0,
-    #fff 49%,
-    ${akEditorTableBorder} 50%,
-    ${akEditorTableBorder} 100%
-  );
-  box-shadow: inset 0 0 0 1px #fff;
+  background: ${akEditorTableToolbar};
   border: 1px solid ${akEditorTableBorder};
   border-radius: 0;
   border-top-left-radius: ${akEditorTableBorderRadius};
@@ -48,15 +44,12 @@ export const CornerButton: ComponentClass<
   padding: 0;
 
   &:hover,
-  .active > &,
   .tableHovered & {
-    background-image: linear-gradient(
-      to bottom right,
-      #fff 0,
-      #fff 49%,
-      ${akEditorTableToolbarSelected} 50%,
-      ${akEditorTableToolbarSelected} 100%
-    );
+    background: ${akEditorTableControlsHovered};
+    z-index: 1;
+  }
+  .active > & {
+    background: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
     z-index: 1;
   }

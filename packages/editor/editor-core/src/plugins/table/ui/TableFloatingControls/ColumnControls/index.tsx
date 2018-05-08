@@ -13,8 +13,9 @@ import {
   ColumnControlsButtonWrap,
   HeaderButton,
 } from './styles';
-import { toolbarSize } from '../styles';
+import { akEditorTableToolbarSize } from '../../../../../styles';
 import InsertColumnButton from './InsertColumnButton';
+import { setTargetRef } from '../../../pm-plugins/contextual-menu-plugin';
 
 export interface Props {
   editorView: EditorView;
@@ -46,15 +47,14 @@ export default class ColumnControls extends Component<Props, any> {
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
-          className={`${className} table-column`}
+          className={`table-column ${className}`}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onMouseDown={() => this.selectColumn(i)}
-            onMouseOver={() => this.hoverColumn(i)}
-            onMouseOut={this.resetHoverSelection}
+            onMouseOver={this.handleMouseOver}
           />
           {!(
             checkIfNumberColumnEnabled(state) &&
@@ -63,7 +63,7 @@ export default class ColumnControls extends Component<Props, any> {
           ) && (
             <InsertColumnButton
               onClick={() => this.insertColumn(i + 1)}
-              lineMarkerHeight={tableHeight + toolbarSize}
+              lineMarkerHeight={tableHeight + akEditorTableToolbarSize - 1}
             />
           )}
         </ColumnControlsButtonWrap>,
@@ -71,7 +71,7 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <ColumnContainer>
+      <ColumnContainer className="table-column-controls">
         <ColumnInner>{nodes}</ColumnInner>
       </ColumnContainer>
     );
@@ -86,18 +86,13 @@ export default class ColumnControls extends Component<Props, any> {
     dispatch(selectColumn(column)(state.tr));
   };
 
-  private hoverColumn = (column: number) => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.hoverColumn(column)(state, dispatch);
-  };
-
-  private resetHoverSelection = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.resetHoverSelection(state, dispatch);
-  };
-
   private insertColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;
     this.props.insertColumn(column)(state, dispatch);
+  };
+
+  private handleMouseOver = event => {
+    const { state, dispatch } = this.props.editorView;
+    setTargetRef(event.target)(state, dispatch);
   };
 }

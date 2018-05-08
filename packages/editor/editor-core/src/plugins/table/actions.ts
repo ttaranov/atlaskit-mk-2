@@ -1,6 +1,6 @@
 import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
-import { TableMap, selectionCell } from 'prosemirror-tables';
+import { TableMap } from 'prosemirror-tables';
 import {
   findTable,
   getCellsInColumn,
@@ -13,7 +13,6 @@ import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selecti
 import { stateKey as tablePluginKey } from './pm-plugins/main';
 import {
   createHoverDecorationSet,
-  getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
 } from './utils';
@@ -214,39 +213,6 @@ export const toggleNumberColumn: Command = (
     }
   }
   return true;
-};
-
-export const setCellAttr = (name: string, value: any): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tr } = state;
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    let updated = false;
-    cellSelection.forEachCell((cell, pos) => {
-      if (cell.attrs[name] !== value) {
-        tr.setNodeMarkup(pos, cell.type, { ...cell.attrs, [name]: value });
-        updated = true;
-      }
-    });
-    if (updated) {
-      dispatch(tr);
-      return true;
-    }
-  } else {
-    const cell: any = selectionCell(state);
-    if (cell) {
-      dispatch(
-        tr.setNodeMarkup(cell.pos, cell.nodeAfter.type, {
-          ...cell.nodeAfter.attrs,
-          [name]: value,
-        }),
-      );
-      return true;
-    }
-  }
-  return false;
 };
 
 export const insertColumn = (column: number): Command => (

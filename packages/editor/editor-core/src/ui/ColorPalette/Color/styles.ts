@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
   akColorN900,
-  akColorN50,
+  akColorN40,
   akColorN0,
 } from '@atlaskit/util-shared-styles';
 
@@ -25,6 +25,6 @@ export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   font-size: 0;
   border-radius: 6px;
   &:hover {
-    border-color: ${akColorN50};
+    border-color: ${akColorN40};
   }
 `;

@@ -15,7 +15,7 @@ export interface Props {
 export default class Color extends PureComponent<Props, any> {
   render() {
     const { tabIndex, value, label, isSelected } = this.props;
-    const border = value ? null : `1px solid ${akColorN30}`;
+    const border = label !== 'White' ? null : `1px solid ${akColorN30}`;
 
     return (
       <ButtonWrapper>

@@ -3,17 +3,18 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
-import {
-  akEditorTableCellSelected,
-  akEditorTableBorder,
-  akEditorTableBorderSelected,
-} from '../../styles';
+import { akEditorTableBorder } from '../../styles';
 import { tableBackgroundColorNames } from '../../';
 
-const tableStyle = `
+export const tableMarginTop = 40;
+export const tableMarginBottom = 20;
+// full-width editor set margin-left and margin-right to 0
+export const tableMarginSides = 20;
+
+const tableSharedStyle = `
   {
     border-collapse: collapse;
-    margin: 20px 8px;
+    margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
@@ -54,33 +55,14 @@ const tableStyle = `
         font-weight: bold;
         text-align: left;
       }
-      .selectedCell, .hoveredCell {
-        position: relative;
-        border-color: ${akEditorTableBorderSelected};
-        border-width: 1px;
-      }
-      /* Give selected cells a blue overlay */
-      .selectedCell:after {
-        z-index: 2;
-        position: absolute;
-        content: "";
-        left: 0; right: 0; top: 0; bottom: 0;
-        background: ${akEditorTableCellSelected};
-        opacity: 0.3;
-        pointer-events: none;
-      }
-      .table-decoration {
-        position: relative;
-        left: -1px;
-      }
     }
   }
 `;
 
 // tslint:disable-next-line:variable-name
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
-  ${tableStyle};
+  ${tableSharedStyle};
 `;
 
-export { tableStyle };
+export { tableSharedStyle };
 export default StyledTable;

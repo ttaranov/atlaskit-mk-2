@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
@@ -18,7 +19,7 @@ import {
 export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 1px;
-  left: -${akEditorTableToolbarSize - 1}px;
+  left: -3px;
   width: ${akEditorTableToolbarSize}px;
   box-sizing: border-box;
   display: none;
@@ -56,9 +57,7 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   height: 100%;
   width: ${akEditorTableToolbarSize - 1}px;
 
-  &:hover,
-  .active > &,
-  .tableHovered & {
+  .active > & {
     border-right: 1px solid ${akEditorTableBorderSelected};
     width: ${akEditorTableToolbarSize}px;
   }

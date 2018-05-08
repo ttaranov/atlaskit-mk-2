@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { tableMarginSides } from '@atlaskit/editor-common';
+
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
@@ -18,7 +20,7 @@ import {
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: -${akEditorTableToolbarSize - 1}px;
-  left: 0;
+  left: ${tableMarginSides}px;
   height: ${akEditorTableToolbarSize}px;
   box-sizing: border-box;
   display: none;
@@ -55,9 +57,7 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   height: ${akEditorTableToolbarSize - 1}px;
   width: 100%;
 
-  &:hover,
-  .active > &,
-  .tableHovered & {
+  .active > & {
     border-bottom: 1px solid ${akEditorTableBorderSelected};
     height: ${akEditorTableToolbarSize}px;
   }

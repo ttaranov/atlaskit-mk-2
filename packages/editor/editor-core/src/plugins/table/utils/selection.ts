@@ -1,7 +1,6 @@
 import { CellSelection } from 'prosemirror-tables';
 import { EditorState } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
-import { isColumnSelected } from 'prosemirror-utils';
 
 export const getCellSelection = (
   state: EditorState,
@@ -50,40 +49,4 @@ export const getSelectedRow = (
   const head = $headCell.index(-1);
 
   return { anchor, head };
-};
-
-export const checkIfNumberColumnSelected = (state: EditorState): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    const tableNode = cellSelection.$anchorCell.node(-1);
-    if (
-      tableNode!.attrs.isNumberColumnEnabled &&
-      isColumnSelected(0)(state.selection)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
-
-export const checkIfNumberColumnCellsSelected = (
-  state: EditorState,
-): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (cellSelection) {
-    const tableNode = cellSelection.$anchorCell.node(-1);
-    if (tableNode!.attrs.isNumberColumnEnabled) {
-      const map = TableMap.get(tableNode);
-      const start = cellSelection.$anchorCell.start(-1);
-      let selected = false;
-      cellSelection.forEachCell((cell, pos) => {
-        const rect = map.findCell(pos - start);
-        if (rect.left === 0) {
-          selected = true;
-        }
-      });
-      return selected;
-    }
-  }
-  return false;
 };

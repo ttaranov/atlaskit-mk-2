@@ -13,7 +13,12 @@ import { akColorB400 } from '@atlaskit/util-shared-styles';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
 import { analyticsService as analytics } from '../../../../../analytics';
-import { TriggerWrapper, ExpandIconWrapper, Spacer } from '../styles';
+import {
+  TriggerWrapper,
+  ExpandIconWrapper,
+  Spacer,
+  DropdownMenuWrapper,
+} from '../styles';
 import {
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
@@ -42,29 +47,31 @@ export default class DisplayOptionsMenu extends Component<Props, State> {
     const { mountPoint } = this.props;
 
     return (
-      <DropdownMenu
-        mountTo={mountPoint}
-        items={this.createItems()}
-        isOpen={isOpen}
-        onOpenChange={this.handleOpenChange}
-        onItemActivated={this.onItemActivated}
-        fitHeight={188}
-        fitWidth={180}
-      >
-        <ToolbarButton
-          selected={isOpen}
-          title="Toggle display options menu"
-          onClick={this.toggleOpen}
-          iconBefore={
-            <TriggerWrapper>
-              <TableDisplayOptionsIcon label="Toggle display options menu" />
-              <ExpandIconWrapper>
-                <ExpandIcon label="expand-dropdown-menu" />
-              </ExpandIconWrapper>
-            </TriggerWrapper>
-          }
-        />
-      </DropdownMenu>
+      <DropdownMenuWrapper>
+        <DropdownMenu
+          mountTo={mountPoint}
+          items={this.createItems()}
+          isOpen={isOpen}
+          onOpenChange={this.handleOpenChange}
+          onItemActivated={this.onItemActivated}
+          fitHeight={188}
+          fitWidth={160}
+        >
+          <ToolbarButton
+            selected={isOpen}
+            title="Toggle display options menu"
+            onClick={this.toggleOpen}
+            iconBefore={
+              <TriggerWrapper>
+                <TableDisplayOptionsIcon label="Toggle display options menu" />
+                <ExpandIconWrapper>
+                  <ExpandIcon label="expand-dropdown-menu" />
+                </ExpandIconWrapper>
+              </TriggerWrapper>
+            }
+          />
+        </DropdownMenu>
+      </DropdownMenuWrapper>
     );
   }
 

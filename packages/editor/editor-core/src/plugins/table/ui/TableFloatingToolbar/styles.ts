@@ -26,3 +26,12 @@ export const Spacer: ComponentClass<HTMLAttributes<{}>> = styled.span`
   flex: 1;
   padding: 12px;
 `;
+
+export const DropdownMenuWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.span`
+  & span[class*='BeforeAfterBase'] {
+    margin: 0;
+    width: 14px;
+  }
+`;

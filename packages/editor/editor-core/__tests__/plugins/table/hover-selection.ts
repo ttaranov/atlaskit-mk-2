@@ -27,7 +27,7 @@ import {
 } from '../../../src/plugins/table/pm-plugins/main';
 import tablesPlugin from '../../../src/plugins/table';
 
-describe('table hover selection plugin', () => {
+describe.skip('table hover selection plugin', () => {
   const event = createEvent('event');
 
   const editor = (doc: any) =>

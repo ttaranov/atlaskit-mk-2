@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { tableEditing, columnResizing } from 'prosemirror-tables';
+import { removeTable } from 'prosemirror-utils';
 import {
   table,
   tableCell,
@@ -14,6 +15,10 @@ import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
+import FloatingContextualMenu from './ui/FloatingContextualMenu';
+import contextualMenu, {
+  pluginKey as contextualMenuPluginkey,
+} from './pm-plugins/contextual-menu-plugin';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -66,32 +71,45 @@ const tablesPlugin: EditorPlugin = {
             ? tableNumberColumnPlugin
             : undefined,
       },
+      { rank: 950, plugin: ({ dispatch }) => contextualMenu(dispatch) },
     ];
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
+    const { dispatch } = editorView;
     return (
       <WithPluginState
-        plugins={{ tablesState: stateKey }}
-        render={({ tablesState }) => (
-          <TableFloatingToolbar
-            editorView={editorView}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            tableElement={tablesState.tableElement}
-            tableActive={tablesState.tableActive}
-            cellSelection={tablesState.cellSelection}
-            remove={tablesState.remove}
-            tableLayout={tablesState.tableLayout}
-            updateLayout={tablesState.setTableLayout}
-            allowMergeCells={tablesState.allowMergeCells}
-            allowNumberColumn={tablesState.allowNumberColumn}
-            allowBackgroundColor={tablesState.allowBackgroundColor}
-            allowHeaderRow={tablesState.allowHeaderRow}
-            allowHeaderColumn={tablesState.allowHeaderColumn}
-            stickToolbarToBottom={tablesState.stickToolbarToBottom}
-            permittedLayouts={tablesState.permittedLayouts}
-          />
+        plugins={{
+          tablesState: stateKey,
+          tableContextualMenuState: contextualMenuPluginkey,
+        }}
+        render={({ tablesState, tableContextualMenuState }) => (
+          <div>
+            <TableFloatingToolbar
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              tableElement={tablesState.tableElement}
+              tableActive={tablesState.tableActive}
+              cellSelection={tablesState.cellSelection}
+              remove={() => dispatch(removeTable(editorView.state.tr))}
+              tableLayout={tablesState.tableLayout}
+              updateLayout={tablesState.setTableLayout}
+              allowNumberColumn={tablesState.allowNumberColumn}
+              allowHeaderRow={tablesState.allowHeaderRow}
+              allowHeaderColumn={tablesState.allowHeaderColumn}
+              stickToolbarToBottom={tablesState.stickToolbarToBottom}
+              permittedLayouts={tablesState.permittedLayouts}
+            />
+            <FloatingContextualMenu
+              editorView={editorView}
+              targetRef={tableContextualMenuState.targetRef}
+              targetPosition={tableContextualMenuState.targetPosition}
+              isOpen={tableContextualMenuState.isOpen}
+              allowMergeCells={tablesState.allowMergeCells}
+              allowBackgroundColor={tablesState.allowBackgroundColor}
+            />
+          </div>
         )}
       />
     );

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { tableMarginTop } from '@atlaskit/editor-common';
+
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
@@ -7,15 +9,14 @@ import {
   akEditorTableBorder,
   akEditorTableBorderSelected,
   akEditorTableToolbar,
+  akEditorTableControlsHovered,
 } from '../../../../styles';
-
-export const toolbarSize = 11;
 
 export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
 
   .ProseMirror.table-resizing & {
-    top: 28px;
+    top: ${tableMarginTop - 2}px;
     display: none;
   }
   .ProseMirror.table-resizing .with-controls & {
@@ -32,11 +33,15 @@ export const HeaderButtonDefault: ComponentClass<
   display: block;
   padding: 0;
   cursor: pointer;
-  &:hover,
+
   .active > &,
-  .tableHovered & {
+  .active > &:hover {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
+  }
+  &:hover,
+  .tableHovered & {
+    background-color: ${akEditorTableControlsHovered};
   }
   &:focus {
     outline: none;

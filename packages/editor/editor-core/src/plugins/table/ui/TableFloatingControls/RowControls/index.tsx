@@ -11,6 +11,7 @@ import {
 import InsertRowButton from './InsertRowButton';
 import { Command } from '../../../../../types';
 import { getLineMarkerWidth } from '../utils';
+import { setTargetRef } from '../../../pm-plugins/contextual-menu-plugin';
 
 export interface Props {
   editorView: EditorView;
@@ -49,14 +50,13 @@ export default class RowControls extends Component<Props, any> {
       nodes.push(
         <RowControlsButtonWrap
           key={i}
-          className={`${className} table-row`}
+          className={`table-row ${className}`}
           style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onClick={() => this.selectRow(i)}
-            onMouseOver={() => this.hoverRow(i)}
-            onMouseOut={this.resetHoverSelection}
+            onMouseOver={this.handleMouseOver}
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton
@@ -69,7 +69,7 @@ export default class RowControls extends Component<Props, any> {
     }
 
     return (
-      <RowContainer>
+      <RowContainer className="table-row-controls">
         <RowInner>{nodes}</RowInner>
       </RowContainer>
     );
@@ -80,18 +80,13 @@ export default class RowControls extends Component<Props, any> {
     dispatch(selectRow(row)(state.tr));
   };
 
-  private hoverRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.hoverRow(row)(state, dispatch);
-  };
-
-  private resetHoverSelection = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.resetHoverSelection(state, dispatch);
-  };
-
   private insertRow = (row: number) => {
     const { state, dispatch } = this.props.editorView;
     this.props.insertRow(row)(state, dispatch);
+  };
+
+  private handleMouseOver = event => {
+    const { state, dispatch } = this.props.editorView;
+    setTargetRef(event.target)(state, dispatch);
   };
 }

@@ -12,14 +12,18 @@ export interface Props {
   boundariesElement?: HTMLElement;
   scrollableElement?: HTMLElement;
   isOpen?: boolean;
+  offset?: Array<number>;
   onOpenChange?: (attrs) => void;
   onItemActivated?: (attrs) => void;
+  onMouseEnter?: (attrs) => void;
+  onMouseLeave?: (attrs) => void;
   fitWidth?: number;
   fitHeight?: number;
   items: Array<{
     items: Array<{
       content: string;
       elemBefore?: React.ReactNode;
+      elemAfter?: React.ReactNode;
       tooltipDescription?: string;
       tooltopPosition?: string;
       isActive: boolean;
@@ -78,13 +82,17 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
     }
   };
 
-  private renderItem(item, onItemActivated) {
+  private renderItem(item) {
+    const { onItemActivated, onMouseEnter, onMouseLeave } = this.props;
     const dropListItem = (
       <ItemWrapper key={item.key || item.content} isSelected={item.isActive}>
         <Item
           elemBefore={item.elemBefore}
+          elemAfter={item.elemAfter}
           isDisabled={item.isDisabled}
           onClick={() => onItemActivated && onItemActivated({ item })}
+          onMouseEnter={() => onMouseEnter && onMouseEnter({ item })}
+          onMouseLeave={() => onMouseLeave && onMouseLeave({ item })}
         >
           <ItemContentWrapper hasElemBefore={!!item.elemBefore}>
             {item.content}
@@ -115,14 +123,15 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
       mountTo,
       boundariesElement,
       scrollableElement,
-      onItemActivated,
       fitHeight,
       fitWidth,
       isOpen,
+      offset,
     } = this.props;
 
     return (
       <Popup
+        offset={offset}
         target={isOpen ? target : undefined}
         mountTo={mountTo}
         boundariesElement={boundariesElement}
@@ -144,7 +153,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
           <div style={{ height: 0, minWidth: fitWidth || 0 }} />
           {items.map((group, index) => (
             <ItemGroup key={index}>
-              {group.items.map(item => this.renderItem(item, onItemActivated))}
+              {group.items.map(item => this.renderItem(item))}
             </ItemGroup>
           ))}
         </DropListWithOutsideListeners>

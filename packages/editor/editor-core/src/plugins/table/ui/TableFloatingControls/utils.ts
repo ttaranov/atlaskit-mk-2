@@ -1,6 +1,6 @@
-import { toolbarSize } from './styles';
+import { akEditorTableToolbarSize } from '../../../../styles';
 
-const TABLE_PADDING = 10;
+const TABLE_PADDING = akEditorTableToolbarSize - 1;
 
 export const getLineMarkerWidth = (
   tableElement: HTMLElement,
@@ -10,7 +10,7 @@ export const getLineMarkerWidth = (
   const diff = offsetWidth - parentElement!.offsetWidth;
   const scrollDiff = scroll - diff > 0 ? scroll - diff : 0;
   return Math.min(
-    offsetWidth + toolbarSize,
+    offsetWidth + akEditorTableToolbarSize,
     parentElement!.offsetWidth + TABLE_PADDING - scrollDiff,
   );
 };

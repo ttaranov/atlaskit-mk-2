@@ -3,23 +3,13 @@ import {
   EditorState,
   Plugin,
   PluginKey,
-  Selection,
   TextSelection,
 } from 'prosemirror-state';
-import {
-  CellSelection,
-  deleteTable,
-  deleteColumn,
-  deleteRow,
-  TableMap,
-  toggleHeaderRow,
-} from 'prosemirror-tables';
+import { CellSelection, TableMap, toggleHeaderRow } from 'prosemirror-tables';
 import {
   findTable,
   findParentDomRefOfType,
-  findParentNodeOfType,
   selectRow,
-  emptySelectedCells,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -30,18 +20,13 @@ import {
 } from '../../../utils/';
 import { Dispatch } from '../../../event-dispatcher';
 
-import { analyticsService } from '../../../analytics';
-
 import TableNode from '../nodeviews/table';
 
 import { resetHoverSelection, clearSelection } from '../actions';
 
 import {
-  isHeaderRowSelected,
   getCellSelection,
   createControlsDecorationSet,
-  getSelectedColumn,
-  getSelectedRow,
   containsTableHeader,
   canInsertTable,
 } from '../utils';
@@ -105,74 +90,6 @@ export class TableState {
     this.eventDispatcher = eventDispatcher;
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
-
-  remove = (): void => {
-    const { state, dispatch } = this.view;
-    const cellSelection = getCellSelection(state);
-    if (!cellSelection) {
-      return;
-    }
-    const tableNode = cellSelection.$anchorCell.node(-1);
-    const isRowSelected = cellSelection.isRowSelection();
-    const isColumnSelected = cellSelection.isColSelection();
-
-    // the whole table
-    if (isRowSelected && isColumnSelected) {
-      deleteTable(state, dispatch);
-      this.focusEditor();
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete.button',
-      );
-    } else if (isColumnSelected) {
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_column.button',
-      );
-
-      // move the cursor in the column to the left of the deleted column(s)
-      const map = TableMap.get(tableNode);
-      const { anchor, head } = getSelectedColumn(this.view.state);
-      const column = Math.min(anchor, head);
-      const nextPos = map.positionAt(0, column > 0 ? column - 1 : 0, tableNode);
-      deleteColumn(state, dispatch);
-      this.moveCursorTo(nextPos);
-    } else if (isRowSelected) {
-      const { tableHeader, tableCell } = this.view.state.schema.nodes;
-      const parent = findParentNodeOfType([tableHeader, tableCell])(
-        this.view.state.selection,
-      );
-      const event =
-        parent && parent.node.type === tableHeader
-          ? 'delete_header_row'
-          : 'delete_row';
-      analyticsService.trackEvent(
-        `atlassian.editor.format.table.${event}.button`,
-      );
-      const headerRowSelected = isHeaderRowSelected(this.view.state);
-      // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
-      const { anchor, head } = getSelectedRow(this.view.state);
-      const map = TableMap.get(tableNode);
-      const minRow = Math.min(anchor, head);
-      const maxRow = Math.max(anchor, head);
-      const isRemovingLastRow = maxRow === map.height - 1;
-      deleteRow(state, dispatch);
-      if (headerRowSelected && this.isHeaderRowRequired) {
-        this.convertFirstRowToHeader();
-      }
-      const nextPos = map.positionAt(
-        isRemovingLastRow ? minRow - 1 : minRow,
-        0,
-        tableNode,
-      );
-      this.moveCursorTo(nextPos);
-    } else {
-      // replace selected cells with empty cells
-      dispatch(emptySelectedCells(state.schema)(state.tr));
-      this.moveCursorInsideTableTo(this.view.state.selection.from);
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button',
-      );
-    }
-  };
 
   convertFirstRowToHeader = () => {
     const { state, dispatch } = this.view;
@@ -295,23 +212,9 @@ export class TableState {
     return false;
   }
 
-  private focusEditor(): void {
+  focusEditor(): void {
     if (!this.view.hasFocus()) {
       this.view.focus();
-    }
-  }
-
-  private moveCursorInsideTableTo(pos: number): void {
-    this.focusEditor();
-    const { tr } = this.view.state;
-    tr.setSelection(Selection.near(tr.doc.resolve(pos)));
-    this.view.dispatch(tr);
-  }
-
-  private moveCursorTo(pos: number): void {
-    const table = findTable(this.view.state.selection);
-    if (table) {
-      this.moveCursorInsideTableTo(pos + table.pos);
     }
   }
 }

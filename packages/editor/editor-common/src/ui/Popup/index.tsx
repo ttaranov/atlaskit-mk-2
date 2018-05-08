@@ -25,6 +25,7 @@ export interface Props {
   scrollableElement?: HTMLElement;
   stickToBottom?: boolean;
   ariaLabel?: string;
+  zIndex?: number;
 }
 
 export interface State {
@@ -169,13 +170,14 @@ export default class Popup extends PureComponent<Props, State> {
 
   private renderPopup() {
     const { position } = this.state;
-
+    const { zIndex } = this.props;
     return (
       <div
         ref={this.handleRef}
         style={{
           position: 'absolute',
-          zIndex: akEditorFloatingPanelZIndex,
+          zIndex:
+            typeof zIndex === 'number' ? zIndex : akEditorFloatingPanelZIndex,
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}

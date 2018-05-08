@@ -4,21 +4,13 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
-import { isTableSelected } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
-import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
+import { Popup, TableLayout } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import Separator from '../../../../ui/Separator';
-import { checkIfNumberColumnSelected } from '../../utils';
-import AdvanceMenu from './AdvanceMenu';
-import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
-import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
-import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+import LayoutMenu from './LayoutMenu';
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
-import { TableLayout } from '@atlaskit/editor-common';
 
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: white;
@@ -40,9 +32,7 @@ export interface Props {
   tableActive?: boolean;
   tableLayout?: TableLayout;
   cellSelection?: CellSelection;
-  allowMergeCells?: boolean;
   allowNumberColumn?: boolean;
-  allowBackgroundColor?: boolean;
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
   stickToolbarToBottom?: boolean;
@@ -54,19 +44,6 @@ export interface Props {
 export interface State {
   isOpen?: boolean;
 }
-
-type TableLayoutInfo = { [K in TableLayout]: any };
-
-const tableLayouts: TableLayoutInfo = {
-  default: {
-    icon: CenterIcon,
-    label: 'inline',
-  },
-  'full-width': {
-    icon: FullWidthIcon,
-    label: 'full width',
-  },
-};
 
 export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {
@@ -80,11 +57,11 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       popupsScrollableElement,
       tableElement,
       editorView,
-      allowMergeCells,
       tableActive,
+      permittedLayouts,
+      updateLayout,
       tableLayout,
       allowNumberColumn,
-      allowBackgroundColor,
       allowHeaderRow,
       allowHeaderColumn,
       stickToolbarToBottom,
@@ -93,35 +70,6 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     if (!tableElement || !tableActive) {
       return null;
     }
-
-    let availableLayouts: TableLayout[] = [];
-    if (this.props.permittedLayouts) {
-      if (this.props.permittedLayouts === 'all') {
-        availableLayouts = Object.keys(tableLayouts) as TableLayout[];
-      } else {
-        availableLayouts = this.props.permittedLayouts;
-      }
-    }
-
-    const layoutButtons = Array.from(new Set(availableLayouts)).map(
-      layoutName => {
-        const label = `Change layout to ${tableLayouts[layoutName].label}`;
-        const Icon = tableLayouts[layoutName].icon;
-        const onClick = () => {
-          this.props.updateLayout!(layoutName);
-        };
-
-        return (
-          <ToolbarButton
-            selected={tableLayout === layoutName}
-            onClick={this.props.updateLayout ? onClick : undefined}
-            title={label}
-            key={layoutName}
-            iconBefore={<Icon label={label} />}
-          />
-        );
-      },
-    );
 
     return (
       <Popup
@@ -136,13 +84,6 @@ export default class TableFloatingToolbar extends Component<Props, State> {
         ariaLabel="Table floating controls"
       >
         <Toolbar>
-          {allowBackgroundColor && (
-            <BackgroundColorMenu
-              editorView={editorView}
-              palette={tableBackgroundColorPalette}
-              mountPoint={popupsMountPoint}
-            />
-          )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
             <DisplayOptionsMenu
               editorView={editorView}
@@ -152,37 +93,21 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               allowHeaderColumn={allowHeaderColumn}
             />
           )}
-          {allowMergeCells && (
-            <AdvanceMenu
-              editorView={editorView}
-              mountPoint={popupsMountPoint}
-              allowMergeCells={allowMergeCells}
-            />
-          )}
-          <Separator style={{ height: 'auto' }} />
-          {layoutButtons}
-          {layoutButtons.length ? (
-            <Separator style={{ height: 'auto' }} />
-          ) : null}
+          {permittedLayouts &&
+            !!permittedLayouts.length && (
+              <LayoutMenu
+                tableLayout={tableLayout}
+                updateLayout={updateLayout}
+                permittedLayouts={permittedLayouts}
+              />
+            )}
           <ToolbarButton
-            disabled={!this.canRemove()}
             onClick={this.props.remove}
-            title="Remove selected cells"
-            iconBefore={<RemoveIcon label="Remove selected cells" />}
+            title="Remove table"
+            iconBefore={<RemoveIcon label="Remove table" />}
           />
         </Toolbar>
       </Popup>
     );
   }
-
-  private canRemove = (): boolean | undefined => {
-    const { cellSelection, editorView: { state } } = this.props;
-    if (
-      !cellSelection ||
-      (checkIfNumberColumnSelected(state) && !isTableSelected(state.selection))
-    ) {
-      return false;
-    }
-    return cellSelection.isColSelection() || cellSelection.isRowSelection();
-  };
 }

@@ -21,8 +21,7 @@ import { TableLayout, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
-// TODO: Should be 50 after ED-4280 is fixed
-const CONTROLLER_PADDING = 52;
+const CONTROLLER_PADDING = 75;
 
 import { Props } from './table';
 
@@ -121,7 +120,7 @@ class TableComponent extends React.Component<ComponentProps> {
               className="table-container"
               data-layout={node.attrs.layout}
             >
-              <div className="table-row-controls">
+              <div className="table-row-controls-wrapper">
                 <TableFloatingControls
                   editorView={view}
                   tableElement={pluginState.tableElement}
@@ -140,7 +139,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   this.wrapper = elem;
                 }}
               >
-                <div className="table-column-controls">
+                <div className="table-column-controls-wrapper">
                   <ColumnControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
@@ -206,7 +205,7 @@ class TableComponent extends React.Component<ComponentProps> {
       ? Math.min(SHADOW_MAX_WIDTH, SHADOW_MAX_WIDTH - scrollDiff + 2)
       : 0;
 
-    const paddingLeft = getComputedStyle(this.wrapper.parentElement!)
+    const paddingLeft = getComputedStyle(this.wrapper!.parentElement!)
       .paddingLeft;
     const paddingLeftPx = paddingLeft
       ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
