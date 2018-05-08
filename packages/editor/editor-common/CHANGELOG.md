@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.3.1
+- [patch] Fixing up the re-rendering of tables on paste [31f28fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31f28fa)
+
 ## 9.3.0
 - [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 
