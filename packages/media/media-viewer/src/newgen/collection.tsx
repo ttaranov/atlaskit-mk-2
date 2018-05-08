@@ -19,8 +19,10 @@ export type State = {
   items: Outcome<MediaCollectionItem[], Error>;
 };
 
+const initialState: State = { items: { status: 'PENDING' } };
+
 export class Collection extends React.Component<Props, State> {
-  state: State = { items: { status: 'PENDING' } };
+  state: State = initialState;
 
   private subscription: Subscription;
 
@@ -61,7 +63,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
-    this.setState({ items: { status: 'PENDING' } });
+    this.setState(initialState);
     const { collectionName, context } = props;
     const provider = context.getMediaCollectionProvider(collectionName, 30);
     this.subscription = provider.observable().subscribe({
