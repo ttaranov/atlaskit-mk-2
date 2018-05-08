@@ -11,7 +11,7 @@ import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 import EmojiProductivityIcon from '@atlaskit/icon/glyph/emoji/productivity';
 
 import { CategoryDescription } from '../../types';
-import { customCategory, userCustomTitle } from '../../constants';
+import { customCategory, userCustomTitle, customTitle } from '../../constants';
 
 export type CategoryId =
   | 'FREQUENT'
@@ -98,7 +98,7 @@ export const CategoryDescriptionMap: CategoryMap = {
   },
   CUSTOM: {
     id: customCategory,
-    name: 'All uploads',
+    name: customTitle,
     icon: EmojiCustomIcon,
     order: 12,
   },
