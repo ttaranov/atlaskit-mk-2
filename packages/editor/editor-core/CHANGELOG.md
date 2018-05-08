@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.2.2
+- [patch] Showing up title in place of macro name [296c3e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/296c3e3)
+
 ## 71.2.1
 
 ## 71.2.0
