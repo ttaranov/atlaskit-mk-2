@@ -5,7 +5,6 @@ import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
-import { Collection } from '../newgen/collection';
 export interface MediaViewerItem {
   id: string;
   occurrenceKey: string;
