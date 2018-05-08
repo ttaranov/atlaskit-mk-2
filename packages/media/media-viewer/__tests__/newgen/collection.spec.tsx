@@ -89,7 +89,6 @@ describe('<Collection />', () => {
     const el = createFixture(createContext(subject), subject, onClose);
     subject.next(mediaCollection);
     el.update();
-    console.log(el.debug());
     el.find(CrossIcon).simulate('click');
     expect(onClose).toHaveBeenCalled();
   });
