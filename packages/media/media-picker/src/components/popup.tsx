@@ -98,7 +98,12 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       });
   }
 
-  public cancel(uniqueIdentifier: string): void {
+  public cancel(uniqueIdentifier?: string): void {
+    if (uniqueIdentifier === undefined) {
+      throw new Error(
+        "Popup doesn't support canceling without a unique identifier",
+      );
+    }
     this.store.dispatch(cancelUpload({ tenantUploadId: uniqueIdentifier }));
   }
 

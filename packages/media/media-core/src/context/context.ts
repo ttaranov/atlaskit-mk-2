@@ -8,6 +8,7 @@ import {
   UploadFileCallbacks,
   ContextConfig,
   MediaApiConfig,
+  UploadFileResult,
 } from '@atlaskit/media-store';
 
 import {
@@ -65,7 +66,7 @@ export interface Context {
   uploadFile(
     file: UploadableFile,
     callbacks?: UploadFileCallbacks,
-  ): Promise<string>;
+  ): UploadFileResult;
 
   readonly config: ContextConfig;
 }
@@ -189,7 +190,7 @@ class ContextImpl implements Context {
   uploadFile(
     file: UploadableFile,
     callbacks?: UploadFileCallbacks,
-  ): Promise<string> {
+  ): UploadFileResult {
     return uploadFile(file, this.apiConfig, callbacks);
   }
 

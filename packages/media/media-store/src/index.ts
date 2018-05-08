@@ -11,4 +11,9 @@ export {
   MediaApiConfig,
   ContextConfig,
 } from './models/auth';
-export { uploadFile, UploadableFile, UploadFileCallbacks } from './uploader';
+export {
+  uploadFile,
+  UploadableFile,
+  UploadFileCallbacks,
+  UploadFileResult,
+} from './uploader';

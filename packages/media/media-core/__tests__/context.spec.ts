@@ -212,13 +212,13 @@ describe('Context', () => {
   });
 
   describe('.uploadFile', () => {
-    it('should call media-store uploadFile with given callbacks', async () => {
+    it('should call media-store uploadFile with given callbacks', () => {
       const context = createFakeContext();
       const file: UploadableFile = {} as any;
       const callbacks: UploadFileCallbacks = {} as any;
-      uploadFileMock.mockReturnValue(Promise.resolve('result'));
-      const actualResult = await context.uploadFile(file, callbacks);
-      expect(actualResult).toEqual('result');
+      uploadFileMock.mockReturnValue({ expectedResult: true });
+      const actualResult = context.uploadFile(file, callbacks);
+      expect(actualResult).toEqual({ expectedResult: true });
       expect(uploadFile).toHaveBeenCalled();
       expect(uploadFileMock.mock.calls[0][0]).toBe(file);
       expect(uploadFileMock.mock.calls[0][1]).toEqual({
@@ -228,12 +228,12 @@ describe('Context', () => {
       expect(uploadFileMock.mock.calls[0][2]).toBe(callbacks);
     });
 
-    it('should call media-store uploadFile with no callbacks provided', async () => {
+    it('should call media-store uploadFile with no callbacks provided', () => {
       const context = createFakeContext();
       const file: UploadableFile = {} as any;
-      uploadFileMock.mockReturnValue(Promise.resolve('result'));
-      const actualResult = await context.uploadFile(file);
-      expect(actualResult).toEqual('result');
+      uploadFileMock.mockReturnValue({ expectedResult: true });
+      const actualResult = context.uploadFile(file);
+      expect(actualResult).toEqual({ expectedResult: true });
       expect(uploadFile).toHaveBeenCalled();
       expect(uploadFileMock.mock.calls[0][0]).toBe(file);
       expect(uploadFileMock.mock.calls[0][1]).toEqual({

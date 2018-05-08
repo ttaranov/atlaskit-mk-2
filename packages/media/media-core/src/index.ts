@@ -12,6 +12,7 @@ export {
   ContextConfig,
   UploadableFile,
   UploadFileCallbacks,
+  UploadFileResult,
 } from '@atlaskit/media-store';
 export * from './mediaTypes';
 export * from './context/context';

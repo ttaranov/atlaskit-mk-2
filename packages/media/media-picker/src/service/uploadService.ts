@@ -33,6 +33,7 @@ export interface ExpFile {
   id: string;
   creationDate: number;
   file: File;
+  cancel?: Function;
 }
 
 export type UploadServiceEventPayloadTypes = {
@@ -61,10 +62,12 @@ export class UploadService {
   private readonly emitter: EventEmitter2;
   private dropzoneElement?: HTMLElement;
   private browserElement?: HTMLInputElement;
+  private uploadingExpFiles: { [key: string]: ExpFile };
 
   constructor(context: Context, uploadParams?: UploadParams) {
     this.emitter = new EventEmitter2();
     this.context = context;
+    this.uploadingExpFiles = {};
 
     if (context.config.userAuthProvider) {
       this.userCollectionMediaClient = new MediaClient(
@@ -150,29 +153,46 @@ export class UploadService {
       creationDate,
       id: uuid.v4(),
     }));
+
     const mediaFiles = expFiles.map(this.mapExpFileToMediaFile);
 
     this.emit('files-added', { files: mediaFiles });
     this.emitPreviews(expFiles);
 
     expFiles.forEach(expFile => {
+      this.uploadingExpFiles[expFile.id] = expFile;
       const uploadableFile: UploadableFile = {
         collection: this.uploadParams.collection,
         content: expFile.file,
       };
-      this.context
-        .uploadFile(uploadableFile, {
+      const { promiseFileId, cancel } = this.context.uploadFile(
+        uploadableFile,
+        {
           onProgress: this.onFileProgress.bind(this, expFile),
-        })
-        .then(
-          this.onFileSuccess.bind(this, expFile),
-          this.onFileError.bind(this, expFile, 'upload_fail'),
-        );
+        },
+      );
+      expFile.cancel = cancel;
+      promiseFileId.then(
+        this.onFileSuccess.bind(this, expFile),
+        this.onFileError.bind(this, expFile, 'upload_fail'),
+      );
     });
   }
 
-  cancel(uniqueIdentifier?: string): void {
-    // TODO
+  cancel(id?: string): void {
+    if (id) {
+      const expFile = this.uploadingExpFiles[id];
+      if (expFile && expFile.cancel) {
+        expFile.cancel();
+      }
+    } else {
+      Object.keys(this.uploadingExpFiles).forEach(key => {
+        const expFile = this.uploadingExpFiles[key];
+        if (expFile.cancel) {
+          expFile.cancel();
+        }
+      });
+    }
   }
 
   on<E extends keyof UploadServiceEventPayloadTypes>(
@@ -231,6 +251,10 @@ export class UploadService {
     return 'unknown';
   }
 
+  private releaseExpFile(expFile: ExpFile): void {
+    delete this.uploadingExpFiles[expFile.id];
+  }
+
   private readonly onFileSuccess = (expFile: ExpFile, fileId: string) => {
     const collectionName = this.uploadParams.collection;
     this.copyFileToUsersCollection(fileId, expFile, collectionName);
@@ -240,7 +264,7 @@ export class UploadService {
       file: publicMediaFile,
     });
 
-    this.context
+    const subscription = this.context
       .getMediaItemProvider(fileId, 'file', collectionName)
       .observable()
       .subscribe({
@@ -257,10 +281,16 @@ export class UploadService {
               file: publicMediaFile,
               public: fileItem.details,
             });
+            this.releaseExpFile(expFile);
           }
         },
         error: this.onFileError.bind(this, expFile, 'metadata_fetch_fail'),
       });
+
+    expFile.cancel = () => {
+      subscription.unsubscribe();
+      this.releaseExpFile(expFile);
+    };
   };
 
   private readonly onFileProgress = (expFile: ExpFile, portion: number) => {
@@ -283,6 +313,12 @@ export class UploadService {
     mediaErrorName: MediaErrorName,
     error: Error | any,
   ) => {
+    this.releaseExpFile(expFile);
+    if (error === 'canceled') {
+      // Specific error coming from chunkinator via rejected fileId promise.
+      // We do not want to trigger error in this case.
+      return;
+    }
     const description = (error && (error.message || error.toString())) || '';
     this.emit('file-upload-error', {
       file: this.mapExpFileToMediaFile(expFile),

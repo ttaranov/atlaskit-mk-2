@@ -82,4 +82,11 @@ describe('MediaPickerPopup', () => {
       expect(emitSpy.mock.calls[0][0]).toEqual('closed');
     });
   });
+
+  describe('cancel', () => {
+    it('should blow up with empty argument', () => {
+      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      expect(() => mediaPicker.cancel()).toThrow();
+    });
+  });
 });

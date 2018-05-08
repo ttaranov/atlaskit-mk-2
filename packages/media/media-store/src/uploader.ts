@@ -17,6 +17,11 @@ export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
 };
 
+export interface UploadFileResult {
+  promiseFileId: Promise<string>;
+  cancel: Function;
+}
+
 const hashingFunction = (blob: Blob): Promise<string> => {
   return createHasher().hash(blob);
 };
@@ -30,11 +35,11 @@ const createProbingFunction = (store: MediaStore) => async (
   return (Object as any).values(results).map((result: any) => result.exists);
 };
 
-export const uploadFile = async (
+export const uploadFile = (
   file: UploadableFile,
   config: MediaApiConfig,
   callbacks?: UploadFileCallbacks,
-): Promise<string> => {
+): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
   const occurrenceKey = uuid.v4();
   const store = new MediaStore(config);
@@ -53,9 +58,9 @@ export const uploadFile = async (
     offset += chunks.length;
   };
 
-  const emptyFile = store.createFile({ collection, occurrenceKey });
+  const emptyFilePromise = store.createFile({ collection, occurrenceKey });
 
-  await chunkinator(
+  const { response, cancel } = chunkinator(
     content,
     {
       hashingFunction,
@@ -77,19 +82,26 @@ export const uploadFile = async (
     },
   );
 
-  const uploadId = await deferredUploadId;
-  const fileId = (await emptyFile).data.id;
+  const fileId = Promise.all([
+    deferredUploadId,
+    emptyFilePromise,
+    response,
+  ]).then(([uploadId, emptyFile]) => {
+    const fileId = emptyFile.data.id;
 
-  await store.createFileFromUpload(
-    { uploadId, name, mimeType },
-    {
-      occurrenceKey,
-      collection,
-      replaceFileId: fileId,
-    },
-  );
+    return store
+      .createFileFromUpload(
+        { uploadId, name, mimeType },
+        {
+          occurrenceKey,
+          collection,
+          replaceFileId: fileId,
+        },
+      )
+      .then(() => fileId);
+  });
 
-  return fileId;
+  return { promiseFileId: fileId, cancel };
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);

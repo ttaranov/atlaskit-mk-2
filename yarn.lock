@@ -2946,9 +2946,9 @@ chromatism@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
 
-chunkinator@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-1.0.1.tgz#d9cc57f4e48fb3412f82abc5b26977df94b89173"
+chunkinator@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-2.0.2.tgz#faba96a0d415dc9fd8852f0c04200bc2272a7276"
   dependencies:
     rxjs "^5.5.6"
     rxjs-async-map soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943
@@ -11971,7 +11971,7 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rxjs-async-map@soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943:
+"rxjs-async-map@github:soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943":
   version "0.1.1"
   resolved "https://codeload.github.com/soswow/rxjs-async-map/tar.gz/1112bd1c1e2a6b608308758df4fdc8f59efbf943"
   dependencies:

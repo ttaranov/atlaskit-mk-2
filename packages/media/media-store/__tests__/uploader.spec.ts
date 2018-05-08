@@ -2,8 +2,7 @@ jest.mock('chunkinator');
 jest.mock('../src/media-store');
 
 import chunkinator, { Options } from 'chunkinator';
-import { MediaStore } from '../src/media-store';
-import { uploadFile } from '../src';
+import { MediaStore, uploadFile } from '../src';
 
 describe('Uploader', () => {
   const setup = () => {
@@ -30,24 +29,25 @@ describe('Uploader', () => {
     }));
 
     const blob: Blob = null as any;
-    ChunkinatorMock.mockImplementation(
-      async (_file, config: Options, callbacks) => {
-        callbacks.onProgress(0.1);
-        await config.processingFunction!([
-          { hash: '1', blob },
-          { hash: '2', blob },
-          { hash: '3', blob },
-        ]);
-        callbacks.onProgress(0.2);
-        await config.processingFunction!([
-          { hash: '4', blob },
-          { hash: '5', blob },
-          { hash: '6', blob },
-        ]);
-
-        return Promise.resolve();
-      },
-    );
+    ChunkinatorMock.mockImplementation((_file, config: Options, callbacks) => {
+      return {
+        response: (async () => {
+          callbacks.onProgress(0.1);
+          await config.processingFunction!([
+            { hash: '1', blob },
+            { hash: '2', blob },
+            { hash: '3', blob },
+          ]);
+          callbacks.onProgress(0.2);
+          await config.processingFunction!([
+            { hash: '4', blob },
+            { hash: '5', blob },
+            { hash: '6', blob },
+          ]);
+        })(),
+        cancel: jest.fn(),
+      };
+    });
 
     return {
       MediaStoreMock,
@@ -95,13 +95,13 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation(() => {
-      return Promise.resolve();
+      return { response: Promise.resolve(), cancel: jest.fn() };
     });
 
     await uploadFile(
       { content: '', name: 'file-name', collection: 'some-collection' },
       config,
-    );
+    ).promiseFileId;
     const occurrenceKey = createFile.mock.calls[0][0].occurrenceKey;
 
     expect(createFileFromUpload).toHaveBeenCalledTimes(1);
@@ -120,7 +120,6 @@ describe('Uploader', () => {
       MediaStoreMock,
       ChunkinatorMock,
       config,
-      createFileFromUpload,
       appendChunksToUpload,
     } = setup();
     const onProgress = jest.fn();
@@ -128,8 +127,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    await uploadFile({ content: '' }, config, { onProgress });
-    await createFileFromUpload();
+    await uploadFile({ content: '' }, config, { onProgress }).promiseFileId;
 
     expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
     expect(appendChunksToUpload.mock.calls[0][0]).toEqual('upload-id-123');
@@ -160,7 +158,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    await uploadFile({ content: '' }, config, { onProgress });
+    await uploadFile({ content: '' }, config, { onProgress }).promiseFileId;
     await createFileFromUpload();
 
     expect(onProgress).toHaveBeenCalledTimes(2);
@@ -175,11 +173,10 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation(() => {
-      return Promise.resolve();
+      return { response: Promise.resolve(), cancel: jest.fn() };
     });
 
-    const fileId = await uploadFile({ content: '' }, config);
-
+    const fileId = await uploadFile({ content: '' }, config).promiseFileId;
     expect(fileId).toBe('id-upfront-123');
   });
 
@@ -190,12 +187,15 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation(() => {
-      return Promise.reject('some upload error');
+      return {
+        response: Promise.reject('some upload error'),
+        cancel: jest.fn(),
+      };
     });
 
-    return expect(uploadFile({ content: '' }, config)).rejects.toEqual(
-      'some upload error',
-    );
+    return expect(
+      uploadFile({ content: '' }, config).promiseFileId,
+    ).rejects.toEqual('some upload error');
   });
 
   it('should use id upfront for the new file', async () => {
@@ -205,14 +205,14 @@ describe('Uploader', () => {
     (chunkinator as any) = ChunkinatorMock;
 
     ChunkinatorMock.mockImplementation(() => {
-      return Promise.resolve();
+      return { response: Promise.resolve(), cancel: jest.fn() };
     });
 
-    const file = uploadFile({ content: '' }, config);
+    const promiseFileId = uploadFile({ content: '' }, config).promiseFileId;
     // notice that we are not awaiting uploadFile here because we want to check that createFile gets called in parallel
     expect(createFile).toHaveBeenCalledTimes(1);
 
-    const fileId = await file;
+    const fileId = await promiseFileId;
     expect(fileId).toBe('id-upfront-123');
   });
 
@@ -242,6 +242,6 @@ describe('Uploader', () => {
       },
     }));
 
-    await uploadFile({ content: '' }, config);
+    await uploadFile({ content: '' }, config).promiseFileId;
   });
 });
