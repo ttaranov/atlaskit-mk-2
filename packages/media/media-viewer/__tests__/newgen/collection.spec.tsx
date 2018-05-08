@@ -6,6 +6,7 @@ import { Stubs } from '../_stubs';
 import { Collection } from '../../src/newgen/collection';
 import { ErrorMessage } from '../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 function createContext(subject): Context {
   const token = 'some-token';
@@ -22,30 +23,43 @@ function createContext(subject): Context {
   ) as any;
 }
 
+const id = 'some-id';
+const occurrenceKey = 'some-custom-occurrence-key';
+
 const identifier = {
-  id: 'some-id',
-  occurrenceKey: 'some-custom-occurrence-key',
+  id,
+  occurrenceKey,
   type: 'file' as MediaItemType,
+};
+
+const mediaCollection: MediaCollection = {
+  id: 'my-collection',
+  items: [
+    {
+      type: 'file',
+      details: {
+        id,
+        occurrenceKey,
+      },
+    },
+  ],
 };
 
 function createFixture(
   context: Context,
   subject: Subject<MediaCollection | Error>,
+  onClose?: () => {},
 ) {
   const el = mount(
     <Collection
       selectedItem={identifier}
       collectionName="my-collection"
       context={context}
+      onClose={onClose}
     />,
   );
   return el;
 }
-
-const mediaCollection: MediaCollection = {
-  id: 'my-collection',
-  items: [],
-};
 
 describe('<Collection />', () => {
   it('should show a spinner while requesting items', () => {
@@ -67,6 +81,17 @@ describe('<Collection />', () => {
     subject.next(new Error('error'));
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  it('should wire the onClose handler', () => {
+    const subject = new Subject<MediaCollection>();
+    const onClose = jest.fn();
+    const el = createFixture(createContext(subject), subject, onClose);
+    subject.next(mediaCollection);
+    el.update();
+    console.log(el.debug());
+    el.find(CrossIcon).simulate('click');
+    expect(onClose).toHaveBeenCalled();
   });
 
   it('should reset the component when the collection prop changes', () => {

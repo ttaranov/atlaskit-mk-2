@@ -40,7 +40,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedItem, context } = this.props;
+    const { selectedItem, context, onClose } = this.props;
     const { items } = this.state;
     switch (items.status) {
       case 'PENDING':
@@ -54,6 +54,7 @@ export class Collection extends React.Component<Props, State> {
             items={identifiers}
             selectedItem={selectedItem ? selectedItem : identifiers[0]}
             context={context}
+            onClose={onClose}
           />
         );
     }

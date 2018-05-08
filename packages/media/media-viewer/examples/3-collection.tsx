@@ -4,6 +4,7 @@ import {
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
+import Button from '@atlaskit/button';
 
 const context = createStorybookContext();
 
@@ -13,21 +14,35 @@ const selected: MediaViewerItem = {
   occurrenceKey: '8351fc2f-ecf8-4afb-a909-a9234ea4a445',
 };
 
+export type State = {
+  isOpen: boolean;
+};
 export default class Example extends React.Component<{}, {}> {
+  state: State = { isOpen: true };
+
   render() {
     return (
       <div>
-        <MediaViewer
-          featureFlags={{ nextGen: true }}
-          MediaViewer={null as any}
-          basePath={null as any}
-          context={context}
-          selectedItem={selected}
-          dataSource={{ collectionName: defaultCollectionName }}
-          collectionName={defaultCollectionName}
-          onClose={() => this.setState({ selectedItem: undefined })}
-        />
+        <Button onClick={() => this.setState({ isOpen: true })}>
+          Open MediaViewer
+        </Button>
+        {this.state.isOpen && (
+          <MediaViewer
+            featureFlags={{ nextGen: true }}
+            MediaViewer={null as any}
+            basePath={null as any}
+            context={context}
+            selectedItem={selected}
+            dataSource={{ collectionName: defaultCollectionName }}
+            collectionName={defaultCollectionName}
+            onClose={this.onClose}
+          />
+        )}
       </div>
     );
   }
+
+  private onClose = () => {
+    this.setState({ isOpen: false });
+  };
 }
