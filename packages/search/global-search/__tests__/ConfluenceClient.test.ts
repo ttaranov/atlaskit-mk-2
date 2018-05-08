@@ -20,7 +20,7 @@ function buildMockPage(type: ResultContentType): RecentPage {
     spaceKey: 'abc',
     title: 'Page title',
     type: 'page',
-    url: 'http://localhost',
+    url: '/content/123',
   };
 }
 
@@ -32,15 +32,12 @@ const MOCK_SPACE = {
 };
 
 function mockRecentlyViewedPages(pages: RecentPage[]) {
-  fetchMock.get(
-    'begin:http://localhost//wiki/rest/recentlyviewed/1.0/recent',
-    pages,
-  );
+  fetchMock.get('begin:http://localhost/rest/recentlyviewed/1.0/recent', pages);
 }
 
 function mockRecentlyViewedSpaces(spaces: RecentSpace[]) {
   fetchMock.get(
-    'begin:http://localhost//wiki/rest/recentlyviewed/1.0/recent/spaces',
+    'begin:http://localhost/rest/recentlyviewed/1.0/recent/spaces',
     spaces,
   );
 }
@@ -75,7 +72,7 @@ describe('ConfluenceClient', () => {
           resultId: pages[0].id,
           type: ResultType.Object,
           name: pages[0].title,
-          href: pages[0].url,
+          href: `${DUMMY_CONFLUENCE_HOST}${pages[0].url}`,
           avatarUrl: '',
           containerName: pages[0].space,
           contentType: pages[0].contentType,
@@ -84,7 +81,7 @@ describe('ConfluenceClient', () => {
           resultId: pages[1].id,
           type: ResultType.Object,
           name: pages[1].title,
-          href: pages[1].url,
+          href: `${DUMMY_CONFLUENCE_HOST}${pages[1].url}`,
           avatarUrl: '',
           containerName: pages[1].space,
           contentType: pages[1].contentType,
@@ -112,14 +109,14 @@ describe('ConfluenceClient', () => {
           resultId: MOCK_SPACE.id,
           type: ResultType.Container,
           name: MOCK_SPACE.name,
-          href: `/wiki/${MOCK_SPACE.key}/overview`,
+          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
         },
         {
           resultId: MOCK_SPACE.id,
           type: ResultType.Container,
           name: MOCK_SPACE.name,
-          href: `/wiki/${MOCK_SPACE.key}/overview`,
+          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
         },
       ]);

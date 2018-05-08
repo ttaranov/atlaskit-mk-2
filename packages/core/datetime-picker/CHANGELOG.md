@@ -1,5 +1,19 @@
 # @atlaskit/datetime-picker
 
+## 3.0.6
+
+## 3.0.5
+- [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
+
+## 3.0.4
+- [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
+
+## 3.0.3
+- [patch] Added appearance prop to enable subtle (no icon) appearance   [c10fd5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c10fd5d)
+
+## 3.0.2
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
 ## 3.0.1
 - [patch] Added isInvalid prop to DateTimePicker DatePicker & TimePicker [101c306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/101c306)
 

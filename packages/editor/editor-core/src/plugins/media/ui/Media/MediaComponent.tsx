@@ -17,8 +17,15 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 import {
-  MediaAttributes,
+  MediaType,
+  MediaBaseAttributes,
   CardEventClickHandler,
+  withImageLoader,
+  ImageStatus,
+  // @ts-ignore
+  ImageLoaderProps,
+  // @ts-ignore
+  ImageLoaderState,
 } from '@atlaskit/editor-common';
 
 import { isImage } from '../../../../utils';
@@ -34,7 +41,8 @@ export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 export const MEDIA_HEIGHT = 125;
 export const FILE_WIDTH = 156;
 
-export interface Props extends MediaAttributes {
+export interface Props extends Partial<MediaBaseAttributes> {
+  type: MediaType;
   mediaProvider?: Promise<MediaProvider>;
   cardDimensions?: CardDimensions;
   onClick?: CardEventClickHandler;
@@ -44,6 +52,8 @@ export interface Props extends MediaAttributes {
   stateManagerFallback?: MediaStateManager;
   selected?: boolean;
   tempId?: string;
+  url?: string;
+  imageStatus?: ImageStatus;
 }
 
 export interface State extends MediaState {
@@ -80,7 +90,7 @@ function mapMediaStatusIntoCardStatus(
   }
 }
 
-export default class MediaComponent extends Component<Props, State> {
+export class MediaComponentInternal extends Component<Props, State> {
   private destroyed = false;
 
   static defaultProps = {
@@ -100,7 +110,7 @@ export default class MediaComponent extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { mediaProvider } = nextProps;
 
     if (this.props.mediaProvider !== mediaProvider) {
@@ -120,13 +130,13 @@ export default class MediaComponent extends Component<Props, State> {
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
-      if (stateManager) {
+      if (stateManager && id) {
         stateManager.off(id, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
-    if (stateManagerFallback) {
+    if (stateManagerFallback && id) {
       stateManagerFallback.off(id, this.handleMediaStateChange);
     }
   }
@@ -138,6 +148,9 @@ export default class MediaComponent extends Component<Props, State> {
 
       case 'link':
         return this.renderLink();
+
+      case 'external':
+        return this.renderExternal();
 
       default:
         return null;
@@ -168,13 +181,13 @@ export default class MediaComponent extends Component<Props, State> {
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
-    if (!hasProviders) {
+    if (!hasProviders || !id) {
       return this.renderLoadingCard('link');
     }
 
     const identifier: Identifier = {
       mediaItemType: 'link',
-      collectionName: collection,
+      collectionName: collection!,
       id,
     };
 
@@ -203,7 +216,7 @@ export default class MediaComponent extends Component<Props, State> {
     const { mediaProvider, viewContext, thumbnail } = this.state;
     const { id } = this.props;
 
-    if (!mediaProvider || !viewContext) {
+    if (!mediaProvider || !viewContext || !id) {
       return this.renderLoadingCard('file');
     }
 
@@ -308,6 +321,40 @@ export default class MediaComponent extends Component<Props, State> {
     );
   }
 
+  private renderExternal() {
+    const {
+      onDelete,
+      cardDimensions,
+      appearance,
+      selected,
+      resizeMode,
+      imageStatus,
+      url,
+    } = this.props;
+
+    const otherProps: any = {};
+    if (onDelete) {
+      otherProps.actions = [createDeleteAction(onDelete)];
+    }
+
+    return (
+      <CardView
+        status={imageStatus || 'loading'}
+        metadata={{
+          mediaType: 'image',
+          name: url,
+        }}
+        dataURI={url}
+        dimensions={cardDimensions}
+        appearance={appearance}
+        selectable={true}
+        selected={selected}
+        resizeMode={resizeMode}
+        {...otherProps}
+      />
+    );
+  }
+
   private handleMediaStateChange = (mediaState: MediaState) => {
     /**
      * `cancelled` gets triggered when we do the node swap, so we can ignore it here.
@@ -335,7 +382,7 @@ export default class MediaComponent extends Component<Props, State> {
 
     this.setState({ mediaProvider });
 
-    if (stateManager) {
+    if (stateManager && id) {
       const mediaState = stateManager.getState(tempId || id);
 
       stateManager.on(id, this.handleMediaStateChange);
@@ -375,3 +422,5 @@ export const createDeleteAction = (
     icon: <CrossIcon size="small" label="delete" />,
   };
 };
+
+export default withImageLoader<Props>(MediaComponentInternal);

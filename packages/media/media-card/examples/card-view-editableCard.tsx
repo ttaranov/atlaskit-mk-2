@@ -28,7 +28,7 @@ import { ImageResizeMode, MediaItemType } from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
 import { CardView } from '../src/root/cardView';
-import { CardAppearance, CardStatus, CardDimensions } from '../src';
+import { CardAppearance, CardStatus, CardDimensions, CardAction } from '../src';
 import {
   openAction,
   closeAction,
@@ -143,7 +143,7 @@ export const generateStoriesForEditableCards = () => {
     metadata: string;
     dataURI: string;
     progress: number;
-    menuActions: any;
+    menuActions: Array<CardAction>;
     selectable: boolean;
     selected: boolean;
     resizeMode: ImageResizeMode;
@@ -190,8 +190,9 @@ export const generateStoriesForEditableCards = () => {
         useDimensions: true,
       };
       const previousState = getStateFromLocalStorage();
-
-      this.state = previousState || defaultState;
+      const state = previousState || defaultState;
+      // We need to override "menuActions" since it can't be serialized because it contains react no
+      this.state = { ...state, menuActions: actions };
     }
 
     componentDidUpdate() {
@@ -494,7 +495,7 @@ export const generateStoriesForEditableCards = () => {
       this.setState({ selectable: !this.state.selectable });
     };
 
-    isActionChecked = action => this.state.menuActions.includes(action);
+    isActionChecked = action => this.state.menuActions.indexOf(action) !== -1;
 
     onActionsChange = action => e => {
       const { checked } = e.target;

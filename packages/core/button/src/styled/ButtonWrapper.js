@@ -23,11 +23,13 @@ const ButtonWrapper = (props: Props) => {
     display: 'inline-flex',
     flexWrap: 'nowrap',
     maxWidth: '100%',
+    position: 'relative',
   };
   if (props.fit) {
     style.width = '100%';
     style.justifyContent = 'center';
   }
+
   const optionalProps = {};
   if (props.onClick) {
     optionalProps.onClick = props.onClick;

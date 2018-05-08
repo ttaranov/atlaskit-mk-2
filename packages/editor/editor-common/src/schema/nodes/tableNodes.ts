@@ -8,6 +8,7 @@ import {
   akColorR50,
   akColorG50,
   akColorY50,
+  akColorN0,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
 import {
@@ -44,11 +45,24 @@ const setCellAttrs = (node: PmNode) => {
   }
   if (node.attrs.background) {
     const { background } = node.attrs;
-    const color =
-      node.type.name === 'tableCell'
-        ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
-        : background;
-    attrs.style = (attrs.style || '') + `background-color: ${color};`;
+    const nodeType = node.type.name;
+
+    // to ensure that we don't overwrite product's style:
+    // - it clears background color for <th> if its set to grey
+    // - it clears background color for <td> if its set to white
+    const ignored =
+      (nodeType === 'tableHeader' &&
+        background === tableBackgroundColorNames.get('grey')) ||
+      (nodeType === 'tableCell' &&
+        background === tableBackgroundColorNames.get('white'));
+
+    if (!ignored) {
+      const color =
+        nodeType === 'tableCell'
+          ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
+          : background;
+      attrs.style = `${attrs.style || ''}background-color: ${color};`;
+    }
   }
 
   return attrs;
@@ -57,7 +71,6 @@ const setCellAttrs = (node: PmNode) => {
 export const tableBackgroundColorPalette = new Map<string, string>();
 export const tableBackgroundColorNames = new Map<string, string>();
 [
-  // [akColorN800, default],
   [akColorB50, 'Blue'],
   [akColorT50, 'Teal'],
   [akColorR50, 'Red'],
@@ -65,10 +78,13 @@ export const tableBackgroundColorNames = new Map<string, string>();
   [akColorP50, 'Purple'],
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
-  ['', 'White'],
-].forEach(([color, label]) => {
-  tableBackgroundColorPalette.set(color.toLowerCase(), label);
-  tableBackgroundColorNames.set(label.toLowerCase(), color.toLowerCase());
+  [akColorN0, 'White'],
+].forEach(([colorValue, colorName]) => {
+  tableBackgroundColorPalette.set(colorValue.toLowerCase(), colorName);
+  tableBackgroundColorNames.set(
+    colorName.toLowerCase(),
+    colorValue.toLowerCase(),
+  );
 });
 
 export function calcTableColumnWidths(node: PmNode): number[] {
@@ -102,6 +118,7 @@ export type Layout = 'default' | 'full-width';
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
+  __autoSize?: boolean;
 }
 
 /**
@@ -164,6 +181,7 @@ export const table: any = {
   attrs: {
     isNumberColumnEnabled: { default: false },
     layout: { default: 'default' },
+    __autoSize: { default: false },
   },
   tableRole: 'table',
   isolating: true,
@@ -175,6 +193,7 @@ export const table: any = {
         isNumberColumnEnabled:
           dom.getAttribute('data-number-column') === 'true' ? true : false,
         layout: dom.getAttribute('data-layout') || 'default',
+        __autoSize: dom.getAttribute('data-autosize') || false,
       }),
     },
   ],
@@ -182,10 +201,20 @@ export const table: any = {
     const attrs = {
       'data-number-column': node.attrs.isNumberColumnEnabled,
       'data-layout': node.attrs.layout,
+      'data-autosize': node.attrs.__autoSize,
     };
     return ['table', attrs, ['tbody', 0]];
   },
 };
+
+export const tableToJSON = (node: PmNode) => ({
+  attrs: Object.keys(node.attrs)
+    .filter(key => !key.startsWith('__'))
+    .reduce((obj, key) => {
+      obj[key] = node.attrs[key];
+      return obj;
+    }, {}),
+});
 
 export const tableRow: any = {
   content: '(tableCell | tableHeader)+',

@@ -8,14 +8,22 @@ import {
   CardOnClickCallback,
 } from '@atlaskit/media-card';
 import { Context, ImageResizeMode } from '@atlaskit/media-core';
-import { MediaType } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  withImageLoader,
+  ImageStatus,
+  // @ts-ignore
+  ImageLoaderProps,
+  // @ts-ignore
+  ImageLoaderState,
+} from '@atlaskit/editor-common';
 
 export interface MediaProvider {
   viewContext?: Context;
 }
 
 export interface MediaCardProps {
-  id: string;
+  id?: string;
   mediaProvider?: MediaProvider;
   eventHandlers?: {
     media?: {
@@ -23,22 +31,26 @@ export interface MediaCardProps {
     };
   };
   type: MediaType;
-  collection: string;
+  collection?: string;
+  url?: string;
   cardDimensions?: CardDimensions;
   resizeMode?: ImageResizeMode;
   appearance?: CardAppearance;
   occurrenceKey?: string;
+  imageStatus?: ImageStatus;
 }
 
 export interface State {
   context?: Context;
+  // externalStatus: CardStatus;
 }
 
-export class MediaCard extends Component<MediaCardProps, State> {
+export class MediaCardInternal extends Component<MediaCardProps, State> {
   state: State = {};
 
   async componentDidMount() {
     const { mediaProvider } = this.props;
+
     if (!mediaProvider) {
       return;
     }
@@ -49,6 +61,32 @@ export class MediaCard extends Component<MediaCardProps, State> {
     this.setState({
       context,
     });
+  }
+
+  private renderExternal() {
+    const {
+      cardDimensions,
+      resizeMode,
+      appearance,
+      url,
+      imageStatus,
+    } = this.props;
+
+    return (
+      <CardView
+        status={imageStatus || 'loading'}
+        dataURI={url}
+        dimensions={cardDimensions}
+        metadata={
+          {
+            mediaType: 'image',
+            name: url,
+          } as any
+        }
+        appearance={appearance}
+        resizeMode={resizeMode}
+      />
+    );
   }
 
   render() {
@@ -62,6 +100,10 @@ export class MediaCard extends Component<MediaCardProps, State> {
       resizeMode,
       appearance,
     } = this.props;
+
+    if (type === 'external') {
+      return this.renderExternal();
+    }
 
     if (!context) {
       return (
@@ -93,3 +135,5 @@ export class MediaCard extends Component<MediaCardProps, State> {
     );
   }
 }
+
+export const MediaCard = withImageLoader<MediaCardProps>(MediaCardInternal);

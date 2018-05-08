@@ -51,6 +51,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   // FileCardProps
   readonly dataURI?: string;
   readonly progress?: number;
+  readonly disableOverlay?: boolean;
 }
 
 export interface CardViewState {
@@ -231,6 +232,7 @@ export class CardViewBase extends React.Component<
       actions,
       selectable,
       selected,
+      disableOverlay,
     } = this.props;
 
     return (
@@ -246,6 +248,7 @@ export class CardViewBase extends React.Component<
         actions={actions}
         selectable={selectable}
         selected={selected}
+        disableOverlay={disableOverlay}
       />
     );
   };

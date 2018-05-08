@@ -63,10 +63,13 @@ function getTooltipContent(position, index) {
      It has a longer content description that wraps multiple lines and is taller than target.
      This should showcase any edge cases related to viewport boundary detection logic. In most
      cases tooltips shouldn't have this much content though.`,
+    `The position of the tooltip is ${position}. ThisHasAReallyLongWordWithNoSpacesWhichShouldWrap.`,
   ];
 
   return contentArray[index];
 }
+
+const tooltipSize = ['small', 'medium', 'large', 'long words'];
 
 export default class PositionExample extends Component<Props, State> {
   // store the direction as an index and pull it from the list above,
@@ -113,7 +116,7 @@ export default class PositionExample extends Component<Props, State> {
 
   changeTooltipSize = () => {
     this.setState({
-      tooltipContent: (this.state.tooltipContent + 1) % 3,
+      tooltipContent: (this.state.tooltipContent + 1) % tooltipSize.length,
     });
   };
 
@@ -156,6 +159,7 @@ export default class PositionExample extends Component<Props, State> {
               Change tooltip size
             </Button>
           </ButtonDiv>
+          <ButtonDiv>Size: {tooltipSize[tooltipContent]}</ButtonDiv>
         </CenterDiv>
         <div
           onClick={this.changeDirection}

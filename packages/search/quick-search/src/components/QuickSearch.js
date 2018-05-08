@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { type ResultData } from './Results/types';
@@ -105,6 +105,8 @@ type Props = {
   selectedResultId: number | string,
   // Internal: injected by withAnalytics(). Fire a private analytics event
   firePrivateAnalyticsEvent: (eventName: string, eventData?: {}) => {},
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 type State = {
@@ -313,6 +315,7 @@ export class QuickSearch extends Component<Props, State> {
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
         sendAnalytics: this.props.firePrivateAnalyticsEvent,
+        linkComponent: this.props.linkComponent,
       });
     };
 

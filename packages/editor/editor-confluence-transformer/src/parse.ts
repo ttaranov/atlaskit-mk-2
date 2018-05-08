@@ -2,7 +2,6 @@ import {
   MediaAttributes,
   MediaSingleAttributes,
   MediaSingleLayout,
-  MediaType,
   acNameToEmoji,
   acShortcutToEmoji,
   parseDate,
@@ -321,7 +320,7 @@ function converter(
       case 'FAB:MEDIA':
         const mediaAttrs: MediaAttributes = {
           id: node.getAttribute('media-id') || '',
-          type: (node.getAttribute('media-type') || 'file') as MediaType,
+          type: (node.getAttribute('media-type') || 'file') as 'file' | 'link',
           collection: node.getAttribute('media-collection') || '',
         };
 
@@ -683,8 +682,12 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
     rowNodes.push(tableRow.createChecked(undefined, Fragment.from(cellNodes)));
   }
 
-  return table.createChecked(
-    { isNumberColumnEnabled },
+  return table.create(
+    {
+      isNumberColumnEnabled,
+      __autoSize:
+        columnSizes.length === 0 || columnSizes.every(width => width === 0),
+    },
     Fragment.from(rowNodes),
   );
 }

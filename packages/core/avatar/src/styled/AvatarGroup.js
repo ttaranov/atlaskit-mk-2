@@ -1,6 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
+import { colors, gridSize } from '@atlaskit/theme';
 import { BORDER_WIDTH } from './constants';
 
 // TODO: use math utilities within styled component
@@ -32,3 +32,23 @@ export const Stack = styled.div`
     margin-right: -${props => BORDER_WIDTH[props.size] * 2 + gutterUnitless}px;
   }
 `;
+
+export function getBackgroundColor({
+  isActive,
+  isHover,
+}: {
+  isActive: boolean,
+  isHover: boolean,
+}) {
+  let themedBackgroundColor = colors.backgroundOnLayer;
+
+  if (isHover) {
+    themedBackgroundColor = colors.backgroundHover;
+  }
+
+  if (isActive) {
+    themedBackgroundColor = colors.backgroundActive;
+  }
+
+  return themedBackgroundColor;
+}

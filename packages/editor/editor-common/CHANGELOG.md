@@ -1,5 +1,32 @@
 # @atlaskit/editor-common
 
+## 9.3.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
+## 9.2.14
+- [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
+
+## 9.2.13
+- [patch] Adding progress loader for cloud pickers [e22266c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e22266c)
+
+## 9.2.12
+
+## 9.2.11
+- [patch] ED-4431, selecting block extension creates a wrng selection. [c078cf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c078cf2)
+
+## 9.2.10
+
+
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
+## 9.2.9
+
+## 9.2.8
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
+## 9.2.7
+- [patch] ED-4454: fix setting while bg color for table header cells [83aecb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83aecb3)
+
 ## 9.2.6
 
 ## 9.2.5

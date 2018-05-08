@@ -31,7 +31,7 @@ export default class ObjectResult extends React.Component<Props> {
   getAvatar = () => {
     if (this.props.contentType === ResultContentType.Page) {
       return <Objects24PageIcon size="large" label={this.props.name} />;
-    } else if (this.props.contentType === ResultContentType.Space) {
+    } else if (this.props.contentType === ResultContentType.Blogpost) {
       return <Objects24BlogIcon size="large" label={this.props.name} />;
     } else {
       return <Avatar src={this.props.avatarUrl} appearance="square" />;

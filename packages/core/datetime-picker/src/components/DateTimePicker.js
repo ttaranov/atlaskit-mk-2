@@ -12,6 +12,8 @@ import { parseDateIntoStateValues } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon. */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
@@ -32,10 +34,12 @@ type Props = {
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
   value?: string,
-  /** Allow users to edit the input and add a time */
+  /** Allow users to edit the input and add a time. */
   timeIsEditable?: boolean,
-  /** Indicates current value is invalid & changes border color */
+  /** Indicates current value is invalid & changes border color. */
   isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
+  hideIcon?: boolean,
 };
 
 type State = {
@@ -47,20 +51,32 @@ type State = {
   zoneValue: string,
 };
 
-function getBorderColor(isInvalid: boolean) {
+/** Border style is defined by the appearnace and whether it is invalid. */
+function getBorderStyle(isInvalid: boolean, appearance: 'default' | 'subtle') {
   if (isInvalid) return `2px solid ${colors.R400}`;
+  if (appearance === 'subtle') return `2px solid transparent`;
   return `1px solid ${colors.N20}`;
 }
+/** Padding style is defined by the appearnace and whether it is invalid. */
+function getPaddingStyle(isFocused: boolean, appearance: 'default' | 'subtle') {
+  if (appearance === 'subtle' || !isFocused) return `1px`;
+  return '0px';
+}
+
 const Flex = styled.div`
-  background-color: ${colors.N10};
-  border-radius: ${borderRadius()}px;
+  ${({ appearance }) => `
+    background-color: ${appearance === 'subtle' ? 'transparent' : colors.N10}
+    };
+  `} border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
-  ${({ isFocused, isInvalid }) => `
+  ${({ isFocused, isInvalid, appearance }) => `
     border: ${
-      isFocused ? `2px solid ${colors.B100}` : `${getBorderColor(isInvalid)}`
+      isFocused
+        ? `2px solid ${colors.B100}`
+        : `${getBorderStyle(isInvalid, appearance)}`
     };
-    padding: ${isFocused ? '0' : '1px'};
+    padding: ${getPaddingStyle(isFocused, appearance)};
   `} &:hover {
     ${({ isFocused, isDisabled }) =>
       !isFocused && !isDisabled
@@ -81,7 +97,7 @@ const styles = {
   control: style => ({
     ...style,
     backgroundColor: 'transparent',
-    border: 0,
+    border: 2,
     borderRadius: 0,
     paddingLeft: 0,
     ':hover': {
@@ -100,6 +116,7 @@ function formatDateTimeZoneIntoIso(
 
 export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -111,6 +128,7 @@ export default class DateTimePicker extends Component<Props, State> {
     defaultValue: '',
     timeIsEditable: false,
     isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
@@ -186,11 +204,16 @@ export default class DateTimePicker extends Component<Props, State> {
       timeIsEditable,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : CalendarIcon;
     const bothProps = {
       isDisabled,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
+      appearance: this.props.appearance,
     };
 
     return (
@@ -199,6 +222,7 @@ export default class DateTimePicker extends Component<Props, State> {
         isFocused={isFocused}
         isDisabled={isDisabled}
         isInvalid={bothProps.isInvalid}
+        appearance={bothProps.appearance}
       >
         <input name={name} type="hidden" value={value} />
         <FlexItem>
@@ -215,7 +239,7 @@ export default class DateTimePicker extends Component<Props, State> {
         <FlexItem>
           <TimePicker
             {...bothProps}
-            icon={CalendarIcon}
+            icon={icon}
             onChange={this.onTimeChange}
             selectProps={{ styles }}
             defaultValue={timeValue}

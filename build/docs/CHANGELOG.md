@@ -1,5 +1,7 @@
 # @atlaskit/docs
 
+## 3.0.3
+
 ## 3.0.2
 - [patch] Upgrade pretty proptypes [0ad9962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ad9962)
 

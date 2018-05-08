@@ -7,8 +7,8 @@ import {
   akEditorTableCellSelected,
   akEditorTableBorder,
   akEditorTableBorderSelected,
-  akEditorTableFloatingControls,
 } from '../../styles';
+import { tableBackgroundColorNames } from '../../';
 
 const tableStyle = `
   {
@@ -17,6 +17,10 @@ const tableStyle = `
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
+
+    &[data-autosize="true"] {
+      table-layout: auto;
+    }
 
     & {
       * {
@@ -46,7 +50,7 @@ const tableStyle = `
         }
       }
       th {
-        background-color: ${akEditorTableFloatingControls};
+        background-color: ${tableBackgroundColorNames.get('grey')};
         font-weight: bold;
         text-align: left;
       }

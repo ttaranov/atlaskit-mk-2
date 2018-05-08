@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/theme": "^3.0.0",
     "enzyme": "^3.3.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2"

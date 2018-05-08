@@ -14,9 +14,10 @@ export const Blanket = styled.div`
   bottom: 0;
   right: 0;
   background-color: #1b2638;
+  z-index: 999;
 `;
 
-export const Header = styled.div`
+export const HeaderWrapper = styled.div`
   position: absolute;
   top: 0;
   width: 100%;
@@ -24,9 +25,10 @@ export const Header = styled.div`
   opacity: 0.85;
   background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
   color: #b8c7e0;
-  padding-top: 17px;
-  padding-left: 17px;
-  line-height: 32px;
+  padding-top: 15px;
+  padding: 24px;
+  box-sizing: border-box;
+  z-index: 1000;
 `;
 
 export const Content = styled.div`
@@ -74,5 +76,19 @@ export const LeftWrapper = ArrowWrapper.extend`
 `;
 
 export const RightWrapper = ArrowWrapper.extend`
+  text-align: right;
+`;
+
+// header.tsx
+export const Header = styled.div`
+  display: flex;
+`;
+
+export const LeftHeader = styled.div`
+  flex: 0.8;
+`;
+
+export const RightHeader = styled.div`
+  flex: 0.2;
   text-align: right;
 `;
