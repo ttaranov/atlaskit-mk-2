@@ -108,7 +108,7 @@ export function makeCrossProductSearchData(
 
   for (let i = 0; i < n; i++) {
     const url = faker.internet.url();
-    const isAttachment = faker.random.boolean();
+    const isAttachment = faker.random.boolean() && faker.random.boolean();
 
     const newAttachment: ConfluenceItem = {
       title: faker.company.catchPhrase(),
