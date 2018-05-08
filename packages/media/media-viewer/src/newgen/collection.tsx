@@ -4,7 +4,6 @@ import { Outcome, Identifier } from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
 import { Subscription } from 'rxjs';
-import * as deepEqual from 'deep-equal';
 import { toIdentifier } from './util';
 import { Spinner } from './loading';
 
@@ -95,7 +94,7 @@ export class Collection extends React.Component<Props, State> {
 
   private needsReset(propsA: Props, propsB: Props) {
     return (
-      !deepEqual(propsA.collectionName, propsB.collectionName) ||
+      propsA.collectionName !== propsB.collectionName ||
       propsA.context !== propsB.context
     );
   }
