@@ -18,17 +18,19 @@ import {
   SpotlightManager,
   SpotlightTarget,
 } from '@atlaskit/onboarding';
+import { colors } from '@atlaskit/theme';
 import Lorem from 'react-lorem-component';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
 import { withTheme } from '../src/theme';
 
 const Global = () => (
+  // TODO: DRY the props
   <GlobalNavigation
     product={{
       icon: () => (
         <SpotlightTarget name="product">
-          <EmojiAtlassianIcon primaryColor="#DEEBFF" />
+          <EmojiAtlassianIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'product',
@@ -36,7 +38,7 @@ const Global = () => (
     search={{
       icon: () => (
         <SpotlightTarget name="search">
-          <SearchIcon primaryColor="#DEEBFF" />
+          <SearchIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'search',
@@ -44,7 +46,7 @@ const Global = () => (
     create={{
       icon: () => (
         <SpotlightTarget name="create">
-          <CreateIcon primaryColor="#DEEBFF" />
+          <CreateIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'create',
@@ -52,7 +54,7 @@ const Global = () => (
     people={{
       icon: () => (
         <SpotlightTarget name="people">
-          <PeopleIcon primaryColor="#DEEBFF" />
+          <PeopleIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'people',
@@ -60,7 +62,7 @@ const Global = () => (
     notification={{
       icon: () => (
         <SpotlightTarget name="notification">
-          <NotificationIcon primaryColor="#DEEBFF" />
+          <NotificationIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'notification',
@@ -68,7 +70,7 @@ const Global = () => (
     appSwitcher={{
       icon: () => (
         <SpotlightTarget name="appSwitcher">
-          <MenuIcon primaryColor="#DEEBFF" />
+          <MenuIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'appSwitcher',
@@ -76,7 +78,7 @@ const Global = () => (
     help={{
       icon: () => (
         <SpotlightTarget name="help">
-          <QuestionCircle primaryColor="#DEEBFF" />
+          <QuestionCircle primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'help',
@@ -84,7 +86,7 @@ const Global = () => (
     profile={{
       icon: () => (
         <SpotlightTarget name="profile">
-          <PeopleIcon primaryColor="#DEEBFF" />
+          <PeopleIcon primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'profile',
