@@ -28,6 +28,7 @@ export interface Props {
   // Editor
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
+  disableScrollTo?: boolean;
 }
 
 export interface State {
@@ -119,7 +120,7 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   private handleRef = (node: HTMLDivElement) => {
-    if (this.props.isExpanded && node) {
+    if (!this.props.disableScrollTo && this.props.isExpanded && node) {
       if ((node as any).scrollIntoViewIfNeeded) {
         (node as any).scrollIntoViewIfNeeded({ behavior: 'smooth' });
       } else if (node.scrollIntoView) {
