@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
 import TableFloatingControls from '../ui/TableFloatingControls';
@@ -30,7 +31,15 @@ export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
 }
 
-class TableComponent extends React.Component<ComponentProps> {
+export interface ComponentState {
+  controlMountPoint?: HTMLElement;
+}
+
+class TableComponent extends React.Component<ComponentProps, ComponentState> {
+  state = {
+    controlMountPoint: undefined,
+  };
+
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
   private colgroup: HTMLTableColElement | null;
@@ -76,6 +85,12 @@ class TableComponent extends React.Component<ComponentProps> {
     }
   }
 
+  setControlMountPoint = ref => {
+    this.setState({
+      controlMountPoint: ReactDOM.findDOMNode(ref) as HTMLElement,
+    });
+  };
+
   render() {
     const { eventDispatcher, view, node, allowColumnResizing } = this.props;
     const columnShadows = allowColumnResizing
@@ -99,6 +114,7 @@ class TableComponent extends React.Component<ComponentProps> {
 
     // doesn't work well with WithPluginState
     const { isTableHovered } = hoverSelectionPluginKey.getState(view.state);
+    const { controlMountPoint } = this.state;
 
     return (
       <WithPluginState
@@ -120,6 +136,7 @@ class TableComponent extends React.Component<ComponentProps> {
               }}
               className="table-container"
               data-layout={node.attrs.layout}
+              ref={this.setControlMountPoint}
             >
               <div className="table-row-controls">
                 <TableFloatingControls
@@ -131,6 +148,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   resetHoverSelection={resetHoverSelection}
                   insertColumn={insertColumn}
                   insertRow={insertRow}
+                  controlMountPoint={controlMountPoint}
                   remove={pluginState.remove}
                 />
               </div>
@@ -146,6 +164,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     tableElement={pluginState.tableElement}
                     isTableHovered={isTableHovered}
                     insertColumn={insertColumn}
+                    controlMountPoint={controlMountPoint}
                     remove={pluginState.remove}
                     hoverColumns={hoverColumns!}
                     resetHoverSelection={resetHoverSelection!}

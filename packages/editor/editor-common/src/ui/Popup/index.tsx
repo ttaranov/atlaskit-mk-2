@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, MouseEvent } from 'react';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 import Portal from '../Portal';
@@ -25,6 +25,7 @@ export interface Props {
   scrollableElement?: HTMLElement;
   stickToBottom?: boolean;
   ariaLabel?: string;
+  onMouseLeave?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
 export interface State {
@@ -169,6 +170,7 @@ export default class Popup extends PureComponent<Props, State> {
 
   private renderPopup() {
     const { position } = this.state;
+    const { onMouseLeave } = this.props;
 
     return (
       <div
@@ -179,6 +181,7 @@ export default class Popup extends PureComponent<Props, State> {
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}
+        onMouseLeave={onMouseLeave}
       >
         {this.props.children}
       </div>

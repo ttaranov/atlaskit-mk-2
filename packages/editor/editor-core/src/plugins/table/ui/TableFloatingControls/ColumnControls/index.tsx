@@ -32,6 +32,7 @@ export interface Props {
   insertColumn: (column: number) => Command;
   hoverColumns: (columns: number[], danger?: boolean) => Command;
   resetHoverSelection: Command;
+  controlMountPoint?: HTMLElement;
   remove: () => void;
 }
 
@@ -83,7 +84,12 @@ export default class ColumnControls extends Component<Props, any> {
   }
 
   render() {
-    const { editorView: { state }, tableElement, isTableHovered } = this.props;
+    const {
+      editorView: { state },
+      tableElement,
+      isTableHovered,
+      controlMountPoint,
+    } = this.props;
     if (!tableElement) {
       return null;
     }
@@ -130,12 +136,12 @@ export default class ColumnControls extends Component<Props, any> {
             i === 0 &&
             checkIfNumberColumnEnabled(state) &&
             checkIfHeaderColumnEnabled(state)
-          ) && (!(
-            selection.hasMultipleSelection && selection.frontOfSelection(i)
-          )) ? (
+          ) &&
+          !(selection.hasMultipleSelection && selection.frontOfSelection(i)) ? (
             <InsertColumnButton
               onClick={() => this.insertColumn(i + 1)}
               lineMarkerHeight={tableHeight + toolbarSize}
+              mountPoint={controlMountPoint}
             />
           ) : null}
         </ColumnControlsButtonWrap>,

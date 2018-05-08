@@ -19,6 +19,7 @@ export interface Props {
   hoverRows?: (rows: number[], danger?: boolean) => Command;
   insertColumn?: (column: number) => Command;
   insertRow?: (row: number) => Command;
+  controlMountPoint?: HTMLElement;
   remove?: () => void;
 }
 
@@ -38,6 +39,7 @@ export default class TableFloatingControls extends Component<Props, State> {
       remove,
       hoverTable,
       isTableHovered,
+      controlMountPoint,
     } = this.props;
 
     if (!tableElement) {
@@ -55,6 +57,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           resetHoverSelection={resetHoverSelection!}
           updateScroll={this.updateScroll}
           scroll={this.state.scroll}
+          controlMountPoint={controlMountPoint}
         />
         <RowControls
           editorView={editorView}

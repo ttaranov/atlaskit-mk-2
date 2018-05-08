@@ -23,11 +23,17 @@ export interface Props {
   resetHoverSelection: Command;
   scroll: number;
   updateScroll: () => void;
+  controlMountPoint?: HTMLElement;
 }
 
 export default class CornerControls extends Component<Props, any> {
   render() {
-    const { tableElement, editorView: { state }, scroll } = this.props;
+    const {
+      tableElement,
+      editorView: { state },
+      scroll,
+      controlMountPoint,
+    } = this.props;
     const tableHeight = tableElement.offsetHeight;
     const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
 
@@ -46,6 +52,7 @@ export default class CornerControls extends Component<Props, any> {
               style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
               onClick={this.insertColumn}
               lineMarkerHeight={tableHeight + toolbarSize}
+              mountPoint={controlMountPoint}
             />
           )}
         {!checkIfHeaderRowEnabled(state) && (

@@ -14,6 +14,7 @@ import {
   InsertButtonDefault,
   LineMarkerDefault,
 } from '../styles';
+import AkButton, { Props as ButtonProps } from '@atlaskit/button';
 import { akEditorTableBorderDelete } from '../../../../../styles';
 
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -69,7 +70,7 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
 `;
 
 export const InsertColumnButtonWrap: ComponentClass<
-  HTMLAttributes<{}>
+  HTMLAttributes<{}> | { innerRef?: any }
 > = styled.div`
   position: absolute;
   top: -20px;
@@ -78,9 +79,6 @@ export const InsertColumnButtonWrap: ComponentClass<
   width: 20px;
   z-index: 2;
   cursor: pointer;
-  &:hover > div {
-    display: flex;
-  }
 `;
 
 export const DeleteColumnButtonSize = 16;
@@ -111,6 +109,17 @@ export const InsertColumnMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   bottom: 3px;
   left: 7px;
+`;
+
+export const InsertColumnComponent: ComponentClass<
+  HTMLAttributes<{}> | ButtonProps
+> = styled(AkButton)`
+  height: 20px;
+  width: 20px;
+  & svg {
+    height: 20px;
+    width: 20px;
+  }
 `;
 
 export const InsertColumnButtonInner: ComponentClass<
