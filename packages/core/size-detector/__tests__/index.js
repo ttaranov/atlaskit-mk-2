@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import SizeDetector from '../src';
 import { name } from '../package.json';
 
+// adding comment to test ED-4533
 describe(name, () => {
   const createChildWithSpy = spy => args => spy(args);
 

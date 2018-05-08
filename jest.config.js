@@ -3,6 +3,7 @@
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+const RUN_EDITOR_TESTS = process.env.RUN_EDITOR_TESTS;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -30,6 +31,8 @@ const config = {
     '/__tests__\\/.*?\\/_.*?',
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
+    // ignore tests under editor package as this will need to runInBand
+    '/editor\\/.*?\\/__tests__\\/*.?',
   ],
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
@@ -61,10 +64,8 @@ if (CHANGED_PACKAGES) {
   const changedPackagesTestGlobs = changedPackages.map(
     pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
   );
-
   config.testMatch = changedPackagesTestGlobs;
 }
-
 // If the INTEGRATION_TESTS flag is set we need to
 if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
@@ -80,6 +81,23 @@ if (INTEGRATION_TESTS) {
     config.testMatch = changedPackagesTestGlobs;
   } else {
     config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+  }
+}
+
+if (RUN_EDITOR_TESTS) {
+  // remove editor tests from ignored patterns
+  if (CHANGED_PACKAGES) {
+    config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+      pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
+    );
+    const changedPackages = JSON.parse(CHANGED_PACKAGES);
+    const changedEditorPackages = changedPackages.filter(name =>
+      name.includes('editor'),
+    );
+    const changedPackagesTestGlobs = changedEditorPackages.map(
+      pkgPath => `${__dirname}/${pkgPath}/__tests__/**/*.(js|tsx|ts)`,
+    );
+    config.testMatch = changedPackagesTestGlobs;
   }
 }
 

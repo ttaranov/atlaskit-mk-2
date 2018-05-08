@@ -57,6 +57,7 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - yarn test:changed
+              - RUN_EDITOR_TESTS="true" yarn test:changed -- --runInBand  
             caches:
               - node
         - step:
