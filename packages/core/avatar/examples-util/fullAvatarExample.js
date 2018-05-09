@@ -89,6 +89,28 @@ export default ({
     <Note>
       Sizes <Code>xsmall</Code> and <Code>xxlarge</Code> do NOT support Status
     </Note>
-    <WithAllAvatarSizes appearance={appearance} src={src} status="approved" />
+    <Block>
+      <Avatar appearance={appearance} src={src} size="xxlarge" />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="xlarge"
+        status="approved"
+      />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="large"
+        status="declined"
+      />
+      <Avatar appearance={appearance} src={src} status="locked" />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="small"
+        status="declined"
+      />
+      <Avatar appearance={appearance} src={src} size="xsmall" />
+    </Block>
   </div>
 );
