@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.3.0
+- [minor] Add collection support to Media Viewer NGwq [6baa5d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6baa5d0)
+
 ## 13.2.3
 
 ## 13.2.2
