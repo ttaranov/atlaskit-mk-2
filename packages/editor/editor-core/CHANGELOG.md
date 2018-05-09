@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.2.3
+- [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
+
 ## 71.2.2
 - [patch] Showing up title in place of macro name [296c3e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/296c3e3)
 
