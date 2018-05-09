@@ -26,9 +26,6 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & li:first-child {
-      padding-left: 2px;
-    }
   }
 `;
 

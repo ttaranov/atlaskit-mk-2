@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 16.1.2
+
+## 16.1.1
+
 ## 16.1.0
 - [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 

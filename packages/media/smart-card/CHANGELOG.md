@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 2.0.2
+- [patch] Implemented <InlineCardView /> for displaying a smart card inline with text. This view is NOT directly exported to consumers. [293b3a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/293b3a7)
+
 ## 2.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 
