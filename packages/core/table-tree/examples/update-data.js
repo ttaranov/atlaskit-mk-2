@@ -4,9 +4,11 @@ import Button from '@atlaskit/button';
 import TableTree from '../src';
 import staticData from './data-structured-nodes.json';
 
+/* eslint-disable react/no-unused-prop-types */
 type ExampleItemData = { title: string, numbering: string };
 const Title = (props: ExampleItemData) => <span>{props.title}</span>;
 const Numbering = (props: ExampleItemData) => <span>{props.numbering}</span>;
+/* eslint-enable react/no-unused-prop-types */
 
 export default class UpdateData extends Component<*, *> {
   state = {

@@ -23,8 +23,7 @@ type Props = {
   /** This will be rendered as content of Table tree, In most cases you are would need to pass Row Element that is exported from table-tree */
   children?: Node,
 
-  // TODO this totally doesn't work now
-  /** Array of root items */
+  /** An array of root items in the table */
   rootItems?: LoadableItems,
 };
 

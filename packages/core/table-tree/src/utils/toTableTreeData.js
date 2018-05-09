@@ -10,7 +10,7 @@ export default function toTableTreeData(
   }: { keyId?: string, childId?: string } = {},
 ): {
   itemsById: Object,
-  rootIds?: Array<mixed>,
+  rootIds?: Array<number | string>,
 } {
   const newItemsById = {};
   for (const rowData of rowsData) {

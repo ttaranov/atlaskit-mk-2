@@ -44,7 +44,7 @@ const PerformanceTweakContainer = styled.div`
 
 type State = {
   itemsById: Object,
-  rootIds: Array<mixed>,
+  rootIds: Array<number | string>,
   childCount: number,
   totalCount: number,
   rootItems?: Array<Object>,
