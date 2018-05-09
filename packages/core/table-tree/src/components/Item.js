@@ -37,7 +37,7 @@ export default class Item extends Component<Props, State> {
     if (!renderedRow) {
       return null;
     }
-    const { hasChildren, itemId, childItems } = renderedRow.props;
+    const { hasChildren, itemId, items } = renderedRow.props;
     const wrappedRow = React.cloneElement(renderedRow, {
       onExpandToggle: this.handleExpandToggleClick,
       depth,
@@ -53,7 +53,7 @@ export default class Item extends Component<Props, State> {
               <Items
                 parentData={data}
                 depth={depth}
-                items={childItems}
+                items={items}
                 // getItemsData={getChildrenData}
                 render={render}
               />

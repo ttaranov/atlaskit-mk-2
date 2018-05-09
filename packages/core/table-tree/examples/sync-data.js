@@ -11,11 +11,11 @@ export default () => (
       <Header width={100}>Page</Header>
     </Headers>
     <Rows
-      rootItems={staticData.children}
+      items={staticData.children}
       render={({ title, numbering, page, children }) => (
         <Row
           itemId={numbering}
-          childItems={children}
+          items={children}
           hasChildren={children.length > 0}
         >
           <Cell singleLine>{title}</Cell>

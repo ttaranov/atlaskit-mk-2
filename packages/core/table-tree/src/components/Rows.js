@@ -6,7 +6,7 @@ import { type RenderFunction, type LoadableItems } from './../types';
 
 type Props = {
   /** An array of root items in the table */
-  rootItems: ?LoadableItems,
+  items: ?LoadableItems,
 
   /** The render prop called each time a row needs to be rendered. Receives item data as its only argument. Should
    * return a Row. */
@@ -15,10 +15,10 @@ type Props = {
 
 export default class Rows extends Component<Props> {
   render() {
-    const { rootItems, render } = this.props;
+    const { items, render } = this.props;
     return (
       <div>
-        <Items items={rootItems} render={render} />
+        <Items items={items} render={render} />
       </div>
     );
   }

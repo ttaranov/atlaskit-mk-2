@@ -121,13 +121,13 @@ export default class extends PureComponent<{}, State> {
             <Header width={100}>Stuff</Header>
           </Headers>
           <Rows
-            rootItems={rootIds && rootIds.map(rootId => itemsById[rootId])}
+            items={rootIds && rootIds.map(rootId => itemsById[rootId])}
             render={({ title, numbering, childIds }) => (
               <Row
                 itemId={numbering}
                 hasChildren
                 onExpand={this.handleExpand}
-                childItems={childIds && childIds.map(id => itemsById[id])}
+                items={childIds && childIds.map(id => itemsById[id])}
               >
                 <Cell singleLine>{title}</Cell>
                 <Cell singleLine>{numbering}</Cell>

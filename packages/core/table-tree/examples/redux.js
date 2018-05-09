@@ -37,14 +37,14 @@ class ReduxTree extends Component<*> {
           <Header width={100}>Numbering</Header>
         </Headers>
         <Rows
-          rootItems={this.props.roots}
+          items={this.props.roots}
           render={({ id, title, numbering, childCount }) => (
             <Row
               onExpand={this.loadChildren}
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
-              childItems={this.props.getChildrenOf(id)}
+              items={this.props.getChildrenOf(id)}
               hasChildren={childCount > 0}
             >
               <Cell singleLine>{title}</Cell>

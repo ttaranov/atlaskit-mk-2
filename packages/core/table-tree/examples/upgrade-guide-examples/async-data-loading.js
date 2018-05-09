@@ -45,14 +45,14 @@ class WithStaticData extends Component<{}, State> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          rootItems={rootIds && rootIds.map(rootId => itemsById[rootId])}
+          items={rootIds && rootIds.map(rootId => itemsById[rootId])}
           render={({ title, numbering, page, hasChildren, childIds }) => (
             <Row
               onExpand={this.loadChildFor}
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
-              childItems={childIds && childIds.map(id => itemsById[id])}
+              items={childIds && childIds.map(id => itemsById[id])}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>

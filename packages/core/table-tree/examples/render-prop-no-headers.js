@@ -6,10 +6,10 @@ import staticData from './data-cleancode-toc.json';
 export default () => (
   <TableTree>
     <Rows
-      rootItems={staticData.children}
+      items={staticData.children}
       render={({ title, numbering, page, children }) => (
         <Row
-          childItems={children}
+          items={children}
           itemId={numbering}
           hasChildren={children.length > 0}
         >

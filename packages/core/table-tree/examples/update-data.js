@@ -38,7 +38,7 @@ export default class UpdateData extends Component<*, *> {
           headers={['Title', 'Numbering']}
           columns={[Title, Numbering]}
           columnWidths={['200px', '200px']}
-          rootItems={this.state.data}
+          items={this.state.data}
         />
       </Fragment>
     );

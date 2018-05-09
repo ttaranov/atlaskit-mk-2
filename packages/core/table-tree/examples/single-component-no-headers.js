@@ -11,5 +11,5 @@ const Title = (props: ExampleItemData) => <span>{props.title}</span>;
 const Numbering = (props: ExampleItemData) => <span>{props.numbering}</span>;
 
 export default () => (
-  <TableTree columns={[Title, Numbering]} rootItems={staticData.children} />
+  <TableTree columns={[Title, Numbering]} items={staticData.children} />
 );

@@ -44,11 +44,11 @@ export default class extends PureComponent<{}, State> {
             </Header>
           </Headers>
           <Rows
-            rootItems={staticData.children}
+            items={staticData.children}
             render={({ title, numbering, page, children }) => (
               <Row
                 itemId={numbering}
-                childItems={children}
+                items={children}
                 hasChildren={children.length > 0}
                 onExpand={rowData =>
                   this.triggerEvent(`Node Expanded (${rowData.title})`)

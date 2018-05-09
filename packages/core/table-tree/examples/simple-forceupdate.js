@@ -96,14 +96,14 @@ export default class extends Component<*, *> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          rootItems={this.state.roots}
+          items={this.state.roots}
           render={({ title, numbering, page, hasChildren, children }) => (
             <Row
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
               onExpand={this.loadChildren}
-              childItems={children}
+              items={children}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>

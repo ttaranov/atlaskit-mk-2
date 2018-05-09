@@ -8,28 +8,24 @@ The major reason for v2 release for table tree was issue:
 
 ---
 
-## Props Changed
+## Props update
 
 ### TableTree (Default export)
 
-- New Prop: **rootItems** - Array of root objects in the table table tree
-
-- Deprecated Prop: **items** - *deprecated* in v2
+- **items** - Array of data object to presented in the Table Tree
 
 ### Rows:
 
-- New Prop: **rootItems** - Array of root objects in the table table tree
-
-- Deprecated Prop: **items** - *deprecated*  in v2
+- **items** - Array of data object to presented in the Table Tree
 
 ### Row:
 
-- New Prop: **childItems** - Array of child objects for particular parent
+- **items** - Array of child objects for particular parent
 
 
 ## With Static Data
 
-In the v2 API we have added \`rootItems\` prop on default export TableTree which is drilled down to Rows component ( can just pass rootItems here in case of render props ).
+In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass rootItems here in case of render props ).
 Moreover, there is a new Props childItems on Row which is expected to receive the children for the particular parent.
 
 ${(

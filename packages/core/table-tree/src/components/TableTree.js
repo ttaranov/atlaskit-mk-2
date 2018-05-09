@@ -23,8 +23,8 @@ type Props = {
   /** This will be rendered as content of Table tree, In most cases you are would need to pass Row Element that is exported from table-tree */
   children?: Node,
 
-  /** An array of root items in the table */
-  rootItems?: LoadableItems,
+  /** An Array of table items */
+  items?: LoadableItems,
 };
 
 type State = {
@@ -71,7 +71,7 @@ export default class TableTree extends Component<Props, State> {
   }
 
   render() {
-    const { rootItems, headers, columns, columnWidths = [] } = this.props;
+    const { items, headers, columns, columnWidths = [] } = this.props;
     const heads = headers && (
       <Headers>
         {headers.map((header, index) => (
@@ -83,12 +83,12 @@ export default class TableTree extends Component<Props, State> {
       </Headers>
     );
     let rows = null;
-    if (columns && rootItems) {
+    if (columns && items) {
       rows = (
         <Rows
-          rootItems={rootItems}
+          items={items}
           render={({ id, children, hasChildren, content }) => (
-            <Row itemId={id} childItems={children} hasChildren={hasChildren}>
+            <Row itemId={id} items={children} hasChildren={hasChildren}>
               {columns.map((CellContent, index) => (
                 <Cell
                   // eslint-disable-next-line react/no-array-index-key

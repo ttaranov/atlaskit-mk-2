@@ -38,7 +38,7 @@ type Props = {
   /** Passed implicitly. The data that this row represents. */
   data?: RowData,
 
-  childItems?: LoadableItems,
+  items?: LoadableItems,
 };
 
 export default class Row extends Component<Props> {

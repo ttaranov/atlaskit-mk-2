@@ -26,13 +26,9 @@ export default class SlowLoad extends Component<
           <Header width={100}>Numbering</Header>
         </Headers>
         <Rows
-          rootItems={this.state.tableData}
+          items={this.state.tableData}
           render={({ id, title, numbering, children }) => (
-            <Row
-              itemId={id}
-              childItems={children}
-              hasChildren={children.length > 0}
-            >
+            <Row itemId={id} items={children} hasChildren={children.length > 0}>
               <Cell>{title}</Cell>
               <Cell>{numbering}</Cell>
             </Row>

@@ -17,13 +17,13 @@ class WithStaticData extends Component<Props> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          rootItems={this.props.tableData}
+          items={this.props.tableData}
           render={({ title, numbering, page, children }) => (
             <Row
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
-              childItems={children}
+              items={children}
               hasChildren={children && children.length > 0}
             >
               <Cell singleLine>{title}</Cell>

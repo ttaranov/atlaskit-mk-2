@@ -117,14 +117,14 @@ export default class extends Component<*, *> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          rootItems={rootIds && rootIds.map(rootId => itemsById[rootId])}
+          items={rootIds && rootIds.map(rootId => itemsById[rootId])}
           render={({ title, numbering, page, hasChildren, childIds }) => (
             <Row
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
               onExpand={this.loadTableData}
-              childItems={childIds && childIds.map(id => itemsById[id])}
+              items={childIds && childIds.map(id => itemsById[id])}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>
