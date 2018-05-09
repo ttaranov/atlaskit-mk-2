@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 71.2.5
+- [patch] ED-4564, Replacing invite team member icon in collab editor. [bfe8ffc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfe8ffc)
+
 ## 71.2.4
 
 ## 71.2.3
