@@ -160,7 +160,7 @@ export default function getButtonStyles(props: Object) {
     max-width: 100%;
     outline: ${outline} !important;
     padding: ${padding};
-    pointer-events: 'auto';
+    pointer-events: auto;
     text-align: center;
     text-decoration: ${textDecoration};
     transition: ${transition};
