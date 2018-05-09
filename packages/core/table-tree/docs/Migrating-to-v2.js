@@ -27,7 +27,7 @@ The major reason for v2 release for table tree was issue:
 - New Prop: **childItems** - Array of child objects for particular parent
 
 
-## Upgrade with Static Data
+## With Static Data
 
 In the v2 API we have added \`rootItems\` prop on default export TableTree which is drilled down to Rows component ( can just pass rootItems here in case of render props ).
 Moreover, there is a new Props childItems on Row which is expected to receive the children for the particular parent.
@@ -47,10 +47,10 @@ ${(
 
 Most important trick is done in the render prop of Rows component. Rows follows a render prop pattern
 where the react function component passed in as render prop will receive the parent object as argument
-and thus children data can be accessed here easily ( please feel free to name the children content as per
+and thus children data can be accessed here easily ( please feel free to name the children property as per
 wish, as it is configurable ).
 
-## Update with Async Data loading
+## With Async loading of data
 
 *Here we will dicuss the recommended pattern to avoiding the data processing in case of Async data loading*
 
