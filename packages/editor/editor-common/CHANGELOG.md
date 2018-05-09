@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 9.3.3
+- [patch] Revert schema change [d6634bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6634bc)
+
 ## 9.3.2
 
 ## 9.3.1
