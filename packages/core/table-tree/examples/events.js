@@ -3,18 +3,6 @@ import React, { PureComponent } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
-function fetchRoots() {
-  return Promise.resolve(staticData.children);
-}
-
-function fetchChildrenOf(node) {
-  return Promise.resolve(node.children);
-}
-
-function getItemsData(parent) {
-  return parent ? fetchChildrenOf(parent) : fetchRoots();
-}
-
 type State = {
   lastEvent: string,
 };
@@ -56,10 +44,11 @@ export default class extends PureComponent<{}, State> {
             </Header>
           </Headers>
           <Rows
-            items={getItemsData}
+            items={staticData.children}
             render={({ title, numbering, page, children }) => (
               <Row
                 itemId={numbering}
+                items={children}
                 hasChildren={children.length > 0}
                 onExpand={rowData =>
                   this.triggerEvent(`Node Expanded (${rowData.title})`)
