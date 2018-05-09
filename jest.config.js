@@ -4,6 +4,7 @@ const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
 const RUN_EDITOR_TESTS = process.env.RUN_EDITOR_TESTS;
+const CI = process.env.CI;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -57,6 +58,12 @@ const config = {
   testResultsProcessor: 'jest-junit',
 };
 
+// do-not ignore editor tests if its not CI
+if (!CI) {
+  config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+    pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
+  );
+}
 // If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only
 // run the tests for those packages
 if (CHANGED_PACKAGES) {
@@ -84,7 +91,7 @@ if (INTEGRATION_TESTS) {
   }
 }
 
-if (RUN_EDITOR_TESTS) {
+if (CI && RUN_EDITOR_TESTS) {
   // remove editor tests from ignored patterns
   if (CHANGED_PACKAGES) {
     config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
