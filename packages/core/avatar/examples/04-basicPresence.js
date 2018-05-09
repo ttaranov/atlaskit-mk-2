@@ -3,16 +3,16 @@ import React from 'react';
 import { Presence } from '../src';
 import { Block, Dot } from '../examples-util/helpers';
 
+const presenceArray = ['online', 'busy', 'focus', 'offline'];
+
 export default () => (
   <Block>
-    <Dot>
-      <Presence presence="online" />
-    </Dot>
-    <Dot>
-      <Presence presence="busy" />
-    </Dot>
-    <Dot>
-      <Presence presence="offline" />
-    </Dot>
+    {presenceArray.map(presence => {
+      return (
+        <Dot>
+          <Presence presence={presence} />
+        </Dot>
+      );
+    })}
   </Block>
 );
