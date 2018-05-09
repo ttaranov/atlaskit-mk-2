@@ -1,5 +1,7 @@
 # @atlaskit/editor-core
 
+## 71.2.4
+
 ## 71.2.3
 - [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
 
