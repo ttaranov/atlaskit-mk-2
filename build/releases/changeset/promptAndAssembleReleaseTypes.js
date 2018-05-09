@@ -35,6 +35,16 @@ type changesetType = {
   dependents: Array<changesetDependentType>,
   releaseNotes?: any,
 }
+type workspaceType = {
+  config: {
+    dependencies?: {},
+    devDependencies?: {},
+    peerDependencies?: {},
+    bundledDependencies?: {},
+    optionalDependencies?: {},
+  },
+  name: string
+}
 */
 
 function leftPad(indent, msg) {
@@ -49,6 +59,15 @@ function leftPadOptions(indent, options) {
     name: leftPad(indent, o),
     value: o,
     short: o,
+  }));
+}
+
+function processOptions(options, opts = {}) {
+  return options.map(o => ({
+    name: `${o.name}${o.type === 'dev' ? ' (dev)' : ''}`,
+    value: o.name,
+    short: o.name,
+    checked: !!opts.checked,
   }));
 }
 
@@ -98,6 +117,20 @@ function getUpdateDetails(dependent, changeset, allDependents, allWorkSpaces) {
   };
 }
 
+function isDevDep(
+  allWorkSpaces /*: Array<workspaceType> */,
+  dependent /*: dependentType */,
+  dependency /*: string */,
+) {
+  const workspace = allWorkSpaces.find(ws => ws.name === dependent.name);
+  if (!workspace) {
+    throw new Error(`No package found, ${dependent.name}, ${dependency}`);
+  }
+  const devDeps = workspace.config.devDependencies;
+
+  return !!(devDeps && devDeps[dependency] != null);
+}
+
 async function promptBumptype({
   mustUpdateBecause,
   mayUpdateBecause,
@@ -110,8 +143,8 @@ async function promptBumptype({
   const mustUpdateList = chalk.green(mustUpdateBecause.join(', '));
   const mayUpdateList = chalk.green(mayUpdateBecause.join(', '));
 
-  const indent = level * 4;
-  // const indent = 0;
+  // const indent = level * 4;
+  const indent = 0;
 
   if (isSubsequent && mustUpdateList) {
     indentLog(
@@ -141,6 +174,15 @@ async function promptBumptype({
   );
 }
 
+function addSection(separatorMsg, choices) {
+  let section = [];
+  if (choices.length > 0) {
+    section = [new inquirer.Separator(separatorMsg), ...choices];
+  }
+
+  return section;
+}
+
 async function promptAndAssembleDependentReleaseTypes(
   packageNames /*: string[] */,
   allDependents /*: dependents */,
@@ -161,13 +203,16 @@ async function promptAndAssembleDependentReleaseTypes(
         const dep = allDependents[depName];
         const mustUpdateParams = getMustUpdateOn(allWorkSpaces, dep, pkg.name);
         const mustUpdate = mustUpdateParams.mustUpdateOn.includes(pkg.type);
+        const depType = isDevDep(allWorkSpaces, dep, pkg.name)
+          ? 'dev'
+          : undefined;
 
         if (changeset.releases.find(r => r.name === depName)) {
-          acc.released.push(depName);
+          acc.released.push({ name: depName, type: depType });
         } else if (mustUpdate) {
-          acc.mustUpdate.push(depName);
+          acc.mustUpdate.push({ name: depName, type: depType });
         } else {
-          acc.mayUpdate.push(depName);
+          acc.mayUpdate.push({ name: depName, type: depType });
         }
 
         return acc;
@@ -175,22 +220,40 @@ async function promptAndAssembleDependentReleaseTypes(
       { released: [], mustUpdate: [], mayUpdate: [] },
     );
 
-    const indent = level * 4;
-    const depsToUpdate = await cli.askCheckbox(
-      leftPad(
-        indent,
-        `Which dependents of ${pkg.name} would you like to bump?`,
-      ),
-      [
-        new inquirer.Separator(leftPad(indent, 'Released packages')),
-        ...leftPadOptions(indent, partitionedDeps.released),
-        new inquirer.Separator(leftPad(indent, 'Packages that must update')),
-        ...leftPadOptions(indent, partitionedDeps.mustUpdate),
-        new inquirer.Separator(leftPad(indent, 'Packages that may update')),
-        ...leftPadOptions(indent, partitionedDeps.mayUpdate),
-      ],
-      { pageSize: 15 },
+    // const indent = level * 4;
+    const indent = 0;
+    const optionalUpdates = partitionedDeps.mayUpdate.filter(
+      d => d.type !== 'dev',
     );
+
+    const choices = [
+      ...addSection(
+        'Released packages',
+        processOptions(partitionedDeps.released.filter(d => d.type !== 'dev'), {
+          checked: true,
+        }),
+      ),
+      ...addSection(
+        'Packages that must be updated',
+        processOptions(partitionedDeps.mustUpdate, { checked: true }),
+      ),
+      ...addSection(
+        'Packages that can be updated',
+        processOptions(optionalUpdates),
+      ),
+    ];
+
+    let depsToUpdate = [];
+    if (choices.length > 0) {
+      depsToUpdate = await cli.askCheckbox(
+        leftPad(
+          indent,
+          `Which dependents of ${pkg.name} would you like to bump?`,
+        ),
+        choices,
+        { pageSize: 15 },
+      );
+    }
 
     for (let depName of pkg.dependents) {
       const dependent = allDependents[depName];
@@ -198,8 +261,14 @@ async function promptAndAssembleDependentReleaseTypes(
         throw new Error(`Dependent '${depName}' not found in allDependents`);
       }
 
-      const mustUpdate = partitionedDeps.mustUpdate.includes(depName);
-      if (!(mustUpdate || depsToUpdate.includes(depName))) {
+      const mustUpdate = !!partitionedDeps.mustUpdate.find(
+        d => d.name === depName,
+      );
+      // console.log('mustUpdate', partitionedDeps.mustUpdate);
+      if (
+        !(mustUpdate || depsToUpdate.includes(depName)) ||
+        dependent.finalised
+      ) {
         /* Only show a prompt if the dep must update or the user has selected it. */
         continue;
       }
