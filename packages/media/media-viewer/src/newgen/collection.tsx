@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Context, MediaCollectionItem, isError } from '@atlaskit/media-core';
+import {
+  Context,
+  MediaCollectionItem,
+  MediaCollectionProvider,
+  isError,
+} from '@atlaskit/media-core';
 import { Outcome, Identifier } from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
@@ -24,6 +29,7 @@ export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
   private subscription: Subscription;
+  private provider: MediaCollectionProvider;
 
   componentWillUpdate(nextProps) {
     if (this.needsReset(this.props, nextProps)) {
@@ -56,6 +62,7 @@ export class Collection extends React.Component<Props, State> {
             selectedItem={selectedItem ? selectedItem : identifiers[0]}
             context={context}
             onClose={onClose}
+            onNavigationChange={this.onNavigationChange}
           />
         );
     }
@@ -63,9 +70,9 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context } = props;
-    const provider = context.getMediaCollectionProvider(collectionName, 30);
-    this.subscription = provider.observable().subscribe({
+    const { collectionName, context, selectedItem } = props;
+    this.provider = context.getMediaCollectionProvider(collectionName, 30);
+    this.subscription = this.provider.observable().subscribe({
       next: collection => {
         if (isError(collection)) {
           this.setState({
@@ -81,6 +88,9 @@ export class Collection extends React.Component<Props, State> {
               data: collection.items,
             },
           });
+          if (selectedItem && this.shouldLoadNext(selectedItem)) {
+            this.provider.loadNextPage();
+          }
         }
       },
     });
@@ -97,5 +107,27 @@ export class Collection extends React.Component<Props, State> {
       propsA.collectionName !== propsB.collectionName ||
       propsA.context !== propsB.context
     );
+  }
+
+  private onNavigationChange = (item: Identifier) => {
+    if (this.shouldLoadNext(item)) {
+      this.provider.loadNextPage();
+    }
+  };
+
+  private shouldLoadNext(selectedItem: Identifier): boolean {
+    const { items } = this.state;
+    if (items.status !== 'SUCCESSFUL' || items.data.length === 0) {
+      return false;
+    }
+    return this.isLastItem(selectedItem, items.data);
+  }
+
+  private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {
+    const lastItem = items[items.length - 1];
+    const isLastItem =
+      selectedItem.id === lastItem.details.id &&
+      selectedItem.occurrenceKey === lastItem.details.occurrenceKey;
+    return isLastItem;
   }
 }
