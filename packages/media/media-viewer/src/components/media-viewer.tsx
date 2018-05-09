@@ -54,7 +54,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           <MediaViewerNextGen
             context={context}
             selectedItem={selectedItem}
-            collectionName={collectionName}
+            collectionName={this.props.dataSource.collectionName}
             onClose={onClose}
           />
         );
