@@ -1,4 +1,4 @@
-jest.mock('../../service/uploadService');
+jest.mock('../../service/uploadServiceFactory');
 
 import { ContextFactory } from '@atlaskit/media-core';
 import { Browser } from '../browser';

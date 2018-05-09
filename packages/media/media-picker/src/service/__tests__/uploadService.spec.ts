@@ -13,8 +13,8 @@ import { Observable } from 'rxjs/Observable';
 import { MediaFile, UploadParams } from '../..';
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
-import { UploadServiceFactory } from '../uploadService';
-import { ExpFile } from '../uploadServiceImpl';
+import { UploadServiceFactory } from '../uploadServiceFactory';
+import { ExpFile } from '../newUploadServiceImpl';
 import {
   MockDragEvent,
   MockFile,

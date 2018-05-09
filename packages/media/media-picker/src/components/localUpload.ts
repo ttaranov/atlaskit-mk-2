@@ -1,5 +1,8 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadService, UploadServiceFactory } from '../service/uploadService';
+import {
+  UploadService,
+  UploadServiceFactory,
+} from '../service/uploadServiceFactory';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,

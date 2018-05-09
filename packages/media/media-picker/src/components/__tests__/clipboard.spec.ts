@@ -3,9 +3,9 @@ import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
-import { UploadService } from '../../service/uploadService';
+import { UploadService } from '../../service/uploadServiceFactory';
 
-jest.mock('../../service/uploadService');
+jest.mock('../../service/uploadServiceFactory');
 
 class MockContext implements MediaPickerContext {
   trackEvent(event: UserEvent) {}

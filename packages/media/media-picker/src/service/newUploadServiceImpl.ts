@@ -24,7 +24,7 @@ import {
   MAX_FILE_SIZE_FOR_PREVIEW,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
-} from './uploadService';
+} from './uploadServiceFactory';
 
 export interface ExpFile {
   id: string;
@@ -33,7 +33,7 @@ export interface ExpFile {
   cancel?: Function;
 }
 
-export class UploadServiceImpl implements UploadServiceImpl {
+export class NewUploadServiceImpl implements NewUploadServiceImpl {
   private readonly context: Context;
   private readonly userCollectionMediaClient: MediaClient;
   private readonly api: MediaApi;
