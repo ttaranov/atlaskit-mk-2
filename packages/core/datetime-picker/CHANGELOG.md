@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 3.1.0
+- [minor] Add dateFormat prop to customise the display format of dates [3daced9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3daced9)
+
 ## 3.0.6
 
 ## 3.0.5

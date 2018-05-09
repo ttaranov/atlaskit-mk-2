@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 8.0.5
+- [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
+
 ## 8.0.4
 
 ## 8.0.3

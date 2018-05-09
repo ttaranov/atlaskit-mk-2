@@ -1,5 +1,7 @@
 # @atlaskit/editor-common
 
+## 9.3.2
+
 ## 9.3.1
 - [patch] Fixing up the re-rendering of tables on paste [31f28fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31f28fa)
 
