@@ -604,4 +604,56 @@ describe('Renderer - TextSerializer', () => {
 
     expect(render(doc)).to.equal('[bodiedExtension]');
   });
+
+  it('should add a space between mention and text', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: '1',
+                accessLevel: 'CONTAINER',
+                text: '@this',
+              },
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('@this is Sparta');
+  });
+
+  it('should not add a space between text nodes', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This',
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('Thisis Sparta');
+  });
 });

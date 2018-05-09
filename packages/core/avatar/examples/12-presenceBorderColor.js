@@ -40,7 +40,7 @@ export default () => (
       </PresenceWrapper>
 
       <PresenceWrapper>
-        <Presence presence="online" borderColor="transparent" />
+        <Presence presence="focus" borderColor="transparent" />
       </PresenceWrapper>
     </Container>
   </div>
