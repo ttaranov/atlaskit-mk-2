@@ -13,7 +13,8 @@ import { Observable } from 'rxjs/Observable';
 import { MediaFile, UploadParams } from '../..';
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
-import { ExpFile, UploadService } from '../uploadService';
+import { UploadServiceFactory } from '../uploadService';
+import { ExpFile } from '../uploadServiceImpl';
 import {
   MockDragEvent,
   MockFile,
@@ -36,7 +37,7 @@ describe('UploadService', () => {
 
   describe('setUploadParams', () => {
     const setup = () => ({
-      uploadService: new UploadService(getContext(), {
+      uploadService: UploadServiceFactory.create(getContext(), {
         collection: '',
       }),
     });
@@ -66,7 +67,7 @@ describe('UploadService', () => {
   });
 
   const setupWithElement = () => {
-    const uploadService = new UploadService(getContext(), {
+    const uploadService = UploadServiceFactory.create(getContext(), {
       collection: '',
     });
     const element = document.createElement('input');
@@ -150,7 +151,7 @@ describe('UploadService', () => {
     });
 
     it('should call addFiles when file is dropped', () => {
-      const uploadService = new UploadService(getContext(), {
+      const uploadService = UploadServiceFactory.create(getContext(), {
         collection: '',
       });
       const element = document.createElement('div');
@@ -236,7 +237,7 @@ describe('UploadService', () => {
     });
 
     it('should call addFiles when file is selected', () => {
-      const uploadService = new UploadService(getContext(), {
+      const uploadService = UploadServiceFactory.create(getContext(), {
         collection: '',
       });
       const element = document.createElement('input');
@@ -269,7 +270,7 @@ describe('UploadService', () => {
     });
 
     const setup = () => {
-      const uploadService = new UploadService(getContext(), {
+      const uploadService = UploadServiceFactory.create(getContext(), {
         collection: '',
       });
 
@@ -414,7 +415,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
       jest.spyOn(context, 'uploadFile');
@@ -447,7 +448,7 @@ describe('UploadService', () => {
         type: 'video/mp4',
       } as any;
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
       const fileConvertingCallback = jest.fn();
@@ -539,7 +540,7 @@ describe('UploadService', () => {
       jest
         .spyOn(context, 'getMediaItemProvider')
         .mockReturnValue(mediaItemProvider);
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
       const fileConvertedCallback = jest.fn();
@@ -561,7 +562,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -604,7 +605,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -647,7 +648,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -676,7 +677,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -712,7 +713,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -761,7 +762,7 @@ describe('UploadService', () => {
       };
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -826,7 +827,7 @@ describe('UploadService', () => {
       };
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -871,7 +872,7 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: 'some-collection',
       });
 
@@ -913,7 +914,7 @@ describe('UploadService', () => {
         authProvider,
         userAuthProvider: config.userAuthProvider,
       });
-      const uploadService = new UploadService(context, {
+      const uploadService = UploadServiceFactory.create(context, {
         collection: collectionNameStub,
       });
 

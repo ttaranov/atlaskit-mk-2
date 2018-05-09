@@ -110,7 +110,7 @@ class UploaderExample extends Component<
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .promiseFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 
@@ -135,7 +135,7 @@ class UploaderExample extends Component<
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .promiseFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 }

@@ -1,11 +1,8 @@
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
-import { UploadParams } from '..';
 
-export interface BinaryConfig {
-  uploadParams: UploadParams;
-}
+export interface BinaryConfig extends LocalUploadConfig {}
 
 export interface BinaryUploaderConstructor {
   new (

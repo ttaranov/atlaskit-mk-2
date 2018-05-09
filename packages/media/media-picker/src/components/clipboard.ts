@@ -1,13 +1,11 @@
 import { AuthProvider, Context } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
-import { UploadParams } from '..';
 import { whenDomReady } from '../util/documentReady';
 
-export interface ClipboardConfig {
-  uploadParams: UploadParams;
+export interface ClipboardConfig extends LocalUploadConfig {
   userAuthProvider?: AuthProvider;
 }
 

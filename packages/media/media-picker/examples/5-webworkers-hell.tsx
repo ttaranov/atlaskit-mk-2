@@ -37,7 +37,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   createBrowse = () => {
     const context = ContextFactory.create({
       serviceHost: defaultServiceHost,
-      authProvider: mediaPickerAuthProvider(this),
+      authProvider: mediaPickerAuthProvider(),
     });
 
     const browseConfig: BrowserConfig = {

@@ -3,7 +3,7 @@ import { EventEmitter2 } from 'eventemitter2';
 import { defaultServiceHost } from '@atlaskit/media-test-helpers';
 import { MediaPicker } from '../../../index';
 import { Dropzone } from '../../dropzone';
-import * as uploadService from '../../../service/uploadService';
+import * as uploadService from '../../../service/uploadServiceImpl';
 import { ContextFactory } from '@atlaskit/media-core';
 
 const context = ContextFactory.create({
@@ -172,7 +172,7 @@ describe('Dropzone', () => {
 
     const stubUploadService = (fakeUploadService: FakeUploadService) => {
       uploadServiceStub = sinon
-        .stub(uploadService, 'UploadService')
+        .stub(uploadService, 'UploadServiceImpl')
         .returns(fakeUploadService);
     };
 

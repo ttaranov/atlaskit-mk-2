@@ -45,7 +45,19 @@ export class PreviewsData extends React.Component<
     }
   }
 
+  componentDidUpdate(
+    prevProps: PreviewsDataProps,
+    prevState: PreviewsDataState,
+  ) {
+    prevProps.picker.removeAllListeners();
+    this.listendToPickerEvents();
+  }
+
   componentDidMount() {
+    this.listendToPickerEvents();
+  }
+
+  listendToPickerEvents() {
     const picker = this.props.picker;
 
     picker.on('uploads-start', data => {

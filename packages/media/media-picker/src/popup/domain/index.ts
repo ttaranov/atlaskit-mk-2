@@ -40,6 +40,7 @@ export interface State {
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
+  readonly useOldUploadService?: boolean;
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;

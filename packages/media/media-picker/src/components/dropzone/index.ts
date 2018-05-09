@@ -1,14 +1,13 @@
 import { AuthProvider, Context } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from '../localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from '../localUpload';
 import { MPDropzoneLoaded } from '../../outer/analytics/events';
 import { MediaPickerContext } from '../../domain/context';
 import { whenDomReady } from '../../util/documentReady';
 import dropzoneUI from './dropzoneUI';
-import { UploadEventPayloadMap, UploadParams } from '../..';
+import { UploadEventPayloadMap } from '../..';
 
-export interface DropzoneConfig {
-  uploadParams: UploadParams;
+export interface DropzoneConfig extends LocalUploadConfig {
   userAuthProvider?: AuthProvider;
   container?: HTMLElement;
   headless?: boolean;

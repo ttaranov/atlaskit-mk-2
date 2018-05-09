@@ -14,6 +14,7 @@ import {
   createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
+import Toggle from '@atlaskit/toggle';
 import { MediaPicker, Popup, MediaProgress } from '../src';
 import {
   PopupContainer,
@@ -58,6 +59,7 @@ export interface PopupWrapperState {
   hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
+  useOldUploadService: boolean;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -72,12 +74,26 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     hasTorndown: false,
     publicFiles: {},
     isUploadingFilesVisible: true,
+    useOldUploadService: false,
   };
 
   componentDidMount() {
+    this.createPopup();
+  }
+
+  componentWillUnmount() {
+    this.popup.removeAllListeners();
+  }
+
+  createPopup() {
+    if (this.popup) {
+      this.popup.removeAllListeners();
+      this.popup.teardown();
+    }
+
     const context = ContextFactory.create({
       serviceHost: userAuthProviderBaseURL,
-      authProvider: mediaPickerAuthProvider(this),
+      authProvider: mediaPickerAuthProvider(this.state.authEnvironment),
       userAuthProvider,
     });
 
@@ -86,6 +102,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
+      useOldUploadService: this.state.useOldUploadService,
     });
 
     this.popup.on('uploads-start', this.onUploadsStart);
@@ -95,10 +112,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.popup.on('upload-end', this.onUploadEnd);
     this.popup.on('upload-error', this.onUploadError);
     this.popup.on('closed', this.onClosed);
-  }
-
-  componentWillUnmount() {
-    this.popup.removeAllListeners();
   }
 
   onUploadError = (data: UploadErrorEventPayload) => {
@@ -220,7 +233,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   onAuthTypeChange = e => {
     const { innerText: authEnvironment } = e.target;
 
-    this.setState({ authEnvironment });
+    this.setState({ authEnvironment }, this.createPopup);
   };
 
   renderSerializedEvent(eventName, data, key) {
@@ -301,6 +314,13 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     console.log(event);
   };
 
+  onUseOldUploadServiceChange = () => {
+    this.setState(
+      { useOldUploadService: !this.state.useOldUploadService },
+      this.createPopup,
+    );
+  };
+
   renderUploadingFiles = () => {
     const { inflightUploads } = this.state;
     const keys = Object.keys(inflightUploads);
@@ -366,6 +386,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       inflightUploads,
       hasTorndown,
       isUploadingFilesVisible,
+      useOldUploadService,
     } = this.state;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
@@ -414,6 +435,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               </DropdownItem>
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
+            Use old upload service
+            <Toggle
+              isDefaultChecked={useOldUploadService}
+              onChange={this.onUseOldUploadServiceChange}
+            />
             Closed times: {closedTimes}
           </PopupHeader>
           {isUploadingFilesVisible ? (

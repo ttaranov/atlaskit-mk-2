@@ -1,11 +1,9 @@
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPBrowserLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
-import { UploadParams } from '..';
 
-export interface BrowserConfig {
-  uploadParams: UploadParams;
+export interface BrowserConfig extends LocalUploadConfig {
   multiple?: boolean;
   fileExtensions?: Array<string>;
 }

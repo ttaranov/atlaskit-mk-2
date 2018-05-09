@@ -50,6 +50,7 @@ import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
+  readonly useOldUploadService?: boolean;
   readonly context: Context;
 }
 
@@ -121,6 +122,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser = MediaPicker('browser', this.mpContext, {
       ...defaultConfig,
       multiple: true,
+      useOldUploadService: this.props.useOldUploadService,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -132,6 +134,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
       ...defaultConfig,
       headless: true,
+      useOldUploadService: this.props.useOldUploadService,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
@@ -142,7 +145,10 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', this.mpContext, defaultConfig);
+    this.mpBinary = MediaPicker('binary', this.mpContext, {
+      ...defaultConfig,
+      useOldUploadService: this.props.useOldUploadService,
+    });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
@@ -225,9 +231,14 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({ view, context }: State): AppStateProps => ({
+const mapStateToProps = ({
+  view,
+  context,
+  useOldUploadService,
+}: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
+  useOldUploadService,
   context,
 });
 

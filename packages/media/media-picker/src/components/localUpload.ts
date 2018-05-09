@@ -1,5 +1,5 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadService } from '../service/uploadService';
+import { UploadService, UploadServiceFactory } from '../service/uploadService';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -15,6 +15,7 @@ import { UploadParams } from '../domain/config';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
+  useOldUploadService?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -31,9 +32,10 @@ export class LocalUploadComponent<
     super(analyticsContext);
 
     this.context = context;
-    this.uploadService = new UploadService(
+    this.uploadService = UploadServiceFactory.create(
       this.context,
       config.uploadParams || { collection: '' },
+      config.useOldUploadService,
     );
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);

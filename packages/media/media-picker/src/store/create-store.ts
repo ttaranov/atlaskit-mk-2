@@ -33,6 +33,7 @@ import { PopupUploadEventEmitter } from '../components/popup';
 export default (
   eventEmitter: PopupUploadEventEmitter,
   context: Context,
+  useOldUploadService?: boolean,
 ): Store<State> => {
   const { userAuthProvider, serviceHost, authProvider } = context.config;
   if (!userAuthProvider) {
@@ -53,7 +54,8 @@ export default (
       tenantAuthProvider: authProvider,
       userAuthProvider,
       context,
-    },
+      useOldUploadService,
+    } as Partial<State>,
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
