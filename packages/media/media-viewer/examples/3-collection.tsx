@@ -5,34 +5,36 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 import Button from '@atlaskit/button';
+import { isError } from '@atlaskit/media-core';
+import { Subscription } from 'rxjs';
 
 const context = createStorybookContext();
 
-const selected: MediaViewerItem = {
-  type: 'file',
-  id: '9ab19d51-e0f4-403e-8fb2-3ab4b6a77504',
-  occurrenceKey: '8351fc2f-ecf8-4afb-a909-a9234ea4a445',
-};
-
 export type State = {
-  isOpen: boolean;
+  selectedItem?: MediaViewerItem;
 };
 export default class Example extends React.Component<{}, {}> {
-  state: State = { isOpen: true };
+  state: State = {};
+
+  private subscription: Subscription;
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ isOpen: true })}>
-          Open MediaViewer
-        </Button>
-        {this.state.isOpen && (
+        <Button onClick={this.open}>Open MediaViewer</Button>
+        {this.state.selectedItem && (
           <MediaViewer
             featureFlags={{ nextGen: true }}
             MediaViewer={null as any}
             basePath={null as any}
             context={context}
-            selectedItem={selected}
+            selectedItem={this.state.selectedItem}
             dataSource={{ collectionName: defaultCollectionName }}
             collectionName={defaultCollectionName}
             onClose={this.onClose}
@@ -42,7 +44,32 @@ export default class Example extends React.Component<{}, {}> {
     );
   }
 
+  private open = () => {
+    // Always get the first item on the collection to avoid having the error of "selected item" not found
+    // when added more items to the top.
+    // MSW-668 will provide a more consistent collection to work as example
+    this.subscription = context
+      .getMediaCollectionProvider(defaultCollectionName, 1)
+      .observable()
+      .subscribe({
+        next: collection => {
+          if (!isError(collection)) {
+            const firstItem = collection.items[0];
+            this.setState({
+              selectedItem: {
+                id: firstItem.details.id,
+                type: firstItem.type,
+                occurrenceKey: firstItem.details.occurrenceKey,
+              },
+            });
+          } else {
+            console.error(collection);
+          }
+        },
+      });
+  };
+
   private onClose = () => {
-    this.setState({ isOpen: false });
+    this.setState({ selectedItem: undefined });
   };
 }
