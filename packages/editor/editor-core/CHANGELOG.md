@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 71.2.6
+- [patch] Fix issue with tables in IE with the Comment appearance where it would show a gray resize box that would interfere with the plugin causing unexpected behaviour [1a280e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a280e5)
+
+## 71.2.5
+- [patch] ED-4564, Replacing invite team member icon in collab editor. [bfe8ffc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfe8ffc)
+
+## 71.2.4
+
+## 71.2.3
+- [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
+
+## 71.2.2
+- [patch] Showing up title in place of macro name [296c3e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/296c3e3)
+
+## 71.2.1
+
 ## 71.2.0
 - [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 

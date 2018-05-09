@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 6.0.4
+- [patch] Media Picker Popup modal dialog now has a fixed size unwanted wrapping behaviour of cards in the Upload view and jumping of the dialog when switching to the GIPHY view. [814e505](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/814e505)
+
 ## 6.0.3
 
 ## 6.0.2

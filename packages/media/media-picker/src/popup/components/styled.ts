@@ -16,6 +16,9 @@ export const MediaPickerPopupWrapper: ComponentClass<
   font-family: ${akFontFamily};
   border-radius: 3px;
   position: relative;
+
+  /* Ensure that the modal has a static size */
+  width: 968px;
 `;
 
 export const SidebarWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

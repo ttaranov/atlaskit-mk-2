@@ -45,7 +45,8 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
-  /** Props to apply to the select. */
+  /** Props to apply to the select. This can be used to set options such as placeholder text.
+   *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value?: string,
@@ -53,6 +54,8 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
+  /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
+  dateFormat: string,
 };
 
 type State = {
@@ -128,6 +131,7 @@ export default class DatePicker extends Component<Props, State> {
     defaultValue: '',
     isInvalid: false,
     hideIcon: false,
+    dateFormat: 'YYYY/MM/DD',
   };
 
   state = {
@@ -248,6 +252,7 @@ export default class DatePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      dateFormat,
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -313,7 +318,7 @@ export default class DatePicker extends Component<Props, State> {
           placeholder="e.g. 2018/12/31"
           value={
             value && {
-              label: format(parse(value), 'YYYY/MM/DD'),
+              label: format(parse(value), dateFormat),
               value,
             }
           }
