@@ -55,13 +55,17 @@ export default class Example extends React.Component<{}, {}> {
         next: collection => {
           if (!isError(collection)) {
             const firstItem = collection.items[0];
-            this.setState({
-              selectedItem: {
-                id: firstItem.details.id,
-                type: firstItem.type,
-                occurrenceKey: firstItem.details.occurrenceKey,
-              },
-            });
+            if (firstItem) {
+              this.setState({
+                selectedItem: {
+                  id: firstItem.details.id,
+                  type: firstItem.type,
+                  occurrenceKey: firstItem.details.occurrenceKey,
+                },
+              });
+            } else {
+              console.error('No items found in the collection');
+            }
           } else {
             console.error(collection);
           }
