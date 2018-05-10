@@ -167,33 +167,10 @@ export const createPlugin = (
           });
           const { doc, schema } = state;
           const { tableCell, tableHeader } = schema.nodes;
-          const target = event.target as HTMLElement;
-
-          // handle slider target cell
-          if (
-            target.nodeName === 'INPUT' &&
-            target.getAttribute('type') === 'range'
-          ) {
-            dispatch(
-              state.tr.setMeta(resizingPluginKey, { setDragging: null }),
-            );
-
-            if (!posAtCoords) {
-              return false;
-            }
-            const $pos = state.doc.resolve(posAtCoords.pos);
-            const cell = findParentNodeOfTypeClosestToPos($pos, [tableCell]);
-            if (!cell) {
-              return false;
-            }
-            if (cell !== pluginState.clickedCell) {
-              return setClickedCell(cell)(view.state, dispatch);
-            }
-          }
 
           if (
             !tableElement ||
-            pluginState.isOpen ||
+            // pluginState.isOpen ||
             isCellSelection(view.state.selection) ||
             !posAtCoords
           ) {
@@ -207,13 +184,25 @@ export const createPlugin = (
           if (!cell) {
             return false;
           }
-          const targetPosition = cell.pos;
-          const ref = findDomRefAtPos(targetPosition, view.domAtPos.bind(view));
-          const targetRef = !targetPosition ? undefined : ref;
-          return setTargetRef(targetRef as HTMLElement, targetPosition)(
-            state,
-            dispatch,
-          );
+          if (
+            cell.node.attrs.cellType === 'slider' &&
+            cell !== pluginState.clickedCell
+          ) {
+            setClickedCell(cell)(view.state, dispatch);
+          }
+          if (!pluginState.isOpen) {
+            const targetPosition = cell.pos;
+            const ref = findDomRefAtPos(
+              targetPosition,
+              view.domAtPos.bind(view),
+            );
+            const targetRef = !targetPosition ? undefined : ref;
+            return setTargetRef(targetRef as HTMLElement, targetPosition)(
+              state,
+              dispatch,
+            );
+          }
+          return false;
         },
         blur(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;

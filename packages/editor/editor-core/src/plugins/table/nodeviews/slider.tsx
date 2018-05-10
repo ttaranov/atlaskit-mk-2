@@ -44,7 +44,7 @@ export default class SliderNode extends React.PureComponent<Props, State> {
       return;
     }
     const paragraph = cell.node.child(0);
-    if (!paragraph) {
+    if (!paragraph || !paragraph.childCount) {
       return;
     }
     const sliderNode = paragraph.child(0);
@@ -64,10 +64,11 @@ export default class SliderNode extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state;
-
+    const { node } = this.props;
+    console.log('~node.attrs~', node.attrs);
     return (
       <div
-        data-value={value}
+        data-value={node.attrs.value}
         className={`slider ${value < 0.7 ? 'danger' : ''}`}
       >
         <Slider
