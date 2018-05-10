@@ -56,6 +56,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
+    showTemplates,
   }) {
     const buttons = toolbarSizeToButtons(toolbarSize);
     const renderNode = providers => {
@@ -134,6 +135,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               popupsScrollableElement={popupsScrollableElement}
               insertMenuItems={options.insertMenuItems}
               editorActions={editorActions}
+              showTemplates={showTemplates}
             />
           )}
         />

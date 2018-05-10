@@ -16,6 +16,7 @@ import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
 import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
+import FileIcon from '@atlaskit/icon/glyph/file';
 import {
   EmojiId,
   EmojiPicker as AkEmojiPicker,
@@ -304,6 +305,14 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     } = this.props;
     let items: any[] = [];
 
+    items.push({
+      content: 'Pick from templates',
+      value: { name: 'templates' },
+      tooltipDescription: 'Pick from templates',
+      tooltipPosition: 'right',
+      elemBefore: <FileIcon label="Pick from templatess" />,
+    });
+
     if (linkSupported) {
       items.push({
         content: 'Add link',
@@ -483,6 +492,10 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
+  private insertTemplates = () => {
+    this.props.showTemplates();
+  };
+
   @analyticsDecorator('atlassian.editor.format.media.button')
   private openMediaPicker = (): boolean => {
     const { onShowMediaPicker } = this.props;
@@ -566,6 +579,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'layout':
         this.insertLayoutColumns();
+        break;
+      case 'templates':
+        this.insertTemplates();
         break;
       default:
         if (item && item.onClick) {

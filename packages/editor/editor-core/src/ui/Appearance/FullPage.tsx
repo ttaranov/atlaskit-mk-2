@@ -37,7 +37,6 @@ const ScrollContainer = styled(ContentStyles)`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: 25px;
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
@@ -110,6 +109,12 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 
 const TemplateArea = styled.div`
   display: flex;
+  align-items: start;
+  position: absolute;
+  bottom: 40px;
+  background: white;
+  z-index: 100;
+  width: 100%;
 
   & .template-title {
     font-weight: bold;
@@ -178,6 +183,12 @@ export default class Editor extends React.Component<
     });
   };
 
+  showTemplates = () => {
+    this.setState({
+      data: !this.state.data,
+    });
+  };
+
   render() {
     const {
       editorDOMElement,
@@ -199,6 +210,38 @@ export default class Editor extends React.Component<
 
     return (
       <FullPageEditorWrapper>
+        {!data && (
+          <TemplateArea>
+            <TemplateItem
+              title="Blog post"
+              icon="Celebration"
+              type="blog"
+              info="Share news and announcements with your team"
+              onClick={this.addTemplate.bind(null, 'blog')}
+            />
+            <TemplateItem
+              title="Meeting notes"
+              icon="ClipboardList"
+              type="health"
+              info="Share news and announcements with your team"
+              onClick={this.addTemplate.bind(null, 'health')}
+            />
+            <TemplateItem
+              title="Decision"
+              icon="Experiment"
+              type="retro"
+              info="Share news and announcements with your team"
+              onClick={this.addTemplate.bind(null, 'retro')}
+            />
+            <TemplateItem
+              title="Product Requirements"
+              icon="Prediction"
+              type="retro"
+              info="Share news and announcements with your team"
+              onClick={this.addTemplate.bind(null, 'retro')}
+            />
+          </TemplateArea>
+        )}
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
@@ -211,6 +254,7 @@ export default class Editor extends React.Component<
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
             disabled={!!disabled}
+            showTemplates={this.showTemplates}
           />
           <MainToolbarCustomComponentsSlot>
             <Avatars
@@ -250,38 +294,6 @@ export default class Editor extends React.Component<
               </div>
             </ContentArea>
           </ClickAreaBlock>
-          {!data && (
-            <TemplateArea>
-              <TemplateItem
-                title="Blog post"
-                icon="Celebration"
-                type="blog"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'blog')}
-              />
-              <TemplateItem
-                title="Meeting notes"
-                icon="ClipboardList"
-                type="health"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'health')}
-              />
-              <TemplateItem
-                title="Decision"
-                icon="Experiment"
-                type="retro"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'retro')}
-              />
-              <TemplateItem
-                title="Product Requirements"
-                icon="Prediction"
-                type="retro"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'retro')}
-              />
-            </TemplateArea>
-          )}
         </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
