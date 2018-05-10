@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
-import { findDomRefAtPos } from 'prosemirror-utils';
+import { findDomRefAtPos, findTable } from 'prosemirror-utils';
 import { Popup } from '@atlaskit/editor-common';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
@@ -75,6 +75,13 @@ export default class SummaryMenu extends Component<Props, any> {
   private createItems = () => {
     const items: any[] = [];
 
+    // const { editorView } = this.props;
+
+    // const table = findTable(editorView.state.selection);
+    // if (!table) {
+    //   return false;
+    // }
+
     items.push({
       content: 'Count',
       value: { name: 'count' },
@@ -111,7 +118,19 @@ export default class SummaryMenu extends Component<Props, any> {
   };
 
   private onMenuItemActivated = ({ item }) => {
-    console.log(item);
+    const { editorView, clickedCell } = this.props;
+    const { state, dispatch } = editorView;
+    if (clickedCell) {
+      dispatch(
+        state.tr.setNodeMarkup(
+          clickedCell.pos - 1,
+          clickedCell.node.type,
+          Object.assign({}, clickedCell.node.attrs, {
+            summaryType: item.value.name,
+          }),
+        ),
+      );
+    }
 
     this.toggleOpen();
   };
