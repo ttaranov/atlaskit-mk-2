@@ -80,6 +80,36 @@ export const createPlugin = (dispatch: Dispatch) =>
       // disable cells with cellType !== "text" from editing
       decorations: (state: EditorState) => createCellTypeDecoration(state),
 
+      nodeViews: {
+        checkbox: (node, view, getPos: () => number) => {
+          const dom = document.createElement('input');
+          dom.type = 'checkbox';
+          dom.checked = node.attrs.checked;
+
+          dom.onclick = e => {
+            const pos = getPos();
+
+            view.dispatch(
+              view.state.tr.setNodeMarkup(
+                pos,
+                node.type,
+                {
+                  ...node.attrs,
+                  checked: !node.attrs.checked,
+                },
+                node.marks,
+              ),
+            );
+          };
+          return {
+            dom,
+            stopEvent: () => {
+              return true;
+            },
+          };
+        },
+      },
+
       handleDOMEvents: {
         click(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;

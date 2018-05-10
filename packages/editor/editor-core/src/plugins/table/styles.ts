@@ -221,6 +221,10 @@ export const tableEditorStyles = `
         float: left;
         color: ${akColorN200}
       }
+
+      td[celltype="checkbox"] {
+        width: 60px;
+      }
     }
   }
 `;

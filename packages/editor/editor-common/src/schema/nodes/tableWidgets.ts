@@ -18,7 +18,9 @@ export const checkbox: NodeSpec = {
       tag: "input[type='checkbox']",
       getAttrs(dom: HTMLElement) {
         return {
-          checked: dom.hasAttribute('checked'),
+          checked: dom.hasAttribute('checked')
+            ? dom.getAttribute('checked') === 'checked'
+            : false,
         };
       },
     },
