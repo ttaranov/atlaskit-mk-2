@@ -175,8 +175,6 @@ export const createPlugin = (dispatch: Dispatch) =>
         for (let i = 0; i < table.node.childCount; i++) {
           const row = table.node.child(i);
           row.forEach(cell => {
-            console.log('cell', cell);
-
             if (
               !(
                 cell.attrs.cellType === 'number' ||
@@ -192,10 +190,18 @@ export const createPlugin = (dispatch: Dispatch) =>
               oldContent,
               cell.attrs.cellType === 'currency',
             );
+
+            if (oldContent.endsWith('.')) {
+              return;
+            }
+
             if (num) {
               const numString = num.toLocaleString();
 
-              if (num && numString !== cell.textContent) {
+              if (
+                (num && numString !== cell.textContent) ||
+                !oldContent.endsWith('.')
+              ) {
                 const sel = tr.selection;
                 tr.replaceWith(
                   from + 1,
