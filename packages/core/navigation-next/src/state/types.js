@@ -63,6 +63,9 @@ export type NavigationProviderProps = {
 /**
  * NavigationSubscriber
  */
+export type NavigationStateSelector = NavigationStateShape => Object;
+
 export type NavigationSubscriberProps = {
   children: NavigationStateInterface => Node,
+  on: NavigationStateSelector,
 };
