@@ -410,7 +410,20 @@ export const createCellTypeDecoration = (
         }
         const node = paragraph.child(0);
         if (node) {
-          contentEditable = state.schema.nodes.mention ? false : true;
+          contentEditable =
+            node.type === state.schema.nodes.mention ? false : true;
+        }
+      }
+
+      if (cell.attrs.cellType === 'emoji') {
+        const paragraph = cell.child(0);
+        if (!paragraph || !paragraph.childCount) {
+          continue;
+        }
+        const node = paragraph.child(0);
+        if (node) {
+          contentEditable =
+            node.type === state.schema.nodes.emoji ? false : true;
         }
       }
 
@@ -461,9 +474,16 @@ export const setClickedCell = (clickedCell?: {
 
     // insert mention on click on cellType="mention"
     if (clickedCell && clickedCell.node.attrs.cellType === 'mention') {
-      const mentionMark = state.schema.mark('mentionQuery', { active: true });
-      const mentionQuery = state.schema.text('@', [mentionMark]);
-      clearAndInsertNode(mentionQuery, clickedCell)(tr);
+      const mark = state.schema.mark('mentionQuery', { active: true });
+      const query = state.schema.text('@', [mark]);
+      clearAndInsertNode(query, clickedCell)(tr);
+    }
+
+    // insert emoji on click on cellType="emoji"
+    if (clickedCell && clickedCell.node.attrs.cellType === 'emoji') {
+      const mark = state.schema.mark('emojiQuery');
+      const query = state.schema.text(':', [mark]);
+      clearAndInsertNode(query, clickedCell)(tr);
     }
 
     dispatch(tr);
