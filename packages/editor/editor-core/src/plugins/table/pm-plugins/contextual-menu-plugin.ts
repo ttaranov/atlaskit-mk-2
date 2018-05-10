@@ -31,6 +31,7 @@ import * as getTime from 'date-fns/get_time';
 import { Dispatch } from '../../../event-dispatcher';
 import { Command } from '../../../types';
 import { stateKey as tablePluginKey } from './main';
+import { mentionQuery } from '@atlaskit/editor-common';
 
 export type Cell = { pos: number; node: PMNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
@@ -338,18 +339,33 @@ export const createCellTypeDecoration = (
 
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
       const cell = row.child(j);
+      const pos = start + map.map[i * map.width];
 
       if (
         ['text', 'currency', 'number', 'mention'].indexOf(
           cell.attrs.cellType,
         ) === -1
       ) {
-        const pos = start + map.map[i * map.width];
         set.push(
           Decoration.node(pos, pos + cell.nodeSize, {
             contentEditable: false,
           } as any),
         );
+      }
+
+      if (cell.attrs.cellType === 'mention') {
+        const paragraph = cell.child(0);
+        if (!paragraph || !paragraph.childCount) {
+          continue;
+        }
+        const node = paragraph.child(0);
+        if (node && node.type === state.schema.nodes.mention) {
+          set.push(
+            Decoration.node(pos, pos + cell.nodeSize, {
+              contentEditable: false,
+            } as any),
+          );
+        }
       }
     }
   }
@@ -366,12 +382,25 @@ export const setClickedCell = (clickedCell?: {
 ): boolean => {
   const pluginState = pluginKey.getState(state);
   if (pluginState.clickedCell !== clickedCell) {
-    dispatch(
-      state.tr.setMeta(pluginKey, {
-        ...pluginState,
-        clickedCell,
-      }),
-    );
+    let { tr } = state;
+    tr.setMeta(pluginKey, {
+      ...pluginState,
+      clickedCell,
+    });
+
+    // insert mention on click on cellType="mention"
+    if (clickedCell && clickedCell.node.attrs.cellType === 'mention') {
+      const mentionMark = state.schema.mark('mentionQuery', { active: true });
+      const mentionQuery = state.schema.text('@', [mentionMark]);
+      tr
+        .delete(
+          clickedCell.pos + 1,
+          clickedCell.pos + clickedCell.node.nodeSize + 1,
+        )
+        .insert(clickedCell.pos + 1, mentionQuery);
+    }
+
+    dispatch(tr);
     return true;
   }
   return false;
