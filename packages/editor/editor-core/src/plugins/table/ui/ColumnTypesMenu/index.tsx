@@ -137,12 +137,7 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         }
         rowIndex++;
         // setting cellType only for tableCell so that we can still type in table headers
-        return setCellAttrs(
-          cell,
-          cell.node.type === tableCell && cell.node.attrs.cellType != 'summary'
-            ? attrs
-            : {},
-        );
+        return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
       })(editorView.state.tr);
 
       const nodemap = {
