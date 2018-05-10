@@ -120,7 +120,9 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         const sliderNode = slider.createChecked();
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
-          tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
+          if (cell.node.type === tableCell) {
+            tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
+          }
         });
       }
 

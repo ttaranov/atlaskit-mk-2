@@ -244,6 +244,9 @@ export const insertRow = (row: number): Command => (
 ): boolean => {
   const tr = addRowAt(row)(state.tr);
   const table = findTable(tr.selection)!;
+  if (!table) {
+    return false;
+  }
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
   tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos)));
@@ -276,16 +279,24 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
   }
 
   const newCells = getCellsInRow(rowIndex)(tr.selection)!;
-  // makes sure cellType attribute is preserved for the new row
-  newCells.forEach((cell, index) => {
-    tr.setNodeMarkup(
+
+  for (let i = newCells.length - 1; i >= 0; i--) {
+    const cell = newCells[i];
+    const { cellType } = cells![i].node.attrs;
+    const sliderNode = schema.nodes.slider.createChecked();
+
+    tr = tr.setNodeMarkup(
       cell.pos - 1,
       cell.node.type,
       Object.assign({}, cell.node.attrs, {
-        cellType: cells![index].node.attrs.cellType,
+        cellType,
       }),
     );
-  });
+
+    if (cellType === 'slider' && cell.node.type === schema.nodes.tableCell) {
+      tr = tr.insert(cell.pos + 1, sliderNode);
+    }
+  }
 
   return tr;
 };

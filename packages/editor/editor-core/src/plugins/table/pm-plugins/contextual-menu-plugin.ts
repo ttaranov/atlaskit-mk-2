@@ -28,10 +28,13 @@ import {
   setCellAttrs,
   findTable,
 } from 'prosemirror-utils';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import * as getTime from 'date-fns/get_time';
 import { Dispatch } from '../../../event-dispatcher';
 import { Command } from '../../../types';
 import { stateKey as tablePluginKey } from './main';
+import sliderNodeView from '../nodeviews/slider';
+import { nodeViewFactory } from '../../../nodeviews';
 
 export type Cell = { pos: number; node: PMNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
@@ -48,7 +51,10 @@ export type PluginState = {
   clickedCell?: Cell;
 };
 
-export const createPlugin = (dispatch: Dispatch) =>
+export const createPlugin = (
+  dispatch: Dispatch,
+  providerFactory: ProviderFactory,
+) =>
   new Plugin({
     state: {
       init: () => ({ isOpen: false }),
@@ -80,6 +86,10 @@ export const createPlugin = (dispatch: Dispatch) =>
       // disable cells with cellType !== "text" from editing
       decorations: (state: EditorState) => createCellTypeDecoration(state),
 
+      nodeViews: {
+        slider: nodeViewFactory(providerFactory, { slider: sliderNodeView }),
+      },
+
       handleDOMEvents: {
         click(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;
@@ -101,26 +111,24 @@ export const createPlugin = (dispatch: Dispatch) =>
           ]);
           if (
             !cell ||
-            ['date', 'link', 'mention', 'checkbox', 'emoji'].indexOf(
+            ['date', 'link', 'mention', 'checkbox', 'emoji', 'slider'].indexOf(
               cell.node.attrs.cellType,
             ) === -1
           ) {
             return setClickedCell(undefined)(state, dispatch);
+          }
+          if (cell.node.attrs.cellType === 'slider') {
+            dispatch(
+              state.tr.setSelection(
+                Selection.near(state.doc.resolve(cell.pos)),
+              ),
+            );
           }
           return setClickedCell(cell)(state, dispatch);
         },
 
         mousemove(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;
-          const target = event.target as HTMLElement;
-          if (
-            target.nodeName === 'INPUT' &&
-            target.getAttribute('type') === 'range'
-          ) {
-            event.stopPropagation();
-            return false;
-          }
-
           if ((resizingPluginKey.getState(state) || {}).dragging) {
             return setTargetRef(undefined)(state, dispatch);
           }
@@ -130,6 +138,32 @@ export const createPlugin = (dispatch: Dispatch) =>
             left: event.clientX,
             top: event.clientY,
           });
+          const { doc, schema } = state;
+          const { tableCell, tableHeader } = schema.nodes;
+          const target = event.target as HTMLElement;
+
+          // handle slider target cell
+          if (
+            target.nodeName === 'INPUT' &&
+            target.getAttribute('type') === 'range'
+          ) {
+            dispatch(
+              state.tr.setMeta(resizingPluginKey, { setDragging: null }),
+            );
+
+            if (!posAtCoords) {
+              return false;
+            }
+            const $pos = state.doc.resolve(posAtCoords.pos);
+            const cell = findParentNodeOfTypeClosestToPos($pos, [tableCell]);
+            if (!cell) {
+              return false;
+            }
+            if (cell !== pluginState.clickedCell) {
+              return setClickedCell(cell)(view.state, dispatch);
+            }
+          }
+
           if (
             !tableElement ||
             pluginState.isOpen ||
@@ -138,8 +172,6 @@ export const createPlugin = (dispatch: Dispatch) =>
           ) {
             return false;
           }
-          const { doc, schema } = state;
-          const { tableCell, tableHeader } = schema.nodes;
           const $pos = doc.resolve(posAtCoords.pos);
           const cell = findParentNodeOfTypeClosestToPos($pos, [
             tableCell,

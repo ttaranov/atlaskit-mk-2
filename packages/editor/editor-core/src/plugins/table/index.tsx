@@ -77,7 +77,11 @@ const tablesPlugin: EditorPlugin = {
             ? tableNumberColumnPlugin
             : undefined,
       },
-      { rank: 50, plugin: ({ dispatch }) => contextualMenu(dispatch) },
+      {
+        rank: 50,
+        plugin: ({ dispatch, providerFactory }) =>
+          contextualMenu(dispatch, providerFactory),
+      },
     ];
   },
 
