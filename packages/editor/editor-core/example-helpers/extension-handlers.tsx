@@ -29,7 +29,7 @@ const BodiedExtension = () => {
 
 export const extensionHandlers: ExtensionHandlers = {
   'com.atlassian.confluence.macro.core': (ext, doc) => {
-    const { extensionKey } = ext;
+    const { extensionKey, parameters } = ext;
 
     // using any here because most props are going to be injected through the extension handler
     // and typescript won't accept that as valid
@@ -44,6 +44,22 @@ export const extensionHandlers: ExtensionHandlers = {
         return <BodiedExtension {...macroProps} />;
       case 'inline-eh':
         return <InlineExtension {...macroProps} />;
+      case 'status':
+        return (
+          <div
+            style={{
+              background: parameters.background || 'white',
+              color: parameters.color || 'red',
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+              padding: '1px 4px',
+              borderRadius: '3px',
+              fontSize: '11px',
+            }}
+          >
+            {parameters.title || 'UNDEFINED'}
+          </div>
+        );
     }
 
     return null;

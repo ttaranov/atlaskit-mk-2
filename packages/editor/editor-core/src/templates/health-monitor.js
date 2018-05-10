@@ -231,48 +231,46 @@ export default {
       content: [
         {
           type: 'text',
-          text: 'Overall health',
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          marks: [
-            {
-              type: 'textColor',
-              attrs: {
-                color: '#36b37e',
-              },
-            },
-          ],
-          text: 'HEALTH   ',
+          text: 'Overall health: ',
         },
         {
-          type: 'text',
-          marks: [
-            {
-              type: 'textColor',
-              attrs: {
-                color: '#ff991f',
-              },
+          type: 'inlineExtension',
+          attrs: {
+            extensionKey: 'status',
+            extensionType: 'com.atlassian.confluence.macro.core',
+            parameters: {
+              color: '#006644',
+              background: '#E3FCEF',
+              title: 'Healthy',
             },
-          ],
-          text: 'BIT SICK    ',
+            text: 'Healthy',
+          },
         },
         {
-          type: 'text',
-          marks: [
-            {
-              type: 'textColor',
-              attrs: {
-                color: '#ff5630',
-              },
+          type: 'inlineExtension',
+          attrs: {
+            extensionKey: 'status',
+            extensionType: 'com.atlassian.confluence.macro.core',
+            parameters: {
+              color: '#FF8B00',
+              background: '#FFFAE5',
+              title: 'Bit Sick',
             },
-          ],
-          text: 'SICK',
+            text: 'Bit Sick',
+          },
+        },
+        {
+          type: 'inlineExtension',
+          attrs: {
+            extensionKey: 'status',
+            extensionType: 'com.atlassian.confluence.macro.core',
+            parameters: {
+              color: '#BF2600',
+              background: '#FFEBE5',
+              title: 'Sick',
+            },
+            text: 'Sick',
+          },
         },
       ],
     },
