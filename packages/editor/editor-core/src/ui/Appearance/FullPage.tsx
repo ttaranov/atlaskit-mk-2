@@ -20,14 +20,58 @@ import {
   RetrospectiveTemplate,
   Daci,
 } from '../../../src/templates/index';
+// import { CSSTransitionGroup } from '../../../../../../node_modules/react-transition-group';
+import { CSSTransition } from '../../../../../../node_modules/react-transition-group';
+// import * asclassnames from 'classnames';
 
 const GUTTER_PADDING = 26;
+const flashTime = 700;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+
+  & .example-enter {
+    opacity: 0.01;
+  }
+
+  & .example-enter-active {
+    opacity: 1;
+    transition: 700ms ease-in all;
+    height: 100%;
+  }
+
+  .animation-wrapper.data {
+    height: 0;
+  }
+
+  .animation-wrapper.no-data {
+    height: 224px;
+  }
+
+  & .animation-wrapper {
+    transition: 700ms ease-in all;
+    overflow: auto;
+  }
+  & .animation-wrapper .empty-div {
+    height: 0;
+  }
+
+  //   & .example-exit-active div {
+  //     height: 0;
+  //   }
+
+  //    & .example-enter-active div {
+  //      height: 100%;
+  //    }
+
+  // & .example-exit-active {
+  //   opacity: 0.01;
+  //   height: 0;
+  //   transition: 1s ease-in all;
+  // }
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -160,6 +204,8 @@ const TemplateItem = props => (
   </div>
 );
 
+const Templates = props => props.templates();
+
 export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
@@ -190,6 +236,44 @@ export default class Editor extends React.Component<
     });
   };
 
+  renderTemplates = () => {
+    const { data } = this.state;
+    return data ? (
+      <div className="empty-div" />
+    ) : (
+      <TemplateArea key="1">
+        <TemplateItem
+          title="Blog post"
+          icon="Celebration"
+          type="blog"
+          info="Share news and announcements with your team"
+          onClick={this.addTemplate.bind(null, 'blog')}
+        />
+        <TemplateItem
+          title="Meeting notes"
+          icon="ClipboardList"
+          type="health"
+          info="Share news and announcements with your team"
+          onClick={this.addTemplate.bind(null, 'health')}
+        />
+        <TemplateItem
+          title="Decision"
+          icon="Experiment"
+          type="retro"
+          info="Share news and announcements with your team"
+          onClick={this.addTemplate.bind(null, 'retro')}
+        />
+        <TemplateItem
+          title="Product Requirements"
+          icon="Prediction"
+          type="retro"
+          info="Share news and announcements with your team"
+          onClick={this.addTemplate.bind(null, 'retro')}
+        />
+      </TemplateArea>
+    );
+  };
+
   render() {
     const {
       editorDOMElement,
@@ -211,38 +295,11 @@ export default class Editor extends React.Component<
 
     return (
       <FullPageEditorWrapper>
-        {!data && (
-          <TemplateArea>
-            <TemplateItem
-              title="Blog post"
-              icon="Celebration"
-              type="blog"
-              info="Share news and announcements with your team"
-              onClick={this.addTemplate.bind(null, 'blog')}
-            />
-            <TemplateItem
-              title="Meeting notes"
-              icon="ClipboardList"
-              type="health"
-              info="Share news and announcements with your team"
-              onClick={this.addTemplate.bind(null, 'health')}
-            />
-            <TemplateItem
-              title="Decision"
-              icon="Experiment"
-              type="retro"
-              info="Share news and announcements with your team"
-              onClick={this.addTemplate.bind(null, 'retro')}
-            />
-            <TemplateItem
-              title="Product Requirements"
-              icon="Prediction"
-              type="retro"
-              info="Share news and announcements with your team"
-              onClick={this.addTemplate.bind(null, 'retro')}
-            />
-          </TemplateArea>
-        )}
+        <CSSTransition in={!data} timeout={2000} classNames="example">
+          <div className={`animation-wrapper ${data ? 'data' : 'no-data'} `}>
+            {this.renderTemplates()}
+          </div>
+        </CSSTransition>
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
