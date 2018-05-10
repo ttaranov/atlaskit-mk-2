@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 162.4487 210.1115">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+      }
+
+      .cls-2, .cls-4 {
+        fill: none;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-linejoin: round;
+      }
+
+      .cls-3 {
+        fill: #e7e8ec;
+      }
+
+      .cls-4 {
+        stroke: #0065ff;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-5 {
+        fill: #ff5630;
+      }
+
+      .cls-6 {
+        fill: #0065ff;
+      }
+
+      .cls-7 {
+        mix-blend-mode: multiply;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-8 {
+        fill: #f4f5f7;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="113.6436" y1="48.9846" x2="154.0511" y2="8.5771" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fafbfc"/>
+      <stop offset="0.2786" stop-color="#eff1f3"/>
+      <stop offset="0.7688" stop-color="#d1d6dd"/>
+      <stop offset="1" stop-color="#c1c7d0"/>
+    </linearGradient>
+  </defs>
+  <title>Pie Chart Document</title>
+  <g class="cls-1">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Objects">
+        <line class="cls-2" x1="17.471" y1="171.7573" x2="79.298" y2="171.7573"/>
+        <polygon id="_Path_" data-name="&lt;Path&gt;" class="cls-3" points="162.445 38.711 162.445 210.111 0 210.111 0 0 123.704 0 162.415 38.711 162.445 38.711"/>
+        <line class="cls-4" x1="18.3973" y1="181.344" x2="84.129" y2="181.344"/>
+        <line class="cls-4" x1="18.3973" y1="190.9306" x2="59.0495" y2="190.9306"/>
+        <line class="cls-4" x1="18.3973" y1="171.7573" x2="84.129" y2="171.7573"/>
+        <path class="cls-5" d="M76.5776,101.9185H125.493A48.9154,48.9154,0,1,1,76.5776,53.0031Z"/>
+        <path class="cls-6" d="M86.9491,89.2167V40.3014a48.9154,48.9154,0,0,1,48.9154,48.9154Z"/>
+        <polygon class="cls-7" points="123.981 59.322 162.351 38.647 123.981 0.277 123.981 59.322"/>
+        <polygon class="cls-8" points="162.449 38.742 123.707 38.742 123.707 0 162.449 38.742"/>
+      </g>
+    </g>
+  </g>
+</svg>

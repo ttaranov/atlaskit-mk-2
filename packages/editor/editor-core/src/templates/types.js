@@ -1,0 +1,98 @@
+export const templateTypes = [
+  {
+    title: 'Blog post',
+    icon: 'Celebration',
+    type: 'blog',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Meeting notes',
+    icon: 'ClipboardList',
+    type: 'health',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Decision',
+    icon: 'Experiment',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Product Requirements',
+    icon: 'Troubleshoot',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Blog post',
+    icon: 'Health',
+    type: 'blog',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Meeting notes',
+    icon: 'Lightbulb',
+    type: 'health',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Decision',
+    icon: 'Memo',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Product Requirements',
+    icon: 'Q&A',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Blog post',
+    icon: 'Security',
+    type: 'blog',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Meeting notes',
+    icon: 'TaskDone',
+    type: 'health',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Decision',
+    icon: 'Chart',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Product Requirements',
+    icon: 'Letter',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Blog post',
+    icon: 'PieChart',
+    type: 'blog',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Meeting notes',
+    icon: 'Problem',
+    type: 'health',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Decision',
+    icon: 'Celebration',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+  {
+    title: 'Product Requirements',
+    icon: 'Prediction',
+    type: 'retro',
+    info: 'Share news and announcements with your team',
+  },
+];

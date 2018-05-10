@@ -23,7 +23,7 @@ import {
 // import { CSSTransitionGroup } from '../../../../../../node_modules/react-transition-group';
 import { CSSTransition } from '../../../../../../node_modules/react-transition-group';
 // import * asclassnames from 'classnames';
-
+import { templateTypes } from '../../../src/templates/types';
 const GUTTER_PADDING = 26;
 const flashTime = 700;
 
@@ -51,12 +51,23 @@ const FullPageEditorWrapper = styled.div`
     height: 224px;
   }
 
+  .animation-wrapper.no-data.more {
+    height: 913px;
+    // max-height: 913px;
+  }
+
   & .animation-wrapper {
     transition: 700ms ease-in all;
     overflow: auto;
   }
   & .animation-wrapper .empty-div {
     height: 0;
+  }
+
+  .view-templates {
+    margin-left: 20px;
+    font-size: 12px;
+    cursor: pointer;
   }
 
   //   & .example-exit-active div {
@@ -153,6 +164,7 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 
 const TemplateArea = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: start;
   // position: absolute;
   bottom: 40px;
@@ -217,6 +229,7 @@ export default class Editor extends React.Component<
     super(props);
     this.state = {
       data: props.editorView && props.editorView!.state!.doc.content.size > 2,
+      moreTemplates: false,
     };
   }
 
@@ -236,41 +249,36 @@ export default class Editor extends React.Component<
     });
   };
 
+  toggleMoreTemplates = () => {
+    this.setState({
+      moreTemplates: !this.state.moreTemplates,
+    });
+  };
+
   renderTemplates = () => {
-    const { data } = this.state;
+    const { data, moreTemplates } = this.state;
     return data ? (
       <div className="empty-div" />
     ) : (
-      <TemplateArea key="1">
-        <TemplateItem
-          title="Blog post"
-          icon="Celebration"
-          type="blog"
-          info="Share news and announcements with your team"
-          onClick={this.addTemplate.bind(null, 'blog')}
-        />
-        <TemplateItem
-          title="Meeting notes"
-          icon="ClipboardList"
-          type="health"
-          info="Share news and announcements with your team"
-          onClick={this.addTemplate.bind(null, 'health')}
-        />
-        <TemplateItem
-          title="Decision"
-          icon="Experiment"
-          type="retro"
-          info="Share news and announcements with your team"
-          onClick={this.addTemplate.bind(null, 'retro')}
-        />
-        <TemplateItem
-          title="Product Requirements"
-          icon="Prediction"
-          type="retro"
-          info="Share news and announcements with your team"
-          onClick={this.addTemplate.bind(null, 'retro')}
-        />
-      </TemplateArea>
+      <>
+        <div className="template-meta">
+          <div className="view-templates" onClick={this.toggleMoreTemplates}>
+            <a>{moreTemplates ? 'Hide' : 'Show'} all templates</a>
+          </div>
+          <div className="search-templates" />
+        </div>
+        <TemplateArea key="1">
+          {templateTypes.map((item, idx) => (
+            <TemplateItem
+              title={item.title}
+              icon={item.icon}
+              type={item.type}
+              info={item.info}
+              onClick={this.addTemplate.bind(null, item.type)}
+            />
+          ))}
+        </TemplateArea>
+      </>
     );
   };
 
@@ -291,12 +299,16 @@ export default class Editor extends React.Component<
       disabled,
       collabEdit,
     } = this.props;
-    const { data } = this.state;
+    const { data, moreTemplates } = this.state;
 
     return (
       <FullPageEditorWrapper>
         <CSSTransition in={!data} timeout={2000} classNames="example">
-          <div className={`animation-wrapper ${data ? 'data' : 'no-data'} `}>
+          <div
+            className={`animation-wrapper ${data ? 'data' : 'no-data'} ${
+              moreTemplates ? 'more' : ''
+            }`}
+          >
             {this.renderTemplates()}
           </div>
         </CSSTransition>

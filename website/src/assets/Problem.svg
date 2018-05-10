@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 162.9477 210.1115">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        fill: #dfe1e5;
+      }
+
+      .cls-10, .cls-3, .cls-7, .cls-8, .cls-9 {
+        fill: none;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        stroke: #0065ff;
+      }
+
+      .cls-4 {
+        fill: #36b37e;
+      }
+
+      .cls-5 {
+        fill: #0065ff;
+      }
+
+      .cls-6 {
+        fill: #253858;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: #253858;
+      }
+
+      .cls-7, .cls-9 {
+        stroke-dasharray: 10 6;
+      }
+
+      .cls-10, .cls-9 {
+        stroke: #36b37e;
+      }
+
+      .cls-11 {
+        mix-blend-mode: multiply;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-12 {
+        fill: #f4f5f7;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="114.1426" y1="48.9846" x2="154.5501" y2="8.5771" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fafbfc"/>
+      <stop offset="0.2786" stop-color="#eff1f3"/>
+      <stop offset="0.7688" stop-color="#d1d6dd"/>
+      <stop offset="1" stop-color="#c1c7d0"/>
+    </linearGradient>
+  </defs>
+  <title>Problem Solving Document</title>
+  <g class="cls-1">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Objects">
+        <polygon id="_Path_" data-name="&lt;Path&gt;" class="cls-2" points="162.445 38.711 162.445 210.111 0 210.111 0 0 123.704 0 162.415 38.711 162.445 38.711"/>
+        <line class="cls-3" x1="18.3973" y1="33.7113" x2="100.8286" y2="33.7113"/>
+        <line class="cls-3" x1="18.3973" y1="43.2979" x2="64.129" y2="43.2979"/>
+        <line class="cls-3" x1="18.3973" y1="24.1246" x2="100.8286" y2="24.1246"/>
+        <circle class="cls-4" cx="32.2375" cy="121.896" r="13.8402"/>
+        <circle class="cls-5" cx="79.899" cy="121.896" r="13.8402"/>
+        <circle class="cls-6" cx="127.5605" cy="121.896" r="13.8402"/>
+        <path class="cls-7" d="M87.7946,75.0691H123.62a4.1143,4.1143,0,0,1,4.1143,4.1143V109.532"/>
+        <polyline class="cls-8" points="92.795 68.784 86.505 75.074 92.795 81.354"/>
+        <path class="cls-9" d="M111.1772,169.1354H36.3518a4.1143,4.1143,0,0,1-4.1143-4.1143V134.6726"/>
+        <polyline class="cls-10" points="105.65 175.42 111.94 169.13 105.65 162.851"/>
+        <line class="cls-8" x1="122.4188" y1="163.9938" x2="132.7021" y2="174.2771"/>
+        <line class="cls-8" x1="132.7021" y1="163.9938" x2="122.4188" y2="174.2771"/>
+        <polygon class="cls-11" points="124.48 59.322 162.85 38.647 124.48 0.277 124.48 59.322"/>
+        <polygon class="cls-12" points="162.948 38.742 124.206 38.742 124.206 0 162.948 38.742"/>
+      </g>
+    </g>
+  </g>
+</svg>

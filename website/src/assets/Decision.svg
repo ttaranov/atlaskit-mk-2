@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.3875 198.5298">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-1 {
+        stroke: #ff991f;
+      }
+
+      .cls-2 {
+        stroke: #ffc400;
+      }
+
+      .cls-3 {
+        fill: #0065ff;
+      }
+
+      .cls-4 {
+        fill: url(#New_Gradient_Swatch_15);
+      }
+
+      .cls-5 {
+        fill: #ffc400;
+      }
+
+      .cls-6 {
+        fill: url(#New_Gradient_Swatch_5);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-8 {
+        fill: url(#New_Gradient_Swatch_5-2);
+      }
+
+      .cls-9 {
+        fill: #ff991f;
+      }
+
+      .cls-10 {
+        fill: url(#New_Gradient_Swatch_6);
+      }
+
+      .cls-11 {
+        fill: #ffab00;
+      }
+
+      .cls-12 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-13 {
+        fill: url(#New_Gradient_Swatch_23);
+      }
+    </style>
+    <linearGradient id="New_Gradient_Swatch_15" data-name="New Gradient Swatch 15" x1="165.903" y1="78.552" x2="239.9984" y2="78.552" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0065ff"/>
+      <stop offset="1" stop-color="#4c9aff"/>
+    </linearGradient>
+    <linearGradient id="New_Gradient_Swatch_5" data-name="New Gradient Swatch 5" x1="99.6486" y1="137.3423" x2="142.6136" y2="137.3423" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff991f"/>
+      <stop offset="1" stop-color="#ffc400"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient" x1="60.3413" y1="191.1021" x2="163.5283" y2="191.1021" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff991f"/>
+      <stop offset="0.7602" stop-color="#ffc400"/>
+    </linearGradient>
+    <linearGradient id="New_Gradient_Swatch_5-2" x1="29.7341" y1="18.45" x2="215.3386" y2="18.45" xlink:href="#New_Gradient_Swatch_5"/>
+    <linearGradient id="New_Gradient_Swatch_6" data-name="New Gradient Swatch 6" x1="125.8463" y1="12.6615" x2="202.5924" y2="12.6615" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffab00"/>
+      <stop offset="1" stop-color="#ffe380"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="105.5763" y1="20.3131" x2="142.7979" y2="20.3131" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff991f"/>
+      <stop offset="0.7527" stop-color="#ffc400"/>
+    </linearGradient>
+    <linearGradient id="New_Gradient_Swatch_23" data-name="New Gradient Swatch 23" x1="120.1675" y1="183.8153" x2="120.1675" y2="183.8153" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7a869a"/>
+      <stop offset="1" stop-color="#7a869a" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <title>Decision Making</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Objects">
+      <line class="cls-1" x1="37.7684" y1="18.471" x2="37.7684" y2="110.6502"/>
+      <line class="cls-2" x1="202.5924" y1="18.471" x2="202.5924" y2="110.6502"/>
+      <circle class="cls-3" cx="37.6721" cy="77.623" r="33.2492"/>
+      <polygon class="cls-4" points="221.475 46.468 184.427 46.468 165.903 78.552 184.427 110.636 221.475 110.636 239.998 78.552 221.475 46.468"/>
+      <line class="cls-2" x1="202.6191" y1="18.471" x2="166.14" y2="111.6982"/>
+      <line class="cls-2" x1="202.9772" y1="18.471" x2="239.4563" y2="111.6982"/>
+      <path id="_Path_" data-name="&lt;Path&gt;" class="cls-5" d="M126.7335,183.8153c7.4455-33.6728,13.8566-68.3073,7.73-102.2024l-8.33-46.0839H114.2014l-8.33,46.0839c-6.1266,33.8951.2845,68.53,7.7306,102.2024Z"/>
+      <path class="cls-6" d="M124.781,143.7255c-13.345-16.3757-18.7172-35.479-20.2754-52.8563-3.5848,30.9248,2.3264,62.3327,9.0959,92.946h13.1318c2.2957-10.382,4.4915-20.8555,6.2532-31.3705A85.5334,85.5334,0,0,1,124.781,143.7255Z"/>
+      <line class="cls-1" x1="37.7684" y1="18.471" x2="74.2475" y2="111.6982"/>
+      <line class="cls-1" x1="37.4103" y1="18.471" x2="0.9312" y2="111.6982"/>
+      <path id="_Path_2" data-name="&lt;Path&gt;" class="cls-5" d="M120.1672,183.434A102.5586,102.5586,0,0,1,173.8844,198.53H66.4506A102.5581,102.5581,0,0,1,120.1672,183.434Z"/>
+      <path class="cls-7" d="M131.0481,198.53a55.2841,55.2841,0,0,1-12.542-8.8565,50.2384,50.2384,0,0,1-5.3623-5.9988A102.44,102.44,0,0,0,66.4506,198.53Z"/>
+      <g>
+        <path id="_Path_3" data-name="&lt;Path&gt;" class="cls-5" d="M114.488,22.35,37.7419,18.471V10.94a71.4653,71.4653,0,0,0,19.4254.1456C72.45,9.0807,77.9469,3.1736,88.9545,2.9776c6.0706-.1081,14.7964,1.5032,25.5335,9.7474Z"/>
+        <polygon class="cls-8" points="37.742 14.55 37.742 18.471 114.488 22.35 114.488 14.55 37.742 14.55"/>
+        <circle class="cls-9" cx="37.3839" cy="9.2877" r="9.2877"/>
+      </g>
+      <path id="_Path_4" data-name="&lt;Path&gt;" class="cls-10" d="M125.8463,22.35l76.7461-3.8794V10.94a71.4653,71.4653,0,0,1-19.4254.1456c-15.2826-2.0046-20.78-7.9117-31.7872-8.1077-6.0706-.1081-14.7964,1.5032-25.5335,9.7474Z"/>
+      <path class="cls-11" d="M195.3008,14.55H125.8463V22.35l76.024-3.8429a9.2851,9.2851,0,1,0-8.2074-9.22A9.24,9.24,0,0,0,195.3008,14.55Z"/>
+      <circle id="_Ellipse_" data-name="&lt;Ellipse&gt;" class="cls-5" cx="120.1937" cy="18.2036" r="12.5717"/>
+      <path class="cls-12" d="M120.1937,30.7753A12.5655,12.5655,0,0,0,132.38,21.2412a26.6824,26.6824,0,0,1-12.1868-3.0377,26.0627,26.0627,0,0,1-9.3772-8.3527,12.5568,12.5568,0,0,0,9.3773,20.9244Z"/>
+      <line class="cls-13" x1="113.6015" y1="183.8153" x2="126.7335" y2="183.8153"/>
+      <path id="_Path_5" data-name="&lt;Path&gt;" class="cls-9" d="M74.2473,110.73H.5827a.5735.5735,0,0,0-.2991,1.063,71.28,71.28,0,0,0,74.2628,0,.5735.5735,0,0,0-.2991-1.063Z"/>
+      <path id="_Path_6" data-name="&lt;Path&gt;" class="cls-5" d="M239.4247,110.73H165.76a.5735.5735,0,0,0-.2991,1.063,71.28,71.28,0,0,0,74.2628,0,.5735.5735,0,0,0-.2991-1.063Z"/>
+      <rect class="cls-9" x="108.4566" y="30.2019" width="23.204" height="5.4691" rx="2.7346" ry="2.7346"/>
+    </g>
+  </g>
+</svg>
