@@ -15,6 +15,7 @@ import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
+import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 
 export interface Props {
   editorView: EditorView;
@@ -99,13 +100,21 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       elemBefore: <EditorLinkIcon label="Link" />,
     });
 
+    items.push({
+      content: 'Decision',
+      value: { name: 'decision' },
+      elemBefore: <DecisionIcon label="Decision" />,
+    });
+
     return items.length ? [{ items }] : null;
   };
 
   private onMenuItemActivated = ({ item }) => {
     const { editorView, columnIndex } = this.props;
     const {
-      state: { schema: { nodes: { slider, checkbox, tableCell } } },
+      state: {
+        schema: { nodes: { slider, checkbox, tableCell, decisionItem } },
+      },
       dispatch,
     } = editorView;
     const attrs = { cellType: item.value.name };
@@ -119,16 +128,26 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       const nodemap = {
         slider: slider,
         checkbox: checkbox,
+        decision: decisionItem,
       };
 
       // filldown for node type
-      if (Object.keys(nodemap).indexOf(item.value.name) !== -1) {
-        const node = nodemap[item.value.name].createChecked();
+      const cellType = item.value.name;
+      if (Object.keys(nodemap).indexOf(cellType) !== -1) {
+        // const node = nodemap[item.value.name].createChecked();
+        let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
           if (cell.node.type !== tableCell) {
             return;
           }
+
+          if (item.value.name === 'decision') {
+            node = editorView.state.schema.nodes.decisionList.createAndFill();
+          } else {
+            node = nodemap[cellType].createChecked();
+          }
+
           tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
         });
       }

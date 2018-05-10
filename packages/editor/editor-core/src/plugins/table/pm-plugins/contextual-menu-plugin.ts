@@ -456,7 +456,7 @@ export const createCellTypeDecoration = (
       const classNames: string[] = [];
 
       if (
-        ['text', 'currency', 'number', 'mention', 'slider'].indexOf(
+        ['text', 'currency', 'number', 'mention', 'slider', 'decision'].indexOf(
           cell.attrs.cellType,
         ) === -1
       ) {

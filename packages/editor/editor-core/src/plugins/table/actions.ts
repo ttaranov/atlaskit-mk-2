@@ -278,6 +278,7 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
   const nodemap = {
     slider: schema.nodes.slider,
     checkbox: schema.nodes.checkbox,
+    decision: null,
   };
 
   const newCells = getCellsInRow(rowIndex)(tr.selection)!;
@@ -296,7 +297,13 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     if (
       Object.keys(nodemap).indexOf(cells![index].node.attrs.cellType) !== -1
     ) {
-      const node = nodemap[cellType].createChecked();
+      let node;
+      if (cellType === 'decision') {
+        node = schema.nodes.decisionList.createAndFill();
+      } else {
+        node = nodemap[cellType].createChecked();
+      }
+
       tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
     }
   });
