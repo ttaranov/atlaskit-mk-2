@@ -71,6 +71,10 @@ export class MockMentionResource extends AbstractMentionResource {
     }, waitTime + 1);
   }
 
+  shouldHighlightMention(mention: MentionDescription) {
+    return mention.id === 'highlight';
+  }
+
   // eslint-disable-next-line class-methods-use-this
   recordMentionSelection(mention: MentionDescription): void {
     debug(`Record mention selection ${mention.id}`);
