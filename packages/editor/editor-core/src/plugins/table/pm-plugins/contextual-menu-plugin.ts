@@ -410,7 +410,8 @@ export const createCellTypeDecoration = (
         }
         const node = paragraph.child(0);
         if (node) {
-          contentEditable = state.schema.nodes.mention ? false : true;
+          contentEditable =
+            node.type === state.schema.nodes.mention ? false : true;
         }
       }
 
