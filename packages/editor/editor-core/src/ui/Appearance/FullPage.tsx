@@ -5,6 +5,7 @@ import {
   akColorN30,
   akColorN90,
   akColorN20,
+  akColorN70,
 } from '@atlaskit/util-shared-styles';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
@@ -100,6 +101,46 @@ const FullPageEditorWrapper = styled.div`
   //   height: 0;
   //   transition: 1s ease-in all;
   // }
+
+  @keyframes dot-keyframes {
+    0% {
+      opacity: 0.4;
+      transform: scale(1, 1);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.2, 1.2);
+    }
+
+    100% {
+      opacity: 0.4;
+      transform: scale(1, 1);
+    }
+  }
+
+  .loading-dots {
+    text-align: center;
+    width: 100%;
+
+    &--dot {
+      animation: dot-keyframes 1.5s infinite ease-in-out;
+      background-color: ${akColorN70};
+      border-radius: 10px;
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      margin: 5px;
+
+      &:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 1s;
+      }
+    }
+  }
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
@@ -248,6 +289,8 @@ export default class Editor extends React.Component<
       data: true,
       moreTemplates: false,
       templateSearch: '',
+      loadingTemplate: false,
+      opened: false,
     };
   }
 
@@ -255,7 +298,8 @@ export default class Editor extends React.Component<
     setTimeout(() => {
       if (
         this.props.editorView &&
-        this.props.editorView!.state!.doc.content.size <= 2
+        this.props.editorView!.state!.doc.content.size <= 2 &&
+        !this.state.opened
       ) {
         this.setState({
           data: false,
@@ -268,15 +312,22 @@ export default class Editor extends React.Component<
     event.stopPropagation();
 
   addTemplate = template => {
-    this.props.editorActions!.replaceDocument(templateMap[template]);
     this.setState({
       data: true,
+      loadingTemplate: true,
     });
+    setTimeout(() => {
+      this.setState({
+        loadingTemplate: false,
+      });
+      this.props.editorActions!.replaceDocument(templateMap[template]);
+    }, 3000);
   };
 
   showTemplates = () => {
     this.setState({
       data: !this.state.data,
+      opened: true,
     });
   };
 
@@ -347,7 +398,7 @@ export default class Editor extends React.Component<
       disabled,
       collabEdit,
     } = this.props;
-    const { data, moreTemplates } = this.state;
+    const { data, moreTemplates, loadingTemplate } = this.state;
 
     return (
       <FullPageEditorWrapper>
@@ -360,6 +411,7 @@ export default class Editor extends React.Component<
             {this.renderTemplates()}
           </div>
         </CSSTransition>
+
         <MainToolbar>
           <Toolbar
             editorView={editorView!}
@@ -413,6 +465,13 @@ export default class Editor extends React.Component<
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
+        {loadingTemplate && (
+          <div className="loading-dots">
+            <div className="loading-dots--dot" />
+            <div className="loading-dots--dot" />
+            <div className="loading-dots--dot" />
+          </div>
+        )}
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );
