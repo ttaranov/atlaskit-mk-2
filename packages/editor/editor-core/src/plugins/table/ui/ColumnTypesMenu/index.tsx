@@ -5,6 +5,8 @@ import {
   forEachCellInColumn,
   setCellAttrs,
   getCellsInColumn,
+  findTable,
+  getCellsInRow,
 } from 'prosemirror-utils';
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
@@ -117,10 +119,23 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       },
       dispatch,
     } = editorView;
-    const attrs = { cellType: item.value.name };
+    let attrs = { cellType: item.value.name };
+    const table = findTable(editorView.state.selection);
+    if (!table) {
+      return false;
+    }
 
     if (columnIndex !== null) {
-      let tr = forEachCellInColumn(columnIndex, cell => {
+      let { tr } = editorView.state;
+      const lastRowIndex = table.node.childCount - 1;
+      let rowIndex = 0;
+      tr = forEachCellInColumn(columnIndex, cell => {
+        if (table.node.attrs.isSummaryRowEnabled && rowIndex === lastRowIndex) {
+          attrs = { cellType: 'summary' };
+        } else {
+          attrs = { cellType: item.value.name };
+        }
+        rowIndex++;
         // setting cellType only for tableCell so that we can still type in table headers
         return setCellAttrs(
           cell,

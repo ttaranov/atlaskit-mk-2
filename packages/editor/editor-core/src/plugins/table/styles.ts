@@ -232,7 +232,7 @@ export const tableEditorStyles = `
       }
 
       td[celltype="summary"]:before {
-        content: 'Total';
+        content: attr(summarytype);
         text-transform: uppercase;
         color: ${akColorN80};
       }

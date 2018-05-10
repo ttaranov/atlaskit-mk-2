@@ -25,6 +25,7 @@ import contextualMenu, {
 } from './pm-plugins/contextual-menu-plugin';
 import { pluginKey as datePluginKey } from '../date/plugin';
 import DatePicker from './ui/DatePicker';
+import SummaryMenu from './ui/SummaryMenu';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -134,6 +135,15 @@ const tablesPlugin: EditorPlugin = {
               onSelect={({ iso }) => {
                 setDateIntoClickedCell(iso)(editorView.state, dispatch);
               }}
+              onClickOutside={(event: Event) => {
+                if (!editorView.dom.contains(event.target as HTMLElement)) {
+                  setClickedCell(undefined)(editorView.state, dispatch);
+                }
+              }}
+            />
+            <SummaryMenu
+              editorView={editorView}
+              clickedCell={tableContextualMenuState.clickedCell}
               onClickOutside={(event: Event) => {
                 if (!editorView.dom.contains(event.target as HTMLElement)) {
                   setClickedCell(undefined)(editorView.state, dispatch);

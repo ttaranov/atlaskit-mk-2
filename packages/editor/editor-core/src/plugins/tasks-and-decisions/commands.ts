@@ -99,26 +99,26 @@ export const createListAtSelection = (
   }
 
   // try to replace any of the given nodeTypes
-  // if (
-  //   hasParentNodeOfType([blockquote, paragraph, decisionList, taskList])(
-  //     selection,
-  //   )
-  // ) {
-  //   const newTr = replaceParentNodeOfType(
-  //     [blockquote, paragraph, decisionList, taskList],
-  //     list.create({ localId: uuid.generate() }, [
-  //       item.create(
-  //         { localId: uuid.generate() },
-  //         $from.node($from.depth).content,
-  //       ),
-  //     ]),
-  //   )(tr);
+  if (
+    hasParentNodeOfType([blockquote, paragraph, decisionList, taskList])(
+      selection,
+    )
+  ) {
+    const newTr = replaceParentNodeOfType(
+      [blockquote, paragraph, decisionList, taskList],
+      list.create({ localId: uuid.generate() }, [
+        item.create(
+          { localId: uuid.generate() },
+          $from.node($from.depth).content,
+        ),
+      ]),
+    )(tr);
 
-  //   // replacing successful
-  //   if (newTr !== tr) {
-  //     return true;
-  //   }
-  // }
+    // replacing successful
+    if (newTr !== tr) {
+      return true;
+    }
+  }
 
   safeInsert(emptyList)(tr);
   return true;
