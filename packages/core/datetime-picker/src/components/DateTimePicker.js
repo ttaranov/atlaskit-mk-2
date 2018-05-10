@@ -1,6 +1,7 @@
 // @flow
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors } from '@atlaskit/theme';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
@@ -40,6 +41,12 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
+  /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
+  dateFormat?: string,
+  /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
+  datePickerSelectProps: {},
+  /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
+  timePickerSelectProps: {},
 };
 
 type State = {
@@ -129,6 +136,8 @@ export default class DateTimePicker extends Component<Props, State> {
     timeIsEditable: false,
     isInvalid: false,
     hideIcon: false,
+    datePickerSelectProps: {},
+    timePickerSelectProps: {},
   };
 
   state = {
@@ -202,6 +211,9 @@ export default class DateTimePicker extends Component<Props, State> {
       isDisabled,
       name,
       timeIsEditable,
+      dateFormat,
+      datePickerSelectProps,
+      timePickerSelectProps,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
@@ -214,6 +226,19 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
       appearance: this.props.appearance,
+    };
+
+    const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);
+    const { styles: timePickerStyles = {} } = (timePickerSelectProps: any);
+
+    const mergedDatePickerSelectProps = {
+      ...datePickerSelectProps,
+      styles: mergeStyles(styles, datePickerStyles),
+    };
+
+    const mergedTimePickerSelectProps = {
+      ...timePickerSelectProps,
+      styles: mergeStyles(styles, timePickerStyles),
     };
 
     return (
@@ -229,10 +254,11 @@ export default class DateTimePicker extends Component<Props, State> {
           <DatePicker
             {...bothProps}
             autoFocus={autoFocus}
+            dateFormat={dateFormat}
             icon={null}
             id={id}
             onChange={this.onDateChange}
-            selectProps={{ styles }}
+            selectProps={mergedDatePickerSelectProps}
             value={dateValue}
           />
         </FlexItem>
@@ -241,7 +267,7 @@ export default class DateTimePicker extends Component<Props, State> {
             {...bothProps}
             icon={icon}
             onChange={this.onTimeChange}
-            selectProps={{ styles }}
+            selectProps={mergedTimePickerSelectProps}
             defaultValue={timeValue}
             timeIsEditable={timeIsEditable}
           />

@@ -42,6 +42,7 @@ import {
   SpinnerWrapper,
   CardsWrapper,
   RecentUploadsTitle,
+  CardWrapper,
 } from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
@@ -105,7 +106,7 @@ export class StatelessUploadView extends Component<
 
   render() {
     const { isLoading } = this.props;
-    const cards = this.cards();
+    const cards = this.renderCards();
     const isEmpty = !isLoading && cards.length === 0;
 
     let contentPart: JSX.Element | null = null;
@@ -166,13 +167,15 @@ export class StatelessUploadView extends Component<
     </FlagGroup>
   );
 
-  private cards() {
+  private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    return uploadingFilesCards.concat(recentFilesCards);
+    return uploadingFilesCards
+      .concat(recentFilesCards)
+      .map(({ key, el: card }) => <CardWrapper key={key}>{card}</CardWrapper>);
   }
 
-  private uploadingFilesCards() {
+  private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
     const { uploads, onFileClick, onEditorShowImage } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
@@ -217,8 +220,9 @@ export class StatelessUploadView extends Component<
         mediaType,
       };
 
-      return (
-        <div key={id}>
+      return {
+        key: id,
+        el: (
           <CardView
             status={status}
             progress={progress || undefined}
@@ -231,12 +235,12 @@ export class StatelessUploadView extends Component<
             onClick={onClick}
             actions={actions}
           />
-        </div>
-      );
+        ),
+      };
     });
   }
 
-  private recentFilesCards(): JSX.Element[] {
+  private recentFilesCards(): { key: string; el: JSX.Element }[] {
     const {
       context,
       recents,
@@ -294,23 +298,25 @@ export class StatelessUploadView extends Component<
         actions.push(createEditCardAction(editHandler));
       }
 
-      return (
-        <Card
-          key={`${occurrenceKey}-${id}`}
-          context={context}
-          identifier={{
-            mediaItemType: 'file',
-            id: id,
-            collectionName: recentsCollection,
-          }}
-          dimensions={cardDimension}
-          selectable={true}
-          selected={selected}
-          onClick={onClick}
-          actions={actions}
-          onLoadingChange={onLoadingChange}
-        />
-      );
+      return {
+        key: `${occurrenceKey}-${id}`,
+        el: (
+          <Card
+            context={context}
+            identifier={{
+              mediaItemType: 'file',
+              id: id,
+              collectionName: recentsCollection,
+            }}
+            dimensions={cardDimension}
+            selectable={true}
+            selected={selected}
+            onClick={onClick}
+            actions={actions}
+            onLoadingChange={onLoadingChange}
+          />
+        ),
+      };
     });
   }
 

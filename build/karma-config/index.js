@@ -135,7 +135,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         browser: 'Safari',
         os: 'OS X',
         os_version: 'High Sierra',
-        browser_version: '11.0',
+        browser_version: '11.1',
       },
       edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };

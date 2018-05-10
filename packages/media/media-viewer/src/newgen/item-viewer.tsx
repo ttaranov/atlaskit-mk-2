@@ -18,8 +18,9 @@ export type State = {
   item: Outcome<FileItem, Error>;
 };
 
+const initialState: State = { item: { status: 'PENDING' } };
 export class ItemViewer extends React.Component<Props, State> {
-  state: State = { item: { status: 'PENDING' } };
+  state: State = initialState;
 
   private subscription: Subscription;
 
@@ -63,6 +64,7 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
+    this.setState(initialState);
     const { context, identifier } = props;
     const provider = context.getMediaItemProvider(
       identifier.id,

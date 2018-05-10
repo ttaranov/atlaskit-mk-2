@@ -72,7 +72,7 @@ class TableComponent extends React.Component<ComponentProps> {
       case 'full-width':
         return `${containerWidth - CONTROLLER_PADDING}px`;
       default:
-        return '100%';
+        return 'inherit';
     }
   }
 

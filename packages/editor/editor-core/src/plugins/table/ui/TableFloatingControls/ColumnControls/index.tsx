@@ -57,9 +57,9 @@ export default class ColumnControls extends Component<Props, any> {
             onMouseOut={this.resetHoverSelection}
           />
           {!(
+            i === 0 &&
             checkIfNumberColumnEnabled(state) &&
-            checkIfHeaderColumnEnabled(state) &&
-            i === 0
+            checkIfHeaderColumnEnabled(state)
           ) && (
             <InsertColumnButton
               onClick={() => this.insertColumn(i + 1)}
