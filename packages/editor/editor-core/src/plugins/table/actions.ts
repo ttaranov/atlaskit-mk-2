@@ -138,18 +138,27 @@ export const toggleSummaryRow: Command = (
           mentionCount = 1;
         }
         colSummary = colSummary ? colSummary + mentionCount : mentionCount;
-      } else if (cell.attrs.cellType === 'checkbox') {
-        let actionCount = 0;
+      } else if (
+        cell.attrs.cellType === 'checkbox' ||
+        cell.attrs.cellType === 'decision'
+      ) {
+        let count = 0;
         if (
-          cell.child(0).type.name === 'paragraph' &&
+          (cell.child(0).type.name === 'paragraph' ||
+            cell.child(0).type.name === 'decisionList') &&
           cell.child(0).childCount > 0
         ) {
           let firstChild = cell.child(0).child(0);
-          // only count unchecked actions
+          // only count unchecked actions and empty decisions
           if (firstChild.type.name === 'checkbox' && !firstChild.attrs.checked)
-            actionCount = 1;
+            count = 1;
+          else if (
+            firstChild.type.name === 'decisionItem' &&
+            firstChild.content.size === 0
+          )
+            count = 1;
         }
-        colSummary = colSummary ? colSummary + actionCount : actionCount;
+        colSummary = colSummary ? colSummary + count : count;
       }
 
       summary[j] = colSummary;

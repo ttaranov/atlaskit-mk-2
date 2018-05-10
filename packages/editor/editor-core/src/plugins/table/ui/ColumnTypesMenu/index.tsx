@@ -122,7 +122,12 @@ export default class ColumnTypesMenu extends Component<Props, any> {
     if (columnIndex !== null) {
       let tr = forEachCellInColumn(columnIndex, cell => {
         // setting cellType only for tableCell so that we can still type in table headers
-        return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
+        return setCellAttrs(
+          cell,
+          cell.node.type === tableCell && cell.node.attrs.cellType != 'summary'
+            ? attrs
+            : {},
+        );
       })(editorView.state.tr);
 
       const nodemap = {
@@ -138,7 +143,10 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
-          if (cell.node.type !== tableCell) {
+          if (
+            cell.node.type !== tableCell ||
+            cell.node.attrs.cellType === 'summary'
+          ) {
             return;
           }
 
