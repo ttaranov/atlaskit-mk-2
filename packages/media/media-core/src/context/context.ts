@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/timer';
+import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/publishLast';
-import 'rxjs/add/operator/publishReplay';
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/map';
 
 // import {publishReplay} from 'rxjs/operator/publishReplay';
 import {
@@ -131,7 +131,7 @@ export class ContextFactory {
   }
 }
 
-const apiFileStatusToFileStatus = (
+const apiProcessingStatusToFileStatus = (
   fileStatus: MediaFileProcessingStatus,
 ): FileStatus => {
   switch (fileStatus) {
@@ -146,11 +146,13 @@ const apiFileStatusToFileStatus = (
 const mapMediaFileToFileState = (
   mediaFile: MediaStoreResponse<MediaFile>,
 ): FileState => {
+  const { id, name, size, processingStatus } = mediaFile.data;
+
   return {
-    status: apiFileStatusToFileStatus(mediaFile.data.processingStatus),
-    id: mediaFile.data.id,
-    name: mediaFile.data.name,
-    size: mediaFile.data.size,
+    status: apiProcessingStatusToFileStatus(processingStatus),
+    id,
+    name,
+    size,
   } as ProcessedFileState | ProcessingFileState;
 };
 
@@ -174,30 +176,24 @@ class ContextImpl implements Context {
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const collectionName =
-      options && options.collectionName ? `-${options.collectionName}` : '';
-    const key = `${id}${collectionName}`;
-    const fileStream = this.fileStreams.get(key);
+    const key = `${id}-${options && options.collectionName}`;
 
-    if (!fileStream) {
-      const stream = Observable.timer(0, 1000)
-        .switchMap(() => {
-          return this.mediaStore.getFile(id);
-        })
-        .map(mapMediaFileToFileState)
+    if (this.fileStreams.has(key) === false) {
+      const requestFileStream$ = Observable.defer(() =>
+        this.mediaStore.getFile(id),
+      ).map(mapMediaFileToFileState);
+
+      const fileStream$ = Observable.timer(0, 2000)
+        .switchMapTo(requestFileStream$)
         .takeWhile(file => file.status === 'processing')
-        .concat(
-          Observable.defer(() => {
-            // TODO: this will make an extra request, investigate how to fix it
-            return this.mediaStore.getFile(id);
-          }),
-        )
-        .map(mapMediaFileToFileState)
+        // TODO: concat will make an extra request, investigate how to fix it
+        .concat(requestFileStream$)
         .publishLast();
 
-      stream.connect();
+      // Start hot observable
+      fileStream$.connect();
 
-      this.fileStreams.set(key, stream);
+      this.fileStreams.set(key, fileStream$);
     }
 
     return this.fileStreams.get(key)!;
