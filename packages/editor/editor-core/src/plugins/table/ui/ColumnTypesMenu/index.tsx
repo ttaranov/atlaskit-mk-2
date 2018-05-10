@@ -144,11 +144,15 @@ export default class ColumnTypesMenu extends Component<Props, any> {
 
           if (item.value.name === 'decision') {
             node = editorView.state.schema.nodes.decisionList.createAndFill();
+            tr = tr.replaceWith(
+              tr.mapping.map(cell.pos),
+              tr.mapping.map(cell.pos + cell.node.nodeSize - 1),
+              node,
+            );
           } else {
             node = nodemap[cellType].createChecked();
+            tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
           }
-
-          tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
         });
       }
 
