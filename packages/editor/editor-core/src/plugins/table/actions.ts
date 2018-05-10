@@ -371,7 +371,7 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
         node = nodemap[cellType].createChecked();
       }
 
-      tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
+      tr = tr.insert(cell.pos + 1, node);
     }
   }
 

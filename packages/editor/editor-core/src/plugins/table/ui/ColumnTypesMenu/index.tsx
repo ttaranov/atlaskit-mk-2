@@ -142,11 +142,6 @@ export default class ColumnTypesMenu extends Component<Props, any> {
             return;
           }
 
-          if (cell.node.type === tableCell) {
-            const sliderNode = editorView.state.schema.nodes.slider.createChecked();
-            tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
-          }
-
           if (item.value.name === 'decision') {
             node = editorView.state.schema.nodes.decisionList.createAndFill();
             tr = tr.replaceWith(
