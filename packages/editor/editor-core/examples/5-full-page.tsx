@@ -177,6 +177,28 @@ export class ExampleEditor extends React.Component<Props, State> {
                 onBlur={this.handleTitleOnBlur}
               />
             }
+            defaultValue={{
+              type: 'doc',
+              version: '1',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'inlineExtension',
+                      attrs: {
+                        extensionKey: 'jira-issue',
+                        extensionType: 'com.atlassian.confluence.macro.core',
+                        parameters: {
+                          title: 'ED-2041',
+                          status: 'DONE',
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+            }}
             primaryToolbarComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
