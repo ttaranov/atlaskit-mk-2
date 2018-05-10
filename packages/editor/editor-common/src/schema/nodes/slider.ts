@@ -11,13 +11,14 @@ export const slider: NodeSpec = {
       tag: 'input[type="range"]',
       getAttrs(dom: HTMLElement) {
         return {
-          value: parseInt(dom.getAttribute('value') || '0', 10),
+          value: parseInt(dom.getAttribute('data-value') || '0', 10),
         };
       },
     },
   ],
   toDOM(node: Node) {
     const attrs = {
+      'data-value': node.attrs.value,
       type: 'range',
     };
     return ['input', attrs];

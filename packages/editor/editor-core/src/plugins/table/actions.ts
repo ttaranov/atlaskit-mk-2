@@ -10,7 +10,6 @@ import {
   addColumnAt,
   removeRowAt,
   addRowAt,
-  forEachCellInRow,
 } from 'prosemirror-utils';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
 import { stateKey as tablePluginKey } from './pm-plugins/main';
@@ -322,6 +321,9 @@ export const insertRow = (row: number): Command => (
 ): boolean => {
   const tr = addRowAt(row)(state.tr);
   const table = findTable(tr.selection)!;
+  if (!table) {
+    return false;
+  }
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
   tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos)));
@@ -356,13 +358,16 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
   const nodemap = {
     slider: schema.nodes.slider,
     checkbox: schema.nodes.checkbox,
+    decision: null,
   };
 
   const newCells = getCellsInRow(rowIndex)(tr.selection)!;
-  // makes sure cellType attribute is preserved for the new row
-  newCells.forEach((cell, index) => {
-    const cellType = cells![index].node.attrs.cellType;
-    tr.setNodeMarkup(
+
+  for (let i = newCells.length - 1; i >= 0; i--) {
+    const cell = newCells[i];
+    const { cellType } = cells![i].node.attrs;
+
+    tr = tr.setNodeMarkup(
       cell.pos - 1,
       cell.node.type,
       Object.assign({}, cell.node.attrs, {
@@ -371,13 +376,17 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     );
 
     // apply filldown
-    if (
-      Object.keys(nodemap).indexOf(cells![index].node.attrs.cellType) !== -1
-    ) {
-      const node = nodemap[cellType].createChecked();
-      tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
+    if (Object.keys(nodemap).indexOf(cells![i].node.attrs.cellType) !== -1) {
+      let node;
+      if (cellType === 'decision') {
+        node = schema.nodes.decisionList.createAndFill();
+      } else {
+        node = nodemap[cellType].createChecked();
+      }
+
+      tr = tr.insert(cell.pos + 1, node);
     }
-  });
+  }
 
   return tr;
 };
