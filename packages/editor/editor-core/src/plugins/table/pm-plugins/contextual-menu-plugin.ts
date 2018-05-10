@@ -169,36 +169,51 @@ export const createPlugin = (dispatch: Dispatch) =>
         const map = TableMap.get(table.node);
         const { pos: start } = findTable(newState.selection)!;
         const { tr } = newState;
-        const { tableHeader, paragraph } = newState.schema.nodes;
+        const { paragraph } = newState.schema.nodes;
         let updated = false;
 
         for (let i = 0; i < table.node.childCount; i++) {
-          const cell = table.node.child(i).child(0);
+          const row = table.node.child(i);
+          row.forEach(cell => {
+            console.log('cell', cell);
 
-          if (cell.type === tableHeader) {
-            continue;
-          }
-
-          const from = tr.mapping.map(start + map.map[i * map.width]);
-          const oldContent = cell.textContent;
-          const num = makeNumber(oldContent);
-          if (num) {
-            const numString = num.toLocaleString();
-
-            if (num && numString !== cell.textContent) {
-              const sel = tr.selection;
-              tr.replaceWith(
-                from + 1,
-                from + cell.nodeSize,
-                paragraph.create({}, newState.schema.text(numString)),
-              );
-
-              const diff = oldContent.length - numString.length;
-              tr.setSelection(new TextSelection(tr.doc.resolve(sel.to - diff)));
+            if (
+              !(
+                cell.attrs.cellType === 'number' ||
+                cell.attrs.cellType === 'currency'
+              )
+            ) {
+              return;
             }
 
-            updated = true;
-          }
+            const from = tr.mapping.map(start + map.map[i * map.width]);
+            const oldContent = cell.textContent;
+            const num = makeNumber(
+              oldContent,
+              cell.attrs.cellType === 'currency',
+            );
+            if (num) {
+              const numString = num.toLocaleString();
+
+              if (num && numString !== cell.textContent) {
+                const sel = tr.selection;
+                tr.replaceWith(
+                  from + 1,
+                  from + cell.nodeSize,
+                  paragraph.create({}, newState.schema.text(numString)),
+                );
+
+                if (sel.from > from && sel.from < from + cell.nodeSize) {
+                  const diff = oldContent.length - numString.length;
+                  tr.setSelection(
+                    new TextSelection(tr.doc.resolve(sel.to - diff)),
+                  );
+                }
+
+                updated = true;
+              }
+            }
+          });
         }
 
         if (updated) {
@@ -422,6 +437,13 @@ export const createCellTypeDecoration = (
         }
       }
 
+      if (cell.attrs.cellType === 'currency' && cell.textContent) {
+        const num = makeNumber(cell.textContent, true);
+        if (num === null) {
+          classNames.push('invalid');
+        }
+      }
+
       if (!contentEditable || classNames.length !== 0) {
         set.push(
           Decoration.node(pos, pos + cell.nodeSize, {
@@ -436,8 +458,13 @@ export const createCellTypeDecoration = (
   return DecorationSet.create(state.doc, set);
 };
 
-const makeNumber = (text: String): Number | null => {
-  const num = Number(text.replace(/[, ]/g, ''));
+const makeNumber = (text: String, currency?: boolean): Number | null => {
+  text = text.replace(/[, ]/g, '');
+  if (currency) {
+    text = text.replace(/$\$/, '');
+  }
+
+  const num = Number(text);
   if (num.toString() === 'NaN') {
     return null;
   }
