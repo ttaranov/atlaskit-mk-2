@@ -31,6 +31,6 @@
     "@atlaskit/avatar": "^10.0.0",
     "@atlaskit/docs": "^3.0.0",
     "@atlaskit/tag": "^4.0.0",
-    "enzyme": "^3.3.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.3.tgz"
   }
 }
