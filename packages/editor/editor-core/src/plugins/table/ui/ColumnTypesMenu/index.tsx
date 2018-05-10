@@ -6,7 +6,6 @@ import {
   setCellAttrs,
   getCellsInColumn,
   findTable,
-  getCellsInRow,
 } from 'prosemirror-utils';
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';

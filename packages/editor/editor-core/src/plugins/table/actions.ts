@@ -362,7 +362,8 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     if (
       cell &&
       cell.type === schema.nodes.tableCell &&
-      cell.attrs.cellType !== 'text'
+      cell.attrs.cellType !== 'text' &&
+      cell.attrs.cellType !== 'summary'
     ) {
       cells = getCellsInRow(i)(tr.selection);
     }
