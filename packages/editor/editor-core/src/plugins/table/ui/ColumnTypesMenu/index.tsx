@@ -149,7 +149,6 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       // filldown for node type
       const cellType = item.value.name;
       if (Object.keys(nodemap).indexOf(cellType) !== -1) {
-        // const node = nodemap[item.value.name].createChecked();
         let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {

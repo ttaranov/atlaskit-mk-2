@@ -222,7 +222,7 @@ export const tableEditorStyles = `
         color: ${akColorN200}
       }
 
-      td[celltype="slider"] {
+      td[celltype="slider"], td[celltype="summary"] {
         caret-color: transparent;
       }
 

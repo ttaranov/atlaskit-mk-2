@@ -75,12 +75,12 @@ export default class SummaryMenu extends Component<Props, any> {
   private createItems = () => {
     const items: any[] = [];
 
-    // const { editorView } = this.props;
+    const { editorView } = this.props;
 
-    // const table = findTable(editorView.state.selection);
-    // if (!table) {
-    //   return false;
-    // }
+    const table = findTable(editorView.state.selection);
+    if (!table) {
+      return false;
+    }
 
     items.push({
       content: 'Count',
