@@ -6,7 +6,7 @@ import {
   Selection,
 } from 'prosemirror-state';
 import { EditorView, DecorationSet, Decoration } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, Fragment } from 'prosemirror-model';
 import {
   columnResizingPluginKey as resizingPluginKey,
   CellSelection,
@@ -393,12 +393,7 @@ export const setClickedCell = (clickedCell?: {
     if (clickedCell && clickedCell.node.attrs.cellType === 'mention') {
       const mentionMark = state.schema.mark('mentionQuery', { active: true });
       const mentionQuery = state.schema.text('@', [mentionMark]);
-      tr
-        .delete(
-          clickedCell.pos + 1,
-          clickedCell.pos + clickedCell.node.nodeSize + 1,
-        )
-        .insert(clickedCell.pos + 1, mentionQuery);
+      clearAndInsertNode(mentionQuery, clickedCell)(tr);
     }
 
     dispatch(tr);
@@ -407,19 +402,58 @@ export const setClickedCell = (clickedCell?: {
   return false;
 };
 
+export const clearAndInsertNode = (
+  nodes: PMNode | PMNode[],
+  clickedCell: Cell,
+) => (tr: Transaction) => {
+  const paragraph = clickedCell.node.child(0);
+  const paragraphStart = clickedCell.pos + 1;
+  const content = Fragment.from(nodes);
+  return tr
+    .delete(
+      // beginning of the paragraph
+      paragraphStart,
+      paragraphStart + paragraph.nodeSize,
+    )
+    .insert(paragraphStart, content)
+    .setSelection(
+      Selection.near(tr.doc.resolve(paragraphStart + content.size)),
+    );
+};
+
 export const setDateIntoClickedCell = (iso: string): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const pluginState = pluginKey.getState(state);
-  const { clickedCell } = pluginState;
   const { tr, schema } = state;
   const dateNode = schema.nodes.date.create({ timestamp: getTime(iso) });
-  tr.replaceWith(
-    clickedCell.pos + 1,
-    clickedCell.pos + clickedCell.node.nodeSize + 1,
-    dateNode,
+
+  clearAndInsertNode(dateNode, pluginState.clickedCell)(tr);
+
+  dispatch(
+    tr.setMeta(pluginKey, {
+      ...pluginState,
+      clickedCell: undefined,
+    }),
   );
+  return true;
+};
+
+export const setEmojiIntoClickedCell = (emojiId, emoji): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const pluginState = pluginKey.getState(state);
+  const { tr, schema } = state;
+
+  const node = schema.nodes.emoji.create({
+    ...emojiId,
+    text: emojiId.fallback || emojiId.shortName,
+  });
+  const text = schema.text(' ');
+
+  clearAndInsertNode([node, text], pluginState.clickedCell)(tr);
 
   dispatch(
     tr.setMeta(pluginKey, {
