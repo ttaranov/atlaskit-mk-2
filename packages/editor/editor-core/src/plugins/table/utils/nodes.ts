@@ -105,3 +105,8 @@ export const checkIfNumberColumnEnabled = (state: EditorState): boolean => {
   const table = findTable(state.selection);
   return !!(table && table.node.attrs.isNumberColumnEnabled);
 };
+
+export const checkIfSummaryRowEnabled = (state: EditorState): boolean => {
+  const table = findTable(state.selection);
+  return !!(table && table.node.attrs.isSummaryRowEnabled);
+};

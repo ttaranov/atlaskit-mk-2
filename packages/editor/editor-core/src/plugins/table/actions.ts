@@ -8,7 +8,9 @@ import {
   getCellsInRow,
   getCellsInTable,
   addColumnAt,
+  removeRowAt,
   addRowAt,
+  forEachCellInRow,
 } from 'prosemirror-utils';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
 import { stateKey as tablePluginKey } from './pm-plugins/main';
@@ -90,6 +92,69 @@ export const clearSelection: Command = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
+  return true;
+};
+
+export const toggleSummaryRow: Command = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+
+  if (!table) {
+    return false;
+  }
+
+  // remove summary row, assume its last row for now
+  if (!!table.node.attrs.isSummaryRowEnabled) {
+    table.node.attrs.isSummaryRowEnabled = false;
+    dispatch(removeRowAt(table.node.childCount - 1)(state.tr));
+    return true;
+  }
+  // calculate summary for each col
+  const summary: any[] = [];
+  for (let i = 0, rowCount = table.node.childCount; i < rowCount; i++) {
+    const row = table.node.child(i);
+
+    for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
+      const cell = row.child(j);
+      let colSummary: any = summary[j];
+
+      if (
+        cell.attrs.cellType === 'number' ||
+        cell.attrs.cellType === 'currency'
+      ) {
+        let cellNumber = parseInt(cell.textContent);
+        colSummary = colSummary ? colSummary + cellNumber : cellNumber;
+      } else if (cell.attrs.cellType === 'text') {
+        colSummary = '';
+      } else if (cell.attrs.cellType === 'mention') {
+        let mentionCount = 0;
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0
+        ) {
+          mentionCount = 1;
+        }
+        colSummary = colSummary ? colSummary + mentionCount : mentionCount;
+      }
+      summary[j] = colSummary;
+    }
+  }
+  // console.log("summary");
+  // console.log(summary);
+
+  table.node.attrs.isSummaryRowEnabled = true;
+  let tr = addRowAt(table.node.childCount)(state.tr);
+
+  // fill in summary - TODO this is not working atm
+  const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
+  cells.forEach((cell, index) => {
+    if (summary[index]) {
+      tr = tr.insert(cell.pos + 1, state.schema.text(summary[index]));
+    }
+  });
+  dispatch(tr);
   return true;
 };
 

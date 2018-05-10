@@ -4,6 +4,7 @@ import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
+  toggleSummaryRow,
 } from '../../../actions';
 import { EditorView } from 'prosemirror-view';
 import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
@@ -23,6 +24,7 @@ import {
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
   checkIfNumberColumnEnabled,
+  checkIfSummaryRowEnabled,
 } from '../../../utils';
 
 export interface Props {
@@ -107,6 +109,12 @@ export default class DisplayOptionsMenu extends Component<Props, State> {
       });
     }
 
+    items.push({
+      elemBefore: checkIfSummaryRowEnabled(state) ? icon : <Spacer />,
+      content: 'Summary row',
+      value: { name: 'summary_row' },
+    });
+
     return [{ items }];
   };
 
@@ -119,6 +127,10 @@ export default class DisplayOptionsMenu extends Component<Props, State> {
           'atlassian.editor.format.table.toggleHeaderRow.button',
         );
         toggleHeaderRow(state, dispatch);
+        this.toggleOpen();
+        break;
+      case 'summary_row':
+        toggleSummaryRow(state, dispatch);
         this.toggleOpen();
         break;
       case 'header_column':
