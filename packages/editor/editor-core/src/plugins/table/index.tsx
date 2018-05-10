@@ -18,7 +18,11 @@ import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin
 import FloatingContextualMenu from './ui/FloatingContextualMenu';
 import contextualMenu, {
   pluginKey as contextualMenuPluginkey,
+  setClickedCell,
+  setDateIntoClickedCell,
 } from './pm-plugins/contextual-menu-plugin';
+import { pluginKey as datePluginKey } from '../date/plugin';
+import DatePicker from './ui/DatePicker';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -71,7 +75,7 @@ const tablesPlugin: EditorPlugin = {
             ? tableNumberColumnPlugin
             : undefined,
       },
-      { rank: 950, plugin: ({ dispatch }) => contextualMenu(dispatch) },
+      { rank: 50, plugin: ({ dispatch }) => contextualMenu(dispatch) },
     ];
   },
 
@@ -82,6 +86,7 @@ const tablesPlugin: EditorPlugin = {
         plugins={{
           tablesState: stateKey,
           tableContextualMenuState: contextualMenuPluginkey,
+          dateState: datePluginKey,
         }}
         render={({ tablesState, tableContextualMenuState }) => (
           <div>
@@ -108,6 +113,18 @@ const tablesPlugin: EditorPlugin = {
               isOpen={tableContextualMenuState.isOpen}
               allowMergeCells={tablesState.allowMergeCells}
               allowBackgroundColor={tablesState.allowBackgroundColor}
+            />
+            <DatePicker
+              editorView={editorView}
+              clickedCell={tableContextualMenuState.clickedCell}
+              onSelect={({ iso }) => {
+                setDateIntoClickedCell(iso)(editorView.state, dispatch);
+              }}
+              onClickOutside={(event: Event) => {
+                if (!editorView.dom.contains(event.target as HTMLElement)) {
+                  setClickedCell(undefined)(editorView.state, dispatch);
+                }
+              }}
             />
           </div>
         )}

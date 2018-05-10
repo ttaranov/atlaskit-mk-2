@@ -58,9 +58,7 @@ export default class FloatingContextualMenu extends Component<Props, State> {
     if (!targetRef) {
       return null;
     }
-    const zIndex = isOpen
-      ? akEditorFloatingPanelZIndex
-      : akEditorFloatingPanelZIndex - 10;
+    const zIndex = isOpen ? akEditorFloatingPanelZIndex : 200;
 
     return (
       <Popup

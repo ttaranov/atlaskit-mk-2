@@ -5,11 +5,12 @@ import {
   Transaction,
   Selection,
 } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { EditorView, DecorationSet, Decoration } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import {
   columnResizingPluginKey as resizingPluginKey,
   CellSelection,
+  TableMap,
 } from 'prosemirror-tables';
 import {
   isCellSelection,
@@ -24,7 +25,9 @@ import {
   emptyCell,
   findCellClosestToPos,
   setCellAttrs,
+  findTable,
 } from 'prosemirror-utils';
+import * as getTime from 'date-fns/get_time';
 import { Dispatch } from '../../../event-dispatcher';
 import { Command } from '../../../types';
 import { stateKey as tablePluginKey } from './main';
@@ -40,6 +43,8 @@ export type PluginState = {
   targetRef?: HTMLElement;
   // position of a target cell where context menu is drawn
   targetPosition?: number;
+  // clicked cell needed to position cellType dropdowns (date, emoji, mention, link)
+  clickedCell?: Cell;
 };
 
 export const createPlugin = (dispatch: Dispatch) =>
@@ -71,7 +76,39 @@ export const createPlugin = (dispatch: Dispatch) =>
       };
     },
     props: {
+      // disable cells with cellType !== "text" from editing
+      decorations: (state: EditorState) => createCellTypeDecoration(state),
+
       handleDOMEvents: {
+        click(view: EditorView, event: MouseEvent) {
+          const { state, dispatch } = view;
+          const { tableElement } = tablePluginKey.getState(state);
+          const posAtCoords = view.posAtCoords({
+            left: event.clientX,
+            top: event.clientY,
+          });
+          if (
+            !tableElement ||
+            isCellSelection(view.state.selection) ||
+            !posAtCoords
+          ) {
+            return setClickedCell(undefined)(state, dispatch);
+          }
+          const $pos = state.doc.resolve(posAtCoords.pos);
+          const cell = findParentNodeOfTypeClosestToPos($pos, [
+            state.schema.nodes.tableCell,
+          ]);
+          if (
+            !cell ||
+            ['date', 'link', 'mention', 'checkbox', 'emoji'].indexOf(
+              cell.node.attrs.cellType,
+            ) === -1
+          ) {
+            return setClickedCell(undefined)(state, dispatch);
+          }
+          return setClickedCell(cell)(state, dispatch);
+        },
+
         mousemove(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;
           if ((resizingPluginKey.getState(state) || {}).dragging) {
@@ -283,4 +320,82 @@ export const setCellsAttrs = (attrs: Object): Command => (
     return true;
   }
   return false;
+};
+
+export const createCellTypeDecoration = (
+  state: EditorState,
+): DecorationSet | null => {
+  const table = findTable(state.selection);
+  if (!table) {
+    return null;
+  }
+  const { pos: start } = table;
+  const map = TableMap.get(table.node);
+  const set: Decoration[] = [];
+
+  for (let i = 0, rowCount = table.node.childCount; i < rowCount; i++) {
+    const row = table.node.child(i);
+
+    for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
+      const cell = row.child(j);
+
+      if (
+        ['text', 'currency', 'number', 'mention'].indexOf(
+          cell.attrs.cellType,
+        ) === -1
+      ) {
+        const pos = start + map.map[i * map.width];
+        set.push(
+          Decoration.node(pos, pos + cell.nodeSize, {
+            contentEditable: false,
+          } as any),
+        );
+      }
+    }
+  }
+
+  return DecorationSet.create(state.doc, set);
+};
+
+export const setClickedCell = (clickedCell?: {
+  pos: number;
+  node: PMNode;
+}): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const pluginState = pluginKey.getState(state);
+  if (pluginState.clickedCell !== clickedCell) {
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        ...pluginState,
+        clickedCell,
+      }),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const setDateIntoClickedCell = (iso: string): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const pluginState = pluginKey.getState(state);
+  const { clickedCell } = pluginState;
+  const { tr, schema } = state;
+  const dateNode = schema.nodes.date.create({ timestamp: getTime(iso) });
+  tr.replaceWith(
+    clickedCell.pos + 1,
+    clickedCell.pos + clickedCell.node.nodeSize + 1,
+    dateNode,
+  );
+
+  dispatch(
+    tr.setMeta(pluginKey, {
+      ...pluginState,
+      clickedCell: undefined,
+    }),
+  );
+  return true;
 };

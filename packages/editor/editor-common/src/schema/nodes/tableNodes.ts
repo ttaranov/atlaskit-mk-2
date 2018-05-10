@@ -29,6 +29,7 @@ const getCellAttrs = (dom: HTMLElement) => {
     rowspan: Number(dom.getAttribute('rowspan') || 1),
     colwidth: width && width.length === colspan ? width : null,
     background: dom.style.backgroundColor || null,
+    cellType: dom.getAttribute('data-cell-type') || 'text',
   };
 };
 
@@ -63,6 +64,9 @@ const setCellAttrs = (node: PmNode) => {
           : background;
       attrs.style = `${attrs.style || ''}background-color: ${color};`;
     }
+  }
+  if (node.attrs.cellType) {
+    attrs.cellType = node.attrs.cellType;
   }
 
   return attrs;
@@ -114,6 +118,15 @@ export function calcTableColumnWidths(node: PmNode): number[] {
 }
 
 export type Layout = 'default' | 'full-width';
+export type CellType =
+  | 'text'
+  | 'number'
+  | 'currency'
+  | 'date'
+  | 'link'
+  | 'mention'
+  | 'checkbox'
+  | 'emoji';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
@@ -173,6 +186,7 @@ export interface CellAttributes {
   rowspan?: number;
   colwidth?: number[];
   background?: string;
+  cellType?: CellType;
 }
 
 // "any", because NodeSpec doesn't support "tableRole" yet
@@ -230,6 +244,7 @@ const cellAttrs = {
   rowspan: { default: 1 },
   colwidth: { default: null },
   background: { default: null },
+  cellType: { default: 'text' },
 };
 
 export const tableCell: any = {

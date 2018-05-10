@@ -1,4 +1,5 @@
 import { EditorState, Transaction, Selection } from 'prosemirror-state';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import { DecorationSet } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
 import {
@@ -100,7 +101,7 @@ export const toggleHeaderRow: Command = (
   if (!table) {
     return false;
   }
-  const { tr } = state;
+  let { tr } = state;
   const map = TableMap.get(table.node);
   const { tableHeader, tableCell } = state.schema.nodes;
   const { isNumberColumnEnabled } = table.node.attrs;
@@ -127,9 +128,18 @@ export const toggleHeaderRow: Command = (
         tableHeader.createAndFill(cell.attrs)!,
       );
     } else {
-      tr.setNodeMarkup(from, type, cell.attrs);
+      tr.setNodeMarkup(
+        from,
+        type,
+        Object.assign({}, cell.attrs, { cellType: 'text' }),
+      );
     }
   }
+
+  if (isHeaderRowEnabled) {
+    tr = ensureCellTypes(0, state.schema)(tr);
+  }
+
   dispatch(tr);
   return true;
 };
@@ -155,7 +165,7 @@ export const toggleHeaderColumn: Command = (
     tr.setNodeMarkup(
       table.pos + map.map[column + row * map.width],
       type,
-      cell.attrs,
+      Object.assign({}, cell.attrs, { cellType: 'text' }),
     );
   }
   dispatch(tr);
@@ -236,7 +246,46 @@ export const insertRow = (row: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos)));
+  dispatch(ensureCellTypes(row, state.schema)(tr));
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
+};
+
+export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
+  tr: Transaction,
+): Transaction => {
+  // getting cells of a row containing all tableCells so that we know what cellTypes should be for the new row
+  const originalTable = findTable(tr.selection)!;
+  let cells: { pos: number; node: PMNode }[] | undefined = [];
+  for (let i = 0, count = originalTable.node.childCount; i < count; i++) {
+    const row = originalTable.node.child(i);
+    const cell = row.nodeAt(0);
+    if (
+      cell &&
+      cell.type === schema.nodes.tableCell &&
+      cell.attrs.cellType !== 'text'
+    ) {
+      cells = getCellsInRow(i)(tr.selection);
+    }
+  }
+
+  // no special cell types found
+  if (!cells || !cells.length) {
+    return tr;
+  }
+
+  const newCells = getCellsInRow(rowIndex)(tr.selection)!;
+  // makes sure cellType attribute is preserved for the new row
+  newCells.forEach((cell, index) => {
+    tr.setNodeMarkup(
+      cell.pos - 1,
+      cell.node.type,
+      Object.assign({}, cell.node.attrs, {
+        cellType: cells![index].node.attrs.cellType,
+      }),
+    );
+  });
+
+  return tr;
 };

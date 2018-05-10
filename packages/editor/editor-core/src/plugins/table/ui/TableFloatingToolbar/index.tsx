@@ -82,6 +82,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
         alignY="bottom"
         alignX="center"
         ariaLabel="Table floating controls"
+        zIndex={300}
       >
         <Toolbar>
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (

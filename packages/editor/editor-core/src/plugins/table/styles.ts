@@ -143,10 +143,13 @@ export const tableEditorStyles = `
     position: absolute;
     width: 130px;
     height: 64px;
-    top: 0;
-    left: 181px;
+    top: 1px;
+    left: 180px;
     padding: 5px;
 
+    &.-with-column-types {
+      top: 30px;
+    }
     &.-open {
       display: block;
     }
@@ -173,6 +176,30 @@ export const tableEditorStyles = `
       left: 25px;
       top: -2px;
       color: ${akColorN90};
+    }
+  }
+  .ProseMirror-column-types-submenu {
+    &:after {
+      content: '›';
+      vertical-align: text-top;
+      display: inline-block;
+      width: 1px;
+      position: relative;
+      left: -5px;
+      color: ${akColorN90};
+    }
+  }
+  /* =============== TABLE CELL TYPE ================== */
+  .ProseMirror {
+    table {
+      td[celltype="date"],
+      td[celltype="mention"],
+      td[celltype="emoji"],
+      td[celltype="link"],
+      td[celltype="checkbox"] {
+        cursor: pointer;
+        // text-align: center;
+      }
     }
   }
 `;

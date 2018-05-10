@@ -25,6 +25,7 @@ import {
   emptyCells,
   setCellsAttrs,
 } from '../../pm-plugins/contextual-menu-plugin';
+import ColumnTypesMenu from '../ColumnTypesMenu';
 
 export interface Props {
   editorView: EditorView;
@@ -39,14 +40,14 @@ export interface Props {
 }
 
 export interface State {
-  isSubmenuOpen: boolean;
+  isColorMenuOpen: boolean;
+  isColumnTypesMenuOpen: boolean;
 }
 
 export default class ContextualMenu extends Component<Props, State> {
-  private closeSubmenuTimeoutId: any;
-
   state: State = {
-    isSubmenuOpen: false,
+    isColorMenuOpen: false,
+    isColumnTypesMenuOpen: false,
   };
 
   render() {
@@ -87,14 +88,33 @@ export default class ContextualMenu extends Component<Props, State> {
     const {
       allowMergeCells,
       allowBackgroundColor,
-      editorView: { state },
+      editorView,
       targetPosition,
       rowIndex,
       columnIndex,
       isOpen,
     } = this.props;
+    const { state } = editorView;
     const items: any[] = [];
-    const { isSubmenuOpen } = this.state;
+    const { isColorMenuOpen } = this.state;
+
+    if (columnIndex !== null) {
+      items.push({
+        content: 'Column types',
+        value: { name: 'column_types' },
+        elemAfter: (
+          <div className={`ProseMirror-column-types-submenu`}>
+            <ColumnTypesMenu
+              editorView={editorView}
+              isOpen={this.state.isColumnTypesMenuOpen}
+              toggleOpen={this.toggleColumnTypesMenu}
+              columnIndex={columnIndex}
+            />
+          </div>
+        ),
+      });
+    }
+
     if (allowBackgroundColor) {
       const node =
         isOpen && targetPosition ? state.doc.nodeAt(targetPosition - 1) : null;
@@ -111,9 +131,8 @@ export default class ContextualMenu extends Component<Props, State> {
             />
             <div
               className={`ProseMirror-table-contextual-submenu ${
-                isSubmenuOpen ? '-open' : ''
-              }`}
-              onMouseEnter={this.clearSubmenuTimeoutId}
+                isColorMenuOpen ? '-open' : ''
+              } ${columnIndex !== null ? '-with-column-types' : ''}`}
             >
               <ColorPalette
                 palette={tableBackgroundColorPalette}
@@ -218,45 +237,44 @@ export default class ContextualMenu extends Component<Props, State> {
     toggleContextualMenu(!isOpen)(state, dispatch);
     if (!isOpen) {
       this.setState({
-        isSubmenuOpen: false,
+        isColorMenuOpen: false,
+        isColumnTypesMenuOpen: false,
       });
     }
   };
 
-  private handleOpenChange = ({ isOpen }) => {
-    const { editorView: { state, dispatch } } = this.props;
-    const { isSubmenuOpen } = this.state;
-    toggleContextualMenu(isOpen)(state, dispatch);
-    this.setState({ isSubmenuOpen: isOpen ? isSubmenuOpen : false });
+  private toggleColumnTypesMenu = () => {
+    this.setState({ isColumnTypesMenuOpen: !this.state.isColumnTypesMenuOpen });
   };
 
-  private handleItemMouseLeave = ({ item }) => {
-    if (item.value.name === 'background') {
-      this.closeSubmenu();
-    }
+  private handleOpenChange = ({ isOpen }) => {
+    const { editorView: { state, dispatch } } = this.props;
+    toggleContextualMenu(isOpen)(state, dispatch);
   };
 
   private handleItemMouseEnter = ({ item }) => {
     if (item.value.name === 'background') {
-      this.clearSubmenuTimeoutId();
-      if (!this.state.isSubmenuOpen) {
-        this.setState({ isSubmenuOpen: true });
-      }
+      this.setState({ isColorMenuOpen: true });
+    }
+    if (item.value.name === 'column_types') {
+      this.setState({ isColumnTypesMenuOpen: true });
     }
   };
 
-  private clearSubmenuTimeoutId = () => {
-    if (this.closeSubmenuTimeoutId) {
-      clearTimeout(this.closeSubmenuTimeoutId);
+  private handleItemMouseLeave = ({ item }) => {
+    if (item.value.name === 'background') {
+      this.setState({ isColorMenuOpen: false });
+    }
+    if (item.value.name === 'column_types') {
+      this.setState({ isColumnTypesMenuOpen: false });
     }
   };
 
   private closeSubmenu = () => {
-    this.closeSubmenuTimeoutId = setTimeout(() => {
-      if (this.state.isSubmenuOpen) {
-        this.setState({ isSubmenuOpen: false });
-      }
-    }, 200);
+    this.setState({
+      isColorMenuOpen: false,
+      isColumnTypesMenuOpen: false,
+    });
   };
 
   @analyticsDecorator('atlassian.editor.format.table.backgroundColor.button')
