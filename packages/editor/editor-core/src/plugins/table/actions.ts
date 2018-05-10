@@ -160,7 +160,7 @@ export const toggleSummaryRow: Command = (
   let tr = addRowAt(table.node.childCount)(state.tr);
 
   // fill in summary - TODO this is not inserting in the correct pos atm
-  const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
+  const cells = getCellsInRow(table.node.childCount)(tr.selection)!;
   cells.forEach((cell, index) => {
     if (summary[index]) {
       tr = tr.insert(cell.pos + 1, state.schema.text(`${summary[index]}`));
