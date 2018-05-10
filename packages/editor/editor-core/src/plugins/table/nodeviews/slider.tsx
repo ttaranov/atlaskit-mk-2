@@ -21,10 +21,20 @@ export interface State {
 export default class SliderNode extends React.PureComponent<Props, State> {
   constructor(props, context) {
     super(props, context);
+
     this.state = {
-      value: 0.5,
+      value: props.node.attrs.value,
       cell: undefined,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { node } = nextProps;
+    if (node.attrs.value !== this.state.value) {
+      this.setState({
+        value: node.attrs.value,
+      });
+    }
   }
 
   handleChangeStart = () => {
@@ -39,23 +49,17 @@ export default class SliderNode extends React.PureComponent<Props, State> {
 
   handleChangeComplete = () => {
     const { state, dispatch } = this.props.view;
+    const { node } = this.props;
     const { clickedCell: cell } = pluginKey.getState(state);
     if (!cell) {
       return;
     }
-    const paragraph = cell.node.child(0);
-    if (!paragraph || !paragraph.childCount) {
-      return;
-    }
-    const sliderNode = paragraph.child(0);
-    if (!sliderNode) {
-      return;
-    }
+
     dispatch(
       state.tr.setNodeMarkup(
         cell.pos + 1,
-        sliderNode.type,
-        Object.assign({}, sliderNode.attrs, {
+        node.type,
+        Object.assign({}, node.attrs, {
           value: this.state.value,
         }),
       ),
@@ -64,11 +68,10 @@ export default class SliderNode extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state;
-    const { node } = this.props;
-    console.log('~node.attrs~', node.attrs);
+
     return (
       <div
-        data-value={node.attrs.value}
+        data-value={value}
         className={`slider ${value < 0.7 ? 'danger' : ''}`}
       >
         <Slider

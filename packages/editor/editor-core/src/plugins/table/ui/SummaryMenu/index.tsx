@@ -112,6 +112,7 @@ export default class SummaryMenu extends Component<Props, State> {
     switch (cellType) {
       case 'number':
       case 'currency':
+      case 'slider':
         items.push({ content: 'Total', value: { name: 'total' } });
         items.push({ content: 'Average', value: { name: 'average' } });
         items.push({ content: 'Min', value: { name: 'min' } });
@@ -125,7 +126,7 @@ export default class SummaryMenu extends Component<Props, State> {
       case 'emoji':
       case 'checkbox':
       case 'decision':
-        items.push({ content: 'Count', value: { name: 'count' } });
+        items.push({ content: 'Total', value: { name: 'total' } });
         break;
     }
 

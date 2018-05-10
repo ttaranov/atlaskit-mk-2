@@ -111,8 +111,17 @@ export const checkIfSummaryRowEnabled = (state: EditorState): boolean => {
   return !!(table && table.node.attrs.isSummaryRowEnabled);
 };
 
+export const toFixed = value => {
+  if (typeof value === 'number' && value % 1 !== 0) {
+    return Number(value.toFixed(1));
+  }
+  return value;
+};
+
 export const maybeCreateText = schema => value => {
-  return value != null && value !== '' ? schema.text(`${value}`) : undefined;
+  return value != null && value !== ''
+    ? schema.text(`${toFixed(value)}`)
+    : undefined;
 };
 
 const numberOps = {
@@ -134,9 +143,10 @@ export const calculateSummary = (table: PmNode) => {
     const row = table.child(i);
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
       const cell = row.child(j);
+      const { cellType } = cell.attrs;
       if (i === lastChildIndex) {
         operators[j] =
-          cell.attrs.cellType === 'summary' ? cell.attrs.summaryType : 'total';
+          cellType === 'summary' ? cell.attrs.summaryType : 'total';
       }
 
       // TODO: pass schema
@@ -145,15 +155,16 @@ export const calculateSummary = (table: PmNode) => {
       }
       let colSummary: any = summary[j];
 
-      if (
-        cell.attrs.cellType === 'number' ||
-        cell.attrs.cellType === 'currency'
-      ) {
+      if (cellType === 'number' || cellType === 'currency') {
         let cellNumber = parseFloat(cell.textContent) || 0;
         colSummary = numberOps[operators[j]](colSummary, cellNumber);
-      } else if (cell.attrs.cellType === 'text') {
+      } else if (cellType === 'slider') {
+        let firstChild = cell.child(0).child(0);
+        let cellNumber = parseFloat(firstChild.attrs.value) || 0;
+        colSummary = numberOps[operators[j]](colSummary, cellNumber);
+      } else if (cellType === 'text') {
         colSummary = '';
-      } else if (cell.attrs.cellType === 'mention') {
+      } else if (cellType === 'mention') {
         let mentionCount = 0;
         if (
           cell.child(0).type.name === 'paragraph' &&
@@ -162,10 +173,7 @@ export const calculateSummary = (table: PmNode) => {
           mentionCount = 1;
         }
         colSummary = colSummary ? colSummary + mentionCount : mentionCount;
-      } else if (
-        cell.attrs.cellType === 'checkbox' ||
-        cell.attrs.cellType === 'decision'
-      ) {
+      } else if (cellType === 'checkbox' || cellType === 'decision') {
         let count = 0;
         if (
           (cell.child(0).type.name === 'paragraph' ||
