@@ -295,38 +295,6 @@ export default class Editor extends React.Component<
               </div>
             </ContentArea>
           </ClickAreaBlock>
-          {!data && (
-            <TemplateArea>
-              <TemplateItem
-                title="DACI"
-                icon="Celebration"
-                type="blog"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'daci')}
-              />
-              <TemplateItem
-                title="Meeting notes"
-                icon="ClipboardList"
-                type="health"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'health')}
-              />
-              <TemplateItem
-                title="Decision"
-                icon="Experiment"
-                type="retro"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'retro')}
-              />
-              <TemplateItem
-                title="Product Requirements"
-                icon="Prediction"
-                type="retro"
-                info="Share news and announcements with your team"
-                onClick={this.addTemplate.bind(null, 'retro')}
-              />
-            </TemplateArea>
-          )}
         </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
