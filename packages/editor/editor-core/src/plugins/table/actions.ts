@@ -110,9 +110,11 @@ export const toggleSummaryRow: Command = (
     dispatch(removeRowAt(table.node.childCount - 1)(state.tr));
     return true;
   }
+
+  const rowCount = table.node.childCount;
   // calculate summary for each col
   const summary: any[] = [];
-  for (let i = 0, rowCount = table.node.childCount; i < rowCount; i++) {
+  for (let i = 0; i < rowCount; i++) {
     const row = table.node.child(i);
 
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
@@ -153,19 +155,26 @@ export const toggleSummaryRow: Command = (
       summary[j] = colSummary;
     }
   }
-  // console.log("summary");
-  // console.log(summary);
 
   table.node.attrs.isSummaryRowEnabled = true;
-  let tr = addRowAt(table.node.childCount)(state.tr);
 
-  // fill in summary - TODO this is not inserting in the correct pos atm
-  const cells = getCellsInRow(table.node.childCount)(tr.selection)!;
-  cells.forEach((cell, index) => {
-    if (summary[index]) {
-      tr = tr.insert(cell.pos + 1, state.schema.text(`${summary[index]}`));
-    }
+  const { tableRow, tableCell, paragraph } = state.schema.nodes;
+  const cells = summary.map(value => {
+    const content =
+      value != null && value !== '' ? state.schema.text(`${value}`) : undefined;
+    return tableCell.createChecked(
+      { cellType: 'summary' },
+      paragraph.createChecked({}, content),
+    );
   });
+
+  const row = tableRow.createChecked({}, cells);
+  let rowPos = table.pos;
+  for (let i = 0; i < rowCount; i++) {
+    rowPos += table.node.child(i).nodeSize;
+  }
+  const tr = state.tr.insert(rowPos, row);
+
   dispatch(tr);
   return true;
 };
