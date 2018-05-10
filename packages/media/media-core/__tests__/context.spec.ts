@@ -198,4 +198,31 @@ describe('Context', () => {
       expect(context.getLocalPreview('123')).toBeUndefined();
     });
   });
+
+  describe.only('getFile', () => {
+    it.skip('should return the local state if the file is still uploading', () => {
+      const context = createFakeContext();
+      const observer = context.getFile('1');
+
+      observer.subscribe({
+        next() {},
+      });
+    });
+
+    it.skip('should fetch the file remotelly when there is no local state for it', async () => {
+      const context = createFakeContext();
+      const observer = context.getFile('1');
+
+      observer.subscribe({
+        next(state) {
+          console.log('state', state);
+        },
+        complete() {
+          console.log('complete');
+        },
+      });
+
+      // await new Promise(resolve => setTimeout(resolve, 11));
+    });
+  });
 });

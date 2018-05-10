@@ -1,5 +1,5 @@
-export { MediaStore } from './media-store';
-export { MediaFile } from './models/media';
+export { MediaStore, MediaStoreResponse } from './media-store';
+export { MediaFile, MediaFileProcessingStatus } from './models/media';
 export {
   Auth,
   ClientBasedAuth,

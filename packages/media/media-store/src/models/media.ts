@@ -5,7 +5,7 @@ export type MediaFileArtifacts = {
   };
 };
 
-export type MediaFileProcessingStatus = 'pending' | 'succeeded';
+export type MediaFileProcessingStatus = 'pending' | 'succeeded' | 'failed';
 
 export type MediaFile = {
   readonly id: string;
