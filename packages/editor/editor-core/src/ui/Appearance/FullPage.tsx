@@ -25,7 +25,6 @@ const GUTTER_PADDING = 26;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -111,7 +110,7 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 const TemplateArea = styled.div`
   display: flex;
   align-items: start;
-  position: absolute;
+  // position: absolute;
   bottom: 40px;
   background: white;
   z-index: 100;
