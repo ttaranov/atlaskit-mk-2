@@ -30,6 +30,11 @@ const getCellAttrs = (dom: HTMLElement) => {
     colwidth: width && width.length === colspan ? width : null,
     background: dom.style.backgroundColor || null,
     cellType: dom.getAttribute('data-cell-type') || 'text',
+    summaryType:
+      dom.getAttribute('data-summary-type') ||
+      dom.getAttribute('data-cell-type') === 'summary'
+        ? 'total'
+        : null,
   };
 };
 
@@ -67,6 +72,9 @@ const setCellAttrs = (node: PmNode) => {
   }
   if (node.attrs.cellType) {
     attrs.cellType = node.attrs.cellType;
+  }
+  if (node.attrs.summaryType) {
+    attrs.summaryType = node.attrs.summaryType;
   }
 
   return attrs;
@@ -128,6 +136,8 @@ export type CellType =
   | 'checkbox'
   | 'emoji';
 
+export type SummaryType = 'total' | 'average' | 'min' | 'max';
+
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
@@ -187,6 +197,8 @@ export interface CellAttributes {
   colwidth?: number[];
   background?: string;
   cellType?: CellType;
+  // TODO: only add `summaryType` when the value of `cellType` is `summary`
+  summaryType?: SummaryType;
 }
 
 // "any", because NodeSpec doesn't support "tableRole" yet
@@ -245,6 +257,7 @@ const cellAttrs = {
   colwidth: { default: null },
   background: { default: null },
   cellType: { default: 'text' },
+  summaryType: { default: null },
 };
 
 export const tableCell: any = {
