@@ -173,7 +173,7 @@ export const createPlugin = (dispatch: Dispatch) =>
 
         for (let i = 0; i < table.node.childCount; i++) {
           const row = table.node.child(i);
-          row.forEach(cell => {
+          row.forEach((cell, _, j) => {
             if (
               !(
                 cell.attrs.cellType === 'number' ||
@@ -183,7 +183,7 @@ export const createPlugin = (dispatch: Dispatch) =>
               return;
             }
 
-            const from = tr.mapping.map(start + map.map[i * map.width]);
+            const from = tr.mapping.map(start + map.map[i * map.width + j]);
             const oldContent = cell.textContent;
             const num = makeNumber(
               oldContent,
