@@ -15,6 +15,7 @@ import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
+import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 
 export interface Props {
   editorView: EditorView;
@@ -77,7 +78,7 @@ export default class ColumnTypesMenu extends Component<Props, any> {
 
     items.push({
       content: 'Checkbox',
-      value: { name: 'task' },
+      value: { name: 'checkbox' },
       elemBefore: <EditorTaskIcon label="Checkbox" />,
     });
 
@@ -99,13 +100,21 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       elemBefore: <EditorLinkIcon label="Link" />,
     });
 
+    items.push({
+      content: 'Decision',
+      value: { name: 'decision' },
+      elemBefore: <DecisionIcon label="Decision" />,
+    });
+
     return items.length ? [{ items }] : null;
   };
 
   private onMenuItemActivated = ({ item }) => {
     const { editorView, columnIndex } = this.props;
     const {
-      state: { schema: { nodes: { slider, tableCell } } },
+      state: {
+        schema: { nodes: { slider, checkbox, tableCell, decisionItem } },
+      },
       dispatch,
     } = editorView;
     const attrs = { cellType: item.value.name };
@@ -116,12 +125,38 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
       })(editorView.state.tr);
 
-      if (item.value.name === 'slider') {
-        const sliderNode = slider.createChecked();
+      const nodemap = {
+        slider: slider,
+        checkbox: checkbox,
+        decision: decisionItem,
+      };
+
+      // filldown for node type
+      const cellType = item.value.name;
+      if (Object.keys(nodemap).indexOf(cellType) !== -1) {
+        // const node = nodemap[item.value.name].createChecked();
+        let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
+          if (cell.node.type !== tableCell) {
+            return;
+          }
+
           if (cell.node.type === tableCell) {
+            const sliderNode = editorView.state.schema.nodes.slider.createChecked();
             tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
+          }
+
+          if (item.value.name === 'decision') {
+            node = editorView.state.schema.nodes.decisionList.createAndFill();
+            tr = tr.replaceWith(
+              tr.mapping.map(cell.pos),
+              tr.mapping.map(cell.pos + cell.node.nodeSize - 1),
+              node,
+            );
+          } else {
+            node = nodemap[cellType].createChecked();
+            tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
           }
         });
       }

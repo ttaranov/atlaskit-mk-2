@@ -42,6 +42,7 @@ export const defaultSchema: Schema = createSchema({
     'layoutSection',
     'layoutColumn',
     'slider',
+    'checkbox',
   ],
   marks: [
     'action',

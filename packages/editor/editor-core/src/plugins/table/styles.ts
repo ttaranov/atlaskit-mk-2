@@ -258,6 +258,9 @@ export const tableEditorStyles = `
     }
     .danger .rangeslider__fill {
       background-color: red;
+      td[celltype="checkbox"] {
+        width: 60px;
+      }
     }
   }
 `;

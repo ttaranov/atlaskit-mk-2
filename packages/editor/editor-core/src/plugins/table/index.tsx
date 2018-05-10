@@ -7,6 +7,7 @@ import {
   tableHeader,
   tableRow,
   slider,
+  checkbox,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
@@ -32,6 +33,7 @@ const tablesPlugin: EditorPlugin = {
   nodes() {
     return [
       { rank: 1700, name: 'slider', node: slider },
+      { rank: 1700, name: 'checkbox', node: checkbox },
       { rank: 1710, name: 'table', node: table },
       { rank: 1800, name: 'tableHeader', node: tableHeader },
       { rank: 1900, name: 'tableRow', node: tableRow },

@@ -88,6 +88,33 @@ export const createPlugin = (
 
       nodeViews: {
         slider: nodeViewFactory(providerFactory, { slider: sliderNodeView }),
+        checkbox: (node, view, getPos: () => number) => {
+          const dom = document.createElement('input');
+          dom.type = 'checkbox';
+          dom.checked = node.attrs.checked;
+
+          dom.onclick = e => {
+            const pos = getPos();
+
+            view.dispatch(
+              view.state.tr.setNodeMarkup(
+                pos,
+                node.type,
+                {
+                  ...node.attrs,
+                  checked: !node.attrs.checked,
+                },
+                node.marks,
+              ),
+            );
+          };
+          return {
+            dom,
+            stopEvent: () => {
+              return true;
+            },
+          };
+        },
       },
 
       handleDOMEvents: {
@@ -458,7 +485,7 @@ export const createCellTypeDecoration = (
       const classNames: string[] = [];
 
       if (
-        ['text', 'currency', 'number', 'mention', 'slider'].indexOf(
+        ['text', 'currency', 'number', 'mention', 'slider', 'decision'].indexOf(
           cell.attrs.cellType,
         ) === -1
       ) {

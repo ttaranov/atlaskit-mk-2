@@ -56,6 +56,7 @@ import {
   placeholder,
   layoutSection,
   layoutColumn,
+  checkbox,
 } from './nodes';
 
 function addItems(
@@ -158,6 +159,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'checkbox', spec: checkbox },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

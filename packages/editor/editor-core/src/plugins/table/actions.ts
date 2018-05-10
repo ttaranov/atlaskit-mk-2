@@ -8,6 +8,7 @@ import {
   getCellsInRow,
   getCellsInTable,
   addColumnAt,
+  removeRowAt,
   addRowAt,
 } from 'prosemirror-utils';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
@@ -90,6 +91,69 @@ export const clearSelection: Command = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
+  return true;
+};
+
+export const toggleSummaryRow: Command = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+
+  if (!table) {
+    return false;
+  }
+
+  // remove summary row, assume its last row for now
+  if (!!table.node.attrs.isSummaryRowEnabled) {
+    table.node.attrs.isSummaryRowEnabled = false;
+    dispatch(removeRowAt(table.node.childCount - 1)(state.tr));
+    return true;
+  }
+  // calculate summary for each col
+  const summary: any[] = [];
+  for (let i = 0, rowCount = table.node.childCount; i < rowCount; i++) {
+    const row = table.node.child(i);
+
+    for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
+      const cell = row.child(j);
+      let colSummary: any = summary[j];
+
+      if (
+        cell.attrs.cellType === 'number' ||
+        cell.attrs.cellType === 'currency'
+      ) {
+        let cellNumber = parseInt(cell.textContent);
+        colSummary = colSummary ? colSummary + cellNumber : cellNumber;
+      } else if (cell.attrs.cellType === 'text') {
+        colSummary = '';
+      } else if (cell.attrs.cellType === 'mention') {
+        let mentionCount = 0;
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0
+        ) {
+          mentionCount = 1;
+        }
+        colSummary = colSummary ? colSummary + mentionCount : mentionCount;
+      }
+      summary[j] = colSummary;
+    }
+  }
+  // console.log("summary");
+  // console.log(summary);
+
+  table.node.attrs.isSummaryRowEnabled = true;
+  let tr = addRowAt(table.node.childCount)(state.tr);
+
+  // fill in summary - TODO this is not working atm
+  const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
+  cells.forEach((cell, index) => {
+    if (summary[index]) {
+      tr = tr.insert(cell.pos + 1, state.schema.text(summary[index]));
+    }
+  });
+  dispatch(tr);
   return true;
 };
 
@@ -278,12 +342,17 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     return tr;
   }
 
+  const nodemap = {
+    slider: schema.nodes.slider,
+    checkbox: schema.nodes.checkbox,
+    decision: null,
+  };
+
   const newCells = getCellsInRow(rowIndex)(tr.selection)!;
 
   for (let i = newCells.length - 1; i >= 0; i--) {
     const cell = newCells[i];
     const { cellType } = cells![i].node.attrs;
-    const sliderNode = schema.nodes.slider.createChecked();
 
     tr = tr.setNodeMarkup(
       cell.pos - 1,
@@ -293,8 +362,16 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
       }),
     );
 
-    if (cellType === 'slider' && cell.node.type === schema.nodes.tableCell) {
-      tr = tr.insert(cell.pos + 1, sliderNode);
+    // apply filldown
+    if (Object.keys(nodemap).indexOf(cells![i].node.attrs.cellType) !== -1) {
+      let node;
+      if (cellType === 'decision') {
+        node = schema.nodes.decisionList.createAndFill();
+      } else {
+        node = nodemap[cellType].createChecked();
+      }
+
+      tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
     }
   }
 
