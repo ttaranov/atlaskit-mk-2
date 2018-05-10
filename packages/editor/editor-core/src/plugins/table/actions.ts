@@ -163,7 +163,7 @@ export const toggleSummaryRow: Command = (
     const content =
       value != null && value !== '' ? state.schema.text(`${value}`) : undefined;
     return tableCell.createChecked(
-      { cellType: 'summary' },
+      { cellType: 'summary', summaryType: 'total' },
       paragraph.createChecked({}, content),
     );
   });
