@@ -5,6 +5,9 @@ import {
   akColorN90,
   akColorN60A,
   akBorderRadius,
+  akColorR75,
+  akColorR300,
+  akColorR50,
 } from '@atlaskit/util-shared-styles';
 import {
   tableSharedStyle,
@@ -199,6 +202,16 @@ export const tableEditorStyles = `
       td[celltype="checkbox"] {
         cursor: pointer;
         // text-align: center;
+      }
+
+      td[celltype="number"] {
+        text-align: right;
+        padding-right: 20px;
+
+        &.invalid {
+          border: 1px solid ${akColorR300};
+          background: ${akColorR50};
+        }
       }
     }
   }

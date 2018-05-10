@@ -4,6 +4,7 @@ import {
   EditorState,
   Transaction,
   Selection,
+  TextSelection,
 } from 'prosemirror-state';
 import { EditorView, DecorationSet, Decoration } from 'prosemirror-view';
 import { Node as PMNode, Fragment } from 'prosemirror-model';
@@ -31,7 +32,6 @@ import * as getTime from 'date-fns/get_time';
 import { Dispatch } from '../../../event-dispatcher';
 import { Command } from '../../../types';
 import { stateKey as tablePluginKey } from './main';
-import { mentionQuery } from '@atlaskit/editor-common';
 
 export type Cell = { pos: number; node: PMNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
@@ -152,6 +152,58 @@ export const createPlugin = (dispatch: Dispatch) =>
           return setTargetRef(undefined)(state, dispatch);
         },
       },
+    },
+
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const table = findTable(newState.selection);
+      if (
+        table &&
+        transactions.some(transaction => transaction.docChanged) &&
+        !transactions.some(transaction => transaction.getMeta(pluginKey))
+      ) {
+        const map = TableMap.get(table.node);
+        const { pos: start } = findTable(newState.selection)!;
+        const { tr } = newState;
+        const { tableHeader, paragraph } = newState.schema.nodes;
+        let updated = false;
+
+        for (let i = 0; i < table.node.childCount; i++) {
+          const cell = table.node.child(i).child(0);
+
+          if (cell.type === tableHeader) {
+            continue;
+          }
+
+          const from = tr.mapping.map(start + map.map[i * map.width]);
+          const oldContent = cell.textContent;
+          const num = makeNumber(oldContent);
+          if (num) {
+            const numString = num.toLocaleString();
+
+            if (num && numString !== cell.textContent) {
+              const sel = tr.selection;
+              tr.replaceWith(
+                from + 1,
+                from + cell.nodeSize,
+                paragraph.create({}, newState.schema.text(numString)),
+              );
+
+              const diff = oldContent.length - numString.length;
+              tr.setSelection(new TextSelection(tr.doc.resolve(sel.to - diff)));
+            }
+
+            updated = true;
+          }
+        }
+
+        if (updated) {
+          return tr;
+        }
+      }
     },
   });
 
@@ -340,17 +392,15 @@ export const createCellTypeDecoration = (
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
       const cell = row.child(j);
       const pos = start + map.map[i * map.width];
+      let contentEditable = true;
+      const classNames: string[] = [];
 
       if (
         ['text', 'currency', 'number', 'mention'].indexOf(
           cell.attrs.cellType,
         ) === -1
       ) {
-        set.push(
-          Decoration.node(pos, pos + cell.nodeSize, {
-            contentEditable: false,
-          } as any),
-        );
+        contentEditable = false;
       }
 
       if (cell.attrs.cellType === 'mention') {
@@ -360,18 +410,38 @@ export const createCellTypeDecoration = (
         }
         const node = paragraph.child(0);
         if (node) {
-          set.push(
-            Decoration.node(pos, pos + cell.nodeSize, {
-              contentEditable:
-                node.type === state.schema.nodes.mention ? false : true,
-            } as any),
-          );
+          contentEditable = state.schema.nodes.mention ? false : true;
         }
+      }
+
+      if (cell.attrs.cellType === 'number' && cell.textContent) {
+        const num = makeNumber(cell.textContent);
+        if (num === null) {
+          classNames.push('invalid');
+        }
+      }
+
+      if (!contentEditable || classNames.length !== 0) {
+        set.push(
+          Decoration.node(pos, pos + cell.nodeSize, {
+            contentEditable: contentEditable.toString(),
+            class: classNames.join(' '),
+          } as any),
+        );
       }
     }
   }
 
   return DecorationSet.create(state.doc, set);
+};
+
+const makeNumber = (text: String): Number | null => {
+  const num = Number(text.replace(/[, ]/g, ''));
+  if (num.toString() === 'NaN') {
+    return null;
+  }
+
+  return num;
 };
 
 export const setClickedCell = (clickedCell?: {
