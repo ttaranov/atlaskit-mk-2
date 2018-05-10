@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 197.2072 240.1197">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-6, .cls-8 {
+        fill: none;
+      }
+
+      .cls-4 {
+        fill: #fcb123;
+      }
+
+      .cls-5 {
+        fill: #fdd07c;
+      }
+
+      .cls-6 {
+        stroke: #fdd07c;
+      }
+
+      .cls-6, .cls-8 {
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-7 {
+        fill: #3384ff;
+      }
+
+      .cls-8 {
+        stroke: #3384ff;
+        stroke-dasharray: 11 7;
+      }
+
+      .cls-9 {
+        fill: #feefd3;
+      }
+
+      .cls-10 {
+        fill: #505f79;
+      }
+
+      .cls-11 {
+        fill: #0065ff;
+      }
+
+      .cls-12 {
+        fill: #fdc150;
+      }
+
+      .cls-13 {
+        fill: #ffd740;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="626.9038" y1="1538.9857" x2="819.3503" y2="1346.6826" gradientTransform="translate(-634.0612 -1311.0835) rotate(-0.0214)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.2303" stop-color="#0065ff"/>
+      <stop offset="0.4564" stop-color="#1a75ff"/>
+      <stop offset="0.938" stop-color="#5d9dff"/>
+      <stop offset="1" stop-color="#66a3ff"/>
+    </linearGradient>
+  </defs>
+  <title>Clipboard List</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Objects">
+      <rect id="_Rectangle_" data-name="&lt;Rectangle&gt;" class="cls-1" x="0.0368" y="22.8718" width="179.1345" height="217.2183" rx="9.8917" ry="9.8917"/>
+      <polygon class="cls-2" points="164.017 37.975 164.08 224.935 80.323 224.972 15.203 224.997 15.133 38.031 164.017 37.975"/>
+      <rect id="_Rectangle_2" data-name="&lt;Rectangle&gt;" class="cls-3" x="-3.8776" y="57.0404" width="186.9638" height="148.8812" transform="translate(221.0519 41.8277) rotate(89.9786)"/>
+      <path class="cls-4" d="M134.7713,31.3994a15.708,15.708,0,0,1,15.7138,15.7021l.0007,1.92-45.2038.0169-31.4166.0117-45.2042.0169-.0007-1.92A15.708,15.708,0,0,1,44.3626,31.4331l13.7883-.0051A15.708,15.708,0,0,0,73.8529,15.7142v0A15.7083,15.7083,0,0,1,89.5554,0h0A15.7083,15.7083,0,0,1,105.27,15.7023v0a15.708,15.708,0,0,0,15.7138,15.7021ZM89.5583,8.1464a6.58,6.58,0,1,0,6.5828,6.5779A6.58,6.58,0,0,0,89.5583,8.1464Z"/>
+      <path class="cls-5" d="M73.8654,49.0505l31.4166-.0117,45.2039-.0168-.0007-1.92a15.7644,15.7644,0,0,0-.2975-3.0167L28.9558,44.13a15.7672,15.7672,0,0,0-.2953,3.0169l.0007,1.92Z"/>
+      <path class="cls-6" d="M89.5647,26.059a11.3325,11.3325,0,1,1,11.33-11.3355A11.3455,11.3455,0,0,1,89.5647,26.059Z"/>
+      <circle class="cls-7" cx="39.8312" cy="87.2425" r="7.3399"/>
+      <line class="cls-8" x1="141.053" y1="94.5447" x2="55.2407" y2="94.5748"/>
+      <circle class="cls-7" cx="39.8422" cy="120.7636" r="7.3399"/>
+      <line class="cls-8" x1="141.0641" y1="128.0658" x2="57.2518" y2="128.0959"/>
+      <circle class="cls-7" cx="39.8533" cy="154.2848" r="7.3399"/>
+      <line class="cls-8" x1="141.0751" y1="161.5869" x2="56.2628" y2="161.6171"/>
+      <polygon id="_Path_" data-name="&lt;Path&gt;" class="cls-9" points="147.943 149.691 160.628 135.937 148.937 131.007 147.943 149.691"/>
+      <polygon class="cls-10" points="148.338 142.26 147.943 149.691 152.988 144.221 148.338 142.26"/>
+      <path class="cls-11" d="M185.175,41.9175h12.6881a0,0,0,0,1,0,0v2.806a6.0856,6.0856,0,0,1-6.0856,6.0856h-.517a6.0856,6.0856,0,0,1-6.0856-6.0856v-2.806a0,0,0,0,1,0,0Z" transform="translate(349.9709 163.5048) rotate(-157.1334)"/>
+      <rect class="cls-12" x="165.1059" y="51.059" width="12.6881" height="85.784" transform="translate(292.9179 247.1418) rotate(-157.1334)"/>
+      <rect class="cls-13" x="171.1964" y="52.3012" width="6.3441" height="85.7849" transform="translate(298.0427 250.6634) rotate(-157.1334)"/>
+      <rect class="cls-4" x="165.3541" y="49.8278" width="6.3342" height="85.7843" transform="translate(287.769 243.6384) rotate(-157.1334)"/>
+      <rect class="cls-11" x="182.5858" y="47.8779" width="12.6881" height="9.2502" transform="translate(342.6101 174.2955) rotate(-157.1334)"/>
+      <circle class="cls-7" cx="39.8643" cy="187.8059" r="7.3399"/>
+      <line class="cls-8" x1="141.0862" y1="195.1081" x2="55.2739" y2="195.1382"/>
+      <circle class="cls-5" cx="49.5245" cy="37.6853" r="2.3762"/>
+      <circle class="cls-5" cx="129.6137" cy="37.6554" r="2.3762"/>
+    </g>
+  </g>
+</svg>

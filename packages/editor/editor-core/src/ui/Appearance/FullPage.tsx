@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  akColorN30,
+  akColorN90,
+  akColorN20,
+} from '@atlaskit/util-shared-styles';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
@@ -10,6 +14,11 @@ import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
+import {
+  MeetingNotesTemplate,
+  HealthMonitorTemplate,
+  RetrospectiveTemplate,
+} from '../../../src/templates/index';
 
 const GUTTER_PADDING = 26;
 
@@ -28,6 +37,7 @@ const ScrollContainer = styled(ContentStyles)`
   position: relative;
   display: flex;
   flex-direction: column;
+  margin-bottom: 25px;
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
@@ -98,6 +108,52 @@ const SecondaryToolbar = styled.div`
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
+const TemplateArea = styled.div`
+  display: flex;
+
+  & .template-title {
+    font-weight: bold;
+    line-height: 30px;
+  }
+
+  & .template-data {
+    color: ${akColorN90};
+    font-size: 12px;
+  }
+
+  & .template-item {
+    margin: 20px;
+    padding: 15px;
+    flex-grow: 1;
+    cursor: pointer;
+    border: 1px solid ${akColorN20};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover {
+      box-shadow: 3px 3px 3px #f3f2f2;
+    }
+  }
+`;
+const templateMap = {
+  blog: MeetingNotesTemplate,
+  health: HealthMonitorTemplate,
+  retro: RetrospectiveTemplate,
+};
+
+const TemplateItem = props => (
+  <div className="template-item" onClick={props.onClick}>
+    <div className="template-img">
+      <img height="100px" src={`./src/assets/${props.icon}.svg`} />
+    </div>
+    <div className="template-info">
+      <div className="template-title">{props.title}</div>
+      <div className="template-data">{props.info}</div>
+    </div>
+  </div>
+);
+
 export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
@@ -105,8 +161,22 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.editorView && props.editorView!.state!.doc.content.size > 2,
+    };
+  }
+
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
     event.stopPropagation();
+
+  addTemplate = template => {
+    this.props.editorActions!.replaceDocument(templateMap[template]);
+    this.setState({
+      data: true,
+    });
+  };
 
   render() {
     const {
@@ -125,6 +195,7 @@ export default class Editor extends React.Component<
       disabled,
       collabEdit,
     } = this.props;
+    const { data } = this.state;
 
     return (
       <FullPageEditorWrapper>
@@ -179,6 +250,38 @@ export default class Editor extends React.Component<
               </div>
             </ContentArea>
           </ClickAreaBlock>
+          {!data && (
+            <TemplateArea>
+              <TemplateItem
+                title="Blog post"
+                icon="Celebration"
+                type="blog"
+                info="Share news and announcements with your team"
+                onClick={this.addTemplate.bind(null, 'blog')}
+              />
+              <TemplateItem
+                title="Meeting notes"
+                icon="ClipboardList"
+                type="health"
+                info="Share news and announcements with your team"
+                onClick={this.addTemplate.bind(null, 'health')}
+              />
+              <TemplateItem
+                title="Decision"
+                icon="Experiment"
+                type="retro"
+                info="Share news and announcements with your team"
+                onClick={this.addTemplate.bind(null, 'retro')}
+              />
+              <TemplateItem
+                title="Product Requirements"
+                icon="Prediction"
+                type="retro"
+                info="Share news and announcements with your team"
+                onClick={this.addTemplate.bind(null, 'retro')}
+              />
+            </TemplateArea>
+          )}
         </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
