@@ -373,7 +373,11 @@ export const createPlugin = (
         const createContent = maybeCreateText(newState.schema);
 
         forEachCellInRow(table.node.childCount - 1, cell => {
-          const content = createContent(summary[index++]);
+          const ret = summary[index++];
+          const content = createContent(
+            // Handle average
+            ret && ret.value ? ret.value / ret.count : ret,
+          );
           const paragraph = cell.node.child(0);
           return tr =>
             content

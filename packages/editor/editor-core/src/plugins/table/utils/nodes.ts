@@ -115,20 +115,42 @@ export const maybeCreateText = schema => value => {
   return value != null && value !== '' ? schema.text(`${value}`) : undefined;
 };
 
+const numberOps = {
+  total: (l = 0, r) => l + r,
+  average: (l = { value: 0, count: 0 }, r) => ({
+    value: l.value + r,
+    count: l.count + 1,
+  }),
+  min: (l = Infinity, r) => Math.min(l, r),
+  max: (l = 0, r) => Math.max(l, r),
+};
+
 export const calculateSummary = (table: PmNode) => {
-  const summary: any[] = [];
-  for (let i = 0, rowCount = table.childCount; i < rowCount; i++) {
+  const summary: Array<any> = [];
+  const operators: Array<string> = [];
+
+  const lastChildIndex = table.childCount - 1;
+  for (let i = lastChildIndex; i >= 0; i--) {
     const row = table.child(i);
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
       const cell = row.child(j);
+      if (i === lastChildIndex) {
+        operators[j] =
+          cell.attrs.cellType === 'summary' ? cell.attrs.summaryType : 'total';
+      }
+
+      // TODO: pass schema
+      if (cell.type.name === 'tableHeader') {
+        continue;
+      }
       let colSummary: any = summary[j];
 
       if (
         cell.attrs.cellType === 'number' ||
         cell.attrs.cellType === 'currency'
       ) {
-        let cellNumber = parseInt(cell.textContent);
-        colSummary = colSummary ? colSummary + cellNumber : cellNumber;
+        let cellNumber = parseFloat(cell.textContent) || 0;
+        colSummary = numberOps[operators[j]](colSummary, cellNumber);
       } else if (cell.attrs.cellType === 'text') {
         colSummary = '';
       } else if (cell.attrs.cellType === 'mention') {
