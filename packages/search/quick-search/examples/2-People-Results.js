@@ -9,7 +9,7 @@ const defaultProps = {
 };
 
 const dummyAvatarComponent = (
-  <Avatar src={getPersonAvatarUrl()} appearance="square" />
+  <Avatar src={getPersonAvatarUrl('wowowow')} appearance="square" />
 );
 
 export default class extends Component<*> {
