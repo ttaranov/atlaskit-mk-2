@@ -8,6 +8,7 @@ import {
   akColorR75,
   akColorR300,
   akColorR50,
+  akColorN200,
 } from '@atlaskit/util-shared-styles';
 import {
   tableSharedStyle,
@@ -204,7 +205,8 @@ export const tableEditorStyles = `
         // text-align: center;
       }
 
-      td[celltype="number"] {
+      td[celltype="number"],
+      td[celltype="currency"] {
         text-align: right;
         padding-right: 20px;
 
@@ -212,6 +214,12 @@ export const tableEditorStyles = `
           border: 1px solid ${akColorR300};
           background: ${akColorR50};
         }
+      }
+
+      td[celltype="currency"]:before {
+        content: '$';
+        float: left;
+        color: ${akColorN200}
       }
     }
   }
