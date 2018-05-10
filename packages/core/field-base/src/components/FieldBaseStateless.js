@@ -24,6 +24,7 @@ export default class FieldBaseStateless extends Component<
     onDialogClick: () => {},
     onDialogFocus: () => {},
     shouldReset: false,
+    isValidationHidden: false,
   };
 
   componentDidUpdate() {
@@ -52,6 +53,7 @@ export default class FieldBaseStateless extends Component<
       onDialogClick,
       onDialogFocus,
       onFocus,
+      isValidationHidden,
     } = this.props;
 
     function getAppearance(a) {
@@ -69,7 +71,7 @@ export default class FieldBaseStateless extends Component<
       >
         <InlineDialog
           content={invalidMessage}
-          isOpen={isDialogOpen && !!invalidMessage}
+          isOpen={isDialogOpen && !!invalidMessage && !isValidationHidden}
           onContentBlur={onDialogBlur}
           onContentClick={onDialogClick}
           onContentFocus={onDialogFocus}
@@ -91,11 +93,13 @@ export default class FieldBaseStateless extends Component<
               subtle={appearance === 'subtle'}
             >
               {children}
-              <ValidationElement
-                isDisabled={isDisabled}
-                isInvalid={isInvalid}
-                isLoading={isLoading}
-              />
+              {!isValidationHidden ? (
+                <ValidationElement
+                  isDisabled={isDisabled}
+                  isInvalid={isInvalid}
+                  isLoading={isLoading}
+                />
+              ) : null}
             </Content>
           </ChildWrapper>
         </InlineDialog>

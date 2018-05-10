@@ -1,9 +1,12 @@
 import { State } from '../domain';
 import { Store } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
+import { ContextFactory } from '@atlaskit/media-core';
+
+const apiUrl = 'some-api-url';
 
 export const mockState: State = {
-  apiUrl: 'some-api-url',
+  apiUrl,
   redirectUrl: 'some-redirect-url',
   view: {
     isVisible: true,
@@ -36,12 +39,16 @@ export const mockState: State = {
   remoteUploads: {},
   isCancelling: false,
   isUploading: false,
-  userAuthProvider: jest.fn(),
+  userAuthProvider: jest.fn().mockReturnValue(Promise.resolve({})),
   giphy: {
     imageCardModels: [],
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
+  context: ContextFactory.create({
+    serviceHost: apiUrl,
+    authProvider: jest.fn(),
+  }),
 };
 
 export const mockStore = (state?: Partial<State>) => ({
@@ -52,20 +59,6 @@ export const mockStore = (state?: Partial<State>) => ({
   }),
   subscribe: jest.fn(),
   replaceReducer: jest.fn(),
-});
-
-export const mockContext = () => ({
-  getMediaItemProvider: mockProvider,
-  getMediaCollectionProvider: mockProvider,
-  getUrlPreviewProvider: mockProvider,
-  getDataUriService: jest.fn(),
-  addLinkItem: jest.fn(),
-  refreshCollection: jest.fn(),
-  config: {
-    serviceHost: 'some-service-host',
-    authProvider: () =>
-      Promise.resolve({ token: 'some-token', clientId: 'some-client-id' }),
-  },
 });
 
 export const mockChannel = () => {
@@ -80,11 +73,6 @@ export const mockChannel = () => {
 
   return channel;
 };
-
-export const mockAuthService = () => ({
-  getUserAuth: jest.fn(),
-  getTenantAuth: jest.fn(),
-});
 
 export const mockProvider = jest.fn(() => ({
   observable: () => {
@@ -147,7 +135,6 @@ export const mockPopupUploadEventEmitter = () => ({
   emitClosed: jest.fn(),
   emitUploadsStart: jest.fn(),
   emitUploadProgress: jest.fn(),
-  emitUploadFinalizeReady: jest.fn(),
   emitUploadPreviewUpdate: jest.fn(),
   emitUploadProcessing: jest.fn(),
   emitUploadEnd: jest.fn(),

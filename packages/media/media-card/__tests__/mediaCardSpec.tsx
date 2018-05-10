@@ -13,7 +13,7 @@ import {
   MediaCardProps,
   MediaCardState,
 } from '../src/root/mediaCard';
-import { CardOverlay } from '../src/utils/cardImageView/cardOverlay';
+import { CardOverlay } from '../src/files/cardImageView/cardOverlay';
 
 const createNoopProvider = () => ({
   observable: () =>
@@ -33,7 +33,7 @@ describe('MediaCard', () => {
     it('should pass down other props', () => {
       const element = shallow(
         <MediaCard appearance="small" provider={createNoopProvider()} />,
-      ) as any;
+      );
       expect(element.props()).toMatchObject({
         appearance: 'small',
       });
@@ -42,13 +42,24 @@ describe('MediaCard', () => {
     it('should pass down the status when we have one', () => {
       const status = 'complete';
 
-      const element = shallow(
-        <MediaCard provider={createNoopProvider()} />,
-      ) as any;
+      const element = shallow(<MediaCard provider={createNoopProvider()} />);
 
       element.setState({ status });
 
       expect(element.props().status).toBe(status);
+    });
+
+    it('should pass "disableOverlay" to CardView', () => {
+      const card = shallow(
+        <MediaCard
+          appearance="image"
+          provider={createNoopProvider()}
+          disableOverlay={true}
+        />,
+        { disableLifecycleMethods: true },
+      );
+
+      expect(card.props().disableOverlay).toBe(true);
     });
 
     it('should render metadata=object when we have metadata', () => {
@@ -56,9 +67,7 @@ describe('MediaCard', () => {
         mediaType: 'image',
       };
 
-      const element = shallow(
-        <MediaCard provider={createNoopProvider()} />,
-      ) as any;
+      const element = shallow(<MediaCard provider={createNoopProvider()} />);
 
       element.setState({ metadata });
 
@@ -68,9 +77,7 @@ describe('MediaCard', () => {
     it('should NOT pass down the error when we have one', () => {
       const error = new Error('test');
 
-      const element = shallow(
-        <MediaCard provider={createNoopProvider()} />,
-      ) as any;
+      const element = shallow(<MediaCard provider={createNoopProvider()} />);
 
       element.setState({ error });
 
@@ -116,9 +123,7 @@ describe('MediaCard', () => {
 
       const element = shallow<MediaCardProps, MediaCardState>(
         <MediaCard provider={provider} />,
-      ) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      );
 
       return waitUntilCardIsLoaded(element).then(() => {
         expect(element.state().metadata).toBe(expectedMetadata);
@@ -140,9 +145,7 @@ describe('MediaCard', () => {
 
       const element = shallow<MediaCardProps, MediaCardState>(
         <MediaCard provider={provider} />,
-      ) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      );
 
       return waitUntilCardIsLoaded(element).then(() => {
         expect(element.state().metadata).toBe(expectedMetadata);
@@ -158,9 +161,12 @@ describe('MediaCard', () => {
           onLoadingChange={onLoadingChange}
         />,
         { disableLifecycleMethods: true },
-      ) as any;
+      );
+      const instance = element.instance();
 
-      (element.instance() as MediaCard).componentDidMount();
+      if (instance.componentDidMount) {
+        instance.componentDidMount();
+      }
 
       expect(onLoadingChange).toHaveBeenCalledTimes(1);
       expect(onLoadingChange).toHaveBeenCalledWith({
@@ -189,11 +195,9 @@ describe('MediaCard', () => {
         }
       };
 
-      const element = shallow(
+      shallow(
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
-      ) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      );
     });
 
     it('should call onLoadingStateChange() with type "complete" when the server has finished processing the media', done => {
@@ -217,11 +221,9 @@ describe('MediaCard', () => {
         }
       };
 
-      const element = shallow(
+      shallow(
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
-      ) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      );
     });
 
     it('should call onLoadingStateChange() with type "error" when the server has errored whilst processing the media', done => {
@@ -246,11 +248,9 @@ describe('MediaCard', () => {
         }
       };
 
-      const element = shallow(
+      shallow(
         <MediaCard provider={provider} onLoadingChange={onLoadingChange} />,
-      ) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      );
     });
 
     it('should unsubscribe from the old provider and subscribe to the new provider when the provider changes', () => {
@@ -276,9 +276,11 @@ describe('MediaCard', () => {
 
       const element = shallow(<MediaCard provider={firstProvider as any} />, {
         disableLifecycleMethods: true,
-      }) as any;
-
-      (element.instance() as MediaCard).componentDidMount();
+      });
+      const instance = element.instance();
+      if (instance.componentDidMount) {
+        instance.componentDidMount();
+      }
       element.setProps({ provider: secondProvider });
 
       expect(oldUnsubscribe).toHaveBeenCalledTimes(1);
@@ -294,10 +296,8 @@ describe('MediaCard', () => {
       const provider = {
         observable: () => Observable.throw(new Error(error)),
       } as any;
-      const element = shallow(<MediaCard provider={provider} />) as any;
-      const instance = element.instance() as MediaCard;
+      const element = shallow(<MediaCard provider={provider} />);
 
-      instance.componentDidMount();
       expect(element.prop('status')).toEqual('error');
       provider.observable = () => Observable.of(successResponse);
       element.simulate('retry');
@@ -310,10 +310,30 @@ describe('MediaCard', () => {
         observable: () => Observable.throw(new Error('some error')),
       };
       const element = mount(<MediaCard provider={provider} />);
-      const instance = element.instance() as MediaCard;
+      const instance = element.instance();
 
       expect(element.find(CardOverlay).prop('onRetry')).toEqual(
         instance[/* prettier-ignore */ 'onRetry'],
+      );
+    });
+  });
+
+  describe('Local preview', () => {
+    it('should use complete status if local preview is available', () => {
+      const element = shallow(
+        <MediaCard preview="image-preview" provider={createNoopProvider()} />,
+      );
+
+      expect(element.state('status')).toEqual('complete');
+    });
+
+    it('should pass preview down to child component', () => {
+      const element = shallow(
+        <MediaCard preview="image-preview" provider={createNoopProvider()} />,
+      );
+
+      expect(element.find('WithDataURIImpl').prop('preview')).toEqual(
+        'image-preview',
       );
     });
   });

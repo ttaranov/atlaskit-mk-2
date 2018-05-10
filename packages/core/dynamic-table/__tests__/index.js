@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { PaginationStateless } from '@atlaskit/pagination';
+import Pagination from '@atlaskit/pagination';
 import TableHead from '../src/components/TableHead';
 import {
   EmptyViewContainer,
@@ -358,7 +358,7 @@ describe(name, () => {
       it.skip('onSetPage', () => {
         // eslint-disable-line jest/no-disabled-tests
         wrapper
-          .find(PaginationStateless)
+          .find(Pagination)
           .find('button')
           .at(1)
           .simulate('click');
@@ -380,7 +380,7 @@ describe(name, () => {
       );
 
       wrapper
-        .find(PaginationStateless)
+        .find(Pagination)
         .find('button')
         .at(0)
         .simulate('click');

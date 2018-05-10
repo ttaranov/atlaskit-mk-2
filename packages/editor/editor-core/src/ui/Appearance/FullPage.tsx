@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
@@ -10,19 +11,20 @@ import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
 
+const GUTTER_PADDING = 26;
+
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
   overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,27 +34,26 @@ ScrollContainer.displayName = 'ScrollContainer';
 const ContentArea = styled.div`
   height: 100%;
   width: 100%;
-  max-width: ${akEditorFullPageMaxWidth}px;
+  max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-bottom: 55px;
 
   & .ProseMirror {
     flex-grow: 1;
     box-sizing: border-box;
-    padding-bottom: 55px;
   }
 
   && .ProseMirror {
     & > * {
       clear: both;
     }
-    & > p,
-    & > ul,
-    & > ol,
+    > p,
+    > ul,
+    > ol,
     > h1,
     > h2,
     > h3,
@@ -76,6 +77,7 @@ const MainToolbar = styled.div`
   border-bottom: 1px solid ${akColorN30};
   display: flex;
   height: 80px;
+  flex-shrink: 0;
 `;
 MainToolbar.displayName = 'MainToolbar';
 
@@ -103,6 +105,9 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
 
+  stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
+    event.stopPropagation();
+
   render() {
     const {
       editorDOMElement,
@@ -118,6 +123,7 @@ export default class Editor extends React.Component<
       popupsBoundariesElement,
       popupsScrollableElement,
       disabled,
+      collabEdit,
     } = this.props;
 
     return (
@@ -139,32 +145,41 @@ export default class Editor extends React.Component<
             <Avatars
               editorView={editorView}
               eventDispatcher={eventDispatcher}
+              inviteToEditHandler={collabEdit && collabEdit.inviteToEditHandler}
+              isInviteToEditButtonSelected={
+                collabEdit && collabEdit.isInviteToEditButtonSelected
+              }
             />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ClickAreaBlock editorView={editorView}>
-          <ScrollContainer>
+        <ScrollContainer>
+          <ClickAreaBlock editorView={editorView}>
             <ContentArea>
-              {customContentComponents}
-              {
-                <PluginSlot
-                  editorView={editorView}
-                  editorActions={editorActions}
-                  eventDispatcher={eventDispatcher}
-                  providerFactory={providerFactory}
-                  appearance={this.appearance}
-                  items={contentComponents}
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                  popupsScrollableElement={popupsScrollableElement}
-                  disabled={!!disabled}
-                />
-              }
-              {editorDOMElement}
+              <div
+                style={{ padding: `0 ${GUTTER_PADDING}px` }}
+                className="content-area"
+              >
+                {customContentComponents}
+                {
+                  <PluginSlot
+                    editorView={editorView}
+                    editorActions={editorActions}
+                    eventDispatcher={eventDispatcher}
+                    providerFactory={providerFactory}
+                    appearance={this.appearance}
+                    items={contentComponents}
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                    disabled={!!disabled}
+                  />
+                }
+                {editorDOMElement}
+              </div>
             </ContentArea>
-          </ScrollContainer>
-        </ClickAreaBlock>
+          </ClickAreaBlock>
+        </ScrollContainer>
         <WidthDetector editorView={editorView!} />
       </FullPageEditorWrapper>
     );

@@ -21,6 +21,7 @@ export {
   toJSON,
   filterContentByType,
   setTextSelection,
+  setGapCursorSelection,
 } from './utils';
 
 // Plugin Keys for WithPluginState
@@ -38,7 +39,7 @@ export {
 export { keyCodes } from './keymaps';
 export { ReactEditorView } from './create-editor';
 export { getDefaultPluginsList } from './create-editor/create-plugins-list';
-export { EditorPlugin, EditorProps, EditorInstance, ExtensionHandlers } from './types';
+export { EditorPlugin, EditorProps, EditorInstance } from './types';
 export { default as EditorActions } from './actions';
 
 // Useless exports
@@ -62,6 +63,7 @@ export {
   MediaStateManager,
   MediaProvider,
   MediaState,
+  CustomMediaPicker,
 } from './plugins/media';
 
 export { MediaOptions } from './plugins/media';
@@ -80,3 +82,7 @@ export * from './analytics'; // ?
 export {
   default as pickerFacadeLoader,
 } from './plugins/media/picker-facade-loader';
+
+export {
+  PluginConfig as TablePluginConfig,
+} from './plugins/table/pm-plugins/main';

@@ -7,7 +7,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
-const whiteListPkgs = ['strip-indent', 'trim-newlines'];
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -112,7 +111,7 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.js$/,
-          exclude: new RegExp(`node_modules\/(?!${whiteListPkgs.join('|')})`),
+          exclude: /node_modules/,
           loader: require.resolve('babel-loader'),
           options: {
             cacheDirectory: true,
@@ -201,9 +200,8 @@ function plugins(
         return (
           count === 1 &&
           (context &&
-            // We're intentionally excluding p-queue and rxjs-async-map from this chunk as it currently breaks our build
-            // These two packages are being used by the media-store package. Unfortunately neither of them are transpiled, and are thus breaking in ie11.
-            !context.includes('node_modules/p-queue') &&
+            // We're intentionally excluding rxjs-async-map from this chunk as it currently breaks our build
+            // This package is being used by the media-store package. Unfortunately it's not transpiled, and is thus breaking in ie11.
             (context && !context.includes('node_modules/rxjs-async-map')))
         );
       },
@@ -256,14 +254,22 @@ function plugins(
 
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['examples'],
     }),
 
     new HtmlWebpackPlugin({
       filename: 'examples.html',
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
       template: path.join(cwd, 'public/examples.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['main'],
     }),
 

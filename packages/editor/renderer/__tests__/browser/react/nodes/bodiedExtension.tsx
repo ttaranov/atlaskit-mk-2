@@ -2,13 +2,14 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import BodiedExtension from '../../../../src/react/nodes/bodiedExtension';
-import {
-  ExtensionHandlers,
-  ExtensionHandler,
-} from '../../../../src/ui/Renderer';
+
 import { RendererContext } from '../../../../src/react';
 import ReactSerializer from '../../../../src/react';
-import { defaultSchema } from '@atlaskit/editor-common';
+import {
+  defaultSchema,
+  ExtensionHandlers,
+  ExtensionHandler,
+} from '@atlaskit/editor-common';
 
 describe('Renderer - React/Nodes/BodiedExtension', () => {
   const extensionHandlers: ExtensionHandlers = {
@@ -193,6 +194,33 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
         .first()
         .text(),
     ).to.equal('This is the original content');
+    extension.unmount();
+  });
+
+  it('extension handler should receive type = bodiedExtension', () => {
+    const extensionHandler = jest.fn();
+    const extensionHandlers: ExtensionHandlers = {
+      'com.atlassian.fabric': extensionHandler,
+    };
+
+    const extension = mount(
+      <BodiedExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="react"
+      />,
+    );
+
+    expect(extensionHandler.mock.calls[0][0]).to.eql({
+      type: 'bodiedExtension',
+      extensionType: 'com.atlassian.fabric',
+      extensionKey: 'react',
+      parameters: undefined,
+      content: undefined,
+    });
+
     extension.unmount();
   });
 });

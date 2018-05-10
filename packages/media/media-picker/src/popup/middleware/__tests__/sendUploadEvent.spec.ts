@@ -2,6 +2,9 @@ import { mockPopupUploadEventEmitter, mockStore } from '../../mocks';
 import sendUploadEventMiddleware from '../sendUploadEvent';
 import { sendUploadEvent } from '../../actions/sendUploadEvent';
 import { MediaError } from '../../../domain/error';
+// avoid polluting test logs with error message in console
+// please ensure you fix it if you expect console.error to be thrown
+let consoleError = console.error;
 
 describe('sendUploadEvent middleware', () => {
   const uploadId = 'some-upload-id';
@@ -34,39 +37,12 @@ describe('sendUploadEvent middleware', () => {
     expect(eventEmitter.emitReady).not.toBeCalled();
     expect(eventEmitter.emitUploadsStart).not.toBeCalled();
     expect(eventEmitter.emitUploadProgress).not.toBeCalled();
-    expect(eventEmitter.emitUploadFinalizeReady).not.toBeCalled();
     expect(eventEmitter.emitUploadPreviewUpdate).not.toBeCalled();
     expect(eventEmitter.emitUploadProcessing).not.toBeCalled();
     expect(eventEmitter.emitUploadEnd).not.toBeCalled();
     expect(eventEmitter.emitUploadError).not.toBeCalled();
 
     expect(next).toBeCalledWith(action);
-  });
-
-  it('should emit finalize ready event', () => {
-    const { eventEmitter, store, next } = setup();
-    const finalize = jest.fn();
-
-    sendUploadEventMiddleware(eventEmitter)(store)(next)(
-      sendUploadEvent({
-        event: {
-          name: 'upload-finalize-ready',
-          data: {
-            file,
-            finalize,
-          },
-        },
-        uploadId,
-      }),
-    );
-
-    expect(eventEmitter.emitUploadFinalizeReady).toBeCalledWith(
-      {
-        ...file,
-        id: uploadId,
-      },
-      finalize,
-    );
   });
 
   it('should emit upload status update event', () => {
@@ -183,6 +159,7 @@ describe('sendUploadEvent middleware', () => {
 
   it('should emit upload error event', () => {
     const { eventEmitter, store, next } = setup();
+    console.error = jest.fn();
     const error: MediaError = {
       name: 'upload_fail',
       description: 'some-description',
@@ -208,5 +185,6 @@ describe('sendUploadEvent middleware', () => {
       },
       error,
     );
+    console.error = consoleError;
   });
 });

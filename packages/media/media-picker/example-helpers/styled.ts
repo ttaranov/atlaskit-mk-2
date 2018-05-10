@@ -100,17 +100,28 @@ export const ClipboardContainer: ComponentClass<
 
 export const UploadingFilesWrapper: ComponentClass<
   HTMLAttributes<{}>
-> = styled.div`
+> = styled.div``;
+
+export const FileProgress: ComponentClass<
+  ProgressHTMLAttributes<{}>
+> = styled.progress`
+  width: 400px;
+`;
+
+export const FilesInfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   border: 1px solid;
   padding: 10px;
   margin-bottom: 10px;
   max-height: 250px;
   min-height: 250px;
   overflow: auto;
+  display: flex;
 `;
 
-export const FileProgress: ComponentClass<
-  ProgressHTMLAttributes<{}>
-> = styled.progress`
-  width: 400px;
+export const CardsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  flex: 1;
+`;
+
+export const CardItemWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  display: inline-block;
 `;

@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
+import { ContextConfig, MediaApiConfig } from '@atlaskit/media-store';
+
 import {
   MediaItemProvider,
   MediaCollectionProvider,
@@ -12,10 +14,10 @@ import {
   MediaDataUriService,
   DataUriService,
 } from '../services/dataUriService';
+import { BlobService, MediaBlobService } from '../services/blobService';
 import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
-import { ContextConfig, MediaApiConfig } from '../auth';
 import { FileItem } from '../item';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -36,6 +38,14 @@ export interface Context {
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
 
   getDataUriService(collectionName?: string): DataUriService;
+
+  getLocalPreview(id: string): string | undefined;
+
+  setLocalPreview(id: string, preview: string): void;
+
+  removeLocalPreview(id: string): void;
+
+  getBlobService(collectionName?: string): BlobService;
 
   addLinkItem(
     url: string,
@@ -59,11 +69,12 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
+  private readonly localPreviewCache: LRUCache<string, string>;
 
   constructor(readonly config: ContextConfig) {
-    this.fileItemCache = new LRUCache<string, FileItem>(
-      config.cacheSize || DEFAULT_CACHE_SIZE,
-    );
+    this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
+
+    this.localPreviewCache = new LRUCache(10);
   }
 
   getMediaItemProvider(
@@ -120,6 +131,26 @@ class ContextImpl implements Context {
 
   getDataUriService(collectionName?: string): DataUriService {
     return new MediaDataUriService(
+      this.config.authProvider,
+      this.config.serviceHost,
+      collectionName,
+    );
+  }
+
+  setLocalPreview(id: string, preview: string) {
+    this.localPreviewCache.set(id, preview);
+  }
+
+  getLocalPreview(id: string): string | undefined {
+    return this.localPreviewCache.get(id);
+  }
+
+  removeLocalPreview(id: string) {
+    this.localPreviewCache.remove(id);
+  }
+
+  getBlobService(collectionName?: string): BlobService {
+    return new MediaBlobService(
       this.config.authProvider,
       this.config.serviceHost,
       collectionName,

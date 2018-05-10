@@ -3,6 +3,10 @@ import 'jest-styled-components';
 import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
 
+let consoleError;
+let consoleWarn;
+let consoleLog;
+
 // URL is not available for non Node environment
 if (global.URL) {
   global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
@@ -246,3 +250,50 @@ expect.extend({
     return ret;
   },
 });
+
+// Copied from react-beautiful-dnd/test/setup.js
+if (typeof document !== 'undefined') {
+  // overriding these properties in jsdom to allow them to be controlled
+  Object.defineProperties(document.documentElement, {
+    clientWidth: {
+      writable: true,
+      value: document.documentElement.clientWidth,
+    },
+    clientHeight: {
+      writable: true,
+      value: document.documentElement.clientHeight,
+    },
+    scrollWidth: {
+      writable: true,
+      value: document.documentElement.scrollWidth,
+    },
+    scrollHeight: {
+      writable: true,
+      value: document.documentElement.scrollHeight,
+    },
+  });
+}
+
+// Setting initial viewport
+// Need to set clientWidth and clientHeight as jsdom does not set these properties
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  document.documentElement.clientWidth = window.innerWidth;
+  document.documentElement.clientHeight = window.innerHeight;
+}
+
+if (process.env.CI) {
+  beforeEach(() => {
+    consoleError = console.error;
+    consoleWarn = console.warn;
+    consoleLog = console.log;
+    console.error = jest.fn();
+    console.warn = jest.fn();
+    console.log = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = consoleError;
+    console.warn = consoleWarn;
+    console.log = consoleLog;
+  });
+}

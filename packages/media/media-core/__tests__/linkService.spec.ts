@@ -2,7 +2,7 @@ import { useFakeXMLHttpRequest } from 'sinon';
 
 import { MediaLinkService } from '../src/services/linkService';
 import { UrlPreview } from '../src/item';
-import { AuthProvider } from '../src/auth';
+import { AuthProvider } from '@atlaskit/media-store';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -44,7 +44,7 @@ describe('MediaLinkService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    authProvider = jest.fn(({ collectionName }) =>
+    authProvider = jest.fn(() =>
       Promise.resolve({
         token,
         clientId,

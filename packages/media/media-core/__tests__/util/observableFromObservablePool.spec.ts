@@ -43,9 +43,9 @@ describe('observableFromObservablePool()', () => {
     );
     const observable = observableFromObservablePool(pool, 'item', createFn);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       observable.subscribe({
-        next(x) {
+        next() {
           resolve();
         },
       });

@@ -1,6 +1,11 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
@@ -11,10 +16,19 @@ import { EditorAppearance } from '../../../types';
 import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
 import { containsTable } from '../../table/utils';
 import { runMacroAutoConvert } from '../../macro';
-import { insertMediaAsMediaSingle } from '../../media/pm-plugins/media-single';
+import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
-import { isSingleLine, isCode, escapeLinks } from '../util';
-import { removeBodiedExtensionsOnPaste } from '../../extension/actions';
+import { isSingleLine, escapeLinks } from '../util';
+import {
+  removeBodiedExtensionsIfSelectionIsInBodiedExtension,
+  removeBodiedExtensionWrapper,
+} from '../../extension/actions';
+import {
+  removeLayoutsIfSelectionIsInLayout,
+  transformSliceToRemoveOpenLayoutNodes,
+} from '../../layout/utils';
+import { linkifyContent } from '../../hyperlink/utils';
+import { hasOpenEnd } from '../../../utils';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -50,6 +64,15 @@ export function createPlugin(
         if (clipboard.isPastedFile(event)) {
           return true;
         }
+
+        slice = removeLayoutsIfSelectionIsInLayout(slice, view.state);
+        // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
+        // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
+        // this function makes sure we prevent that weirdness
+        slice = removeBodiedExtensionsIfSelectionIsInBodiedExtension(
+          slice,
+          view.state,
+        );
 
         const { $to, $from } = view.state.selection;
 
@@ -101,6 +124,15 @@ export function createPlugin(
           return true;
         }
 
+        /** If a partial paste of bodied extension, paste only text */
+        if (
+          node &&
+          node.type === schema.nodes.bodiedExtension &&
+          hasOpenEnd(slice)
+        ) {
+          slice = removeBodiedExtensionWrapper(view.state, slice);
+        }
+
         if (
           editorAppearance !== 'message' &&
           node &&
@@ -110,10 +142,8 @@ export function createPlugin(
         }
 
         // If the clipboard contents looks like computer code, create a code block
-        if (
-          (text && isCode(text)) ||
-          (text && html && node && node.type === schema.nodes.codeBlock)
-        ) {
+        // Note: Disabling (text && isCode(text)) check (@see ED-4092) until we decide how to improve it (possibly adding the ability to undo)
+        if (text && html && node && node.type === schema.nodes.codeBlock) {
           analyticsService.trackEvent('atlassian.editor.paste.code');
           let tr = view.state.tr;
           if (isSingleLine(text)) {
@@ -130,12 +160,32 @@ export function createPlugin(
               $from.pos + text.length,
               schema.marks.code.create(),
             );
+            const { code } = view.state.schema.marks;
+            // ED-4299, if a new code mark is created by pasting cursor should be moved out of it.
+            if (!$to.marks().some(mark => mark.type === code)) {
+              tr = tr.removeStoredMark(code);
+            }
           } else {
             const codeBlockNode = schema.nodes.codeBlock.create(
               node ? node.attrs : {},
               schema.text(text),
             );
             tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+            // ED-4299, If code-block is created at end of its parent a paragraph is added after it.
+            // Selection is moved position after pasted code.
+            if ($to.pos + 1 === $to.end($to.depth - 1)) {
+              const { paragraph } = view.state.schema.nodes;
+              const { $to: newSel } = tr.selection;
+              tr = tr.insert(
+                newSel.end(newSel.depth - 1),
+                paragraph.createAndFill()!,
+              );
+            }
+            tr = tr.setSelection(
+              new TextSelection(
+                tr.doc.resolve($to.pos + codeBlockNode.nodeSize),
+              ),
+            );
           }
           view.dispatch(tr.scrollIntoView());
           return true;
@@ -169,16 +219,20 @@ export function createPlugin(
             return true;
           }
 
-          // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
-          // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
-          // this function makes sure we prevent that weirdness
-          return removeBodiedExtensionsOnPaste(slice)(
-            view.state,
-            view.dispatch,
+          slice = linkifyContent(view.state.schema, slice) || slice;
+
+          view.dispatch(
+            view.state.tr.replaceSelection(slice).setStoredMarks([]),
           );
+          return true;
         }
 
         return false;
+      },
+      transformPasted(slice) {
+        // We do this separately so it also applies to drag/drop events
+        slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
+        return slice;
       },
     },
   });

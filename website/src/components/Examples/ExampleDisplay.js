@@ -1,17 +1,17 @@
 // @flow
 import React, { type ComponentType } from 'react';
-import styled from 'styled-components';
 import Loadable from 'react-loadable';
 import Loading from '../Loading';
 import CodeBlock from '../Code';
 
 type Props = {
   src: string | null,
+  name: string,
+  src: string,
   example: {
     contents: Function,
     exports: Function,
   },
-  name: 'string',
   displayCode: boolean,
   render: (ComponentType<any>, ComponentType<any>, boolean) => any,
 };
@@ -30,6 +30,7 @@ export default (props: Props) => {
   }
   const Example = () => (
     <iframe
+      title="example"
       style={{
         width: '100%',
         height: '100%',

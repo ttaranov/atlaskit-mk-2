@@ -19,7 +19,7 @@ export default class Code extends PureComponent<{}, {}> {
        * so it would actually looks like
        * <Code>{['This is the text']}</Code>
        */
-      return <AkCode language="text" text={children[0] as string} />;
+      return <AkCode language="text" text={children.join('')} />;
     }
 
     return <AkCode language="text" text={''} />;

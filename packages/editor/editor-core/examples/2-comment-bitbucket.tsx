@@ -108,7 +108,9 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowMentions={true}
-                    allowTables={true}
+                    allowTables={{
+                      isHeaderRowRequired: true,
+                    }}
                     textFormatting={{
                       disableSuperscriptAndSubscript: true,
                       disableUnderline: true,
@@ -117,6 +119,11 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     disabled={disabled}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
+                    media={{
+                      allowMediaSingle: {
+                        disableLayout: true,
+                      },
+                    }}
                     legacyImageUploadProvider={imageUploadProvider}
                     shouldFocus={true}
                     onChange={onChange}

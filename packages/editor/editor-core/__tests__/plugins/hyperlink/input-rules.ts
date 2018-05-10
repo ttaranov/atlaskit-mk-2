@@ -89,6 +89,66 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).toEqualDocument(doc(p(a, ' ')));
     });
 
+    ['?', '!', ')', '(', '[', ']', ';', '{', '}', ',', '.'].forEach(
+      punctuation => {
+        it(`should not convert trailing '${punctuation}' in "https://www.atlassian.com${punctuation}" to hyperlink`, () => {
+          const { editorView, sel } = editor(doc(p('{<>}')));
+          insertText(
+            editorView,
+            `https://www.atlassian.com${punctuation} `,
+            sel,
+            sel,
+          );
+
+          const a = link({ href: 'https://www.atlassian.com' })(
+            'https://www.atlassian.com',
+          );
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(a, `${punctuation} `)),
+          );
+        });
+      },
+    );
+
+    ['?', '!', ')', '(', '[', ']', '{', '}', ',', '.'].forEach(punctuation => {
+      it(`should not convert trailing '${punctuation}' in "https://www.atlassian.com/${punctuation}" to hyperlink`, () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(
+          editorView,
+          `https://www.atlassian.com/${punctuation} `,
+          sel,
+          sel,
+        );
+
+        const a = link({ href: 'https://www.atlassian.com/' })(
+          'https://www.atlassian.com/',
+        );
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(a, `${punctuation} `)),
+        );
+      });
+    });
+
+    it('should convert only the link in "?https://www.atlassian.com?" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '?https://www.atlassian.com? ', sel, sel);
+
+      const a = link({ href: 'https://www.atlassian.com' })(
+        'https://www.atlassian.com',
+      );
+      expect(editorView.state.doc).toEqualDocument(doc(p('?', a, '? ')));
+    });
+
+    it('should convert only the link in "?https://www.atlassian.com" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '?https://www.atlassian.com ', sel, sel);
+
+      const a = link({ href: 'https://www.atlassian.com' })(
+        'https://www.atlassian.com',
+      );
+      expect(editorView.state.doc).toEqualDocument(doc(p('?', a, ' ')));
+    });
+
     it('should not convert "https://www.atlassian.com" to hyperlink inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
       insertText(editorView, 'https://www.atlassian.com ', sel, sel);
@@ -210,6 +270,20 @@ describe('hyperlink', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p(link({ href: 'http://www.atlassian.com' })('test'))),
+      );
+    });
+
+    it('Does not nest hyperlinks when a html hyperlink is pasted', () => {
+      const { editorView } = editor(doc(p('')));
+      /** Taken from copying a link in JIRA */
+      const htmlInput = `<meta charset='utf-8'><a href=\"https://atlassian.com/\" target=\"_blank\" title=\"https://atlassian.com\" rel=\"noreferrer noopener\" class=\"josSif\" style=\"color: rgb(0, 82, 204); text-decoration: none; cursor: pointer; font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);\">https://atlassian.com</a>`;
+
+      dispatchPasteEvent(editorView, { html: htmlInput });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(link({ href: 'https://atlassian.com' })('https://atlassian.com')),
+        ),
       );
     });
 

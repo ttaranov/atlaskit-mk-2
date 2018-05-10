@@ -87,7 +87,7 @@ You're now ready to start developing in Atlaskit!
 Each component/util lives in it's own package under the `packages` directory. We are using [bolt](https://github.com/boltpkg/bolt) to manage our mono-repo, so you are going to need bolt installed globally as well.
 
 ```sh
-yarn add global bolt
+yarn global add bolt
 ```
 
 Next, to install packages, we use bolt, just calling it:

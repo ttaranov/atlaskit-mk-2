@@ -1,8 +1,7 @@
-/* @flow */
-import React, { Component, type Node } from 'react';
-import { Redirect } from 'react-router-dom';
+// @flow
+import React from 'react';
 import Loadable from 'react-loadable';
-import type { Directory, RouterMatch } from '../types';
+import type { RouterMatch } from '../types';
 import { packages } from '../site';
 import * as fs from '../utils/fs';
 import Page, { Title } from '../components/Page';

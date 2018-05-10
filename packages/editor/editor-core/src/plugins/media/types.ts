@@ -1,11 +1,10 @@
-import { ContextConfig, Context } from '@atlaskit/media-core';
-import { UploadParams } from '@atlaskit/media-picker';
+import { Context } from '@atlaskit/media-core';
+import { UploadParams, MediaFile } from '@atlaskit/media-picker';
 
 export type MediaStateStatus =
   | 'unknown'
   | 'uploading'
   | 'processing'
-  | 'unfinalized'
   | 'ready'
   | 'error'
   | 'cancelled'
@@ -20,6 +19,8 @@ export interface MediaState {
   fileType?: string;
   fileMimeType?: string;
   progress?: number;
+  ready?: boolean;
+  preview?: boolean;
   thumbnail?: {
     src: string;
     dimensions?: {
@@ -27,7 +28,6 @@ export interface MediaState {
       height: number;
     };
   };
-  finalizeCb?: () => void;
   error?: {
     name: string;
     description: string;
@@ -37,6 +37,7 @@ export interface MediaState {
 export interface MediaStateManager {
   getState(tempId: string): MediaState | undefined;
   updateState(tempId: string, newState: MediaState): void;
+  newState(file: MediaFile, status: string, publicId?: string): MediaState;
   on(tempId: string, cb: (state: MediaState) => void);
   off(tempId: string, cb: (state: MediaState) => void): void;
   destroy(): void;
@@ -54,17 +55,27 @@ export interface MediaProvider {
    * Used for displaying Media Cards and downloading files.
    * This is context config is required.
    */
-  viewContext: Promise<Context | ContextConfig>;
+  viewContext: Promise<Context>;
 
   /**
    * (optional) Used for creating new uploads and finalizing files.
    * NOTE: We currently don't accept Context instance, because we need config properties
    *       to initialize
    */
-  uploadContext?: Promise<ContextConfig>;
+  uploadContext?: Promise<Context>;
 
   /**
    * (optional) Used for creation of new Media links.
    */
-  linkCreateContext?: Promise<Context | ContextConfig>;
+  linkCreateContext?: Promise<Context>;
+}
+
+export type Listener = (data: any) => void;
+
+export interface CustomMediaPicker {
+  on(event: string, cb: Listener): void;
+  removeAllListeners(event: any);
+  emit(event: string, data: any): void;
+  destroy(): void;
+  setUploadParams(uploadParams: UploadParams);
 }

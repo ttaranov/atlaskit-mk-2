@@ -1,6 +1,10 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+} from 'react';
 import type { ButtonAppearances } from '../types';
 
 const getComponentName = (target: any): string => {
@@ -23,8 +27,11 @@ const warnIfDeprecatedAppearance = appearance => {
 
 export default function withDeprecationWarnings<
   Props: { appearance?: ButtonAppearances },
->(WrappedComponent: ComponentType<Props>): ComponentType<Props> {
-  return class WithDeprecationWarnings extends Component<Props> {
+  InnerComponent: ComponentType<Props>,
+>(
+  WrappedComponent: InnerComponent,
+): ComponentType<ElementConfig<InnerComponent>> {
+  return class WithDeprecationWarnings extends Component<$ReadOnly<Props>> {
     static displayName = `WithDeprecationWarnings(${getComponentName(
       WrappedComponent,
     )})`;

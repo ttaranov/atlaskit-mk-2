@@ -20,6 +20,8 @@ import {
   NodeType,
 } from 'prosemirror-model';
 
+import { mapImageToEmoji } from './emojiHelper';
+
 /**
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
@@ -170,7 +172,7 @@ export function convert(
          *     </span>
          * </span>
          */
-        if (node.className === 'jira-issue-macro') {
+        if (node.className.split(' ').indexOf('jira-issue-macro') > -1) {
           const jiraKey = node.getAttribute('data-jira-key');
           const link = node.getElementsByTagName('a')[0];
           if (jiraKey && link) {
@@ -220,6 +222,11 @@ export function convert(
           node.parentElement.className.match('jira-issue-macro-key')
         ) {
           return null;
+        } else if (node.className === 'emoticon') {
+          let emojiResult = mapImageToEmoji(node as HTMLImageElement);
+          if (emojiResult) {
+            return schema.text(emojiResult);
+          }
         }
         break;
       case 'H1':

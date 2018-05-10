@@ -24,6 +24,7 @@ const atlaskitTeam = [
   'jedw',
   'alexreardon',
   'pete_gleeson',
+  'mgardiner_atlas',
 ];
 const editorTeam = [
   'imsysoev',
@@ -49,16 +50,17 @@ const elementsTeam = [
   'jhoarau',
   'ttjandra',
   'pcurren',
+  'lgpereira',
 ];
 // Jono is a special case atm, and his team doesn't have a name
 const jono = ['jonathan_yeo'];
 const mediaTeam = [
+  'hzarcogarcia',
   'sattard',
   'mjames91',
   'alichamas',
   'jluong',
   'amotsjonov',
-  'hzarcogarcia',
   'jamesnewell',
   'abodera',
   'vvvlasov',
@@ -66,6 +68,14 @@ const mediaTeam = [
   'iloire-atlassian',
 ];
 const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
+const kitkatTeam = [
+  'kamil-kaczmarczyk',
+  'mszerszynski',
+  'kziajka123',
+  'pmurawski_atlassian',
+  'vpetrychuk',
+  'bgryta',
+];
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,
   editorTeam,
@@ -73,6 +83,7 @@ const usersAllowedToApprove = [].concat(
   jono,
   mediaTeam,
   searchAndSmartsTeam,
+  kitkatTeam,
 );
 
 module.exports = {

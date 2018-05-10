@@ -1,5 +1,10 @@
 # @atlaskit/checkbox
 
+## 2.0.1
+
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.4.0
 - [minor] Add indeterminate prop to stateless checkbox [3fc6c5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3fc6c5e)
 

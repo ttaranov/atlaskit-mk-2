@@ -1,5 +1,55 @@
 # @atlaskit/datetime-picker
 
+## 3.1.0
+- [minor] Add dateFormat prop to customise the display format of dates [3daced9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3daced9)
+
+## 3.0.6
+
+## 3.0.5
+- [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
+
+## 3.0.4
+- [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
+
+## 3.0.3
+- [patch] Added appearance prop to enable subtle (no icon) appearance   [c10fd5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c10fd5d)
+
+## 3.0.2
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
+## 3.0.1
+- [patch] Added isInvalid prop to DateTimePicker DatePicker & TimePicker [101c306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/101c306)
+
+## 3.0.0
+
+## 2.0.6
+- [patch] Added timeIsEditable prop to enable user created times [4695e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4695e5d)
+
+## 2.0.5
+
+## 2.0.4
+
+## 2.0.3
+
+
+
+- [patch] Change pickers to use fixed positioning and scroll lock to allow them to break out of modals. [d4981fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4981fe)
+
+## 2.0.2
+- [patch] Fix datetime picker without a value and defaultValue not working [a88aee0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88aee0)
+
+## 2.0.1
+
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 1.0.1
+- [patch] Fix picker value not being able to be set programatically [17c7a15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17c7a15)
+- [patch] Fix `isDisabled` not restricting pickers from opening [f396f2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f396f2e)
+
+## 1.0.0
+- [major] QoL and consistency changes to the calendar and datetime-picker APIs. Added the ability to specify a string to the DateTimePicker component. Remove stateless components and make each component stateless or stateful using the controlled / uncontrolled pattern. Misc prop renames for consistency. [ab21d8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab21d8e)
+
 ## 0.7.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

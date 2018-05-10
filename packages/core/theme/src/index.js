@@ -1,15 +1,16 @@
 // @flow
 
 import * as colors from './colors';
-
+import * as typography from './typography';
 import * as math from './utils/math';
 import getTheme from './utils/getTheme';
 import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
-export { colors, math, getTheme, themed, AtlaskitThemeProvider };
+export { colors, typography, math, getTheme, themed, AtlaskitThemeProvider };
+export { default as Appearance } from './components/Appearance';
 
-// backwards-compatible export with old AtlasKit case
+// backwards-compatible export with old Atlaskit case
 export const AtlasKitThemeProvider = AtlaskitThemeProvider;
 
 /*

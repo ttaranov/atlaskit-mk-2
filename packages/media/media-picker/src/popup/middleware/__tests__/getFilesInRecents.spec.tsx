@@ -14,7 +14,7 @@ describe('getFilesInRecents middleware', () => {
       const next = jest.fn();
 
       const unknownAction = { type: 'UNKNOWN' };
-      getFilesInRecents(fetcher, mockAuthProvider)(store)(next)(unknownAction);
+      getFilesInRecents(fetcher)(store)(next)(unknownAction);
 
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
       expect(store.dispatch).toHaveBeenCalledTimes(0);

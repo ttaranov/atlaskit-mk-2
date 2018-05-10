@@ -12,11 +12,7 @@ import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import CachingEmoji, {
   CachingMediaEmoji,
 } from '../../../src/components/common/CachingEmoji';
-import {
-  imageEmoji,
-  loadedMediaEmoji,
-  mediaEmoji,
-} from '../../../src/support/test-data';
+import { imageEmoji, loadedMediaEmoji, mediaEmoji } from '../../_test-data';
 import { hasSelector } from '../../_emoji-selectors';
 
 describe('<CachingEmoji />', () => {

@@ -15,13 +15,20 @@ import {
 } from '../../styles';
 import {
   akGridSizeUnitless,
-  akColorN80,
   akColorN20,
+  akColorN40,
   akBorderRadius,
   akColorN40A,
+  akColorN300,
+  akColorB200,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import { tableStyle } from '@atlaskit/editor-common';
+import {
+  tableStyle,
+  akEditorTableNumberColumnWidth,
+} from '@atlaskit/editor-common';
+
+import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -40,19 +47,18 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror .placeholder-decoration {
     position: absolute;
-    width: 100%;
     pointer-events: none;
     user-select: none;
 
     &::before {
       content: attr(data-text);
-      color: ${akColorN80};
+      color: ${akColorN300};
       pointer-events: none;
     }
   }
 
   .ProseMirror span[data-placeholder] {
-    color: ${akColorN80};
+    color: ${akColorN300};
   }
 
   .ProseMirror blockquote {
@@ -97,7 +103,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     padding: 2px 1px;
     background: ${akColorN20};
     border-radius: 3px;
-    font-family: monospace;
+    font-family: ${akEditorCodeFontFamily};
     white-space: pre-wrap;
 
     &::before,
@@ -254,10 +260,31 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    .media-single.is-loading {
+      min-height: 20px;
+    }
+
+    li .media-single {
+      margin: 0;
+    }
+
+    table .media-single {
+      margin: 0;
+      width: inherit;
+    }
+
     & [layout='wrap-left'] + [layout='wrap-right'],
     & [layout='wrap-right'] + [layout='wrap-left'] {
       clear: none;
-      & + p {
+      & + p,
+      & + ul,
+      & + ol,
+      & + h1,
+      & + h2,
+      & + h3,
+      & + h4,
+      & + h5,
+      & + h6 {
         clear: both;
       }
       & > div {
@@ -290,27 +317,27 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .table-container table ${tableStyle} .table-column-controls {
       position: relative;
     }
-    .table-container.with-controls table {
-      margin-left: 0;
-      margin-right: 0;
-    }
-    .table-container.with-controls {
-      margin-left: 8px;
+    .table-container {
+      position: relative;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${akEditorTableFloatingControls};
-      width: 40px;
+      width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
+    }
+    .table-container[data-layout='full-width'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
   }
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
-    .table-container {
-      position: relative;
-    }
-    .table-container.with-controls {
-      margin-left: 0;
+    .with-controls .table-container[data-layout='full-width'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
     .table-shadow {
       pointer-events: none;
@@ -370,6 +397,41 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       position: relative;
     }
   }
+  /* =============== Layouts ================== */
+  .ProseMirror {
+    & [data-layout-type] {
+      display: flex;
+      flex-direction: row;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      /* Ensure first column aligns with the cursor on top-level paragraph */
+      /* (margin + padding) === 24 | 24 * 2 === 48 */
+      position: relative;
+      width: calc(100% + 48px);
+      /* (48px / 2) + layout-section-border (2px) + layout-column-border (2px) */
+      left: -28px;
+
+      /* Inner cursor located 26px from left */
+      & > * {
+        border: 2px solid ${akColorN40};
+        border-radius: 5px;
+        margin: ${akGridSizeUnitless}px;
+        padding: ${akGridSizeUnitless * 2}px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /**
+       * Border to show when node is selected
+       * Helps visualise when 'selectNodeBackwards' selects the node for deletion
+       */
+      &.ProseMirror-selectednode {
+        border-color: ${akColorB200};
+      }
+    }
+  }
+
+  ${gapCursorStyles};
 `;
 
 export default ContentStyles;

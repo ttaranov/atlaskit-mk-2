@@ -1,18 +1,19 @@
 import * as assert from 'assert';
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
+import { Node as PMNode } from 'prosemirror-model';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
-import { Props as MediaProps } from '../ui/Media/MediaComponent';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
+  node: PMNode;
 }
 
 export interface MediaGroupNodeState {
@@ -25,13 +26,10 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & li:first-child {
-      padding-left: 2px;
-    }
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<
+export default class MediaGroupNode extends Component<
   MediaGroupNodeProps,
   MediaGroupNodeState
 > {
@@ -61,6 +59,19 @@ export default class MediaGroupNode extends PureComponent<
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
   }
 
+  shouldComponentUpdate(nextProps) {
+    const children = this.getMediaNodesIds(this.props.children);
+    const nextChildren = this.getMediaNodesIds(nextProps.children);
+    if (
+      children.length === nextChildren.length &&
+      this.props.node.firstChild!.attrs.__key ===
+        nextProps.node.firstChild!.attrs.__key
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   /**
    * Update "mediaNodesIds" and notify media plugin about removed nodes
    */
@@ -87,26 +98,7 @@ export default class MediaGroupNode extends PureComponent<
           onSize={this.handleSize}
           onScroll={this.handleScroll}
         >
-          {React.Children.map(
-            this.props.children,
-            (child: ReactElement<MediaNodeProps>) => {
-              switch (child.props.node.attrs.type) {
-                case 'file':
-                  return child;
-
-                default:
-                case 'link':
-                  return React.cloneElement(
-                    child as ReactElement<any>,
-                    {
-                      cardDimensions: {
-                        width: 343,
-                      },
-                    } as MediaProps,
-                  );
-              }
-            },
-          )}
+          {this.props.children}
         </FilmstripView>
       </Wrapper>
     );

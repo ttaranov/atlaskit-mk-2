@@ -17,6 +17,8 @@ describe('nodeviews/media', () => {
     id: 'foo',
     type: 'file',
     collection: 'collection',
+    width: 100,
+    height: 100,
   });
 
   beforeEach(() => {

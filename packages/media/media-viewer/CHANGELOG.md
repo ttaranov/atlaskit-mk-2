@@ -1,5 +1,57 @@
 # @atlaskit/media-viewer
 
+## 13.3.1
+- [patch] use proper collectionName property in MVNG [7815256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7815256)
+
+## 13.3.0
+- [minor] Add collection support to Media Viewer NGwq [6baa5d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6baa5d0)
+
+## 13.2.3
+
+## 13.2.2
+- [patch] Bump z-index of MVNG [7d1f8fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d1f8fb)
+
+## 13.2.1
+- [patch] Fix issues with "selectedItem" not being part of the list. [f542262](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f542262)
+
+## 13.2.0
+- [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
+
+## 13.1.3
+- [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
+
+## 13.1.2
+- [patch] Fix dynamic import in PDF viewer (next gen) [2e37250](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e37250)
+
+## 13.1.1
+
+## 13.1.0
+- [minor] Add PDF viewer to MVNG [f4dbaa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4dbaa0)
+
+## 13.0.0
+
+## 12.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 11.0.7
+- [patch] Show upload button during recents load in media picker. + Inprove caching for auth provider used in examples [929731a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/929731a)
+
+## 11.0.6
+- [patch] Release first version of image viewer for Media Viewer Next Generation [dd1893a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd1893a)
+
+## 11.0.5
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 11.0.4
+
+## 11.0.3
+
+## 11.0.2
+
+## 11.0.1
+- [patch] Wire up MVNG with Media Providers [d80c743](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d80c743)
+
 ## 11.0.0
 
 ## 10.1.0

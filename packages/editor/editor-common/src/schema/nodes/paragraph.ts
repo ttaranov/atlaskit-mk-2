@@ -1,5 +1,4 @@
-import { NodeSpec } from 'prosemirror-model';
-import { nodes } from 'prosemirror-schema-basic';
+import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 import { Inline } from './doc';
 
 /**
@@ -10,4 +9,12 @@ export interface Definition {
   content: Array<Inline>;
 }
 
-export const paragraph: NodeSpec = nodes.paragraph;
+const pDOM: DOMOutputSpec = ['p', 0];
+export const paragraph: NodeSpec = {
+  content: 'inline*',
+  group: 'block',
+  parseDOM: [{ tag: 'p' }],
+  toDOM() {
+    return pDOM;
+  },
+};

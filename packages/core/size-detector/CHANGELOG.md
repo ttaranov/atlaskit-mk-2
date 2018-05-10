@@ -1,5 +1,14 @@
 # @atlaskit/size-detector
 
+## 3.1.0
+- [minor] Add onResize prop callback [18c0bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18c0bf0)
+
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 2.2.2
+- [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
+
 ## 2.2.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

@@ -1,6 +1,5 @@
 import { MediaPickerContext } from '../domain/context';
 
-import { FileFinalize } from '../service/uploadService';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 import { MediaProgress } from '../domain/progress';
 import { MediaError } from '../domain/error';
@@ -18,7 +17,6 @@ import { UploadEventPayloadMap } from '../domain/uploadEvent';
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;
   emitUploadProgress(file: MediaFile, progress: MediaProgress): void;
-  emitUploadFinalizeReady(file: MediaFile, finalize: FileFinalize): void;
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void;
   emitUploadProcessing(file: PublicMediaFile): void;
   emitUploadEnd(file: PublicMediaFile, mediaApiData: MediaFileData): void;
@@ -28,7 +26,7 @@ export interface UploadEventEmitter {
 export class UploadComponent<
   M extends UploadEventPayloadMap
 > extends GenericEventEmitter<M> implements UploadEventEmitter {
-  constructor(protected readonly context: MediaPickerContext) {
+  constructor(protected readonly analyticsContext: MediaPickerContext) {
     super();
   }
 
@@ -45,10 +43,6 @@ export class UploadComponent<
     });
   }
 
-  emitUploadFinalizeReady(file: MediaFile, finalize: FileFinalize): void {
-    this.emit('upload-finalize-ready', { file, finalize });
-  }
-
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void {
     this.emit('upload-preview-update', {
       file,
@@ -58,12 +52,12 @@ export class UploadComponent<
 
   emitUploadProcessing(file: PublicMediaFile): void {
     this.emit('upload-processing', { file });
-    this.context.trackEvent(new MPFileProcessingStarted());
+    this.analyticsContext.trackEvent(new MPFileProcessingStarted());
   }
 
   emitUploadEnd(file: PublicMediaFile, mediaApiData: MediaFileData): void {
     this.emit('upload-end', { file, public: mediaApiData });
-    this.context.trackEvent(new MPFileUploadEnded());
+    this.analyticsContext.trackEvent(new MPFileUploadEnded());
   }
 
   emitUploadError(file: MediaFile, error: MediaError): void {

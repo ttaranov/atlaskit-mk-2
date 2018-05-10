@@ -1,5 +1,60 @@
 # @atlaskit/media-image
 
+## 27.1.1
+
+## 27.1.0
+- [minor] Added "disableOverlay" prop to Card and CardView public API [533d085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533d085)
+
+## 27.0.4
+- [patch] hide link items from CardList (Sidebard) [dd2c7e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2c7e7)
+
+## 27.0.3
+- [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
+- [patch] Turn side effects to true due to rxjs operators imports [5eddd49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5eddd49)
+
+## 27.0.2
+- [patch] remove polished dependency [0e54c69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e54c69)
+
+## 27.0.1
+
+## 27.0.0
+
+## 26.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 26.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 25.2.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 25.1.8
+
+## 25.1.7
+
+## 25.1.6
+- [patch] Fix typo and potential memory leak [6ecc601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ecc601)
+
+## 25.1.5
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 25.1.4
+
+## 25.1.3
+- [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
+
+## 25.1.2
+- [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
+
+## 25.1.1
+
+## 25.1.0
+- [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+- [minor] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
+
+## 25.0.2
+
 ## 25.0.1
 
 ## 25.0.0

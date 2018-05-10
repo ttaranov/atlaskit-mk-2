@@ -260,7 +260,7 @@ export class Demo extends React.Component<
     };
     const success = {
       heading: 'Success',
-      items: [200, 201, 204].map((code: Number) => {
+      items: [200, 201, 204].map((code: number) => {
         return {
           content: code,
           value: code,
@@ -271,7 +271,7 @@ export class Demo extends React.Component<
     };
     const error = {
       heading: 'Error',
-      items: [400, 403, 404, 500, 503].map((code: Number) => {
+      items: [400, 403, 404, 500, 503].map((code: number) => {
         return {
           content: code,
           value: code,

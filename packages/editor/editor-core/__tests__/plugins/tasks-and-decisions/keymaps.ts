@@ -7,9 +7,16 @@ import {
   sendKeyToPm,
   taskList,
   taskItem,
+  mention,
+  table,
+  tr,
+  td,
+  tdEmpty,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
+import mentionsPlugin from '../../../src/plugins/mentions';
+import tablesPlugin from '../../../src/plugins/table';
 
 describe('tasks and decisions - keymaps', () => {
   beforeEach(() => {
@@ -23,7 +30,7 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tasksAndDecisionsPlugin],
+      editorPlugins: [tablesPlugin, tasksAndDecisionsPlugin, mentionsPlugin],
     });
 
   describe('decisions', () => {
@@ -63,6 +70,29 @@ describe('tasks and decisions - keymaps', () => {
             doc(
               decisionList({ localId: 'local-decision' })(
                 decisionItem({ localId: 'local-decision' })('Hello'),
+              ),
+            ),
+          );
+        });
+
+        it('should delete only internal node on backspace', () => {
+          const { editorView } = editor(
+            doc(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })(
+                  'Hello ',
+                  mention({ id: '1234', text: '@Oscar Wallhult' })(),
+                  '{<>}',
+                ),
+              ),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('Hello '),
               ),
             ),
           );
@@ -210,6 +240,28 @@ describe('tasks and decisions - keymaps', () => {
         });
       });
     });
+
+    describe('Down Arrow', () => {
+      it('should navigate out of decision', () => {
+        const { editorView } = editor(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('Hello world{<>}'),
+            ),
+          ),
+        );
+
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('Hello world'),
+            ),
+            p(),
+          ),
+        );
+      });
+    });
   });
 
   describe('tasks', () => {
@@ -250,6 +302,29 @@ describe('tasks and decisions - keymaps', () => {
             doc(
               taskList({ localId: 'local-decision' })(
                 taskItem({ localId: 'local-decision' })('Hello'),
+              ),
+            ),
+          );
+        });
+
+        it('should delete only internal node on backspace', () => {
+          const { editorView } = editor(
+            doc(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })(
+                  'Hello ',
+                  mention({ id: '1234', text: '@Oscar Wallhult' })(),
+                  '{<>}',
+                ),
+              ),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })('Hello '),
               ),
             ),
           );
@@ -332,6 +407,35 @@ describe('tasks and decisions - keymaps', () => {
           );
         });
       });
+
+      describe('when nested inside tables', () => {
+        describe('when cursor is at the begining of the first taskItem', () => {
+          it('should convert item to paragraph and keep the cursor in the same cell', () => {
+            const { editorView } = editor(
+              doc(
+                table()(
+                  tr(
+                    tdEmpty,
+                    td()(
+                      taskList({ localId: 'local-highlight' })(
+                        taskItem({ localId: 'local-highlight' })('{<>}'),
+                      ),
+                    ),
+                    tdEmpty,
+                  ),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(table()(tr(tdEmpty, tdEmpty, tdEmpty))),
+            );
+
+            expect(editorView.state.selection.$from.pos).toEqual(8);
+          });
+        });
+      });
     });
 
     describe('Enter', () => {
@@ -393,6 +497,28 @@ describe('tasks and decisions - keymaps', () => {
             ),
           );
         });
+      });
+    });
+
+    describe('Down Arrow', () => {
+      it('should navigate out of task', () => {
+        const { editorView } = editor(
+          doc(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('Hello world{<>}'),
+            ),
+          ),
+        );
+
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('Hello world'),
+            ),
+            p(),
+          ),
+        );
       });
     });
   });

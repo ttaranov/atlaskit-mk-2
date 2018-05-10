@@ -276,6 +276,25 @@ export function hasClass(node: Element, className: string): boolean {
   return false;
 }
 
+/**
+ * Calculates the size of an element in a given dimension, using its CSS property value,
+ * which may be based to the parent element's dimensions.
+ *
+ * @param value Value for a CSS property. Supported units are px and %.
+ * @param parentPixels The dimension of the container element, in pixels.
+ */
+export function calcPixelsFromCSSValue(
+  value: string,
+  parentPixels: number,
+): number {
+  if (value.substr(-2) === 'px') {
+    return parseInt(value.slice(0, -2), 10);
+  } else if (value.substr(-1) === '%') {
+    return Math.round(parseInt(value.slice(0, -1), 10) / 100.0 * parentPixels);
+  }
+  return 0;
+}
+
 /*
  * Constructs a struct string of replacement blocks and marks for a given node
  */
@@ -326,7 +345,10 @@ export function parseMacro(node: Element): Macro {
 export const getExtensionMacroParams = (params: object) => {
   const macroParams = {};
   Object.keys(params).forEach(key => {
-    macroParams[key] = { value: params[key] };
+    /** Safe check for empty keys */
+    if (key) {
+      macroParams[key] = { value: params[key] };
+    }
   });
   return macroParams;
 };

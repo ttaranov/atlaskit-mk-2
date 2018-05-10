@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
 import {
@@ -10,33 +9,30 @@ import {
 } from './styles';
 
 export interface ButtonProps {
-  index: number;
   style?: object;
-  insertRow: (row: number) => void;
+  onClick: () => void;
   lineMarkerWidth?: number;
   onMouseOver?: () => void;
 }
 
-export default class InsertRowButton extends Component<ButtonProps, any> {
-  handleInsert = () => this.props.insertRow(this.props.index);
+const InsertRowButton = ({
+  onMouseOver,
+  onClick,
+  lineMarkerWidth,
+  style,
+}: ButtonProps) => (
+  <InsertRowButtonWrap style={style} onMouseOver={onMouseOver}>
+    <InsertRowButtonInner>
+      <AkButton
+        onClick={onClick}
+        iconBefore={<AddIcon label="Add row" />}
+        appearance="primary"
+        spacing="none"
+      />
+    </InsertRowButtonInner>
+    <RowLineMarker style={{ width: lineMarkerWidth }} />
+    <InsertRowMarker />
+  </InsertRowButtonWrap>
+);
 
-  render() {
-    return (
-      <InsertRowButtonWrap
-        style={this.props.style}
-        onMouseOver={this.props.onMouseOver}
-      >
-        <InsertRowButtonInner>
-          <AkButton
-            onClick={this.handleInsert}
-            iconBefore={<AddIcon label="Add row" />}
-            appearance="primary"
-            spacing="none"
-          />
-        </InsertRowButtonInner>
-        <RowLineMarker style={{ width: this.props.lineMarkerWidth }} />
-        <InsertRowMarker />
-      </InsertRowButtonWrap>
-    );
-  }
-}
+export default InsertRowButton;

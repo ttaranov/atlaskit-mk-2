@@ -3,10 +3,11 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
+import { selectParentNodeOfType } from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
-import { ExtensionHandlers } from '../../../../types';
+import { ExtensionHandlers } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;
@@ -16,10 +17,6 @@ export interface Props {
     element: HTMLElement | null,
   ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
-  selectExtension: (
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-  ) => void;
   extensionHandlers: ExtensionHandlers;
 }
 
@@ -109,7 +106,9 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   private handleSelectExtension = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.selectExtension(state, dispatch);
+    dispatch(
+      selectParentNodeOfType(state.schema.nodes.bodiedExtension)(state.tr),
+    );
   };
 
   private tryExtensionHandler() {

@@ -1,5 +1,28 @@
 # @atlaskit/media-avatar-picker
 
+## 7.1.0
+- [minor] Allow to customize default avatar list text [d2a7642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2a7642)
+
+## 7.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 7.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 6.0.7
+
+## 6.0.6
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 6.0.5
+
+## 6.0.4
+
+## 6.0.3
+
+## 6.0.2
+
 ## 6.0.1
 
 ## 6.0.0

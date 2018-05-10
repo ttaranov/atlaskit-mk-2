@@ -1,5 +1,10 @@
 # @atlaskit/field-range
 
+## 3.0.1
+
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 2.6.3
 - [patch] updated logic to calculate value percent [7e070f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e070f5)
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
-import { Context, ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { MediaType } from '@atlaskit/editor-common';
 import { Card, CardView, CardProps } from '@atlaskit/media-card';
 import {
@@ -12,7 +11,13 @@ import {
   MediaStateManager,
   DefaultMediaStateManager,
 } from '../../../../src/plugins/media';
-import MediaComponent from '../../../../src/plugins/media/ui/Media/MediaComponent';
+import MediaComponent, {
+  MediaComponentInternal,
+} from '../../../../src/plugins/media/ui/Media/MediaComponent';
+import {
+  MediaState,
+  MediaStateManager as MediaStateManagerType,
+} from '../../../../src/plugins/media/types';
 
 describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const file = {
@@ -42,6 +47,14 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     },
   };
 
+  const external = {
+    type: 'media',
+    attrs: {
+      type: 'external',
+      url: 'http://image.jpg',
+    },
+  };
+
   const defaultStateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -67,7 +80,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
   it('should render a CardView component if the media type is file without provider', () => {
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={file.attrs.id}
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
@@ -79,7 +92,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should render a Card component if the media is a public file with provider', async () => {
     const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={file.attrs.id}
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
@@ -97,7 +110,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should render a CardView component if the media is a temporary file with provider', async () => {
     const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={tempFile.attrs.id}
         type={tempFile.attrs.type as MediaType}
         collection={tempFile.attrs.collection}
@@ -116,7 +129,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       includeLinkCreateContext: true,
     });
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
@@ -124,10 +137,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-    const linkCreateContext = ContextFactory.create(
-      resolvedLinkCreateContextConfig,
-    ) as Context;
+    const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
     mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(0);
@@ -136,7 +147,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should render nothing if linkCreateContext not provided', async () => {
     const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
@@ -154,7 +165,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       includeLinkCreateContext: true,
     });
     const mediaComponent = shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
@@ -163,16 +174,29 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     );
 
     const resolvedMediaProvider = await mediaProvider;
-    const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-    const linkCreateContext = ContextFactory.create(
-      resolvedLinkCreateContextConfig,
-    ) as Context;
+    const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
     mediaComponent.setState({ linkCreateContext });
 
     expect(mediaComponent.find(Card).length).toEqual(1);
   });
 
-  describe('when appearance is set', () => {
+  it('should render a CardView component if media type is external', async () => {
+    const mediaComponent = shallow(
+      <MediaComponentInternal
+        type={external.attrs.type as MediaType}
+        url={external.attrs.url}
+      />,
+    );
+
+    expect(mediaComponent.find(CardView).length).toEqual(1);
+  });
+
+  /**
+   * To fix ED-4030 we decided to a temporary fix. So, we not swapping `CardView` with `Card`
+   * `CardView` doesn't support appearance
+   */
+  describe.skip('when appearance is set', () => {
     it('renders a Card component with the customized appearance', async () => {
       const mediaProvider = getFreshResolvedProvider({
         includeLinkCreateContext: true,
@@ -188,10 +212,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-      const linkCreateContext = ContextFactory.create(
-        resolvedLinkCreateContextConfig,
-      ) as Context;
+      const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
       mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
@@ -199,7 +221,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     });
   });
 
-  describe('when appearance is not set', () => {
+  describe.skip('when appearance is not set', () => {
     it('renders a link Card component with the default appearance', async () => {
       const mediaProvider = getFreshResolvedProvider({
         includeLinkCreateContext: true,
@@ -214,10 +236,8 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
       );
 
       const resolvedMediaProvider = await mediaProvider;
-      const resolvedLinkCreateContextConfig = (await resolvedMediaProvider.linkCreateContext) as ContextConfig;
-      const linkCreateContext = ContextFactory.create(
-        resolvedLinkCreateContextConfig,
-      ) as Context;
+      const linkCreateContext = await resolvedMediaProvider.linkCreateContext;
+
       mediaComponent.setState({ linkCreateContext });
 
       const props: CardProps = mediaComponent.find(Card).props();
@@ -228,16 +248,17 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   it('should use stateManager from Plugin state in Editor mode', async () => {
     const stateManager = {
       getState: () => undefined,
+      newState: (): MediaState | undefined => undefined,
       updateState: () => {},
       on: jest.fn(),
       off: () => {},
       destroy: () => {},
-    };
+    } as MediaStateManagerType;
 
     const mediaProvider = getFreshResolvedProvider({ stateManager });
 
     shallow(
-      <MediaComponent
+      <MediaComponentInternal
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}
@@ -255,7 +276,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     const mediaProvider = getFreshResolvedProvider();
 
     const media = mount(
-      <MediaComponent
+      <MediaComponentInternal
         id={link.attrs.id}
         type={link.attrs.type as MediaType}
         collection={link.attrs.collection}

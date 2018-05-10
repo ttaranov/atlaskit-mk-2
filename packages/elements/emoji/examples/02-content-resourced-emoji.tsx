@@ -3,7 +3,7 @@ import * as React from 'react';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
-import { getEmojiResource, lorem } from '../src/support/story-data';
+import { getEmojiResource, lorem } from '../example-helpers';
 
 interface SampleEmojiProps {
   emojiProvider?: Promise<EmojiProvider>;

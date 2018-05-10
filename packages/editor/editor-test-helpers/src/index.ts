@@ -46,12 +46,12 @@ export {
   mentionQuery,
   hardBreak,
   emojiQuery,
+  typeAheadQuery,
   media,
   mediaGroup,
   mediaSingle,
   textColor,
   table,
-  tableWithAttrs,
   tr,
   td,
   th,
@@ -75,6 +75,8 @@ export {
   sequence,
   date,
   placeholder,
+  layoutSection,
+  layoutColumn,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';

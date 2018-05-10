@@ -2,7 +2,7 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, MediaType } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
@@ -11,6 +11,7 @@ import { MediaFile, validateMediaFile, PublicMediaFile } from '../domain/file';
 import { SmartMediaProgress } from '../domain/progress';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
+import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 
 import { createHasher } from './hashing/hasherCreator';
 
@@ -28,8 +29,6 @@ type UploadId = string;
 type ChunkId = string;
 
 const MAX_RETRY_COUNT = 1;
-
-export type FileFinalize = () => void;
 
 export interface UploadRequestParams {
   collection?: string;
@@ -65,11 +64,6 @@ export interface FileUploadingEventPayload {
   readonly progress: SmartMediaProgress;
 }
 
-export interface FileFinalizeReadyEventPayload {
-  readonly file: MediaFile;
-  readonly finalize: FileFinalize;
-}
-
 export interface FileConvertingEventPayload {
   readonly file: PublicMediaFile;
 }
@@ -88,7 +82,6 @@ export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': FilesAddedEventPayload;
   readonly 'file-preview-update': FilePreviewUpdateEventPayload;
   readonly 'file-uploading': FileUploadingEventPayload;
-  readonly 'file-finalize-ready': FileFinalizeReadyEventPayload;
   readonly 'file-converting': FileConvertingEventPayload;
   readonly 'file-converted': FileConvertedEventPayload;
   readonly 'file-upload-error': FileUploadErrorEventPayload;
@@ -320,12 +313,18 @@ export class UploadService {
 
         const files = resumableFiles.map(resumableFile => {
           const file = this.mapResumableFileToMediaFile(resumableFile);
-          const mediaType = file.type.match(/^image\//) ? 'image' : 'unknown';
-
+          const mediaType = this.getMediaTypeFromFile(resumableFile.file);
           // TODO MSW-396 Replace this check after RFC from ticket has been decided
           // https://product-fabric.atlassian.net/browse/MSW-396
           if (file.size < maxFileSizeForPreview && mediaType === 'image') {
             getPreviewFromBlob(resumableFile.file, mediaType).then(preview => {
+              this.emit('file-preview-update', {
+                file,
+                preview,
+              });
+            });
+          } else if (mediaType === 'video') {
+            getPreviewFromVideo(resumableFile.file).then(preview => {
               this.emit('file-preview-update', {
                 file,
                 preview,
@@ -349,6 +348,17 @@ export class UploadService {
       },
     );
   };
+
+  private getMediaTypeFromFile(file: File): MediaType {
+    const { type } = file;
+    if (type.match(/^image\//)) {
+      return 'image';
+    } else if (type.match(/^video\//)) {
+      return 'video';
+    }
+
+    return 'unknown';
+  }
 
   private onChunkingComplete = (resumableFile: ResumableFile): void => {
     // By default the callback of a chunk aborts all uploads and clears the chunk array in case of error.
@@ -411,21 +421,9 @@ export class UploadService {
   };
 
   private onFileSuccess = (resumableFile: ResumableFile): void => {
-    const { autoFinalize } = this.getResumableFileUploadParams(resumableFile);
-
     this.emitLastUploadingPercentage(resumableFile);
 
-    if (autoFinalize) {
-      this.finalizeFile(resumableFile);
-      return;
-    }
-
-    this.emit('file-finalize-ready', {
-      file: this.mapResumableFileToMediaFile(resumableFile),
-      finalize: () => {
-        this.finalizeFile(resumableFile);
-      },
-    });
+    this.finalizeFile(resumableFile);
   };
 
   private onFileError = (
@@ -570,18 +568,12 @@ export class UploadService {
     publicId: string,
     resumableFile: ResumableFile,
   ): Promise<MediaFileData> {
-    const { collection, fetchMetadata } = this.getResumableFileUploadParams(
-      resumableFile,
-    );
+    const { collection } = this.getResumableFileUploadParams(resumableFile);
 
-    if (fetchMetadata) {
-      this.emit('file-converting', {
-        file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
-      });
-      return this.api.pollForFileMetadata(mediaClient, publicId, collection);
-    }
-
-    return Promise.resolve({ id: publicId });
+    this.emit('file-converting', {
+      file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
+    });
+    return this.api.pollForFileMetadata(mediaClient, publicId, collection);
   }
 
   // Error handling

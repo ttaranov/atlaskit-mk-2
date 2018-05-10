@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type Component as ComponentType } from 'react';
-import { PaginationStateless } from '@atlaskit/pagination';
+import Pagination from '@atlaskit/pagination';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
 import {
@@ -211,9 +211,9 @@ export default class DynamicTable extends Component<Props, State> {
           </Table>
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
-          <PaginationStateless
-            current={page}
-            onSetPage={this.onSetPage}
+          <Pagination
+            value={page}
+            onChange={this.onSetPage}
             total={totalPages}
           />
         )}

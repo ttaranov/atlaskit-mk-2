@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+import { akColorN300 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -12,14 +12,13 @@ import {
   storyContextIdentifierProviderFactory,
   macroProvider,
 } from '@atlaskit/editor-test-helpers';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
-import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import { DevTools } from '../example-helpers/DevTools';
 
 import {
   akEditorCodeBackground,
@@ -37,7 +36,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN80};
+    color: ${akColorN300};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -46,14 +45,14 @@ TitleInput.displayName = 'TitleInput';
  * +-------------------------------+
  * + [Editor core v] [Full page v] +  48px height
  * +-------------------------------+
- * +                               +  20px padding-top
+ * +                               +  16px padding-top
  * +            Content            +
- * +                               +  20px padding-bottom
+ * +                               +  16px padding-bottom
  * +-------------------------------+  ----
- *                                    88px
+ *                                    80px - 48px (Outside of iframe)
  */
 export const Wrapper: any = styled.div`
-  height: calc(100vh - 88px);
+  height: calc(100vh - 32px);
 `;
 Wrapper.displayName = 'Wrapper';
 
@@ -106,12 +105,12 @@ export type Props = {};
 export type State = { disabled: boolean };
 
 const providers = {
-  emojiProvider: emojiStoryData.getEmojiResource({
+  emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
   }) as Promise<EmojiProvider>,
-  mentionProvider: Promise.resolve(mentionStoryData.resourceProvider),
+  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
-    taskDecisionStoryData.getMockTaskDecisionResource(),
+    taskDecision.getMockTaskDecisionResource(),
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   activityProvider: Promise.resolve(new MockActivityResource()),
@@ -121,7 +120,7 @@ const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-export default class Example extends React.Component<Props, State> {
+export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
@@ -137,56 +136,59 @@ export default class Example extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Content>
-          <EditorContext>
-            <Editor
-              appearance="full-page"
-              analyticsHandler={analyticsHandler}
-              allowTasksAndDecisions={true}
-              allowCodeBlocks={true}
-              allowLists={true}
-              allowTextColor={true}
-              allowTables={{
-                allowColumnResizing: true,
-                allowMergeCells: true,
-                allowNumberColumn: true,
-                allowBackgroundColor: true,
-                allowHeaderRow: true,
-                allowHeaderColumn: true,
-              }}
-              allowJiraIssue={true}
-              allowUnsupportedContent={true}
-              allowPanel={true}
-              allowExtension={true}
-              allowRule={true}
-              allowDate={true}
-              allowTemplatePlaceholders={{ allowInserting: true }}
-              {...providers}
-              media={{ provider: mediaProvider, allowMediaSingle: true }}
-              placeholder="Write something..."
-              shouldFocus={false}
-              disabled={this.state.disabled}
-              contentComponents={
-                <TitleInput
-                  placeholder="Give this page a title..."
-                  // tslint:disable-next-line:jsx-no-lambda
-                  innerRef={this.handleTitleRef}
-                  onFocus={this.handleTitleOnFocus}
-                  onBlur={this.handleTitleOnBlur}
-                />
-              }
-              primaryToolbarComponents={
-                <WithEditorActions
-                  // tslint:disable-next-line:jsx-no-lambda
-                  render={actions => (
-                    <SaveAndCancelButtons editorActions={actions} />
-                  )}
-                />
-              }
-              onSave={SAVE_ACTION}
-              insertMenuItems={customInsertMenuItems}
-              extensionHandlers={extensionHandlers}
-            />
-          </EditorContext>
+          <Editor
+            appearance="full-page"
+            analyticsHandler={analyticsHandler}
+            UNSAFE_allowQuickInsert={true}
+            allowTasksAndDecisions={true}
+            allowCodeBlocks={true}
+            allowLists={true}
+            allowTextColor={true}
+            allowTables={{
+              allowColumnResizing: true,
+              allowMergeCells: true,
+              allowNumberColumn: true,
+              allowBackgroundColor: true,
+              allowHeaderRow: true,
+              allowHeaderColumn: true,
+              permittedLayouts: 'all',
+              stickToolbarToBottom: true,
+            }}
+            allowJiraIssue={true}
+            allowUnsupportedContent={true}
+            allowPanel={true}
+            allowExtension={true}
+            allowRule={true}
+            allowDate={true}
+            UNSAFE_allowLayouts={true}
+            allowGapCursor={true}
+            allowTemplatePlaceholders={{ allowInserting: true }}
+            {...providers}
+            media={{ provider: mediaProvider, allowMediaSingle: true }}
+            placeholder="Write something..."
+            shouldFocus={false}
+            disabled={this.state.disabled}
+            contentComponents={
+              <TitleInput
+                placeholder="Give this page a title..."
+                // tslint:disable-next-line:jsx-no-lambda
+                innerRef={this.handleTitleRef}
+                onFocus={this.handleTitleOnFocus}
+                onBlur={this.handleTitleOnBlur}
+              />
+            }
+            primaryToolbarComponents={
+              <WithEditorActions
+                // tslint:disable-next-line:jsx-no-lambda
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
+              />
+            }
+            onSave={SAVE_ACTION}
+            insertMenuItems={customInsertMenuItems}
+            extensionHandlers={extensionHandlers}
+          />
         </Content>
       </Wrapper>
     );
@@ -199,4 +201,15 @@ export default class Example extends React.Component<Props, State> {
       ref.focus();
     }
   };
+}
+
+export default function Example() {
+  return (
+    <EditorContext>
+      <div style={{ height: '100%' }}>
+        <DevTools />
+        <ExampleEditor />
+      </div>
+    </EditorContext>
+  );
 }

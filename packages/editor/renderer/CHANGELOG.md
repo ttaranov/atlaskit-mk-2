@@ -1,5 +1,103 @@
 # @atlaskit/renderer
 
+## 16.1.3
+- [patch] Add a blank space between mention and text in text renderer [940ecc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/940ecc7)
+
+## 16.1.2
+
+## 16.1.1
+
+## 16.1.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
+## 16.0.9
+
+## 16.0.8
+- [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
+
+## 16.0.7
+
+## 16.0.6
+
+## 16.0.5
+- [patch] Fix rendering of multiple text nodes in inline code [9ee5612](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ee5612)
+
+## 16.0.4
+- [patch] CFE-1078: Add the type of extension to the call to extension handler [4db252c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4db252c)
+
+## 16.0.3
+
+## 16.0.2
+- [patch] Use node type as fallback behavior for unsupported node [090d962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/090d962)
+
+## 16.0.1
+- [patch] Always wrap text [bcd3361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcd3361)
+
+## 16.0.0
+
+## 15.0.2
+
+## 15.0.1
+- [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
+
+## 15.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 14.0.0
+- [major] Generic Text Serializer [1549347](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1549347)
+
+## 13.3.4
+
+## 13.3.3
+- [patch] support table colwidth in renderer, fix other table properties in email renderer [f78bef4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f78bef4)
+
+## 13.3.2
+
+## 13.3.1
+
+## 13.3.0
+
+## 13.2.0
+- [minor] stop creating mediaContext in MediaCard component [ad8c3c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad8c3c0)
+
+## 13.1.0
+
+## 13.0.17
+
+## 13.0.16
+- [patch] Move types/interfaces for ExtensionHandlers to editor-common [3d26cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d26cab)
+
+## 13.0.15
+
+## 13.0.14
+- [patch] Prevent CodeBlocks from overflowing their container [50cc975](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50cc975)
+
+## 13.0.13
+- [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
+
+## 13.0.12
+
+## 13.0.11
+- [patch] Adds styling for unknown blocks [5cdc63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cdc63c)
+
+## 13.0.10
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
+## 13.0.9
+- [patch] Change Media Group resize mode to full-fit from crop [05575db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05575db)
+
+## 13.0.8
+
+## 13.0.7
+
+## 13.0.6
+- [patch] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
+
+## 13.0.5
+
+## 13.0.4
+
 ## 13.0.3
 
 ## 13.0.2

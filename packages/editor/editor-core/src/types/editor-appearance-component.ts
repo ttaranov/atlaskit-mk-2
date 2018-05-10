@@ -1,13 +1,13 @@
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import {
   UIComponentFactory,
   ReactElement,
   InsertMenuCustomItem,
-  ExtensionHandlers,
 } from '../types';
+import { CollabEditOptions } from '../plugins/collab-edit';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
@@ -41,4 +41,6 @@ export interface EditorAppearanceComponentProps {
   extensionHandlers?: ExtensionHandlers;
 
   disabled?: boolean;
+
+  collabEdit?: CollabEditOptions;
 }

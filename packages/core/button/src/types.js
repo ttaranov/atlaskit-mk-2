@@ -2,8 +2,6 @@
 import type { Node, Element, ElementType } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
-type Func = () => any;
-
 export type ButtonAppearances =
   | 'default'
   | 'danger'
@@ -22,6 +20,8 @@ export type ButtonProps = {
   /** Pass aria-expanded to underlying html button. */
   ariaExpanded?: boolean,
   /** Pass aria-haspopup to underlying html button. */
+  ariaLabel?: string,
+  /** Pass aria-haspopup to underlying html button. */
   ariaHaspopup?: boolean,
   /** This button's child nodes. */
   children?: Node,
@@ -38,13 +38,19 @@ export type ButtonProps = {
   /** Places an icon within the button, before the button's text. */
   iconBefore?: Element<*>,
   /** Pass a reference on to the styled component */
-  innerRef?: Func,
+  innerRef?: HTMLElement => mixed,
   /** Provide a unique id to the button. */
   id?: string,
   /** Set if the button is disabled. */
-  isDisabled?: boolean,
+  isDisabled: boolean,
+  /**
+    Set if the button is loading. When isLoading is true, text is hidden, and
+    a spinner is shown in its place. The button maintains the width that it would
+    have if the text were visible.
+  */
+  isLoading: boolean,
   /** Change the style to indicate the button is selected. */
-  isSelected?: boolean,
+  isSelected: boolean,
   /** Handler to be called on blur */
   onBlur?: (e: SyntheticEvent<>) => void,
   /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
@@ -52,15 +58,17 @@ export type ButtonProps = {
   /** Handler to be called on focus */
   onFocus?: (e: SyntheticEvent<>) => void,
   /** Set the amount of padding in the button. */
-  spacing?: 'compact' | 'default' | 'none',
+  spacing: 'compact' | 'default' | 'none',
   /** Assign specific tabIndex order to the underlying html button. */
   tabIndex?: number,
   /** Pass target down to a link within the button component, if a href is provided. */
   target?: string,
   /** Set whether it is a button or a form submission. */
-  type?: 'button' | 'submit',
+  type: 'button' | 'submit',
   /** Option to fit button width to its parent width */
-  shouldFitContainer?: boolean,
+  shouldFitContainer: boolean,
+  /** Set the button to autofocus on mount. */
+  autoFocus: boolean,
 };
 
 export type DerivedButtonProps = {

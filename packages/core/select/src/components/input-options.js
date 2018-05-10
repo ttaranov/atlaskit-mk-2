@@ -1,10 +1,12 @@
 // @flow
 
-import React, { Component, type Node } from 'react';
+import React, { Component, type Element } from 'react';
+import styled from 'styled-components';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
+import type { CommonProps, fn, InnerProps } from './types';
 
 // maintains function shape
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
@@ -64,18 +66,21 @@ const getSecondaryColor = ({
   return color(rest);
 };
 
-type fn = any => any;
-type OptionProops = {
-  children: Node,
+type OptionProps = CommonProps & {
+  [string]: any,
+  children: Element<*>,
   getStyles: fn,
   Icon: CheckboxIcon | RadioIcon,
-  innerProps: {},
-  isDisabled?: boolean,
-  isFocused?: boolean,
+  innerProps: InnerProps,
+  isDisabled: boolean,
+  isFocused: boolean,
   isSelected: boolean,
+  type: 'option',
+  label: string,
 };
 type OptionState = { isActive?: boolean };
-class ControlOption extends Component<OptionProops, OptionState> {
+
+class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
   onMouseUp = () => this.setState({ isActive: false });
@@ -89,6 +94,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
       isSelected,
       children,
       innerProps,
+      ...rest
     } = this.props;
     const { isActive } = this.state;
 
@@ -105,7 +111,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
     };
 
     // prop assignment
-    const props = {
+    const props: InnerProps = {
       ...innerProps,
       onMouseDown: this.onMouseDown,
       onMouseUp: this.onMouseUp,
@@ -115,6 +121,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
 
     return (
       <components.Option
+        {...rest}
         isDisabled={isDisabled}
         isFocused={isFocused}
         isSelected={isSelected}
@@ -125,11 +132,29 @@ class ControlOption extends Component<OptionProops, OptionState> {
           primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
           secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
         />
-        {children}
+        <Truncate>{children}</Truncate>
       </components.Option>
     );
   }
 }
+/* TODO:
+  to be removed
+  the label of an option in the menu
+  should ideally be something we can customise
+  as part of the react-select component API
+  at the moment we are hardcoding it into
+  the custom input-option components for Radio and Checkbox Select
+  and so this behaviour is not customisable / disableable
+  by users who buy into radio / checkbox select.
+*/
+
+const Truncate = styled.div`
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  flex: 1;
+  white-space: nowrap;
+`;
+
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />
 );

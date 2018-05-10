@@ -17,7 +17,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 
-import { Browser } from '../../../..';
+import { Browser } from '../../../../components/browser';
 
 import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
@@ -37,7 +37,13 @@ import {
 } from '../../../domain';
 
 import { menuEdit } from '../editor/phrases';
-import { Wrapper, SpinnerWrapper } from './styled';
+import {
+  Wrapper,
+  SpinnerWrapper,
+  CardsWrapper,
+  RecentUploadsTitle,
+  CardWrapper,
+} from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -100,18 +106,22 @@ export class StatelessUploadView extends Component<
 
   render() {
     const { isLoading } = this.props;
+    const cards = this.renderCards();
+    const isEmpty = !isLoading && cards.length === 0;
 
+    let contentPart: JSX.Element | null = null;
     if (isLoading) {
-      return this.loadingView();
+      contentPart = this.loadingView();
+    } else if (!isEmpty) {
+      contentPart = this.recentView(cards);
     }
 
-    const cards = this.cards();
-
-    if (cards.length > 0) {
-      return this.recentView(cards);
-    } else {
-      return this.emptyView();
-    }
+    return (
+      <Wrapper>
+        <Dropzone isEmpty={isEmpty} mpBrowser={this.props.mpBrowser} />
+        {contentPart}
+      </Wrapper>
+    );
   }
 
   private loadingView = () => {
@@ -122,26 +132,15 @@ export class StatelessUploadView extends Component<
     );
   };
 
-  private emptyView() {
-    return (
-      <Wrapper className="empty">
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-      </Wrapper>
-    );
-  }
-
   private recentView(cards: JSX.Element[]) {
     return (
-      <Wrapper>
-        <Dropzone mpBrowser={this.props.mpBrowser} />
-        <div className="cards">
-          <div className="recentUploadsTitle">Recent Uploads</div>
-          {cards}
-        </div>
+      <div>
+        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <CardsWrapper>{cards}</CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
           : null}
-      </Wrapper>
+      </div>
     );
   }
 
@@ -168,13 +167,15 @@ export class StatelessUploadView extends Component<
     </FlagGroup>
   );
 
-  private cards() {
+  private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    return uploadingFilesCards.concat(recentFilesCards);
+    return uploadingFilesCards
+      .concat(recentFilesCards)
+      .map(({ key, el: card }) => <CardWrapper key={key}>{card}</CardWrapper>);
   }
 
-  private uploadingFilesCards() {
+  private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
     const { uploads, onFileClick, onEditorShowImage } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
@@ -191,29 +192,40 @@ export class StatelessUploadView extends Component<
       const { dataURI } = file;
 
       const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
-      const metadata = { ...file.metadata, mimeType: mediaType };
-      const { id } = metadata;
+      const fileMetadata: LocalUploadFileMetadata = {
+        ...file.metadata,
+        mimeType: mediaType,
+      };
+
+      // mimeType
+      const { id } = fileMetadata;
 
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
-      const onClick = () => onFileClick(metadata, 'upload');
+      const onClick = () => onFileClick(fileMetadata, 'upload');
 
       const actions: CardAction[] = [];
       if (mediaType === 'image' && dataURI) {
         actions.push(
           createEditCardAction(
             this.onAnnotateActionClick(() =>
-              onEditorShowImage(metadata, dataURI),
+              onEditorShowImage(fileMetadata, dataURI),
             ),
           ),
         );
       }
 
-      return (
-        <div className="cardWrapper" key={id}>
+      const metadata: FileDetails = {
+        ...file.metadata,
+        mediaType,
+      };
+
+      return {
+        key: id,
+        el: (
           <CardView
             status={status}
-            progress={progress}
+            progress={progress || undefined}
             mediaItemType={'file'}
             metadata={metadata}
             dimensions={cardDimension}
@@ -223,12 +235,12 @@ export class StatelessUploadView extends Component<
             onClick={onClick}
             actions={actions}
           />
-        </div>
-      );
+        ),
+      };
     });
   }
 
-  private recentFilesCards(): JSX.Element[] {
+  private recentFilesCards(): { key: string; el: JSX.Element }[] {
     const {
       context,
       recents,
@@ -245,7 +257,7 @@ export class StatelessUploadView extends Component<
 
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
-      if (fileDetails && fileDetails.id) {
+      if (fileDetails) {
         onFileClick(
           {
             id: fileDetails.id,
@@ -262,19 +274,17 @@ export class StatelessUploadView extends Component<
       if (mediaItem.type === 'file') {
         const { id, name } = mediaItem.details;
 
-        if (id) {
-          if (isWebGLAvailable()) {
-            onEditRemoteImage(
-              {
-                id,
-                name: name || '',
-              },
-              recentsCollection,
-            );
-          } else {
-            // WebGL not available - show warning flag
-            this.showWebGLWarningFlag();
-          }
+        if (isWebGLAvailable()) {
+          onEditRemoteImage(
+            {
+              id,
+              name: name || '',
+            },
+            recentsCollection,
+          );
+        } else {
+          // WebGL not available - show warning flag
+          this.showWebGLWarningFlag();
         }
       }
     };
@@ -288,8 +298,9 @@ export class StatelessUploadView extends Component<
         actions.push(createEditCardAction(editHandler));
       }
 
-      return (
-        <div className="cardWrapper" key={`${occurrenceKey}-${id}`}>
+      return {
+        key: `${occurrenceKey}-${id}`,
+        el: (
           <Card
             context={context}
             identifier={{
@@ -304,8 +315,8 @@ export class StatelessUploadView extends Component<
             actions={actions}
             onLoadingChange={onLoadingChange}
           />
-        </div>
-      );
+        ),
+      };
     });
   }
 
@@ -317,12 +328,7 @@ export class StatelessUploadView extends Component<
     const payload = cardLoadingState.payload as FileDetails;
     const type = cardLoadingState.type;
 
-    if (
-      type === 'complete' &&
-      payload &&
-      payload.mediaType === 'image' &&
-      payload.id
-    ) {
+    if (type === 'complete' && payload && payload.mediaType === 'image') {
       const imageIds = this.state.imageIds.concat(payload.id);
       this.setState({ imageIds });
     }

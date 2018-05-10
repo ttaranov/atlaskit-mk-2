@@ -3,6 +3,11 @@ jest.mock('../src/utils/isRetina');
 
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
+import {
+  MediaItemDetails,
+  DataUri,
+  DataUriService,
+} from '@atlaskit/media-core';
 import { waitUntil } from '@atlaskit/media-test-helpers';
 import {
   withDataURI,
@@ -12,14 +17,29 @@ import {
 } from '../src/root/withDataURI';
 import { getElementDimension } from '../src/utils/getElementDimension';
 import { isRetina } from '../src/utils/isRetina';
+import { FileDetails } from '../../media-core/src';
 
-const DemoComponent = () => null; // tslint:disable-line:variable-name
+interface DemoComponentProps {
+  foo?: string;
+}
+
+class DemoComponent extends React.Component<DemoComponentProps> {
+  render() {
+    return null;
+  }
+}
 const DemoComponentWithDataURI = withDataURI(DemoComponent); // tslint:disable-line:variable-name
 
-const createDataURIService = (imageDataUriDataUri = 'data:jpg') => ({
-  fetchImageDataUri: jest.fn(() => Promise.resolve(imageDataUriDataUri)),
-  fetchOriginalDataUri: jest.fn(),
-});
+const createDataURIService = (
+  imageDataUriDataUri: DataUri = 'data:jpg',
+): jest.Mocked<DataUriService> => {
+  const mock = {
+    fetchOriginalDataUri: jest.fn(),
+    fetchImageDataUri: jest.fn(),
+  } as jest.Mocked<DataUriService>;
+  mock.fetchImageDataUri.mockReturnValue(Promise.resolve(imageDataUriDataUri));
+  return mock;
+};
 
 const waitUntilDataURIIsTruthy = (
   card: ShallowWrapper<WithDataURIProps, WithDataURIState>,
@@ -28,7 +48,8 @@ const waitUntilDataURIIsTruthy = (
 };
 
 describe('WithDataURI', () => {
-  const metadata = {
+  const metadata: FileDetails = {
+    id: 'id',
     mimeType: 'image/gif',
     name: 'foobar.gif',
   };
@@ -39,12 +60,15 @@ describe('WithDataURI', () => {
         <DemoComponentWithDataURI />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       const updateDataURI = jest.spyOn(instance, 'updateDataURI');
 
-      instance.componentWillReceiveProps({
-        dataURIService: createDataURIService(),
-      });
+      instance.componentWillReceiveProps(
+        {
+          dataURIService: createDataURIService(),
+        },
+        {},
+      );
 
       expect(updateDataURI).toHaveBeenCalledTimes(1);
     });
@@ -54,10 +78,10 @@ describe('WithDataURI', () => {
         <DemoComponentWithDataURI />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       const updateDataURI = jest.spyOn(instance, 'updateDataURI');
 
-      instance.componentWillReceiveProps({ metadata: {} });
+      instance.componentWillReceiveProps({ metadata: { id: 'id' } }, {});
 
       expect(updateDataURI).toHaveBeenCalledTimes(1);
     });
@@ -67,9 +91,9 @@ describe('WithDataURI', () => {
         <DemoComponentWithDataURI />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       const updateDataURI = jest.spyOn(instance, 'updateDataURI');
-      instance.componentWillReceiveProps({ foo: 'bar' });
+      instance.componentWillReceiveProps({ foo: 'bar' }, {});
 
       expect(updateDataURI).not.toHaveBeenCalled();
     });
@@ -79,7 +103,8 @@ describe('WithDataURI', () => {
     it('should clear the dataURI when the metadata is undefined', () => {
       const dataURIService = createDataURIService();
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.gif',
       };
 
@@ -92,7 +117,7 @@ describe('WithDataURI', () => {
 
       element.setState({ dataURI: 'data:png' });
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata: undefined });
 
       expect(element.state().dataURI).toBe(undefined);
@@ -101,10 +126,10 @@ describe('WithDataURI', () => {
     it('should clear the dataURI when the metadata is a link', () => {
       const dataURIService = createDataURIService();
 
-      const metadata = {
+      const metadata: MediaItemDetails = {
         url: 'https://example.com',
         title: 'Example link',
-      };
+      } as MediaItemDetails;
 
       const element = shallow<WithDataURIProps, WithDataURIState>(
         <DemoComponentWithDataURI
@@ -114,7 +139,7 @@ describe('WithDataURI', () => {
       );
 
       element.setState({ dataURI: 'data:png' });
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata: undefined });
 
       expect(element.state().dataURI).toBe(undefined);
@@ -123,7 +148,8 @@ describe('WithDataURI', () => {
     it('should set the dataURI to a GIF when the mimeType indicates the item is a GIF', () => {
       const dataURIService = createDataURIService('data:gif');
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         mimeType: 'image/gif',
       };
 
@@ -133,7 +159,7 @@ describe('WithDataURI', () => {
           metadata={metadata}
         />,
       );
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata });
 
       return waitUntilDataURIIsTruthy(element).then(() =>
@@ -144,7 +170,8 @@ describe('WithDataURI', () => {
     it('should set the dataURI to a JPG when the mimeType indicates the item is not a GIF', () => {
       const dataURIService = createDataURIService();
 
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         mimeType: 'image/jpeg',
       };
 
@@ -155,7 +182,7 @@ describe('WithDataURI', () => {
         />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata });
 
       return waitUntilDataURIIsTruthy(element).then(() =>
@@ -165,7 +192,8 @@ describe('WithDataURI', () => {
 
     it('should call fetchImageDataUri with allowAnimated false', () => {
       const dataURIService = createDataURIService();
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.png',
       };
 
@@ -177,7 +205,7 @@ describe('WithDataURI', () => {
         { disableLifecycleMethods: true },
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata, appearance: 'small' });
 
       expect(
@@ -187,7 +215,8 @@ describe('WithDataURI', () => {
 
     it('should call fetchImageDataUri with allowAnimated true', () => {
       const dataURIService = createDataURIService();
-      const metadata = {
+      const metadata: FileDetails = {
+        id: 'id',
         name: 'foobar.png',
       };
 
@@ -198,7 +227,7 @@ describe('WithDataURI', () => {
         />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata, appearance: 'auto' });
 
       expect(
@@ -213,7 +242,7 @@ describe('WithDataURI', () => {
       };
       const invalidDimensions = {
         width: 'hi',
-        height: /a/,
+        height: 'bye',
       };
       const dimensions = {
         width: 50,
@@ -248,7 +277,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -269,7 +298,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -291,7 +320,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -312,7 +341,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -333,7 +362,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -355,7 +384,7 @@ describe('WithDataURI', () => {
           />,
         );
 
-        const instance = element.instance() as WithDataURI;
+        const instance = element.instance() as WithDataURI<DemoComponentProps>;
         instance.updateDataURI({ dataURIService, metadata });
 
         expect(dataURIService.fetchImageDataUri).toBeCalledWith(
@@ -377,7 +406,7 @@ describe('WithDataURI', () => {
         />,
       );
 
-      const instance = element.instance() as WithDataURI;
+      const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata });
 
       expect(dataURIService.fetchImageDataUri).toHaveBeenCalled();
@@ -393,7 +422,9 @@ describe('WithDataURI', () => {
 
       element.setState({ dataURI: 'data:png' });
 
-      expect(element.find(DemoComponent).props().dataURI).toBe('data:png');
+      expect((element.find(DemoComponent).props() as any).dataURI).toBe(
+        'data:png',
+      );
     });
 
     it('should pass down other props when I am passed them', () => {
@@ -414,6 +445,14 @@ describe('WithDataURI', () => {
       expect(element.find(DemoComponent).prop('dataURIService')).toBe(
         undefined,
       );
+    });
+
+    it('should use preview as dataURI while we are still fetching the remote one', () => {
+      const element = shallow<WithDataURIProps, WithDataURIState>(
+        <DemoComponentWithDataURI preview="some-preview" />,
+      );
+
+      expect(element.find(DemoComponent).prop('dataURI')).toBe('some-preview');
     });
   });
 });

@@ -1,4 +1,4 @@
-import { MediaApiConfig } from '../auth';
+import { MediaApiConfig } from '@atlaskit/media-store';
 import { MediaCollectionItem } from '../collection';
 import { Resources } from '../item';
 import createRequest from './util/createRequest';
@@ -107,7 +107,7 @@ export class MediaCollectionService implements CollectionService {
         sortDirection,
         details,
       },
-    }).then(response => {
+    }).response.then(response => {
       return {
         items: response.data.contents.map(this.mapToMediaCollectionItem),
         nextInclusiveStartKey: response.data.nextInclusiveStartKey,

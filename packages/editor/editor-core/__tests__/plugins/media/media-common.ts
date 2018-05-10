@@ -497,7 +497,7 @@ describe('media-common', () => {
         });
 
         describe('when it is at the beginning of the document', () => {
-          it('puts cursor to the beginging of the document', () => {
+          it('puts cursor to the beginning of the document', () => {
             const deletingMediaNode = media({
               id: 'media',
               type: 'file',
@@ -703,6 +703,35 @@ describe('media-common', () => {
             ),
           );
 
+          editorView.destroy();
+        });
+
+        it('removes the selected media node (without last paragraph)', () => {
+          const { editorView } = editor(
+            doc(
+              mediaGroup(
+                media({
+                  id: 'media1',
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+                media({
+                  id: 'media2',
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+                media({
+                  id: 'media3',
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+              ),
+            ),
+          );
+
+          setNodeSelection(editorView, 3);
+          splitMediaGroup(editorView);
+
           expect(editorView.state.doc).toEqualDocument(
             doc(
               mediaGroup(
@@ -717,7 +746,7 @@ describe('media-common', () => {
                   collection: testCollectionName,
                 })(),
               ),
-              p('text'),
+              p(),
             ),
           );
           editorView.destroy();

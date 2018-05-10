@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState } from 'prosemirror-state';
+import { isRowSelected, selectRow } from 'prosemirror-utils';
 import {
   RowInner,
   RowContainer,
@@ -16,9 +16,7 @@ export interface Props {
   editorView: EditorView;
   tableElement: HTMLElement;
   isTableHovered: boolean;
-  checkIfSelected: (row: number, state: EditorState) => boolean;
-  selectRow: (row: number) => Command;
-  insertRow: (row: number) => void;
+  insertRow: (row: number) => Command;
   hoverRow: (row: number) => Command;
   resetHoverSelection: Command;
   scroll: number;
@@ -31,20 +29,23 @@ export default class RowControls extends Component<Props, any> {
       tableElement,
       editorView: { state },
       isTableHovered,
-      checkIfSelected,
       scroll,
     } = this.props;
     if (!tableElement) {
       return null;
     }
-    const tbody = tableElement.querySelector('tbody')!;
+    const tbody = tableElement.querySelector('tbody');
+    if (!tbody) {
+      return null;
+    }
+
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
     const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
 
     for (let i = 0, len = rows.length; i < len; i++) {
       const className =
-        isTableHovered || checkIfSelected(i, state) ? 'active' : '';
+        isTableHovered || isRowSelected(i)(state.selection) ? 'active' : '';
       nodes.push(
         <RowControlsButtonWrap
           key={i}
@@ -59,8 +60,7 @@ export default class RowControls extends Component<Props, any> {
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton
-            insertRow={this.props.insertRow}
-            index={i + 1}
+            onClick={() => this.insertRow(i + 1)}
             lineMarkerWidth={lineMarkerWidth}
             onMouseOver={this.props.updateScroll}
           />
@@ -77,7 +77,7 @@ export default class RowControls extends Component<Props, any> {
 
   private selectRow = (row: number) => {
     const { state, dispatch } = this.props.editorView;
-    this.props.selectRow(row)(state, dispatch);
+    dispatch(selectRow(row)(state.tr));
   };
 
   private hoverRow = (row: number) => {
@@ -88,5 +88,10 @@ export default class RowControls extends Component<Props, any> {
   private resetHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
     this.props.resetHoverSelection(state, dispatch);
+  };
+
+  private insertRow = (row: number) => {
+    const { state, dispatch } = this.props.editorView;
+    this.props.insertRow(row)(state, dispatch);
   };
 }

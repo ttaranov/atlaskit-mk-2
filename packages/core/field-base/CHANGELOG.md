@@ -1,5 +1,14 @@
 # @atlaskit/field-base
 
+## 9.0.2
+
+## 9.0.1
+- [patch] Form developer preview [d8b2b03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8b2b03)
+- [patch] Form package developer preview release [9b28847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b28847)
+
+## 9.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 8.2.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

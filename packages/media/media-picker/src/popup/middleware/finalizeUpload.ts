@@ -12,15 +12,11 @@ import {
   sendUploadEvent,
   SendUploadEventAction,
 } from '../actions/sendUploadEvent';
-import { AuthService } from '../../domain/auth';
 
-export default function(
-  fetcher: Fetcher,
-  authService: AuthService,
-): Middleware {
+export default function(fetcher: Fetcher): Middleware {
   return <State>(store) => (next: Dispatch<State>) => action => {
     if (isFinalizeUploadAction(action)) {
-      finalizeUpload(fetcher, authService, store, action);
+      finalizeUpload(fetcher, store, action);
     }
     return next(action);
   };
@@ -28,12 +24,11 @@ export default function(
 
 export function finalizeUpload(
   fetcher: Fetcher,
-  authService: AuthService,
   store: Store<State>,
   { file, uploadId, source, tenant }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
-  return authService
-    .getUserAuth()
+  const { userAuthProvider } = store.getState();
+  return userAuthProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
       const sourceFile = {
@@ -49,22 +44,7 @@ export function finalizeUpload(
         tenant,
       };
 
-      if (tenant.uploadParams.autoFinalize === false) {
-        return store.dispatch(
-          sendUploadEvent({
-            event: {
-              name: 'upload-finalize-ready',
-              data: {
-                file,
-                finalize: () => copyFile(copyFileParams),
-              },
-            },
-            uploadId,
-          }),
-        );
-      } else {
-        return copyFile(copyFileParams);
-      }
+      return copyFile(copyFileParams);
     });
 }
 
@@ -93,33 +73,27 @@ function copyFile({
   return fetcher
     .copyFile(apiUrl, sourceFile, destination)
     .then(destinationFile => {
-      const { fetchMetadata } = tenant.uploadParams;
-
-      if (fetchMetadata) {
-        store.dispatch(
-          sendUploadEvent({
-            event: {
-              name: 'upload-processing',
-              data: {
-                file: {
-                  ...file,
-                  publicId: destinationFile.id,
-                },
+      store.dispatch(
+        sendUploadEvent({
+          event: {
+            name: 'upload-processing',
+            data: {
+              file: {
+                ...file,
+                publicId: destinationFile.id,
               },
             },
-            uploadId,
-          }),
-        );
+          },
+          uploadId,
+        }),
+      );
 
-        return fetcher.pollFile(
-          apiUrl,
-          tenant.auth,
-          destinationFile.id,
-          tenant.uploadParams.collection,
-        );
-      } else {
-        return Promise.resolve({ id: destinationFile.id });
-      }
+      return fetcher.pollFile(
+        apiUrl,
+        tenant.auth,
+        destinationFile.id,
+        tenant.uploadParams.collection,
+      );
     })
     .then(processedDestinationFile => {
       return store.dispatch(

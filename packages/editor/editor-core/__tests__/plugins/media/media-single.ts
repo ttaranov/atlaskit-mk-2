@@ -10,7 +10,7 @@ import {
 import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
-} from '../../../src/plugins/media/pm-plugins/media-single';
+} from '../../../src/plugins/media/utils/media-single';
 import {
   MediaState,
   MediaStateStatus,
@@ -58,6 +58,7 @@ describe('media-single', () => {
             editorView,
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'pdf',
@@ -75,6 +76,7 @@ describe('media-single', () => {
             editorView,
             media({
               id: temporaryFileId,
+              __key: temporaryFileId,
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/png',
@@ -87,6 +89,7 @@ describe('media-single', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                   __fileMimeType: 'image/png',
@@ -117,6 +120,7 @@ describe('media-single', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
                 width: 100,
@@ -147,6 +151,7 @@ describe('media-single', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId,
+                __key: temporaryFileId,
                 type: 'file',
                 collection: testCollectionName,
                 width: 100,
@@ -156,6 +161,7 @@ describe('media-single', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId + '1',
+                __key: temporaryFileId + '1',
                 type: 'file',
                 collection: testCollectionName,
                 width: 100,
@@ -165,6 +171,7 @@ describe('media-single', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId + '2',
+                __key: temporaryFileId + '2',
                 type: 'file',
                 collection: testCollectionName,
                 width: 100,
@@ -193,6 +200,7 @@ describe('media-single', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                   width: 100,
@@ -221,6 +229,7 @@ describe('media-single', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                   width: 100,
@@ -252,6 +261,7 @@ describe('media-single', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   id: temporaryFileId,
+                  __key: temporaryFileId,
                   type: 'file',
                   collection: testCollectionName,
                   width: 100,

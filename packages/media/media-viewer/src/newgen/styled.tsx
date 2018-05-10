@@ -5,22 +5,94 @@
 import styled, { StyledComponentClass } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes } from 'react';
+import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 
-export const Positioner = styled.div`
+export const Blanket = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
+  background-color: #1b2638;
+  z-index: 999;
 `;
 
-export const ErrorMessage = styled.div`
+export const HeaderWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  text-align: center;
+  height: 98px;
+  opacity: 0.85;
+  background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
+  color: #b8c7e0;
+  padding-top: 15px;
+  padding: 24px;
+  box-sizing: border-box;
+  z-index: 1000;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ListWrapper = styled.div``;
+
+export const ErrorMessage = styled.div`
+  color: #b8c7e0;
+`;
+
+export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+  max-width: 100%;
+`;
+
+export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
+  width: 100%;
+  height: 100%;
+`;
+
+export const PDFWrapper = styled.div``;
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+`;
+
+const ArrowWrapper = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+export const Arrow = styled.span`
+  cursor: pointer;
+`;
+
+export const LeftWrapper = ArrowWrapper.extend`
+  text-align: left;
+`;
+
+export const RightWrapper = ArrowWrapper.extend`
+  text-align: right;
+`;
+
+// header.tsx
+export const Header = styled.div`
+  display: flex;
+`;
+
+export const LeftHeader = styled.div`
+  flex: 0.8;
+`;
+
+export const RightHeader = styled.div`
+  flex: 0.2;
+  text-align: right;
 `;

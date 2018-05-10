@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 
 import React from 'react';
 import PageIcon from '@atlaskit/icon/glyph/page';

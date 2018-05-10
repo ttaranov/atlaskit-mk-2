@@ -2,11 +2,21 @@ import * as sinon from 'sinon';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/filter';
 
 import { CollectionServiceStub } from '../../test-helpers/collection-service-stub';
 import { RemoteMediaCollectionProviderFactory } from '../../src/providers/remoteMediaCollectionProviderFactory';
+import { Subscription } from 'rxjs/Subscription';
+import { isError } from '../../src/error';
+import { MediaCollection } from '../../src/collection';
+import { RemoteMediaCollectionProvider } from '../../src/providers/remoteMediaCollectionProvider';
+import { CollectionNotFoundError } from '../../src/index';
 
 const defaultCollectionName = 'MediaServicesSample';
+
+function isMediaCollection(value: any): value is MediaCollection {
+  return !isError(value);
+}
 
 describe('RemoteMediaCollectionProvider', () => {
   const pageCount = 10;
@@ -27,14 +37,17 @@ describe('RemoteMediaCollectionProvider', () => {
       sortDirection,
     );
 
-    const subscription = collectionProvider.observable().subscribe({
-      next: collection => {
-        expect(collection.id).toBe(defaultCollectionName);
-        expect(collection.items).toHaveLength(itemsPerPageCount);
-        subscription.unsubscribe();
-        done();
-      },
-    });
+    const subscription = collectionProvider
+      .observable()
+      .filter(isMediaCollection)
+      .subscribe({
+        next: collection => {
+          expect(collection.id).toBe(defaultCollectionName);
+          expect(collection.items).toHaveLength(itemsPerPageCount);
+          subscription.unsubscribe();
+          done();
+        },
+      });
   });
 
   it('should load the next page', done => {
@@ -51,16 +64,17 @@ describe('RemoteMediaCollectionProvider', () => {
     );
 
     // Load next page when we have finished loading the first one.
-    const subscription1 = collectionProvider
+    const subscription1: Subscription = collectionProvider
       .observable()
       .take(1)
-      .do(collection => collectionProvider.loadNextPage())
+      .do(() => collectionProvider.loadNextPage())
       .subscribe({
         next: () => subscription1.unsubscribe(),
       });
 
     const subscription2 = collectionProvider
       .observable()
+      .filter(isMediaCollection)
       .skip(1)
       .take(1)
       .subscribe({
@@ -73,69 +87,6 @@ describe('RemoteMediaCollectionProvider', () => {
           done();
         },
       });
-  });
-
-  it('should load all the pages until it finds occurrence key', done => {
-    const collectionService = CollectionServiceStub.from(
-      defaultCollectionName,
-      totalItemCount,
-      itemsPerPageCount,
-    );
-    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-      collectionService,
-      defaultCollectionName,
-      itemsPerPageCount,
-      sortDirection,
-    );
-
-    collectionProvider.loadNextPageUntil(
-      item => item.details.occurrenceKey === 'file-66',
-    );
-
-    const subscription = collectionProvider
-      .observable()
-      .skip(6)
-      .take(1)
-      .subscribe({
-        next: collection => {
-          expect(collection.items).toHaveLength(7 * itemsPerPageCount);
-          expect(
-            collection.items[7 * itemsPerPageCount - 1].details.occurrenceKey,
-          ).toBe('file-69');
-          subscription.unsubscribe();
-          done();
-        },
-      });
-  });
-
-  it("should load all the pages if it can't find the occurrence key", done => {
-    const collectionService = CollectionServiceStub.from(
-      defaultCollectionName,
-      totalItemCount,
-      itemsPerPageCount,
-    );
-    const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
-      collectionService,
-      defaultCollectionName,
-      itemsPerPageCount,
-      sortDirection,
-    );
-
-    collectionProvider.loadNextPageUntil(
-      item => item.details.occurrenceKey === 'file-not-found',
-    );
-
-    const subscription = collectionProvider.observable().subscribe({
-      next: collection => {
-        if (collection.items.length === totalItemCount) {
-          expect(
-            collection.items[totalItemCount - 1].details.occurrenceKey,
-          ).toBe('file-99');
-          subscription.unsubscribe();
-          done();
-        }
-      },
-    });
   });
 
   describe('refresh', () => {
@@ -172,19 +123,22 @@ describe('RemoteMediaCollectionProvider', () => {
       );
 
       let firstTime = true;
-      const subscription = collectionProvider.observable().subscribe({
-        next: collection => {
-          if (firstTime) {
-            firstTime = false;
-            collectionProvider.refresh();
-          } else {
-            expect(collection.items).toHaveLength(firstPageItems.length);
-            expect(collection.items).toEqual([...firstPageItems]);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      });
+      const subscription = collectionProvider
+        .observable()
+        .filter(isMediaCollection)
+        .subscribe({
+          next: collection => {
+            if (firstTime) {
+              firstTime = false;
+              collectionProvider.refresh();
+            } else {
+              expect(collection.items).toHaveLength(firstPageItems.length);
+              expect(collection.items).toEqual([...firstPageItems]);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        });
     });
 
     it('should fetch and add new items from the first page to the collection when we have loaded the first page', done => {
@@ -225,21 +179,27 @@ describe('RemoteMediaCollectionProvider', () => {
       );
 
       let firstTime = true;
-      const subscription = collectionProvider.observable().subscribe({
-        next: collection => {
-          if (firstTime) {
-            firstTime = false;
-            collectionProvider.refresh();
-          } else {
-            expect(collection.items).toHaveLength(
-              newItems.length + firstPageItems.length,
-            );
-            expect(collection.items).toEqual([...newItems, ...firstPageItems]);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      });
+      const subscription = collectionProvider
+        .observable()
+        .filter(isMediaCollection)
+        .subscribe({
+          next: collection => {
+            if (firstTime) {
+              firstTime = false;
+              collectionProvider.refresh();
+            } else {
+              expect(collection.items).toHaveLength(
+                newItems.length + firstPageItems.length,
+              );
+              expect(collection.items).toEqual([
+                ...newItems,
+                ...firstPageItems,
+              ]);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        });
     });
 
     it('should fetch and add new items from the first page to the collection when we have loaded the first page and multiple items have the same ID', done => {
@@ -272,21 +232,27 @@ describe('RemoteMediaCollectionProvider', () => {
       );
 
       let firstTime = true;
-      const subscription = collectionProvider.observable().subscribe({
-        next: collection => {
-          if (firstTime) {
-            firstTime = false;
-            collectionProvider.refresh();
-          } else {
-            expect(collection.items).toHaveLength(
-              newItems.length + firstPageItems.length,
-            );
-            expect(collection.items).toEqual([...newItems, ...firstPageItems]);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      });
+      const subscription = collectionProvider
+        .observable()
+        .filter(isMediaCollection)
+        .subscribe({
+          next: collection => {
+            if (firstTime) {
+              firstTime = false;
+              collectionProvider.refresh();
+            } else {
+              expect(collection.items).toHaveLength(
+                newItems.length + firstPageItems.length,
+              );
+              expect(collection.items).toEqual([
+                ...newItems,
+                ...firstPageItems,
+              ]);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        });
     });
 
     it('should fetch and add new items from the first page to the collection when we have loaded the second page', done => {
@@ -339,39 +305,42 @@ describe('RemoteMediaCollectionProvider', () => {
       );
 
       let callCount = 0;
-      const subscription = collectionProvider.observable().subscribe({
-        next: collection => {
-          switch (callCount) {
-            case 0:
-              expect(collection.items).toHaveLength(secondPageItems.length);
-              collectionProvider.loadNextPage();
-              break;
+      const subscription = collectionProvider
+        .observable()
+        .filter(isMediaCollection)
+        .subscribe({
+          next: collection => {
+            switch (callCount) {
+              case 0:
+                expect(collection.items).toHaveLength(secondPageItems.length);
+                collectionProvider.loadNextPage();
+                break;
 
-            case 1:
-              expect(collection.items).toHaveLength(
-                firstPageItems.length + secondPageItems.length,
-              );
-              collectionProvider.refresh();
-              break;
+              case 1:
+                expect(collection.items).toHaveLength(
+                  firstPageItems.length + secondPageItems.length,
+                );
+                collectionProvider.refresh();
+                break;
 
-            case 2:
-              expect(collection.items).toHaveLength(
-                newItems.length +
-                  firstPageItems.length +
-                  secondPageItems.length,
-              );
-              expect(collection.items).toEqual([
-                ...newItems,
-                ...firstPageItems,
-                ...secondPageItems,
-              ]);
-              subscription.unsubscribe();
-              done();
-              break;
-          }
-          ++callCount;
-        },
-      });
+              case 2:
+                expect(collection.items).toHaveLength(
+                  newItems.length +
+                    firstPageItems.length +
+                    secondPageItems.length,
+                );
+                expect(collection.items).toEqual([
+                  ...newItems,
+                  ...firstPageItems,
+                  ...secondPageItems,
+                ]);
+                subscription.unsubscribe();
+                done();
+                break;
+            }
+            ++callCount;
+          },
+        });
     });
 
     it('should fetch and add new items from the first two pages to the collection when we have loaded the first page', done => {
@@ -431,28 +400,88 @@ describe('RemoteMediaCollectionProvider', () => {
       );
 
       let callCount = 0;
-      const subscription = collectionProvider.observable().subscribe({
-        next: collection => {
-          switch (callCount) {
-            case 0:
-              expect(collection.items).toHaveLength(3);
-              collectionProvider.refresh();
-              break;
+      const subscription = collectionProvider
+        .observable()
+        .filter(isMediaCollection)
+        .subscribe({
+          next: collection => {
+            switch (callCount) {
+              case 0:
+                expect(collection.items).toHaveLength(3);
+                collectionProvider.refresh();
+                break;
 
-            case 1:
-              expect(collection.items).toHaveLength(9);
-              expect(collection.items).toEqual([
-                ...newItemsPage1,
-                ...newItemsPage2,
-                ...firstPageItems,
-              ]);
-              subscription.unsubscribe();
-              done();
-              break;
-          }
-          ++callCount;
-        },
-      });
+              case 1:
+                expect(collection.items).toHaveLength(9);
+                expect(collection.items).toEqual([
+                  ...newItemsPage1,
+                  ...newItemsPage2,
+                  ...firstPageItems,
+                ]);
+                subscription.unsubscribe();
+                done();
+                break;
+            }
+            ++callCount;
+          },
+        });
+    });
+
+    it('should emit a CollectionNotFoundError given collection service responds with a 404', () => {
+      const collectionService = {
+        getCollectionItems: jest.fn(),
+        loadNextPage: jest.fn(),
+      };
+
+      collectionService.getCollectionItems.mockReturnValue(
+        Promise.reject({
+          response: { status: 404 },
+        }),
+      );
+
+      const provider = new RemoteMediaCollectionProvider(
+        collectionService,
+        defaultCollectionName,
+        10,
+        'desc',
+      );
+
+      return provider
+        .observable()
+        .filter(isError)
+        .take(1)
+        .do(error => {
+          expect(error).toEqual(new CollectionNotFoundError());
+        })
+        .toPromise();
+    });
+
+    it('should emit an Error given collection service responds with some other error', () => {
+      const someError = new Error();
+      const collectionService = {
+        getCollectionItems: jest.fn(),
+        loadNextPage: jest.fn(),
+      };
+
+      collectionService.getCollectionItems.mockReturnValue(
+        Promise.reject(someError),
+      );
+
+      const provider = new RemoteMediaCollectionProvider(
+        collectionService,
+        defaultCollectionName,
+        10,
+        'desc',
+      );
+
+      return provider
+        .observable()
+        .filter(isError)
+        .take(1)
+        .do(error => {
+          expect(error).toEqual(someError);
+        })
+        .toPromise();
     });
   });
 });

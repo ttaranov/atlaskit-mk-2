@@ -3,8 +3,7 @@ import { PureComponent } from 'react';
 
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';
 import { EmojiDescription } from '../src/types';
-import { getEmojis } from '../src/support/story-data';
-import { onSelection } from '../example-helpers';
+import { onSelection, getEmojis } from '../example-helpers';
 
 function randomEmojis(): EmojiDescription[] {
   return getEmojis()

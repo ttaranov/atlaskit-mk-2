@@ -10,6 +10,8 @@ import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
+import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import ProgressLoader from '../../../ui/ProgressLoader';
 
 export interface MediaNodeProps extends ReactNodeProps {
   getPos: ProsemirrorGetPosHandler;
@@ -18,9 +20,13 @@ export interface MediaNodeProps extends ReactNodeProps {
   providerFactory: ProviderFactory;
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
+  progress?: number;
+  onExternalImageLoaded?: (
+    dimensions: { width: number; height: number },
+  ) => void;
 }
 
-const getId = (props: MediaNodeProps) => props.node.attrs.id;
+const getId = (props: MediaNodeProps) => props.node.attrs.__key;
 
 export default class MediaNode extends Component<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
@@ -44,9 +50,16 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   shouldComponentUpdate(nextProps) {
     return (
       getId(nextProps) !== getId(this.props) ||
-      nextProps.selected !== this.props.selected
+      nextProps.selected !== this.props.selected ||
+      this.props.progress !== nextProps.progress ||
+      this.props.node.attrs.width !== nextProps.node.attrs.width
     );
   }
+
+  cancelProgress = () => {
+    const { node: { attrs: { __key } } } = this.props;
+    this.pluginState.removeNodeById(__key);
+  };
 
   render() {
     const {
@@ -56,22 +69,42 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       view,
       cardDimensions,
       isMediaSingle,
+      progress = 0,
+      onExternalImageLoaded,
     } = this.props;
-    const { id, type, collection } = node.attrs;
+    const { id, type, collection, url, __key, width } = node.attrs;
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
+    if (
+      !width &&
+      this.pluginState.editorAppearance !== 'message' &&
+      isMediaSingle &&
+      type !== 'external'
+    ) {
+      return (
+        <ProgressLoader
+          progress={progress}
+          maxWidth={akEditorFullPageMaxWidth}
+          onCancel={this.cancelProgress}
+          cancelLabel="Cancel upload"
+        />
+      );
+    }
 
     return (
       <UIMedia
-        key={`medianode-${id}`}
+        key={`media-node-${__key}`}
         editorView={view}
         id={id!}
+        tempId={__key!}
         type={type!}
         collection={collection!}
         providers={providerFactory}
         cardDimensions={cardDimensions}
         onDelete={deleteEventHandler}
         selected={selected}
+        url={url}
+        onExternalImageLoaded={onExternalImageLoaded}
       />
     );
   }

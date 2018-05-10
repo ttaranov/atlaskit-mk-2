@@ -39,6 +39,7 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import rulePlugin from '../../../src/plugins/rule';
 import tablePlugin from '../../../src/plugins/table';
 import pickerFacadeLoader from '../../../src/plugins/media/picker-facade-loader';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -55,7 +56,6 @@ const getFreshMediaProvider = () =>
 describe('Media plugin', () => {
   const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
-
   const providerFactory = ProviderFactory.create({ mediaProvider });
 
   const editor = (
@@ -112,7 +112,6 @@ describe('Media plugin', () => {
     await provider.uploadContext;
 
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     pluginState.binaryPicker!.upload = jest.fn();
@@ -125,6 +124,38 @@ describe('Media plugin', () => {
     expect(pluginState.binaryPicker!.upload as any).toHaveBeenCalledTimes(1);
     collectionFromProvider.mockRestore();
     pluginState.destroy();
+  });
+
+  it('should set local preview on context when file is uploaded', async () => {
+    const provider = await mediaProvider;
+    const { pluginState } = editor(doc(p('')));
+    const temporaryId = 'temp-id';
+    const publicId = 'public-id';
+    const src = 'file-preview';
+
+    await waitForMediaPickerReady(pluginState);
+    await provider.viewContext;
+
+    const context = await pluginState['mediaProvider'].viewContext;
+    const spy = jest.spyOn(context, 'setLocalPreview');
+    pluginState.insertFiles([
+      {
+        id: temporaryId,
+        fileMimeType: 'image/jpeg',
+      },
+    ]);
+    stateManager.updateState(temporaryId, {
+      id: temporaryId,
+      status: 'processing',
+      thumbnail: {
+        src,
+      },
+      publicId,
+    });
+
+    await sleep(0);
+
+    expect(spy).toBeCalledWith(publicId, src);
   });
 
   describe('when message editor', () => {
@@ -144,12 +175,14 @@ describe('Media plugin', () => {
           mediaGroup(
             media({
               id: 'foo',
+              __key: 'foo',
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/jpeg',
             })(),
             media({
               id: 'bar',
+              __key: 'bar',
               type: 'file',
               collection: testCollectionName,
               __fileMimeType: 'image/png',
@@ -187,6 +220,12 @@ describe('Media plugin', () => {
           thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
         });
 
+        stateManager.updateState('foo', {
+          id: 'foo',
+          status: 'ready',
+          publicId: 'foo',
+        });
+
         stateManager.updateState('bar', {
           id: 'bar',
           status: 'preview',
@@ -196,6 +235,12 @@ describe('Media plugin', () => {
           thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
         });
 
+        stateManager.updateState('bar', {
+          id: 'bar',
+          status: 'ready',
+          publicId: 'bar',
+        });
+
         expect(editorView.state.doc).toEqualDocument(
           doc(
             mediaSingle({
@@ -203,6 +248,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'foo.jpg',
@@ -217,6 +263,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'bar',
+                __key: 'bar',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'bar.png',
@@ -261,6 +308,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'foo.jpg',
@@ -276,56 +324,32 @@ describe('Media plugin', () => {
       });
 
       describe('when inserting inside table cell', () => {
-        it('inserts media group', async () => {
-          const { editorView, pluginState } = editor(
-            doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+        it('inserts media single', async () => {
+          const { editorView } = editor(
+            doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
           );
-          await waitForMediaPickerReady(pluginState);
 
-          pluginState.insertFiles([
-            {
-              id: 'foo',
-              fileMimeType: 'image/jpeg',
-            },
-            {
-              id: 'bar',
-              fileMimeType: 'image/png',
-            },
-          ]);
-
-          stateManager.updateState('foo', {
-            id: 'foo',
-            status: 'uploading',
-            fileName: 'foo.jpg',
-            fileSize: 100,
-            fileMimeType: 'image/jpeg',
-            thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
-          });
-
-          stateManager.updateState('bar', {
-            id: 'bar',
-            status: 'uploading',
-            fileName: 'bar.png',
-            fileSize: 200,
-            fileMimeType: 'image/png',
-            thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
-          });
+          insertMediaAsMediaSingle(
+            editorView,
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            })()(editorView.state.schema),
+          );
 
           // Different from media single that those optional properties are copied over only when the thumbnail is ready in media group.
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              table(
+              table()(
                 tr(
                   td({})(
-                    mediaGroup(
+                    mediaSingle({ layout: 'center' })(
                       media({
-                        id: 'foo',
-                        type: 'file',
-                        collection: testCollectionName,
-                        __fileMimeType: 'image/jpeg',
-                      })(),
-                      media({
-                        id: 'bar',
+                        id: temporaryFileId,
+                        __key: temporaryFileId,
                         type: 'file',
                         collection: testCollectionName,
                         __fileMimeType: 'image/png',
@@ -367,6 +391,7 @@ describe('Media plugin', () => {
             mediaGroup(
               media({
                 id: 'lala',
+                __key: 'lala',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
@@ -375,13 +400,13 @@ describe('Media plugin', () => {
             mediaSingle({ layout: 'center' })(
               media({
                 id: 'bar',
+                __key: 'bar',
                 __fileName: 'bar.png',
                 __fileSize: 200,
                 height: 200,
                 width: 200,
                 __fileMimeType: 'image/png',
                 type: 'file',
-
                 collection: testCollectionName,
               })(),
             ),
@@ -407,18 +432,21 @@ describe('Media plugin', () => {
             mediaGroup(
               media({
                 id: 'foo',
+                __key: 'foo',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
               })(),
               media({
                 id: 'bar',
+                __key: 'bar',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
               })(),
               media({
                 id: 'foobar',
+                __key: 'foobar',
                 type: 'file',
                 __fileMimeType: 'pdf',
                 collection: testCollectionName,
@@ -488,6 +516,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -538,16 +567,19 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: firstTemporaryFileId,
+            __key: firstTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
           media({
             id: secondTemporaryFileId,
+            __key: secondTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
           media({
             id: thirdTemporaryFileId,
+            __key: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -564,7 +596,7 @@ describe('Media plugin', () => {
     stateManager.updateState(secondTemporaryFileId, {
       id: secondTemporaryFileId,
       status: 'processing',
-      publicId: secondFileId,
+      publicId: secondTemporaryFileId,
     });
 
     stateManager.on(firstTemporaryFileId, spy);
@@ -580,7 +612,7 @@ describe('Media plugin', () => {
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = getNodePos(pluginState, secondFileId);
+    pos = getNodePos(pluginState, secondTemporaryFileId);
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 
@@ -590,6 +622,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: thirdTemporaryFileId,
+            __key: thirdTemporaryFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -598,7 +631,8 @@ describe('Media plugin', () => {
       ),
     );
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    /** Since we have a state manager in the nodeview now too */
+    expect(spy).toHaveBeenCalledTimes(2);
 
     expect(spy).toHaveBeenCalledWith({
       id: firstTemporaryFileId,
@@ -618,7 +652,6 @@ describe('Media plugin', () => {
     );
     collectionFromProvider.mockImplementation(() => testCollectionName);
     const tempFileId = `temporary:${randomId()}`;
-    const publicFileId = `${randomId()}`;
 
     // wait until mediaProvider has been set
     const provider = await mediaProvider;
@@ -633,6 +666,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: tempFileId,
+            __key: tempFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -649,7 +683,7 @@ describe('Media plugin', () => {
     // mark the upload as finished, triggering replacement of media node
     stateManager.updateState(tempFileId, {
       id: tempFileId,
-      publicId: publicFileId,
+      publicId: tempFileId,
       status: 'ready',
     });
 
@@ -658,7 +692,8 @@ describe('Media plugin', () => {
         p(),
         mediaGroup(
           media({
-            id: publicFileId,
+            id: tempFileId,
+            __key: tempFileId,
             type: 'file',
             collection: testCollectionName,
           })(),
@@ -672,6 +707,30 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).toEqualDocument(doc(p(), p()));
     collectionFromProvider.mockRestore();
+    editorView.destroy();
+    pluginState.destroy();
+  });
+
+  it('It should not hide the progress bar before upload is done', async () => {
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+
+    const tempFileId = `temporary:${randomId()}`;
+
+    // wait until mediaProvider has been set
+    const provider = await mediaProvider;
+    // wait until mediaProvider's uploadContext has been set
+    await provider.uploadContext;
+
+    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
+
+    /** update to preview state of the media */
+    stateManager.updateState(tempFileId, {
+      id: tempFileId,
+      publicId: tempFileId,
+      status: 'preview',
+    });
+    const updatedState = stateManager.getState(tempFileId);
+    expect(updatedState!.progress).not.toEqual(1);
     editorView.destroy();
     pluginState.destroy();
   });
@@ -761,7 +820,7 @@ describe('Media plugin', () => {
     });
   });
 
-  it('should trigger analytics events for picking', async () => {
+  it('should trigger analytics events for picking and dropzone', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const spy = jest.fn();
     analyticsService.handler = spy as AnalyticsHandler;
@@ -788,21 +847,104 @@ describe('Media plugin', () => {
       ],
     };
 
-    // Warning: calling private methods below
     (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and clipboard', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and popup', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
+  });
+
+  it('should trigger analytics events for picking and binary', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = jest.fn();
+    analyticsService.handler = spy as AnalyticsHandler;
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    await waitForMediaPickerReady(pluginState);
+
+    expect(typeof pluginState.binaryPicker!).toBe('object');
+
+    const testFileData = {
+      files: [
+        {
+          id: 'test',
+          name: 'test.png',
+          size: 1,
+          type: `file/test`,
+        },
+      ],
+    };
 
     (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {
@@ -977,8 +1119,18 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).toEqualDocument(
       doc(
         mediaGroup(
-          media({ id: 'bar', type: 'file', collection: testCollectionName })(),
-          media({ id: 'foo', type: 'file', collection: testCollectionName })(),
+          media({
+            id: 'bar',
+            __key: 'bar',
+            type: 'file',
+            collection: testCollectionName,
+          })(),
+          media({
+            id: 'foo',
+            __key: 'foo',
+            type: 'file',
+            collection: testCollectionName,
+          })(),
         ),
         p(),
       ),
@@ -1011,6 +1163,7 @@ describe('Media plugin', () => {
         mediaGroup(
           media({
             id: temporaryFileId,
+            __key: temporaryFileId,
             type: 'file',
             collection: testCollectionName,
             __fileName: 'foo.png',
@@ -1164,6 +1317,7 @@ describe('Media plugin', () => {
               collection: testCollectionName,
             })(),
           ),
+          p(),
         ),
       );
       editorView.destroy();
@@ -1408,6 +1562,8 @@ describe('Media plugin', () => {
               media({
                 id: 'media',
                 type: 'file',
+                width: 100,
+                height: 100,
                 collection: testCollectionName,
               })(),
             ),
@@ -1470,6 +1626,7 @@ describe('Media plugin', () => {
                 id: 'media1',
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
               })(),
             ),
             mediaSingle({ layout: 'center' })(
@@ -1477,6 +1634,8 @@ describe('Media plugin', () => {
                 id: 'media2',
                 type: 'file',
                 collection: testCollectionName,
+                width: 100,
+                height: 100,
               })(),
             ),
             p(''),

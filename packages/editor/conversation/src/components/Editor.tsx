@@ -27,6 +27,8 @@ export interface Props {
 
   // Editor
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+  placeholder?: string;
+  disableScrollTo?: boolean;
 }
 
 export interface State {
@@ -44,7 +46,7 @@ const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   grid-template:
     'avatar-area editor-area'
     / auto 1fr;
-  padding-top: 10px;
+  padding-top: 16px;
   position: relative;
 
   &:first-child,
@@ -61,7 +63,7 @@ const AvatarSection: React.ComponentClass<
   -ms-grid-column: 1;
   /* stylelint-enable */
   grid-area: avatar-area;
-  margin-right: 16px;
+  margin-right: 8px;
 `;
 
 const EditorSection: React.ComponentClass<
@@ -72,7 +74,6 @@ const EditorSection: React.ComponentClass<
   -ms-grid-column: 2;
   /* stylelint-enable */
   grid-area: editor-area;
-  margin-right: 16px;
 `;
 
 export default class Editor extends React.Component<Props, State> {
@@ -102,19 +103,39 @@ export default class Editor extends React.Component<Props, State> {
   private onSave = async (actions: any) => {
     if (this.props.onSave) {
       const value = await actions.getValue();
-      this.props.onSave(value);
-    } else {
-      this.setState({
-        isExpanded: false,
-        isEditing: false,
-      });
+
+      if (value && value.content.some(n => n.content && n.content.length)) {
+        this.props.onSave(value);
+        actions.clear();
+      } else {
+        this.onCancel();
+        return;
+      }
     }
 
-    actions.clear();
+    this.setState({
+      isExpanded: false,
+      isEditing: false,
+    });
+  };
+
+  private handleRef = (node: HTMLDivElement) => {
+    if (!this.props.disableScrollTo && this.props.isExpanded && node) {
+      if ((node as any).scrollIntoViewIfNeeded) {
+        (node as any).scrollIntoViewIfNeeded({ behavior: 'smooth' });
+      } else if (node.scrollIntoView) {
+        node.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   private renderEditor = (actions: EditorActions) => {
-    const { dataProviders, renderEditor, defaultValue } = this.props;
+    const {
+      dataProviders,
+      renderEditor,
+      defaultValue,
+      placeholder,
+    } = this.props;
     let providers = {};
 
     // @TODO Remove and just pass the factory through once AkEditor is updated
@@ -136,17 +157,19 @@ export default class Editor extends React.Component<Props, State> {
     };
 
     return (
-      <CollapsedEditor
-        placeholder="What do you want to say?"
-        isExpanded={this.state.isExpanded}
-        onFocus={this.onFocus}
-      >
-        {renderEditor ? (
-          renderEditor(AkEditor, defaultProps)
-        ) : (
-          <AkEditor {...defaultProps} />
-        )}
-      </CollapsedEditor>
+      <div ref={this.handleRef}>
+        <CollapsedEditor
+          placeholder={placeholder}
+          isExpanded={this.state.isExpanded}
+          onFocus={this.onFocus}
+        >
+          {renderEditor ? (
+            renderEditor(AkEditor, defaultProps)
+          ) : (
+            <AkEditor {...defaultProps} />
+          )}
+        </CollapsedEditor>
+      </div>
     );
   };
 

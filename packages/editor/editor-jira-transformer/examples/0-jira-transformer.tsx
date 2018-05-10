@@ -6,9 +6,7 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { mention, emoji } from '@atlaskit/util-data-test';
 import { JIRATransformer } from '../src';
 
 const Container = styled.div`
@@ -33,10 +31,8 @@ const Container = styled.div`
   }
 `;
 
-const emojiProvider = emojiStoryData.getEmojiResource() as Promise<
-  EmojiProvider
->;
-const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
+const emojiProvider = emoji.storyData.getEmojiResource();
+const mentionProvider = Promise.resolve(mention.storyData.resourceProvider);
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
 type Props = { actions: any };

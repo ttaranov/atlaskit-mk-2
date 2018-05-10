@@ -8,13 +8,17 @@ import {
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
+import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
+import { ResultContentType } from '../src/model/Result';
+
+const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
   return array[index];
 }
 
-function jiraIconUrl() {
+function randomJiraIconUrl() {
   const urls = [
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
     'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
@@ -23,28 +27,26 @@ function jiraIconUrl() {
   return pickRandom(urls);
 }
 
-function objectIconUrl() {
+function randomConfluenceIconUrl() {
   const urls = [
-    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype',
     'https://home.useast.atlassian.io/confluence-page-icon.svg',
-    'https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype',
+    'https://home.useast.atlassian.io/confluence-blogpost-icon.svg',
   ];
 
   return pickRandom(urls);
 }
 
-function provider() {
+function randomProvider() {
   const providers = ['jira', 'confluence'];
   return pickRandom(providers);
 }
 
-function issueKey() {
-  const keys = ['ETH', 'XRP', 'ADA', 'TRON'];
-
+function randomIssueKey() {
+  const keys = ['ETH', 'XRP', 'ADA', 'TRON', 'DOGE'];
   return pickRandom(keys) + '-' + faker.random.number(1000);
 }
 
-function iconCssClass() {
+function randomIconCssClass() {
   const classes = [
     'aui-iconfont-page-default',
     'aui-iconfont-homepage',
@@ -57,13 +59,23 @@ export function recentData(n = 50): RecentItemsResponse {
   const items = [];
 
   for (let i = 0; i < n; i++) {
+    const provider = randomProvider();
+
+    const name =
+      provider === 'jira'
+        ? `${randomIssueKey()} ${faker.company.catchPhrase()}`
+        : faker.company.catchPhrase();
+
+    const iconUrl =
+      provider === 'jira' ? randomJiraIconUrl() : randomConfluenceIconUrl();
+
     items.push({
       objectId: faker.random.uuid(),
-      name: faker.company.catchPhrase(),
-      iconUrl: objectIconUrl(),
+      name: name,
+      iconUrl: iconUrl,
       container: faker.company.companyName(),
       url: faker.internet.url(),
-      provider: provider(),
+      provider: provider,
     });
   }
 
@@ -76,30 +88,74 @@ export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
   const confData: ConfluenceItem[] = [];
+  const confSpaceData: ConfluenceItem[] = [];
+  const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
     confData.push({
       title: faker.company.catchPhrase(),
       container: {
         title: faker.company.companyName(),
+        displayUrl: url,
       },
-      iconCssClass: iconCssClass(),
+      iconCssClass: randomIconCssClass(),
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
+    });
+  }
+
+  for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
+    const isAttachment = faker.random.boolean() && faker.random.boolean();
+
+    const newAttachment: ConfluenceItem = {
+      title: faker.company.catchPhrase(),
+      container: {
+        title: faker.company.companyName(),
+        displayUrl: url,
+      },
+      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
+    };
+
+    if (isAttachment) {
+      newAttachment.content = {
+        id: faker.random.alphaNumeric(3),
+        type: 'attachment' as ResultContentType,
+      };
+    }
+
+    confDataWithAttachments.push(newAttachment);
+  }
+
+  for (let i = 0; i < n; i++) {
+    const title = faker.company.companyName();
+    confSpaceData.push({
+      title: title,
+      baseUrl: DUMMY_BASE_URL,
       url: faker.internet.url(),
-      baseUrl: '',
+      content: null,
+      iconCssClass: null,
+      container: {
+        title: title,
+        displayUrl: faker.internet.url(),
+      },
     });
   }
 
   for (let i = 0; i < n; i++) {
     jiraData.push({
-      key: issueKey(),
+      key: randomIssueKey(),
       fields: {
         summary: faker.company.catchPhrase(),
         project: {
           name: faker.company.companyName(),
         },
         issuetype: {
-          iconUrl: jiraIconUrl(),
+          iconUrl: randomJiraIconUrl(),
         },
       },
     });
@@ -116,6 +172,14 @@ export function makeCrossProductSearchData(
       result => result.fields.summary.toLowerCase().indexOf(term) > -1,
     );
 
+    const filteredSpaceResults = confSpaceData.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
     return {
       scopes: [
         {
@@ -123,8 +187,16 @@ export function makeCrossProductSearchData(
           results: filteredConfResults,
         },
         {
+          id: Scope.ConfluencePageBlogAttachment,
+          results: filteredConfResultsWithAttachments,
+        },
+        {
           id: Scope.JiraIssue,
           results: filteredJiraResults,
+        },
+        {
+          id: Scope.ConfluenceSpace,
+          results: filteredSpaceResults,
         },
       ],
     };
@@ -156,4 +228,39 @@ export function makePeopleSearchData(
       },
     };
   };
+}
+
+export function makeConfluenceRecentPagesData(n: number = 300) {
+  const items: RecentPage[] = [];
+
+  for (let i = 0; i < n; i++) {
+    items.push({
+      available: true,
+      contentType: ResultContentType.Page,
+      id: faker.random.uuid(),
+      lastSeen: faker.date.past(1).getTime(),
+      space: faker.company.companyName(),
+      spaceKey: faker.hacker.abbreviation(),
+      title: faker.company.catchPhrase(),
+      type: 'page',
+      url: faker.internet.url(),
+    });
+  }
+
+  return items;
+}
+
+export function makeConfluenceRecentSpacesData(n: number = 15) {
+  const spaces: RecentSpace[] = [];
+
+  for (let i = 0; i < n; i++) {
+    spaces.push({
+      id: faker.random.uuid(),
+      key: faker.hacker.abbreviation(),
+      icon: faker.image.avatar(),
+      name: faker.company.companyName(),
+    });
+  }
+
+  return spaces;
 }

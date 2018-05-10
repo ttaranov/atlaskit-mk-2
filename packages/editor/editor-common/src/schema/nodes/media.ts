@@ -1,7 +1,7 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
-export type MediaType = 'file' | 'link';
+export type MediaType = 'file' | 'link' | 'external';
 export type DisplayType = 'file' | 'thumbnail';
 
 export type DefaultAttributes<T> = {
@@ -18,15 +18,14 @@ export interface Definition {
   /**
    * @minItems 1
    */
-  attrs: Attributes;
+  attrs: MediaAttributes | ExternalMediaAttributes;
 }
 
-export interface Attributes {
+export interface MediaBaseAttributes {
   /**
    * @minLength 1
    */
   id: string;
-  type: MediaType;
   collection: string;
   height?: number;
   width?: number;
@@ -41,30 +40,47 @@ export interface Attributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
+  // For Stride @see ED-4030
+  __key?: string | null;
 }
 
-export const defaultAttrs: DefaultAttributes<Attributes> = {
+export interface MediaAttributes extends MediaBaseAttributes {
+  type: 'file' | 'link';
+}
+
+export interface ExternalMediaAttributes {
+  type: 'external';
+  url: string;
+  width?: number;
+  height?: number;
+}
+
+export const defaultAttrs: DefaultAttributes<
+  MediaAttributes | ExternalMediaAttributes
+> = {
   id: { default: '' },
   type: { default: 'file' },
   collection: { default: null },
   occurrenceKey: { default: null },
   width: { default: null },
   height: { default: null },
+  url: { default: null },
   __fileName: { default: null },
   __fileSize: { default: null },
   __fileMimeType: { default: null },
   __displayType: { default: null },
+  __key: { default: null },
 };
 
 export const media: NodeSpec = {
   inline: false,
   selectable: true,
-  attrs: defaultAttrs,
+  attrs: defaultAttrs as any,
   parseDOM: [
     {
       tag: 'div[data-node-type="media"]',
       getAttrs: (dom: HTMLElement) => {
-        const attrs = {} as Attributes;
+        const attrs = {} as MediaAttributes;
 
         Object.keys(defaultAttrs).forEach(k => {
           const key = camelCaseToKebabCase(k).replace(/^__/, '');
@@ -92,6 +108,7 @@ export const media: NodeSpec = {
       'data-occurrence-key': node.attrs.occurrenceKey,
       'data-width': node.attrs.width,
       'data-height': node.attrs.height,
+      'data-url': node.attrs.url,
       // toDOM is used for static rendering as well as editor rendering. This comes into play for
       // emails, copy/paste, etc, so the title and styling here *is* useful (despite a React-based
       // node view being used for editing).
@@ -132,11 +149,19 @@ export const copyPrivateAttributes = (
  * There's no concept of optional property in ProseMirror. It sets value as `null`
  * when there's no use of any property. We are filtering out all private & optional attrs here.
  */
-const optionalAttributes = ['occurrenceKey', 'width', 'height'];
+const optionalAttributes = ['occurrenceKey', 'width', 'height', 'url'];
+const externalOnlyAttributes = ['type', 'url', 'width', 'height'];
+
 export const toJSON = (node: PMNode) => ({
   attrs: Object.keys(node.attrs)
     .filter(key => !(key[0] === '_' && key[1] === '_'))
     .reduce((obj, key) => {
+      if (
+        node.attrs.type === 'external' &&
+        externalOnlyAttributes.indexOf(key) === -1
+      ) {
+        return obj;
+      }
       if (
         optionalAttributes.indexOf(key) > -1 &&
         (node.attrs[key] === null || node.attrs[key] === '')

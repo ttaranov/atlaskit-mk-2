@@ -14,7 +14,7 @@ import {
   defaultMediaApiToken,
   mediaBaseUrl,
   mediaEmojiImagePath,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
 
 const testConcurrentDownloadLimit = 2;
 
@@ -195,16 +195,21 @@ describe('MediaImageLoader', () => {
         });
     });
 
-    it('image Promise rejection when image load fails', () => {
+    it('image Promise rejection when image load fails', done => {
       const mediaImageLoader = createMediaImageLoader();
       fetchMock.mock({
         matcher: `begin:${mediaEmojiImagePath}`,
         response: 404,
         name: 'media-emoji',
       });
-      return mediaImageLoader.loadMediaImage(mediaEmojiImagePath).catch(() => {
-        expect(true, 'Promise was rejected');
-      });
+
+      mediaImageLoader
+        .loadMediaImage(mediaEmojiImagePath)
+        .then(() => done.fail('Promise should be rejected.'))
+        .catch(() => {
+          expect(true, 'Promise was rejected').to.equal(true);
+          done();
+        });
     });
 
     it('image Promise resolves when image load fails with 403 first time', () => {
@@ -237,29 +242,38 @@ describe('MediaImageLoader', () => {
         });
     });
 
-    it('image Promise rejection when image load fails with 403 twice', () => {
+    it('image Promise rejection when image load fails with 403 twice', done => {
       const mediaImageLoader = createMediaImageLoader();
       fetchMock.mock({
         matcher: `begin:${mediaEmojiImagePath}`,
         response: 403,
         name: 'media-emoji',
       });
-      return mediaImageLoader.loadMediaImage(mediaEmojiImagePath).catch(err => {
-        expect(fetchMock.calls('media-emoji').length, 'Called twice').to.equal(
-          2,
-        );
-      });
+      mediaImageLoader
+        .loadMediaImage(mediaEmojiImagePath)
+        .then(() => done.fail('Promise should be rejected.'))
+        .catch(err => {
+          expect(
+            fetchMock.calls('media-emoji').length,
+            'Called twice',
+          ).to.equal(2);
+          done();
+        });
     });
 
-    it('image Promise rejection when token load fails', () => {
+    it('image Promise rejection when token load fails', done => {
       const tokenError = 'get token failure';
       const tokenManager = createTokenManager(Promise.reject(tokenError));
       const mediaImageLoader = createMediaImageLoader(tokenManager);
-      return mediaImageLoader.loadMediaImage(mediaEmojiImagePath).catch(err => {
-        expect(err, 'Promise was rejected with token error').to.equal(
-          tokenError,
-        );
-      });
+      mediaImageLoader
+        .loadMediaImage(mediaEmojiImagePath)
+        .then(() => done.fail('Promise should be rejected.'))
+        .catch(err => {
+          expect(err, 'Promise was rejected with token error').to.equal(
+            tokenError,
+          );
+          done();
+        });
     });
   });
 });

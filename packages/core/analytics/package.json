@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "2.4.4",
-  "description": "The AtlasKit Component Analytics Framework",
+  "version": "3.0.0",
+  "description": "The Atlaskit Component Analytics Framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "types": "src/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "src/index.d.ts"
@@ -24,11 +25,10 @@
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.3",
-    "@atlaskit/theme": "^2.3.4",
+    "@atlaskit/docs": "^3.0.0",
     "enzyme": "^3.3.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2"

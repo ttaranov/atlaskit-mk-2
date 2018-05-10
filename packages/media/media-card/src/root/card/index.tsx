@@ -10,10 +10,12 @@ import {
   ImageResizeMode,
 } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardEventProps } from '../..';
+import { SharedCardProps, CardEventProps, CardAnalyticsContext } from '../..';
 import { MediaCard } from '../mediaCard';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
+import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -40,15 +42,19 @@ export interface UrlPreviewIdentifier {
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
-  isLazy?: boolean;
-  resizeMode?: ImageResizeMode;
+  readonly isLazy?: boolean;
+  readonly resizeMode?: ImageResizeMode;
+
+  // only relevant to file card with image appearance
+  readonly disableOverlay?: boolean;
 }
 
 export class Card extends Component<CardProps, {}> {
   static defaultProps = {
     appearance: 'auto',
-    isLazy: true,
     resizeMode: 'crop',
+    isLazy: true,
+    disableOverlay: false,
   };
 
   private provider: Provider;
@@ -121,28 +127,66 @@ export class Card extends Component<CardProps, {}> {
     );
   }
 
+  private get preview() {
+    const { context, identifier } = this.props;
+
+    return context.getLocalPreview(identifier['id']);
+  }
+  get analyticsContext(): CardAnalyticsContext {
+    const { identifier } = this.props;
+    const id = this.isUrlPreviewIdentifier(identifier)
+      ? identifier.url
+      : identifier.id;
+    return getBaseAnalyticsContext('Card', id);
+  }
+
   render() {
     const {
-      context,
       isLazy,
       appearance,
       resizeMode,
-      identifier,
-      ...otherProps
+      dimensions,
+      actions,
+      selectable,
+      selected,
+      onClick,
+      onMouseEnter,
+      onSelectChange,
+      onLoadingChange,
+      disableOverlay,
     } = this.props;
+    const {
+      mediaItemType,
+      provider,
+      dataURIService,
+      placeholder,
+      preview,
+      analyticsContext,
+    } = this;
     const card = (
-      <MediaCard
-        {...otherProps}
-        resizeMode={resizeMode}
-        appearance={appearance}
-        mediaItemType={this.mediaItemType}
-        provider={this.provider}
-        dataURIService={this.dataURIService}
-      />
+      <AnalyticsContext data={analyticsContext}>
+        <MediaCard
+          provider={provider}
+          mediaItemType={mediaItemType}
+          dataURIService={dataURIService}
+          appearance={appearance}
+          resizeMode={resizeMode}
+          dimensions={dimensions}
+          actions={actions}
+          selectable={selectable}
+          selected={selected}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onSelectChange={onSelectChange}
+          onLoadingChange={onLoadingChange}
+          preview={preview}
+          disableOverlay={disableOverlay}
+        />
+      </AnalyticsContext>
     );
 
     return isLazy ? (
-      <LazyContent placeholder={this.placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={placeholder}>{card}</LazyContent>
     ) : (
       card
     );

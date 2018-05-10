@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
 import * as fs from '../utils/fs';
-import type { Directory, RouterMatch } from '../types';
+import type { RouterMatch } from '../types';
 import Page from '../components/Page';
 import FourOhFour from './FourOhFour';
 import Loading from '../components/Loading';
-import Loadable from 'react-loadable';
 import { patterns } from '../site';
 
 type Props = {
@@ -27,9 +26,8 @@ export default function Pattern({ match: { params: { patternId } } }: Props) {
     render(mod) {
       if (mod && mod.default) {
         return React.createElement(mod.default);
-      } else {
-        return <FourOhFour />;
       }
+      return <FourOhFour />;
     },
   });
 

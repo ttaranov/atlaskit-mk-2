@@ -1,5 +1,15 @@
 # @atlaskit/empty-state
 
+## 1.1.1
+
+## 1.1.0
+- [patch] Remove null as we allowed void values [7ab743b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ab743b)
+- [patch] Update empty state and button to have consistent types [f0da143](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0da143)
+- [minor] Update Empty state to use ButtonGroup from @atlaskit/button [e4a8dcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4a8dcf)
+
+## 1.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 0.3.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
 

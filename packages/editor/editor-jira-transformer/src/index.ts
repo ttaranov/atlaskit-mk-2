@@ -8,6 +8,7 @@ import { bfsOrder, convert, ensureBlocks } from './utils';
 import {
   isSchemaWithLists,
   isSchemaWithMentions,
+  isSchemaWithEmojis,
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
   isSchemaWithMedia,
@@ -138,6 +139,7 @@ export class JIRATransformer implements Transformer<string> {
       heading,
       listItem,
       mention,
+      emoji,
       orderedList,
       paragraph,
       rule,
@@ -170,6 +172,10 @@ export class JIRATransformer implements Transformer<string> {
 
     if (isSchemaWithMentions(this.schema) && node.type === mention) {
       return this.encodeMention(node, this.customEncoders.mention);
+    }
+
+    if (isSchemaWithEmojis(this.schema) && node.type === emoji) {
+      return this.encodeEmoji(node);
     }
 
     if (isSchemaWithCodeBlock(this.schema) && node.type === codeBlock) {
@@ -277,18 +283,13 @@ export class JIRATransformer implements Transformer<string> {
             const linkElem = this.doc.createElement('a');
             const href = mark.attrs['href'];
 
-            // Handle external links e.g. links which start with http://, https://, ftp://, //
-            if (
-              href.match(/\w+:\/\//) ||
-              href.match(/^\/\//) ||
-              href.match('mailto:')
-            ) {
+            /** JIRA always expects external-link attribute set on links created via editor unless its #fragment */
+            if (!href.match(/^#/)) {
               linkElem.setAttribute('class', 'external-link');
-              linkElem.setAttribute('href', href);
               linkElem.setAttribute('rel', 'nofollow');
-            } else {
-              linkElem.setAttribute('href', href);
             }
+
+            linkElem.setAttribute('href', href);
 
             if (mark.attrs['title']) {
               linkElem.setAttribute('title', mark.attrs['title']);
@@ -386,6 +387,10 @@ export class JIRATransformer implements Transformer<string> {
     elem.appendChild(this.doc.createTextNode(node.attrs.text));
 
     return elem;
+  }
+
+  private encodeEmoji(node: PMNode) {
+    return this.doc.createTextNode(node.attrs && node.attrs.text);
   }
 
   private encodeCodeBlock(node: PMNode) {

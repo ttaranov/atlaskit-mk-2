@@ -1,11 +1,23 @@
 'use strict';
 //@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 120e3;
+
+/*
+* Setup webdriver clients depending on environment on which the test is run against.
+* BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and 
+* teardown for webdriver tests .
+*/
+
+// increase default jasmine timeout not to fail on webdriver tests as tests run can
+// take a while depending on the number of threads executing.
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
+
 const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
   : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
+let skipForBrowser /*:?Object */ = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
@@ -20,7 +32,9 @@ function BrowserTestCase(...args /*:Array<any> */) {
     beforeEach(async function() {
       for (let client of clients) {
         if (client) {
-          const browserName = client.driver.desiredCapabilities.browserName;
+          const browserName /*: string */ =
+            client.driver.desiredCapabilities.browserName;
+
           if (skipForBrowser && skipForBrowser[browserName]) {
             if (client.isReady) {
               client.isReady = false;
@@ -127,30 +141,35 @@ function setBrowserStackClients() {
   const launchers = {
     chrome: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'Chrome',
-      browser_version: '64.0',
+      browser_version: '65.0',
       resolution: '1440x900',
     },
     firefox: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'firefox',
-      browser_version: '58',
+      browser_version: '59',
       resolution: '1440x900',
     },
     ie: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'ie',
       browser_version: '11',
       resolution: '1440x900',
     },
     safari: {
       os: 'OS X',
+      os_version: 'Sierra',
       browserName: 'safari',
       browser_version: '10.1',
       resolution: '1920x1080',
     },
     edge: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'edge',
       browser_version: '16',
       resolution: '1440x900',

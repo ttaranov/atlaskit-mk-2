@@ -1,5 +1,15 @@
 # @atlaskit/onboarding
 
+## 3.1.2
+
+## 3.1.1
+
+## 3.1.0
+- [minor] support new property "targetNode" on spotlight component [48397b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48397b6)
+
+## 3.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 2.4.3
 
 ## 2.4.2

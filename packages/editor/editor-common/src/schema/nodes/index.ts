@@ -25,7 +25,9 @@ export { default as unknownBlock } from './unknown-block';
 export {
   media,
   MediaType,
-  Attributes as MediaAttributes,
+  MediaBaseAttributes,
+  MediaAttributes,
+  ExternalMediaAttributes,
   DisplayType as MediaDisplayType,
   copyPrivateAttributes as copyPrivateMediaAttributes,
   toJSON as mediaToJSON,
@@ -38,13 +40,18 @@ export {
 } from './media-single';
 export {
   table,
+  TableAttributes,
+  tableToJSON,
   tableCell,
   toJSONTableCell,
   tableHeader,
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
+  tableBackgroundColorNames,
   CellAttributes,
+  Layout as TableLayout,
+  calcTableColumnWidths,
 } from './tableNodes';
 export {
   applicationCard,
@@ -60,3 +67,5 @@ export { inlineExtension } from './inline-extension';
 export { bodiedExtension } from './bodied-extension';
 export { date } from './date';
 export { placeholder } from './placeholder';
+export { layoutSection } from './layout-section';
+export { layoutColumn } from './layout-column';

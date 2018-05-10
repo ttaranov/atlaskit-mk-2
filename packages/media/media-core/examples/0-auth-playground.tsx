@@ -3,10 +3,8 @@ import { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import { Context, ContextFactory } from '../src/context/context';
-import { MediaItem } from '../src/item';
-import { MediaCollection } from '../src/collection';
-import { Auth, AuthProvider, isClientBasedAuth } from '../src/auth';
+import { Context, ContextFactory, MediaItem, isError } from '../src';
+import { Auth, AuthProvider, isClientBasedAuth } from '@atlaskit/media-store';
 
 const collectionName = 'MediaServicesSample';
 const serviceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
@@ -22,7 +20,17 @@ const FormattedBlock = styled.pre`
   word-wrap: break-word;
 `;
 
-const requestToken = ({ access, withAsapIssuer, collectionName }) => {
+type RequestTokenParams = {
+  readonly access: { [resource: string]: string[] };
+  readonly withAsapIssuer: boolean;
+  readonly collectionName: string;
+};
+
+const requestToken = ({
+  access,
+  withAsapIssuer,
+  collectionName,
+}: RequestTokenParams) => {
   return axios
     .post(
       '/token/tenant',
@@ -41,12 +49,12 @@ const requestToken = ({ access, withAsapIssuer, collectionName }) => {
 // We leverage the fact, that our internal /toke/tenant API returns data in the same format as Auth
 const tokenDataToAuth = (tokenData: any): Auth => tokenData as Auth;
 
-const clientIdBaseAuthProvider = (collection): Promise<Auth> =>
+const clientIdBaseAuthProvider = (): Promise<Auth> =>
   requestToken({ access, collectionName, withAsapIssuer: false }).then(
     tokenDataToAuth,
   );
 
-const asapIssuerBaseAuthProvider = (collection): Promise<Auth> =>
+const asapIssuerBaseAuthProvider = (): Promise<Auth> =>
   requestToken({ access, collectionName, withAsapIssuer: true }).then(
     tokenDataToAuth,
   );
@@ -99,8 +107,10 @@ class AuthPlayground extends Component<Props, State> {
       3,
     );
     const observable = mediaCollectionProvider.observable();
-    observable.subscribe((next: MediaCollection) => {
-      this.setState({ items: next.items });
+    observable.subscribe(next => {
+      if (!isError(next)) {
+        this.setState({ items: next.items });
+      }
     });
   };
 
@@ -144,6 +154,8 @@ class AuthPlayground extends Component<Props, State> {
           </FormattedBlock>
         );
       }
+    } else {
+      return null;
     }
   };
 

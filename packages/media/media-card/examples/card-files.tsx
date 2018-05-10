@@ -1,3 +1,4 @@
+/* tslint:disable:no-console */
 import * as React from 'react';
 import {
   StoryList,
@@ -6,6 +7,9 @@ import {
   unknownFileId,
   errorFileId,
 } from '@atlaskit/media-test-helpers';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+
+import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 import { Card, FileIdentifier } from '../src';
 import { createApiCards, actions } from '../example-helpers';
@@ -122,6 +126,34 @@ const lazyLoadCards = [
   },
 ];
 
+// no hover state cards
+const noHoverStateCards = [
+  {
+    title: 'Overlay disabled',
+    content: (
+      <Card
+        identifier={successIdentifier}
+        context={context}
+        appearance="image"
+        disableOverlay={true}
+      />
+    ),
+  },
+  {
+    title: 'Selected',
+    content: (
+      <Card
+        identifier={successIdentifier}
+        context={context}
+        appearance="image"
+        disableOverlay={true}
+        selectable={true}
+        selected={true}
+      />
+    ),
+  },
+];
+
 // collection and no collection configuration of files
 const fileWithNoCollection: FileIdentifier = {
   mediaItemType: 'file',
@@ -138,30 +170,40 @@ const collectionConfigCards = [
     content: <Card identifier={successIdentifier} context={context} />,
   },
 ];
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
+  const { payload, context } = analyticsEvent;
+  console.log('Received event:', { payload, context });
+};
+
 export default () => (
-  <div>
-    <h1 style={{ margin: '10px 20px' }}>File cards</h1>
-    <div style={{ margin: '20px 40px' }}>
-      <h3>Standard</h3>
-      <StoryList>{standardCards}</StoryList>
+  <AnalyticsListener channel="media" onEvent={handleEvent}>
+    <div>
+      <h1 style={{ margin: '10px 20px' }}>File cards</h1>
+      <div style={{ margin: '20px 40px' }}>
+        <h3>Standard</h3>
+        <StoryList>{standardCards}</StoryList>
 
-      <h3>Error</h3>
-      <StoryList>{errorCards}</StoryList>
+        <h3>Error</h3>
+        <StoryList>{errorCards}</StoryList>
 
-      <h3>Menu</h3>
-      <StoryList>{menuCards}</StoryList>
+        <h3>Menu</h3>
+        <StoryList>{menuCards}</StoryList>
 
-      <h3>API Cards</h3>
-      <StoryList>{apiCards}</StoryList>
+        <h3>API Cards</h3>
+        <StoryList>{apiCards}</StoryList>
 
-      <h3>Thumbnail not available</h3>
-      <StoryList>{noThumbnailCards}</StoryList>
+        <h3>Thumbnail not available</h3>
+        <StoryList>{noThumbnailCards}</StoryList>
 
-      <h3>Lazy load</h3>
-      <StoryList>{lazyLoadCards}</StoryList>
+        <h3>Lazy load</h3>
+        <StoryList>{lazyLoadCards}</StoryList>
 
-      <h3>Collection configurations</h3>
-      <StoryList>{collectionConfigCards}</StoryList>
+        <h3>Collection configurations</h3>
+        <StoryList>{collectionConfigCards}</StoryList>
+
+        <h3>Overlay disabled</h3>
+        <StoryList>{noHoverStateCards}</StoryList>
+      </div>
     </div>
-  </div>
+  </AnalyticsListener>
 );

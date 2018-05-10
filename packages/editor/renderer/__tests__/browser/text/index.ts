@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TextSerializer } from '../../../src';
-import { defaultSchema as schema } from '@atlaskit/editor-common';
+import { createSchema, defaultSchema as schema } from '@atlaskit/editor-common';
 
 const serializer = TextSerializer.fromSchema(schema);
 
@@ -422,15 +422,11 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).to.equal('foo\nbar');
   });
 
-  it('should ignore bullet lists', () => {
+  it('should render bullet lists', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'foo' }],
-        },
         {
           type: 'bulletList',
           content: [
@@ -439,31 +435,32 @@ describe('Renderer - TextSerializer', () => {
               content: [
                 {
                   type: 'paragraph',
-                  content: [{ type: 'text', text: 'ignore me' }],
+                  content: [{ type: 'text', text: 'a' }],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: 'b' }],
                 },
               ],
             },
           ],
         },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'bar' }],
-        },
       ],
     };
 
-    expect(render(doc)).to.equal('foo\nbar');
+    expect(render(doc)).to.equal('* a\n* b');
   });
 
-  it('should ignore ordered lists', () => {
+  it('should render ordered lists', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'foo' }],
-        },
         {
           type: 'orderedList',
           content: [
@@ -472,45 +469,42 @@ describe('Renderer - TextSerializer', () => {
               content: [
                 {
                   type: 'paragraph',
-                  content: [{ type: 'text', text: 'ignore me' }],
+                  content: [{ type: 'text', text: '1' }],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: '2' }],
                 },
               ],
             },
           ],
         },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'bar' }],
-        },
       ],
     };
 
-    expect(render(doc)).to.equal('foo\nbar');
+    expect(render(doc)).to.equal('1. 1\n2. 2');
   });
 
   [1, 2, 3, 4, 5, 6].forEach(level => {
-    it(`should ignore heading level ${level}`, () => {
+    it(`should render heading level ${level}`, () => {
       const doc = {
         type: 'doc',
         version: 1,
         content: [
           {
-            type: 'paragraph',
-            content: [{ type: 'text', text: 'foo' }],
-          },
-          {
             type: 'heading',
             attrs: { level },
-            content: [{ type: 'text', text: 'ignore me' }],
-          },
-          {
-            type: 'paragraph',
-            content: [{ type: 'text', text: 'bar' }],
+            content: [{ type: 'text', text: 'heading' }],
           },
         ],
       };
 
-      expect(render(doc)).to.equal('foo\nbar');
+      expect(render(doc)).to.equal('heading');
     });
   });
 
@@ -536,15 +530,11 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).to.equal('foo\nbar');
   });
 
-  it('should ignore panels', () => {
+  it('should render panels', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'foo' }],
-        },
         {
           type: 'panel',
           attrs: {
@@ -553,41 +543,29 @@ describe('Renderer - TextSerializer', () => {
           content: [
             {
               type: 'paragraph',
-              content: [{ type: 'text', text: 'ignore me' }],
+              content: [{ type: 'text', text: 'information' }],
             },
           ],
-        },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'bar' }],
         },
       ],
     };
 
-    expect(render(doc)).to.equal('foo\nbar');
+    expect(render(doc)).to.equal('information');
   });
 
-  it('should ignore tables', () => {
+  it('should render tables', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
         {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'foo' }],
-        },
-        {
           type: 'table',
           content: [],
-        },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'bar' }],
         },
       ],
     };
 
-    expect(render(doc)).to.equal('foo\nbar');
+    expect(render(doc)).to.equal('{table}');
   });
 
   it('should ignore empty paragraphs', () => {
@@ -611,5 +589,71 @@ describe('Renderer - TextSerializer', () => {
     };
 
     expect(render(doc)).to.equal('foo\nbar');
+  });
+
+  it('should render unsupported node with the node type', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'bodiedExtension',
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('[bodiedExtension]');
+  });
+
+  it('should add a space between mention and text', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: '1',
+                accessLevel: 'CONTAINER',
+                text: '@this',
+              },
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('@this is Sparta');
+  });
+
+  it('should not add a space between text nodes', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This',
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('Thisis Sparta');
   });
 });

@@ -36,6 +36,8 @@ type Props = {
   children: SizeMetrics => Node,
   /** Optional styles object to be applied to the containing element */
   containerStyle?: Object,
+  /** Called when the component is resized. */
+  onResize?: SizeMetrics => void,
 };
 
 type State = {
@@ -56,14 +58,9 @@ export default class SizeDetector extends Component<Props, State> {
     containerStyle: {},
   };
 
-  rafFrame: number; // eslint-disable-line react/sort-comp
   container: ?HTMLDivElement;
   resizeObjectDocument: ?window;
   resizeObject: ?HTMLElement;
-
-  queueSizeDetect = () => {
-    this.rafFrame = this.handleResize();
-  };
 
   handleResize = rafSchedule(() => {
     const { container } = this;
@@ -71,12 +68,18 @@ export default class SizeDetector extends Component<Props, State> {
       return;
     }
 
+    const sizeMetrics = {
+      width: container.offsetWidth,
+      height: container.offsetHeight,
+    };
+
     this.setState({
-      sizeMetrics: {
-        width: container.offsetWidth,
-        height: container.offsetHeight,
-      },
+      sizeMetrics,
     });
+
+    if (this.props.onResize) {
+      this.props.onResize(sizeMetrics);
+    }
   });
 
   componentDidMount() {
@@ -87,11 +90,12 @@ export default class SizeDetector extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    cancelAnimationFrame(this.rafFrame);
+    this.handleResize.cancel();
+
     if (this.resizeObjectDocument) {
       this.resizeObjectDocument.removeEventListener(
         'resize',
-        this.queueSizeDetect,
+        this.handleResize,
       );
     }
   }
@@ -101,7 +105,7 @@ export default class SizeDetector extends Component<Props, State> {
       return;
     }
     this.container = ref;
-    this.queueSizeDetect();
+    this.handleResize();
   };
 
   handleObjectRef = (ref: ?HTMLElement) => {
@@ -118,7 +122,7 @@ export default class SizeDetector extends Component<Props, State> {
 
     // $FlowFixMe - resizeObject is typed as HTMLElement which has no contentDocument prop
     this.resizeObjectDocument = this.resizeObject.contentDocument.defaultView;
-    this.resizeObjectDocument.addEventListener('resize', this.queueSizeDetect);
+    this.resizeObjectDocument.addEventListener('resize', this.handleResize);
   };
 
   renderChildren = () => {

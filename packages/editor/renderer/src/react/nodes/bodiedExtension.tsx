@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
-import { ExtensionHandlers } from '../../ui/Renderer';
-import { ADNode } from '@atlaskit/editor-common';
+import { ADNode, ExtensionHandlers } from '@atlaskit/editor-common';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -28,7 +27,13 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const extensionContent = extensionHandlers[extensionType](
-        { extensionKey, parameters, content },
+        {
+          type: 'bodiedExtension',
+          extensionKey,
+          extensionType,
+          parameters,
+          content,
+        },
         rendererContext.adDoc,
       );
 

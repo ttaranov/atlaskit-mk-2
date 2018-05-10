@@ -23,18 +23,26 @@ export function request(
 ): Promise<Response> {
   const { method = 'GET', auth, params, headers, body } = options;
 
+  const processFetchResponse = (response: Response) => {
+    if (response.ok || response.redirected) {
+      return response;
+    } else {
+      throw response;
+    }
+  };
+
   if (method === 'GET') {
     return fetch(createUrl(url, { params, auth }), {
       method,
       body,
       headers,
-    });
+    }).then(processFetchResponse);
   } else {
     return fetch(createUrl(url, { params }), {
       method,
       body,
       headers: withAuth(auth)(headers),
-    });
+    }).then(processFetchResponse);
   }
 }
 
@@ -42,7 +50,7 @@ export function mapResponseToJson(response: Response): Promise<any> {
   return response.json();
 }
 
-export function mapResponseToVoid(response: Response): Promise<void> {
+export function mapResponseToVoid(_response: Response): Promise<void> {
   return Promise.resolve();
 }
 

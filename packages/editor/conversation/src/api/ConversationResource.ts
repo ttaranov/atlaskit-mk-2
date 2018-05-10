@@ -59,6 +59,21 @@ export interface ResourceProvider {
   updateUser(user: User): Promise<User>;
 }
 
+const getHighlightedComment = () => {
+  if (!location || !location.hash) {
+    return undefined;
+  }
+
+  const commentPrefix = 'comment-';
+  const commentId = location.hash.indexOf(commentPrefix);
+
+  if (commentId !== -1) {
+    return location.hash.substr(commentId + commentPrefix.length);
+  }
+
+  return undefined;
+};
+
 export class AbstractConversationResource implements ResourceProvider {
   private _store: Store<State | undefined>;
 
@@ -71,7 +86,12 @@ export class AbstractConversationResource implements ResourceProvider {
   };
 
   constructor() {
-    this._store = createStore();
+    const initialState: State = {
+      conversations: [] as Conversation[],
+      highlighted: getHighlightedComment(),
+    };
+
+    this._store = createStore(initialState);
   }
 
   /**
@@ -224,11 +244,13 @@ export class ConversationResource extends AbstractConversationResource {
     meta: any,
   ): Promise<Conversation> {
     const { dispatch } = this;
+    const isMain = !meta || Object.keys(meta).length === 0;
     const tempConversation = this.createConversation(
       localId,
       containerId,
       value,
       meta,
+      isMain,
     );
     let result: Conversation;
 
@@ -254,6 +276,7 @@ export class ConversationResource extends AbstractConversationResource {
                 adf: value,
               },
             },
+            isMain,
           }),
         },
       );
@@ -447,6 +470,7 @@ export class ConversationResource extends AbstractConversationResource {
     containerId: string,
     value: any,
     meta: any,
+    isMain?: boolean,
   ): Conversation {
     return {
       localId,
@@ -454,6 +478,7 @@ export class ConversationResource extends AbstractConversationResource {
       meta,
       conversationId: localId,
       comments: [this.createComment(localId, localId, value)],
+      isMain,
     };
   }
 

@@ -353,7 +353,7 @@ export const createSelectableCardsWithMenu = (
 };
 
 export const createMissingMetadataFileCards = (appearance: CardAppearance) => {
-  const minimumDetails: FileDetails = {};
+  const minimumDetails: FileDetails = { id: 'id' };
 
   const missingNameDetails: FileDetails = deepcopy(genericFileDetails);
   delete missingNameDetails.name;
@@ -583,6 +583,52 @@ export const createApiCards = (
   return apiCards;
 };
 
+const createImageCardsWithNoOverlay = () => {
+  const uploadingCard = {
+    title: 'uploading card',
+    content: (
+      <CardView
+        status="uploading"
+        appearance="image"
+        metadata={imageFileDetails}
+        disableOverlay={true}
+        dataURI={gifDataUri}
+        progress={0.4}
+      />
+    ),
+  };
+
+  const loadedCard = {
+    title: 'loaded card',
+    content: (
+      <CardView
+        status="complete"
+        appearance="image"
+        metadata={imageFileDetails}
+        disableOverlay={true}
+        dataURI={gifDataUri}
+      />
+    ),
+  };
+
+  const selectedAndLoadedCard = {
+    title: 'loaded and selected card',
+    content: (
+      <CardView
+        status="complete"
+        appearance="image"
+        metadata={imageFileDetails}
+        disableOverlay={true}
+        dataURI={gifDataUri}
+        selectable={true}
+        selected={true}
+      />
+    ),
+  };
+
+  return [uploadingCard, loadedCard, selectedAndLoadedCard];
+};
+
 export const generateStoriesForFilesWithAppearance = (
   appearance: CardAppearance,
 ) => {
@@ -733,6 +779,13 @@ export const generateStoriesForFilesWithAppearance = (
 
       <h4>Missing metadata or data uri</h4>
       <StoryList>{fileMissingMetadataOrDataUriCards}</StoryList>
+
+      {appearance === 'image' ? (
+        <div>
+          <h4>Overlay disabled</h4>
+          <StoryList>{createImageCardsWithNoOverlay()}</StoryList>
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -826,11 +879,16 @@ export const generateStoriesForLinksWithAppearance = (
 
 export const generateStoriesForAppearance = (appearance: CardAppearance) => {
   const fileCardStories =
-    appearance !== 'square' && appearance !== 'horizontal'
+    appearance === 'image' || appearance === 'small'
       ? generateStoriesForFilesWithAppearance(appearance)
       : null;
 
-  const linkCardStories = generateStoriesForLinksWithAppearance(appearance);
+  const linkCardStories =
+    appearance === 'square' ||
+    appearance === 'horizontal' ||
+    appearance === 'small'
+      ? generateStoriesForLinksWithAppearance(appearance)
+      : null;
 
   return () => (
     <div>

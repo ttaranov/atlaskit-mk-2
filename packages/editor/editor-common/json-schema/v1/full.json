@@ -46,6 +46,124 @@
       ],
       "additionalProperties": false
     },
+    "media_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "media"
+          ]
+        },
+        "attrs": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "link",
+                    "file"
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "collection": {
+                  "type": "string"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "occurrenceKey": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "collection"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "external"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "mediaSingle_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "mediaSingle"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/media_node"
+          },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "layout": {
+              "enum": [
+                "wrap-right",
+                "center",
+                "wrap-left",
+                "wide",
+                "full-width"
+              ]
+            }
+          },
+          "required": [
+            "layout"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "additionalProperties": false
+    },
     "listItem_node": {
       "type": "object",
       "properties": {
@@ -58,7 +176,14 @@
           "type": "array",
           "items": [
             {
-              "$ref": "#/definitions/paragraph_node"
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/paragraph_node"
+                },
+                {
+                  "$ref": "#/definitions/mediaSingle_node"
+                }
+              ]
             },
             {
               "anyOf": [
@@ -67,6 +192,9 @@
                 },
                 {
                   "$ref": "#/definitions/bulletList_node"
+                },
+                {
+                  "$ref": "#/definitions/mediaSingle_node"
                 },
                 {
                   "$ref": "#/definitions/orderedList_node"
@@ -605,55 +733,6 @@
       ],
       "additionalProperties": false
     },
-    "media_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "media"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1
-            },
-            "type": {
-              "enum": [
-                "link",
-                "file"
-              ]
-            },
-            "collection": {
-              "type": "string"
-            },
-            "height": {
-              "type": "number"
-            },
-            "width": {
-              "type": "number"
-            },
-            "occurrenceKey": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "required": [
-            "id",
-            "type",
-            "collection"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
     "mediaGroup_node": {
       "type": "object",
       "properties": {
@@ -676,47 +755,6 @@
       ],
       "additionalProperties": false
     },
-    "mediaSingle_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "mediaSingle"
-          ]
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/media_node"
-          },
-          "minItems": 1,
-          "maxItems": 1
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "layout": {
-              "enum": [
-                "wrap-right",
-                "center",
-                "wrap-left",
-                "wide",
-                "full-width"
-              ]
-            }
-          },
-          "required": [
-            "layout"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "content"
-      ],
-      "additionalProperties": false
-    },
     "table_node": {
       "type": "object",
       "properties": {
@@ -730,6 +768,12 @@
           "properties": {
             "isNumberColumnEnabled": {
               "type": "boolean"
+            },
+            "layout": {
+              "enum": [
+                "full-width",
+                "default"
+              ]
             }
           },
           "additionalProperties": false
@@ -814,7 +858,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
@@ -854,7 +897,6 @@
       },
       "required": [
         "type",
-        "attrs",
         "content"
       ],
       "additionalProperties": false
@@ -1610,6 +1652,9 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
+            "$ref": "#/definitions/mediaSingle_node"
+          },
+          {
             "$ref": "#/definitions/orderedList_node"
           },
           {
@@ -1626,9 +1671,6 @@
           },
           {
             "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
-            "$ref": "#/definitions/mediaSingle_node"
           },
           {
             "$ref": "#/definitions/table_node"
@@ -1666,6 +1708,9 @@
             "$ref": "#/definitions/bulletList_node"
           },
           {
+            "$ref": "#/definitions/mediaSingle_node"
+          },
+          {
             "$ref": "#/definitions/orderedList_node"
           },
           {
@@ -1696,9 +1741,6 @@
             "$ref": "#/definitions/extension_node"
           },
           {
-            "$ref": "#/definitions/bodiedExtension_node"
-          },
-          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
@@ -1714,6 +1756,9 @@
           },
           {
             "$ref": "#/definitions/bulletList_node"
+          },
+          {
+            "$ref": "#/definitions/mediaSingle_node"
           },
           {
             "$ref": "#/definitions/orderedList_node"
@@ -1732,9 +1777,6 @@
           },
           {
             "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
-            "$ref": "#/definitions/mediaSingle_node"
           },
           {
             "$ref": "#/definitions/table_node"

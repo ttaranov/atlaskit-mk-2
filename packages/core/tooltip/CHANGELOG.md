@@ -1,5 +1,32 @@
 # @atlaskit/tooltip
 
+## 9.1.6
+
+## 9.1.5
+- [patch] Fix long words in tooltip content overflowing the tooltip, they will now wrap. [b2967ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2967ef)
+
+## 9.1.4
+- [patch] Fix tooltips sometimes not hiding when rapidly switching between them [760f6a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760f6a0)
+
+## 9.1.3
+- [patch] Fix react warnings caused when unmounting a tooltip when it is queued for show/hide [6d9cc52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9cc52)
+
+## 9.1.2
+- [patch] Fix tooltip scroll listeners not being removed properly and an edgecase viewport autoflip issue [0a3ccc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3ccc9)
+
+## 9.1.1
+- [patch] Fix viewport edge collision detection for non-mouse positions in some cases and improve detection to include scrollbars [e66bce5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66bce5)
+
+## 9.1.0
+- [patch] Improve viewport edge collision detection. Tooltips will now shift along the secondary position axis (e.g. left/right when position is top/bottom) to show within viewport. Fix auto flip occurring incorrectly in these situations as well. [ebf331a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf331a)
+- [minor] Add new 'mouse' value for position prop and mousePosition prop to allow the tooltip to display relative to the mouse. [1d5577d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d5577d)
+
+## 9.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 8.4.2
+- [patch] Makes packages Flow types compatible with version 0.67 [25daac0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25daac0)
+
 ## 8.4.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 

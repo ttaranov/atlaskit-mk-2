@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 import { waitUntil } from '@atlaskit/util-common-test';
-
+import { EmojiDescriptionWithVariations } from '../../../src/types';
 import { isPromise } from '../../../src/type-helpers';
 import MediaEmojiCache, {
   BrowserCacheStrategy,
@@ -18,7 +18,8 @@ import {
   mediaEmoji,
   mediaEmojiImagePath,
   loadedAltMediaEmoji,
-} from '../../../src/support/test-data';
+} from '../../_test-data';
+import { frequentCategory } from '../../../src/constants';
 
 const restoreStub = (stub: any) => {
   if (stub.restore) {
@@ -358,21 +359,35 @@ describe('BrowserCacheStrategy', () => {
       }
     });
 
-    it('returns undefined via Promise if uncached and error, Emoji once cached', () => {
+    it('returns undefined via Promise if uncached and error', () => {
       mockMediaImageLoader.reject = true;
       const emojiPromise = browserCacheStrategy.loadEmoji(mediaEmoji);
       expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
       if (isPromise(emojiPromise)) {
         return emojiPromise.then(emoji => {
           expect(emoji, 'Emoji is undefined on load error').to.equal(undefined);
-          const cachedError = browserCacheStrategy.loadEmoji(mediaEmoji);
-          expect(isPromise(cachedError), 'Cached, not a promise').to.equal(
+        });
+      }
+    });
+
+    it('returns different emoji if two different EmojiDescription have same mediaPath', () => {
+      const frequentEmoji: EmojiDescriptionWithVariations = {
+        ...mediaEmoji,
+        category: frequentCategory,
+      };
+      const emojiPromise = browserCacheStrategy.loadEmoji(mediaEmoji);
+      expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
+      if (isPromise(emojiPromise)) {
+        return emojiPromise.then(emoji => {
+          expect(emoji, 'Same emoji returned').to.deep.equal(emoji);
+          const cachedEmoji = browserCacheStrategy.loadEmoji(frequentEmoji);
+          expect(isPromise(cachedEmoji), 'Cached, not a promise').to.deep.equal(
             false,
           );
           expect(
-            cachedError,
-            'Cached error. Emoji is undefined on load error',
-          ).to.equal(undefined);
+            cachedEmoji,
+            'Different EmojiDescription returned',
+          ).to.deep.equal(frequentEmoji);
         });
       }
     });
@@ -419,14 +434,6 @@ describe('MemoryCacheStrategy', () => {
       if (isPromise(emojiPromise)) {
         return emojiPromise.then(emoji => {
           expect(emoji, 'Emoji is undefined on load error').to.equal(undefined);
-          const cachedError = memoryCacheStrategy.loadEmoji(mediaEmoji);
-          expect(isPromise(cachedError), 'Cached, not a promise').to.equal(
-            false,
-          );
-          expect(
-            cachedError,
-            'Cached error. Emoji is undefined on load error',
-          ).to.equal(undefined);
         });
       }
     });
@@ -449,6 +456,32 @@ describe('MemoryCacheStrategy', () => {
           expect(cachedEmoji, 'Same emoji returned').to.deep.equal(
             loadedAltMediaEmoji,
           );
+        });
+      }
+    });
+
+    it('returns different emoji if two different EmojiDescription have same mediaPath', () => {
+      const frequentEmoji: EmojiDescriptionWithVariations = {
+        ...mediaEmoji,
+        category: frequentCategory,
+      };
+      const loadedFrequentEmoji: EmojiDescriptionWithVariations = {
+        ...loadedMediaEmoji,
+        category: frequentCategory,
+      };
+      const emojiPromise = memoryCacheStrategy.loadEmoji(mediaEmoji);
+      expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
+      if (isPromise(emojiPromise)) {
+        return emojiPromise.then(emoji => {
+          expect(emoji, 'Same emoji returned').to.deep.equal(loadedMediaEmoji);
+          const cachedEmoji = memoryCacheStrategy.loadEmoji(frequentEmoji);
+          expect(isPromise(cachedEmoji), 'Cached, not a promise').to.deep.equal(
+            false,
+          );
+          expect(
+            cachedEmoji,
+            'Different EmojiDescription returned',
+          ).to.deep.equal(loadedFrequentEmoji);
         });
       }
     });

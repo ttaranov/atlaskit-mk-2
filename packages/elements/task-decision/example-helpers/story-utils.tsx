@@ -4,9 +4,17 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import { TaskDecisionProvider } from '../src/types';
-import { getMockTaskDecisionResource } from '../src/support/story-data';
-import { MockTaskDecisionResourceConfig } from '../src/support/support-types';
-import MockTaskDecisionResource from '../src/support/MockTaskDecisionResource';
+import {
+  MockTaskDecisionResource,
+  MockTaskDecisionResourceConfig,
+  taskDecision,
+} from '@atlaskit/util-data-test';
+
+export const {
+  getMockTaskDecisionResource,
+  document,
+  getParticipants,
+} = taskDecision;
 
 export const createProviders = (
   options?: MockTaskDecisionResourceConfig,
@@ -41,24 +49,28 @@ export const createRenderer = (provider: TaskDecisionProvider) => {
   return renderDocument;
 };
 
-export const MessageContainer = styled.div`
+export const MessageContainer: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   border: 10px solid #fcc;
   width: 585px;
 `;
 
-export const SidebarContainer = styled.div`
+export const SidebarContainer: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   border: 10px solid #fcc;
   width: 240px;
   overflow-x: hidden;
 `;
 
-export const Grid = styled.div`
+export const Grid: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 `;
 
-export const Item = styled.div`
+export const Item: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   flex: 1 1 0;
   margin: 10px;
 `;

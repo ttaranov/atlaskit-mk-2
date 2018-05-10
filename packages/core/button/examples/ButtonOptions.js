@@ -1,27 +1,36 @@
 // @flow
-import React from 'react';
+import React, { type Node } from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import Btn from '../src';
-import type { ButtonProps } from '../src/types';
+import Button from '../src';
 
 const Icon = <AtlassianIcon label="Test icon" />;
 
-const Button = ({
+const ButtonWrapper = ({
   inline = true,
-  ...props
-}: { inline?: boolean } & ButtonProps) => (
+  children,
+}: {
+  inline?: boolean,
+  children: Node,
+}) => (
   <div style={{ display: inline ? 'inline-block' : 'block', padding: 4 }}>
-    <Btn {...props} />
+    {children}
   </div>
 );
 
 const ButtonOptions = () => (
   <div>
-    <Button iconBefore={Icon}>Icon Before</Button>
-    <Button iconAfter={Icon}>Icon After</Button>
-    <Button inline={false} shouldFitContainer>
-      Fit Container
-    </Button>
+    <ButtonWrapper>
+      <Button autoFocus>Auto focused button</Button>
+    </ButtonWrapper>
+    <ButtonWrapper>
+      <Button iconBefore={Icon}>Icon Before</Button>
+    </ButtonWrapper>
+    <ButtonWrapper>
+      <Button iconAfter={Icon}>Icon After</Button>
+    </ButtonWrapper>
+    <ButtonWrapper inline={false}>
+      <Button shouldFitContainer>Fit Container</Button>
+    </ButtonWrapper>
   </div>
 );
 

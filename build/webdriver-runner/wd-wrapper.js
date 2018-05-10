@@ -1,3 +1,7 @@
+/*
+* wrapper on top of webdriver-io apis to give a feel of puppeeteer api
+*/
+
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
 const WAIT_TIMEOUT = 5000;
@@ -149,6 +153,10 @@ export default class Page {
     return this.browser.isVisible(selector);
   }
 
+  hasFocus(selector) {
+    return this.browser.hasFocus(selector);
+  }
+
   log(type) {
     return this.browser.log(type);
   }
@@ -163,7 +171,7 @@ export default class Page {
     } else {
       keys = ['Command', 'v'];
     }
-    return this.browser.setValue(selector, keys);
+    return this.browser.addValue(selector, keys);
   }
 
   // Wait

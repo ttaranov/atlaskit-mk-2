@@ -1,5 +1,22 @@
 # @atlaskit/mention
 
+## 11.1.1
+
+## 11.1.0
+- [minor] If a Mention item is a team then render a TEAM lozenge automatically [d4976d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4976d4)
+
+## 11.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 10.0.1
+
+## 10.0.0
+- [major] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
+
+## 9.2.3
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 9.2.2
 - [patch] Update links in documentation [c4f7497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4f7497)
 

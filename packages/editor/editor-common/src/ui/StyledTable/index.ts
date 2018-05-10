@@ -7,8 +7,8 @@ import {
   akEditorTableCellSelected,
   akEditorTableBorder,
   akEditorTableBorderSelected,
-  akEditorTableFloatingControls,
 } from '../../styles';
+import { tableBackgroundColorNames } from '../../';
 
 const tableStyle = `
   {
@@ -17,6 +17,10 @@ const tableStyle = `
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
+
+    &[data-autosize="true"] {
+      table-layout: auto;
+    }
 
     & {
       * {
@@ -41,12 +45,12 @@ const tableStyle = `
         /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
         background-clip: padding-box;
 
-        & p {
-          margin: 0;
+        th p:not(:first-of-type), td p:not(:first-of-type) {
+          margin-top: 12px;
         }
       }
       th {
-        background-color: ${akEditorTableFloatingControls};
+        background-color: ${tableBackgroundColorNames.get('grey')};
         font-weight: bold;
         text-align: left;
       }

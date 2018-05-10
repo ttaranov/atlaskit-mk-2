@@ -21,12 +21,12 @@ export class MediaFileService implements FileService {
     } else {
       const request = createRequest({
         config: this.config,
-        collectionName: collectionName,
+        collectionName,
         preventPreflight: true,
       });
 
       return request({ url: `/file/${fileId}` })
-        .then(json => json.data)
+        .response.then(json => json.data)
         .then(fileDetails => {
           const fileItem = <FileItem>{
             type: 'file',

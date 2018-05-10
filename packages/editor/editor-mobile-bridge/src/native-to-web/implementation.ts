@@ -2,15 +2,23 @@ import NativeToWebBridge from './bridge';
 
 import { EditorView } from 'prosemirror-view';
 
-import { MentionsState, TextFormattingState } from '@atlaskit/editor-core';
+import {
+  MentionsState,
+  TextFormattingState,
+  EditorActions,
+  CustomMediaPicker,
+} from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
+import { rejectPromise, resolvePromise } from '../cross-platform-promise';
 
 export default class WebBridgeImpl implements NativeToWebBridge {
   textFormattingPluginState: TextFormattingState | null = null;
   mentionsPluginState: MentionsState | null = null;
   editorView: EditorView | null = null;
   transformer: JSONTransformer = new JSONTransformer();
+  editorActions: EditorActions = new EditorActions();
+  mediaPicker: CustomMediaPicker | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -70,19 +78,32 @@ export default class WebBridgeImpl implements NativeToWebBridge {
       this.mentionsPluginState.dismiss();
     }
   }
-  setContent(content: string) {}
+
+  setContent(content: string) {
+    if (this.editorActions) {
+      this.editorActions.replaceDocument(content);
+    }
+  }
 
   getContent(): string {
     return this.editorView
-      ? JSON.stringify(
-          this.transformer.encode(this.editorView.state.doc),
-          null,
-          2,
-        )
+      ? JSON.stringify(this.transformer.encode(this.editorView.state.doc))
       : '';
   }
 
   setTextFormattingStateAndSubscribe(state: TextFormattingState) {
     this.textFormattingPluginState = state;
+  }
+  onMediaPicked(eventName: string, payload: string) {
+    if (this.mediaPicker) {
+      this.mediaPicker.emit(eventName, JSON.parse(payload));
+    }
+  }
+  onPromiseResolved(uuid: string, paylaod: string) {
+    resolvePromise(uuid, JSON.parse(paylaod));
+  }
+
+  onPromiseRejected(uuid: string) {
+    rejectPromise(uuid);
   }
 }

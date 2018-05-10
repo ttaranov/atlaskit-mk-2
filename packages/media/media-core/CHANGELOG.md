@@ -1,5 +1,32 @@
 # @atlaskit/media-core
 
+## 18.0.2
+- [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
+
+## 18.0.1
+
+## 18.0.0
+- [major] FileDetails' `id` property is now mandatory\nAuth interfaces moves from media-core to media-store, though still exported from media-core\nNew Interfaces (UploadableFile, UploadFileCallbacks) are exported from media-store\nMediaStore calls fixed with collection supplied during auth-provider call [d7b5021](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7b5021)
+
+## 17.0.0
+- [major] MediaCollectionProvider now emits errors as next values in observable() [f22e2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f22e2a0)
+
+## 16.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 15.3.0
+- [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
+
+## 15.2.0
+- [minor] MSW-531: add cancelable methods to blobService [7f84f67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f84f67)
+
+## 15.1.0
+- [minor] Release first version of image viewer for Media Viewer Next Generation [dd1893a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd1893a)
+
+## 15.0.1
+
+- [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
+
 ## 15.0.0
 - [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
 

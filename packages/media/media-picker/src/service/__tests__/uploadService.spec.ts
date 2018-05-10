@@ -16,6 +16,7 @@ createHasherSpy.mockImplementation(() => {
 });
 
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
+import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { UploadService } from '../uploadService';
 import { AuthProvider } from '@atlaskit/media-core';
 
@@ -42,28 +43,23 @@ describe('UploadService', () => {
     it('should apply defaultUploadParams', () => {
       const { uploadService } = setup();
 
-      uploadService.setUploadParams({ collection: '' });
+      uploadService.setUploadParams({});
 
       expect(uploadService.getUploadParams()).toEqual({
         collection: '',
-        fetchMetadata: true,
-        autoFinalize: true,
       });
     });
 
     it('should combine default uploadParams given new upload parameters', () => {
       const { uploadService } = setup();
-      const newUploadParams = {
+      const newUploadParams: UploadParams = {
         collection,
-        autoFinalize: false,
       };
 
       uploadService.setUploadParams(newUploadParams);
 
       expect(uploadService.getUploadParams()).toEqual({
         collection,
-        fetchMetadata: true,
-        autoFinalize: false,
       });
     });
   });
@@ -331,6 +327,9 @@ describe('UploadService', () => {
       (getPreviewModule.getPreviewFromBlob as any) = jest
         .fn()
         .mockReturnValue(Promise.resolve());
+      (getPreviewFromVideo.getPreviewFromVideo as any) = jest
+        .fn()
+        .mockReturnValue(Promise.resolve());
 
       const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
         collection: '',
@@ -395,6 +394,17 @@ describe('UploadService', () => {
       return filesAddedPromise.then(() => {
         expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
       });
+    });
+
+    it('should emit file-preview-update for video files', async () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
+
+      uploadService.addFile(file as File);
+      await filesAddedPromise;
+
+      expect(getPreviewFromVideo.getPreviewFromVideo).toHaveBeenCalledTimes(1);
+      expect(getPreviewFromVideo.getPreviewFromVideo).toBeCalledWith(file);
     });
   });
 
@@ -495,9 +505,9 @@ describe('UploadService', () => {
       );
     });
 
-    it('should finalize file automatically if finalizeFile in uploadParams is true', () => {
+    it('should finalize file automatically', () => {
       const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -509,7 +519,7 @@ describe('UploadService', () => {
 
     it('should emit a 100% upload percentage when the file has been uploaded', () => {
       const { resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -527,37 +537,8 @@ describe('UploadService', () => {
       );
     });
 
-    it('should emit "file-finalize-ready" if finalizeFile in uploadParams is false', () => {
-      const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: false },
-      });
-
-      resumable.fire('fileSuccess', resumableFile as any, '');
-
-      expect(emitter.emit).toHaveBeenCalledTimes(2);
-      expect(emitter.emit).toHaveBeenCalledWith(
-        'file-finalize-ready',
-        expect.objectContaining({
-          file: expect.objectContaining({
-            name: resumableFile.file.name,
-          }),
-        }),
-      );
-      expect(uploadService['finalizeFile']).not.toHaveBeenCalled();
-
-      const { finalize } = (emitter.emit as jest.Mock<void>).mock.calls[1][1];
-
-      finalize();
-
-      expect(uploadService['finalizeFile']).toHaveBeenCalledTimes(1);
-      expect(uploadService['finalizeFile']).toHaveBeenCalledWith(resumableFile);
-    });
-
     it('should fire "file-upload-error" with associated file and error', () => {
-      // avoid polluting test logs with error message in console
-      const consoleError = console.error;
       console.error = jest.fn();
-
       const { resumable, resumableFile, emitter } = setup();
       const description = 'some-error-description';
 
@@ -577,8 +558,7 @@ describe('UploadService', () => {
           },
         }),
       );
-
-      console.error = consoleError;
+      expect(console.error).toBeCalled();
     });
   });
 
