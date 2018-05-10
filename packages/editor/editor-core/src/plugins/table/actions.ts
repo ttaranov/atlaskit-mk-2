@@ -17,6 +17,8 @@ import {
   createHoverDecorationSet,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
+  calculateSummary,
+  maybeCreateText,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
@@ -112,77 +114,28 @@ export const toggleSummaryRow: Command = (
   }
 
   const rowCount = table.node.childCount;
-  // calculate summary for each col
-  const summary: any[] = [];
-  for (let i = 0; i < rowCount; i++) {
-    const row = table.node.child(i);
-
-    for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
-      const cell = row.child(j);
-      let colSummary: any = summary[j];
-
-      if (
-        cell.attrs.cellType === 'number' ||
-        cell.attrs.cellType === 'currency'
-      ) {
-        let cellNumber = parseInt(cell.textContent);
-        colSummary = colSummary ? colSummary + cellNumber : cellNumber;
-      } else if (cell.attrs.cellType === 'text') {
-        colSummary = '';
-      } else if (cell.attrs.cellType === 'mention') {
-        let mentionCount = 0;
-        if (
-          cell.child(0).type.name === 'paragraph' &&
-          cell.child(0).childCount > 0
-        ) {
-          mentionCount = 1;
-        }
-        colSummary = colSummary ? colSummary + mentionCount : mentionCount;
-      } else if (
-        cell.attrs.cellType === 'checkbox' ||
-        cell.attrs.cellType === 'decision'
-      ) {
-        let count = 0;
-        if (
-          (cell.child(0).type.name === 'paragraph' ||
-            cell.child(0).type.name === 'decisionList') &&
-          cell.child(0).childCount > 0
-        ) {
-          let firstChild = cell.child(0).child(0);
-          // only count unchecked actions and empty decisions
-          if (firstChild.type.name === 'checkbox' && !firstChild.attrs.checked)
-            count = 1;
-          else if (
-            firstChild.type.name === 'decisionItem' &&
-            firstChild.content.size === 0
-          )
-            count = 1;
-        }
-        colSummary = colSummary ? colSummary + count : count;
-      }
-
-      summary[j] = colSummary;
-    }
-  }
-
-  table.node.attrs.isSummaryRowEnabled = true;
-
   const { tableRow, tableCell, paragraph } = state.schema.nodes;
-  const cells = summary.map(value => {
-    const content =
-      value != null && value !== '' ? state.schema.text(`${value}`) : undefined;
-    return tableCell.createChecked(
+  const createContent = maybeCreateText(state.schema);
+
+  const cells = calculateSummary(table.node).map(value =>
+    tableCell.createChecked(
       { cellType: 'summary', summaryType: 'total' },
-      paragraph.createChecked({}, content),
-    );
-  });
+      paragraph.createChecked({}, createContent(value)),
+    ),
+  );
 
   const row = tableRow.createChecked({}, cells);
   let rowPos = table.pos;
   for (let i = 0; i < rowCount; i++) {
     rowPos += table.node.child(i).nodeSize;
   }
+
   const tr = state.tr.insert(rowPos, row);
+  tr.setNodeMarkup(table.pos - 1, state.schema.nodes.table, {
+    ...table.node.attrs,
+    isSummaryRowEnabled: true,
+  });
+  tr.setMeta(tablePluginKey, { addedSummaryRow: true });
 
   dispatch(tr);
   return true;

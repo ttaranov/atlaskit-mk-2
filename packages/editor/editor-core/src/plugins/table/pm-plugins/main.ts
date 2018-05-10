@@ -4,12 +4,14 @@ import {
   Plugin,
   PluginKey,
   TextSelection,
+  Transaction,
 } from 'prosemirror-state';
 import { CellSelection, TableMap, toggleHeaderRow } from 'prosemirror-tables';
 import {
   findTable,
   findParentDomRefOfType,
   selectRow,
+  forEachCellInRow,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -29,6 +31,8 @@ import {
   createControlsDecorationSet,
   containsTableHeader,
   canInsertTable,
+  calculateSummary,
+  maybeCreateText,
 } from '../utils';
 
 import { TableLayout } from '@atlaskit/editor-common';
@@ -340,5 +344,48 @@ export const createPlugin = (
           return false;
         },
       },
+    },
+    // update summary cells on each table modification
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const table = findTable(newState.selection);
+      if (
+        table &&
+        table.node.attrs.isSummaryRowEnabled &&
+        transactions.some(transaction => transaction.docChanged) &&
+        // ignore the transaction that enables summary row (otherwise it goes into infinite loop)
+        !transactions.some(transaction => {
+          const meta = transaction.getMeta(stateKey);
+          return meta && meta.addedSummaryRow;
+        }) &&
+        // TODO: Need to find a better way to stop infinite loop
+        !transactions.every(transaction =>
+          transaction.getMeta('appendedTransaction'),
+        )
+      ) {
+        const summary = calculateSummary(table.node);
+
+        let { tr } = newState;
+        let index = 0;
+        const createContent = maybeCreateText(newState.schema);
+
+        forEachCellInRow(table.node.childCount - 1, cell => {
+          const content = createContent(summary[index++]);
+          const paragraph = cell.node.child(0);
+          return tr =>
+            content
+              ? tr.replaceWith(
+                  cell.pos + 1,
+                  cell.pos + paragraph.nodeSize - 1,
+                  content,
+                )
+              : tr;
+        })(tr);
+
+        return tr;
+      }
     },
   });

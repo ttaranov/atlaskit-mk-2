@@ -110,3 +110,61 @@ export const checkIfSummaryRowEnabled = (state: EditorState): boolean => {
   const table = findTable(state.selection);
   return !!(table && table.node.attrs.isSummaryRowEnabled);
 };
+
+export const maybeCreateText = schema => value => {
+  return value != null && value !== '' ? schema.text(`${value}`) : undefined;
+};
+
+export const calculateSummary = (table: PmNode) => {
+  const summary: any[] = [];
+  for (let i = 0, rowCount = table.childCount; i < rowCount; i++) {
+    const row = table.child(i);
+    for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
+      const cell = row.child(j);
+      let colSummary: any = summary[j];
+
+      if (
+        cell.attrs.cellType === 'number' ||
+        cell.attrs.cellType === 'currency'
+      ) {
+        let cellNumber = parseInt(cell.textContent);
+        colSummary = colSummary ? colSummary + cellNumber : cellNumber;
+      } else if (cell.attrs.cellType === 'text') {
+        colSummary = '';
+      } else if (cell.attrs.cellType === 'mention') {
+        let mentionCount = 0;
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0
+        ) {
+          mentionCount = 1;
+        }
+        colSummary = colSummary ? colSummary + mentionCount : mentionCount;
+      } else if (
+        cell.attrs.cellType === 'checkbox' ||
+        cell.attrs.cellType === 'decision'
+      ) {
+        let count = 0;
+        if (
+          (cell.child(0).type.name === 'paragraph' ||
+            cell.child(0).type.name === 'decisionList') &&
+          cell.child(0).childCount > 0
+        ) {
+          let firstChild = cell.child(0).child(0);
+          // only count unchecked actions and empty decisions
+          if (firstChild.type.name === 'checkbox' && !firstChild.attrs.checked)
+            count = 1;
+          else if (
+            firstChild.type.name === 'decisionItem' &&
+            firstChild.content.size === 0
+          )
+            count = 1;
+        }
+        colSummary = colSummary ? colSummary + count : count;
+      }
+
+      summary[j] = colSummary;
+    }
+  }
+  return summary;
+};

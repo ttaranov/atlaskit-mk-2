@@ -141,6 +141,7 @@ export type SummaryType = 'total' | 'average' | 'min' | 'max';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
+  isSummaryRowEnabled?: boolean;
   layout?: Layout;
   __autoSize?: boolean;
 }
@@ -207,6 +208,7 @@ export const table: any = {
   content: 'tableRow+',
   attrs: {
     isNumberColumnEnabled: { default: false },
+    isSummaryRowEnabled: { default: false },
     layout: { default: 'default' },
     __autoSize: { default: false },
   },
@@ -219,6 +221,8 @@ export const table: any = {
       getAttrs: (dom: Element) => ({
         isNumberColumnEnabled:
           dom.getAttribute('data-number-column') === 'true' ? true : false,
+        isSummaryRowEnabled:
+          dom.getAttribute('data-summary-row') === 'true' ? true : false,
         layout: dom.getAttribute('data-layout') || 'default',
         __autoSize: dom.getAttribute('data-autosize') === 'true' ? true : false,
       }),
@@ -227,6 +231,7 @@ export const table: any = {
   toDOM(node) {
     const attrs = {
       'data-number-column': node.attrs.isNumberColumnEnabled,
+      'data-summary-row': node.attrs.isSummaryRowEnabled,
       'data-layout': node.attrs.layout,
       'data-autosize': node.attrs.__autoSize,
     };
