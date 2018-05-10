@@ -153,7 +153,10 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
-          if (cell.node.type !== tableCell) {
+          if (
+            cell.node.type !== tableCell ||
+            cell.node.attrs.cellType === 'summary'
+          ) {
             return;
           }
 

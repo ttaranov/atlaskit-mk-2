@@ -160,60 +160,60 @@ export const createPlugin = (
           return setClickedCell(cell)(state, dispatch);
         },
 
-        mousemove(view: EditorView, event: MouseEvent) {
-          const { state, dispatch } = view;
-          if ((resizingPluginKey.getState(state) || {}).dragging) {
-            return setTargetRef(undefined)(state, dispatch);
-          }
-          const pluginState = pluginKey.getState(state);
-          const { tableElement } = tablePluginKey.getState(state);
-          const posAtCoords = view.posAtCoords({
-            left: event.clientX,
-            top: event.clientY,
-          });
-          const { doc, schema } = state;
-          const { tableCell, tableHeader } = schema.nodes;
+        // mousemove(view: EditorView, event: MouseEvent) {
+        //   const { state, dispatch } = view;
+        //   if ((resizingPluginKey.getState(state) || {}).dragging) {
+        //     return setTargetRef(undefined)(state, dispatch);
+        //   }
+        //   const pluginState = pluginKey.getState(state);
+        //   const { tableElement } = tablePluginKey.getState(state);
+        //   const posAtCoords = view.posAtCoords({
+        //     left: event.clientX,
+        //     top: event.clientY,
+        //   });
+        //   const { doc, schema } = state;
+        //   const { tableCell, tableHeader } = schema.nodes;
 
-          if (
-            !tableElement ||
-            // pluginState.isOpen ||
-            isCellSelection(view.state.selection) ||
-            !posAtCoords
-          ) {
-            return false;
-          }
-          const $pos = doc.resolve(posAtCoords.pos);
-          const cell = findParentNodeOfTypeClosestToPos($pos, [
-            tableCell,
-            tableHeader,
-          ]);
-          if (!cell) {
-            return false;
-          }
-          if (
-            cell.node.attrs.cellType === 'slider' &&
-            cell !== pluginState.clickedCell
-          ) {
-            setClickedCell(cell)(view.state, dispatch);
-          }
-          if (!pluginState.isOpen) {
-            const targetPosition = cell.pos;
-            const ref = findDomRefAtPos(
-              targetPosition,
-              view.domAtPos.bind(view),
-            );
-            const targetRef = !targetPosition ? undefined : ref;
-            return setTargetRef(targetRef as HTMLElement, targetPosition)(
-              state,
-              dispatch,
-            );
-          }
-          return false;
-        },
-        blur(view: EditorView, event: MouseEvent) {
-          const { state, dispatch } = view;
-          return setTargetRef(undefined)(state, dispatch);
-        },
+        //   if (
+        //     !tableElement ||
+        //     // pluginState.isOpen ||
+        //     isCellSelection(view.state.selection) ||
+        //     !posAtCoords
+        //   ) {
+        //     return false;
+        //   }
+        //   const $pos = doc.resolve(posAtCoords.pos);
+        //   const cell = findParentNodeOfTypeClosestToPos($pos, [
+        //     tableCell,
+        //     tableHeader,
+        //   ]);
+        //   if (!cell) {
+        //     return false;
+        //   }
+        //   if (
+        //     cell.node.attrs.cellType === 'slider' &&
+        //     cell !== pluginState.clickedCell
+        //   ) {
+        //     setClickedCell(cell)(view.state, dispatch);
+        //   }
+        //   if (!pluginState.isOpen) {
+        //     const targetPosition = cell.pos;
+        //     const ref = findDomRefAtPos(
+        //       targetPosition,
+        //       view.domAtPos.bind(view),
+        //     );
+        //     const targetRef = !targetPosition ? undefined : ref;
+        //     return setTargetRef(targetRef as HTMLElement, targetPosition)(
+        //       state,
+        //       dispatch,
+        //     );
+        //   }
+        //   return false;
+        // },
+        // blur(view: EditorView, event: MouseEvent) {
+        //   const { state, dispatch } = view;
+        //   return setTargetRef(undefined)(state, dispatch);
+        // },
       },
     },
 

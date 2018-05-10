@@ -16,6 +16,23 @@ export interface Props {
 const PopupWithListeners = withOuterListeners(Popup);
 
 export default class SummaryMenu extends Component<Props, any> {
+  state = {
+    isOpen: false,
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { clickedCell } = nextProps;
+    if (
+      clickedCell &&
+      clickedCell.node &&
+      clickedCell.node.attrs.cellType === 'summary'
+    ) {
+      this.setState({
+        isOpen: true,
+      });
+    }
+  }
+
   render() {
     const items = this.createItems();
     if (!items) {
@@ -33,14 +50,14 @@ export default class SummaryMenu extends Component<Props, any> {
         editorView.domAtPos.bind(editorView),
       );
     }
-    if (targetRef) {
+    if (!targetRef) {
       return null;
     }
 
     return (
       <PopupWithListeners
-        target={targetRef!}
-        offset={[0, 2]}
+        target={targetRef}
+        offset={[0, -6]}
         handleClickOutside={onClickOutside}
         handleEscapeKeydown={onClickOutside}
       >
@@ -49,7 +66,7 @@ export default class SummaryMenu extends Component<Props, any> {
           onItemActivated={this.onMenuItemActivated}
           fitHeight={188}
           fitWidth={180}
-          offset={[13, -20]}
+          isOpen={this.state.isOpen}
         />
       </PopupWithListeners>
     );
@@ -86,7 +103,16 @@ export default class SummaryMenu extends Component<Props, any> {
     return items.length ? [{ items }] : null;
   };
 
+  private toggleOpen = () => {
+    const { isOpen } = this.state;
+    this.setState({
+      isOpen: !isOpen,
+    });
+  };
+
   private onMenuItemActivated = ({ item }) => {
-    console.log(item.name.value);
+    console.log(item);
+
+    this.toggleOpen();
   };
 }
