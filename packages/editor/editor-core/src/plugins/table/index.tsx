@@ -6,7 +6,6 @@ import {
   tableCell,
   tableHeader,
   tableRow,
-  WithProviders,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
@@ -21,11 +20,9 @@ import contextualMenu, {
   pluginKey as contextualMenuPluginkey,
   setClickedCell,
   setDateIntoClickedCell,
-  setEmojiIntoClickedCell,
 } from './pm-plugins/contextual-menu-plugin';
 import { pluginKey as datePluginKey } from '../date/plugin';
 import DatePicker from './ui/DatePicker';
-import EmojiPicker from './ui/EmojiPicker';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -90,79 +87,53 @@ const tablesPlugin: EditorPlugin = {
   }) {
     const { dispatch } = editorView;
 
-    const renderNode = providers => {
-      return (
-        <WithPluginState
-          plugins={{
-            tablesState: stateKey,
-            tableContextualMenuState: contextualMenuPluginkey,
-            dateState: datePluginKey,
-          }}
-          render={({ tablesState, tableContextualMenuState }) => (
-            <div>
-              <TableFloatingToolbar
-                editorView={editorView}
-                popupsMountPoint={popupsMountPoint}
-                popupsBoundariesElement={popupsBoundariesElement}
-                tableElement={tablesState.tableElement}
-                tableActive={tablesState.tableActive}
-                cellSelection={tablesState.cellSelection}
-                remove={() => dispatch(removeTable(editorView.state.tr))}
-                tableLayout={tablesState.tableLayout}
-                updateLayout={tablesState.setTableLayout}
-                allowNumberColumn={tablesState.allowNumberColumn}
-                allowHeaderRow={tablesState.allowHeaderRow}
-                allowHeaderColumn={tablesState.allowHeaderColumn}
-                stickToolbarToBottom={tablesState.stickToolbarToBottom}
-                permittedLayouts={tablesState.permittedLayouts}
-              />
-              <FloatingContextualMenu
-                editorView={editorView}
-                targetRef={tableContextualMenuState.targetRef}
-                targetPosition={tableContextualMenuState.targetPosition}
-                isOpen={tableContextualMenuState.isOpen}
-                allowMergeCells={tablesState.allowMergeCells}
-                allowBackgroundColor={tablesState.allowBackgroundColor}
-              />
-              <DatePicker
-                editorView={editorView}
-                clickedCell={tableContextualMenuState.clickedCell}
-                onSelect={({ iso }) => {
-                  setDateIntoClickedCell(iso)(editorView.state, dispatch);
-                }}
-                onClickOutside={(event: Event) => {
-                  if (!editorView.dom.contains(event.target as HTMLElement)) {
-                    setClickedCell(undefined)(editorView.state, dispatch);
-                  }
-                }}
-              />
-              <EmojiPicker
-                editorView={editorView}
-                emojiProvider={providers.emojiProvider}
-                clickedCell={tableContextualMenuState.clickedCell}
-                onSelect={(emojiId, emoji) => {
-                  setEmojiIntoClickedCell(emojiId, emoji)(
-                    editorView.state,
-                    dispatch,
-                  );
-                }}
-                onClickOutside={(event: Event) => {
-                  if (!editorView.dom.contains(event.target as HTMLElement)) {
-                    setClickedCell(undefined)(editorView.state, dispatch);
-                  }
-                }}
-              />
-            </div>
-          )}
-        />
-      );
-    };
-
     return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
+      <WithPluginState
+        plugins={{
+          tablesState: stateKey,
+          tableContextualMenuState: contextualMenuPluginkey,
+          dateState: datePluginKey,
+        }}
+        render={({ tablesState, tableContextualMenuState }) => (
+          <div>
+            <TableFloatingToolbar
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              tableElement={tablesState.tableElement}
+              tableActive={tablesState.tableActive}
+              cellSelection={tablesState.cellSelection}
+              remove={() => dispatch(removeTable(editorView.state.tr))}
+              tableLayout={tablesState.tableLayout}
+              updateLayout={tablesState.setTableLayout}
+              allowNumberColumn={tablesState.allowNumberColumn}
+              allowHeaderRow={tablesState.allowHeaderRow}
+              allowHeaderColumn={tablesState.allowHeaderColumn}
+              stickToolbarToBottom={tablesState.stickToolbarToBottom}
+              permittedLayouts={tablesState.permittedLayouts}
+            />
+            <FloatingContextualMenu
+              editorView={editorView}
+              targetRef={tableContextualMenuState.targetRef}
+              targetPosition={tableContextualMenuState.targetPosition}
+              isOpen={tableContextualMenuState.isOpen}
+              allowMergeCells={tablesState.allowMergeCells}
+              allowBackgroundColor={tablesState.allowBackgroundColor}
+            />
+            <DatePicker
+              editorView={editorView}
+              clickedCell={tableContextualMenuState.clickedCell}
+              onSelect={({ iso }) => {
+                setDateIntoClickedCell(iso)(editorView.state, dispatch);
+              }}
+              onClickOutside={(event: Event) => {
+                if (!editorView.dom.contains(event.target as HTMLElement)) {
+                  setClickedCell(undefined)(editorView.state, dispatch);
+                }
+              }}
+            />
+          </div>
+        )}
       />
     );
   },

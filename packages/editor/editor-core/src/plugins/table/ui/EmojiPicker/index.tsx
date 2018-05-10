@@ -21,7 +21,23 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
 }
 
-export default class EmojiPicker extends React.Component<Props, any> {
+export interface State {
+  emojiPickerOpen: boolean;
+}
+
+export default class EmojiPicker extends React.Component<Props, State> {
+  state: State = {
+    emojiPickerOpen: false,
+  };
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { clickedCell } = nextProps;
+    // If number of visible buttons changed, close emoji picker
+    if (clickedCell && clickedCell !== this.props.clickedCell) {
+      this.setState({ emojiPickerOpen: true });
+    }
+  }
+
   render() {
     const {
       clickedCell,
@@ -42,7 +58,7 @@ export default class EmojiPicker extends React.Component<Props, any> {
       );
     }
 
-    if (!targetRef) {
+    if (!targetRef || !this.state.emojiPickerOpen) {
       return null;
     }
 
@@ -50,11 +66,16 @@ export default class EmojiPicker extends React.Component<Props, any> {
       <PopupWithListeners
         target={targetRef!}
         offset={[0, 2]}
-        handleClickOutside={onClickOutside}
+        handleClickOutside={this.handleClickOutside}
         handleEscapeKeydown={onClickOutside}
       >
         <AkEmojiPicker emojiProvider={emojiProvider} onSelection={onSelect} />
       </PopupWithListeners>
     );
   }
+
+  private handleClickOutside = e => {
+    this.props.onClickOutside(e);
+    this.setState({ emojiPickerOpen: false });
+  };
 }
