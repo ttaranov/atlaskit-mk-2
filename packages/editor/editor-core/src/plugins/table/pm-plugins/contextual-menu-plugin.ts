@@ -138,9 +138,15 @@ export const createPlugin = (
           ]);
           if (
             !cell ||
-            ['date', 'link', 'mention', 'checkbox', 'emoji', 'slider'].indexOf(
-              cell.node.attrs.cellType,
-            ) === -1
+            [
+              'summary',
+              'date',
+              'link',
+              'mention',
+              'checkbox',
+              'emoji',
+              'slider',
+            ].indexOf(cell.node.attrs.cellType) === -1
           ) {
             return setClickedCell(undefined)(state, dispatch);
           }

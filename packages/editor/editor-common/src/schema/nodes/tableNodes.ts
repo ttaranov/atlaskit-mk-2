@@ -126,7 +126,8 @@ export type CellType =
   | 'link'
   | 'mention'
   | 'checkbox'
-  | 'emoji';
+  | 'emoji'
+  | 'summary';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
