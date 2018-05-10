@@ -857,8 +857,8 @@
                 "mention",
                 "text",
                 "date",
-                "currency",
-                "checkbox"
+                "checkbox",
+                "currency"
               ]
             }
           },
@@ -908,8 +908,8 @@
                 "mention",
                 "text",
                 "date",
-                "currency",
-                "checkbox"
+                "checkbox",
+                "currency"
               ]
             }
           },
@@ -1550,6 +1550,20 @@
       "required": [
         "type",
         "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "checkbox_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "checkbox"
+          ]
+        }
+      },
+      "required": [
+        "type"
       ],
       "additionalProperties": false
     },

@@ -77,7 +77,7 @@ export default class ColumnTypesMenu extends Component<Props, any> {
 
     items.push({
       content: 'Checkbox',
-      value: { name: 'task' },
+      value: { name: 'checkbox' },
       elemBefore: <EditorTaskIcon label="Checkbox" />,
     });
 
@@ -105,7 +105,7 @@ export default class ColumnTypesMenu extends Component<Props, any> {
   private onMenuItemActivated = ({ item }) => {
     const { editorView, columnIndex } = this.props;
     const {
-      state: { schema: { nodes: { slider, tableCell } } },
+      state: { schema: { nodes: { slider, checkbox, tableCell } } },
       dispatch,
     } = editorView;
     const attrs = { cellType: item.value.name };
@@ -116,11 +116,20 @@ export default class ColumnTypesMenu extends Component<Props, any> {
         return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
       })(editorView.state.tr);
 
-      if (item.value.name === 'slider') {
-        const sliderNode = slider.createChecked();
+      const nodemap = {
+        slider: slider,
+        checkbox: checkbox,
+      };
+
+      // filldown for node type
+      if (Object.keys(nodemap).indexOf(item.value.name) !== -1) {
+        const node = nodemap[item.value.name].createChecked();
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
-          tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
+          if (cell.node.type !== tableCell) {
+            return;
+          }
+          tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
         });
       }
 
