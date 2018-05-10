@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@pgleeson/enzyme-mount-wrapper": "^0.0.1",
     "enzyme-adapter-react-16": "^1.1.1",
     "raf-stub": "^2.0.1"
   },
