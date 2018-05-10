@@ -86,6 +86,25 @@
     eslint-plugin-prefer-object-spread "^1.1.0"
     eslint-plugin-react "^6.4.1"
 
+"@atlaskit/field-base@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-9.0.2.tgz#54257fdd481d3a03e8d3d0dc3619ac2d2521af55"
+  dependencies:
+    "@atlaskit/icon" "^11.1.1"
+    "@atlaskit/inline-dialog" "^6.0.1"
+    "@atlaskit/spinner" "^5.0.1"
+    "@atlaskit/theme" "^3.1.1"
+    babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+
+"@atlaskit/field-text@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-text/-/field-text-5.0.2.tgz#153677a4202fcaab2cbcb0f0c792d1cedae0c514"
+  dependencies:
+    "@atlaskit/field-base" "^9.0.2"
+    "@atlaskit/theme" "^3.1.1"
+    styled-components "1.4.6 - 3"
+
 "@atlaskit/icon@^10.1.0":
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-10.1.2.tgz#a5e63c441fb9ab90324a7bae82b3006cfe555f5f"
@@ -103,6 +122,15 @@
     prop-types "^15.5.10"
     styled-components "^1.4.6"
 
+"@atlaskit/icon@^11.1.1":
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-11.1.1.tgz#3ba9666a4dac003dd259359ce92b5efb319d81b1"
+  dependencies:
+    "@atlaskit/theme" "^3.1.1"
+    babel-runtime "^6.26.0"
+    styled-components "1.4.6 - 3"
+    uuid "^3.1.0"
+
 "@atlaskit/icon@^7.0.1":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-7.1.0.tgz#7334150848735263de4a13bc98f4d44d4f2be8df"
@@ -118,6 +146,14 @@
     babel-runtime "^6.11.6"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/inline-dialog@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-6.0.1.tgz#5acea9a57328de2d4953bf0f692f5543688a0bc3"
+  dependencies:
+    "@atlaskit/layer" "^3.0.0"
+    "@atlaskit/theme" "^3.1.1"
+    styled-components "1.4.6 - 3"
 
 "@atlaskit/item@^4.1.0":
   version "4.2.1"
@@ -149,6 +185,13 @@
     popper.js "1.0.8"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/layer@^3.0.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-3.1.0.tgz#cf8a814a3129d5f9d0b2e325a5d663d70c52632d"
+  dependencies:
+    react-scrolllock "^2.0.2"
+    styled-components "1.4.6 - 3"
 
 "@atlaskit/polyfills@^1.0.0":
   version "1.1.0"
@@ -186,6 +229,15 @@
     react-transition-group "^1.2.0"
     styled-components "^1.3.0"
 
+"@atlaskit/spinner@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-5.0.1.tgz#346741be79f631416710e700f9ed5c0a836e55a1"
+  dependencies:
+    "@atlaskit/theme" "^3.1.1"
+    babel-runtime "^6.26.0"
+    react-transition-group "^2.2.1"
+    styled-components "1.4.6 - 3"
+
 "@atlaskit/theme@^2.0.0", "@atlaskit/theme@^2.1.0", "@atlaskit/theme@^2.2.0":
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-2.2.7.tgz#e1625f5e8080fda94df398b0978f264381ba4eb4"
@@ -200,6 +252,13 @@
     "@atlaskit/util-shared-styles" "^2.6.0"
     prop-types "^15.5.10"
     styled-components "^1.3.0"
+
+"@atlaskit/theme@^3.1.1":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-3.2.0.tgz#5eb4f2c02a929d427db60e52fcb65f929e849d4e"
+  dependencies:
+    prop-types "^15.5.10"
+    styled-components "1.4.6 - 3"
 
 "@atlaskit/tooltip@^8.0.1":
   version "8.0.4"

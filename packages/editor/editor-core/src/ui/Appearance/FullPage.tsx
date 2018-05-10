@@ -24,6 +24,14 @@ import {
 import { CSSTransition } from '../../../../../../node_modules/react-transition-group';
 // import * asclassnames from 'classnames';
 import { templateTypes } from '../../../src/templates/types';
+import Form, {
+  Field,
+  FormHeader,
+  FormSection,
+  FormFooter,
+} from '@atlaskit/form';
+import FieldText from '@atlaskit/field-text';
+
 const GUTTER_PADDING = 26;
 const flashTime = 700;
 
@@ -48,12 +56,11 @@ const FullPageEditorWrapper = styled.div`
   }
 
   .animation-wrapper.no-data {
-    height: 224px;
+    height: 255px;
   }
 
   .animation-wrapper.no-data.more {
-    height: 913px;
-    // max-height: 913px;
+    height: 960px;
   }
 
   & .animation-wrapper {
@@ -64,10 +71,20 @@ const FullPageEditorWrapper = styled.div`
     height: 0;
   }
 
+  .template-header {
+    margin: 7px 0;
+  }
+
   .view-templates {
     margin-left: 20px;
     font-size: 12px;
     cursor: pointer;
+    flex-grow: 1;
+  }
+
+  .template-meta {
+    display: flex;
+    align-items: center;
   }
 
   //   & .example-exit-active div {
@@ -228,9 +245,23 @@ export default class Editor extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      data: props.editorView && props.editorView!.state!.doc.content.size > 2,
+      data: true,
       moreTemplates: false,
+      templateSearch: '',
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      if (
+        this.props.editorView &&
+        this.props.editorView!.state!.doc.content.size <= 2
+      ) {
+        this.setState({
+          data: false,
+        });
+      }
+    }, 10000);
   }
 
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
@@ -255,28 +286,45 @@ export default class Editor extends React.Component<
     });
   };
 
+  filterTemplates = e => {
+    this.setState({
+      templateSearch: e.target.value || '',
+    });
+  };
+
   renderTemplates = () => {
-    const { data, moreTemplates } = this.state;
+    const { data, moreTemplates, templateSearch } = this.state;
+    const regExp = new RegExp(templateSearch, 'i');
     return data ? (
       <div className="empty-div" />
     ) : (
       <>
         <div className="template-meta">
           <div className="view-templates" onClick={this.toggleMoreTemplates}>
+            <h3 className="template-header">Pick from template gallery</h3>
             <a>{moreTemplates ? 'Hide' : 'Show'} all templates</a>
           </div>
-          <div className="search-templates" />
+          <div className="search-templates">
+            <FieldText
+              name="repo_name"
+              onChange={this.filterTemplates}
+              placeholder="Search templates.."
+              isLabelHidden={true}
+            />
+          </div>
         </div>
         <TemplateArea key="1">
-          {templateTypes.map((item, idx) => (
-            <TemplateItem
-              title={item.title}
-              icon={item.icon}
-              type={item.type}
-              info={item.info}
-              onClick={this.addTemplate.bind(null, item.type)}
-            />
-          ))}
+          {templateTypes
+            .filter(item => item.title.match(regExp))
+            .map((item, idx) => (
+              <TemplateItem
+                title={item.title}
+                icon={item.icon}
+                type={item.type}
+                info={item.info}
+                onClick={this.addTemplate.bind(null, item.type)}
+              />
+            ))}
         </TemplateArea>
       </>
     );
