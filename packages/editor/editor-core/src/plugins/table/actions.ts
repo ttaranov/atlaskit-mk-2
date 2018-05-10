@@ -275,16 +275,30 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     return tr;
   }
 
+  const nodemap = {
+    slider: schema.nodes.slider,
+    checkbox: schema.nodes.checkbox,
+  };
+
   const newCells = getCellsInRow(rowIndex)(tr.selection)!;
   // makes sure cellType attribute is preserved for the new row
   newCells.forEach((cell, index) => {
+    const cellType = cells![index].node.attrs.cellType;
     tr.setNodeMarkup(
       cell.pos - 1,
       cell.node.type,
       Object.assign({}, cell.node.attrs, {
-        cellType: cells![index].node.attrs.cellType,
+        cellType,
       }),
     );
+
+    // apply filldown
+    if (
+      Object.keys(nodemap).indexOf(cells![index].node.attrs.cellType) !== -1
+    ) {
+      const node = nodemap[cellType].createChecked();
+      tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
+    }
   });
 
   return tr;
