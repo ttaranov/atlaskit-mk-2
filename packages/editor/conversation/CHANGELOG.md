@@ -1,5 +1,10 @@
 # @atlaskit/conversation
 
+## 7.4.0
+- [minor] Add ability to disable scroll-to behavior and permalinks [94792ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/94792ca)
+
+## 7.3.0
+
 ## 7.2.1
 
 ## 7.2.0

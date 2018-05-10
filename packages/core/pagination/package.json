@@ -27,7 +27,6 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/theme": "^3.0.0",
     "enzyme": "^3.3.0"
   }
 }

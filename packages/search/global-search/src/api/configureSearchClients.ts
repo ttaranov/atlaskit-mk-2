@@ -27,7 +27,7 @@ const defaultConfig: Config = {
   activityServiceUrl: '/gateway/api/activity',
   searchAggregatorServiceUrl: '/gateway/api/xpsearch-aggregator',
   directoryServiceUrl: '/gateway/api/directory',
-  confluenceUrl: '', // confluence URL is just relative to current location
+  confluenceUrl: '/wiki',
 };
 
 export default function configureSearchClients(

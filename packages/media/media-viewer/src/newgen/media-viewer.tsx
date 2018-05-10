@@ -1,43 +1,65 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { ItemViewer } from './item-viewer';
 import { Identifier } from './domain';
+import { List } from './list';
+import { Collection } from './collection';
 import { Blanket, Content } from './styled';
-import Navigation from './navigation';
+import { ErrorMessage } from './styled';
 
 export type Props = {
   onClose?: () => void;
-  selectedItem: Identifier;
-  items: Identifier[];
+  selectedItem?: Identifier;
+  collectionName?: string;
+  items?: Identifier[];
   context: Context;
 };
 
-export type State = {
-  selectedItem: Identifier;
-};
-
-export class MediaViewer extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
-
+export class MediaViewer extends React.Component<Props, {}> {
   render() {
-    const { onClose, context, items } = this.props;
-    const { selectedItem } = this.state;
-
     return (
-      <Blanket onClick={onClose}>
-        <Content>
-          <ItemViewer context={context} identifier={selectedItem} />
-          <Navigation
-            items={items}
-            selectedItem={selectedItem}
-            onChange={this.onNavigationChange}
-          />
+      <Blanket>
+        <Content onClick={this.onClickContentClose}>
+          {this.renderContent()}
         </Content>
       </Blanket>
     );
   }
 
-  onNavigationChange = (selectedItem: Identifier) => {
-    this.setState({ selectedItem });
+  private renderContent() {
+    const {
+      items,
+      collectionName,
+      selectedItem,
+      context,
+      onClose,
+    } = this.props;
+    if (collectionName) {
+      return (
+        <Collection
+          selectedItem={selectedItem}
+          collectionName={collectionName}
+          context={context}
+          onClose={onClose}
+        />
+      );
+    } else if (items) {
+      return (
+        <List
+          selectedItem={selectedItem || items[0]}
+          items={items}
+          context={context}
+          onClose={onClose}
+        />
+      );
+    } else {
+      return <ErrorMessage>No media found</ErrorMessage>;
+    }
+  }
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
   };
 }

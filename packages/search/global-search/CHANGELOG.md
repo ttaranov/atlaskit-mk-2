@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 3.1.1
+
+## 3.1.0
+
+## 3.0.5
+
 ## 3.0.4
 - [patch] Link to people search includes query [6d2e946](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d2e946)
 

@@ -1,5 +1,24 @@
 # @atlaskit/renderer
 
+## 16.1.3
+- [patch] Add a blank space between mention and text in text renderer [940ecc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/940ecc7)
+
+## 16.1.2
+
+## 16.1.1
+
+## 16.1.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
+## 16.0.9
+
+## 16.0.8
+- [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
+
+## 16.0.7
+
+## 16.0.6
+
 ## 16.0.5
 - [patch] Fix rendering of multiple text nodes in inline code [9ee5612](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ee5612)
 

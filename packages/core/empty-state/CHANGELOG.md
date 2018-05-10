@@ -1,5 +1,7 @@
 # @atlaskit/empty-state
 
+## 1.1.1
+
 ## 1.1.0
 - [patch] Remove null as we allowed void values [7ab743b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ab743b)
 - [patch] Update empty state and button to have consistent types [f0da143](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0da143)

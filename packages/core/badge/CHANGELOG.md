@@ -1,5 +1,7 @@
 # @atlaskit/badge
 
+## 7.1.1
+
 ## 7.1.0
 - [minor] Added ability to specify an object as the badge appearance. Added an Appearance export to theme so that we can use strings and objects for appearance theming." [6e89615](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e89615)
 

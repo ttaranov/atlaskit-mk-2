@@ -30,6 +30,7 @@ export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly dataURIService?: DataUriService;
   readonly resizeMode?: ImageResizeMode;
   readonly preview?: string;
+  readonly disableOverlay?: boolean;
 }
 
 export interface MediaCardState {
@@ -162,6 +163,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
       actions,
       selectable,
       selected,
+      disableOverlay,
     } = this.props;
     const { metadata, status } = this.state;
 
@@ -182,6 +184,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         actions={actions}
         selectable={selectable}
         selected={selected}
+        disableOverlay={disableOverlay}
       />
     );
   }

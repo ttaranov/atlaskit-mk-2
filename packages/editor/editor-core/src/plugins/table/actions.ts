@@ -257,7 +257,7 @@ export const insertColumn = (column: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created column
   const pos = TableMap.get(table.node).positionAt(0, column, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.column.button');
   return true;
 };
@@ -270,7 +270,7 @@ export const insertRow = (row: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
 };

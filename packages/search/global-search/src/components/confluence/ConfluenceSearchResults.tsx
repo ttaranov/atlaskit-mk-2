@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoResults from '../NoResults';
@@ -28,15 +29,29 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) =>
 const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
-    {searchPeopleItem(query)}
+    {renderSearchPeopleItem(query)}
   </ResultItemGroup>
 );
+
+export const renderSearchConfluenceItem = (query: string) =>
+  searchConfluenceItem({
+    query: query,
+    icon: <SearchIcon size="medium" label="Advanced search" />,
+    text: 'Advanced search for more filter options',
+  });
+
+const renderSearchPeopleItem = (query: string) =>
+  searchPeopleItem({
+    query: query,
+    icon: <SearchIcon size="medium" label="Search People" />,
+    text: 'People directory',
+  });
 
 const renderNoResults = (query: string) => (
   <>
     <NoResults />
-    {searchConfluenceItem(query)}
-    {searchPeopleItem(query)}
+    {renderSearchConfluenceItem(query)}
+    {renderSearchPeopleItem(query)}
   </>
 );
 

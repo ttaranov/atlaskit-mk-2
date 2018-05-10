@@ -61,4 +61,7 @@ export type FieldTextProps = {
   autoFocus?: boolean,
   /** Set the maximum length that the entered text can be. */
   maxLength?: number,
+  /** Hide the validation message and style. This is used by <Field> to disable Validation display handling by FieldBase
+   */
+  isValidationHidden?: boolean,
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
+import { LinkComponent } from './GlobalQuickSearchWrapper';
 
 export interface Props {
   onMount();
@@ -9,6 +10,7 @@ export interface Props {
   isLoading: boolean;
   query: string;
   children: React.ReactNode;
+  linkComponent?: LinkComponent;
 }
 
 /**
@@ -31,13 +33,14 @@ export default class GlobalQuickSearch extends React.Component<Props> {
   }
 
   render() {
-    const { query, isLoading, children } = this.props;
+    const { query, isLoading, linkComponent, children } = this.props;
 
     return (
       <QuickSearch
         isLoading={isLoading}
         onSearchInput={this.handleSearchInput}
         value={query}
+        linkComponent={linkComponent}
       >
         {children}
       </QuickSearch>

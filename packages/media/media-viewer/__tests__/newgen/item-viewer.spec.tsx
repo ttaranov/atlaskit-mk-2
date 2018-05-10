@@ -205,5 +205,25 @@ describe('<ItemViewer />', () => {
       expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
       expect(newContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
     });
+
+    it('should return to PENDING state when resets', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext(subject);
+      const el = mount(
+        <ItemViewer context={context} identifier={identifier} />,
+      );
+
+      expect(el.state().item.status).toEqual('PENDING');
+      subject.next(docItem);
+      expect(el.state().item.status).toEqual('SUCCESSFUL');
+
+      const identifier2 = {
+        ...identifier,
+        id: 'some-other-id',
+      };
+
+      el.setProps({ context, identifier: identifier2 });
+      expect(el.state().item.status).toEqual('PENDING');
+    });
   });
 });

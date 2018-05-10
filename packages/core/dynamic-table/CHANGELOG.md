@@ -1,5 +1,10 @@
 # @atlaskit/dynamic-table
 
+## 8.0.2
+
+## 8.0.1
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
 ## 8.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

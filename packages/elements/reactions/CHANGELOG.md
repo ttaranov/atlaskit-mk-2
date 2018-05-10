@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 12.0.3
+
+## 12.0.2
+
+## 12.0.1
+
 ## 12.0.0
 - [major] FS-1023 Error handling for reactions [2202edc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2202edc)
 - [minor] FS-1023 - Handle error and show tooltip in case of error [f9f1040](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9f1040)

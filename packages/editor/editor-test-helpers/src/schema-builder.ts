@@ -1,4 +1,5 @@
 import {
+  ExternalMediaAttributes,
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
@@ -352,7 +353,7 @@ export const mediaSingle = (
   attrs: MediaSingleAttributes = { layout: 'center' },
 ) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: MediaAttributes) =>
+export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
 export const applicationCard = (attrs: ApplicationCardAttributes) =>
   nodeFactory(sampleSchema.nodes.applicationCard, attrs);

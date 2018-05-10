@@ -1,5 +1,13 @@
 # @atlaskit/media-image
 
+## 27.1.1
+
+## 27.1.0
+- [minor] Added "disableOverlay" prop to Card and CardView public API [533d085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533d085)
+
+## 27.0.4
+- [patch] hide link items from CardList (Sidebard) [dd2c7e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2c7e7)
+
 ## 27.0.3
 - [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
 - [patch] Turn side effects to true due to rxjs operators imports [5eddd49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5eddd49)

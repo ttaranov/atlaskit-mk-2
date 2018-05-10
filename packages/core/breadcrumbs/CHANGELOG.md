@@ -1,5 +1,10 @@
 # @atlaskit/breadcrumbs
 
+## 4.1.1
+
+## 4.1.0
+- [minor] Added two new props: `itemsBeforeCollapse` and `itemsAfterCollapse`. With these, you can control how many items are displayed before and after the ellipsis in breadcrumbs' collapsed state. The default for both of these is one, meaning that the base behaviour is unchanged. [58bd739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58bd739)
+
 ## 4.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

@@ -5,9 +5,7 @@ import {
   ContainerResult,
   ResultBase,
 } from '@atlaskit/quick-search';
-import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
-import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result, ResultType } from '../model/Result';
 import ObjectResult from './ObjectResult';
 
@@ -39,13 +37,21 @@ export function renderResults(results: Result[]) {
   });
 }
 
-export const searchConfluenceItem = (query: string) => (
+export interface AdvancedSearchItemProps {
+  query: string;
+  icon: JSX.Element;
+  text: string;
+}
+
+export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
   <ResultBase
-    href={`/wiki/dosearchsite.action?queryString=${encodeURIComponent(query)}`}
-    icon={<ConfluenceIcon size="large" label="Search Confluence" />}
+    href={`/wiki/dosearchsite.action?queryString=${encodeURIComponent(
+      props.query,
+    )}`}
+    icon={props.icon}
     key="search_confluence"
     resultId="search_confluence"
-    text="Search for more Confluence pages and blogs"
+    text={props.text}
   />
 );
 
@@ -59,13 +65,13 @@ export const searchJiraItem = (query: string) => (
   />
 );
 
-export const searchPeopleItem = (query: string) => (
+export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
   <ResultBase
-    href={`/home/people?q=${encodeURIComponent(query)}`}
-    icon={<PeopleIcon size="large" label="Search People" />}
+    href={`/home/people?q=${encodeURIComponent(props.query)}`}
+    icon={props.icon}
     key="search_people"
     resultId="search_people"
-    text="Search for more people"
+    text={props.text}
   />
 );
 

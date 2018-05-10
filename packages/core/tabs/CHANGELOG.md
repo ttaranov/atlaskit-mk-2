@@ -1,5 +1,10 @@
 # @atlaskit/tabs
 
+## 6.0.2
+
+## 6.0.1
+- [patch] Update types [0073768](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0073768)
+
 ## 6.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

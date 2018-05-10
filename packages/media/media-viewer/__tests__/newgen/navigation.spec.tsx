@@ -18,13 +18,25 @@ describe('Navigation', () => {
     type: 'file',
   };
 
+  const identifier2Duplicated: Identifier = {
+    id: 'some-id-2',
+    occurrenceKey: 'some-other-occurrence-key',
+    type: 'file',
+  };
+
   const identifier3: Identifier = {
     id: 'some-id-3',
     occurrenceKey: 'some-custom-occurrence-key',
     type: 'file',
   };
 
-  const items = [identifier, identifier2, identifier3];
+  const nonFoundIdentifier: Identifier = {
+    id: 'some-other-id',
+    occurrenceKey: 'some-custom-occurrence-key',
+    type: 'file',
+  };
+
+  const items = [identifier, identifier2, identifier3, identifier2Duplicated];
 
   it('should show right arrow if there are items on the right', () => {
     const el = mount(
@@ -57,6 +69,18 @@ describe('Navigation', () => {
       />,
     );
     expect(el.find(ArrowLeftCircleIcon)).toHaveLength(0);
+    expect(el.find(ArrowRightCircleIcon)).toHaveLength(0);
+  });
+
+  it('should handle items with the same id', () => {
+    const el = mount(
+      <Navigation
+        onChange={() => {}}
+        items={items}
+        selectedItem={identifier2Duplicated}
+      />,
+    );
+    expect(el.find(ArrowLeftCircleIcon)).toHaveLength(1);
     expect(el.find(ArrowRightCircleIcon)).toHaveLength(0);
   });
 
@@ -102,5 +126,18 @@ describe('Navigation', () => {
       .first()
       .simulate('click');
     expect(onChange).toBeCalledWith(identifier2);
+  });
+
+  it('should not show any arrows if selectedItem is not found', () => {
+    const onChange = jest.fn();
+    const el = mount(
+      <Navigation
+        onChange={onChange}
+        items={items}
+        selectedItem={nonFoundIdentifier}
+      />,
+    );
+    expect(el.find(ArrowRightCircleIcon)).toHaveLength(0);
+    expect(el.find(ArrowLeftCircleIcon)).toHaveLength(0);
   });
 });
