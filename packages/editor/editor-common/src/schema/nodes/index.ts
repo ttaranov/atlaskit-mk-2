@@ -53,6 +53,7 @@ export {
   Layout as TableLayout,
   calcTableColumnWidths,
 } from './tableNodes';
+export { slider } from './slider';
 export {
   applicationCard,
   Attributes as ApplicationCardAttributes,

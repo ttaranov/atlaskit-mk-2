@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { forEachCellInColumn, setCellAttrs } from 'prosemirror-utils';
+import {
+  forEachCellInColumn,
+  setCellAttrs,
+  getCellsInColumn,
+} from 'prosemirror-utils';
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
@@ -10,6 +14,7 @@ import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DropdownMenu from '../../../../ui/DropdownMenu';
+import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 
 export interface Props {
   editorView: EditorView;
@@ -65,12 +70,6 @@ export default class ColumnTypesMenu extends Component<Props, any> {
     });
 
     items.push({
-      content: 'Link',
-      value: { name: 'link' },
-      elemBefore: <EditorLinkIcon label="Link" />,
-    });
-
-    items.push({
       content: 'Person',
       value: { name: 'mention' },
       elemBefore: <EditorMentionIcon label="Person" />,
@@ -83,9 +82,21 @@ export default class ColumnTypesMenu extends Component<Props, any> {
     });
 
     items.push({
+      content: 'Slider',
+      value: { name: 'slider' },
+      elemBefore: <EditorHorizontalRuleIcon label="Slider" />,
+    });
+
+    items.push({
       content: 'Emoji',
       value: { name: 'emoji' },
       elemBefore: <EditorEmojiIcon label="Emoji" />,
+    });
+
+    items.push({
+      content: 'Link',
+      value: { name: 'link' },
+      elemBefore: <EditorLinkIcon label="Link" />,
     });
 
     return items.length ? [{ items }] : null;
@@ -94,18 +105,26 @@ export default class ColumnTypesMenu extends Component<Props, any> {
   private onMenuItemActivated = ({ item }) => {
     const { editorView, columnIndex } = this.props;
     const {
-      state: { tr, schema: { nodes: { tableCell } } },
+      state: { schema: { nodes: { slider, tableCell } } },
       dispatch,
     } = editorView;
     const attrs = { cellType: item.value.name };
 
     if (columnIndex !== null) {
-      dispatch(
-        forEachCellInColumn(columnIndex, cell => {
-          // setting cellType only for tableCell so that we can still type in table headers
-          return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
-        })(tr),
-      );
+      let tr = forEachCellInColumn(columnIndex, cell => {
+        // setting cellType only for tableCell so that we can still type in table headers
+        return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
+      })(editorView.state.tr);
+
+      if (item.value.name === 'slider') {
+        const sliderNode = slider.createChecked();
+        const cells = getCellsInColumn(columnIndex)(tr.selection)!;
+        cells.forEach(cell => {
+          tr = tr.insert(tr.mapping.map(cell.pos + 1), sliderNode);
+        });
+      }
+
+      dispatch(tr);
       this.props.toggleOpen();
     }
   };

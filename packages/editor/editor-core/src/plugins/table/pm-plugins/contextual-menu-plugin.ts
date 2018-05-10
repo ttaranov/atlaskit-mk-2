@@ -112,6 +112,15 @@ export const createPlugin = (dispatch: Dispatch) =>
 
         mousemove(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;
+          const target = event.target as HTMLElement;
+          if (
+            target.nodeName === 'INPUT' &&
+            target.getAttribute('type') === 'range'
+          ) {
+            event.stopPropagation();
+            return false;
+          }
+
           if ((resizingPluginKey.getState(state) || {}).dragging) {
             return setTargetRef(undefined)(state, dispatch);
           }
@@ -396,7 +405,7 @@ export const createCellTypeDecoration = (
       const classNames: string[] = [];
 
       if (
-        ['text', 'currency', 'number', 'mention'].indexOf(
+        ['text', 'currency', 'number', 'mention', 'slider'].indexOf(
           cell.attrs.cellType,
         ) === -1
       ) {

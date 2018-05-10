@@ -6,6 +6,7 @@ import {
   tableCell,
   tableHeader,
   tableRow,
+  slider,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
@@ -30,7 +31,8 @@ const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
 const tablesPlugin: EditorPlugin = {
   nodes() {
     return [
-      { rank: 1700, name: 'table', node: table },
+      { rank: 1700, name: 'slider', node: slider },
+      { rank: 1710, name: 'table', node: table },
       { rank: 1800, name: 'tableHeader', node: tableHeader },
       { rank: 1900, name: 'tableRow', node: tableRow },
       { rank: 2000, name: 'tableCell', node: tableCell },
