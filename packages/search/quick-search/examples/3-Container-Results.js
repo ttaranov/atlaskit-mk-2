@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
+import Avatar from '@atlaskit/avatar';
 import { getContainerAvatarUrl } from './utils/mockData';
 import { ContainerResult, ResultItemGroup } from '../src';
-import Avatar from '@atlaskit/avatar';
 
 const defaultProps = {
   resultId: 'result_id',

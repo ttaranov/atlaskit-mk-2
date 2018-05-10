@@ -84,6 +84,8 @@ export type ObjectResultType = CommonResultProps & {
 export type PersonResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
   avatarUrl?: string,
+  /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
+  avatar?: React.Component,
   /** React element to appear to the left of the text. */
   icon?: Node,
   /** A user's custom handle. Appears to the right of their `name`. It has a lower

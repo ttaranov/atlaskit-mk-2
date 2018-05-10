@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
+import Avatar from '@atlaskit/avatar';
 import { randomJiraIconUrl, randomConfluenceIconUrl } from './utils/mockData';
 import { ObjectResult, ResultItemGroup } from '../src';
-import Avatar from '@atlaskit/avatar';
 
 const defaultProps = {
   resultId: 'result_id',
