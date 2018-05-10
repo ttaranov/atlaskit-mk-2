@@ -137,7 +137,20 @@ export const toggleSummaryRow: Command = (
           mentionCount = 1;
         }
         colSummary = colSummary ? colSummary + mentionCount : mentionCount;
+      } else if (cell.attrs.cellType === 'checkbox') {
+        let actionCount = 0;
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0
+        ) {
+          let firstChild = cell.child(0).child(0);
+          // only count unchecked actions
+          if (firstChild.type.name === 'checkbox' && !firstChild.attrs.checked)
+            actionCount = 1;
+        }
+        colSummary = colSummary ? colSummary + actionCount : actionCount;
       }
+
       summary[j] = colSummary;
     }
   }
@@ -147,11 +160,11 @@ export const toggleSummaryRow: Command = (
   table.node.attrs.isSummaryRowEnabled = true;
   let tr = addRowAt(table.node.childCount)(state.tr);
 
-  // fill in summary - TODO this is not working atm
+  // fill in summary - TODO this is not inserting in the correct pos atm
   const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
   cells.forEach((cell, index) => {
     if (summary[index]) {
-      tr = tr.insert(cell.pos + 1, state.schema.text(summary[index]));
+      tr = tr.insert(cell.pos + 1, state.schema.text(`${summary[index]}`));
     }
   });
   dispatch(tr);
