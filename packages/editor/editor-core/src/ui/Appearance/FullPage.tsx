@@ -243,6 +243,7 @@ const TemplateArea = styled.div`
   & .template-item {
     margin: 20px;
     padding: 15px;
+    min-width: 320px;
     flex-grow: 1;
     cursor: pointer;
     border: 1px solid ${akColorN20};
@@ -361,6 +362,7 @@ export default class Editor extends React.Component<
               onChange={this.filterTemplates}
               placeholder="Search templates.."
               isLabelHidden={true}
+              value={this.state.templateSearch}
             />
           </div>
         </div>
