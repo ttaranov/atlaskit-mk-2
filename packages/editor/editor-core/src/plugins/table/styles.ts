@@ -197,6 +197,18 @@ export const tableEditorStyles = `
   /* =============== TABLE CELL TYPE ================== */
   .ProseMirror {
     table {
+      .ProseMirror-tableHeader-nodeview {
+        clear: both;
+      }
+      .ProseMirror-tableHeader-nodeview-content {
+        width: calc(100% - 25px);
+        float: left;
+      }
+      .ProseMirror-tableHeader-nodeview-content + span {
+        float: right;
+        opacity: 0.5;
+      }
+
       td[celltype="date"],
       td[celltype="mention"],
       td[celltype="emoji"],

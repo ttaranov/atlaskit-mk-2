@@ -35,6 +35,7 @@ import { Command } from '../../../types';
 import { stateKey as tablePluginKey } from './main';
 import sliderNodeView from '../nodeviews/slider';
 import { nodeViewFactory } from '../../../nodeviews';
+import TableHeaderView from '../nodeviews/tableHeader';
 
 export type Cell = { pos: number; node: PMNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
@@ -88,6 +89,15 @@ export const createPlugin = (
 
       nodeViews: {
         slider: nodeViewFactory(providerFactory, { slider: sliderNodeView }),
+
+        tableHeader: (node: PMNode, view: EditorView, getPos: () => number) => {
+          return new TableHeaderView({
+            node,
+            view,
+            getPos,
+          });
+        },
+
         checkbox: (node, view, getPos: () => number) => {
           const dom = document.createElement('input');
           dom.type = 'checkbox';
@@ -474,6 +484,9 @@ export const createCellTypeDecoration = (
 
     for (let j = 0, colsCount = row.childCount; j < colsCount; j++) {
       const cell = row.child(j);
+      if (cell.type === state.schema.nodes.tableHeader) {
+        continue;
+      }
       const pos = start + map.map[i * map.width];
       let contentEditable = true;
       const classNames: string[] = [];
@@ -561,6 +574,12 @@ export const setClickedCell = (clickedCell?: {
 ): boolean => {
   const pluginState = pluginKey.getState(state);
   if (pluginState.clickedCell !== clickedCell) {
+    if (
+      clickedCell &&
+      clickedCell.node.type === state.schema.nodes.tableHeader
+    ) {
+      return false;
+    }
     let { tr } = state;
     tr.setMeta(pluginKey, {
       ...pluginState,

@@ -10,7 +10,6 @@ import {
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-// import EditorLinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
@@ -95,12 +94,6 @@ export default class ColumnTypesMenu extends Component<Props, any> {
       elemBefore: <EditorEmojiIcon label="Emoji" />,
     });
 
-    // items.push({
-    //   content: 'Link',
-    //   value: { name: 'link' },
-    //   elemBefore: <EditorLinkIcon label="Link" />,
-    // });
-
     items.push({
       content: 'Decision',
       value: { name: 'decision' },
@@ -135,8 +128,7 @@ export default class ColumnTypesMenu extends Component<Props, any> {
           attrs = { cellType: item.value.name };
         }
         rowIndex++;
-        // setting cellType only for tableCell so that we can still type in table headers
-        return setCellAttrs(cell, cell.node.type === tableCell ? attrs : {});
+        return setCellAttrs(cell, attrs);
       })(editorView.state.tr);
 
       const nodemap = {
