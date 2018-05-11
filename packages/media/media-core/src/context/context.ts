@@ -3,7 +3,7 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMapTo';
-import 'rxjs/add/operator/publishLast';
+import 'rxjs/add/operator/publishReplay';
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/map';
@@ -181,17 +181,7 @@ class ContextImpl implements Context {
     const key = `${id}-${options && options.collectionName}`;
 
     if (this.fileStreams.has(key) === false) {
-      const requestFileStream$ = Observable.defer(() =>
-        this.mediaStore.getFile(id),
-      ).map(mapMediaFileToFileState);
-
-      const fileStream$ = Observable.timer(0, 2000)
-        .switchMapTo(requestFileStream$)
-        .takeWhile(file => file.status === 'processing')
-        // TODO: concat will make an extra request, investigate how to fix it
-        .concat(requestFileStream$)
-        .publishLast();
-
+      const fileStream$ = this.createDownloadFileStream(id).publishReplay(1);
       // Start hot observable
       fileStream$.connect();
 
@@ -204,7 +194,7 @@ class ContextImpl implements Context {
   uploadFile(file: UploadableFile): Observable<FileState> {
     let fileId: string | undefined;
 
-    const stream$ = new Observable<FileState>(observer => {
+    const fileStream = new Observable<FileState>(observer => {
       const name = file.name || '';
       let progress = 0;
 
@@ -212,7 +202,7 @@ class ContextImpl implements Context {
       uploadFile(file, this.apiConfig, {
         onId: id => {
           fileId = id;
-          this.fileStreams.set(fileId, stream$);
+          this.fileStreams.set(fileId, fileStream);
 
           observer.next({
             id: fileId,
@@ -224,10 +214,8 @@ class ContextImpl implements Context {
         },
         onProgress: uploadProgress => {
           progress = uploadProgress;
-          console.log(fileId, uploadProgress);
 
           if (fileId) {
-            console.log(fileId, uploadProgress);
             observer.next({
               id: fileId,
               progress,
@@ -249,32 +237,28 @@ class ContextImpl implements Context {
 
           observer.complete();
         })
-        .catch(() => observer.error());
+        .catch(err => observer.error(err));
     })
-      // .concat(
-      //   Observable.defer(() => this.createDownloadFileStream(fileId as string)),
-      // )
-      .publishLast();
+      .concat(
+        Observable.defer(() => this.createDownloadFileStream(fileId as string)),
+      )
+      .publishReplay(1);
 
-    stream$.connect();
-
-    return stream$;
+    // Start hot observable
+    fileStream.connect();
+    return fileStream;
   }
 
   private createDownloadFileStream = (id: string) => {
-    const requestFileStream$ = Observable.defer(() =>
-      this.mediaStore.getFile(id),
-    ).map(mapMediaFileToFileState);
+    const requestFileStream$ = Observable.defer(() => {
+      return this.mediaStore.getFile(id);
+    }).map(mapMediaFileToFileState);
 
-    const fileStream$ = Observable.timer(0, 2000)
+    const fileStream$ = Observable.timer(0, 3000)
       .switchMapTo(requestFileStream$)
       .takeWhile(file => file.status === 'processing')
       // TODO: concat will make an extra request, investigate how to fix it
-      .concat(requestFileStream$)
-      .publishLast();
-
-    // // Start hot observable
-    // fileStream$.connect();
+      .concat(requestFileStream$);
 
     return fileStream$;
   };
