@@ -189,7 +189,7 @@ export const calculateSummary = (table: PmNode) => {
         let cellNumber = parseFloat(firstChild.attrs.value) || 0;
         colValue = numberOps[operators[j]](colValue, cellNumber);
         colSummary.summaryType = 'total';
-      } else if (cellType === 'text') {
+      } else if (cellType === 'text' || cellType === 'date') {
         colValue = '';
         colSummary.summaryType = '';
       } else if (cellType === 'mention') {
