@@ -12,15 +12,13 @@ export interface ComponentProps {}
 export interface ComponentState {
   files: { [id: string]: FileState };
 }
-
+const mediaContext = createStorybookContext();
 class Example extends Component<ComponentProps, ComponentState> {
-  mediaContext: Context;
   fileStreams: Observable<FileState>[];
 
   constructor(props: ComponentProps) {
     super(props);
 
-    this.mediaContext = createStorybookContext();
     this.state = {
       files: {},
     };
@@ -28,8 +26,12 @@ class Example extends Component<ComponentProps, ComponentState> {
   }
 
   componentDidMount() {
-    this.getFile(imageFileId.id, imageFileId.collectionName);
+    this.getImageFile();
   }
+
+  getImageFile = () => {
+    this.getFile(imageFileId.id, imageFileId.collectionName);
+  };
 
   onFileUpdate = (state: FileState) => {
     console.log('onFileUpdate', state);
@@ -42,13 +44,14 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   getFile = (id: string, collectionName: string) => {
-    const stream = this.mediaContext.getFile(id, { collectionName });
+    console.log('getFile', id);
+    const stream = mediaContext.getFile(id, { collectionName });
 
     this.addStream(stream);
   };
 
   uploadFile = () => {
-    const stream = this.mediaContext.uploadFile();
+    const stream = mediaContext.uploadFile();
 
     this.addStream(stream);
   };
@@ -100,6 +103,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     return (
       <div>
         <button onClick={this.uploadFile}>Upload fake file 🚀</button>
+        <button onClick={this.getImageFile}>Get image file</button>
         <div>
           <h1>Files</h1>
           {this.renderFiles()}
@@ -109,4 +113,9 @@ class Example extends Component<ComponentProps, ComponentState> {
   }
 }
 
-export default () => <Example />;
+export default () => (
+  <div>
+    <Example />
+    <Example />
+  </div>
+);

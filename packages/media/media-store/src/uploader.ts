@@ -13,6 +13,7 @@ export type UploadableFile = {
 
 export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
+  onId: (id: string) => void;
 };
 
 // TODO: Replace custom FileReader by Rusha.createHash().update(blob)
@@ -68,6 +69,10 @@ export const uploadFile = async (
   };
 
   const emptyFile = store.createFile();
+
+  if (callbacks && callbacks.onId) {
+    emptyFile.then(response => callbacks.onId(response.data.id));
+  }
 
   await chunkinator(
     content,

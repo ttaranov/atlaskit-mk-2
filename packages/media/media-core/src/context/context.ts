@@ -13,9 +13,11 @@ import {
   ContextConfig,
   MediaApiConfig,
   MediaStore,
+  uploadFile,
   MediaFileProcessingStatus,
   MediaFile,
   MediaStoreResponse,
+  UploadableFile,
 } from '@atlaskit/media-store';
 
 import {
@@ -120,7 +122,7 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-  uploadFile(): Observable<FileState>;
+  uploadFile(file: UploadableFile): Observable<FileState>;
 
   readonly config: ContextConfig;
 }
@@ -199,33 +201,54 @@ class ContextImpl implements Context {
     return this.fileStreams.get(key)!;
   }
 
-  // TODO: This is fake
-  uploadFile(): Observable<FileState> {
-    const fileId = `${new Date().getTime()}`;
-    const stream = new Observable<FileState>(subscription => {
-      let progress = 0;
+  uploadFile(file: UploadableFile): Observable<FileState> {
+    const stream$ = new Observable<FileState>(observer => {
+      const name = file.name || '';
+      let fileId,
+        progress = 0;
 
-      subscription.next({
-        id: fileId,
-        status: 'uploading',
-      } as UploadingFileState);
+      uploadFile(file, this.apiConfig, {
+        onId(id) {
+          fileId = id;
+          this.fileStream$.set(fileId, stream$);
 
-      setInterval(() => {
-        progress += 1;
-        subscription.add;
-        subscription.next({
+          observer.next({
+            id: fileId,
+            status: 'uploading',
+            progress,
+            name,
+            size: 0, // TODO: fix
+          });
+        },
+        onProgress(uploadProgress) {
+          progress = uploadProgress;
+
+          if (fileId) {
+            observer.next({
+              id: fileId,
+              progress,
+              status: 'uploading',
+              name,
+              size: 0, // TODO: fix
+            });
+          }
+        },
+      }).then(() => {
+        observer.next({
           id: fileId,
+          progress: 1,
           status: 'uploading',
-          progress,
-        } as UploadingFileState);
-      }, 2000);
-    }).publishReplay(1);
+          name,
+          size: 0, // TODO: fix
+        });
 
-    stream.connect();
+        observer.complete();
+      });
+    });
 
-    this.fileStreams.set(fileId, stream);
+    stream$.publishLast().connect();
 
-    return stream;
+    return stream$;
   }
 
   getMediaItemProvider(
