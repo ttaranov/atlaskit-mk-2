@@ -59,12 +59,12 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   // type later
-  uploadFile = (event: SyntheticEvent<any>) => {
-    const file = event.currentTarget.files[0];
+  uploadFile = (event: SyntheticEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files![0];
 
     const stream = mediaContext.uploadFile({
       content: file,
-      name: 'my-file',
+      name: file.name,
     });
 
     this.addStream(stream);
@@ -90,7 +90,7 @@ class Example extends Component<ComponentProps, ComponentState> {
       const file = files[fileId];
       let name, progress;
 
-      if (file.status === 'processed') {
+      if (file.status !== 'error') {
         name = <div>name: {file['name']}</div>;
       }
 
