@@ -8,6 +8,7 @@ import {
   removeParentNodeOfType,
 } from 'prosemirror-utils';
 import keymapPlugin from './keymaps';
+import codeBlockNodeView from '../nodeviews/code-block';
 
 export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
@@ -148,6 +149,9 @@ export const plugin = new Plugin({
     };
   },
   props: {
+    nodeViews: {
+      codeBlock: codeBlockNodeView,
+    },
     handleClick(view: EditorView, event) {
       stateKey
         .getState(view.state)

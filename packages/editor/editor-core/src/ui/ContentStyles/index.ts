@@ -21,6 +21,7 @@ import {
   akColorN40A,
   akColorN300,
   akColorB200,
+  akColorN800,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import {
@@ -91,12 +92,42 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 
   .ProseMirror pre {
-    box-sizing: border-box;
-    white-space: pre-wrap;
+    display: flex;
     font-family: ${akEditorCodeFontFamily};
-    background: ${akEditorCodeBackground};
-    padding: ${akEditorCodeBlockPadding};
+    background: ${akColorN20};
     border-radius: ${akBorderRadius};
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    counter-reset: line;
+
+    .line-numbers {
+      overflow-x: unset;
+      color: ${akColorN300};
+      background-color: rgba(9, 30, 66, 0.04);
+      text-align: right;
+      user-select: none;
+      padding: ${akEditorCodeBlockPadding} 8px;
+
+      span {
+        display: block;
+        font-size: 12px;
+        border-radius: ${akBorderRadius};
+        line-height: 20px;
+
+        &:before {
+          counter-increment: line;
+          content: counter(line);
+          display: inline-block;
+        }
+      }
+    }
+
+    code {
+      padding: ${akEditorCodeBlockPadding} 16px;
+      overflow-x: scroll;
+      color: ${akColorN800};
+    }
   }
 
   .ProseMirror .code {
