@@ -202,15 +202,17 @@ class ContextImpl implements Context {
   }
 
   uploadFile(file: UploadableFile): Observable<FileState> {
+    let fileId: string | undefined;
+
     const stream$ = new Observable<FileState>(observer => {
       const name = file.name || '';
-      let fileId,
-        progress = 0;
+      let progress = 0;
 
+      // TODO send local preview
       uploadFile(file, this.apiConfig, {
-        onId(id) {
+        onId: id => {
           fileId = id;
-          this.fileStream$.set(fileId, stream$);
+          this.fileStreams.set(fileId, stream$);
 
           observer.next({
             id: fileId,
@@ -220,10 +222,12 @@ class ContextImpl implements Context {
             size: 0, // TODO: fix
           });
         },
-        onProgress(uploadProgress) {
+        onProgress: uploadProgress => {
           progress = uploadProgress;
+          console.log(fileId, uploadProgress);
 
           if (fileId) {
+            console.log(fileId, uploadProgress);
             observer.next({
               id: fileId,
               progress,
@@ -233,23 +237,47 @@ class ContextImpl implements Context {
             });
           }
         },
-      }).then(() => {
-        observer.next({
-          id: fileId,
-          progress: 1,
-          status: 'uploading',
-          name,
-          size: 0, // TODO: fix
-        });
+      })
+        .then(id => {
+          observer.next({
+            id,
+            progress: 1,
+            status: 'uploading',
+            name,
+            size: 0, // TODO: fix
+          });
 
-        observer.complete();
-      });
-    });
+          observer.complete();
+        })
+        .catch(() => observer.error());
+    })
+      // .concat(
+      //   Observable.defer(() => this.createDownloadFileStream(fileId as string)),
+      // )
+      .publishLast();
 
-    stream$.publishLast().connect();
+    stream$.connect();
 
     return stream$;
   }
+
+  private createDownloadFileStream = (id: string) => {
+    const requestFileStream$ = Observable.defer(() =>
+      this.mediaStore.getFile(id),
+    ).map(mapMediaFileToFileState);
+
+    const fileStream$ = Observable.timer(0, 2000)
+      .switchMapTo(requestFileStream$)
+      .takeWhile(file => file.status === 'processing')
+      // TODO: concat will make an extra request, investigate how to fix it
+      .concat(requestFileStream$)
+      .publishLast();
+
+    // // Start hot observable
+    // fileStream$.connect();
+
+    return fileStream$;
+  };
 
   getMediaItemProvider(
     id: string,

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, SyntheticEvent } from 'react';
 import {
-  createStorybookContext,
+  // createStorybookContext,
   imageFileId,
+  defaultServiceHost,
+  defaultMediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
-import { Context, FileState } from '../src';
+import { FileState, ContextFactory } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,7 +14,13 @@ export interface ComponentProps {}
 export interface ComponentState {
   files: { [id: string]: FileState };
 }
-const mediaContext = createStorybookContext();
+
+//const mediaContext = createStorybookContext();
+const mediaContext = ContextFactory.create({
+  serviceHost: defaultServiceHost,
+  authProvider: defaultMediaPickerAuthProvider,
+});
+
 class Example extends Component<ComponentProps, ComponentState> {
   fileStreams: Observable<FileState>[];
 
@@ -50,8 +58,14 @@ class Example extends Component<ComponentProps, ComponentState> {
     this.addStream(stream);
   };
 
-  uploadFile = () => {
-    const stream = mediaContext.uploadFile();
+  // type later
+  uploadFile = (event: SyntheticEvent<any>) => {
+    const file = event.currentTarget.files[0];
+
+    const stream = mediaContext.uploadFile({
+      content: file,
+      name: 'my-file',
+    });
 
     this.addStream(stream);
   };
@@ -102,7 +116,7 @@ class Example extends Component<ComponentProps, ComponentState> {
   render() {
     return (
       <div>
-        <button onClick={this.uploadFile}>Upload fake file 🚀</button>
+        <input type="file" onChange={this.uploadFile} />
         <button onClick={this.getImageFile}>Get image file</button>
         <div>
           <h1>Files</h1>
