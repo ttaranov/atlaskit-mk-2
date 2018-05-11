@@ -117,10 +117,10 @@ export const toggleSummaryRow: Command = (
   const { tableRow, tableCell, paragraph } = state.schema.nodes;
   const createContent = maybeCreateText(state.schema);
 
-  const cells = calculateSummary(table.node).map(value =>
+  const cells = calculateSummary(table.node).map(summary =>
     tableCell.createChecked(
-      { cellType: 'summary', summaryType: 'total' },
-      paragraph.createChecked({}, createContent(value)),
+      { cellType: 'summary', summaryType: summary.summaryType },
+      paragraph.createChecked({}, createContent(summary.value)),
     ),
   );
 

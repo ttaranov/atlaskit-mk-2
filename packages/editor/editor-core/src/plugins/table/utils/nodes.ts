@@ -119,7 +119,16 @@ export const toFixed = value => {
 };
 
 export const maybeCreateText = schema => value => {
-  return value != null && value !== ''
+  if (value instanceof Object) {
+    let str = '';
+    for (var key in value) {
+      if (key.indexOf('circle') !== -1) str += '🔴';
+      else if (key.indexOf('check') !== -1) str += '✅';
+      str += ' ' + value[key] + '\n';
+    }
+    return schema.text(`${toFixed(str)}`);
+  }
+  return value !== null && value !== ''
     ? schema.text(`${toFixed(value)}`)
     : undefined;
 };
@@ -147,23 +156,42 @@ export const calculateSummary = (table: PmNode) => {
       if (i === lastChildIndex) {
         operators[j] =
           cellType === 'summary' ? cell.attrs.summaryType : 'total';
+        //default to total
+        if (!operators[j]) operators[j] = 'total';
       }
 
       // TODO: pass schema
       if (cell.type.name === 'tableHeader') {
         continue;
       }
-      let colSummary: any = summary[j];
+      let colSummary = summary[j] || {};
+      let colValue: any = colSummary ? colSummary.value : null;
 
       if (cellType === 'number' || cellType === 'currency') {
         let cellNumber = parseFloat(cell.textContent) || 0;
-        colSummary = numberOps[operators[j]](colSummary, cellNumber);
+        colValue = numberOps[operators[j]](colValue, cellNumber);
+        colSummary.summaryType = 'total';
+      } else if (cellType === 'emoji') {
+        colValue = colValue || {};
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0
+        ) {
+          let childNode = cell.child(0).child(0);
+          if (childNode.type.name === 'emoji') {
+            let count = colValue[childNode.attrs.shortName] || 0;
+            colValue[childNode.attrs.shortName] = count + 1;
+          }
+        }
+        colSummary.summaryType = 'total';
       } else if (cellType === 'slider') {
         let firstChild = cell.child(0).child(0);
         let cellNumber = parseFloat(firstChild.attrs.value) || 0;
-        colSummary = numberOps[operators[j]](colSummary, cellNumber);
+        colValue = numberOps[operators[j]](colValue, cellNumber);
+        colSummary.summaryType = 'total';
       } else if (cellType === 'text') {
-        colSummary = '';
+        colValue = '';
+        colSummary.summaryType = '';
       } else if (cellType === 'mention') {
         let mentionCount = 0;
         if (
@@ -172,7 +200,8 @@ export const calculateSummary = (table: PmNode) => {
         ) {
           mentionCount = 1;
         }
-        colSummary = colSummary ? colSummary + mentionCount : mentionCount;
+        colValue = colValue ? colValue + mentionCount : mentionCount;
+        colSummary.summaryType = 'people';
       } else if (cellType === 'checkbox' || cellType === 'decision') {
         let count = 0;
         if (
@@ -190,9 +219,10 @@ export const calculateSummary = (table: PmNode) => {
           )
             count = 1;
         }
-        colSummary = colSummary ? colSummary + count : count;
+        colValue = colValue ? colValue + count : count;
+        colSummary.summaryType = 'remaining';
       }
-
+      colSummary.value = colValue;
       summary[j] = colSummary;
     }
   }

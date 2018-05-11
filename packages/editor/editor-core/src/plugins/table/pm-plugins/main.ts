@@ -373,7 +373,7 @@ export const createPlugin = (
         const createContent = maybeCreateText(newState.schema);
 
         forEachCellInRow(table.node.childCount - 1, cell => {
-          const ret = summary[index++];
+          const ret = summary[index++].value;
           const content = createContent(
             // Handle average
             ret && ret.value ? ret.value / ret.count : ret,
