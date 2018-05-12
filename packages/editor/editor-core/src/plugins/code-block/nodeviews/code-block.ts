@@ -9,6 +9,7 @@ export class CodeBlockView {
   dom: HTMLPreElement;
   contentDOM: HTMLElement;
   lineNumberGutter: HTMLElement;
+  languageCornerDOM: HTMLElement;
 
   constructor(node: Node, view: EditorView, getPos: () => number) {
     this.node = node;
@@ -19,6 +20,8 @@ export class CodeBlockView {
     this.lineNumberGutter = document.createElement('div');
     this.lineNumberGutter.setAttribute('contenteditable', 'false');
     this.lineNumberGutter.classList.add('line-numbers');
+
+    this.languageCornerDOM = document.createElement('div');
 
     this.ensureLineNumbers();
 

@@ -1,6 +1,6 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
-import { Plugin, EditorState } from 'prosemirror-state';
+import { Plugin, EditorState, TextSelection } from 'prosemirror-state';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   return keymap({
@@ -31,16 +31,16 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       return false;
     },
     Backspace: (state: EditorState, dispatch) => {
-      const { selection, tr, schema: { nodes } } = state;
-      if (!selection.empty || selection.from !== 1) {
-        return false;
-      }
-
-      const { $anchor } = selection;
-      const node = $anchor.node($anchor.depth);
-      if (node && node.type === nodes.codeBlock) {
-        tr.setBlockType($anchor.pos, $anchor.pos, nodes.paragraph);
-        dispatch(tr);
+      const { selection, schema: { nodes } } = state;
+      const { $cursor } = selection as TextSelection;
+      if (
+        $cursor &&
+        $cursor.pos === 1 &&
+        $cursor.parent.type === nodes.codeBlock
+      ) {
+        dispatch(
+          state.tr.setBlockType($cursor.pos, $cursor.pos, nodes.paragraph),
+        );
         return true;
       }
       return false;
