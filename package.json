@@ -73,7 +73,8 @@
     "build:layer": "                         cd packages/core/layer && yarn build",
     "build:navigation-next": "               rm -rf packages/core/navigation-next/dist/{cjs,esm} && run-p build:navigation-next:cjs build:navigation-next:esm",
     "build:navigation-next:cjs": "           NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/cjs",
-    "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm"
+    "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm",
+    "create:contributor": "                  node build/contributors/index.js"
   },
   "bolt": {
     "version": "^0.18.3 || ^0.19.2 || ^0.20.6",
