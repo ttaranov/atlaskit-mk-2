@@ -5,6 +5,7 @@ import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from './pm-plugins/main';
 import keymap from './pm-plugins/keymaps';
+import ideUX from './pm-plugins/ide-ux';
 import LanguagePicker from './ui/LanguagePicker';
 
 const codeBlockPlugin: EditorPlugin = {
@@ -15,6 +16,7 @@ const codeBlockPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 700, plugin: () => plugin },
+      { rank: 710, plugin: () => ideUX },
       { rank: 720, plugin: ({ schema }) => keymap(schema) },
     ];
   },
