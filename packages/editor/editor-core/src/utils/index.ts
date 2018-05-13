@@ -180,6 +180,10 @@ export function endPositionOfParent(resolvedPos: ResolvedPos): number {
   return resolvedPos.end(resolvedPos.depth) + 1;
 }
 
+export function getCursor(selection: Selection): ResolvedPos | undefined {
+  return (selection as TextSelection).$cursor || undefined;
+}
+
 /**
  * Check if a mark is allowed at the current selection / cursor based on a given state.
  * This method looks at both the currently active marks on the transaction, as well as
