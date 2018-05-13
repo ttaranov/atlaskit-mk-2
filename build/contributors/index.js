@@ -5,7 +5,7 @@ const axios = require('axios');
 const { promisify } = require('util');
 const chalk = require('chalk');
 const notFoundContributor = require('./src/404Contributors.json');
-const getContributers = require('./src/contributers');
+const getContributers = require('./src/get-git-committers');
 const allContributers = require('./src/allContributers.json');
 
 const writeFile = promisify(fs.writeFile);
