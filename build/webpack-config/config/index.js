@@ -100,6 +100,11 @@ module.exports = function createWebpackConfig(
           },
         },
         {
+          test: /CONTRIBUTOR_DATA$/,
+          loader: require.resolve('contributor-loader'),
+          exclude: ['**/node_modules/**'],
+        },
+        {
           test: /CHANGELOG\.md$/,
           exclude: /node_modules/,
           loader: require.resolve('changelog-md-loader'),

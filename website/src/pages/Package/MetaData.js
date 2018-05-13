@@ -3,6 +3,8 @@
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
+import { AvatarGroup } from '@atlaskit/avatar';
+import contribors from '../../CONTRIBUTOR_DATA';
 
 type MetaItemProps = {
   href?: string,
@@ -31,6 +33,16 @@ export type MetaDataProps = {
 };
 
 export default class MetaData extends Component<MetaDataProps> {
+  getContributers() {
+    return contribors[this.props.packageName].map(contribor => ({
+      ...contribor,
+      appearance: 'circle',
+      enableTooltip: true,
+      size: 'medium',
+      src: contribor.avatar,
+    }));
+  }
+
   render() {
     const { packageSrc, packageName } = this.props;
 
@@ -51,6 +63,17 @@ export default class MetaData extends Component<MetaDataProps> {
           label="Bundle"
           summary="unpkg.com"
         />
+        <DI>
+          <DT>Contributers</DT>
+          <DD>
+            <AvatarGroup
+              appearance="stack"
+              data={this.getContributers()}
+              size="large"
+              maxCount={4}
+            />
+          </DD>
+        </DI>
       </Meta>
     );
   }
