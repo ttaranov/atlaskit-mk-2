@@ -1,11 +1,11 @@
+// @flow
 const bolt = require('bolt');
 const path = require('path');
 const fs = require('fs');
 const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
-module.exports = async function contributorLoader(source) {
-  console.log(source);
+module.exports = async function contributorLoader() {
   let contributions = {};
   let workspaces = await bolt.getWorkspaces({ cwd: process.cwd() });
 

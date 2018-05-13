@@ -1,4 +1,4 @@
-'use strict';
+// @flow
 const bolt = require('bolt');
 const fs = require('fs');
 const axios = require('axios');
@@ -10,6 +10,12 @@ const allContributers = require('./src/allContributers.json');
 
 const writeFile = promisify(fs.writeFile);
 
+/*::
+type _404ContributorType = {
+  [string]: boolean
+}
+*/
+
 async function asyncForEach(arr, callback) {
   for (const key of arr) {
     await callback(key);
@@ -19,7 +25,7 @@ async function asyncForEach(arr, callback) {
 async function createContributers() {
   console.log(chalk.yellow`⚖️ Updating Atlaskit contributors`);
   let contributerInformation = new Set();
-  let _404Contributor = [];
+  let _404Contributor /*: _404ContributorType*/ = {};
   let newContributers = {};
   const workspaces = await bolt.getWorkspaces();
   const workspacesDirs = workspaces.map(ws => ws.dir);
