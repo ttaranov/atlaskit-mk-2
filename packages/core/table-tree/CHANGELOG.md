@@ -1,5 +1,10 @@
 # @atlaskit/table-tree
 
+- updated the `items` prop in TableTree component to accept Array of table data instead of function
+- updated the `items` prop in Rows component to accept Array of table data instead of function
+- added an `items` prop in Row component to accept children data Array for particular parent
+- a new helper util is exported that will help manipulation for async loading `toTableTreeData`, this is intended to make upgrade from previous API easy in case of async loading.
+
 ## 1.1.3
 - [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
   - @atlaskit/select@3.0.0
