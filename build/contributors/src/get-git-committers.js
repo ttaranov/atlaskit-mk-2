@@ -1,8 +1,10 @@
 // @flow
 const spawn = require('child_process').spawn;
 
-const gitExec = (command /* : Array<string> */ /*: Promise<string> */) =>
-  new Promise((resolve, reject) => {
+module.exports = function gitExec(
+  command /* : Array<string> */,
+) /*: Promise<string> */ {
+  return new Promise((resolve, reject) => {
     const thread = spawn('git', command, {
       stdio: ['inherit', 'pipe', 'pipe'],
     });
@@ -25,5 +27,4 @@ const gitExec = (command /* : Array<string> */ /*: Promise<string> */) =>
       resolve(stdOut.join());
     });
   });
-
-module.exports = gitExec;
+};
