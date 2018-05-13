@@ -144,13 +144,18 @@ export default new Plugin({
           const { text, start } = getLinesFromSelection(state);
           const { tr } = state;
           forEachLine(text, (line, offset) => {
-            const { indentToken, indentLength } = getLineInfo(line);
-            tr.delete(
-              tr.mapping.map(start + offset),
-              tr.mapping.map(
-                start + offset + 1 + indentLength % indentToken.length,
-              ),
-            );
+            const { indentToken, indentText } = getLineInfo(line);
+            if (indentText) {
+              tr.delete(
+                tr.mapping.map(start + offset),
+                tr.mapping.map(
+                  start +
+                    offset +
+                    (indentText.length % indentToken.length ||
+                      indentToken.length),
+                ),
+              );
+            }
           });
           dispatch(tr);
           return true;

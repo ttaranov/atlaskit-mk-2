@@ -45,13 +45,13 @@ export const forEachLine = (
   });
 };
 
-const TAB_REGEX = /(?=\t+)[^\t]/;
-const SPACES_REGEX = /(?=(  )+)[^ ]/;
+const TAB_REGEX = /[^\t]/;
+const SPACES_REGEX = /[^ ]/;
 export const getLineInfo = (line: string) => {
   const indentToken = line.startsWith('\t') ? '\t' : '  ';
   const indentLength = line.search(
     indentToken === '\t' ? TAB_REGEX : SPACES_REGEX,
   );
-  const indentText = line.substring(0, indentLength);
-  return { indentToken, indentLength, indentText };
+  const indentText = indentLength >= 0 ? line.substring(0, indentLength) : '';
+  return { indentToken, indentText };
 };
