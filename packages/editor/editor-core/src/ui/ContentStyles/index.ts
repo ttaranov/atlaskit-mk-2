@@ -124,7 +124,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror ul ol,
   .ProseMirror ol ul,
   .ProseMirror ol ol {
-    padding-left: 17px;
+    padding-left: 21px;
   }
 
   .ProseMirror li {
