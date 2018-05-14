@@ -19,6 +19,7 @@ import {
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
+import { Node } from 'prosemirror-model';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
@@ -33,16 +34,23 @@ export const resetHoverSelection: Command = (
   return true;
 };
 
-export const hoverColumn = (column: number): Command => (
+export const hoverColumns = (columns: number[], danger?: boolean): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = getCellsInColumn(column)(state.selection)!;
+    const cells = columns.reduce(
+      (acc: { pos: number; node: Node }[], colIdx) => {
+        const colCells = getCellsInColumn(colIdx)(state.selection);
+        return colCells ? acc.concat(colCells) : acc;
+      },
+      [],
+    );
+
     dispatch(
       state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state),
+        decorationSet: createHoverDecorationSet(cells, state, danger),
       }),
     );
     return true;
@@ -50,16 +58,20 @@ export const hoverColumn = (column: number): Command => (
   return false;
 };
 
-export const hoverRow = (row: number): Command => (
+export const hoverRows = (rows: number[], danger?: boolean): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = getCellsInRow(row)(state.selection)!;
+    const cells = rows.reduce((acc: { pos: number; node: Node }[], rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(state.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    }, []);
+
     dispatch(
       state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state),
+        decorationSet: createHoverDecorationSet(cells, state, danger),
       }),
     );
     return true;
