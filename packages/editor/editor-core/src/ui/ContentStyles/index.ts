@@ -11,6 +11,7 @@ import {
   akEditorCodeBackground,
   akEditorCodeFontFamily,
   akEditorCodeBlockPadding,
+  defaultEditorFontStyles,
 } from '../../styles';
 import {
   akGridSizeUnitless,
@@ -43,6 +44,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     word-wrap: break-word;
     white-space: pre-wrap;
     outline: none;
+  }
+
+  .ProseMirror p,
+  .ProseMirror .code {
+    ${defaultEditorFontStyles};
   }
 
   .ProseMirror .placeholder-decoration {
