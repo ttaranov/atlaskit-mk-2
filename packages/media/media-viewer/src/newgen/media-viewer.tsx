@@ -3,8 +3,9 @@ import { Context } from '@atlaskit/media-core';
 import { Identifier } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
-import { Blanket, Content } from './styled';
+import { Blanket } from './styled';
 import { ErrorMessage } from './styled';
+import { Content } from './content';
 
 export type Props = {
   onClose?: () => void;
