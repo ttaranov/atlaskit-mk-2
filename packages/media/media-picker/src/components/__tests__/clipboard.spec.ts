@@ -35,11 +35,6 @@ describe('Clipboard', () => {
     clipboard.deactivate();
   });
 
-  it('should not call this.uploadService.addFiles() when a paste event is dispatched without files', () => {
-    document.dispatchEvent(new MockClipboardEvent('paste'));
-    expect(addFiles).toHaveBeenCalledTimes(0);
-  });
-
   it('should call this.uploadService.addFiles() when a paste event is dispatched with a single file', () => {
     document.dispatchEvent(new MockClipboardEvent('paste', [new MockFile()]));
     expect(addFiles).toHaveBeenCalledTimes(1);

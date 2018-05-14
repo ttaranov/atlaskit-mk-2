@@ -14,7 +14,6 @@ import { MediaFile, UploadParams } from '../..';
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { UploadServiceFactory } from '../uploadServiceFactory';
-import { ExpFile } from '../newUploadServiceImpl';
 import {
   MockDragEvent,
   MockFile,
@@ -952,14 +951,13 @@ describe('UploadService', () => {
   });
 
   describe('#copyFileToUsersCollection()', () => {
-    const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
-
     const setup = (config: {
       uploadParams?: UploadParams;
       progress?: number;
       userAuthProvider?: AuthProvider;
       copyFileToCollectionSpy: Function;
     }) => {
+      const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
       const collectionNameStub = 'some-collection-name';
       const context = getContext({
         authProvider,
@@ -978,24 +976,11 @@ describe('UploadService', () => {
       };
 
       const sourceFileId = 'some-source-file-id';
-      const sourceFileCollection = collectionNameStub;
-
-      const expFile: ExpFile = {
-        id: 'some-id-42',
-        creationDate: 1234,
-        file: {
-          name: 'some-name',
-          size: 4200,
-          type: 'some-type',
-        } as File,
-      };
-
       return {
         uploadService,
         authProvider,
         sourceFileId,
-        sourceFileCollection,
-        expFile,
+        sourceFileCollection: collectionNameStub,
       };
     };
 
@@ -1009,14 +994,12 @@ describe('UploadService', () => {
         authProvider,
         sourceFileId,
         sourceFileCollection,
-        expFile,
       } = setup({
         copyFileToCollectionSpy,
       });
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
-        expFile,
         sourceFileCollection,
       ).then(() => {
         expect(authProvider).not.toHaveBeenCalled();
@@ -1044,7 +1027,6 @@ describe('UploadService', () => {
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
-        {} as ExpFile,
         sourceFileCollection,
       ).then(() => {
         expect(authProvider).toHaveBeenCalledWith({
@@ -1063,43 +1045,26 @@ describe('UploadService', () => {
         .fn()
         .mockReturnValue(Promise.resolve('some-MediaApi-response'));
 
-      const {
-        uploadService,
-        sourceFileId,
-        sourceFileCollection,
-        expFile,
-      } = setup({
+      const { uploadService, sourceFileId, sourceFileCollection } = setup({
         userAuthProvider,
         copyFileToCollectionSpy,
       });
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
-        expFile,
         sourceFileCollection,
       ).then(response => {
         expect(response).toEqual('some-MediaApi-response');
       });
     });
 
-    it('rejects with api#copyFileToCollection rejection when userAuthProvider was passed into UploadService', () => {
-      const usersClientId = 'some-users-collection-client-id';
-      const usersToken = 'some-users-collection-client-id';
-      const userAuthProvider = () =>
-        Promise.resolve({ clientId: usersClientId, token: usersToken });
-
+    it('rejects with api#copyFileToCollection rejection when authProvider resolves', () => {
       const copyFileToCollectionRejection = new Error('some-error');
       const copyFileToCollectionSpy = jest
         .fn()
         .mockReturnValue(Promise.reject(copyFileToCollectionRejection));
 
-      const {
-        uploadService,
-        sourceFileId,
-        sourceFileCollection,
-        expFile,
-      } = setup({
-        userAuthProvider,
+      const { uploadService, sourceFileId, sourceFileCollection } = setup({
         copyFileToCollectionSpy,
       });
 
@@ -1108,24 +1073,10 @@ describe('UploadService', () => {
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
-        expFile,
         sourceFileCollection,
       ).catch((error: Error) => {
         expect(error).toEqual(copyFileToCollectionRejection);
-        expect(fileUploadErrorCallback).toHaveBeenCalledWith({
-          file: {
-            id: 'some-id-42',
-            creationDate: 1234,
-            name: 'some-name',
-            size: 4200,
-            type: 'some-type',
-          },
-          error: {
-            fileId: 'some-id-42',
-            name: 'upload_fail',
-            description: 'some-error',
-          },
-        });
+        expect(fileUploadErrorCallback).not.toHaveBeenCalled();
       });
     });
 
@@ -1136,12 +1087,7 @@ describe('UploadService', () => {
         .fn()
         .mockReturnValue(Promise.resolve('some-MediaApi-response'));
 
-      const {
-        uploadService,
-        sourceFileId,
-        sourceFileCollection,
-        expFile,
-      } = setup({
+      const { uploadService, sourceFileId, sourceFileCollection } = setup({
         userAuthProvider,
         copyFileToCollectionSpy,
       });
@@ -1151,7 +1097,6 @@ describe('UploadService', () => {
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
-        expFile,
         sourceFileCollection,
       ).catch(error => {
         expect(error).toEqual(new Error('some-error'));

@@ -7,7 +7,7 @@ import {
 } from '@atlaskit/media-core';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
-import { MediaFile, PublicMediaFile, validateMediaFile } from '../domain/file';
+import { MediaFile, PublicMediaFile } from '../domain/file';
 
 import { MediaApi } from './mediaApi';
 import { MediaClient } from './mediaClient';
@@ -27,9 +27,8 @@ import {
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
 
-export interface ExpFile {
-  id: string;
-  creationDate: number;
+export interface CancellableFileUpload {
+  mediaFile: MediaFile;
   file: File;
   cancel?: () => void;
 }
@@ -43,11 +42,11 @@ export class NewUploadServiceImpl implements UploadService {
   private readonly emitter: EventEmitter2;
   private dropzoneElement?: HTMLElement;
   private browserElement?: HTMLInputElement;
-  private uploadingExpFiles: { [key: string]: ExpFile };
+  private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
   constructor(private readonly context: Context, uploadParams?: UploadParams) {
     this.emitter = new EventEmitter2();
-    this.uploadingExpFiles = {};
+    this.cancellableFilesUploads = {};
 
     if (context.config.userAuthProvider) {
       this.userCollectionMediaClient = new MediaClient(
@@ -128,46 +127,48 @@ export class NewUploadServiceImpl implements UploadService {
       return;
     }
     const creationDate = Date.now();
-    const expFiles: ExpFile[] = files.map(file => ({
+    const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
+      mediaFile: this.mapExpFileToMediaFile(file, uuid.v4(), creationDate),
       file,
-      creationDate,
-      id: uuid.v4(),
     }));
 
-    const mediaFiles = expFiles.map(this.mapExpFileToMediaFile);
+    const mediaFiles = cancellableFileUploads.map(
+      cancellableFileUpload => cancellableFileUpload.mediaFile,
+    );
 
     this.emit('files-added', { files: mediaFiles });
-    this.emitPreviews(expFiles);
+    this.emitPreviews(cancellableFileUploads);
 
-    expFiles.forEach(expFile => {
-      this.uploadingExpFiles[expFile.id] = expFile;
+    cancellableFileUploads.forEach(cancellableFileUpload => {
+      const { mediaFile, file } = cancellableFileUpload;
+      this.cancellableFilesUploads[mediaFile.id] = cancellableFileUpload;
       const uploadableFile: UploadableFile = {
         collection: this.uploadParams.collection,
-        content: expFile.file,
+        content: file,
       };
       const { promiseFileId, cancel } = this.context.uploadFile(
         uploadableFile,
         {
-          onProgress: this.onFileProgress.bind(this, expFile),
+          onProgress: this.onFileProgress.bind(this, cancellableFileUpload),
         },
       );
-      expFile.cancel = cancel;
+      cancellableFileUpload.cancel = cancel;
       promiseFileId.then(
-        this.onFileSuccess.bind(this, expFile),
-        this.onFileError.bind(this, expFile, 'upload_fail'),
+        this.onFileSuccess.bind(this, cancellableFileUpload),
+        this.onFileError.bind(this, mediaFile, 'upload_fail'),
       );
     });
   }
 
   cancel(id?: string): void {
     if (id) {
-      const expFile = this.uploadingExpFiles[id];
+      const expFile = this.cancellableFilesUploads[id];
       if (expFile && expFile.cancel) {
         expFile.cancel();
       }
     } else {
-      Object.keys(this.uploadingExpFiles).forEach(key => {
-        const expFile = this.uploadingExpFiles[key];
+      Object.keys(this.cancellableFilesUploads).forEach(key => {
+        const expFile = this.cancellableFilesUploads[key];
         if (expFile.cancel) {
           expFile.cancel();
         }
@@ -196,10 +197,9 @@ export class NewUploadServiceImpl implements UploadService {
     this.emitter.emit(event, payload);
   };
 
-  private emitPreviews(expFiles: ExpFile[]) {
-    expFiles.forEach(expFile => {
-      const mediaFile = this.mapExpFileToMediaFile(expFile);
-      const file = expFile.file;
+  private emitPreviews(cancellableFileUploads: CancellableFileUpload[]) {
+    cancellableFileUploads.forEach(cancellableFileUpload => {
+      const { file, mediaFile } = cancellableFileUpload;
       const { size } = file;
       const mediaType = this.getMediaTypeFromFile(file);
       if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
@@ -231,15 +231,23 @@ export class NewUploadServiceImpl implements UploadService {
     return 'unknown';
   }
 
-  private releaseExpFile(expFile: ExpFile): void {
-    delete this.uploadingExpFiles[expFile.id];
+  private releaseExpFile(mediaFile: MediaFile): void {
+    delete this.cancellableFilesUploads[mediaFile.id];
   }
 
-  private readonly onFileSuccess = (expFile: ExpFile, fileId: string) => {
+  private readonly onFileSuccess = (
+    cancellableFileUpload: CancellableFileUpload,
+    fileId: string,
+  ) => {
+    const { mediaFile } = cancellableFileUpload;
     const collectionName = this.uploadParams.collection;
-    this.copyFileToUsersCollection(fileId, expFile, collectionName);
+    this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
 
-    const publicMediaFile = this.mapExpFileToPublicMediaFile(expFile, fileId);
+    const publicMediaFile: PublicMediaFile = {
+      ...mediaFile,
+      publicId: fileId,
+    };
+
     this.emit('file-converting', {
       file: publicMediaFile,
     });
@@ -261,39 +269,46 @@ export class NewUploadServiceImpl implements UploadService {
               file: publicMediaFile,
               public: fileItem.details,
             });
-            this.releaseExpFile(expFile);
+            this.releaseExpFile(mediaFile);
           }
         },
-        error: this.onFileError.bind(this, expFile, 'metadata_fetch_fail'),
+        error: this.onFileError.bind(
+          this,
+          cancellableFileUpload,
+          'metadata_fetch_fail',
+        ),
       });
 
-    expFile.cancel = () => {
+    cancellableFileUpload.cancel = () => {
       subscription.unsubscribe();
-      this.releaseExpFile(expFile);
+      this.releaseExpFile(mediaFile);
     };
   };
 
-  private readonly onFileProgress = (expFile: ExpFile, portion: number) => {
-    const size = expFile.file.size;
+  private readonly onFileProgress = (
+    { mediaFile, file }: CancellableFileUpload,
+    portion: number,
+  ) => {
+    const size = file.size;
     const progress = new SmartMediaProgress(
       size,
       size * portion,
-      expFile.creationDate,
+      mediaFile.creationDate,
       Date.now(),
     );
 
     this.emit('file-uploading', {
-      file: this.mapExpFileToMediaFile(expFile),
+      file: mediaFile,
       progress: progress.toJSON(),
     });
   };
 
   private readonly onFileError = (
-    expFile: ExpFile,
+    mediaFile: MediaFile,
     mediaErrorName: MediaErrorName,
     error: Error | string,
   ) => {
-    this.releaseExpFile(expFile);
+    this.releaseExpFile(mediaFile);
     if (error === 'canceled') {
       // Specific error coming from chunkinator via rejected fileId promise.
       // We do not want to trigger error in this case.
@@ -301,9 +316,9 @@ export class NewUploadServiceImpl implements UploadService {
     }
     const description = error instanceof Error ? error.message : error;
     this.emit('file-upload-error', {
-      file: this.mapExpFileToMediaFile(expFile),
+      file: mediaFile,
       error: {
-        fileId: expFile.id,
+        fileId: mediaFile.id,
         description: description,
         name: mediaErrorName,
       },
@@ -312,7 +327,6 @@ export class NewUploadServiceImpl implements UploadService {
 
   private copyFileToUsersCollection(
     sourceFileId: string,
-    expFile: ExpFile,
     sourceCollection?: string,
   ): Promise<void> {
     if (!this.userCollectionMediaClient) {
@@ -321,60 +335,32 @@ export class NewUploadServiceImpl implements UploadService {
 
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
-      .then(
-        auth => {
-          const sourceFile: SourceFile = {
-            id: sourceFileId,
-            collection: sourceCollection,
-            owner: {
-              ...mapAuthToSourceFileOwner(auth),
-            },
-          };
+      .then(auth => {
+        const sourceFile: SourceFile = {
+          id: sourceFileId,
+          collection: sourceCollection,
+          owner: {
+            ...mapAuthToSourceFileOwner(auth),
+          },
+        };
 
-          return this.api.copyFileToCollection(
-            this.userCollectionMediaClient,
-            sourceFile,
-            'recents',
-          );
-        },
-        error => {
-          this.onFileError(expFile, 'token_fetch_fail', error);
-          throw error;
-        },
-      )
-      .catch(error => {
-        this.onFileError(expFile, 'upload_fail', error);
-        throw error;
+        return this.api.copyFileToCollection(
+          this.userCollectionMediaClient,
+          sourceFile,
+          'recents',
+        );
       });
   }
 
-  private mapExpFileToPublicMediaFile = (
-    expFile: ExpFile,
-    publicId: string,
-  ): PublicMediaFile => {
-    return {
-      ...this.mapExpFileToMediaFile(expFile),
-      publicId,
-    };
-  };
-
-  private mapExpFileToMediaFile = (expFile: ExpFile): MediaFile => {
-    if (!expFile.creationDate) {
-      throw new Error('createDate is required on file');
-    }
-    if (!expFile.id) {
-      throw new Error('id is required file');
-    }
-    const mediaFile: MediaFile = {
-      id: expFile.id,
-      name: expFile.file.name,
-      size: expFile.file.size,
-      creationDate: expFile.creationDate,
-      type: expFile.file.type,
-    };
-
-    validateMediaFile(mediaFile);
-
-    return mediaFile;
-  };
+  private mapExpFileToMediaFile = (
+    file: File,
+    id: string,
+    creationDate: number,
+  ): MediaFile => ({
+    id,
+    name: file.name,
+    size: file.size,
+    creationDate,
+    type: file.type,
+  });
 }

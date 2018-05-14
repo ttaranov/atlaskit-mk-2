@@ -12,7 +12,7 @@ import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
 import { mapAuthToQueryParameters } from '../domain/auth';
 import { MediaErrorName } from '../domain/error';
-import { MediaFile, validateMediaFile, PublicMediaFile } from '../domain/file';
+import { MediaFile, PublicMediaFile } from '../domain/file';
 import { SmartMediaProgress } from '../domain/progress';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
@@ -649,8 +649,6 @@ export class OldUploadServiceImpl implements UploadService {
       type: resumableFile.file.type,
       creationDate: this.getResumableFileCreationDate(resumableFile),
     };
-
-    validateMediaFile(file);
 
     return file;
   };
