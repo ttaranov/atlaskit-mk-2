@@ -21,6 +21,7 @@ describe('Marshal', () => {
     tooltip = {
       show: jest.fn(),
       hide: jest.fn(),
+      props: { delay: 300 },
       state: {
         position: 'bottom',
       },
@@ -31,6 +32,7 @@ describe('Marshal', () => {
     anotherTooltip = {
       show: jest.fn(),
       hide: jest.fn(),
+      props: { delay: 300 },
       state: {
         position: 'bottom',
       },
