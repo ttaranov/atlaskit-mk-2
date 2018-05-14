@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.3.2
+- [patch] Always show MediaViewer close button [9ddeec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ddeec0)
+
 ## 13.3.1
 - [patch] use proper collectionName property in MVNG [7815256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7815256)
 
