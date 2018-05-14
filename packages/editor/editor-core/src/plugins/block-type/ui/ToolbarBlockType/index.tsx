@@ -168,10 +168,7 @@ export default class ToolbarBlockType extends React.PureComponent<
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
-    this.props.pluginState.toggleBlockType(
-      blockType.name,
-      this.props.editorView,
-    );
+    this.props.pluginState.setBlockType(blockType.name, this.props.editorView);
     this.setState({
       active: false,
       availableBlockTypes,
