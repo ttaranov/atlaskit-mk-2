@@ -75,6 +75,18 @@ export const Wrapper: ComponentClass<any> = styled.div`
     & ul ul {
       list-style-type: square;
     }
+
+    & ul ul ul {
+      list-style-type: disc;
+    }
+
+    & ul ul ul ul {
+      list-style-type: circle;
+    }
+
+    & ul ul ul ul ul {
+      list-style-type: square;
+    }
   }
 
   & ol {

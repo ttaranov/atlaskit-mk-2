@@ -294,6 +294,31 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
   }
 
+  /** =============== LIST INDENT STYLES ========= */
+  ul {
+    list-style-type: disc;
+  }
+
+  ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul {
+    list-style-type: square;
+  }
+
+  ul ul ul ul {
+    list-style-type: disc;
+  }
+
+  ul ul ul ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul ul ul ul {
+    list-style-type: square;
+  }
+
   /* =============== PLACEHOLDER CURSOR STYLES========= */
 
   & .ProseMirror-fake-text-cursor {
