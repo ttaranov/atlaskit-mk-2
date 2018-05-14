@@ -700,6 +700,13 @@ export const getValidNode = (
         }
         break;
       }
+      case 'placeholder': {
+        if (attrs && typeof attrs.text !== 'undefined') {
+          return { type, attrs };
+        }
+
+        break;
+      }
     }
   }
 
