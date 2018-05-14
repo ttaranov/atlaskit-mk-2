@@ -30,7 +30,7 @@ const Global = () => (
     product={{
       icon: () => (
         <SpotlightTarget name="product">
-          <EmojiAtlassianIcon primaryColor={colors.B50} />
+          <EmojiAtlassianIcon size="large" primaryColor={colors.B50} />
         </SpotlightTarget>
       ),
       label: 'product',
