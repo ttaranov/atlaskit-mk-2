@@ -128,14 +128,6 @@ describe('UploadService', () => {
       expect(element.removeEventListener).toHaveBeenCalledTimes(1);
     });
 
-    it('removeDropzone should not call removeEventListener if the dropzone was not added', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.removeDropzone();
-
-      expect(element.removeEventListener).not.toHaveBeenCalled();
-    });
-
     it('addDropzone should call addEventListener if dropzone was added and removed before', () => {
       const { uploadService, element } = setupWithElement();
       const anotherElement = document.createElement('span');
@@ -214,15 +206,7 @@ describe('UploadService', () => {
       expect(element.removeEventListener).toHaveBeenCalledTimes(1);
     });
 
-    it('removeBrowse() should not call removeEventListener if the browse was not added', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.removeBrowse();
-
-      expect(element.removeEventListener).not.toHaveBeenCalled();
-    });
-
-    it('addBrowse should call addEventListener if dropzone was added and removed before', () => {
+    it('addBrowse should call addEventListener if browse was added and removed before', () => {
       const { uploadService, element } = setupWithElement();
       const anotherElement = document.createElement('input');
       jest.spyOn(anotherElement, 'addEventListener');
@@ -281,7 +265,7 @@ describe('UploadService', () => {
       return { uploadService, filesAddedPromise };
     };
 
-    it('should emit file upload event when file type is "image" and file size is less than 10 MB', async () => {
+    it('should generate a preview when file type is “image” and file size is less than 10MB', async () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'image/png' };
 
@@ -554,7 +538,7 @@ describe('UploadService', () => {
       uploadService.addFiles([file]);
     });
 
-    it('should call emit "file-uploading"', async () => {
+    it('should call emit "file-uploading" when it receives an onProgress event from Context#uploadFile()', async () => {
       const file: File = {
         size: 100,
         name: 'some-filename',
@@ -670,6 +654,9 @@ describe('UploadService', () => {
     });
 
     it('should not trigger error when cancelled', async () => {
+      // Chunkinator rejects a promise when cancel is called.
+      // With this test we want verify that this rejection doesn't cause error triggered
+      // by uploadService.
       const file: File = {
         size: 100,
         name: 'some-filename',
@@ -700,7 +687,7 @@ describe('UploadService', () => {
       expect(fileUploadErrorCallback).not.toHaveBeenCalled();
     });
 
-    it('should cancel all uploads', () => {
+    it('should cancel all uploads when #cancel is not passed any arguments', () => {
       const file1: File = {
         size: 100,
         name: 'some-filename',

@@ -60,6 +60,7 @@ export interface PopupWrapperState {
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
   useOldUploadService: boolean;
+  pickerVersion: number;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
@@ -75,6 +76,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     publicFiles: {},
     isUploadingFilesVisible: true,
     useOldUploadService: false,
+    pickerVersion: 1,
   };
 
   componentDidMount() {
@@ -85,7 +87,9 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.popup.removeAllListeners();
   }
 
-  createPopup() {
+  private createPopup(
+    useOldUploadService: boolean = this.state.useOldUploadService,
+  ) {
     if (this.popup) {
       this.popup.removeAllListeners();
       this.popup.teardown();
@@ -102,7 +106,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-      useOldUploadService: this.state.useOldUploadService,
+      useOldUploadService,
     });
 
     this.popup.on('uploads-start', this.onUploadsStart);
@@ -112,6 +116,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.popup.on('upload-end', this.onUploadEnd);
     this.popup.on('upload-error', this.onUploadError);
     this.popup.on('closed', this.onClosed);
+
+    this.setState(prevState => ({
+      pickerVersion: prevState.pickerVersion + 1,
+      useOldUploadService,
+    }));
   }
 
   onUploadError = (data: UploadErrorEventPayload) => {
@@ -315,10 +324,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onUseOldUploadServiceChange = () => {
-    this.setState(
-      { useOldUploadService: !this.state.useOldUploadService },
-      this.createPopup,
-    );
+    this.createPopup(!this.state.useOldUploadService);
   };
 
   renderUploadingFiles = () => {

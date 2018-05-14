@@ -26,6 +26,7 @@ export interface DropzoneWrapperState {
   isFetchingLastItems: boolean;
   lastItems: any[];
   inflightUploads: string[];
+  pickerVersion: number;
 }
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
@@ -38,6 +39,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     isFetchingLastItems: true,
     lastItems: [],
     inflightUploads: [],
+    pickerVersion: 1,
   };
 
   // TODO: Move into example-helpers
@@ -78,9 +80,11 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     });
 
     this.dropzone = dropzone;
-
     dropzone.activate();
-    this.forceUpdate();
+
+    this.setState(prevState => ({
+      pickerVersion: prevState.pickerVersion + 1,
+    }));
   }
 
   saveDropzoneContainer = (element: HTMLDivElement) => {

@@ -1,6 +1,6 @@
 export * from './item';
 export * from './actions';
-// TODO remove this export after we done with resumable.js
+
 export {
   ClientBasedAuth,
   AsapBasedAuth,
@@ -14,8 +14,11 @@ export {
   UploadableFile,
   UploadFileCallbacks,
   UploadFileResult,
-  createHasher,
 } from '@atlaskit/media-store';
+
+// TODO remove createHasher export after we done with resumable.js (MSW-691)
+export { createHasher } from '@atlaskit/media-store';
+
 export * from './mediaTypes';
 export * from './context/context';
 export * from './collection';

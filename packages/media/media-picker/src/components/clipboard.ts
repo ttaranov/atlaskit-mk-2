@@ -6,7 +6,7 @@ import { MediaPickerContext } from '../domain/context';
 import { whenDomReady } from '../util/documentReady';
 
 export interface ClipboardConfig extends LocalUploadConfig {
-  userAuthProvider?: AuthProvider;
+  readonly userAuthProvider?: AuthProvider;
 }
 
 export interface ClipboardConstructor {

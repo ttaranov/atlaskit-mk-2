@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PreviewData, renderPreviewImage } from './index';
 import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadPreviewUpdateEventPayload } from '../src';
-import { DropzonePreviewsWrapper } from './styled';
+import { PreviewsWrapper } from './styled';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -20,13 +20,13 @@ export class PreviewsData extends React.Component<
     previewsData: [],
   };
 
-  getPreviewData(fileId: string): PreviewData | null {
+  private getPreviewData(fileId: string): PreviewData | null {
     return (
       this.state.previewsData.find(preview => preview.fileId === fileId) || null
     );
   }
 
-  updatePreviewDataFile(
+  private updatePreviewDataFile(
     fileId: string,
     progress: number,
     isProcessed: boolean = false,
@@ -39,9 +39,7 @@ export class PreviewsData extends React.Component<
     ) {
       previewData.uploadingProgress = progress;
       previewData.isProcessed = isProcessed;
-      this.forceUpdate();
-    } else {
-      console.log('update is not needed');
+      this.setState({ previewsData: [...this.state.previewsData] });
     }
   }
 
@@ -50,14 +48,18 @@ export class PreviewsData extends React.Component<
     prevState: PreviewsDataState,
   ) {
     prevProps.picker.removeAllListeners();
-    this.listendToPickerEvents();
+    this.setupMediaPickerEventListeners();
   }
 
   componentDidMount() {
-    this.listendToPickerEvents();
+    this.setupMediaPickerEventListeners();
   }
 
-  listendToPickerEvents() {
+  componentWillUnmount() {
+    this.props.picker.removeAllListeners();
+  }
+
+  private setupMediaPickerEventListeners() {
     const picker = this.props.picker;
 
     picker.on('uploads-start', data => {
@@ -105,7 +107,7 @@ export class PreviewsData extends React.Component<
     });
   }
 
-  renderPreviews = () => {
+  private renderPreviews = () => {
     const { previewsData } = this.state;
 
     return previewsData.map(renderPreviewImage);
@@ -113,10 +115,10 @@ export class PreviewsData extends React.Component<
 
   render() {
     return (
-      <DropzonePreviewsWrapper>
+      <PreviewsWrapper>
         <h1>Upload previews</h1>
         {this.renderPreviews()}
-      </DropzonePreviewsWrapper>
+      </PreviewsWrapper>
     );
   }
 }

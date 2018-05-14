@@ -105,6 +105,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
   public cancel(uniqueIdentifier?: string): void {
     if (uniqueIdentifier === undefined) {
+      // TODO Make popup able to accept undefined and cancel all the inflight uploads (MSW-691)
       throw new Error(
         "Popup doesn't support canceling without a unique identifier",
       );

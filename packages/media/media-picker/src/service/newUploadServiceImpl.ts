@@ -22,6 +22,7 @@ import { SmartMediaProgress } from '../domain/progress';
 import { MediaErrorName } from '../domain/error';
 import {
   MAX_FILE_SIZE_FOR_PREVIEW,
+  UploadService,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
@@ -30,11 +31,10 @@ export interface ExpFile {
   id: string;
   creationDate: number;
   file: File;
-  cancel?: Function;
+  cancel?: () => void;
 }
 
-export class NewUploadServiceImpl implements NewUploadServiceImpl {
-  private readonly context: Context;
+export class NewUploadServiceImpl implements UploadService {
   private readonly userCollectionMediaClient: MediaClient;
   private readonly api: MediaApi;
 
@@ -45,9 +45,8 @@ export class NewUploadServiceImpl implements NewUploadServiceImpl {
   private browserElement?: HTMLInputElement;
   private uploadingExpFiles: { [key: string]: ExpFile };
 
-  constructor(context: Context, uploadParams?: UploadParams) {
+  constructor(private readonly context: Context, uploadParams?: UploadParams) {
     this.emitter = new EventEmitter2();
-    this.context = context;
     this.uploadingExpFiles = {};
 
     if (context.config.userAuthProvider) {
@@ -292,7 +291,7 @@ export class NewUploadServiceImpl implements NewUploadServiceImpl {
   private readonly onFileError = (
     expFile: ExpFile,
     mediaErrorName: MediaErrorName,
-    error: Error | any,
+    error: Error | string,
   ) => {
     this.releaseExpFile(expFile);
     if (error === 'canceled') {
@@ -300,7 +299,7 @@ export class NewUploadServiceImpl implements NewUploadServiceImpl {
       // We do not want to trigger error in this case.
       return;
     }
-    const description = (error && (error.message || error.toString())) || '';
+    const description = error instanceof Error ? error.message : error;
     this.emit('file-upload-error', {
       file: this.mapExpFileToMediaFile(expFile),
       error: {

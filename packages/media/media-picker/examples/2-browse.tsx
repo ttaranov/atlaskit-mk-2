@@ -20,6 +20,7 @@ export interface BrowserWrapperState {
   collectionName: string;
   useOldUploadService: boolean;
   authEnvironment: AuthEnvironment;
+  pickerVersion: number;
 }
 
 class BrowserWrapper extends Component<{}, BrowserWrapperState> {
@@ -30,13 +31,14 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     useOldUploadService: false,
     authEnvironment: 'client',
     collectionName: defaultMediaPickerCollectionName,
+    pickerVersion: 1,
   };
 
   componentWillMount() {
     this.createBrowse();
   }
 
-  createBrowse() {
+  createBrowse(useOldUploadService: boolean = this.state.useOldUploadService) {
     const context = ContextFactory.create({
       serviceHost: defaultServiceHost,
       authProvider: mediaPickerAuthProvider(),
@@ -48,12 +50,17 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       multiple: true,
       fileExtensions: ['image/jpeg', 'image/png', 'video/mp4'],
       uploadParams,
-      useOldUploadService: this.state.useOldUploadService,
+      useOldUploadService,
     };
     if (this.fileBrowser) {
       this.fileBrowser.teardown();
     }
     this.fileBrowser = MediaPicker('browser', context, browseConfig);
+
+    this.setState(prevState => ({
+      pickerVersion: prevState.pickerVersion + 1,
+      useOldUploadService,
+    }));
   }
 
   onOpen = () => {
@@ -77,13 +84,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   };
 
   onUseOldUploadServiceChange = () => {
-    this.setState(
-      { useOldUploadService: !this.state.useOldUploadService },
-      () => {
-        this.createBrowse();
-        this.forceUpdate();
-      },
-    );
+    this.createBrowse(!this.state.useOldUploadService);
   };
 
   render() {

@@ -50,7 +50,6 @@ export const PreviewImageWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: relative;
-  float: left;
   margin-right: 15px;
 `;
 
@@ -83,20 +82,24 @@ export const DropzoneContentWrapper: ComponentClass<
   display: flex;
 `;
 
-export const DropzonePreviewsWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const PreviewsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  display: flex;
+  flex-flow: row wrap;
   overflow: auto;
+
+  h1 {
+    width: 100%;
+  }
 `;
 
 export const ProgressCircleWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  top: 80px;
-  left: 80px;
-  width: 150px;
-  height: 150px;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  width: 100px;
+  height: 100px;
 `;
 
 export const DropzoneItemsInfo: ComponentClass<HTMLAttributes<{}>> = styled.div`

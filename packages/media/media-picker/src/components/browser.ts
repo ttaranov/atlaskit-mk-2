@@ -4,8 +4,8 @@ import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
 
 export interface BrowserConfig extends LocalUploadConfig {
-  multiple?: boolean;
-  fileExtensions?: Array<string>;
+  readonly multiple?: boolean;
+  readonly fileExtensions?: Array<string>;
 }
 
 export interface BrowserConstructor {
@@ -26,7 +26,7 @@ export class Browser extends LocalUploadComponent {
   ) {
     super(analyticsContext, context, browserConfig);
 
-    this.browseElement = document.createElement('INPUT') as HTMLInputElement;
+    this.browseElement = document.createElement('input');
     this.browseElement.setAttribute('type', 'file');
     this.browseElement.style.display = 'none';
 

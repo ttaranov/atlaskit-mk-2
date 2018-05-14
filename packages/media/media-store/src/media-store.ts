@@ -153,7 +153,6 @@ export class MediaStore {
   ): Promise<void> {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
-      // TODO do we need to get proper authProvider token using collectionName here?
       body: JSON.stringify(body),
       headers: {
         Accept: 'application/json',

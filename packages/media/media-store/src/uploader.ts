@@ -19,7 +19,7 @@ export type UploadFileCallbacks = {
 
 export interface UploadFileResult {
   promiseFileId: Promise<string>;
-  cancel: Function;
+  cancel: () => void;
 }
 
 const hashingFunction = (blob: Blob): Promise<string> => {
@@ -58,7 +58,7 @@ export const uploadFile = (
     offset += chunks.length;
   };
 
-  const emptyFilePromise = store.createFile({ collection, occurrenceKey });
+  const deferredEmptyFile = store.createFile({ collection, occurrenceKey });
 
   const { response, cancel } = chunkinator(
     content,
@@ -84,7 +84,7 @@ export const uploadFile = (
 
   const fileId = Promise.all([
     deferredUploadId,
-    emptyFilePromise,
+    deferredEmptyFile,
     response,
   ]).then(([uploadId, emptyFile]) => {
     const fileId = emptyFile.data.id;

@@ -9,7 +9,7 @@ import {
 import Button from '@atlaskit/button';
 import { MediaPicker, Browser, BrowserConfig } from '../src';
 import {
-  DropzonePreviewsWrapper,
+  PreviewsWrapper,
   PopupHeader,
   PopupContainer,
 } from '../example-helpers/styled';
@@ -78,10 +78,10 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     return (
       <PopupContainer>
         <PopupHeader>{buttons}</PopupHeader>
-        <DropzonePreviewsWrapper>
+        <PreviewsWrapper>
           <h1>Upload previews</h1>
           {this.renderPreviews()}
-        </DropzonePreviewsWrapper>
+        </PreviewsWrapper>
       </PopupContainer>
     );
   }

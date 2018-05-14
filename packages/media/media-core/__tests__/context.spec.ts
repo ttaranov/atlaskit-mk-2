@@ -211,7 +211,7 @@ describe('Context', () => {
     });
   });
 
-  describe('.uploadFile', () => {
+  describe('.uploadFile()', () => {
     it('should call media-store uploadFile with given callbacks', () => {
       const context = createFakeContext();
       const file: UploadableFile = {} as any;

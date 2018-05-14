@@ -2,7 +2,7 @@ import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
 
-export interface BinaryConfig extends LocalUploadConfig {}
+export type BinaryConfig = LocalUploadConfig;
 
 export interface BinaryUploaderConstructor {
   new (
