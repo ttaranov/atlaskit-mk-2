@@ -7,7 +7,10 @@ import { CellSelection } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
+import {
+  tableBackgroundColorPalette,
+  tableBackgroundColorBorders,
+} from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
 import AdvanceMenu from './AdvanceMenu';
@@ -17,6 +20,23 @@ import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
 import { TableLayout } from '@atlaskit/editor-common';
+import {
+  akColorN30,
+  akColorB50,
+  akColorT50,
+  akColorP50,
+  akColorR50,
+  akColorG50,
+  akColorY50,
+  akColorN0,
+  akColorB75,
+  akColorG75,
+  akColorR75,
+  akColorN40,
+  akColorP75,
+  akColorT75,
+  akColorY75,
+} from '@atlaskit/util-shared-styles';
 
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: white;
@@ -139,6 +159,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               editorView={editorView}
               palette={tableBackgroundColorPalette}
               mountPoint={popupsMountPoint}
+              borders={tableBackgroundColorBorders}
             />
           )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
