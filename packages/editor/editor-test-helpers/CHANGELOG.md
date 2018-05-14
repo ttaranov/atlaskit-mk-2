@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 3.1.7
+- [patch] Extensions should have text [64e32a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64e32a2)
+
 ## 3.1.6
 - [patch] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 
