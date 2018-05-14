@@ -34,16 +34,58 @@ export const HeaderWrapper = styled.div`
   z-index: ${overlayZindex + 1};
 `;
 
-export const Content = styled.div`
+HeaderWrapper.displayName = 'HeaderWrapper';
+
+export interface ContentWrapperProps {
+  showControls: boolean;
+}
+
+export const ListWrapper = styled.div``;
+
+ListWrapper.displayName = 'ListWrapper';
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+`;
+
+export const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: ${overlayZindex + 2};
+`;
+
+const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
+  transition: opacity .3s;
+  opacity: ${showControls ? '1' : '0'};
+`;
+
+export const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   overflow: auto;
   align-items: center;
   justify-content: center;
+
+  ${HeaderWrapper} {
+    ${handleControlsVisibility};
+  }
+
+  ${ArrowsWrapper} {
+    ${handleControlsVisibility};
+  }
+
+  ${CloseButtonWrapper} {
+    ${handleControlsVisibility};
+  }
 `;
 
-export const ListWrapper = styled.div``;
+ContentWrapper.displayName = 'Content';
 
 export const ErrorMessage = styled.div`
   color: #b8c7e0;
@@ -59,14 +101,6 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
 `;
 
 export const PDFWrapper = styled.div``;
-
-export const ArrowsWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: 40%;
-  left: 0;
-  width: 100%;
-`;
 
 const ArrowWrapper = styled.div`
   flex: 1;
@@ -92,11 +126,4 @@ export const Header = styled.div`
 
 export const LeftHeader = styled.div`
   flex: 0.8;
-`;
-
-export const CloseButtonWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: ${overlayZindex + 2};
 `;

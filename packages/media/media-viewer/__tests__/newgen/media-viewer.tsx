@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
-import { Content } from '../../src/newgen/styled';
+import { Content } from '../../src/newgen/content';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { ErrorMessage, CloseButtonWrapper } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
