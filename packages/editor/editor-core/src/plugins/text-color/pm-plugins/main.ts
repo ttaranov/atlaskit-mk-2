@@ -23,6 +23,7 @@ export class TextColorState {
   color?: string;
   disabled: boolean;
   palette: Map<string, string>;
+  borderPalette: Object;
   // For caching the default color,
   // because this will be accessed every time we change selection in editor
   defaultColor: string;
