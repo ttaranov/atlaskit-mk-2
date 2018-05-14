@@ -118,7 +118,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror ul,
   .ProseMirror ol {
     padding-left: 30px;
-    cursor: default;
     box-sizing: border-box;
   }
 
