@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 71.3.10
+- [patch] Adding nested ul support [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
+- [none] Updated dependencies [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
+  - @atlaskit/renderer@16.2.4
+
 ## 71.3.9
 - [patch] Fixing the link dialog url heights [7268bef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7268bef)
 - [none] Updated dependencies [7268bef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7268bef)
