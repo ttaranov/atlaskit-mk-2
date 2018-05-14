@@ -64,7 +64,7 @@ export default class MetaData extends Component<MetaDataProps> {
           summary="unpkg.com"
         />
         <DI>
-          <DT style={{ lineHeight: '44px' }}>Contributers</DT>
+          <DT style={{ lineHeight: '44px' }}>Contributors</DT>
           <DD>
             <AvatarGroup
               appearance="stack"
