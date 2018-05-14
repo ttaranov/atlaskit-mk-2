@@ -251,6 +251,7 @@ describe('Dropzone', () => {
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
+        useOldUploadService: false,
       });
 
       dropzone.on('drop', () => {

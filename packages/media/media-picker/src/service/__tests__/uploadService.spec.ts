@@ -37,9 +37,13 @@ describe('UploadService', () => {
 
   describe('setUploadParams', () => {
     const setup = () => ({
-      uploadService: UploadServiceFactory.create(getContext(), {
-        collection: '',
-      }),
+      uploadService: UploadServiceFactory.create(
+        getContext(),
+        {
+          collection: '',
+        },
+        false,
+      ),
     });
 
     it('should apply defaultUploadParams', () => {
@@ -67,9 +71,13 @@ describe('UploadService', () => {
   });
 
   const setupWithElement = () => {
-    const uploadService = UploadServiceFactory.create(getContext(), {
-      collection: '',
-    });
+    const uploadService = UploadServiceFactory.create(
+      getContext(),
+      {
+        collection: '',
+      },
+      false,
+    );
     const element = document.createElement('input');
 
     jest.spyOn(element, 'addEventListener');
@@ -143,9 +151,13 @@ describe('UploadService', () => {
     });
 
     it('should call addFiles when file is dropped', () => {
-      const uploadService = UploadServiceFactory.create(getContext(), {
-        collection: '',
-      });
+      const uploadService = UploadServiceFactory.create(
+        getContext(),
+        {
+          collection: '',
+        },
+        false,
+      );
       const element = document.createElement('div');
       uploadService.addDropzone(element);
 
@@ -221,9 +233,13 @@ describe('UploadService', () => {
     });
 
     it('should call addFiles when file is selected', () => {
-      const uploadService = UploadServiceFactory.create(getContext(), {
-        collection: '',
-      });
+      const uploadService = UploadServiceFactory.create(
+        getContext(),
+        {
+          collection: '',
+        },
+        false,
+      );
       const element = document.createElement('input');
       uploadService.addBrowse(element);
 
@@ -254,9 +270,13 @@ describe('UploadService', () => {
     });
 
     const setup = () => {
-      const uploadService = UploadServiceFactory.create(getContext(), {
-        collection: '',
-      });
+      const uploadService = UploadServiceFactory.create(
+        getContext(),
+        {
+          collection: '',
+        },
+        false,
+      );
 
       const filesAddedPromise = new Promise(resolve =>
         uploadService.on('files-added', () => resolve()),
@@ -399,9 +419,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
       jest.spyOn(context, 'uploadFile');
       uploadService.addFiles([file1, file2]);
       expect(context.uploadFile).toHaveBeenCalledTimes(2);
@@ -432,9 +456,13 @@ describe('UploadService', () => {
         type: 'video/mp4',
       } as any;
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
       const fileConvertingCallback = jest.fn();
       uploadService.on('file-converting', fileConvertingCallback);
       const uploadFilePromise = Promise.resolve('public-file-id');
@@ -524,9 +552,13 @@ describe('UploadService', () => {
       jest
         .spyOn(context, 'getMediaItemProvider')
         .mockReturnValue(mediaItemProvider);
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
       const fileConvertedCallback = jest.fn();
       uploadService.on('file-converted', fileConvertedCallback);
 
@@ -546,9 +578,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const uploadFilePromise = Promise.resolve('public-file-id');
       jest.spyOn(context, 'uploadFile').mockReturnValue({
@@ -589,9 +625,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const fileUploadErrorCallback = jest.fn();
       uploadService.on('file-upload-error', fileUploadErrorCallback);
@@ -632,9 +672,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
@@ -664,9 +708,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const fileUploadErrorCallback = jest.fn();
       uploadService.on('file-upload-error', fileUploadErrorCallback);
@@ -700,9 +748,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
@@ -749,9 +801,13 @@ describe('UploadService', () => {
       };
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const fileConvertedCallback = jest.fn();
       uploadService.on('file-converted', fileConvertedCallback);
@@ -814,9 +870,13 @@ describe('UploadService', () => {
       };
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
@@ -859,9 +919,13 @@ describe('UploadService', () => {
       } as any;
 
       const context = getContext();
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: 'some-collection',
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: 'some-collection',
+        },
+        false,
+      );
 
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
@@ -901,9 +965,13 @@ describe('UploadService', () => {
         authProvider,
         userAuthProvider: config.userAuthProvider,
       });
-      const uploadService = UploadServiceFactory.create(context, {
-        collection: collectionNameStub,
-      });
+      const uploadService = UploadServiceFactory.create(
+        context,
+        {
+          collection: collectionNameStub,
+        },
+        false,
+      );
 
       (uploadService as any).api = {
         copyFileToCollection: config.copyFileToCollectionSpy,
