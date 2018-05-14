@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.4.0
+- [minor] MediaViewer: toggle UI controls on mouse move [36ec198](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36ec198)
+
 ## 13.3.2
 - [patch] Always show MediaViewer close button [9ddeec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ddeec0)
 
