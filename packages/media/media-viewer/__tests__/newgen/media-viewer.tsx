@@ -5,7 +5,7 @@ import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
 import { Content } from '../../src/newgen/styled';
 import { MediaViewer } from '../../src/newgen/media-viewer';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage, CloseButtonWrapper } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
 
 function createContext(subject) {
@@ -72,6 +72,17 @@ describe('<MediaViewer />', () => {
     const { el, onClose } = createFixture([], selectedItem);
     expect(el.find(ErrorMessage)).toHaveLength(1);
     el.find(Content).simulate('click');
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('should always render the close button', () => {
+    const { el, onClose } = createFixture([identifier], identifier);
+
+    expect(el.find(CloseButtonWrapper)).toHaveLength(1);
+    el
+      .find(CloseButtonWrapper)
+      .find('Button')
+      .simulate('click');
     expect(onClose).toHaveBeenCalled();
   });
 });
