@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.6
+- [patch] Prevent link-edit dialog from jumping [5ea20fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ea20fa)
+- [none] Updated dependencies [5ea20fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ea20fa)
+
 ## 71.3.5
 - [patch] ED-4631: fix list padding [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
 - [none] Updated dependencies [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
