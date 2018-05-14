@@ -32,7 +32,7 @@ export interface ChromelessEditorProps {
 
 // tslint:disable-next-line:variable-name
 const ChromelessEditor: any = styled.div`
-  line-height: 24px;
+  line-height: 20px;
   height: auto;
   min-height: 30px;
   ${(props: ChromelessEditorProps) =>

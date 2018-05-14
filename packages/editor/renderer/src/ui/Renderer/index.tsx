@@ -17,7 +17,6 @@ export type RendererAppearance =
   | 'inline-comment'
   | 'comment'
   | 'full-page'
-  | 'chromeless'
   | 'mobile'
   | undefined;
 
