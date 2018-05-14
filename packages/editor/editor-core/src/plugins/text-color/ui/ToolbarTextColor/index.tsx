@@ -91,6 +91,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
             palette={this.props.pluginState.palette}
             onClick={this.toggleTextColor}
             selectedColor={color}
+            borders={this.props.pluginState.borderPalette}
           />
         </Dropdown>
         <Separator />

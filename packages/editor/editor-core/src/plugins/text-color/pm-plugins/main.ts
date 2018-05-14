@@ -7,7 +7,7 @@ import {
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
-import { colorPalette } from '@atlaskit/editor-common';
+import { colorPalette, colorBorderPalette } from '@atlaskit/editor-common';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
 
 export type StateChangeHandler = (state: TextColorState) => any;
@@ -32,6 +32,7 @@ export class TextColorState {
   constructor(state: EditorState, palette: Map<string, string>) {
     this.state = state;
     this.palette = palette;
+    this.borderPalette = colorBorderPalette;
     this.defaultColor = palette.keys().next().value;
     this.update(state);
   }
