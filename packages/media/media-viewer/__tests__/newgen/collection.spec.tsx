@@ -12,7 +12,6 @@ import { Collection } from '../../src/newgen/collection';
 import { ErrorMessage } from '../../src/newgen/styled';
 import { Identifier } from '../../src/newgen/domain';
 import Spinner from '@atlaskit/spinner';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
 function createContext(subject, provider?: MediaCollectionProvider): Context {
@@ -99,21 +98,6 @@ describe('<Collection />', () => {
     subject.next(new Error('error'));
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
-  });
-
-  it('should wire the onClose handler', () => {
-    const subject = new Subject<MediaCollection>();
-    const onClose = jest.fn();
-    const el = createFixture(
-      createContext(subject),
-      subject,
-      identifier,
-      onClose,
-    );
-    subject.next(mediaCollection);
-    el.update();
-    el.find(CrossIcon).simulate('click');
-    expect(onClose).toHaveBeenCalled();
   });
 
   it('should reset the component when the collection prop changes', () => {

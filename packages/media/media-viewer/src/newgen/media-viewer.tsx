@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Button from '@atlaskit/button';
 import { Identifier } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
-import { Blanket, Content } from './styled';
-import { ErrorMessage } from './styled';
+import { Blanket, Content, ErrorMessage, CloseButtonWrapper } from './styled';
 
 export type Props = {
   onClose?: () => void;
@@ -16,9 +17,16 @@ export type Props = {
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
+    const { onClose } = this.props;
     return (
       <Blanket>
         <Content onClick={this.onClickContentClose}>
+          <CloseButtonWrapper>
+            <Button
+              onClick={onClose}
+              iconBefore={<CrossIcon label="Close" />}
+            />
+          </CloseButtonWrapper>
           {this.renderContent()}
         </Content>
       </Blanket>

@@ -92,7 +92,9 @@ export const LeftHeader = styled.div`
   flex: 0.8;
 `;
 
-export const RightHeader = styled.div`
-  flex: 0.2;
-  text-align: right;
+export const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
 `;
