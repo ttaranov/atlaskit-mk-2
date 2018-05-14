@@ -52,6 +52,13 @@ export const ArrowsWrapper = styled.div`
   width: 100%;
 `;
 
+export const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: ${overlayZindex + 2};
+`;
+
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
   transition: opacity .3s;
   opacity: ${showControls ? '1' : '0'};
@@ -70,6 +77,10 @@ export const ContentWrapper = styled.div`
   }
 
   ${ArrowsWrapper} {
+    ${handleControlsVisibility};
+  }
+
+  ${CloseButtonWrapper} {
     ${handleControlsVisibility};
   }
 `;
@@ -115,11 +126,4 @@ export const Header = styled.div`
 
 export const LeftHeader = styled.div`
   flex: 0.8;
-`;
-
-export const CloseButtonWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: ${overlayZindex + 2};
 `;
