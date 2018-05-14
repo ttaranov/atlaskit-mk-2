@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
 The major reason for v2 release for table tree was issue:
@@ -25,8 +25,8 @@ The major reason for v2 release for table tree was issue:
 
 ## With Static Data
 
-In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass rootItems here in case of render props ).
-Moreover, there is a new Props childItems on Row which is expected to receive the children for the particular parent.
+In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass \`items\` here in case of render props ).
+Moreover, there is a new prop \`items\` on Row which is expected to receive the children for the particular parent.
 
 ${(
   <Example
@@ -48,7 +48,7 @@ wish, as it is configurable ).
 
 ## With Async loading of data
 
-*Here we will dicuss the recommended pattern to avoiding the data processing in case of Async data loading*
+*Here we will discuss the recommended pattern to avoiding the data processing in case of Async data loading*
 
 ### Problem
 
@@ -57,7 +57,7 @@ be hit while trying to update the table data.
 
 Example table data
 
-~~~js
+${code`
 [
   {
     // Item 1 data,
@@ -67,22 +67,22 @@ Example table data
         children: [
           {
             // child 1.1.1 data,
-            // ... so on
+            // ... and so on
           }
         ]
       }
     ]
   }
 ]
-~~~
+`}
 
 In this case, *if a inner child is expanded we need to traverse the object to find the parent item and update the
 child property which will be painful in case of nested object.*
 
 ### Recommendation
 
-There is a new named export from the Table tree package - **toTableTreeData**. toTableTreeData is util function that
-handles the data manipulation on table data object and creates a flat structure so that it can be consumes in Table-tree.
+There is a new named export from the Table tree package - **toTableTreeData**. \`toTableTreeData\` is util function that
+handles the data manipulation on table data object and creates a flat structure so that it can be easily consumed in Table-tree.
 
 ${(
   <Example
@@ -90,7 +90,7 @@ ${(
       require('../examples/upgrade-guide-examples/async-data-loading').default
     }
     source={require('!!raw-loader!../examples/upgrade-guide-examples/async-data-loading')}
-    title="Basic Usage: With Async loading"
+    title="Advance Usage: With Async loading"
     language="jsx"
   />
 )}
@@ -99,7 +99,7 @@ The idea here is to maintain a two properties in state - \`rootIds\` and \`items
 hook is called with the parentItem to help to fetch children for that particular parent. This is where
 we update the items in to flat structure and that object in \`itemsById\`
 
-~~~js
+${code`
 itemsById: {
   'id1': {
     // Item with id1 as keyId,
@@ -115,7 +115,7 @@ itemsById: {
     ]
   }
 }
-~~~
+`}
 
 **toTableTreeData** does the heavy lifting of creating the flat object identified by ids, and creates the
 rootIds array to identify root items in the itemsById object. Just pass in the received children and
