@@ -50,12 +50,10 @@ export const ArrowsWrapper = styled.div`
   width: 100%;
 `;
 
-const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => {
-  return `
-    transition: opacity .3s;
-    opacity: ${showControls ? '1' : '0'};
-  `;
-};
+const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
+  transition: opacity .3s;
+  opacity: ${showControls ? '1' : '0'};
+`;
 
 export const ContentWrapper = styled.div`
   width: 100%;
