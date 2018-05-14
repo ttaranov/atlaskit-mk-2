@@ -2,7 +2,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import Page from '../../src/index';
+import Page from '../../src';
 import { name } from '../../package.json';
 
 describe(name, () => {
