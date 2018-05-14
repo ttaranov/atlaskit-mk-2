@@ -92,6 +92,7 @@ MainToolbar.displayName = 'MainToolbar';
 const MainToolbarCustomComponentsSlot = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-grow: 1;
   padding-right: ${TableControlsPadding}px;
   > div {
