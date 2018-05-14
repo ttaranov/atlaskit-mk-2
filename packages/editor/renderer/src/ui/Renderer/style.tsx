@@ -1,4 +1,4 @@
-import { ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akColorB300,
   akColorB400,
@@ -13,9 +13,19 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
+import { RendererAppearance } from './';
+
+export interface Props {
+  appearance?: RendererAppearance;
+}
+
+const getLineHeight = ({ appearance }: Props) => {
+  return `line-height: ${appearance === 'message' ? 20 : 24}px;`;
+};
+
 // tslint:disable-next-line:variable-name
-export const Wrapper: ComponentClass<any> = styled.div`
-  color: ${akColorN800};
+export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${getLineHeight} color: ${akColorN800};
   word-wrap: break-word;
 
   & span.akActionMark {
@@ -60,7 +70,6 @@ export const Wrapper: ComponentClass<any> = styled.div`
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
     font-weight: 400;
-    line-height: 24px;
     white-space: pre-wrap;
     word-wrap: break-word;
   }

@@ -32,6 +32,7 @@ const ScrollContainer = styled(ContentStyles)`
 ScrollContainer.displayName = 'ScrollContainer';
 
 const ContentArea = styled.div`
+  line-height: 24px;
   height: 100%;
   width: 100%;
   max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
