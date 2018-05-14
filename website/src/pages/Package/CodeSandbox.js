@@ -61,8 +61,6 @@ export default class CodeSandbox extends Component<{}, {}> {
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
         name={`${pkgJSON.name}-${name}`}
-        skipRedirect
-        preload
         afterDeployError={afterDeployError}
         gitInfo={{
           account: 'atlassian',
