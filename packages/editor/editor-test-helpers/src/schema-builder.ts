@@ -336,16 +336,19 @@ export const inlineExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.inlineExtension, attrs);
 export const extension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.extension, attrs);
 export const bodiedExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();
