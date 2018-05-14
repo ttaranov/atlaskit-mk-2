@@ -5,8 +5,8 @@ const axios = require('axios');
 const { promisify } = require('util');
 const chalk = require('chalk');
 const notFoundContributor = require('./src/404Contributors.json');
-const getContributers = require('./src/get-git-committers');
-const allContributers = require('./src/allContributers.json');
+const getContributors = require('./src/get-git-committers');
+const allContributors = require('./src/allContributors.json');
 
 const writeFile = promisify(fs.writeFile);
 
@@ -24,29 +24,29 @@ async function asyncForEach(arr, callback) {
 
 async function createContributers() {
   console.log(chalk.yellow`⚖️ Updating Atlaskit contributors`);
-  let contributerInformation = new Set();
+  let contributorInformation = new Set();
   let _404Contributor /*: _404ContributorType*/ = {};
-  let newContributers = {};
+  let newContributors = {};
   const workspaces = await bolt.getWorkspaces();
   const workspacesDirs = workspaces.map(ws => ws.dir);
-  const contributerToRepository = await getContributers([
+  const contributerToRepository = await getContributors([
     'shortlog',
     '-s',
     '-e',
   ]);
 
   contributerToRepository.split('\n').forEach(contributor => {
-    contributerInformation.add(contributor.replace(/(.*\<)/, '').slice(0, -1));
+    contributorInformation.add(contributor.replace(/(.*\<)/, '').slice(0, -1));
   });
 
-  await asyncForEach(contributerInformation.keys(), async contributorEmail => {
-    let isNewContributer = !allContributers[contributorEmail];
+  await asyncForEach(contributorInformation.keys(), async contributorEmail => {
+    let isNewContributer = !allContributors[contributorEmail];
     if (isNewContributer && !notFoundContributor[contributorEmail]) {
       try {
         const { data } = await axios(
           `https://api.bitbucket.org/2.0/users/${contributorEmail}`,
         );
-        newContributers[contributorEmail] = {
+        newContributors[contributorEmail] = {
           name: data.display_name,
           avatar: data.links.avatar.href,
           email: contributorEmail,
@@ -60,17 +60,17 @@ async function createContributers() {
     }
   });
 
-  if (Object.keys(newContributers).length !== 0) {
-    writeFile(
-      `${__dirname}/src/allContributers.json`,
-      JSON.stringify({ ...allContributers, ...newContributers }),
+  if (Object.keys(newContributors).length !== 0) {
+    await writeFile(
+      `${__dirname}/src/allContributors.json`,
+      JSON.stringify({ ...allContributors, ...newContributors }, null, 2),
     );
   }
 
   if (Object.keys(_404Contributor).length !== 0) {
-    writeFile(
+    await writeFile(
       `${__dirname}/src/404Contributors.json`,
-      JSON.stringify({ ...notFoundContributor, ..._404Contributor }),
+      JSON.stringify({ ...notFoundContributor, ..._404Contributor }, null, 2),
     );
   }
 
@@ -79,7 +79,7 @@ async function createContributers() {
 
   await asyncForEach(workspacesDirs, async ws => {
     let contributionInWSWithDetails = [];
-    const contributorInWs = await getContributers([
+    const contributorInWs = await getContributors([
       'shortlog',
       '-n',
       '-s',
@@ -90,8 +90,11 @@ async function createContributers() {
       .split('\n')
       .map(contributor => contributor.replace(/(.*\<)/, '').slice(0, -1))
       .filter(contributorEmail => !notFoundContributor[contributorEmail])
-      .map(contributor => allContributers[contributor]);
-    writeFile(`${ws}/CONTRIBUTORS`, JSON.stringify(contributorInWsEmails));
+      .map(contributor => allContributors[contributor]);
+    writeFile(
+      `${ws}/CONTRIBUTORS`,
+      JSON.stringify(contributorInWsEmails, null, 2),
+    );
   });
 }
 

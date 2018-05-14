@@ -69,7 +69,7 @@ export default class MetaData extends Component<MetaDataProps> {
             <AvatarGroup
               appearance="stack"
               data={this.getContributers()}
-              size="large"
+              size="medium"
               maxCount={4}
             />
           </DD>

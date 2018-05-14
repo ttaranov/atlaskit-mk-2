@@ -10,13 +10,11 @@ module.exports = async function contributorLoader() {
   let workspaces = await bolt.getWorkspaces({ cwd: process.cwd() });
 
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
-  //console.log('from contribor loader');
   workspaces = workspaces.map(w =>
     Object.assign({}, w, { relativeDir: path.relative(projectRoot, w.dir) }),
   );
 
   for (let workspace of workspaces) {
-    //console.log(workspace);
     const [, , name] = workspace.relativeDir.split(path.sep);
     if (name) {
       let contributor = await readFile(
