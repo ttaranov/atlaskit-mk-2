@@ -74,7 +74,7 @@ describe('gap-cursor', () => {
   const blockNodes = {
     code_block: code_block({ language: 'java' })('{<>}'),
     ul: ul(li(p('{<>}'))),
-    ol: ol(li(p('{<>}'))),
+    ol: ol()(li(p('{<>}'))),
     panel: panel()(p('{<>}')),
     table: table()(tr(tdCursor)),
     decisionList: decisionList({ localId: 'test' })(

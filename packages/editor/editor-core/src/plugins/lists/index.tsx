@@ -19,7 +19,11 @@ const listPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 600, plugin: () => plugin },
-      { rank: 620, plugin: ({ schema }) => inputRulePlugin(schema) },
+      {
+        rank: 620,
+        plugin: ({ schema, props }) =>
+          inputRulePlugin(schema, props.allowLists),
+      },
       { rank: 640, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },

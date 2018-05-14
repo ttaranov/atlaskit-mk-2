@@ -250,10 +250,10 @@ describe('@atlaskit/editore-core/utils', () => {
     });
 
     it('it should return true for empty ordered list', () => {
-      expect(checkEmptyNode(ol(li(p())))).toBeTruthy();
+      expect(checkEmptyNode(ol()(li(p())))).toBeTruthy();
     });
     it('it should return false for non-empty ordered', () => {
-      expect(checkEmptyNode(ol(li(p('1'))))).toBeFalsy();
+      expect(checkEmptyNode(ol()(li(p('1'))))).toBeFalsy();
     });
 
     it('it should return true for empty task list', () => {

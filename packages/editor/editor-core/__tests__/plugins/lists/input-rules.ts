@@ -92,7 +92,7 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '1. ', sel);
-      expect(editorView.state.doc).toEqualDocument(doc(ol(li(p()))));
+      expect(editorView.state.doc).toEqualDocument(doc(ol({})(li(p()))));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.autoformatting',
       );
@@ -101,7 +101,9 @@ describe('inputrules', () => {
     it('should convert "1. " after shift+enter to a ordered list item', () => {
       const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
       insertText(editorView, '1. ', sel);
-      expect(editorView.state.doc).toEqualDocument(doc(p('test'), ol(li(p()))));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test'), ol({})(li(p()))),
+      );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.autoformatting',
       );
@@ -113,7 +115,7 @@ describe('inputrules', () => {
       );
       insertText(editorView, '1. ', sel);
       expect(editorView.state.doc).toEqualDocument(
-        doc(p('test', hardBreak()), ol(li(p()))),
+        doc(p('test', hardBreak()), ol({})(li(p()))),
       );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.autoformatting',
@@ -124,19 +126,21 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '1) ', sel);
-      expect(editorView.state.doc).toEqualDocument(doc(ol(li(p()))));
+      expect(editorView.state.doc).toEqualDocument(doc(ol({})(li(p()))));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.autoformatting',
       );
     });
 
     describe('for numbers other than 1', () => {
-      it('should not convert "2. " to a ordered list item', () => {
+      it('should convert "2. " to an ordered list and make it start from 2', () => {
         const { editorView, sel } = editor(doc(p('{<>}')));
 
         insertText(editorView, '2. ', sel);
-        expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
-        expect(trackEvent).not.toHaveBeenCalledWith(
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ol({ order: 2 })(li(p()))),
+        );
+        expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.format.list.numbered.autoformatting',
         );
       });
@@ -169,8 +173,10 @@ describe('inputrules', () => {
         const { editorView, sel } = editor(doc(p('{<>}')));
 
         insertText(editorView, '2) ', sel);
-        expect(editorView.state.doc).toEqualDocument(doc(p('2) ')));
-        expect(trackEvent).not.toHaveBeenCalledWith(
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ol({ order: 2 })(li(p()))),
+        );
+        expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.format.list.numbered.autoformatting',
         );
       });

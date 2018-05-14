@@ -158,7 +158,7 @@ describe('BitbucketTransformer: parser', () => {
     it('that are ordered should be parsed', () => {
       expect(
         parse('<ol>' + '<li>foo</li>' + '<li>bar</li>' + '</ol>'),
-      ).toEqualDocument(doc(ol(li(p('foo')), li(p('bar')))));
+      ).toEqualDocument(doc(ol()(li(p('foo')), li(p('bar')))));
     });
 
     it('that are nested and homogeneous should be parsed', () => {
@@ -173,7 +173,9 @@ describe('BitbucketTransformer: parser', () => {
             '</li>' +
             '</ol>',
         ),
-      ).toEqualDocument(doc(ol(li(p('foo')), li(p('bar'), ol(li(p('baz')))))));
+      ).toEqualDocument(
+        doc(ol()(li(p('foo')), li(p('bar'), ol()(li(p('baz')))))),
+      );
 
       expect(
         parse(
@@ -201,7 +203,9 @@ describe('BitbucketTransformer: parser', () => {
             '</li>' +
             '</ul>',
         ),
-      ).toEqualDocument(doc(ul(li(p('foo')), li(p('bar'), ol(li(p('baz')))))));
+      ).toEqualDocument(
+        doc(ul(li(p('foo')), li(p('bar'), ol()(li(p('baz')))))),
+      );
     });
 
     it('with multiple paragraphs should be parsed', () => {
@@ -219,7 +223,7 @@ describe('BitbucketTransformer: parser', () => {
             '</ul>',
         ),
       ).toEqualDocument(
-        doc(ul(li(p('foo'), p('bar'), ol(li(p('nested foo'))), p('baz')))),
+        doc(ul(li(p('foo'), p('bar'), ol()(li(p('nested foo'))), p('baz')))),
       );
     });
   });

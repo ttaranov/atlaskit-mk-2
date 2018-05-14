@@ -585,25 +585,25 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       check(
         'ordered list',
         '<ol><li>A piggy</li></ol>',
-        doc(ol(li(p('A piggy')))),
+        doc(ol()(li(p('A piggy')))),
       );
 
       check(
         'ordered list with strong',
         '<ol><li>A piggy</li><li><strong>Bigger</strong> piggy</li></ol>',
-        doc(ol(li(p('A piggy')), li(p(strong('Bigger'), ' piggy')))),
+        doc(ol()(li(p('A piggy')), li(p(strong('Bigger'), ' piggy')))),
       );
 
       check(
         'ordered list with direct paragraph',
         '<ol><p>a</p></ol>',
-        doc(ol(li(p('a')))),
+        doc(ol()(li(p('a')))),
       );
 
       check(
         'ordered list with non listItem child, it will try to wrap it with listItem',
         '<ol>a</ol>',
-        doc(ol(li(p('a')))),
+        doc(ol()(li(p('a')))),
       );
     });
 

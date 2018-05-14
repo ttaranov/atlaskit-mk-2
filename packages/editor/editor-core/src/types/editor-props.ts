@@ -26,6 +26,7 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
+import { ListPluginOptions } from '../plugins/lists/types';
 
 export type EditorAppearance =
   | 'message'
@@ -63,7 +64,7 @@ export interface EditorProps {
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean;
-  allowLists?: boolean;
+  allowLists?: ListPluginOptions;
   allowTextColor?: boolean;
   allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;

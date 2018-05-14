@@ -208,7 +208,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should be able to remove panel node if cursor is inside nested list node', () => {
       const { pluginState, editorView } = editor(
-        doc(p('one'), panel()(p('text'), ol(li(p('te{<>}xt')))), p('two')),
+        doc(p('one'), panel()(p('text'), ol()(li(p('te{<>}xt')))), p('two')),
       );
       pluginState.removePanel(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(p('one'), p('two')));
@@ -216,7 +216,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should change panel type if cursor is inside nested list node', () => {
       const { pluginState, editorView } = editor(
-        doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
+        doc(panel()(p('text'), ol()(li(p('te{<>}xt'))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
       pluginState.changePanelType(editorView, { panelType: 'note' });
@@ -239,7 +239,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     describe('when focus is inside a list in panel', () => {
       it('it is true', () => {
         const { editorView, plugin, pluginState } = editor(
-          doc(p('text'), panel()(p('text'), ol(li(p('te{<>}xt'))))),
+          doc(p('text'), panel()(p('text'), ol()(li(p('te{<>}xt'))))),
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
         plugin.props.handleClick!(editorView, 2, createEvent('event'));

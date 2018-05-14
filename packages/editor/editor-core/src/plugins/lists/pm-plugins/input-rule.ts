@@ -11,12 +11,17 @@ import {
   defaultInputRuleHandler,
   leafNodeReplacementCharacter,
 } from '../../../utils/input-rules';
+import { ListPluginOptions } from '../types';
 
-export function createInputRule(regexp: RegExp, nodeType: NodeType): InputRule {
+export function createInputRule(
+  regexp: RegExp,
+  nodeType: NodeType,
+  getAttrs: ((match) => {}) | {} = {},
+): InputRule {
   return wrappingInputRule(
     regexp,
     nodeType,
-    {},
+    getAttrs,
     (_, node) => node.type === nodeType,
   );
 }
@@ -65,7 +70,10 @@ export const insertList = (
 };
 
 // TODO: Fix types (ED-2987)
-export default function inputRulePlugin(schema: Schema): Plugin | undefined {
+export default function inputRulePlugin(
+  schema: Schema,
+  listPluginOptions: ListPluginOptions,
+): Plugin | undefined {
   const rules: InputRule[] = [];
 
   if (schema.nodes.bulletList) {
@@ -83,6 +91,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
       defaultCreateInputRule(
         new RegExp(`${leafNodeReplacementCharacter}\\s*([\\*\\-]) $`),
         (state, match, start, end): Transaction | undefined => {
+          console.log({ match });
           return insertList(
             state,
             schema.nodes.bulletList,
@@ -98,12 +107,20 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
   }
 
   if (schema.nodes.orderedList) {
+    const isListOffsetEnabled =
+      typeof listPluginOptions === 'object' &&
+      listPluginOptions.orderedListOffset;
+
     // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
     // input rule will allow for a list to start at any given number, which isn't allowed in
     // markdown (where a ordered list will always start on 1). This is a slightly modified
     // version of that input rule.
     const rule = defaultInputRuleHandler(
-      createInputRule(/^(1)[\.\)] $/, schema.nodes.orderedList),
+      createInputRule(
+        isListOffsetEnabled ? /^(\d{1,2})[\.\)] $/ : /^(1)[\.\)] $/,
+        schema.nodes.orderedList,
+        match => ({ order: isListOffsetEnabled ? parseInt(match[1]) || 1 : 1 }),
+      ),
       true,
     );
     (rule as any).handler = trackAndInvoke(

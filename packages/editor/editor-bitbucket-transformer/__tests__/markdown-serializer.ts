@@ -381,7 +381,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('with elements should serialize', () => {
       expect(
         markdownSerializer.serialize(
-          doc(ol(li(p('foo')), li(p('bar')), li(p('baz'))))(defaultSchema),
+          doc(ol()(li(p('foo')), li(p('bar')), li(p('baz'))))(defaultSchema),
         ),
       ).toEqual('1. foo\n2. bar\n3. baz\n\n');
     });
@@ -389,7 +389,7 @@ describe('BitbucketTransformer: serializer', () => {
     it('surrounded with other block elements keeps empty line between', () => {
       expect(
         markdownSerializer.serialize(
-          doc(p('para'), ol(li(p('foo')), li(p('bar'))), p('baz'))(
+          doc(p('para'), ol()(li(p('foo')), li(p('bar'))), p('baz'))(
             defaultSchema,
           ),
         ),
@@ -400,7 +400,7 @@ describe('BitbucketTransformer: serializer', () => {
       expect(
         markdownSerializer.serialize(
           doc(
-            ol(
+            ol()(
               li(p('item')),
               li(p('item')),
               li(p('item')),
@@ -421,7 +421,7 @@ describe('BitbucketTransformer: serializer', () => {
 
     it('with one empty element is preserved', () => {
       expect(
-        markdownSerializer.serialize(doc(ol(li(p(''))))(defaultSchema)),
+        markdownSerializer.serialize(doc(ol()(li(p(''))))(defaultSchema)),
       ).toEqual('1. \n\n');
     });
 
@@ -429,11 +429,11 @@ describe('BitbucketTransformer: serializer', () => {
       expect(
         markdownSerializer.serialize(
           doc(
-            ol(
+            ol()(
               li(
                 p('foo 1'),
-                ol(
-                  li(p('bar 1'), ol(li(p('baz 1')), li(p('baz 2')))),
+                ol()(
+                  li(p('bar 1'), ol()(li(p('baz 1')), li(p('baz 2')))),
                   li(p('bar 2')),
                 ),
               ),
@@ -462,13 +462,13 @@ describe('BitbucketTransformer: serializer', () => {
       expect(
         markdownSerializer.serialize(
           doc(
-            ol(
+            ol()(
               li(
                 p('foo 1'),
                 ul(
                   li(
                     p('bar 1'),
-                    ol(li(p('baz 1')), li(p('baz 2'), ul(li(p('banana'))))),
+                    ol()(li(p('baz 1')), li(p('baz 2'), ul(li(p('banana'))))),
                   ),
                   li(p('bar 2')),
                 ),
@@ -499,9 +499,9 @@ describe('BitbucketTransformer: serializer', () => {
       expect(
         markdownSerializer.serialize(
           doc(
-            ol(li(p('foo 1')), li(p('foo 2'))),
+            ol()(li(p('foo 1')), li(p('foo 2'))),
             ul(li(p('bar 1')), li(p('bar 2'))),
-            ol(li(p('baz 1')), li(p('baz 2'))),
+            ol()(li(p('baz 1')), li(p('baz 2'))),
           )(defaultSchema),
         ),
       ).toEqual(

@@ -21,8 +21,22 @@ export interface Definition {
 export const orderedList: NodeSpec = {
   group: 'block',
   content: 'listItem+',
-  parseDOM: [{ tag: 'ol' }],
-  toDOM() {
-    return ['ol', 0];
+  attrs: {
+    order: {
+      default: 1,
+    },
+  },
+  parseDOM: [
+    {
+      tag: 'ol',
+      getAttrs: (dom: Element) => {
+        const order =
+          dom.getAttribute('start') || orderedList.attrs!.order.default;
+        return { order };
+      },
+    },
+  ],
+  toDOM(node) {
+    return ['ol', { start: node.attrs.order }, 0];
   },
 };

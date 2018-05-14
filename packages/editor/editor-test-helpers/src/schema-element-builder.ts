@@ -48,7 +48,7 @@ export const pmNodeFactory: object = {
   blockquote,
   panel: panel({}),
   bulletList: ul,
-  orderedList: ol,
+  orderedList: ol(),
   rule: () => hr,
   codeBlock: code_block(),
   heading: h1,
@@ -96,7 +96,7 @@ export const pmNodeBuilder: object = {
   listItem: li(p('fake list item')),
   rule: hr(),
   bulletList: ul(li(p('fake bullet list'))),
-  orderedList: ol(li(p('fake ordered list'))),
+  orderedList: ol()(li(p('fake ordered list'))),
   heading: h1('fake heading'),
   decisionList: decisionList({ localId: 'fake-decision-list' })(
     decisionItem({ localId: 'fake-decision-item' })('fake decision'),

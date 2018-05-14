@@ -384,7 +384,7 @@ describe('paste', () => {
     describe('pasting link inside list', () => {
       it('should create link correctly', function() {
         const { editorView } = editor(
-          doc(ol(li(paragraph('item1')), li(paragraph('{<>}')))),
+          doc(ol()(li(paragraph('item1')), li(paragraph('{<>}')))),
         );
         const linkText = 'http://www.atlassian.com';
         if (
@@ -397,7 +397,7 @@ describe('paste', () => {
         }
         expect(editorView.state.doc).to.deep.equal(
           doc(
-            ol(
+            ol()(
               li(paragraph('item1')),
               li(
                 paragraph(

@@ -275,7 +275,8 @@ export const h5 = nodeFactory(sampleSchema.nodes.heading, { level: 5 });
 export const h6 = nodeFactory(sampleSchema.nodes.heading, { level: 6 });
 export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
-export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
+export const ol = (attrs: {} = { order: 1 }) =>
+  nodeFactory(sampleSchema.nodes.orderedList, attrs);
 export const br = nodeFactory(sampleSchema.nodes.hardBreak, {});
 export const hr = nodeFactory(sampleSchema.nodes.rule, {});
 export const panel = (attrs: {} = {}) =>

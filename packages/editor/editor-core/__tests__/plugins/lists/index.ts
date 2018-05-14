@@ -56,7 +56,7 @@ describe('lists', () => {
     describe('when hit Tab', () => {
       it('should call indent analytics event', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text')), li(p('text{<>}')))),
+          doc(ol()(li(p('text')), li(p('text{<>}')))),
           trackEvent,
         );
         sendKeyToPm(editorView, 'Tab');
@@ -86,49 +86,49 @@ describe('lists', () => {
 
       it('should outdent a first level list item to paragraph', () => {
         backspaceCheck(
-          doc(ol(li(p('text')), li(p('{<>}')))),
-          doc(ol(li(p('text'))), p('{<>}')),
+          doc(ol()(li(p('text')), li(p('{<>}')))),
+          doc(ol()(li(p('text'))), p('{<>}')),
         );
       });
 
       it('should outdent a first level list item to paragraph, with content', () => {
         backspaceCheck(
-          doc(ol(li(p('text')), li(p('{<>}second text')))),
-          doc(ol(li(p('text'))), p('{<>}second text')),
+          doc(ol()(li(p('text')), li(p('{<>}second text')))),
+          doc(ol()(li(p('text'))), p('{<>}second text')),
         );
       });
 
       it('should outdent a second level list item to first level', () => {
         backspaceCheck(
-          doc(ol(li(p('text'), ol(li(p('{<>}')))))),
-          doc(ol(li(p('text')), li(p('{<>}')))),
+          doc(ol()(li(p('text'), ol()(li(p('{<>}')))))),
+          doc(ol()(li(p('text')), li(p('{<>}')))),
         );
       });
 
       it('should outdent a second level list item to first level, with content', () => {
         backspaceCheck(
-          doc(ol(li(p('text'), ol(li(p('{<>}subtext')))))),
-          doc(ol(li(p('text')), li(p('{<>}subtext')))),
+          doc(ol()(li(p('text'), ol()(li(p('{<>}subtext')))))),
+          doc(ol()(li(p('text')), li(p('{<>}subtext')))),
         );
       });
 
       it('should move paragraph content back to previous (nested) list item', () => {
         backspaceCheck(
-          doc(ol(li(p('text'), ol(li(p('text'))))), p('{<>}after')),
-          doc(ol(li(p('text'), ol(li(p('text{<>}after')))))),
+          doc(ol()(li(p('text'), ol()(li(p('text'))))), p('{<>}after')),
+          doc(ol()(li(p('text'), ol()(li(p('text{<>}after')))))),
         );
       });
 
       it('keeps nodes same level as backspaced list item together in same list', () => {
         backspaceCheck(
           doc(
-            ol(li(p('{<>}A'), ol(li(p('B')))), li(p('C'))),
+            ol()(li(p('{<>}A'), ol()(li(p('B')))), li(p('C'))),
 
             p('after'),
           ),
           doc(
             p('{<>}A'),
-            ol(li(p('B')), li(p('C'))),
+            ol()(li(p('B')), li(p('C'))),
 
             p('after'),
           ),
@@ -138,30 +138,30 @@ describe('lists', () => {
       it('merges two single-level lists when the middle paragraph is backspaced', () => {
         backspaceCheck(
           doc(
-            ol(li(p('A')), li(p('B'))),
+            ol()(li(p('A')), li(p('B'))),
 
             p('{<>}middle'),
 
-            ol(li(p('C')), li(p('D'))),
+            ol()(li(p('C')), li(p('D'))),
           ),
-          doc(ol(li(p('A')), li(p('B{<>}middle')), li(p('C')), li(p('D')))),
+          doc(ol()(li(p('A')), li(p('B{<>}middle')), li(p('C')), li(p('D')))),
         );
       });
 
       it('merges two double-level lists when the middle paragraph is backspaced', () => {
         backspaceCheck(
           doc(
-            ol(li(p('A'), ol(li(p('B')))), li(p('C'))),
+            ol()(li(p('A'), ol()(li(p('B')))), li(p('C'))),
 
             p('{<>}middle'),
 
-            ol(li(p('D'), ol(li(p('E')))), li(p('F'))),
+            ol()(li(p('D'), ol()(li(p('E')))), li(p('F'))),
           ),
           doc(
-            ol(
-              li(p('A'), ol(li(p('B')))),
+            ol()(
+              li(p('A'), ol()(li(p('B')))),
               li(p('C{<>}middle')),
-              li(p('D'), ol(li(p('E')))),
+              li(p('D'), ol()(li(p('E')))),
               li(p('F')),
             ),
           ),
@@ -171,12 +171,12 @@ describe('lists', () => {
       it('moves directly to previous list item if it was empty', () => {
         backspaceCheck(
           doc(
-            ol(li(p('nice')), li(p('')), li(p('{<>}text'))),
+            ol()(li(p('nice')), li(p('')), li(p('{<>}text'))),
 
             p('after'),
           ),
           doc(
-            ol(li(p('nice')), li(p('{<>}text'))),
+            ol()(li(p('nice')), li(p('{<>}text'))),
 
             p('after'),
           ),
@@ -186,12 +186,12 @@ describe('lists', () => {
       it('moves directly to previous list item if it was empty, but with two paragraphs', () => {
         backspaceCheck(
           doc(
-            ol(li(p('nice')), li(p('')), li(p('{<>}text'), p('double'))),
+            ol()(li(p('nice')), li(p('')), li(p('{<>}text'), p('double'))),
 
             p('after'),
           ),
           doc(
-            ol(li(p('nice')), li(p('{<>}text'), p('double'))),
+            ol()(li(p('nice')), li(p('{<>}text'), p('double'))),
 
             p('after'),
           ),
@@ -201,12 +201,12 @@ describe('lists', () => {
       it('backspaces paragraphs within a list item rather than the item itself', () => {
         backspaceCheck(
           doc(
-            ol(li(p('')), li(p('nice'), p('{<>}two'))),
+            ol()(li(p('')), li(p('nice'), p('{<>}two'))),
 
             p('after'),
           ),
           doc(
-            ol(li(p('')), li(p('nice{<>}two'))),
+            ol()(li(p('')), li(p('nice{<>}two'))),
 
             p('after'),
           ),
@@ -216,12 +216,12 @@ describe('lists', () => {
       it('backspaces line breaks correctly within list items, with content after', () => {
         backspaceCheck(
           doc(
-            ol(li(p('')), li(p('nice'), p('two', br(), '{<>}three'))),
+            ol()(li(p('')), li(p('nice'), p('two', br(), '{<>}three'))),
 
             p('after'),
           ),
           doc(
-            ol(li(p('')), li(p('nice'), p('two{<>}three'))),
+            ol()(li(p('')), li(p('nice'), p('two{<>}three'))),
 
             p('after'),
           ),
@@ -231,12 +231,12 @@ describe('lists', () => {
       it('backspaces line breaks correctly within list items, with content before', () => {
         backspaceCheck(
           doc(
-            ol(li(p('')), li(p('nice'), p('two', br(), br(), '{<>}'))),
+            ol()(li(p('')), li(p('nice'), p('two', br(), br(), '{<>}'))),
 
             p('after'),
           ),
           doc(
-            ol(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
+            ol()(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
 
             p('after'),
           ),
@@ -246,7 +246,7 @@ describe('lists', () => {
       it('moves text from after list to below mediaSingle in list item', () => {
         backspaceCheck(
           doc(
-            ol(
+            ol()(
               li(p('')),
               li(
                 p('nice'),
@@ -266,7 +266,7 @@ describe('lists', () => {
             p('{<>}after'),
           ),
           doc(
-            ol(
+            ol()(
               li(p('')),
               li(
                 p('nice'),
@@ -289,7 +289,7 @@ describe('lists', () => {
       it('selects mediaSingle in list if inside the empty paragraph after', () => {
         backspaceCheck(
           doc(
-            ol(
+            ol()(
               li(p('')),
               li(
                 p('nice'),
@@ -309,7 +309,7 @@ describe('lists', () => {
             p('after'),
           ),
           doc(
-            ol(
+            ol()(
               li(p('')),
               li(
                 p('nice'),
@@ -334,7 +334,7 @@ describe('lists', () => {
       it('backspaces mediaSingle in list if selected', () => {
         backspaceCheck(
           doc(
-            ol(
+            ol()(
               li(p('')),
               li(
                 p('nice{<}'),
@@ -352,7 +352,7 @@ describe('lists', () => {
             ),
             p('after'),
           ),
-          doc(ol(li(p('')), li(p('nice'))), p('{<>}after')),
+          doc(ol()(li(p('')), li(p('nice'))), p('{<>}after')),
         );
       });
     });
@@ -360,7 +360,7 @@ describe('lists', () => {
     describe('when hit Shift-Tab', () => {
       it('should call outdent analytics event', () => {
         const { editorView } = editor(
-          doc(ol(li(p('One'), ul(li(p('Two{<>}')))))),
+          doc(ol()(li(p('One'), ul(li(p('Two{<>}')))))),
           trackEvent,
         );
         sendKeyToPm(editorView, 'Shift-Tab');
@@ -377,7 +377,7 @@ describe('lists', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).toEqualDocument(
-              doc(ol(li(p('text')))),
+              doc(ol()(li(p('text')))),
             );
             expect(trackEvent).toHaveBeenCalledWith(
               'atlassian.editor.format.list.numbered.keyboard',
@@ -429,7 +429,7 @@ describe('lists', () => {
 
     it('should not emit extra change events when moving within an ordered list', () => {
       const { editorView, pluginState, refs } = editor(
-        doc(ol(li(p('t{<>}ex{end}t')))),
+        doc(ol()(li(p('t{<>}ex{end}t')))),
       );
       const { end } = refs;
 
@@ -443,7 +443,7 @@ describe('lists', () => {
 
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
       const { editorView, pluginState, refs } = editor(
-        doc(ol(li(p('t{<>}ext{end}')))),
+        doc(ol()(li(p('t{<>}ext{end}')))),
       );
       const { end } = refs;
 
@@ -485,7 +485,7 @@ describe('lists', () => {
       const { editorView, pluginState } = editor(doc(p('t{a}ex{b}t')));
 
       pluginState.toggleOrderedList(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(ol(li(p('text')))));
+      expect(editorView.state.doc).toEqualDocument(doc(ol()(li(p('text')))));
       pluginState.toggleOrderedList(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
@@ -500,7 +500,9 @@ describe('lists', () => {
     });
 
     it('should allow toggling between ordered and bullet list', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(p('t{<}ex{>}t')))));
+      const { editorView, pluginState } = editor(
+        doc(ol()(li(p('t{<}ex{>}t')))),
+      );
 
       pluginState.toggleBulletList(editorView);
       expect(editorView.state.doc).toEqualDocument(doc(ul(li(p('text')))));
@@ -509,7 +511,7 @@ describe('lists', () => {
     });
 
     it('should make sure that it is enabled when selecting ordered list', () => {
-      const { pluginState } = editor(doc(ol(li(p('te{<>}xt')))));
+      const { pluginState } = editor(doc(ol()(li(p('te{<>}xt')))));
 
       expect(pluginState).toHaveProperty('orderedListActive', true);
       expect(pluginState).toHaveProperty('orderedListDisabled', false);
@@ -532,16 +534,21 @@ describe('lists', () => {
 
     describe('untoggling a list', () => {
       const expectedOutput = doc(
-        ol(li(p('One'))),
+        ol()(li(p('One'))),
         p('Two'),
         p('Three'),
-        ol(li(p('Four'))),
+        ol()(li(p('Four'))),
       );
 
       it('should allow untoggling part of a list based on selection', () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('{<}Two')), li(p('Three{>}')), li(p('Four'))),
+            ol()(
+              li(p('One')),
+              li(p('{<}Two')),
+              li(p('Three{>}')),
+              li(p('Four')),
+            ),
           ),
         );
 
@@ -551,7 +558,7 @@ describe('lists', () => {
 
       it('should untoggle empty paragraphs in a list', () => {
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
+          doc(ol()(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
         );
 
         pluginState.toggleOrderedList(editorView);
@@ -563,19 +570,19 @@ describe('lists', () => {
       it('should untoggle all list items with different ancestors in selection', () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('{<}Two')), li(p('Three'))),
-            ol(li(p('One{>}')), li(p('Two'))),
+            ol()(li(p('One')), li(p('{<}Two')), li(p('Three'))),
+            ol()(li(p('One{>}')), li(p('Two'))),
           ),
         );
 
         pluginState.toggleOrderedList(editorView);
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('One'))),
+            ol()(li(p('One'))),
             p('Two'),
             p('Three'),
             p('One'),
-            ol(li(p('Two'))),
+            ol()(li(p('Two'))),
           ),
         );
       });
@@ -584,13 +591,18 @@ describe('lists', () => {
     describe('converting a list', () => {
       it('should allow converting part of a list based on selection', () => {
         const expectedOutput = doc(
-          ol(li(p('One'))),
+          ol()(li(p('One'))),
           ul(li(p('Two')), li(p('Three'))),
-          ol(li(p('Four'))),
+          ol()(li(p('Four'))),
         );
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('{<}Two')), li(p('Three{>}')), li(p('Four'))),
+            ol()(
+              li(p('One')),
+              li(p('{<}Two')),
+              li(p('Three{>}')),
+              li(p('Four')),
+            ),
           ),
         );
 
@@ -608,13 +620,18 @@ describe('lists', () => {
 
       it('should allow converting part of a list based on selection that starts at the end of previous line', () => {
         const expectedOutput = doc(
-          ol(li(p('One'))),
+          ol()(li(p('One'))),
           ul(li(p('Two')), li(p('Three'))),
-          ol(li(p('Four'))),
+          ol()(li(p('Four'))),
         );
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))),
+            ol()(
+              li(p('One{<}')),
+              li(p('Two')),
+              li(p('Three{>}')),
+              li(p('Four')),
+            ),
           ),
         ); // When selection starts on previous (empty) node
 
@@ -624,10 +641,13 @@ describe('lists', () => {
 
       it('should convert selection to a list when the selection starts with a paragraph and ends inside a list', () => {
         const expectedOutput = doc(
-          ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+          ol()(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
         );
         const { editorView, pluginState } = editor(
-          doc(p('{<}One'), ol(li(p('Two{>}')), li(p('Three')), li(p('Four')))),
+          doc(
+            p('{<}One'),
+            ol()(li(p('Two{>}')), li(p('Three')), li(p('Four'))),
+          ),
         );
 
         pluginState.toggleOrderedList(editorView);
@@ -636,10 +656,10 @@ describe('lists', () => {
 
       it('should convert selection to a list when the selection contains a list but starts and end with paragraphs', () => {
         const expectedOutput = doc(
-          ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+          ol()(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
         );
         const { editorView, pluginState } = editor(
-          doc(p('{<}One'), ol(li(p('Two')), li(p('Three'))), p('Four{>}')),
+          doc(p('{<}One'), ol()(li(p('Two')), li(p('Three'))), p('Four{>}')),
         );
 
         pluginState.toggleOrderedList(editorView);
@@ -648,10 +668,13 @@ describe('lists', () => {
 
       it('should convert selection to a list when the selection starts inside a list and ends with a paragraph', () => {
         const expectedOutput = doc(
-          ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+          ol()(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
         );
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('One')), li(p('{<}Two')), li(p('Three'))), p('Four{>}')),
+          doc(
+            ol()(li(p('One')), li(p('{<}Two')), li(p('Three'))),
+            p('Four{>}'),
+          ),
         );
 
         pluginState.toggleOrderedList(editorView);
@@ -663,7 +686,7 @@ describe('lists', () => {
           ul(li(p('One')), li(p('Two')), li(p()), li(p('Three'))),
         );
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
+          doc(ol()(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
         );
 
         pluginState.toggleBulletList(editorView);
@@ -683,7 +706,7 @@ describe('lists', () => {
 
     describe('joining lists', () => {
       const expectedOutputForPreviousList = doc(
-        ol(
+        ol()(
           li(p('One')),
           li(p('Two')),
           li(p('Three')),
@@ -694,7 +717,7 @@ describe('lists', () => {
       );
       const expectedOutputForNextList = doc(
         p('One'),
-        ol(
+        ol()(
           li(p('Two')),
           li(p('Three')),
           li(p('Four')),
@@ -703,7 +726,7 @@ describe('lists', () => {
         ),
       );
       const expectedOutputForPreviousAndNextList = doc(
-        ol(
+        ol()(
           li(p('One')),
           li(p('Two')),
           li(p('Three')),
@@ -716,7 +739,7 @@ describe('lists', () => {
       it("should join with previous list if it's of the same type", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three'))),
             p('{<}Four'),
             p('Five{>}'),
             p('Six'),
@@ -732,7 +755,7 @@ describe('lists', () => {
       it("should join with previous list if it's of the same type and selection starts at the end of previous line", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three{<}'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three{<}'))),
             p('Four'),
             p('Five{>}'),
             p('Six'),
@@ -748,7 +771,7 @@ describe('lists', () => {
       it("should not join with previous list if it's not of the same type", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three'))),
             p('{<}Four'),
             p('Five{>}'),
             p('Six'),
@@ -758,7 +781,7 @@ describe('lists', () => {
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three'))),
             ul(li(p('Four')), li(p('Five'))),
             p('Six'),
           ),
@@ -768,7 +791,7 @@ describe('lists', () => {
       it("should not join with previous list if it's not of the same type and selection starts at the end of previous line", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three{<}'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three{<}'))),
             p('Four'),
             p('Five{>}'),
             p('Six'),
@@ -778,7 +801,7 @@ describe('lists', () => {
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('One')), li(p('Two')), li(p('Three'))),
+            ol()(li(p('One')), li(p('Two')), li(p('Three'))),
             ul(li(p('Four')), li(p('Five'))),
             p('Six'),
           ),
@@ -791,7 +814,7 @@ describe('lists', () => {
             p('One'),
             p('{<}Two'),
             p('Three{>}'),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -805,7 +828,7 @@ describe('lists', () => {
             p('One{<}'),
             p('Two'),
             p('Three{>}'),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -819,7 +842,7 @@ describe('lists', () => {
             p('One'),
             p('{<}Two'),
             p('Three{>}'),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -828,7 +851,7 @@ describe('lists', () => {
           doc(
             p('One'),
             ul(li(p('Two')), li(p('Three'))),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
       });
@@ -839,7 +862,7 @@ describe('lists', () => {
             p('One{<}'),
             p('Two'),
             p('Three{>}'),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -848,7 +871,7 @@ describe('lists', () => {
           doc(
             p('One'),
             ul(li(p('Two')), li(p('Three'))),
-            ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+            ol()(li(p('Four')), li(p('Five')), li(p('Six'))),
           ),
         );
       });
@@ -856,10 +879,10 @@ describe('lists', () => {
       it("should join with previous and next list if they're of the same type", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two'))),
+            ol()(li(p('One')), li(p('Two'))),
             p('{<}Three'),
             p('Four{>}'),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -872,10 +895,10 @@ describe('lists', () => {
       it("should join with previous and next list if they're of the same type and selection starts at the end of previous line", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two{<}'))),
+            ol()(li(p('One')), li(p('Two{<}'))),
             p('Three'),
             p('Four{>}'),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
 
@@ -888,19 +911,19 @@ describe('lists', () => {
       it("should not join with previous and next list if they're not of the same type", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two'))),
+            ol()(li(p('One')), li(p('Two'))),
             p('{<}Three'),
             p('Four{>}'),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('One')), li(p('Two'))),
+            ol()(li(p('One')), li(p('Two'))),
             ul(li(p('Three')), li(p('Four'))),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
       });
@@ -908,19 +931,19 @@ describe('lists', () => {
       it("should not join with previous and next list if they're not of the same type and selectoin starts at the end of previous line", () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('One')), li(p('Two{<}'))),
+            ol()(li(p('One')), li(p('Two{<}'))),
             p('Three'),
             p('Four{>}'),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('One')), li(p('Two'))),
+            ol()(li(p('One')), li(p('Two'))),
             ul(li(p('Three')), li(p('Four'))),
-            ol(li(p('Five')), li(p('Six'))),
+            ol()(li(p('Five')), li(p('Six'))),
           ),
         );
       });
@@ -929,7 +952,7 @@ describe('lists', () => {
     describe('Nested Lists', () => {
       it('should increase the depth of list item when Tab key press', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+          doc(ol()(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
         );
         expect(editorView.state.selection.$from.depth).toEqual(3);
 
@@ -940,19 +963,19 @@ describe('lists', () => {
 
       it('should nest the list item when Tab key press', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+          doc(ol()(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
         );
 
         sendKeyToPm(editorView, 'Tab');
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('te{<>}xt')))), li(p('text')))),
         );
       });
 
       it('should decrease the depth of list item when Shift-Tab key press', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('te{<>}xt')))), li(p('text')))),
         );
         expect(editorView.state.selection.$from.depth).toEqual(5);
 
@@ -963,20 +986,20 @@ describe('lists', () => {
 
       it('should lift the list item when Shift-Tab key press', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('te{<>}xt')))), li(p('text')))),
         );
 
         sendKeyToPm(editorView, 'Shift-Tab');
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+          doc(ol()(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
         );
       });
 
       it('should lift nested and same level list items correctly', () => {
         const { editorView } = editor(
           doc(
-            ol(li(p('some{<>}text'), ol(li(p('B')))), li(p('C'))),
+            ol()(li(p('some{<>}text'), ol()(li(p('B')))), li(p('C'))),
 
             p('after'),
           ),
@@ -987,7 +1010,7 @@ describe('lists', () => {
         expect(editorView.state.doc).toEqualDocument(
           doc(
             p('some{<>}text'),
-            ol(li(p('B')), li(p('C'))),
+            ol()(li(p('B')), li(p('C'))),
 
             p('after'),
           ),
@@ -996,13 +1019,13 @@ describe('lists', () => {
 
       it('should lift the list item when Enter key press is done on empty list-item', () => {
         const { editorView } = editor(
-          doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('{<>}')))), li(p('text')))),
         );
 
         sendKeyToPm(editorView, 'Enter');
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+          doc(ol()(li(p('text')), li(p('{<>}')), li(p('text')))),
         );
       });
     });
@@ -1011,13 +1034,13 @@ describe('lists', () => {
       describe('when Enter key is pressed on empty nested list item', () => {
         it('should create new list item in parent list', () => {
           const { editorView } = editor(
-            doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+            doc(ol()(li(p('text'), ol()(li(p('{<>}')))), li(p('text')))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
-            doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+            doc(ol()(li(p('text')), li(p('{<>}')), li(p('text')))),
           );
         });
       });
@@ -1025,15 +1048,15 @@ describe('lists', () => {
       describe('when Enter key is pressed on non-empty nested list item', () => {
         it('should created new nested list item', () => {
           const { editorView } = editor(
-            doc(ol(li(p('text'), ol(li(p('test{<>}')))), li(p('text')))),
+            doc(ol()(li(p('text'), ol()(li(p('test{<>}')))), li(p('text')))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
             doc(
-              ol(
-                li(p('text'), ol(li(p('test')), li(p('{<>}')))),
+              ol()(
+                li(p('text'), ol()(li(p('test')), li(p('{<>}')))),
                 li(p('text')),
               ),
             ),
@@ -1044,13 +1067,15 @@ describe('lists', () => {
       describe('when Enter key is pressed on non-empty top level list item', () => {
         it('should created new list item at top level', () => {
           const { editorView } = editor(
-            doc(ol(li(p('text')), li(p('test{<>}')), li(p('text')))),
+            doc(ol()(li(p('text')), li(p('test{<>}')), li(p('text')))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
-            doc(ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text')))),
+            doc(
+              ol()(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text'))),
+            ),
           );
         });
       });
@@ -1058,7 +1083,7 @@ describe('lists', () => {
       describe('when Enter key is pressed on non-empty top level list item inside panel', () => {
         it('should created new list item at top level', () => {
           const { editorView } = editor(
-            doc(panel()(ol(li(p('text')), li(p('test{<>}')), li(p('text'))))),
+            doc(panel()(ol()(li(p('text')), li(p('test{<>}')), li(p('text'))))),
           );
 
           sendKeyToPm(editorView, 'Enter');
@@ -1066,7 +1091,12 @@ describe('lists', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(
               panel()(
-                ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text'))),
+                ol()(
+                  li(p('text')),
+                  li(p('test')),
+                  li(p('{<>}')),
+                  li(p('text')),
+                ),
               ),
             ),
           );
@@ -1076,13 +1106,13 @@ describe('lists', () => {
       describe('when Enter key is pressed on empty top level list item', () => {
         it('should create new paragraph outside the list', () => {
           const { editorView } = editor(
-            doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+            doc(ol()(li(p('text')), li(p('{<>}')), li(p('text')))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
-            doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))),
+            doc(ol()(li(p('text'))), p('{<>}'), ol()(li(p('text')))),
           );
         });
       });
@@ -1090,13 +1120,13 @@ describe('lists', () => {
       describe('when Enter key is pressed on empty top level list item inside panel', () => {
         it('should create new paragraph outside the list', () => {
           const { editorView } = editor(
-            doc(panel()(ol(li(p('text')), li(p('{<>}')), li(p('text'))))),
+            doc(panel()(ol()(li(p('text')), li(p('{<>}')), li(p('text'))))),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).toEqualDocument(
-            doc(panel()(ol(li(p('text'))), p('{<>}'), ol(li(p('text'))))),
+            doc(panel()(ol()(li(p('text'))), p('{<>}'), ol()(li(p('text'))))),
           );
         });
       });
@@ -1105,60 +1135,60 @@ describe('lists', () => {
     describe('Toggle - nested list scenarios - to lift items out of list', () => {
       it('should be possible to toggle a simple nested list', () => {
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('text'), ol(li(p('text{<>}')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('text{<>}')))), li(p('text')))),
         );
 
         pluginState.toggleOrderedList(editorView);
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(ol(li(p('text'))), p('text{<>}'), ol(li(p('text')))),
+          doc(ol()(li(p('text'))), p('text{<>}'), ol()(li(p('text')))),
         );
       });
 
       it('should be possible to toggle an empty nested list item', () => {
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+          doc(ol()(li(p('text'), ol()(li(p('{<>}')))), li(p('text')))),
         );
 
         pluginState.toggleOrderedList(editorView);
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))),
+          doc(ol()(li(p('text'))), p('{<>}'), ol()(li(p('text')))),
         );
       });
 
       it('should be possible to toggle a selection across different depths in the list', () => {
         const { editorView, pluginState } = editor(
-          doc(ol(li(p('te{<}xt'), ol(li(p('text{>}')))), li(p('text')))),
+          doc(ol()(li(p('te{<}xt'), ol()(li(p('text{>}')))), li(p('text')))),
         );
 
         pluginState.toggleOrderedList(editorView);
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('te{<}xt'), p('text{>}'), ol(li(p('text')))),
+          doc(p('te{<}xt'), p('text{>}'), ol()(li(p('text')))),
         );
       });
 
       it('should be possible to toggle a selection across lists with different parent lists', () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(li(p('te{<}xt'), ol(li(p('text'))))),
-            ol(li(p('te{>}xt'), ol(li(p('text'))))),
+            ol()(li(p('te{<}xt'), ol()(li(p('text'))))),
+            ol()(li(p('te{>}xt'), ol()(li(p('text'))))),
           ),
         );
 
         pluginState.toggleOrderedList(editorView);
 
         expect(editorView.state.doc).toEqualDocument(
-          doc(p('te{<}xt'), p('text'), p('te{>}xt'), ol(li(p('text')))),
+          doc(p('te{<}xt'), p('text'), p('te{>}xt'), ol()(li(p('text')))),
         );
       });
 
       it('should be create a new list for children of lifted list item', () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(
-              li(p('text'), ol(li(p('te{<>}xt'), ol(li(p('text')))))),
+            ol()(
+              li(p('text'), ol()(li(p('te{<>}xt'), ol()(li(p('text')))))),
               li(p('text')),
             ),
           ),
@@ -1168,9 +1198,9 @@ describe('lists', () => {
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(li(p('text'))),
+            ol()(li(p('text'))),
             p('te{<>}xt'),
-            ol(li(p('text')), li(p('text'))),
+            ol()(li(p('text')), li(p('text'))),
           ),
         );
       });
@@ -1178,8 +1208,8 @@ describe('lists', () => {
       it('should only change type to bullet list when toggling orderedList to bulletList', () => {
         const { editorView, pluginState } = editor(
           doc(
-            ol(
-              li(p('text'), ol(li(p('text'), ol(li(p('te{<>}xt')))))),
+            ol()(
+              li(p('text'), ol()(li(p('text'), ol()(li(p('te{<>}xt')))))),
               li(p('text')),
             ),
           ),
@@ -1189,8 +1219,8 @@ describe('lists', () => {
 
         expect(editorView.state.doc).toEqualDocument(
           doc(
-            ol(
-              li(p('text'), ol(li(p('text'), ul(li(p('te{<>}xt')))))),
+            ol()(
+              li(p('text'), ol()(li(p('text'), ul(li(p('te{<>}xt')))))),
               li(p('text')),
             ),
           ),

@@ -95,7 +95,7 @@ describe('JSONTransformer:', () => {
             textColor({ color: 'red' })('Red :D'),
           ),
           ul(li(p('ichi')), li(p('ni')), li(p('san'))),
-          ol(li(p('ek')), li(p('dui')), li(p('tin'))),
+          ol()(li(p('ek')), li(p('dui')), li(p('tin'))),
           blockquote(p('1')),
           h1('H1'),
           h2('H2'),

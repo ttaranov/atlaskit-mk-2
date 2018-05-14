@@ -213,10 +213,10 @@ describe('clear-formatting', () => {
     });
 
     it('should not remove ordered list item if present', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(p('te{<>}xt')))));
+      const { editorView, pluginState } = editor(doc(ol()(li(p('te{<>}xt')))));
 
       pluginState.clearFormatting(editorView);
-      expect(editorView.state.doc).toEqualDocument(doc(ol(li(p('text')))));
+      expect(editorView.state.doc).toEqualDocument(doc(ol()(li(p('text')))));
 
       editorView.destroy();
     });

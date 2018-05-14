@@ -142,7 +142,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             UNSAFE_allowQuickInsert={true}
             allowTasksAndDecisions={true}
             allowCodeBlocks={true}
-            allowLists={true}
+            allowLists={{ orderedListOffset: true }}
             allowTextColor={true}
             allowTables={{
               allowColumnResizing: true,

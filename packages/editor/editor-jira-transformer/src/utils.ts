@@ -282,7 +282,10 @@ export function convert(
         case 'UL':
           return schema.nodes.bulletList!.createChecked({}, content);
         case 'OL':
-          return schema.nodes.orderedList!.createChecked({}, content);
+          return schema.nodes.orderedList!.createChecked(
+            { order: parseInt(node.getAttribute('start') || '') || 1 },
+            content,
+          );
         case 'LI':
           const compatibleContent = schema.nodes.listItem!.validContent(content)
             ? content
