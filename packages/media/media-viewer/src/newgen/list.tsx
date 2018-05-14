@@ -30,6 +30,11 @@ export class List extends React.Component<Props, State> {
   renderContent(items: Identifier[]) {
     const { context, onClose } = this.props;
     const { selectedItem } = this.state;
+    const provider = context.getMediaItemProvider(
+      selectedItem.id,
+      selectedItem.type,
+      selectedItem.collectionName,
+    );
     if (getSelectedIndex(items, selectedItem) < 0) {
       return (
         <ErrorMessage>
@@ -41,11 +46,7 @@ export class List extends React.Component<Props, State> {
       return (
         <ListWrapper>
           <HeaderWrapper>
-            <Header
-              context={context}
-              identifier={selectedItem}
-              onClose={onClose}
-            />
+            <Header observable={provider.observable()} onClose={onClose} />
           </HeaderWrapper>
           <ItemViewer context={context} identifier={selectedItem} />
           <Navigation
