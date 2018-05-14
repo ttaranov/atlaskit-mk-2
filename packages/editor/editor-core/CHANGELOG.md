@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.5
+- [patch] ED-4631: fix list padding [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
+- [none] Updated dependencies [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
+
 ## 71.3.4
 - [patch] FeedbackToolbar item now renders correctly in IE11. Additionally, components rendered via `primaryToolbarComponents` will now be vertically-centered in the toolbar. [02ad242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02ad242)
 - [none] Updated dependencies [02ad242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02ad242)
