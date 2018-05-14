@@ -394,17 +394,17 @@ export function outdentList(): Command {
           *    unorderedList
           *      listItem(B)
           *  listItem(C)
-          * 
+          *
           * becomes, after unindenting the first, top level listItem, A:
-          * 
+          *
           * content of A
           * unorderedList
           *  listItem(B)
           * unorderedList
           *  listItem(C)
-          * 
+          *
           * so, we try to merge these two lists if they're of the same type, to give:
-          * 
+          *
           * content of A
           * unorderedList
           *  listItem(B)
@@ -563,6 +563,31 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
     topLevelNode.nodeSize === 2
   );
 }
+
+export const removeEmptyHeadingAtStartOfDocument: Command = (
+  state,
+  dispatch,
+) => {
+  const { $cursor } = state.selection as TextSelection;
+  if (
+    $cursor &&
+    !$cursor.nodeBefore &&
+    !$cursor.nodeAfter &&
+    $cursor.pos === 1
+  ) {
+    if ($cursor.parent.type === state.schema.nodes.heading) {
+      dispatch(
+        state.tr.setBlockType(
+          $cursor.pos,
+          $cursor.pos,
+          state.schema.nodes.paragraph,
+        ),
+      );
+      return true;
+    }
+  }
+  return false;
+};
 
 export function createParagraphAtEnd(): Command {
   return function(state, dispatch) {
