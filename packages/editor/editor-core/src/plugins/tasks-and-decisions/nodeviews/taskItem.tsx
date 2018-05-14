@@ -6,6 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { ContentNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
+import { ItemWrapper } from './styles';
 
 type getPosHandler = () => number;
 
@@ -61,14 +62,16 @@ class Task extends ContentNodeView implements NodeView {
     const { localId, state } = node.attrs;
 
     const taskItem = (
-      <TaskItem
-        taskId={localId}
-        contentRef={this.handleRef}
-        isDone={state === 'DONE'}
-        onChange={this.handleOnChange}
-        showPlaceholder={this.isContentEmpty}
-        providers={this.providerFactory}
-      />
+      <ItemWrapper>
+        <TaskItem
+          taskId={localId}
+          contentRef={this.handleRef}
+          isDone={state === 'DONE'}
+          onChange={this.handleOnChange}
+          showPlaceholder={this.isContentEmpty}
+          providers={this.providerFactory}
+        />
+      </ItemWrapper>
     );
     ReactDOM.render(
       <AnalyticsDelegate {...this.analyticsDelegateContext}>

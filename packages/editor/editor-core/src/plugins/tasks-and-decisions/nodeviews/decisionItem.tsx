@@ -4,6 +4,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { DecisionItem } from '@atlaskit/task-decision';
 import { ContentNodeView } from '../../../nodeviews';
+import { ItemWrapper } from './styles';
 
 type getPosHandler = () => number;
 
@@ -31,10 +32,12 @@ class Decision extends ContentNodeView implements NodeView {
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <DecisionItem
-        contentRef={this.handleRef}
-        showPlaceholder={this.isContentEmpty}
-      />,
+      <ItemWrapper>
+        <DecisionItem
+          contentRef={this.handleRef}
+          showPlaceholder={this.isContentEmpty}
+        />
+      </ItemWrapper>,
       this.domRef,
     );
   }
