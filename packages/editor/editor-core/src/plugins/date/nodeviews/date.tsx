@@ -40,6 +40,7 @@ const DateNode = styled.span`
   position: relative;
   cursor: pointer;
   transition: background 0.3s;
+  white-space: nowrap;
   &:hover {
     background: ${akColorN40};
   }

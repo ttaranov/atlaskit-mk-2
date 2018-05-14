@@ -3,9 +3,8 @@ import { Context } from '@atlaskit/media-core';
 import { Identifier } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
-import { Blanket } from './styled';
-import { ErrorMessage } from './styled';
 import { Content } from './content';
+import { Blanket, ErrorMessage } from './styled';
 
 export type Props = {
   onClose?: () => void;
@@ -17,9 +16,10 @@ export type Props = {
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
+    const { onClose } = this.props;
     return (
       <Blanket>
-        <Content onClick={this.onClickContentClose}>
+        <Content onClick={this.onClickContentClose} onClose={onClose}>
           {this.renderContent()}
         </Content>
       </Blanket>
