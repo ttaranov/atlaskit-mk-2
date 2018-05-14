@@ -68,8 +68,11 @@ export default class CodeSandbox extends Component<{}, {}> {
         }}
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
-          // this reset handles the css-reset package
-          [`packages/${groupId}/${packageId}/src/index.less`, pkgJSON.name],
+          // The below two replacements are hacks to make the css packs work
+          [
+            '!!raw-loader!../src/icons-sprite.svg',
+            `${pkgJSON.name}/dist/icons-sprite.svg`,
+          ][(`packages/${groupId}/${packageId}/src/index.less`, pkgJSON.name)],
           ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
         ]}
         dependencies={{
