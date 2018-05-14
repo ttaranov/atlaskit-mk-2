@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.8
+- [patch] Don't wrap date [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
+- [none] Updated dependencies [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
+
 ## 71.3.7
 - [patch] Fix size of delete button for code block [92b0e26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92b0e26)
 - [none] Updated dependencies [92b0e26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92b0e26)
