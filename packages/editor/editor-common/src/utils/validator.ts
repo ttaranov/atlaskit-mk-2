@@ -315,7 +315,7 @@ export const getValidNode = (
           details &&
           details.some(meta => {
             const { badge, lozenge, users } = meta;
-            if (badge && !badge.value) {
+            if (badge && typeof badge.value !== 'number') {
               return true;
             }
             if (lozenge && !lozenge.text) {
