@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 71.3.2
+
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+  - @atlaskit/renderer@16.2.1
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/renderer@16.2.1
+  - @atlaskit/editor-common@9.3.4
+
+## 71.3.1
+- [patch] Proper cursor type for lists [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
+- [none] Updated dependencies [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
+
+## 71.3.0
+- [minor] Set line-height based on appearance [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+- [none] Updated dependencies [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+  - @atlaskit/renderer@16.2.0
+
 ## 71.2.7
 - [patch] ED-4299, fix selection after code block and code mark pasting. [72c8ecf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72c8ecf)
 

@@ -8,6 +8,10 @@ import {
   akEditorTableBorderSelected,
   akEditorTableToolbar,
 } from '../../../../styles';
+import {
+  akEditorTableBorderDelete,
+  akEditorTableToolbarDelete,
+} from '../../../../styles';
 
 export const toolbarSize = 11;
 
@@ -15,7 +19,7 @@ export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
 
   .ProseMirror.table-resizing & {
-    top: 28px;
+    top: 32px;
     display: none;
   }
   .ProseMirror.table-resizing .with-controls & {
@@ -37,6 +41,10 @@ export const HeaderButtonDefault: ComponentClass<
   .tableHovered & {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
+  }
+  .danger > & {
+    background-color: ${akEditorTableToolbarDelete};
+    border-color: ${akEditorTableBorderDelete};
   }
   &:focus {
     outline: none;

@@ -10,6 +10,7 @@ import {
   akEditorTableToolbarSelected,
 } from '../../../../../styles';
 import { LineMarkerDefault } from '../styles';
+import { akEditorTableToolbar } from '@atlaskit/editor-common';
 
 export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
@@ -33,31 +34,18 @@ export const CornerButton: ComponentClass<
   bottom: -1px;
   width: ${akEditorTableToolbarSize}px;
   height: ${akEditorTableToolbarSize}px;
-  background-image: linear-gradient(
-    to bottom right,
-    #fff 0,
-    #fff 49%,
-    ${akEditorTableBorder} 50%,
-    ${akEditorTableBorder} 100%
-  );
-  box-shadow: inset 0 0 0 1px #fff;
   border: 1px solid ${akEditorTableBorder};
   border-radius: 0;
   border-top-left-radius: ${akEditorTableBorderRadius};
+  background: ${akEditorTableToolbar};
   cursor: pointer;
   padding: 0;
 
   &:hover,
   .active > &,
   .tableHovered & {
-    background-image: linear-gradient(
-      to bottom right,
-      #fff 0,
-      #fff 49%,
-      ${akEditorTableToolbarSelected} 50%,
-      ${akEditorTableToolbarSelected} 100%
-    );
     border-color: ${akEditorTableBorderSelected};
+    background: ${akEditorTableToolbarSelected};
     z-index: 1;
   }
   &:focus {

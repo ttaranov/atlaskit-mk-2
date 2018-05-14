@@ -106,6 +106,13 @@ export class TableState {
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
 
+  removeTable = (): void => {
+    const { state, dispatch } = this.view;
+    deleteTable(state, dispatch);
+    this.focusEditor();
+    analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
+  };
+
   remove = (): void => {
     const { state, dispatch } = this.view;
     const cellSelection = getCellSelection(state);
