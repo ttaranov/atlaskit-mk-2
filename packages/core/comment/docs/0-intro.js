@@ -1,20 +1,21 @@
 // @flow
 
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
 The comment component exports both the wrapper component for comments, as well as several smaller components designed to be passed in to the comment component to display a richer comment. The complete export is:
 
-~~~
+${code`
 import Comment, {
   CommentAction,
   CommentAuthor,
   CommentEdited,
   CommentLayout,
   CommentTime
-} from @atlaskit/comment
-~~~
+} from @atlaskit/comment;
+`}
+
 All subcomponents are expected as props with the same lowercased name.
 
 All children components are displayed indented after the comment body, allowing nesting of comments.

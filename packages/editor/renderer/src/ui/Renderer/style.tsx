@@ -1,4 +1,4 @@
-import { ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akColorB300,
   akColorB400,
@@ -13,8 +13,19 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
+import { RendererAppearance } from './';
+
+export interface Props {
+  appearance?: RendererAppearance;
+}
+
+const getLineHeight = ({ appearance }: Props) => {
+  return `line-height: ${appearance === 'message' ? 20 : 24}px`;
+};
+
 // tslint:disable-next-line:variable-name
-export const Wrapper: ComponentClass<any> = styled.div`
+export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${getLineHeight};
   color: ${akColorN800};
   word-wrap: break-word;
 
@@ -60,7 +71,6 @@ export const Wrapper: ComponentClass<any> = styled.div`
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
     font-weight: 400;
-    line-height: 24px;
     white-space: pre-wrap;
     word-wrap: break-word;
   }
@@ -119,42 +129,42 @@ export const Wrapper: ComponentClass<any> = styled.div`
   }
 
   & h1 {
-    ${akTypographyMixins.h800};
+    ${akTypographyMixins.h800 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h2 {
-    ${akTypographyMixins.h700};
+    ${akTypographyMixins.h700 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h3 {
-    ${akTypographyMixins.h600};
+    ${akTypographyMixins.h600 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h4 {
-    ${akTypographyMixins.h500};
+    ${akTypographyMixins.h500 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h5 {
-    ${akTypographyMixins.h400};
+    ${akTypographyMixins.h400 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h6 {
-    ${akTypographyMixins.h300};
+    ${akTypographyMixins.h300 as any};
     &:first-child {
       margin-top: 0;
     }

@@ -16,10 +16,10 @@ export interface Props {
   isTableHovered?: boolean;
   resetHoverSelection?: Command;
   hoverTable?: Command;
-  hoverRow?: (row: number) => Command;
-  hoverColumn?: (column: number) => Command;
+  hoverRows?: (rows: number[], danger?: boolean) => Command;
   insertColumn?: (column: number) => Command;
   insertRow?: (row: number) => Command;
+  remove?: () => void;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -30,11 +30,12 @@ export default class TableFloatingControls extends Component<Props, State> {
   render() {
     const {
       editorView,
-      hoverRow,
+      hoverRows,
       resetHoverSelection,
       tableElement,
       insertColumn,
       insertRow,
+      remove,
       hoverTable,
       isTableHovered,
     } = this.props;
@@ -60,7 +61,8 @@ export default class TableFloatingControls extends Component<Props, State> {
           tableElement={tableElement}
           isTableHovered={isTableHovered!}
           insertRow={insertRow!}
-          hoverRow={hoverRow!}
+          remove={remove!}
+          hoverRows={hoverRows!}
           resetHoverSelection={resetHoverSelection!}
           updateScroll={this.updateScroll}
           scroll={this.state.scroll}

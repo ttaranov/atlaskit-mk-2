@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 16.2.0
+- [minor] Set line-height based on appearance [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+- [none] Updated dependencies [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+
 ## 16.1.3
 - [patch] Add a blank space between mention and text in text renderer [940ecc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/940ecc7)
 
