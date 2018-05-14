@@ -6,9 +6,9 @@ import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { stateKey } from '../pm-plugins/main';
 import { pluginKey as hoverSelectionPluginKey } from '../pm-plugins/hover-selection-plugin';
 import {
-  hoverColumn,
+  hoverColumns,
   hoverTable,
-  hoverRow,
+  hoverRows,
   resetHoverSelection,
   insertColumn,
   insertRow,
@@ -21,8 +21,8 @@ import { TableLayout, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
-// TODO: Should be 50 after ED-4280 is fixed
-const CONTROLLER_PADDING = 52;
+// TODO: Should be 62 after ED-4280 is fixed
+const CONTROLLER_PADDING = 63;
 
 import { Props } from './table';
 
@@ -72,7 +72,7 @@ class TableComponent extends React.Component<ComponentProps> {
       case 'full-width':
         return `${containerWidth - CONTROLLER_PADDING}px`;
       default:
-        return '100%';
+        return 'inherit';
     }
   }
 
@@ -127,11 +127,11 @@ class TableComponent extends React.Component<ComponentProps> {
                   tableElement={pluginState.tableElement}
                   isTableHovered={isTableHovered}
                   hoverTable={hoverTable}
-                  hoverRow={hoverRow}
-                  hoverColumn={hoverColumn}
+                  hoverRows={hoverRows}
                   resetHoverSelection={resetHoverSelection}
                   insertColumn={insertColumn}
                   insertRow={insertRow}
+                  remove={pluginState.remove}
                 />
               </div>
               <div
@@ -146,7 +146,8 @@ class TableComponent extends React.Component<ComponentProps> {
                     tableElement={pluginState.tableElement}
                     isTableHovered={isTableHovered}
                     insertColumn={insertColumn}
-                    hoverColumn={hoverColumn!}
+                    remove={pluginState.remove}
+                    hoverColumns={hoverColumns!}
                     resetHoverSelection={resetHoverSelection!}
                   />
                 </div>

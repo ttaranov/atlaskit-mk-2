@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { AvatarGroup } from '../src'; // TODO: add to docs
+import { AvatarGroup } from '../src';
 import { Block } from '../examples-util/helpers';
 import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 

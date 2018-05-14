@@ -1,5 +1,43 @@
 # @atlaskit/editor-core
 
+## 71.3.2
+
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+  - @atlaskit/renderer@16.2.1
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/renderer@16.2.1
+  - @atlaskit/editor-common@9.3.4
+
+## 71.3.1
+- [patch] Proper cursor type for lists [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
+- [none] Updated dependencies [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
+
+## 71.3.0
+- [minor] Set line-height based on appearance [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+- [none] Updated dependencies [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+  - @atlaskit/renderer@16.2.0
+
+## 71.2.7
+- [patch] ED-4299, fix selection after code block and code mark pasting. [72c8ecf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72c8ecf)
+
+## 71.2.6
+- [patch] Fix issue with tables in IE with the Comment appearance where it would show a gray resize box that would interfere with the plugin causing unexpected behaviour [1a280e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a280e5)
+
+## 71.2.5
+- [patch] ED-4564, Replacing invite team member icon in collab editor. [bfe8ffc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfe8ffc)
+
+## 71.2.4
+
+## 71.2.3
+- [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
+
+## 71.2.2
+- [patch] Showing up title in place of macro name [296c3e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/296c3e3)
+
+## 71.2.1
+
 ## 71.2.0
 - [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 

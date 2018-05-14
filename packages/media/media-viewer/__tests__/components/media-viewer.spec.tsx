@@ -63,6 +63,25 @@ describe('<MediaViewer />', () => {
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
     });
 
+    it('should pass the correct collectionName property to the next gen viewer', () => {
+      const featureFlags = { nextGen: true };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={collectionDataSource}
+          collectionName={'another-collection-name'}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+          featureFlags={featureFlags}
+        />,
+      );
+      expect(el.find(MediaViewerNextGen).props().collectionName).toEqual(
+        collectionDataSource.collectionName,
+      );
+    });
+
     it('should show the next gen viewer when dev flag is enabled', () => {
       let originalLocalStorage = global.window.localStorage;
       global.window.localStorage = {

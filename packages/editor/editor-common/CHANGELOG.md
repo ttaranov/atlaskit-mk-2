@@ -1,5 +1,19 @@
 # @atlaskit/editor-common
 
+## 9.3.4
+- [patch] Fix validation for badge number [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+
+## 9.3.3
+- [patch] Revert schema change [d6634bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6634bc)
+
+## 9.3.2
+
+## 9.3.1
+- [patch] Fixing up the re-rendering of tables on paste [31f28fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31f28fa)
+
 ## 9.3.0
 - [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
 

@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   Provides a standard way to create a text-based form input with an associated label.
 
-  ~~~js
-  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
-  ~~~
+${code`
+import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+`}
 
   Text Field Area exports both a stateful default component, and a stateless
   component. The stateful component manages the value of the input for you
