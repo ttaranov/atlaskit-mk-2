@@ -1,5 +1,7 @@
 # @atlaskit/tag
 
+## 4.0.2
+
 ## 4.0.1
 - [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
 

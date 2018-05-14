@@ -7,6 +7,8 @@ import styled, { StyledComponentClass } from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 
+const overlayZindex = 999;
+
 export const Blanket = styled.div`
   position: fixed;
   top: 0;
@@ -14,29 +16,76 @@ export const Blanket = styled.div`
   bottom: 0;
   right: 0;
   background-color: #1b2638;
+  z-index: ${overlayZindex};
 `;
 
 export const HeaderWrapper = styled.div`
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 98px;
   opacity: 0.85;
   background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
   color: #b8c7e0;
   padding-top: 15px;
-  padding-left: 24px;
+  padding: 24px;
   box-sizing: border-box;
+  z-index: ${overlayZindex + 1};
 `;
 
-export const Content = styled.div`
+HeaderWrapper.displayName = 'HeaderWrapper';
+
+export interface ContentWrapperProps {
+  showControls: boolean;
+}
+
+export const ListWrapper = styled.div``;
+
+ListWrapper.displayName = 'ListWrapper';
+
+export const ArrowsWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+`;
+
+export const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: ${overlayZindex + 2};
+`;
+
+const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
+  transition: opacity .3s;
+  opacity: ${showControls ? '1' : '0'};
+`;
+
+export const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: auto;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+
+  ${HeaderWrapper} {
+    ${handleControlsVisibility};
+  }
+
+  ${ArrowsWrapper} {
+    ${handleControlsVisibility};
+  }
+
+  ${CloseButtonWrapper} {
+    ${handleControlsVisibility};
+  }
 `;
+
+ContentWrapper.displayName = 'Content';
 
 export const ErrorMessage = styled.div`
   color: #b8c7e0;
@@ -53,13 +102,6 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
 
 export const PDFWrapper = styled.div``;
 
-export const ArrowsWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: 40%;
-  width: 100%;
-`;
-
 const ArrowWrapper = styled.div`
   flex: 1;
   padding: 20px;
@@ -75,4 +117,13 @@ export const LeftWrapper = ArrowWrapper.extend`
 
 export const RightWrapper = ArrowWrapper.extend`
   text-align: right;
+`;
+
+// header.tsx
+export const Header = styled.div`
+  display: flex;
+`;
+
+export const LeftHeader = styled.div`
+  flex: 0.8;
 `;

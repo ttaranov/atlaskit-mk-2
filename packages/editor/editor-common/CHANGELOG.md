@@ -1,5 +1,36 @@
 # @atlaskit/editor-common
 
+## 9.3.6
+- [patch] Disable overlay for mediaSingle [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+- [none] Updated dependencies [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+
+## 9.3.5
+- [patch] ED-4120 support placeholder text in renderer [616a6a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/616a6a5)
+- [patch] Updated dependencies [616a6a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/616a6a5)
+
+## 9.3.4
+- [patch] Fix validation for badge number [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+
+## 9.3.3
+- [patch] Revert schema change [d6634bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6634bc)
+
+## 9.3.2
+
+## 9.3.1
+- [patch] Fixing up the re-rendering of tables on paste [31f28fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31f28fa)
+
+## 9.3.0
+- [minor] Adding support for external images [9935105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9935105)
+
+## 9.2.14
+- [patch] ED-4568, adding support for panel types success and error in renderer. [1aef8d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aef8d2)
+
+## 9.2.13
+- [patch] Adding progress loader for cloud pickers [e22266c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e22266c)
+
 ## 9.2.12
 
 ## 9.2.11

@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.7
+- [patch] Adding a safe check for macro params [193c7fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/193c7fa)
+
 ## 4.0.6
 - [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
 

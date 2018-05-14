@@ -11,12 +11,14 @@ import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
+import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  linkComponent?: LinkComponent;
 }
 
 export interface State {
@@ -78,12 +80,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [Scope.ConfluencePageBlog, Scope.ConfluenceSpace],
+      [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace],
     );
 
     if (this.state.query === query) {
       this.setState({
-        objectResults: results.get(Scope.ConfluencePageBlog) || [],
+        objectResults: results.get(Scope.ConfluencePageBlogAttachment) || [],
         spaceResults: results.get(Scope.ConfluenceSpace) || [],
       });
     }
@@ -176,6 +178,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   render() {
+    const { linkComponent } = this.props;
     const {
       query,
       isLoading,
@@ -193,6 +196,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         onSearch={this.handleSearch}
         isLoading={isLoading}
         query={query}
+        linkComponent={linkComponent}
       >
         {renderSearchResults({
           query,

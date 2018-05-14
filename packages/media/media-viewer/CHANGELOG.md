@@ -1,5 +1,28 @@
 # @atlaskit/media-viewer
 
+## 13.4.0
+- [minor] MediaViewer: toggle UI controls on mouse move [36ec198](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36ec198)
+
+## 13.3.2
+- [patch] Always show MediaViewer close button [9ddeec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ddeec0)
+
+## 13.3.1
+- [patch] use proper collectionName property in MVNG [7815256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7815256)
+
+## 13.3.0
+- [minor] Add collection support to Media Viewer NGwq [6baa5d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6baa5d0)
+
+## 13.2.3
+
+## 13.2.2
+- [patch] Bump z-index of MVNG [7d1f8fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d1f8fb)
+
+## 13.2.1
+- [patch] Fix issues with "selectedItem" not being part of the list. [f542262](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f542262)
+
+## 13.2.0
+- [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
+
 ## 13.1.3
 - [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
 

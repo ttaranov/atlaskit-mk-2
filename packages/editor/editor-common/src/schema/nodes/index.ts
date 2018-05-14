@@ -25,7 +25,9 @@ export { default as unknownBlock } from './unknown-block';
 export {
   media,
   MediaType,
-  Attributes as MediaAttributes,
+  MediaBaseAttributes,
+  MediaAttributes,
+  ExternalMediaAttributes,
   DisplayType as MediaDisplayType,
   copyPrivateAttributes as copyPrivateMediaAttributes,
   toJSON as mediaToJSON,

@@ -1,10 +1,11 @@
 import * as assert from 'assert';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
+import { Node as PMNode } from 'prosemirror-model';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
@@ -12,6 +13,7 @@ import {
 
 export interface MediaGroupNodeProps {
   view: EditorView;
+  node: PMNode;
 }
 
 export interface MediaGroupNodeState {
@@ -24,13 +26,10 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & li:first-child {
-      padding-left: 2px;
-    }
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<
+export default class MediaGroupNode extends Component<
   MediaGroupNodeProps,
   MediaGroupNodeState
 > {
@@ -58,6 +57,19 @@ export default class MediaGroupNode extends PureComponent<
    */
   componentDidMount() {
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const children = this.getMediaNodesIds(this.props.children);
+    const nextChildren = this.getMediaNodesIds(nextProps.children);
+    if (
+      children.length === nextChildren.length &&
+      this.props.node.firstChild!.attrs.__key ===
+        nextProps.node.firstChild!.attrs.__key
+    ) {
+      return false;
+    }
+    return true;
   }
 
   /**

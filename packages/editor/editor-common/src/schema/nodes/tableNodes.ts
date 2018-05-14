@@ -193,7 +193,7 @@ export const table: any = {
         isNumberColumnEnabled:
           dom.getAttribute('data-number-column') === 'true' ? true : false,
         layout: dom.getAttribute('data-layout') || 'default',
-        __autoSize: dom.getAttribute('data-autosize') || false,
+        __autoSize: dom.getAttribute('data-autosize') === 'true' ? true : false,
       }),
     },
   ],

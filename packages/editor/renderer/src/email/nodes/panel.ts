@@ -8,6 +8,8 @@ import {
   akColorP400,
   akColorY400,
   akColorY50,
+  akColorR50,
+  akColorR400,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
@@ -27,9 +29,17 @@ const config = {
     background: akColorG50,
     iconColor: akColorG400,
   },
+  success: {
+    background: akColorG50,
+    iconColor: akColorG400,
+  },
   warning: {
     background: akColorY50,
     iconColor: akColorY400,
+  },
+  error: {
+    background: akColorR50,
+    iconColor: akColorR400,
   },
 };
 

@@ -1,5 +1,7 @@
 # @atlaskit/tooltip
 
+## 9.1.6
+
 ## 9.1.5
 - [patch] Fix long words in tooltip content overflowing the tooltip, they will now wrap. [b2967ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2967ef)
 

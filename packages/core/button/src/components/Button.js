@@ -14,6 +14,7 @@ import getButtonStyles from '../styled/getButtonStyles';
 import ButtonContent from '../styled/ButtonContent';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import IconWrapper from '../styled/IconWrapper';
+import LoadingSpinner from '../styled/LoadingSpinner';
 
 import type { ButtonProps } from '../types';
 
@@ -61,6 +62,7 @@ class Button extends Component<ButtonProps, State> {
     appearance: 'default',
     isDisabled: false,
     isSelected: false,
+    isLoading: false,
     spacing: 'default',
     type: 'button',
     shouldFitContainer: false,
@@ -141,7 +143,17 @@ class Button extends Component<ButtonProps, State> {
   };
 
   render() {
-    const { children, iconBefore, iconAfter, shouldFitContainer } = this.props;
+    const {
+      children,
+      iconBefore,
+      iconAfter,
+      isLoading,
+      shouldFitContainer,
+      spacing,
+      appearance,
+      isSelected,
+      isDisabled,
+    } = this.props;
 
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
@@ -154,8 +166,17 @@ class Button extends Component<ButtonProps, State> {
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
+          {isLoading ? (
+            <LoadingSpinner
+              spacing={spacing}
+              appearance={appearance}
+              isSelected={isSelected}
+              isDisabled={isDisabled}
+            />
+          ) : null}
           {iconBefore ? (
             <IconWrapper
+              isLoading={isLoading}
               spacing={buttonProps.spacing}
               isOnlyChild={iconIsOnlyChild}
             >
@@ -164,6 +185,7 @@ class Button extends Component<ButtonProps, State> {
           ) : null}
           {children ? (
             <ButtonContent
+              isLoading={isLoading}
               followsIcon={!!iconBefore}
               spacing={buttonProps.spacing}
             >
@@ -172,6 +194,7 @@ class Button extends Component<ButtonProps, State> {
           ) : null}
           {iconAfter ? (
             <IconWrapper
+              isLoading={isLoading}
               spacing={buttonProps.spacing}
               isOnlyChild={iconIsOnlyChild}
             >

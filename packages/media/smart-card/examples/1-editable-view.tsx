@@ -7,46 +7,41 @@ import 'brace/theme/tomorrow';
 import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
 import { Provider, CardView } from '../src';
-import { convert } from '../src/convert';
+import { extractBlockViewPropsFromJSONLD } from '../src/extract';
 
 const defaultText = `{
-  "context": [
-    {
-      "name": "Trello"
-    }
-  ],
-  "url": "https://trello.com/c/S1O480F0/15-make-json-pretty",
-  "name": "Make JSON pretty",
-  "summary": "Beautify JSON exports for better usability.",
-  "tag": [
-    {
-      "name": "Low Priority"
-    }
-  ]
+  "@type": "Document",
+  "generator": {
+    "@type": "Application",
+    "name": "Confluence"
+  },
+  "url": "https://extranet.atlassian.com/pages/viewpage.action?pageId=3088533424",
+  "name": "Founder Update 76: Hello, Trello!",
+  "summary": "Today is a big day for Atlassian – we have entered into an agreement to buy Trello. (boom)"
 }`;
 
-const defaultJSON = convert(JSON.parse(defaultText));
+const defaultJSON = extractBlockViewPropsFromJSONLD(JSON.parse(defaultText));
 
 export interface ExampleProps {}
 
 export interface ExampleState {
   text: string;
-  json: Object;
+  props: Object;
   error?: string;
 }
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
     text: defaultText,
-    json: defaultJSON,
+    props: defaultJSON,
   };
 
   handleChange = (text: string) => {
     try {
-      const json = convert(JSON.parse(text));
+      const props = extractBlockViewPropsFromJSONLD(JSON.parse(text));
       this.setState({
         text,
-        json,
+        props,
         error: undefined,
       });
     } catch (err) {
@@ -58,13 +53,13 @@ class Example extends React.Component<ExampleProps, ExampleState> {
   };
 
   render() {
-    const { text, json, error } = this.state;
+    const { text, props, error } = this.state;
     return (
       <Provider>
         <Page>
           <Grid>
             <GridColumn>
-              <CardView {...json as any} />
+              <CardView {...props as any} />
               <br />
               <br />
               <AceEditor

@@ -1,6 +1,11 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
@@ -155,12 +160,32 @@ export function createPlugin(
               $from.pos + text.length,
               schema.marks.code.create(),
             );
+            const { code } = view.state.schema.marks;
+            // ED-4299, if a new code mark is created by pasting cursor should be moved out of it.
+            if (!$to.marks().some(mark => mark.type === code)) {
+              tr = tr.removeStoredMark(code);
+            }
           } else {
             const codeBlockNode = schema.nodes.codeBlock.create(
               node ? node.attrs : {},
               schema.text(text),
             );
             tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+            // ED-4299, If code-block is created at end of its parent a paragraph is added after it.
+            // Selection is moved position after pasted code.
+            if ($to.pos + 1 === $to.end($to.depth - 1)) {
+              const { paragraph } = view.state.schema.nodes;
+              const { $to: newSel } = tr.selection;
+              tr = tr.insert(
+                newSel.end(newSel.depth - 1),
+                paragraph.createAndFill()!,
+              );
+            }
+            tr = tr.setSelection(
+              new TextSelection(
+                tr.doc.resolve($to.pos + codeBlockNode.nodeSize),
+              ),
+            );
           }
           view.dispatch(tr.scrollIntoView());
           return true;

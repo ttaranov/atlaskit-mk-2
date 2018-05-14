@@ -5,6 +5,7 @@ import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
 import { ArrowsWrapper, RightWrapper, LeftWrapper, Arrow } from './styled';
+import { getSelectedIndex } from './util';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -23,16 +24,26 @@ export default class Navigation extends Component<NavigationProps, any> {
         direction === 'next'
           ? items[selectedIndex + 1]
           : items[selectedIndex - 1];
-      onChange(newItem);
+
+      if (newItem) {
+        onChange(newItem);
+      }
     };
   }
+
   get selectedIndex() {
     const { items, selectedItem } = this.props;
-    return items.findIndex(item => item.id === selectedItem.id);
+    return getSelectedIndex(items, selectedItem);
   }
+
   render() {
     const { items } = this.props;
     const { selectedIndex } = this;
+
+    if (selectedIndex === -1) {
+      return null;
+    }
+
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 

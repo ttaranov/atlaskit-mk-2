@@ -47,6 +47,9 @@ type Props = {
   enableResize?: boolean,
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types
+  /** Hide the validation message and style. This is used by <Field> to disable Validation display handling by FieldBase
+   */
+  isValidationHidden?: boolean,
 };
 
 // We are using any as FieldTextArea passes props via spread
@@ -63,6 +66,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
     type: 'text',
     isSpellCheckEnabled: true,
     minimumRows: 1,
+    isValidationHidden: false,
   };
 
   focus() {
@@ -90,6 +94,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
       required,
       shouldFitContainer,
       value,
+      isValidationHidden,
     } = this.props;
 
     return (
@@ -110,6 +115,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
           isRequired={required}
           invalidMessage={invalidMessage}
           isFitContainerWidthEnabled={shouldFitContainer}
+          isValidationHidden={isValidationHidden}
         >
           <TextArea
             disabled={disabled}

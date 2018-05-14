@@ -1,5 +1,17 @@
 # @atlaskit/datetime-picker
 
+## 3.1.1
+- [patch] Updated dependencies [7468739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7468739)
+  - @atlaskit/select@2.0.2
+
+## 3.1.0
+- [minor] Add dateFormat prop to customise the display format of dates [3daced9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3daced9)
+
+## 3.0.6
+
+## 3.0.5
+- [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
+
 ## 3.0.4
 - [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
 

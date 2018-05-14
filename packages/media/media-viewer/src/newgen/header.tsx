@@ -3,10 +3,12 @@ import { Outcome, Identifier } from './domain';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { Header as HeaderWrapper, LeftHeader } from './styled';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
+  readonly onClose?: () => void;
 };
 
 export type State = {
@@ -77,6 +79,14 @@ export default class Header extends React.Component<Props, State> {
   }
 
   render() {
+    return (
+      <HeaderWrapper>
+        <LeftHeader>{this.renderMetadata()}</LeftHeader>
+      </HeaderWrapper>
+    );
+  }
+
+  private renderMetadata() {
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':

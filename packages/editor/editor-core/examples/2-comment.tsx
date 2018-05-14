@@ -129,15 +129,17 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
-                    primaryToolbarComponents={[
-                      <ToolbarFeedback
-                        product={'bitbucket'}
-                        packageVersion={version}
-                        packageName={name}
-                        key="toolbar-feedback"
-                      />,
-                      <ToolbarHelp key="toolbar-help" />,
-                    ]}
+                    primaryToolbarComponents={
+                      <>
+                        <ToolbarFeedback
+                          product={'bitbucket'}
+                          packageVersion={version}
+                          packageName={name}
+                          key="toolbar-feedback"
+                        />
+                        <ToolbarHelp key="toolbar-help" />
+                      </>
+                    }
                     allowExtension={true}
                     insertMenuItems={customInsertMenuItems}
                     extensionHandlers={extensionHandlers}
