@@ -1,5 +1,41 @@
 # @atlaskit/editor-core
 
+## 71.3.8
+- [patch] Don't wrap date [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
+- [none] Updated dependencies [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
+
+## 71.3.7
+- [patch] Fix size of delete button for code block [92b0e26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92b0e26)
+- [none] Updated dependencies [92b0e26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92b0e26)
+
+## 71.3.6
+- [patch] Prevent link-edit dialog from jumping [5ea20fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ea20fa)
+- [none] Updated dependencies [5ea20fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ea20fa)
+
+## 71.3.5
+- [patch] ED-4631: fix list padding [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
+- [none] Updated dependencies [16ef82c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16ef82c)
+
+## 71.3.4
+- [patch] FeedbackToolbar item now renders correctly in IE11. Additionally, components rendered via `primaryToolbarComponents` will now be vertically-centered in the toolbar. [02ad242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02ad242)
+- [none] Updated dependencies [02ad242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02ad242)
+
+## 71.3.3
+- [patch] Disable overlay for mediaSingle [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+- [none] Updated dependencies [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+  - @atlaskit/renderer@16.2.3
+  - @atlaskit/editor-common@9.3.6
+
+## 71.3.2
+
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+  - @atlaskit/renderer@16.2.1
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/renderer@16.2.1
+  - @atlaskit/editor-common@9.3.4
+
 ## 71.3.1
 - [patch] Proper cursor type for lists [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
 - [none] Updated dependencies [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)

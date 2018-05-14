@@ -54,6 +54,7 @@ export interface Props extends Partial<MediaBaseAttributes> {
   tempId?: string;
   url?: string;
   imageStatus?: ImageStatus;
+  disableOverlay?: boolean;
 }
 
 export interface State extends MediaState {
@@ -177,6 +178,7 @@ export class MediaComponentInternal extends Component<Props, State> {
       cardDimensions,
       onDelete,
       appearance,
+      disableOverlay,
       ...otherProps
     } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
@@ -207,6 +209,7 @@ export class MediaComponentInternal extends Component<Props, State> {
         identifier={identifier}
         appearance={appearance || 'horizontal'}
         resizeMode={this.resizeMode}
+        disableOverlay={disableOverlay}
         {...otherProps as any}
       />
     );
@@ -236,6 +239,7 @@ export class MediaComponentInternal extends Component<Props, State> {
       onDelete,
       onClick,
       selected,
+      disableOverlay,
     } = this.props;
     const otherProps: any = {};
 
@@ -259,6 +263,7 @@ export class MediaComponentInternal extends Component<Props, State> {
         selectable={true}
         selected={selected}
         resizeMode={this.resizeMode}
+        disableOverlay={disableOverlay}
         {...otherProps}
       />
     );
@@ -272,6 +277,7 @@ export class MediaComponentInternal extends Component<Props, State> {
       appearance,
       selected,
       resizeMode,
+      disableOverlay,
     } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
@@ -316,6 +322,7 @@ export class MediaComponentInternal extends Component<Props, State> {
         selectable={true}
         selected={selected}
         resizeMode={resizeMode}
+        disableOverlay={disableOverlay}
         {...otherProps}
       />
     );
@@ -330,6 +337,7 @@ export class MediaComponentInternal extends Component<Props, State> {
       resizeMode,
       imageStatus,
       url,
+      disableOverlay,
     } = this.props;
 
     const otherProps: any = {};
@@ -350,6 +358,7 @@ export class MediaComponentInternal extends Component<Props, State> {
         selectable={true}
         selected={selected}
         resizeMode={resizeMode}
+        disableOverlay={disableOverlay}
         {...otherProps}
       />
     );
