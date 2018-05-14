@@ -51,9 +51,10 @@ export interface State {
 }
 
 const floatingStyleOverride = {
-  maxHeight: '284px',
+  maxHeight: '312px',
   minHeight: '40px',
   height: 'initial',
+  'margin-top': '6px',
 };
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
