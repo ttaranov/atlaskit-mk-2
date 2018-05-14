@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.9
+- [patch] Fixing the link dialog url heights [7268bef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7268bef)
+- [none] Updated dependencies [7268bef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7268bef)
+
 ## 71.3.8
 - [patch] Don't wrap date [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
 - [none] Updated dependencies [759c194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/759c194)
