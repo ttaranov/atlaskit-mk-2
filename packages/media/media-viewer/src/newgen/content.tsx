@@ -10,8 +10,10 @@ export interface ContentState {
   showControls: boolean;
 }
 
+const mouseMovementDelay = 2000;
+
 export class Content extends Component<ContentProps, ContentState> {
-  checkActivityTimeout: number;
+  private checkActivityTimeout: number;
   state: ContentState = {
     showControls: true,
   };
@@ -22,11 +24,18 @@ export class Content extends Component<ContentProps, ContentState> {
 
   private hideControls = () => this.setState({ showControls: false });
 
-  onMouseMove = () => {
+  private checkMouseMovement = () => {
     this.clearTimeout();
     this.setState({ showControls: true });
-    this.checkActivityTimeout = window.setTimeout(this.hideControls, 2000);
+    this.checkActivityTimeout = window.setTimeout(
+      this.hideControls,
+      mouseMovementDelay,
+    );
   };
+
+  componentDidMount() {
+    this.checkMouseMovement();
+  }
 
   componentWillUnmount() {
     this.clearTimeout();
@@ -39,7 +48,7 @@ export class Content extends Component<ContentProps, ContentState> {
     return (
       <ContentWrapper
         showControls={showControls}
-        onMouseMove={this.onMouseMove}
+        onMouseMove={this.checkMouseMovement}
         onClick={onClick}
       >
         {children}
