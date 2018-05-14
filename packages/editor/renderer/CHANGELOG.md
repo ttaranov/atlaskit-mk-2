@@ -1,5 +1,13 @@
 # @atlaskit/renderer
 
+## 16.2.1
+
+
+- [patch] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+- [none] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/editor-common@9.3.4
+
 ## 16.2.0
 - [minor] Set line-height based on appearance [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
 - [none] Updated dependencies [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)

@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 71.3.2
+
+- [patch] ED-4523 implement contexual delete [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+- [none] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+  - @atlaskit/renderer@16.2.1
+- [patch] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/renderer@16.2.1
+  - @atlaskit/editor-common@9.3.4
+
 ## 71.3.1
 - [patch] Proper cursor type for lists [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
 - [none] Updated dependencies [2d6deaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6deaa)
