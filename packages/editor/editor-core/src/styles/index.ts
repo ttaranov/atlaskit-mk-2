@@ -37,3 +37,4 @@ export const defaultEditorFontStyles = `
   font-size: ${fontSize()}px;
   font-weight: normal;
 `;
+export const akEditorToolbarKeylineHeight = 2;
