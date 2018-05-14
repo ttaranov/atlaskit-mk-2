@@ -72,7 +72,8 @@ export default class CodeSandbox extends Component<{}, {}> {
           [
             '!!raw-loader!../src/icons-sprite.svg',
             `${pkgJSON.name}/dist/icons-sprite.svg`,
-          ][(`packages/${groupId}/${packageId}/src/index.less`, pkgJSON.name)],
+          ],
+          [(`packages/${groupId}/${packageId}/src/index.less`, pkgJSON.name)],
           ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
         ]}
         dependencies={{
