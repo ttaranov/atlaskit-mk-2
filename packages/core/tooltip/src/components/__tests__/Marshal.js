@@ -60,7 +60,7 @@ describe('Marshal', () => {
 
     it("should delay the showing/hiding of a tooltip based on the tooltip's delay prop", () => {
       // Non-default delay value
-      const customDelay = {
+      const customDelay: Tooltip = {
         show: jest.fn(),
         hide: jest.fn(),
         props: { delay: 100 },
@@ -88,7 +88,7 @@ describe('Marshal', () => {
       expect(customDelay.hide).toHaveBeenCalledWith({ immediate: false });
 
       // Zero delay value
-      const zeroDelay = {
+      const zeroDelay: Tooltip = {
         show: jest.fn(),
         hide: jest.fn(),
         props: { delay: 0 },
