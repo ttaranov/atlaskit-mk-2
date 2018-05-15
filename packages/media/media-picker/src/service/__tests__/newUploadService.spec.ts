@@ -967,10 +967,8 @@ describe('UploadService', () => {
       uploadParams?: UploadParams;
       progress?: number;
       userAuthProvider?: AuthProvider;
-      copyFileToCollectionSpy: Function;
+      copyFileWithTokenSpy: Function;
     }) => {
-      // window.fetch = jest.fn(() => Promise.resolve({ ok: true }));
-
       const collectionNameStub = 'some-collection-name';
 
       const clientBasedConfig: ContextConfig = {
@@ -991,8 +989,8 @@ describe('UploadService', () => {
         false,
       );
 
-      (uploadService as any).mediaStore = {
-        copyFileWithToken: config.copyFileToCollectionSpy,
+      (uploadService as any).userMediaStore = config.userAuthProvider && {
+        copyFileWithToken: config.copyFileWithTokenSpy,
       };
 
       const sourceFileId = 'some-source-file-id';
@@ -1005,7 +1003,7 @@ describe('UploadService', () => {
     };
 
     it('resolves immediately when userAuthProvider was not passed in to UploadService constructor', () => {
-      const copyFileToCollectionSpy = jest
+      const copyFileWithTokenSpy = jest
         .fn()
         .mockReturnValue(Promise.resolve('some-upload-id'));
 
@@ -1015,7 +1013,7 @@ describe('UploadService', () => {
         sourceFileId,
         sourceFileCollection,
       } = setup({
-        copyFileToCollectionSpy,
+        copyFileWithTokenSpy,
       });
 
       return uploadService['copyFileToUsersCollection'](
@@ -1023,7 +1021,7 @@ describe('UploadService', () => {
         sourceFileCollection,
       ).then(() => {
         expect(authProvider).not.toHaveBeenCalled();
-        expect(copyFileToCollectionSpy).not.toHaveBeenCalled();
+        expect(copyFileWithTokenSpy).not.toHaveBeenCalled();
       });
     });
 
@@ -1033,7 +1031,7 @@ describe('UploadService', () => {
       const userAuthProvider = () =>
         Promise.resolve({ clientId: usersClientId, token: usersToken });
 
-      const copyFileToCollectionSpy = () => Promise.resolve('some-upload-id');
+      const copyFileWithTokenSpy = () => Promise.resolve('some-upload-id');
 
       const {
         uploadService,
@@ -1042,7 +1040,7 @@ describe('UploadService', () => {
         sourceFileCollection,
       } = setup({
         userAuthProvider,
-        copyFileToCollectionSpy,
+        copyFileWithTokenSpy,
       });
 
       return uploadService['copyFileToUsersCollection'](
@@ -1061,13 +1059,13 @@ describe('UploadService', () => {
       const userAuthProvider = () =>
         Promise.resolve({ clientId: usersClientId, token: usersToken });
 
-      const copyFileToCollectionSpy = jest
+      const copyFileWithTokenSpy = jest
         .fn()
         .mockReturnValue(Promise.resolve('some-MediaApi-response'));
 
       const { uploadService, sourceFileId, sourceFileCollection } = setup({
         userAuthProvider,
-        copyFileToCollectionSpy,
+        copyFileWithTokenSpy,
       });
 
       return uploadService['copyFileToUsersCollection'](
@@ -1080,12 +1078,12 @@ describe('UploadService', () => {
 
     it('rejects with api#copyFileToCollection rejection when authProvider resolves', () => {
       const copyFileToCollectionRejection = new Error('some-error');
-      const copyFileToCollectionSpy = jest
+      const copyFileWithTokenSpy = jest
         .fn()
         .mockReturnValue(Promise.reject(copyFileToCollectionRejection));
 
       const { uploadService, sourceFileId, sourceFileCollection } = setup({
-        copyFileToCollectionSpy,
+        copyFileWithTokenSpy,
       });
 
       const fileUploadErrorCallback = jest.fn();
@@ -1103,13 +1101,13 @@ describe('UploadService', () => {
     it('resolves when userAuthProvider fails', () => {
       const userAuthProvider = () => Promise.reject(new Error('some-error'));
 
-      const copyFileToCollectionSpy = jest
+      const copyFileWithTokenSpy = jest
         .fn()
         .mockReturnValue(Promise.resolve('some-MediaApi-response'));
 
       const { uploadService, sourceFileId, sourceFileCollection } = setup({
         userAuthProvider,
-        copyFileToCollectionSpy,
+        copyFileWithTokenSpy,
       });
 
       const fileUploadErrorCallback = jest.fn();
