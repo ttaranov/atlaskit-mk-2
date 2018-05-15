@@ -4,9 +4,10 @@ import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
 import toItemId from '../utils/toItemId';
-import { type RowData, type LoadableItems } from '../types';
+import type { RowData, LoadableItems } from '../types';
 
 type Props = {
+  /** Whether this row has any child rows. */
   hasChildren: boolean,
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
