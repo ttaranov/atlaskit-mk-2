@@ -1,7 +1,19 @@
 import { Observable } from 'rxjs';
 import { Context } from '@atlaskit/media-core';
+import { ContextConfig } from '../../media-store';
 
-export const fakeContext = (stubbedContext: any = {}): Context => {
+const defaultContextConfig = {
+  serviceHost: 'some-service-host',
+  authProvider: () =>
+    Promise.resolve({
+      clientId: 'some-client-id',
+      token: 'some-token',
+    }),
+};
+export const fakeContext = (
+  stubbedContext: any = {},
+  config: ContextConfig = defaultContextConfig,
+): Context => {
   const returns = (value: any) => jest.fn().mockReturnValue(value);
   const getMediaItemProvider = returns({
     observable: returns(Observable.of('nothing')),
@@ -38,14 +50,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
     getUrlPreviewProvider,
     refreshCollection,
     uploadFile,
-    config: {
-      serviceHost: 'some-service-host',
-      authProvider: () =>
-        Promise.resolve({
-          clientId: 'some-client-id',
-          token: 'some-token',
-        }),
-    },
+    config,
   };
 
   const wrappedStubbedContext: any = {};

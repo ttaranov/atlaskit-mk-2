@@ -1,3 +1,5 @@
+import { UploadableFile } from '../../../../media-core';
+
 jest.mock('../../util/getPreviewFromBlob');
 jest.mock('../../util/getPreviewFromVideo');
 
@@ -428,28 +430,25 @@ describe('UploadService', () => {
       jest.spyOn(context, 'uploadFile');
       uploadService.addFiles([file1, file2]);
       expect(context.uploadFile).toHaveBeenCalledTimes(2);
-      expect(context.uploadFile).toHaveBeenCalledWith(
-        {
-          collection: 'some-collection',
-          content: file1,
-          name: 'some-filename',
-          fileType: 'video/mp4',
-        },
-        {
-          onProgress: expect.any(Function),
-        },
-      );
-      expect(context.uploadFile).toHaveBeenCalledWith(
-        {
-          collection: 'some-collection',
-          content: file2,
-          name: 'some-other-filename',
-          fileType: 'image/png',
-        },
-        {
-          onProgress: expect.any(Function),
-        },
-      );
+      const expectedUploadableFile2: UploadableFile = {
+        collection: 'some-collection',
+        content: file2,
+        name: 'some-other-filename',
+        mimeType: 'image/png',
+      };
+      const expectedUploadableFile1: UploadableFile = {
+        collection: 'some-collection',
+        content: file1,
+        name: 'some-filename',
+        mimeType: 'video/mp4',
+      };
+      expect(context.uploadFile).toHaveBeenCalledWith(expectedUploadableFile1, {
+        onProgress: expect.any(Function),
+      });
+
+      expect(context.uploadFile).toHaveBeenCalledWith(expectedUploadableFile2, {
+        onProgress: expect.any(Function),
+      });
     });
 
     it('should emit file-converting when uploadFile resolves', async () => {
@@ -830,16 +829,16 @@ describe('UploadService', () => {
               // It's not required, but I like "natural" feel of this call
               observer.next(pendingFileItem);
 
-              // At this point expFile.cancel should be the one that cancels pulling observable
+              // At this point cancellableFilesUpload.cancel should be the one that cancels pulling observable
               uploadService.cancel();
               // Just checking that original cancel method (that came from context.uploadFile)
               // is not called at this point
               expect(chunkinatorCancel).not.toHaveBeenCalled();
               expect(observer.closed).toBe(true);
 
-              // Double checking that expFile was released
+              // Double checking that cancellableFilesUpload was released
               expect(
-                Object.keys((uploadService as any).uploadingExpFiles),
+                Object.keys((uploadService as any).cancellableFilesUploads),
               ).toHaveLength(0);
 
               // Just checking that `file-converted` event is not triggered even if .next be called
@@ -857,7 +856,7 @@ describe('UploadService', () => {
       uploadService.addFiles([file]);
     });
 
-    it('should release expFile after files were added and succeeded status received', done => {
+    it('should release cancellableFilesUpload after files were added and succeeded status received', done => {
       const file: File = {
         size: 100,
         name: 'some-filename',
@@ -897,7 +896,7 @@ describe('UploadService', () => {
             setImmediate(() => {
               observer.next(succeededFileItem);
               expect(
-                Object.keys((uploadService as any).uploadingExpFiles),
+                Object.keys((uploadService as any).cancellableFilesUploads),
               ).toHaveLength(0);
               done();
             });
@@ -910,11 +909,11 @@ describe('UploadService', () => {
 
       uploadService.addFiles([file]);
       expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
+        Object.keys((uploadService as any).cancellableFilesUploads),
       ).toHaveLength(1);
     });
 
-    it('should release expFile after file failed to upload', async () => {
+    it('should release cancellableFilesUpload after file failed to upload', async () => {
       const file: File = {
         size: 100,
         name: 'some-filename',
@@ -942,14 +941,14 @@ describe('UploadService', () => {
 
       uploadService.addFiles([file]);
       expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
+        Object.keys((uploadService as any).cancellableFilesUploads),
       ).toHaveLength(1);
       try {
         await rejectedPromise;
       } catch (e) {}
 
       expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
+        Object.keys((uploadService as any).cancellableFilesUploads),
       ).toHaveLength(0);
     });
   });
