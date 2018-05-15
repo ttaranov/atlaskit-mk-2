@@ -32,7 +32,7 @@ const config = {
     '/__tests__\\/.*?\\/_.*?',
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
-    // ignore tests under editor package as this will need to runInBand
+    // ignore tests under editor package as they require the --runInBand flag in CI
     '/editor\\/.*?\\/__tests__\\/*.?',
   ],
   modulePathIgnorePatterns: ['./node_modules'],
@@ -58,7 +58,7 @@ const config = {
   testResultsProcessor: 'jest-junit',
 };
 
-// do-not ignore editor tests if its not CI
+// donot ignore editor tests if its environment not CI
 if (!CI) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
@@ -73,7 +73,7 @@ if (CHANGED_PACKAGES) {
   );
   config.testMatch = changedPackagesTestGlobs;
 }
-// If the INTEGRATION_TESTS flag is set we need to
+// donot ignore integration tests when INTEGRATION_TESTS is set
 if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
@@ -90,9 +90,8 @@ if (INTEGRATION_TESTS) {
     config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
   }
 }
-
+// when in CI env and flag RUN_EDITOR_TESTS is set run editor tests using --runInBand
 if (CI && RUN_EDITOR_TESTS) {
-  // remove editor tests from ignored patterns
   if (CHANGED_PACKAGES) {
     config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
       pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
