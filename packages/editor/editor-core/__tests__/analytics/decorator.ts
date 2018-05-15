@@ -2,7 +2,6 @@ import analytics from '../../src/analytics/decorator';
 import { AnalyticsHandler } from '../../src/analytics/handler';
 import service from '../../src/analytics/service';
 
-// adding comment to test ED-4533
 describe('analytics decorator', () => {
   let spy: any;
 

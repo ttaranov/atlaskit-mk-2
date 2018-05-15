@@ -3,7 +3,6 @@ import { doc, p, emoji } from '@atlaskit/editor-test-helpers';
 import { checkParse, checkEncode } from './_test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
 
-// adding comment to test ED-4533
 describe('emojiHelper', () => {
   it(`maps correctly formed image tags`, () => {
     const imageElement = new Image();
@@ -29,7 +28,6 @@ describe('emojiHelper', () => {
   it(`does not map image tags without src`, () => {
     const imageElement = new Image();
     const result = mapImageToEmoji(imageElement);
-    expect(result).toBeNull();
     expect(result).toBeNull();
   });
 
