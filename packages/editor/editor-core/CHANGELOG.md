@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 71.3.19
+- [patch] Adding borders for colors in color picker [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)
+- [none] Updated dependencies [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)
+  - @atlaskit/editor-common@9.3.7
+
 ## 71.3.18
 - [patch] Align font sizes for inline code, mentions and dates [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
 - [none] Updated dependencies [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)

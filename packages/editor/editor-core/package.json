@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "71.3.18",
+  "version": "71.3.19",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -26,7 +26,7 @@
     "@atlaskit/calendar": "^5.0.2",
     "@atlaskit/code": "^4.0.3",
     "@atlaskit/droplist": "^5.0.2",
-    "@atlaskit/editor-common": "^9.3.6",
+    "@atlaskit/editor-common": "^9.3.7",
     "@atlaskit/editor-json-transformer": "^3.0.5",
     "@atlaskit/editor-markdown-transformer": "^0.2.19",
     "@atlaskit/emoji": "^34.1.11",
