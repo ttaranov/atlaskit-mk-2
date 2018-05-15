@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.15
+- [patch] internal changes to ContentNodeView to support mocking around contentDOM in tests [d6f88f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6f88f1)
+- [patch] Updated dependencies [d6f88f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6f88f1)
+
 ## 71.3.14
 - [patch] ED-4628: fixed list button group styles [ca01876](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca01876)
 - [none] Updated dependencies [ca01876](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca01876)
