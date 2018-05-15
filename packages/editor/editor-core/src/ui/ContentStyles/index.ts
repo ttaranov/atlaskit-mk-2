@@ -90,31 +90,29 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  .ProseMirror pre {
-    display: flex;
+  .ProseMirror .code-block {
     font-family: ${akEditorCodeFontFamily};
     background: ${akColorN20};
     border-radius: ${akBorderRadius};
     font-size: 14px;
     line-height: 20px;
-    vertical-align: middle;
     counter-reset: line;
+    display: flex;
 
-    .line-numbers {
-      overflow-x: unset;
+    .line-number-gutter {
       color: ${akColorN300};
       background-color: rgba(9, 30, 66, 0.04);
       text-align: right;
       user-select: none;
       padding: ${akEditorCodeBlockPadding} 8px;
+      border-radius: ${akBorderRadius};
+      font-size: 12px;
+      line-height: 20px;
 
       span {
         display: block;
-        font-size: 12px;
-        border-radius: ${akBorderRadius};
-        line-height: 20px;
 
-        &:before {
+        &::before {
           counter-increment: line;
           content: counter(line);
           display: inline-block;
@@ -122,10 +120,24 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       }
     }
 
-    code {
+    .code-content {
       padding: ${akEditorCodeBlockPadding} 16px;
-      overflow-x: scroll;
       color: ${akColorN800};
+      overflow: scroll;
+      display: flex;
+      flex: 1;
+    }
+
+    /* We render this as a basic box in IE11 because it can't handle scrolling */
+    &.ie11 {
+      display: block;
+      .line-number-gutter {
+        display: none;
+      }
+      .code-content {
+        display: block;
+        overflow: visible;
+      }
     }
   }
 
