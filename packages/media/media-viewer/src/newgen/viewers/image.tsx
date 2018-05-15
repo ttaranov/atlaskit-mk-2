@@ -50,9 +50,14 @@ export class ImageViewer extends React.Component<
 
   renderImage(src: string) {
     const { zoomLevel } = this.state;
+    // We need to set new border value every time the zoom changes
+    // to force a re layout in Chrome.
+    // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
+    const border = `${zoomLevel / 100}px solid transparent`;
     // We use style attr instead of SC prop for perf reasons
     const imgStyle = {
       transform: `scale(${zoomLevel})`,
+      border,
     };
 
     return (

@@ -147,7 +147,7 @@ export const LeftHeader = styled.div`
 export const ImageWrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
   display: flex;
   align-items: center;
   justify-content: center;
