@@ -1,5 +1,5 @@
 import { BitbucketTransformer } from '../src';
-import { bitbucketSchema as schema } from '@atlaskit/editor-common';
+import { bitbucketSchema as schema, paragraph } from '@atlaskit/editor-common';
 import {
   a,
   blockquote,
@@ -73,16 +73,61 @@ describe('BitbucketTransformer: parser', () => {
     it('should support horizontal rules', () => {
       expect(parse('<hr>')).toEqualDocument(doc(hr()));
     });
+  });
 
+  describe('images', () => {
     it('should support images', () => {
       const parsed = parse(
         '<p><img alt="Alt text" src="http://path/to/image.jpg"></p>',
       );
+
       expect(parsed).toEqualDocument(
         doc(
           mediaSingle()(
             media({ url: 'http://path/to/image.jpg', type: 'external' })(),
           ),
+        ),
+      );
+    });
+
+    it('should support images in lists', () => {
+      const parsed = parse(`
+        <ul>
+          <li>
+            Hello
+            <img src="http://path/to/image.jpg">
+            World
+          </li>
+        </ul>
+      `);
+
+      expect(parsed).toEqualDocument(
+        doc(
+          ul(
+            li(
+              p('Hello'),
+              mediaSingle()(
+                media({ url: 'http://path/to/image.jpg', type: 'external' })(),
+              ),
+              p('World'),
+            ),
+          ),
+        ),
+      );
+    });
+
+    it('shoud split paragraphs with images', () => {
+      const parsed = parse(`
+        <p>Hello <img src="http://path/to/image.jpg"> World</p>
+      `);
+
+      expect(parsed).toEqualDocument(
+        doc(
+          p('Hello'),
+          mediaSingle()(
+            media({ url: 'http://path/to/image.jpg', type: 'external' })(),
+          ),
+          p('World'),
         ),
       );
     });

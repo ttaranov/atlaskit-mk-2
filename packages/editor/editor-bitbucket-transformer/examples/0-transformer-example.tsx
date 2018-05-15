@@ -6,7 +6,6 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
-import { bitbucketSchema } from '@atlaskit/editor-common';
 import { BitbucketTransformer } from '../src';
 import exampleBitbucketHTML from '../example-helpers/exampleHTML';
 
@@ -74,11 +73,6 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowLists={true}
             allowRule={true}
             allowTables={true}
-            media={{
-              allowMediaSingle: true,
-            }}
-            // allowMentions={true}
-            // mentionProvider={Promise.resolve(() => {}) as any}
             legacyImageUploadProvider={Promise.resolve(() => {})}
             contentTransformerProvider={schema =>
               new BitbucketTransformer(schema)

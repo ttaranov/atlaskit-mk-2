@@ -135,66 +135,103 @@ export function transformHtml(
 
       const { parentNode } = img;
 
-      if (parentNode) {
-        // parentNode is root-element
-        if (parentNode === el) {
-          parentNode.insertBefore(mediaSingle, img);
-        } else {
-          const { childNodes } = parentNode;
-          if (childNodes.length === 1) {
-            parentNode.parentNode!.insertBefore(mediaSingle, parentNode);
-            parentNode.parentNode!.removeChild(parentNode);
-          } else {
-            let parent = parentNode;
-
-            if (parentNode.nodeName === 'LI') {
-              parent = document.createElement('p');
-              while (parentNode.firstChild) {
-                parent.appendChild(parentNode.firstChild);
-              }
-              parentNode.appendChild(parent);
-            }
-
-            const before: DocumentFragment = new DocumentFragment();
-            const after: DocumentFragment = new DocumentFragment();
-            let foundImg = false;
-
-            Array.from(parent.childNodes).forEach(child => {
-              if (child === img) {
-                foundImg = true;
-                parent.removeChild(child);
-              } else {
-                if (foundImg) {
-                  after.appendChild(child);
-                } else {
-                  before.appendChild(child);
-                }
-              }
-            });
-
-            if (before.childNodes.length) {
-              const beforeNode = parent.cloneNode();
-              beforeNode.appendChild(before);
-
-              parent.parentNode!.insertBefore(beforeNode, parent);
-            }
-
-            parent.parentNode!.insertBefore(mediaSingle, parent);
-
-            if (after.childNodes.length) {
-              const afterNode = parent.cloneNode();
-              afterNode.appendChild(after);
-              parent.parentNode!.insertBefore(afterNode, parent);
-            }
-
-            parent.parentNode!.removeChild(parent);
-          }
-        }
-
-        try {
-          parentNode.removeChild(img);
-        } catch (err) {}
+      if (!parentNode) {
+        return;
       }
+
+      /**
+       * Replace the image node with mediaSingle if parent is the root-element
+       */
+      if (parentNode === el) {
+        parentNode.insertBefore(mediaSingle, img);
+      } else {
+        const { childNodes } = parentNode;
+
+        /**
+         * Insert mediaSingle before the parent node if the image node is it's only child, then
+         * remove the parent node.
+         */
+        if (childNodes.length === 1) {
+          parentNode.parentNode!.insertBefore(mediaSingle, parentNode);
+          parentNode.parentNode!.removeChild(parentNode);
+        } else {
+          /**
+           * If the image node is inline with other content we need to split the node. For example:
+           * Input:
+           *   <p>Hello <img src="image.jpg" /> World</p>
+           * Output:
+           *   <p>Hello</p>
+           *   <div data-node-type="mediaSingle">
+           *     <div data-node-type="media" data-type="external" data-url="image.jpg"></div>
+           *   </div>
+           *   <p>World</p>
+           *
+           * There's a special case for lists where we do allow mediaSingle as content. Example:
+           * Input:
+           *   <ul>
+           *     <li>Hello <img src="image.jpg" /> World<li>
+           *   </ul>
+           * Output:
+           *   <ul>
+           *     <li>
+           *       <p>Hello</p>
+           *       <div data-node-type="mediaSingle">
+           *         <div data-node-type="media" data-type="external" data-url="image.jpg"></div>
+           *       </div>
+           *       <p>World</p>
+           *     </li>
+           *   </ul>
+           */
+
+          let parent = parentNode;
+
+          if (parentNode.nodeName === 'LI') {
+            parent = document.createElement('p');
+            while (parentNode.firstChild) {
+              parent.appendChild(parentNode.firstChild);
+            }
+            parentNode.appendChild(parent);
+          }
+
+          const before: Node[] = [];
+          const after: Node[] = [];
+          let foundImg = false;
+
+          Array.from(parent.childNodes).forEach(child => {
+            if (child === img) {
+              foundImg = true;
+              parent.removeChild(child);
+            } else {
+              if (foundImg) {
+                after.push(child);
+              } else {
+                before.push(child);
+              }
+            }
+          });
+
+          if (before.length) {
+            const beforeNode = parent.cloneNode();
+            before.forEach(child => beforeNode.appendChild(child));
+
+            parent.parentNode!.insertBefore(beforeNode, parent);
+          }
+
+          parent.parentNode!.insertBefore(mediaSingle, parent);
+
+          if (after.length) {
+            const afterNode = parent.cloneNode();
+            after.forEach(child => afterNode.appendChild(child));
+            parent.parentNode!.insertBefore(afterNode, parent);
+          }
+
+          parent.parentNode!.removeChild(parent);
+        }
+      }
+
+      try {
+        parentNode.removeChild(img);
+      } catch (err) {}
     },
   );
 
