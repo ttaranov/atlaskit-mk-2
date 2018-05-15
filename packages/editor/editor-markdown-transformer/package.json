@@ -18,7 +18,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^9.0.0",
     "markdown-it": "^6.0.4",
-    "markdown-it-table": "^2.0.2",
+    "markdown-it-table": "^2.0.3",
     "prosemirror-markdown": "^1.0.3",
     "prosemirror-model": "^1.2.0"
   },

@@ -313,7 +313,7 @@
     "lodash.sample": "^4.2.1",
     "lru-fast": "^0.2.2",
     "markdown-it": "^6.0.4",
-    "markdown-it-table": "^2.0.2",
+    "markdown-it-table": "^2.0.3",
     "memoize-one": "^3.0.1",
     "minimatch": "^3.0.4",
     "node-yaml": "^3.1.1",
