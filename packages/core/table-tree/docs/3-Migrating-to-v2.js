@@ -25,8 +25,12 @@ to help you process data in case of async loading.
 
 ## Upgrade with static table data ( without async loading )
 
-In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass \`items\` here in case of render props ).
-Moreover, there is a new prop \`items\` on Row which expects to receive the children for the particular parent.
+In v2 API of table tree, the \`items\` prop on default export of tableTree, accepts the array of data to be presented
+in table tree. Moreover, the \`items\` prop is drilled down to Rows component ( exported from package ) , therefore, we
+can pass the table tree here in case we follow render props pattern.
+
+Additionally, a new prop \`items\` is added on Row component ( exported from package ), which accepts array of children object for particular
+parent item. See the example below:
 
 ${(
   <Example
@@ -41,14 +45,16 @@ ${(
 
 ### Explanation:
 
-Most important trick is done in the render prop of Rows component. Rows follows a render prop pattern
-where the react function component passed in as render prop will receive the parent object as argument
-and thus children data can be accessed here easily ( please feel free to name the children property as per
-wish, as it is configurable ).
+We provide the table tree data in the \`items\` prop on the Rows component. When a row is expanded if will pass
+the expanded object, parent item in this case. Thus, we get children of the expanded Row. Then we just pass in
+the children in as \`items\` in Row component.
+
+*As you may have guessed, property name children is used in example but we can name our property anything we want and
+pass the same as \`items\` in Row*
 
 ## Upgrade with Async loading of table data
 
-**Here we will discuss the recommended pattern to avoid data processing in case of Async data loading.**
+**Here we will discuss the recommended pattern in case of Async data loading.**
 
 ### Problem
 
