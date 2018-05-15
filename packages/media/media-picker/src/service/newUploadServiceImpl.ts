@@ -5,16 +5,12 @@ import {
   MediaType,
   FileItem,
 } from '@atlaskit/media-core';
+import { MediaStore } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 
-import { MediaApi } from './mediaApi';
-import { MediaClient } from './mediaClient';
-import {
-  mapAuthToSourceFileOwner,
-  SourceFile,
-} from '../popup/domain/source-file';
+import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 import { UploadParams } from '..';
@@ -34,8 +30,7 @@ export interface CancellableFileUpload {
 }
 
 export class NewUploadServiceImpl implements UploadService {
-  private readonly userCollectionMediaClient: MediaClient;
-  private readonly api: MediaApi;
+  private readonly userMediaStore: MediaStore;
 
   private uploadParams: UploadParams;
 
@@ -49,14 +44,11 @@ export class NewUploadServiceImpl implements UploadService {
     this.cancellableFilesUploads = {};
 
     if (context.config.userAuthProvider) {
-      this.userCollectionMediaClient = new MediaClient(
-        context.config.serviceHost,
-        context.config.userAuthProvider,
-        'recents',
-      );
+      this.userMediaStore = new MediaStore({
+        serviceHost: context.config.serviceHost,
+        authProvider: context.config.userAuthProvider,
+      });
     }
-
-    this.api = new MediaApi();
 
     this.setUploadParams(uploadParams);
   }
@@ -145,6 +137,8 @@ export class NewUploadServiceImpl implements UploadService {
       const uploadableFile: UploadableFile = {
         collection: this.uploadParams.collection,
         content: file,
+        name: file.name,
+        mimeType: file.type,
       };
       const { promiseFileId, cancel } = this.context.uploadFile(
         uploadableFile,
@@ -329,26 +323,26 @@ export class NewUploadServiceImpl implements UploadService {
     sourceFileId: string,
     sourceCollection?: string,
   ): Promise<void> {
-    if (!this.userCollectionMediaClient) {
+    if (!this.userMediaStore) {
       return Promise.resolve();
     }
 
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
-        const sourceFile: SourceFile = {
-          id: sourceFileId,
-          collection: sourceCollection,
-          owner: {
-            ...mapAuthToSourceFileOwner(auth),
+        const body = {
+          sourceFile: {
+            id: sourceFileId,
+            collection: sourceCollection,
+            owner: {
+              ...mapAuthToSourceFileOwner(auth),
+            },
           },
         };
-
-        return this.api.copyFileToCollection(
-          this.userCollectionMediaClient,
-          sourceFile,
-          'recents',
-        );
+        const params = {
+          collection: 'recents',
+        };
+        return this.userMediaStore.copyFileWithToken(body, params);
       });
   }
 

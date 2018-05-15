@@ -16,9 +16,6 @@ export {
   UploadFileResult,
 } from '@atlaskit/media-store';
 
-// TODO remove createHasher export after we done with resumable.js (MSW-691)
-export { createHasher } from '@atlaskit/media-store';
-
 export * from './mediaTypes';
 export * from './context/context';
 export * from './collection';

@@ -28,6 +28,7 @@
     "@atlaskit/icon": "^11.0.0",
     "@atlaskit/media-card": "^27.1.0",
     "@atlaskit/media-editor": "^7.0.1",
+    "@atlaskit/media-store": "^2.1.0",
     "@atlaskit/modal-dialog": "^4.0.0",
     "@atlaskit/spinner": "^5.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

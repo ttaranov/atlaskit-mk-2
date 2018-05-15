@@ -1,3 +1,6 @@
+// TODO Kill this file and it's friends as part of MSW-691
+// Do not use this class for anything. Use media-store instead
+
 import * as uuid from 'uuid';
 import { FileDetails } from '@atlaskit/media-core';
 import {
@@ -6,7 +9,7 @@ import {
   addAuthToQueryParameters,
 } from './mediaClient';
 import { retryTask } from '../util/promises';
-import { SourceFile } from '../popup/domain/source-file';
+import { SourceFile } from '../popup/domain';
 
 export interface MediaArtifact {
   processingStatus: string;
@@ -20,9 +23,6 @@ export interface MediaFileData {
 }
 
 export class MediaApi {
-  // Following functions are deprecated and are here just to serve
-  // resumable.js old upload service. Please delete me when I am not used.
-  // START OF DEPRECATION CODE PART \/\/\/
   createUpload(mediaClient: MediaClient): Promise<string> {
     // Media API may not be able to create the required upload container. If it fails, this function retries
     const numRetries = 5;
@@ -128,7 +128,6 @@ export class MediaApi {
       delayMultiplier,
     );
   }
-  // END OF DEPRECATION PART ^^^
 
   copyFileToCollection(
     mediaClient: MediaClient,

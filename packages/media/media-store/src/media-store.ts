@@ -163,12 +163,16 @@ export class MediaStore {
 
   copyFileWithToken(
     body: MediaStoreCopyFileWithTokenBody,
-    params?: MediaStoreCopyFileWithTokenParams,
+    params: MediaStoreCopyFileWithTokenParams,
   ): Promise<void> {
-    return this.request('file/copy/withToken', {
+    return this.request('/file/copy/withToken', {
       method: 'POST',
-      authContext: { collectionName: body.collection }, // Collection name to read from
-      body: JSON.stringify(body),
+      authContext: { collectionName: params.collection }, // Contains collection name to write to
+      body: JSON.stringify(body), // Contains collection name to read from
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       params, // Contains collection name to write to
     }).then(mapResponseToVoid);
   }
@@ -257,10 +261,12 @@ export type MediaStoreGetCollectionItemsPrams = {
 };
 
 export type MediaStoreCopyFileWithTokenBody = {
-  id: string;
-  owner: ClientAltBasedAuth | AsapBasedAuth;
-  collection?: string;
-  version?: number;
+  sourceFile: {
+    id: string;
+    owner: ClientAltBasedAuth | AsapBasedAuth;
+    collection?: string;
+    version?: number;
+  };
 };
 
 export type MediaStoreCopyFileWithTokenParams = {

@@ -1,4 +1,5 @@
 /**
+ * TODO
  * This is deprecated code. It will be removed soon.
  * Please remove this file and rename newUploadServiceImpl.ts to uploadServiceImpl.ts
  */
@@ -6,22 +7,22 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider, MediaType, createHasher } from '@atlaskit/media-core';
+import { AuthProvider, MediaType } from '@atlaskit/media-core';
+import { createHasher } from '@atlaskit/media-store';
 import { Context, FileDetails } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
-import { mapAuthToQueryParameters } from '../domain/auth';
-import { MediaErrorName } from '../domain/error';
-import { MediaFile, PublicMediaFile } from '../domain/file';
-import { SmartMediaProgress } from '../domain/progress';
-import { defaultUploadParams } from '../domain/uploadParams';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
+import { mapAuthToQueryParameters } from '../domain/auth';
+import { MediaErrorName } from '../domain/error';
+import { SmartMediaProgress } from '../domain/progress';
+import { defaultUploadParams } from '../domain/uploadParams';
+import { MediaFile, PublicMediaFile, UploadParams } from '..';
 
 import { MediaClient, MediaApiError, isTokenError } from './mediaClient';
 import { MediaClientPool } from './mediaClientPool';
 import { MediaApi } from './mediaApi';
-import { UploadParams } from '../domain/config';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,

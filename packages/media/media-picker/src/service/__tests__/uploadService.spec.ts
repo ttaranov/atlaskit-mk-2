@@ -1,56 +1,46 @@
-jest.mock('../../util/getPreviewFromBlob');
-jest.mock('../../util/getPreviewFromVideo');
+jest.mock('@atlaskit/media-store');
 
-import {
-  ContextFactory,
-  FileItem,
-  AuthProvider,
-  UploadFileCallbacks,
-  MediaItemProvider,
-  UploadFileResult,
-} from '@atlaskit/media-core';
-import { Observable } from 'rxjs/Observable';
-import { MediaFile, UploadParams } from '../..';
+import { ResumableFile, ResumableChunk } from 'resumablejs';
+import * as Resumable from 'resumablejs';
+import { createHasher } from '@atlaskit/media-store';
+import { UploadParams } from '../../domain/config';
+import { AuthProvider } from '@atlaskit/media-core';
+import { fakeContext } from '@atlaskit/media-test-helpers';
+
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
-import { UploadServiceFactory } from '../uploadServiceFactory';
-import {
-  MockDragEvent,
-  MockFile,
-  MockFileList,
-} from '../../util/clipboardEventMocks';
+import { OldUploadServiceImpl as UploadService } from '../uploadService';
 
 describe('UploadService', () => {
   const apiUrl = 'some-api-url';
   const clientId = 'some-client-id';
+  const asapIssuer = 'some-asap-issuer';
   const token = 'some-token';
   const collection = 'some-collection';
-  const clientBasedAuthProvider = () => Promise.resolve({ clientId, token });
+  // const clientBasedAuthProvider = () => Promise.resolve({ clientId, token });
+  // const issuerBasedAuthProvider = () => Promise.resolve({ asapIssuer, token });
 
-  const getContext = (options = {}) =>
-    ContextFactory.create({
-      serviceHost: apiUrl,
-      authProvider: clientBasedAuthProvider,
-      ...options,
-    });
+  beforeEach(() => {
+    // hasherHashSpy.mockReset();
+  });
 
   describe('setUploadParams', () => {
-    const setup = () => ({
-      uploadService: UploadServiceFactory.create(
-        getContext(),
-        {
+    const setup = () => {
+      const context = fakeContext();
+      return {
+        uploadService: new UploadService(context, {
           collection: '',
-        },
-        false,
-      ),
-    });
+        }),
+        context,
+      };
+    };
 
     it('should apply defaultUploadParams', () => {
       const { uploadService } = setup();
 
       uploadService.setUploadParams({});
 
-      expect(uploadService['uploadParams']).toEqual({
+      expect(uploadService.getUploadParams()).toEqual({
         collection: '',
       });
     });
@@ -63,912 +53,589 @@ describe('UploadService', () => {
 
       uploadService.setUploadParams(newUploadParams);
 
-      expect(uploadService['uploadParams']).toEqual({
+      expect(uploadService.getUploadParams()).toEqual({
         collection,
       });
     });
   });
 
-  const setupWithElement = () => {
-    const uploadService = UploadServiceFactory.create(
-      getContext(),
-      {
+  describe('dropzone', () => {
+    const setup = () => {
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
         collection: '',
-      },
-      false,
-    );
-    const element = document.createElement('input');
+      });
+      const resumable = uploadService['resumable'];
+      const element = document.createElement('div');
 
-    jest.spyOn(element, 'addEventListener');
-    jest.spyOn(element, 'removeEventListener');
+      jest.spyOn(resumable, 'assignDrop');
+      jest.spyOn(resumable, 'unAssignDrop');
+      jest.spyOn(element, 'addEventListener');
+      jest.spyOn(element, 'removeEventListener');
 
-    return {
-      uploadService,
-      element,
+      return {
+        uploadService,
+        resumable,
+        element,
+        context,
+      };
     };
+
+    it('addDropzone should call addEventListener and assignDrop', () => {
+      const { uploadService, resumable, element } = setup();
+
+      uploadService.addDropzone(element);
+
+      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
+      expect(resumable.assignDrop).toHaveBeenCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'drop',
+        expect.any(Function),
+      );
+    });
+
+    it('addDropzone should not call addEventListener and assignDrop if dropzone was already added to same element', () => {
+      const { uploadService, resumable, element } = setup();
+
+      uploadService.addDropzone(element);
+      uploadService.addDropzone(element);
+
+      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
+      expect(resumable.assignDrop).toHaveBeenCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'drop',
+        expect.any(Function),
+      );
+    });
+
+    it('addDropzone should not call addEventListener and assignDrop twice if dropzone was already added to another element', () => {
+      const { uploadService, resumable, element } = setup();
+      const otherElement = document.createElement('span');
+
+      uploadService.addDropzone(otherElement);
+      uploadService.addDropzone(element);
+
+      expect(resumable.assignDrop).toHaveBeenCalledTimes(1);
+      expect(resumable.assignDrop).toHaveBeenCalledWith(otherElement);
+      expect(element.addEventListener).not.toHaveBeenCalled();
+    });
+
+    it('removeDropzone should call removeEventListener and unAssignDrop', () => {
+      const { uploadService, resumable, element } = setup();
+
+      uploadService.addDropzone(element);
+      uploadService.removeDropzone();
+
+      expect(resumable.unAssignDrop).toHaveBeenCalledTimes(1);
+      expect(resumable.unAssignDrop).toHaveBeenCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'drop',
+        expect.any(Function),
+      );
+    });
+
+    it('removeDropzone should call removeEventListener and unAssignDrop only once if is called twice', () => {
+      const { uploadService, resumable, element } = setup();
+
+      uploadService.addDropzone(element);
+      uploadService.removeDropzone();
+      uploadService.removeDropzone();
+
+      expect(resumable.unAssignDrop).toHaveBeenCalledTimes(1);
+      expect(resumable.unAssignDrop).toHaveBeenCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'drop',
+        expect.any(Function),
+      );
+    });
+
+    it('removeDropzone should not call removeEventListener and unAssignDrop if the dropzone was not added', () => {
+      const { uploadService, resumable, element } = setup();
+
+      uploadService.removeDropzone();
+
+      expect(resumable.unAssignDrop).not.toHaveBeenCalled();
+      expect(element.addEventListener).not.toHaveBeenCalled();
+    });
+
+    it('addDropzone should call addEventListener and assignDrop if dropzone was added and removed before', () => {
+      const { uploadService, resumable, element } = setup();
+      const anotherElement = document.createElement('span');
+
+      uploadService.addDropzone(anotherElement);
+      uploadService.removeDropzone();
+      uploadService.addDropzone(element);
+
+      expect(resumable.assignDrop).toHaveBeenCalledTimes(2);
+      expect(resumable.assignDrop).toHaveBeenCalledWith(anotherElement);
+      expect(resumable.assignDrop).toHaveBeenLastCalledWith(element);
+      expect(element.addEventListener).toHaveBeenCalled();
+      expect(element.addEventListener).toBeCalledWith(
+        'drop',
+        expect.any(Function),
+      );
+    });
+  });
+
+  describe('cancel', () => {
+    const setup = () => {
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
+        collection: '',
+      });
+      const resumable = uploadService['resumable'];
+      const resumableFile = {
+        cancel: jest.fn(),
+      };
+
+      jest.spyOn(resumable, 'cancel');
+      jest.spyOn(resumable, 'getFromUniqueIdentifier');
+
+      return {
+        uploadService,
+        resumable,
+        resumableFile,
+        uniqueIdentifier: 'some-unique-identifier',
+      };
+    };
+
+    it('should find resumable file by its unique id and call cancel if the file is found', () => {
+      const {
+        uploadService,
+        resumable,
+        resumableFile,
+        uniqueIdentifier,
+      } = setup();
+
+      (resumable.getFromUniqueIdentifier as jest.Mock<
+        ResumableFile | false
+      >).mockReturnValue(resumableFile);
+
+      uploadService.cancel(uniqueIdentifier);
+
+      expect(resumable.getFromUniqueIdentifier).toBeCalledWith(
+        uniqueIdentifier,
+      );
+      expect(resumableFile.cancel).toBeCalled();
+    });
+
+    it('should find resumable file by its unique id and do nothing if the file is not found', () => {
+      const { uploadService, resumable, uniqueIdentifier } = setup();
+
+      (resumable.getFromUniqueIdentifier as jest.Mock<
+        ResumableFile | false
+      >).mockReturnValue(false);
+
+      uploadService.cancel(uniqueIdentifier);
+
+      expect(resumable.getFromUniqueIdentifier).toBeCalledWith(
+        uniqueIdentifier,
+      );
+    });
+
+    it('should call cancel on resumable if unique id is not provided', () => {
+      const { uploadService, resumable } = setup();
+
+      uploadService.cancel();
+
+      expect(resumable.cancel).toBeCalled();
+    });
+  });
+
+  const setupForSpy = (): Promise<Resumable> => {
+    const context = fakeContext();
+    const uploadService = new UploadService(context, {
+      collection: '',
+    });
+    const resumable: Resumable = uploadService['resumable'];
+
+    const file = { size: 1000, type: 'image/png', name: 'some-file-name' };
+    uploadService.addFiles([file as File]);
+    resumable.upload();
+    return new Promise(resolve => {
+      resumable.on('uploadStart', () => resolve(resumable));
+    });
   };
 
-  describe('dropzone', () => {
-    it('addDropzone should call addEventListener', () => {
-      const { uploadService, element } = setupWithElement();
+  describe('query', () => {
+    it('should have client based auth parameters', () =>
+      setupForSpy().then((resumable: Resumable) => {
+        const queryResult = (resumable.opts.query as any)(
+          resumable.files[0],
+          resumable.files[0].chunks[0],
+        );
+        expect(queryResult).toEqual(
+          expect.objectContaining({
+            client: clientId,
+            token,
+          }),
+        );
+      }));
 
-      uploadService.addDropzone(element);
-
-      expect(element.addEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'drop',
-        expect.any(Function),
-      );
-    });
-
-    it('addDropzone should throw an exception when element added second time', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addDropzone(element);
-      expect(() => {
-        uploadService.addDropzone(element);
-      }).toThrow();
-
-      expect(element.addEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('removeDropzone should call removeEventListener', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addDropzone(element);
-      uploadService.removeDropzone();
-
-      expect(element.removeEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'drop',
-        expect.any(Function),
-      );
-    });
-
-    it('removeDropzone should call removeEventListener only once if is called twice', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addDropzone(element);
-      uploadService.removeDropzone();
-      uploadService.removeDropzone();
-
-      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('addDropzone should call addEventListener if dropzone was added and removed before', () => {
-      const { uploadService, element } = setupWithElement();
-      const anotherElement = document.createElement('span');
-      jest.spyOn(anotherElement, 'addEventListener');
-
-      uploadService.addDropzone(element);
-      uploadService.removeDropzone();
-      uploadService.addDropzone(anotherElement);
-
-      expect(element.addEventListener).toHaveBeenCalledTimes(1);
-      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
-      expect(anotherElement.addEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call addFiles when file is dropped', () => {
-      const uploadService = UploadServiceFactory.create(
-        getContext(),
-        {
-          collection: '',
-        },
-        false,
-      );
-      const element = document.createElement('div');
-      uploadService.addDropzone(element);
-
-      jest.spyOn(uploadService, 'addFiles');
-
-      const files = [new MockFile(), new MockFile()];
-      const clipBoardEvent = new MockDragEvent('drop', files);
-      element.dispatchEvent(clipBoardEvent);
-
-      expect(uploadService.addFiles).toHaveBeenCalledWith(files);
-    });
+    it('should have issuer based auth parameters', () =>
+      setupForSpy().then((resumable: Resumable) => {
+        const queryResult = (resumable.opts.query as any)(
+          resumable.files[0],
+          resumable.files[0].chunks[0],
+        );
+        expect(queryResult).toEqual(
+          expect.objectContaining({
+            issuer: asapIssuer,
+            token,
+          }),
+        );
+      }));
   });
 
-  describe('browse', () => {
-    it('addBrowse should call addEventListener', () => {
-      const { uploadService, element } = setupWithElement();
+  describe('target', () => {
+    it('should have client based auth parameters', () =>
+      setupForSpy().then((resumable: Resumable) => {
+        const rawParams: Array<string> = [
+          `client=${clientId}`,
+          `token=${token}`,
+          'hash=some_hash',
+          'resumableCurrentChunkSize=10',
+        ];
+        const url: string = (resumable.opts.target as any)(rawParams);
+        expect(url).toEqual(
+          `${apiUrl}/chunk/some_hash-10?client=${clientId}&token=${token}`,
+        );
+      }));
 
-      uploadService.addBrowse(element);
-
-      expect(element.addEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'change',
-        expect.any(Function),
-      );
-    });
-
-    it('addBrowse should throw an exception when element added second time', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addBrowse(element);
-      expect(() => {
-        uploadService.addBrowse(element);
-      }).toThrow();
-
-      expect(element.addEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('removeBrowse should call removeEventListener', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addBrowse(element);
-      uploadService.removeBrowse();
-
-      expect(element.removeEventListener).toHaveBeenCalled();
-      expect(element.addEventListener).toBeCalledWith(
-        'change',
-        expect.any(Function),
-      );
-    });
-
-    it('removeBrowse should call removeEventListener only once if is called twice', () => {
-      const { uploadService, element } = setupWithElement();
-
-      uploadService.addBrowse(element);
-      uploadService.removeBrowse();
-      uploadService.removeBrowse();
-
-      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('addBrowse should call addEventListener if browse was added and removed before', () => {
-      const { uploadService, element } = setupWithElement();
-      const anotherElement = document.createElement('input');
-      jest.spyOn(anotherElement, 'addEventListener');
-
-      uploadService.addBrowse(element);
-      uploadService.removeBrowse();
-      uploadService.addBrowse(anotherElement);
-
-      expect(element.addEventListener).toHaveBeenCalledTimes(1);
-      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
-      expect(anotherElement.addEventListener).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call addFiles when file is selected', () => {
-      const uploadService = UploadServiceFactory.create(
-        getContext(),
-        {
-          collection: '',
-        },
-        false,
-      );
-      const element = document.createElement('input');
-      uploadService.addBrowse(element);
-
-      jest.spyOn(uploadService, 'addFiles');
-
-      const files = [new MockFile(), new MockFile()];
-      const changeEvent = new Event('change');
-      Object.defineProperty(element, 'files', {
-        value: MockFileList.fromArray(files),
-        writable: false,
-      });
-      element.dispatchEvent(changeEvent);
-
-      expect(uploadService.addFiles).toHaveBeenCalledWith(files);
-    });
+    it('should have issuer based auth parameters', () =>
+      setupForSpy().then((resumable: Resumable) => {
+        const rawParams: Array<string> = [
+          `issuer=${asapIssuer}`,
+          `token=${token}`,
+          'hash=some_hash',
+          'resumableCurrentChunkSize=10',
+        ];
+        const url: string = (resumable.opts.target as any)(rawParams);
+        expect(url).toEqual(
+          `${apiUrl}/chunk/some_hash-10?issuer=${asapIssuer}&token=${token}`,
+        );
+      }));
   });
 
-  describe('addFiles', () => {
-    beforeEach(() => {
-      (getPreviewModule.getPreviewFromBlob as any).mockReset();
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReset();
-      (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
-        Promise.resolve(),
-      );
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
-        Promise.resolve(),
-      );
-    });
-
+  describe('add', () => {
     const setup = () => {
-      const uploadService = UploadServiceFactory.create(
-        getContext(),
-        {
-          collection: '',
-        },
-        false,
-      );
+      (getPreviewModule.getPreviewFromBlob as any) = jest
+        .fn()
+        .mockReturnValue(Promise.resolve());
+      (getPreviewFromVideo.getPreviewFromVideo as any) = jest
+        .fn()
+        .mockReturnValue(Promise.resolve());
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
+        collection: '',
+      });
+
+      const resumable = uploadService['resumable'];
 
       const filesAddedPromise = new Promise(resolve =>
         uploadService.on('files-added', () => resolve()),
       );
 
-      return { uploadService, filesAddedPromise };
+      return { uploadService, resumable, filesAddedPromise };
     };
 
-    it('should generate a preview when file type is “image” and file size is less than 10MB', async () => {
+    it('should call createHasher once and its hash function twice for different UploadService instance', () => {
+      const { uploadService: uploadService1, resumable: resumable1 } = setup();
+      const { uploadService: uploadService2, resumable: resumable2 } = setup();
+
+      const file = { size: 100, name: 'some-filename', type: '' };
+
+      const promise1 = new Promise(resolve =>
+        resumable1.on('filesAdded', () => resolve()),
+      );
+      const promise2 = new Promise(resolve =>
+        resumable2.on('filesAdded', () => resolve()),
+      );
+
+      uploadService1.addFiles([file as File]);
+      uploadService2.addFiles([file as File]);
+
+      return Promise.all([promise1, promise2]).then(() => {
+        expect(hasherHashSpy).toHaveBeenCalledTimes(2);
+        expect(createHasher).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should emit file upload event when file type is "image" and file size is less than 10 MB', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'image/png' };
 
-      uploadService.addFiles([file as File]);
-
-      await filesAddedPromise;
-      expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(1);
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it('should NOT emit file upload event when file type is NOT "image"', async () => {
+    it('should NOT emit file upload event when file type is NOT "image"', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'unknown' };
 
-      const callback = jest.fn();
-      uploadService.on('file-preview-update', callback);
-
-      uploadService.addFiles([file as File]);
-
-      await filesAddedPromise;
-      expect(getPreviewModule.getPreviewFromBlob).not.toHaveBeenCalled();
-      expect(callback).not.toHaveBeenCalled();
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
+      });
     });
 
-    it('should NOT emit file upload event when file size is greater than 10MB', async () => {
+    it('should NOT emit file upload event when file size is greater than 10MB', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 10e7, name: 'some-filename', type: 'image/png' };
 
-      const callback = jest.fn();
-      uploadService.on('file-preview-update', callback);
-
-      uploadService.addFiles([file as File]);
-
-      await filesAddedPromise;
-      expect(getPreviewModule.getPreviewFromBlob).not.toHaveBeenCalled();
-      expect(callback).not.toHaveBeenCalled();
+      uploadService.addFile(file as File);
+      return filesAddedPromise.then(() => {
+        expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
+      });
     });
 
     it('should emit file-preview-update for video files', async () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
 
-      const callback = jest.fn();
-      uploadService.on('file-preview-update', callback);
-
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
-        Promise.resolve({ preview: true }),
-      );
-
-      uploadService.addFiles([file as File]);
+      uploadService.addFile(file as File);
       await filesAddedPromise;
 
       expect(getPreviewFromVideo.getPreviewFromVideo).toHaveBeenCalledTimes(1);
       expect(getPreviewFromVideo.getPreviewFromVideo).toBeCalledWith(file);
-      expect(callback).toHaveBeenCalledWith({
-        file: {
-          creationDate: expect.any(Number),
-          id: expect.any(String),
-          name: 'some-filename',
-          size: 100,
-          type: 'video/mp4',
-        },
-        preview: { preview: true },
-      });
-    });
-
-    it('should not emit files-added if files is empty list', () => {
-      const { uploadService } = setup();
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
-      uploadService.addFiles([]);
-      expect(filesAddedCallback).not.toHaveBeenCalled();
-    });
-
-    it('should emit files-added', () => {
-      const { uploadService } = setup();
-      const currentTimestamp = Date.now();
-      const file1: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-      const file2: File = {
-        size: 10e7,
-        name: 'some-other-filename',
-        type: 'image/png',
-      } as any;
-
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
-
-      uploadService.addFiles([file1, file2]);
-      expect(filesAddedCallback).toHaveBeenCalledWith({
-        files: [
-          {
-            id: expect.any(String),
-            creationDate: expect.any(Number),
-            name: 'some-filename',
-            size: 100,
-            type: 'video/mp4',
-          },
-          {
-            id: expect.any(String),
-            creationDate: expect.any(Number),
-            name: 'some-other-filename',
-            size: 100000000,
-            type: 'image/png',
-          },
-        ],
-      });
-      expect(filesAddedCallback.mock.calls[0][0].files[0].id).not.toEqual(
-        filesAddedCallback.mock.calls[0][0].files[1].id,
-      );
-      expect(
-        filesAddedCallback.mock.calls[0][0].files[0].creationDate,
-      ).toBeGreaterThanOrEqual(currentTimestamp);
-      expect(
-        filesAddedCallback.mock.calls[0][0].files[1].creationDate,
-      ).toBeGreaterThanOrEqual(currentTimestamp);
-    });
-
-    it('should call uploadFile for each given file', () => {
-      const file1: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-      const file2: File = {
-        size: 10e7,
-        name: 'some-other-filename',
-        type: 'image/png',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-      jest.spyOn(context, 'uploadFile');
-      uploadService.addFiles([file1, file2]);
-      expect(context.uploadFile).toHaveBeenCalledTimes(2);
-      expect(context.uploadFile).toHaveBeenCalledWith(
-        {
-          collection: 'some-collection',
-          content: file1,
-        },
-        {
-          onProgress: expect.any(Function),
-        },
-      );
-      expect(context.uploadFile).toHaveBeenCalledWith(
-        {
-          collection: 'some-collection',
-          content: file2,
-        },
-        {
-          onProgress: expect.any(Function),
-        },
-      );
-    });
-
-    it('should emit file-converting when uploadFile resolves', async () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-      const fileConvertingCallback = jest.fn();
-      uploadService.on('file-converting', fileConvertingCallback);
-      const uploadFilePromise = Promise.resolve('public-file-id');
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
-        cancel: jest.fn(),
-      } as UploadFileResult);
-      uploadService.addFiles([file]);
-      await uploadFilePromise;
-      expect(fileConvertingCallback).toHaveBeenCalledWith({
-        file: {
-          publicId: 'public-file-id',
-          id: expect.any(String),
-          creationDate: expect.any(Number),
-          name: 'some-filename',
-          size: 100,
-          type: 'video/mp4',
-        },
-      });
-    });
-
-    it('should emit file-converted when file is successfully processed', done => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-      const context = getContext();
-
-      const pendingFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'pending',
-        },
-      };
-
-      const succeededFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-        },
-      };
-
-      const failedFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'failed',
-        },
-      };
-
-      const mediaItemProvider: MediaItemProvider = {
-        observable: () =>
-          Observable.create(observer => {
-            observer.next(pendingFileItem);
-            expect(fileConvertedCallback).not.toHaveBeenCalled();
-            observer.next(succeededFileItem);
-            const expectedFile = {
-              publicId: 'public-file-id',
-              id: expect.any(String),
-              creationDate: expect.any(Number),
-              name: 'some-filename',
-              size: 100,
-              type: 'video/mp4',
-            };
-            expect(fileConvertedCallback).toHaveBeenCalledWith({
-              file: expectedFile,
-              public: {
-                id: 'some-id',
-                processingStatus: 'succeeded',
-              },
-            });
-            observer.next(failedFileItem);
-            expect(fileConvertedCallback).toHaveBeenCalledWith({
-              file: expectedFile,
-              public: {
-                id: 'some-id',
-                processingStatus: 'failed',
-              },
-            });
-            done();
-          }),
-      };
-
-      jest
-        .spyOn(context, 'getMediaItemProvider')
-        .mockReturnValue(mediaItemProvider);
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-      const fileConvertedCallback = jest.fn();
-      uploadService.on('file-converted', fileConvertedCallback);
-
-      const uploadFilePromise = Promise.resolve('public-file-id');
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
-        cancel: jest.fn(),
-      } as UploadFileResult);
-      uploadService.addFiles([file]);
-    });
-
-    it('should call emit "file-uploading" when it receives an onProgress event from Context#uploadFile()', async () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-
-      const uploadFilePromise = Promise.resolve('public-file-id');
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
-        cancel: jest.fn(),
-      } as UploadFileResult);
-
-      const fileUploadingCallback = jest.fn();
-      uploadService.on('file-uploading', fileUploadingCallback);
-
-      uploadService.addFiles([file]);
-      const onProgress = ((context.uploadFile as jest.Mock<any>).mock
-        .calls[0][1] as UploadFileCallbacks).onProgress;
-      onProgress(0.42);
-      const expectedMediaFile: MediaFile = {
-        id: expect.any(String),
-        creationDate: expect.any(Number),
-        name: 'some-filename',
-        size: 100,
-        type: 'video/mp4',
-      };
-      expect(fileUploadingCallback).toHaveBeenCalledWith({
-        file: expectedMediaFile,
-        progress: expect.objectContaining({
-          absolute: 42,
-          max: 100,
-          portion: 0.42,
-        }),
-      });
-      await uploadFilePromise;
-    });
-
-    it('should emit "file-upload-error" when uploadFile fail', async () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-
-      const fileUploadErrorCallback = jest.fn();
-      uploadService.on('file-upload-error', fileUploadErrorCallback);
-
-      const uploadFilePromise = Promise.reject(new Error('Some reason'));
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
-        cancel: jest.fn(),
-      } as UploadFileResult);
-
-      uploadService.addFiles([file]);
-      await uploadFilePromise.catch(() => {});
-
-      const expectedMediaFile: MediaFile = {
-        id: expect.any(String),
-        creationDate: expect.any(Number),
-        name: 'some-filename',
-        size: 100,
-        type: 'video/mp4',
-      };
-      expect(fileUploadErrorCallback).toHaveBeenCalledWith({
-        file: expectedMediaFile,
-        error: {
-          fileId: expect.any(String),
-          name: 'upload_fail',
-          description: 'Some reason',
-        },
-      });
     });
   });
 
-  describe('#cancel()', () => {
-    it('should cancel specific upload', () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
+  describe('File events', () => {
+    const setup = (
+      config: { uploadParams?: UploadParams; progress?: number } = {},
+    ) => {
+      const uploadService = new UploadService(
+        apiUrl,
+        clientBasedAuthProvider,
+        config.uploadParams || { collection: '' },
       );
-
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
-
-      const unresolvedPromise = new Promise<string>(() => {});
-      const cancel = jest.fn();
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: unresolvedPromise,
-        cancel,
-      } as UploadFileResult);
-
-      uploadService.addFiles([file]);
-
-      const generatedId = filesAddedCallback.mock.calls[0][0].files[0].id;
-      uploadService.cancel(generatedId);
-      expect(cancel).toHaveBeenCalled();
-    });
-
-    it('should not trigger error when cancelled', async () => {
-      // Chunkinator rejects a promise when cancel is called.
-      // With this test we want verify that this rejection doesn't cause error triggered
-      // by uploadService.
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
+      const resumable = uploadService['resumable'];
+      const emitter = uploadService['emitter'];
+      const resumableFile = {
+        uniqueIdentifier: 'some-unique-identifier',
+        file: {
+          name: 'some-file-name',
+          size: 1000,
+          type: 'jpg',
         },
-        false,
-      );
-
-      const fileUploadErrorCallback = jest.fn();
-      uploadService.on('file-upload-error', fileUploadErrorCallback);
-
-      // This is how chunkinator rejects promised fileId
-      const cancelledPromise = Promise.reject('canceled');
-      const cancel = jest.fn();
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: cancelledPromise,
-        cancel,
-      } as UploadFileResult);
-
-      uploadService.addFiles([file]);
-      try {
-        await cancelledPromise;
-      } catch (e) {}
-
-      expect(fileUploadErrorCallback).not.toHaveBeenCalled();
-    });
-
-    it('should cancel all uploads when #cancel is not passed any arguments', () => {
-      const file1: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-      const file2: File = {
-        size: 10e7,
-        name: 'some-other-filename',
-        type: 'image/png',
-      } as any;
-
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
-
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
-
-      const unresolvedPromise = new Promise<string>(() => {});
-      const cancels = [jest.fn(), jest.fn()];
-      let i = 0;
-      jest.spyOn(context, 'uploadFile').mockImplementation(
-        () =>
-          ({
-            promiseFileId: unresolvedPromise,
-            cancel: cancels[i++],
-          } as UploadFileResult),
-      );
-
-      uploadService.addFiles([file1, file2]);
-
-      uploadService.cancel();
-      expect(cancels[0]).toHaveBeenCalled();
-      expect(cancels[1]).toHaveBeenCalled();
-    });
-
-    it('should cancel status polling if file was already uploaded', done => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'some-type',
-      } as any;
-
-      const pendingFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'pending',
-        },
+        chunks: [] as ResumableChunk[],
+        progress: jest.fn().mockReturnValue(config.progress),
       };
 
-      const succeededFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-        },
+      jest.spyOn(uploadService as any, 'finalizeFile');
+      jest.spyOn(uploadService as any, 'copyFileToUsersCollection');
+      jest.spyOn(emitter, 'emit');
+      jest.spyOn(resumable, 'upload');
+
+      resumable.fire('filesAdded', [resumableFile] as any, '');
+
+      return {
+        uploadService,
+        resumable,
+        resumableFile,
+        emitter,
       };
+    };
 
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
+    it('should emit "files-added" event', () => {
+      const { emitter, resumableFile, uploadService } = setup({
+        uploadParams: { collection },
+      });
 
-      const fileConvertedCallback = jest.fn();
-      uploadService.on('file-converted', fileConvertedCallback);
+      return uploadService['mediaClientPool']
+        .getMediaClient(collection)
+        .refreshAuth()
+        .then(() => {
+          expect(emitter.emit).toBeCalledWith('files-added', {
+            files: [
+              expect.objectContaining({
+                id: resumableFile.uniqueIdentifier,
+                name: resumableFile.file.name,
+              }),
+            ],
+          });
+        });
+    });
 
-      const resolvedPromise = Promise.resolve('some-id');
-      const chunkinatorCancel = jest.fn();
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: resolvedPromise,
-        cancel: chunkinatorCancel,
-      } as UploadFileResult);
+    it('should not fire "file-uploading" for file with undefined progress', () => {
+      const { resumable, resumableFile, emitter } = setup();
 
-      const mediaItemProvider: MediaItemProvider = {
-        observable: () =>
-          Observable.create(observer => {
-            // We have to wait 1 cycle otherwise :next callback called synchronously
-            setImmediate(() => {
-              // It's not required, but I like "natural" feel of this call
-              observer.next(pendingFileItem);
+      resumable.fire('fileProgress', resumableFile as any, '');
 
-              // At this point expFile.cancel should be the one that cancels pulling observable
-              uploadService.cancel();
-              // Just checking that original cancel method (that came from context.uploadFile)
-              // is not called at this point
-              expect(chunkinatorCancel).not.toHaveBeenCalled();
-              expect(observer.closed).toBe(true);
+      expect(emitter.emit).not.toBeCalled();
+    });
 
-              // Double checking that expFile was released
-              expect(
-                Object.keys((uploadService as any).uploadingExpFiles),
-              ).toHaveLength(0);
+    it('should not fire "file-uploading" for file with zero progress', () => {
+      const { resumable, resumableFile, emitter } = setup({ progress: 0 });
 
-              // Just checking that `file-converted` event is not triggered even if .next be called
-              observer.next(succeededFileItem);
-              expect(fileConvertedCallback).not.toHaveBeenCalled();
-              done();
-            });
+      resumable.fire('fileProgress', resumableFile as any, '');
+
+      expect(emitter.emit).not.toBeCalled();
+    });
+
+    it('should not fire "file-uploading" for file with progress 1', () => {
+      const { resumable, resumableFile, emitter } = setup({ progress: 1 });
+
+      resumable.fire('fileProgress', resumableFile as any, '');
+
+      expect(emitter.emit).not.toBeCalled();
+    });
+
+    it('should fire "file-uploading" for file with progress 0.4', () => {
+      const { resumable, resumableFile, emitter } = setup({ progress: 0.4 });
+
+      resumable.fire('fileProgress', resumableFile as any, '');
+
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(emitter.emit).toHaveBeenCalledWith(
+        'file-uploading',
+        expect.objectContaining({
+          file: expect.objectContaining({
+            name: resumableFile.file.name,
           }),
-      };
-
-      jest
-        .spyOn(context, 'getMediaItemProvider')
-        .mockReturnValue(mediaItemProvider);
-
-      uploadService.addFiles([file]);
+        }),
+      );
     });
 
-    it('should release expFile after files were added and succeeded status received', done => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
+    it('should finalize file automatically', () => {
+      const { uploadService, resumable, resumableFile, emitter } = setup({
+        uploadParams: { collection },
+      });
 
-      const succeededFileItem: FileItem = {
-        type: 'file',
-        details: {
-          id: 'some-id',
-          processingStatus: 'succeeded',
-        },
-      };
+      resumable.fire('fileSuccess', resumableFile as any, '');
 
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
-      );
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(uploadService['finalizeFile']).toHaveBeenCalledTimes(1);
+      expect(uploadService['finalizeFile']).toHaveBeenCalledWith(resumableFile);
+    });
 
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
+    it('should emit a 100% upload percentage when the file has been uploaded', () => {
+      const { resumable, resumableFile, emitter } = setup({
+        uploadParams: { collection },
+      });
 
-      const resolvedPromise = Promise.resolve('some-id');
-      const cancel = jest.fn();
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: resolvedPromise,
-        cancel,
-      } as UploadFileResult);
+      resumable.fire('fileSuccess', resumableFile as any, '');
 
-      const mediaItemProvider: MediaItemProvider = {
-        observable: () =>
-          Observable.create(observer => {
-            setImmediate(() => {
-              observer.next(succeededFileItem);
-              expect(
-                Object.keys((uploadService as any).uploadingExpFiles),
-              ).toHaveLength(0);
-              done();
-            });
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(emitter.emit).toBeCalledWith(
+        'file-uploading',
+        expect.objectContaining({
+          progress: expect.objectContaining({
+            absolute: 1000,
+            max: 1000,
+            portion: 1,
           }),
-      };
-
-      jest
-        .spyOn(context, 'getMediaItemProvider')
-        .mockReturnValue(mediaItemProvider);
-
-      uploadService.addFiles([file]);
-      expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
-      ).toHaveLength(1);
+        }),
+      );
     });
 
-    it('should release expFile after file failed to upload', async () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
+    it('should fire "file-upload-error" with associated file and error', () => {
+      console.error = jest.fn();
+      const { resumable, resumableFile, emitter } = setup();
+      const description = 'some-error-description';
 
-      const context = getContext();
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: 'some-collection',
-        },
-        false,
+      resumable.fire('fileError', resumableFile as any, description);
+
+      expect(emitter.emit).toHaveBeenCalledTimes(1);
+      expect(emitter.emit).toHaveBeenCalledWith(
+        'file-upload-error',
+        expect.objectContaining({
+          file: expect.objectContaining({
+            name: resumableFile.file.name,
+          }),
+          error: {
+            fileId: resumableFile.uniqueIdentifier,
+            name: 'upload_fail',
+            description,
+          },
+        }),
+      );
+      expect(console.error).toBeCalled();
+    });
+  });
+
+  describe('#finalizeFile()', () => {
+    const setup = (
+      config: { uploadParams?: UploadParams; progress?: number } = {},
+    ) => {
+      const collectionNameStub = 'some-collection-name';
+      const uploadService = new UploadService(
+        apiUrl,
+        clientBasedAuthProvider,
+        config.uploadParams || { collection: collectionNameStub },
       );
 
-      const filesAddedCallback = jest.fn();
-      uploadService.on('files-added', filesAddedCallback);
+      const resumable = uploadService['resumable'];
+      const resumableFile: ResumableFile = {
+        uniqueIdentifier: 'some-unique-identifier',
+        file: {
+          name: 'some-file-name',
+        },
+        chunks: [] as ResumableChunk[],
+        progress: jest.fn().mockReturnValue(config.progress),
+      } as any;
 
-      const rejectedPromise = Promise.reject(new Error('something happened'));
-      const cancel = jest.fn();
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: rejectedPromise,
-        cancel,
-      } as UploadFileResult);
+      jest.spyOn(uploadService as any, 'copyFileToUsersCollection');
 
-      uploadService.addFiles([file]);
-      expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
-      ).toHaveLength(1);
-      try {
-        await rejectedPromise;
-      } catch (e) {}
+      const publicFileIdStub = 'some-public-file-id';
+      (uploadService as any).api = {
+        createUpload: jest
+          .fn()
+          .mockReturnValue(Promise.resolve('some-upload-id')),
+        createFileFromUpload: jest.fn().mockReturnValue(publicFileIdStub),
+      };
 
-      expect(
-        Object.keys((uploadService as any).uploadingExpFiles),
-      ).toHaveLength(0);
+      resumable.fire('filesAdded', [resumableFile] as any, '');
+      return {
+        uploadService,
+        resumableFile,
+        publicFileIdStub,
+        collectionNameStub,
+      };
+    };
+
+    it('calls #copyFileToUsersCollection when upload is added to tenants collection', () => {
+      const {
+        uploadService,
+        resumableFile,
+        publicFileIdStub,
+        collectionNameStub,
+      } = setup();
+
+      return uploadService['finalizeFile'](resumableFile).then(() => {
+        const copyFileToUsersCollectionSpy =
+          uploadService['copyFileToUsersCollection'];
+        expect(copyFileToUsersCollectionSpy).toHaveBeenCalledTimes(1);
+        expect(copyFileToUsersCollectionSpy).toHaveBeenCalledWith(
+          publicFileIdStub,
+          collectionNameStub,
+        );
+      });
     });
   });
 
   describe('#copyFileToUsersCollection()', () => {
+    const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
+
     const setup = (config: {
       uploadParams?: UploadParams;
       progress?: number;
       userAuthProvider?: AuthProvider;
       copyFileToCollectionSpy: Function;
     }) => {
-      const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
       const collectionNameStub = 'some-collection-name';
-      const context = getContext({
+      const uploadService = new UploadService(
+        apiUrl,
         authProvider,
-        userAuthProvider: config.userAuthProvider,
-      });
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: collectionNameStub,
-        },
-        false,
+        config.uploadParams || { collection: collectionNameStub },
+        config.userAuthProvider,
       );
 
       (uploadService as any).api = {
@@ -976,11 +643,13 @@ describe('UploadService', () => {
       };
 
       const sourceFileId = 'some-source-file-id';
+      const sourceFileCollection = collectionNameStub;
+
       return {
         uploadService,
         authProvider,
         sourceFileId,
-        sourceFileCollection: collectionNameStub,
+        sourceFileCollection,
       };
     };
 
@@ -1058,62 +727,28 @@ describe('UploadService', () => {
       });
     });
 
-    it('rejects with api#copyFileToCollection rejection when authProvider resolves', () => {
+    it('rejects with api#copyFileToCollection rejection when userAuthProvider was passed into UploadService', done => {
+      const usersClientId = 'some-users-collection-client-id';
+      const usersToken = 'some-users-collection-client-id';
+      const userAuthProvider = () =>
+        Promise.resolve({ clientId: usersClientId, token: usersToken });
+
       const copyFileToCollectionRejection = new Error('some-error');
       const copyFileToCollectionSpy = jest
         .fn()
         .mockReturnValue(Promise.reject(copyFileToCollectionRejection));
 
       const { uploadService, sourceFileId, sourceFileCollection } = setup({
+        userAuthProvider,
         copyFileToCollectionSpy,
       });
-
-      const fileUploadErrorCallback = jest.fn();
-      uploadService.on('file-upload-error', fileUploadErrorCallback);
 
       return uploadService['copyFileToUsersCollection'](
         sourceFileId,
         sourceFileCollection,
       ).catch((error: Error) => {
         expect(error).toEqual(copyFileToCollectionRejection);
-        expect(fileUploadErrorCallback).not.toHaveBeenCalled();
-      });
-    });
-
-    it('resolves when userAuthProvider fails', () => {
-      const userAuthProvider = () => Promise.reject(new Error('some-error'));
-
-      const copyFileToCollectionSpy = jest
-        .fn()
-        .mockReturnValue(Promise.resolve('some-MediaApi-response'));
-
-      const { uploadService, sourceFileId, sourceFileCollection } = setup({
-        userAuthProvider,
-        copyFileToCollectionSpy,
-      });
-
-      const fileUploadErrorCallback = jest.fn();
-      uploadService.on('file-upload-error', fileUploadErrorCallback);
-
-      return uploadService['copyFileToUsersCollection'](
-        sourceFileId,
-        sourceFileCollection,
-      ).catch(error => {
-        expect(error).toEqual(new Error('some-error'));
-        expect(fileUploadErrorCallback).toHaveBeenCalledWith({
-          file: {
-            id: 'some-id-42',
-            creationDate: 1234,
-            name: 'some-name',
-            size: 4200,
-            type: 'some-type',
-          },
-          error: {
-            fileId: 'some-id-42',
-            name: 'token_fetch_fail',
-            description: 'some-error',
-          },
-        });
+        done();
       });
     });
   });
