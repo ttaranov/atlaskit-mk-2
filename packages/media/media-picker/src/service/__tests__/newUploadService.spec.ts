@@ -1,5 +1,3 @@
-import { UploadableFile } from '../../../../media-core';
-
 jest.mock('../../util/getPreviewFromBlob');
 jest.mock('../../util/getPreviewFromVideo');
 
@@ -11,6 +9,7 @@ import {
   MediaItemProvider,
   UploadFileResult,
   ContextConfig,
+  UploadableFile,
 } from '@atlaskit/media-core';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';

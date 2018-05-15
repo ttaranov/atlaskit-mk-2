@@ -1,3 +1,4 @@
+import { Context } from '@atlaskit/media-core';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -9,7 +10,6 @@ import {
 } from '..';
 import { NewUploadServiceImpl } from './newUploadServiceImpl';
 import { OldUploadServiceImpl } from './uploadService';
-import { Context } from '../../../media-core';
 
 export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': UploadsStartEventPayload;
