@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Items from './Items';
 import toItemId from '../utils/toItemId';
-import { type RenderFunction, type RowData } from './../types';
+import type { RenderFunction, RowData } from './../types';
 
 type Props = {
   data: RowData,
@@ -54,7 +54,6 @@ export default class Item extends Component<Props, State> {
                 parentData={data}
                 depth={depth}
                 items={items}
-                // getItemsData={getChildrenData}
                 render={render}
               />
             )}
