@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.11
+- [patch] ED-4633: updated placeholder text [498e7a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/498e7a2)
+- [none] Updated dependencies [498e7a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/498e7a2)
+
 ## 71.3.10
 - [patch] Adding nested ul support [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
 - [none] Updated dependencies [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
