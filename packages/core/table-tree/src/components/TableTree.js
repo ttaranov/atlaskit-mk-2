@@ -20,7 +20,7 @@ type Props = {
   /** The headers of the respective columns of the table. */
   headers?: Array<string>,
 
-  /** This will be rendered as content of Table tree, In most cases you are would need to pass Row Element that is exported from table-tree */
+  /** React node to rendered within table tree, most common use case is to pass the `Row` component exported from table-tree */
   children?: Node,
 
   /** An Array of table items */

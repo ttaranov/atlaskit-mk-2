@@ -5,35 +5,35 @@ export default function toTableTreeData(
   parentItem: ?Object = null,
   oldItemsById: ?Object,
   {
-    keyId = 'id',
-    childId = 'childIds',
-  }: { keyId?: string, childId?: string } = {},
+    idKey = 'id',
+    childIdkey = 'childIds',
+  }: { idKey?: string, childIdkey?: string } = {},
 ): {
   itemsById: Object,
   rootIds?: Array<number | string>,
 } {
   const newItemsById = {};
   for (const rowData of addedRowsData) {
-    newItemsById[rowData[keyId]] = rowData;
+    newItemsById[rowData[idKey]] = rowData;
   }
 
   if (parentItem === null || parentItem === undefined) {
     return {
       itemsById: newItemsById,
-      rootIds: addedRowsData.map(rowData => rowData[keyId]),
+      rootIds: addedRowsData.map(rowData => rowData[idKey]),
     };
   }
 
   const updatedParentItem = {
     ...parentItem,
-    [childId]: addedRowsData.map(child => child[keyId]),
+    [childIdkey]: addedRowsData.map(child => child[idKey]),
   };
 
   return {
     itemsById: {
       ...oldItemsById,
       ...newItemsById,
-      [parentItem[keyId]]: updatedParentItem,
+      [parentItem[idKey]]: updatedParentItem,
     },
   };
 }

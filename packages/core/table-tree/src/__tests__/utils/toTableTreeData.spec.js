@@ -29,7 +29,7 @@ test('to return rootIds and itemsById for root items with custom id', () => {
     rootData,
     undefined,
     {},
-    { keyId: 'title' },
+    { idKey: 'title' },
   );
 
   expect(formatedData.rootIds).toEqual([
@@ -63,7 +63,7 @@ test('to update the parent item with child ids - with custom ids', () => {
     childItem,
     parentItem,
     {},
-    { keyId: 'title' },
+    { idKey: 'title' },
   );
   expect(formatedData).toEqual({
     itemsById: {

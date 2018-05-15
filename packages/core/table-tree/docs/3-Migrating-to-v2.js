@@ -3,30 +3,30 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-The major reason for v2 release for table tree was issue:
-[Table Tree doesn’t update](https://community.developer.atlassian.com/t/table-tree-doesnt-update/17043)
+In the v2 release the table-tree component does not maintain a state anymore, a helper function \`toTableTreeData\`
+to help you process data in case of async loading.
 
 ---
 
-## Props update
+## Changes to the Props
 
 ### TableTree (Default export)
 
-- **items** - Array of data object to presented in the Table Tree
+- **items** - Array of data object to display in the Table Tree
 
 ### Rows:
 
-- **items** - Array of data object to presented in the Table Tree
+- **items** - Array of data object to display in the Table Tree
 
 ### Row:
 
-- **items** - Array of child objects for particular parent
+- **items** - Array of child objects for a particular parent
 
 
 ## With Static Data
 
 In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass \`items\` here in case of render props ).
-Moreover, there is a new prop \`items\` on Row which is expected to receive the children for the particular parent.
+Moreover, there is a new prop \`items\` on Row which expects to receive the children for the particular parent.
 
 ${(
   <Example
@@ -48,7 +48,7 @@ wish, as it is configurable ).
 
 ## With Async loading of data
 
-*Here we will discuss the recommended pattern to avoiding the data processing in case of Async data loading*
+*Here we will discuss the recommended pattern to avoid data processing in case of Async data loading.*
 
 ### Problem
 
@@ -95,7 +95,7 @@ ${(
   />
 )}
 
-The idea here is to maintain a two properties in state - \`rootIds\` and \`itemsById\`, the \`onExpand\`
+The idea here is to maintain two properties in state \`rootIds\` and \`itemsById\`. The \`onExpand\`
 hook is called with the parentItem to help to fetch children for that particular parent. This is where
 we update the items in to flat structure and that object in \`itemsById\`
 
@@ -118,6 +118,6 @@ itemsById: {
 `}
 
 **toTableTreeData** does the heavy lifting of creating the flat object identified by ids, and creates the
-rootIds array to identify root items in the itemsById object. Just pass in the received children and
-parentItem. Just like the Example above.
+rootIds array to identify root items in the itemsById object. To do this, pass in the received children and parentItem,
+like in the example above.
 `;
