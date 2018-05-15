@@ -6,6 +6,7 @@ import { ItemViewer } from '../../src/newgen/item-viewer';
 import { ErrorMessage } from '../../src/newgen/styled';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
+import { AudioViewer } from '../../src/newgen/viewers/audio';
 import { PDFViewer } from '../../src/newgen/viewers/pdf';
 import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
@@ -47,6 +48,15 @@ const videoItem: MediaItem = {
     id: 'some-id',
     processingStatus: 'succeeded',
     mediaType: 'video',
+  },
+};
+
+const audioItem: MediaItem = {
+  type: 'file',
+  details: {
+    id: 'some-id',
+    processingStatus: 'succeeded',
+    mediaType: 'audio',
   },
 };
 
@@ -134,6 +144,16 @@ describe('<ItemViewer />', () => {
     subject.next(videoItem);
     el.update();
     expect(el.find(VideoViewer)).toHaveLength(1);
+  });
+
+  it('should show the audio viewer if media type is video', () => {
+    const subject = new Subject<MediaItem>();
+    const el = mount(
+      <ItemViewer context={createContext(subject)} identifier={identifier} />,
+    );
+    subject.next(audioItem);
+    el.update();
+    expect(el.find(AudioViewer)).toHaveLength(1);
   });
 
   it('should show the document viewer if media type is document', () => {
