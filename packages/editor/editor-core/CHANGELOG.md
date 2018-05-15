@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.16
+- [patch] Remove horizontal scroll in an empty table [44caac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44caac1)
+- [none] Updated dependencies [44caac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44caac1)
+
 ## 71.3.15
 - [patch] internal changes to ContentNodeView to support mocking around contentDOM in tests [d6f88f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6f88f1)
 - [patch] Updated dependencies [d6f88f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6f88f1)
