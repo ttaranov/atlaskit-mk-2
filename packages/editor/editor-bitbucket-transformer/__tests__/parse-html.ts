@@ -27,6 +27,8 @@ import {
   strong,
   em,
   strike,
+  mediaSingle,
+  media,
 } from '@atlaskit/editor-test-helpers';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 
@@ -77,7 +79,11 @@ describe('BitbucketTransformer: parser', () => {
         '<p><img alt="Alt text" src="http://path/to/image.jpg"></p>',
       );
       expect(parsed).toEqualDocument(
-        doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text' })())),
+        doc(
+          mediaSingle()(
+            media({ url: 'http://path/to/image.jpg', type: 'external' })(),
+          ),
+        ),
       );
     });
   });

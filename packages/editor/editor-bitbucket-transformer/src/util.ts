@@ -120,5 +120,83 @@ export function transformHtml(
       });
   }
 
+  // Parse images
+  arrayFrom(el.querySelectorAll('img:not(.emoji)')).forEach(
+    (img: HTMLImageElement) => {
+      const mediaSingle = document.createElement('div');
+      mediaSingle.setAttribute('data-node-type', 'mediaSingle');
+
+      const media = document.createElement('div');
+      media.setAttribute('data-node-type', 'media');
+      media.setAttribute('data-type', 'external');
+      media.setAttribute('data-url', img.getAttribute('src')!);
+
+      mediaSingle.appendChild(media);
+
+      const { parentNode } = img;
+
+      if (parentNode) {
+        // parentNode is root-element
+        if (parentNode === el) {
+          parentNode.insertBefore(mediaSingle, img);
+        } else {
+          const { childNodes } = parentNode;
+          if (childNodes.length === 1) {
+            parentNode.parentNode!.insertBefore(mediaSingle, parentNode);
+            parentNode.parentNode!.removeChild(parentNode);
+          } else {
+            let parent = parentNode;
+
+            if (parentNode.nodeName === 'LI') {
+              parent = document.createElement('p');
+              while (parentNode.firstChild) {
+                parent.appendChild(parentNode.firstChild);
+              }
+              parentNode.appendChild(parent);
+            }
+
+            const before: DocumentFragment = new DocumentFragment();
+            const after: DocumentFragment = new DocumentFragment();
+            let foundImg = false;
+
+            Array.from(parent.childNodes).forEach(child => {
+              if (child === img) {
+                foundImg = true;
+                parent.removeChild(child);
+              } else {
+                if (foundImg) {
+                  after.appendChild(child);
+                } else {
+                  before.appendChild(child);
+                }
+              }
+            });
+
+            if (before.childNodes.length) {
+              const beforeNode = parent.cloneNode();
+              beforeNode.appendChild(before);
+
+              parent.parentNode!.insertBefore(beforeNode, parent);
+            }
+
+            parent.parentNode!.insertBefore(mediaSingle, parent);
+
+            if (after.childNodes.length) {
+              const afterNode = parent.cloneNode();
+              afterNode.appendChild(after);
+              parent.parentNode!.insertBefore(afterNode, parent);
+            }
+
+            parent.parentNode!.removeChild(parent);
+          }
+        }
+
+        try {
+          parentNode.removeChild(img);
+        } catch (err) {}
+      }
+    },
+  );
+
   return el;
 }
