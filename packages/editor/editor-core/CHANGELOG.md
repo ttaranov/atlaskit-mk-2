@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.23
+- [patch] Updated dependencies [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
+  - @atlaskit/editor-markdown-transformer@0.2.20
+
 ## 71.3.22
 - [patch] ED-4603: fix emptyCell on Backspace [06a52c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06a52c9)
 - [none] Updated dependencies [06a52c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06a52c9)
