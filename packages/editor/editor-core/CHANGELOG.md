@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 71.3.25
+- [patch] Pasting a link will now generate a new undo step, allowing you to undo only the pasted content. Previously, if you were typing rapidly typing and then pasted content, undo would remove the pasted content AND the text you had typed before it. [c6252d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6252d2)
+
+- [none] Updated dependencies [c6252d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6252d2)
+- [none] Updated dependencies [2363d14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2363d14)
+  - @atlaskit/button@7.2.3
+
 ## 71.3.24
 - [patch] Fixing the media group scroll [14c17ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14c17ba)
 - [none] Updated dependencies [14c17ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14c17ba)

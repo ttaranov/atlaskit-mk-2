@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "71.3.24",
+  "version": "71.3.25",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,7 +22,7 @@
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^3.0.0",
     "@atlaskit/avatar": "^10.0.5",
-    "@atlaskit/button": "^7.2.1",
+    "@atlaskit/button": "^7.2.3",
     "@atlaskit/calendar": "^5.0.2",
     "@atlaskit/code": "^4.0.3",
     "@atlaskit/droplist": "^5.0.2",
@@ -88,7 +88,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.1",
+    "@atlaskit/button": "^7.2.3",
     "@atlaskit/docs": "^3.0.3",
     "@atlaskit/editor-bitbucket-transformer": "^3.0.4",
     "@atlaskit/editor-test-helpers": "^3.1.6",
