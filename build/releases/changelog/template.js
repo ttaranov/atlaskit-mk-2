@@ -51,24 +51,38 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
     .join('\n');
   result.push(releaseLines);
 
-  if (Array.isArray(release.dependencies) && release.dependencies.length > 0) {
-    const dependencyLines = relatedChangesets.map(changeset => {
-      const dep = changeset.dependents.find(d => d.name === release.name);
-      const lines = [];
-      lines.push(
-        `- [${dep.type}] Updated dependencies ${commitLink(
-          changeset.commit,
-          repoUrl,
-        )}`,
-      );
-      dep.dependencies.forEach(name => {
-        const version = releases.find(r => r.name === name).version;
-        lines.push(`  - ${name}@${version}`);
-      });
-      return lines.join('\n');
+  /**
+   *  Create the dependency bumping section. We'll create one "entry" per changeset that lists us
+   *  as a dependent, and include all the dependencies we are bumping with their new versions
+   */
+  relatedChangesets.forEach(changeset => {
+    // check if this changeset lists us as a dependent
+    const dependent = changeset.dependents.find(
+      dep => dep.name === release.name,
+    );
+    if (!dependent) return;
+
+    const lines = [];
+    lines.push(
+      `- [${dependent.type}] Updated dependencies ${commitLink(
+        changeset.commit,
+        repoUrl,
+      )}`,
+    );
+
+    dependent.dependencies.forEach(depName => {
+      // check if we are releasing this dependency (ignore if not)
+      const dependencyRelease = releases.find(r => r.name === depName);
+      if (!dependencyRelease) return;
+      const version = dependencyRelease.version;
+      lines.push(`  - ${depName}@${version}`);
     });
-    result.push(dependencyLines);
-  }
+
+    if (lines.length > 0) {
+      result.push(lines.join('\n'));
+    }
+  });
+
   return result.filter(line => line).join('\n');
 }
 

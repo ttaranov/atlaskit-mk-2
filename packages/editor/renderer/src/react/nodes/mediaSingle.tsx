@@ -46,6 +46,7 @@ export default class MediaSingle extends Component<
         height: '100%',
       },
       onExternalImageLoaded: this.onExternalImageLoaded,
+      disableOverlay: true,
     });
 
     let { width, height, type } = child.props;

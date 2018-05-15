@@ -48,6 +48,7 @@ export default class CodeSandbox extends Component<{}, {}> {
       loadingButton,
       packageId,
       pkgJSON,
+      afterDeployError,
     } = this.props;
 
     const name = example.id
@@ -60,6 +61,7 @@ export default class CodeSandbox extends Component<{}, {}> {
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
         name={`${pkgJSON.name}-${name}`}
+        afterDeployError={afterDeployError}
         gitInfo={{
           account: 'atlassian',
           repository: 'atlaskit-mk-2',
@@ -76,7 +78,9 @@ export default class CodeSandbox extends Component<{}, {}> {
         }}
         providedFiles={baseFiles(groupId, packageId, example.id)}
       >
-        {({ isLoading }) => (isLoading ? loadingButton() : deployButton({}))}
+        {({ isLoading, error }) =>
+          isLoading ? loadingButton() : deployButton({ error })
+        }
       </CodeSandboxer>
     );
   }

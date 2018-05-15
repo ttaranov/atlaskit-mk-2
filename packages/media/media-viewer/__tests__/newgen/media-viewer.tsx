@@ -3,13 +3,12 @@ import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
-import { Content } from '../../src/newgen/styled';
+import { Content } from '../../src/newgen/content';
 import { MediaViewer } from '../../src/newgen/media-viewer';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage, CloseButtonWrapper } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
-import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
-function createContext(subject, blobService?) {
+function createContext(subject) {
   const token = 'some-token';
   const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
@@ -22,14 +21,12 @@ function createContext(subject, blobService?) {
     contextConfig,
     undefined,
     subject && Stubs.mediaItemProvider(subject),
-    blobService,
   ) as any;
 }
 
 function createFixture(items, identifier) {
   const subject = new Subject<MediaItem>();
-  const blobService = Stubs.blobService();
-  const context = createContext(subject, blobService);
+  const context = createContext(subject);
   const onClose = jest.fn();
   const el = mount(
     <MediaViewer
@@ -39,7 +36,7 @@ function createFixture(items, identifier) {
       onClose={onClose}
     />,
   );
-  return { blobService, subject, context, el, onClose };
+  return { subject, el, onClose };
 }
 
 describe('<MediaViewer />', () => {
@@ -48,6 +45,11 @@ describe('<MediaViewer />', () => {
     occurrenceKey: 'some-custom-occurrence-key',
     type: 'file' as MediaItemType,
   };
+
+  it('should display an error if data source is not supported', () => {
+    const { el } = createFixture([], identifier);
+    expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
 
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture([identifier], identifier);
@@ -61,35 +63,6 @@ describe('<MediaViewer />', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('should update navigation', () => {
-    const identifier2 = {
-      id: 'some-id-2',
-      occurrenceKey: 'some-custom-occurrence-key',
-      type: 'file' as MediaItemType,
-    };
-    const { el } = createFixture([identifier, identifier2], identifier);
-    expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
-    el.find(ArrowRightCircleIcon).simulate('click');
-    expect(el.state().selectedItem).toMatchObject({ id: 'some-id-2' });
-  });
-
-  it('should show an error if selected item is not found in the list', () => {
-    const list = [
-      {
-        id: 'some-id',
-        occurrenceKey: 'some-custom-occurrence-key',
-        type: 'file' as MediaItemType,
-      },
-    ];
-    const selectedItem = {
-      id: 'some-id-2',
-      occurrenceKey: 'some-custom-occurrence-key',
-      type: 'file' as MediaItemType,
-    };
-    const { el } = createFixture(list, selectedItem);
-    expect(el.find(ErrorMessage)).toHaveLength(1);
-  });
-
   it('the error view show close on click', () => {
     const selectedItem = {
       id: 'some-id-2',
@@ -99,6 +72,17 @@ describe('<MediaViewer />', () => {
     const { el, onClose } = createFixture([], selectedItem);
     expect(el.find(ErrorMessage)).toHaveLength(1);
     el.find(Content).simulate('click');
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('should always render the close button', () => {
+    const { el, onClose } = createFixture([identifier], identifier);
+
+    expect(el.find(CloseButtonWrapper)).toHaveLength(1);
+    el
+      .find(CloseButtonWrapper)
+      .find('Button')
+      .simulate('click');
     expect(onClose).toHaveBeenCalled();
   });
 });

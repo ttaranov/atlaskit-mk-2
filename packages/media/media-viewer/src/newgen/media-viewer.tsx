@@ -1,68 +1,61 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { ItemViewer } from './item-viewer';
 import { Identifier } from './domain';
-import { Blanket, Content, HeaderWrapper } from './styled';
-import { getSelectedIndex } from './util';
-import { ErrorMessage } from './styled';
-import Navigation from './navigation';
-import Header from './header';
+import { List } from './list';
+import { Collection } from './collection';
+import { Content } from './content';
+import { Blanket, ErrorMessage } from './styled';
 
 export type Props = {
   onClose?: () => void;
-  selectedItem: Identifier;
-  items: Identifier[];
+  selectedItem?: Identifier;
+  collectionName?: string;
+  items?: Identifier[];
   context: Context;
 };
 
-export type State = {
-  selectedItem: Identifier;
-};
-
-export class MediaViewer extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
-
+export class MediaViewer extends React.Component<Props, {}> {
   render() {
-    return <Blanket>{this.getContent()}</Blanket>;
+    const { onClose } = this.props;
+    return (
+      <Blanket>
+        <Content onClick={this.onClickContentClose} onClose={onClose}>
+          {this.renderContent()}
+        </Content>
+      </Blanket>
+    );
   }
 
-  getContent() {
-    const { context, items, onClose } = this.props;
-    const { selectedItem } = this.state;
-
-    if (getSelectedIndex(items, selectedItem) < 0) {
+  private renderContent() {
+    const {
+      items,
+      collectionName,
+      selectedItem,
+      context,
+      onClose,
+    } = this.props;
+    if (collectionName) {
       return (
-        <Content onClick={this.onClickContentClose}>
-          <ErrorMessage>
-            The selected item with id '{selectedItem.id}' was not found on the
-            list
-          </ErrorMessage>;
-        </Content>
+        <Collection
+          selectedItem={selectedItem}
+          collectionName={collectionName}
+          context={context}
+          onClose={onClose}
+        />
+      );
+    } else if (items) {
+      return (
+        <List
+          selectedItem={selectedItem || items[0]}
+          items={items}
+          context={context}
+          onClose={onClose}
+        />
       );
     } else {
-      return (
-        <Content onClick={this.onClickContentClose}>
-          <HeaderWrapper>
-            <Header
-              context={context}
-              identifier={selectedItem}
-              onClose={onClose}
-            />
-          </HeaderWrapper>
-          <ItemViewer context={context} identifier={selectedItem} />
-          <Navigation
-            items={items}
-            selectedItem={selectedItem}
-            onChange={this.onNavigationChange}
-          />
-        </Content>
-      );
+      return <ErrorMessage>No media found</ErrorMessage>;
     }
   }
-
-  onNavigationChange = (selectedItem: Identifier) => {
-    this.setState({ selectedItem });
-  };
 
   private onClickContentClose = e => {
     const { onClose } = this.props;

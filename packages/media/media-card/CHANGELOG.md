@@ -1,5 +1,7 @@
 # @atlaskit/media-image
 
+## 27.1.1
+
 ## 27.1.0
 - [minor] Added "disableOverlay" prop to Card and CardView public API [533d085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533d085)
 

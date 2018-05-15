@@ -80,12 +80,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [Scope.ConfluencePageBlog, Scope.ConfluenceSpace],
+      [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace],
     );
 
     if (this.state.query === query) {
       this.setState({
-        objectResults: results.get(Scope.ConfluencePageBlog) || [],
+        objectResults: results.get(Scope.ConfluencePageBlogAttachment) || [],
         spaceResults: results.get(Scope.ConfluenceSpace) || [],
       });
     }
