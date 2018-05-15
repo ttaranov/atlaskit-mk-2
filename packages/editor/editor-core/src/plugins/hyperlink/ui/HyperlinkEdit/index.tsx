@@ -51,7 +51,6 @@ export interface State {
 }
 
 const floatingStyleOverride = {
-  maxHeight: '312px',
   minHeight: '40px',
   height: 'initial',
   'margin-top': '6px',
