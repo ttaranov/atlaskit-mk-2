@@ -3,6 +3,7 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import styled, { StyledComponentClass } from 'styled-components';
+import { MediaType } from '@atlaskit/media-core';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
@@ -162,7 +163,7 @@ const colors = {
 };
 
 export interface IconWrapperProps {
-  type: string;
+  type: MediaType;
 }
 
 export const IconWrapper: ComponentClass<

@@ -5,6 +5,7 @@ import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
 import VideoIcon from '@atlaskit/icon/glyph/media-services/video';
 import DocIcon from '@atlaskit/icon/glyph/media-services/document';
 import UnknownIcon from '@atlaskit/icon/glyph/media-services/unknown';
+import { MediaType } from '@atlaskit/media-core';
 import { IconWrapper } from './styled';
 
 const icons = {
@@ -16,15 +17,20 @@ const icons = {
 };
 
 export interface FileIconProps {
-  type?: string;
+  type?: MediaType;
 }
 
 export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
+  static defaultProps: FileIconProps = {
+    type: 'unknown',
+  };
+
   render() {
     const { type } = this.props;
-    const Icon = (type && icons[type]) || icons.unknown;
+    const Icon = icons[type!];
+
     return (
-      <IconWrapper type={type || 'unknown'}>
+      <IconWrapper type={type!}>
         <Icon label="media-type" size="large" />
       </IconWrapper>
     );
