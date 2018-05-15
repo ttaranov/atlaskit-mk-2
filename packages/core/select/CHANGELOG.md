@@ -1,25 +1,16 @@
 # @atlaskit/select
 
 ## 3.0.0
-- [major] Update to react-select@beta.4, removed developer preview warning. Stable release, see changelog for details [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
-
-* BREAKING: Removed `maxValueHeight` prop and functionality, this is a breaking change that affects multi -value components predominantly. The control will now expand to accommodate contained values, as opposed to constraining to a maxValueHeight with a scrollable area.
-
-* `Async`, `Creatable`, `AsyncCreatable` components now imported from `react-select` and not from `react-select/lib/*`.
-
-* Internal cx implementation refactored to reduce specificity of css-in-js base styles. By default these base-styles will be overridden by css styles associated to provided class names.
-
-* Fixed animated component bug where setting isSearchable to false would throw warnings in the console.
-
-* Added a `classNamePrefix` prop which now controls the class names applied to internal components, `className` prop is now intended for adding a className to the bounding selectContainer only. If the classNamePrefix field is left undefined, then the className prop will currently fulfill both these roles, however a warning will be shown and _this functionality is intended to be deprecated in future releases_.
-
-* Added --is-disabled className modifier to the default Option component
-
-* Fixed IE11 issues around element overflow in the menuList, and scroll indicators in the control.
-
-* Added multi-value keyboard navigation using left and right arrow keys.
-
-* Added fix to ensure focus is on the input when the menu opens.
+- [major] Update to react-select@beta.4, removed developer preview warning. Stable release [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+- BREAKING: Removed `maxValueHeight` prop and functionality, this is a breaking change that affects multi -value components predominantly. The control will now expand to accommodate contained values, as opposed to constraining to a maxValueHeight with a scrollable area.
+- `Async`, `Creatable`, `AsyncCreatable` components now imported from `react-select` and not from `react-select/lib/*`.
+- Internal cx implementation refactored to reduce specificity of css-in-js base styles. By default these base-styles will be overridden by css styles associated to provided class names.
+- Fixed animated component bug where setting isSearchable to false would throw warnings in the console.
+- Added a `classNamePrefix` prop which now controls the class names applied to internal components, `className` prop is now intended for adding a className to the bounding selectContainer only. If the classNamePrefix field is left undefined, then the className prop will currently fulfill both these roles, however a warning will be shown and _this functionality is intended to be deprecated in future releases_.
+- Added --is-disabled className modifier to the default Option component
+- Fixed IE11 issues around element overflow in the menuList, and scroll indicators in the control.
+- Added multi-value keyboard navigation using left and right arrow keys.
+- Added fix to ensure focus is on the input when the menu opens.
 
 ## 2.0.2
 - [patch] Release to align @atlaskit/select styles and theme with ADG3 guideline.  [7468739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7468739)
