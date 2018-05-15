@@ -12,7 +12,6 @@ import TableTree, {
 } from '../src';
 
 function getItemsData(parent, count) {
-  //console.log(parent);
   return generateChildItems(parent || { numberingPath: '' }, count);
 }
 

@@ -38,6 +38,7 @@ type Props = {
   /** Passed implicitly. The data that this row represents. */
   data?: RowData,
 
+  /** Array of object of the children of expended parent item */
   items?: LoadableItems,
 };
 
