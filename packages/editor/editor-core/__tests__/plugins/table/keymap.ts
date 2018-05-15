@@ -332,9 +332,17 @@ describe('table keymap', () => {
     });
 
     describe('when table is selected', () => {
-      it('it should empty table cells', () => {
+      it('it should empty table cells and move cursor to the last selected cell', () => {
         const { editorView, plugin } = editor(
-          doc(table()(tr(tdCursor, td({})(p('2')), td({})(p('3'))))),
+          doc(
+            table()(
+              tr(
+                tdCursor,
+                td({})(p('text text text')),
+                td({})(p('more text text text')),
+              ),
+            ),
+          ),
           trackEvent,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -349,13 +357,15 @@ describe('table keymap', () => {
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.format.table.delete_content.keyboard',
         );
+        expect(editorView.state.selection.$from.pos).toEqual(12);
         editorView.destroy();
       });
     });
 
     [0, 1, 2].forEach(index => {
       describe(`when row ${index + 1} is selected`, () => {
-        it(`it should empty cells in the row ${index + 1}`, () => {
+        it(`it should empty cells in the row ${index +
+          1} and move cursor to the last selected cell`, () => {
           const { editorView, plugin } = editor(
             doc(
               table()(
@@ -385,12 +395,16 @@ describe('table keymap', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_content.keyboard',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(
+            [8, 19, 30][index],
+          );
           editorView.destroy();
         });
       });
 
       describe(`when column ${index + 1} is selected`, () => {
-        it(`it should empty cells in the column ${index + 1}`, () => {
+        it(`it should empty cells in the column ${index +
+          1} and move cursor to the last selected cell`, () => {
           const emptyRow = tr(tdEmpty, tdEmpty, tdEmpty);
           const { editorView, plugin } = editor(
             doc(
@@ -421,6 +435,9 @@ describe('table keymap', () => {
           expect(cursorPos).toEqual(editorView.state.selection.$from.pos);
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.delete_content.keyboard',
+          );
+          expect(editorView.state.selection.$from.pos).toEqual(
+            [18, 23, 28][index],
           );
           editorView.destroy();
         });

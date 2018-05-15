@@ -1,5 +1,14 @@
 # @atlaskit/media-viewer
 
+## 13.5.0
+- [minor] Add header metadata to MVNG [8aa7812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8aa7812)
+
+## 13.4.0
+- [minor] MediaViewer: toggle UI controls on mouse move [36ec198](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36ec198)
+
+## 13.3.2
+- [patch] Always show MediaViewer close button [9ddeec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ddeec0)
+
 ## 13.3.1
 - [patch] use proper collectionName property in MVNG [7815256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7815256)
 

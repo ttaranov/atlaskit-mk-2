@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
 // eslint-disable-next-line
-import reducedStyles from '!!raw-loader!../src/bundle.css';
+import stuff from '!!style-loader!css-loader!../src/bundle.css';
 
 export default () => (
   <form onSubmit={e => e.preventDefault()}>
-    <style>{reducedStyles}</style>
     <h1>Example form to show field widths</h1>
     <div className="ak-field-group">
       <label htmlFor="username">Username</label>

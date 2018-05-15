@@ -6,9 +6,7 @@ import {
   toEmojiId,
   EmojiProvider,
 } from '@atlaskit/emoji';
-import * as chai from 'chai';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import { mount, shallow } from 'enzyme';
 
@@ -18,8 +16,6 @@ import { emoji } from '@atlaskit/util-data-test';
 
 const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
-
-const { expect } = chai;
 
 const smiley: EmojiDescription = emojiRepository.findByShortName(
   ':smiley:',
@@ -39,22 +35,22 @@ const renderEmojiButton = (onClick: OnEmojiEvent = () => {}) => {
 describe('@atlaskit/reactions/emoji-button', () => {
   it('should render a button', () => {
     const emojiButton = shallow(renderEmojiButton());
-    expect(emojiButton.find('button').length).to.equal(1);
+    expect(emojiButton.find('button').length).toEqual(1);
   });
 
   it('should render an emoji', () => {
     const emojiButton = mount(renderEmojiButton());
     return waitUntil(() => hasSelector(emojiButton, Emoji)).then(() => {
       const emoji = emojiButton.find(Emoji);
-      expect(emoji.length).to.equal(1);
-      expect(emoji.first().prop('emoji').id).to.equal(emojiId.id);
+      expect(emoji.length).toEqual(1);
+      expect(emoji.first().prop('emoji').id).toEqual(emojiId.id);
     });
   });
 
   it('should call "onClick" when clicked', () => {
-    const onClick = sinon.spy();
+    const onClick = jest.fn();
     const emojiButton = mount(renderEmojiButton(onClick));
     emojiButton.simulate('mouseup', { button: 0 });
-    expect(onClick.called).to.equal(true);
+    expect(onClick).toHaveBeenCalled();
   });
 });

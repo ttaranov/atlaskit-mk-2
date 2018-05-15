@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 7.2.3
+- [patch] Fix invalid css in button [2363d14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2363d14)
+- [none] Updated dependencies [2363d14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2363d14)
+
 ## 7.2.2
 - [patch] Fix react ref dev warnings when using custom components [40b743c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40b743c)
 
