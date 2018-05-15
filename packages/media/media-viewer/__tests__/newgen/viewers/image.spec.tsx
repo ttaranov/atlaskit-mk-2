@@ -156,6 +156,6 @@ describe('ImageViewer', () => {
       .find(Button)
       .last()
       .simulate('click');
-    expect(el.state('zoomLevel')).toEqual(1);
+    expect(el.state('zoomLevel')).toEqual(0.96);
   });
 });
