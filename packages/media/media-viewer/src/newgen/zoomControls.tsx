@@ -9,6 +9,7 @@ export type ZoomDirection = 'out' | 'in';
 
 export interface ZoomControlsProps {
   onChange: (zoomLevel: number) => void;
+  step?: number;
 }
 
 export interface ZoomControlsState {
@@ -16,21 +17,27 @@ export interface ZoomControlsState {
 }
 
 const minZoomLevel = 0.2;
+const zoomingStep = 0.2;
 
 export class ZoomControls extends Component<
   ZoomControlsProps,
   ZoomControlsState
 > {
+  static defaultProps: ZoomControlsProps = {
+    onChange() {},
+    step: zoomingStep,
+  };
+
   state: ZoomControlsState = {
     zoomLevel: 1,
   };
 
   zoom = (direction: ZoomDirection) => () => {
-    const { onChange } = this.props;
+    const { onChange, step } = this.props;
     const { zoomLevel: currentZoomLevel } = this.state;
-    const newZoomLevel = direction === 'out' ? -0.2 : 0.2;
+    const newZoomLevel = direction === 'out' ? -step! : step;
     const zoomLevel = Math.max(
-      Math.round((currentZoomLevel + newZoomLevel) * 10) / 10,
+      Math.round((currentZoomLevel + newZoomLevel!) * 10) / 10,
       minZoomLevel,
     );
 

@@ -8,7 +8,7 @@ describe('<Content />', () => {
 
   const setup = () => {
     const component = shallow(
-      <Content>
+      <Content onClick={jest.fn()}>
         <div />
         <div />
       </Content>,

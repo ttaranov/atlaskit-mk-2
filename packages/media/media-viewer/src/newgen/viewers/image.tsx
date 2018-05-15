@@ -54,7 +54,6 @@ export class ImageViewer extends React.Component<
     const imgStyle = {
       transform: `scale(${zoomLevel})`,
     };
-    console.log(zoomLevel);
 
     return (
       <ImageWrapper>
