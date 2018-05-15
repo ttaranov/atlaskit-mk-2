@@ -81,7 +81,7 @@ if (INTEGRATION_TESTS) {
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);
-    // look for editor package changes inside of integration tests
+    // look for editor package inside of changed packages before running tests
     const changedEditorPackages = changedPackages.filter(name =>
       name.includes('editor'),
     );
