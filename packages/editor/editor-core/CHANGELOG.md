@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.21
+- [patch] Escape now closes the link toolbar when activity provider is disabled [b060a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b060a5a)
+- [none] Updated dependencies [b060a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b060a5a)
+
 ## 71.3.20
 - [patch] Fixing the hyperlink height [da3e35f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da3e35f)
 - [none] Updated dependencies [da3e35f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da3e35f)
