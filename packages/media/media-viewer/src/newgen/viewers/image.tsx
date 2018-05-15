@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Outcome } from '../domain';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { Img, ErrorMessage } from '../styled';
-import { Spinner } from '../loading';
 import * as deepEqual from 'deep-equal';
+import { Outcome } from '../domain';
+import { Img, ErrorMessage, ImageWrapper } from '../styled';
+import { Spinner } from '../loading';
+import { ZoomControls } from '../zoomControls';
 
 export type ObjectUrl = string;
-
 export const REQUEST_CANCELLED = 'request_cancelled';
 
 export type ImageViewerProps = {
@@ -16,9 +16,11 @@ export type ImageViewerProps = {
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
+  zoomLevel: number;
 };
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
+  zoomLevel: 1,
 };
 
 export class ImageViewer extends React.Component<
@@ -42,13 +44,33 @@ export class ImageViewer extends React.Component<
     }
   }
 
+  private onZoomChange = zoomLevel => {
+    this.setState({ zoomLevel });
+  };
+
+  renderImage(src: string) {
+    const { zoomLevel } = this.state;
+    // We use style attr instead of SC prop for perf reasons
+    const imgStyle = {
+      transform: `scale(${zoomLevel})`,
+    };
+    console.log(zoomLevel);
+
+    return (
+      <ImageWrapper>
+        <Img src={src} style={imgStyle} />
+        <ZoomControls onChange={this.onZoomChange} />
+      </ImageWrapper>
+    );
+  }
+
   render() {
     const { objectUrl } = this.state;
     switch (objectUrl.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <Img src={objectUrl.data} />;
+        return this.renderImage(objectUrl.data);
       case 'FAILED':
         return <ErrorMessage>{objectUrl.err.message}</ErrorMessage>;
     }
