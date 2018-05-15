@@ -10,12 +10,6 @@ export const ButtonGroup: ComponentClass<
   display: inline-flex;
   align-items: center;
 
-  & > div:not(:first-child),
-  & > span:not(:first-child) {
-    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
-      width !== 'large' ? 4 : 0}px;
-  }
-
   & > div {
     display: flex;
   }
