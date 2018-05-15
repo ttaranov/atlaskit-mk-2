@@ -3,8 +3,10 @@
 import React, { Component } from 'react';
 // eslint-disable-next-line
 import icons from '!!raw-loader!../src/icons-sprite.svg';
-// eslint-disable-next-line
-import reducedStyles from '!!raw-loader!../src/bundle.css';
+/* eslint-disable */
+// $FlowFixMe
+import stuff from '!!style-loader!css-loader!../src/bundle.css';
+/* eslint-enable */
 
 // eslint-disable-next-line react/no-danger
 const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
@@ -26,7 +28,6 @@ class FilledIconExample extends Component<*, *> {
 
     return (
       <form>
-        <style>{reducedStyles}</style>
         <div className="ak-field-group">
           <label htmlFor="color">Icon primary colour</label>
           <input

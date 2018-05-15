@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-// eslint-disable-next-line
-import reducedStyles from '!!raw-loader!../src/bundle.css';
+/* eslint-disable */
+// $FlowFixMe
+import stuff from '!!style-loader!css-loader!../src/bundle.css';
+/* eslint-enable */
 
 export default () => (
   <div>
-    <style>{reducedStyles}</style>
     <ak-grid is>
       <ak-grid-column is size="8">
         <h1>Main heading</h1>
