@@ -16,7 +16,7 @@ export const createHoverDecorationSet = (
       classes.push('danger');
     }
 
-    return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
+    return Decoration.node(cell.pos - 1, cell.pos + cell.node.nodeSize - 1, {
       class: classes.join(' '),
     });
   });

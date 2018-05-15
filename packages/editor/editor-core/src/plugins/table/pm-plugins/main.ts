@@ -19,7 +19,6 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
   selectRow,
-  emptySelectedCells,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -171,13 +170,6 @@ export class TableState {
         tableNode,
       );
       this.moveCursorTo(nextPos);
-    } else {
-      // replace selected cells with empty cells
-      dispatch(emptySelectedCells(state.schema)(state.tr));
-      this.moveCursorInsideTableTo(this.view.state.selection.from);
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button',
-      );
     }
   };
 
