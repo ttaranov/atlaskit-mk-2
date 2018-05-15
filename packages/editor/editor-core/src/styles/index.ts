@@ -1,3 +1,4 @@
+import { fontSize } from '@atlaskit/theme';
 import {
   akCodeFontFamily,
   akColorB100,
@@ -15,6 +16,9 @@ import {
   akColorN700,
   akColorN900,
   akZIndexLayer,
+  akColorR50,
+  akColorR300,
+  akColorR75,
 } from '@atlaskit/util-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;
@@ -40,6 +44,13 @@ export const akEditorTableFloatingControls = akColorN20;
 export const akEditorTableCellSelected = akColorB75;
 export const akEditorTableToolbarSelected = akColorB100;
 export const akEditorTableBorderSelected = akColorB300;
+export const akEditorTableCellDelete = akColorR50;
+export const akEditorTableBorderDelete = akColorR300;
+export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorRuleBackground = akColorN30;
 export const akEditorRuleBorderRadius = '1px';
+export const defaultEditorFontStyles = `
+  font-size: ${fontSize()}px;
+  font-weight: normal;
+`;

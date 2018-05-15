@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
-import { isTableSelected } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
+import {
+  tableBackgroundColorPalette,
+  tableBackgroundBorderColors,
+} from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
-import { checkIfNumberColumnSelected } from '../../utils';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
@@ -46,7 +47,7 @@ export interface Props {
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
   stickToolbarToBottom?: boolean;
-  remove?: () => void;
+  removeTable?: () => void;
   permittedLayouts?: PermittedLayoutsDescriptor;
   updateLayout?: (layoutName: TableLayout) => void;
 }
@@ -141,6 +142,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               editorView={editorView}
               palette={tableBackgroundColorPalette}
               mountPoint={popupsMountPoint}
+              borderColors={tableBackgroundBorderColors}
             />
           )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
@@ -165,24 +167,12 @@ export default class TableFloatingToolbar extends Component<Props, State> {
             <Separator style={{ height: 'auto' }} />
           ) : null}
           <ToolbarButton
-            disabled={!this.canRemove()}
-            onClick={this.props.remove}
-            title="Remove selected cells"
-            iconBefore={<RemoveIcon label="Remove selected cells" />}
+            onClick={this.props.removeTable}
+            title="Remove table"
+            iconBefore={<RemoveIcon label="Remove table" />}
           />
         </Toolbar>
       </Popup>
     );
   }
-
-  private canRemove = (): boolean | undefined => {
-    const { cellSelection, editorView: { state } } = this.props;
-    if (
-      !cellSelection ||
-      (checkIfNumberColumnSelected(state) && !isTableSelected(state.selection))
-    ) {
-      return false;
-    }
-    return cellSelection.isColSelection() || cellSelection.isRowSelection();
-  };
 }

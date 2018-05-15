@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
@@ -110,89 +110,97 @@ function ExampleSelector(props) {
   );
 }
 
-function ExampleNavigation(props) {
-  const {
-    onExampleSelected,
-    examples,
-    onPackageSelected,
-    groups,
-    exampleId,
-    groupId,
-    loaderUrl,
-    packageId,
-    config,
-  } = props;
-  const example = examples && examples.children.find(e => e.id === exampleId);
+class ExampleNavigation extends Component {
+  state = {};
+  render() {
+    const {
+      onExampleSelected,
+      examples,
+      onPackageSelected,
+      groups,
+      exampleId,
+      groupId,
+      loaderUrl,
+      packageId,
+      config,
+      codeIsVisible,
+      onCodeToggle,
+    } = this.props;
+    const { error } = this.state;
+    console.log(error);
+    const example = examples && examples.children.find(e => e.id === exampleId);
 
-  return (
-    <Nav>
-      <NavSection style={{ marginLeft: 8 }}>
-        <Tooltip content="Back to docs" position="right">
-          <NavLink to={packageUrl(props.groupId, props.packageId)}>
-            <ArrowLeftIcon label="Back to docs" />
-          </NavLink>
-        </Tooltip>
-      </NavSection>
+    return (
+      <Nav>
+        <NavSection style={{ marginLeft: 8 }}>
+          <Tooltip content="Back to docs" position="right">
+            <NavLink to={packageUrl(groupId, packageId)}>
+              <ArrowLeftIcon label="Back to docs" />
+            </NavLink>
+          </Tooltip>
+        </NavSection>
 
-      <NavSection>
-        <PackageSelector
-          groupId={groupId}
-          packageId={packageId}
-          groups={groups}
-          onSelected={onPackageSelected}
-        />
-        <ExampleSelector
-          examples={examples}
-          exampleId={exampleId}
-          onSelected={onExampleSelected}
-        />
-      </NavSection>
-      <NavSection style={{ marginRight: 8 }}>
-        <Tooltip content="Deploy to CodeSandbox" position="left">
-          <CodeSandbox
-            example={example}
+        <NavSection>
+          <PackageSelector
             groupId={groupId}
             packageId={packageId}
-            pkgJSON={config}
-            loadingButton={() => (
-              <NavButton style={{ marginRight: 8 }} type="Submit" disabled>
-                <CodeSandboxLogo />
-              </NavButton>
-            )}
-            deployButton={({ isDisabled }) => (
-              <NavButton
-                style={{ marginRight: 8 }}
-                type="Submit"
-                disabled={isDisabled}
-              >
-                <CodeSandboxLogo />
-              </NavButton>
-            )}
-            useNavButton
+            groups={groups}
+            onSelected={onPackageSelected}
           />
-        </Tooltip>
-        <Tooltip
-          content={`${props.codeIsVisible ? 'Hide' : 'Show'} source`}
-          position="left"
-        >
-          <NavButton
-            isSelected={props.codeIsVisible}
-            onClick={props.onCodeToggle}
+          <ExampleSelector
+            examples={examples}
+            exampleId={exampleId}
+            onSelected={onExampleSelected}
+          />
+        </NavSection>
+        <NavSection style={{ marginRight: 8 }}>
+          <Tooltip
+            content={error ? error.name : 'Deploy to CodeSandbox'}
+            position="left"
           >
-            <CodeIcon label="Show source" />
-          </NavButton>
-        </Tooltip>
-        <Tooltip content="Isolated View" position="bottom">
-          <Button
-            appearance="subtle"
-            iconBefore={<LinkIcon label="Link Icon" />}
-            href={loaderUrl}
-            target="_blank"
-          />
-        </Tooltip>
-      </NavSection>
-    </Nav>
-  );
+            <CodeSandbox
+              example={example}
+              groupId={groupId}
+              packageId={packageId}
+              pkgJSON={config}
+              afterDeployError={error => this.setState({ error })}
+              loadingButton={() => (
+                <NavButton style={{ marginRight: 8 }} type="Submit" disabled>
+                  <CodeSandboxLogo />
+                </NavButton>
+              )}
+              deployButton={({ isDisabled }) => (
+                <NavButton
+                  style={{ marginRight: 8 }}
+                  type="Submit"
+                  disabled={isDisabled}
+                >
+                  <CodeSandboxLogo />
+                </NavButton>
+              )}
+              useNavButton
+            />
+          </Tooltip>
+          <Tooltip
+            content={`${codeIsVisible ? 'Hide' : 'Show'} source`}
+            position="left"
+          >
+            <NavButton isSelected={codeIsVisible} onClick={onCodeToggle}>
+              <CodeIcon label="Show source" />
+            </NavButton>
+          </Tooltip>
+          <Tooltip content="Isolated View" position="bottom">
+            <Button
+              appearance="subtle"
+              iconBefore={<LinkIcon label="Link Icon" />}
+              href={loaderUrl}
+              target="_blank"
+            />
+          </Tooltip>
+        </NavSection>
+      </Nav>
+    );
+  }
 }
 
 type State = {

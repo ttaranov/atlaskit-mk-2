@@ -24,30 +24,6 @@ async function getRepoUrl(cwd, opts) {
   return '';
 }
 
-/**
- * @param {Object[]} listOfHistory
- * @param {string} listOfHistory[].release
- * @param {string} listOfHistory[].summary
- * @param {string[]} listOfHistory[].versions
- * @param {Object[]} listOfHistory[].commits
- * @param {string} listOfHistory[].commits[].message
- * @param {string} listOfHistory[].commits[].hash
- * @param {object} opts
- * @param {string} opts.prefix
- * @param {string} opts.path
- * The history object would looks like following
- * {
- *   summary: "This is a summary",
- *   doc: "release.md",
- *   releases: [
- *     '@atlaskit/code@minor'
- *   ],
- *   dependents: [
- *     '@atlaskit/badge@patch'
- *   ]
- * }
- */
-
 async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });

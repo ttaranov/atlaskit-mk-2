@@ -38,6 +38,7 @@ export interface MediaCardProps {
   appearance?: CardAppearance;
   occurrenceKey?: string;
   imageStatus?: ImageStatus;
+  disableOverlay?: boolean;
 }
 
 export interface State {
@@ -70,6 +71,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       appearance,
       url,
       imageStatus,
+      disableOverlay,
     } = this.props;
 
     return (
@@ -85,6 +87,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
         }
         appearance={appearance}
         resizeMode={resizeMode}
+        disableOverlay={disableOverlay}
       />
     );
   }
@@ -99,6 +102,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       cardDimensions,
       resizeMode,
       appearance,
+      disableOverlay,
     } = this.props;
 
     if (type === 'external') {
@@ -131,6 +135,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
         }
         resizeMode={resizeMode}
         appearance={appearance}
+        disableOverlay={disableOverlay}
       />
     );
   }

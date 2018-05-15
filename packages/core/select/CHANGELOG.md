@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 2.0.2
+- [patch] Release to align @atlaskit/select styles and theme with ADG3 guideline.  [7468739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7468739)
+
 ## 2.0.1
 
 ## 2.0.0

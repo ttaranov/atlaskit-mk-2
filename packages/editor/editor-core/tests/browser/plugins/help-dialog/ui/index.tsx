@@ -43,9 +43,9 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     const key = getComponentFromKeymap(keymaps.toggleBold);
     const shortcut = mount(<div>{key}</div>);
     if (browser.mac) {
-      expect(shortcut.text()).to.equal('⌘ + b');
+      expect(shortcut.text()).to.equal('⌘ + B');
     } else {
-      expect(shortcut.text()).to.equal('ctrl + b');
+      expect(shortcut.text()).to.equal('Ctrl + B');
     }
     shortcut.unmount();
   });
