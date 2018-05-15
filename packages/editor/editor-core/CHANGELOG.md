@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.12
+- [patch] ED-4591: fix responsive toolbar alignment to match content area left padding [1ccb6e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ccb6e9)
+- [none] Updated dependencies [1ccb6e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ccb6e9)
+
 ## 71.3.11
 - [patch] ED-4633: updated placeholder text [498e7a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/498e7a2)
 - [none] Updated dependencies [498e7a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/498e7a2)
