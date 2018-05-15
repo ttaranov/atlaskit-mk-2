@@ -29,7 +29,9 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin: 0 8px;
 `;
 
-export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & { isSmall?: boolean }
+> = styled.span`
   display: flex;
   align-items: center;
 
@@ -41,6 +43,10 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   > div > div {
     display: flex;
   }
+  /* see ED-4591 */
+  margin-left: 4px;
+  min-width: ${({ isSmall }: { isSmall: false }) =>
+    isSmall ? '40px' : 'auto'};
 `;
 
 export const ExpandIconWrapper: ComponentClass<
