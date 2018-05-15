@@ -10,7 +10,9 @@ import {
   UploadFileCallbacks,
   MediaItemProvider,
   UploadFileResult,
+  ContextConfig,
 } from '@atlaskit/media-core';
+import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';
 import { MediaFile, UploadParams } from '../..';
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
@@ -27,7 +29,10 @@ describe('UploadService', () => {
   const clientId = 'some-client-id';
   const token = 'some-token';
   const collection = 'some-collection';
-  const clientBasedAuthProvider = () => Promise.resolve({ clientId, token });
+
+  const clientBasedAuthProvider = jest.fn(() =>
+    Promise.resolve({ clientId, token }),
+  );
 
   const getContext = (options = {}) =>
     ContextFactory.create({
@@ -35,6 +40,10 @@ describe('UploadService', () => {
       authProvider: clientBasedAuthProvider,
       ...options,
     });
+
+  beforeEach(() => {
+    clientBasedAuthProvider.mockClear();
+  });
 
   describe('setUploadParams', () => {
     const setup = () => ({
@@ -960,12 +969,20 @@ describe('UploadService', () => {
       userAuthProvider?: AuthProvider;
       copyFileToCollectionSpy: Function;
     }) => {
-      const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
+      // window.fetch = jest.fn(() => Promise.resolve({ ok: true }));
+
       const collectionNameStub = 'some-collection-name';
-      const context = getContext({
-        authProvider,
-        userAuthProvider: config.userAuthProvider,
-      });
+
+      const clientBasedConfig: ContextConfig = {
+        serviceHost: apiUrl,
+        authProvider: clientBasedAuthProvider,
+      };
+
+      const context = fakeContext(
+        {},
+        { ...clientBasedConfig, userAuthProvider: config.userAuthProvider },
+      );
+
       const uploadService = UploadServiceFactory.create(
         context,
         {
@@ -974,14 +991,14 @@ describe('UploadService', () => {
         false,
       );
 
-      (uploadService as any).api = {
-        copyFileToCollection: config.copyFileToCollectionSpy,
+      (uploadService as any).mediaStore = {
+        copyFileWithToken: config.copyFileToCollectionSpy,
       };
 
       const sourceFileId = 'some-source-file-id';
       return {
         uploadService,
-        authProvider,
+        authProvider: context.config.authProvider,
         sourceFileId,
         sourceFileCollection: collectionNameStub,
       };

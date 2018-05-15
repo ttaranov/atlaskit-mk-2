@@ -327,6 +327,8 @@ export class NewUploadServiceImpl implements UploadService {
       return Promise.resolve();
     }
 
+    console.log(this.userMediaStore.copyFileWithToken);
+
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
