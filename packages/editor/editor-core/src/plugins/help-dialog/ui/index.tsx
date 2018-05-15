@@ -209,23 +209,23 @@ export const getSupportedFormatting = (schema: Schema): Format[] => {
 };
 
 export const getComponentFromKeymap = (keymap): any => {
-  const currentMap = keymap[browser.mac ? 'mac' : 'windows'];
-  const keyParts = currentMap.replace(/\-(?=.)/g, ' + ').split(' ');
+  const shortcut: string = keymap[browser.mac ? 'mac' : 'windows'];
+  const keyParts = shortcut.replace(/\-(?=.)/g, ' + ').split(' ');
   return (
     <span>
       {keyParts.map((part, index) => {
         if (part === '+') {
-          return <span key={`${currentMap}-${index}`}>{' + '}</span>;
+          return <span key={`${shortcut}-${index}`}>{' + '}</span>;
         } else if (part === 'Cmd') {
-          return <CodeSm key={`${currentMap}-${index}`}>⌘</CodeSm>;
+          return <CodeSm key={`${shortcut}-${index}`}>⌘</CodeSm>;
         } else if (
           ['ctrl', 'alt', 'opt', 'shift'].indexOf(part.toLowerCase()) >= 0
         ) {
-          return (
-            <CodeMd key={`${currentMap}-${index}`}>{part.toLowerCase()}</CodeMd>
-          );
+          return <CodeMd key={`${shortcut}-${index}`}>{part}</CodeMd>;
         }
-        return <CodeSm key={`${currentMap}-${index}`}>{part}</CodeSm>;
+        return (
+          <CodeSm key={`${shortcut}-${index}`}>{part.toUpperCase()}</CodeSm>
+        );
       })}
     </span>
   );
@@ -245,6 +245,7 @@ const ModalHeader = ({ onClose, showKeyline }) => (
       <ToolbarButton
         onClick={onClose}
         title="Close help dialog"
+        spacing="compact"
         iconBefore={<CloseIcon label="Close help dialog" size="large" />}
       />
     </div>
