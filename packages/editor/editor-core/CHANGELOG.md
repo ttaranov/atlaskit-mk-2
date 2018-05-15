@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.13
+- [patch] ED-4152: added clear formatting to help dialog [9cc835a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cc835a)
+- [none] Updated dependencies [9cc835a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cc835a)
+
 ## 71.3.12
 - [patch] ED-4591: fix responsive toolbar alignment to match content area left padding [1ccb6e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ccb6e9)
 - [none] Updated dependencies [1ccb6e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ccb6e9)
