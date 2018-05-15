@@ -1,5 +1,5 @@
 import createStub from 'raf-stub';
-import { code_block, h1, defaultSchema } from '@atlaskit/editor-test-helpers';
+import { code_block, defaultSchema } from '@atlaskit/editor-test-helpers';
 import codeBlockNodeView from '../../../../src/plugins/code-block/nodeviews/code-block';
 
 const codeBlock = (attrs?) => (...args) =>
@@ -25,8 +25,8 @@ describe('Code Block - NodeView', () => {
       const node = codeBlock()('this is code');
       const nodeView = codeBlockNodeView(node, null as any, () => -1);
 
-      expect(nodeView.dom.tagName).toBe('PRE');
       expect(nodeView.contentDOM.tagName).toBe('CODE');
+      expect(nodeView.contentDOM.parentElement!.tagName).toBe('PRE');
     });
 
     it('should render language on contentDOM as `data-language`', () => {

@@ -1,28 +1,46 @@
-import { EditorView } from 'prosemirror-view';
-import { Node } from 'prosemirror-model';
 import rafSchedule from 'raf-schd';
+import { EditorView } from 'prosemirror-view';
+import { Node, DOMSerializer, DOMOutputSpec } from 'prosemirror-model';
+import { browser } from '@atlaskit/editor-common';
 
 const MATCH_NEWLINES = new RegExp('\n', 'g');
 
+// For browsers <= IE11, we apply style overrides to render a basic code box
+const isIE11 = browser.ie && browser.ie_version <= 11;
+const toDOM = (node: Node) =>
+  [
+    'div',
+    { class: 'code-block' + (isIE11 ? ' ie11' : '') },
+    ['div', { class: 'line-number-gutter', contenteditable: 'false' }],
+    [
+      'div',
+      { class: 'code-content' },
+      [
+        'pre',
+        [
+          'code',
+          { 'data-language': node.attrs.language || '', spellcheck: 'false' },
+          0,
+        ],
+      ],
+    ],
+  ] as DOMOutputSpec;
+
 export class CodeBlockView {
   node: Node;
-  dom: HTMLPreElement;
+  dom: HTMLElement;
   contentDOM: HTMLElement;
   lineNumberGutter: HTMLElement;
 
   constructor(node: Node, view: EditorView, getPos: () => number) {
+    const { dom, contentDOM } = DOMSerializer.renderSpec(document, toDOM(node));
     this.node = node;
-    this.dom = document.createElement('pre');
-    this.contentDOM = document.createElement('code');
-    this.contentDOM.setAttribute('data-language', node.attrs.language);
-    this.contentDOM.setAttribute('spellcheck', 'false');
+    this.dom = dom as HTMLElement;
+    this.contentDOM = contentDOM as HTMLElement;
+    this.lineNumberGutter = this.dom.querySelector(
+      '.line-number-gutter',
+    ) as HTMLElement;
 
-    this.lineNumberGutter = document.createElement('div');
-    this.lineNumberGutter.setAttribute('contenteditable', 'false');
-    this.lineNumberGutter.classList.add('line-numbers');
-
-    this.dom.appendChild(this.lineNumberGutter);
-    this.dom.appendChild(this.contentDOM);
     this.ensureLineNumbers();
   }
 
@@ -44,10 +62,15 @@ export class CodeBlockView {
   });
 
   update(node: Node) {
-    if (node.type !== this.node.type) return false;
+    if (node.type !== this.node.type) {
+      return false;
+    }
     if (node !== this.node) {
       if (node.attrs.language !== this.node.attrs.language) {
-        this.contentDOM.setAttribute('data-language', node.attrs.language);
+        this.contentDOM.setAttribute(
+          'data-language',
+          node.attrs.language || '',
+        );
       }
       this.node = node;
       this.ensureLineNumbers();
