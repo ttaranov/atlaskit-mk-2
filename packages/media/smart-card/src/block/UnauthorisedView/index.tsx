@@ -16,7 +16,7 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
       <IconAndDetailLayout
         left={<Icon src={icon} />}
         right={
-          <>
+          <div>
             <Title>Get more out of your links</Title>
             <Description>
               Make these link previews 18% more breathtaking by connecting{' '}
@@ -31,7 +31,7 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
                 Connect
               </Button>
             </ButtonGroup>
-          </>
+          </div>
         }
       />
     );
