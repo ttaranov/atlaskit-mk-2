@@ -81,6 +81,15 @@ if (INTEGRATION_TESTS) {
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);
+    // look for editor package changes inside of integration tests
+    const changedEditorPackages = changedPackages.filter(name =>
+      name.includes('editor'),
+    );
+    if (changedEditorPackages.length > 0) {
+      config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+        pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
+      );
+    }
     const changedPackagesTestGlobs = changedPackages.map(
       pkgPath =>
         `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
