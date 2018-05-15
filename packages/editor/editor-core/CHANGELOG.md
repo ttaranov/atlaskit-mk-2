@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.14
+- [patch] ED-4628: fixed list button group styles [ca01876](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca01876)
+- [none] Updated dependencies [ca01876](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca01876)
+
 ## 71.3.13
 - [patch] ED-4152: added clear formatting to help dialog [9cc835a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cc835a)
 - [none] Updated dependencies [9cc835a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cc835a)
