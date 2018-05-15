@@ -139,7 +139,7 @@ export const MetadataWrapper = styled.div`
 `;
 
 export const MetadataFileName = styled.div`
-  &:first-letter {
+  &::first-letter {
     text-transform: uppercase;
   }
 `;
