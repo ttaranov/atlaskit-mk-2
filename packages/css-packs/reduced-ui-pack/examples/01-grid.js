@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
 
 export default () => (
   <div>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@atlaskit/reduced-ui-pack@8.8.0/dist/bundle.css"
-    />
+    <style>{reducedStyles}</style>
     <ak-grid is>
       <ak-grid-column is size="8">
         <h1>Main heading</h1>

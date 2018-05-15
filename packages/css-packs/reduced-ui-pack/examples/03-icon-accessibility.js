@@ -3,16 +3,15 @@
 import React from 'react';
 // eslint-disable-next-line
 import icons from '!!raw-loader!../src/icons-sprite.svg';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
 
 // eslint-disable-next-line react/no-danger
 const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
 
 export default () => (
   <div>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@atlaskit/reduced-ui-pack@8.8.0/dist/bundle.css"
-    />
+    <style>{reducedStyles}</style>
     <Spritemap />
     <div className="ak-field-group">
       <label htmlFor="dummy">Dummy input</label>

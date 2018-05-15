@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
+// eslint-disable-next-line
+import reducedStyles from '!!raw-loader!../src/bundle.css';
 
 export default () => (
   <form onSubmit={e => e.preventDefault()}>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@atlaskit/reduced-ui-pack@8.8.0/dist/bundle.css"
-    />
+    <style>{reducedStyles}</style>
     <div className="ak-field-group">
       <label htmlFor="search">Search</label>
       <input
