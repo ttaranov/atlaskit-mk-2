@@ -12,15 +12,17 @@ to help you process data in case of async loading.
 
 ### TableTree (Default export)
 
-- **items** - Array of data object to display in the Table Tree
+- v1 - **items**: Function that will be used to provide data for rows at a particular level in the hierarchy
+- v2 - **items**: Array of data object to display in the Table Tree
 
 ### Rows:
 
-- **items** - Array of data object to display in the Table Tree
+- v1 - **items**: Function that will be used to provide data for rows at a particular level in the hierarchy
+- v2 - **items**: Array of data object to display in the Table Tree
 
 ### Row:
 
-- **items** - Array of child objects for a particular parent
+- [New Prop] **items** - Array of child objects for a particular parent
 
 
 ## Upgrade with static table data ( without async loading )
