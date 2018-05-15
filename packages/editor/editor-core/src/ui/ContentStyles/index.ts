@@ -98,11 +98,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror pre {
     box-sizing: border-box;
-    white-space: pre-wrap;
     font-family: ${akEditorCodeFontFamily};
     background: ${akEditorCodeBackground};
     padding: ${akEditorCodeBlockPadding};
     border-radius: ${akBorderRadius};
+    overflow-x: scroll;
   }
 
   .ProseMirror .code {

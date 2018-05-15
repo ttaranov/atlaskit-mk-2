@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
   "module": "dist/bundle.css",
-  "atlaskit:src": "src/index.js",
+  "atlaskit:src": "src/bundle.css",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/overview",
   "files": [
     "dist/bundle.css",

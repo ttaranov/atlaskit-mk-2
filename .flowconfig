@@ -37,6 +37,7 @@ module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/package
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/stride/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/trello/\1/src/index'
 
+module.name_mapper='\!\!style-loader\!css-loader\!.*' -> '<PROJECT_ROOT>/typings/style-loader-css-loader.js'
 module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js'
 module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
 module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
