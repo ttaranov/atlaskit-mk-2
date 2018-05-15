@@ -55,7 +55,6 @@
     "@atlaskit/util-data-test": "^9.1.2",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
-    "sinon": "^2.2.0",
     "whatwg-fetch": "^2.0.3"
   },
   "repository": {
