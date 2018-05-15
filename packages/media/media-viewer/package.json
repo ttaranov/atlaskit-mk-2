@@ -25,6 +25,7 @@
     "@atlaskit/media-ui": "^2.0.1",
     "@atlaskit/spinner": "^5.0.1",
     "@atlaskit/theme": "^3.1.1",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "deep-equal": "^1.0.1",
     "pdfjs-dist": "^2.0.466",
     "query-string": "^4.3.2",
