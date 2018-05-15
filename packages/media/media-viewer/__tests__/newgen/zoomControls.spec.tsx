@@ -26,7 +26,7 @@ describe('<ZoomControls />', () => {
       .find(Button)
       .first()
       .simulate('click');
-    expect(onChange).lastCalledWith(0.6);
+    expect(onChange).lastCalledWith(0.64);
     component
       .find(Button)
       .last()
@@ -39,7 +39,7 @@ describe('<ZoomControls />', () => {
       .find(Button)
       .last()
       .simulate('click');
-    expect(onChange).lastCalledWith(1.2);
+    expect(onChange).lastCalledWith(1.1);
   });
 
   it('should allow zooming with constrains', () => {
@@ -53,7 +53,7 @@ describe('<ZoomControls />', () => {
       .find(Button)
       .first()
       .simulate('click');
-    expect(onChange).lastCalledWith(0.2);
+    expect(onChange).lastCalledWith(0.25);
     component
       .find(Button)
       .first()
