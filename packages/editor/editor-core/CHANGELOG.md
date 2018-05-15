@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.22
+- [patch] ED-4603: fix emptyCell on Backspace [06a52c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06a52c9)
+- [none] Updated dependencies [06a52c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06a52c9)
+
 ## 71.3.21
 - [patch] Escape now closes the link toolbar when activity provider is disabled [b060a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b060a5a)
 - [none] Updated dependencies [b060a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b060a5a)
