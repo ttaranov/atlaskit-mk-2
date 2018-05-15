@@ -1,39 +1,40 @@
 // @flow
+import get from 'lodash.get';
+import set from 'lodash.set';
 
-export default function toTableTreeData(
-  addedRowsData: Array<Object>,
-  parentItem: ?Object = null,
-  oldItemsById: ?Object,
-  {
-    idKey = 'id',
-    childIdkey = 'childIds',
-  }: { idKey?: string, childIdkey?: string } = {},
-): {
-  itemsById: Object,
-  rootIds?: Array<number | string>,
-} {
-  const newItemsById = {};
-  for (const rowData of addedRowsData) {
-    newItemsById[rowData[idKey]] = rowData;
+export default class createTableTreeDataHelper {
+  key: string;
+  keysCache: Object;
+  constructor(key: string = 'key') {
+    this.key = key;
+    this.keysCache = {};
   }
 
-  if (parentItem === null || parentItem === undefined) {
-    return {
-      itemsById: newItemsById,
-      rootIds: addedRowsData.map(rowData => rowData[idKey]),
-    };
+  updateObjectWithChildren(
+    objectPath: string,
+    items: Array<Object>,
+    allItems: Array<Object>,
+  ) {
+    let newObject = [...allItems];
+    let toChangeObject = get(newObject, objectPath);
+    toChangeObject.children = items;
+    return set(newObject, objectPath, toChangeObject);
   }
 
-  const updatedParentItem = {
-    ...parentItem,
-    [childIdkey]: addedRowsData.map(child => child[idKey]),
-  };
+  rootItems(rootItems: Array<Object>) {
+    rootItems.forEach((rootItem, index) => {
+      this.keysCache[rootItem[this.key]] = index;
+    });
 
-  return {
-    itemsById: {
-      ...oldItemsById,
-      ...newItemsById,
-      [parentItem[idKey]]: updatedParentItem,
-    },
-  };
+    return rootItems;
+  }
+
+  addItem(items: Array<Object>, parentItem: Object, allItems: Array<Object>) {
+    const parentLocation = this.keysCache[parentItem[this.key]];
+    items.forEach((item, index) => {
+      this.keysCache[item[this.key]] = `${parentLocation}.children[${index++}]`;
+    });
+
+    return this.updateObjectWithChildren(parentLocation, items, allItems);
+  }
 }

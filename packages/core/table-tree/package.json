@@ -20,6 +20,8 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/spinner": "^5.0.2",
     "@atlaskit/theme": "^3.2.2",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
     "prop-types": "^15.5.10",
     "styled-components": "1.4.6 - 3"
   },

@@ -8,8 +8,10 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  toTableTreeData,
+  createTableTreeDataHelper,
 } from '../src';
+
+const tableTreeHelper = new createTableTreeDataHelper('id');
 
 function getItemsData(parent, count) {
   return generateChildItems(parent || { numberingPath: '' }, count);
@@ -42,8 +44,7 @@ const PerformanceTweakContainer = styled.div`
 `;
 
 type State = {
-  itemsById: Object,
-  rootIds: Array<number | string>,
+  items: Array<Object>,
   childCount: number,
   totalCount: number,
   rootItems?: Array<Object>,
@@ -87,15 +88,15 @@ export default class extends PureComponent<{}, State> {
     childCount: childCountPerItem,
     totalCount: childCountPerItem,
     selectedChildCountOption: childCountOptions[3],
-    ...toTableTreeData(getItemsData(undefined, 100)),
+    items: tableTreeHelper.rootItems(getItemsData(undefined, 100)),
   };
 
   handleExpand = (parentItem: Object) => {
     this.setState({
-      ...toTableTreeData(
+      items: tableTreeHelper.addItem(
         getItemsData(parentItem, 100),
         parentItem,
-        this.state.itemsById,
+        this.state.items,
       ),
       totalCount:
         this.state.totalCount + this.state.selectedChildCountOption.value,
@@ -110,7 +111,7 @@ export default class extends PureComponent<{}, State> {
   };
 
   render() {
-    const { rootIds, itemsById } = this.state;
+    const { items } = this.state;
     return (
       <div style={{ position: 'relative' }}>
         <TableTree>
@@ -120,13 +121,13 @@ export default class extends PureComponent<{}, State> {
             <Header width={100}>Stuff</Header>
           </Headers>
           <Rows
-            items={rootIds && rootIds.map(rootId => itemsById[rootId])}
-            render={({ title, numbering, childIds }) => (
+            items={items}
+            render={({ title, numbering, childIds, children }) => (
               <Row
                 itemId={numbering}
                 hasChildren
                 onExpand={this.handleExpand}
-                items={childIds && childIds.map(id => itemsById[id])}
+                items={children}
               >
                 <Cell singleLine>{title}</Cell>
                 <Cell singleLine>{numbering}</Cell>

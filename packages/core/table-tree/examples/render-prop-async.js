@@ -6,7 +6,7 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  toTableTreeData,
+  createTableTreeDataHelper,
 } from '../src';
 
 let uuid = 0;
@@ -85,10 +85,11 @@ function getData(parentItem: ?Object) {
   return !parentItem ? fetchRoots() : fetchChildrenOf();
 }
 
+const tableTreeHelper = new createTableTreeDataHelper('id');
+
 export default class extends Component<*, *> {
   state = {
-    rootIds: null,
-    itemsById: {},
+    items: [],
   };
 
   componentDidMount() {
@@ -101,14 +102,20 @@ export default class extends Component<*, *> {
     }
 
     getData(parentItem).then(items => {
-      this.setState({
-        ...toTableTreeData(items, parentItem, this.state.itemsById),
-      });
+      if (!parentItem) {
+        this.setState({
+          items: tableTreeHelper.rootItems(items),
+        });
+      } else {
+        this.setState({
+          items: tableTreeHelper.addItem(items, parentItem, this.state.items),
+        });
+      }
     });
   };
 
   render() {
-    const { rootIds, itemsById } = this.state;
+    const { items } = this.state;
     return (
       <TableTree>
         <Headers>
@@ -117,14 +124,14 @@ export default class extends Component<*, *> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          items={rootIds && rootIds.map(rootId => itemsById[rootId])}
-          render={({ title, numbering, page, hasChildren, childIds }) => (
+          items={items}
+          render={({ title, numbering, page, hasChildren, children }) => (
             <Row
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
               onExpand={this.loadTableData}
-              items={childIds && childIds.map(id => itemsById[id])}
+              items={children}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>
