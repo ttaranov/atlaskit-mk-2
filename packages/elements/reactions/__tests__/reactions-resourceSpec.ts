@@ -1,8 +1,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
-import * as chai from 'chai';
 import * as fetchMock from 'fetch-mock/src/client';
-import * as sinon from 'sinon';
 import { ReactionsResource } from '../src';
 import { ReactionsState, ReactionStatus } from '../src/reactions-resource';
 import { equalEmojiId } from '../src/internal/helpers';
@@ -13,8 +11,6 @@ import {
   smileyId,
   thumbsupId,
 } from './_test-data';
-
-const { expect } = chai;
 
 const baseUrl = 'https://reactions';
 const ari = 'ari:cloud:owner:demo-cloud-id:item/1';
@@ -127,11 +123,11 @@ describe('@atlaskit/reactions/reactions-provider', () => {
   });
 
   describe('test data defined', () => {
-    expect(grinningId, 'grinning').to.not.eq(undefined);
-    expect(laughingId, 'laughing').to.not.eq(undefined);
-    expect(thumbsupId, 'thumbsup').to.not.eq(undefined);
-    expect(grinId, 'grin').to.not.eq(undefined);
-    expect(smileyId, 'smiley').to.not.eq(undefined);
+    expect(grinningId).not.toEqual(undefined);
+    expect(laughingId).not.toEqual(undefined);
+    expect(thumbsupId).not.toEqual(undefined);
+    expect(grinId).not.toEqual(undefined);
+    expect(smileyId).not.toEqual(undefined);
   });
 
   describe('getReactions', () => {
@@ -151,7 +147,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       return reactionsProvider
         .getReactions([{ ari, containerAri }])
         .then(reactions => {
-          expect(reactions).to.deep.equal(fetchGetReactions());
+          expect(reactions).toEqual(fetchGetReactions());
         });
     });
 
@@ -161,7 +157,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         .then(reactions => {
           expect(
             Object.keys((reactionsProvider as any).cachedReactions).length,
-          ).to.equal(1);
+          ).toEqual(1);
         });
     });
 
@@ -192,23 +188,23 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       return reactionsProvider
         .getReactions([{ ari, containerAri }])
         .then(reactions => {
-          expect((reactionsProvider as any).cachedReactions).not.to.deep.equal(
+          expect((reactionsProvider as any).cachedReactions).not.toEqual(
             reactions,
           );
           expect(
             (reactionsProvider as any).cachedReactions[
               reactionsProvider.objectReactionKey(containerAri, ari)
             ].reactions,
-          ).to.deep.equal(reactions[ari]);
+          ).toEqual(reactions[ari]);
           expect(
             (reactionsProvider as any).cachedReactions[anotherCacheKey],
-          ).to.deep.equal(anotherAriData);
+          ).toEqual(anotherAriData);
         });
     });
 
     it('should not fail with empty args', () => {
       return reactionsProvider.getReactions([]).then(reactions => {
-        expect(reactions).to.deep.equal({});
+        expect(reactions).toEqual({});
       });
     });
   });
@@ -225,20 +221,20 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         matcher: 'end:reactions',
         response: fetchAddReaction(),
       });
-      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
+      const spy = jest.spyOn(reactionsProvider, 'notifyUpdated');
 
       return reactionsProvider
         .addReaction(containerAri, ari, smileyId.id!)
         .then(state => {
-          expect(spy.called).to.equal(true);
+          expect(spy).toHaveBeenCalled();
           expect(
             (reactionsProvider as any).cachedReactions[
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
-          ).to.deep.equal(state);
-          expect(state.status).equal(ReactionStatus.ready);
+          ).toEqual(state);
+          expect(state.status).toEqual(ReactionStatus.ready);
           if (state.status === ReactionStatus.ready) {
-            expect(state.reactions.length).to.equal(
+            expect(state.reactions.length).toEqual(
               fetchGetReactions()[ari].length + 1,
             );
           }
@@ -258,20 +254,20 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         matcher: `begin:${baseUrl}/reactions?ari=${ari}`,
         response: fetchDeleteReaction(),
       });
-      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
+      const spy = jest.spyOn(reactionsProvider, 'notifyUpdated');
 
       return reactionsProvider
         .deleteReaction(containerAri, ari, grinningId.id!)
         .then(state => {
-          expect(spy.called).to.equal(true);
+          expect(spy).toHaveBeenCalled();
           expect(
             (reactionsProvider as any).cachedReactions[
               reactionsProvider.objectReactionKey(containerAri, ari)
             ],
-          ).to.deep.equal(state);
-          expect(state.status).equal(ReactionStatus.ready);
+          ).toEqual(state);
+          expect(state.status).toEqual(ReactionStatus.ready);
           if (state.status === ReactionStatus.ready) {
-            expect(state.reactions.length).to.equal(
+            expect(state.reactions.length).toEqual(
               fetchGetReactions()[ari].length - 1,
             );
           }
@@ -284,71 +280,71 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
 
-      // cast to <any> because Sinon doesn't see the protected optmisticAddReaction method
-      const optimisticSpy = sinon.spy(
+      // cast to <any> because Jest doesn't see the protected optmisticAddReaction method
+      const optimisticSpy = jest.spyOn(
         <any>reactionsProvider,
         'optimisticAddReaction',
       );
-      const addSpy = sinon.spy(reactionsProvider, 'addReaction');
+      const addSpy = jest.spyOn(reactionsProvider, 'addReaction');
 
       reactionsProvider.toggleReaction(containerAri, ari, smileyId.id!);
-      expect(optimisticSpy.called).to.equal(true);
-      expect(addSpy.called).to.equal(true);
+      expect(optimisticSpy).toHaveBeenCalled();
+      expect(addSpy).toHaveBeenCalled();
     });
 
     it('should optimistically delete reaction if in cache and call service', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
 
-      // cast to <any> because Sinon doesn't see the protected optmisticDeleteReaction method
-      const optimisticSpy = sinon.spy(
+      // cast to <any> because Jest doesn't see the protected optmisticDeleteReaction method
+      const optimisticSpy = jest.spyOn(
         <any>reactionsProvider,
         'optimisticDeleteReaction',
       );
-      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
+      const deleteSpy = jest.spyOn(reactionsProvider, 'deleteReaction');
 
       reactionsProvider.toggleReaction(containerAri, ari, grinningId.id!);
-      expect(optimisticSpy.called).to.equal(true);
-      expect(deleteSpy.called).to.equal(true);
+      expect(optimisticSpy).toHaveBeenCalled();
+      expect(deleteSpy).toHaveBeenCalled();
     });
 
     it('should optimistically increase counter on reaction if user have not already reacted', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
 
-      const addSpy = sinon.spy(reactionsProvider, 'addReaction');
+      const addSpy = jest.spyOn(reactionsProvider, 'addReaction');
       reactionsProvider.toggleReaction(containerAri, ari, thumbsupId.id!);
-      expect(addSpy.called).to.equal(true);
+      expect(addSpy).toHaveBeenCalled();
 
       const reaction = (reactionsProvider as any).cachedReactions[
         reactionsProvider.objectReactionKey(containerAri, ari)
       ].reactions.filter(r => equalEmojiId(r.emojiId, thumbsupId.id!))[0];
-      expect(reaction.count).to.equal(6);
-      expect(reaction.reacted).to.equal(true);
+      expect(reaction.count).toEqual(6);
+      expect(reaction.reacted).toEqual(true);
     });
 
     it('should optimistically decrease counter on reaction if user have already reacted', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
 
-      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
+      const deleteSpy = jest.spyOn(reactionsProvider, 'deleteReaction');
       reactionsProvider.toggleReaction(containerAri, ari, laughingId.id!);
-      expect(deleteSpy.called).to.equal(true);
+      expect(deleteSpy).toHaveBeenCalled();
 
       const reaction = (reactionsProvider as any).cachedReactions[
         reactionsProvider.objectReactionKey(containerAri, ari)
       ].reactions.filter(r => equalEmojiId(r.emojiId, laughingId.id!))[0];
-      expect(reaction.count).to.equal(1);
-      expect(reaction.reacted).to.equal(false);
+      expect(reaction.count).toEqual(1);
+      expect(reaction.reacted).toEqual(false);
     });
 
     it('should delete reaction if count is less than 1', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
 
-      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
+      const deleteSpy = jest.spyOn(reactionsProvider, 'deleteReaction');
       reactionsProvider.toggleReaction(containerAri, ari, grinningId.id!);
-      expect(deleteSpy.called).to.equal(true);
+      expect(deleteSpy).toHaveBeenCalled();
 
       const objectReactionKey = reactionsProvider.objectReactionKey(
         containerAri,
@@ -358,11 +354,11 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         (reactionsProvider as any).cachedReactions[
           objectReactionKey
         ].reactions.filter(r => equalEmojiId(r.emojiId, grinningId.id!)).length,
-      ).to.equal(0);
+      ).toEqual(0);
       expect(
         (reactionsProvider as any).cachedReactions[objectReactionKey].reactions
           .length,
-      ).to.equal(fetchGetReactions()[ari].length - 1);
+      ).toEqual(fetchGetReactions()[ari].length - 1);
     });
   });
 
@@ -382,7 +378,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
     it('should fetch details for reaction', () => {
       return reactionsProvider.getDetailedReaction(reaction).then(detail => {
-        expect(detail).to.deep.equal(detailedReaction);
+        expect(detail).toEqual(detailedReaction);
       });
     });
   });
@@ -402,11 +398,10 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     });
 
     it('should fetch reaction details for reaction', () => {
-      const spy = sinon.spy(reactionsProvider, 'getDetailedReaction');
+      const spy = jest.spyOn(reactionsProvider, 'getDetailedReaction');
       reactionsProvider.fetchReactionDetails(reaction);
-      expect(spy.called).to.equal(true);
-      expect(spy.calledWith(reaction)).to.equal(true);
-      spy.restore();
+      expect(spy).toHaveBeenCalledWith(reaction);
+      spy.mockRestore();
     });
 
     it('should call notifyUpdated if cached', () => {
@@ -418,24 +413,25 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       (reactionsProvider as any).cachedReactions = {
         [key]: reactionsState,
       };
-      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
+      const spy = jest.spyOn(reactionsProvider, 'notifyUpdated');
       return reactionsProvider.fetchReactionDetails(reaction).then(() => {
-        expect(spy.called).to.equal(true);
-        expect(
-          spy.calledWith(reaction.containerAri, reaction.ari, reactionsState),
-        ).to.equal(true);
-        spy.restore();
+        expect(spy).toHaveBeenCalledWith(
+          reaction.containerAri,
+          reaction.ari,
+          reactionsState,
+        );
+        spy.mockRestore();
       });
     });
 
     it('should not query if request already in flight', () => {
       const firstCall = reactionsProvider.fetchReactionDetails(reaction);
 
-      const spy = sinon.spy(reactionsProvider, 'getDetailedReaction');
+      const spy = jest.spyOn(reactionsProvider, 'getDetailedReaction');
       const secondCall = reactionsProvider.fetchReactionDetails(reaction);
-      expect(spy.called).to.equal(false);
-      expect(secondCall).to.equal(firstCall);
-      spy.restore();
+      expect(spy).not.toHaveBeenCalled();
+      expect(secondCall).toEqual(firstCall);
+      spy.mockRestore();
     });
   });
 });
