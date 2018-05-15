@@ -6,6 +6,12 @@ import styled, { StyledComponentClass } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
+import {
+  akColorY200,
+  akColorP200,
+  akColorB300,
+  akColorN400,
+} from '@atlaskit/util-shared-styles';
 
 const overlayZindex = 999;
 
@@ -126,4 +132,42 @@ export const Header = styled.div`
 
 export const LeftHeader = styled.div`
   flex: 0.8;
+`;
+
+export const MetadataWrapper = styled.div`
+  display: flex;
+`;
+
+export const MetadataFileName = styled.div`
+  &:first-letter {
+    text-transform: uppercase;
+  }
+`;
+
+export const MetadataSubText = styled.div`
+  color: ${akColorN400};
+`;
+
+export const MetadataIconWrapper = styled.div`
+  padding-top: 4px;
+  padding-right: 12px;
+`;
+
+const colors = {
+  image: akColorY200,
+  audio: akColorP200,
+  video: '#ff7143',
+  doc: akColorB300,
+  unknown: '#3dc7dc',
+};
+
+export interface IconWrapperProps {
+  type: string;
+}
+
+export const IconWrapper: ComponentClass<
+  HTMLAttributes<{}> & IconWrapperProps
+> = styled.div`
+  display: inline-flex;
+  color: ${({ type }: IconWrapperProps) => colors[type] || colors.unknown};
 `;

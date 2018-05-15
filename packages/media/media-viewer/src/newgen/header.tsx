@@ -1,9 +1,18 @@
 import * as React from 'react';
 import { Outcome, Identifier } from './domain';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileItem, MediaType } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
-import { Header as HeaderWrapper, LeftHeader } from './styled';
+import {
+  Header as HeaderWrapper,
+  LeftHeader,
+  MetadataWrapper,
+  MetadataSubText,
+  MetadataIconWrapper,
+  MetadataFileName,
+} from './styled';
+import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
+import { MediaTypeIcon } from './media-type-icon';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -92,11 +101,59 @@ export default class Header extends React.Component<Props, State> {
       case 'PENDING':
         return '';
       case 'SUCCESSFUL':
-        return <span>{item.data.details.name || ''}</span>;
+        return this.getMetadataLayout(item.data);
       case 'FAILED':
         return '';
     }
   }
+
+  private getMetadataLayout(item: FileItem) {
+    return (
+      <MetadataWrapper>
+        <MetadataIconWrapper>
+          {this.getMediaIcon(item.details.mediaType)}
+        </MetadataIconWrapper>
+        <div>
+          <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
+          <MetadataSubText>
+            {this.renderFileTypeText(item.details.mediaType)}
+            {this.renderSize(item)}
+          </MetadataSubText>
+        </div>
+      </MetadataWrapper>
+    );
+  }
+
+  private renderSize = (item: FileItem) => {
+    if (item.details.size) {
+      return (
+        this.renderSeparator() + toHumanReadableMediaSize(item.details.size)
+      );
+    } else {
+      return '';
+    }
+  };
+
+  private renderSeparator = () => {
+    return ' · ';
+  };
+
+  private renderFileTypeText = (mediaType?: MediaType): string => {
+    switch (mediaType) {
+      case 'image':
+        return 'image';
+      case 'video':
+        return 'video';
+      case 'doc':
+        return 'document';
+      default:
+        return 'unknown';
+    }
+  };
+
+  private getMediaIcon = (mediaType?: MediaType) => {
+    return <MediaTypeIcon type={mediaType} size="large" />;
+  };
 
   private needsReset(propsA: Props, propsB: Props) {
     return (
