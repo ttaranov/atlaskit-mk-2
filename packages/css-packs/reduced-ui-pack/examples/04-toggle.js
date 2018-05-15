@@ -1,9 +1,8 @@
 // // @flow
 
 import React from 'react';
-/* eslint-disable */
+// eslint-disable-next-line
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
-/* eslint-enable */
 
 export default () => (
   <div>

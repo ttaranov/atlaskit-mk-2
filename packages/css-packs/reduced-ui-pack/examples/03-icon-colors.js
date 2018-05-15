@@ -3,9 +3,8 @@
 import React, { Component } from 'react';
 // eslint-disable-next-line
 import icons from '!!raw-loader!../src/icons-sprite.svg';
-/* eslint-disable */
+// eslint-disable-next-line
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
-/* eslint-enable */
 
 // eslint-disable-next-line react/no-danger
 const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
