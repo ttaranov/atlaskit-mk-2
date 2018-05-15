@@ -17,17 +17,15 @@ const icons = {
 
 export interface FileIconProps {
   type?: string;
-  size?: string;
-  className?: string;
 }
 
 export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
   render() {
-    const { type, size = 'small', className } = this.props;
+    const { type } = this.props;
     const Icon = (type && icons[type]) || icons.unknown;
     return (
       <IconWrapper type={type || 'unknown'}>
-        <Icon label="media-type" size={size} className={className} />
+        <Icon label="media-type" size="large" />
       </IconWrapper>
     );
   }

@@ -101,13 +101,13 @@ export default class Header extends React.Component<Props, State> {
       case 'PENDING':
         return '';
       case 'SUCCESSFUL':
-        return this.getMetadataLayout(item.data);
+        return this.renderMetadataLayout(item.data);
       case 'FAILED':
         return '';
     }
   }
 
-  private getMetadataLayout(item: FileItem) {
+  private renderMetadataLayout(item: FileItem) {
     return (
       <MetadataWrapper>
         <MetadataIconWrapper>
@@ -152,7 +152,7 @@ export default class Header extends React.Component<Props, State> {
   };
 
   private getMediaIcon = (mediaType?: MediaType) => {
-    return <MediaTypeIcon type={mediaType} size="large" />;
+    return <MediaTypeIcon type={mediaType} />;
   };
 
   private needsReset(propsA: Props, propsB: Props) {
