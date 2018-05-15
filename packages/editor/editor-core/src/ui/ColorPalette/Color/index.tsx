@@ -9,13 +9,13 @@ export interface Props {
   tabIndex?: number;
   isSelected?: boolean;
   onClick: (value: string) => void;
-  border: string;
+  borderColor: string;
 }
 
 export default class Color extends PureComponent<Props, any> {
   render() {
-    const { tabIndex, value, label, isSelected, border } = this.props;
-    const borderColor = `1px solid ${border}`;
+    const { tabIndex, value, label, isSelected, borderColor } = this.props;
+    const borderStyle = `1px solid ${borderColor}`;
     return (
       <ButtonWrapper>
         <Button
@@ -26,7 +26,7 @@ export default class Color extends PureComponent<Props, any> {
           title={label}
           style={{
             backgroundColor: value || 'transparent',
-            border: borderColor,
+            border: borderStyle,
           }}
         >
           {isSelected && (
