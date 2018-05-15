@@ -247,6 +247,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           onChange={this.updateText}
           onMouseDown={this.setInputActive}
           onBlur={this.handleOnBlur}
+          onCancel={this.handleOnBlur}
         />
       );
     }
@@ -261,6 +262,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         onChange={this.updateHref}
         onMouseDown={this.setInputActive}
         onBlur={this.handleOnBlur}
+        onCancel={this.handleOnBlur}
       />
     );
   }
