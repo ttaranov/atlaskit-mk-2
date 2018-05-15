@@ -193,10 +193,19 @@ export const formatting: Format[] = [
   },
 ];
 
+const otherFormatting = [
+  {
+    name: 'Clear formatting',
+    type: 'clearFormatting',
+    keymap: () => keymaps.clearFormatting,
+  },
+];
+
 export const getSupportedFormatting = (schema: Schema): Format[] => {
-  return formatting.filter(
+  const supportedBySchema = formatting.filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
+  return supportedBySchema.concat(otherFormatting);
 };
 
 export const getComponentFromKeymap = (keymap): any => {
