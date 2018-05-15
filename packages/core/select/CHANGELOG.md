@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 3.0.0
+- [major] Update to react-select@beta.4, removed developer preview warning. Stable release, see changelog for details [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+
 * BREAKING: Removed `maxValueHeight` prop and functionality, this is a breaking change that affects multi -value components predominantly. The control will now expand to accommodate contained values, as opposed to constraining to a maxValueHeight with a scrollable area.
 
 * `Async`, `Creatable`, `AsyncCreatable` components now imported from `react-select` and not from `react-select/lib/*`.

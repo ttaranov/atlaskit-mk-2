@@ -1,5 +1,10 @@
 # @atlaskit/form
 
+## 1.0.2
+- [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+  - @atlaskit/select@3.0.0
+  - @atlaskit/datetime-picker@4.0.0
+
 ## 1.0.1
 
 ## 1.0.0
