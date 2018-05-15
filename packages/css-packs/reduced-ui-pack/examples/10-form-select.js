@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 /* eslint-disable */
-// $FlowFixMe
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
 /* eslint-enable */
 

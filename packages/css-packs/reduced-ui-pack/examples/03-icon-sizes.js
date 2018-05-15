@@ -4,7 +4,6 @@ import React from 'react';
 // eslint-disable-next-line
 import icons from '!!raw-loader!../src/icons-sprite.svg';
 /* eslint-disable */
-// $FlowFixMe
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
 /* eslint-enable */
 
