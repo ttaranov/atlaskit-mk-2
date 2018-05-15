@@ -15,7 +15,7 @@ export interface Props {
 export default class Color extends PureComponent<Props, any> {
   render() {
     const { tabIndex, value, label, isSelected, border } = this.props;
-    const colorBorder = `1px solid ${border}`;
+    const borderColor = `1px solid ${border}`;
     return (
       <ButtonWrapper>
         <Button
@@ -26,7 +26,7 @@ export default class Color extends PureComponent<Props, any> {
           title={label}
           style={{
             backgroundColor: value || 'transparent',
-            border: colorBorder,
+            border: borderColor,
           }}
         >
           {isSelected && (

@@ -18,7 +18,7 @@ export interface Props {
   editorView: EditorView;
   palette: Map<string, string>;
   mountPoint?: HTMLElement;
-  borders: object;
+  borderColors: object;
 }
 
 export interface State {
@@ -32,7 +32,7 @@ export default class BackgroundColorMenu extends Component<Props, State> {
 
   render() {
     const { isOpen } = this.state;
-    const { mountPoint, borders } = this.props;
+    const { mountPoint, borderColors } = this.props;
 
     return (
       <DropdownWithOutsideListeners
@@ -61,7 +61,7 @@ export default class BackgroundColorMenu extends Component<Props, State> {
         <ColorPalette
           palette={this.props.palette}
           onClick={this.setColor}
-          borders={borders}
+          borderColors={borderColors}
         />
       </DropdownWithOutsideListeners>
     );

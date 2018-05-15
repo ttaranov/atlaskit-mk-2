@@ -54,6 +54,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsScrollableElement,
       isReducedSpacing,
+      pluginState: { palette, borderColorPalette },
     } = this.props;
 
     return (
@@ -88,10 +89,10 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
           }
         >
           <ColorPalette
-            palette={this.props.pluginState.palette}
+            palette={palette}
             onClick={this.toggleTextColor}
             selectedColor={color}
-            borders={this.props.pluginState.borderPalette}
+            borderColors={borderColorPalette}
           />
         </Dropdown>
         <Separator />

@@ -48,7 +48,7 @@ export {
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
-  tableBackgroundColorBorders,
+  tableBackgroundBorderColors,
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,

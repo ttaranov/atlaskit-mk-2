@@ -78,7 +78,7 @@ const setCellAttrs = (node: PmNode) => {
 export const tableBackgroundColorPalette = new Map<string, string>();
 
 /** New borders for colors in the color picker */
-export const tableBackgroundColorBorders = {
+export const tableBackgroundBorderColors = {
   blue: akColorB75,
   teal: akColorT75,
   red: akColorR75,

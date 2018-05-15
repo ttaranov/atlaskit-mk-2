@@ -36,7 +36,7 @@ export interface TextColorMark extends Mark {
 }
 
 /** New borders for colors in the color picker */
-export const colorBorderPalette = {
+export const borderColorPalette = {
   orange: akColorY500,
   teal: akColorT500,
   red: akColorR500,

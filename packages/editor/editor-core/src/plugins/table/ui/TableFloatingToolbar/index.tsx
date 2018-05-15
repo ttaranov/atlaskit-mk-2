@@ -9,7 +9,7 @@ import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {
   tableBackgroundColorPalette,
-  tableBackgroundColorBorders,
+  tableBackgroundBorderColors,
 } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
@@ -142,7 +142,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               editorView={editorView}
               palette={tableBackgroundColorPalette}
               mountPoint={popupsMountPoint}
-              borders={tableBackgroundColorBorders}
+              borderColors={tableBackgroundBorderColors}
             />
           )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
