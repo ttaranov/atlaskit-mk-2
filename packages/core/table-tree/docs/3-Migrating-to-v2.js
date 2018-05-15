@@ -23,7 +23,7 @@ to help you process data in case of async loading.
 - **items** - Array of child objects for a particular parent
 
 
-## With Static Data
+## Upgrade with static table data ( without async loading )
 
 In the v2 API the \`items\` prop on default export TableTree which is drilled down to Rows component ( can just pass \`items\` here in case of render props ).
 Moreover, there is a new prop \`items\` on Row which expects to receive the children for the particular parent.
@@ -46,14 +46,16 @@ where the react function component passed in as render prop will receive the par
 and thus children data can be accessed here easily ( please feel free to name the children property as per
 wish, as it is configurable ).
 
-## With Async loading of data
+## Upgrade with Async loading of table data
 
-*Here we will discuss the recommended pattern to avoid data processing in case of Async data loading.*
+**Here we will discuss the recommended pattern to avoid data processing in case of Async data loading.**
 
 ### Problem
 
-We can always use the nested data structure in case of async loading but the performance bottle neck will
-be hit while trying to update the table data.
+We can use the nested table data structure where each item has a children property referencing it's children object.
+However, in case of async loading we will not have children items for a particular parent item. Therefore, once we load the
+the children item we need to traverse the table tree object and update the children property in the particular parent item. As
+the table tree data object grows we will hit performance bottle neck in traversing table tree object.
 
 Example table data
 
@@ -76,8 +78,8 @@ ${code`
 ]
 `}
 
-In this case, *if a inner child is expanded we need to traverse the object to find the parent item and update the
-child property which will be painful in case of nested object.*
+*To overcome this performance bottle neck we recommend creating a flat object and to help you process data into object we provide
+a helper funtion **toTableTreeData** ( we will discuss it in next section )*
 
 ### Recommendation
 
