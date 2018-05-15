@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.24
+- [patch] Fixing the media group scroll [14c17ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14c17ba)
+- [none] Updated dependencies [14c17ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14c17ba)
+
 ## 71.3.23
 - [patch] Updated dependencies [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
   - @atlaskit/editor-markdown-transformer@0.2.20
