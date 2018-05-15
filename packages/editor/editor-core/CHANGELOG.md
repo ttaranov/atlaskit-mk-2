@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.17
+- [patch] Updated Tooltip format for toolbar buttons. [82ba018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82ba018)
+- [none] Updated dependencies [82ba018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82ba018)
+
 ## 71.3.16
 - [patch] Remove horizontal scroll in an empty table [44caac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44caac1)
 - [none] Updated dependencies [44caac1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44caac1)
