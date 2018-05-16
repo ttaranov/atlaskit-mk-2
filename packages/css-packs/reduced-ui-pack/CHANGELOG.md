@@ -1,5 +1,16 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.9.0
+- [minor] Add divider from editor  [5cbb8a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cbb8a6)
+- [minor] Add divider fabric icon [8b794ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b794ed)
+- [minor] Add divider icon from fabric [c8adb64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8adb64)
+- [none] Updated dependencies [5cbb8a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cbb8a6)
+  - @atlaskit/icon@11.2.0
+- [none] Updated dependencies [8b794ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b794ed)
+  - @atlaskit/icon@11.2.0
+- [none] Updated dependencies [c8adb64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8adb64)
+  - @atlaskit/icon@11.2.0
+
 ## 8.8.0
 - [minor] Add label icon [72baa86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72baa86)
 
