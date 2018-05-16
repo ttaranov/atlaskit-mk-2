@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
-import { MediaItem, MediaItemType } from '@atlaskit/media-core';
+import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 
@@ -126,14 +126,38 @@ describe('<Header />', () => {
     });
 
     describe('File metadata', () => {
-      it('should render media type text and file size', () => {
+      const testMediaTypeText = (
+        mediaType: MediaType,
+        expectedText: string,
+      ) => {
+        const item: MediaItem = {
+          type: 'file',
+          details: {
+            id: 'some-id',
+            processingStatus: 'succeeded',
+            mediaType: mediaType,
+            name: 'my item',
+            size: 12222222,
+          },
+        };
+
         const subject = new Subject<MediaItem>();
         const el = mount(
           <Header context={createContext(subject)} identifier={identifier} />,
         );
-        subject.next(imageItem);
+        subject.next(item);
         el.update();
-        expect(el.find(MetadataSubText).text()).toEqual('image · 11.7 MB');
+        expect(el.find(MetadataSubText).text()).toEqual(
+          `${expectedText} · 11.7 MB`,
+        );
+      };
+
+      it('should render media type text and file size for each media type', () => {
+        testMediaTypeText('image', 'image');
+        testMediaTypeText('audio', 'audio');
+        testMediaTypeText('video', 'video');
+        testMediaTypeText('unknown', 'unknown');
+        testMediaTypeText('doc', 'document');
       });
 
       it('should no render file size if not available', () => {
