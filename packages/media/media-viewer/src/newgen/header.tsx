@@ -139,15 +139,10 @@ export default class Header extends React.Component<Props, State> {
   };
 
   private renderFileTypeText = (mediaType?: MediaType): string => {
-    switch (mediaType) {
-      case 'image':
-        return 'image';
-      case 'video':
-        return 'video';
-      case 'doc':
-        return 'document';
-      default:
-        return 'unknown';
+    if (mediaType === 'doc') {
+      return 'document';
+    } else {
+      return mediaType || 'unknown';
     }
   };
 
