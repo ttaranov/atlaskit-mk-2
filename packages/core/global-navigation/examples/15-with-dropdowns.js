@@ -7,7 +7,7 @@ import Dropdown, {
   DropdownItemGroup,
   DropdownItem,
 } from '@atlaskit/dropdown-menu';
-import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import QuestionIcon from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Avatar from '@atlaskit/avatar';
 
@@ -48,7 +48,7 @@ const Global = () => (
       component: generateDropDown(MenuIcon),
     }}
     help={{
-      component: generateDropDown(() => <QuestionCircleIcon />),
+      component: generateDropDown(() => <QuestionIcon />),
     }}
     profile={{
       component: generateDropDown(() => (
