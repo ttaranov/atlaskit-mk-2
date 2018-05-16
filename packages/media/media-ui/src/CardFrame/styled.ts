@@ -97,6 +97,7 @@ const wrapperStyles = css`
 export const LinkWrapper: ComponentClass<
   AnchorHTMLAttributes<{}> & WrapperProps
 > = styled.a`
+  text-decoration: none;
   ${wrapperStyles} &:hover {
     text-decoration: none;
   }
