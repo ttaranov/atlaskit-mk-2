@@ -60,6 +60,8 @@ export class NewUploadServiceImpl implements UploadService {
     };
   }
 
+  // TODO addBrowse addDropzone removeDropzone removeBrowse are deprecated and going to be moved out
+  // of this class as part of MSW-691
   addBrowse(element: HTMLInputElement): void {
     if (this.browserElement) {
       throw new Error(
