@@ -58,8 +58,8 @@ const config = {
   testResultsProcessor: 'jest-junit',
 };
 
-// donot ignore editor tests if its environment not CI
-if (!CI) {
+// donot ignore editor tests if its environment not CI or while running integration tests
+if (!CI || INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
   );
@@ -81,15 +81,6 @@ if (INTEGRATION_TESTS) {
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);
-    // look for editor package inside of changed packages before running tests
-    const changedEditorPackages = changedPackages.filter(name =>
-      name.includes('editor'),
-    );
-    if (changedEditorPackages.length > 0) {
-      config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
-        pattern => pattern !== '/editor\\/.*?\\/__tests__\\/*.?',
-      );
-    }
     const changedPackagesTestGlobs = changedPackages.map(
       pkgPath =>
         `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
