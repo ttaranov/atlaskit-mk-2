@@ -7,18 +7,18 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  toTableTreeData,
+  CreateTableTreeDataHelper,
 } from '../../src';
 
 type State = {
-  rootIds: Array<number | string>,
-  itemsById: Object,
+  items: Array<Object>,
 };
+
+const createTableTreeDataHelper = new CreateTableTreeDataHelper('title');
 
 class WithStaticData extends Component<{}, State> {
   state = {
-    rootIds: [],
-    itemsById: {},
+    items: [],
   };
 
   componentDidMount() {
@@ -28,15 +28,17 @@ class WithStaticData extends Component<{}, State> {
   loadChildFor = (parentItem: ?Object) => {
     getChildren(parentItem).then(item => {
       this.setState({
-        ...toTableTreeData(item, parentItem, this.state.itemsById, {
-          keyId: 'title',
-        }),
+        items: createTableTreeDataHelper.updateItems(
+          item,
+          this.state.items,
+          parentItem,
+        ),
       });
     });
   };
 
   render() {
-    const { itemsById, rootIds } = this.state;
+    const { items } = this.state;
     return (
       <TableTree>
         <Headers>
@@ -45,14 +47,21 @@ class WithStaticData extends Component<{}, State> {
           <Header width={100}>Page</Header>
         </Headers>
         <Rows
-          items={rootIds && rootIds.map(rootId => itemsById[rootId])}
-          render={({ title, numbering, page, hasChildren, childIds }) => (
+          items={items}
+          render={({
+            title,
+            numbering,
+            page,
+            hasChildren,
+            childIds,
+            children,
+          }) => (
             <Row
               onExpand={this.loadChildFor}
               expandLabel={'Expand'}
               collapseLabel={'Collapse'}
               itemId={numbering}
-              items={childIds && childIds.map(id => itemsById[id])}
+              items={children}
               hasChildren={hasChildren}
             >
               <Cell singleLine>{title}</Cell>
