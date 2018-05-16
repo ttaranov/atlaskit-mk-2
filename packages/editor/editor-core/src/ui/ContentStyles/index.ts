@@ -11,6 +11,7 @@ import {
   akEditorCodeBackground,
   akEditorCodeFontFamily,
   akEditorCodeBlockPadding,
+  defaultEditorFontStyles,
 } from '../../styles';
 import {
   akGridSizeUnitless,
@@ -19,6 +20,7 @@ import {
   akBorderRadius,
   akColorN300,
   akColorB200,
+  akColorN90,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import {
@@ -44,6 +46,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
+  .ProseMirror p,
+  .ProseMirror .code {
+    ${defaultEditorFontStyles};
+  }
+
   .ProseMirror .placeholder-decoration {
     position: absolute;
     pointer-events: none;
@@ -51,7 +58,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
     &::before {
       content: attr(data-text);
-      color: ${akColorN300};
+      color: ${akColorN90};
       pointer-events: none;
     }
   }
@@ -91,11 +98,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror pre {
     box-sizing: border-box;
-    white-space: pre-wrap;
     font-family: ${akEditorCodeFontFamily};
     background: ${akEditorCodeBackground};
     padding: ${akEditorCodeBlockPadding};
     border-radius: ${akBorderRadius};
+    overflow-x: scroll;
   }
 
   .ProseMirror .code {
@@ -124,7 +131,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror ul ol,
   .ProseMirror ol ul,
   .ProseMirror ol ol {
-    padding-left: 17px;
+    padding-left: 21px;
   }
 
   .ProseMirror li {
@@ -290,6 +297,31 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
         margin-right: 0;
       }
     }
+  }
+
+  /** =============== LIST INDENT STYLES ========= */
+  ul {
+    list-style-type: disc;
+  }
+
+  ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul {
+    list-style-type: square;
+  }
+
+  ul ul ul ul {
+    list-style-type: disc;
+  }
+
+  ul ul ul ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul ul ul ul {
+    list-style-type: square;
   }
 
   /* =============== PLACEHOLDER CURSOR STYLES========= */

@@ -7,6 +7,11 @@ import {
 import { akColorN40A } from '@atlaskit/util-shared-styles';
 
 export const tableStyles = `
+  .table-wrapper {
+    padding-right: 10px;
+    margin-right: -10px;
+  }
+
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
     .with-controls .table-container[data-layout='full-width'] {

@@ -4,20 +4,12 @@ import {
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
-import {
-  CellSelection,
-  goToNextCell as baseGotoNextCell,
-  TableMap,
-} from 'prosemirror-tables';
-import {
-  findTable,
-  findParentNodeOfType,
-  emptySelectedCells,
-} from 'prosemirror-utils';
+import { goToNextCell as baseGotoNextCell, TableMap } from 'prosemirror-tables';
+import { findTable, findParentNodeOfType } from 'prosemirror-utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { stateKey } from './pm-plugins/main';
-import { resetHoverSelection, insertRow } from './actions';
+import { insertRow } from './actions';
 import { createTableNode, isIsolating } from './utils';
 import { outdentList } from '../../commands';
 
@@ -104,27 +96,6 @@ const goToNextCell = (direction: number): Command => {
   };
 };
 
-const emptyCells = (): Command => {
-  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
-    const pluginState = stateKey.getState(state);
-    if (!pluginState.cellSelection) {
-      return false;
-    }
-    resetHoverSelection(state, dispatch);
-    dispatch(emptySelectedCells(state.schema)(state.tr));
-    const {
-      $head: { pos, parentOffset },
-    } = (state.selection as any) as CellSelection;
-    const newPos = pos - parentOffset;
-    pluginState.moveCursorInsideTableTo(newPos);
-    analyticsService.trackEvent(
-      'atlassian.editor.format.table.delete_content.keyboard',
-    );
-
-    return true;
-  };
-};
-
 const moveCursorBackward = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
@@ -195,5 +166,4 @@ export default {
   createTable,
   goToNextCell,
   moveCursorBackward,
-  emptyCells,
 };

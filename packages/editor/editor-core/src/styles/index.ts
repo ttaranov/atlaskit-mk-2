@@ -1,3 +1,4 @@
+import { fontSize } from '@atlaskit/theme';
 import {
   akCodeFontFamily,
   akColorB100,
@@ -49,3 +50,7 @@ export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorRuleBackground = akColorN30;
 export const akEditorRuleBorderRadius = '1px';
+export const defaultEditorFontStyles = `
+  font-size: ${fontSize()}px;
+  font-weight: normal;
+`;

@@ -36,6 +36,22 @@ document.getElementById('root')
   },
 });
 
+/*
+  The css packs use loaders, which are not needed in prod. This is incredibly not
+  ideal. This handles these to create valid sandboxes.
+
+  We only apply this creative solution because these examples are not recommended
+  usages in any case.
+*/
+const cssLoaderExceptions = (pkgJSONName, groupId, packageId) => [
+  ['!!style-loader!css-loader!../src/bundle.css', pkgJSONName],
+  [`packages/${groupId}/${packageId}/src/index.less`, pkgJSONName],
+  [
+    '!!raw-loader!../src/icons-sprite.svg',
+    `${pkgJSONName}/dist/icons-sprite.svg`,
+  ],
+];
+
 export default class CodeSandbox extends Component<{}, {}> {
   state = { parameters: '' };
 
@@ -71,6 +87,7 @@ export default class CodeSandbox extends Component<{}, {}> {
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
           ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
+          ...cssLoaderExceptions(pkgJSON.name, groupId, packageId),
         ]}
         dependencies={{
           '@atlaskit/css-reset': 'latest',

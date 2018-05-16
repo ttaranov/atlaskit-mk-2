@@ -47,8 +47,8 @@ const selectRows = rowIdxs => tr => {
   }, []);
 
   if (cells) {
-    const $anchor = tr.doc.resolve(cells[0].pos);
-    const $head = tr.doc.resolve(cells[cells.length - 1].pos);
+    const $anchor = tr.doc.resolve(cells[0].pos - 1);
+    const $head = tr.doc.resolve(cells[cells.length - 1].pos - 1);
     return tr.setSelection(new CellSelection($anchor, $head));
   }
 };
