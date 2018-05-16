@@ -92,18 +92,21 @@ export default class Header extends React.Component<Props, State> {
   }
 
   downloadItem = (item: FileItem) => async () => {
-    const { context } = this.props;
+    const { identifier, context } = this.props;
     const link = document.createElement('a');
-    const url =
-      (item.details.artifacts && item.details.artifacts['image.jpg']['url']) ||
-      '';
+    const url = `/file/${item.details.id}/binary`;
     const name = item.details.name || 'download';
-    const href = await constructAuthTokenUrl(url, context);
+    const href = await constructAuthTokenUrl(
+      url,
+      context,
+      identifier.collectionName,
+    );
 
     link.href = `${href}&dl=true&name=${name}`;
     link.download = name;
     document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   };
 
   private renderDownload = () => {
