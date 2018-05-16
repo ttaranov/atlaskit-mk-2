@@ -26,8 +26,10 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.3",
+    "@atlaskit/editor-core": "^71.3.26",
     "@atlaskit/editor-json-transformer": "^3.0.5",
     "@atlaskit/editor-test-helpers": "^3.1.7",
+    "@atlaskit/util-data-test": "^9.1.2",
     "@types/prosemirror-model": "^1.0.0",
     "cookie": "^0.3.1",
     "debug": "^2.2.0",

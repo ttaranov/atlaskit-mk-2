@@ -76,6 +76,16 @@ export class TableBuilder implements Builder {
     return this.buildTableNode();
   }
 
+  private emptyTableCell = (): PMNode => {
+    const { tableCell, paragraph } = this.schema.nodes;
+    return tableCell.createChecked({}, paragraph.createChecked());
+  };
+
+  private emptyTableRow = (): PMNode => {
+    const { tableRow } = this.schema.nodes;
+    return tableRow.createChecked({}, this.emptyTableCell());
+  };
+
   /**
    * Build prosemirror table node
    * @returns {PMNode}
@@ -83,7 +93,11 @@ export class TableBuilder implements Builder {
   private buildTableNode = (): PMNode => {
     const { root } = this;
     const { table } = this.schema.nodes;
-    return table.createChecked({}, root.rows.map(this.buildTableRowNode));
+    const content = root.rows.map(this.buildTableRowNode);
+    if (content.length === 0) {
+      content.push(this.emptyTableRow());
+    }
+    return table.createChecked({}, content);
   };
 
   /**
@@ -102,8 +116,10 @@ export class TableBuilder implements Builder {
    */
   private buildTableCellNode = (cell: TableCell): PMNode => {
     const { type, content } = cell;
+    if (content.length === 0) {
+      content.push(this.schema.nodes.paragraph.createChecked());
+    }
     const cellNode = this.schema.nodes[type];
-
     return cellNode.createChecked({}, content);
   };
 

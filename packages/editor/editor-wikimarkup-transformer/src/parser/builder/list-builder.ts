@@ -91,15 +91,26 @@ export class ListBuilder implements Builder {
    */
   private buildListItemNode = (item: ListItem): PMNode => {
     const { listItem } = this.schema.nodes;
-    const content: any[] = [];
+    const content: PMNode[] = [];
 
     content.push(...item.children.map(this.buildListNode));
 
-    if (!item.content) {
-      return listItem.createChecked({}, content);
+    if (item.content && item.content.length > 0) {
+      content.push(...item.content);
     }
 
-    return listItem.createChecked({}, [...item.content, ...content]);
+    if (
+      content.length === 0 ||
+      ['paragraph', 'mediaSingle'].indexOf(content[0].type.name) === -1
+    ) {
+      // If the content is empty or the first element is not paragraph or mediaSingle.
+      // this likely to be a nested list where the toplevel list is empty
+      // For example: *# item 1
+      // In this case we create an empty paragraph for the top level listNode
+      content.unshift(this.schema.nodes.paragraph.createChecked());
+    }
+
+    return listItem.createChecked({}, content);
   };
 
   /**
