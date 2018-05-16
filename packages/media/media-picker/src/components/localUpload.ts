@@ -18,7 +18,7 @@ import { UploadParams } from '../domain/config';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
-  useOldUploadService?: boolean;
+  useNewUploadService?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -38,7 +38,7 @@ export class LocalUploadComponent<
     this.uploadService = UploadServiceFactory.create(
       this.context,
       config.uploadParams || { collection: '' },
-      config.useOldUploadService,
+      config.useNewUploadService,
     );
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);

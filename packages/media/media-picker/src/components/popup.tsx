@@ -28,7 +28,7 @@ import { UploadEventPayloadMap } from '../domain/uploadEvent';
 export interface PopupConfig {
   readonly container?: HTMLElement;
   readonly uploadParams: UploadParams;
-  readonly useOldUploadService?: boolean;
+  readonly useNewUploadService?: boolean;
 }
 
 export const USER_RECENTS_COLLECTION = 'recents';
@@ -61,13 +61,13 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     {
       container = document.body,
       uploadParams,
-      useOldUploadService,
+      useNewUploadService,
     }: PopupConfig,
   ) {
     super(anlyticsContext);
 
     this.analyticsContext.trackEvent(new MPPopupLoaded());
-    this.store = createStore(this, context, useOldUploadService);
+    this.store = createStore(this, context, useNewUploadService);
 
     this.uploadParams = {
       ...defaultUploadParams,

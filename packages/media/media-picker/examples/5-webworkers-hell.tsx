@@ -12,6 +12,7 @@ import {
   PreviewsWrapper,
   PopupHeader,
   PopupContainer,
+  PreviewsTitle,
 } from '../example-helpers/styled';
 import { renderPreviewImage } from '../example-helpers';
 import { ContextFactory } from '@atlaskit/media-core';
@@ -79,7 +80,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       <PopupContainer>
         <PopupHeader>{buttons}</PopupHeader>
         <PreviewsWrapper>
-          <h1>Upload previews</h1>
+          <PreviewsTitle>Upload previews</PreviewsTitle>
           {this.renderPreviews()}
         </PreviewsWrapper>
       </PopupContainer>

@@ -59,7 +59,7 @@ export interface PopupWrapperState {
   hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
-  useOldUploadService: boolean;
+  useNewUploadService: boolean;
   pickerVersion: number;
 }
 
@@ -75,7 +75,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     hasTorndown: false,
     publicFiles: {},
     isUploadingFilesVisible: true,
-    useOldUploadService: false,
+    useNewUploadService: true,
     pickerVersion: 1,
   };
 
@@ -88,7 +88,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 
   private createPopup(
-    useOldUploadService: boolean = this.state.useOldUploadService,
+    useNewUploadService: boolean = this.state.useNewUploadService,
   ) {
     if (this.popup) {
       this.popup.removeAllListeners();
@@ -106,7 +106,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-      useOldUploadService,
+      useNewUploadService,
     });
 
     this.popup.on('uploads-start', this.onUploadsStart);
@@ -119,7 +119,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
     this.setState(prevState => ({
       pickerVersion: prevState.pickerVersion + 1,
-      useOldUploadService,
+      useNewUploadService,
     }));
   }
 
@@ -323,8 +323,8 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     console.log(event);
   };
 
-  onUseOldUploadServiceChange = () => {
-    this.createPopup(!this.state.useOldUploadService);
+  onuseNewUploadServiceChange = () => {
+    this.createPopup(!this.state.useNewUploadService);
   };
 
   renderUploadingFiles = () => {
@@ -392,7 +392,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       inflightUploads,
       hasTorndown,
       isUploadingFilesVisible,
-      useOldUploadService,
+      useNewUploadService,
     } = this.state;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
@@ -441,10 +441,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               </DropdownItem>
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
-            Use old upload service
+            Use new upload service
             <Toggle
-              isDefaultChecked={useOldUploadService}
-              onChange={this.onUseOldUploadServiceChange}
+              isDefaultChecked={useNewUploadService}
+              onChange={this.onuseNewUploadServiceChange}
             />
             Closed times: {closedTimes}
           </PopupHeader>

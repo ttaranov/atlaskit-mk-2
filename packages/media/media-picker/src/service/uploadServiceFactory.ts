@@ -49,9 +49,9 @@ export class UploadServiceFactory {
   public static create(
     context: Context,
     uploadParams?: UploadParams,
-    useOldUploadService: boolean = true,
+    useNewUploadService: boolean = false,
   ): UploadService {
-    if (useOldUploadService) {
+    if (useNewUploadService) {
       return new OldUploadServiceImpl(context, uploadParams);
     } else {
       return new NewUploadServiceImpl(context, uploadParams);

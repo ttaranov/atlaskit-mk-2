@@ -77,7 +77,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       uploadParams: {
         collection: '',
       },
-      useOldUploadService: false,
+      useNewUploadService: true,
     });
 
     this.dropzone = dropzone;

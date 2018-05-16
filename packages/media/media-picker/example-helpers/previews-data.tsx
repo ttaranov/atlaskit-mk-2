@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PreviewData, renderPreviewImage } from './index';
 import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadPreviewUpdateEventPayload } from '../src';
-import { PreviewsWrapper } from './styled';
+import { PreviewsTitle, PreviewsWrapper } from './styled';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -116,7 +116,7 @@ export class PreviewsData extends React.Component<
   render() {
     return (
       <PreviewsWrapper>
-        <h1>Upload previews</h1>
+        <PreviewsTitle>Upload previews</PreviewsTitle>
         {this.renderPreviews()}
       </PreviewsWrapper>
     );

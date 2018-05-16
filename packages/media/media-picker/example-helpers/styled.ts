@@ -86,10 +86,10 @@ export const PreviewsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-flow: row wrap;
   overflow: auto;
+`;
 
-  h1 {
-    width: 100%;
-  }
+export const PreviewsTitle: ComponentClass<HTMLAttributes<{}>> = styled.h1`
+  width: 100%;
 `;
 
 export const ProgressCircleWrapper: ComponentClass<
