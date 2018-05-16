@@ -173,8 +173,8 @@ describe('UploadService', () => {
       jest.spyOn(uploadService, 'addFiles');
 
       const files = [new MockFile(), new MockFile()];
-      const clipBoardEvent = new MockDragEvent('drop', files);
-      element.dispatchEvent(clipBoardEvent);
+      const mockDropEvent = new MockDragEvent('drop', files);
+      element.dispatchEvent(mockDropEvent);
 
       expect(uploadService.addFiles).toHaveBeenCalledWith(files);
     });
@@ -477,7 +477,7 @@ describe('UploadService', () => {
       uploadService.on('file-converting', fileConvertingCallback);
       const uploadFilePromise = Promise.resolve('public-file-id');
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
+        deferredFileId: uploadFilePromise,
         cancel: jest.fn(),
       } as UploadFileResult);
       uploadService.addFiles([file]);
@@ -574,7 +574,7 @@ describe('UploadService', () => {
 
       const uploadFilePromise = Promise.resolve('public-file-id');
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
+        deferredFileId: uploadFilePromise,
         cancel: jest.fn(),
       } as UploadFileResult);
       uploadService.addFiles([file]);
@@ -598,7 +598,7 @@ describe('UploadService', () => {
 
       const uploadFilePromise = Promise.resolve('public-file-id');
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
+        deferredFileId: uploadFilePromise,
         cancel: jest.fn(),
       } as UploadFileResult);
 
@@ -648,7 +648,7 @@ describe('UploadService', () => {
 
       const uploadFilePromise = Promise.reject(new Error('Some reason'));
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: uploadFilePromise,
+        deferredFileId: uploadFilePromise,
         cancel: jest.fn(),
       } as UploadFileResult);
 
@@ -696,7 +696,7 @@ describe('UploadService', () => {
       const unresolvedPromise = new Promise<string>(() => {});
       const cancel = jest.fn();
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: unresolvedPromise,
+        deferredFileId: unresolvedPromise,
         cancel,
       } as UploadFileResult);
 
@@ -733,7 +733,7 @@ describe('UploadService', () => {
       const cancelledPromise = Promise.reject('canceled');
       const cancel = jest.fn();
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: cancelledPromise,
+        deferredFileId: cancelledPromise,
         cancel,
       } as UploadFileResult);
 
@@ -775,7 +775,7 @@ describe('UploadService', () => {
       jest.spyOn(context, 'uploadFile').mockImplementation(
         () =>
           ({
-            promiseFileId: unresolvedPromise,
+            deferredFileId: unresolvedPromise,
             cancel: cancels[i++],
           } as UploadFileResult),
       );
@@ -825,7 +825,7 @@ describe('UploadService', () => {
       const resolvedPromise = Promise.resolve('some-id');
       const chunkinatorCancel = jest.fn();
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: resolvedPromise,
+        deferredFileId: resolvedPromise,
         cancel: chunkinatorCancel,
       } as UploadFileResult);
 
@@ -837,7 +837,7 @@ describe('UploadService', () => {
               // It's not required, but I like "natural" feel of this call
               observer.next(pendingFileItem);
 
-              // At this point cancellableFilesUpload.cancel should be the one that cancels pulling observable
+              // At this point cancellableFilesUpload.cancel should be the one that cancels polling observable
               uploadService.cancel();
               // Just checking that original cancel method (that came from context.uploadFile)
               // is not called at this point
@@ -894,7 +894,7 @@ describe('UploadService', () => {
       const resolvedPromise = Promise.resolve('some-id');
       const cancel = jest.fn();
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: resolvedPromise,
+        deferredFileId: resolvedPromise,
         cancel,
       } as UploadFileResult);
 
@@ -943,7 +943,7 @@ describe('UploadService', () => {
       const rejectedPromise = Promise.reject(new Error('something happened'));
       const cancel = jest.fn();
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        promiseFileId: rejectedPromise,
+        deferredFileId: rejectedPromise,
         cancel,
       } as UploadFileResult);
 

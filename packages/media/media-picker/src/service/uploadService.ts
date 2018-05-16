@@ -1,6 +1,6 @@
 /**
  * TODO
- * This is deprecated code. It will be removed soon.
+ * This is deprecated code. It will be removed soon (MSW-691)
  * Please remove this file and rename newUploadServiceImpl.ts to uploadServiceImpl.ts
  */
 import * as Resumable from 'resumablejs';

@@ -101,7 +101,7 @@ describe('Uploader', () => {
     await uploadFile(
       { content: '', name: 'file-name', collection: 'some-collection' },
       config,
-    ).promiseFileId;
+    ).deferredFileId;
     const occurrenceKey = createFile.mock.calls[0][0].occurrenceKey;
 
     expect(createFileFromUpload).toHaveBeenCalledTimes(1);
@@ -127,7 +127,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    await uploadFile({ content: '' }, config, { onProgress }).promiseFileId;
+    await uploadFile({ content: '' }, config, { onProgress }).deferredFileId;
 
     expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
     expect(appendChunksToUpload.mock.calls[0][0]).toEqual('upload-id-123');
@@ -158,7 +158,7 @@ describe('Uploader', () => {
     (MediaStore as any) = MediaStoreMock;
     (chunkinator as any) = ChunkinatorMock;
 
-    await uploadFile({ content: '' }, config, { onProgress }).promiseFileId;
+    await uploadFile({ content: '' }, config, { onProgress }).deferredFileId;
     await createFileFromUpload();
 
     expect(onProgress).toHaveBeenCalledTimes(2);
@@ -176,7 +176,7 @@ describe('Uploader', () => {
       return { response: Promise.resolve(), cancel: jest.fn() };
     });
 
-    const fileId = await uploadFile({ content: '' }, config).promiseFileId;
+    const fileId = await uploadFile({ content: '' }, config).deferredFileId;
     expect(fileId).toBe('id-upfront-123');
   });
 
@@ -194,7 +194,7 @@ describe('Uploader', () => {
     });
 
     return expect(
-      uploadFile({ content: '' }, config).promiseFileId,
+      uploadFile({ content: '' }, config).deferredFileId,
     ).rejects.toEqual('some upload error');
   });
 
@@ -208,7 +208,7 @@ describe('Uploader', () => {
       return { response: Promise.resolve(), cancel: jest.fn() };
     });
 
-    const promiseFileId = uploadFile({ content: '' }, config).promiseFileId;
+    const promiseFileId = uploadFile({ content: '' }, config).deferredFileId;
     // notice that we are not awaiting uploadFile here because we want to check that createFile gets called in parallel
     expect(createFile).toHaveBeenCalledTimes(1);
 
@@ -242,6 +242,6 @@ describe('Uploader', () => {
       },
     }));
 
-    await uploadFile({ content: '' }, config).promiseFileId;
+    await uploadFile({ content: '' }, config).deferredFileId;
   });
 });

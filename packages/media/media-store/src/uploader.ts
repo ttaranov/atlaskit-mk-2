@@ -18,7 +18,7 @@ export type UploadFileCallbacks = {
 };
 
 export interface UploadFileResult {
-  promiseFileId: Promise<string>;
+  deferredFileId: Promise<string>;
   cancel: () => void;
 }
 
@@ -101,7 +101,7 @@ export const uploadFile = (
       .then(() => fileId);
   });
 
-  return { promiseFileId: fileId, cancel };
+  return { deferredFileId: fileId, cancel };
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);

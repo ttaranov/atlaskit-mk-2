@@ -120,7 +120,7 @@ export class NewUploadServiceImpl implements UploadService {
     }
     const creationDate = Date.now();
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
-      mediaFile: this.mapExpFileToMediaFile(file, uuid.v4(), creationDate),
+      mediaFile: this.mapFileToMediaFile(file, uuid.v4(), creationDate),
       file,
     }));
 
@@ -140,14 +140,14 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      const { promiseFileId, cancel } = this.context.uploadFile(
+      const { deferredFileId, cancel } = this.context.uploadFile(
         uploadableFile,
         {
           onProgress: this.onFileProgress.bind(this, cancellableFileUpload),
         },
       );
       cancellableFileUpload.cancel = cancel;
-      promiseFileId.then(
+      deferredFileId.then(
         this.onFileSuccess.bind(this, cancellableFileUpload),
         this.onFileError.bind(this, mediaFile, 'upload_fail'),
       );
@@ -156,15 +156,15 @@ export class NewUploadServiceImpl implements UploadService {
 
   cancel(id?: string): void {
     if (id) {
-      const expFile = this.cancellableFilesUploads[id];
-      if (expFile && expFile.cancel) {
-        expFile.cancel();
+      const cancellableFileUpload = this.cancellableFilesUploads[id];
+      if (cancellableFileUpload && cancellableFileUpload.cancel) {
+        cancellableFileUpload.cancel();
       }
     } else {
       Object.keys(this.cancellableFilesUploads).forEach(key => {
-        const expFile = this.cancellableFilesUploads[key];
-        if (expFile.cancel) {
-          expFile.cancel();
+        const cancellableFileUpload = this.cancellableFilesUploads[key];
+        if (cancellableFileUpload.cancel) {
+          cancellableFileUpload.cancel();
         }
       });
     }
@@ -225,7 +225,7 @@ export class NewUploadServiceImpl implements UploadService {
     return 'unknown';
   }
 
-  private releaseExpFile(mediaFile: MediaFile): void {
+  private releaseCancellableFile(mediaFile: MediaFile): void {
     delete this.cancellableFilesUploads[mediaFile.id];
   }
 
@@ -258,12 +258,11 @@ export class NewUploadServiceImpl implements UploadService {
             processingStatus === 'succeeded' ||
             processingStatus === 'failed'
           ) {
-            // TODO we emit 'file-converted' when it failed?
             this.emit('file-converted', {
               file: publicMediaFile,
               public: fileItem.details,
             });
-            this.releaseExpFile(mediaFile);
+            this.releaseCancellableFile(mediaFile);
           }
         },
         error: this.onFileError.bind(
@@ -275,7 +274,7 @@ export class NewUploadServiceImpl implements UploadService {
 
     cancellableFileUpload.cancel = () => {
       subscription.unsubscribe();
-      this.releaseExpFile(mediaFile);
+      this.releaseCancellableFile(mediaFile);
     };
   };
 
@@ -302,7 +301,7 @@ export class NewUploadServiceImpl implements UploadService {
     mediaErrorName: MediaErrorName,
     error: Error | string,
   ) => {
-    this.releaseExpFile(mediaFile);
+    this.releaseCancellableFile(mediaFile);
     if (error === 'canceled') {
       // Specific error coming from chunkinator via rejected fileId promise.
       // We do not want to trigger error in this case.
@@ -326,9 +325,6 @@ export class NewUploadServiceImpl implements UploadService {
     if (!this.userMediaStore) {
       return Promise.resolve();
     }
-
-    console.log(this.userMediaStore.copyFileWithToken);
-
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
@@ -348,7 +344,7 @@ export class NewUploadServiceImpl implements UploadService {
       });
   }
 
-  private mapExpFileToMediaFile = (
+  private mapFileToMediaFile = (
     file: File,
     id: string,
     creationDate: number,
