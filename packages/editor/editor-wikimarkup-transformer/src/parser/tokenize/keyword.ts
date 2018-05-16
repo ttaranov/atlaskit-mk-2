@@ -39,7 +39,7 @@ export function parseKeyword(input: string) {
   }
 
   // Look for a emoji
-  if ([':', '(', ';'].includes(input.substr(0, 1))) {
+  if ([':', '(', ';'].indexOf(input.substr(0, 1)) !== -1) {
     for (const emoji of EMOJIS) {
       for (const text of emoji.markup) {
         if (input.startsWith(text)) {

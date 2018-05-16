@@ -11,7 +11,6 @@ import {
   strike,
   strong,
   subsup,
-  text,
   textColor,
   underline,
 } from '@atlaskit/editor-test-helpers';

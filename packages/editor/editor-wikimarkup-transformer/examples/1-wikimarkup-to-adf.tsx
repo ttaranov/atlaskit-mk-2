@@ -1,10 +1,24 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { defaultSchema } from '@atlaskit/editor-common';
+import { defaultSchema, ProviderFactory } from '@atlaskit/editor-common';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { WikiMarkupTransformer } from '../src';
+import { ReactRenderer } from '@atlaskit/renderer';
+import {
+  storyMediaProviderFactory,
+  storyContextIdentifierProviderFactory,
+} from '@atlaskit/editor-test-helpers';
+import {
+  profilecard as profilecardUtils,
+  emoji,
+  taskDecision,
+} from '@atlaskit/util-data-test';
+import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
 const Container = styled.div`
+  display: grid;
+  grid-template-columns: 33% 34% 33%;
+
   #source,
   #output {
     box-sizing: border-box;
@@ -27,6 +41,55 @@ const Container = styled.div`
   }
 `;
 
+const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
+const MockProfileClient = getMockProfileClientUtil(
+  AkProfileClient,
+  modifyResponse,
+);
+
+const mentionProvider = Promise.resolve({
+  shouldHighlightMention(mention) {
+    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
+  },
+});
+const mediaProvider = storyMediaProviderFactory();
+const emojiProvider = emoji.storyData.getEmojiResource();
+const taskDecisionProvider = Promise.resolve(
+  taskDecision.getMockTaskDecisionResource(),
+);
+const profilecardProvider = Promise.resolve({
+  cloudId: 'DUMMY-CLOUDID',
+  resourceClient: new MockProfileClient({
+    cacheSize: 10,
+    cacheMaxAge: 5000,
+  }),
+  getActions: (id: string) => {
+    const actions = [
+      {
+        label: 'Mention',
+        callback: () => console.log('profile-card:mention'),
+      },
+      {
+        label: 'Message',
+        callback: () => console.log('profile-card:message'),
+      },
+    ];
+
+    return id === '1' ? actions : actions.slice(0, 1);
+  },
+});
+
+const contextIdentifierProvider = storyContextIdentifierProviderFactory();
+
+const providerFactory = ProviderFactory.create({
+  mentionProvider,
+  mediaProvider,
+  emojiProvider,
+  profilecardProvider,
+  taskDecisionProvider,
+  contextIdentifierProvider,
+});
+
 const wikiTransformer = new WikiMarkupTransformer(defaultSchema);
 const adfTransformer = new JSONTransformer();
 
@@ -47,14 +110,14 @@ class Example extends React.PureComponent<{}, State> {
   };
 
   render() {
+    const doc = this.state.source ? getADF(this.state.source) : '';
     return (
       <Container>
         <textarea id="source" onChange={this.handleChange} />
-        <pre id="output">
-          {this.state.source
-            ? JSON.stringify(getADF(this.state.source), null, 2)
-            : ''}
-        </pre>
+        <div id="output">
+          <ReactRenderer document={doc} dataProviders={providerFactory} />
+        </div>
+        <pre id="output">{JSON.stringify(doc, null, 2)}</pre>
       </Container>
     );
   }

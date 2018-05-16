@@ -93,11 +93,10 @@ export class ListBuilder implements Builder {
     const { listItem } = this.schema.nodes;
     const content: PMNode[] = [];
 
-    content.push(...item.children.map(this.buildListNode));
-
     if (item.content && item.content.length > 0) {
       content.push(...item.content);
     }
+    content.push(...item.children.map(this.buildListNode));
 
     if (
       content.length === 0 ||

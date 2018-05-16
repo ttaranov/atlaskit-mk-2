@@ -32,7 +32,7 @@ export function panelMacro(
   let contentBuffer: PMNode[] = [];
 
   for (const n of normalizedContent) {
-    if (allowedNodeType.includes(n.type.name)) {
+    if (allowedNodeType.indexOf(n.type.name) !== -1) {
       contentBuffer.push(n);
     } else {
       const panelNode = schema.nodes.panel.createChecked(

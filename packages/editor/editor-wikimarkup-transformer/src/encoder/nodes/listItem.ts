@@ -21,7 +21,7 @@ export const listItem = (node: PMNode, prefix: string): string => {
         const nestedList = encode(n)
           .split('\n')
           .map(line => {
-            if (['#', '*'].includes(line.substr(0, 1))) {
+            if (['#', '*'].indexOf(line.substr(0, 1)) !== -1) {
               return `${prefix}${line}`;
             }
             return line;

@@ -42,7 +42,7 @@ export function parseString(
           parseLeadingKeyword(input.substring(index)) ||
           parseKeyword(input.substring(index));
 
-        if (match && !ignoreTokens.includes(match.type)) {
+        if (match && ignoreTokens.indexOf(match.type) === -1) {
           tokenType = match.type;
           state = processState.TOKEN;
           continue;

@@ -1,6 +1,6 @@
 import { defaultSchema } from '@atlaskit/editor-common';
 import { doc, emoji, hardBreak, p } from '@atlaskit/editor-test-helpers';
-import { EmojiMapItem } from '../../src/interfaces';
+import { EmojiMapItem } from '../../src/parser/tokenize/emoji';
 import { EMOJIS } from '../../src/parser/tokenize/emoji';
 import { checkParseEncodeRoundTrips } from '../_test-helpers';
 

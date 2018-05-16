@@ -19,7 +19,6 @@ import {
   tr,
   ul,
 } from '@atlaskit/editor-test-helpers';
-import { heading } from '../../src/parser/tokenize/heading';
 
 describe('ADF => WikiMarkup - Table', () => {
   const transformer = new WikiMarkupTransformer();

@@ -104,9 +104,16 @@ export function parseToken(
 ): Token {
   const tokenParser = tokenToTokenParserMapping[type];
   if (tokenParser) {
-    return tokenParser(input, schema);
+    try {
+      return tokenParser(input, schema);
+    } catch (err) {
+      return fallback(input);
+    }
   }
+  return fallback(input);
+}
 
+function fallback(input: string): Token {
   return {
     type: 'text',
     text: input.substr(0, 1),

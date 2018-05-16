@@ -1,15 +1,7 @@
 import { defaultSchema } from '@atlaskit/editor-common';
 import WikiMarkupTransformer from '../../src';
 
-import {
-  doc,
-  emoji,
-  li,
-  mention,
-  ol,
-  p,
-  ul,
-} from '@atlaskit/editor-test-helpers';
+import { doc, li, ol, p, ul } from '@atlaskit/editor-test-helpers';
 
 describe('ADF => WikiMarkup - List', () => {
   const transformer = new WikiMarkupTransformer();
