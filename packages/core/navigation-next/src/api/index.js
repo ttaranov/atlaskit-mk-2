@@ -61,6 +61,13 @@ export class NavAPI extends Container<NavAPIState> {
     const reducerList = [...(this.reducers[viewKey] || []), reducer];
     const newReducers = { ...this.reducers, [viewKey]: reducerList };
     this.reducers = newReducers;
+
+    // If we're adding a reducer to the active view we'll want to re-set it so
+    // that the reducer gets applied.
+    const { activeView } = this.state;
+    if (activeView && viewKey === activeView) {
+      this.setView(activeView);
+    }
   };
 
   addView = (viewKey: ViewKey, viewGetter: ViewResolver) => {
