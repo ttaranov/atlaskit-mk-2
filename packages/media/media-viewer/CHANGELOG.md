@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.5.1
+- [patch] Add media type metadata to audio in MVNG [8dec6fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dec6fb)
+
 ## 13.5.0
 - [minor] Add header metadata to MVNG [8aa7812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8aa7812)
 
