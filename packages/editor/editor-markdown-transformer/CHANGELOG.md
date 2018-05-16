@@ -1,5 +1,10 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.20
+- [patch] Fix a crash for markdown transformer where the table misses a call [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
+- [patch] Updated dependencies [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
+  - @atlaskit/editor-core@71.3.23
+
 ## 0.2.19
 
 ## 0.2.18

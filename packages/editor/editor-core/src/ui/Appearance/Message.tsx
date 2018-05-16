@@ -62,6 +62,7 @@ const MessageEditor: any = styled.div`
 `;
 
 const ContentArea: any = styled(ContentStyles)`
+  line-height: 20px;
   padding: 6px 16px 4px 8px;
   flex-grow: 1;
   overflow-x: hidden;

@@ -1,5 +1,31 @@
 # @atlaskit/renderer
 
+## 16.2.4
+- [patch] Adding nested ul support [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
+- [none] Updated dependencies [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
+
+## 16.2.3
+- [patch] Disable overlay for mediaSingle [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+- [none] Updated dependencies [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
+  - @atlaskit/editor-common@9.3.6
+
+## 16.2.2
+- [patch] ED-4120 support placeholder text in renderer [616a6a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/616a6a5)
+- [patch] Updated dependencies [616a6a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/616a6a5)
+  - @atlaskit/editor-common@9.3.5
+
+## 16.2.1
+
+
+- [patch] Updated dependencies [3ef21cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ef21cd)
+  - @atlaskit/editor-common@9.3.4
+- [none] Updated dependencies [9591127](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9591127)
+  - @atlaskit/editor-common@9.3.4
+
+## 16.2.0
+- [minor] Set line-height based on appearance [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+- [none] Updated dependencies [b21cd55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b21cd55)
+
 ## 16.1.3
 - [patch] Add a blank space between mention and text in text renderer [940ecc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/940ecc7)
 

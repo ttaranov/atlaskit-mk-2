@@ -4,6 +4,7 @@ import { ErrorMessage } from './styled';
 import { Outcome, Identifier } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
+import { AudioViewer } from './viewers/audio';
 import { PDFViewer } from './viewers/pdf';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
@@ -51,6 +52,7 @@ export class ItemViewer extends React.Component<Props, State> {
           case 'image':
             return <ImageViewer context={context} item={itemUnwrapped} />;
           case 'audio':
+            return <AudioViewer context={context} item={itemUnwrapped} />;
           case 'video':
             return <VideoViewer context={context} item={itemUnwrapped} />;
           case 'doc':

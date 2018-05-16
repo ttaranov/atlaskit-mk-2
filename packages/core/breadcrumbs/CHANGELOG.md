@@ -1,5 +1,9 @@
 # @atlaskit/breadcrumbs
 
+## 4.1.2
+- [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+  - @atlaskit/select@3.0.0
+
 ## 4.1.1
 
 ## 4.1.0
