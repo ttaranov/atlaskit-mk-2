@@ -159,6 +159,13 @@ export const tableStyles = `
 
 export const tableFullPageEditorStyles = `
   .ProseMirror .table-container table {
+    .selectedCell.danger, .hoveredCell.danger {
+      border: 1px solid ${tableBorderDeleteColor};
+      background: ${tableCellDeleteColor};
+    }
+    .selectedCell.danger:after {
+      background: ${tableCellDeleteColor};
+    }
     margin-left: 0;
     margin-right: 0;
     width: 100%;

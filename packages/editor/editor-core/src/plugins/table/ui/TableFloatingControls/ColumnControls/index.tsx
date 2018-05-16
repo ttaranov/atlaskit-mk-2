@@ -33,6 +33,7 @@ export interface Props {
   hoverColumns: (columns: number[], danger?: boolean) => Command;
   resetHoverSelection: Command;
   remove: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class ColumnControls extends Component<Props, any> {
@@ -84,7 +85,12 @@ export default class ColumnControls extends Component<Props, any> {
   }
 
   render() {
-    const { editorView: { state }, tableElement, isTableHovered } = this.props;
+    const {
+      editorView: { state },
+      tableElement,
+      isTableHovered,
+      isTableInDanger,
+    } = this.props;
     if (!tableElement) {
       return null;
     }
@@ -111,7 +117,7 @@ export default class ColumnControls extends Component<Props, any> {
         : false;
       const classNames =
         selection.inSelection(i) || isTableHovered ? ['active'] : [''];
-      if (this.state.dangerColumns.indexOf(i) !== -1) {
+      if (this.state.dangerColumns.indexOf(i) !== -1 || isTableInDanger) {
         classNames.push('danger');
       }
       nodes.push(
