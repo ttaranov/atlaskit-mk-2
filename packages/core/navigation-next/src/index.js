@@ -22,4 +22,7 @@ export { default as SectionTitle } from './components/SectionTitle';
 export { NavigationProvider, NavigationSubscriber } from './state';
 
 /** Theme */
-export { dark, light, settings, modeGenerator } from './theme';
+export { dark, light, settings, modeGenerator, GlobalTheme } from './theme';
+
+/** Types */
+export { GlobalItemProps } from './components/GlobalItem';
