@@ -1,5 +1,5 @@
 // @flow
-import CreateTableTreeDataHelper from '../../utils/toTableTreeData';
+import CreateTableTreeDataHelper from '../../utils/createTableTreeDataHelper';
 
 test('to return rootIds and itemsById for root items with defaults', () => {
   const rootData = [

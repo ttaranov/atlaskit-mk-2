@@ -3,7 +3,7 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-In the v2 release the table-tree component does not maintain a state anymore, a helper function \`toTableTreeData\`
+In the v2 release the table-tree component does not maintain a state anymore, a helper class \`CreateTableTreeDataHelper\`
 to help you process data in case of async loading.
 
 ---
@@ -86,13 +86,24 @@ ${code`
 ]
 `}
 
-*To overcome this performance bottle neck we recommend creating a flat object and to help you process data into object we provide
-a helper funtion **toTableTreeData** ( we will discuss it in next section )*
+*To overcome this performance bottle neck we recommend creating a cache with unique identifier in the item and path to the item, so that
+we can travel the item tree quickly to update, to do this we provide a helper class \`CreateTableTreeDataHelper\`*
 
 ### Recommendation
 
-There is a new named export from the Table tree package - **toTableTreeData**. \`toTableTreeData\` is util function that
-handles the data manipulation on table data object and creates a flat structure so that it can be easily consumed in Table-tree.
+\`CreateTableTreeDataHelper\` is exported from table tree package, to use it we need to instantiate it with the unique identifier.
+
+${code`
+const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper('keyId');
+`}
+
+Then to build cache and get items to be used in component just do:
+
+${code`
+createTableTreeDataHelperInstance.updateItems(<_items_to_add>, <_current_items_>, <_parent_item_for_item_to_be_added_>);
+`}
+
+*In case of root items ( 1st level object) only one parameter items is enough*
 
 ${(
   <Example
@@ -105,29 +116,25 @@ ${(
   />
 )}
 
-The idea here is to maintain two properties in state \`rootIds\` and \`itemsById\`. The \`onExpand\`
-hook is called with the parentItem to help to fetch children for that particular parent. This is where
-we update the items in to flat structure and that object in \`itemsById\`
+The idea here is to get the path of parent item in the table tree object using cache, cache makes it really fast, and then
+update parent update with children and return the new items with updated items.
 
 ${code`
 itemsById: {
   'id1': {
-    // Item with id1 as keyId,
-    childIds: [
-      'id2',
-      // all the other child ids
+    // item 1
+    children: [
+      // Children
     ]
   },
   'id2': {
-    // Child of item 'id1'
-    childIds: [
-      // child ids if there are any children
+    // item 2
+    children: [
+      // Children
     ]
   }
 }
 `}
 
-**toTableTreeData** does the heavy lifting of creating the flat object identified by ids, and creates the
-rootIds array to identify root items in the itemsById object. To do this, pass in the received children and parentItem,
-like in the example above.
+**CreateTableTreeDataHelper** creates the cache and updates the object for you, hence taking the worry away in case of async loading.
 `;
