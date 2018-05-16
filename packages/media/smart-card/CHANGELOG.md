@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 3.0.1
+- [patch] add @types/prop-types to dependencies of smart-card [d558d2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d558d2b)
+
 ## 3.0.0
 - [major] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
 
