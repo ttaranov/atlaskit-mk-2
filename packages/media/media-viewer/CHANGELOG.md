@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.6.0
+- [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
+
 ## 13.5.2
 - [patch] Fix media-ui dependency version [60f61c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60f61c5)
 
