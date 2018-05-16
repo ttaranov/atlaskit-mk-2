@@ -1,5 +1,9 @@
 # @atlaskit/datetime-picker
 
+## 4.0.1
+- [patch] Updated dependencies [92ae24e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92ae24e)
+  - @atlaskit/select@3.0.1
+
 ## 4.0.0
 - [major] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
   - @atlaskit/select@3.0.0
