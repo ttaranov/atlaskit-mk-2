@@ -69,7 +69,6 @@ type GlobalNavigationItemOptions = {
   label?: string,
   onClick?: (() => void) | false,
   tooltip?: string,
-  disablePeek?: boolean,
 };
 
 export type GlobalNavigationProps = {
