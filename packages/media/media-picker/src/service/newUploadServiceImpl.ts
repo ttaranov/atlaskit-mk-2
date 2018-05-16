@@ -122,7 +122,13 @@ export class NewUploadServiceImpl implements UploadService {
     }
     const creationDate = Date.now();
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
-      mediaFile: this.mapFileToMediaFile(file, uuid.v4(), creationDate),
+      mediaFile: {
+        id: uuid.v4(),
+        name: file.name,
+        size: file.size,
+        creationDate,
+        type: file.type,
+      },
       file,
     }));
 
@@ -345,16 +351,4 @@ export class NewUploadServiceImpl implements UploadService {
         return this.userMediaStore.copyFileWithToken(body, params);
       });
   }
-
-  private mapFileToMediaFile = (
-    file: File,
-    id: string,
-    creationDate: number,
-  ): MediaFile => ({
-    id,
-    name: file.name,
-    size: file.size,
-    creationDate,
-    type: file.type,
-  });
 }

@@ -82,6 +82,17 @@ export class PreviewsData extends React.Component<
       },
     );
 
+    /*
+      Following three consequential events use some magic numbers. All of this is for better
+      user experience. Here is explanation:
+
+      1. From 0% to 98% percentage shows actual chunk uploading progress.
+      2. When all chunks are uploaded and processing has started we show 99%
+      3. When processing has finished we show 100% and wait for 750ms. This is done just to give
+         user a feedback that uploading has finished.
+      4. We hide upload progress
+     */
+
     picker.on('upload-status-update', ({ file: { id }, progress }) => {
       let uploadProgress = Math.round(progress.portion * 98);
       console.log(`upload progress: ${uploadProgress}% for ${id} file`);
