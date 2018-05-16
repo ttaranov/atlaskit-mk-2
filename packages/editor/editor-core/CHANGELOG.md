@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.27
+- [patch] ED-4604 make headings always set, not toggle [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
+- [patch] Updated dependencies [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
+
 ## 71.3.26
 - [patch] Fix bug where code-block lines would be soft-wrapped [0d08e1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d08e1a)
 - [none] Updated dependencies [0d08e1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d08e1a)
