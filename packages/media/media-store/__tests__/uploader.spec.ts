@@ -2,7 +2,8 @@ jest.mock('chunkinator');
 jest.mock('../src/media-store');
 
 import chunkinator, { Options } from 'chunkinator';
-import { MediaStore, uploadFile } from '../src';
+import { uploadFile } from '../src';
+import { MediaStore } from '../src/media-store';
 
 describe('Uploader', () => {
   const setup = () => {
