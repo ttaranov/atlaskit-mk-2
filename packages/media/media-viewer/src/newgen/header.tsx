@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { Outcome, Identifier } from './domain';
 import { Context, FileItem, MediaType } from '@atlaskit/media-core';
+import Button from '@atlaskit/button';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
+import { Outcome, Identifier } from './domain';
 import {
   Header as HeaderWrapper,
   LeftHeader,
+  RightHeader,
   MetadataWrapper,
   MetadataSubText,
   MetadataIconWrapper,
   MetadataFileName,
 } from './styled';
-import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
 import { MediaTypeIcon } from './media-type-icon';
+import { constructAuthTokenUrl } from './util';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -87,10 +91,40 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
+  downloadItem = (item: FileItem) => async () => {
+    const { context } = this.props;
+    const link = document.createElement('a');
+    const url =
+      (item.details.artifacts && item.details.artifacts['image.jpg']['url']) ||
+      '';
+    const name = item.details.name || 'download';
+    const href = await constructAuthTokenUrl(url, context);
+
+    link.href = `${href}&dl=true&name=${name}`;
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+  };
+
+  private renderDownload = () => {
+    const { item } = this.state;
+    if (item.status !== 'SUCCESSFUL') {
+      return;
+    }
+
+    return (
+      <Button
+        onClick={this.downloadItem(item.data)}
+        iconBefore={<DownloadIcon label="download" />}
+      />
+    );
+  };
+
   render() {
     return (
       <HeaderWrapper>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
+        <RightHeader>{this.renderDownload()}</RightHeader>
       </HeaderWrapper>
     );
   }
