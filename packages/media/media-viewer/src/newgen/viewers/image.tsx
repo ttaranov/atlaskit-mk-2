@@ -63,7 +63,7 @@ export class ImageViewer extends React.Component<
     return (
       <ImageWrapper>
         <Img src={src} style={imgStyle} />
-        <ZoomControls onChange={this.onZoomChange} />
+        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
       </ImageWrapper>
     );
   }

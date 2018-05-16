@@ -8,52 +8,65 @@ import { ZoomWrapper } from './styled';
 export type ZoomDirection = 'out' | 'in';
 
 export interface ZoomControlsProps {
+  zoomLevel: number;
   onChange: (zoomLevel: number) => void;
   step?: number;
 }
 
-export interface ZoomControlsState {
-  zoomLevel: number;
-}
+export interface ZoomControlsState {}
 
 const minZoomLevel = 0.2;
+const maxZoomLevel = 5;
 const zoomingStep = 0.2;
 
 export class ZoomControls extends Component<
   ZoomControlsProps,
   ZoomControlsState
 > {
-  static defaultProps: ZoomControlsProps = {
-    onChange() {},
+  static defaultProps: Partial<ZoomControlsProps> = {
     step: zoomingStep,
-  };
-
-  state: ZoomControlsState = {
-    zoomLevel: 1,
   };
 
   zoom = (direction: ZoomDirection) => () => {
     const { onChange, step } = this.props;
-    const { zoomLevel: currentZoomLevel } = this.state;
+    const { zoomLevel: currentZoomLevel } = this.props;
     const increase = step! * currentZoomLevel;
     const newZoomLevel = direction === 'out' ? -increase! : increase;
-    const zoomLevel = Math.max(
-      Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
-      minZoomLevel,
+    const zoomLevel = Math.min(
+      Math.max(
+        Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
+        minZoomLevel,
+      ),
+      maxZoomLevel,
     );
 
     onChange(zoomLevel);
-    this.setState({ zoomLevel });
   };
 
+  get canZoomOut(): boolean {
+    const { zoomLevel } = this.props;
+
+    return zoomLevel > minZoomLevel;
+  }
+
+  get canZoomIn(): boolean {
+    const { zoomLevel } = this.props;
+
+    return zoomLevel < maxZoomLevel;
+  }
+
   render() {
+    const { canZoomOut, canZoomIn } = this;
+
     return (
       <ZoomWrapper>
         <Button
+          isDisabled={!canZoomOut}
           onClick={this.zoom('out')}
           iconBefore={<ZoomOutIcon primaryColor="white" label="zoom out" />}
         />
         <Button
+          isDisabled={!canZoomIn}
           onClick={this.zoom('in')}
           iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
         />
