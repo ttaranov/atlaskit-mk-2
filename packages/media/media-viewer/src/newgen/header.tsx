@@ -28,6 +28,21 @@ export type State = {
   item: Outcome<FileItem, Error>;
 };
 
+export const createDownloadUrl = async (
+  item: FileItem,
+  context: Context,
+  collectionName?: string,
+): Promise<string> => {
+  const url = `/file/${item.details.id}/binary`;
+  const tokenizedUrl = await constructAuthTokenUrl(
+    url,
+    context,
+    collectionName,
+  );
+
+  return `${tokenizedUrl}&dl=true`;
+};
+
 const initialState: State = {
   item: { status: 'PENDING' },
 };
@@ -94,15 +109,14 @@ export default class Header extends React.Component<Props, State> {
   downloadItem = (item: FileItem) => async () => {
     const { identifier, context } = this.props;
     const link = document.createElement('a');
-    const url = `/file/${item.details.id}/binary`;
     const name = item.details.name || 'download';
-    const href = await constructAuthTokenUrl(
-      url,
+    const href = await createDownloadUrl(
+      item,
       context,
       identifier.collectionName,
     );
 
-    link.href = `${href}&dl=true&name=${name}`;
+    link.href = href;
     link.download = name;
     document.body.appendChild(link);
     link.click();
