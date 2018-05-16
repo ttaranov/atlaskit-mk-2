@@ -2,7 +2,23 @@
 import get from 'lodash.get';
 import set from 'lodash.set';
 
-export default class createTableTreeDataHelper {
+/**
+ * This helper class will create a cache of all the id's in the items object and
+ * path to the object.
+ * Example:
+ * [{
+ *   // item 1,
+ *   id: 1,
+ *   children:[{
+ *     // item 1.1,
+ *     id: '2'
+ *   }]
+ * }]
+ *
+ * Cache will look something like:
+ * {1: 0, 2: '0.children[0]'}
+ */
+export default class CreateTableTreeDataHelper {
   key: string;
   keysCache: Object;
   constructor(key: string = 'key') {
@@ -10,18 +26,8 @@ export default class createTableTreeDataHelper {
     this.keysCache = {};
   }
 
-  updateObjectWithChildren(
-    objectPath: string,
-    items: Array<Object>,
-    allItems: Array<Object>,
-  ) {
-    let newObject = [...allItems];
-    let toChangeObject = get(newObject, objectPath);
-    toChangeObject.children = items;
-    return set(newObject, objectPath, toChangeObject);
-  }
-
-  rootItems(rootItems: Array<Object>) {
+  addRootItems(rootItems: Array<Object>) {
+    // Create cache
     rootItems.forEach((rootItem, index) => {
       this.keysCache[rootItem[this.key]] = index;
     });
@@ -29,12 +35,33 @@ export default class createTableTreeDataHelper {
     return rootItems;
   }
 
-  addItem(items: Array<Object>, parentItem: Object, allItems: Array<Object>) {
+  addChildItem(
+    items: Array<Object>,
+    allItems: Array<Object>,
+    parentItem: Object,
+  ) {
     const parentLocation = this.keysCache[parentItem[this.key]];
+    // Update cache
     items.forEach((item, index) => {
       this.keysCache[item[this.key]] = `${parentLocation}.children[${index++}]`;
     });
 
-    return this.updateObjectWithChildren(parentLocation, items, allItems);
+    let allItemsCopy = [...allItems];
+    let objectToChange = get(allItemsCopy, parentLocation);
+    objectToChange.children = items;
+
+    return set(allItemsCopy, parentLocation, objectToChange);
+  }
+
+  updateItems(
+    items: Array<Object>,
+    allItems?: Array<Object> = [],
+    parentItem: ?Object,
+  ) {
+    if (!parentItem) {
+      return this.addRootItems(items);
+    }
+
+    return this.addChildItem(items, allItems, parentItem);
   }
 }

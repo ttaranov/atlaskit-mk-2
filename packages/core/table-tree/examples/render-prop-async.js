@@ -6,7 +6,7 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  createTableTreeDataHelper,
+  CreateTableTreeDataHelper,
 } from '../src';
 
 let uuid = 0;
@@ -85,7 +85,7 @@ function getData(parentItem: ?Object) {
   return !parentItem ? fetchRoots() : fetchChildrenOf();
 }
 
-const tableTreeHelper = new createTableTreeDataHelper('id');
+const tableTreeHelper = new CreateTableTreeDataHelper('id');
 
 export default class extends Component<*, *> {
   state = {
@@ -102,15 +102,9 @@ export default class extends Component<*, *> {
     }
 
     getData(parentItem).then(items => {
-      if (!parentItem) {
-        this.setState({
-          items: tableTreeHelper.rootItems(items),
-        });
-      } else {
-        this.setState({
-          items: tableTreeHelper.addItem(items, parentItem, this.state.items),
-        });
-      }
+      this.setState({
+        items: tableTreeHelper.updateItems(items, this.state.items, parentItem),
+      });
     });
   };
 
