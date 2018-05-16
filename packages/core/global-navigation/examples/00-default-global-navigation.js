@@ -2,14 +2,9 @@
 
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
-import {
-  LayoutManager,
-  NavigationProvider,
-  light,
-} from '@atlaskit/navigation-next';
+import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
-import { withTheme } from '../src/theme';
 
 const Global = () => (
   <GlobalNavigation
@@ -27,7 +22,7 @@ const Global = () => (
   />
 );
 
-const GlobalNav = () => (
+export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={Global}
@@ -38,5 +33,3 @@ const GlobalNav = () => (
     </LayoutManager>
   </NavigationProvider>
 );
-
-export default withTheme({ mode: light, context: 'expanded' })(GlobalNav);

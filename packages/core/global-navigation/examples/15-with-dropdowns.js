@@ -2,11 +2,7 @@
 
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
-import {
-  LayoutManager,
-  NavigationProvider,
-  light,
-} from '@atlaskit/navigation-next';
+import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import Dropdown, {
   DropdownItemGroup,
   DropdownItem,
@@ -16,7 +12,6 @@ import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Avatar from '@atlaskit/avatar';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
-import { withTheme } from '../src/theme';
 
 const generateDropDown = Trigger => ({ className }: { className: string }) => (
   <Dropdown
@@ -68,7 +63,7 @@ const Global = () => (
   />
 );
 
-const GlobalNav = () => (
+export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={Global}
@@ -79,5 +74,3 @@ const GlobalNav = () => (
     </LayoutManager>
   </NavigationProvider>
 );
-
-export default withTheme({ mode: light, context: 'expanded' })(GlobalNav);

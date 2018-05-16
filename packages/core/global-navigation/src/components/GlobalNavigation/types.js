@@ -4,8 +4,7 @@ import type { ComponentType } from 'react';
 
 // import type { NavigationStateInterface } from '../../../state/types';
 
-import type { GlobalItemProps } from '../GlobalItem/types';
-import type { GlobalTheme } from '../../theme/types';
+import type { GlobalItemProps, GlobalTheme } from '@atlaskit/navigation-next';
 
 export type DrawerContentProps = { closeDrawer: () => void };
 

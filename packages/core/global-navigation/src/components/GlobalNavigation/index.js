@@ -8,9 +8,7 @@ import QuestionIcon from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import { NavigationSubscriber } from '@atlaskit/navigation-next';
-
-import GlobalNav from '../GlobalNav';
+import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
 import Drawer from '../Drawer';
 import type {

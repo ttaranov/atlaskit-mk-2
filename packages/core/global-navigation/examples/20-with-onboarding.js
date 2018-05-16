@@ -8,11 +8,7 @@ import QuestionCircle from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import {
-  LayoutManager,
-  NavigationProvider,
-  light,
-} from '@atlaskit/navigation-next';
+import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import {
   Spotlight,
   SpotlightManager,
@@ -22,7 +18,6 @@ import { colors } from '@atlaskit/theme';
 import Lorem from 'react-lorem-component';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
-import { withTheme } from '../src/theme';
 
 const Global = () => (
   // TODO: DRY the props
@@ -98,7 +93,10 @@ type State = {
   active: number | null,
 };
 
-class GlobalNavigationWtihSpotLight extends Component<Object, State> {
+export default class GlobalNavigationWtihSpotLight extends Component<
+  Object,
+  State,
+> {
   state: State = { active: null };
   start = () => this.setState({ active: 0 });
   next = () => this.setState(state => ({ active: (state.active || 0) + 1 }));
@@ -232,7 +230,3 @@ class GlobalNavigationWtihSpotLight extends Component<Object, State> {
     );
   }
 }
-
-export default withTheme({ mode: light, context: 'expanded' })(
-  GlobalNavigationWtihSpotLight,
-);
