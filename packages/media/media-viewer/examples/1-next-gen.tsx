@@ -3,6 +3,7 @@ import Button from '@atlaskit/button';
 import {
   createStorybookContext,
   imageFileId,
+  audioFileId,
   videoFileId,
   docFileId,
   defaultCollectionName,
@@ -30,6 +31,12 @@ const videoItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const audioItem: MediaViewerItem = {
+  type: 'file',
+  id: audioFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const unsupportedItem: MediaViewerItem = {
   type: 'file',
   id: unknownFileId.id,
@@ -51,6 +58,9 @@ export default class Example extends React.Component<{}, State> {
         </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
           Preview a video item
+        </Button>
+        <Button onClick={() => this.setState({ selectedItem: audioItem })}>
+          Preview an audio item
         </Button>
         <Button onClick={() => this.setState({ selectedItem: docItem })}>
           Preview a doc item

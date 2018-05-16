@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "A component used for navigation, with each item acting as a link",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.3",
     "@atlaskit/icon": "^11.1.1",
-    "@atlaskit/select": "^2.0.1",
+    "@atlaskit/select": "^3.0.0",
     "enzyme": "^3.3.0",
     "jest-in-case": "^1.0.2",
     "react-router": "^4.2.0",

@@ -7,7 +7,10 @@ import { CellSelection } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
+import {
+  tableBackgroundColorPalette,
+  tableBackgroundBorderColors,
+} from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import Separator from '../../../../ui/Separator';
 import AdvanceMenu from './AdvanceMenu';
@@ -139,6 +142,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               editorView={editorView}
               palette={tableBackgroundColorPalette}
               mountPoint={popupsMountPoint}
+              borderColors={tableBackgroundBorderColors}
             />
           )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (

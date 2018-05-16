@@ -1,6 +1,6 @@
 // @flow
 
-import AsyncCreatable from 'react-select/lib/AsyncCreatable';
+import { AsyncCreatable } from 'react-select';
 import createSelect from './createSelect';
 
 export default createSelect(AsyncCreatable);
