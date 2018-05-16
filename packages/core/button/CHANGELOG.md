@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 7.2.4
+- [patch] Export types for Button [6a47d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a47d88)
+- [none] Updated dependencies [6a47d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a47d88)
+
 ## 7.2.3
 - [patch] Fix invalid css in button [2363d14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2363d14)
 - [none] Updated dependencies [2363d14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2363d14)
