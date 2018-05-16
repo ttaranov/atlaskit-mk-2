@@ -129,6 +129,15 @@ pipelines:
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
 
+    run-bundle-analysis:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn build:bundle-analysis
+          caches:
+            - node 
+
 
     landkid:
       - parallel:
