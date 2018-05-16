@@ -576,14 +576,7 @@ export const removeEmptyHeadingAtStartOfDocument: Command = (
     $cursor.pos === 1
   ) {
     if ($cursor.parent.type === state.schema.nodes.heading) {
-      dispatch(
-        state.tr.setBlockType(
-          $cursor.pos,
-          $cursor.pos,
-          state.schema.nodes.paragraph,
-        ),
-      );
-      return true;
+      return setNormalText()(state, dispatch);
     }
   }
   return false;
