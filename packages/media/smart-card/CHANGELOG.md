@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 3.0.0
+- [major] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+
 ## 2.0.2
 - [patch] Implemented <InlineCardView /> for displaying a smart card inline with text. This view is NOT directly exported to consumers. [293b3a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/293b3a7)
 
