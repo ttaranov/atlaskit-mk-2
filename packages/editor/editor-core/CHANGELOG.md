@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.28
+- [patch] ED-4614: fix weird toolbar buttons highlighting when page is disabled [0cd49f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cd49f4)
+- [none] Updated dependencies [0cd49f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cd49f4)
+
 ## 71.3.27
 - [patch] ED-4604 make headings always set, not toggle [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
 - [patch] Updated dependencies [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
