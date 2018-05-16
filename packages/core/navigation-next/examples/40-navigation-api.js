@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import UNSTATED from 'unstated-debug';
 
 import {
   GlobalNav,
