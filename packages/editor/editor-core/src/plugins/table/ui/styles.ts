@@ -1,3 +1,4 @@
+import { browser } from '@atlaskit/editor-common';
 import {
   akColorN40A,
   akColorB100,
@@ -30,6 +31,8 @@ export const tableToolbarSize = 12;
 export const tableBorderRadiusSize = 3;
 export const tableInsertColumnButtonSize = 20;
 export const tableDeleteColumnButtonSize = 16;
+
+const isIE11 = browser.ie_version === 11;
 
 export const tableStyles = `
   .ProseMirror{
@@ -110,7 +113,7 @@ export const tableStyles = `
       width: 0;
     }
     .with-controls .table-shadow {
-      display: block;
+      display: ${isIE11 ? 'none' : 'block'};
     }
     .table-shadow.-left {
       left: 0;
@@ -128,7 +131,7 @@ export const tableStyles = `
       );
     }
     .table-wrapper {
-      overflow-x: auto;
+      overflow-x: ${isIE11 ? 'none' : 'auto'};
     }
     .column-resize-handle {
       background-color: ${tableBorderSelectedColor};

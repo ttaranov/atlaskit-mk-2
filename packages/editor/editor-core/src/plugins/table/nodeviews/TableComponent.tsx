@@ -1,6 +1,7 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
+import { TableLayout, browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { stateKey } from '../pm-plugins/main';
@@ -17,8 +18,8 @@ import {
 import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
-import { TableLayout, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 
+const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
 // TODO: Should be 62 after ED-4280 is fixed
@@ -53,14 +54,14 @@ class TableComponent extends React.Component<ComponentProps> {
         );
       }
 
-      if (this.wrapper) {
+      if (this.wrapper && !isIE11) {
         this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
       }
     }
   }
 
   componentWillUnmount() {
-    if (this.wrapper) {
+    if (this.wrapper && !isIE11) {
       this.wrapper.removeEventListener('scroll', this.handleScrollDebounced);
     }
 
@@ -113,10 +114,6 @@ class TableComponent extends React.Component<ComponentProps> {
             <div
               style={{
                 width: this.calcWidth(node.attrs.layout, containerWidth),
-                maxWidth:
-                  containerWidth <= akEditorFullPageMaxWidth
-                    ? '100%'
-                    : `${containerWidth}px`,
               }}
               className="table-container"
               data-layout={node.attrs.layout}
@@ -190,11 +187,13 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   private handleScroll = (event: Event) => {
-    if (event.target !== this.wrapper) {
-      return;
-    }
-
-    if (!this.table || !this.leftShadow || !this.rightShadow) {
+    if (
+      !this.wrapper ||
+      event.target !== this.wrapper ||
+      !this.table ||
+      !this.leftShadow ||
+      !this.rightShadow
+    ) {
       return;
     }
 
