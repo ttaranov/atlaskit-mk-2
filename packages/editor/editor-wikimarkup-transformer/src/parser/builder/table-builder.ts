@@ -1,27 +1,21 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { Builder, AddArgs } from './builder';
+import {
+  AddCellArgs,
+  Builder,
+  CellType,
+  Table,
+  TableCell,
+  TableRow,
+} from '../../interfaces';
 
-export type CellType = 'tableHeader' | 'tableCell';
-
-export interface TableCell {
-  type: CellType;
-  content: PMNode[];
+/**
+ * Return the cell type based on the delimeter
+ */
+function getType(style: string): CellType {
+  return /\|\|/.test(style) ? 'tableHeader' : 'tableCell';
 }
 
-export interface TableRow {
-  cells: TableCell[];
-}
-
-export interface Table {
-  rows: TableRow[];
-}
-
-export interface AddCellArgs extends AddArgs {
-  style: '|' | '||' | null;
-  content: PMNode[];
-}
-
-export default class TableBuilder implements Builder {
+export class TableBuilder implements Builder {
   private schema: Schema;
   private root: Table;
   private lastCell: TableCell;
@@ -32,15 +26,6 @@ export default class TableBuilder implements Builder {
     this.root = {
       rows: [],
     };
-  }
-
-  /**
-   * Return the cell type based on the delimeter
-   * @param {string} style
-   * @returns {CellType}
-   */
-  static getType(style: string): CellType {
-    return /\|\|/.test(style) ? 'tableHeader' : 'tableCell';
   }
 
   /**
@@ -58,15 +43,15 @@ export default class TableBuilder implements Builder {
   add(cells: AddCellArgs[]) {
     // Iterate the cells and create TH/TD based on the delimeter
     let index = 0;
+
     for (const cell of cells) {
       const { style, content } = cell;
 
       // For the first item, determine if it's a new row or not
-      if (index++ === 0) {
+      if (index === 0) {
         if (style === null) {
           // If there's no style (cell delimeter), it's part of the previous row
-          const hardBreak = this.schema.nodes.hardBreak.create();
-          this.lastCell.content.push(hardBreak, ...content);
+          this.lastCell.content.push(...content);
           continue;
         } else {
           // Otherwise, create a new row
@@ -74,10 +59,12 @@ export default class TableBuilder implements Builder {
         }
       }
 
-      const type = TableBuilder.getType(style!);
+      const type = getType(style!);
       const newCell = { type, content };
       this.lastCell = newCell;
       this.lastRow.cells.push(newCell);
+
+      index += 1;
     }
   }
 
@@ -96,7 +83,7 @@ export default class TableBuilder implements Builder {
   private buildTableNode = (): PMNode => {
     const { root } = this;
     const { table } = this.schema.nodes;
-    return table.create({}, root.rows.map(this.buildTableRowNode));
+    return table.createChecked({}, root.rows.map(this.buildTableRowNode));
   };
 
   /**
@@ -105,7 +92,7 @@ export default class TableBuilder implements Builder {
    */
   private buildTableRowNode = (row: TableRow): PMNode => {
     const { tableRow } = this.schema.nodes;
-    return tableRow.create({}, row.cells.map(this.buildTableCellNode));
+    return tableRow.createChecked({}, row.cells.map(this.buildTableCellNode));
   };
 
   /**
@@ -116,7 +103,8 @@ export default class TableBuilder implements Builder {
   private buildTableCellNode = (cell: TableCell): PMNode => {
     const { type, content } = cell;
     const cellNode = this.schema.nodes[type];
-    return cellNode.create({}, content);
+
+    return cellNode.createChecked({}, content);
   };
 
   /**

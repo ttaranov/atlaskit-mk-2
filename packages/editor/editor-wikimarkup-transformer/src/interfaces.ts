@@ -1,17 +1,6 @@
-import { Node as PMNode, NodeType } from 'prosemirror-model';
+import { Node as PMNode } from 'prosemirror-model';
 
-export type MacroName = 'color' | 'code' | 'noformat' | 'panel' | 'quote';
-export type TextEffect =
-  | 'strong'
-  | 'emphasis'
-  | 'citation'
-  | 'deleted'
-  | 'inserted'
-  | 'superscript'
-  | 'subscript'
-  | 'monospaced'
-  | 'color'
-  | 'link';
+export type MacroName = string;
 
 export interface SimpleInterval {
   left: number;
@@ -38,55 +27,67 @@ export interface MacroMatch extends FatInterval {
   attrs: { [key: string]: string };
 }
 
-export interface TextMatch extends FatInterval {
-  effect: TextEffect;
-  attrs: { [key: string]: string | null };
-}
-
 export interface MacroInterval {
   macros: SimpleMacro[];
-  text: string;
-}
-
-export interface Effect {
-  name: TextEffect;
-  attrs: { [key: string]: string | null };
-}
-
-export interface TextInterval {
-  effects: Effect[];
   text: string;
 }
 
 export interface RichInterval {
   macro?: SimpleMacro;
   text: string;
+}
+
+export interface AddArgs {
+  style: string | null;
   content: PMNode[];
 }
 
-export interface TextMarkElement {
-  name: TextEffect;
-  grep: string;
+export interface Builder {
+  type: string;
+
+  /**
+   * Add a item to the builder
+   * @param {AddCellArgs[]} items
+   */
+  add(items: AddArgs[]): void;
+
+  /**
+   * Compile a prosemirror node from the root list
+   * @returns {PMNode}
+   */
+  buildPMNode(): PMNode;
 }
 
-export interface EmojiMapItem {
-  markup: string[];
-  adf: {
-    id: string;
-    shortName: string;
-    text: string;
-  };
+export interface ListItem {
+  content?: any[];
+  parent: List;
+  children: List[];
 }
 
-export interface InlineNodeClosestMatch {
-  nodeType: NodeType;
-  attrs: { [key: string]: any };
-  matchPosition: number;
-  textLength: number;
+export interface List {
+  children: ListItem[];
+  type: ListType;
+  parent?: ListItem;
 }
 
-export interface InlineNodeWithPosition {
-  node: PMNode;
-  matchPosition: number;
-  textLength: number;
+export type ListType = 'bulletList' | 'orderedList';
+
+export type CellType = 'tableHeader' | 'tableCell';
+
+export interface TableCell {
+  type: CellType;
+  content: PMNode[];
+}
+
+export interface TableRow {
+  cells: TableCell[];
+}
+
+export interface Table {
+  rows: TableRow[];
+}
+
+export interface AddCellArgs extends AddArgs {
+  style: '|' | '||' | null;
+  content: PMNode[];
 }

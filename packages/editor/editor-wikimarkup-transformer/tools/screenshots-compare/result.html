@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Wiki Markup Parser results</title>
+  <script src="assets/tasks.js"></script>
+  <script src="assets/screenshots-parser.js"></script>
+  <script src="assets/screenshots-jira.js"></script>
+
+  <style>
+  html, body {
+    padding: 0;
+    margin: 0;
+  }
+
+  #results {
+    display: table;
+  }
+
+  .cell {
+    display: table-cell;
+    border: 1px solid #999;
+    border-collapse: collapse;
+    padding: 12px;
+    box-sizing: border-box;
+    vertical-align: top;
+  }
+
+  .cell_header {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .row {
+    display: table-row;
+  }
+
+  .markup {
+    max-width: 450px;
+    width: 450px;
+    overflow: auto;
+    background: #eee;
+  }
+
+  .loadmore {
+    border: none;
+    border-radius: 4px;
+    background: #eee;
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    margin: 16px auto;
+    padding: 16px;
+  }
+  </style>
+</head>
+<body>
+
+<table id="results" data-start="0">
+  <tr class="row">
+    <th class="cell cell_header">JIRA Wiki markup</th>
+    <th class="cell cell_header">JIRA Cloud renderer</th>
+    <th class="cell cell_header">WikiMarkup Parser &gt; ADF &gt; Renderer</th>
+  </tr>
+</table>
+
+<button class="loadmore" type="button" onclick="javascript:loadResults()">Load more</button>
+
+<script type="text/javascript">
+function onImageLoadError(img) {
+  const issueKey = img.dataset.issueKey;
+
+  const replacement = document.createElement('span');
+  replacement.innerHTML = `No captured screenshot yet for ${issueKey}`;
+
+  img.parentNode.replaceChild(replacement, img);
+}
+
+function loadResults() {
+  const results = document.getElementById('results');
+  const startFrom = Number(results.dataset.start);
+  const runTo = startFrom + 20;
+
+  const task = `<tr class="row">
+    <td class="cell markup">
+      <p><a target="_blank" href="https://product-fabric.atlassian.net/browse/{issueKey}">{issueKey}</a></p>
+      <pre>{markup}</pre>
+    </td>
+    <td class="cell">
+      <img
+        data-issue-key="{issueKey}"
+        onerror="javascript:onImageLoadError(this)"
+        src="data:image/png;base64,{jira}"
+
+      />
+    </td>
+    <td class="cell">
+      <img
+        data-issue-key="{issueKey}"
+        onerror="javascript:onImageLoadError(this)"
+        src="data:image/png;base64,{parser}"
+      />
+    </td>
+  </tr>`;
+
+  const screenshotsJira = window.screenshotsJira || {};
+  const screenshotsParser = window.screenshotsParser || {};
+
+  Object.keys(tasks).forEach((key, index) => {
+    if (index < startFrom || index > runTo) {
+      return;
+    }
+
+    const taskRow = task
+      .replace(/\{issueKey\}/g, key)
+      .replace('{jira}', screenshotsJira[key])
+      .replace('{parser}', screenshotsParser[key])
+      .replace('{markup}', tasks[key]);
+
+    results.insertAdjacentHTML('beforeEnd', taskRow);
+  });
+
+  results.dataset.start = runTo + 1;
+}
+
+loadResults();
+</script>
+
+</body>
+</html>

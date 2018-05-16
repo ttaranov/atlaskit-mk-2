@@ -21,13 +21,19 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^9.2.8",
-    "@atlaskit/theme": "^3.1.1",
-    "@types/prosemirror-model": "^1.0.0",
-    "prosemirror-model": "^1.2.0"
+    "@atlaskit/editor-common": "^9.3.7",
+    "@atlaskit/theme": "^3.2.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.3",
-    "@atlaskit/editor-test-helpers": "^3.0.6"
+    "@atlaskit/editor-json-transformer": "^3.0.5",
+    "@atlaskit/editor-test-helpers": "^3.1.7",
+    "@types/prosemirror-model": "^1.0.0",
+    "cookie": "^0.3.1",
+    "debug": "^2.2.0",
+    "got": "^8.3.1",
+    "prosemirror-model": "^1.2.0",
+    "puppeteer": "^0.10.2",
+    "rxjs": "^5.1.0"
   }
 }
