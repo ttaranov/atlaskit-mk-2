@@ -19,13 +19,12 @@ import type {
 // By default we will render a button which toggles the peek behaviour. The
 // consumer can opt out of this by passing their own handler or `false` to the
 // onClick prop, or by passing the disablePeek prop.
-const getProductPrimaryItemComponent = navigation => ({
+const getProductPrimaryItemComponent = (navigation, disablePeek) => ({
   className,
   children,
   href,
   onClick,
   target,
-  disablePeek,
 }: *) =>
   disablePeek ? (
     <a
@@ -61,7 +60,10 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     if (product) {
       inbuiltPrimaryItems.push({
         ...product,
-        component: getProductPrimaryItemComponent(navigation),
+        component: getProductPrimaryItemComponent(
+          navigation,
+          product.disablePeek,
+        ),
       });
     }
 
