@@ -5,7 +5,6 @@ import Button from '@atlaskit/button';
 import { ContentWrapper, CloseButtonWrapper } from './styled';
 
 export interface ContentProps {
-  onClick: (e) => void;
   onClose?: () => void;
 }
 
@@ -47,9 +46,16 @@ export class Content extends Component<ContentProps, ContentState> {
   // We want to check mouse movement on click too
   // in order to not hide controls when user is interacting with any control
   private onClick = e => {
-    const { onClick } = this.props;
     this.checkMouseMovement();
-    onClick(e);
+    this.onClickContentClose(e);
+  };
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
   };
 
   render() {
