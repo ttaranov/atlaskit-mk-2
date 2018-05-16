@@ -6,7 +6,9 @@ import { ZoomControls, ZoomControlsProps } from '../../src/newgen/zoomControls';
 describe('<ZoomControls />', () => {
   const setup = (props?: Partial<ZoomControlsProps>) => {
     const onChange = jest.fn();
-    const component = shallow(<ZoomControls onChange={onChange} {...props} />);
+    const component = shallow(
+      <ZoomControls zoomLevel={1} onChange={onChange} {...props} />,
+    );
 
     return {
       onChange,
