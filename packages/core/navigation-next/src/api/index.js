@@ -2,7 +2,6 @@
 
 import React, { type Node } from 'react';
 import { Container, Subscribe } from 'unstated';
-import { Item, Section, SectionSeparator, SectionTitle } from '../';
 
 import type {
   NavAPIOptions,
@@ -20,13 +19,6 @@ const defaultOptions: NavAPIOptions = {
 };
 
 export class NavAPI extends Container<NavAPIState> {
-  componentTypes = {
-    Item,
-    Section,
-    SectionSeparator,
-    SectionTitle,
-  };
-
   reducers: { [ViewKey]: Reducer[] } = {};
   views: { [ViewKey]: ViewResolver } = {};
 
@@ -59,8 +51,7 @@ export class NavAPI extends Container<NavAPIState> {
    */
   addReducer = (viewKey: ViewKey, reducer: Reducer) => {
     const reducerList = [...(this.reducers[viewKey] || []), reducer];
-    const newReducers = { ...this.reducers, [viewKey]: reducerList };
-    this.reducers = newReducers;
+    this.reducers = { ...this.reducers, [viewKey]: reducerList };
 
     // If we're adding a reducer to the active view we'll want to re-set it so
     // that the reducer gets applied.
