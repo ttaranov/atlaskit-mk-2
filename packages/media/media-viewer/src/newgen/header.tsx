@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { Outcome, Identifier } from './domain';
 import { Context, FileItem, MediaType } from '@atlaskit/media-core';
+import Button from '@atlaskit/button';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
+import { Outcome, Identifier } from './domain';
 import {
   Header as HeaderWrapper,
   LeftHeader,
+  RightHeader,
   MetadataWrapper,
   MetadataSubText,
   MetadataIconWrapper,
   MetadataFileName,
 } from './styled';
-import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
 import { MediaTypeIcon } from './media-type-icon';
+import { constructAuthTokenUrl } from './util';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -22,6 +26,21 @@ export type Props = {
 
 export type State = {
   item: Outcome<FileItem, Error>;
+};
+
+export const createDownloadUrl = async (
+  item: FileItem,
+  context: Context,
+  collectionName?: string,
+): Promise<string> => {
+  const url = `/file/${item.details.id}/binary`;
+  const tokenizedUrl = await constructAuthTokenUrl(
+    url,
+    context,
+    collectionName,
+  );
+
+  return `${tokenizedUrl}&dl=true`;
 };
 
 const initialState: State = {
@@ -87,10 +106,42 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
+  downloadItem = (item: FileItem) => async () => {
+    const { identifier, context } = this.props;
+    const link = document.createElement('a');
+    const name = item.details.name || 'download';
+    const href = await createDownloadUrl(
+      item,
+      context,
+      identifier.collectionName,
+    );
+
+    link.href = href;
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  private renderDownload = () => {
+    const { item } = this.state;
+    if (item.status !== 'SUCCESSFUL') {
+      return;
+    }
+
+    return (
+      <Button
+        onClick={this.downloadItem(item.data)}
+        iconBefore={<DownloadIcon label="download" />}
+      />
+    );
+  };
+
   render() {
     return (
       <HeaderWrapper>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
+        <RightHeader>{this.renderDownload()}</RightHeader>
       </HeaderWrapper>
     );
   }
