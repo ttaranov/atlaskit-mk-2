@@ -19,6 +19,24 @@ const minZoomLevel = 0.2;
 const maxZoomLevel = 5;
 const zoomingStep = 0.2;
 
+export const getZoomLevel = (
+  currentZoomLevel: number,
+  direction: ZoomDirection,
+  step: number = zoomingStep,
+): number => {
+  const increase = step! * currentZoomLevel;
+  const newZoomLevel = direction === 'out' ? -increase! : increase;
+  const zoomLevel = Math.min(
+    Math.max(
+      Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
+      minZoomLevel,
+    ),
+    maxZoomLevel,
+  );
+
+  return zoomLevel;
+};
+
 export class ZoomControls extends Component<
   ZoomControlsProps,
   ZoomControlsState
@@ -30,15 +48,7 @@ export class ZoomControls extends Component<
   zoom = (direction: ZoomDirection) => () => {
     const { onChange, step } = this.props;
     const { zoomLevel: currentZoomLevel } = this.props;
-    const increase = step! * currentZoomLevel;
-    const newZoomLevel = direction === 'out' ? -increase! : increase;
-    const zoomLevel = Math.min(
-      Math.max(
-        Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
-        minZoomLevel,
-      ),
-      maxZoomLevel,
-    );
+    const zoomLevel = getZoomLevel(currentZoomLevel, direction, step);
 
     onChange(zoomLevel);
   };
