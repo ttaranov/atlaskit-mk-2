@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "2.0.2",
+  "version": "3.0.1",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -28,6 +28,7 @@
     "@atlaskit/tooltip": "^9.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "lodash.debounce": "^4.0.8",
+    "@types/prop-types": "^15.5.1",
     "prop-types": "^15.5.10",
     "react-lazily-render": "^1.0.1",
     "react-transition-group": "^2.2.1",

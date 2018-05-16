@@ -48,10 +48,7 @@ ReactDOM.render(<ReactRenderer document={document} />, container);
 
 ## Polyfills
 
-Don't forget to add these polyfills to your product build if you're using emoji or mentions in the renderer and you want to target older browsers:
-
- * Promise ([polyfill](https://www.npmjs.com/package/es6-promise), [browser support](http://caniuse.com/#feat=promises))
- * Fetch API ([polyfill](https://www.npmjs.com/package/whatwg-fetch), [browser support](http://caniuse.com/#feat=fetch))
- * Element.closest ([polyfill](https://www.npmjs.com/package/element-closest), [browser support](http://caniuse.com/#feat=element-closest))
+Don't forget to add polyfills for fetch, ES6 & ES7 to your product build if you want to target older browsers.
+We recommend the use of [babel-preset-env](https://babeljs.io/docs/plugins/preset-env/) & [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
 
 `;
