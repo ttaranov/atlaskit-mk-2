@@ -52,7 +52,7 @@ describe('Zooming', () => {
     });
   });
 
-  describe.only('getZoomLevel', () => {
+  describe('getZoomLevel', () => {
     it('defaults', () => {
       expect(getZoomLevel(1, 'out')).toEqual(0.8);
       expect(getZoomLevel(1, 'in')).toEqual(1.2);
