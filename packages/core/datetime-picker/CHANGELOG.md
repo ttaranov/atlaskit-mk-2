@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 4.0.2
+- [patch] Fix create option being displayed when timeIsEditable is false [7e99ba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e99ba3)
+
 ## 4.0.1
 - [patch] Updated dependencies [92ae24e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92ae24e)
   - @atlaskit/select@3.0.1
