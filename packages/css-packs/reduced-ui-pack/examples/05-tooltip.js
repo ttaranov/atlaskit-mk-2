@@ -2,9 +2,11 @@
 import React from 'react';
 // eslint-disable-next-line
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
+import Warning from './utils/warning';
 
 export default () => (
   <div>
+    <Warning />
     <p>
       Note that tooltips are only available for <code>button</code> elements,
       and
