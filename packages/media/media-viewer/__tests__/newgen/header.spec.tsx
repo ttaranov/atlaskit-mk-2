@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 
 function createContext(subject: Subject<MediaItem>) {
   const token = 'some-token';
@@ -216,6 +217,28 @@ describe('<Header />', () => {
       );
       subject.next(linkItem);
       expect(el.text()).toEqual('');
+    });
+  });
+
+  describe('Download button', () => {
+    it('should show the download button', () => {
+      const subject = new Subject<MediaItem>();
+      const el = mount(
+        <Header context={createContext(subject)} identifier={identifier} />,
+      );
+      subject.next(imageItem);
+      el.update();
+      expect(el.find(DownloadIcon)).toHaveLength(1);
+    });
+
+    it('should NOT show the download button when there is an error', () => {
+      const subject = new Subject<MediaItem>();
+      const el = mount(
+        <Header context={createContext(subject)} identifier={identifier} />,
+      );
+      subject.error(new Error('error'));
+      el.update();
+      expect(el.find(DownloadIcon)).toHaveLength(0);
     });
   });
 });
