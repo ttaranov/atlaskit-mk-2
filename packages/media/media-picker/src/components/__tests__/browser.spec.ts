@@ -1,28 +1,28 @@
 jest.mock('../../service/uploadService');
 
-import { ContextFactory } from '@atlaskit/media-core';
-import { Browser } from '../browser';
+import { Context, ContextFactory } from '@atlaskit/media-core';
+import { Browser, BrowserConfig } from '../browser';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
-import { UploadParams } from '../..';
 
 class MockContext implements MediaPickerContext {
   trackEvent(event: UserEvent) {}
 }
 
-class MockConfig {
-  uploadParams: UploadParams;
-}
-
 describe('Browser', () => {
   let browser: Browser | undefined;
-  let context;
+  let context: Context;
+  let browseConfig: BrowserConfig;
 
   beforeEach(() => {
     context = ContextFactory.create({
       serviceHost: '',
       authProvider: {} as any,
     });
+    browseConfig = {
+      uploadParams: {},
+      useNewUploadService: true,
+    };
 
     if (browser) {
       browser.teardown();
@@ -32,14 +32,14 @@ describe('Browser', () => {
 
   it('should append the input to the body', () => {
     const inputsBefore = document.querySelectorAll('input[type=file]');
-    browser = new Browser(new MockContext(), context, new MockConfig());
+    browser = new Browser(new MockContext(), context, browseConfig);
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeGreaterThan(inputsBefore.length);
     expect(browser['uploadService'].addBrowse).toHaveBeenCalled();
   });
 
   it('should remove the input from the body', () => {
-    browser = new Browser(new MockContext(), context, new MockConfig());
+    browser = new Browser(new MockContext(), context, browseConfig);
     const inputsBefore = document.querySelectorAll('input[type=file]');
     browser.teardown();
     const inputsAfter = document.querySelectorAll('input[type=file]');

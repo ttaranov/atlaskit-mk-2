@@ -27,6 +27,7 @@ describe('Dropzone', () => {
       collection: '',
     },
     container,
+    useNewUploadService: true,
   };
   // Helper functions
   const createDragOverOrDropEvent = (
@@ -54,10 +55,6 @@ describe('Dropzone', () => {
 
   const createDragOverEvent = (type?: string) => {
     return createDragOverOrDropEvent('dragover', type);
-  };
-
-  const createDropEvent = (type?: string) => {
-    return createDragOverOrDropEvent('drop', type);
   };
 
   const createDragLeaveEvent = () => {
@@ -243,41 +240,6 @@ describe('Dropzone', () => {
         });
 
         container.dispatchEvent(createDragLeaveEvent());
-        done();
-      });
-    });
-
-    it('should fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array contains the string "Files"', done => {
-      const dropzone = MediaPicker('dropzone', context, {
-        ...config,
-        headless: true,
-        useNewUploadService: true,
-      });
-
-      dropzone.on('drop', () => {
-        done();
-      });
-
-      dropzone.activate().then(() => {
-        someFakeUploadService.emit('file-dropped', createDropEvent());
-      });
-    });
-
-    it('should not fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array does not contain the string "Files"', done => {
-      const dropzone = MediaPicker('dropzone', context, {
-        ...config,
-        headless: true,
-      });
-
-      dropzone.on('drop', () => {
-        done(new Error('drop should not be emitted'));
-      });
-
-      dropzone.activate().then(() => {
-        someFakeUploadService.emit(
-          'file-dropped',
-          createDropEvent('Not Files'),
-        );
         done();
       });
     });
