@@ -20,18 +20,16 @@ export interface BrowserWrapperState {
   collectionName: string;
   useNewUploadService: boolean;
   authEnvironment: AuthEnvironment;
-  pickerVersion: number;
+  fileBrowser?: Browser;
 }
 
 class BrowserWrapper extends Component<{}, BrowserWrapperState> {
-  fileBrowser: Browser;
   dropzoneContainer: HTMLDivElement;
 
   state: BrowserWrapperState = {
     useNewUploadService: true,
     authEnvironment: 'client',
     collectionName: defaultMediaPickerCollectionName,
-    pickerVersion: 1,
   };
 
   componentWillMount() {
@@ -52,26 +50,33 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       uploadParams,
       useNewUploadService,
     };
-    if (this.fileBrowser) {
-      this.fileBrowser.teardown();
+    if (this.state.fileBrowser) {
+      this.state.fileBrowser.teardown();
     }
-    this.fileBrowser = MediaPicker('browser', context, browseConfig);
+    const fileBrowser = MediaPicker('browser', context, browseConfig);
 
-    this.setState(prevState => ({
-      pickerVersion: prevState.pickerVersion + 1,
+    this.setState({
+      fileBrowser,
       useNewUploadService,
-    }));
+    });
   }
 
   onOpen = () => {
-    this.fileBrowser.browse();
+    const { fileBrowser } = this.state;
+    if (fileBrowser) {
+      fileBrowser.browse();
+    }
   };
 
   onCollectionChange = e => {
     const { innerText: collectionName } = e.target;
+    const { fileBrowser } = this.state;
+    if (!fileBrowser) {
+      return;
+    }
 
     this.setState({ collectionName }, () => {
-      this.fileBrowser.setUploadParams({
+      fileBrowser.setUploadParams({
         collection: collectionName,
       });
     });
@@ -88,7 +93,12 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   };
 
   render() {
-    const { collectionName, authEnvironment, useNewUploadService } = this.state;
+    const {
+      collectionName,
+      authEnvironment,
+      useNewUploadService,
+      fileBrowser,
+    } = this.state;
 
     return (
       <PopupContainer>
@@ -114,7 +124,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
             onChange={this.onuseNewUploadServiceChange}
           />
         </PopupHeader>
-        <PreviewsData picker={this.fileBrowser} />
+        {fileBrowser ? <PreviewsData picker={fileBrowser} /> : null}
       </PopupContainer>
     );
   }

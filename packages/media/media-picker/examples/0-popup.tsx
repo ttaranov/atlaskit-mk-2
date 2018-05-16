@@ -56,27 +56,22 @@ export interface PopupWrapperState {
   events: Events;
   authEnvironment: AuthEnvironment;
   inflightUploads: { [key: string]: MediaProgress };
-  hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
   useNewUploadService: boolean;
-  pickerVersion: number;
+  popup?: Popup;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
-  popup: Popup;
-
   state: PopupWrapperState = {
     collectionName: defaultMediaPickerCollectionName,
     closedTimes: 0,
     events: [],
     authEnvironment: 'client',
     inflightUploads: {},
-    hasTorndown: false,
     publicFiles: {},
     isUploadingFilesVisible: true,
     useNewUploadService: true,
-    pickerVersion: 1,
   };
 
   componentDidMount() {
@@ -84,15 +79,19 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 
   componentWillUnmount() {
-    this.popup.removeAllListeners();
+    const { popup } = this.state;
+    if (popup) {
+      popup.removeAllListeners();
+    }
   }
 
   private createPopup(
     useNewUploadService: boolean = this.state.useNewUploadService,
   ) {
-    if (this.popup) {
-      this.popup.removeAllListeners();
-      this.popup.teardown();
+    const { popup } = this.state;
+    if (popup) {
+      popup.removeAllListeners();
+      popup.teardown();
     }
 
     const context = ContextFactory.create({
@@ -101,7 +100,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       userAuthProvider,
     });
 
-    this.popup = MediaPicker('popup', context, {
+    const newPopup = MediaPicker('popup', context, {
       container: document.body,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
@@ -109,18 +108,18 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       useNewUploadService,
     });
 
-    this.popup.on('uploads-start', this.onUploadsStart);
-    this.popup.on('upload-preview-update', this.onUploadPreviewUpdate);
-    this.popup.on('upload-status-update', this.onUploadStatusUpdate);
-    this.popup.on('upload-processing', this.onUploadProcessing);
-    this.popup.on('upload-end', this.onUploadEnd);
-    this.popup.on('upload-error', this.onUploadError);
-    this.popup.on('closed', this.onClosed);
+    newPopup.on('uploads-start', this.onUploadsStart);
+    newPopup.on('upload-preview-update', this.onUploadPreviewUpdate);
+    newPopup.on('upload-status-update', this.onUploadStatusUpdate);
+    newPopup.on('upload-processing', this.onUploadProcessing);
+    newPopup.on('upload-end', this.onUploadEnd);
+    newPopup.on('upload-error', this.onUploadError);
+    newPopup.on('closed', this.onClosed);
 
-    this.setState(prevState => ({
-      pickerVersion: prevState.pickerVersion + 1,
+    this.setState({
+      popup: newPopup,
       useNewUploadService,
-    }));
+    });
   }
 
   onUploadError = (data: UploadErrorEventPayload) => {
@@ -130,7 +129,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       );
       authStg
         ? window.open('https://id.stg.internal.atlassian.com', '_blank')
-        : this.popup.hide();
+        : this.state.popup!.hide();
     } else {
       console.error(JSON.stringify(data));
     }
@@ -221,16 +220,18 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onShow = () => {
-    const { collectionName: collection } = this.state;
+    const { collectionName: collection, popup } = this.state;
 
-    this.popup.setUploadParams({
-      collection,
-    });
+    if (popup) {
+      popup.setUploadParams({
+        collection,
+      });
 
-    // Populate cache in userAuthProvider.
-    userAuthProvider();
-    // Synchronously with next command tenantAuthProvider will be requested.
-    this.popup.show().catch(console.error);
+      // Populate cache in userAuthProvider.
+      userAuthProvider();
+      // Synchronously with next command tenantAuthProvider will be requested.
+      popup.show().catch(console.error);
+    }
   };
 
   onCollectionChange = e => {
@@ -298,9 +299,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 
   onTeardown = () => {
-    this.setState({ hasTorndown: true }, () => {
-      this.popup.teardown();
-    });
+    const { popup } = this.state;
+    if (popup) {
+      popup.teardown();
+      this.setState({ popup: undefined });
+    }
   };
 
   onUploadingFilesToggle = () => {
@@ -310,11 +313,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onCancelUpload = () => {
-    const { inflightUploads } = this.state;
-
-    Object.keys(inflightUploads).forEach(uploadId =>
-      this.popup.cancel(uploadId),
-    );
+    const { inflightUploads, popup } = this.state;
+    if (!popup) {
+      return;
+    }
+    Object.keys(inflightUploads).forEach(uploadId => popup.cancel(uploadId));
 
     this.setState({ inflightUploads: {} });
   };
@@ -390,10 +393,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       authEnvironment,
       collectionName,
       inflightUploads,
-      hasTorndown,
       isUploadingFilesVisible,
       useNewUploadService,
+      popup,
     } = this.state;
+    const hasTorndown = !popup;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (

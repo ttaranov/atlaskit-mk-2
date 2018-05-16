@@ -26,11 +26,10 @@ export interface DropzoneWrapperState {
   isFetchingLastItems: boolean;
   lastItems: any[];
   inflightUploads: string[];
-  pickerVersion: number;
+  dropzone?: Dropzone;
 }
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
-  dropzone: Dropzone;
   dropzoneContainer: HTMLDivElement;
 
   state: DropzoneWrapperState = {
@@ -39,7 +38,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     isFetchingLastItems: true,
     lastItems: [],
     inflightUploads: [],
-    pickerVersion: 1,
   };
 
   // TODO: Move into example-helpers
@@ -72,6 +70,9 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
         ? userAuthProvider
         : undefined,
     });
+    if (this.state.dropzone) {
+      this.state.dropzone.deactivate();
+    }
     const dropzone = MediaPicker('dropzone', context, {
       container: this.dropzoneContainer,
       uploadParams: {
@@ -80,12 +81,11 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       useNewUploadService: true,
     });
 
-    this.dropzone = dropzone;
     dropzone.activate();
 
-    this.setState(prevState => ({
-      pickerVersion: prevState.pickerVersion + 1,
-    }));
+    this.setState({
+      dropzone,
+    });
   }
 
   saveDropzoneContainer = (element: HTMLDivElement) => {
@@ -99,16 +99,20 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     const isConnectedToUsersCollection = !this.state
       .isConnectedToUsersCollection;
     this.setState({ isConnectedToUsersCollection }, () => {
-      this.dropzone.deactivate();
       this.createDropzone();
     });
   };
 
   onActiveChange = () => {
-    const { dropzone } = this;
-    const isActive = !this.state.isActive;
-    this.setState({ isActive }, () => {
-      isActive ? dropzone.activate() : dropzone.deactivate();
+    const { dropzone, isActive } = this.state;
+    this.setState({ isActive: !isActive }, () => {
+      if (dropzone) {
+        if (isActive) {
+          dropzone.activate();
+        } else {
+          dropzone.deactivate();
+        }
+      }
     });
   };
 
@@ -141,6 +145,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       isConnectedToUsersCollection,
       isActive,
       inflightUploads,
+      dropzone,
     } = this.state;
     const isCancelButtonDisabled = inflightUploads.length === 0;
 
@@ -171,7 +176,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
             innerRef={this.saveDropzoneContainer}
           />
           <DropzoneItemsInfo>
-            {this.dropzone ? <PreviewsData picker={this.dropzone} /> : null}
+            {dropzone ? <PreviewsData picker={dropzone} /> : null}
             <h1>User collection items</h1>
             {this.renderLastItems()}
           </DropzoneItemsInfo>
