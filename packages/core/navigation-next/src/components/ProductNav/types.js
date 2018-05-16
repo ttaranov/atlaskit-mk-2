@@ -3,7 +3,7 @@
 import type { ComponentType } from 'react';
 
 export type ProductNavProps = {
-  container?: ComponentType<{}> | null,
+  container?: ?ComponentType<{}>,
   isDragging: boolean,
   isHinting: boolean,
   isPeeking: boolean,
