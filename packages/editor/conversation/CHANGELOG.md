@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.5.0
+- [minor] Add option to allow feedback and help buttons [ca8bdc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca8bdc3)
+
 ## 7.4.0
 - [minor] Add ability to disable scroll-to behavior and permalinks [94792ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/94792ca)
 
