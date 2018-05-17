@@ -1,9 +1,17 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
+import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
 import { constructAuthTokenUrl } from '../util';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
-import { ErrorMessage } from '../styled';
+import {
+  ErrorMessage,
+  AudioPlayer,
+  AudioCover,
+  Audio,
+  DefaultCoverWrapper,
+  colors,
+} from '../styled';
 
 export type Props = {
   item: FileItem;
@@ -13,7 +21,30 @@ export type Props = {
 
 export type State = {
   src: Outcome<string, Error>;
+  coverUrl?: string;
 };
+
+const defaultCover = (
+  <DefaultCoverWrapper>
+    <AudioIcon
+      label="cover"
+      size="xlarge"
+      primaryColor="#c3bbec"
+      secondaryColor={colors.audio}
+    />
+  </DefaultCoverWrapper>
+);
+
+const getCoverUrl = (
+  item: FileItem,
+  context: Context,
+  collectionName?: string,
+): Promise<string> =>
+  constructAuthTokenUrl(
+    `/file/${item.details.id}/image`,
+    context,
+    collectionName,
+  );
 
 export class AudioViewer extends React.Component<Props, State> {
   state: State = { src: { status: 'PENDING' } };
@@ -24,24 +55,53 @@ export class AudioViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
+
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <audio controls src={src.data} preload="metadata" />;
+        return this.renderPlayer(src.data);
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
   }
 
+  private renderCover = () => {
+    const { coverUrl } = this.state;
+
+    if (coverUrl) {
+      return <AudioCover src={coverUrl} alt="cover" />;
+    } else {
+      return defaultCover;
+    }
+  };
+
+  private renderPlayer = src => (
+    <AudioPlayer>
+      {this.renderCover()}
+      <Audio controls src={src} preload="metadata" />
+    </AudioPlayer>
+  );
+
+  private setCoverUrl = async () => {
+    const { context, item, collectionName } = this.props;
+    const coverUrl = await getCoverUrl(item, context, collectionName);
+    const img = new Image();
+
+    img.src = coverUrl;
+    img.onload = () => this.setState({ coverUrl });
+  };
+
   private async init() {
     const { context, item, collectionName } = this.props;
-    const videoUrl = getAudioArtifactUrl(item);
+    const audioUrl = getAudioArtifactUrl(item);
+
     try {
+      this.setCoverUrl();
       this.setState({
         src: {
           status: 'SUCCESSFUL',
-          data: await constructAuthTokenUrl(videoUrl, context, collectionName),
+          data: await constructAuthTokenUrl(audioUrl, context, collectionName),
         },
       });
     } catch (err) {
