@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
-import { AudioViewer, defaultCover } from '../../../src/newgen/viewers/audio';
+import { AudioViewer } from '../../../src/newgen/viewers/audio';
 import Spinner from '@atlaskit/spinner';
 import {
   ErrorMessage,
