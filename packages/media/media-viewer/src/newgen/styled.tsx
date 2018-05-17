@@ -118,11 +118,11 @@ export const Arrow = styled.span`
   cursor: pointer;
 `;
 
-export const LeftWrapper = ArrowWrapper.extend`
+export const LeftWrapper = styled(ArrowWrapper)`
   text-align: left;
 `;
 
-export const RightWrapper = ArrowWrapper.extend`
+export const RightWrapper = styled(ArrowWrapper)`
   text-align: right;
 `;
 
