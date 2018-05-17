@@ -588,6 +588,7 @@ export class MediaPluginState {
       };
       const defaultPickerConfig = {
         uploadParams,
+        useNewUploadService: !!this.options.useNewUploadService,
       };
 
       if (this.options.customMediaPicker) {
