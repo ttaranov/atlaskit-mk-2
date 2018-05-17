@@ -61,7 +61,7 @@ export const ArrowsWrapper = styled.div`
 
 export const CloseButtonWrapper = styled.div`
   position: absolute;
-  top: 20px;
+  top: 24px;
   right: 20px;
   z-index: ${overlayZindex + 2};
 `;
@@ -171,4 +171,10 @@ export const IconWrapper: ComponentClass<
 > = styled.div`
   display: inline-flex;
   color: ${({ type }: IconWrapperProps) => colors[type] || colors.unknown};
+`;
+
+export const RightHeader = styled.div`
+  flex: 0.2;
+  text-align: right;
+  margin-right: 50px;
 `;

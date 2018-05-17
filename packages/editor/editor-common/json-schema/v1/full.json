@@ -923,7 +923,7 @@
               "properties": {
                 "url": {
                   "type": "string",
-                  "pattern": "^https://|^data:image/"
+                  "pattern": "^https?://|^data:image/"
                 }
               },
               "required": [

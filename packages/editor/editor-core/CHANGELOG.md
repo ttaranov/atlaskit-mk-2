@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 71.3.29
+- [patch] ED-4606 Fix table floating toolbar [118785e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/118785e)
+- [none] Updated dependencies [118785e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/118785e)
+
+## 71.3.28
+- [patch] ED-4614: fix weird toolbar buttons highlighting when page is disabled [0cd49f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cd49f4)
+- [none] Updated dependencies [0cd49f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cd49f4)
+
+## 71.3.27
+- [patch] ED-4604 make headings always set, not toggle [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
+- [patch] Updated dependencies [8c88cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c88cd1)
+
 ## 71.3.26
 - [patch] Fix bug where code-block lines would be soft-wrapped [0d08e1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d08e1a)
 - [none] Updated dependencies [0d08e1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d08e1a)

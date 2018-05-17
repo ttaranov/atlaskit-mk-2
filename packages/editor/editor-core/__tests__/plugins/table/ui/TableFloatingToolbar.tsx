@@ -96,7 +96,7 @@ describe('TableFloatingToolbar', () => {
         />,
       );
 
-      const button = floatingToolbar.find(ToolbarButton).last();
+      const button = floatingToolbar.find('[title="Remove table"]').first();
       button.simulate('click');
       expect(removeTable as any).toHaveBeenCalledTimes(1);
       floatingToolbar.unmount();

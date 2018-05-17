@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 9.3.8
+- [patch] ED-4569 Fix ADF schema issue for application card link pattern [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)
+- [none] Updated dependencies [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)
+
 ## 9.3.7
 - [patch] Adding borders for colors in color picker [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)
 - [none] Updated dependencies [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)

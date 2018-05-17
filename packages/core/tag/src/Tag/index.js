@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React, { Component, type Node, type ComponentType } from 'react';
 
 import Chrome from '../Chrome';
 import Content from '../Content';
@@ -48,6 +48,9 @@ type Props = {
   /** Handler to be called after tag is removed. Called with the string 'Post
    Removal Hook'. */
   onAfterRemoveAction?: (text: string) => mixed,
+  /* A link component to be used instead of our standard anchor. The styling of
+  our link item will be applied to the link that is passed in. */
+  linkComponent?: ComponentType<*>,
 };
 
 type State = {
@@ -57,7 +60,7 @@ type State = {
   isFocused: boolean,
 };
 
-export default class Tag extends PureComponent<Props, State> {
+export default class Tag extends Component<Props, State> {
   static defaultProps = {
     color: 'standard',
     appearance: 'default',
@@ -103,6 +106,7 @@ export default class Tag extends PureComponent<Props, State> {
       removeButtonText,
       text,
       color,
+      linkComponent,
     } = this.props;
 
     const safeColor = colorList.includes(color) ? color : 'standard';
@@ -128,7 +132,7 @@ export default class Tag extends PureComponent<Props, State> {
           onFocusChange={this.handleFocusChange}
         >
           {elemBefore ? <Before>{elemBefore}</Before> : null}
-          <Content {...styled} href={href}>
+          <Content linkComponent={linkComponent} {...styled} href={href}>
             {text}
           </Content>
           {isRemovable ? (

@@ -1,5 +1,14 @@
 # @atlaskit/media-viewer
 
+## 13.6.0
+- [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
+
+## 13.5.2
+- [patch] Fix media-ui dependency version [60f61c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60f61c5)
+
+## 13.5.1
+- [patch] Add media type metadata to audio in MVNG [8dec6fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dec6fb)
+
 ## 13.5.0
 - [minor] Add header metadata to MVNG [8aa7812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8aa7812)
 
