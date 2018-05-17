@@ -84,13 +84,24 @@ export class AudioViewer extends React.Component<Props, State> {
     </AudioPlayer>
   );
 
+  private loadCover = (coverUrl: string) => {
+    return new Promise(async (resolve, reject) => {
+      const img = new Image();
+
+      img.src = coverUrl;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+  };
+
   private setCoverUrl = async () => {
     const { context, item, collectionName } = this.props;
     const coverUrl = await getCoverUrl(item, context, collectionName);
-    const img = new Image();
 
-    img.src = coverUrl;
-    img.onload = () => this.setState({ coverUrl });
+    try {
+      await this.loadCover(coverUrl);
+      this.setState({ coverUrl });
+    } catch (e) {}
   };
 
   private async init() {

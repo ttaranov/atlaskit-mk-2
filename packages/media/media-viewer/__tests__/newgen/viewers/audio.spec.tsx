@@ -3,9 +3,13 @@ import { mount } from 'enzyme';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
-import { AudioViewer } from '../../../src/newgen/viewers/audio';
+import { AudioViewer, defaultCover } from '../../../src/newgen/viewers/audio';
 import Spinner from '@atlaskit/spinner';
-import { ErrorMessage } from '../../../src/newgen/styled';
+import {
+  ErrorMessage,
+  DefaultCoverWrapper,
+  AudioCover,
+} from '../../../src/newgen/styled';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -78,5 +82,43 @@ describe('Audio viewer', () => {
     await awaitError(authPromise, 'test error');
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  describe('cover', () => {
+    it('it should show the default cover while the audio cover is loading', async () => {
+      const authPromise = Promise.resolve({ token, clientId });
+      const { el } = createFixture(authPromise);
+      await el.instance()['init']();
+      el.update();
+      expect(el.find(DefaultCoverWrapper)).toHaveLength(1);
+    });
+
+    it('it should show the default cover when the audio cover is errored', async () => {
+      const authPromise = Promise.resolve({ token, clientId });
+      const { el } = createFixture(authPromise);
+      const instance = el.instance();
+
+      instance['loadCover'] = () => Promise.reject('no cover found');
+      await instance['init']();
+      el.update();
+      expect(el.find(DefaultCoverWrapper)).toHaveLength(1);
+    });
+
+    it('it should show the audio cover if exists', async () => {
+      const authPromise = Promise.resolve({ token, clientId });
+      const { el } = createFixture(authPromise);
+      const instance = el.instance();
+      const promiseSrc = Promise.resolve('cover-src');
+
+      instance['loadCover'] = () => promiseSrc;
+      await instance['init']();
+      await promiseSrc;
+      el.update();
+
+      expect(el.find(DefaultCoverWrapper)).toHaveLength(0);
+      expect(el.find(AudioCover).prop('src')).toEqual(
+        'some-service-host/file/some-id/image?client=some-client-id&token=some-token',
+      );
+    });
   });
 });
