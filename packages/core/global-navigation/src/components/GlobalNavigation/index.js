@@ -41,6 +41,8 @@ const getProductPrimaryItemComponent = navigation => ({
       onClick={
         typeof onClick !== 'undefined' ? onClick || null : navigation.togglePeek
       }
+      onMouseEnter={navigation.hint}
+      onMouseLeave={navigation.unHint}
     >
       {children}
     </button>
@@ -58,9 +60,10 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     const inbuiltPrimaryItems = [];
 
     if (product) {
+      const { component, ...rest } = product;
       inbuiltPrimaryItems.push({
-        ...product,
-        component: getProductPrimaryItemComponent(navigation),
+        ...rest,
+        component: component || getProductPrimaryItemComponent(navigation),
       });
     }
 
