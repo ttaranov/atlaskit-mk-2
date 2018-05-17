@@ -60,12 +60,16 @@ export type GlobalNavProps = {
   theme: GlobalTheme,
 };
 
-type GlobalNavigationItemOptions = GlobalItemProps & {
+type GlobalNavigationItemOptions = {
   drawer?: {
     content: ComponentType<DrawerContentProps>,
     onClose?: () => void,
   },
+  href?: string,
+  label?: string,
   onClick?: (() => void) | false,
+  tooltip?: string,
+  component?: ComponentType<*>,
 };
 
 export type GlobalNavigationProps = {
