@@ -30,7 +30,7 @@ export const updateReadonlyArray = <T>(
   updater: (T) => T,
 ): Array<T> => {
   return array.map((value, i) => {
-    if (i == index) {
+    if (i === index) {
       return updater(value);
     }
 
