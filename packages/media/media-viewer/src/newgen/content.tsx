@@ -2,7 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
-import { ContentWrapper, CloseButtonWrapper } from './styled';
+import {
+  ContentWrapper,
+  CloseButtonWrapper,
+  hideControlsClassName,
+} from './styled';
 
 export interface ContentProps {
   onClose?: () => void;
@@ -68,7 +72,7 @@ export class Content extends Component<ContentProps, ContentState> {
         onMouseMove={this.checkMouseMovement}
         onClick={this.onClick}
       >
-        <CloseButtonWrapper>
+        <CloseButtonWrapper className={hideControlsClassName}>
           <Button onClick={onClose} iconBefore={<CrossIcon label="Close" />} />
         </CloseButtonWrapper>
         {children}
