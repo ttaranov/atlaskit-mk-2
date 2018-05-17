@@ -1,7 +1,5 @@
 import { Emoji, EmojiDescription, toEmojiId } from '@atlaskit/emoji';
-import * as chai from 'chai';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import { mount } from 'enzyme';
 
@@ -13,8 +11,6 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
-
-const { expect } = chai;
 
 const grinning: EmojiDescription = emojiRepository.findByShortName(
   ':grinning:',
@@ -48,18 +44,18 @@ describe('@atlaskit/reactions/reaction', () => {
 
     waitUntil(() => hasSelector(reaction, Emoji)).then(() => {
       const emoji = reaction.find(Emoji).first();
-      expect(emoji.length).to.equal(1);
+      expect(emoji.length).toEqual(1);
       const emojiDesc = emoji.prop('emoji');
-      expect(emojiDesc.id).to.equal(grinning.id);
+      expect(emojiDesc.id).toEqual(grinning.id);
     });
   });
 
   it('should call onClick on click', () => {
-    const onClickSpy = sinon.spy();
+    const onClickSpy = jest.fn();
     const reaction = mount(renderReaction(false, 1, onClickSpy));
 
     reaction.simulate('mouseup', { button: 0 });
-    expect(onClickSpy.called).to.equal(true);
+    expect(onClickSpy).toHaveBeenCalled();
   });
 
   it('should delegate flash to Flash component', () => {
@@ -71,7 +67,7 @@ describe('@atlaskit/reactions/reaction', () => {
 
     (reaction.instance() as Reaction).flash();
 
-    expect(flashSpy.mock.calls).to.have.lengthOf(1);
+    expect(flashSpy.mock.calls).toHaveLength(1);
   });
 
   it('should call flash when change to reacted', () => {
@@ -90,7 +86,7 @@ describe('@atlaskit/reactions/reaction', () => {
       },
     });
 
-    expect(flashSpy.mock.calls).to.have.lengthOf(1);
+    expect(flashSpy.mock.calls).toHaveLength(1);
   });
 
   it('should call flash on mount', () => {
@@ -101,6 +97,6 @@ describe('@atlaskit/reactions/reaction', () => {
 
     (reaction.instance() as Reaction).componentDidMount();
 
-    expect(flashSpy.mock.calls).to.have.lengthOf(1);
+    expect(flashSpy.mock.calls).toHaveLength(1);
   });
 });

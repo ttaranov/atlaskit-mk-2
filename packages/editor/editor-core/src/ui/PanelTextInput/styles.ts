@@ -17,8 +17,8 @@ export const Input: ComponentClass<
     flex-grow: 1;
     font-size: 13px;
     line-height: 20px;
-    padding: 0;
-    ${props => (props.width ? `width: ${props.width}px` : '')} height: 20px;
+    padding: 0 0 0 4px;
+    ${props => (props.width ? `width: ${props.width}px` : '')} height: 48px;
     min-width: 145px;
 
     /* Hides IE10+ built-in [x] clear input button */

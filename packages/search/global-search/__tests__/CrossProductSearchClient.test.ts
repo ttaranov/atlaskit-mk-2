@@ -42,6 +42,9 @@ describe('CrossProductSearchClient', () => {
                 container: {
                   title: 'containerTitle',
                 },
+                content: {
+                  type: 'page',
+                },
               } as ConfluenceItem,
             ],
           },
@@ -62,6 +65,7 @@ describe('CrossProductSearchClient', () => {
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
+      expect(item.contentType).toEqual('page');
     });
 
     it('should return confluence spaces', async () => {

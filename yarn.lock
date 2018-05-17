@@ -3179,9 +3179,9 @@ codesandbox@^1.1.14:
     shortid "^2.2.8"
     update-notifier "^2.2.0"
 
-codesandboxer@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/codesandboxer/-/codesandboxer-0.1.1.tgz#d5908125a7254e17bad95980e58c23ed858912fb"
+codesandboxer@^0.2.1, codesandboxer@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/codesandboxer/-/codesandboxer-0.2.2.tgz#78fee363c4733974fd39e85c3f93549c54241be1"
   dependencies:
     codesandbox "^1.1.14"
     isomorphic-unfetch "^2.0.0"
@@ -3462,7 +3462,7 @@ cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
 
-cookie@0.3.1:
+cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
 
@@ -6101,6 +6101,28 @@ got@^8.0.3:
     url-parse-lax "^3.0.0"
     url-to-options "^1.0.1"
 
+got@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/got/-/got-8.3.1.tgz#093324403d4d955f5a16a7a8d39955d055ae10ed"
+  dependencies:
+    "@sindresorhus/is" "^0.7.0"
+    cacheable-request "^2.1.1"
+    decompress-response "^3.3.0"
+    duplexer3 "^0.1.4"
+    get-stream "^3.0.0"
+    into-stream "^3.1.0"
+    is-retry-allowed "^1.1.0"
+    isurl "^1.0.0-alpha5"
+    lowercase-keys "^1.0.0"
+    mimic-response "^1.0.0"
+    p-cancelable "^0.4.0"
+    p-timeout "^2.0.1"
+    pify "^3.0.0"
+    safe-buffer "^5.1.1"
+    timed-out "^4.0.1"
+    url-parse-lax "^3.0.0"
+    url-to-options "^1.0.1"
+
 graceful-fs@^3.0.4, graceful-fs@~3.0.2:
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-3.0.11.tgz#7613c778a1afea62f25c630a086d7f3acbbdd818"
@@ -8531,9 +8553,9 @@ markdown-escapes@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/markdown-escapes/-/markdown-escapes-1.0.1.tgz#1994df2d3af4811de59a6714934c2b2292734518"
 
-markdown-it-table@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/markdown-it-table/-/markdown-it-table-2.0.2.tgz#7fb3512c173017f4c141d2c5ea39e8bb7396fe97"
+markdown-it-table@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/markdown-it-table/-/markdown-it-table-2.0.3.tgz#d0069997abcd9725ed77a472112d6ce61ad72b90"
 
 markdown-it@^6.0.4:
   version "6.1.1"
@@ -10678,9 +10700,9 @@ prosemirror-state@^1.0.0, prosemirror-state@^1.1.0:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.3.tgz#250aef1d355993489ec33504392e563be997fc2f"
+prosemirror-tables@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.5.tgz#a99f508a44001224d9d1ab035dc60294969bbd2e"
   dependencies:
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"
@@ -10694,9 +10716,9 @@ prosemirror-transform@1.0.9, prosemirror-transform@^1.0.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.2.19:
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.2.19.tgz#d58d09662b9e0158c66b9e1595319b1791d8f001"
+prosemirror-utils@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.4.3.tgz#7a1dbb974dfd36805133bd18976644939aa079f9"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.3.0:
   version "1.3.0"
@@ -11014,11 +11036,11 @@ react-beautiful-dnd@^4.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
-react-codesandboxer@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-2.0.1.tgz#19fa5f627833ccea0e6162a4dcc8bf3b76ec65b2"
+react-codesandboxer@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-2.1.0.tgz#6c4e1635199593ab113e8fec3088a94088cfea28"
   dependencies:
-    codesandboxer "^0.1.1"
+    codesandboxer "^0.2.1"
     react-node-resolver "^1.0.1"
 
 react-deprecate@^0.1.0:
@@ -11199,9 +11221,9 @@ react-scrolllock@^2.0.2:
   dependencies:
     exenv "^1.2.2"
 
-react-select@^2.0.0-beta.2:
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-beta.2.tgz#92b724680dbe31ae104ac2cc2088d9416389f532"
+react-select@^2.0.0-beta.4:
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-beta.4.tgz#44009c06d9d5c8f8580b9969fa062cf6f4ec8d52"
   dependencies:
     classnames "^2.2.5"
     emotion "^9.1.2"

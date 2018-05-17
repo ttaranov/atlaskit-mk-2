@@ -83,6 +83,7 @@ export default class Reaction extends PureComponent<Props, State> {
   private timeouts: Array<number>;
   private tooltipTimeout: number;
   private flashRef: FlashAnimation;
+  private mounted: boolean;
 
   static defaultProps = {
     flash: false,
@@ -109,6 +110,7 @@ export default class Reaction extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.props.emojiProvider.then(emojiResource => {
       const foundEmoji = emojiResource.findByEmojiId({
         shortName: '',
@@ -118,9 +120,11 @@ export default class Reaction extends PureComponent<Props, State> {
       if (isPromise(foundEmoji)) {
         foundEmoji.then(emoji => {
           if (emoji) {
-            this.setState({
-              emojiName: emoji.name,
-            });
+            if (this.mounted) {
+              this.setState({
+                emojiName: emoji.name,
+              });
+            }
           }
         });
       } else if (foundEmoji) {
@@ -136,6 +140,7 @@ export default class Reaction extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.timeouts.forEach(clearTimeout);
+    this.mounted = false;
   }
 
   private handleMouseDown = event => {
@@ -156,13 +161,13 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOver(this.props.reaction, event);
       }
 
-      this.tooltipTimeout = setTimeout(
-        () =>
+      this.tooltipTimeout = setTimeout(() => {
+        if (this.mounted) {
           this.setState({
             showTooltip: true,
-          }),
-        500,
-      );
+          });
+        }
+      }, 500);
       this.timeouts.push(this.tooltipTimeout);
     }
   };

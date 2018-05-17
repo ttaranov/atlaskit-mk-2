@@ -1,5 +1,8 @@
 # @atlaskit/size-detector
 
+## 3.1.0
+- [minor] Add onResize prop callback [18c0bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18c0bf0)
+
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

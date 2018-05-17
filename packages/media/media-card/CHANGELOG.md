@@ -1,5 +1,15 @@
 # @atlaskit/media-image
 
+## 27.1.3
+- [patch] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+- [patch] Updated dependencies [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+  - @atlaskit/smart-card@3.0.0
+
+## 27.1.2
+- [patch] Move toHumanReadableMediaSize to media-ui [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
+- [patch] Updated dependencies [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
+  - @atlaskit/media-ui@2.1.0
+
 ## 27.1.1
 
 ## 27.1.0

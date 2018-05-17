@@ -93,6 +93,7 @@ const iconIds = [
   'editor/code',
   'editor/date',
   'editor/decision',
+  'editor/divider',
   'editor/done',
   'editor/edit',
   'editor/emoji',

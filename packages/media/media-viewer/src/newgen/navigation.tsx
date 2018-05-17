@@ -4,7 +4,13 @@ import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { ArrowsWrapper, RightWrapper, LeftWrapper, Arrow } from './styled';
+import {
+  ArrowsWrapper,
+  RightWrapper,
+  LeftWrapper,
+  Arrow,
+  hideControlsClassName,
+} from './styled';
 import { getSelectedIndex } from './util';
 
 export type NavigationDirection = 'prev' | 'next';
@@ -48,7 +54,7 @@ export default class Navigation extends Component<NavigationProps, any> {
     const isRightVisible = selectedIndex < items.length - 1;
 
     return (
-      <ArrowsWrapper>
+      <ArrowsWrapper className={hideControlsClassName}>
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow>

@@ -1,4 +1,4 @@
-import { Fragment, Schema } from 'prosemirror-model';
+import { Fragment, Schema, NodeType } from 'prosemirror-model';
 import { ReducedNode, nodeToReducerMapping } from './nodes';
 
 export const reduceTree = (
@@ -6,6 +6,7 @@ export const reduceTree = (
   schema: Schema,
 ): ReducedNode[] => {
   let fragmentContainsInlineNodes = false;
+  let previousNodeType: NodeType | undefined;
   let textChunks = '';
   let childrenChunks: ReducedNode[] = [];
 
@@ -13,12 +14,17 @@ export const reduceTree = (
     fragmentContainsInlineNodes = fragmentContainsInlineNodes || node.isInline;
 
     if (fragmentContainsInlineNodes) {
-      if (nodeToReducerMapping[node.type.name]) {
-        textChunks +=
-          nodeToReducerMapping[node.type.name](node, schema).text || '';
-      } else {
-        textChunks += nodeToReducerMapping['unknown'](node, schema).text || '';
-      }
+      const isTextNode = node.type === schema.nodes.text;
+      const delimiter =
+        previousNodeType === schema.nodes.mention &&
+        isTextNode &&
+        !node.text!.startsWith(' ')
+          ? ' '
+          : '';
+      const mapping =
+        nodeToReducerMapping[node.type.name] || nodeToReducerMapping.unknown;
+
+      textChunks += delimiter + mapping(node, schema).text || '';
     } else {
       if (Object.keys(schema.nodes).indexOf(node.type.name) === -1) {
         childrenChunks.push(nodeToReducerMapping['unknown'](node, schema));
@@ -28,6 +34,8 @@ export const reduceTree = (
         childrenChunks.push(nodeToReducerMapping['unknown'](node, schema));
       }
     }
+
+    previousNodeType = node.type;
   });
 
   return fragmentContainsInlineNodes

@@ -26,9 +26,6 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & li:first-child {
-      padding-left: 2px;
-    }
   }
 `;
 
@@ -62,13 +59,14 @@ export default class MediaGroupNode extends Component<
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     const children = this.getMediaNodesIds(this.props.children);
     const nextChildren = this.getMediaNodesIds(nextProps.children);
     if (
       children.length === nextChildren.length &&
       this.props.node.firstChild!.attrs.__key ===
-        nextProps.node.firstChild!.attrs.__key
+        nextProps.node.firstChild!.attrs.__key &&
+      this.state.offset === nextState.offset
     ) {
       return false;
     }

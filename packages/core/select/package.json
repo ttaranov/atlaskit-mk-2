@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "2.0.1",
+  "version": "3.0.1",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@atlaskit/icon": "^11.1.1",
     "@atlaskit/theme": "^3.1.1",
-    "react-select": "^2.0.0-beta.2",
+    "react-select": "^2.0.0-beta.4",
     "react-transition-group": "^2.2.1",
     "styled-components": "1.4.6 - 3"
   },

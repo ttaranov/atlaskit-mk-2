@@ -50,9 +50,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        transitionDuration,
+        animationDuration: transitionDuration,
         animationFillMode: 'forwards',
-        transitionTimingFunction,
+        animationTimingFunction: transitionTimingFunction,
       };
     }
 
@@ -62,9 +62,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        transitionDuration,
+        animationDuration: transitionDuration,
         animationFillMode: 'forwards',
-        transitionTimingFunction,
+        animationTimingFunction: transitionTimingFunction,
         position: 'absolute',
         width: '100%',
       };

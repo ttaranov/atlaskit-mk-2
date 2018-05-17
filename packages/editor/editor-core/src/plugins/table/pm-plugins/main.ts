@@ -19,7 +19,6 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
   selectRow,
-  emptySelectedCells,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -106,6 +105,13 @@ export class TableState {
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
 
+  removeTable = (): void => {
+    const { state, dispatch } = this.view;
+    deleteTable(state, dispatch);
+    this.focusEditor();
+    analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
+  };
+
   remove = (): void => {
     const { state, dispatch } = this.view;
     const cellSelection = getCellSelection(state);
@@ -164,13 +170,6 @@ export class TableState {
         tableNode,
       );
       this.moveCursorTo(nextPos);
-    } else {
-      // replace selected cells with empty cells
-      dispatch(emptySelectedCells(state.schema)(state.tr));
-      this.moveCursorInsideTableTo(this.view.state.selection.from);
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button',
-      );
     }
   };
 

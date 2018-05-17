@@ -56,7 +56,8 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - yarn test:changed
+              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
+              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
             caches:
               - node
         - step:

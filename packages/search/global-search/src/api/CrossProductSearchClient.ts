@@ -1,4 +1,9 @@
-import { Result, ComponentType, AnalyticsType } from '../model/Result';
+import {
+  Result,
+  ComponentType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -7,6 +12,7 @@ import {
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
+  ConfluencePageBlogAttachment = 'confluence.page,blogpost,attachment',
   ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
 }
@@ -30,10 +36,12 @@ export interface JiraItem {
 
 export interface ConfluenceItem {
   title: string; // this is highlighted
-  lastModified: string;
   baseUrl: string;
   url: string;
-  content: object;
+  content?: {
+    id: string;
+    type: ResultContentType;
+  };
   iconCssClass: string;
   container: {
     title: string; // this is unhighlighted
@@ -53,7 +61,7 @@ export interface CrossProductSearchClient {
   search(
     query: string,
     searchSessionId: string,
-    scopes?: Scope[],
+    scopes: Scope[],
   ): Promise<Map<Scope, Result[]>>;
 }
 
@@ -118,7 +126,6 @@ export default class CrossProductSearchClientImpl
             mapItemToResult(scopeResult.id as Scope, result, searchSessionId),
           ),
         );
-
         return resultsMap;
       },
       new Map(),
@@ -147,7 +154,8 @@ function mapItemToResult(
   searchSessionId: string,
 ): Result {
   switch (scope) {
-    case Scope.ConfluencePageBlog: {
+    case Scope.ConfluencePageBlog:
+    case Scope.ConfluencePageBlogAttachment: {
       return mapConfluenceItemToResultObject(
         item as ConfluenceItem,
         searchSessionId,
@@ -171,7 +179,7 @@ function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
 ): Result {
-  return {
+  const result: Result = {
     componentType: ComponentType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
@@ -180,6 +188,12 @@ function mapConfluenceItemToResultObject(
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
   };
+
+  if (item.content && item.content.type) {
+    result.contentType = item.content.type as ResultContentType;
+  }
+
+  return result;
 }
 
 function mapJiraItemToResult(item: JiraItem): Result {

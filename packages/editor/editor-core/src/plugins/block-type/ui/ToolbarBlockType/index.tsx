@@ -75,7 +75,6 @@ export default class ToolbarBlockType extends React.PureComponent<
       popupsBoundariesElement,
       popupsScrollableElement,
       isSmall,
-      isReducedSpacing,
     } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
@@ -83,12 +82,12 @@ export default class ToolbarBlockType extends React.PureComponent<
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing={isReducedSpacing ? 'none' : 'default'}
+        spacing="none"
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconAfter={
-          <Wrapper>
+          <Wrapper isSmall={isSmall}>
             {isSmall && <TextStyleIcon label="Change formatting" />}
             <ExpandIconWrapper>
               <ExpandIcon label="Change formatting" />
@@ -168,10 +167,7 @@ export default class ToolbarBlockType extends React.PureComponent<
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
-    this.props.pluginState.toggleBlockType(
-      blockType.name,
-      this.props.editorView,
-    );
+    this.props.pluginState.setBlockType(blockType.name, this.props.editorView);
     this.setState({
       active: false,
       availableBlockTypes,
