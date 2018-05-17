@@ -3,6 +3,7 @@
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -81,6 +82,12 @@ if (INTEGRATION_TESTS) {
   } else {
     config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
   }
+}
+
+if (OVERRIDE_TEST_IGNORE) {
+  config.testPathIgnorePatterns.push(
+    `/${OVERRIDE_TEST_IGNORE}.+\\/__tests__\\/`,
+  );
 }
 
 /**
