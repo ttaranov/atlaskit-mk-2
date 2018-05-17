@@ -10,10 +10,10 @@
       },
       "content": [
         {
-          "type": "extension",
+          "type": "bodiedExtension",
           "attrs": {
-            "extensionType": "com.atlassian.confluence.macro",
-            "extensionKey": "gallery"
+            "extensionType": "com.atlassian.confluence.macro.core",
+            "extensionKey": "expand"
           },
           "content": [
             {
