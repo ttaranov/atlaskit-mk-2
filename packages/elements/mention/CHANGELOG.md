@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 11.1.3
+- [patch] ED-2551 use default cursor on mention if no onClick is provided [e9cc83c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9cc83c)
+- [patch] Updated dependencies [e9cc83c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9cc83c)
+
 ## 11.1.2
 - [patch] Align font sizes for inline code, mentions and dates [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
 - [none] Updated dependencies [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
