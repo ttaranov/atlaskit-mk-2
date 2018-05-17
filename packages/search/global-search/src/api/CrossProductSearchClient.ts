@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { Result, ComponentType, AnalyticsType } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -172,33 +172,36 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
 ): Result {
   return {
-    type: ResultType.Object,
+    componentType: ComponentType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }
 
 function mapJiraItemToResult(item: JiraItem): Result {
   return {
-    type: ResultType.Object,
+    componentType: ComponentType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
     objectKey: item.key,
+    analyticsType: AnalyticsType.ResultJira,
   };
 }
 
 function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
-    type: ResultType.Container,
+    componentType: ComponentType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
     avatarUrl: '', // depends on XPSRCH-747
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }

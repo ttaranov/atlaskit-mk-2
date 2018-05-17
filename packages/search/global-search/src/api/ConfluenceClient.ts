@@ -1,4 +1,9 @@
-import { Result, ResultType, ResultContentType } from '../model/Result';
+import {
+  Result,
+  ComponentType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   utils,
@@ -79,12 +84,13 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
 function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
   return {
     resultId: recentPage.id,
-    type: ResultType.Object,
+    componentType: ComponentType.Object,
     name: recentPage.title,
     href: `${baseUrl}${recentPage.url}`,
     avatarUrl: '',
     containerName: recentPage.space,
     contentType: recentPage.contentType,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }
 
@@ -94,9 +100,10 @@ function recentSpaceToResult(
 ): Result {
   return {
     resultId: recentSpace.id,
-    type: ResultType.Container,
+    componentType: ComponentType.Container,
     name: recentSpace.name,
     href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }

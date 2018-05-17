@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { Result, ComponentType, AnalyticsType } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -100,10 +100,11 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
 
 function userSearchResultToResult(searchResult: SearchResult): Result {
   return {
-    type: ResultType.Person,
+    componentType: ComponentType.Person,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
     href: '/home/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
+    analyticsType: AnalyticsType.ResultPerson,
   };
 }

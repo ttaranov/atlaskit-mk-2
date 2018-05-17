@@ -6,23 +6,40 @@ import {
   ResultBase,
 } from '@atlaskit/quick-search';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
-import { Result, ResultType } from '../model/Result';
+import {
+  Result,
+  ComponentType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import ObjectResult from './ObjectResult';
 
-function getResultComponent(resultType: ResultType): ComponentClass {
-  switch (resultType) {
-    case ResultType.Object: {
+// Common properties that the quick-search Result component supports
+interface QuickSearchResult extends ComponentClass {
+  type: string;
+  name: string;
+  resultId: string;
+  href: string;
+  avatarUrl?: string;
+  containerName?: string;
+  objectKey?: string;
+  contentType?: ResultContentType;
+}
+
+function getResultComponent(componentType: ComponentType): ComponentClass {
+  switch (componentType) {
+    case ComponentType.Object: {
       return ObjectResult;
     }
-    case ResultType.Person: {
+    case ComponentType.Person: {
       return PersonResult;
     }
-    case ResultType.Container: {
+    case ComponentType.Container: {
       return ContainerResult;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched
-      const _nonExhaustiveMatch: never = resultType;
+      const _nonExhaustiveMatch: never = componentType;
       throw new Error(
         `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
       );
@@ -32,8 +49,24 @@ function getResultComponent(resultType: ResultType): ComponentClass {
 
 export function renderResults(results: Result[]) {
   return results.map(result => {
-    const Result = getResultComponent(result.type);
-    return <Result key={result.resultId} {...result} />;
+    const type = result.analyticsType || result.componentType;
+    const Result = getResultComponent(result.componentType) as ComponentClass<
+      QuickSearchResult
+    >;
+
+    return (
+      <Result
+        key={result.resultId}
+        resultId={result.resultId}
+        type={type}
+        name={result.name}
+        containerName={result.containerName}
+        href={result.href}
+        avatarUrl={result.avatarUrl}
+        objectKey={result.objectKey}
+        contentType={result.contentType}
+      />
+    );
   });
 }
 
@@ -52,6 +85,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
     key="search_confluence"
     resultId="search_confluence"
     text={props.text}
+    type={AnalyticsType.AdvancedSearchConfluence}
   />
 );
 
@@ -62,6 +96,7 @@ export const searchJiraItem = (query: string) => (
     key="search_jira"
     resultId="search_jira"
     text="Search for more Jira issues"
+    type={AnalyticsType.AdvancedSearchJira}
   />
 );
 
@@ -72,6 +107,7 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
     key="search_people"
     resultId="search_people"
     text={props.text}
+    type={AnalyticsType.AdvancedSearchPeople}
   />
 );
 
