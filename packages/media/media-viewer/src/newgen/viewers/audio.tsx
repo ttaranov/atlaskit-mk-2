@@ -67,10 +67,11 @@ export class AudioViewer extends React.Component<Props, State> {
   }
 
   private renderCover = () => {
+    const { item } = this.props;
     const { coverUrl } = this.state;
 
     if (coverUrl) {
-      return <AudioCover src={coverUrl} alt="cover" />;
+      return <AudioCover src={coverUrl} alt={item.details.name} />;
     } else {
       return defaultCover;
     }
