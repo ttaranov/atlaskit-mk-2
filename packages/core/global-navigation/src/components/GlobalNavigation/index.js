@@ -19,6 +19,8 @@ import type {
 // By default we will render a button which toggles the peek behaviour. The
 // consumer can opt out of this by passing their own handler or `false` to the
 // onClick prop, or by passing a href (which will render an <a>).
+// They also opt out of the peek behaviour if they pass in a component to
+// the primary item (where getProductPrimaryItemComponent is called)
 const getProductPrimaryItemComponent = navigation => ({
   className,
   children,
