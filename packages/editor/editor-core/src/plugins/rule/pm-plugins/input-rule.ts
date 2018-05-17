@@ -33,7 +33,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       // -1, so that it also replaces the container paragraph
       createInputRule(
-        /^\-\-\-$|^\*\*\*$/,
+        /^\-\-\-$/,
         (state, match, start, end) =>
           createHorizontalRuleAutoformat(state, start - 1, end),
         true,
@@ -43,9 +43,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     // '---' and '***' after shift+enter for hr
     rules.push(
       createInputRule(
-        new RegExp(
-          `${leafNodeReplacementCharacter}\\-\\-\\-|${leafNodeReplacementCharacter}\\*\\*\\*`,
-        ),
+        new RegExp(`${leafNodeReplacementCharacter}\\-\\-\\-`),
         (state, match, start, end) => {
           const { hardBreak } = state.schema.nodes;
           if (state.doc.resolve(start).nodeAfter!.type !== hardBreak) {

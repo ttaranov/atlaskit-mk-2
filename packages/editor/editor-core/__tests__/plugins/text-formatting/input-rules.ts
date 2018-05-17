@@ -554,6 +554,30 @@ describe('text-formatting input rules', () => {
       });
     });
 
+    describe('single space character', () => {
+      notautoformats('__ __');
+      notautoformats('** **');
+      notautoformats('_ _');
+      notautoformats('* *');
+      notautoformats('~~ ~~');
+    });
+
+    describe('single character same as autoformatting character', () => {
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('___');
+      notautoformats('***');
+      notautoformats('~~~~~');
+    });
+
+    describe('multiple characters same as autoformatting character', () => {
+      notautoformats('_______');
+      notautoformats('*******');
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('~~~~~~~');
+    });
+
     describe('space after formatting character', () => {
       notautoformats('__ test__');
       notautoformats('** test**');
