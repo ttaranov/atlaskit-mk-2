@@ -213,7 +213,6 @@ export const DefaultCoverWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  // Make audio icon bigger
   > * {
     transform: scale(2);
   }
