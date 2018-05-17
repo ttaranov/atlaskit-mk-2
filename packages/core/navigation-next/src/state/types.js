@@ -58,6 +58,7 @@ export type NavigationProviderProps = {
   children: Element<*>,
   cache: NavigationStateCache | false,
   initialState?: InitialNavigationStateShape,
+  debug?: boolean,
 };
 
 /**

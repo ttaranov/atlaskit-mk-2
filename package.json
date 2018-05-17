@@ -279,6 +279,7 @@
     "debounce": "^1.0.0",
     "debug": "^2.2.0",
     "deep-equal": "^1.0.1",
+    "deep-object-diff": "^1.1.0",
     "deepcopy": "0.6.3",
     "editor": "^1.0.0",
     "emotion": "^9.1.1",

@@ -22,6 +22,7 @@
     "@atlaskit/theme": "^3.1.1",
     "@atlaskit/tooltip": "^9.1.6",
     "chromatism": "^2.6.0",
+    "deep-object-diff": "^1.1.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "interpolate-range": "^2.1.0",
@@ -38,7 +39,9 @@
     "@atlaskit/badge": "^7.1.1",
     "@atlaskit/docs": "^3.0.3",
     "@atlaskit/dropdown-menu": "^4.0.2",
+    "@atlaskit/field-base": "^9.0.2",
     "@atlaskit/logo": "^7.0.0",
-    "@atlaskit/lozenge": "^4.0.0"
+    "@atlaskit/lozenge": "^4.0.0",
+    "@atlaskit/toggle": "^3.0.1"
   }
 }
