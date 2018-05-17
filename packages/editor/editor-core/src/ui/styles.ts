@@ -27,7 +27,7 @@ export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & { isSmall?: boolean }
 > = styled.span`
   display: flex;
-  align-items: center;
+  align-items: stretch;
 
   > div,
   > span {
@@ -38,8 +38,8 @@ export const Wrapper: ComponentClass<
     display: flex;
   }
   /* see ED-4591 */
-  margin-left: 4px;
-  min-width: ${({ isSmall }: { isSmall: false }) =>
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 5 : 4)}px;
+  min-width: ${({ isSmall }: { isSmall?: boolean }) =>
     isSmall ? '40px' : 'auto'};
 `;
 
