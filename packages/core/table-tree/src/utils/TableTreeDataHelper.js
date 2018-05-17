@@ -26,42 +26,40 @@ export default class TableTreeDataHelper {
     this.keysCache = {};
   }
 
-  addRootItems(rootItems: Array<Object>) {
-    // Create cache
-    rootItems.forEach((rootItem, index) => {
-      this.keysCache[rootItem[this.key]] = index;
-    });
-
-    return rootItems;
-  }
-
-  addChildItems(
-    items: Array<Object>,
-    allItems: Array<Object>,
-    parentItem: Object,
-  ) {
-    const parentLocation = this.keysCache[parentItem[this.key]];
-    // Update cache
-    items.forEach((item, index) => {
-      this.keysCache[item[this.key]] = `${parentLocation}.children[${index}]`;
-    });
-
-    const allItemsCopy = [...allItems];
-    const objectToChange = get(allItemsCopy, parentLocation);
-    objectToChange.children = items;
-
-    return set(allItemsCopy, parentLocation, objectToChange);
-  }
-
   updateItems(
     items: Array<Object>,
     allItems?: Array<Object> = [],
     parentItem: ?Object,
   ) {
+    const addRootItems = (rootItems: Array<Object>) => {
+      rootItems.forEach((rootItem, index) => {
+        this.keysCache[rootItem[this.key]] = index;
+      });
+      return rootItems;
+    };
+
+    const addChildItems = (
+      newitems: Array<Object>,
+      allItems: Array<Object>,
+      parentItem: Object,
+    ) => {
+      const parentLocation = this.keysCache[parentItem[this.key]];
+      // Update cache
+      newitems.forEach((item, index) => {
+        this.keysCache[item[this.key]] = `${parentLocation}.children[${index}]`;
+      });
+
+      const allItemsCopy = [...allItems];
+      const objectToChange = get(allItemsCopy, parentLocation);
+      objectToChange.children = newitems;
+
+      return set(allItemsCopy, parentLocation, objectToChange);
+    };
+
     if (!parentItem) {
-      return this.addRootItems(items);
+      return addRootItems(items);
     }
 
-    return this.addChildItems(items, allItems, parentItem);
+    return addChildItems(items, allItems, parentItem);
   }
 }
