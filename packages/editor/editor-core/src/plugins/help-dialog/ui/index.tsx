@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { browser } from '@atlaskit/editor-common';
-import CloseIcon from '@atlaskit/icon/glyph/editor/close';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Modal from '@atlaskit/modal-dialog';
 import {
   Header,
+  Footer,
   ContentWrapper,
   Line,
   Content,
@@ -72,16 +73,16 @@ export const formatting: Format[] = [
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeSm>#</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>#</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Heading 5',
+    name: 'Heading 2',
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeLg>#####</CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>##</CodeLg> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -91,7 +92,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleOrderedList,
     autoFormatting: () => (
       <span>
-        <CodeSm>1.</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>1.</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -101,7 +102,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleBulletList,
     autoFormatting: () => (
       <span>
-        <CodeSm>*</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>*</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -111,7 +112,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleBlockQuote,
     autoFormatting: () => (
       <span>
-        <CodeLg>></CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>></CodeLg> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -160,7 +161,7 @@ export const formatting: Format[] = [
     type: 'taskItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>[]</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>[]</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -169,7 +170,7 @@ export const formatting: Format[] = [
     type: 'decisionItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>&lt;&gt;</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>&lt;&gt;</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -198,6 +199,16 @@ const otherFormatting = [
     name: 'Clear formatting',
     type: 'clearFormatting',
     keymap: () => keymaps.clearFormatting,
+  },
+  {
+    name: 'Undo',
+    type: 'undo',
+    keymap: () => keymaps.undo,
+  },
+  {
+    name: 'Redo',
+    type: 'redo',
+    keymap: () => keymaps.redo,
   },
 ];
 
@@ -246,10 +257,18 @@ const ModalHeader = ({ onClose, showKeyline }) => (
         onClick={onClose}
         title="Close help dialog"
         spacing="compact"
-        iconBefore={<CloseIcon label="Close help dialog" size="large" />}
+        iconBefore={<CrossIcon label="Close help dialog" size="medium" />}
       />
     </div>
   </Header>
+);
+
+// tslint:disable-next-line:variable-name
+const ModalFooter = ({ onClose, showKeyline }) => (
+  <Footer showKeyline={showKeyline}>
+    Press {getComponentFromKeymap(keymaps.openHelp)} to quickly open this dialog
+    at any time
+  </Footer>
 );
 
 export default class HelpDialog extends React.Component<Props, any> {
@@ -290,6 +309,7 @@ export default class HelpDialog extends React.Component<Props, any> {
         width="large"
         onClose={this.closeDialog}
         header={ModalHeader}
+        footer={ModalFooter}
       >
         <ContentWrapper>
           <Line />

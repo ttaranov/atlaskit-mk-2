@@ -14,6 +14,7 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main';
+import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 
 const pulseBackground = keyframes`
   50% {
@@ -112,16 +113,12 @@ const ContentArea = styled(ContentStyles)`
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    padding: 12px 20px;
+    padding: 0 12px;
   }
 
-  padding-left: ${TableControlsPadding}px;
-  padding-right: ${TableControlsPadding}px;
+  padding: ${TableControlsPadding}px;
 
-  .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  ${tableCommentEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 

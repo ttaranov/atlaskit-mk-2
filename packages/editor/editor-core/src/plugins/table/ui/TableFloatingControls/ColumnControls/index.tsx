@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { CellSelection } from 'prosemirror-tables';
 import {
   selectColumn,
   isTableSelected,
@@ -17,13 +18,12 @@ import {
   ColumnInner,
   ColumnControlsButtonWrap,
   HeaderButton,
-  DeleteColumnButtonSize,
 } from './styles';
 import { toolbarSize } from '../styles';
+import { tableDeleteColumnButtonSize } from '../../styles';
 import InsertColumnButton from './InsertColumnButton';
 import DeleteColumnButton from './DeleteColumnButton';
 import { findColumnSelection, TableSelection } from '../utils';
-import { CellSelection } from 'prosemirror-tables';
 
 export interface Props {
   editorView: EditorView;
@@ -52,7 +52,8 @@ export default class ColumnControls extends Component<Props, any> {
       <DeleteColumnButton
         key="delete"
         style={{
-          left: offsetWidth + selectionWidth / 2 - DeleteColumnButtonSize / 2,
+          left:
+            offsetWidth + selectionWidth / 2 - tableDeleteColumnButtonSize / 2,
         }}
         onClick={() => this.deleteColumns(selectedColIdxs)}
         onMouseEnter={() => this.hoverColumns(selectedColIdxs, true)}
@@ -130,9 +131,8 @@ export default class ColumnControls extends Component<Props, any> {
             i === 0 &&
             checkIfNumberColumnEnabled(state) &&
             checkIfHeaderColumnEnabled(state)
-          ) && (!(
-            selection.hasMultipleSelection && selection.frontOfSelection(i)
-          )) ? (
+          ) &&
+          !(selection.hasMultipleSelection && selection.frontOfSelection(i)) ? (
             <InsertColumnButton
               onClick={() => this.insertColumn(i + 1)}
               lineMarkerHeight={tableHeight + toolbarSize}

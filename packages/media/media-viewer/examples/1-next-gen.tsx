@@ -8,6 +8,7 @@ import {
   docFileId,
   defaultCollectionName,
   unknownFileId,
+  audioNoCoverFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -37,6 +38,12 @@ const audioItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const audioItemNoCover: MediaViewerItem = {
+  type: 'file',
+  id: audioNoCoverFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const unsupportedItem: MediaViewerItem = {
   type: 'file',
   id: unknownFileId.id,
@@ -54,21 +61,26 @@ export default class Example extends React.Component<{}, State> {
     return (
       <div>
         <Button onClick={() => this.setState({ selectedItem: imageItem })}>
-          Preview an image item
+          Image item
         </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
-          Preview a video item
+          Video item
         </Button>
         <Button onClick={() => this.setState({ selectedItem: audioItem })}>
-          Preview an audio item
+          Audio item
+        </Button>
+        <Button
+          onClick={() => this.setState({ selectedItem: audioItemNoCover })}
+        >
+          Audio no cover
         </Button>
         <Button onClick={() => this.setState({ selectedItem: docItem })}>
-          Preview a doc item
+          Doc item
         </Button>
         <Button
           onClick={() => this.setState({ selectedItem: unsupportedItem })}
         >
-          Preview unsupported item
+          Unsupported item
         </Button>
 
         {this.state.selectedItem && (

@@ -9,7 +9,14 @@ import { setGapCursorAtPos } from '../actions';
 export const pluginKey = new PluginKey('gapCursorPlugin');
 
 export const isButton = (elem: HTMLElement | null) => {
-  return elem && elem.nodeName === 'BUTTON';
+  const tableControls = document.querySelector(
+    '.table-column-controls-wrapper',
+  );
+  return (
+    elem &&
+    (elem.nodeName === 'BUTTON' ||
+      (tableControls && tableControls.contains(elem)))
+  );
 };
 
 const plugin = new Plugin({
@@ -79,7 +86,7 @@ const plugin = new Plugin({
       if (
         posAtCoords &&
         posAtCoords.inside !== position &&
-        !isButton(event.currentTarget as HTMLElement)
+        !isButton(event.target as HTMLElement)
       ) {
         // max available space between parent and child from the left side in px
         // this ensures the correct side of the gap cursor in case of clicking in between two block nodes
