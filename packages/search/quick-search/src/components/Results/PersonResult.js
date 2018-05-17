@@ -31,7 +31,11 @@ export default class PersonResult extends PureComponent<Props> {
       : null;
 
   getAvatar = () => (
-    <Avatar presence={this.props.presenceState} src={this.props.avatarUrl} />
+    <Avatar
+      presence={this.props.presenceState}
+      size="small"
+      src={this.props.avatarUrl}
+    />
   );
 
   render() {
