@@ -1,6 +1,6 @@
 // @flow
-import type { Item, TargetPosition, TreeData } from './types';
 import React from 'react';
+import type { Item, TargetPosition, TreeData } from '../types';
 
 export type Props = {|
   tree: TreeData,
@@ -8,11 +8,10 @@ export type Props = {|
   onCollapse: (item: Item) => void,
   onDragStart: (item: Item) => void,
   onDragEnd: (item: Item, targetItem: Item, position: TargetPosition) => void,
-  renderItem: (
+  renderItem: ({
     item: Item,
+    level: number,
     isDragged: boolean,
     isHovered: boolean,
-    isInvalid: boolean,
-  ) => React.Node,
-  treeIndentation: number,
+  }) => any,
 |};

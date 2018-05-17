@@ -1,1 +1,3 @@
-export { default } from './Tree';
+// @flow
+
+export { default } from './components/Tree';
