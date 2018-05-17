@@ -27,6 +27,9 @@ export const defaultTimes = [
   '18:00',
 ];
 
+export const defaultTimeFormat = 'h:mma';
+export const defaultDateFormat = 'YYYY/MM/DD';
+
 export const DropdownIndicator = ({ icon: Icon }: { icon?: any } = {}) =>
   Icon ? (
     <span role="img">
@@ -47,4 +50,26 @@ export function parseDateIntoStateValues(
     timeValue: valid ? format(parsed, 'HH:mm') : timeValue,
     zoneValue: valid ? format(parsed, 'ZZ') : zoneValue,
   };
+}
+
+export function parseTime(timeString: string) {
+  const dateTime = new Date();
+  const time = timeString.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
+  let hours = 0;
+
+  if (!time) return NaN;
+  if (time[1]) {
+    hours = parseInt(time[1], 10);
+  }
+
+  if (hours === 12 && !time[3]) {
+    hours = 0;
+  } else {
+    hours += hours < 12 && time[3] ? 12 : 0;
+  }
+
+  dateTime.setHours(hours);
+  dateTime.setMinutes(parseInt(time[2], 10) || 0);
+  dateTime.setSeconds(0, 0);
+  return dateTime;
 }
