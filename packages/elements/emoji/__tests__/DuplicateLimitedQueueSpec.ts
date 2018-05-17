@@ -2,6 +2,7 @@ import { expect } from 'chai';
 
 import DuplicateLimitedQueue from '../src/DuplicateLimitedQueue';
 
+//testing
 describe('DuplicateLimitedQueue', () => {
   describe('initialisation', () => {
     it('should throw for illegal constructor parameters', () => {
