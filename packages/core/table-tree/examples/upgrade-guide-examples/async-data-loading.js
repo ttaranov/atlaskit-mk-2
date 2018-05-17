@@ -14,7 +14,7 @@ type State = {
   items: Array<Object>,
 };
 
-const tableTreeDataHelper = new TableTreeDataHelper('title');
+const tableTreeDataHelper = new TableTreeDataHelper({ key: 'title' });
 
 class WithStaticData extends Component<{}, State> {
   state = {

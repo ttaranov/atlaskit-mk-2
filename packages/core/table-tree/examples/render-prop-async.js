@@ -85,7 +85,7 @@ function getData(parentItem: ?Object) {
   return !parentItem ? fetchRoots() : fetchChildrenOf();
 }
 
-const tableTreeHelper = new TableTreeDataHelper('id');
+const tableTreeHelper = new TableTreeDataHelper({ key: 'id' });
 
 export default class extends Component<*, *> {
   state = {

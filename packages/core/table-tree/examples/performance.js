@@ -11,7 +11,7 @@ import TableTree, {
   TableTreeDataHelper,
 } from '../src';
 
-const tableTreeDataHelper = new TableTreeDataHelper('id');
+const tableTreeDataHelper = new TableTreeDataHelper({ key: 'id' });
 
 function getItemsData(parent, count) {
   return generateChildItems(parent || { numberingPath: '' }, count);

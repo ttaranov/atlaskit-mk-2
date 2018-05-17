@@ -21,7 +21,7 @@ import set from 'lodash.set';
 export default class TableTreeDataHelper {
   key: string;
   keysCache: Object;
-  constructor(key: string = 'key') {
+  constructor({ key = 'key' }: { key?: string } = {}) {
     this.key = key;
     this.keysCache = {};
   }
