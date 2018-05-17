@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.8.0
+- [minor] show cover for audio files [f830d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f830d51)
+
 ## 13.7.1
 - [patch] Remove component interpolation to be able to integrate with an older version of SC [401db67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/401db67)
 
