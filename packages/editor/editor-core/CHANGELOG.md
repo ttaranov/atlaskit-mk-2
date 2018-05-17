@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.3.32
+- [patch] ED-4591: fix paragraph alignment in comment editor [c420ef0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c420ef0)
+- [none] Updated dependencies [c420ef0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c420ef0)
+
 ## 71.3.31
 
 - [patch] ED-4629: fix replacing inline extensions [ed1eb59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed1eb59)
