@@ -1,34 +1,40 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
+import { HTMLAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
-import { Popup } from '@atlaskit/editor-common';
-import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+
 import {
+  Popup,
+  TableLayout,
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
 } from '@atlaskit/editor-common';
-import ToolbarButton from '../../../../ui/ToolbarButton';
-import Separator from '../../../../ui/Separator';
+import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+
+import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
+import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
-import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
-import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
-import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
-import { TableLayout } from '@atlaskit/editor-common';
 
+// `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-top: -8px;
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  padding: 3px 6px;
+  box-shadow: rgba(9, 30, 66, 0.31) 0 0 1px,
+    rgba(9, 30, 66, 0.25) 0 4px 8px -2px;
+  padding: 4px 8px;
   display: flex;
-  > button {
-    flex: 1;
+
+  & > div:last-child button {
+    margin-right: 0;
+  }
+  & > div:first-child button {
+    margin-left: 0;
   }
 `;
 
@@ -114,6 +120,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
 
         return (
           <ToolbarButton
+            spacing="compact"
             selected={tableLayout === layoutName}
             onClick={this.props.updateLayout ? onClick : undefined}
             title={label}
@@ -161,12 +168,17 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               allowMergeCells={allowMergeCells}
             />
           )}
-          <Separator style={{ height: 'auto' }} />
+          {(allowBackgroundColor ||
+            allowNumberColumn ||
+            allowHeaderRow ||
+            allowHeaderColumn ||
+            allowMergeCells) && <Separator style={{ height: 'auto' }} />}
           {layoutButtons}
           {layoutButtons.length ? (
             <Separator style={{ height: 'auto' }} />
           ) : null}
-          <ToolbarButton
+          <ToolbarButtonDanger
+            spacing="compact"
             onClick={this.props.removeTable}
             title="Remove table"
             iconBefore={<RemoveIcon label="Remove table" />}

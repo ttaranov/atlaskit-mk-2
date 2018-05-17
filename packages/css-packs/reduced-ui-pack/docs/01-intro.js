@@ -2,6 +2,17 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
+  ---
+  
+## Using Examples
+
+The examples are written in react, however the rendered html code should be
+copyable into your application, with the change of \`className\` to \`class\`.
+
+If you want to see an example running using base html, you can see that use-case
+in [codesandbox](https://codesandbox.io/s/nzvrz6zxj).
+  ---
+
   The reduced UI pack is designed to allow you to use some ADG3 styling easily
   without opting in to using react. Instead, it provides a css file as its main
   export, allowing you to add classes and meta-properties to html to get
@@ -36,9 +47,4 @@ export default md`
   ~~~
 
   With this, you can access classes to add all the styling you need.
-
-  ## Using Examples
-
-  The examples are written in react, however the rendered html code should be
-  copyable into your application, if it has the reduced-ui-pack styles.
 `;

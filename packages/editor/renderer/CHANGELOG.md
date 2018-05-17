@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 16.2.5
+- [patch] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+- [patch] Updated dependencies [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+  - @atlaskit/media-card@27.1.3
+
 ## 16.2.4
 - [patch] Adding nested ul support [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
 - [none] Updated dependencies [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
