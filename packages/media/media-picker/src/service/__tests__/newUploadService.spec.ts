@@ -51,7 +51,7 @@ describe('UploadService', () => {
         {
           collection: '',
         },
-        false,
+        true,
       ),
     });
 
@@ -85,7 +85,7 @@ describe('UploadService', () => {
       {
         collection: '',
       },
-      false,
+      true,
     );
     const element = document.createElement('input');
 
@@ -169,7 +169,7 @@ describe('UploadService', () => {
         {
           collection: '',
         },
-        false,
+        true,
       );
       const element = document.createElement('div');
       uploadService.addDropzone(element);
@@ -255,7 +255,7 @@ describe('UploadService', () => {
         {
           collection: '',
         },
-        false,
+        true,
       );
       const element = document.createElement('input');
       uploadService.addBrowse(element);
@@ -292,7 +292,7 @@ describe('UploadService', () => {
         {
           collection: '',
         },
-        false,
+        true,
       );
 
       const filesAddedPromise = new Promise(resolve =>
@@ -455,7 +455,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
       jest.spyOn(context, 'uploadFile');
       uploadService.addFiles([file1, file2]);
@@ -493,7 +493,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
       const fileConvertingCallback = jest.fn();
       uploadService.on('file-converting', fileConvertingCallback);
@@ -589,7 +589,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
       const fileConvertedCallback = jest.fn();
       uploadService.on('file-converted', fileConvertedCallback);
@@ -615,7 +615,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const uploadFilePromise = Promise.resolve('public-file-id');
@@ -662,7 +662,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const fileUploadErrorCallback = jest.fn();
@@ -709,7 +709,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const filesAddedCallback = jest.fn();
@@ -745,7 +745,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const fileUploadErrorCallback = jest.fn();
@@ -785,7 +785,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const filesAddedCallback = jest.fn();
@@ -838,7 +838,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const fileConvertedCallback = jest.fn();
@@ -907,7 +907,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const filesAddedCallback = jest.fn();
@@ -956,7 +956,7 @@ describe('UploadService', () => {
         {
           collection: 'some-collection',
         },
-        false,
+        true,
       );
 
       const filesAddedCallback = jest.fn();
@@ -1009,7 +1009,7 @@ describe('UploadService', () => {
         {
           collection: collectionNameStub,
         },
-        false,
+        true,
       );
 
       (uploadService as any).userMediaStore = config.userAuthProvider && {

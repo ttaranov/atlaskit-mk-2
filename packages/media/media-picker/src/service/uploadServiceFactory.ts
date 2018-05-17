@@ -52,9 +52,9 @@ export class UploadServiceFactory {
     useNewUploadService: boolean = false,
   ): UploadService {
     if (useNewUploadService) {
-      return new OldUploadServiceImpl(context, uploadParams);
-    } else {
       return new NewUploadServiceImpl(context, uploadParams);
+    } else {
+      return new OldUploadServiceImpl(context, uploadParams);
     }
   }
 }
