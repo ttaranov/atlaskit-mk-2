@@ -17,7 +17,7 @@ import {
   DropzoneContentWrapper,
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
-import { PreviewsData } from '../example-helpers/previews-data';
+import { UploadPreviews } from '../example-helpers/upload-previews';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
@@ -176,7 +176,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
             innerRef={this.saveDropzoneContainer}
           />
           <DropzoneItemsInfo>
-            {dropzone ? <PreviewsData picker={dropzone} /> : null}
+            {dropzone ? <UploadPreviews picker={dropzone} /> : null}
             <h1>User collection items</h1>
             {this.renderLastItems()}
           </DropzoneItemsInfo>

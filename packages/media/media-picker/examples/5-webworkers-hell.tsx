@@ -14,7 +14,7 @@ import {
   PopupContainer,
   PreviewsTitle,
 } from '../example-helpers/styled';
-import { renderPreviewImage } from '../example-helpers';
+import { UploadPreview } from '../example-helpers/upload-preview';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
@@ -61,11 +61,19 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     fileBrowser.browse();
   };
 
-  renderPreviews() {
+  private renderPreviews = () => {
     const { previewsData } = this.state;
 
-    return previewsData.map(renderPreviewImage);
-  }
+    return previewsData.map((previewsData, index) => (
+      <UploadPreview
+        key={`${index}`}
+        fileId={previewsData.fileId}
+        isProcessed={previewsData.isProcessed}
+        preview={previewsData.preview}
+        uploadingProgress={previewsData.uploadingProgress}
+      />
+    ));
+  };
 
   render() {
     const buttons = this.browserComponents.map((browser, key) => {

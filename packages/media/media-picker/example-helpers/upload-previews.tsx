@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { PreviewData, renderPreviewImage } from './index';
+import { UploadPreview } from './upload-preview';
 import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadPreviewUpdateEventPayload } from '../src';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
+import { PreviewData } from './types';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -12,7 +13,7 @@ export interface PreviewsDataProps {
   picker: LocalUploadComponent;
 }
 
-export class PreviewsData extends React.Component<
+export class UploadPreviews extends React.Component<
   PreviewsDataProps,
   PreviewsDataState
 > {
@@ -20,27 +21,29 @@ export class PreviewsData extends React.Component<
     previewsData: [],
   };
 
-  private getPreviewData(fileId: string): PreviewData | null {
-    return (
-      this.state.previewsData.find(preview => preview.fileId === fileId) || null
-    );
-  }
-
   private updatePreviewDataFile(
     fileId: string,
     progress: number,
     isProcessed: boolean = false,
   ) {
-    const previewData = this.getPreviewData(fileId);
-    if (
-      previewData &&
-      (previewData.uploadingProgress !== progress ||
-        previewData.isProcessed !== isProcessed)
-    ) {
-      previewData.uploadingProgress = progress;
-      previewData.isProcessed = isProcessed;
-      this.setState({ previewsData: [...this.state.previewsData] });
-    }
+    this.setState(({ previewsData }) => {
+      const newPreviewData = previewsData.map(previewData => {
+        if (
+          previewData.fileId === fileId &&
+          (previewData.uploadingProgress !== progress ||
+            previewData.isProcessed !== isProcessed)
+        ) {
+          return {
+            ...previewData,
+            uploadingProgress: progress,
+            isProcessed,
+          };
+        } else {
+          return previewData;
+        }
+      });
+      return { previewsData: newPreviewData };
+    });
   }
 
   componentDidUpdate(
@@ -121,7 +124,15 @@ export class PreviewsData extends React.Component<
   private renderPreviews = () => {
     const { previewsData } = this.state;
 
-    return previewsData.map(renderPreviewImage);
+    return previewsData.map((previewsData, index) => (
+      <UploadPreview
+        key={`${index}`}
+        fileId={previewsData.fileId}
+        isProcessed={previewsData.isProcessed}
+        preview={previewsData.preview}
+        uploadingProgress={previewsData.uploadingProgress}
+      />
+    ));
   };
 
   render() {

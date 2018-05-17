@@ -27,7 +27,6 @@ import {
   CardsWrapper,
   CardItemWrapper,
 } from '../example-helpers/styled';
-import { AuthEnvironment } from '../example-helpers';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -37,10 +36,10 @@ import {
   UploadStatusUpdateEventPayload,
 } from '../src/domain/uploadEvent';
 import { PopupUploadEventPayloadMap } from '../src/components/popup';
+import { AuthEnvironment } from '../example-helpers/types';
 
 const context = createStorybookContext();
 
-export type InflightUpload = { [key: string]: {} };
 export type PublicFile = {
   publicId: string;
   preview?: string;

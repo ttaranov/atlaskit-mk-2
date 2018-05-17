@@ -12,8 +12,8 @@ import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import { MediaPicker, Browser, UploadParams, BrowserConfig } from '../src';
 import { PopupHeader, PopupContainer } from '../example-helpers/styled';
-import { PreviewsData } from '../example-helpers/previews-data';
-import { AuthEnvironment } from '../example-helpers';
+import { UploadPreviews } from '../example-helpers/upload-previews';
+import { AuthEnvironment } from '../example-helpers/types';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
@@ -88,7 +88,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     this.setState({ authEnvironment });
   };
 
-  onuseNewUploadServiceChange = () => {
+  onUseNewUploadServiceChange = () => {
     this.createBrowse(!this.state.useNewUploadService);
   };
 
@@ -121,10 +121,10 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
           Use new upload service
           <Toggle
             isDefaultChecked={useNewUploadService}
-            onChange={this.onuseNewUploadServiceChange}
+            onChange={this.onUseNewUploadServiceChange}
           />
         </PopupHeader>
-        {fileBrowser ? <PreviewsData picker={fileBrowser} /> : null}
+        {fileBrowser ? <UploadPreviews picker={fileBrowser} /> : null}
       </PopupContainer>
     );
   }
