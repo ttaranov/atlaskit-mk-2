@@ -6,12 +6,13 @@ import styled, { StyledComponentClass } from 'styled-components';
 import { MediaType } from '@atlaskit/media-core';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
+import { HTMLAttributes, VideoHTMLAttributes, AudioHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 import {
   akColorY200,
   akColorP200,
   akColorB300,
   akColorN400,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 
 const overlayZindex = 999;
@@ -172,7 +173,7 @@ export const MetadataIconWrapper = styled.div`
   padding-right: 12px;
 `;
 
-const colors = {
+export const colors = {
   image: akColorY200,
   audio: akColorP200,
   video: '#ff7143',
@@ -195,4 +196,42 @@ export const RightHeader = styled.div`
   flex: 0.2;
   text-align: right;
   margin-right: 50px;
+`;
+
+export const AudioPlayer = styled.div`
+  border-radius: ${akBorderRadius};
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const Audio = styled.audio`
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+
+export const AudioCover = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const DefaultCoverWrapper = styled.div`
+  background-color: ${colors.audio};
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > * {
+    transform: scale(2);
+  }
 `;
