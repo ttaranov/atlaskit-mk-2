@@ -6,7 +6,7 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  CreateTableTreeDataHelper,
+  TableTreeDataHelper,
 } from '../src';
 
 let uuid = 0;
@@ -85,7 +85,7 @@ function getData(parentItem: ?Object) {
   return !parentItem ? fetchRoots() : fetchChildrenOf();
 }
 
-const tableTreeHelper = new CreateTableTreeDataHelper('id');
+const tableTreeHelper = new TableTreeDataHelper('id');
 
 export default class extends Component<*, *> {
   state = {

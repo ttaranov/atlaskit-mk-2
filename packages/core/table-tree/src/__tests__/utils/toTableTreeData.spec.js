@@ -1,5 +1,5 @@
 // @flow
-import CreateTableTreeDataHelper from '../../utils/createTableTreeDataHelper';
+import TableTreeDataHelper from '../../utils/TableTreeDataHelper';
 
 test('to return rootIds and itemsById for root items with defaults', () => {
   const rootData = [
@@ -7,8 +7,8 @@ test('to return rootIds and itemsById for root items with defaults', () => {
     { title: 'Chapter Two', page: 20, id: 2 },
     { title: 'Chapter Three', page: 30, id: 3 },
   ];
-  const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper();
-  const formatedData = createTableTreeDataHelperInstance.updateItems(rootData);
+  const tableTreeDataHelper = new TableTreeDataHelper();
+  const formatedData = tableTreeDataHelper.updateItems(rootData);
   expect(formatedData).toEqual([
     { title: 'Chapter One', page: 10, id: 1 },
     { title: 'Chapter Two', page: 20, id: 2 },
@@ -22,10 +22,8 @@ test('to return rootIds and itemsById for root items with custom id', () => {
     { title: 'Chapter Two', page: 20, id: 2 },
     { title: 'Chapter Three', page: 30, id: 3 },
   ];
-  const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper(
-    'title',
-  );
-  const formatedData = createTableTreeDataHelperInstance.updateItems(rootData);
+  const tableTreeDataHelperInstance = new TableTreeDataHelper('title');
+  const formatedData = tableTreeDataHelperInstance.updateItems(rootData);
   expect(formatedData).toEqual([
     { id: 1, page: 10, title: 'Chapter One' },
     { id: 2, page: 20, title: 'Chapter Two' },
@@ -36,9 +34,9 @@ test('to return rootIds and itemsById for root items with custom id', () => {
 test('to update the parent item with child ids', () => {
   const parentItem = [{ title: 'Chapter One', page: 10, id: 1 }];
   const childItem = [{ title: 'Chapter Two', page: 20, id: 2 }];
-  const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper();
-  createTableTreeDataHelperInstance.updateItems(parentItem);
-  const formatedData = createTableTreeDataHelperInstance.updateItems(
+  const tableTreeDataHelperInstance = new TableTreeDataHelper();
+  tableTreeDataHelperInstance.updateItems(parentItem);
+  const formatedData = tableTreeDataHelperInstance.updateItems(
     childItem,
     parentItem,
     ...parentItem,
@@ -56,12 +54,10 @@ test('to update the parent item with child ids', () => {
 test('to update the parent item with child ids - with custom ids', () => {
   const parentItem = [{ title: 'Chapter One', page: 10, id: 1 }];
   const childItem = [{ title: 'Chapter Two', page: 20, id: 2 }];
-  const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper(
-    'title',
-  );
-  createTableTreeDataHelperInstance.updateItems(parentItem);
+  const tableTreeDataHelperInstance = new TableTreeDataHelper('title');
+  tableTreeDataHelperInstance.updateItems(parentItem);
 
-  const formatedData = createTableTreeDataHelperInstance.updateItems(
+  const formatedData = tableTreeDataHelperInstance.updateItems(
     childItem,
     parentItem,
     ...parentItem,

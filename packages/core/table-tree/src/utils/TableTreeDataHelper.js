@@ -18,7 +18,7 @@ import set from 'lodash.set';
  * Cache will look something like:
  * {1: 0, 2: '0.children[0]'}
  */
-export default class CreateTableTreeDataHelper {
+export default class TableTreeDataHelper {
   key: string;
   keysCache: Object;
   constructor(key: string = 'key') {
@@ -35,7 +35,7 @@ export default class CreateTableTreeDataHelper {
     return rootItems;
   }
 
-  addChildItem(
+  addChildItems(
     items: Array<Object>,
     allItems: Array<Object>,
     parentItem: Object,
@@ -43,11 +43,11 @@ export default class CreateTableTreeDataHelper {
     const parentLocation = this.keysCache[parentItem[this.key]];
     // Update cache
     items.forEach((item, index) => {
-      this.keysCache[item[this.key]] = `${parentLocation}.children[${index++}]`;
+      this.keysCache[item[this.key]] = `${parentLocation}.children[${index}]`;
     });
 
-    let allItemsCopy = [...allItems];
-    let objectToChange = get(allItemsCopy, parentLocation);
+    const allItemsCopy = [...allItems];
+    const objectToChange = get(allItemsCopy, parentLocation);
     objectToChange.children = items;
 
     return set(allItemsCopy, parentLocation, objectToChange);
@@ -62,6 +62,6 @@ export default class CreateTableTreeDataHelper {
       return this.addRootItems(items);
     }
 
-    return this.addChildItem(items, allItems, parentItem);
+    return this.addChildItems(items, allItems, parentItem);
   }
 }

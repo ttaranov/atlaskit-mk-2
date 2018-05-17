@@ -7,14 +7,14 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  CreateTableTreeDataHelper,
+  TableTreeDataHelper,
 } from '../../src';
 
 type State = {
   items: Array<Object>,
 };
 
-const createTableTreeDataHelper = new CreateTableTreeDataHelper('title');
+const tableTreeDataHelper = new TableTreeDataHelper('title');
 
 class WithStaticData extends Component<{}, State> {
   state = {
@@ -28,7 +28,7 @@ class WithStaticData extends Component<{}, State> {
   loadChildFor = (parentItem: ?Object) => {
     getChildren(parentItem).then(item => {
       this.setState({
-        items: createTableTreeDataHelper.updateItems(
+        items: tableTreeDataHelper.updateItems(
           item,
           this.state.items,
           parentItem,
@@ -48,14 +48,7 @@ class WithStaticData extends Component<{}, State> {
         </Headers>
         <Rows
           items={items}
-          render={({
-            title,
-            numbering,
-            page,
-            hasChildren,
-            childIds,
-            children,
-          }) => (
+          render={({ title, numbering, page, hasChildren, children }) => (
             <Row
               onExpand={this.loadChildFor}
               expandLabel={'Expand'}

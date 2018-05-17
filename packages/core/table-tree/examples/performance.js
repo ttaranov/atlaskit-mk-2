@@ -8,10 +8,10 @@ import TableTree, {
   Rows,
   Row,
   Cell,
-  CreateTableTreeDataHelper,
+  TableTreeDataHelper,
 } from '../src';
 
-const tableTreeHelper = new CreateTableTreeDataHelper('id');
+const tableTreeDataHelper = new TableTreeDataHelper('id');
 
 function getItemsData(parent, count) {
   return generateChildItems(parent || { numberingPath: '' }, count);
@@ -88,12 +88,12 @@ export default class extends PureComponent<{}, State> {
     childCount: childCountPerItem,
     totalCount: childCountPerItem,
     selectedChildCountOption: childCountOptions[3],
-    items: tableTreeHelper.updateItems(getItemsData(undefined, 100)),
+    items: tableTreeDataHelper.updateItems(getItemsData(undefined, 100)),
   };
 
   handleExpand = (parentItem: Object) => {
     this.setState({
-      items: tableTreeHelper.updateItems(
+      items: tableTreeDataHelper.updateItems(
         getItemsData(parentItem, 100),
         this.state.items,
         parentItem,
@@ -121,7 +121,7 @@ export default class extends PureComponent<{}, State> {
           </Headers>
           <Rows
             items={items}
-            render={({ title, numbering, childIds, children }) => (
+            render={({ title, numbering, children }) => (
               <Row
                 itemId={numbering}
                 hasChildren
