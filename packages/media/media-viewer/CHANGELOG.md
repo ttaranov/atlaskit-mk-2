@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.7.1
+- [patch] Remove component interpolation to be able to integrate with an older version of SC [401db67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/401db67)
+
 ## 13.7.0
 - [minor] Add basic zooming to MV [6bd0af4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bd0af4)
 
