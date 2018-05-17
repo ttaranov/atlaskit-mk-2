@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.6.1
+- [patch] Use SC style() instead of extend [cc35663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35663)
+
 ## 13.6.0
 - [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
 
