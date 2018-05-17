@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.7.0
+- [minor] Add basic zooming to MV [6bd0af4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bd0af4)
+
 ## 13.6.1
 - [patch] Use SC style() instead of extend [cc35663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35663)
 
