@@ -4,6 +4,32 @@ import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { ZoomControls } from '../../zoomControls';
 
+import { injectGlobal } from 'styled-components';
+
+injectGlobal`
+  .pdfViewer {
+    .page {
+      margin: 1px auto -8px auto;
+      border: 9px solid transparent;
+      position: relative;
+
+      .canwasWrapper {
+        overflow: hidden;
+      }
+
+      .textLayer, .annotationLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        line-height: 1.0;
+      }
+    }
+  }
+`;
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
 export type Props = {
@@ -39,10 +65,12 @@ export class PDFViewer extends React.PureComponent<Props, { scale: number }> {
 
   render() {
     return (
-      <PDFWrapper innerRef={this.savePdfElement}>
-        <div className="pdfViewer" />
+      <div>
+        <PDFWrapper innerRef={this.savePdfElement}>
+          <div className="pdfViewer" />
+        </PDFWrapper>
         <ZoomControls zoomLevel={this.state.scale} onChange={this.handleZoom} />
-      </PDFWrapper>
+      </div>
     );
   }
 }
