@@ -66,6 +66,17 @@ export const CloseButtonWrapper = styled.div`
   z-index: ${overlayZindex + 2};
 `;
 
+export const ZoomWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  button {
+    margin-right: 10px;
+  }
+`;
+
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
   transition: opacity .3s;
   opacity: ${showControls ? '1' : '0'};
@@ -90,6 +101,10 @@ export const ContentWrapper = styled.div`
   ${CloseButtonWrapper} {
     ${handleControlsVisibility};
   }
+
+  ${ZoomWrapper} {
+    ${handleControlsVisibility};
+  }
 `;
 
 ContentWrapper.displayName = 'Content';
@@ -99,7 +114,8 @@ export const ErrorMessage = styled.div`
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
-  max-width: 100%;
+  transition: transform 0.2s;
+  transform-origin: center;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
@@ -135,6 +151,14 @@ export const LeftHeader = styled.div`
   flex: 0.8;
 `;
 
+export const ImageWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 export const MetadataWrapper = styled.div`
   display: flex;
 `;
