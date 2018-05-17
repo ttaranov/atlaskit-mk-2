@@ -1,5 +1,4 @@
 // @flow
-import React from 'react';
 import type { Item, TargetPosition, TreeData } from '../types';
 
 export type Props = {|

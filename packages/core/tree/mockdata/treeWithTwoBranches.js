@@ -14,7 +14,9 @@ export const treeWithTwoBranches: TreeData = {
           hasChildren: false,
           isExpanded: false,
           isLoading: false,
-          data: {},
+          data: {
+            title: 'Child one',
+          },
         },
         {
           id: '1-1-2',
@@ -22,13 +24,17 @@ export const treeWithTwoBranches: TreeData = {
           hasChildren: false,
           isExpanded: false,
           isLoading: false,
-          data: {},
+          data: {
+            title: 'Child two',
+          },
         },
       ],
       hasChildren: false,
       isExpanded: false,
       isLoading: false,
-      data: {},
+      data: {
+        title: 'First parent',
+      },
     },
     {
       id: '1-2',
@@ -39,7 +45,9 @@ export const treeWithTwoBranches: TreeData = {
           hasChildren: false,
           isExpanded: false,
           isLoading: false,
-          data: {},
+          data: {
+            title: 'Child three',
+          },
         },
         {
           id: '1-2-2',
@@ -47,17 +55,23 @@ export const treeWithTwoBranches: TreeData = {
           hasChildren: false,
           isExpanded: false,
           isLoading: false,
-          data: {},
+          data: {
+            title: 'Child four',
+          },
         },
       ],
       hasChildren: false,
       isExpanded: false,
       isLoading: false,
-      data: { title: 'two' },
+      data: {
+        title: 'Second parent',
+      },
     },
   ],
   hasChildren: true,
   isExpanded: true,
   isLoading: false,
-  data: {},
+  data: {
+    title: 'root',
+  },
 };
