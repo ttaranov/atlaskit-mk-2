@@ -121,7 +121,7 @@ class TableComponent extends React.Component<ComponentProps> {
               className="table-container"
               data-layout={node.attrs.layout}
             >
-              <div className="table-row-controls">
+              <div className="table-row-controls-wrapper">
                 <TableFloatingControls
                   editorView={view}
                   tableElement={pluginState.tableElement}
@@ -140,7 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   this.wrapper = elem;
                 }}
               >
-                <div className="table-column-controls">
+                <div className="table-column-controls-wrapper">
                   <ColumnControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
