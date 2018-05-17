@@ -77,10 +77,23 @@ export class AudioViewer extends React.Component<Props, State> {
     }
   };
 
+  private saveAudioElement = audioElement => {
+    if (!audioElement) {
+      return;
+    }
+
+    audioElement.setAttribute('controlsList', 'nodownload');
+  };
+
   private renderPlayer = src => (
     <AudioPlayer>
       {this.renderCover()}
-      <Audio controls src={src} preload="metadata" />
+      <Audio
+        controls
+        innerRef={this.saveAudioElement}
+        src={src}
+        preload="metadata"
+      />
     </AudioPlayer>
   );
 
