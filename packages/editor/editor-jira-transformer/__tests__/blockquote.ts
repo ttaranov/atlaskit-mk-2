@@ -5,7 +5,7 @@ import { createJIRASchema } from '@atlaskit/editor-common';
 const schema = createJIRASchema({ allowBlockQuote: true, allowLists: true });
 
 // Nodes
-// testing
+
 describe('JIRATransformer', () => {
   describe('blockquote', () => {
     checkParseEncodeRoundTrips(
