@@ -40,16 +40,16 @@ export default class TableTreeDataHelper {
 
     const addChildItems = (
       newitems: Array<Object>,
-      allItems: Array<Object>,
-      parentItem: Object,
+      allTableItems: Array<Object>,
+      itemParent: Object,
     ) => {
-      const parentLocation = this.keysCache[parentItem[this.key]];
+      const parentLocation = this.keysCache[itemParent[this.key]];
       // Update cache
       newitems.forEach((item, index) => {
         this.keysCache[item[this.key]] = `${parentLocation}.children[${index}]`;
       });
 
-      const allItemsCopy = [...allItems];
+      const allItemsCopy = [...allTableItems];
       const objectToChange = get(allItemsCopy, parentLocation);
       objectToChange.children = newitems;
 
