@@ -16,6 +16,8 @@ import {
 
 const overlayZindex = 999;
 
+export const hideControlsClassName = 'mvng-hide-controls';
+
 export const Blanket = styled.div`
   position: fixed;
   top: 0;
@@ -79,15 +81,7 @@ export const ContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${HeaderWrapper} {
-    ${handleControlsVisibility};
-  }
-
-  ${ArrowsWrapper} {
-    ${handleControlsVisibility};
-  }
-
-  ${CloseButtonWrapper} {
+  .${hideControlsClassName} {
     ${handleControlsVisibility};
   }
 `;
