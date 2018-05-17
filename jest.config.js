@@ -1,8 +1,9 @@
 //@flow
 /* eslint-disable no-console */
-const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
-const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
-const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS; // This is a flag to run the webdriver tests
+const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS; // This variable can be a list of tests that need to be run across multiple parallel steps, see below
+const OVERRIDE_TEST_MATCH = process.env.OVERRIDE_TEST_MATCH; // This can be used to override the testMatch array
+const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE; // Similarly, this is used to override testPathIgnore
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -16,9 +17,6 @@ const STEPS = process.env.STEPS;
  *
  * Run all the tests, but in parallel
  * PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --listTests
- *
- * Run only tests for changed packages (in parallel)
- * PARALLELIZE_TESTS="$(CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn --silent jest --listTests)" yarn jest --listTests
  */
 
 const config = {
@@ -54,33 +52,33 @@ const config = {
   testResultsProcessor: 'jest-junit',
 };
 
-// If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only
-// run the tests for those packages
-if (CHANGED_PACKAGES) {
-  const changedPackages = JSON.parse(CHANGED_PACKAGES);
-  const changedPackagesTestGlobs = changedPackages.map(
-    pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
+// OVERRIDE_TEST_MATCH can be a js array passed in by an env var to overide the testMatch config
+// The expected values should be relative paths to packages as we will map over them to create the testMatchPatterns
+// i.e OVERRIDE_TEST_MATCH="[packages/core/avatar,packages/editor/editor-core] yarn jest"
+if (OVERRIDE_TEST_MATCH) {
+  const testMatch = JSON.parse(OVERRIDE_TEST_MATCH).map(
+    pkgPath => `${__dirname}/${pkgPath}/__tests__/**/*.(js|tsx|ts)`,
   );
-
-  config.testMatch = changedPackagesTestGlobs;
+  config.testMatch = testMatch;
+}
+// OVERRIDE_TEST_IGNORE is similar to above except that we only append to the testPathIgnore array, not override
+if (OVERRIDE_TEST_IGNORE) {
+  const testIgnorePaths = JSON.parse(OVERRIDE_TEST_IGNORE).map(
+    pkgPath => `${__dirname}/${pkgPath}/__tests__/**/*.(js|tsx|ts)`,
+  );
+  config.testMatch = [...config.testMatch, ...testIgnorePaths];
 }
 
-// If the INTEGRATION_TESTS flag is set we need to
+// If the INTEGRATION_TESTS flag is set we need to remove the default ignoring and transform the testMatch's
+// to look for integration tests instead
 if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
-  // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
-  if (CHANGED_PACKAGES) {
-    const changedPackages = JSON.parse(CHANGED_PACKAGES);
-    const changedPackagesTestGlobs = changedPackages.map(
-      pkgPath =>
-        `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
-    );
-    config.testMatch = changedPackagesTestGlobs;
-  } else {
-    config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
-  }
+  const newTestMatch = config.tests.map(matchPattern =>
+    matchPattern.replace('__tests__/', '__tests__/integration/'),
+  );
+  config.testMatch = newTestMatch;
 }
 
 /**
@@ -88,6 +86,8 @@ if (INTEGRATION_TESTS) {
  * In CI we want to be able to split out tests into multiple parallel steps that can be run concurrently.
  * We do this by passing in a list of test files (PARALLELIZE_TESTS), the number of a parallel steps (STEPS)
  * and the (0 indexed) index of the current step (STEP_IDX). Using these we can split the test up evenly
+ *
+ * NOTE: This will ignore all the changes we've made above; this flag should not be used with any others
  */
 if (PARALLELIZE_TESTS) {
   const allTests = JSON.parse(PARALLELIZE_TESTS);
