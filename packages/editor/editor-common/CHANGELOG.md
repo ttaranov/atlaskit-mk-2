@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 9.3.10
+- [patch] ED-4643: added support for "wide" layout for tables [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+- [none] Updated dependencies [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+
 ## 9.3.9
 - [patch] Support external media in bitbucket transformer and image uploader [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
 - [patch] ED-4656: enable extension inside bodiedExtension [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
