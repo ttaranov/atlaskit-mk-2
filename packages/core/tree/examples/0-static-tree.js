@@ -37,8 +37,8 @@ export default class StaticTree extends Component<void> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, level }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: level * LEFT_PADDING }}>
+  renderItem = ({ item, depth }: RenderItemParams) => (
+    <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item)}

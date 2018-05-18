@@ -11,15 +11,15 @@ export type Item = {|
   children: Array<Item>,
   hasChildren?: boolean,
   isExpanded?: boolean,
-  isLoading?: boolean,
+  isChildrenLoading?: boolean,
   data?: ItemData,
 |};
 
-export type FlattenTree = Array<FlattenItem>;
+export type FlattenedTree = Array<FlattenedItem>;
 
 export type Path = Array<ItemId>;
 
-export type FlattenItem = {|
+export type FlattenedItem = {|
   item: Item,
   path: Path,
 |};

@@ -1,8 +1,11 @@
 //@flow
 
-import type { FlattenItem, Path, TreeData } from '../types';
+import type { FlattenedItem, Path, TreeData } from '../types';
 
-export const flattenTree = (tree: TreeData, path: Path = []): FlattenItem[] => {
+export const flattenTree = (
+  tree: TreeData,
+  path: Path = [],
+): FlattenedItem[] => {
   if (
     tree.children &&
     Array.isArray(tree.children) &&

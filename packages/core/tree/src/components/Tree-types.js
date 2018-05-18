@@ -3,8 +3,8 @@ import type { Item, TargetPosition, TreeData } from '../types';
 
 export type RenderItemParams = {|
   item: Item,
-  level: number,
-  isDragged: boolean,
+  depth: number,
+  isDragging: boolean,
   isHovered: boolean,
 |};
 

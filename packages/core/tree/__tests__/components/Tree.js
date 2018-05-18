@@ -15,20 +15,20 @@ describe('@atlaskit/tree - Tree', () => {
       expect(mockRender).toHaveBeenCalledTimes(3);
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.children[0],
-        level: 0,
-        isDragged: false,
+        depth: 0,
+        isDragging: false,
         isHovered: false,
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.children[1],
-        level: 0,
-        isDragged: false,
+        depth: 0,
+        isDragging: false,
         isHovered: false,
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.children[2],
-        level: 0,
-        isDragged: false,
+        depth: 0,
+        isDragging: false,
         isHovered: false,
       });
     });

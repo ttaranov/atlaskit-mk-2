@@ -10,7 +10,7 @@ export const treeWithThreeLeaves: TreeData = {
       children: [],
       hasChildren: false,
       isExpanded: false,
-      isLoading: false,
+      isChildrenLoading: false,
       data: { title: 'one' },
     },
     {
@@ -18,7 +18,7 @@ export const treeWithThreeLeaves: TreeData = {
       children: [],
       hasChildren: false,
       isExpanded: false,
-      isLoading: false,
+      isChildrenLoading: false,
       data: { title: 'two' },
     },
     {
@@ -26,12 +26,12 @@ export const treeWithThreeLeaves: TreeData = {
       children: [],
       hasChildren: false,
       isExpanded: false,
-      isLoading: false,
+      isChildrenLoading: false,
       data: { title: 'three' },
     },
   ],
   hasChildren: true,
   isExpanded: true,
-  isLoading: false,
+  isChildrenLoading: false,
   data: {},
 };

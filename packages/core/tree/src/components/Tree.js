@@ -3,7 +3,7 @@ import { Component } from 'react';
 import type { Props } from './Tree-types';
 import { noop } from '../utils/handy';
 import { flattenTree } from '../utils/tree';
-import type { FlattenItem, FlattenTree } from '../types';
+import type { FlattenedItem, FlattenedTree } from '../types';
 
 export default class Tree extends Component<Props> {
   static defaultProps = {
@@ -18,13 +18,13 @@ export default class Tree extends Component<Props> {
   render() {
     const { tree, renderItem } = this.props;
 
-    const items: FlattenTree = flattenTree(tree);
+    const items: FlattenedTree = flattenTree(tree);
 
-    return items.map((item: FlattenItem) => {
+    return items.map((item: FlattenedItem) => {
       return renderItem({
         item: item.item,
-        level: item.path.length - 1,
-        isDragged: false,
+        depth: item.path.length - 1,
+        isDragging: false,
         isHovered: false,
       });
     });
