@@ -2,7 +2,9 @@
 
 import React, { type Node } from 'react';
 import { Container, Subscribe } from 'unstated';
+import { diff } from 'deep-object-diff';
 
+import Logger from '../services/logger';
 import type {
   NavAPIOptions,
   NavAPIState,
@@ -16,15 +18,18 @@ const defaultOptions: NavAPIOptions = {
   activeView: null,
   reducers: {},
   views: {},
+  debug: false,
 };
 
 export class NavAPI extends Container<NavAPIState> {
   reducers: { [ViewKey]: Reducer[] } = {};
   views: { [ViewKey]: ViewResolver } = {};
+  debug: boolean;
+  logger: Logger;
 
   constructor(options: NavAPIOptions | void) {
     super();
-    const { activeView, reducers, views } = {
+    const { activeView, reducers, views, debug } = {
       ...defaultOptions,
       ...options,
     };
@@ -40,6 +45,8 @@ export class NavAPI extends Container<NavAPIState> {
     this.reducers = reducers;
     this.views = views;
 
+    this.logger = new Logger({ debug, prefix: 'Nav API' });
+
     // Resolve the active view data if we have an activeView.
     if (activeView) {
       this.setView(activeView);
@@ -49,10 +56,29 @@ export class NavAPI extends Container<NavAPIState> {
   /**
    * Setters
    */
-  addReducer = (viewKey: ViewKey, reducer: Reducer) => {
-    const reducerList = [...(this.reducers[viewKey] || []), reducer];
+
+  setDebug = (enabled: boolean) => {
+    this.logger.setDebug(enabled);
+  };
+
+  /**
+   * Adds reducer from source to the view with viewKey
+   */
+  addReducer = (
+    viewKey: ViewKey,
+    reducer: Reducer,
+    source?: string = 'unknown',
+  ) => {
+    const reducerList = [
+      ...(this.reducers[viewKey] || []),
+      { source, fn: reducer },
+    ];
     this.reducers = { ...this.reducers, [viewKey]: reducerList };
 
+    this.logger.debug(
+      `Adding reducer from '${source} to '${viewKey}' view - %O`,
+      reducer,
+    );
     // If we're adding a reducer to the active view we'll want to re-set it so
     // that the reducer gets applied.
     const { activeView } = this.state;
@@ -109,12 +135,30 @@ export class NavAPI extends Container<NavAPIState> {
   };
 
   setViewData = (viewKey: ViewKey, viewData: ViewData) => {
+    this.logger.debugGroup(`Setting active view`);
+    this.logger.debug(`Active view: '${viewKey}'`);
     // Pass the data through any reducers.
     const reducers = this.reducers[viewKey] || [];
-    const data = reducers.reduce(
-      (currentView, reducer) => reducer(currentView, viewKey),
-      viewData,
+
+    const data = reducers.reduce((currentView, reducer) => {
+      this.logger.debugGroupCollapsed(`Applying '${reducer.source}' reducer`);
+
+      const reducedData = reducer.fn(currentView, viewKey);
+
+      this.logger.debug(`Data diff: %O`, diff(currentView, reducedData));
+      this.logger.debug(`Function: %O`, reducer.fn);
+      this.logger.debugGroupEnd();
+
+      return reducedData;
+    }, viewData);
+
+    this.logger.debug(`View data: %O`, data);
+    this.logger.debugConditional(
+      reducers.length > 0,
+      `Diff after reducers: %O`,
+      diff(viewData, data),
     );
+    this.logger.debugGroupEnd(`Setting active view`);
 
     this.setState({
       activeView: viewKey,
