@@ -158,4 +158,23 @@ describe('ImageViewer', () => {
       .simulate('click');
     expect(el.state('zoomLevel')).toEqual(0.96);
   });
+
+  it('should return cache friendly dimensions', () => {
+    const response = Promise.resolve(new Blob());
+    const { el } = createFixture(response);
+    const getCacheFriendlyDimension = el.instance()[
+      'getCacheFriendlyDimension'
+    ];
+    expect(getCacheFriendlyDimension(0)).toEqual(800);
+    expect(getCacheFriendlyDimension(600)).toEqual(800);
+    expect(getCacheFriendlyDimension(800)).toEqual(800);
+    expect(getCacheFriendlyDimension(1000)).toEqual(800);
+    expect(getCacheFriendlyDimension(1200)).toEqual(1200);
+    expect(getCacheFriendlyDimension(1600)).toEqual(1400);
+    expect(getCacheFriendlyDimension(1800)).toEqual(1800);
+    expect(getCacheFriendlyDimension(2000)).toEqual(2000);
+    expect(getCacheFriendlyDimension(2200)).toEqual(2000);
+    expect(getCacheFriendlyDimension(2600)).toEqual(2500);
+    expect(getCacheFriendlyDimension(22200)).toEqual(2500);
+  });
 });
