@@ -268,6 +268,21 @@ const editorNodes = {
     state.renderInline(node);
     state.closeBlock(node);
   },
+  mediaGroup(state: MarkdownSerializerState, node: PMNode) {
+    for (let i = 0; i < node.childCount; i++) {
+      const child = node.child(i);
+      state.render(child, node, i);
+    }
+  },
+  mediaSingle(state: MarkdownSerializerState, node: PMNode) {
+    for (let i = 0; i < node.childCount; i++) {
+      const child = node.child(i);
+      state.render(child, node, i);
+    }
+  },
+  media(state: MarkdownSerializerState, node: PMNode) {
+    state.write('![](' + node.attrs.url + ')\n');
+  },
   image(state: MarkdownSerializerState, node: PMNode) {
     // Note: the 'title' is not escaped in this flavor of markdown.
     state.write(
