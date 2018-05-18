@@ -3,8 +3,8 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-In the v2 release the table-tree component does not maintain a state anymore, a helper class \`TableTreeDataHelper\`
-to help you process data in case of async loading.
+In the v2 release the table-tree component does not maintain a state anymore. A helper class \`TableTreeDataHelper\`
+is exported that can help you maintain cache of the object keys and update table tree items object efficiently.
 
 ---
 
@@ -12,13 +12,13 @@ to help you process data in case of async loading.
 
 ### TableTree (Default export)
 
-- v1 - **items**: Function that will be used to provide data for rows at a particular level in the hierarchy
 - v2 - **items**: Array of data object to display in the Table Tree
+- v1 - **items**: (***Deprecated***) Function that will be used to provide data for rows at a particular level in the hierarchy
 
 ### Rows:
 
-- v1 - **items**: Function that will be used to provide data for rows at a particular level in the hierarchy
 - v2 - **items**: Array of data object to display in the Table Tree
+- v1 - **items**: (***Deprecated***) Function that will be used to provide data for rows at a particular level in the hierarchy
 
 ### Row:
 
@@ -56,7 +56,7 @@ pass the same as \`items\` in Row*
 
 ## Upgrade with Async loading of table data
 
-**Here we will discuss the recommended pattern in case of Async data loading.**
+**Here we will discuss the helper class that we can use in case of Async data loading.**
 
 ### Problem
 
@@ -91,7 +91,8 @@ we can travel the item tree quickly to update, to do this we provide a helper cl
 
 ### Recommendation
 
-\`TableTreeDataHelper\` is exported from table tree package, to use it we need to instantiate it with the unique identifier.
+\`TableTreeDataHelper\` is exported from table tree package, to use it we need to instantiate it with the unique identifier in the table tree
+item objects.
 
 ${code`
 const tableTreeDataHelper = new TableTreeDataHelper('keyId');
