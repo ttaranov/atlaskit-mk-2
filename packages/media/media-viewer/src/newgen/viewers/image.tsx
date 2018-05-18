@@ -89,6 +89,13 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
+  private getCacheFriendlyDimension(targetDimension: number) {
+    const allowedRanges = [800, 1200, 1400, 1800, 2000, 2500];
+    return (
+      allowedRanges.filter(d => d <= targetDimension).pop() || allowedRanges[0]
+    );
+  }
+
   private async init(fileItem: FileItem, context: Context) {
     this.setState(initialState, async () => {
       try {
@@ -96,8 +103,8 @@ export class ImageViewer extends React.Component<
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {
-            width: 800,
-            height: 600,
+            width: this.getCacheFriendlyDimension(window.innerWidth),
+            height: this.getCacheFriendlyDimension(window.innerHeight),
             mode: 'fit',
             allowAnimated: true,
           },
