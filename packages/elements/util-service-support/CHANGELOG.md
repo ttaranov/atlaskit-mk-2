@@ -1,5 +1,9 @@
 # @atlaskit/util-service-support
 
+## 2.0.7
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
 ## 2.0.6
 - [patch] Fixed tsconfig in build/es5 [c8e55d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8e55d0)
 

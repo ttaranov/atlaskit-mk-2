@@ -73,6 +73,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowLists={true}
             allowRule={true}
             allowTables={true}
+            legacyImageUploadProvider={Promise.resolve(() => {})}
             contentTransformerProvider={schema =>
               new BitbucketTransformer(schema)
             }

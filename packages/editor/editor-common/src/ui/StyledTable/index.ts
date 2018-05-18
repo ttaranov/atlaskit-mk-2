@@ -6,10 +6,14 @@ import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
 import { akEditorTableBorder } from '../../styles';
 import { tableBackgroundColorNames } from '../../';
 
-const tableStyle = `
+export const tableMarginTop = 32;
+export const tableMarginBottom = 20;
+export const tableMarginSides = 8;
+
+const tableSharedStyle = `
   {
     border-collapse: collapse;
-    margin: 20px 8px;
+    margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
@@ -56,8 +60,8 @@ const tableStyle = `
 
 // tslint:disable-next-line:variable-name
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
-  ${tableStyle};
+  ${tableSharedStyle};
 `;
 
-export { tableStyle };
+export { tableSharedStyle };
 export default StyledTable;

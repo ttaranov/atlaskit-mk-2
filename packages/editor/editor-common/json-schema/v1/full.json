@@ -1791,6 +1791,9 @@
             "$ref": "#/definitions/taskList_node"
           },
           {
+            "$ref": "#/definitions/extension_node"
+          },
+          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]

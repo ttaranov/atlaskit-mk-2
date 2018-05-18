@@ -5,7 +5,6 @@ import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } 
 import {
   akEditorBlockquoteBorderColor,
   akEditorMentionSelected,
-  akEditorTableFloatingControls,
   akEditorRuleBackground,
   akEditorRuleBorderRadius,
   akEditorCodeBackground,
@@ -23,11 +22,6 @@ import {
   akColorN90,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import {
-  tableStyle,
-  akEditorTableNumberColumnWidth,
-} from '@atlaskit/editor-common';
-
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 import { tableStyles } from '../../plugins/table/ui/styles';
 
@@ -340,27 +334,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     position: absolute;
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
-  }
-
-  /* =============== TABLE ================== */
-  .ProseMirror {
-    .table-container table ${tableStyle} .table-column-controls {
-      position: relative;
-    }
-    .table-container {
-      position: relative;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-    .table-container table[data-number-column='true'] td:first-child {
-      background-color: ${akEditorTableFloatingControls};
-      width: ${akEditorTableNumberColumnWidth}px;
-      text-align: center;
-    }
-    .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
   }
 
   /* =============== Layouts ================== */

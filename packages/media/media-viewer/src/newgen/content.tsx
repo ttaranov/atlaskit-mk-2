@@ -2,10 +2,13 @@ import * as React from 'react';
 import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
-import { ContentWrapper, CloseButtonWrapper } from './styled';
+import {
+  ContentWrapper,
+  CloseButtonWrapper,
+  hideControlsClassName,
+} from './styled';
 
 export interface ContentProps {
-  onClick?: (e) => void;
   onClose?: () => void;
 }
 
@@ -44,17 +47,32 @@ export class Content extends Component<ContentProps, ContentState> {
     this.clearTimeout();
   }
 
+  // We want to check mouse movement on click too
+  // in order to not hide controls when user is interacting with any control
+  private onClick = e => {
+    this.checkMouseMovement();
+    this.onClickContentClose(e);
+  };
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
+  };
+
   render() {
     const { showControls } = this.state;
-    const { onClick, onClose, children } = this.props;
+    const { onClose, children } = this.props;
 
     return (
       <ContentWrapper
         showControls={showControls}
         onMouseMove={this.checkMouseMovement}
-        onClick={onClick}
+        onClick={this.onClick}
       >
-        <CloseButtonWrapper>
+        <CloseButtonWrapper className={hideControlsClassName}>
           <Button onClick={onClose} iconBefore={<CrossIcon label="Close" />} />
         </CloseButtonWrapper>
         {children}
