@@ -20,6 +20,8 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/spinner": "^5.0.2",
     "@atlaskit/theme": "^3.2.2",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
     "prop-types": "^15.5.10",
     "styled-components": "1.4.6 - 3"
   },
@@ -29,7 +31,10 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/select": "^3.0.2",
-    "enzyme": "^3.3.0"
+    "enzyme": "^3.3.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "keywords": [
     "atlaskit",
