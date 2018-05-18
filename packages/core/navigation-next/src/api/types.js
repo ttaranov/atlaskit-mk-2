@@ -55,4 +55,5 @@ export type NavAPIOptions = {|
   activeView?: ViewKey | null,
   reducers?: { [ViewKey]: Reducer[] },
   views?: { [ViewKey]: ViewResolver },
+  debug?: boolean,
 |};

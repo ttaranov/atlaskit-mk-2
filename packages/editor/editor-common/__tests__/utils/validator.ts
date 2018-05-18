@@ -1941,4 +1941,97 @@ describe('Renderer - Validator', () => {
       expect(newDoc).to.deep.equal(expectedValidDoc);
     });
   });
+
+  describe('Stage0', () => {
+    it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original)).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original, schema, 'stage0')).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+    });
+  });
 });
