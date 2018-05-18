@@ -4,8 +4,3 @@ export type AnalyticsWebClient = {
   sendTrackEvent: (event: any) => void;
   sendScreenEvent: (event: any) => void;
 };
-
-// TODO: make key be EventType
-export type DispatcherMap = {
-  [key: string]: Function;
-};

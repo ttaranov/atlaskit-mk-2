@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import { DummyComponentWithAnalytics } from '../example-helpers';
-import debug, { enableLogger } from '../src/logger';
+import debug, { enableLogger } from '../example-helpers/logger';
 
 const myOnClickHandler = () => {
   debug('DIV clicked ! Yay!');

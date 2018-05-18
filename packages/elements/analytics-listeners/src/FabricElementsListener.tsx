@@ -2,15 +2,14 @@ import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { GasPayload } from '@atlaskit/analytics-gas-types';
-import { mapEventTypeToDispatcher } from './utils';
+import { sendEvent } from './analytics-web-client-wrapper';
 import { AnalyticsWebClient } from './types';
-import debug from './logger';
 
 const ELEMENTS_CHANNEL = 'fabric-elements';
 
 export type EventNextType = {
   payload: GasPayload;
-  context?: object;
+  context?: any;
 };
 
 export type ListenerFunction = (event: EventNextType) => void;
@@ -22,27 +21,8 @@ export type Props = {
 };
 
 export default class FabricElementsListener extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  listenerHandler: ListenerFunction = (event: EventNextType) => {
-    const gasEvent = {
-      ...event.payload,
-    };
-
-    const eventType = gasEvent.eventType;
-    delete gasEvent!.eventType;
-
-    const dispatchers: object = mapEventTypeToDispatcher(this.props.client);
-    const dispatcher = dispatchers[eventType];
-    if (dispatcher) {
-      dispatcher(gasEvent);
-    } else {
-      debug(
-        `cannot map eventType ${eventType} to an analytics-web-client function`,
-      );
-    }
+  listenerHandler: ListenerFunction = event => {
+    sendEvent(this.props.client)(event.payload);
   };
 
   render() {

@@ -5,9 +5,10 @@ import {
   DummyComponentWithAnalytics,
   DummyComponent,
 } from '../example-helpers';
+import { AnalyticsWebClient } from '../src/types';
 
 describe('<FabricAnalyticsListeners />', () => {
-  let analyticsWebClientMock;
+  let analyticsWebClientMock: AnalyticsWebClient;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -34,7 +35,7 @@ describe('<FabricAnalyticsListeners />', () => {
       );
 
       const dummyComponent = analyticsListener.find(DummyComponent);
-      expect(dummyComponent.length).toBe(1);
+      expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
       expect(compOnClick).toBeCalled();

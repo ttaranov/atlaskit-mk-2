@@ -7,9 +7,7 @@ export type Props = {
   onClick: (e) => void;
 };
 
-export const DummyComponent: React.StatelessComponent<Props> = (
-  props: Props,
-) => (
+export const DummyComponent: React.StatelessComponent<Props> = props => (
   <div id="dummy" onClick={props.onClick}>
     Test [click on me]
   </div>

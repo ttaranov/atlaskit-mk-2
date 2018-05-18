@@ -3,9 +3,10 @@ import { mount } from 'enzyme';
 import FabricElementsListener from '../src/FabricElementsListener';
 import { DummyComponentWithAnalytics } from '../example-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { AnalyticsWebClient } from '../src/types';
 
 describe('<FabricElementsListener />', () => {
-  let analyticsWebClientMock;
+  let analyticsWebClientMock: AnalyticsWebClient;
 
   beforeEach(() => {
     analyticsWebClientMock = {
