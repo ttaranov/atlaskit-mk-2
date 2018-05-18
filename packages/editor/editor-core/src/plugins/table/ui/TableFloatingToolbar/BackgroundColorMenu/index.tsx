@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import BackgroundColorIcon from '@atlaskit/icon/glyph/editor/background-color';
-import ToolbarButton from '../../../../../ui/ToolbarButton';
 import Dropdown from '../../../../../ui/Dropdown';
 import { analyticsDecorator as analytics } from '../../../../../analytics';
 import ColorPalette from '../../../../../ui/ColorPalette';
 import { TriggerWrapper, ExpandIconWrapper } from '../styles';
 import { setCellAttr } from '../../../actions';
-
 import withOuterListeners from '../../../../../ui/with-outer-listeners';
+import { ToolbarButtonWide } from '../styles';
 
 const DropdownWithOutsideListeners: any = withOuterListeners(Dropdown);
 
@@ -18,6 +18,7 @@ export interface Props {
   editorView: EditorView;
   palette: Map<string, string>;
   mountPoint?: HTMLElement;
+  borderColors: object;
 }
 
 export interface State {
@@ -31,7 +32,7 @@ export default class BackgroundColorMenu extends Component<Props, State> {
 
   render() {
     const { isOpen } = this.state;
-    const { mountPoint } = this.props;
+    const { mountPoint, borderColors } = this.props;
 
     return (
       <DropdownWithOutsideListeners
@@ -42,7 +43,8 @@ export default class BackgroundColorMenu extends Component<Props, State> {
         handleClickOutside={this.handleClose}
         handleEscapeKeydown={this.handleClose}
         trigger={
-          <ToolbarButton
+          <ToolbarButtonWide
+            spacing="compact"
             selected={isOpen}
             title="Toggle background color menu"
             onClick={this.toggleOpen}
@@ -57,7 +59,11 @@ export default class BackgroundColorMenu extends Component<Props, State> {
           />
         }
       >
-        <ColorPalette palette={this.props.palette} onClick={this.setColor} />
+        <ColorPalette
+          palette={this.props.palette}
+          onClick={this.setColor}
+          borderColors={borderColors}
+        />
       </DropdownWithOutsideListeners>
     );
   }

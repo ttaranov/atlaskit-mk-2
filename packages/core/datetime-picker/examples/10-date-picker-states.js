@@ -22,7 +22,16 @@ export default () => {
 
       <Label label="Disabled dates" />
       <DatePicker
-        disabled={[now(10), now(11), now(12)]}
+        disabled={[now(31), now(30), now(10), now(11), now(12)]}
+        onChange={console.log}
+      />
+
+      <Label label="Custom date format" />
+      <DatePicker
+        dateFormat="DD/MMM/YY"
+        selectProps={{
+          placeholder: 'e.g. 31/Dec/18',
+        }}
         onChange={console.log}
       />
     </div>

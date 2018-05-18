@@ -2,7 +2,7 @@
 
 Related reading:
 
-* [versioning](./versioning)
+* [Versioning](./versioning)
 
 ## Committing your code
 

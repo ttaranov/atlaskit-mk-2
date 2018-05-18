@@ -28,6 +28,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   &.with-overlay {
     .extension-overlay {
       background: ${akColorN20A};
+      color: transparent;
     }
 
     &:hover .extension-overlay {

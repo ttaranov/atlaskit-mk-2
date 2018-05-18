@@ -27,4 +27,13 @@ describe('Media', () => {
     expect(mediaComponent.find(MediaCard).length).to.equal(1);
     mediaComponent.unmount();
   });
+
+  it('should render a media component with external image', async () => {
+    const mediaComponent = mount(
+      <Media type="external" url="http://image.jpg" />,
+    );
+
+    expect(mediaComponent.find(MediaCard).length).to.equal(1);
+    mediaComponent.unmount();
+  });
 });

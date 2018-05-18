@@ -1,5 +1,21 @@
 # @atlaskit/theme
 
+## 3.2.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
+## 3.2.1
+- [patch] Add Consolas to our font family [62bacf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62bacf6)
+- [none] Updated dependencies [62bacf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62bacf6)
+
+## 3.2.0
+- [minor] Add color palette to theme - Jira Porfolio [72ab054](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72ab054)
+
+## 3.1.1
+- [patch] releasing all compo that depends on theme [86a82d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86a82d2)
+- [patch] Re-release to fix changes merged with @atlaskit/form [baa3c20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/baa3c20)
+
 ## 3.1.0
 - [minor] Added ability to specify an object as the badge appearance. Added an Appearance export to theme so that we can use strings and objects for appearance theming." [6e89615](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e89615)
 

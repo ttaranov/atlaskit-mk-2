@@ -242,7 +242,7 @@ export class HyperlinkState {
       };
     };
     return translateCoordinates(
-      editorView.coordsAtPos(pos),
+      editorView.coordsAtPos(this.activeLinkStartPos || pos),
       left,
       top - cursorHeight,
     );

@@ -51,9 +51,9 @@ export interface State {
 }
 
 const floatingStyleOverride = {
-  maxHeight: '284px',
   minHeight: '40px',
   height: 'initial',
+  'margin-top': '6px',
 };
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
@@ -129,8 +129,10 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
    * because we need to show it next to cursor even without clear target for popup.
    */
   private adjustPosition = position => {
+    const { inputActive } = this.state;
     const { pluginState } = this.props;
-    if (!pluginState.active) {
+
+    if (!pluginState.active || inputActive) {
       const editorRoot = this.getOffsetParent();
 
       if (!editorRoot) {
@@ -143,21 +145,22 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       );
 
       if (position.left) {
-        position.left = coordinates.left;
+        position.left = Math.round(coordinates.left);
       }
 
       if (position.top) {
-        position.top = coordinates.top;
+        position.top = Math.round(coordinates.top);
       }
 
       if (position.bottom) {
-        position.bottom = coordinates.bottom;
+        position.bottom = Math.round(coordinates.bottom);
       }
 
       if (position.right) {
-        position.right = coordinates.right;
+        position.right = Math.round(coordinates.right);
       }
     }
+
     return position;
   };
 
@@ -244,6 +247,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
           onChange={this.updateText}
           onMouseDown={this.setInputActive}
           onBlur={this.handleOnBlur}
+          onCancel={this.handleOnBlur}
         />
       );
     }
@@ -258,6 +262,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         onChange={this.updateHref}
         onMouseDown={this.setInputActive}
         onBlur={this.handleOnBlur}
+        onCancel={this.handleOnBlur}
       />
     );
   }

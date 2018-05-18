@@ -6,6 +6,8 @@ import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 function getPresence() {
   const chance = Math.random();
   switch (true) {
+    case chance > 0.5 && chance < 0.8:
+      return 'focus';
     case chance < 0.25:
       return 'busy';
     case chance < 0.5:

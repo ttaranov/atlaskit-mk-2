@@ -8,6 +8,17 @@ import { setGapCursorAtPos } from '../actions';
 
 export const pluginKey = new PluginKey('gapCursorPlugin');
 
+export const isButton = (elem: HTMLElement | null) => {
+  const tableControls = document.querySelector(
+    '.table-column-controls-wrapper',
+  );
+  return (
+    elem &&
+    (elem.nodeName === 'BUTTON' ||
+      (tableControls && tableControls.contains(elem)))
+  );
+};
+
 const plugin = new Plugin({
   key: pluginKey,
 
@@ -72,7 +83,11 @@ const plugin = new Plugin({
       });
 
       // this helps to ignore all of the clicks outside of the parent (e.g. nodeView controls)
-      if (posAtCoords && posAtCoords.inside !== position) {
+      if (
+        posAtCoords &&
+        posAtCoords.inside !== position &&
+        !isButton(event.target as HTMLElement)
+      ) {
         // max available space between parent and child from the left side in px
         // this ensures the correct side of the gap cursor in case of clicking in between two block nodes
         const leftSideOffsetX = 20;

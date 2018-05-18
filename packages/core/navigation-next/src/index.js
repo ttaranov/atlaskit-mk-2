@@ -23,3 +23,6 @@ export { NavigationProvider, NavigationSubscriber } from './state';
 
 /** Theme */
 export { dark, light, settings, modeGenerator } from './theme';
+
+/** Nav API */
+export { NavAPISubscriber } from './api';

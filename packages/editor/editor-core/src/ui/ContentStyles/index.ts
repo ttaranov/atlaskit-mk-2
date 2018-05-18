@@ -5,30 +5,25 @@ import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } 
 import {
   akEditorBlockquoteBorderColor,
   akEditorMentionSelected,
-  akEditorTableBorderSelected,
-  akEditorTableFloatingControls,
   akEditorRuleBackground,
   akEditorRuleBorderRadius,
   akEditorCodeBackground,
   akEditorCodeFontFamily,
   akEditorCodeBlockPadding,
+  defaultEditorFontStyles,
 } from '../../styles';
 import {
   akGridSizeUnitless,
   akColorN20,
   akColorN40,
   akBorderRadius,
-  akColorN40A,
   akColorN300,
   akColorB200,
+  akColorN90,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import {
-  tableStyle,
-  akEditorTableNumberColumnWidth,
-} from '@atlaskit/editor-common';
-
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
+import { tableStyles } from '../../plugins/table/ui/styles';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -45,6 +40,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
+  .ProseMirror p,
+  .ProseMirror .code {
+    ${defaultEditorFontStyles};
+  }
+
   .ProseMirror .placeholder-decoration {
     position: absolute;
     pointer-events: none;
@@ -52,7 +52,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
     &::before {
       content: attr(data-text);
-      color: ${akColorN300};
+      color: ${akColorN90};
       pointer-events: none;
     }
   }
@@ -92,11 +92,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror pre {
     box-sizing: border-box;
-    white-space: pre-wrap;
     font-family: ${akEditorCodeFontFamily};
     background: ${akEditorCodeBackground};
     padding: ${akEditorCodeBlockPadding};
     border-radius: ${akBorderRadius};
+    overflow-x: scroll;
   }
 
   .ProseMirror .code {
@@ -118,7 +118,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror ul,
   .ProseMirror ol {
     padding-left: 30px;
-    cursor: default;
     box-sizing: border-box;
   }
 
@@ -126,7 +125,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror ul ol,
   .ProseMirror ol ul,
   .ProseMirror ol ol {
-    padding-left: 17px;
+    padding-left: 21px;
   }
 
   .ProseMirror li {
@@ -260,6 +259,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    .media-single.is-loading {
+      min-height: 20px;
+    }
+
     li .media-single {
       margin: 0;
     }
@@ -290,6 +293,31 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
   }
 
+  /** =============== LIST INDENT STYLES ========= */
+  ul {
+    list-style-type: disc;
+  }
+
+  ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul {
+    list-style-type: square;
+  }
+
+  ul ul ul ul {
+    list-style-type: disc;
+  }
+
+  ul ul ul ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul ul ul ul {
+    list-style-type: square;
+  }
+
   /* =============== PLACEHOLDER CURSOR STYLES========= */
 
   & .ProseMirror-fake-text-cursor {
@@ -308,91 +336,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     border-right: 1px solid rgba(0, 0, 0, 0.4);
   }
 
-  /* =============== TABLE ================== */
-  .ProseMirror {
-    .table-container table ${tableStyle} .table-column-controls {
-      position: relative;
-    }
-    .table-container {
-      position: relative;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-    .table-container table[data-number-column='true'] td:first-child {
-      background-color: ${akEditorTableFloatingControls};
-      width: ${akEditorTableNumberColumnWidth}px;
-      text-align: center;
-    }
-    .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  /* =============== TABLE COLUMN RESIZING ================== */
-  .ProseMirror.table-resizing {
-    .with-controls .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
-    .table-shadow {
-      pointer-events: none;
-      display: none;
-      position: absolute;
-      top: 18px;
-      bottom: 20px;
-      width: 0;
-    }
-    .with-controls .table-shadow {
-      display: block;
-    }
-    .table-shadow.-left {
-      left: 0;
-      background: linear-gradient(
-        to left,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
-    .table-shadow.-right {
-      background: linear-gradient(
-        to right,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
-    .table-wrapper {
-      overflow-x: auto;
-      padding-top: 8px;
-    }
-    .table-column-controls {
-      top: 20px;
-    }
-    .column-resize-handle {
-      background-color: ${akEditorTableBorderSelected};
-      position: absolute;
-      bottom: 0;
-      top: -1px;
-      right: -2px;
-      width: 2px;
-      height: calc(100% + 2px);
-      pointer-events: none;
-      z-index: 20;
-    }
-    .with-controls .column-resize-handle {
-      top: -11px;
-      height: calc(100% + 11px);
-    }
-  }
-
-  .ProseMirror.resize-cursor {
-    cursor: col-resize;
-
-    table td,
-    table th {
-      position: relative;
-    }
-  }
   /* =============== Layouts ================== */
   .ProseMirror {
     & [data-layout-type] {
@@ -428,6 +371,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 
   ${gapCursorStyles};
+  ${tableStyles};
 `;
 
 export default ContentStyles;

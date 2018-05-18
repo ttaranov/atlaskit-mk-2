@@ -1,6 +1,4 @@
-import * as chai from 'chai';
 import * as React from 'react';
-import * as sinon from 'sinon';
 import { OnEmojiEvent, EmojiProvider } from '@atlaskit/emoji';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 
@@ -15,8 +13,6 @@ import {
 import { emoji } from '@atlaskit/util-data-test';
 
 const { getEmojiResourcePromise } = emoji.testData;
-
-const { expect } = chai;
 
 const renderSelector = (
   onSelection: OnEmojiEvent = () => {},
@@ -34,38 +30,37 @@ const renderSelector = (
 };
 
 describe('@atlaskit/reactions/selector', () => {
-  let clock;
   beforeEach(function() {
-    clock = sinon.useFakeTimers();
+    jest.useFakeTimers();
   });
 
   afterEach(function() {
-    clock.restore();
+    jest.useRealTimers();
   });
 
   it('should render default reactions', () => {
     const selector = shallow(renderSelector());
     const emojis = selector.find(EmojiButton);
 
-    expect(emojis.length).to.equal(defaultReactions.length);
+    expect(emojis.length).toEqual(defaultReactions.length);
 
     emojis.forEach(emoji => {
-      expect(isDefaultReaction(emoji.props().emojiId)).to.equal(true);
+      expect(isDefaultReaction(emoji.props().emojiId)).toEqual(true);
     });
 
-    expect(selector.find(EditorMoreIcon)).to.have.lengthOf(0);
+    expect(selector.find(EditorMoreIcon)).toHaveLength(0);
   });
 
   it('should call "onSelection" on selection', () => {
-    const onSelection = sinon.spy();
+    const onSelection = jest.fn();
     const selector = mount(renderSelector(onSelection));
     selector
       .find(EmojiButton)
       .first()
       .simulate('mouseup', { button: 0 });
 
-    clock.tick(500);
-    expect(onSelection.called).to.equal(true);
+    jest.runTimersToTime(500);
+    expect(onSelection).toHaveBeenCalled();
   });
 
   it('should call "onMoreClick" when more button is clicked', () => {
@@ -75,7 +70,7 @@ describe('@atlaskit/reactions/selector', () => {
 
     selector.find(EditorMoreIcon).simulate('mousedown');
 
-    expect(onMoreClick.mock.calls).to.have.lengthOf(1);
+    expect(onMoreClick.mock.calls).toHaveLength(1);
   });
 
   it('should calculate animation delay based on reaction index', () => {
@@ -86,6 +81,6 @@ describe('@atlaskit/reactions/selector', () => {
         .find(`.${revealStyle}`)
         .at(2)
         .prop('style'),
-    ).to.have.property('animationDelay', '100ms');
+    ).toHaveProperty('animationDelay', '100ms');
   });
 });

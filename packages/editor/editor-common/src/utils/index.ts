@@ -11,3 +11,4 @@ export {
   ErrorReportingHandler,
 } from './error-reporter';
 export * from './date';
+export * from './imageLoader';
