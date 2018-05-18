@@ -1,5 +1,8 @@
 # @atlaskit/comment
 
+## 3.1.7
+- [patch] Remove button for Edited and replace it by a span [ad3cd34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad3cd34)
+
 ## 3.1.6
 
 
