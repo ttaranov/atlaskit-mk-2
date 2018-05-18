@@ -2,6 +2,7 @@
 
 import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import { ThemeProvider } from 'styled-components';
@@ -37,9 +38,6 @@ type Props = {
   onOpenChange?: any => mixed,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position?: string,
-  /** Value passed to the Layer component to determine if the list will be positioned
-   * relative to the viewport. */
-  isMenuFixed?: boolean,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */
@@ -66,7 +64,6 @@ export default class Droplist extends Component<Props, void> {
     onKeyDown: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
-    isMenuFixed: false,
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
@@ -124,19 +121,14 @@ export default class Droplist extends Component<Props, void> {
 
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
-      // $FlowFixMe
-      if (event.target instanceof Node) {
-        // Rather than check for the target within the entire Droplist, we specify the trigger/content.
-        // This is so when the Layer component is open, the scroll-lock blanket does not stop the Droplist
-        // from closing.
-        const withinTrigger =
-          this.triggerRef && this.triggerRef.contains(event.target);
-        const withinContent =
-          this.dropContentRef && this.dropContentRef.contains(event.target);
+      const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
 
-        if (!withinTrigger && !withinContent) {
-          this.close(event);
-        }
+      if (
+        !domNode ||
+        // $FlowFixMe
+        (event.target instanceof Node && !domNode.contains(event.target))
+      ) {
+        this.close(event);
       }
     }
   };
@@ -173,7 +165,6 @@ export default class Droplist extends Component<Props, void> {
       onClick,
       onKeyDown,
       position,
-      isMenuFixed,
       shouldFitContainer,
       shouldFlip,
       trigger,
@@ -207,8 +198,7 @@ export default class Droplist extends Component<Props, void> {
           offset={dropOffset}
           // $FlowFixMe
           position={position}
-          isAlwaysFixed={isOpen && isMenuFixed}
-          lockScroll={isOpen && isMenuFixed}
+          isAlwaysFixed
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}

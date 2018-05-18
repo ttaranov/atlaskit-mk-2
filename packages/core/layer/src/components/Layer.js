@@ -7,7 +7,7 @@ import {
   getFlipBehavior,
   positionPropToPopperPosition,
 } from './internal/helpers';
-import { LayerContainer, ContentContainer, TriggerContainer } from '../styles';
+import ContentContainer from '../styledContentContainer';
 import type {
   FlipPositionType,
   BoundariesElementType,
@@ -15,7 +15,6 @@ import type {
   CSSPositionType,
   OffsetStateType,
   PopperStateType,
-  FixedOffsetType,
 } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -39,7 +38,7 @@ export type Props = {
   zIndex?: number,
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
-  /** Force the layer to always be positioned fixed to the viewport. */
+  /** Force the layer to always be positioned fixed to the viewport. This will cause scroll to be locked regardless of the lockScroll prop. */
   isAlwaysFixed?: boolean,
 };
 
@@ -59,7 +58,7 @@ type State = {
   cssPosition: CSSPositionType,
   originalHeight: ?number,
   maxHeight: ?number,
-  fixedOffset: ?FixedOffsetType,
+  fixedOffset: ?number,
 };
 
 export default class Layer extends Component<Props, State> {
@@ -181,10 +180,7 @@ export default class Layer extends Component<Props, State> {
 
     if (isAlwaysFixed && this.targetRef) {
       const actualTarget = this.targetRef.firstChild;
-      const { top, width, height } = actualTarget.getBoundingClientRect();
-      this.setState({ fixedOffset: { top, width, height } });
-    } else if (!isAlwaysFixed && this.state.fixedOffset !== undefined) {
-      this.setState({ fixedOffset: undefined });
+      this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
     }
   }
 
@@ -305,20 +301,18 @@ export default class Layer extends Component<Props, State> {
       fixedOffset,
     } = this.state;
     const opacity = hasExtractedStyles ? {} : { opacity: 0 };
-    const { top, width, height } = fixedOffset || {};
 
     return (
-      <LayerContainer width={width} height={height}>
-        {lockScroll && <ScrollBlock />}
-        <TriggerContainer
-          innerRef={ref => {
+      <div>
+        <div
+          ref={ref => {
             this.targetRef = ref;
           }}
-          fixedOffset={top}
         >
           {this.props.children}
-        </TriggerContainer>
-        <ContentContainer maxHeight={maxHeight} fixedOffset={top}>
+        </div>
+        {lockScroll && <ScrollBlock />}
+        <ContentContainer maxHeight={maxHeight} fixedOffset={fixedOffset}>
           <div
             ref={ref => {
               this.contentRef = ref;
@@ -335,7 +329,7 @@ export default class Layer extends Component<Props, State> {
             {this.props.content}
           </div>
         </ContentContainer>
-      </LayerContainer>
+      </div>
     );
   }
 }
