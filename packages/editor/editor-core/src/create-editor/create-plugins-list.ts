@@ -38,6 +38,7 @@ import {
   typeAheadPlugin,
   quickInsertPlugin,
   gapCursorPlugin,
+  inlineActionPlugin,
 } from '../plugins';
 
 /**
@@ -70,6 +71,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.UNSAFE_allowQuickInsert) {
     plugins.push(quickInsertPlugin);
+  }
+
+  if (props.allowInlineAction) {
+    plugins.push(inlineActionPlugin);
   }
 
   if (props.allowTextColor) {
