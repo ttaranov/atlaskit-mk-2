@@ -57,7 +57,7 @@ export function parseTime(timeString: string) {
   const time = timeString.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
   let hours = 0;
 
-  if (!time) return NaN;
+  if (!time || !time[2]) return NaN;
   if (time[1]) {
     hours = parseInt(time[1], 10);
   }
